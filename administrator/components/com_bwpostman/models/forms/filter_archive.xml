@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="newsletters">
+		<fields name="filter">
+			<field
+				name="search"
+				type="text"
+				label="COM_CONTENT_FILTER_SEARCH_DESC"
+				hint="JSEARCH_FILTER"
+			/>
+			<field
+				name="search_filter"
+				type="list"
+				label="COM_BWPOSTMAN_NL_FILTER_TITLE_LBL"
+				description="COM_BWPOSTMAN_NL_FILTER_TITLE_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">COM_BWPOSTMAN_FILTER_SEARCH_FOR</option>
+				<option value="subject">COM_BWPOSTMAN_NL_FILTER_SEARCH_SUBJECT</option>
+				<option value="description">COM_BWPOSTMAN_NL_FILTER_SEARCH_DESCRIPTION</option>
+				<option value="subject_description">COM_BWPOSTMAN_NL_FILTER_SEARCH_SUBJECT_DESCRIPTION</option>
+				<option value="html_version">COM_BWPOSTMAN_NL_FILTER_SEARCH_HTML</option>
+				<option value="text_version">COM_BWPOSTMAN_NL_FILTER_SEARCH_TEXT</option>
+				<option value="html_text_version">COM_BWPOSTMAN_NL_FILTER_SEARCH_HTMLTEXT</option>
+			</field>
+			<field
+				name="mailinglists"
+				type="arcmailinglists"
+				label="COM_BWPOSTMAN_NL_FILTER_MAILINGLIST_LBL"
+				description="COM_BWPOSTMAN_NL_FILTER_MAILINGLIST_DESC"
+				onchange="this.form.submit();"
+				>
+			</field>
+			<field
+				name="usergroups"
+				type="arcusergroups"
+				label="COM_BWPOSTMAN_NL_FILTER_USERGROUP_LBL"
+				description="COM_BWPOSTMAN_NL_FILTER_USERGROUP_DESC"
+				onchange="this.form.submit();"
+				>
+			</field>
+			<field
+				name="campaigns"
+				type="campaigns"
+				label="COM_BWPOSTMAN_NL_FILTER_CAMPAIGNLIST_LBL"
+				description="COM_BWPOSTMAN_NL_FILTER_CAMPAIGNLIST_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="-1">COM_BWPOSTMAN_NL_FILTER_NO_CAMPAIGN</option>
+			</field>
+			<field
+				name="authors"
+				type="authors"
+				label="COM_BWPOSTMAN_NL_FILTER_AUTHORLIST_LBL"
+				description="COM_BWPOSTMAN_NL_FILTER_AUTHORLIST_DESC"
+				onchange="this.form.submit();"
+				>
+			</field>
+			<field
+				name="published"
+				type="list"
+				label="COM_CONTENT_FILTER_PUBLISHED"
+				description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">JOPTION_SELECT_PUBLISHED</option>
+				<option value="0">COM_BWPOSTMAN_FIELD_VALUE_UNPUBLISHED</option>
+				<option value="1">COM_BWPOSTMAN_FIELD_VALUE_PUBLISHED</option>
+			</field>
+		</fields>
+
+		<fields name="list">
+			<field
+				name="fullordering"
+				type="list"
+				label="COM_CONTENT_LIST_FULL_ORDERING"
+				description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+				onchange="this.form.submit();"
+				default="a.subject ASC"
+				class="list_ordering"
+				>
+				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.subject ASC">COM_BWPOSTMAN_NL_SUBJECT_ASC</option>
+				<option value="a.subject DESC">COM_BWPOSTMAN_NL_SUBJECT_DESC</option>
+				<option value="a.description ASC">COM_BWPOSTMAN_NL_DESCRIPTION_ASC</option>
+				<option value="a.description DESC">COM_BWPOSTMAN_NL_DESCRIPTION_DESC</option>
+				<option value="a.mailing_date ASC">COM_BWPOSTMAN_NL_MAILINGDATE_ASC</option>
+				<option value="a.mailing_date DESC">COM_BWPOSTMAN_NL_MAILINGDATE_DESC</option>
+				<option value="author ASC">COM_BWPOSTMAN_NL_AUTHOR_ASC</option>
+				<option value="author DESC">COM_BWPOSTMAN_NL_AUTHOR_DESC</option>
+				<option value="campaigns ASC">COM_BWPOSTMAN_NL_CAMPAIGN_ASC</option>
+				<option value="campaigns DESC">COM_BWPOSTMAN_NL_CAMPAIGN_DESC</option>
+				<option value="a.published ASC">JSTATUS_ASC</option>
+				<option value="a.published DESC">JSTATUS_DESC</option>
+				<option value="a.publish_up ASC">COM_BWPOSTMAN_NL_PUBLISH_UP_ASC</option>
+				<option value="a.publish_up DESC">COM_BWPOSTMAN_NL_PUBLISH_UP_DESC</option>
+				<option value="a.publish_down ASC">COM_BWPOSTMAN_NL_PUBLISH_DOWN_ASC</option>
+				<option value="a.publish_down DESC">COM_BWPOSTMAN_NL_PUBLISH_DOWN_DESC</option>
+				<option value="a.archive_date ASC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_ASC</option>
+				<option value="a.archive_date DESC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_DESC</option>
+				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			</field>
+		
+			<field
+				name="limit"
+				type="limitbox"
+				class="input-mini"
+				default="20"
+				label="COM_CONTENT_LIST_LIMIT"
+				description="COM_CONTENT_LIST_LIMIT_DESC"
+				onchange="this.form.submit();"
+			/>
+		</fields>
+	</fieldset>
+
+	<fieldset name="subscribers">
+		<fields name="filter">
+			<field
+				name="search"
+				type="text"
+				label="COM_CONTENT_FILTER_SEARCH_DESC"
+				hint="JSEARCH_FILTER"
+			/>
+			<field
+				name="search_filter"
+				type="list"
+				label="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_LBL"
+				description="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">COM_BWPOSTMAN_FILTER_SEARCH_FOR</option>
+				<option value="name">COM_BWPOSTMAN_SUB_FILTER_SEARCH_NAME</option>
+				<option value="firstname">COM_BWPOSTMAN_SUB_FILTER_SEARCH_FIRSTNAME</option>
+				<option value="fullname">COM_BWPOSTMAN_SUB_FILTER_SEARCH_FULLNAME</option>
+				<option value="email">COM_BWPOSTMAN_SUB_FILTER_SEARCH_EMAIL</option>
+				<option value="name_email">COM_BWPOSTMAN_SUB_FILTER_SEARCH_NAMEEMAIL</option>
+			</field>
+			<field
+				name="emailformat"
+				type="list"
+				label="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_LBL"
+				description="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT</option>
+				<option value="0">COM_BWPOSTMAN_TEXT</option>
+				<option value="1">COM_BWPOSTMAN_HTML</option>
+			</field>
+
+			<field
+				name="status"
+				type="list"
+				label="COM_CONTENT_FILTER_PUBLISHED"
+				description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">JOPTION_SELECT_PUBLISHED</option>
+				<option value="1">COM_BWPOSTMAN_SUB_FILTER_SEARCH_CONFIRMED</option>
+				<option value="0">COM_BWPOSTMAN_SUB_FILTER_SEARCH_UNCONFIRMED</option>
+				<option value="9">COM_BWPOSTMAN_SUB_FILTER_SEARCH_TESTRECIPIENT</option>
+			</field>
+		</fields>
+
+		<fields name="list">
+			<field
+				name="fullordering"
+				type="list"
+				label="COM_CONTENT_LIST_FULL_ORDERING"
+				description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+				onchange="this.form.submit();"
+				default="a.name ASC"
+				>
+				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.name ASC">COM_BWPOSTMAN_SUB_NAME_ASC</option>
+				<option value="a.name DESC">COM_BWPOSTMAN_SUB_NAME_DESC</option>
+				<option value="a.firstname ASC">COM_BWPOSTMAN_SUB_FIRSTNAME_ASC</option>
+				<option value="a.firstname DESC">COM_BWPOSTMAN_SUB_FIRSTNAME_DESC</option>
+				<option value="a.email ASC">COM_BWPOSTMAN_EMAIL_ASC</option>
+				<option value="a.email DESC">COM_BWPOSTMAN_EMAIL_DESC</option>
+				<option value="a.status ASC">JSTATUS_ASC</option>
+				<option value="a.status DESC">JSTATUS_DESC</option>
+				<option value="a.emailformat ASC">COM_BWPOSTMAN_EMAILFORMAT_ASC</option>
+				<option value="a.emailformat DESC">COM_BWPOSTMAN_EMAILFORMAT_DESC</option>
+				<option value="mailinglists ASC">COM_BWPOSTMAN_ML_NBR_ASC</option>
+				<option value="mailinglists DESC">COM_BWPOSTMAN_ML_NBR_DESC</option>
+				<option value="a.archive_date ASC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_ASC</option>
+				<option value="a.archive_date DESC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_DESC</option>
+				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			</field>
+			<field
+				name="limit"
+				type="limitbox"
+				class="input-mini"
+				default="20"
+				label="COM_CONTENT_LIST_LIMIT"
+				description="COM_CONTENT_LIST_LIMIT_DESC"
+				onchange="this.form.submit();"
+			/>
+	</fields>
+	</fieldset>
+
+	<fieldset name="campaigns">
+		<fields name="filter">
+			<field
+				name="search"
+				type="text"
+				label="COM_CONTENT_FILTER_SEARCH_DESC"
+				hint="JSEARCH_FILTER"
+			/>
+			<field
+				name="search_filter"
+				type="list"
+				label="COM_BWPOSTMAN_CAM_FILTER_TITLE_LBL"
+				description="COM_BWPOSTMAN_CAM_FILTER_TITLE_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="title">COM_BWPOSTMAN_CAM_FILTER_SEARCH_TITLE</option>
+				<option value="description">COM_BWPOSTMAN_CAM_FILTER_SEARCH_DESC</option>
+				<option value="title_description">COM_BWPOSTMAN_CAM_FILTER_SEARCH_TITLEDESC</option>
+			</field>
+		</fields>
+
+		<fields name="list">
+			<field
+				name="fullordering"
+				type="list"
+				label="COM_CONTENT_LIST_FULL_ORDERING"
+				description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+				onchange="this.form.submit();"
+				default="a.title ASC"
+				>
+				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.title ASC">COM_BWPOSTMAN_CAM_TITLE_ASC</option>
+				<option value="a.title DESC">COM_BWPOSTMAN_CAM_TITLE_DESC</option>
+				<option value="a.description ASC">COM_BWPOSTMAN_CAM_DESCRIPTION_ASC</option>
+				<option value="a.description DESC">COM_BWPOSTMAN_CAM_DESCRIPTION_DESC</option>
+				<option value="newsletters ASC">COM_BWPOSTMAN_CAM_NBR_ASC</option>
+				<option value="newsletters DESC">COM_BWPOSTMAN_CAM_NBR_DESC</option>
+				<option value="a.archive_date ASC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_ASC</option>
+				<option value="a.archive_date DESC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_DESC</option>
+				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			</field>
+			<field
+				name="limit"
+				type="limitbox"
+				class="input-mini"
+				default="20"
+				label="COM_CONTENT_LIST_LIMIT"
+				description="COM_CONTENT_LIST_LIMIT_DESC"
+				onchange="this.form.submit();"
+			/>
+	</fields>
+	</fieldset>
+
+	<fieldset name="mailinglists">
+		<fields name="filter">
+			<field
+				name="search"
+				type="text"
+				label="COM_CONTENT_FILTER_SEARCH_DESC"
+				hint="JSEARCH_FILTER"
+			/>
+			<field
+				name="search_filter"
+				type="list"
+				label="COM_BWPOSTMAN_CAM_FILTER_TITLE_LBL"
+				description="COM_BWPOSTMAN_CAM_FILTER_TITLE_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="title">COM_BWPOSTMAN_ML_FILTER_SEARCH_TITLE</option>
+				<option value="description">COM_BWPOSTMAN_ML_FILTER_SEARCH_DESC</option>
+				<option value="title_description">COM_BWPOSTMAN_ML_FILTER_SEARCH_TITLEDESC</option>
+			</field>
+			<field
+				name="published"
+				type="list"
+				label="COM_CONTENT_FILTER_PUBLISHED"
+				description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">JOPTION_SELECT_PUBLISHED</option>
+				<option value="0">COM_BWPOSTMAN_FIELD_VALUE_UNPUBLISHED</option>
+				<option value="1">COM_BWPOSTMAN_FIELD_VALUE_PUBLISHED</option>
+			</field>
+			<field
+				name="access"
+				type="accesslevel"
+				label="JOPTION_FILTER_ACCESS"
+				description="JOPTION_FILTER_ACCESS_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">JOPTION_SELECT_ACCESS</option>
+			</field>
+		</fields>
+
+		<fields name="list">
+			<field
+				name="fullordering"
+				type="list"
+				label="COM_CONTENT_LIST_FULL_ORDERING"
+				description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+				onchange="this.form.submit();"
+				default="a.title ASC"
+				>
+				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.title ASC">COM_BWPOSTMAN_ML_TITLE_ASC</option>
+				<option value="a.title DESC">COM_BWPOSTMAN_ML_TITLE_DESC</option>
+				<option value="a.description ASC">COM_BWPOSTMAN_ML_DESCRIPTION_ASC</option>
+				<option value="a.description DESC">COM_BWPOSTMAN_ML_DESCRIPTION_DESC</option>
+				<option value="a.access ASC">JGRID_HEADING_ACCESS_ASC</option>
+				<option value="a.access DESC">JGRID_HEADING_ACCESS_DESC</option>
+				<option value="a.published ASC">JSTATUS_ASC</option>
+				<option value="a.published DESC">JSTATUS_DESC</option>
+				<option value="subscribers ASC">COM_BWPOSTMAN_ML_NBR_ASC</option>
+				<option value="subscribers DESC">COM_BWPOSTMAN_ML_NBR_DESC</option>
+				<option value="a.archive_date ASC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_ASC</option>
+				<option value="a.archive_date DESC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_DESC</option>
+				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			</field>
+			<field
+				name="limit"
+				type="limitbox"
+				class="input-mini"
+				default="20"
+				label="COM_CONTENT_LIST_LIMIT"
+				description="COM_CONTENT_LIST_LIMIT_DESC"
+				onchange="this.form.submit();"
+			/>
+		</fields>
+	</fieldset>
+
+	<fieldset name="templates">
+		<fields name="filter">
+			<field
+				name="search"
+				type="text"
+				label="COM_CONTENT_FILTER_SEARCH_DESC"
+				hint="JSEARCH_FILTER"
+			/>
+			<field
+				name="search_filter"
+				type="list"
+				label="COM_BWPOSTMAN_CAM_FILTER_TITLE_LBL"
+				description="COM_BWPOSTMAN_CAM_FILTER_TITLE_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="title">COM_BWPOSTMAN_TPL_FILTER_SEARCH_TITLE</option>
+				<option value="description">COM_BWPOSTMAN_TPL_FILTER_SEARCH_DESC</option>
+				<option value="title_description">COM_BWPOSTMAN_TPL_FILTER_SEARCH_TITLEDESC</option>
+			</field>
+			<field
+				name="tpl_id"
+				type="list"
+				label="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_LBL"
+				description="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT</option>
+				<option value="2">COM_BWPOSTMAN_TEXT</option>
+				<option value="1">COM_BWPOSTMAN_HTML</option>
+			</field>
+			<field
+				name="published"
+				type="list"
+				label="COM_CONTENT_FILTER_PUBLISHED"
+				description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">JOPTION_SELECT_PUBLISHED</option>
+				<option value="0">COM_BWPOSTMAN_FIELD_VALUE_UNPUBLISHED</option>
+				<option value="1">COM_BWPOSTMAN_FIELD_VALUE_PUBLISHED</option>
+			</field>
+		</fields>
+	
+		<fields name="list">
+			<field
+				name="fullordering"
+				type="list"
+				label="COM_CONTENT_LIST_FULL_ORDERING"
+				description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+				onchange="this.form.submit();"
+				default="a.title ASC"
+				>
+				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.title ASC">COM_BWPOSTMAN_TPL_TITLE_ASC</option>
+				<option value="a.title DESC">COM_BWPOSTMAN_TPL_TITLE_DESC</option>
+				<option value="a.description ASC">COM_BWPOSTMAN_TPL_DESCRIPTION_ASC</option>
+				<option value="a.description DESC">COM_BWPOSTMAN_TPL_DESCRIPTION_DESC</option>
+				<option value="a.tpl_id ASC">COM_BWPOSTMAN_EMAILFORMAT_ASC</option>
+				<option value="a.tpl_id DESC">COM_BWPOSTMAN_EMAILFORMAT_DESC</option>
+				<option value="a.published ASC">JSTATUS_ASC</option>
+				<option value="a.published DESC">JSTATUS_DESC</option>
+				<option value="a.archive_date ASC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_ASC</option>
+				<option value="a.archive_date DESC">COM_BWPOSTMAN_ARC_ARCHIVE_DATE_DESC</option>
+				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			</field>
+			<field
+				name="limit"
+				type="limitbox"
+				class="input-mini"
+				default="20"
+				label="COM_CONTENT_LIST_LIMIT"
+				description="COM_CONTENT_LIST_LIMIT_DESC"
+				onchange="this.form.submit();"
+			/>
+		</fields>
+	</fieldset>
+</form>

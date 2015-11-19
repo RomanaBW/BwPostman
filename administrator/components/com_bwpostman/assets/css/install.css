@@ -1,0 +1,194 @@
+/**
+ * BwPostman Newsletter Component
+ *
+ * BwPostman CSS-styles for installation.
+ *
+ * @version 1.2.4 bwpm
+ * @package BwPostman-Admin
+ * @author Romana Boldt
+ * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
+ * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+body {
+	margin: 0px;
+	padding: 0px;
+	color : #333;
+	background-color : #FFF;
+	font-size : 11px;
+	font-family : Arial, Helvetica, sans-serif;
+}
+
+#com_bwp_install_header {
+	background: #FFF440;
+	text-align: center;
+	margin: -5px -5px 0 -5px;
+}
+
+div.top_line {
+    background-color: #005A00;
+    height: 5px;
+	margin: 0 -5px;
+}
+
+#com_bwp_install_outer {
+	margin: 0 -5px -5px -5px;
+	padding: 1em 2em;
+	background: url(../images/verlauf_gelb_2.png) repeat;
+}
+
+#com_bwp_install_outer h1 {
+	margin: 0 0 1em 0;
+	color: #2B5741;
+	text-align: center;
+}
+
+#com_bwp_install_left {
+	float: left;
+	width: 48%;
+}
+
+
+#com_bwp_install_right {
+	float: right;
+	width: 48%;
+}
+
+#com_bwp_install_outer p {
+	margin: 0;
+}
+
+.com_bwp_install_welcome {
+}
+
+.com_bwp_install_finished {
+	text-align: center;
+}
+
+.com_bwp_install_finished h2 {
+//	color: #2B5741;
+}
+
+.com_bwp_install_specialnote {
+/*	background: rgba(180, 90, 0, 0.2);*/
+	border-radius: 5px;
+	border: rgba(180, 90, 0, 1) 3px solid;
+	margin: 0 0 2em 0;
+	padding: 1em;
+	color: #ff0000;
+}
+
+.com_bwp_install_updateinfo {
+/*	background: rgba(0, 90, 0, 0.2);*/
+	border-radius: 5px;
+	border: rgba(00, 90, 0, 1) 1px solid;
+	margin: 0 0 2em 0;
+	padding: 1em;
+	color: #2B5741;
+	}
+
+.com_bwp_install_updateinfo h2, .com_bwp_install_specialnote h2 {
+	margin: 0 0 1em 0;
+}
+
+.com_bwp_install_updateinfo h3, .com_bwp_install_specialnote h3 {
+	margin: 0 0 1em 0;
+}
+
+.cpanel {
+	text-align: center;
+	margin: 3em auto;
+}
+
+.cpanel div.icon {
+	float: none;
+	display: inline-block;
+}
+
+.clr {
+	clear: both;
+}
+
+.com_bwp_install_footer, .com_bwp_install_footer p {
+	text-align: center;
+}
+
+.com_bwp_install_footer p a img {
+	border-radius: 5px;
+	margin: 0 0 0.3em 0;
+}
+
+.small {
+	color : #333;
+	font-size : 10px;
+}
+
+.error {
+	color : #cc0000;
+	font-size : 12px;
+	font-weight : bold;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.urgent {
+	color: #cc0000;
+}
+
+/* 48x48 images and joomla overide to use it*/
+#cpanel span.icon48 {
+	display: inline-block !important; 
+	height: 48px; 
+	width: 48px;
+	margin-top: 10px;
+}
+
+#cpanel div.icon {
+	cursor: pointer;
+}
+
+.bw_maintenance_result {
+	font-weight: bold;
+	font-size: 1.2em;
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    padding: 8px 35px 8px 14px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.bw_tablecheck_ok {
+	color: #008800;
+}
+
+.bw_tablecheck_ok.ok {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.bw_tablecheck_warn {
+  color: #c09853;
+}
+
+.bw_tablecheck_error.err {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+} 
+
+.bw_tablecheck_error {
+	color: #880000;
+} 

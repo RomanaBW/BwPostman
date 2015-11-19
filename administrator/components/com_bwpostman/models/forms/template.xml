@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset label="COM_BWPOSTMAN_TPL_BASICS_LABEL">
+		<field
+			name="id"
+			type="hidden" 
+			class="readonly"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			labelclass="control-label"
+			description="JGLOBAL_FIELD_ID_DESC"
+			default="0"
+			readonly="true"
+		/>
+		<field
+			name="asset_id"
+			type="hidden"
+		/>
+		<field
+			name="title"
+			type="text"
+			label="COM_BWPOSTMAN_TPL_FIELD_TITLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_FIELD_TITLE_DESC"
+			class="inputbox"
+			required="true"
+		/>
+		<field
+			name="description"
+			type="textarea"
+			label="COM_BWPOSTMAN_TPL_FIELD_DESCRIPTION_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_FIELD_DESCRIPTION_DESC"
+			class="inputbox"
+			rows="3"
+			cols="50"
+			required="true"
+		/>
+		<field
+			name="thumbnail"
+			type="allmedia"
+			class="inputbox"
+			label="COM_BWPOSTMAN_TPL_THUMBNAIL_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_THUMBNAIL_DESC"
+			preview="false"
+		/>
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset"
+		/>
+
+	</fieldset>
+	
+	<fields name="basics">
+		<fieldset name="jbasics">
+			<field name="spacer1" type="spacer" class="divider" hr="true" />
+			<field
+				name="nl_width"
+				type="text"
+				label="COM_BWPOSTMAN_TPL_NL_WIDTH_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_NL_WIDTH_DESC"
+				default="600"
+				class="inputbox"
+				size="4"
+				filter="integer"
+			/>
+			<field
+				name="zoom"
+				type="list"
+				class="inputbox chzn-state"
+				label="COM_BWPOSTMAN_TPL_ZOOM_LABEL"
+				labelclass="control-label"
+				description ="COM_BWPOSTMAN_TPL_ZOOM_DESC" 
+				default="1"
+			>
+				<option value="1">100%</option>
+				<option value="0.95">95%</option>
+				<option value="0.9">90%</option>
+				<option value="0.85">85%</option>
+				<option value="0.8">80%</option>
+				<option value="0.75">75%</option>
+				<option value="0.7">70%</option>
+				<option value="0.65">65%</option>
+				<option value="0.6">60%</option>
+			</field>
+			<field
+				name="zoom_padding"
+				type="list"
+				class="inputbox chzn-state"
+				label="COM_BWPOSTMAN_TPL_ZOOM_PADDING_LABEL"
+				labelclass="control-label"
+				description ="COM_BWPOSTMAN_TPL_ZOOM_PADDING_DESC" 
+				default="1"
+				>
+				<option value="1">100%</option>
+				<option value="0.9">90%</option>
+				<option value="0.8">80%</option>
+				<option value="0.7">70%</option>
+				<option value="0.6">60%</option>
+				<option value="0.5">50%</option>
+				<option value="0.4">40%</option>
+				<option value="0.3">30%</option>
+				<option value="0.2">20%</option>
+			</field>
+			<field name="spacer11" type="spacer" class="divider" hr="true" />
+			<field
+				name="paper_bg"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_PAPER_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_PAPER_BG_DESC"
+			/>
+			<field
+				name="article_bg"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_ARTICLE_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_ARTICLE_BG_DESC"
+			/>
+			<field
+				name="headline_color"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_HEADLINE_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_HEADLINE_COLOR_DESC"
+			/>
+			<field
+				name="content_color"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_CONTENT_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_CONTENT_COLOR_DESC"
+			/>
+			<field
+				name="legal_color"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_LEGAL_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_LEGAL_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="header">
+		<fieldset name="jheader" label="COM_BWPOSTMAN_TPL_HEADER_LABEL">
+			<field
+				name="header_style"
+				type="list"
+				class="inputbox chzn-color-state"
+				label="COM_BWPOSTMAN_TPL_THEME_HEADER_LABEL"
+				labelclass="control-label"
+				description ="COM_BWPOSTMAN_TPL_THEME_HEADER_DESC" 
+				default="logo_with_text"
+				>
+				<option value="logo_with_text">COM_BWPOSTMAN_TPL_THEME_HEADER_LOGOWITHSLOGAN</option>
+				<option value="only_logo">COM_BWPOSTMAN_TPL_THEME_HEADER_LOGO</option>
+				<option value="only_text">COM_BWPOSTMAN_TPL_THEME_HEADER_SLOGAN</option>
+				<option value="no_header">COM_BWPOSTMAN_TPL_THEME_HEADER_NOHEADER</option>
+			</field>
+			<field
+				name="alignment"
+				type="radio"
+				class="btn-group"
+				default="left"
+				label="COM_BWPOSTMAN_ALIGNMENT_LABEL"
+				description="COM_BWPOSTMAN_ALIGNMENT_NOTE"
+				labelclass="control-label"
+			>
+				<option value="left">JGLOBAL_LEFT</option>
+				<option value="center">JGLOBAL_CENTER</option>
+				<option value="right">JGLOBAL_RIGHT</option>
+			</field>
+			<field
+				name="logo_src"
+				type="allmedia"
+				class="inputbox"
+				label="COM_BWPOSTMAN_LOGO_FIELD_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_LOGO_FIELD_DESC"
+			/>
+			<field 
+				name="logo_width" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_LOGO_WIDTH_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_LOGO_WIDTH_DESC" 
+				class="inputbox" 
+				size="4"
+				filter="integer"
+			/>
+			<field 
+				name="firstline" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_FIRSTLINE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_FIRSTLINE_DESC" 
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="size_firstline" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_SIZE_FIRSTLINE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SIZE_FIRSTLINE_DESC" 
+				   default="36"
+				class="inputbox" 
+				size="2"
+			/>
+			<field 
+				name="secondline" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_SECONDLINE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SECONDLINE_DESC" 
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="size_secondline" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_SIZE_SECONDLINE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SIZE_SECONDLINE_DESC" 
+				default="16"
+				class="inputbox" 
+				size="2"
+			/>
+			<field
+				name="header_bg"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_HEADER_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_HEADER_BG_DESC"
+			/>
+			<field
+				name="header_shadow"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_HEADER_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_HEADER_SHADOW_DESC"
+			/>
+			<field
+				name="header_color"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_HEADER_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_HEADER_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="intro">
+		<fieldset name="jintro" label="COM_BWPOSTMAN_TPL_INTRO_LABEL">
+			<field
+				name="show_intro"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_INTRO_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_INTRO_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field 
+				name="intro_headline" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC" 
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="intro_text" 
+				type="textarea" 
+				label="COM_BWPOSTMAN_TPL_INTROTEXT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC" 
+				default="Lorem ipsum dolor sit amet consectetuer sem venenatis eros id lacus. Consequat dolor urna justo pede Phasellus justo est Lorem nunc et."
+				class="inputbox" 
+				rows="3"
+				cols="50"
+				filter="raw"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="article">
+		<fieldset name="jarticle" label="COM_BWPOSTMAN_TPL_ARTICLE_LABEL">
+			<field
+				name="divider"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_DIVIDER_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_DIVIDER_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+				name="divider_color"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_DIVIDER_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_DIVIDER_COLOR_DESC"
+			/>
+			<field name="spacer2" type="spacer" class="divider" hr="true" />
+			<field
+				name="show_author"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_AUTHOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_AUTHOR_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+				name="show_createdate"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_CREATEDATE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_CREATEDATE_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+				name="show_readon"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_READON_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_READON_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+				name="readon_bg"
+				type="color"
+				class="inputbox"
+				default="#78b424"
+				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_BG_DESC"
+			/>
+			<field
+				name="readon_shadow"
+				type="color"
+				class="inputbox"
+				default="#66952a"
+				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_DESC"
+			/>
+			<field
+				name="readon_color"
+				type="color"
+				class="inputbox"
+				default="#ffffff"
+				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="footer">
+		<fieldset name="jfooter" label="COM_BWPOSTMAN_TPL_FOOTER_LABEL">
+			<field
+				name="footer_bg"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_FOOTER_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_FOOTER_BG_DESC"
+			/>
+			<field
+				name="footer_shadow"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_FOOTER_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_FOOTER_SHADOW_DESC"
+			/>
+			<field
+				name="footer_color"
+				type="color"
+				class="inputbox"
+				label="COM_BWPOSTMAN_TPL_FOOTER_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_FOOTER_COLOR_DESC"
+			/>
+			<field name="spacer3" type="spacer" class="divider" hr="true" />
+			<field
+				name="show_impressum"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="0"
+				label="COM_BWPOSTMAN_TPL_SHOW_IMPRESSUM_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_IMPRESSUM_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field name="spacer31" type="spacer" class="divider" hr="true" />
+			<field
+				name="show_address"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_ADDRESS_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_ADDRESS_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field 
+				name="address_text" 
+				type="textarea" 
+				label="COM_BWPOSTMAN_TPL_ADDRESSTEXT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_ADDRESSTEXT_DESC" 
+				default="Name&#13;&#10;Address&#13;&#10;..."
+				class="inputbox" 
+				rows="3"
+				cols="50"
+			/>
+			<field 
+				name="button_headline" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_HEADLINE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_HEADLINE_DESC" 
+				class="inputbox" 
+				size="30"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="button1">
+		<fieldset name="jbutton1" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
+			<field
+				name="show_button"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_BUTTON_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field 
+				name="button_text" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				default="Website"
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="button_href" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				default="http://www.mywebsite.com"
+				class="inputbox" 
+				size="30"
+			/>
+			<field
+				name="button_bg"
+				type="color"
+				class="inputbox"
+				default="#78b424"
+				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_BG_DESC"
+			/>
+			<field
+				name="button_shadow"
+				type="color"
+				class="inputbox"
+				default="#66952a"
+				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_DESC"
+			/>
+			<field
+				name="button_color"
+				type="color"
+				class="inputbox"
+				default="#ffffff"
+				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="button2">
+		<fieldset name="jbutton2" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
+			<field
+				name="show_button"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_BUTTON_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field 
+				name="button_text" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				default="Facebook"
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="button_href" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				default="http://www.facebook.com"
+				class="inputbox" 
+				size="30"
+			/>
+			<field
+				name="button_bg"
+				type="color"
+				class="inputbox"
+				default="#3b5998"
+				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_BG_DESC"
+			/>
+			<field
+				name="button_shadow"
+				type="color"
+				class="inputbox"
+				default="##2e3066"
+				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_DESC"
+			/>
+			<field
+				name="button_color"
+				type="color"
+				class="inputbox"
+				default="#ffffff"
+				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="button3">
+		<fieldset name="jbutton3" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
+			<field
+				name="show_button"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_BUTTON_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field 
+				name="button_text" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				default="Twitter"
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="button_href" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				default="http://www.twitter.com/"
+				class="inputbox" 
+				size="30"
+			/>
+			<field
+				name="button_bg"
+				type="color"
+				class="inputbox"
+				default="#3b5998"
+				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_BG_DESC"
+			/>
+			<field
+				name="button_shadow"
+				type="color"
+				class="inputbox"
+				default="#2e3066"
+				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_DESC"
+			/>
+			<field
+				name="button_color"
+				type="color"
+				class="inputbox"
+				default="#ffffff"
+				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="button4">
+		<fieldset name="jbutton4" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
+			<field
+				name="show_button"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_BUTTON_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field 
+				name="button_text" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				default="Google+"
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="button_href" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				default="https://plus.google.com/"
+				class="inputbox" 
+				size="30"
+			/>
+			<field
+				name="button_bg"
+				type="color"
+				class="inputbox"
+				default="#ff4444"
+				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_BG_DESC"
+			/>
+			<field
+				name="button_shadow"
+				type="color"
+				class="inputbox"
+				default="#66952a"
+				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_DESC"
+			/>
+			<field
+				name="button_color"
+				type="color"
+				class="inputbox"
+				default="#ffffff"
+				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fields name="button5">
+		<fieldset name="jbutton5" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
+			<field
+				name="show_button"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_SHOW_BUTTON_DESC"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field 
+				name="button_text" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				default="Linkedin"
+				class="inputbox" 
+				size="30"
+			/>
+			<field 
+				name="button_href" 
+				type="text" 
+				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				default="https://www.linkedin.com/"
+				class="inputbox" 
+				size="30"
+			/>
+			<field
+				name="button_bg"
+				type="color"
+				class="inputbox"
+				default="#2855d1"
+				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_BG_DESC"
+			/>
+			<field
+				name="button_shadow"
+				type="color"
+				class="inputbox"
+				default="#19158a"
+				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_DESC"
+			/>
+			<field
+				name="button_color"
+				type="color"
+				class="inputbox"
+				default="#ffffff"
+				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_BUTTON_COLOR_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<fieldset>
+		<field
+			name="tpl_id"
+			type="hidden"
+			default="0"
+		/>
+		<field 
+			name="archive_flag" 
+			type="hidden" 
+		/>
+		<field 
+			name="archive_time" 
+			type="hidden" 
+		/>
+		<field 
+			name="archive_by" 
+			type="hidden" 
+		/>
+		<field
+			name="tpl_html"
+			type="editor"
+			label="COM_BWPOSTMAN_TPL_HTML_LABEL"
+			labelclass="control-label"
+			description ="COM_BWPOSTMAN_TPL_HTML_DESC" 
+			filter="JComponentHelper::filterText"
+		/>
+		<field
+			name="tpl_css"
+			type="textarea"
+			label="COM_BWPOSTMAN_TPL_CSS_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_CSS_DESC"
+			rows="20"
+			cols="50"
+			filter="raw"
+		/>
+		<field
+			name="tpl_article"
+			type="textarea"
+			label="COM_BWPOSTMAN_TPL_ARTICLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_ARTICLE_DESC"
+			class="inputbox"
+			rows="3"
+			cols="50"
+			filter="JComponentHelper::filterText"
+		/>
+		<field
+			name="tpl_divider"
+			type="textarea"
+			label="COM_BWPOSTMAN_TPL_DIVIDER_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_DIVIDER_DESC"
+			class="inputbox"
+			rows="3"
+			cols="50"
+			filter="JComponentHelper::filterText"
+		/>
+	</fieldset>
+</form>

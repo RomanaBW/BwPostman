@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<access component="com_bwpostman">
+	<section name="component">
+		<action name="core.manage" title="COM_BWPOSTMAN_ACTION_MANAGE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_MANAGE_DESC" />
+		<action name="core.admin" title="COM_BWPOSTMAN_ACTION_ADMIN" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_DESC" />
+		<action name="core.create" title="COM_BWPOSTMAN_ACTION_CREATE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_CREATE_DESC" />
+		<action name="core.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_COMPONENT_ACCESS_EDIT_DESC" />
+		<action name="core.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_COMPONENT_ACCESS_EDITOWN_DESC" />
+		<action name="core.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_EDITSTATE_DESC" />
+		<action name="core.archive" title="COM_BWPOSTMAN_ACTION_ARCHIVE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ARCHIVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_DELETE_DESC" />
+		<action name="core.send" title="COM_BWPOSTMAN_ACTION_SEND" description="COM_BWPOSTMAN_COMPONENT_ACCESS_SEND_DESC" />
+		<action name="core.view.newsletters" title="COM_BWPOSTMAN_ACTION_VIEW_NEWSLETTERS" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_NEWSLETTERS_DESC" />
+		<action name="core.view.subscribers" title="COM_BWPOSTMAN_ACTION_VIEW_SUBSCRIBERS" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_SUBSCRIBERS_DESC" />
+		<action name="core.view.campaigns" title="COM_BWPOSTMAN_ACTION_VIEW_CAMPAIGNS" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_CAMPAIGNS_DESC" />
+		<action name="core.view.mailinglists" title="COM_BWPOSTMAN_ACTION_VIEW_MAILINGLISTS" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_MAILINGLISTS_DESC" />
+		<action name="core.view.templates" title="COM_BWPOSTMAN_ACTION_VIEW_TEMPLATES" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_TEMPLATES_DESC" />
+		<action name="core.view.archive" title="COM_BWPOSTMAN_ACTION_VIEW_ARCHIVE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_ARCHIVE_DESC" />
+		<action name="core.view.manage" title="COM_BWPOSTMAN_ACTION_VIEW_MANAGE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_MANAGE_DESC" />
+		<action name="core.view.maintenance" title="COM_BWPOSTMAN_ACTION_VIEW_MAINTENANCE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_MAINTENANCE_DESC" />
+	</section>
+	<section name="newsletter">
+		<action name="core.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_NEWSLETTER_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_NEWSLETTER_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_NEWSLETTER_ACCESS_EDITOWN_DESC" />
+		<action name="core.send" title="COM_BWPOSTMAN_ACTION_SEND" description="COM_BWPOSTMAN_NEWSLETTER_ACCESS_SEND_DESC" />
+		<action name="core.archive" title="COM_BWPOSTMAN_ACTION_ARCHIVE" description="COM_BWPOSTMAN_NEWSLETTER_ACCESS_ARCHIVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_NEWSLETTER_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_NEWSLETTER_ACCESS_DELETE_DESC" />
+	</section>
+	<section name="subscriber">
+		<action name="core.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_SUBSCRIBER_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_SUBSCRIBER_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_SUBSCRIBER_ACCESS_EDITOWN_DESC" />
+		<action name="core.archive" title="COM_BWPOSTMAN_ACTION_ARCHIVE" description="COM_BWPOSTMAN_SUBSCRIBER_ACCESS_ARCHIVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_SUBSCRIBER_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_SUBSCRIBER_ACCESS_DELETE_DESC" />
+	</section>
+	<section name="campaign">
+		<action name="core.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDITOWN_DESC" />
+		<action name="core.archive" title="COM_BWPOSTMAN_ACTION_ARCHIVE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_ARCHIVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_DELETE_DESC" />
+	</section>
+	<section name="campaigns">
+		<action name="core.manage" title="COM_BWPOSTMAN_ACTION_MANAGE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_MANAGE_DESC" />
+		<action name="core.admin" title="COM_BWPOSTMAN_ACTION_ADMIN" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_DESC" />
+		<action name="core.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDITOWN_DESC" />
+		<action name="core.archive" title="COM_BWPOSTMAN_ACTION_ARCHIVE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_ARCHIVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_DELETE_DESC" />
+	</section>
+	<section name="mailinglist">
+		<action name="core.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_EDITOWN_DESC" />
+		<action name="core.archive" title="COM_BWPOSTMAN_ACTION_ARCHIVE" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_ARCHIVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_DELETE_DESC" />
+	</section>
+	<section name="template">
+		<action name="core.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_TEMPLATE_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_TEMPLATE_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_TEMPLATE_ACCESS_EDITOWN_DESC" />
+		<action name="core.archive" title="COM_BWPOSTMAN_ACTION_ARCHIVE" description="COM_BWPOSTMAN_TEMPLATE_ACCESS_ARCHIVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_TEMPLATE_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_TEMPLATE_ACCESS_DELETE_DESC" />
+	</section>
+	<section name="archive">
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_ARCHIVE_ACCESS_RESTORE_DESC" />
+		<action name="core.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_ARCHIVE_ACCESS_DELETE_DESC" />
+	</section>
+	<section name="maintenance">
+		<action name="core.check" title="COM_BWPOSTMAN_ACTION_CHECK_AND_REPAIR" description="COM_BWPOSTMAN_MAINTENANCE_ACCESS_CHECK_AND_REPAIR_DESC" />
+		<action name="core.save" title="COM_BWPOSTMAN_ACTION_SAVE" description="COM_BWPOSTMAN_MAINTENANCE_ACCESS_SAVE_DESC" />
+		<action name="core.restore" title="COM_BWPOSTMAN_ACTION_RESTORE" description="COM_BWPOSTMAN_MAINTENANCE_ACCESS_RESTORE_DESC" />
+	</section>
+</access>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+ 		<field
+			name="id"
+			type="hidden" 
+			class="readonly"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			labelclass="control-label"
+			description="JGLOBAL_FIELD_ID_DESC"
+			default="0"
+			readonly="true"
+		/>
+
+		<field
+			name="asset_id"
+			type="hidden"
+		/>
+
+		<field
+			name="title"
+			type="text"
+			label="COM_BWPOSTMAN_CAM_FIELD_TITLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_CAM_FIELD_TITLE_DESC"
+			class="inputbox"
+			required="true"
+		/>
+
+		<field
+			name="description"
+			type="textarea"
+			label="COM_BWPOSTMAN_CAM_FIELD_DESCRIPTION_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_CAM_FIELD_DESCRIPTION_DESC"
+			class="inputbox"
+		/>
+
+		<field 
+			name="created_by" 
+			type="user"
+			label="COM_BWPOSTMAN_FIELD_CREATED_BY_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_CREATED_BY_DESC" 
+			class="readonly" 
+			readonly="true" 
+		/>
+
+		<field 
+			name="created_date" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_CREATED_DATE_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_CREATED_DATE_DESC"
+			class="readonly" 
+			readonly="true" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="modified_time" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_MODIFIED_TIME_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_MODIFIED_TIME_DESC"
+			class="readonly" 
+			readonly="true" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="modified_by" 
+			type="user"
+			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_MODIFIED_BY_DESC" 
+			class="readonly" 
+			readonly="true" 
+		/>
+
+<!-- 
+		<field
+			name="active"
+			type="list"
+			label="COM_BWPOSTMAN_FIELD_ACTIVATE_LABEL" 
+			description="COM_BWPOSTMAN_FIELD_ACTIVATE_DESC"
+			class="inputbox"
+			filter="intval"
+			size="1"
+			default="1"
+		>
+			<option value="1">
+				JPUBLISHED</option>
+			<option value="0">
+				JUNPUBLISHED</option>
+		</field>
+
+		<field
+			name="automailing"
+			type="list"
+			label="COM_BWPOSTMAN_FIELD_AUTOMAILING_LABEL" 
+			description="COM_BWPOSTMAN_FIELD_AUTOMAILING_DESC"
+			class="inputbox"
+			filter="intval"
+			size="1"
+			default="1"
+		>
+			<option value="1">
+				JPUBLISHED</option>
+			<option value="0">
+				JUNPUBLISHED</option>
+		</field>
+-->
+ 
+		<field
+			name="buttonspacer"
+			description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
+			type="spacer"
+		/>
+		
+		<field
+			name="checked_out"
+			 type="hidden"
+			 filter="unset"
+		/>
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field 
+			name="archive_flag" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="archive_time" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="archive_by" 
+			type="hidden" 
+		/>
+
+ 		<field
+			name="rules"
+			type="rules"
+			label=""
+			translate_label="false"
+			class="inputbox"
+			filter="rules"
+			component="com_bwpostman"
+			section="campaign">
+		</field>
+
+<!-- 
+		<field
+			name="publish_up"
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_PUBLISH_UP_LABEL" 
+			description="COM_BWPOSTMAN_FIELD_PUBLISH_UP_DESC"
+			class="inputbox" format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+
+		<field
+			name="publish_down"
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_PUBLISH_DOWN_LABEL" 
+			description="COM_BWPOSTMAN_FIELD_PUBLISH_DOWN_DESC"
+			class="inputbox" format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+
+		<field
+			name="mail_ordering"
+			type="text"
+			label="COM_BWPOSTMAN_FIELD_MAIL_ORDERING_LABEL" 
+			description="COM_BWPOSTMAN_FIELD_MAIL_ORDERING_DESC"
+			class="inputbox"
+			size="6"
+			default="0"
+		/>
+-->
+	</fieldset>
+
+	<fieldset name="mailinglists">
+		<field 
+			name="ml_available" 
+			type="cammlavailable"
+			label="COM_BWPOSTMAN_NL_FIELD_ML_AVAILABLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_ML_AVAILABLE_DESC" 
+			class="inputbox mailinglists" 
+		/>
+
+		<field 
+			name="ml_unavailable" 
+			type="cammlunavailable"
+			label="COM_BWPOSTMAN_NL_FIELD_ML_UNAVAILABLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_ML_UNAVAILABLE_DESC" 
+			class="inputbox mailinglists" 
+		/>
+
+		<field 
+			name="ml_intern" 
+			type="cammlintern"
+			label="COM_BWPOSTMAN_NL_FIELD_ML_INTERN_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_ML_INTERN_DESC" 
+			class="inputbox mailinglists" 
+		/>
+	</fieldset>
+
+	<fieldset name="usergroups">
+		<field 
+			name="usergroups" 
+			type="usergroups" 
+			label="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC" 
+			class="inputbox" 
+			size="1" 
+		/>
+	</fieldset>
+</form>

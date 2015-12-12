@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+						<!-- BwPostman export file -->
+						<!DOCTYPE subscribers [
+						<!ELEMENT subscribers (subscriber+)>
+						<!ELEMENT subscriber (name, firstname, email, emailformat, status)>
+						<!ELEMENT id (#PCDATA)>
+							<!ELEMENT name (#PCDATA)>
+							<!ELEMENT firstname (#PCDATA)>
+							<!ELEMENT email (#PCDATA)>
+							<!ELEMENT emailformat (#PCDATA)>
+							<!ELEMENT status (#PCDATA)>
+						]>
+<subscribers>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Maximilian</firstname>
+		<email>test7@test-domain.nul</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Emil</firstname>
+		<email>test8@test-domain.nul</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Hanni</firstname>
+		<email>test9@test-domain.nul</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Nanni</firstname>
+		<email>test10@test-domain.nul</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+</subscribers>

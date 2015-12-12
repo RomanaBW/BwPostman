@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="COM_CONTENT_FILTER_SEARCH_DESC"
+			hint="JSEARCH_FILTER"
+		/>
+		<field
+			name="search_filter"
+			type="list"
+			label="COM_BWPOSTMAN_CAM_FILTER_TITLE_LBL"
+			description="COM_BWPOSTMAN_CAM_FILTER_TITLE_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="title">COM_BWPOSTMAN_TPL_FILTER_SEARCH_TITLE</option>
+			<option value="description">COM_BWPOSTMAN_TPL_FILTER_SEARCH_DESC</option>
+			<option value="title_description">COM_BWPOSTMAN_TPL_FILTER_SEARCH_TITLEDESC</option>
+		</field>
+		<field
+			name="tpl_id"
+			type="list"
+			label="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_LBL"
+			description="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="">COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT</option>
+			<option value="2">COM_BWPOSTMAN_TEXT</option>
+			<option value="1">COM_BWPOSTMAN_HTML</option>
+		</field>
+		<field
+			name="published"
+			type="list"
+			label="COM_CONTENT_FILTER_PUBLISHED"
+			description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+			<option value="0">COM_BWPOSTMAN_FIELD_VALUE_UNPUBLISHED</option>
+			<option value="1">COM_BWPOSTMAN_FIELD_VALUE_PUBLISHED</option>
+		</field>
+	</fields>
+
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			label="COM_CONTENT_LIST_FULL_ORDERING"
+			description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+			onchange="this.form.submit();"
+			default="a.title ASC"
+			>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.title ASC">COM_BWPOSTMAN_TPL_TITLE_ASC</option>
+			<option value="a.title DESC">COM_BWPOSTMAN_TPL_TITLE_DESC</option>
+			<option value="a.tpl_id ASC">COM_BWPOSTMAN_EMAILFORMAT_ASC</option>
+			<option value="a.tpl_id DESC">COM_BWPOSTMAN_EMAILFORMAT_DESC</option>
+			<option value="a.published ASC">JSTATUS_ASC</option>
+			<option value="a.published DESC">JSTATUS_DESC</option>
+			<option value="a.description ASC">COM_BWPOSTMAN_TPL_DESCRIPTION_ASC</option>
+			<option value="a.description DESC">COM_BWPOSTMAN_TPL_DESCRIPTION_DESC</option>
+			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+		</field>
+		<field
+			name="limit"
+			type="limitbox"
+			class="input-mini"
+			default="20"
+			label="COM_CONTENT_LIST_LIMIT"
+			description="COM_CONTENT_LIST_LIMIT_DESC"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+</form>

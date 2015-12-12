@@ -1,0 +1,825 @@
+/**
+ * BwPostman Newsletter Component
+ *
+ * BwPostman CSS-styles for backend.
+ *
+ * @version 1.2.4 bwpm
+ * @package BwPostman-Admin
+ * @author Romana Boldt
+ * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
+ * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*----------------------------------------------------------
+	Header Icons
+----------------------------------------------------------*/
+.icon-48-bwpostman {
+	background-image:	url(../images/icon-48-bwpostman.png);
+	height:				48px;
+	width:				152px;
+}
+
+.icon-48-archive {
+	background-image:	url(../images/icon-48-archive.png);
+}
+
+.icon-48-campaignadd {
+	background-image:	url(../images/icon-48-campaignadd.png);
+}
+
+.icon-48-campaignedit {
+	background-image:	url(../images/icon-48-campaignedit.png);
+}
+
+.icon-48-campaigns {
+	background-image:	url(../images/icon-48-campaigns.png);
+}
+
+.icon-48-mailinglistadd {
+	background-image:	url(../images/icon-48-mailinglistadd.png);
+}
+
+.icon-48-mailinglistedit {
+	background-image:	url(../images/icon-48-mailinglistedit.png);
+}
+
+.icon-48-mailinglists {
+	background-image:	url(../images/icon-48-mailinglists.png);
+}
+
+.icon-48-templateadd {
+	background-image:	url(../images/icon-48-templateadd.png);
+}
+
+.icon-48-text_templateadd {
+	background-image:	url(../images/icon-48-text_templateadd.png);
+}
+
+.icon-48-templateedit {
+	background-image:	url(../images/icon-48-templateedit.png);
+}
+
+.icon-48-templates {
+	background-image:	url(../images/icon-48-templates.png);
+}
+
+.icon-48-newsletteradd {
+	background-image:	url(../images/icon-48-newsletteradd.png);
+}
+
+.icon-48-newsletteredit {
+	background-image:	url(../images/icon-48-newsletteredit.png);
+}
+
+.icon-48-newsletters {
+	background-image:	url(../images/icon-48-newsletters.png);
+}
+
+.icon-48-subscriberadd {
+	background-image:	url(../images/icon-48-subscriberadd.png);
+}
+
+.icon-48-subscriberedit {
+	background-image:	url(../images/icon-48-subscriberedit.png);
+}
+
+.icon-48-subscribers {
+	background-image:	url(../images/icon-48-subscribers.png);
+}
+
+.icon-48-testrecipientadd {
+	background-image:	url(../images/icon-48-testrecipientadd.png);
+}
+
+.icon-48-testrecipientedit {
+	background-image:	url(../images/icon-48-testrecipientedit.png);
+}
+
+.icon-48-maintenance {
+	background-image:	url(../images/icon-48-maintenance.png);
+	height:				48px;
+	width:				152px;
+}
+
+.icon-48-tablerestore {
+	background-image:	url(../images/icon-48-tablerestore.png);
+}
+
+.icon-48-tablecheck {
+	background-image:	url(../images/icon-48-tablecheck.png);
+}
+
+.icon-32-checkform {
+	background-image:	url(../images/icon-32-checkform.png);
+}
+
+.icon-32-export {
+	background-image:	url(../images/icon-32-export.png);
+}
+
+.icon-32-import {
+	background-image:	url(../images/icon-32-import.png);
+}
+
+.icon-32-validate {
+	background-image:	url(../images/icon-32-validate.png);
+}
+
+.icon-32-addhtml {
+	background-image:	url(../images/icon-32-addhtml.png);
+}
+
+.icon-32-addtext {
+	background-image:	url(../images/icon-32-addtext.png);
+}
+
+.icon-back:before {
+	content:			"\e00c";
+}
+
+
+/*----------------------------------------------------------
+	Definition for tabs
+----------------------------------------------------------*/
+.bwp_tabs {
+	float:				left;
+	margin:				10px 0 -1px 0;
+	padding:			0;
+	z-index:			50;
+	list-style-type:	none;
+}
+
+.bwp_tabs li {
+	float:					left;
+	padding:				2px 10px;
+	border-left:			1px solid #ccc;
+	border-right:			1px solid #ccc;
+	border-top:				1px solid #ccc;
+	border-bottom:			1px solid #ccc;
+	margin-left:			3px;
+	background:				#f0f0f0;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			3px 3px 0 0;
+}
+
+.bwp_tabs li a {
+	font-size:			14px;
+	color:				#666;
+	border-width:		0;
+	cursor:				pointer;
+	padding:			3px 0;
+	text-decoration:	none;
+}
+
+.bwp_tabs li.open {
+	background:			#F9F9F9;
+	border-bottom:		1px solid #F9F9F9;
+	z-index:			100;
+	color:				#000;
+}
+
+.tab-wrapper-bwp {
+	border:					1px solid #cccccc;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			4px;
+	padding:				10px;
+}
+
+#bwp_view_lists dl,
+#bwp_editform dl {
+	display:			block;
+}
+
+#bwp_view_lists dl.tabs,
+#bwp_editform dl.tabs {
+	float:				left;
+	margin:				10px 0 -1px;
+	z-index:			50;
+}
+
+#bwp_view_lists dl.tabs dt,
+#bwp_editform dl.tabs dt {
+	background:			none repeat scroll 0 0 #E9E9E9;
+	border:				1px solid #CCCCCC;
+	color:				#666666;
+	float:				left;
+	margin-left:		3px;
+	padding:			4px 10px;
+}
+
+#bwp_view_lists dl.tabs dt.open,
+#bwp_editform dl.tabs dt.open {
+	border-left:			1px solid #ccc;
+	border-right:			1px solid #ccc;
+	border-top:				1px solid #ccc;
+	border-bottom:			1px solid #f9f9f9;
+	margin-left:			3px;
+	background:				#f9f9f9;
+	-webkit-border-radius:	4px 4px 0 0;
+	-moz-border-radius:		4px 4px 0 0;
+	border-radius:			4px 4px 0 0;
+	color:					#000000;
+	z-index:				100;
+}
+
+#bwp_view_lists dl.tabs dt h3,
+#bwp_editform  dl.tabs dt h3 {
+	font-size:			14px;
+	font-weight:		normal;
+	margin:				0;
+	padding:			0;
+}
+
+#bwp_view_lists div.current,
+#bwp_editform div.current {
+	border:					1px solid #CCCCCC;
+	border-bottom:			1px solid #f9f9f9;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			4px;
+	background:				#ffffff;
+	clear:					both;
+	padding:				10px;
+}
+
+
+/*----------------------------------------------------------
+	Container
+----------------------------------------------------------*/
+.well-white {
+	background-color:		#ffffff;
+	border:					1px solid #e3e3e3;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			4px;
+	box-shadow:				0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	margin-bottom:			20px;
+	min-height:				20px;
+	padding:				19px;	
+}
+
+.well-note {
+	background-color:		rgba(255,0,0,0.3);
+	border:					1px solid #e3e3e3;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			4px;
+	box-shadow:				0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	margin-top:				20px;
+	margin-bottom:			20px;
+	min-height:				20px;
+	padding:				19px;
+}
+
+.row-fluid.width-100 {
+	width:				100%;
+}
+
+.row-fluid:after {
+	clear:				both;
+}
+
+.row-fluid:before, .row-fluid:after {
+	content:			"";
+	display:			table;
+	line-height:		0;
+}
+
+div.width-5 {
+	width:				5%;
+}
+
+div.width-25 {
+	width:				25%;
+}
+
+div.width-33 {
+	width:				33%;
+}
+
+div.width-75 {
+	width:				75%;
+}
+
+div.width-25 .well fieldset,
+div.width-33 .well fieldset,
+div.width-75 .well fieldset {
+	background-color:	#F5F5F5;
+}
+
+div.width-25 fieldset,
+div.width-33 fieldset,
+div.width-75 fieldset {
+	background-color:	#FFFFFF;
+}
+
+div.width-25 fieldset legend,
+div.width-33 fieldset legend,
+div.width-75 fieldset legend {
+	font-size:			13px;
+	line-height:		16px;
+	font-weight:		bold;
+}
+
+div.width-25 fieldset,
+div.width-33 fieldset {
+	padding:			5px 17px 17px;
+}
+
+
+#email_preview.width-55 {
+	margin-left:		2%;
+}
+
+span.bwplabel {
+	margin:				7px 15px 5px 0;
+	display:			inline-block;
+}
+
+.cam_preview {
+	font-size:			11px;
+}
+
+div.bwpmailformat {
+	width:				170px;
+}
+
+p#bwp_editorlabel {
+	max-width:			250px;
+	text-align:			left; 
+}
+
+
+/*----------------------------------------------------------
+	Required fields
+----------------------------------------------------------*/
+.required,
+legend.required {
+	color:				#FF0000;
+}
+
+
+label.required {
+	font-weight:		bold;
+	color:				#FF0000;
+}
+
+.required_description {
+	font-size:			14px;
+	color:				#FF0000;
+}
+
+.input_label {
+	padding:			8px 0 0 0;
+	display:			inline-block;
+}
+
+
+/*----------------------------------------------------------
+	Form validation
+----------------------------------------------------------*/
+.invalid {
+	color:				#ff0000;
+}
+
+input.invalid {
+	border-color:		#ff0000;
+	color:				#000000;
+}
+
+textarea.invalid {
+	border-color:		#ff0000;
+	color:				#000000;
+}
+
+
+
+
+/*----------------------------------------------------------
+	Fieldsets
+----------------------------------------------------------*/
+fieldset.inactive {
+	display:			none;
+}
+
+fieldset.adminform label.noclear {
+	clear:				none;
+}
+
+fieldset.adminform legend .legendlabel {
+	padding:			0 5px 0 0;
+	margin:				5px 0;
+	display:			inline-block;
+}
+
+.adminformlist label.mailinglist_label {
+	clear:				none;
+	margin-top:			5px;
+}
+.adminformlist input.mailinglists {
+	margin:				5px 5px 5px 0;
+}
+
+fieldset.adminform .checkboxes {
+	margin-left:		40px;
+	float:				left;
+}
+
+fieldset.adminform .checkboxes input {
+	clear:				left;
+	margin:				8px 5px 0;
+}
+
+fieldset.adminform.templates .checkboxes input {
+	margin:				0 5px 0;
+}
+
+fieldset.adminform.templates .checkboxes label {
+	margin-top:			0;
+}
+
+fieldset.adminform .checkboxes label {
+	clear:				right;
+}
+
+fieldset p.mllabel {
+	margin-bottom:		5px;
+}
+
+
+/*----------------------------------------------------------
+	Panels
+----------------------------------------------------------*/
+
+#cpanel.cpanel_j3 .btn {
+	width:				90px;
+	margin-right:		5px;
+	height:				90px;
+	margin-bottom:		10px;
+	padding:			8px; 
+}
+#cpanel.cpanel_j3 .icon {
+	height:				100%;
+	width:				100%;
+}
+
+#cpanel .icon a {
+	display:			block;
+	height:				100%;
+}
+#cpanel .icon span {
+	display:			block;
+	font-size:			11px;
+}
+
+.pane-toggler span {
+	background:			url("../images/j_arrow.png") no-repeat scroll 5px 50% rgba(0, 0, 0, 0);
+	padding-left:		20px;
+}
+
+.pane-toggler-down span {
+	background:			url("../images/j_arrow_down.png") no-repeat scroll 5px 50% rgba(0, 0, 0, 0);
+	padding-left:		20px;
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+	background-color:	#DDDDDD !important;
+}
+
+.view-subscribers #toolbar.btn-toolbar .btn-wrapper:nth-child(6) .btn{
+	width:				auto !important;
+}
+
+#bwpostman_statistic-pane .panel {
+	background-color:	#FFFFFF;
+	border:				1px solid rgba(0, 0, 0, 0.2);
+	box-shadow:			0 1px 3px rgba(0, 0, 0, 0.1);
+	padding:			4px;
+	margin-bottom:		10px;
+}
+
+
+/*----------------------------------------------------------
+	Import/Export
+----------------------------------------------------------*/
+
+.bwptable.import span.hasTip {
+	margin-right:		15px;
+}
+
+.bwptable.import select {
+	margin-bottom:		0;
+}
+
+.bwptable.import {
+	line-height:		30px;
+}
+
+table.import {
+	margin-bottom:		20px;
+}
+
+.import td.key {
+	padding-right:		20px;
+}
+
+.import div.bwpmailformat {
+	width:				200px;
+}
+
+.import div.bwpmailformat input {
+	margin-top: 0;
+}
+
+.layout-import1 .tip-wrap {
+	-width:				500px !important;
+}
+
+.bwptable.export span.hasTip {
+	margin-right:		15px;
+}
+
+.bwptable.export select {
+	margin-bottom:		0;
+}
+
+.bwptable.export {
+	line-height:		30px;
+}
+
+table.export {
+	margin-bottom:		20px;
+}
+
+.export td.key {
+	padding-right:		20px;
+}
+
+.export div.bwpmailformat {
+	width:				200px;
+}
+
+.export div.bwpmailformat input {
+	margin-top: 0;
+}
+
+.layout-export1 .tip-wrap {
+	-width:				500px !important;
+}
+
+
+/*----------------------------------------------------------
+	Maintenance
+----------------------------------------------------------*/
+
+.bw_maintenance_result {
+	font-weight:			bold;
+	font-size:				17px;
+	background-color:		#fcf8e3;
+	border:					1px solid #fbeed5;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			4px;
+	margin-bottom:			18px;
+	padding:				8px 35px 8px 14px;
+	text-shadow:			0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.bw_tablecheck_ok {
+	color:				#008800;
+}
+
+.bw_tablecheck_ok.ok {
+	background-color:	#dff0d8;
+	border-color:		#d6e9c6;
+}
+
+.bw_tablecheck_warn {
+	color:				#c09853;
+}
+
+.bw_tablecheck_error.err {
+	background-color:	#f2dede;
+	border-color:		#eed3d7;
+} 
+
+.bw_tablecheck_error {
+	color:				#880000;
+}
+
+#loading {
+	background:			url("../images/ajax-loader.gif") no-repeat 50% 15% #ffffff;
+	width:				100%;
+	height:				100%;
+	top:				0;
+	left:				0;
+	position:			fixed;
+	filter:				alpha(opacity=80); 
+	-ms-filter:			"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	-moz-opacity:		0.8; 
+	-khtml-opacity:		0.8; 
+	opacity:			0.8;
+}
+
+/*----------------------------------------------------------
+	Pagination
+----------------------------------------------------------*/
+
+#bwp_view_lists .container .pagination {
+	display:			inline-block;
+}
+
+#bwp_view_lists .pagination {
+	text-align:			center;
+}
+
+#bwp_view_lists div.current select#limit {
+	float:				none;
+}
+
+
+/*----------------------------------------------------------
+	Buttons
+----------------------------------------------------------*/
+
+button {
+	margin:				0 3px;
+}
+
+.buttonAsLink {
+	font-size:			14px;
+	color:				#08c;
+	border-width:		0;
+	cursor:				pointer;
+	padding:			3px 0;
+	background:			#f0f0f0;
+}
+
+.buttonAsLink_open {
+	font-size:			14px;
+	color:				#08c;
+	background-color:	#F9F9F9;
+	border-width:		0;
+	cursor:				pointer;
+	padding:			3px 0;
+}
+
+.btn25 {
+	-moz-border-bottom-colors:	none;
+	-moz-border-left-colors:	none;
+	-moz-border-right-colors:	none;
+	-moz-border-top-colors:		none;
+	border-color:				rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #b3b3b3;
+	border-image:				none;
+	border-style:				solid;
+	border-width:				1px;
+	box-shadow:					0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+	cursor:						pointer;
+	line-height:				20px;
+	margin-bottom:				0;
+	text-align:					center;
+	vertical-align:				middle;
+	-webkit-border-radius:		6px;
+	-moz-border-radius:			6px;
+	border-radius:				6px;
+	font-size:					17.5px;
+	padding:					11px 19px;
+	box-sizing:					border-box;
+	display:					block;
+	padding-left:				0;
+	padding-right:				0;
+	width:						100%;
+	background-color:			#006dcc;
+	background-image:			linear-gradient(to bottom, #0088cc, #0044cc);
+	background-repeat:			repeat-x;
+	border-color:				rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	color:						#ffffff;
+	text-shadow:				0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn25:hover, .btn25:focus {
+	background-position:	0 -15px;
+	text-decoration:		none;
+	transition:				background-position 0.1s linear 0s;
+}
+
+.btn25:hover, .btn25:focus, .btn25:active {
+	background-color:	#0044cc;
+	color:				#ffffff;
+}
+
+.btn-toolbar .icon-back:before {
+	color:				#bd362f;
+}
+
+
+
+/*----------------------------------------------------------
+	Filter lists
+----------------------------------------------------------*/
+
+span.invisible,
+div.ordering-select.hidden-phone.unsent li.active-result.sent,
+div.ordering-select.hidden-phone.unsent li.active-result.queue,
+div.ordering-select.hidden-phone.sent li.active-result.unsent,
+div.ordering-select.hidden-phone.sent li.active-result.queue,
+div.ordering-select.hidden-phone.queue li.active-result.sent,
+div.ordering-select.hidden-phone.queue li.active-result.unsent,
+div.ordering-select.hidden-phone.testrecipients li.active-result.confirmed,
+div.ordering-select.hidden-phone.testrecipients li.active-result.uncinformed {
+	display:			none;
+}
+
+div.ordering-select.hidden-phone.sent li.active-result.unsent.sent,
+div.ordering-select.hidden-phone.unsent li.active-result.unsent.sent {
+	display:			inline-block;
+}
+
+
+/*----------------------------------------------------------
+	Miscellaneous
+----------------------------------------------------------*/
+#bwp_view_single select#jform_selected_content,
+#bwp_view_single select#jform_available_content {
+	width:				500px;
+}
+
+.top-spacer {
+	margin:				18px 0 0 0;
+}
+
+.bwpm_copyright {
+	font-size:			12px;
+	text-align:			center;
+	margin:				15px 0;
+	color:				#aaa;
+}
+
+ul.unstyled li {
+	margin-bottom:		5px;
+}
+
+.adminform .mailinglist_label {
+	margin:				0 0 0 30px;
+	float:				none;
+}
+
+.adminform #jform_text_version {
+	width:				98%;
+	height:				300px;
+}
+
+.adminform legend + .control-group {
+	margin-top:			0;
+}
+
+.adminform input.mailinglists {
+	margin:				0;
+}
+
+label.mailinglist_label input.mailinglists,
+label.mailinglists input[type="radio"],
+fieldset.usergroups label.checkbox input {
+	margin-right:		7px;
+	margin-top:			0;
+}
+
+div#batch-task.control-group.radio div.controls label,
+div #batch-task div.controls label {
+	display:			block;
+}
+
+.bwptable img {
+	float:				right;
+	display:			inline;
+}
+
+tr.bwptable {
+	vertical-align:		top;
+}
+
+td.bwptable input.radio {
+	float:				none;
+}
+
+td.bwptable label.radiobtn {
+	float:				none;
+	display:			inline-block;
+}
+
+

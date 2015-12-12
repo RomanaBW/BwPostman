@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field 
+			name="id"  
+			type="hidden" 
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" 
+			default="0"
+			readonly="true"  
+		/>
+
+		<field 
+			name="asset_id" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="title" 
+			type="text" 
+			label="COM_BWPOSTMAN_ML_FIELD_TITLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_ML_FIELD_TITLE_DESC" 
+			class="inputbox" 
+			required="true" 
+		/>
+
+		<field 
+			name="description" 
+			type="textarea" 
+			label="COM_BWPOSTMAN_ML_FIELD_DESCRIPTION_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_ML_FIELD_DESCRIPTION_DESC" 
+			class="inputbox" 
+			required="true" 
+		/>
+
+		<field 
+			name="campaign_id"  
+			type="text" 
+			class="readonly" 
+			label="COM_BWPOSTMAN_ML_FIELD_CAMPAIGN_ID_LABEL"
+			description ="COM_BWPOSTMAN_ML_FIELD_CAMPAIGN_ID_DESC" 
+			default="0"
+			readonly="true"  
+		/>
+
+		<field 
+			name="access" 
+			type="accesslevel" 
+			label="COM_BWPOSTMAN_ML_FIELD_ACCESS_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_ML_FIELD_ACCESS_DESC" 
+			class="inputbox" 
+		/>
+
+		<field 
+			name="groupname" 
+			type="text" 
+			label="COM_BWPOSTMAN_ML_FIELD_GROUPNAME_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_ML_FIELD_GROUPNAME_DESC" 
+			class="inputbox" 
+		/>
+
+		<field 
+			name="published" 
+			type="list" 
+			label="JSTATUS"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_PUBLISHED_DESC" 
+			class="chzn-color-state"
+			filter="intval" 
+			default="1"
+		>
+			<option value="1">
+				COM_BWPOSTMAN_FIELD_VALUE_PUBLISHED</option>
+			<option value="0">
+				COM_BWPOSTMAN_FIELD_VALUE_UNPUBLISHED</option>
+		</field>
+
+		<field 
+			name="created_by" 
+			type="user"
+			label="COM_BWPOSTMAN_FIELD_CREATED_BY_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_CREATED_BY_DESC" 
+			class="readonly" 
+			readonly="true" 
+		/>
+
+		<field 
+			name="created_date" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_CREATED_DATE_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_CREATED_DATE_DESC"
+			class="readonly" 
+			readonly="true" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="modified_time" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_MODIFIED_TIME_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_MODIFIED_TIME_DESC"
+			class="readonly" 
+			readonly="true" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="modified_by" 
+			type="user"
+			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_MODIFIED_BY_DESC" 
+			class="readonly" 
+			readonly="true" 
+		/>
+
+		<field 
+			name="checked_out" 
+			type="hidden" 
+			filter="unset" 
+		/>
+
+		<field 
+			name="checked_out_time" 
+			type="hidden" 
+			filter="unset" 
+		/>
+
+		<field 
+			name="archive_flag" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="archive_time" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="archive_by" 
+			type="hidden" 
+		/>
+
+ 		<field
+			name="rules"
+			type="rules"
+			label=""
+			translate_label="false"
+			class="inputbox"
+			filter="rules"
+			component="com_bwpostman"
+			section="mailinglist">
+		</field>
+	</fieldset>
+</form>

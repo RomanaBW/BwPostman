@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="basic_1">
+		<field 
+			name="from_name" 
+			type="text" 
+			label="COM_BWPOSTMAN_NL_FIELD_FROM_NAME_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_FROM_NAME_DESC" 
+			class="inputbox" 
+			size="30"
+			required="true" 
+		/>
+
+		<field 
+			name="from_email" 
+			type="email" 
+			label="COM_BWPOSTMAN_NL_FIELD_FROM_EMAIL_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_FROM_EMAIL_DESC" 
+			class="inputbox" 
+			size="30"
+			validate="email"
+			required="true" 
+		/>
+
+		<field 
+			name="reply_email" 
+			type="email" 
+			label="COM_BWPOSTMAN_NL_FIELD_REPLY_EMAIL_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_REPLY_EMAIL_DESC" 
+			class="inputbox" 
+			size="30"
+			validate="email"
+			required="true" 
+		/>
+
+		<field 
+			name="subject" 
+			type="text" 
+			label="COM_BWPOSTMAN_NL_FIELD_SUBJECT_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_SUBJECT_DESC" 
+			class="inputbox" 
+			size="30"
+			required="true" 
+		/>
+
+		<field 
+			id="attachment"
+			name="attachment"
+			type="allmedia"
+			label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_ATTACHMENT_FIELD_DESC"
+			class="inputbox"
+			size="30"
+			directory="" 
+		/>
+	</fieldset>
+	
+	<fieldset name="basic_2">
+		<field 
+			name="description" 
+			type="textarea" 
+			label="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_DESC" 
+			class="inputbox" 
+		/>
+
+		<field 
+			name="id"  
+			type="hidden" 
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" 
+			size="10" 
+			default="0"
+			readonly="true"
+		/>
+
+		<field 
+			name="asset_id" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="created_by" 
+			type="user"
+			label="COM_BWPOSTMAN_FIELD_CREATED_BY_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_CREATED_BY_DESC" 
+			class="readonly" 
+			readonly="true" 
+		/>
+
+		<field 
+			name="created_date" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_CREATED_DATE_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_CREATED_DATE_DESC"
+			class="readonly" 
+			readonly="true" 
+			size="22" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="modified_by" 
+			type="user"
+			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_MODIFIED_BY_DESC" 
+			class="readonly" 
+			readonly="true" 
+		/>
+
+		<field 
+			name="modified_time" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_MODIFIED_TIME_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_MODIFIED_TIME_DESC"
+			class="readonly" 
+			size="22" 
+			readonly="true" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="mailing_date" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_MAILING_DATE_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_MAILING_DATE_DESC"
+			class="readonly" 
+			readonly="true" 
+			size="22" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="checked_out" 
+			type="hidden" 
+			filter="unset" 
+		/>
+
+		<field 
+			name="checked_out_time" 
+			type="hidden" 
+			filter="unset" 
+		/>
+
+		<field 
+			name="archive_flag" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="archive_date" 
+			type="hidden" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="archived_by" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="hits"
+			type="hidden" 
+			class="inputbox" 
+			label="COM_BWPOSTMAN_NL_FIELD_HITS_ID_LABEL"
+			labelclass="control-label"
+			description ="COM_BWPOSTMAN_NL_FIELD_HITS_ID_DESC" 
+			size="10" 
+			default="0"
+			readonly="true"  
+		/>
+	</fieldset>
+
+	<fieldset name="templates">
+		<field 
+			name="template_id" 
+			type="HtmlTemplates"
+			label="COM_BWPOSTMAN_NL_FIELD_TEMPLATE_ID_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_TEMPLATE_ID_DESC" 
+			class="inputbox mailinglists" 
+			required="true" 
+			default="1"
+		/>
+
+		<field 
+			name="template_id_old" 
+			type="hidden"
+		/>
+
+		<field 
+			name="text_template_id" 
+			type="TextTemplates"
+			label="COM_BWPOSTMAN_NL_FIELD_TEXT_TEMPLATE_ID_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_TEXT_TEMPLATE_ID_DESC" 
+			class="inputbox mailinglists" 
+			required="true" 
+			default="1"
+		/>
+
+		<field 
+			name="text_template_id_old" 
+			type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="campaigns">
+		<field 
+			name="campaign_id" 
+			type="campaignlist"
+			label="COM_BWPOSTMAN_NL_FIELD_CAMPAIGN_ID_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_CAMPAIGN_ID_DESC" 
+			class="chzn-state" 
+		/>
+	</fieldset>
+
+	<fieldset name="mailinglists">
+		<field 
+			name="ml_available" 
+			type="mlavailable"
+			label="COM_BWPOSTMAN_NL_FIELD_ML_AVAILABLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_ML_AVAILABLE_DESC" 
+			class="inputbox mailinglists" 
+		/>
+
+		<field 
+			name="ml_unavailable" 
+			type="mlunavailable"
+			label="COM_BWPOSTMAN_NL_FIELD_ML_UNAVAILABLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_ML_UNAVAILABLE_DESC" 
+			class="inputbox mailinglists" 
+		/>
+
+		<field 
+			name="ml_intern" 
+			type="mlintern"
+			label="COM_BWPOSTMAN_NL_FIELD_ML_INTERN_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_ML_INTERN_DESC" 
+			class="inputbox mailinglists" 
+		/>
+	</fieldset>
+
+	<fieldset name="usergroups">
+		<field 
+			name="usergroups" 
+			type="usergroups" 
+			label="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC" 
+			class="inputbox" 
+			size="1" 
+		/>
+	</fieldset>
+
+	<fieldset name="selected_content">
+		<field 
+			name="selected_content" 
+			type="selectedcontent" 
+			label="COM_BWPOSTMAN_NL_FIELD_SELECTED_CONTENT_LABEL"
+			description="COM_BWPOSTMAN_NL_FIELD_SELECTED_CONTENT_DESC" 
+			class="inputbox" 
+			size="20"
+			multiple="true"
+			ondblclick="moveSelectedOptions(document.adminForm['jform_selected_content'], document.adminForm['jform_available_content'])"
+		/>
+	</fieldset>
+
+	<fieldset name="available_content">
+		<field 
+			name="available_content" 
+			type="availablecontent" 
+			label="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_LABEL"
+			description="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_DESC" 
+			class="inputbox" 
+			size="20"
+			multiple="true"
+			ondblclick="moveSelectedOptions(document.adminForm['jform_available_content'], document.adminForm['jform_selected_content'])"
+		/>
+	</fieldset>
+
+	<fieldset name="html_version">
+		<field
+			name="intro_headline"
+			type="text"
+			label="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC"
+			class="inputbox"
+			size="30"
+		/>
+		
+		<field
+			name="intro_text"
+			type="textarea"
+			label="COM_BWPOSTMAN_TPL_INTROTEXT_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC"
+			class="inputbox"
+			rows="3"
+			cols="50"
+		/>
+		
+		<field
+			name="html_version"
+			type="editor"
+			class="inputbox"
+			label="COM_BWPOSTMAN_NL_FIELD_HTML_VERSION_ID_LABEL"
+			description ="COM_BWPOSTMAN_NL_FIELD_HTML_VERSION_ID_DESC" 
+			filter="raw"
+			buttons="true"
+		/>
+	</fieldset>
+
+	<fieldset name="text_version">
+		<field
+			name="intro_text_headline"
+			type="text"
+			label="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC"
+			class="inputbox"
+			size="30"
+		/>
+		
+		<field
+			name="intro_text_text"
+			type="textarea"
+			label="COM_BWPOSTMAN_TPL_INTROTEXT_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC"
+			class="inputbox"
+			rows="3"
+			cols="50"
+		/>
+		
+		<field
+			name="text_version"
+			type="textarea"
+			class="inputbox span10"
+			label="COM_BWPOSTMAN_NL_FIELD_TEXT_VERSION_ID_LABEL"
+			description ="COM_BWPOSTMAN_NL_FIELD_TEXT_VERSION_ID_DESC" 
+			filter="BwPostmanFilterHelper::filterContent"
+			cols="400"
+			rows="40"
+			buttons="true"
+		/>
+	</fieldset>
+
+	<fieldset name="rules">
+		<field
+			name="rules"
+			type="rules"
+			label=""
+			translate_label="false"
+			class="inputbox"
+			filter="rules"
+			component="com_bwpostman"
+			section="newsletter"
+		/>
+	</fieldset>
+
+	<fieldset name="edit_publish">
+		<field 
+			name="published" 
+			type="list" 
+			label="JSTATUS"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_PUBLISHED_DESC" 
+			class="chzn-color-state"
+			filter="intval" 
+			size="1" 
+			default="0"
+		>
+			<option value="1">
+				COM_BWPOSTMAN_FIELD_VALUE_PUBLISHED</option>
+			<option value="0">
+				COM_BWPOSTMAN_FIELD_VALUE_UNPUBLISHED</option>
+		</field>
+
+		<field 
+			name="publish_up" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_PUBLISH_UP_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_PUBLISH_UP_DESC"
+			format="%Y-%m-%d %H:%M:%S" 
+			size="22"
+			filter="user_utc" 
+			class="inputbox"
+		/>
+
+		<field 
+			name="publish_down" 
+			type="calendar"
+			label="COM_BWPOSTMAN_FIELD_PUBLISH_DOWN_LABEL" 
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_FIELD_PUBLISH_DOWN_DESC"
+			format="%Y-%m-%d %H:%M:%S" 
+			size="22"
+			filter="user_utc" 
+			class="inputbox"
+		/>
+
+		<field 
+			name="template_id"  
+			type="hidden" 
+		/>
+		
+		<field 
+			name="text_template_id"  
+			type="hidden"
+		/>
+		
+		<field
+			name="rules"
+			type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="basic_1_hidden">
+		<field 
+			name="from_name" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="from_email" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="reply_email" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="subject" 
+			type="hidden" 
+		/>
+	</fieldset>
+	
+	<fieldset name="basic_2_hidden">
+		<field 
+			name="description" 
+			type="hidden" 
+			label="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_DESC" 
+			class="inputbox" 
+		/>
+
+		<field 
+			name="id"  
+			type="hidden" 
+		/>
+
+		<field 
+			name="asset_id" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="created_by" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="created_date" 
+			type="hidden" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="modified_by" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="modified_time" 
+			type="hidden" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="mailing_date" 
+			type="hidden" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="checked_out" 
+			type="hidden" 
+			filter="unset" 
+		/>
+
+		<field 
+			name="checked_out_time" 
+			type="hidden" 
+			filter="unset" 
+		/>
+
+		<field 
+			name="archive_flag" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="archive_date" 
+			type="hidden" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="archived_by" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="hits"
+			type="hidden" 
+		/>
+	</fieldset>
+
+	<fieldset name="templates_hidden">
+		<field 
+			name="template_id_old" 
+			type="hidden"
+		/>
+
+		<field 
+			name="text_template_id_old" 
+			type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="html_version_hidden">
+		<field
+			name="intro_headline"
+			type="hidden"
+		/>
+		
+		<field
+			name="intro_text"
+			type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="text_version_hidden">
+		<field
+			name="intro_text_headline"
+			type="hidden"
+		/>
+		
+		<field
+			name="intro_text_text"
+			type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="selected_content_hidden">
+		<field 
+			name="selected_content" 
+			type="hidden" 
+		/>
+	</fieldset>
+
+	<fieldset name="available_content_hidden">
+		<field 
+			name="available_content" 
+			type="hidden" 
+		/>
+	</fieldset>
+
+	<fieldset name="publish_hidden">
+		<field 
+			name="published" 
+			type="hidden" 
+		/>
+
+		<field 
+			name="publish_up" 
+			type="hidden"
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="publish_down" 
+			type="hidden"
+			filter="user_utc" 
+		/>
+	</fieldset>
+</form>

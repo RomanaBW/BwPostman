@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="basic"  addfieldpath="/administrator/components/com_bwpostman/models/fields">
+		<fields name="filter">
+			<field
+				name="mailinglist"
+				type="allmailinglists"
+				label="COM_BWPOSTMAN_FILTER_MAILINGLISTS_LBL"
+				description="COM_BWPOSTMAN_FILTER_MAILINGLISTS_DESC"
+				onchange="this.form.submit();"
+				/>
+			<field
+				name="search"
+				type="text"
+				label="COM_CONTENT_FILTER_SEARCH_DESC"
+				hint="JSEARCH_FILTER"
+				class="inputbox input-mini"
+			/>
+<!-- 
+			<field
+				name="search_filter"
+				type="list"
+				label="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_LBL"
+				description="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">COM_BWPOSTMAN_FILTER_SEARCH_FOR</option>
+				<option value="name">COM_BWPOSTMAN_SUB_FILTER_SEARCH_NAME</option>
+				<option value="firstname">COM_BWPOSTMAN_SUB_FILTER_SEARCH_FIRSTNAME</option>
+				<option value="fullname">COM_BWPOSTMAN_SUB_FILTER_SEARCH_FULLNAME</option>
+				<option value="email">COM_BWPOSTMAN_SUB_FILTER_SEARCH_EMAIL</option>
+				<option value="name_email">COM_BWPOSTMAN_SUB_FILTER_SEARCH_NAMEEMAIL</option>
+			</field>
+			<field
+				name="emailformat"
+				type="list"
+				label="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_LBL"
+				description="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_DESC"
+				onchange="this.form.submit();"
+				>
+				<option value="">COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT</option>
+				<option value="0">COM_BWPOSTMAN_TEXT</option>
+				<option value="1">COM_BWPOSTMAN_HTML</option>
+			</field>
+			<field
+				name="mailinglist"
+				type="allmailinglists"
+				label="COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS_LBL"
+				description="COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS_DESC"
+				onchange="this.form.submit();"
+				>
+			</field>
+-->
+		</fields>
+		<fields name="list">
+<!-- 	
+			<field
+				name="fullordering"
+				type="list"
+				label="COM_CONTENT_LIST_FULL_ORDERING"
+				description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+				onchange="this.form.submit();"
+				default="a.name ASC"
+				>
+				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.name ASC">COM_BWPOSTMAN_SUB_NAME_ASC</option>
+				<option value="a.name DESC">COM_BWPOSTMAN_SUB_NAME_DESC</option>
+				<option value="a.firstname ASC">COM_BWPOSTMAN_SUB_FIRSTNAME_ASC</option>
+				<option value="a.firstname DESC">COM_BWPOSTMAN_SUB_FIRSTNAME_DESC</option>
+				<option value="a.email ASC">COM_BWPOSTMAN_EMAIL_ASC</option>
+				<option value="a.email DESC">COM_BWPOSTMAN_EMAIL_DESC</option>
+				<option value="a.emailformat ASC">COM_BWPOSTMAN_EMAILFORMAT_ASC</option>
+				<option value="a.emailformat DESC">COM_BWPOSTMAN_EMAILFORMAT_DESC</option>
+				<option value="a.user_id ASC">COM_BWPOSTMAN_JOOMLA_USERID_ASC</option>
+				<option value="a.user_id DESC">COM_BWPOSTMAN_JOOMLA_USERID_DESC</option>
+				<option value="mailinglists ASC" class="confirmed unconfirmed">COM_BWPOSTMAN_ML_NBR_ASC</option>
+				<option value="mailinglists DESC" class="confirmed unconfirmed">COM_BWPOSTMAN_ML_NBR_DESC</option>
+				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			</field>
+ -->
+			<field
+				name="limit"
+				type="limitbox"
+				class="input-mini"
+				default="20"
+				label="COM_CONTENT_LIST_LIMIT"
+				description="COM_CONTENT_LIST_LIMIT_DESC"
+				onchange="this.form.submit();"
+			/>
+		</fields>
+	</fieldset>
+</form>

@@ -44,7 +44,7 @@ class BwPostmanTableSendmailcontent extends JTable
 
 	/** @var int Newsletter-ID */
 	var $nl_id = null;
-		
+
 	/** @var string Sender name */
 	var $from_name = null;
 
@@ -112,7 +112,7 @@ class BwPostmanTableSendmailcontent extends JTable
 			$this->setError($e);
 			return false;
 		}
-				
+
 		// Cast properties
 		$this->id	= (int) $this->id;
 
@@ -152,7 +152,7 @@ class BwPostmanTableSendmailcontent extends JTable
 			$res = $this->_db->loadResult();
 			if ($res) $this->$k = $res;
 		}
-		
+
 		if ($this->$k) {
 			// An id value is set
 			$ret = $this->_db->insertObject($this->_tbl, $this);
@@ -182,21 +182,21 @@ class BwPostmanTableSendmailcontent extends JTable
 		$mode	= $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$this->reset();
-		
+
 		$query->select('*');
 		$query->from($_db->quoteName($this->_tbl));
 		$query->where($_db->quoteName('id') . ' = ' . (int) $keys);
 		$query->where($_db->quoteName('mode') . ' = ' . (int) $mode);
-				
+
 		$_db->setQuery($query);
-		
+
 		if ($result = $_db->loadAssoc()) {
 			return $this->bind($result);
 		}
 		else{
-			$this->setError($db->getErrorMsg());
+			$this->setError($_db->getErrorMsg());
 			return false;
 		}
 	}

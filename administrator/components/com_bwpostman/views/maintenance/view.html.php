@@ -51,7 +51,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
-		
+
 		if (!BwPostmanHelper::canView('maintenance')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -63,23 +63,23 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$layout		= $jinput->getCmd('layout', '');
 //dump ($layout, 'View Layout');
 //dump ($tpl, 'View TPL');
-	
+
 			//check for queue entries
 			$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
-	
+
 			$this->template	= $app->getTemplate();
 			$dest			= $app->getUserState('com_bwpostman.maintenance.dest', '');
-	
+
 			// Get document object, set document title and add css
 			$document = JFactory::getDocument();
 			$document->setTitle(JText::_('COM_BWPOSTMAN'));
-			$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
-	
+			$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
 			// Set toolbar title
 			JToolBarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
-			
+
 			$canDo = BwPostmanHelper::getActions();
-			
+
 			// Set toolbar items for the page
 			if ($layout == 'restoreTables') {
 				$alt 	= "COM_BWPOSTMAN_BACK";
@@ -92,7 +92,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
 			}
-			
+
 				if ($layout == 'doRestore') {
 				$alt 	= "COM_BWPOSTMAN_BACK";
 				$bar	= JToolBar::getInstance('toolbar');
@@ -104,7 +104,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
 			}
-			
+
 			if ($layout == 'checkTables') {
 				$alt 	= "COM_BWPOSTMAN_BACK";
 				$bar	= JToolBar::getInstance('toolbar');
@@ -116,7 +116,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
 			}
-			
+
 			if ($layout == 'updateCheckSave') {
 				$alt 	= "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
 				$bar	= JToolBar::getInstance('toolbar');
@@ -128,16 +128,16 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
 			}
-			
+
 			if ($canDo->get('core.manage')) JToolBarHelper::preferences('com_bwpostman', '500', '900');
 			JToolBarHelper::spacer();
 			JToolBarHelper::divider();
 			JToolBarHelper::spacer();
 			JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 			JToolBarHelper::spacer();
-			
+
 			BwPostmanHelper::addSubmenu('maintenance');
-			
+
 			switch ($layout) {
 				case 'updateCheckSave':
 					break;
@@ -162,9 +162,9 @@ class BwPostmanViewMaintenance extends JViewLegacy
 					break;
 					default:
 			}
-			
+
 			if (empty($layout)) $this->sidebar = JHtmlSidebar::render();
-			
+
 			parent::display($tpl);
 		}
 	}

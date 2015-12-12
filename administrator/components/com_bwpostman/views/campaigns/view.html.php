@@ -50,7 +50,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
-		
+
 		if (!BwPostmanHelper::canView('campaigns')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_CAMS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -58,10 +58,10 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		else {
 			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-			
+
 			// Build the key for the userState
 			$key = $this->getName();
-	
+
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items			= $this->get('Items');
@@ -70,16 +70,16 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			$this->pagination		= $this->get('Pagination');
 			$this->total			= $this->get('total');
 			$this->auto_nbr			= 0;
-			
+
 			// trigger Plugin BwTimeControl event and get results
 			$this->auto_nbr	= $dispatcher->trigger('onBwPostmanCampaignsPrepare', array (&$this->items));
-			
+
 			$this->addToolbar();
-	
+
 			BwPostmanHelper::addSubmenu('campaigns');
-			
+
 			$this->sidebar = JHtmlSidebar::render();
-			
+
 			// Call parent display
 			parent::display($tpl);
 		}
@@ -96,23 +96,23 @@ class BwPostmanViewCampaigns extends JViewLegacy
 
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
-		
+
 		// Get document object, set document title and add css
 		$document	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAMS'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_CAMS'), 'list');
-		
+
 		// Set toolbar items for the page
 		if ($canDo->get('core.create'))	JToolBarHelper::addNew('campaign.add');
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('campaign.edit');
 		JToolBarHelper::divider();
 		JToolBarHelper::spacer();
-		
+
 		// Special archive button because we need a confirm dialog with 3 options
-		if ($canDo->get('core.archive')) {		
+		if ($canDo->get('core.archive')) {
 			$bar= JToolBar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";
 			$bar->appendButton('Popup', 'archive', $alt, 'index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive', 500, 110);
@@ -124,7 +124,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			JToolBarHelper::checkin('campaigns.checkin');
 			JToolBarHelper::divider();
 		}
-		
+
 		// trigger BwTimeControl event
 		$dispatcher->trigger('onBwPostmanCampaignsPrepareToolbar', array($canDo));
 

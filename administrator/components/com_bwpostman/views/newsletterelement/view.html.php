@@ -28,7 +28,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
- 
+
 class BwPostmanViewNewsletterelement extends JViewLegacy
 {
 
@@ -46,7 +46,7 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		$user		= JFactory::getUser();
 		$uri		= JFactory::getURI();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
-		
+
 		// Build the key for the userState
 		$key = $this->getName();
 
@@ -61,7 +61,7 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'COM_BWPOSTMAN_SELECTNEWSLETTER' ));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get data from the model
 		$items 		= $this->get('data');

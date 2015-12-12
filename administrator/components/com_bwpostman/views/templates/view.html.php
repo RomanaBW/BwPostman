@@ -46,16 +46,16 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 * Display
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param	string Template
-	 * 
+	 *
 	 * @since	1.1.0
 	 */
 	public function display($tpl = null)
 	{
 		$app		= JFactory::getApplication();
 		$user		= JFactory::getUser();
-		
+
 		if (!BwPostmanHelper::canView('templates')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -64,7 +64,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 		// Build the key for the userState
 			$key			= $this->getName();
 			$filter_search	= $app->getUserStateFromRequest($key.'search_filter', 'filter.search_filter', 'title', 'string');
-	
+
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items			= $this->get('Items');
@@ -72,13 +72,13 @@ class BwPostmanViewTemplates extends JViewLegacy
 			$this->activeFilters	= $this->get('ActiveFilters');
 			$this->pagination		= $this->get('Pagination');
 			$this->total			= $this->get('total');
-	
+
 			$this->addToolbar();
-	
+
 			BwPostmanHelper::addSubmenu('templates');
-			
+
 			$this->sidebar = JHtmlSidebar::render();
-			
+
 			// Call parent display
 			parent::display($tpl);
 		}
@@ -95,8 +95,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_TPL'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_TPL'), 'picture');
 
@@ -113,8 +113,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 
 		JToolBarHelper::divider();
 		JToolBarHelper::spacer();
-		
-		if ($canDo->get('core.archive')) {		
+
+		if ($canDo->get('core.archive')) {
 			JToolBarHelper::archiveList('template.archive');
 			JToolBarHelper::divider();
 			JToolBarHelper::spacer();

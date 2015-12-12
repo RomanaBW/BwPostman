@@ -59,9 +59,9 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
+
 	}
-	
+
 	/**
 	 * Method override to check if you can add a new record.
 	 *
@@ -74,7 +74,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		$user	= JFactory::getUser();
-		
+
 		return ($user->authorise('core.create', 'com_bwpostman'));
 	}
 
@@ -167,7 +167,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		{
 			$urlVar = $key;
 		}
-		
+
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
 		$checkin = property_exists($table, 'checked_out');
@@ -223,20 +223,20 @@ class BwPostmanControllerCampaign extends JControllerForm
 	}
 
 	/**
-	 * Override method to save a campaign 
+	 * Override method to save a campaign
 	 *
 	 * @access	public
 	 */
 	public function save($key = null, $urlVar = null)
 	{
 		parent::save();
-		
+
 		$dispatcher = JEventDispatcher::getInstance();
 
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanAfterCampaignControllerSave', array());
 	}
-	
+
 	/**
 	 * Method to archive one or more campaigns and if the user want also the assigned newsletters
 	 * --> campaigns-table: archive_flag = 1, set archive_date
@@ -247,12 +247,12 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function archive()
 	{
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// If archive_nl = 1 the assigned newsletters shall be archived, too
 		$archive_nl = $jinput->get('archive_nl');
 
@@ -299,7 +299,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 				}
 			}
 			$link = JRoute::_('index.php?option=com_bwpostman&view=campaigns', false);
-				
+
 			$this->setRedirect($link, $msg);
 		}
 	}
@@ -313,7 +313,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function dueSend()
 	{
 		$dispatcher = JEventDispatcher::getInstance();
-		
+
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanCampaignsTaskDueSend');
 	}
@@ -327,7 +327,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function autotest()
 	{
 		$dispatcher = JEventDispatcher::getInstance();
-		
+
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanCampaignsTaskAutoTest');
 	}
@@ -341,7 +341,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function activate()
 	{
 		$dispatcher = JEventDispatcher::getInstance();
-		
+
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanCampaignsTaskActivate');
 	}
@@ -356,15 +356,16 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function suspendNewletterFromSending()
 	{
 		$dispatcher = JEventDispatcher::getInstance();
-		
+
 		JPluginHelper::importPlugin('bwpostman');
 
 		$jinput		= JFactory::getApplication()->input;
 		$get_data	= $jinput->getArray(array('suspended' => '', 'id' => ''));
 		$link		= JRoute::_(JFactory::getApplication()->getUserState('bwtimecontrol.campaign_edit.request', null), false);
-		
+		$msg        = '';
+
 		$dispatcher->trigger('onBwPostmanCampaignTaskSuspendNewsletterFromSending', array(&$get_data));
-		
+
 		$this->setRedirect($link, $msg);
 	}
 }

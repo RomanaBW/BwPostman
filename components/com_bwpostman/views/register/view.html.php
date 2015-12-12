@@ -50,13 +50,13 @@ class BwPostmanViewRegister extends JViewLegacy
 
 		$params			= $app->getPageParameters();
 		$templateName	= $app->getTemplate();
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 		$this->captcha	= BwPostmanHelper::getCaptcha(1);
-		
+
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists($css_filename)) $document->addStyleSheet($css_filename);
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+
 		switch ($layout) {
 			case "error_accountblocked":
 			case "error_accountgeneral":
@@ -93,11 +93,10 @@ class BwPostmanViewRegister extends JViewLegacy
 		$menu		= $app->getMenu()->getActive();
 		$err		= JFactory::getSession()->get('session_error', null);
 		$error		= new stdClass();
-		
+
 		$templateName	= $app->getTemplate();
-//		$css_filename	= JPATH_BASE . '/templates/' . $templateName . '/css/com_bwpostman.css';
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-		
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+
 		if(isset($err) && is_array($err)){
 			foreach ($err AS $key => $value) {
 				$error->$key = $value;
@@ -111,11 +110,11 @@ class BwPostmanViewRegister extends JViewLegacy
 			$menu_params->loadString($menu->params, 'JSON');
 			if (!$menu_params->get('page_title')) {
 				$title = JText::_('COM_BWPOSTMAN_NL_REGISTRATION');
-			} 
+			}
 			else {
 				$title = $menu_params->get('page_title');
 			}
-		} 
+		}
 		else {
 			$params->set('page_title',	JText::_('COM_BWPOSTMAN_NL_REGISTRATION'));
 		}
@@ -123,9 +122,9 @@ class BwPostmanViewRegister extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists($css_filename)) $document->addStyleSheet($css_filename);
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+
 		// Load the form validation behavior
 		JHTML::_('behavior.formvalidation');
 
@@ -137,7 +136,7 @@ class BwPostmanViewRegister extends JViewLegacy
 
 		//reset error state
 		$app->setUserState('com_bwpostman.subscriber.register.error', null);
-		
+
 		// Set parent display
 		parent::display();
 	}
@@ -158,7 +157,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		$success	= new stdClass();
 		$params		= $app->getPageParameters();
 		$menu		= $app->getMenu()->getActive();
-		
+
 		$session_success = $session->get('session_success');
 		if(isset($session_success) && is_array($session_success)){
 			foreach ($session_success AS $key => $value) {
@@ -174,25 +173,24 @@ class BwPostmanViewRegister extends JViewLegacy
 			$menu_params->loadString($menu->params, 'JSON');
 			if (!$menu_params->get('page_title')) {
 				$title = JText::_('COM_BWPOSTMAN_NL_REGISTRATION');
-			} 
+			}
 			else {
 				$title = $menu_params->get('page_title');
 			}
-		} 
+		}
 		else {
 			$params->set('page_title',	JText::_('COM_BWPOSTMAN_NL_REGISTRATION'));
 		}
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-//		$css_filename	= JPATH_BASE . '/templates/' . $templateName . '/css/com_bwpostman.css';
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-		
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists($css_filename)) $document->addStyleSheet($css_filename);
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+
 		// Save references into view
 		$this->assignRef('params', $params);
 		$this->assignRef('success', $success);
@@ -218,7 +216,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		$params		= $app->getPageParameters('com_bwpostman');
 		$menu		= $app->getMenu()->getActive();
 		$subscriber	= new stdClass();
-		
+
 
 		// If there occured an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');
@@ -230,7 +228,7 @@ class BwPostmanViewRegister extends JViewLegacy
 			$subscriber->id	= 0;
 			$session->clear('subscriber_data');
 			$selected_mailinglists = $subscriber->mailinglists;
-		} 
+		}
 		else {
 			// If the user is logged into the website get the data from users-table
 			if (!$user->get('guest')) {
@@ -252,25 +250,24 @@ class BwPostmanViewRegister extends JViewLegacy
 			$menu_params->loadString($menu->params, 'JSON');
 			if (!$menu_params->get('page_title')) {
 				$title = JText::_('COM_BWPOSTMAN_NL_REGISTRATION');
-			} 
+			}
 			else {
 				$title = $menu_params->get('page_title');
 			}
-		} 
+		}
 		else {
 			$params->set('page_title',	JText::_('COM_BWPOSTMAN_NL_REGISTRATION'));
 		}
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-//		$css_filename	= JPATH_BASE . '/templates/' . $templateName . '/css/com_bwpostman.css';
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-		
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists($css_filename)) $document->addStyleSheet($css_filename);
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+
 		// Load the form validation behavior
 		JHTML::_('behavior.formvalidation');
 

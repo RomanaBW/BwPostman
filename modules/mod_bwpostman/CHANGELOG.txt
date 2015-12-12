@@ -1,0 +1,183 @@
+******************************
+Changelog for BwPostman Module
+******************************
+
+This is a changelog for the Joomla!3 module BwPostman
+The changelog may not be exhaustive but nearly complete.
+Many thanks to all those people who have contributed bug reports and code fixes.
+
+
+--- version 1.2.4 released (12-Dec-2015)----
+
+Dec-2015 Romana Boldt
+- bugfix:
+	- User-defined css file some times not read - fixed
+	- faulty calling of icon font for user-defined css file- fixed
+
+
+--- version 1.2.3 released (22-Sep-2015)----
+- improvement:
+	- Javascript noscript message added
+
+
+--- version 1.2.2 released (2-Sep-2015)----
+only version number changed to meet version number of component
+
+
+--- version 1.2.1 released (17-Jul-2015)----
+only version number changed to meet version number of component
+
+
+Jul-2015 Romana Boldt
+--- version 1.2.0 released (9-Jul-2015)----
+
+Jul-2015 Romana Boldt
+- improvement:
+	- Improved and modernized look
+	- CSS files now contains all elements used by BwPostman (most of them empty to fill by user)
+
+
+--- version 1.1.0.1 released (16-Apr-2015)----
+
+Apr-2015 Romana Boldt
+only version number changed to meet version number of component
+
+
+--- version 1.1.0 released (21-Mar-2015)----
+
+Mar-2015 Romana Boldt
+only version number changed to meet version number of component
+
+
+--- version 1.0.8.2 released (Mar-24-2015)----
+
+Mar-2015 Romana Boldt
+only version number changed to meet version number of component
+
+
+--- version 1.0.8.1 released (Mar-16-2015)----
+
+Mar-2015 Romana Boldt
+- improvement:
+	- List of mailing lists now ordered by title ascending
+
+
+--- version 1.0.8 released (Mar-05-2015)----
+
+*********************************************
+*** last version that supports Joomla!2.5 ***
+*********************************************
+
+Mar-2015 Romana Boldt
+only version number changed to meet version number of component
+
+
+--- version 1.0.7 released (Feb-18-2015)----
+
+Feb-2015 Romana Boldt
+only version number changed to meet version number of component
+
+
+--- version 1.0.6 released (Jan-05-2015)----
+
+Jan-2015 Romana Boldt
+
+only version number changed to meet version number of component
+
+
+--- version 1.0.5 released (Dec-18-2014)----
+
+Dec-2014 Romana Boldt
+- bugfixes:
+	- user-defined css file not read - fixed
+
+- new:
+	- Now it is possible to set displayed mailing lists per module (extra tab)
+	- Now it is possible to use settings for module different to that of the component (extra tab)
+
+
+--- version 1.0.4 released (Oct-29-2014)----
+
+only version number changed to meet version number of component
+
+--- version 1.0.3 released (Oct-10-2014)----
+
+only version number changed to meet version number of component
+
+--- version 1.0.2 released (Sep-20-2014)----
+
+Sep-2014 Romana Boldt
+- improvement:
+	- spam check revised
+
+- bugfixes:
+	- revised, corrected and updated language strings
+
+--- version 1.0.1 released (Aug-07-2014)----
+
+Aug-2014 Romana Boldt
+- new:
+	- works now with Joomla!3.3
+	- new installation routine
+
+- improvement:
+	- mostly revised and simplified code
+
+- bugfixes:
+	- Minor discrepancies in the client-side and server-side validation of form fields has been corrected.
+
+
+This is a changelog for the Joomla!2.5 module BwPostman
+The changelog may not be exhaustive but nearly complete.
+Many thanks to all those people who have contributed bug reports and code fixes.
+
+
+--- version 0.9.8.1 released (April-13-2014)----
+
+only version number set according to component (bugfix in component)
+
+
+--- version 0.9.8 released (Apr-09-2014)----
+
+Apr-9-2014 Romana Boldt
+- integrate question and captcha formfields
+- integrate spamprotection
+- some smaller internal changes in code
+
+
+--- version 0.9.7.1 released (Mar-28-2014)----
+
+March-28-2014 Romana Boldt
+- bugfix: document title won´t show in browser when module is published - fixed
+
+--- version 0.9.7 released (Mar-08-2014)----
+
+March-08-2014 Romana Boldt
+- some smaller internal changes in code
+
+--- version 0.9.6.4 released (Sept-25-2013)----
+
+Sept-25-2013 Romana Boldt
+- js-checking input fields fixed and enhanced
+
+--- version 0.9.6.3 released (Sept-07-2013)----
+
+Sept-07-2013 Romana Boldt
+- fix for updating version number
+- language files updated
+
+--- version 0.9.6.1 released (Sept-02-2013)----
+
+Sept-02-2013 Romana Boldt
+- bugfix at registering to newsletter
+
+--- version 0.9.6 released (Aug-22-2013)----
+
+Aug-22-2013 Romana Boldt
+- css-asset for module added
+
+--- version 0.9.5 released (Aug-21-2013)----
+
+Aug-21-2013 Romana Boldt
+- general changes for Joomla! 2.5
+

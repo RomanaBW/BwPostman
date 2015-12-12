@@ -53,7 +53,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		
+
 		// Register Extra tasks
 		$this->registerTask('checkTables', 'checkTables');
 		$this->registerTask('saveTables', 'saveTables');
@@ -90,25 +90,24 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * --> we will take the raw-view which calls the saveTables-function in the model
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @since	1.2.4
 	 */
 	public function updateCheckSave()
 	{
 		// Require helper classes
 		require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
-dumpMessage('In Controller angekommen');
 		$model	= $this->getModel();
-		
+
 		ob_start();
-		
+
 		// first save all tables
 		echo '<br /><br /><div class="well">';
 		echo '<h2>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h2>';
 		BwPostmanTableHelper::saveTables(true);
 		ob_flush();
 		flush();
-		
+
 		// then make the checks (function repairs tables automatically)
 //		echo '<br /><br /><h2>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
 //		$check_res	= BwPostmanTableHelper::checkTables();
@@ -132,7 +131,7 @@ dumpMessage('In Controller angekommen');
 		$user		= JFactory::getUser();
 		$app		= JFactory::getApplication();
 		$document	= JFactory::getDocument();
-		
+
 		// Access check.
 		if (!$user->authorise('core.admin', 'com_bwpostman')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERROR_SAVE_NO_PERMISSION'), 'error');
@@ -159,7 +158,7 @@ dumpMessage('In Controller angekommen');
 		$jinput	= JFactory::getApplication()->input;
 		$user	= JFactory::getUser();
 		$app	= JFactory::getApplication();
-		
+
 		// Access check.
 		if (!$user->authorise('core.admin', 'com_bwpostman')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERROR_CHECK_NO_PERMISSION'), 'error');
@@ -182,7 +181,7 @@ dumpMessage('In Controller angekommen');
 		$jinput	= JFactory::getApplication()->input;
 		$user	= JFactory::getUser();
 		$app	= JFactory::getApplication();
-		
+
 		// Access check.
 		if (!$user->authorise('core.admin', 'com_bwpostman')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_PERMISSION'), 'error');
@@ -203,14 +202,14 @@ dumpMessage('In Controller angekommen');
 	public function doRestore()
 	{
 		$jinput	= JFactory::getApplication()->input;
-				
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$user	= JFactory::getUser();
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel();
-		
+
 		// Access check.
 		if (!$user->authorise('core.admin', 'com_bwpostman')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_PERMISSION'), 'error');
@@ -221,25 +220,25 @@ dumpMessage('In Controller angekommen');
 
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('restorefile');
-		
+
 		// Import filesystem libraries. Perhaps not necessary, but does not hurt
 		jimport('joomla.filesystem.file');
-		
+
 		// Clean up filename to get rid of strange characters like spaces etc
 		$filename = JFile::makeSafe($file['name']);
 
 		// Set up the source and destination of the file
 		$src	= $file['tmp_name'];
-		
+
 		$ext	= JFile::getExt($filename);
 		$dest	= JFactory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $ext;
-		
+
 		// If the file isn't okay, redirect to restoretables.php
 		if ($file['error'] > 0) {
-		
+
 			//http://de.php.net/features.file-upload.errors
 			$msg = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD');
-		
+
 			switch ($file['error']) {
 				case '1':
 				case '2': $msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_SIZE');
@@ -249,10 +248,10 @@ dumpMessage('In Controller angekommen');
 				case '4': $msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_FILE');
 				break;
 			}
-		
+
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
 			$this->setRedirect($link, $msg, 'error');
-		
+
 		}
 		else { // The file is okay
 			// Check if the file has the right extension, we need xml
@@ -261,7 +260,7 @@ dumpMessage('In Controller angekommen');
 				$msg = JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_TYPE');
 				$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
 				$this->setRedirect($link, $msg, 'error');
-		
+
 			// Check if the extension is identical to the selected fileformat
 			// --> if not, redirect to import.php
 			}
@@ -273,7 +272,7 @@ dumpMessage('In Controller angekommen');
 				}
 				else {
 					$app->setUserState('com_bwpostman.maintenance.dest', $dest);
-						
+
 					$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=doRestore', false);
 				}
 			}

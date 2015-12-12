@@ -59,7 +59,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		
+
 		//register extra tasks
 		$this->registerTask('setContent', 'setContent');
 		$this->registerTask('sendmail', 'sendmail');
@@ -68,7 +68,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$this->registerTask('publish_save', 'save');
 		$this->registerTask('changeTab', 'changeTab');
 	}
-	
+
 	/**
 	 * Method override to check if you can add a new record.
 	 *
@@ -157,7 +157,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Initialise variables.
 		$recordId	= (int) isset($data[$key]) ? $data[$key] : 0;
 		$user		= JFactory::getUser();
-		
+
 		// Check general component send permission first.
 		if ($user->authorise('core.send', 'com_bwpostman')) {
 			return true;
@@ -170,7 +170,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Override method to edit an existing record, based on Joomla method.
 	 * We need an override, because we want to handle state a bit different than Joomla at this point
@@ -203,7 +203,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		{
 			$urlVar = $key;
 		}
-		
+
 		// Get the previous record id (if any) and the current record id.
 		$recordId	= (int) (count($cid) ? $cid[0] : $this->input->getInt($urlVar));
 		$checkin	= property_exists($table, 'checked_out');
@@ -269,21 +269,21 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	public function cancel($key = null)
 	{
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$app		= JFactory::getApplication();
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		$checkin	= property_exists($table, 'checked_out');
 		$context	= "$this->option.edit.$this->context";
 
-		
+
 		if (empty($key))
 		{
 			$key = $table->getKeyName();
 		}
-		
+
 		$recordId = $app->input->getInt($key);
-		
+
 		// Attempt to check-in the current record.
 		if ($recordId)
 		{
@@ -294,7 +294,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					// Check-in failed, go back to the record and display a notice.
 					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
 					$this->setMessage($this->getError(), 'error');
-		
+
 					$this->setRedirect(
 							JRoute::_(
 									'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -305,24 +305,24 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				}
 			}
 		}
-		
+
 		// Clean the session data and redirect.
 		$this->releaseEditId($context, $recordId);
 		$app->setUserState($context . '.data', null);
 		$app->setUserState('com_bwpostman.edit.newsletter.data', null);
 
 		$dispatcher = JEventDispatcher::getInstance();
-		
+
 		JPluginHelper::importPlugin('bwpostman');
 //		$dispatcher->trigger('onBwPostmanAfterNewsletterCancel', array());
-		
+
 		$this->setRedirect(
 			JRoute::_(
 				'index.php?option=' . $this->option . '&view=' . $this->view_list
 				. $this->getRedirectToListAppend(), false
 			)
 		);
-		
+
 		return true;
 	}
 
@@ -342,7 +342,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$app		= JFactory::getApplication();
 		$lang		= JFactory::getLanguage();
 		$model		= $this->getModel();
@@ -351,31 +351,31 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$checkin	= property_exists($table, 'checked_out');
 		$context	= "$this->option.edit.$this->context";
 		$task		= $this->getTask();
-		
+
 		// Determine the name of the primary key for the data.
 		if (empty($key))
 		{
 			$key = $table->getKeyName();
 		}
-	
+
 		// To avoid data collisions the urlVar may be different from the primary key.
 		if (empty($urlVar))
 		{
 			$urlVar = $key;
 		}
-	
+
 		$recordId = $this->input->getInt($urlVar);
 
 		if (($task == 'save') || ($task == 'apply') || ($task == 'save2copy') || ($task == 'publish_save')) {
 			$this->changeTab();
 		}
-		
+
 		$data	= JArrayHelper::fromObject($app->getUserState('com_bwpostman.edit.newsletter.data'));
 		$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 
 		// Populate the row id from the session.
 		$data[$key] = $recordId;
-	
+
 	// The save2copy task needs to be handled slightly differently.
 		if ($task == 'save2copy')
 		{
@@ -385,7 +385,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				// Check-in failed. Go back to the item and display a notice.
 				$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
 				$this->setMessage($this->getError(), 'error');
-	
+
 				$this->setRedirect(
 					JRoute::_(
 						'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -394,18 +394,18 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				);
 				return false;
 			}
-	
+
 			// Reset the ID and then treat the request as for Apply.
 			$data[$key] = 0;
 			$task = 'apply';
 		}
-	
+
 		// Access check.
 		if (!$this->allowSave($data, $key))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
 			$this->setMessage($this->getError(), 'error');
-	
+
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
@@ -414,27 +414,27 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			);
 			return false;
 		}
-	
+
 		// Validate the posted data.
 		// Sometimes the form needs some posted data, such as for plugins and modules.
 		$form = $model->getForm($data, false);
-	
+
 		if (!$form)
 		{
 			$app->enqueueMessage($model->getError(), 'error');
-	
+
 			return false;
 		}
-	
+
 		// Test whether the data is valid.
 		$validData = $model->validate($form, $data);
-		
+
 		// Check for validation errors.
 		if ($validData === false)
 		{
 			// Get the validation messages.
 			$errors = $model->getErrors();
-	
+
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
@@ -447,10 +447,10 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$app->enqueueMessage($errors[$i], 'warning');
 				}
 			}
-	
+
 			// Save the data in the session.
 			$app->setUserState($context . '.data', $data);
-			
+
 			// Redirect back to the edit screen.
 			$this->setRedirect(
 				JRoute::_(
@@ -458,40 +458,40 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					. $this->getRedirectToItemAppend($recordId, $urlVar), false
 				)
 			);
-			
+
 			return false;
 		}
-		
+
 		// Attempt to save the data.
 		if (!$model->save($validData))
 		{
 			// Save the data in the session.
 			$app->setUserState($context . '.data', $validData);
-		
+
 			// Redirect back to the edit screen.
 			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
 			$this->setMessage($this->getError(), 'error');
-		
+
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
 					. $this->getRedirectToItemAppend($recordId, $urlVar), false
 				)
 			);
-		
+
 			return false;
 		}
-		
+
 		// Save succeeded, so check-in the record.
 		if ($checkin && $model->checkin($validData[$key]) === false)
 		{
 			// Save the data in the session.
 			$app->setUserState($context . '.data', $validData);
-	
+
 			// Check-in failed, so go back to the record and display a notice.
 			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
 			$this->setMessage($this->getError(), 'error');
-	
+
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -500,7 +500,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			);
 			return false;
 		}
-		
+
 		$this->setMessage(
 		JText::_(
 			($lang->hasKey($this->text_prefix . ($recordId == 0 && $app->isSite() ? '_SUBMIT' : '') . '_SAVE_SUCCESS')
@@ -508,7 +508,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				: 'JLIB_APPLICATION') . ($recordId == 0 && $app->isSite() ? '_SUBMIT' : '') . '_SAVE_SUCCESS'
 			)
 		);
-		
+
 		// Redirect the user and adjust session state based on the chosen task.
 		switch ($task)
 		{
@@ -518,7 +518,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$this->holdEditId($context, $recordId);
 					$app->setUserState($context . '.data', null);
 					$model->checkout($recordId);
-			
+
 					// Redirect back to the edit screen.
 					$this->setRedirect(
 						JRoute::_(
@@ -527,12 +527,12 @@ class BwPostmanControllerNewsletter extends JControllerForm
 						)
 					);
 				break;
-		
+
 			case 'save2new':
 					// Clear the record id and data from the session.
 					$this->releaseEditId($context, $recordId);
 					$app->setUserState($context . '.data', null);
-		
+
 					// Redirect back to the edit screen.
 					$this->setRedirect(
 						JRoute::_(
@@ -541,13 +541,13 @@ class BwPostmanControllerNewsletter extends JControllerForm
 						)
 					);
 				break;
-		
+
 			case 'publish_save':
 					// Clear the record id and data from the session.
 					$this->releaseEditId($context, $recordId);
 					$app->setUserState($context . '.data', null);
 					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
-			
+
 					// Redirect  to the list screen.
 					$this->setRedirect(
 						JRoute::_(
@@ -556,18 +556,18 @@ class BwPostmanControllerNewsletter extends JControllerForm
 						)
 					);
 				break;
-		
+
 			default:
 					// Clear the record id and data from the session.
 					$this->releaseEditId($context, $recordId);
 					$app->setUserState($context . '.data', null);
 					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
-			
+
 					$dispatcher = JEventDispatcher::getInstance();
-		
+
 					JPluginHelper::importPlugin('bwpostman');
 					$dispatcher->trigger('onBwPostmanAfterNewsletterSave', array());
-					
+
 					// Redirect to the list screen.
 					$this->setRedirect(
 						JRoute::_(
@@ -577,7 +577,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					);
 				break;
 		}
-		
+
 		// Invoke the postSave method to allow for the child class to access the model.
 		// @todo Necessary? Usable for Plugins?
 		$this->postSaveHook($model, $validData);
@@ -598,7 +598,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$tab		= $this->input->get('tab', 'edit_basic');
 
 		$app->setUserState($this->context . '.tab' . $recordId, $tab);
-		
+
 		$this->getModel('newsletter')->changeTab();
 
 		if ($this->getTask() == 'changeTab') {
@@ -623,7 +623,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$cids		= $this->input->get('cid', array(), 'array');
 		$recordId	= (int)$cids[0];
 		$tab		= 'send';
-		
+
 		if (count($cids) > 1) $app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_WARNING_SENDING_ONLY_ONE_NL'), 'warning');
 
 		// set edit tab to send
@@ -637,7 +637,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			)
 		);
 	}
-	
+
 	/**
 	 * Method to send a newsletter to the subscribers or the test-recipients
 	 *
@@ -647,25 +647,29 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('newsletter');
 		$error	= false;
-		
+
 		// Get record ID from list view
-		$recordId	= (int) $this->input->get('cid', 0, '', 'array')[0];
-		
+		$ids    	= (int) $this->input->get('cid', 0, '', 'array');
+		$recordId   = $ids[0];
+
 		// If we come from single view, record ID is 0
 		if ($recordId == 0) {
 			$recordId	= $this->input->getInt('id', 0);
 		}
-		
+
 		// Check the newsletter form
 		$data	= $model->checkForm($recordId, $error);
-	
+
 		// if checkForm fails redrect to edit
 		if ($error) {
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_CHECKFORM'), 'error');
+			for ($i = 0; $i <= count($error); $i++)
+			{
+				$app->enqueueMessage($error[$i]['err_msg'], 'error');
+			}
 			$this->setRedirect(
 					JRoute::_(
 							'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -678,12 +682,12 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$task			= $this->input->get('task', 0);
 			$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
 			$startsending	= 0;
-				
+
 			// Access check.
 			if (!self::allowSend($data)) {
 				$this->setError(JText::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED'));
 				$this->setMessage($this->getError(), 'error');
-	
+
 				$this->setRedirect(
 						JRoute::_(
 							'index.php?option=' . $this->option . '&view=' . $this->view_list
@@ -692,11 +696,12 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				);
 				return false;
 			}
-	
+
 			// Store the newsletter into the newsletters-table
 			if ($model->save($data)) { // save newsletter is ok
 				// make sure, recordID matches data id (because we may come from list view or form a new newsletter)
 				$recordId	= $model->getState('newsletter.id');
+				$ret_msg    = '';
 
 				switch ($task) {
 					case "sendmail":
@@ -763,7 +768,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 							}
 						break;
 				}
-			
+
 				if ($startsending){
 					if ($task == "sendmailandpublish") $app->setUserState('com_bwpostman.newsletters.sendmailandpublish', 1);
 					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
@@ -786,7 +791,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	}
 
 	/**
-	 * Method to copy a newsletter 
+	 * Method to copy a newsletter
 	 *
 	 * @access	public
 	 */
@@ -794,29 +799,29 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$app	= JFactory::getApplication();
-		
+
 		// Access check.
 		if (!self::allowAdd()) {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPY_CREATE_RIGHTS_MISSING'), 'error');
 			return false;
 		}
-				
+
 		$model	= $this->getModel('newsletter');
-		
+
 		// Get the newsletter IDs to copy
 		$cid = $this->input->get('cid', array(), 'array');
-		
+
 		$res	= $model->copy($cid);
-		
+
 		if ($res === true) {
 			$dispatcher = JEventDispatcher::getInstance();
-			
+
 			JPluginHelper::importPlugin('bwpostman');
 			$dispatcher->trigger('onBwPostmanAfterNewsletterCopy', array());
 		}
-		
+
 		parent::display();
 	}
 
@@ -831,33 +836,33 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		// Get the selected newsletter(s)
 		$cid		= $this->input->get('cid', array(0), 'post', 'array');
 		$res		= true;
 		$msg		= '';
-		
+
 		$dispatcher = JEventDispatcher::getInstance();
-				
+
 		// Which tab are we in?
 		$layout	= $this->input->get('tab', 'unsent');
 
 		// Get the selected newsletter(s)
 		$cid	= $this->input->get('cid', array(0), 'post', 'array');
-		
+
 		JArrayHelper::toInteger($cid);
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanBeforeNewsletterArchive', array(&$cid, &$msg, &$res));
-		
+
 		if ($res === false) {
 			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout='.$layout, false);
 			$this->setRedirect($link, $msg, 'error');
 			return false;
 		}
-		
+
 		$n		= count ($cid);
 		$model	= $this->getModel('newsletter');
-		
+
 		if(!$model->archive($cid, 1)) { // Couldn't archive
 
 			if ($n > 1) {

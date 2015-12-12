@@ -1,0 +1,34 @@
+******************************
+Changelog for BwPostman Overview Module
+******************************
+
+This is a changelog for the Joomla!3 module BwPostman
+The changelog may not be exhaustive but nearly complete.
+Many thanks to all those people who have contributed bug reports and code fixes.
+
+
+--- version 1.2.4 released (12-Dec-2015)----
+
+Dec-2015 Romana Boldt
+- bugfix:
+	- User-defined css file some times not read - fixed
+
+
+--- version 1.2.3 released (22-Sep-2015)----
+only version number changed to meet version number of component
+
+
+--- version 1.2.2 released (2-Sep-2015)----
+only version number changed to meet version number of component
+
+
+--- version 1.2.1 released (17-Jul-2015)----
+only version number changed to meet version number of component
+
+
+--- version 1.2.0 released (9-Jul-2015)----
+
+Jul-2015 Romana Boldt
+- first release
+
+

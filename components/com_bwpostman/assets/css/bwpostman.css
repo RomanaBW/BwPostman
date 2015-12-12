@@ -21,6 +21,8 @@
  */
 
 
+@import 'iconfonts.css';
+
 /*----------------------------------------------------------
 	Definition for generals and miscellaneous
 ----------------------------------------------------------*/
@@ -41,7 +43,7 @@
 }
 
 #bwpostman .contact-admin {
-	
+
 }
 
 #bwpostman.maindivider {
@@ -213,15 +215,15 @@
 }
 
 #bwpostman #bwp_search .search_left input#filter_search {
-	
+
 }
 
 #bwpostman #bwp_search .search_left button.button.go {
-	
+
 }
 
 #bwpostman #bwp_search .search_left button.button.reset {
-	
+
 }
 
 #bwpostman #bwp_search .search_right {
@@ -229,11 +231,11 @@
 }
 
 #bwpostman #bwp_search .search_right select#limit {
-	
+
 }
 
 #bwpostman #bwp_search .search_right select#limit option{
-	
+
 }
 
 #bwpostman #bwp_search select {
@@ -274,11 +276,11 @@
 }
 
 #bwpostman table#bwp_newsletters_table thead {
-	
+
 }
 
 #bwpostman table#bwp_newsletters_table thead tr {
-	
+
 }
 
 #bwpostman table#bwp_newsletters_table thead tr th {
@@ -297,7 +299,7 @@
 }
 
 #bwpostman table#bwp_newsletters_table thead tr th.date_head a {
-	
+
 }
 
 #bwpostman table#bwp_newsletters_table thead tr th.subject_head {
@@ -305,7 +307,7 @@
 }
 
 #bwpostman table#bwp_newsletters_table thead tr th.subject_head a {
-	
+
 }
 
 #bwpostman table#bwp_newsletters_table thead tr th.clicks_head {
@@ -318,7 +320,7 @@
 }
 
 #bwpostman table#bwp_newsletters_table tbody tr {
-	
+
 }
 
 #bwpostman table#bwp_newsletters_table tbody tr.row0 {
@@ -369,59 +371,59 @@
 }
 
 #bwpostman .pagination ul li {
-	
+
 }
 
 #bwpostman .pagination ul li a.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-start {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-start span.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-start a.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-prev {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-prev span.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-prev a.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-next {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-next span.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-next a.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-end {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-end span.pagenav {
-	
+
 }
 
 #bwpostman .pagination ul li.pagination-end a.pagenav {
-	
+
 }
 
 #bwpostman .pagination p.counter {
@@ -587,8 +589,8 @@
 	border-radius:			0 4px 4px 0;
 }
 
-#bwpostman .input-append input, 
-#bwpostman .input-append select, 
+#bwpostman .input-append input,
+#bwpostman .input-append select,
 #bwpostman .input-append .uneditable-input {
 	-webkit-border-radius:	4px 0 0 4px;
 	-moz-border-radius:		4px 0 0 4px;
@@ -725,9 +727,8 @@
 	box-shadow:			none;
 }
 
-#bwpostman [class^="icon-"], 
+#bwpostman [class^="icon-"],
 #bwpostman [class*=" icon-"] {
-	background-image:		url("../images/glyphicons-halflings.png");
 	background-position:	14px 14px;
 	background-repeat:		no-repeat;
 	display:				inline-block;
@@ -739,7 +740,6 @@
 }
 
 #bwpostman .icon_attachment {
-	background-image:	url(../images/icon-16-attachment.png) ;
 	background-repeat:	no-repeat;
 	display:			inline-block;
 	height:				16px;
@@ -803,15 +803,15 @@
 ----------------------------------------------------------*/
 
 #bwp_com_nl_all {
-	
+
 }
 
 #bwp_com_nl_all h1 {
-	
+
 }
 
 #bwp_com_nl_all form#adminForm {
-	
+
 }
 
 
@@ -820,15 +820,15 @@
 ----------------------------------------------------------*/
 
 #bwp_com_nl_archived {
-	
+
 }
 
 #bwp_com_nl_archived h1 {
-	
+
 }
 
 #bwp_com_nl_archived form#adminForm {
-	
+
 }
 
 
@@ -837,15 +837,15 @@
 ----------------------------------------------------------*/
 
 #bwp_com_nl_single {
-	
+
 }
 
 #bwp_com_nl_single h1 {
-	
+
 }
 
 #bwp_com_nl_single p.mailingdate {
-	
+
 }
 
 #bwp_com_nl_single p.mailingdate span {
@@ -863,7 +863,7 @@
 }
 
 #bwp_com_nl_single .back_link {
-	
+
 }
 
 
@@ -872,66 +872,66 @@
 ----------------------------------------------------------*/
 
 #bwp_com_register {
-	
+
 }
 
 #bwp_com_register h1 {
-	
+
 }
 
 #bwp_com_register form#bwp_com_form {
-	
+
 }
 
 #bwp_com_register .pre_text {
-	
+
 }
 
 #bwp_com_register .user_edit {
-	
+
 }
 #bwp_com_register .user_firstname {
-	
+
 }
 
 #bwp_com_register .user_firstname label#firstnamemsg {
-	
+
 }
 
 #bwp_com_register .user_firstname input#firstname {
-	
+
 }
 
 #bwp_com_register .user_name {
-	
+
 }
 
 #bwp_com_register .user_name label#namemsg {
-	
+
 }
 
 #bwp_com_register .user_name input#name {
-	
+
 }
 
 #bwp_com_register .user_email {
-	
+
 }
 
 #bwp_com_register .user_email label#emailmsg {
-	
+
 }
 
 #bwp_com_register .user_email input#email {
-	
+
 }
 
 #bwp_com_register .user_mailformat {
-	
+
 }
 
 #bwp_com_register .user_email label#mailformatmsg {
-	
+
 }
 
 #bwp_com_register label#emailformatmsg {
@@ -939,19 +939,19 @@
 }
 
 #bwp_com_register .user_mailformat .controls {
-	
+
 }
 
 #bwp_com_register .user_mailformat .controls label {
-	
+
 }
 
 #bwp_com_register .user_mailformat .controls label input.inputbox {
-	
+
 }
 
 #bwp_com_register .maindivider {
-	
+
 }
 
 #bwp_com_register .mail_available {
@@ -960,23 +960,23 @@
 }
 
 #bwp_com_register .mail_available_list {
-	
+
 }
 
 #bwp_com_register .mail_available_list input {
-	
+
 }
 
 #bwp_com_register .mail_available_list span.mail_available_list_title {
-	
+
 }
 
 #bwp_com_register .show_disclaimer {
-	
+
 }
 
 #bwp_com_register .agree_check {
-	
+
 }
 
 #bwp_com_register .agree_check span {
@@ -984,15 +984,15 @@
 }
 
 #bwp_com_register .agree_check span a{
-	
+
 }
 
 #bwp_com_register .captcha {
-	
+
 }
 
 #bwp_com_register .captcha .captcha-text {
-	
+
 }
 
 #bwp_com_register .captcha .security_question_lbl {
@@ -1001,23 +1001,23 @@
 }
 
 #bwp_com_register .captcha .captcha-result {
-	
+
 }
 
 #bwp_com_register .captcha .captcha label#captcha {
-	
+
 }
 
 #bwp_com_register .captcha .captcha input#stringCaptcha {
-	
+
 }
 
 #bwp_com_register button.button.validate {
-	
+
 }
 
 #bwp_mod_form_required {
-	
+
 }
 
 #bwp_com_form .user_hightlight {
@@ -1026,7 +1026,7 @@
 	color:				rgb(255,0,0);
 }
 
-#bwp_com_form .captcha, 
+#bwp_com_form .captcha,
 #bwp_com_form .question {
 	border:					2px solid #ccc;
 	-webkit-border-radius:	4px;
@@ -1037,11 +1037,11 @@
 }
 
 #bwp_com_register .question {
-	
+
 }
 
 #bwp_com_register .question .question-text {
-	
+
 }
 
 #bwp_com_register .question .security_question_lbl {
@@ -1050,15 +1050,15 @@
 }
 
 #bwp_com_register .question .question-result {
-	
+
 }
 
 #bwp_com_register .question .question-result label {
-	
+
 }
 
 #bwp_com_register .question .question-result input {
-	
+
 }
 
 
@@ -1067,31 +1067,31 @@
 ----------------------------------------------------------*/
 
 #bwp_com_getedit_link {
-	
+
 }
 
 #bwp_com_getedit_link form#bwp_com_form {
-	
+
 }
 
 #bwp_com_getedit_link .getlink_text {
-	
+
 }
 
 #bwp_com_getedit_link .getlink_email {
-	
+
 }
 
 #bwp_com_getedit_link .getlink_email span {
-	
+
 }
 
 #bwp_com_getedit_link .getlink_email span label#emailmsg {
-	
+
 }
 
 #bwp_com_getedit_link .getlink_email span input#email {
-	
+
 }
 
 
@@ -1100,15 +1100,15 @@
 ----------------------------------------------------------*/
 
 #bwp_com_register_success {
-	
+
 }
 
 #bwp_com_register_success h1 {
-	
+
 }
 
 #bwp_com_register_success .success-message {
-	
+
 }
 
 
@@ -1117,59 +1117,59 @@
 ----------------------------------------------------------*/
 
 #bwp_com_edit_subscription {
-	
+
 }
 
 #bwp_com_edit_subscription h1 {
-	
+
 }
 
 #bwp_com_edit_subscription form#bwp_com_form {
-	
+
 }
 
 #bwp_com_edit_subscription .bwp_com_form_pretext {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_firstname {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_firstname label#firstnamemsg {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_firstname input#firstname {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_name {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_name label#namemsg {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_name input#name {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_email {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_email label#emailmsg {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_email input#email {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_emailformat {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_emailformat label {
@@ -1177,19 +1177,19 @@
 }
 
 #bwp_com_edit_subscription .controls {
-	
+
 }
 
 #bwp_com_edit_subscription .controls label {
-	
+
 }
 
 #bwp_com_edit_subscription .controls label input.inputbox {
-	
+
 }
 
 #bwp_com_edit_subscription .maindivider {
-	
+
 }
 
 #bwp_com_edit_subscription .mail_available {
@@ -1198,15 +1198,15 @@
 }
 
 #bwp_com_edit_subscription .mail_available_list {
-	
+
 }
 
 #bwp_com_edit_subscription .mail_available_list input {
-	
+
 }
 
 #bwp_com_edit_subscription .mail_available_list span.mail_available_list_title {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_unsubscribe {
@@ -1214,7 +1214,7 @@
 }
 
 #bwp_com_edit_subscription .edit_unsubscribe input#unsubscribe {
-	
+
 }
 
 #bwp_com_edit_subscription .edit_unsubscribe_text {
@@ -1223,15 +1223,15 @@
 }
 
 #bwp_com_edit_subscription .edit_required {
-	
+
 }
 
 #bwp_com_edit_subscription button.button.validate.save {
-	
+
 }
 
 #bwp_com_edit_subscription button.button.validate.leave {
-	
+
 }
 
 /*----------------------------------------------------------
@@ -1239,35 +1239,35 @@
 ----------------------------------------------------------*/
 
 #bwp_com_error_geteditlink {
-	
+
 }
 
 #bwp_com_error_geteditlink h1 {
-	
+
 }
 
 #bwp_com_error_geteditlink .bwp-error {
-	
+
 }
 
 #bwp_com_error_geteditlink .error-message {
-	
+
 }
 
 #bwp_com_error_geteditlink form#bwp_com_form {
-	
+
 }
 
 #bwp_com_error_geteditlink .geteditlink {
-	
+
 }
 
 #bwp_com_error_geteditlink .geteditlink label#emailmsg{
-	
+
 }
 
 #bwp_com_error_geteditlink .geteditlink input#email{
-	
+
 }
 
 
@@ -1276,35 +1276,35 @@
 ----------------------------------------------------------*/
 
 #bwp_com_error_account_notactivated {
-	
+
 }
 
 #bwp_com_error_account_notactivated h1 {
-	
+
 }
 
 #bwp_com_error_account_notactivated .bwp-error {
-	
+
 }
 
 #bwp_com_error_account_notactivated .error-message {
-	
+
 }
 
 #bwp_com_error_account_notactivated form#bwp_com_form {
-	
+
 }
 
 #bwp_com_error_account_notactivated .activate {
-	
+
 }
 
 #bwp_com_error_account_notactivated .activate label#emailmsg{
-	
+
 }
 
 #bwp_com_error_account_notactivated .activate input#email{
-	
+
 }
 
 
@@ -1313,15 +1313,15 @@
 ----------------------------------------------------------*/
 
 #bwp_com_error_geteditlink {
-	
+
 }
 
 #bwp_com_error_geteditlink h1 {
-	
+
 }
 
 #bwp_com_error_geteditlink p {
-	
+
 }
 
 
@@ -1330,27 +1330,27 @@
 ----------------------------------------------------------*/
 
 #bwp_com_error_email {
-	
+
 }
 
 #bwp_com_error_email h1 {
-	
+
 }
 
 #bwp_com_error_email .bwp-error {
-	
+
 }
 
 #bwp_com_error_email .error-message {
-	
+
 }
 
 #bwp_com_error_email .contact-admin {
-	
+
 }
 
 #bwp_com_error_email p {
-	
+
 }
 
 
@@ -1359,7 +1359,7 @@
 ----------------------------------------------------------*/
 
 #bwp_com_error_account_blocked {
-	
+
 }
 
 #bwp_com_error_account_blocked h1 {
@@ -1367,15 +1367,15 @@
 }
 
 #bwp_com_error_account_blocked .bwp-error {
-	
+
 }
 
 #bwp_com_error_account_blocked .error-message {
-	
+
 }
 
 #bwp_com_error_account_blocked .contact-admin {
-	
+
 }
 
 
@@ -1384,25 +1384,25 @@
 ----------------------------------------------------------*/
 
 #bwp_com_error_account_general {
-	
+
 }
 
 #bwp_com_error_account_general h1 {
-	
+
 }
 
 #bwp_com_error_account_general .bwp-error {
-	
+
 }
 
 #bwp_com_error_account_general .error-message {
-	
+
 }
 
 #bwp_com_error_account_general .contact-admin {
-	
+
 }
 
 #bwp_com_error_account_general p {
-	
+
 }

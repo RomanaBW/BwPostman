@@ -64,7 +64,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	public function __construct()
 	{
 		parent::__construct();
-		 
+
 		$jinput	= JFactory::getApplication()->input;
 		$array	= $jinput->get('cid',  0, '', 'array');
 		$this->setId((int)$array[0]);
@@ -78,7 +78,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	array	Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
-	 * 
+	 *
 	 * @since  1.0.1
 	*/
 	public function getTable($type = 'Mailinglists', $prefix = 'BwPostmanTable', $config = array())
@@ -115,10 +115,10 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		{
 			return true;
 		}
-		
+
 		if (!empty($record->id)) {
 			// Check specific delete permission.
-			if ($user->authorise('core.delete', 'com_bwpostman.mailinglists.' . (int) $recordId))
+			if ($user->authorise('core.delete', 'com_bwpostman.mailinglists.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -143,10 +143,10 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		{
 			return true;
 		}
-		
+
 		if (!empty($record->id)) {
 			// Check specific edit state permission.
-			if ($user->authorise('core.edit.state', 'com_bwpostman.mailinglists.' . (int) $recordId))
+			if ($user->authorise('core.edit.state', 'com_bwpostman.mailinglists.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -166,7 +166,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		$app	= JFactory::getApplication();
-		$cid	= $app->getUserState('com_bwpostman.edit.mailinglist.id', 0); 
+		$cid	= $app->getUserState('com_bwpostman.edit.mailinglist.id', 0);
 		$data	= $app->getUserState('com_bwpostman.edit.mailinglist.data', null);
 
 		if (!$data) {
@@ -184,7 +184,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		}
 		else {
 			$item	= new stdClass();
-			foreach ($data as $key => $value) $item->$key	= $value; 
+			foreach ($data as $key => $value) $item->$key	= $value;
 		}
 		return $item;
 	}
@@ -206,7 +206,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			return false;
 		}
 		$jinput = JFactory::getApplication()->input;
-		
+
 		// The front end calls this model and uses a_id to avoid id clashes so we need to check for that first.
 		if ($jinput->get('a_id'))
 		{
@@ -248,8 +248,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$form->setFieldAttribute('state', 'filter', 'unset');
 
 		}
-		// Check to show campaign_id 
-		$campaign_id	= $jinput->get('campaign_id'); 
+		// Check to show campaign_id
+		$campaign_id	= $jinput->get('campaign_id');
 		if (empty($campaign_id)) {
 			$form->setFieldAttribute('campaign_id', 'type', 'hidden');
 		}
@@ -260,7 +260,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
 		}
-		
+
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
 		if ($m_date == '0000-00-00 00:00:00') {
@@ -280,7 +280,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_bwpostman.mailinglist.edit.data', array());
-		
+
 		if (empty($data)) {
 			$data = $this->getItem();
 		}
@@ -302,10 +302,10 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		$app	= JFactory::getApplication();
 		$date	= JFactory::getDate();
 		$uid	= JFactory::getUser()->get('id');
-				
+
 		if ($archive == 1) {
 			$time = $date->toSql();
-		
+
 			// Access check.
 			foreach ($cid as $i) {
 				if (!BwPostmanHelper::allowArchive($i, 0, 'mailinglist'))
@@ -314,11 +314,11 @@ class BwPostmanModelMailinglist extends JModelAdmin
 					return false;
 				}
 			}
-		} 
+		}
 		else {
 			$time	= '0000-00-00 00:00:00';
 			$uid	= 0;
-				
+
 			// Access check.
 			foreach ($cid as $i) {
 				if (!BwPostmanHelper::allowRestore($i, 0, 'mailinglist'))
@@ -333,13 +333,13 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		{
 			JArrayHelper::toInteger($cid);
 			$query	= $_db->getQuery(true);
-			
+
 			$query->update($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->set($_db->quoteName('archive_flag') . " = " . $_db->Quote((int) $archive));
 			$query->set($_db->quoteName('archive_date') . " = " . $_db->Quote($time, false));
 			$query->set($_db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($_db->quoteName('id') . ' IN (' .implode(',', $cid) . ')');
-			
+
 			$_db->setQuery($query);
 
 			if (!$_db->query()) {
@@ -375,11 +375,11 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		{
 			JArrayHelper::toInteger($pks);
 			$_db	= $this->getDbo();
-				
+
 			$lists_table	= JTable::getInstance('mailinglists', 'BwPostmanTable');
 			$nll_table		= JTable::getInstance('newsletters_mailinglists', 'BwPostmanTable');
 			$subs_table		= JTable::getInstance('subscribers_mailinglists', 'BwPostmanTable');
-				
+
 			// Delete all entries from the mailinglists-table
 			foreach ($pks as $id) {
 				if (!$lists_table->delete($id))
@@ -388,14 +388,14 @@ class BwPostmanModelMailinglist extends JModelAdmin
 					return false;
 				}
 			}
-				
+
 			// Delete all entries from the subscribers_mailinglists-table
 			$query = $_db->getQuery(true);
 			$query->delete();
 			$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 			$query->where('mailinglist_id IN (' .implode(',', $pks) . ')');
 			$_db->setQuery($query);
-				
+
 			if (!$_db->query())
 			{
 				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_SUBS_DELETED'), 'warning');
@@ -407,7 +407,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
 			$query->where('mailinglist_id IN (' .implode(',', $pks) . ')');
 			$_db->setQuery($query);
-				
+
 			if (!$_db->query())
 			{
 				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_MLS_DELETED'), 'warning');

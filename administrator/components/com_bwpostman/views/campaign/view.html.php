@@ -44,7 +44,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 	protected $form;
 	protected $item;
 	protected $state;
-	
+
 	/**
 	 * Display
 	 *
@@ -55,12 +55,12 @@ class BwPostmanViewCampaign extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$document	= JFactory::getDocument();
-		
+
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-		
+
 		$app->setUserState('com_bwpostman.edit.campaign.id', JFactory::getApplication()->input->getInt('id', 0));
-		
+
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
@@ -71,10 +71,10 @@ class BwPostmanViewCampaign extends JViewLegacy
 
 		// Get the assigned newsletters
 		$this->newsletters = $this->get('Newsletters');
-		
+
 		// trigger Plugin BwTimeControl event and get results
 		$dispatcher->trigger('onBwPostmanCampaignPrepare', array (&$this->item, &$this->newsletters, &$document));
-		
+
 		$this->addToolbar();
 		// Call parent display
 		parent::display($tpl);
@@ -88,11 +88,11 @@ class BwPostmanViewCampaign extends JViewLegacy
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$uri		= JFactory::getURI();
 		$userId		= JFactory::getUser()->get('id');
-		
+
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAM_DETAILS'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
@@ -100,7 +100,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$user_browser	= $browser->getBrowser();
 
 		if ($user_browser == 'msie') {
-			$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
+			$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
@@ -109,7 +109,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		// Set toolbar title and items
         $canDo		= BwPostmanHelper::getActions($this->item->id, 'campaign');
         $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-        
+
 		// For new records, check the create permission.
 		if ($isNew && $canDo->get('core.create'))  {
 			JToolBarHelper::save('campaign.save');
@@ -133,7 +133,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
 			}
-			
+
 			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
 		}
 

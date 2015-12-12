@@ -54,7 +54,7 @@ class BwPostmanViewArchive extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
-		
+
 		if (!BwPostmanHelper::canView('archive')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_ARC')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -62,7 +62,7 @@ class BwPostmanViewArchive extends JViewLegacy
 		else {
 			$uri		= JFactory::getURI();
 			$uri_string	= str_replace('&','&amp;', $uri->toString());
-			
+
 			// Get data from the model
 			$this->items 			= $this->get('Items');
 			$this->pagination		= $this->get('Pagination');
@@ -70,13 +70,13 @@ class BwPostmanViewArchive extends JViewLegacy
 			$this->activeFilters	= $this->get('ActiveFilters');
 			$this->state			= $this->get('State');
 			$this->request_url		= $uri_string;
-		
+
 			$this->addToolbar();
-	
+
 			BwPostmanHelper::addSubmenu('archive');
-			
+
 			$this->sidebar = JHtmlSidebar::render();
-			
+
 			// Call parent display
 			parent::display($tpl);
 		}
@@ -90,15 +90,15 @@ class BwPostmanViewArchive extends JViewLegacy
 	{
 		$jinput	= JFactory::getApplication()->input;
 		$canDo	= BwPostmanHelper::getActions(0, 'archive');
-		
+
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_ARC'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
-			
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_ARC'), 'list');
-	
+
 		// Set toolbar items for the page (depending on the tab which we are in)
 		$layout = $jinput->get('layout', 'newsletters');
 		switch ($layout) { // Which tab are we in?

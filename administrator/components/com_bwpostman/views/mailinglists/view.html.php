@@ -51,7 +51,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
-		
+
 		if (!BwPostmanHelper::canView('mailinglists')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -60,7 +60,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			// Build the key for the userState
 			$key			= $this->getName();
 			$filter_search	= $app->getUserStateFromRequest($key.'search_filter', 'filter.search_filter', 'title', 'string');
-			
+
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items			= $this->get('Items');
@@ -68,13 +68,13 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			$this->activeFilters	= $this->get('ActiveFilters');
 			$this->pagination		= $this->get('Pagination');
 			$this->total			= $this->get('total');
-	
+
 			$this->addToolbar();
-	
+
 			BwPostmanHelper::addSubmenu('mailinglists');
-			
+
 			$this->sidebar = JHtmlSidebar::render();
-			
+
 			// Call parent display
 			parent::display($tpl);
 		}
@@ -88,15 +88,15 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	protected function addToolbar()
 	{
 		$canDo	= BwPostmanHelper::getActions(0, 'mailinglists');
-		
+
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_MLS'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_MLS'), 'list');
-				
+
 		// Set toolbar items for the page
 		if ($canDo->get('core.create'))	JToolBarHelper::addNew('mailinglist.add');
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('mailinglist.edit');
@@ -115,7 +115,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			JToolBarHelper::checkin('mailinglists.checkin');
 			JToolBarHelper::divider();
 		}
-				
+
 		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 		JToolBarHelper::spacer();
 	}

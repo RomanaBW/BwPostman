@@ -46,10 +46,10 @@ class BwPostmanViewEdit extends JViewLegacy
 		$params		= $app->getPageParameters();
 		$menu		= $app->getMenu()->getActive();
 		$model		= $this->getModel('edit');
-		
+
 		// If there occured an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');
-		
+
 		if(isset($subscriber_data) && is_array($subscriber_data)){
 			$subscriber	= new stdClass();
 			foreach ($subscriber_data AS $key => $value) {
@@ -58,25 +58,25 @@ class BwPostmanViewEdit extends JViewLegacy
 			$subscriber->id	= 0;
 			$session->clear('subscriber_data');
 			$selected_mailinglists = $subscriber->mailinglists;
-		} 
+		}
 		else {
 			$subscriber	= $this->get('Item');
 			if(!is_object($subscriber)){
 				$subscriber = $model->fillVoidSubscriber();
-			} 
+			}
 			else {
 				$selected_mailinglists = $subscriber->mailinglists;
 			}
 		}
-		if (is_array($selected_mailinglists)) $app->setUserState('com_bwpostman.subscriber.selected_lists', $selected_mailinglists); 
-		 
+		if (is_array($selected_mailinglists)) $app->setUserState('com_bwpostman.subscriber.selected_lists', $selected_mailinglists);
+
 		// Get the mailinglists which the subscriber is authorized to see
 		$available_mailinglists = $this->get('mailinglists');
 
 		// Because the application sets a default page title, we need to get it
 		// right from the menu item itself
 		$title	= JText::_('COM_BWPOSTMAN_NL_REGISTRATION');
-		
+
 		if (is_object($menu)) {
 			$menu_params	= new JRegistry();
 			$menu_params->loadString($menu->params, 'JSON');
@@ -86,21 +86,20 @@ class BwPostmanViewEdit extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-//		$css_filename	= JURI::root(true) . '/templates/' . $templateName . '/css/com_bwpostman.css';
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists($css_filename)) $document->addStyleSheet($css_filename);
-				
+		$document->addStyleSheet('/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+
 		// Load the form validation behavior
 		JHTML::_('behavior.formvalidation');
 
 		// Build the emailormat select list
 		if (!isset($subscriber->emailformat)) {
 			$selected = $params->get('default_emailformat');
-		} 
+		}
 		else {
 			$selected = $subscriber->emailformat;
 		}
@@ -110,7 +109,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		$emailformat[] 			= JHTML::_('select.option',  '0', '<span>' . JText::_('COM_BWPOSTMAN_TEXT') . '</span>');
 		$emailformat[]			= JHTML::_('select.option',  '1', '<span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span>');
 		$lists['emailformat']	= JHTML::_('select.radiolist',  $emailformat, 'a_emailformat', 'class="checkbox" ', 'value', 'text', $selected);
-		
+
 		// Save a reference into the view
 		$this->assignRef('available_mailinglists', $available_mailinglists);
 		$this->assignRef('selected_mailinglists', $selected_mailinglists);
@@ -118,7 +117,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		$this->assignRef('subscriber', $subscriber);
 		$this->assignRef('params', $params);
 		$this->assignRef('user', $user);
-		
+
 		// Set parent display
 		parent::display($tpl);
 	}

@@ -55,7 +55,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
-		
+
 		if (!BwPostmanHelper::canView('newsletters')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_NLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -66,19 +66,19 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			$uri_string	= str_replace('&', '&amp;', $uri->toString());
 			$model		= $this->getModel();
 			$table		= $model->getTable('newsletters', 'BwPostmanTable');
-	
+
 			//check for queue entries
 			$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
-	
+
 			// Build the key for the userState
 			$key = $this->getName();
-	
+
 			$app->setUserState('com_bwpostman.edit.newsletter.referrer', 'newsletters');
 			// The query always contains the tab which we are in, but this might be confusing
 			// That's why we will set the query only to controller = newsletters
 			$uri_query	= 'option=com_bwpostman&view=newsletters';
 			$uri->setQuery($uri_query);
-	
+
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items			= $this->get('Items');
@@ -89,16 +89,16 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			$this->total 			= $this->get('total');
 			$this->count_queue		= $this->get('CountQueue');
 			$this->context			= 'com_bwpostman.newsletters';
-			
+
 			$this->addToolbar();
-	
+
 			BwPostmanHelper::addSubmenu('newsletters');
-			
+
 			$this->sidebar = JHtmlSidebar::render();
-			
+
 			// Show the layout depending on the tab
 			$tpl = $jinput->get('tab', 'unsent');
-			
+
 			// Call parent display
 			parent::display($tpl);
 		}
@@ -112,17 +112,17 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	{
 		$tab	= $this->state->get('tab', 'unsent');
 		$canDo	= BwPostmanHelper::getActions(0, 'newsletters');
-		
+
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_NLS'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_NLS'), 'envelope');
-				
+
 		// Set toolbar items for the page
-		
+
 		switch ($tab) { // The layout-variable tells us which tab we are in
 			case "sent":
 				if ($canDo->get('core.edit.state'))	{
@@ -163,7 +163,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 				if ($canDo->get('core.create'))	JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'Copy', true);
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
-				
+
 				if ($canDo->get('core.send')) {
 					JToolBarHelper::custom('newsletter.sendOut', 'envelope', 'send_f2.png', 'COM_BWPOSTMAN_NL_SEND', true);
 					JToolBarHelper::divider();
@@ -182,5 +182,5 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		}
 		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 		JToolBarHelper::spacer();
-	}	
+	}
 }

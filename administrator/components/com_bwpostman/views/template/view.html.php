@@ -44,14 +44,14 @@ class BwPostmanViewTemplate extends JViewLegacy
 	protected $form;
 	protected $item;
 	protected $state;
-	
+
 	/**
 	 * Display
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param	string Template
-	 * 
+	 *
 	 * @since	1.1.0
 	 */
 	public function display($tpl = null)
@@ -61,9 +61,9 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$template	= $app->getTemplate();
 		$uri		= JFactory::getURI();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
-		
+
 		$app->setUserState('com_bwpostman.edit.template.id', JFactory::getApplication()->input->getInt('id', 0));
-		
+
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
@@ -77,7 +77,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$this->template		= $template;
 
 		$this->addToolbar();
-		
+
 		// call usermade html template
 		if ($this->item->tpl_id == '0')  $tpl = 'html';
 		// call usermade text template
@@ -91,7 +91,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 
 	/**
 	 * Add the page title, styles and toolbar.
-	 * 
+	 *
 	 * @since	1.1.0
 	 */
 	protected function addToolbar()
@@ -99,11 +99,11 @@ class BwPostmanViewTemplate extends JViewLegacy
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$uri		= JFactory::getURI();
 		$userId		= JFactory::getUser()->get('id');
-		
+
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('BWP_TPL_DETAILS'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
@@ -111,7 +111,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$user_browser = $browser->getBrowser();
 
 		if ($user_browser == 'msie') {
-			$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
+			$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
@@ -121,7 +121,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$canDo = BwPostmanHelper::getActions($this->item->id, 'template');
 		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$this->canDo	= $canDo;
-		
+
 		// For new records, check the create permission.
 		if ($isNew && $canDo->get('core.create')) {
 			JToolBarHelper::save('template.save');
@@ -147,7 +147,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 			JToolBarHelper::cancel('template.cancel', 'JTOOLBAR_CLOSE');
 			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS').':  <strong>' . $this->item->title  . '  </strong><small>[ ' . JText::_('EDIT').' ]</small> ', 'edit');
 		}
-    
+
 		$backlink 	= $_SERVER['HTTP_REFERER'];
 		$siteURL 	= $uri->base();
 

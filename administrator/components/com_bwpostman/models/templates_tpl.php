@@ -45,7 +45,7 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 {
 	/**
 	 * Alias Constructor
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	public function __construct()
@@ -60,7 +60,7 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 	 * @param	array	Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
-	 * 
+	 *
 	 * @since  1.1.0
 	*/
 	public function getTable($type = 'Templates_Tpl', $prefix = 'BwPostmanTable', $config = array())
@@ -77,18 +77,18 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 	 *
 	 * @since   1.1.0
 	 */
-	
+
 	public function getItem($pk = null)
 	{
 		$item	= parent::getItem($pk);
-	
+
 		// convert header_tpl string to array
 		if (is_string($item->header_tpl)){
 			$registry = new JRegistry;
 			$registry->loadString($item->header_tpl);
 			$item->header_tpl = $registry->toArray();
 		}
-		
+
 		return $item;
 	}
 
@@ -103,6 +103,9 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
+		// Get the form.
+		$form = $this->loadForm('com_bwpostman.template', 'Template', array('control' => 'jform', 'load_data' => $loadData));
+
 		return $form;
 	}
 

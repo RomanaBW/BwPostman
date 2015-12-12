@@ -30,9 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 //
 // Component development:
 //
-// Newsletter encoding 1=on, 0=off 
+// Newsletter encoding 1=on, 0=off
 if (!defined ('BWPOSTMAN_NL_ENCODING')) define ('BWPOSTMAN_NL_ENCODING', 1);
-// Newsletter sending 1=on, 0=off 
+// Newsletter sending 1=on, 0=off
 if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
 
 
@@ -59,13 +59,13 @@ abstract class BwPostmanHelper {
 	 * @param	string	$vName	The name of the task view.
 	 *
 	 * @return	void
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public static function addSubmenu($vName)
 	{
 		$canDo	= self::getActions();
-		
+
 		JHtmlSidebar::addEntry
 			(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY'),
@@ -81,7 +81,7 @@ abstract class BwPostmanHelper {
 					$vName == 'newsletters'
 				);
 		}
-		
+
 		if ($canDo->get('core.view.subscribers')) {
 			JHtmlSidebar::addEntry
 				(
@@ -90,7 +90,7 @@ abstract class BwPostmanHelper {
 					$vName == 'subscribers'
 				);
 		}
-		
+
 		if ($canDo->get('core.view.campaigns')) {
 			JHtmlSidebar::addEntry
 				(
@@ -99,7 +99,7 @@ abstract class BwPostmanHelper {
 					$vName == 'campaigns'
 				);
 		}
-				
+
 		if ($canDo->get('core.view.mailinglists')) {
 				JHtmlSidebar::addEntry
 				(
@@ -117,7 +117,7 @@ abstract class BwPostmanHelper {
 					$vName == 'templates'
 				);
 		}
-		
+
 		if ($canDo->get('core.archive') || $canDo->get('core.view.archive')) {
 			JHtmlSidebar::addEntry
 				(
@@ -126,7 +126,7 @@ abstract class BwPostmanHelper {
 					$vName == 'archive'
 				);
 		}
-		
+
 		if ($canDo->get('core.admin') || $canDo->get('core.view.manage')) {
 			JHtmlSidebar::addEntry
 				(
@@ -179,7 +179,7 @@ abstract class BwPostmanHelper {
 		$text = preg_replace($search_str,' ${1}="'.JURI::root().'${2}"',$text);
 		return true;
 	}
-	
+
 	/**
 	 * Method to get selectlist for dates
 	 *
@@ -226,7 +226,7 @@ abstract class BwPostmanHelper {
 			else {
 				$selected	= 0;
 			}
-				
+
 			$select_html		= '<select id="' . $opt . '" name="automailing_values['.$date.'][]" >';
 			foreach ($options as $key => $value) {
 
@@ -249,12 +249,12 @@ abstract class BwPostmanHelper {
 	 * @return	JObject
 	 */
 
-	public static function getActions($section = '', $id = 0)
+	public static function getActions($id = 0, $section = '')
 	{
 		$user	= JFactory::getUser();
 		$path	= JPATH_ADMINISTRATOR . '/components/com_bwpostman/access.xml';
 		$result	= new JObject;
-		
+
 		if ($section && $id)
 		{
 			$assetName	= 'com_bwpostman.' . $section . '.' . (int) $id;
@@ -263,7 +263,7 @@ abstract class BwPostmanHelper {
 		{
 			$assetName	= 'com_bwpostman';
 		}
-		
+
 		$com_actions	= JAccess::getActionsFromFile($path, "/access/section[@name='component']/");
 
 		if ($section != '') {
@@ -273,12 +273,12 @@ abstract class BwPostmanHelper {
 		else {
 			$actions	= $com_actions;
 		}
-		
+
 		foreach ($actions as $action)
 		{
 			$result->set($action->name, $user->authorise($action->name, $assetName));
 		}
-		
+
 		return $result;
 	}
 
@@ -294,7 +294,7 @@ abstract class BwPostmanHelper {
 	public static function canView($view = '')
 	{
 		$user	= JFactory::getUser();
-		
+
 		// Check general component permission first.
 		if ($user->authorise('core.admin', 'com_bwpostman')) {
 			return true;
@@ -306,20 +306,20 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Method to check if you can add a record.
 	 *
 	 * @param	string	$view		The view to test. Has to be the list mode name.
 	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public static function canAdd($view = '')
 	{
 		$user	= JFactory::getUser();
-		
+
 		// Check general component permission first.
 		if ($user->authorise('core.admin', 'com_bwpostman')) {
 			return true;
@@ -333,7 +333,7 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Method to check if you can edit a record.
 	 *
@@ -341,16 +341,16 @@ abstract class BwPostmanHelper {
 	 * @param	array	$data	An array of input data.
 	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
-	public static function canEdit($view = '', $data = array())
+/*	public static function canEdit($view = '', $data = array())
 	{
 		// Initialise variables.
 		$recordId	= (int) isset($data['id']) ? $data['id'] : 0;
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
-		
+
 		// Check general component permission first.
 		if ($user->authorise('core.admin', 'com_bwpostman')) {
 			return true;
@@ -371,14 +371,14 @@ abstract class BwPostmanHelper {
 				{
 					// Need to do a lookup from the model.
 					$record = $this->getModel($view)->getItem($recordId);
-	
+
 					if (empty($record))
 					{
 						return false;
 					}
 					$ownerId = $record->created_by;
 				}
-	
+
 				// If the owner matches 'me' then allow access.
 				if ($ownerId == $userId)
 				{
@@ -388,20 +388,20 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+ */
 	/**
 	 * Method to check if you can edit the state of a record.
 	 *
 	 * @param	string	$view		The view to test.
 	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public static function canEditState($view = '')
 	{
 		$user	= JFactory::getUser();
-		
+
 		// Check general component permission first.
 		if ($user->authorise('core.admin', 'com_bwpostman')) {
 			return true;
@@ -415,20 +415,20 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Method to check if you can send a newsletter.
 	 *
 	 * @param	string	$recordId		The record to test.
-	 * 
+	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public static function canSend($recordId = '')
 	{
 		$user	= JFactory::getUser();
-		
+
 		// Check general component permission first.
 		if ($user->authorise('core.admin', 'com_bwpostman')) {
 			return true;
@@ -440,7 +440,7 @@ abstract class BwPostmanHelper {
 				return true;
 			}
 		}
-	
+
 		// Finally check record permission.
 		if ($user->authorise('core.view.newsletters', 'com_bwpostman')) {
 			if ($user->authorise('core.send.newsletter.' . $recordId, 'com_bwpostman')) {
@@ -449,7 +449,7 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Method to check if you can archive a record.
 	 *
@@ -457,13 +457,13 @@ abstract class BwPostmanHelper {
 	 * @param	array	$data	An array of input data.
 	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public static function canArchive($view = '', $data = array())
 	{
 		$user	= JFactory::getUser();
-		
+
 		// Check general component permission first.
 		if ($user->authorise('core.admin', 'com_bwpostman')) {
 			return true;
@@ -477,7 +477,7 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Method to check if you can archive an existing record.
 	 *
@@ -495,7 +495,7 @@ abstract class BwPostmanHelper {
 		$ownerId	= (int) $ownerId;
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
-		
+
 		// Check general component archive permission first.
 		if ($user->authorise('core.archive', 'com_bwpostman')) {
 			return true;
@@ -526,7 +526,7 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Method to check if you can delete an archived record.
 	 *
@@ -544,7 +544,7 @@ abstract class BwPostmanHelper {
 		$ownerId	= (int) $ownerId;
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
-		
+
 		// Check general component delete permission first.
 		if ($user->authorise('core.delete', 'com_bwpostman')) {
 			return true;
@@ -578,7 +578,7 @@ abstract class BwPostmanHelper {
 		}
 		return false;
 	}
- 
+
 	/**
 	 * Method to check if you can restore an archived record.
 	 *
@@ -596,7 +596,7 @@ abstract class BwPostmanHelper {
 		$ownerId	= (int) $ownerId;
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
-		
+
 		// Check general component restore permission first.
 		if ($user->authorise('core.restore', 'com_bwpostman')) {
 			return true;
@@ -632,17 +632,17 @@ abstract class BwPostmanHelper {
 		$_db			= JFactory::getDbo();
 		$query			= $_db->getQuery(true);
 		$ml_published	='';
-	
+
 		// Get # of all published mailinglists
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-				
+
 		$_db->setQuery($query);
-		
+
 		$ml_published = $_db->loadResult();
-	
+
 		if ($ml_published <1){
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_WARNING_NO_PUBLISHED_MAILINGLIST'), 'warning');
 		}
@@ -652,19 +652,19 @@ abstract class BwPostmanHelper {
 
 	/**
 	 * Check number of queue entries
-	 * 
+	 *
 	 * @return	bool	true if there are entries in the queue, otherwise false
-	 * 
+	 *
 	 * since	1.0.3
 	 */
 	static public function checkQueueEntries()
 	{
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select('COUNT(' . $_db->quoteName('id') . ')');
 		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
-		
+
 		$_db->setQuery($query);
 
 		if ($_db->loadResult() > 0) {
@@ -717,7 +717,7 @@ abstract class BwPostmanHelper {
 	 *	@version	$Id: captcha.php,v 0.10 2006/04/07 13:15:30 des1 Exp $
 	 *	@link		http://www.selfphp.de
 	 */
-	
+
 	/**
 	 * Erzeugt die Rechenaufgabe
 	 *
@@ -726,25 +726,25 @@ abstract class BwPostmanHelper {
 	 * @param		string		$fileTTF		Pfad zur True-Type-Datei
 	 * @param		integer		$imgHeight		Bildhöhe
 	 *
-	 * @return		string		Gibt die Rechenaufgabe als String für den Dateinamen wieder			
+	 * @return		string		Gibt die Rechenaufgabe als String für den Dateinamen wieder
 	 */
-	
+
 	static public function showCaptcha() {
 		function mathCaptcha($im,$size,$fileTTF,$imgHeight)
 		{
 			$math = range(0,9);
 			shuffle($math);
-			
+
 			$mix = range(0,120);
 			shuffle($mix);
-			
+
 			$color = imagecolorallocate($im,$mix[0],$mix[1],$mix[2]);
-		
+
 			$text		= "$math[0] + $math[1]";
 			$fileName	= $math[0] + $math[1];
-			
+
 			imagettftext($im, $size, 0, 5, 25, $color, $fileTTF,$text);
-			
+
 			return $fileName;
 		}
 
@@ -752,35 +752,35 @@ abstract class BwPostmanHelper {
 	// Sie sollten hier unbedingt den absoluten Pfad angeben, da ansonsten
 	// eventuell die TTF-Datei nicht eingebunden werden kann!
 	$fileTTF = JPATH_COMPONENT_SITE.'/assets/ttf/style.ttf';
-	
+
 	// Verzeichnis für die Captcha-Bilder (muss Schreibrechte besitzen!)
 	// Ausserdem sollten in diesem Ordner nur die Bilder gespeichert werden
 	// da das Programm in regelmaessigen Abstaenden dieses leert!
 	// Kein abschliessenden Slash benutzen!
 	$captchaDir = JPATH_COMPONENT_SITE.'/assets/capimgdir';
-	
+
 	// Schriftgröße
 	$size = 20;
-	
+
 	// Schriftgröße Rechenaufgabe
 	$sizeMath = 20;
-	
+
 	//Bildgroesse
 	$imgWidth = 80;//200
 	$imgHeight = 30;//80
-	
+
 	header("Content-type: image/png");
 	$im = @imagecreate($imgWidth, $imgHeight)
 	 or die("GD! Initialisierung fehlgeschlagen");
 	$color = imagecolorallocate($im,255,255,255);
 	imagefill($im,0,$imgWidth,$color);
 	$fileName = mathCaptcha($im,$sizeMath,$fileTTF,$imgHeight);
-	
+
 	// Uebermittelter Hash-Wert ueberpruefen
 	if(!preg_match('/^[a-f0-9]{32}$/',$_GET['codeCaptcha']))
 		$_GET['codeCaptcha'] = md5(microtime());
-	
-	// Image speichern	
+
+	// Image speichern
 	imagepng($im,$captchaDir.'/'.$_GET['codeCaptcha'].'_'.$fileName.'.png');
 	imagedestroy($im);
 	// Bild ausgeben
@@ -815,21 +815,21 @@ abstract class BwPostmanHelper {
 	 * @param		string		$dir				Das Verzeichnis mit den Captcha-Bilder
 	 * @param		integer		$delFile			Die Zeit in Minuten, nachdem ein Captcha-Bild gelöscht wird
 	 *
-	 * @return		bool		TRUE/FALSE			
+	 * @return		bool		TRUE/FALSE
 	 */
 	public static function CheckCaptcha($codeCaptcha,$stringCaptcha,$dir,$delFile=5)
 	{
 		// Setzt den Check erst einmal auf FALSE
 		$captchaTrue = FALSE;
-		
+
 		// Übergebene Hash-Variable überprüfen
 		if(!preg_match('/^[a-f0-9]{32}$/',$codeCaptcha))
 			return FALSE;
-		
+
 		// Übergebene Captcha-Variable überprüfen
 		if(!preg_match('/^[a-zA-Z0-9]{1,6}$/',$stringCaptcha))
 			return FALSE;
-		
+
 		$handle = @opendir($dir);
 		while (false !== ($file = readdir($handle))) {
 			if (preg_match("=^\.{1,2}$=", $file)) {
@@ -852,10 +852,10 @@ abstract class BwPostmanHelper {
 					}
 				}
 			}
-		}	
-	
+		}
+
 		@closedir($handle);
-		
+
 		if ($captchaTrue)
 			return TRUE;
 		else

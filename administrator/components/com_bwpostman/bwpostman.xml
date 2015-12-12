@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="component" version="3.0" method="upgrade">
 	<name>COM_BWPOSTMAN</name>
-	<creationDate>October 2015</creationDate>
+	<creationDate>Dec 2015</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>http://www.boldt-webservice.de</authorUrl>
@@ -50,7 +50,7 @@
 		<folder>images</folder>
 		<folder>js</folder>
 	</media>
- 
+
 	<administration>
 
 		<menu img="../administrator/components/com_bwpostman/assets/images/logo-bwpostman.png">COM_BWPOSTMAN_MENU_MAIN_ENTRY</menu>
@@ -105,11 +105,11 @@
 		</languages>
 
 	</administration>
-	
+
 	<scriptfile>install.bwpostman.php</scriptfile>
-	
+
 	<updateservers>
 		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/com_bwpostman_update.xml</server>
-	</updateservers>	
+	</updateservers>
 
 </extension>

@@ -67,7 +67,7 @@ class BwPostmanController extends JControllerLegacy
 		if (($view != 'newsletters') && ($view != 'newsletter')) {
 
 			$user 	= JFactory::getUser();
-				
+
 			// Check if the variable editlink exists in the uri
 			$uri			= JFactory::getURI();
 			$editlink		= $uri->getVar("editlink", null);
@@ -98,17 +98,17 @@ class BwPostmanController extends JControllerLegacy
 			else {
 				$subscriberid = 0;
 			}
-				
+
 			$session_error = $session->get('session_error');
 			if(isset($session_error) && is_array($session_error)){
 				$session->clear('session_error');
 			}
-			 
+
 			$session_success = $session->get('session_success');
 			if(isset($session_success) && is_array($session_success)){
 				$session->clear('session_success');
 			}
-				
+
 			if ($subscriberid) { // Guest with subscriber id which is stored in the session
 				$model			= $this->getModel('register');
 				$subscriberdata	= $model->getSubscriberData ((int) $subscriberid);
@@ -125,7 +125,7 @@ class BwPostmanController extends JControllerLegacy
 				}
 
 				if ($err->err_code != 0) {
-					$this->errorSubscriberData($err, $subscriberid, $email);
+					$this->errorSubscriberData($err, $subscriberid, $subscriberdata->email);
 				}
 			}
 			elseif (!$user->get('guest')) { // User
@@ -145,9 +145,9 @@ class BwPostmanController extends JControllerLegacy
 						$err->err_code	= 406;
 						$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTNOTACTIVATED';
 					}
-						
+
 					if ($err->err_code != 0) {
-						$this->errorSubscriberData($err, $subscriberid, $email);
+						$this->errorSubscriberData($err, $subscriberid, $subscriberdata->email);
 					}
 				}
 			}
@@ -168,7 +168,7 @@ class BwPostmanController extends JControllerLegacy
 					else {
 						$model			= $this->getModel('register');
 						$subscriberdata	= $model->getSubscriberData ((int) $subscriberid);
-						
+
 						// The error code numbers are the same like in the subscribers-table check function
 						if ($subscriberdata->archive_flag == 1) {
 							$err->err_code	= 405;
@@ -180,7 +180,7 @@ class BwPostmanController extends JControllerLegacy
 						}
 
 						if ($err->err_code != 0) {
-							$this->errorSubscriberData($err, $subscriberid, $email);
+							$this->errorSubscriberData($err, $subscriberid, $subscriberdata->email);
 						}
 						else {
 							$model	= $this->getModel('edit');
@@ -206,14 +206,14 @@ class BwPostmanController extends JControllerLegacy
 	{
 		$app	= JFactory::getApplication();
 		$app->setUserState('subscriber.id', $subscriberid);
-		
+
 		$this->_subscriberid	= $subscriberid;
 		$this->_userid			= $userid;
 	}
 
 	/**
 	 * Display
-	 * 
+	 *
 	 * @param	boolean			If true, the view output will be cached
 	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
@@ -227,19 +227,19 @@ class BwPostmanController extends JControllerLegacy
 			case "newsletters":
 				$jinput->set('view', 'newsletters');
 				break;
-					
+
 				// View of a single newsletter
 			case "newsletter":
 				$jinput->set('view', 'newsletter');
 				break;
-					
+
 			// Register form
 			case "register":
 				$session		= JFactory::getSession();
 				$session_error	= $session->get('session_error');
-				
+
 				$jinput->set('view', 'edit');
-				
+
 				if(!(isset($session_error) && is_array($session_error))) {
 					if (($this->_userid) && ($this->_subscriberid)) {
 					}
@@ -256,9 +256,9 @@ class BwPostmanController extends JControllerLegacy
 			case "edit":
 				$session		= JFactory::getSession();
 				$session_error	= $session->get('session_error');
-				
+
 				$jinput->set('view', 'edit');
-				
+
 				if(!(isset($session_error) && is_array($session_error))) {
 					if (($this->_userid) && ($this->_subscriberid)) {
 					}
@@ -313,7 +313,7 @@ class BwPostmanController extends JControllerLegacy
 	{
 		$jinput		= JFactory::getApplication()->input;
 		$session	= JFactory::getSession();
-		
+
 		// The error code numbers 4-6 are the same like in the subscribers-table check function
 		switch ($err->err_code) {
 			case 405: // Subscriber account is blocked by the system
@@ -418,7 +418,7 @@ class BwPostmanController extends JControllerLegacy
 		$jinput			= JFactory::getApplication()->input;
 		$session		= JFactory::getSession();
 		$session_error	= array('err_msg' => $err_msg, 'err_email' => $email);
-		
+
 		$session->set('session_error', $session_error);
 
 		$jinput->set('layout', 'error_email');
@@ -460,10 +460,10 @@ class BwPostmanController extends JControllerLegacy
 
 		$jinput	= JFactory::getApplication()->input;
 		$app	= JFactory::getApplication();
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$post	= $jinput->getArray(
 					array(
 						'edit' => 'string',
@@ -480,7 +480,7 @@ class BwPostmanController extends JControllerLegacy
 						'option' => 'string',
 						'unsubscribe' => 'int'
 					));
-		
+
 		$newEmail	= false;
 
 		if (isset($post['unsubscribe'])) {
@@ -489,7 +489,7 @@ class BwPostmanController extends JControllerLegacy
 		}
 		else {
 			$model = $this->getModel('edit');
-				
+
 			// Email address has changed
 			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id']))){
 				$newEmail					= true;
@@ -503,21 +503,23 @@ class BwPostmanController extends JControllerLegacy
 			if (!$model->save($post)) {
 				// Store the input data into the session object
 				$session			= JFactory::getSession();
+				$error              = $model->getError();
 				$subscriber_data	= array('id' => $post['id'], 'name' => $post['name'], 'firstname' => $post['firstname'], 'email' => $post['email'], 'emailformat' => $post['emailformat'], 'list' => $post['list'], 'err_code' => $error['err_id']);
 				$session->set('subscriber_data', $subscriber_data);
 
 				$jinput->set('view', 'edit');
-			} 
+			}
 			else { // Storing the data has been successful
 				if ($newEmail) { // A new email address has been stored --> the account needs to be confirmed again
+					$subscriber = new stdClass();
 					$subscriber->name 		= $post['name'];
 					$subscriber->firstname	= $post['firstname'];
 					$subscriber->email 		= $post['email'];
 					$subscriber->activation = $post['activation'];
-						
+
 					$type	= 3; // Send confirmation email
 					$itemid = $model->getItemid();
-						
+
 					// Send confirmation mail
 					$res = $this->_sendMail($subscriber, $type, $itemid);
 
@@ -531,15 +533,15 @@ class BwPostmanController extends JControllerLegacy
 
 					$session				= JFactory::getSession();
 					$session_subscriberid	= $session->get('session_subscriberid');
-						
+
 					if(isset($session_subscriberid) && is_array($session_subscriberid)){
 						$session->clear('session_subscriberid');
 					}
 					$jinput->set('view', 'register');
-				} 
+				}
 				else { // No new email address has been stored --> the account doesn't need to be confirmed again
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CHANGES_SAVED_SUCCESSFULLY', 'message'));
-						
+
 					// If the user has choosen the button "save modifications & leave edit mode" we clear the session object
 					// now no subscriber_id is stored into the session
 					if ($post['edit'] == "submitleave") {
@@ -571,17 +573,17 @@ class BwPostmanController extends JControllerLegacy
 	 *
 	 * @access public
 	 * @author Romana Boldt
-	 * 
+	 *
 	 * @since	1.0.1
 	 */
 	public function register_save()
 	{
 		$jinput	= JFactory::getApplication()->input;
 		$app	= JFactory::getApplication();
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$model		= $this->getModel('register');
 		$session	= JFactory::getSession();
 		$error		= $session->get('session_error');
@@ -610,9 +612,9 @@ class BwPostmanController extends JControllerLegacy
 						'bwp-' . BwPostmanHelper::getCaptcha(2) => 'string',
 						'task' => 'string'
 					));
-		
+
 		$app->setUserState('com_bwpostman.subscriber.register.data', $post);
-		
+
 		if (isset($post['a_firstname'])) {
 			if ($post['a_firstname'] == JText::_('COM_BWPOSTMAN_FIRSTNAME')) {
 				$post['firstname']	= '';
@@ -621,7 +623,7 @@ class BwPostmanController extends JControllerLegacy
 			}
 			unset($post['a_firstname']);
 		}
-	
+
 		if (isset($post['a_name'])) {
 			if ($post['a_name'] == JText::_('COM_BWPOSTMAN_NAME')) {
 				$post['name']	= '';
@@ -635,12 +637,12 @@ class BwPostmanController extends JControllerLegacy
 			$post['emailformat']	= $post['a_emailformat'];
 			unset($post['a_emailformat']);
 		}
-		
+
 		if (isset($post['agreecheck_mod'])) {
 			$post['agreecheck']	= $post['agreecheck_mod'];
 			unset($post['agreecheck_mod']);
 		}
-		
+
 		// Subscriber is guest
 		if (!$this->_userid) {
 			// Check if the email-adress from the registration form is stored in user-table and gives back the id
@@ -662,14 +664,14 @@ class BwPostmanController extends JControllerLegacy
 		if (!$model->save($post)) {
 			$subscriber_data = array('name' => $post['name'], 'firstname' => $post['firstname'], 'email' => $post['email'], 'emailformat' => $post['emailformat'], 'mailinglists' => $post['mailinglists']);
 			$session->set('subscriber_data', $subscriber_data);
-			
+
 			$err = $app->getUserState('com_bwpostman.subscriber.register.error', null);
-			
+
 			if (is_array($err)) {
 				$err	= JArrayHelper::toObject($err);
 				$this->errorSubscriberData($err, $post['user_id'], $post['email']);
 			}
-			else {	
+			else {
 				$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 				$this->setRedirect($link);
 			}
@@ -680,10 +682,10 @@ class BwPostmanController extends JControllerLegacy
 			$subscriber->firstname	= $post['firstname'];
 			$subscriber->email 		= $post['email'];
 			$subscriber->activation = $app->getUserState('com_bwpostman.subscriber.activation', '');
-				
+
 			$type	= 0; // Send Registration email
 			$itemid = $model->getItemid();
-				
+
 			// Send registration confirmation mail
 			$res = $this->_sendMail($subscriber, $type, $itemid);
 
@@ -713,7 +715,7 @@ class BwPostmanController extends JControllerLegacy
 		$db		= JFactory::getDBO();
 		$model	= $this->getModel('register');
 		$itemid	= $model->getItemid();
-		
+
 		// We come from the edit view
 		if ($id) {
 			$unsubscribedata	= $model->getSubscriberData($id);
@@ -730,7 +732,7 @@ class BwPostmanController extends JControllerLegacy
 			// Do we have an email address?
 			$email = $jinput->get('email', '', '', 'string');
 			$email = $db->escape($email);
-				
+
 		}
 
 		// Editlink-variable or email-variable is empty
@@ -741,6 +743,7 @@ class BwPostmanController extends JControllerLegacy
 		}
 		else {
 			// The editlink or email don't exist in the subscribers-table
+			$msg    = '';
 			if (!$model->unsubscribe($editlink, $email, $msg)) {
 				$msg		= 'COM_BWPOSTMAN_ERROR_WRONGUNSUBCRIBECODE';
 				$msg_type	= 'error';
@@ -757,7 +760,7 @@ class BwPostmanController extends JControllerLegacy
 		// otherwise the subscriber can get to the edit view again
 		$session				= JFactory::getSession();
 		$session_subscriberid	= $session->get('session_subscriberid');
-		
+
 		if(isset($session_subscriberid) && is_array($session_subscriberid)){
 			$session->clear('session_subscriberid');
 		}
@@ -778,23 +781,25 @@ class BwPostmanController extends JControllerLegacy
 		// Initialize some variables
 		$db		= JFactory::getDBO();
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Do we have an activation string?
 		$activation		= $jinput->getAlnum('subscriber', '');
 		$activation		= $db->escape($activation);
 		$activation_ip	= $_SERVER['REMOTE_ADDR'];
 		$params 		= JComponentHelper::getParams('com_bwpostman');
 		$send_mail		= $params->get('activation_to_webmaster');
-	
+
 		// No activation string
 		if (empty($activation)) {
 			$err_msg = 'COM_BWPOSTMAN_ERROR_WRONGACTIVATIONCODE';
 			$this->errorActivationCode($err_msg);
-		} 
+		}
 		else {
 			$model = $this->getModel('register');
 
 			// An error occured while activation the subscriber account
+			$err_msg    = '';
+			$editlink   = '';
 			$subscriber_id = $model->activateSubscriber($activation, $err_msg, $editlink, $activation_ip);
 			if ($subscriber_id == false) {
 				$this->errorActivationCode($err_msg);
@@ -825,16 +830,16 @@ class BwPostmanController extends JControllerLegacy
 		$jinput	= JFactory::getApplication()->input;
 		$model	= $this->getModel('register');
 		$post	= $jinput->getArray(
-		 		array(
-		 				'email' => 'string',
-		 				'language' => 'string',
-		 				'task' => 'string',
-		 				'option' => 'string'
-		 		));
-		
+				array(
+						'email' => 'string',
+						'language' => 'string',
+						'task' => 'string',
+						'option' => 'string'
+				));
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$id				= $model->isRegSubscriber($post['email']);
 		$err			= new stdClass();
 		$err->err_code	= 0;
@@ -857,7 +862,7 @@ class BwPostmanController extends JControllerLegacy
 			$err->err_code	= 406; // Email address exists but account is not activated
 			$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTNOTACTIVATED';
 		}
-			
+
 		if ($err->err_code != 0) {
 			// we use not $subscriberdata->id - if $ID==NULL Notice: Trying to get property of non-object
 			$this->errorSubscriberData($err, $subs_id, $post['email']);
@@ -867,7 +872,7 @@ class BwPostmanController extends JControllerLegacy
 			$subscriber->name 		= $subscriberdata->name;
 			$subscriber->firstname	= $subscriberdata->firstname;
 			$subscriber->email 		= $subscriberdata->email;
-				
+
 			$type	= 1; // Send Editlink
 			$model	= $this->getModel('edit');
 			$itemid	= $model->getItemid();
@@ -879,7 +884,7 @@ class BwPostmanController extends JControllerLegacy
 			}
 			else { // Email has not been sent
 				$err_msg 	= 'COM_BWPOSTMAN_ERROR_EDITLINKEMAIL';
-				$this->errorSendingEmail($err_msg, $email);
+				$this->errorSendingEmail($err_msg, $subscriber->email);
 			}
 			$jinput->set('view', 'register');
 		}
@@ -895,32 +900,32 @@ class BwPostmanController extends JControllerLegacy
 	public function sendActivation()
 	{
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		// Get required system objects
 		$model			= $this->getModel('register');
 		$err			= new stdClass();
 		$err->err_code	= 0;
 		$post			= $jinput->getArray(
 							array(
-		 						'email' => 'string',
+								'email' => 'string',
 								'id' => 'string',
 								'task' => 'string',
 								'language' => 'string',
 								'option' => 'string'
 							));
-		
+
 		$id	= $post['id'];
-		
+
 		if (array_key_exists('email', $post)) {
 			if ($post['email'] !== NULL)
 				$id = $model->isRegSubscriber($post['email']);
 		}
 
 		$subscriberdata = $model->getSubscriberData($id);
-		
+
 		if (!is_object($subscriberdata)) {
 			$subs_id		= null;
 			$err->err_code	= 408; // Email address doesn't exist
@@ -931,7 +936,7 @@ class BwPostmanController extends JControllerLegacy
 			$err->err_code	= 405; // Email address exists but is blocked
 			$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTBLOCKED';
 		}
-			
+
 		if ($err->err_code != 0) {
 			$this->errorSubscriberData($err, $subs_id, $post['email']);
 		}
@@ -941,18 +946,18 @@ class BwPostmanController extends JControllerLegacy
 			$subscriber->firstname	= $subscriberdata->firstname;
 			$subscriber->email 		= $subscriberdata->email;
 			$subscriber->activation = $subscriberdata->activation;
-				
+
 			$type	= 2; // Send Activation reminder
 			$itemid	= $model->getItemid();
 			$res	= $this->_sendMail($subscriber, $type, $itemid);
-				
+
 			if ($res === true) {// Email has been sent
 				$success_msg 	= 'COM_BWPOSTMAN_SUCCESS_ACTIVATIONEMAIL';
 				$this->success($success_msg, $subscriberdata->editlink, $itemid);
 			}
 			else { // Email has not been sent
 				$err_msg 	= 'COM_BWPOSTMAN_ERROR_ACTIVATIONEMAIL';
-				$this->errorSendingEmail($err_msg, $email);
+				$this->errorSendingEmail($err_msg, $subscriber->email);
 			}
 		}
 		$jinput->set('view', 'register');
@@ -976,7 +981,7 @@ class BwPostmanController extends JControllerLegacy
 		$name 		= $subscriber->name;
 		$firstname 	= $subscriber->firstname;
 		if ($firstname != '') $name = $firstname . ' ' . $name;
-		
+
 		$sitename			= $app->getCfg('sitename');
 		$mailfrom			= $params->get('default_from_email');
 		$fromname			= $params->get('default_from_name');
@@ -985,7 +990,7 @@ class BwPostmanController extends JControllerLegacy
 		$permission_text	= $params->get('permission_text');
 		$legal_information	= $params->get('legal_information_text');
 		$active_msg			= $active_title . ' ' . $name . ",\n\n" . $active_intro . "\n";
-		
+
 		$siteURL = JURI::root();
 
 		switch ($type) {
@@ -1000,7 +1005,7 @@ class BwPostmanController extends JControllerLegacy
 				else {
 					$link 	= $siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}";
 				}
-				$message = $active_msg . JText::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text; 
+				$message = $active_msg . JText::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
 				break;
 			case 1: // Send Editlink
 				$editlink 	= $subscriber->editlink;
@@ -1042,13 +1047,13 @@ class BwPostmanController extends JControllerLegacy
 		$mailer		= JFactory::getMailer();
 		$sender		= array();
 		$reply		= array();
-		
+
 		$sender[0]	= $mailfrom;
 		$sender[1]	= $fromname;
 
 		$reply[0]	= $mailfrom;
 		$reply[1]	= $fromname;
-				
+
 		$mailer->setSender($sender);
 		$mailer->addReplyTo($reply);
 		$mailer->addRecipient($email);
@@ -1056,7 +1061,7 @@ class BwPostmanController extends JControllerLegacy
 		$mailer->setBody($message);
 
 		$res = $mailer->Send();
-		
+
 		return $res;
 	}
 

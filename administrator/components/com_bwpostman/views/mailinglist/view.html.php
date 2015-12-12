@@ -44,7 +44,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	protected $form;
 	protected $item;
 	protected $state;
-	
+
 	/**
 	 * Display
 	 *
@@ -58,9 +58,9 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$template	= $app->getTemplate();
 		$uri		= JFactory::getURI();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
-		
+
 		$app->setUserState('com_bwpostman.edit.mailinglist.id', JFactory::getApplication()->input->getInt('id', 0));
-		
+
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
@@ -68,7 +68,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$this->item		= $this->get('Item');
 		$this->state	= $this->get('State');
 		$this->canDo	= BwPostmanHelper::getActions($this->item->id, 'mailinglist');
-		
+
 		// Save a reference into view
 		$this->request_url	= $uri_string;
 		$this->template		= $template;
@@ -78,7 +78,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		// Call parent display
 		parent::display($tpl);
 	}
-	
+
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
@@ -88,11 +88,11 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$uri		= JFactory::getURI();
 		$userId		= JFactory::getUser()->get('id');
-				
+
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_ML_DETAILS'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
@@ -100,7 +100,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$user_browser = $browser->getBrowser();
 
 		if ($user_browser == 'msie') {
-			$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
+			$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
@@ -109,7 +109,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		// Set toolbar title and items
         $canDo		= BwPostmanHelper::getActions($this->item->id, 'mailinglist');
         $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-        
+
 		// For new records, check the create permission.
 		if ($isNew && $canDo->get('core.create')) {
 			JToolBarHelper::save('mailinglist.save');

@@ -50,7 +50,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
-		
+
 		if (!BwPostmanHelper::canView('subscribers')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUB')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -65,13 +65,13 @@ class BwPostmanViewSubscribers extends JViewLegacy
 			$this->pagination		= $this->get('Pagination');
 			$this->total 			= $this->get('total');
 			$this->context			= 'com_bwpostman.subscribers';
-			
+
 			$this->addToolbar();
-			
+
 			BwPostmanHelper::addSubmenu('subscribers');
-			
+
 			$this->sidebar = JHtmlSidebar::render();
-			
+
 			// Call parent display
 			parent::display($tpl);
 		}
@@ -89,18 +89,18 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');
 		$canDo	= BwPostmanHelper::getActions(0, 'subscribers');
 		$user	= JFactory::getUser();
-		
+
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAMS'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
-		
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_SUB'), 'users');
-		
+
 		// Set toolbar items for the page
 		switch ($tab) { // The layout-variable tells us which tab we are in
 			default;
@@ -111,7 +111,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					JToolBarHelper::spacer();
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
-					
+
 					if ($canDo->get('core.create'))		JToolBarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
 					if ($canDo->get('core.edit'))		JToolBarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
 					if ($canDo->get('core.archive')) {
@@ -124,10 +124,10 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					{
 						JHtml::_('bootstrap.modal', 'collapseModal');
 						$title = JText::_('JTOOLBAR_BATCH');
-			
+
 						// Instantiate a new JLayoutFile instance and render the batch button
 						$layout = new JLayoutFile('joomla.toolbar.batch');
-			
+
 						$dhtml = $layout->render(array('title' => $title));
 						$bar->appendButton('Custom', $dhtml, 'batch');
 					}

@@ -57,7 +57,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$res		= JPluginHelper::importPlugin('bwpostman');
 		$app		= JFactory::getApplication();
 		$_db		= JFactory::getDBO();
-		
+
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
@@ -72,9 +72,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->canDo		= BwPostmanHelper::getActions($this->item->id, 'newsletter');
 		$this->template		= $app->getTemplate();
 		$this->params		= JComponentHelper::getParams('com_bwpostman');
-		
+
 		$dispatcher->trigger('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
-		
+
 		// set some needed flags
 		// flag, if rendered content exists or not
 		if ($this->item->html_version || $this->item->text_version) {
@@ -93,20 +93,20 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		else {
 			$this->selected_content_old	= '';
 		}
-		
+
 		// flags for template ids before editing
 		$this->template_id_old		= $this->item->template_id_old;
 		$this->text_template_id_old	= $this->item->text_template_id_old;
 
 		$this->addToolbar();
-		
+
 		// reset temporary state
 		$app->setUserState('com_bwpostman.edit.newsletter.changeTab', false);
-		
+
 		// Call parent display
 		parent::display($tpl);
 	}
-			
+
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
@@ -117,18 +117,18 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$uri		= JFactory::getURI();
 		$userId		= JFactory::getUser()->get('id');
 		$layout		= JFactory::getApplication()->input->get('layout', '');
-		
+
 		// Get document object, set document title and add css
 		$document	= JFactory::getDocument();
 		$document->setTitle('COM_BWPOSTMAN_NL_DETAILS');
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(JURI::base().'components/com_bwpostman/assets/js/bwpostman_nl.js');
-		
+
 		// Set toolbar title and items
 		$canDo			= BwPostmanHelper::getActions($this->item->id, 'newsletter');
 		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$this->canDo	= $canDo;
-		
+
 		$isNew = ($this->item->id == 0);
 
 		// If we come from sent newsletters, we have to do other stuff than normal
@@ -138,7 +138,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
 		}
 		else {
-			
+
 			// For new records, check the create permission.
 			if ($isNew && $canDo->get('core.create')) {
 				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
@@ -171,7 +171,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			JToolBarHelper::divider();
 			JToolBarHelper::spacer();
 			if ($canDo->get('core.create') || $canDo->get('core.edit') || $canDo->get('core.send')) JToolBarHelper::custom('newsletter.checkForm', 'thumbs-up', 'checkform_f2', 'COM_BWPOSTMAN_NL_CHECK_FORM', false);
-	*/			
+	*/
 		}
 		JToolBarHelper::divider();
 		JToolBarHelper::spacer();

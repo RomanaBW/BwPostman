@@ -1,14 +1,22 @@
 *********************************
 Changelog for BwPostman Component
 *********************************
- 
+
 This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
- 
---- version 1.2.4 released (22-Oct-2015)----
 
-Oct-2015 Romana Boldt
+--- version 1.2.4 released (12-Dec-2015)----
+
+Dec-2015 Romana Boldt
 - bugfix:
+	- User-defined CSS file some times not read - fixed
+	- Faulty calling of icon font for user-defined css file - fixed
+	- Faulty function call in helper class - fixed
+	- Unable to delegate actions in BwPostman to other user groups - fixed
+
+- improvement:
+	- Select lists for available and selected content at creating/editing newsletters broadened
+	- Error message at missing inputs while creating a newsletter specified
 
 
 --- version 1.2.3 released (22-Sep-2015)----
@@ -32,14 +40,14 @@ Sep-2015 Karl Klostermann
 --- version 1.2.1 released (17-Jul-2015)----
 
 Jul-2015 Romana Boldt
-- bugfixes:
+- bugfix:
 	- Adding subscriber without name is not possible, even option is set to no obligation - fixed
 
 
 --- version 1.2.0 released (9-Jul-2015)----
 
 Jul-2015 Romana Boldt
-- bugfixes:
+- bugfix:
 	- Newsletters, that only contains free content without articles from Joomla, did not use the template - fixed
 	- Access control in view archive does not work properly - fixed
 	- Pagination in back end view of newsletters did not work properly - fixed
@@ -54,7 +62,7 @@ Jul-2015 Romana Boldt
 	- Access to attachment of a newsletter in front end, selectable by global option and menu item option
 	- Extended options for view newsletters list in front end
 	- Filter newsletters in front end list view by mailing lists, usergroups, campaigns, month and year enable by global option and menu item option
-	- More additional filters in back end list views 
+	- More additional filters in back end list views
 
 - improvement:
 	- Improved loading time and stability while editing newsletter in back end
@@ -67,7 +75,7 @@ Jul-2015 Romana Boldt
 --- version 1.1.0.1 released (14-Apr-2015)----
 
 Apr-2015 Romana Boldt
-- bugfixes:
+- bugfix:
 	- Pagination does not work since Joomla 3.3.4 - fixed
 	- Confirmation date of subscriber was set on actual date on each saving - fixed
 	- Newsletters to usergroups are not shown in front end - fixed
@@ -80,7 +88,7 @@ Apr-2015 Romana Boldt
 --- version 1.1.0 released (21-Mar-2015)----
 
 Mar-2015 Romana Boldt, Karl Klostermann
-- bugfixes:
+- bugfix:
 	- Newsletters without articles of Joomla have not used CSS styles
 
 - new:
@@ -90,7 +98,7 @@ Mar-2015 Romana Boldt, Karl Klostermann
 - improvement:
 	- Extended and improved filtering in back end
 
- 
+
 --- version 1.0.8 released (Mar-05-2015)----
 
 *********************************************
@@ -114,11 +122,11 @@ Mar-2015 Romana Boldt
 --- version 1.0.7 released (Feb-18-2015)----
 
 Feb-2015 Romana Boldt
-- bugfixes:
+- bugfix:
 	- Corrupt language file - fixed
-	- Read more link in newsletter causes error 404 - file not found - if language of the article does not meet the language of the website on multi-language sites - fixed 
+	- Read more link in newsletter causes error 404 - file not found - if language of the article does not meet the language of the website on multi-language sites - fixed
 	- Archived recipients were not deleted from queue - fixed
-	
+
 - improvement:
 	- Code is more valid
 	- Icons in back end menus of Joomla
@@ -127,14 +135,14 @@ Feb-2015 Romana Boldt
 --- version 1.0.6 released (Jan-05-2015)----
 
 Jan-2015 Romana Boldt
-- bugfixes:
+- bugfix:
 	- Editing newsletters step 3 preview not shown, sending of newsletters not possible - fixed
 
 
 --- version 1.0.5 released (Dec-18-2014)----
 
 Dec-2014 Romana Boldt
-- bugfixes:
+- bugfix:
 	- User-defined css file not read - fixed
 	- In some cases error 1052 while editing subscribers - fixed
 
@@ -145,7 +153,7 @@ Dec-2014 Romana Boldt
 --- version 1.0.4 released (Oct-29-2014)----
 
 Oct-2014 Romana Boldt
-- bugfixes:
+- bugfix:
 	- selecting attachment others than images is not possible - fixed
 	- sorting newsletters list in front-end is not possible - fixed
 	- In view newsletters in back-end at tab Sent newsletters nothing shown as marked at check all - fixed
@@ -156,7 +164,7 @@ Oct-2014 Romana Boldt
 --- version 1.0.3 released (Oct-14-2014)----
 
 Oct-2014 Romana Boldt
-- bugfixes:
+- bugfix:
 	- problem while browsing pages with subscribers and newsletters in backend - fixed
 	- false error message "invalid email address" while importing subscribers, no import possible - fixed
 	- no items visible in queue - fixed
@@ -172,7 +180,7 @@ Sep-2014 Romana Boldt
 	- spam check revised
 	- error messages revised
 
-- bugfixes:
+- bugfix:
 	- revised, corrected and updated language strings
 	- sending newsletters to joomla usergroups was not possible - fixed
 
@@ -189,20 +197,20 @@ Aug-2014 Romana Boldt
 
 - improvement:
 	- better overview of basic settings by improved layout of options
-	- disclaimer now also selectable from Joomla! articles or Joomla! menu 
+	- disclaimer now also selectable from Joomla! articles or Joomla! menu
 	- conversion from _all/_single file and class naming to Joomla! conventions
 	- table engine changed to InnoDB
-	- list(s) renamed to mailinglist(s) in tables, controllers, models and views 
+	- list(s) renamed to mailinglist(s) in tables, controllers, models and views
 	- mostly revised and simplified code
 
-- bugfixes:
+- bugfix:
 	- Minor discrepancies in the client-side and server-side validation of form fields has been corrected.
 
 
 --- version 0.9.8.1 released (Apr-13-2014)----
 
 Apr-13-2014 Romana Boldt
-- bugfix: ERROR 500 - Unknown column 'attachment' in 'field list' SQL=INSERT INTO `#__bwpostman_newsletters_tmp` - fixed 
+- bugfix: ERROR 500 - Unknown column 'attachment' in 'field list' SQL=INSERT INTO `#__bwpostman_newsletters_tmp` - fixed
 
 
 --- version 0.9.8 released (Apr-09-2014)----
@@ -215,7 +223,7 @@ Mar-Apr-2014 Romana Boldt
         + or a captcha with a simple math question
       in the registration form.
 - improvement: The display of the articleauthor and the creation date in the newsletter can be controlled in the options.
-- bugfixes: Minor bugs in the client-side and server-side validation of form fields has been corrected.
+- bugfix: Minor bugs in the client-side and server-side validation of form fields has been corrected.
 
 
 --- version 0.9.7 released (Mar-08-2014)----
@@ -223,12 +231,12 @@ Mar-Apr-2014 Romana Boldt
 Jan-Mar-2014 Romana Boldt
 - new:	- Sending an attachment with the newsletter is now possible
 		- There is a new tab Advanced Settings added to options/settings for:
-			- Legal informations
+			- Legal information
 			- A title in the activation mail
 			- Various texts for the activation mail
 			- You are able to set, that you will be informed at each confirmation per mail
-			- A user-defined CSS-File named com_bwbostman.css, located in [your template]/css, will be used and overrides the css-styles predefined in BwPostman
-- improvement: If name und firstname are set to required, then the fields will be displayed at registration even if you forgot to set to display these fields
+			- A user-defined CSS-File named com_bwpostman.css, located in [your template]/css, will be used and overrides the css-styles predefined in BwPostman
+- improvement: If name und first name are set to required, then the fields will be displayed at registration even if you forgot to set to display these fields
 - improvement: All elements shown in frontend are individually selectable by CSS now
 - improvement: Revised installation routine
 
@@ -236,8 +244,8 @@ Jan-Mar-2014 Romana Boldt
 --- version 0.9.6.4 released (Jan-23-2014)----
 
 Jan-23-2014 Romana Boldt
-- bugfix: Can't register in component register form, when only one mailinglist is available - fixed
-- bugfix: When component register form and module form are displayed at same time, one has to fill both forms to be able to register - fixed  
+- bugfix: Can't register in component register form, when only one mailing list is available - fixed
+- bugfix: When component register form and module form are displayed at same time, one has to fill both forms to be able to register - fixed
 
 
 --- version 0.9.6.3 released (Sept-07-2013)----
@@ -264,10 +272,9 @@ Aug-22-2013 Romana Boldt
 Apr-09-2013 Romana Boldt, Version 0.9.3
 - field 'firstname' inserted with separated option for show/required to field 'name'
 - personalization for HTML- als text-newsletters inserted
-- error while copying newsletter eliminated 
- 
+- error while copying newsletter eliminated
+
 
 Apr-05-2013 Romana Boldt, Version 0.9.1
-- general changes to Joomla! 2.5 
- 
-  
+- general changes to Joomla! 2.5
+

@@ -54,7 +54,7 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		$uri		= JFactory::getURI();
 		$uri_string	= $uri->toString();
 		$canDo		= BwPostmanHelper::getActions();
-		
+
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
@@ -67,11 +67,11 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN'));
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN'), 'envelope');
-		
+
 		// Set toolbar items for the page
 		if ($canDo->get('core.admin')) {
 			JToolBarHelper::preferences('com_bwpostman', '500', '900');
@@ -81,11 +81,11 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		}
 		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 		JToolBarHelper::spacer();
-		
+
 		BwPostmanHelper::addSubmenu('bwpostman');
-		
+
 		$this->sidebar = JHtmlSidebar::render();
-		
+
 		parent::display($tpl);
 	}
 }

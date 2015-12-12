@@ -51,8 +51,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-		
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+
 		$document = JFactory::getDocument();
 		if ($params->get('page_heading') != '') {
 			$document->setTitle($params->get('page_title'));
@@ -60,26 +60,26 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		else {
 			$document->setTitle($newsletter->subject);
 		}
-		$document->addStyleSheet('components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists($css_filename)) $document->addStyleSheet($css_filename);
-						
+		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+
 		// Get the global list params and preset them
 		$globalParams				= JComponentHelper::getParams('com_bwpostman', true);
 		$this->attachment_enabled	= $globalParams->get('attachment_single_enable');
 		$this->page_title			= $globalParams->get('subject_as_title');
 
 		$menuParams = new JRegistry;
-		
+
 		if ($menu = $app->getMenu()->getActive()) {
 			$menuParams->loadString($menu->params);
 		}
 
-		// if we came from list view to show single newsletter, then params of list view shall take effect 
+		// if we came from list view to show single newsletter, then params of list view shall take effect
 		if (is_object($menu)) {
 			if (stristr($menu->link, 'view=newsletter&') == false) {
 				// Get the menu item state
 				$nls_state	= $app->getUserState('com_bwpostman.newsletters.params');
-	
+
 				// if we have a menu state, use this and overwrite global settings
 				if ($nls_state->get('attachment_enable') !== null) {
 					$this->attachment_enabled	= $nls_state->get('attachment_enable');
@@ -94,7 +94,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				}
 			}
 		}
-		
+
 		if ($newsletter->published == 0) {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_NL_NOT_AVAILABLE'), 'error');
 		}

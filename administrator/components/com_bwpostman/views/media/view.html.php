@@ -45,21 +45,21 @@ class BwPostmanViewMedia extends JViewLegacy
 		$lang		= JFactory::getLanguage();
 		$document	= JFactory::getDocument();
 		$mediaModel = JModelLegacy::getInstance('Manager', 'MediaModel');
-		
+
 		if (!$app->isAdmin())
 		{
 			return $app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
 		}
 
 		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
-		
+
 		// Include jQuery
 		JHtml::_('jquery.framework');
 		JHtml::_('script', 'bw_postman/popup-imagemanager.js', true, true);
 
 		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
 		JHtml::_('stylesheet', 'system/mootree.css', array(), true);
-		
+
 		if ($lang->isRTL())
 		{
 			JHtml::_('stylesheet', 'media/popup-imagemanager_rtl.css', array(), true);
@@ -95,7 +95,7 @@ class BwPostmanViewMedia extends JViewLegacy
 		$this->require_ftp	= $ftp;
 		$this->folders_id	= ' id="media-tree"';
 		$this->folders		= $mediaModel->getFolderTree();
-		
+
 		parent::display($tpl);
 	}
 }

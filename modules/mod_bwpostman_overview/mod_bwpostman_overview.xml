@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="module" version="3.3" client="site" method="upgrade">
+	<name>MOD_BWPOSTMAN_OVERVIEW</name>
+	<creationDate>Dec 2015</creationDate>
+	<author>Boldt Webservice</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>http://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>GNU/GPLv3 or later</license>
+	<version>1.2.4</version>
+	<scriptfile>script.php</scriptfile>
+	<description>MOD_BWPOSTMAN_OVERVIEW_XML_DESCRIPTION</description>
+
+	<files>
+		<filename module="mod_bwpostman_overview">mod_bwpostman_overview.php</filename>
+		<filename>helper.php</filename>
+		<filename>mod_bwpostman_overview.xml</filename>
+		<filename>CHANGELOG.txt</filename>
+		<filename>LICENSE.txt</filename>
+		<filename>index.html</filename>
+		<filename>script.php</filename>
+		<folder>assets</folder>
+		<folder>images</folder>
+		<folder>tmpl</folder>
+	</files>
+	<languages folder="language">
+		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.ini</language>
+		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_bwpostman_overview.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_bwpostman_overview.sys.ini</language>
+	</languages>
+	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_BWPOSTMAN_OVERVIEW" />
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="count"
+					type="text"
+					default="12"
+					label="MOD_BWPOSTMAN_OVERVIEW_FIELD_COUNT_LABEL"
+					description="MOD_BWPOSTMAN_OVERVIEW_FIELD_COUNT_DESC"
+				/>
+
+				<field name="menu_item"
+					type="MenuItems"
+					default=""
+					description="MOD_BWPOSTMAN_OVERVIEW_MENU_ITEMS_SELECT_DESC"
+					label="MOD_BWPOSTMAN_OVERVIEW_MENU_ITEMS_SELECT_LABEL"
+				>
+					<option value="">MOD_BWPOSTMAN_OVERVIEW_NO_CORRESPONDING_MENUITEM</option>
+				</field>
+
+				<field
+					name="access-check"
+					type="list"
+					default="1"
+					description="MOD_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_DESC"
+					label="MOD_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_LABEL"
+				>
+					<option value="1">JYES</option>
+					<option value="no">JNO</option>
+				</field>
+
+				<field name="show_type"
+					type="list"
+					default="all"
+					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_DESC"
+					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_LABEL"
+				>
+					<option value="all">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="all_not_arc">MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_ALL_NOT_ARC</option>
+					<option value="not_arc_down">MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_NOT_ARC_DOWN</option>
+					<option value="not_arc_but_down">MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_NOT_ARC_BUT_DOWN</option>
+					<option value="arc">MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_ARC</option>
+					<option value="down">MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_DOWN</option>
+					<option value="arc_and_down">MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_ARC_AND_DOWN</option>
+					<option value="arc_or_down">MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_ARC_OR_DOWN</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE" addfieldpath="/components/com_bwpostman/models/fields" id="newsletterselect-group">
+				<field name="ml_selected_all"
+					type="radio"
+					default=""
+					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_ML_FILTER_DESC"
+					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_ML_FILTER_LABEL"
+					class="radio btn-group btn-group-yesno"
+				>
+					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
+				</field>
+
+				<field
+					name="ml_available"
+					type="comml"
+					label="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE_LABEL"
+					labelclass="control-label"
+					description="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE_DESC"
+					multiple="true"
+					size="5"
+					default="0"
+					class="inputbox mailinglists"
+				/>
+
+				<field name="groups_selected_all"
+					type="radio"
+					default=""
+					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_DESC"
+					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_LABEL"
+					class="radio btn-group btn-group-yesno"
+				>
+					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
+				</field>
+
+				<field
+					name="groups_available"
+					type="usergroups"
+					label="MOD_BWPOSTMAN_OVERVIEW_MENU_GROUPS_AVAILABLE_LABEL"
+					labelclass="control-label"
+					description="MOD_BWPOSTMAN_OVERVIEW_MENU_GROUPS_AVAILABLE_DESC"
+					multiple="true"
+					size="1"
+					default="0"
+					class="inputbox"
+				/>
+			</fieldset>
+
+			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE" addfieldpath="/components/com_bwpostman/models/fields" id="newsletterselect-group">
+				<field name="cam_selected_all"
+					type="radio"
+					default="no"
+					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_CAM_FILTER_DESC"
+					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_CAM_FILTER_LABEL"
+					class="radio btn-group btn-group-yesno"
+				>
+					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
+				</field>
+
+				<field
+					name="cam_available"
+					type="comcam"
+					label="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE_LABEL"
+					labelclass="control-label"
+					description="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE_DESC"
+					multiple="true" size="5"
+					default="0"
+					class="inputbox mailinglists"
+				/>
+			</fieldset>
+
+			<fieldset name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field
+					name="moduleclass_sfx"
+					type="textarea"
+					rows="3"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field
+					name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC"
+				>
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field
+					name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="MOD_MODULES_FIELD_CACHE_TIME_DESC" />
+
+				<field
+					name="cachemode"
+					type="hidden"
+					default="static">
+					<option
+						value="static"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

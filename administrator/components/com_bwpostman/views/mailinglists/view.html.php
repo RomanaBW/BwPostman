@@ -92,7 +92,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_MLS'));
-		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet('/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_MLS'), 'list');

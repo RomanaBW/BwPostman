@@ -183,7 +183,6 @@ abstract class BwPostmanTableHelper {
 
 		// check table columns
 		for ($i=0; $i < count($neededTables); $i++) {
-			$res	= 0;
 			$res	= self::checkTableColumns($neededTables[$i]);
 
 			if ($res == 2) $i--;
@@ -222,7 +221,7 @@ abstract class BwPostmanTableHelper {
 	/**
 	 * Method to save BwPostman tables
 	 *
-	 * @param	boolean		save while component update?
+	 * @param	boolean		$update save while component update?
 	 *
 	 * @return	boolean		true if save file is written
 	 *
@@ -437,8 +436,6 @@ abstract class BwPostmanTableHelper {
 				// get default charset of installed table
 				$start	= strpos($queries[$i], 'DEFAULT CHARSET=');
 				if ($start !== false) {
-					$stop	= strpos($queries[$i], ' ', $start);
-//					$length	= $stop - $start - 16;
 					$neededTables[$i]->charset	= substr($queries[$i], $start + 16);
 				}
 			}
@@ -459,7 +456,6 @@ abstract class BwPostmanTableHelper {
 
 			// check table columns
 			for ($i=0; $i < count($neededTables); $i++) {
-				$res	= 0;
 				$res	= self::checkTableColumns($neededTables[$i]);
 
 				if ($res == 2) $i--;
@@ -649,14 +645,13 @@ abstract class BwPostmanTableHelper {
 	 *
 	 * @since	1.0.1
 	 */
-	protected static function checkTableNames($neededTables = '', $genericTableNames = '', $mode = 'check')
+	protected static function checkTableNames($neededTables, $genericTableNames, $mode = 'check')
 	{
 		if (!is_array($neededTables) && !is_array($genericTableNames)) {
 			return false;
 		}
 
 		$_db				= JFactory::getDbo();
-		$app				= JFactory::getApplication();
 		$neededTableNames	= array();
 
 		// extract table names from table object list,
@@ -711,7 +706,6 @@ abstract class BwPostmanTableHelper {
 
 				// delete obsolete tables
 				foreach ($diff_2 as $obsoleteTable) {
-					$deleteDB	= false;
 					$query		= "DROP TABLE IF EXISTS " . $obsoleteTable;
 
 					$_db->setQuery($query);
@@ -825,7 +819,7 @@ abstract class BwPostmanTableHelper {
 	 *
 	 * @since	1.0.1
 	 */
-	protected static function checkTableColumns($checkTable = '')
+	protected static function checkTableColumns($checkTable)
 	{
 		if (!is_object($checkTable)) {
 			return 0;
@@ -924,7 +918,6 @@ abstract class BwPostmanTableHelper {
 
 				// install missing columns
 				foreach (array_keys($diff) as $missingCol) {
-					$alterCol	= false;
 					($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = '';
 					(isset($neededColumns[$i]['Default'])) ? $default	= ' DEFAULT ' . $_db->Quote($neededColumns[$i]['Default']) : $default	= '';
 					$query	 = "ALTER TABLE " . $_db->quoteName($checkTable->name);
@@ -1126,9 +1119,7 @@ abstract class BwPostmanTableHelper {
 							// get unsigned
 							$start	= stripos($column, 'unsigned');
 							if ($start !== false) {
-								$stop				= strpos($column, " ", $start);
 								$col_arr->Type		.= ' unsigned';
-								$sub_txt			= str_replace('unsigned', '', $column);
 							}
 							$table->columns[]	= $col_arr;
 						} // end foreach columns
@@ -1251,6 +1242,8 @@ abstract class BwPostmanTableHelper {
 	/**
 	 * Builds the XML structure to export. Based on Joomla JDatabaseExporter
 	 *
+	 * @param   string  $tableName  name of table to build structure for
+	 *
 	 * @return	array	An array of XML lines (strings).
 	 *
 	 * @since	1.0.1
@@ -1363,7 +1356,7 @@ abstract class BwPostmanTableHelper {
 	/**
 	 * Checks if all data and options are in order prior to exporting. Based on Joomla JDatabaseExporter
 	 *
-	 * @param	$db     database connector
+	 * @param	database    $db     database connector
 	 *
 	 * @return	boolean true on success.
 	 *
@@ -1386,7 +1379,7 @@ abstract class BwPostmanTableHelper {
 	/**
 	 * Get the generic name of the table, converting the database prefix to the wildcard string. Based on Joomla JDatabaseExporter
 	 *
-	 * @param	string	$table	The name of the table.
+	 * @param	string	    $table	The name of the table.
 	 *
 	 * @return	string			The name of the table with the database prefix replaced with #__.
 	 *
@@ -1420,7 +1413,6 @@ abstract class BwPostmanTableHelper {
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		$app		= JFactory::getApplication();
 		$date		= JFactory::getDate();
 		$path		= JFactory::getConfig()->get('tmp_path');
 		$file_name	= $path . '/BwPostman_Tables_Server_' . $date->format("Y-m-d_H_i") . '.xml';

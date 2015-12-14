@@ -60,7 +60,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		else {
 			$document->setTitle($newsletter->subject);
 		}
-		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet('/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
 
 		// Get the global list params and preset them

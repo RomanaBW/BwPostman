@@ -57,7 +57,7 @@ switch ($this->check_res['type']) {
 	<?php
 		ob_start();
 		echo '<div class="well">';
-		$this->check_res	= $model->checkTables();
+		$model->checkTables();
 		echo '</div>';
 		ob_flush();
 		flush();

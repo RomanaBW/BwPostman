@@ -170,7 +170,9 @@ abstract class BwPostmanHelper {
 	 * Method to replace the links in a newsletter to provide the correct preview
 	 *
 	 * @access	public
-	 * @param 	string HTML-/Text-version
+	 *
+	 * @param 	string $text    HTML-/Text-version
+	 *
 	 * @return 	boolean
 	 */
 	static public function replaceLinks(&$text)
@@ -184,15 +186,16 @@ abstract class BwPostmanHelper {
 	 * Method to get selectlist for dates
 	 *
 	 * @access	public
-	 * @param 	string				sort of date --> day, hour, minute
-	 * @param 	int					length of listarray
-	 * @param 	array of objects	selectval selected values
+	 *
+	 * @param 	string		$date		sort of date --> day, hour, minute
+	 * @param 	int			$length		length of listarray
+	 * @param 	array   	$selectval  selected values
+	 *
 	 * @return 	string				selectlist
 	 */
 	public function getDateList($date = 'minute', $length = 10, $selectval)
 	{
 		$options	= array();
-		$optMax		= 0;
 		$selectlist	= array();
 		$intval		= 1;
 		if ($date == 'minute') {
@@ -215,10 +218,9 @@ abstract class BwPostmanHelper {
 							}
 							break;
 		}
-		$optMax = count($options);
 
 		foreach ($selectval->$date as $key => $value) {
-			$attribs	= 'class="inputbox" size="1"';
+//			$attribs	= 'class="inputbox" size="1"';
 			$opt		= "automailing_values[" . $date . "][".$key."]";
 			if ($value != '0') {
 				$selected	= $value;

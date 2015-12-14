@@ -136,7 +136,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle($this->params->get('page_title'));
 
-		$document->addStyleSheet(JURI::base(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet('/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
 
 		// Save a reference into view

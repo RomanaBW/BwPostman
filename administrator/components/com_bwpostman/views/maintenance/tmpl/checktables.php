@@ -38,7 +38,7 @@ $model		= $this->getModel();
 
 
 
-
+/*
 switch ($this->check_res['type']) {
 	case 'error':	$class	= "bw_tablecheck_error bw_maintenance_result err";
 		break;
@@ -47,6 +47,7 @@ switch ($this->check_res['type']) {
 	case 'message':	$class	= "bw_tablecheck_ok bw_maintenance_result ok";
 		break;
 }
+*/
 ?>
 
 <?php /*

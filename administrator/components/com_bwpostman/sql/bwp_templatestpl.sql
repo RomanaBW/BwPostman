@@ -1,5 +1,5 @@
 --
--- Daten für Tabelle `#__bwpostman_templates_tpl`
+-- Data for table `#__bwpostman_templates_tpl`
 --
 
 INSERT IGNORE INTO `#__bwpostman_templates_tpl` (`id`, `title`, `css`, `header_tpl`, `intro_tpl`, `divider_tpl`, `article_tpl`, `readon_tpl`, `footer_tpl`, `button_tpl`) VALUES

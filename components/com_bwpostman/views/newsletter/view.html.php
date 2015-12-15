@@ -51,7 +51,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document = JFactory::getDocument();
 		if ($params->get('page_heading') != '') {
@@ -60,8 +60,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		else {
 			$document->setTitle($newsletter->subject);
 		}
-		$document->addStyleSheet('/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
 
 		// Get the global list params and preset them
 		$globalParams				= JComponentHelper::getParams('com_bwpostman', true);

@@ -92,7 +92,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAM_DETAILS'));
-		$document->addStyleSheet('/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
@@ -100,7 +100,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$user_browser	= $browser->getBrowser();
 
 		if ($user_browser == 'msie') {
-			$document->addStyleSheet('/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
+			$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit

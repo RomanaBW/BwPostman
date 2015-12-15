@@ -73,7 +73,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			// Get document object, set document title and add css
 			$document = JFactory::getDocument();
 			$document->setTitle(JText::_('COM_BWPOSTMAN'));
-			$document->addStyleSheet('/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+			$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 			// Set toolbar title
 			JToolBarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');

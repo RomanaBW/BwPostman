@@ -246,7 +246,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'));
-		$document->addStyleSheet('/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar items
 		JToolBarHelper::title(JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'), 'subscribers');
@@ -279,7 +279,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$document	= JFactory::getDocument();
-		$document->addStyleSheet('/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		$alt 	= "COM_BWPOSTMAN_BACK";
 		$bar	= JToolBar::getInstance('toolbar');

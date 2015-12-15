@@ -131,13 +131,13 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document = JFactory::getDocument();
 		$document->setTitle($this->params->get('page_title'));
 
-		$document->addStyleSheet('/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet($css_filename);
+		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
 
 		// Save a reference into view
 		$this->assign('uri', str_replace('&', '&amp;', $uri_string));

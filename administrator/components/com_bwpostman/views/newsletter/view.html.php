@@ -121,8 +121,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// Get document object, set document title and add css
 		$document	= JFactory::getDocument();
 		$document->setTitle('COM_BWPOSTMAN_NL_DETAILS');
-		$document->addStyleSheet(JURI::root(true) . 'administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(JURI::root(true) . 'administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
+		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(JURI::root(true) . 'components/com_bwpostman/assets/js/bwpostman_nl.js');
 
 		// Set toolbar title and items
 		$canDo			= BwPostmanHelper::getActions($this->item->id, 'newsletter');

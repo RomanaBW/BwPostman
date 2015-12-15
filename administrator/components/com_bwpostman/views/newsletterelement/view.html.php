@@ -61,7 +61,7 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'COM_BWPOSTMAN_SELECTNEWSLETTER' ));
-		$document->addStyleSheet(JURI::root(true) . 'administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get data from the model
 		$items 		= $this->get('data');

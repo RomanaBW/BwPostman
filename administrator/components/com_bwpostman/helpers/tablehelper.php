@@ -1306,8 +1306,8 @@ abstract class BwPostmanTableHelper {
 	/**
 	 * Builds the XML data to export
 	 *
-	 * @param	string	$tableName  name of table
-	 * @param	handle	$fp         handle of backup file
+	 * @param	string	        $tableName  name of table
+	 * @param	file pointer	$fp         handle of backup file
 	 *
 	 * @return	array	An array of XML lines (strings).
 	 *
@@ -1379,7 +1379,7 @@ abstract class BwPostmanTableHelper {
 	/**
 	 * Get the generic name of the table, converting the database prefix to the wildcard string. Based on Joomla JDatabaseExporter
 	 *
-	 * @param	string	$table	The name of the table.
+	 * @param	string	    $table	The name of the table.
 	 *
 	 * @return	string			The name of the table with the database prefix replaced with #__.
 	 *
@@ -1413,7 +1413,6 @@ abstract class BwPostmanTableHelper {
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		$app		= JFactory::getApplication();
 		$date		= JFactory::getDate();
 		$path		= JFactory::getConfig()->get('tmp_path');
 		$file_name	= $path . '/BwPostman_Tables_Server_' . $date->format("Y-m-d_H_i") . '.xml';

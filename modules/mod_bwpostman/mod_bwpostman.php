@@ -48,9 +48,9 @@ else {
 $templateName	= $app->getTemplate();
 $css_filename	= '/templates/' . $templateName . '/css/mod_bwpostman.css';
 
-$document->addStyleSheet('modules/mod_bwpostman/css/bwpostman.css');
+$document->addStyleSheet(JURI::root(true) . '/modules/mod_bwpostman/css/bwpostman.css');
 if (file_exists(JPATH_BASE . $css_filename)) {
-	$document->addStyleSheet($css_filename);
+	$document->addStyleSheet(JURI::root(true) . $css_filename);
 }
 
 if (!JComponentHelper::isEnabled('com_bwpostman', true)) {

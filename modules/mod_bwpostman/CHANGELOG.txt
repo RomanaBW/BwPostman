@@ -7,7 +7,7 @@ The changelog may not be exhaustive but nearly complete.
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 1.2.4 released (12-Dec-2015)----
+--- version 1.2.4 released (17-Dec-2015)----
 
 Dec-2015 Romana Boldt
 - bugfix:

@@ -49,6 +49,7 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * Display
 	 *
 	 * @access	public
+	 *
 	 * @param	string Template
 	 */
 	public function display($tpl = null)

@@ -5,7 +5,7 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
---- version 1.2.4 released (12-Dec-2015)----
+--- version 1.2.4 released (17-Dec-2015)----
 
 Dec-2015 Romana Boldt
 - bugfix:

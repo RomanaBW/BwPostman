@@ -36,9 +36,9 @@ $document	= JFactory::getDocument();
 $templateName	= $app->getTemplate();
 $css_filename	= '/templates/' . $templateName . '/css/mod_bwpostman_overview.css';
 
-$document->addStyleSheet('modules/mod_bwpostman_overview/assets/css/bwpostman_overview.css');
+$document->addStyleSheet(JURI::root(true) . '/modules/mod_bwpostman_overview/assets/css/bwpostman_overview.css');
 if (file_exists(JPATH_BASE . $css_filename)) {
-	$document->addStyleSheet($css_filename);
+	$document->addStyleSheet(JURI::root(true) . $css_filename);
 }
 
 $moduleclass_sfx	= htmlspecialchars($params->get('moduleclass_sfx'));

@@ -50,11 +50,11 @@ class BwPostmanViewRegister extends JViewLegacy
 
 		$params			= $app->getPageParameters();
 		$templateName	= $app->getTemplate();
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 		$this->captcha	= BwPostmanHelper::getCaptcha(1);
 
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
 
 		switch ($layout) {
@@ -95,7 +95,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		$error		= new stdClass();
 
 		$templateName	= $app->getTemplate();
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		if(isset($err) && is_array($err)){
 			foreach ($err AS $key => $value) {
@@ -122,7 +122,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
 
 		// Load the form validation behavior
@@ -184,11 +184,11 @@ class BwPostmanViewRegister extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
 
 		// Save references into view
@@ -261,11 +261,11 @@ class BwPostmanViewRegister extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();
-		$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
 
 		// Load the form validation behavior

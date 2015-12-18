@@ -4,7 +4,7 @@
  *
  * BwPostman main model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -72,13 +72,13 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$_general	= array();
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
-		
+
 		// Get # of all unsent newsletters
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_newsletters'));
 		$query->where($_db->quoteName('mailing_date') . ' = ' . $_db->Quote('0000-00-00 00:00:00'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		
+
 		$_db->setQuery($query);
 		$_general['nl_unsent'] = $_db->loadResult();
 
@@ -88,7 +88,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_newsletters'));
 		$query->where($_db->quoteName('mailing_date') . ' != ' . $_db->Quote('0000-00-00 00:00:00'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		
+
 		$_db->SetQuery($query);
 		$_general['nl_sent'] = $_db->loadResult();
 
@@ -98,7 +98,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		
+
 		$_db->SetQuery($query);
 		$_general['sub'] = $_db->loadResult();
 
@@ -108,7 +108,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('status') . ' = ' . (int) 9);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		
+
 		$_db->SetQuery($query);
 		$_general['test'] = $_db->loadResult();
 
@@ -117,7 +117,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_campaigns'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		
+
 		$_db->SetQuery($query);
 		$_general['cam'] = $_db->loadResult();
 
@@ -127,7 +127,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . 0);
-		
+
 		$_db->SetQuery($query);
 		$_general['ml_published'] = $_db->loadResult();
 
@@ -137,7 +137,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 0);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . 0);
-		
+
 		$_db->SetQuery($query);
 		$_general['ml_unpublished'] = $_db->loadResult();
 
@@ -147,7 +147,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
 		$query->where($_db->quoteName('tpl_id') . ' < ' . $_db->Quote('998'));
-		
+
 		$_db->SetQuery($query);
 		$_general['html_templates'] = $_db->loadResult();
 
@@ -157,7 +157,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
 		$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->Quote('997'));
-		
+
 		$_db->SetQuery($query);
 		$_general['text_templates'] = $_db->loadResult();
 
@@ -178,12 +178,12 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$_archive	= array();
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
-		
+
 		// Get # of all archived newsletters
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_newsletters'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 1);
-		
+
 		$_db->SetQuery($query);
 		$_archive['arc_nl'] = $_db->loadResult();
 
@@ -192,7 +192,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 1);
-		
+
 		$_db->SetQuery($query);
 		$_archive['arc_sub'] = $_db->loadResult();
 
@@ -201,7 +201,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_campaigns'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 1);
-		
+
 		$_db->SetQuery($query);
 		$_archive['arc_cam'] = $_db->loadResult();
 
@@ -210,7 +210,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 1);
-		
+
 		$_db->SetQuery($query);
 		$_archive['arc_ml'] = $_db->loadResult();
 
@@ -220,7 +220,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 1);
 		$query->where($_db->quoteName('tpl_id') . ' < ' . $_db->Quote('998'));
-		
+
 		$_db->SetQuery($query);
 		$_general['arc_html_templates'] = $_db->loadResult();
 
@@ -230,7 +230,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 1);
 		$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->Quote('997'));
-		
+
 		$_db->SetQuery($query);
 		$_general['arc_text_templates'] = $_db->loadResult();
 

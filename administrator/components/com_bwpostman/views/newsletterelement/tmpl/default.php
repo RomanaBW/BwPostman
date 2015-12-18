@@ -4,7 +4,7 @@
  *
  * BwPostman backend element template to select a singlenewsletter for a view in frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -46,8 +46,8 @@ JHtml::_('behavior.tooltip');
 			</td>
 		</tr>
 	</table>
-	<br />	
-	
+	<br />
+
 	<table class="adminlist table">
 		<thead>
 			<tr>
@@ -70,7 +70,7 @@ JHtml::_('behavior.tooltip');
 				foreach ($this->items as $i => $item) : ?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td align="center"><?php echo $item->id; ?></td>
-					<td>  
+					<td>
 						<span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_BWPOSTMAN_SELECT_NEWSLETTER' );?><?php echo "<br /><br /><strong>".$item->subject.":</strong><br />".$item->description; ?>">
 							<a style="cursor:pointer" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
 								<?php echo htmlspecialchars($item->subject, ENT_QUOTES, 'UTF-8'); ?>
@@ -91,9 +91,9 @@ JHtml::_('behavior.tooltip');
 			?>
 		</tbody>
 	</table>
-	
+
 	<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-	
+
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />

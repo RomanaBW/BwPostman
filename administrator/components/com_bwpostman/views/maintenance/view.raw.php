@@ -4,7 +4,7 @@
  *
  * BwPostman single text (raw) subscribers view for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -43,70 +43,70 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		$app 	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
 		$date	= JFactory::getDate();
-		
+
 		$layout	= $jinput->get('layout');
-		
+
 		if ($layout == 'saveTables') {
 			$db		= JFactory::getDbo();
 			$query	= $db->getQuery(true);
-			
+
 			$query->select($db->quoteName('manifest_cache'));
 			$query->from($db->quoteName('#__extensions'));
 			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 			$db->SetQuery($query);
-			
+
 			$manifest	= json_decode($db->loadResult(), true);
 			$version	= str_replace('.', '_', $manifest['version']);
-			
+
 			$filename	= "BwPostman_" . $version . "_Tables_" . $date->format("Y-m-d_H:i") . '.xml';
 			$mime_type	= "application/xml";
-	
+
 			// Maybe we need other headers depending on browser type...
 			jimport('joomla.environment.browser');
 			$browser		= JBrowser::getInstance();
 			$user_browser	= $browser->getBrowser();
-	
+
 			JResponse::clearHeaders();
-	
+
 			JResponse::setHeader('Content-Type', $mime_type, true); // Joomla will overwrite this...
 			JResponse::setHeader('Content-Disposition', "attachment; filename=\"$filename\"", true);
 			JResponse::setHeader('Expires', gmdate('D, d M Y H:i:s') . ' GMT', true);
 			JResponse::setHeader('Pragma', 'no-cache', true);
-	
+
 			if ($user_browser == "msie"){
 				JResponse::setHeader('Cache-Control','must-revalidate, post-check=0, pre-check=0', true);
 				JResponse::setHeader('Pragma', 'public', true);
 			}
-	
+
 			// Joomla overwrites content-type, we can't use JResponse::setHeader()
 			$document = JFactory::getDocument();
 			$document->setMimeEncoding("application/xml");
-	
+
 			@ob_end_clean();
 			ob_start();
-	
+
 			JResponse::sendHeaders();
-	
+
 			// Get the export data
 			$model	= $this->getModel('maintenance');
 
 			readfile($model->saveTables(false));
 		}
-		
+
 		if ($layout == 'doRestore') {
 			$model	= $this->getModel();
 			$dest	= $app->getUserState('com_bwpostman.maintenance.dest', '');
-			
+
 			$model->restoreTables($dest);
 		}
 
 		if ($layout == 'checkTables') {
 			$model	= $this->getModel();
-			
+
 			echo '<div class="modal" rel="{size: {x: 700, y: 500}}">';
 			$model->checkTables();
 			echo '</div>';
-			
+
 		}
 	}
 }

@@ -5,7 +5,7 @@
  *
  * BwPostman  form field mailinglists class.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -57,7 +57,7 @@ class JFormFieldArcUsergroups extends JFormFieldList {
 		$query->order('u.title');
 
 		$_db->setQuery ($query);
-	
+
 		try
 		{
 			$options = $_db->loadObjectList();
@@ -66,15 +66,15 @@ class JFormFieldArcUsergroups extends JFormFieldList {
 		{
 			JError::raiseWarning(500, $e->getMessage());
 		}
-	
+
 		$parent = new stdClass;
 		$parent->value = '';
 		$parent->text = JText::_('COM_BWPOSTMAN_ARC_FILTER_USERGROUPS');
 		array_unshift($options, $parent);
-		
+
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
-		
+
 		return $options;
 	}
 }

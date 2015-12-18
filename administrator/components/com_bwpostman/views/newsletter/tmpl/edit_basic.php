@@ -4,7 +4,7 @@
  *
  * BwPostman single newsletter edit basic template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -40,7 +40,7 @@ $checkContentArgs	.= "document.getElementById('content_exists'), ";
 $checkContentArgs	.= "document.getElementsByName('jform[template_id]'), ";
 $checkContentArgs	.= "document.getElementsByName('jform[text_template_id]'), ";
 $checkContentArgs	.= "document.getElementById('template_id_old'), ";
-$checkContentArgs	.= "document.getElementById('text_template_id_old'),"; 
+$checkContentArgs	.= "document.getElementById('text_template_id_old'),";
 $checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
 $checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEMPLATE_ID', true) . "', ";
 $checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true) . "'";
@@ -60,7 +60,7 @@ var $j	= jQuery.noConflict();
 function changeTab(tab){
 	if (tab != 'edit_basic') {
 		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');	
+		document.adminForm.task.setAttribute('value','newsletter.changeTab');
 		checkSelectedContent(<?php echo $checkContentArgs; ?>);
 		if ($j("#jform_campaign_id option:selected").val() == '-1') {
 			res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
@@ -85,7 +85,7 @@ Joomla.submitbutton = function (pressbutton) {
 	if (pressbutton == 'newsletter.cancel') {
 		submitform(pressbutton);
 		return;
-	} 
+	}
 
 	if (pressbutton == 'newsletter.back') {
 		form.task.value = 'back';
@@ -131,7 +131,7 @@ Joomla.submitbutton = function (pressbutton) {
 				return true;
 			}
 }
-	} 
+	}
 }
 
 /* ]]> */
@@ -169,9 +169,9 @@ Joomla.submitbutton = function (pressbutton) {
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>
-		
-	
-	
+
+
+
 		<div class="tab-wrapper-bwp">
 			<div class="form-horizontal">
 				<fieldset class="adminform">
@@ -205,7 +205,7 @@ Joomla.submitbutton = function (pressbutton) {
 								<?php endforeach; ?>
 								</ul>
 						</div>
-							
+
 						<div class="width-50 fltlft span6 control-group">
 							<ul class="adminformlist unstyled">
 								<?php foreach($this->form->getFieldset('basic_2') as $field): ?>
@@ -272,10 +272,10 @@ Joomla.submitbutton = function (pressbutton) {
 																<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">&nbsp;<?php echo $field->label; ?></span>
 															</legend>
 															<div class="row-fluid clearfix">
-																<?php 
+																<?php
 																	$input_field	= trim($field->input);
-																	if (!empty($input_field)) echo $field->input; 
-																	else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; 
+																	if (!empty($input_field)) echo $field->input;
+																	else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>';
 																?>
 															</div>
 														</fieldset>
@@ -286,7 +286,7 @@ Joomla.submitbutton = function (pressbutton) {
 									</fieldset>
 								</div>
 							</div>
-				
+
 							<div class="width-25 fltlft span3">
 								<div class="well-white well-small">
 									<fieldset class="adminform usergroups">
@@ -304,7 +304,7 @@ Joomla.submitbutton = function (pressbutton) {
 						</div>
 					</fieldset>
 				</div>
-				
+
 				<div class="row-fluid">
 					<div class="well-small">
 						<fieldset class="adminform">
@@ -325,14 +325,14 @@ Joomla.submitbutton = function (pressbutton) {
 										<?php endforeach; ?>
 									</ul>
 								</div>
-				
+
 								<div class="width-20 fltlft span3">
 									<input style="width: 50px" type="button" name="left" class="btn-left" value="&lt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_available_content'], document.adminForm['jform_selected_content'])" />
 									<input style="width: 50px" type="button" name="right" class="btn-right" value="&gt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_selected_content'], document.adminForm['jform_available_content'])" />
 								</div>
-								
+
 								<div class="width-40 fltlft span4">
 									<ul class="adminformlist unstyled">
 										<?php foreach($this->form->getFieldset('available_content') as $field): ?>
@@ -352,7 +352,7 @@ Joomla.submitbutton = function (pressbutton) {
 				</div>
 			</fieldset>
 			<fieldset class="adminform">
-				<?php 
+				<?php
 				if ($this->canDo->get('core.admin')): ?>
 					<div class="fltlft">
 						<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
@@ -366,17 +366,17 @@ Joomla.submitbutton = function (pressbutton) {
 						<?php echo JHtml::_('sliders.end'); ?>
 					</div>
 				<?php endif; ?>
-				
+
 			</fieldset>
 			<div class="clr clearfix"></div>
 		</div>
-		
-		<?php 
+
+		<?php
 			foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
 			foreach($this->form->getFieldset('text_version_hidden') as $field) echo $field->input;
 			?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-		
+
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" id="layout" name="layout" value="edit_basic" /><!-- value never changes -->

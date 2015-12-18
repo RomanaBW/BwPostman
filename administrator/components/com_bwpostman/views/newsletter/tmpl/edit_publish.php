@@ -4,7 +4,7 @@
  *
  * BwPostman single newsletter edit publish template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -42,13 +42,13 @@ Joomla.submitbutton = function (pressbutton) {
 	if (pressbutton == 'newsletter.cancel') {
 		submitform(pressbutton);
 		return;
-	} 
+	}
 
 	if (pressbutton == 'newsletter.publish_save') {
 		form.task.setAttribute('value','newsletter.publish_save');
 		submitform(pressbutton);
 		return;
-	} 
+	}
 }
 /* ]]> */
 </script>
@@ -71,7 +71,7 @@ Joomla.submitbutton = function (pressbutton) {
 							<?php endforeach; ?>
 						</ul>
 					</div>
-						
+
 					<div class="width-50 fltlft span6 control-group">
 						<ul class="adminformlist unstyled">
 							<?php foreach($this->form->getFieldset('basic_2') as $field): ?>
@@ -90,7 +90,7 @@ Joomla.submitbutton = function (pressbutton) {
 			</fieldset>
 		</div>
 
-		<?php 
+		<?php
 			foreach($this->form->getFieldset('basic_1_hidden') as $field) echo $field->input;
 			foreach($this->form->getFieldset('selected_content_hidden') as $field) echo $field->input;
 			foreach($this->form->getFieldset('available_content_hidden') as $field) echo $field->input;
@@ -98,11 +98,11 @@ Joomla.submitbutton = function (pressbutton) {
 			foreach($this->form->getFieldset('text_version_hidden') as $field) echo $field->input;
 			foreach($this->form->getFieldset('templates_hidden') as $field) echo $field->input;
 		?>
-			
+
 		<div class="clr clearfix"></div>
-		
+
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-		
+
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="publish_save" />
 		<input type="hidden" id="layout" name="layout" value="edit_publish" /><!-- value never changes -->
@@ -115,4 +115,3 @@ Joomla.submitbutton = function (pressbutton) {
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div>
-		

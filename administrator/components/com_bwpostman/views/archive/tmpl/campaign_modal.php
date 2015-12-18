@@ -4,7 +4,7 @@
  *
  * BwPostman archive campaign modal template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -58,13 +58,13 @@ $url	= $base.'components/com_bwpostman/assets/images/icon-48-campaigns.png';
 			<td><strong><?php echo JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL'); ?></strong></td>
 		</tr>
 		<tr>
-			<td><?php 
+			<td><?php
 			$newsletters = $this->cam->newsletters;
-				
+
 			if (!empty($newsletters)) {
-	
+
 				echo "<ul>";
-	
+
 				foreach ($newsletters AS $newsletter) {
 					if ($newsletter->archive_flag == 0) {
 						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id})</li>";
@@ -73,14 +73,14 @@ $url	= $base.'components/com_bwpostman/assets/images/icon-48-campaigns.png';
 						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id}, ". JText::_('COM_BWPOSTMAN_ARC_NL').")</li>";
 					}
 				}
-	
+
 				echo "</ul>";
-	
+
 			}
 			else {
 				echo JText::_('COM_BWPOSTMAN_ARC_CAM_NO_ASSIGNED_NL');
 			}
-	
+
 			?></td>
 		</tr>
 	</table>

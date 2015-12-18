@@ -4,7 +4,7 @@
  *
  * BwPostman templates table for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -136,7 +136,7 @@ class BwPostmanTableTemplates extends JTable
 	 * Constructor
 	 *
 	 * @param 	db Database object
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	public function __construct(& $db)
@@ -250,12 +250,12 @@ class BwPostmanTableTemplates extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
-	 * 
+	 *
 	 * @param object Named array
 	 * @param string Space separated list of fields not to bind
-	 * 
+	 *
 	 * @return boolean
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	public function bind($data, $ignore='')
@@ -297,9 +297,9 @@ class BwPostmanTableTemplates extends JTable
 	 * Overloaded check method to ensure data integrity
 	 *
 	 * @access public
-	 * 
+	 *
 	 * @return boolean True
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	public function check()
@@ -308,7 +308,7 @@ class BwPostmanTableTemplates extends JTable
 		$_db	= $this->_db;
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
-		
+
 		// unset standard template if task is save2copy
 		$jinput	= JFactory::getApplication()->input;
 		$task = $jinput->get('task', 0);
@@ -316,7 +316,7 @@ class BwPostmanTableTemplates extends JTable
 
 		// *** prepare the template data ***
 		$item = $this;
-		
+
 		// usermade html template
 		if ($item->tpl_id == 0) {
 			if (isset($this->article) && is_array($this->article)) {
@@ -345,15 +345,15 @@ class BwPostmanTableTemplates extends JTable
 			// make html template data
 			$this->tpl_html	= $model->makeTexttemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1) $this->tpl_html = $this->tpl_html . '[%impressum%]';
-			
+
 			// make article template data
 			$article			= $tpl->article_tpl;
 			$readon				= $tpl->readon_tpl;
 			$this->tpl_article	= $this->article['show_readon'] != 1 ? str_replace('[%readon_button%]', '', $article) : str_replace('[%readon_button%]', $readon, $article);
-			
+
 			//  set divider template
 			$this->tpl_divider	= $tpl->divider_tpl;
-			
+
 			// convert object array to string
 			self::converttostr($this);
 		}
@@ -363,30 +363,30 @@ class BwPostmanTableTemplates extends JTable
 			$tpl_id		= $item->tpl_id;
 			$tpl_model	= JModelLegacy::getInstance( 'templates_tpl', 'BwPostmanModel' );
 			$tpl		= $tpl_model->getItem($tpl_id);
-			
+
 			// get template model
 			$model		= JModelLegacy::getInstance( 'template', 'BwPostmanModel' );
 			// make html template data
 			$this->tpl_html = $model->makeTemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1) $this->tpl_html = $this->tpl_html . '[%impressum%]';
-			
+
 			// make css data
 			$this->tpl_css = $model->replaceZooms($tpl->css, $item);
-			
+
 			// make article template data
 			$article			= $model->replaceZooms($tpl->article_tpl, $item);
 			$readon				= $model->makeButton($tpl->readon_tpl, $item);
 			$this->tpl_article	= $this->article['show_readon'] != 1 ? str_replace('[%readon_button%]', '', $article) : str_replace('[%readon_button%]', $readon, $article);
-			
+
 			//  set divider template and replace placeholder
 			$tpl->divider_tpl	= $model->replaceZooms($tpl->divider_tpl, $item);
 			$this->tpl_divider	= str_replace('[%divider_color%]', $item->article['divider_color'], $tpl->divider_tpl);
-			
+
 			// convert object array to string
 			self::converttostr($this);
 		}
 		// *** end prepare the template data ***
-		
+
 		// Check for valid title
 		if (trim($this->title) == '') {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE'), 'error');
@@ -403,9 +403,9 @@ class BwPostmanTableTemplates extends JTable
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		$query->where($_db->quoteName('title') . ' = ' . $_db->Quote($this->title));
-		
+
 		$_db->setQuery($query);
-		
+
 		$xid = intval($this->_db->loadResult());
 
 		if ($xid && $xid != intval($this->id)) {
@@ -414,7 +414,7 @@ class BwPostmanTableTemplates extends JTable
 			return false;
 		}
 
-		if ($fault) { 
+		if ($fault) {
 			$app->setUserState('com_bwpostman.edit.template.data', $this);
 			return false;
 		}
@@ -434,7 +434,7 @@ class BwPostmanTableTemplates extends JTable
 	{
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
-	
+
 		// trim leading and last <style>-tag
 		$this->tpl_css = trim($this->tpl_css);
 		$this->tpl_css = ltrim($this->tpl_css, '<style type="text/css">');
@@ -452,17 +452,17 @@ class BwPostmanTableTemplates extends JTable
 		}
 		$res	= parent::store($updateNulls);
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.template.id', $this->id);
-		
+
 		return $res;
 	}
-	
+
 	/**
 	 * Convert object array to string
 	 *
 	 * @access private
-	 * 
+	 *
 	 * @return $data
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	private function converttostr($data)

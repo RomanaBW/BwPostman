@@ -4,7 +4,7 @@
  *
  * BwPostman subscriber controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -59,11 +59,11 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
+
 		// Register Extra tasks
 		$this->registerTask('add_test', 'add_test');
 	}
-	
+
 	/**
 	 * Method override to check if you can add a new record.
 	 *
@@ -76,7 +76,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		$user	= JFactory::getUser();
-		
+
 		return ($user->authorise('core.create', 'com_bwpostman'));
 	}
 
@@ -136,7 +136,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Override method to edit an existing record, based on Joomla method.
 	 * We need an override, because we want to handle state a bit different than Joomla at this point
@@ -170,7 +170,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		{
 			$urlVar = $key;
 		}
-		
+
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
 		$checkin = property_exists($table, 'checked_out');
@@ -237,7 +237,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		parent::add();
 	}
-	
+
 	/**
 	 * Overwrite for method to add a new record for a test-recipient
 	 *
@@ -250,7 +250,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		parent::add();
 	}
-	
+
 	/**
 	 * Method to archive one or more subscribers/test-recipients
 	 * --> subscribers-table: archive_flag = 1, set archive_date
@@ -265,7 +265,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'confirmed');
 
@@ -284,13 +284,13 @@ class BwPostmanControllerSubscriber extends JControllerForm
 				else {
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_TEST_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
-			}else {		
+			}else {
 				if ($n > 1) {
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_SUBS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
 				else {
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_SUB_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
-				}	
+				}
 			}
 		}
 		else { // Archived successfully
@@ -329,14 +329,14 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	{
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$app		= JFactory::getApplication();
 		$jinput		= $app->input;
 		$vars		= $jinput->post->get('batch', array(), 'array');
 		$cid		= $jinput->post->get('cid', array(), 'array');
 		$old_list	= JFactory::getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
 		$message	= '';
-		
+
 		// Build an array of item contexts to check
 		$contexts = array();
 		foreach ($cid as $id) {
@@ -352,7 +352,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		// Set the model and sone variables
 		$model	= $this->getModel('Subscriber', '', array());
-		
+
 		// run the batch operation.
 		$results	= $model->batch($vars, $cid, $contexts);
 
@@ -386,10 +386,10 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		else {
 			$this->setMessage(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_FAILED', $model->getError()), 'warning');
 		}
-		
+
 		// Set the redirect
 		$this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=subscribers' . $this->getRedirectToListAppend(), false));
-		
+
 		return true;
 	}
 }

@@ -4,7 +4,7 @@
  *
  * BwPostman mailinglist controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -59,9 +59,9 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
+
 	}
-	
+
 	/**
 	 * Method override to check if you can add a new record.
 	 *
@@ -74,7 +74,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		$user	= JFactory::getUser();
-		
+
 		return ($user->authorise('core.create', 'com_bwpostman'));
 	}
 
@@ -168,7 +168,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		{
 			$urlVar = $key;
 		}
-		
+
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
 		$checkin = property_exists($table, 'checked_out');
@@ -233,16 +233,16 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	public function archive()
 	{
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		// Get the selected mailinglist(s)
 		$cid = $jinput->get('cid', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid);
-	
+
 		$n = count ($cid);
-	
+
 		$model = $this->getModel('mailinglist');
 		if(!$model->archive($cid, 1)) {
 			if ($n > 1) {
@@ -260,7 +260,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 				$msg = JText::_('COM_BWPOSTMAN_ML_ARCHIVED');
 			}
 			$link = JRoute::_('index.php?option=com_bwpostman&view=mailinglists', false);
-	
+
 			$this->setRedirect($link, $msg);
 		}
 	}

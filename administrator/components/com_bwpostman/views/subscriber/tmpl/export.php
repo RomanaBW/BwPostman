@@ -4,7 +4,7 @@
  *
  * BwPostman single subscriber export template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -52,7 +52,7 @@ JHtml::_('bootstrap.tooltip');
 	function removeOptions(selectbox)
 	{
 		var i;
-		
+
 		for(i=selectbox.options.length-1;i>=0;i--) {
 			if(selectbox.options[i].selected){
 				selectbox.remove(i);
@@ -77,7 +77,7 @@ JHtml::_('bootstrap.tooltip');
 		 	}
 		}
 	}
-	
+
 	function moveDown(element) // Method to move an item down
 	{
 		for(i = (element.options.length - 1); i >= 0; i--) {
@@ -96,7 +96,7 @@ JHtml::_('bootstrap.tooltip');
 	function check() // Method to check if the user didn't delete all items in the select box
 	{
 		var count_export_fields = document.getElementById('export_fields').length;
-	
+
 		if (count_export_fields <= 0) {
 		alert ("<?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_NO_EXPORTFIELDS', true); ?>");
 		return 0;
@@ -162,7 +162,7 @@ JHtml::_('bootstrap.tooltip');
 					</td>
 					<td valign="top" width="280"><?php echo $this->lists['export_fields']; ?><br />
 						<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
-							<input class="btn btn-small" type="button" name="upbutton" onclick="moveUp(document.getElementById('export_fields'));" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" /> 
+							<input class="btn btn-small" type="button" name="upbutton" onclick="moveUp(document.getElementById('export_fields'));" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
 						</span>
 						<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
 							<input class="btn btn-small" type="button" name="downbutton" onclick="moveDown(document.getElementById('export_fields'));" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
@@ -184,7 +184,7 @@ JHtml::_('bootstrap.tooltip');
 			</table>
 		</div>
 	</fieldset>
-	
+
 	<input type="hidden" name="task" value="export" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
@@ -199,7 +199,7 @@ var $j	= jQuery.noConflict();
 
 function extCheck() {
 	var format		= $j("input[name='fileformat']:checked").val();
-	
+
 	switch (format) {
 		case 'xml':
 				$j( ".exportgroups" ).show();

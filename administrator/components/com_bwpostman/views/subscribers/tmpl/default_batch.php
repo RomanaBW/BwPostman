@@ -4,7 +4,7 @@
  *
  * BwPostman all subscribers confirmed template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -31,7 +31,7 @@ defined ('_JEXEC') or die ('Restricted access');
 $filter_id	= $this->escape($this->state->get('filter.mailinglist'));
 $published	= $this->escape($this->state->get('filter.published'));
 
-// Set session filter state for moving, needed in model 
+// Set session filter state for moving, needed in model
 JFactory::getSession()->set('com_bwpostman.subscriber.batch_filter_mailinglist', $filter_id);
 
 // Create the subscribe/unsubscribe/move options.
@@ -81,6 +81,6 @@ $batch_lists =	'<label id="batch-choose-action-lbl" for="batch-choose-action">' 
 		<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('subscriber.batch');">
 			<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 		</button>
-		
+
 	</div>
 </div>

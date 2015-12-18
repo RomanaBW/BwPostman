@@ -4,7 +4,7 @@
  *
  * BwPostman  form field available content class.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -85,7 +85,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . (string) $this->element['ondblclick'] . '"' : '';
-		
+
 		// Get the field options.
 		$options = (array) $this->getOptions();
 
@@ -104,7 +104,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		return implode($html);
 	}
 
-	
+
 	/**
 	 * Method to get the field options.
 	 *
@@ -115,7 +115,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 	{
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
-		
+
 		// Initialize variables.
 		$options		= array();
 		$user_id		= null;
@@ -128,23 +128,23 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query_user	= $_db->getQuery(true);
 		$options	= array();
 		$return		= '';
-		
+
 		// get user_ids if exists
 		$query_user->select($_db->quoteName('user_id'));
 		$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query_user->where($_db->quoteName('id') . ' = ' . (int) $this->_id);
-		
+
 		$_db->setQuery($query_user);
 		$user_id = $_db->loadResult();
 
-		// get authorized viewlevels 
+		// get authorized viewlevels
 		if ($user_id) {
 			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
 		}
-		
+
 		// check access for unavailable mailinglists
 		if (in_array(3, $accesslevels)) {
-			$access	= 3; 
+			$access	= 3;
 		}
 		elseif (in_array(2, $accesslevels)) {
 			$access	= 2;
@@ -154,7 +154,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
-		
+
 		return $options;
 	}
 	/**
@@ -170,13 +170,13 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query				= $_db->getQuery(true);
 		$options			= array();
 		$selected_content	= '';
-				
+
 		if ($app->getUserState('com_bwpostman.edit.newsletter.data')) {
 			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
 		}
 
 		if (is_array($selected_content)) $selected_content	= implode(',',$selected_content);
-		
+
 		$available_content_items = array();
 
 		// Get available content which is categorized
@@ -186,32 +186,32 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('c'));
 		$query->where($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' > ' . $_db->Quote('0'));
 		$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') .' ASC');
-				
+
 		$_db->setQuery($query);
 
 		$categories = $_db->loadObjectList();
-		
+
 		foreach($categories as $category){
 			$query	= $_db->getQuery(true);
 			$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
 			$query->select('CONCAT(' . $_db->quoteName('cc') . '.' . $_db->quoteName('path') . ', " = ",' . $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS ' . $_db->quoteName('text'));
 			$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('c'));
 			$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc'));
-			
+
 			$query->where($_db->quoteName('c') . '.' . $_db->quoteName('state') . ' > ' . (int) 0);
 			$query->where($_db->quoteName('c') . '.' . $_db->quoteName('catid') . ' = ' . $_db->quoteName('cc') . '.' . $_db->quoteName('id'));
 			$query->where($_db->quoteName('c') . '.' . $_db->quoteName('catid') . ' = ' . (int) $category->id);
 			$query->where($_db->quoteName('cc') . '.' . $_db->quoteName('parent_id') . ' = ' . (int) $category->parent);
 
 			if ($selected_content)	$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
-				
+
 			$query->order($_db->quoteName('cc') . '.' . $_db->quoteName('path').' ASC');
 			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('created').' DESC');
 			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title').' ASC');
-							
+
 			$_db->setQuery($query);
 			$rows_list = $_db->loadObjectList();
-				
+
 			if(sizeof($rows_list) > 0)	$options	= array_merge($options, $rows_list);
 		}
 
@@ -220,18 +220,18 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
 		$query->select('CONCAT("' . JText::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT_UNCATEGORIZED') . ' = ",' .  $_db->quoteName('title') . ') AS ' . $_db->quoteName('text'));
 		$query->from($_db->quoteName('#__content'));
-		
+
 		$query->where($_db->quoteName('state') . ' > ' . (int) 0);
 		$query->where($_db->quoteName('catid') . ' = ' . (int) 0);
 
 		if ($selected_content)	$query->where($_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
-			
+
 		$query->order($_db->quoteName('created').' DESC');
 		$query->order($_db->quoteName('title').' ASC');
-			
+
 		$_db->setQuery($query);
 		$rows_list_uncat = $_db->loadObjectList();
-		
+
 		if(sizeof($rows_list_uncat) > 0)	$options	= array_merge($rows_list, $rows_list_uncat);
 
 		return $options;

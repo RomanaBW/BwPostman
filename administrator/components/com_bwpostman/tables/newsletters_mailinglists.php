@@ -4,7 +4,7 @@
  *
  * BwPostman newsletters lists table for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -65,13 +65,13 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 		$subQuery	= $_db->getQuery(true);
-		
+
 		$subQuery->select($_db->Quote($newid)  . ' AS ' . $_db->quoteName('newsletter_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
 		$subQuery->where($_db->quoteName('newsletter_id') . ' = ' . (int) $oldid);
 		$_db->setQuery($subQuery);
-		
+
 		$lists		= $_db->loadAssocList();
 
 		foreach ($lists as $list) {
@@ -82,7 +82,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 				$_db->quoteName('mailinglist_id')
 				));
 			$query->values(
-					(int) $list['newsletter_id'] . ',' . 
+					(int) $list['newsletter_id'] . ',' .
 					(int) $list['mailinglist_id']
 				);
 			$_db->setQuery($query);

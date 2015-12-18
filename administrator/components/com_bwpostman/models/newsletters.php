@@ -4,7 +4,7 @@
  *
  * BwPostman newsletterslists model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -93,13 +93,13 @@ class BwPostmanModelNewsletters extends JModelList
 			$this->context .= '.' . $layout;
 			$this->setState('tab', $layout);
 		}
-		
+
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
 		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
 		$this->setState('filter.search_filter', $filtersearch);
-		
+
 		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
 		$this->setState('filter.published', $published);
 
@@ -141,7 +141,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @param	string		$id	A prefix for the store id.
 	 *
 	 * @return	string		A store id.
-	 * 
+	 *
 	 * @since	1.0.1
 	 */
 	protected function getStoreId($id = '')
@@ -157,7 +157,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$id	.= ':'.$this->getState('filter.mailinglists');
 		$id	.= ':'.$this->getState('filter.usergroups');
 		$id	.= ':'.$this->getState('filter.description');
-		
+
 		return parent::getStoreId($id);
 	}
 
@@ -172,7 +172,7 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
 
@@ -181,7 +181,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		return $count_queue;
 	}
-	
+
 	/**
 	 * Method to build the MySQL query
 	 *
@@ -194,11 +194,11 @@ class BwPostmanModelNewsletters extends JModelList
 		$app	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
 		$query	= $_db->getQuery(true);
-		
+
 		// Define null and now dates, get params
 		$nullDate	= $_db->quote($_db->getNullDate());
 		$nowDate	= $_db->quote(JFactory::getDate()->toSql());
-		
+
 		//Get the tab in which we are for correct query
 		$tab	= $jinput->get('tab', 'unsent');
 
@@ -214,7 +214,7 @@ class BwPostmanModelNewsletters extends JModelList
 					$tab_int	= ' = ';
 				break;
 		}
-		
+
 
 		switch ($tab) {
 			case ("unsent"):
@@ -233,37 +233,37 @@ class BwPostmanModelNewsletters extends JModelList
 					$query->from('#__bwpostman_newsletters AS a');
 					$query->leftJoin('#__bwpostman_campaigns AS c ON c.id = a.campaign_id');
 					$query->where('a.archive_flag = 0');
-					
+
 					// Join over the users for the checked out user.
 					$query->select('uc.name AS editor');
 					$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-					
+
 					// Join over the users for the authors.
 					$query->select('ua.name AS authors');
 					$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
-					
+
 					// Filter by campaign
 					if ($campaign = $this->getState('filter.campaign_id')) {
 						$query->where('a.campaign_id = ' . (int) $campaign);
 					}
-					
+
 					// Filter by mailinglist
 					if ($mailinglist = $this->getState('filter.mailinglists')) {
 						$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 						$query->where('m.mailinglist_id = ' . (int) $mailinglist);
 					}
-					
+
 					// Filter by usergroup
 					if ($usergroup = $this->getState('filter.usergroups')) {
 						$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 						$query->where('m.mailinglist_id = ' . -(int) $usergroup);
 					}
-					
+
 					// Filter by authors
 					if ($authors = $this->getState('filter.authors')) {
 						$query->where('a.created_by = ' . (int) $authors);
 					}
-					
+
 					// Filter by published state
 					$published = $this->getState('filter.published');
 					if (is_numeric($published)) {
@@ -289,22 +289,22 @@ class BwPostmanModelNewsletters extends JModelList
 									$query->where('a.publish_up > ' . $nowDate);
 								break;
 						}
-						
+
 					}
 					elseif ($published === '') {
 						$query->where('(a.published = 0 OR a.published = 1)');
 					}
-					
+
 					// Filter by mailing date
 					$query->where('a.mailing_date' . $tab_int . "'0000-00-00 00:00:00'");
-					
+
 					// Filter by archive state
 					$query->where('a.archive_flag = ' . (int) 0);
-					
+
 					// Filter by search word.
 					$filtersearch	= $this->getState('filter.search_filter');
 					$search			= $_db->escape($this->getState('filter.search'), true);
-					
+
 					if (!empty($search)) {
 						$search			= '%' . $search . '%';
 						switch ($filtersearch) {
@@ -320,26 +320,26 @@ class BwPostmanModelNewsletters extends JModelList
 							case 'html_text_version':
 									$query->where('(a.html_version LIKE ' . $_db->Quote($search, false) . 'OR a.text_version LIKE ' . $_db->Quote($search, false) . ')');
 								break;
-							case 'text_version':	
+							case 'text_version':
 									$query->where('a.text_version LIKE ' . $_db->Quote($search. false));
 								break;
-							case 'html_version':	
+							case 'html_version':
 									$query->where('a.html_version LIKE ' . $_db->Quote($search, false));
 								break;
-							default:	
+							default:
 						}
 					}
-					
+
 					// Add the list ordering clause.
 					$orderCol	= $this->state->get('list.ordering', 'a.subject');
 					$orderDirn	= $this->state->get('list.direction', 'asc');
-					
+
 					//sqlsrv change
 					if($orderCol == 'modified_time')
 						$orderCol = 'a.modified_time';
-					
+
 					$query->order($_db->escape($orderCol.' '.$orderDirn));
-					
+
 					$_db->setQuery($query);
 				break;
 
@@ -353,21 +353,21 @@ class BwPostmanModelNewsletters extends JModelList
 					$query->rightJoin('#__bwpostman_sendmailqueue AS q ON q.content_id = c.id');
 					$query->leftJoin('#__bwpostman_newsletters AS n ON n.id = c.nl_id');
 					$query->leftJoin('#__users AS ua ON ua.id = n.created_by');
-					
+
 					// Filter by campaign
 					if ($campaign = $this->getState('filter.campaign_id')) {
 						$query->where('n.campaign_id = ' . (int) $campaign);
 					}
-					
+
 					// Filter by authors
 					if ($authors = $this->getState('filter.authors')) {
 						$query->where('n.created_by = ' . (int) $authors);
 					}
-					
+
 					// Filter by search word.
 					$filtersearch	= $this->getState('filter.search_filter');
 					$search			= $_db->escape($this->getState('filter.search'), true);
-					
+
 					if (!empty($search)) {
 						$search			= '%' . $search . '%';
 						switch ($filtersearch) {
@@ -392,12 +392,12 @@ class BwPostmanModelNewsletters extends JModelList
 							default:
 						}
 					}
-					
+
 					$query->order($_db->quoteName('q')  . '.' . $_db->quoteName('id'));
-					
+
 					$_db->setQuery($query);
 				break;
-		}	
+		}
 		return $query;
 	}
 }

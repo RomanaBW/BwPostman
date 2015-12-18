@@ -4,7 +4,7 @@
  *
  * BwPostman media template for backend, based on joomla com_media.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -64,7 +64,7 @@ echo $params->get('image_path', 'images'); ?>/';
 	</div>
 
 	<iframe id="imageframe" name="imageframe" src="index.php?option=com_bwpostman&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>"></iframe>
-	
+
 	<div class="well">
 		<div class="row">
 			<div class="span6 control-group">

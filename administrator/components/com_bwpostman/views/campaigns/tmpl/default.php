@@ -4,7 +4,7 @@
  *
  * BwPostman all campaigns default template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -48,11 +48,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 <script type="text/javascript">
 /* <![CDATA[ */
 	function confirmArchive(archive_value) // Get the selected value from modalbox
-	{ 
+	{
 		document.adminForm.archive_nl.value = archive_value;
 		Joomla.submitbutton('campaign.archive');
 	}
-/* ]]> */	
+/* ]]> */
 </script>
 
 <div id="bwp_view_lists">
@@ -69,7 +69,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				// Search tools bar
 				echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 			?>
-		
+
 				<div class="row-fluid">
 					<table class="adminlist table table-striped">
 						<thead>
@@ -82,8 +82,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								if ($this->auto_nbr) { ?>
 									<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOMATION'); ?></th>
 									<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVE'); ?></th>
-								<?php 	
-								} 
+								<?php
+								}
 								?>
 								<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 							</tr>
@@ -95,8 +95,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						</tfoot>
 						<tbody>
 						<?php
-							if (count($this->items) > 0) { 
-								foreach ($this->items as $i => $item) : 
+							if (count($this->items) > 0) {
+								foreach ($this->items as $i => $item) :
 									$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 									$canEdit	= $user->authorise('core.edit',			'com_bwpostman.campaign.'.$item->id);
 									$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.campaign.'.$item->id) && $item->created_by == $userId;
@@ -117,7 +117,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										<td><?php echo $item->description; ?></td>
 										<td align="center"><?php echo $item->newsletters; ?></td>
 										<?php
-										if ($this->auto_nbr) { 
+										if ($this->auto_nbr) {
 											$checked	= '';
 											if ($item->active) {
 												$checked	= 'checked="checked" ';
@@ -127,30 +127,30 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 												<?php if ($item->auto) {
 													if ($item->active)?>
 													<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=campaign&task=campaign.activate&cid[0]='. $item->id); ?>" class="btn btn-micro active hasTooltip"><i class="icon-publish"></i></a></td>
-												<?php } 	
-										} 
+												<?php }
+										}
 										?>
 										<td align="center"><?php echo $item->id; ?></td>
-									</tr><?php 
-								endforeach; 
+									</tr><?php
+								endforeach;
 							}
 							else { ?>
 								<tr class="row1">
 									<td colspan="5"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 								</tr><?php
-							} 
+							}
 						?>
 						</tbody>
 					</table>
 				</div>
-			
+
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
 				<input type="hidden" name="archive_nl" value="0" />
 				<?php echo JHTML::_('form.token'); ?>
-			
+
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 			</div>
 		</div>
 	</form>
-</div>	
+</div>

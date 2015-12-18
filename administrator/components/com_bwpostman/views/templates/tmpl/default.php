@@ -4,7 +4,7 @@
  *
  * BwPostman all templates default template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -49,10 +49,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				return;
 			}
 		} else {
-			submitform(pressbutton);		
-		} 
+			submitform(pressbutton);
+		}
 	}
-/* ]]> */	
+/* ]]> */
 </script>
 
 <div id="bwp_view_lists">
@@ -69,7 +69,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				// Search tools bar
 				echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 			?>
-		
+
 				<div class="row-fluid">
 					<table class="adminlist table table-striped">
 						<thead>
@@ -91,8 +91,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						</tfoot>
 						<tbody>
 						<?php
-							if (count($this->items) > 0) { 
-								foreach ($this->items as $i => $item) : 
+							if (count($this->items) > 0) {
+								foreach ($this->items as $i => $item) :
 									$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 									$canEdit	= $user->authorise('core.edit',			'com_bwpostman.template.'.$item->id);
 									$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.template.'.$item->id) && $item->created_by == $userId;
@@ -127,25 +127,25 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										<td class="center" align="center"><?php echo JHTML::_('jgrid.published', $item->published, $i, 'templates.', $canChange, 'cb'); ?>
 										<td><?php echo nl2br($item->description); ?></td>
 										<td align="center"><?php echo $item->id; ?></td>
-									</tr><?php 
-								endforeach; 
+									</tr><?php
+								endforeach;
 							}
 							else { ?>
 								<tr class="row1">
 									<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 								</tr><?php
-							} 
+							}
 						?>
 						</tbody>
 					</table>
 				</div>
-		
+
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
 				<?php echo JHTML::_('form.token'); ?>
-		
+
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 			</div>
 		</div>
 	</form>
-</div>	
+</div>

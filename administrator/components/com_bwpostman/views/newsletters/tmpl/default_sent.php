@@ -4,7 +4,7 @@
  *
  * BwPostman all newsletters sent template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -80,7 +80,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			return false;
 		}
 	}
-	
+
 	Joomla.submitbutton = function (pressbutton) {
 		var form = document.adminForm;
 		if (pressbutton == 'newsletters.archive') {
@@ -93,7 +93,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			}
 		}
 		else {
-			submitform(pressbutton);		
+			submitform(pressbutton);
 		}
 	}
 /* ]]> */
@@ -118,7 +118,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			// Search tools bar
 			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'sent'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 		?>
-	
+
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
@@ -141,7 +141,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>
-		
+
 		<div class="row-fluid current">
 			<table class="adminlist table table-striped">
 				<thead>
@@ -161,9 +161,9 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 					</tr>
 				</thead>
 				<tbody>
-				<?php 
+				<?php
 					if (count($this->items)) {
-						foreach ($this->items as $i => $item) : 
+						foreach ($this->items as $i => $item) :
 							$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 							$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
 							$canEdit	= $user->authorise('core.edit',		'com_bwpostman.newsletter.'.$item->id);
@@ -211,7 +211,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 		</div>
 				<p class="pagination"><?php echo $this->pagination->getListFooter(); ?></p>
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-				
+
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="tab" value="sent" />
 				<input type="hidden" name="layout" value="default" />

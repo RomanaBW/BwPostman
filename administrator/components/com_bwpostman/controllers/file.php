@@ -4,7 +4,7 @@
  *
  * BwPostman file controller for backend, based on joomla com_media.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -65,7 +65,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 		$params = JComponentHelper::getParams('com_media');
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Get some data from the request
 		$files			= $this->input->files->get('Filedata', '', 'array');
 		$this->folder	= $this->input->get('folder', '', 'path');
@@ -202,7 +202,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 		return true;
 	}
 
-	
+
 	/**
 	 * Used as a callback for array_map, turns the multi-file input array into a sensible array of files
 	 * Also, removes illegal characters from the 'name' and sets a 'filepath' as the final destination of the file

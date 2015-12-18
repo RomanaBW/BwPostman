@@ -4,7 +4,7 @@
  *
  * BwPostman campaigns controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -81,7 +81,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	public function display($cachable = false, $urlparams = false)
 	{
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		switch($this->getTask())
 		{
 			case 'add':
@@ -114,7 +114,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 				$jinput->set('layout', 'default');
 				$jinput->set('view', 'campaigns');
 				break;
-*/				
+*/
 			default:
 				$jinput->set('hidemainmenu', 0);
 				$jinput->set('view', 'campaigns');

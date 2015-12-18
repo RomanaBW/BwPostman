@@ -4,7 +4,7 @@
  *
  * BwPostman main default template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -53,7 +53,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 		<?php else :  ?>
 			<div id="j-main-container">
 		<?php endif; ?>
-	
+
 			<table>
 				<tr>
 					<td valign="top">
@@ -66,64 +66,64 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								if ($canDo->get('core.view.newsletters')) {
 									$link = 'index.php?option='.$option.'&view=newsletters';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-newsletters.png', JText::_("COM_BWPOSTMAN_NLS"), 0, 0);
-				
+
 									if ($canDo->get('core.create')) {
 										$link = 'index.php?option='.$option.'&view=newsletter&task=add&layout=edit_basic';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-newsletteradd.png', JText::_("COM_BWPOSTMAN_NL_ADD"), 0, 0);
 									}
 								}
-									
+
 								if ($canDo->get('core.view.subscribers')) {
 									$link = 'index.php?option='.$option.'&view=subscribers';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-subscribers.png', JText::_("COM_BWPOSTMAN_SUB"), 0, 0);
-									
+
 									if ($canDo->get('core.create')) {
 										$link = 'index.php?option='.$option.'&view=subscriber&task=subscriber.add&layout=edit';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-subscriberadd.png', JText::_("COM_BWPOSTMAN_SUB_ADD"), 0, 0);
-				
+
 										$link = 'index.php?option='.$option.'&view=subscriber&task=subscriber.add_test&layout=edit';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-testrecipientadd.png', JText::_("COM_BWPOSTMAN_TEST_ADD"), 0, 0);
 									}
 								}
-				
+
 								if ($canDo->get('core.view.campaigns')) {
 									$link = 'index.php?option='.$option.'&view=campaigns';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-campaigns.png', JText::_("COM_BWPOSTMAN_CAMS"), 0, 0);
-									
+
 									if ($canDo->get('core.create')) {
 										$link = 'index.php?option='.$option.'&view=campaign&=add';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-campaignadd.png', JText::_("COM_BWPOSTMAN_CAM_ADD"), 0, 0);
 									}
 								}
-									
+
 								if ($canDo->get('core.view.mailinglists')) {
 									$link = 'index.php?option='.$option.'&view=mailinglists';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-mailinglists.png', JText::_("COM_BWPOSTMAN_MLS"), 0, 0);
-									
+
 									if ($canDo->get('core.create')) {
 										$link = 'index.php?option='.$option.'&view=mailinglist&task=add';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-mailinglistadd.png', JText::_("COM_BWPOSTMAN_ML_ADD"), 0, 0);
 									}
 								}
-				
+
 								if ($canDo->get('core.view.templates')) {
 									$link = 'index.php?option='.$option.'&view=templates';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-templates.png', JText::_("COM_BWPOSTMAN_TPLS"), 0, 0);
-									
+
 									if ($canDo->get('core.create')) {
 										$link = 'index.php?option='.$option.'&view=template&task=addhtml';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-templateadd.png', JText::_("COM_BWPOSTMAN_TPL_ADDHTML"), 0, 0);
-						
+
 										$link = 'index.php?option='.$option.'&view=template&task=addtext';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-text_templateadd.png', JText::_("COM_BWPOSTMAN_TPL_ADDTEXT"), 0, 0);
 									}
 								}
-				
+
 								if ($canDo->get('core.archive') || $canDo->get('core.view.archive')) {
 									$link = 'index.php?option='.$option.'&view=archive&layout=newsletters';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-archive.png', JText::_("COM_BWPOSTMAN_ARC"), 0, 0);
 								}
-				
+
 								if ($canDo->get('core.admin') || $canDo->get('core.view.manage')) {
 									$link	= 'index.php?option=com_config&amp;view=component&amp;component='.$option.'&amp;path=';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', JText::_("COM_BWPOSTMAN_SETTINGS"), '', '');
@@ -133,12 +133,12 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									$link = 'index.php?option='.$option.'&view=maintenance';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-maintenance.png', JText::_("COM_BWPOSTMAN_MAINTENANCE"), 0, 0);
 								}
-												
+
 								if ($canDo->get('core.view.maintenance')) {
 									$link = 'http://www.boldt-webservice.de/forum/bwpostman.html';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', JText::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');
 								}
-				
+
 								?></div>
 							</td>
 						</tr>
@@ -149,7 +149,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_GENERAL_STATS'), 'general');
 						?>
 					<table class="adminlist">
-						<?php 
+						<?php
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage')) || ($canDo->get('core.view.newsletters'))){ ?>
 							<tr>
 								<td width="200"><?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT_NUM').': '; ?></td>
@@ -163,7 +163,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=newsletters&layout=sent"><?php echo $this->general['nl_sent']; ?></a></b>
 								</td>
 							</tr>
-						<?php 
+						<?php
 						}
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage')) || ($canDo->get('core.view.subscribers'))) { ?>
 							<tr>
@@ -178,7 +178,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=subscribers"><?php echo $this->general['test']; ?></a></b>
 								</td>
 							</tr>
-						<?php 
+						<?php
 						}
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage')) || ($canDo->get('core.view.campaigns'))) { ?>
 							<tr>
@@ -187,7 +187,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=campaigns"><?php echo $this->general['cam']; ?></a></b>
 								</td>
 							</tr>
-						<?php 
+						<?php
 						}
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage')) || ($canDo->get('core.view.mailinglists'))) { ?>
 							<tr>
@@ -202,7 +202,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=mailinglists"><?php echo $this->general['ml_unpublished']; ?></a></b>
 								</td>
 							</tr>
-						<?php } 
+						<?php }
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage')) || ($canDo->get('core.view.templates'))) { ?>
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_TPL_HTML_NUM').': '; ?></td>
@@ -219,12 +219,12 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 						<?php } ?>
 					</table>
 					<?php
-			
+
 					echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_ARC_STATS'), 'general');
-			
+
 					?>
 					<table class="adminlist">
-						<?php 
+						<?php
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage')) || ($canDo->get('core.view.archive')) || ($canDo->get('core.view.newsletters'))) { ?>
 							<tr>
 								<td width="200"><?php echo JText::_('COM_BWPOSTMAN_ARC_NL_NUM').': '; ?></td>
@@ -232,7 +232,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=archive&layout=newsletters"><?php echo $this->archive['arc_nl']; ?></a></b>
 								</td>
 							</tr>
-						<?php 
+						<?php
 						}
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage'))|| ($canDo->get('core.view.archive')) || ($canDo->get('core.view.subscribers'))) { ?>
 							<tr>
@@ -241,7 +241,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=archive&layout=subscribers"><?php echo $this->archive['arc_sub']; ?></a></b>
 								</td>
 							</tr>
-						<?php 
+						<?php
 						}
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage'))|| ($canDo->get('core.view.archive')) || ($canDo->get('core.view.campaigns'))) { ?>
 							<tr>
@@ -250,7 +250,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=archive&layout=campaigns"><?php echo $this->archive['arc_cam']; ?></a></b>
 								</td>
 							</tr>
-						<?php 
+						<?php
 						}
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage'))|| ($canDo->get('core.view.archive')) || ($canDo->get('core.view.mailinglists'))) { ?>
 							<tr>
@@ -259,7 +259,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=archive&layout=mailinglists"><?php echo $this->archive['arc_ml']; ?></a></b>
 								</td>
 							</tr>
-						<?php } 
+						<?php }
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage'))|| ($canDo->get('core.view.archive')) || ($canDo->get('core.view.templates'))) { ?>
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM').': '; ?></td>
@@ -267,7 +267,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									<b><a href="index.php?option=com_bwpostman&view=archive&layout=templates"><?php echo $this->archive['arc_ml']; ?></a></b>
 								</td>
 							</tr>
-						<?php } 
+						<?php }
 						if (($canDo->get('core.admin')) || ($canDo->get('core.manage')) || ($canDo->get('core.view.manage'))|| ($canDo->get('core.view.archive')) || ($canDo->get('core.view.templates'))) { ?>
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM').': '; ?></td>
@@ -277,7 +277,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							</tr>
 						<?php } ?>
 					</table>
-			
+
 					<?php
 					echo JHtml::_('sliders.end');
 					?></td>

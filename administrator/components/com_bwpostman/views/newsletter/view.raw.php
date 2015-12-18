@@ -4,7 +4,7 @@
  *
  * BwPostman single text (raw) newsletters view for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -42,7 +42,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	{
 		$app 	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
-		
+
 
 		// Get the params
 		$params			= JComponentHelper::getParams('com_bwpostman');
@@ -50,7 +50,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$sendandpublish	= $app->getUserState('com_bwpostman.newsletters.sendmailandpublish', 0);
 		$id				= $app->getUserState('com_bwpostman.newsletters.publish_id', 0);
 		$delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
-		
+
 		// Build delay message
 		if ((int) $params->get('mails_per_pageload_delay_unit') == 1000) {
 			if ((int) $params->get('mails_per_pageload_delay') == 1) {
@@ -73,7 +73,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$task	= $jinput->get('task', 'previewHTML');
 		$nl_id	= $jinput->get('nl_id');
 		$app->setUserState('com_bwpostman.viewraw.newsletter.id', $nl_id);
-		
+
 		if ($task == 'continue_sending'){
 			// set number of queue entries before start sending
 			$sumentries	= is_null($app->getUserState('com_bwpostman.newsletters.entries', null)) ? $app->setUserState('com_bwpostman.newsletters.entries', $model->checkTrials(2,1)) : $app->getUserState('com_bwpostman.newsletters.entries', null);
@@ -125,12 +125,12 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			}
 		}
 		elseif ($task == 'insideModal') {
-			// Get the newsletter 
+			// Get the newsletter
 			$this->item	= $model->getItem($nl_id);
 			$this->item	= $model->getSingleNewsletter();
-		} 
+		}
 		else {
-			// Get the newsletter 
+			// Get the newsletter
 			$this->item	= $model->getSingleNewsletter();
 		}
 		// Call parent display

@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Module
- * 
+ *
  * BwPostman special form field for module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -194,16 +194,16 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	protected function getOptions()
 	{
 		$app	= JFactory::getApplication();
-		
+
 		// Initialize variables.
 		$options		= array();
-		
+
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$options	= array();
 		$return		= '';
-		
+
 		$query->select("a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published");
 		$query->from('#__bwpostman_mailinglists AS a');
 		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
@@ -212,10 +212,10 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		$query->order($_db->quoteName('published')  . 'DESC, ' . $_db->quoteName('access_level'). 'ASC');
-		
+
 		$_db->setQuery($query);
 		$options = $_db->loadObjectList();
-		
+
 		// Check for a database error.
 		if ($_db->getErrorNum()) {
 			$app->enqueueMessage($_db->getErrorMsg(), 'error');

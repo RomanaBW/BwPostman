@@ -4,7 +4,7 @@
  *
  * BwPostman newsletter all model for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -82,7 +82,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		$app 	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		$id = $jinput->get('id');
 		$this->setId((int)$id);
 
@@ -112,7 +112,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @param	array	Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
-	 * 
+	 *
 	 * @since  1.0.1
 	*/
 	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
@@ -133,40 +133,40 @@ class BwPostmanModelNewsletters extends JModelList
 		$app	= JFactory::getApplication('site');
 		$jinput	= $app->input;
 		$pk		= $jinput->getInt('id');
-		
+
 		// Load state from the request.
 		$this->setState('newsletter.id', $pk);
 
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_bwpostman', true);
-		
+
 		// Load the parameters. Merge Global and Menu Item params into new object
 		$params = $app->getParams();
 		$menuParams = new JRegistry;
-		
+
 		if ($menu = $app->getMenu()->getActive()) {
 			$menuParams->loadString($menu->params);
 		}
-		
+
 		$mergedParams = clone $menuParams;
 		$mergedParams->merge($params);
-		
+
 		$this->setState('params', $mergedParams);
 		$app->setUserState('com_bwpostman.newsletters.params', $mergedParams);
 
 		// Set module ID
 		$this->setState('module.id', $app->input->getInt('mid'));
-		
+
 		// Filter on month, year
 		$this->setState('filter.month', $app->input->getInt('month'));
 		$this->setState('filter.year', $app->input->getInt('year'));
 
 		// Optional filter text
 		$this->setState('filter.search', $jinput->getString('filter_search'));
-		
+
 		$mailinglist = $this->getUserStateFromRequest('com_bwpostman.newsletters.filter.mailinglist', 'filter_mailinglist', '');
 		$this->setState('filter.mailinglist', $mailinglist);
-		
+
 		$campaign = $this->getUserStateFromRequest('com_bwpostman.newsletters.filter.campaign', 'filter_campaign', '');
 		$this->setState('filter.campaign', $campaign);
 
@@ -179,18 +179,18 @@ class BwPostmanModelNewsletters extends JModelList
 //			$orderCol = 'a.mailing_date';
 //		}
 		$this->setState('list.ordering', $orderCol);
-		
+
 		$listOrder = $app->getUserStateFromRequest('com_bwpostman.newsletters.list.filter_order_Dir', 'filter_order_Dir', 'DESC', 'cmd');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
 			$listOrder = 'DESC';
 		}
 		$this->setState('list.direction', $listOrder);
-		
+
 		$this->setState('layout', JFactory::getApplication()->input->getCmd('layout'));
-		
+
 		$limit = (int) $app->getUserStateFromRequest('com_bwpostman.newsletters.list.limit', 'limit', $params->get('display_num'), 'uint');
 		$this->setState('list.limit', $limit);
-		
+
 		$limitstart = $app->input->get->get->get('start');
 		if ($limitstart === NULL) $limitstart = $app->input->get->get->get('limitstart');
 		$this->setState('list.start', $limitstart);
@@ -220,7 +220,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$id	.= ':' . $this->getState('filter.campaign');
 		$id	.= ':' . $this->getState('filter.usergroup');
 		$id	.= ':' . $this->getState('getTotal');
-		
+
 		return parent::getStoreId($id);
 	}
 
@@ -239,7 +239,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 	/**
 	 * Returns a record count for the query.
-	 * Override because fast COUNT version will result in wrong number 
+	 * Override because fast COUNT version will result in wrong number
 	 *
 	 * @param	JDatabaseQuery|string  $query  The query.
 	 *
@@ -270,7 +270,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Overriden to inject convert the attribs field into a JParameter object.
 	 *
 	 * @return	mixed	An array of objects on success, false on failure.
-	 * 
+	 *
 	 * @since	1.0.1
 	 */
 	public function getItems()
@@ -281,25 +281,25 @@ class BwPostmanModelNewsletters extends JModelList
 		$guest	= $user->get('guest');
 		$groups	= $user->getAuthorisedViewLevels();
 		$input	= JFactory::getApplication()->input;
-		
+
 		$this->_pagination = parent::getPagination();
-		
+
 		// Convert the parameter fields into objects.
 		foreach ($items as &$item)
 		{
 			$item->params = clone $this->getState('params');
-				
+
 			// Get display date
 			switch ($item->params->get('list_show_date'))
 			{
 				case 'modified_time':
 					$item->displayDate = $item->modified_time;
 					break;
-		
+
 				case 'published':
 					$item->displayDate = ($item->publish_up == 0) ? $item->created_date : $item->publish_up;
 					break;
-		
+
 				case 'created_date':
 					$item->displayDate = $item->created_date;
 					break;
@@ -309,19 +309,19 @@ class BwPostmanModelNewsletters extends JModelList
 					$item->displayDate = $item->mailing_date;
 					break;
 			}
-		
+
 			// Compute the asset access permissions.
 			// Technically guest could edit an newsletter, but lets not check that to improve performance a little.
 			if (!$guest)
 			{
 				$asset = 'com_bwpostman.newsletter.' . $item->id;
-		
+
 				// Check general edit permission first.
 				if ($user->authorise('core.edit', $asset))
 				{
 					$item->params->set('access-edit', true);
 				}
-		
+
 				// Now check if edit.own is available.
 				elseif (!empty($userId) && $user->authorise('core.edit.own', $asset))
 				{
@@ -332,9 +332,9 @@ class BwPostmanModelNewsletters extends JModelList
 					}
 				}
 			}
-		
+
 			$access = $this->getState('filter.access');
-		
+
 			if ($access)
 			{
 				// If the access filter has been set, we already have only the newsletters this user can view.
@@ -345,12 +345,12 @@ class BwPostmanModelNewsletters extends JModelList
 				// If no access filter is set, the layout takes some responsibility for display of limited information.
 				$item->params->set('access-view', in_array($item->access, $groups));
 			}
-		
+
 			// Get the tags
 			$item->tags = new JHelperTags;
 			$item->tags->getItemTags('com_bwpostman.newsletter', $item->id);
 		}
-		
+
 		return $items;
 	}
 
@@ -367,74 +367,74 @@ class BwPostmanModelNewsletters extends JModelList
 		$user		= JFactory::getUser();
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
-		
+
 		// Define null and now dates, get params
 		$nullDate	= $_db->quote($_db->getNullDate());
 		$nowDate	= $_db->quote(JFactory::getDate()->toSql());
-		$params		= $this->state->params; 
+		$params		= $this->state->params;
 		$menuId		= $params->get('menu_item');
 		$mod_id		= $this->getState('module.id');
-		
+
 		if (empty($menuId) && !empty($mod_id)) {
 			$module = $this->_getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
-		
-		
+
+
 		// get accessible mailing lists
 		$mls	= $this->getAccessibleMailinglists('false');
-		
+
 		$groups	= $this->getAccessibleUsergroups('false');
-		
+
 		if (count($groups) > 0) {
 			// merge mailinglists and usergroups and remove multiple values
 			$mls	= array_merge($mls, $groups);
 			$mls	= array_unique($mls);
 		}
-		
+
 		// get accessible campaigns
 		$cams	= $this->getAccessibleCampaigns('false');
-		
-		
+
+
 		// Filter by mailing list
 		$mailinglist = $this->getState('filter.mailinglist');
-		
+
 		if ($mailinglist) {
 			$filter_mls	= array();
-			
+
 			$filter_mls[]	= $mls[array_search($mailinglist, $mls)];
 			$mls			= $filter_mls;
 			$cams			= array(0 => 0);
 			$this->setState('filter.campaign', '');
 			$this->setState('filter.usergroup', '');
 		}
-		
+
 		// Filter by user group
 		$usergroup = $this->getState('filter.usergroup');
-		
+
 		if ($usergroup) {
 			$filter_mls	= array();
-			
+
 			$filter_mls[]	= $mls[array_search($usergroup, $mls)];
 			$mls			= $filter_mls;
 			$cams			= array(0 => 0);
 			$this->setState('filter.campaign', '');
 			$this->setState('filter.mailinglist', '');
 		}
-		
+
 		// Filter by campaign
 		$campaign = $this->getState('filter.campaign');
 
 		if ($campaign) {
 			$filter_cam	= array();
-			
+
 			$filter_cam[]	= $cams[array_search($campaign, $cams)];
 			$cams			= $filter_cam;
 			$mls			= array(0 => 0);
 			$this->setState('filter.usergroup', '');
 			$this->setState('filter.mailinglist', '');
 		}
-		
+
 		// build query
 		$query->select(
 			$this->getState(
@@ -445,7 +445,7 @@ class BwPostmanModelNewsletters extends JModelList
 				'publish_down'
 				)
 		);
-						
+
 		$query->from($_db->quoteName('#__bwpostman_newsletters') . ' AS ' . $_db->quoteName('a'));
 		// in front end only sent and published newsletters are shown!
 		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('published') . ' = ' . (int) 1);
@@ -454,24 +454,24 @@ class BwPostmanModelNewsletters extends JModelList
 		// Filter by mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 		$query->where('(m.mailinglist_id IN (' . implode(',', $mls) . ') OR a.campaign_id IN (' . implode(',', $cams) . '))');
-		
+
 		switch ($params->get('show_type', 'not_arc_down')) {
-			default:	
-			case 'all_not_arc':	
+			default:
+			case 'all_not_arc':
 					$query->where('a.archive_flag = 0');
 				break;
-			case 'not_arc_down':	
+			case 'not_arc_down':
 					$query->where('a.archive_flag = 0');
 					$query->where('a.publish_up <= ' . $nowDate);
 					$query->where('(a.publish_down >= ' . $nowDate . ' OR a.publish_down = ' . $nullDate . ')');
 				break;
-			case 'not_arc_but_down':	
+			case 'not_arc_but_down':
 					$query->where('a.archive_flag = 0');
 					$query->where('a.publish_up <= ' . $nowDate);
 					$query->where('a.publish_down <> ' . $nullDate);
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
-			case 'arc':	
+			case 'arc':
 					$query->where('a.archive_flag = 1');
 				break;
 			case 'down':
@@ -486,10 +486,10 @@ class BwPostmanModelNewsletters extends JModelList
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
 			case 'arc_or_down':
-					$query->where('(a.archive_flag = 1 
+					$query->where('(a.archive_flag = 1
 							OR (
-									a.publish_down <> ' . $nullDate . ' 
-								AND a.publish_down <= ' . $nowDate . ' 
+									a.publish_down <> ' . $nullDate . '
+								AND a.publish_down <= ' . $nowDate . '
 								AND a.publish_up <= ' . $nowDate . '
 							))');
 				break;
@@ -503,7 +503,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$search	= '%' . $_db->escape($this->getState('filter.search'), true) . '%';
 			$query->where('subject LIKE ' . $_db->Quote($search, false));
 		}
-		
+
 		// Filter on month
 		if ($month = $this->getState('filter.month')) {
 			$query->where($query->month('a.mailing_date') . ' = ' . $month);
@@ -524,7 +524,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$orderDirn	= $this->state->get('list.direction', 'DESC');
 		$query->order($_db->escape($orderCol.' '.$orderDirn));
 		$query->group($_db->quoteName('a.mailing_date'));
-		
+
 		$_db->setQuery($query);
 
 		return $query;
@@ -534,9 +534,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to get all published mailing lists which the user is authorized to see
 	 *
 	 * @access 	public
-	 * 
-	 * @return 	array	ID and title of allowed mailinglists 
-	 * 
+	 *
+	 * @return 	array	ID and title of allowed mailinglists
+	 *
 	 * @since	1.0.1
 	 */
 	public function getAllowedMailinglists()
@@ -556,7 +556,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$_db->setQuery ($query);
 
 		$mailinglists = $_db->loadAssocList();
-		
+
 		$allowed	= array();
 		foreach ($mailinglists as $item) {
 			$allowed[]	= $item['id'];
@@ -568,11 +568,11 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to get all published mailing lists which the user is authorized to see and wich are selected in menu
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	boolean	with title
-	 * 
-	 * @return 	array	ID and title of allowed mailinglists 
-	 * 
+	 *
+	 * @return 	array	ID and title of allowed mailinglists
+	 *
 	 * @since	1.2.0
 	 */
 	public function getAccessibleMailinglists($title = true)
@@ -582,25 +582,25 @@ class BwPostmanModelNewsletters extends JModelList
 		$params		= $this->state->params;
 		$menuId		= $params->get('menu_item');
 		$mod_id		= $this->getState('module.id');
-		
+
 		if (empty($menuId) && !empty($mod_id)) {
 			$module = $this->_getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
-		
+
 		$check		= $params->get('access-check');
 
 		// fetch only from mailing lists, which are selected, if so
 		$all_mls	= $params->get('ml_selected_all');
 		$sel_mls	= $params->get('ml_available');
-		
+
 		if ($all_mls) {
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			
+
 			$_db->setQuery ($query);
-			
+
 			$res_mls	= $_db->loadAssocList();
 			$mls		= array();
 			if (count($res_mls > 0)) {
@@ -615,7 +615,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		// if no mls is left, make array
 		if (count($mls) == 0) $mls[]	= 0;
-		
+
 		// Check permission, if desired
 		if ($all_mls || $check != 'no') {
 			// get authorized viewlevels
@@ -628,18 +628,18 @@ class BwPostmanModelNewsletters extends JModelList
 			else {
 				$acc_levels[]	= 0;
 			}
-			
+
 			$query	= $_db->getQuery(true);
 
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-	
+
 			$_db->setQuery ($query);
 
 			$res_mls = $_db->loadAssocList();
-			
+
 			$acc_mls	= array();
 			foreach ($res_mls as $item) {
 				$acc_mls[]	= $item['id'];
@@ -649,16 +649,16 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		if (count($mls) == 0) $mls[]	= 0;
-		
+
 		if ($title === true) {
 			$query	= $_db->getQuery(true);
 			$query->select('id');
 			$query->select('title');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $mls) . ')');
-			
+
 			$_db->setQuery ($query);
-		
+
 			$mailinglists = $_db->loadAssocList();
 		}
 		else {
@@ -671,11 +671,11 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to get all campaigns which the user is authorized to see
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	boolean	with title
-	 * 
+	 *
 	 * @return 	array	ID of allowed campaigns
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function getAccessibleCampaigns($title = true)
@@ -685,14 +685,14 @@ class BwPostmanModelNewsletters extends JModelList
 		$params		= $this->state->params;
 		$menuId		= $params->get('menu_item');
 		$mod_id		= $this->getState('module.id');
-		
+
 		if (empty($menuId) && !empty($mod_id)) {
 			$module = $this->_getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
-		
+
 		$check		= $params->get('access-check');
-		
+
 		// fetch only from campaigns, which are selected, if so
 		$all_cams	= $params->get('cam_selected_all');
 		$sel_cams	= $params->get('cam_available');
@@ -728,31 +728,31 @@ class BwPostmanModelNewsletters extends JModelList
 			else {
 				$acc_levels[]	= 0;
 			}
-				
+
 			$query	= $_db->getQuery(true);
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			
+
 			$_db->setQuery ($query);
-				
+
 			$res_mls = $_db->loadAssocList();
-				
+
 			$acc_mls	= array();
 			foreach ($res_mls as $item) {
 				$acc_mls[]	= $item['id'];
 			}
-			
+
 			$query		= $_db->getQuery(true);
-			
+
 			$query->select('DISTINCT (' . $_db->quoteName('campaign_id') . ')');
 			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
 			$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
 			$query->where($_db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
-				
+
 			$_db->setQuery ($query);
-	
+
 			$acc_cams	= $_db->loadAssocList();
 			if (count($acc_cams > 0)) {
 				$cams		= array();
@@ -763,14 +763,14 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 		// if no cam is left, make array to return
 		if (count($cams) == 0) $cams[]	= 0;
-		
+
 		if ($title === true) {
 			$query	= $_db->getQuery(true);
 			$query->select('id');
 			$query->select('title');
 			$query->from($_db->quoteName('#__bwpostman_campaigns'));
 			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $cams) . ')');
-			
+
 			$_db->setQuery ($query);
 
 			$campaigns = $_db->loadAssocList();
@@ -785,11 +785,11 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to get all user groups which the user is authorized to see
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	boolean	with title
-	 * 
+	 *
 	 * @return 	array	ID of allowed campaigns
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function getAccessibleUsergroups($title = true)
@@ -799,23 +799,23 @@ class BwPostmanModelNewsletters extends JModelList
 		$params		= $this->state->params;
 		$menuId		= $params->get('menu_item');
 		$mod_id		= $this->getState('module.id');
-		
+
 		if (empty($menuId) && !empty($mod_id)) {
 			$module = $this->_getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
-		
+
 		$check		= $params->get('access-check');
-		
+
 		// fetch only from usergroups, which are selected, if so
 		$all_groups	= $params->get('groups_selected_all');
 		$sel_groups	= $params->get('groups_available');
-		
+
 		if ($all_groups) {
 			$query->select('u.id');
 			$query->from('#__usergroups AS u');
 			$_db->setQuery ($query);
-				
+
 			$res_groups	= $_db->loadAssocList();
 			$groups		= array();
 			if (count($res_groups > 0)) {
@@ -841,12 +841,12 @@ class BwPostmanModelNewsletters extends JModelList
 			$c_groups	= $sel_groups;
 		}
 		if (count($c_groups) == 0) $c_groups[]	= 0;
-		
+
 		// Check permission, if desired
 		if ($all_groups || $check != 'no') {
 			$user		= JFactory::getUser();
 			$acc_groups	= $user->getAuthorisedGroups();
-				
+
 			//convert usergroups to match bwPostman's needs
 			$a_groups	= array();
 			if (count($acc_groups > 0)) {
@@ -857,7 +857,7 @@ class BwPostmanModelNewsletters extends JModelList
 			else {
 				$a_groups[]	= 0;
 			}
-			
+
 			$sel_groups	= array_intersect($a_groups, $c_groups);
 		}
 
@@ -869,7 +869,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$query->select('title');
 			$query->from($_db->quoteName('#__usergroups'));
 			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $sel_groups) . ')');
-			
+
 			$_db->setQuery ($query);
 
 			$groups = $_db->loadAssocList();
@@ -877,7 +877,7 @@ class BwPostmanModelNewsletters extends JModelList
 		else {
 			$groups	= $sel_groups;
 		}
-		
+
 		return $groups;
 	}
 
@@ -885,28 +885,28 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to get all user groups which the user is authorized to see
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	int	module ID
-	 * 
+	 *
 	 * @return 	object	module object
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	private function _getModuleById($id = 0)
 	{
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params');
 		$query->from('#__modules AS m');
 		$query->where('m.id = ' . $id);
-		
+
 		$_db->setQuery($query);
-		
+
 		$module	= $_db->loadObject();
-		
+
 		return $module;
-	
+
 	}
-	
+
 }

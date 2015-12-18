@@ -4,7 +4,7 @@
  *
  * BwPostman single campaigns form template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -27,7 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 ?>
-		
+
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?></legend>
 	<div class="well well-small">
@@ -36,7 +36,7 @@ defined ('_JEXEC') or die ('Restricted access');
 			if (empty($this->newsletters->sent)) {
 				echo JText::_('COM_BWPOSTMAN_CAM_NO_SENT_NL');
 			}
-			else { 
+			else {
 				$firstset	= $this->newsletters->sent[0];
 				if (property_exists($firstset, 'email')) {
 					$automation	= true;
@@ -49,7 +49,7 @@ defined ('_JEXEC') or die ('Restricted access');
 					<thead>
 						<tr>
 							<th>
-							<?php 
+							<?php
 								if ($automation) {
 									echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAIL_NUMBER');
 								}
@@ -59,21 +59,21 @@ defined ('_JEXEC') or die ('Restricted access');
 							</th>
 							<th align="left"><?php echo JText::_('SUBJECT'); ?></th>
 							<th width="150"><?php echo JText::_('COM_BWPOSTMAN_NL_MAILING_DATE'); ?></th>
-							<?php 
+							<?php
 								if ($automation) { ?>
 									<th width="150"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_RECIPIENT'); ?></th>
 								<?php }
 								else { ?>
 									<th width="150"><?php echo JText::_('AUTHOR'); ?></th>
 									<th width="150"><?php echo JText::_('PUBLISHED'); ?></th>
-								<?php } 
+								<?php }
 							?>
 						</tr>
 					</thead>
 					<tbody>
 					<?php
 						$k = 0;
-					
+
 						$newsletters_sent = $this->newsletters->sent;
 						for ($i=0, $n=count($newsletters_sent); $i < $n; $i++)
 						{
@@ -83,7 +83,7 @@ defined ('_JEXEC') or die ('Restricted access');
 							?>
 							<tr class="<?php echo "item$k"; ?>">
 								<td align="center">
-								<?php 
+								<?php
 									if ($automation) {
 										echo $item->mail_number;
 									}
@@ -91,29 +91,29 @@ defined ('_JEXEC') or die ('Restricted access');
 										echo $item->id;
 									} ?>
 								</td>
-								<td><?php echo $item->subject; ?>&nbsp;&nbsp; 
+								<td><?php echo $item->subject; ?>&nbsp;&nbsp;
 									<span class="cam_preview">
 										<span class="editlinktip hasTip"
 											title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
 											<?php echo '<a class="popup" href="'.$link_html.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}}">'.JText::_('COM_BWPOSTMAN_HTML_NL').'</a>'; ?>&nbsp;
-											</span> 
+											</span>
 										<span class="editlinktip hasTip"
 											title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
 											<?php echo '<a class="popup" href="'.$link_text.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}}">'.JText::_('COM_BWPOSTMAN_TEXT_NL').'</a>'; ?>
 										</span>
 									</span>
 								</td>
-								<?php 
+								<?php
 								if ($automation) { ?>
 									<td align="center"><?php echo JHtml::date($item->sent_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
 									<td align="center"><?php echo $item->email; ?></td>
-								<?php 	
+								<?php
 								}
 								else { ?>
 									<td align="center"><?php echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
 									<td align="center"><?php echo $item->author; ?></td>
 									<td align="center"><?php if ($item->published) { echo JText::_('COM_BWPOSTMAN_YES'); } else { echo JText::_('COM_BWPOSTMAN_NO');}?>
-								<?php 	
+								<?php
 								} ?>
 							</tr>
 							<?php
@@ -127,4 +127,4 @@ defined ('_JEXEC') or die ('Restricted access');
 		}
 		?>
 	</div>
-</fieldset>		
+</fieldset>

@@ -4,7 +4,7 @@
  *
  * BwPostman all subscribers main template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -72,19 +72,19 @@ $tab_options = array(
 <script type="text/javascript">
 /* <![CDATA[ */
 	Joomla.submitbutton = function (pressbutton) {
-		
+
 		if (pressbutton == 'archive') {
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE' , true); ?>");
 			if (ConfirmArchive == true) {
 				submitform(pressbutton);
-			} 
+			}
 			else {
 				return;
 			}
-		} 
+		}
 		else {
-			submitform(pressbutton);		
-		} 
+			submitform(pressbutton);
+		}
 	}
 	/* ]]> */
 </script>
@@ -103,7 +103,7 @@ $tab_options = array(
 				// Search tools bar
 				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 			?>
-		
+
 				<div class="row-fluid">
 					<?php
 						echo JHtmlBwTabs::start('bwpostman_subscribers_tabs', $tab_options);
@@ -130,10 +130,10 @@ $tab_options = array(
 				</div>
 				<p class="pagination"><?php echo $this->pagination->getListFooter(); ?></p>
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-			
+
 				<?php //Load the batch processing form. ?>
 				<?php echo $this->loadTemplate('batch'); ?>
-	
+
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
 				<input type="hidden" id="tab" name="tab" value="" />

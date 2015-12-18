@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Newsletter Overview Module
- * 
+ *
  * BwPostman default template for overview module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -64,7 +64,7 @@ JFactory::getDocument()->addScriptDeclaration($script);
 			<?php endforeach; ?>
 		</ul>
 	<?php }
-	else { 
+	else {
 		echo JText::_('MOD_BWPOSTMAN_OVERVIEW_NO_NEWSLETTERS_FOUND');
 	} ?>
 </div>

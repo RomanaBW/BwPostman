@@ -4,7 +4,7 @@
  *
  * BwPostman single text (raw) subscribers view for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -45,13 +45,13 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 		// Get the post data
 		$post	= $app->getUserState('com_bwpostman.subscribers.export.data');
-		
+
 		if ($post['fileformat'] == 'csv') {
 			$mime_type = "application/csv";
 		} else {
 			$mime_type = "application/xml";
 		}
-			
+
 		$date		= JFactory::getDate();
 		$filename	= "BackupList_BwPostman_from_" . $date->format("Y-m-d");
 

@@ -4,7 +4,7 @@
  *
  * BwPostman edit template sub-template html for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -72,7 +72,7 @@ $options = array(
 			var inputs_old = readStore("inputs");
 			inputs = checkValues(1);
 			if (inputs_old === inputs){
-			} 
+			}
 			else {
 			// confirm if cancel or not
 				confirmCancel =confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
@@ -86,12 +86,12 @@ $options = array(
  			 			submitform(pressbutton);
 			return;
 		}
-		
+
 		// Valdiate input fields
 		if (form.jform_title.value == ""){
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
 		} else if (form.jform_description.value== ""){
-			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");			
+			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
 		} else {
 			submitform(pressbutton);
 		}
@@ -100,7 +100,7 @@ $options = array(
 		// insert placeholder
 		function buttonClick(text, editor) {
 		jInsertEditorText(text, editor);
-	} 
+	}
 
 		// check form field values
 		function checkValues(turn) {
@@ -113,7 +113,7 @@ $options = array(
 			}
 			if (turn == 0){
 				writeStore("inputs", inputs);
-			} 
+			}
 			else {
 				return inputs;
 			}
@@ -123,7 +123,7 @@ $options = array(
 		function writeStore(item, value) {
 			if (Browser.Features.localstorage) {
 				localStorage[item] = value;
-			} 
+			}
 			else {
 				Cookie.write(item, value);
 			}
@@ -133,7 +133,7 @@ $options = array(
 		function readStore(item) {
 			if (Browser.Features.localstorage) {
 				itemValue = localStorage[item];
-			} 
+			}
 			else {
 				itemValue = Cookie.read(item);
 			}
@@ -193,7 +193,7 @@ $options = array(
 							</ul>
 						</div>
 					</fieldset>
-					
+
 					<fieldset class="panelform">
 						<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
 						<div class="well well-small">
@@ -262,7 +262,7 @@ $options = array(
 		</div>
 	</fieldset>
 
-		<input type="hidden" name="task" value="" /> 
+		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<?php echo $this->form->getInput('id'); ?>
 		<?php echo $this->form->getInput('asset_id'); ?>

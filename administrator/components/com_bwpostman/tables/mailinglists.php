@@ -4,7 +4,7 @@
  *
  * BwPostman mailinglists table for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -227,7 +227,7 @@ class BwPostmanTableMailinglists extends JTable
 			$this->setError($e);
 			return false;
 		}
-				
+
 		// Cast properties
 		$this->id	= (int) $this->id;
 
@@ -268,9 +268,9 @@ class BwPostmanTableMailinglists extends JTable
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('title') . ' = ' . $_db->Quote($this->title));
-		
+
 		$_db->setQuery($query);
-		
+
 		$xid = intval($this->_db->loadResult());
 
 		if ($xid && $xid != intval($this->id)) {
@@ -298,7 +298,7 @@ class BwPostmanTableMailinglists extends JTable
 	{
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
-	
+
 		if ($this->id)
 		{
 			// Existing mailing list
@@ -313,7 +313,7 @@ class BwPostmanTableMailinglists extends JTable
 		}
 		$res	= parent::store($updateNulls);
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
-		
+
 		return $res;
 			}
 }

@@ -4,7 +4,7 @@
  *
  * BwPostman archive controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -57,7 +57,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	{
 		$app	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
@@ -88,7 +88,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_NL_UNARCHIVED');
 						}
-							
+
 						$app->enqueueMessage($msg);
 						$jinput->set('layout', 'newsletters');
 					}
@@ -112,7 +112,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_UNARCHIVED');
 						}
-							
+
 						$app->enqueueMessage($msg);
 						$jinput->set('layout', 'subscribers');
 					}
@@ -122,7 +122,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			case "campaigns":
 					// If archive_nl = 1 the assigned newsletters shall be archived, too
 					$unarchive_nl = $jinput->get('unarchive_nl');
-	
+
 					$model = $this->getModel('campaign');
 					if(!$model->archive($cid, 0, $unarchive_nl)) {
 						if ($n > 1) {
@@ -224,16 +224,16 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	public function delete()
 	{
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$app	= JFactory::getApplication();
 		$tab	= $jinput->get('layout','newsletters');
 		$cid	= $jinput->get('cid', array(0), 'post', 'array');
 		$msg	= '';
 		$type	= 'message';
-		
+
 		JArrayHelper::toInteger($cid);
 
 		$n = count ($cid);
@@ -247,15 +247,15 @@ class BwPostmanControllerArchive extends JControllerLegacy
 						$type	= 'error';
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NLS');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NL');
 						}
-					} 
+					}
 					else {
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_REMOVED');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_NL_REMOVED');
 						}
@@ -269,15 +269,15 @@ class BwPostmanControllerArchive extends JControllerLegacy
 						$type	= 'error';
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUBS');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUB');
 						}
-					} 
+					}
 					else {
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_REMOVED');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_REMOVED');
 						}
@@ -294,33 +294,33 @@ class BwPostmanControllerArchive extends JControllerLegacy
 						if ($n > 1) {
 							if ($remove_nl) {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NL');
-							} 
+							}
 							else {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS');
 							}
-						} 
+						}
 						else {
 							if ($remove_nl) {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM_NL');
-							} 
+							}
 							else {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM');
 							}
 						}
-					} 
+					}
 					else {
 						if ($n > 1) {
 							if ($remove_nl) {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_REMOVED');
-							} 
+							}
 							else {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_REMOVED');
 							}
-						} 
+						}
 						else {
 							if ($remove_nl) {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_REMOVED');
-							} 
+							}
 							else {
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_REMOVED');
 							}
@@ -335,22 +335,22 @@ class BwPostmanControllerArchive extends JControllerLegacy
 						$type	= 'error';
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_ML');
 						}
-							
-					} 
+
+					}
 					else {
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_REMOVED');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ML_REMOVED');
 						}
 					}
 					break;
-	
+
 				// We are in the templates_tab
 				case "templates":
 					$model = $this->getModel('template');
@@ -358,16 +358,16 @@ class BwPostmanControllerArchive extends JControllerLegacy
 						$type	= 'error';
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPLS');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPL');
 						}
-							
-					} 
+
+					}
 					else {
 						if ($n > 1) {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_REMOVED');
-						} 
+						}
 						else {
 							$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_REMOVED');
 						}

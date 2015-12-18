@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Module
- * 
+ *
  * BwPostman special form field for module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -61,16 +61,16 @@ class JFormFieldMenuItems extends JFormFieldList
 
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('id') . ' AS value');
 		$query->select($_db->quoteName('title') . ' AS text');
 		$query->from($_db->quoteName('#__menu'));
 		$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=archive') . ' OR ' . $_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=newsletters'));
 		$query->where($_db->quoteName('client_id') . ' = ' . (int) 0);
 		$query->order($_db->quoteName('title').' ASC');
-		
+
 		$_db->setQuery($query);
-		
+
 		$options	= $_db->loadObjectList();
 
 		// Merge any additional options in the XML definition.

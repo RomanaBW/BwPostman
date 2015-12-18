@@ -4,7 +4,7 @@
  *
  * BwPostman edit template sub-template text for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -85,12 +85,12 @@ $options = array(
 			submitform(pressbutton);
 			return;
 		}
-		
+
 		// Valdiate input fields
 		if (form.jform_title.value == ""){
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
 		} else if (form.jform_description.value== ""){
-			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");			
+			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
 		} else {
 			submitform(pressbutton);
 		}
@@ -126,12 +126,12 @@ $options = array(
 		for (var i=0; i<elements.length; i++){
 			if (elements[i].getAttribute('id') != 'jform_tpl_html') {var fieldValue = elements[i].value;} else {var fieldValue = elements[i].value.length;}
 			if (elements[i].getAttribute('checked') != false) {var fieldChecked = elements[i].getAttribute('checked');}
-			inputs += fieldValue + fieldChecked;			
+			inputs += fieldValue + fieldChecked;
 		}
 		if (turn == 0){
 			writeStore("inputs", inputs);
-		} 
-		else { 
+		}
+		else {
 			return inputs;
 		}
 	}
@@ -140,20 +140,20 @@ $options = array(
 	function writeStore(item, value) {
 		if (Browser.Features.localstorage) {
 			localStorage[item] = value;
-		} 
+		}
 		else {
 			Cookie.write(item, value);
 		}
 	}
 
 	// read storage
-	function readStore(item) { 
+	function readStore(item) {
 		if (Browser.Features.localstorage) {
 			itemValue = localStorage[item];
-		} 
+		}
 		else {
 			itemValue = Cookie.read(item);
-		} 
+		}
 		return itemValue;
 	}
 
@@ -210,7 +210,7 @@ $options = array(
 							</ul>
 						</div>
 					</fieldset>
-					
+
 					<fieldset class="panelform">
 						<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
 						<div class="well well-small">
@@ -266,7 +266,7 @@ $options = array(
 			</div>
 		</fieldset>
 
-		<input type="hidden" name="task" value="" /> 
+		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<?php echo $this->form->getInput('id'); ?>
 		<?php echo $this->form->getInput('asset_id'); ?>

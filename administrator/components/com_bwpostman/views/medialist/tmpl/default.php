@@ -4,7 +4,7 @@
  *
  * BwPostman medialist default template for backend, based on joomla com_media.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -32,18 +32,18 @@ defined('_JEXEC') or die;
 				$this->setFolder($i);
 				echo $this->loadTemplate('folder');
 			endfor; ?>
-		
+
 			<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
 				$this->setImage($i);
 				echo $this->loadTemplate('image');
 			endfor; ?>
-		
+
 			<?php for ($i = 0, $n = count($this->documents); $i < $n; $i++) :
 				$this->setDocument($i);
 				echo $this->loadTemplate('document');
 			endfor; ?>
 	</ul>
-	
+
 <?php } else { ?>
 	<div id="media-noimages">
 		<div class="alert alert-info"><?php echo JText::_('COM_BWPOSTMAN_MEDIA_NO_MEDIA_FOUND'); ?></div>

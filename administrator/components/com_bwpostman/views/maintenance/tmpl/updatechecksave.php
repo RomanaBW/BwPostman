@@ -4,7 +4,7 @@
  *
  * BwPostman maintenance updateCheckSave template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -77,7 +77,7 @@ if ($show_update || $string_special != '') {
 	$show_right	= true;
 }
 ?>
-		
+
 <link rel="stylesheet" href="components/com_bwpostman/assets/css/install.css" type="text/css" />
 
 <div id="com_bwp_install_header">
@@ -136,7 +136,7 @@ if ($show_update || $string_special != '') {
 					<p class="urgent"><?php echo $string_special; ?></p>
 				</div>
 			<?php }?>
-			
+
 			<?php if ($show_update) { ?>
 				<div class="com_bwp_install_updateinfo">
 					<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
@@ -179,14 +179,14 @@ if ($show_update || $string_special != '') {
 		<?php } ?>
 	</div>
 	<div class="clr"></div>
-<?php /*	
+<?php /*
 	<div class="com_bwp_install_footer">
 		<p class="small"><?php echo JText::_('&copy; 2012-'); echo date (" Y")?> by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
 	</div>
 </div>
 */?>
 
-<?php 
+<?php
 /*
 switch ($this->check_res['type']) {
 	case 'error':	$class	= "bw_tablecheck_error bw_maintenance_result err";

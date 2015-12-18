@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Module
- * 
+ *
  * BwPostman special form field for module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -129,7 +129,7 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		// Initialize variables.
 		$html	= array();
 		$stub	= "'ub'";
-		
+
 		// Initialize some field attributes.
 		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
 
@@ -198,13 +198,13 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 	{
 		// Hash for caching
 		$hash = md5($this->element);
-	
+
 		if (!isset(static::$options[$hash]))
 		{
 			static::$options[$hash] = parent::getOptions();
-	
+
 			$options = array();
-	
+
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)
 			->select('CONCAT("-",a.id) AS value')
@@ -222,14 +222,14 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 				{
 					$option->text = str_repeat('- ', $option->level) . $option->text;
 				}
-	
+
 				static::$options[$hash] = array_merge(static::$options[$hash], $options);
 			}
 		}
-	
+
 		return static::$options[$hash];
 	}
-	
+
 
 
 

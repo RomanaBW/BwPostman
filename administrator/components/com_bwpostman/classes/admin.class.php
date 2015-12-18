@@ -4,7 +4,7 @@
  *
  * BwPostman admin class for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -41,12 +41,12 @@ class BwPostmanAdmin {
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 		$db->SetQuery($query);
-		
+
 		$manifest = json_decode($db->loadResult(), true);
 
 		echo 'BwPostman version ' . $manifest['version'] . ' by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';

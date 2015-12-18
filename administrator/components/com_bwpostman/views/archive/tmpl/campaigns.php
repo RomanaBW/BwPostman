@@ -4,7 +4,7 @@
  *
  * BwPostman archive campaigns template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -54,17 +54,17 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 <script type="text/javascript">
 /* <![CDATA[ */
 	function confirmUnarchive(unarchive_value)  // Get the selected value from modalbox
-	{ 
+	{
 		document.adminForm.unarchive_nl.value = unarchive_value;
 		Joomla.submitbutton('archive.unarchive');
 	}
 
 	function confirmDelete(delete_value)  // Get the selected value from modalbox
-	{ 
+	{
 		document.adminForm.remove_nl.value = delete_value;
 		Joomla.submitbutton('archive.delete');
 	}
-/* ]]> */		
+/* ]]> */
 </script>
 
 <div id="bwp_view_lists">
@@ -81,7 +81,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 				// Search tools bar
 				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 			?>
-		
+
 				<div class="row-fluid">
 					<table class="adminlist table table-striped">
 						<tbody>
@@ -104,7 +104,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
 										</li>
 									</ul>
-					
+
 									<div class="current">
 										<table class="adminlist">
 											<thead>
@@ -123,9 +123,9 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 												</tr>
 											</tfoot>
 											<tbody>
-											<?php 
+											<?php
 											if (count($this->items) > 0) {
-												foreach ($this->items as $i => $item) : 
+												foreach ($this->items as $i => $item) :
 													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.'.$item->id);
 													$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
@@ -158,7 +158,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 							</tr>
 						</tbody>
 					</table>
-					
+
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="boxchecked" value="0" />
 					<input type="hidden" name="unarchive_nl" value="0" />

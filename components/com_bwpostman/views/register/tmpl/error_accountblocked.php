@@ -4,7 +4,7 @@
  *
  * BwPostman register error account blocked template for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -41,21 +41,21 @@ defined ('_JEXEC') or die ('Restricted access');
 		<?php if ($this->params->def('show_page_title', 1)) { ?>
 		<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
 		<?php }
-		
+
 		$admin_email = $this->params->def('default_from_email', $this->config->get('mailfrom'));
-		
+
 		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
-		
+
 		if (!$this->error->err_email) { // Case 1, 2, 3
 			echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
-		} 
+		}
 		else { // Case 4
 			$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
 			echo $msg;
 		}
 		$msg1 = JText::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email);
 		echo '<p class="contact-admin">' . JHTML::_('content.prepare', $msg1) . '</p>';
-		
+
 		?>
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
 	</div>

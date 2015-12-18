@@ -4,7 +4,7 @@
  *
  * BwPostman single subscriber model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -64,7 +64,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function __construct()
 	{
 		parent::__construct();
-		 
+
 		$jinput	= JFactory::getApplication()->input;
 		$array	= $jinput->get('cid',  0, '', 'array');
 		$this->setId((int)$array[0]);
@@ -78,7 +78,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	array	Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
-	 * 
+	 *
 	 * @since  1.0.1
 	*/
 	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
@@ -115,7 +115,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		{
 			return true;
 		}
-		
+
 		if (!empty($record->id)) {
 			// Check specific delete permission.
 			if ($user->authorise('core.delete', 'com_bwpostman.subscribers.' . (int) $recordId))
@@ -138,10 +138,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	{
 		$app			= JFactory::getApplication();
 		$table			= $this->getTable();
-		$cid			= $app->getUserState('com_bwpostman.edit.subscriber.id', 0); 
-		$data			= $app->getUserState('com_bwpostman.edit.subscriber.data', null); 
+		$cid			= $app->getUserState('com_bwpostman.edit.subscriber.id', 0);
+		$data			= $app->getUserState('com_bwpostman.edit.subscriber.data', null);
 		$mailinglists	= $app->getUserState('com_bwpostman.edit.subscriber.mailinglists', null);
-		
+
 		if (!$data) {
 			// Initialise variables.
 			if (is_array($cid)) {
@@ -154,14 +154,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 			(!empty($pk)) ? $pk	= $pk : $pk	= (int) $cid;
 			$item	= parent::getItem($pk);
-			
+
 			$_db	= $this->_db;
 			$query	= $_db->getQuery(true);
-				
+
 			$query->select($_db->quoteName('mailinglist_id'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 			$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $item->id);
-			
+
 			$_db->setQuery($query);
 			$item->list_id_values = $_db->loadColumn();
 		}
@@ -178,7 +178,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		}
 		$app->setUserState('com_bwpostman.edit.subscriber.data', null);
 		$app->setUserState('com_bwpostman.edit.subscriber.mailinglists', null);
-		
+
 		return $item;
 	}
 
@@ -194,7 +194,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/models/fields');
-		
+
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
@@ -223,14 +223,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		if (!$form->getValue('name_field_obligation')) {
 			$form->setFieldAttribute('name', 'required', false);
 		}
-		
+
 		// Check for required first name
 		if ($form->getValue('firstname_field_obligation')) {
 			$form->setFieldAttribute('firstname', 'required', true);
 		}
-		
+
 		// Check to show confirmation data or checkbox
-		$c_date	= strtotime($form->getValue('confirmation_date'));		
+		$c_date	= strtotime($form->getValue('confirmation_date'));
 		if (empty($c_date)) {
 			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
 			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');
@@ -239,7 +239,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		else {
 			$form->setFieldAttribute('status', 'type', 'hidden');
 		}
-		
+
 		// Check to show registration data
 		$r_date	= $form->getValue('registration_date');
 		if (empty($r_date)) {
@@ -247,17 +247,17 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$form->setFieldAttribute('registered_by', 'type', 'hidden');
 			$form->setFieldAttribute('registration_ip', 'type', 'hidden');
 		}
-		
+
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
 		if ($m_date == '0000-00-00 00:00:00') {
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
 		}
-		
+
 		// check for new test-recipient
 		if (JFactory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', '0') == '9') $form->setFieldAttribute('status', 'default', '1');
-		
+
 		return $form;
 	}
 
@@ -271,10 +271,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	protected function loadFormData()
 	{
 		// @todo XML-file will not be processed
-		
+
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_bwpostman.subscriber.edit.data', array());
-		
+
 		if (empty($data)) $data = $this->getItem();
 
 		return $data;
@@ -290,12 +290,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('id')  . ' AS ' . $_db->Quote(''));
 		$query->from($_db->quoteName('#__menu'));
 		$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=register'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				
+
 		$_db->setQuery($query);
 
 		$itemid = $this->_db->loadResult();
@@ -320,12 +320,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		while ($match_editlink) {
 			$new_editlink	= JApplication::getHash(JUserHelper::genRandomPassword());
 			$query			= $_db->getQuery(true);
-						
+
 			$query->select($_db->quoteName('editlink'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
 			$query->where($_db->quoteName('editlink') . ' = ' . $_db->Quote($new_editlink));
-			
-			$_db->setQuery($query);		
+
+			$_db->setQuery($query);
 
 			$editlink = $_db->loadResult();
 
@@ -345,7 +345,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function getActivation()
 	{
 		$_db	= $this->_db;
-		
+
 		jimport('joomla.user.helper');
 
 		// Create the activation and check if the string doesn't exist twice or more
@@ -354,11 +354,11 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		while ($match_activation) {
 			$new_activation = JApplication::getHash(JUserHelper::genRandomPassword());
 			$query		= $_db->getQuery(true);
-			
+
 			$query->select($_db->quoteName('activation'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
 			$query->where($_db->quoteName('activation') . ' = ' . $_db->Quote($new_activation));
-				
+
 			$_db->setQuery($query);
 			$activation = $_db->loadResult();
 
@@ -385,7 +385,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 		$subscriber	= new stdClass();
-		
+
 		// Get the user_id from the users-table
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__users'));
@@ -398,28 +398,28 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		if (isset($data['ml_available']))	foreach ($data['ml_available'] as $key => $value) 	$data['mailinglists'][] 	= $value;
 		if (isset($data['ml_unavailable']))	foreach ($data['ml_unavailable'] as $key => $value)	$data['mailinglists'][] 	= $value;
 		if (isset($data['ml_intern']))		foreach ($data['ml_intern'] as $key => $value)		$data['mailinglists'][] 	= $value;
-		
+
 		// Admin creates a new subscriber?
-		if (!$data['id']) { 
+		if (!$data['id']) {
 			$data['editlink'] = $this->getEditlink();
 		}
 
 		// Admin creates a new subscriber and doesn't confirm the subscriber?
-		if ((!array_key_exists('confirm',$data)) && (!$data['id'])) { 
+		if ((!array_key_exists('confirm',$data)) && (!$data['id'])) {
 			$data['activation'] = $this->getActivation();
 		}
-		
+
 		$time = $date->toSql();
-		
+
 		// New subscriber
-		if (empty($data['id'])) { 
+		if (empty($data['id'])) {
 			$data['registration_date'] 	= $time;
 			$data['registered_by'] 		= $user->get('id');
 			$data['registration_ip']	= $data['ip'];
 			$new_subscriber				= true;
-		
+
 			// New subscriber is confirmed by administrator
-			if ($data['status'] != '0') { 
+			if ($data['status'] != '0') {
 				$data['confirmation_date'] 	= $time;
 				$data['confirmation_ip'] 	= $data['ip'];
 				$data['confirmed_by']		= $user->get('id');
@@ -431,63 +431,63 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 		}
 		// Existing subscriber
-		else { 
+		else {
 			$new_subscriber	= false;
-		
+
 			if ($data['status'] == '1') { // Existing subscriber is confirmed by administrator  **** (2015-04-10) not possible, field confirmation is not displayed at existing subscribers
 //				$data['confirmation_date'] 	= $time;
 //				$data['confirmed_by']		= $user->get('id');
 //				$data['activation']			= '';
 			}
 		}
-		
+
 		if (parent::save($data)) {
 			// Get the subscriber ID
 			$subscriber_id	= $this->getState('subscriber.id');
-	
+
 			// Delete all entrys of the subscriber from subscribers_mailinglists-Table
 			$query		= $_db->getQuery(true);
-						
+
 			$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 			$query->where($_db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
-			
+
 			$_db->setQuery($query);
 			$_db->Execute($query);
-	
+
 			if (!empty($data['mailinglists'])) {
 				$list_id_values = $data['mailinglists'];
-	
+
 				// Store subscribed mailinglists in newsletters_mailinglists-table
 				foreach ($list_id_values AS $list_id) {
 					$query	= $_db->getQuery(true);
-					
+
 					$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 					$query->columns(array(
 							$_db->quoteName('subscriber_id'),
 							$_db->quoteName('mailinglist_id')
 					));
 					$query->values(
-							(int) $subscriber_id . ',' . 
+							(int) $subscriber_id . ',' .
 							(int) $list_id
 					);
 					$_db->setQuery($query);
 					$_db->execute();
 				}
 			}
-				
+
 			if (isset($data['activation'])) $ret_activation = $data['activation']; // @todo Always needed?
 
 			// New subscriber has to confirm the account by himself
-			if (($new_subscriber) && (!$confirmed)) { 
+			if (($new_subscriber) && (!$confirmed)) {
 				$subscriber->name 		= $data['name'];
 				$subscriber->firstname	= $data['firstname'];
 				$subscriber->email 		= $data['email'];
 				$subscriber->activation = $data['activation'];
-			
+
 				// Send registration confirmation mail
 				$itemid	= '';//$this->getItemid();
 				$res	= $this->_sendMail($subscriber, $itemid);
-				
+
 				if (!$res) {
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_FAILED'), 'error');
 					return false;
@@ -518,19 +518,19 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$db			= $this->_db;
 		$mailer		= JFactory::getMailer();
 		$siteURL	= JURI::root();
-		
+
 		$params 	= JComponentHelper::getParams('com_bwpostman');
 		$sitename	= $app->getCfg('sitename');
 		$sender		= array();
-		
+
 		$sender[0]	= $params->get('default_from_email');
 		$sender[1]	= $params->get('default_from_name');
-		
+
 		$reply		= array();
 		$reply[0]	= $params->get('default_from_email');
 		$reply[1]	= $params->get('default_from_name');
-		
-		
+
+
 		$name 		= $subscriber->name;
 		$firstname 	= $subscriber->firstname;
 		if ($firstname != '') $name = $firstname . ' ' . $name; //Cat fo full name
@@ -538,10 +538,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$activation = $subscriber->activation;
 
 		$subject 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
-		
+
 		if (is_null($itemid)) {
 			$body 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG', $name, $siteURL, $siteURL."index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");
-		} 
+		}
 		else {
 			$body 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG', $name, $siteURL, $siteURL."index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}");
 		}
@@ -556,7 +556,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$mailer->setSubject($subject);
 		$mailer->setBody($body);
 		$mailer->isHTML(false);
-		
+
 		$res = $mailer->Send();
 
 		return $res;
@@ -577,9 +577,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$date	= JFactory::getDate();
 		$user	= JFactory::getUser();
 		$_db	= $this->_db;
-		
-		if ($archive == 1) 
-		{ 
+
+		if ($archive == 1)
+		{
 			$time	= $date->toSql();
 			$userid	= $user->get('id');
 
@@ -590,9 +590,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					return false;
 				}
 			}
-		} 
-		else 
-		{ // 
+		}
+		else
+		{ //
 			$time	= '0000-00-00 00:00:00';
 			$userid	= "-1";
 
@@ -603,19 +603,19 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					return false;
 				}
 			}
-		} 
+		}
 
 		if (count($cid)) {
 			JArrayHelper::toInteger($cid);
 			$query	= $_db->getQuery(true);
-						
+
 			$query->update($_db->quoteName('#__bwpostman_subscribers'));
 			$query->set($_db->quoteName('archive_flag') . " = " . (int) $archive);
 			$query->set($_db->quoteName('archive_date') . " = " . $_db->Quote($date));
 			$query->set($_db->quoteName('archived_by') . " = " . (int) $userid);
 			$query->where($_db->quoteName('id') . ' IN (' .implode(',', $cid) . ')');
-			
-			$_db->setQuery($query);		
+
+			$_db->setQuery($query);
 			if (!$_db->query()) {
 				$this->setError($_db->getErrorMsg());
 				return false;
@@ -635,18 +635,18 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function delete(&$pks)
 	{
 		$result = false;
-		
+
 		// Access check.
 		foreach ($pks as $i) {
 			if (!BwPostmanHelper::allowDelete($i, 0, 'subscriber'))	return false;
 		}
-		
+
 		if (count($pks)) {
 			JArrayHelper::toInteger($pks);
 			$_db	= $this->getDbo();
-				
+
 			$subslist_table	= JTable::getInstance('subscribers_mailinglists', 'BwPostmanTable');
-				
+
 			// Delete subscriber from subscribers-table
 			if (!parent::delete($pks)) {
 				$this->setError($_db->getErrorMsg());
@@ -659,7 +659,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 			$query->where('subscriber_id IN (' .implode(',', $pks) . ')');
 			$_db->setQuery($query);
-				
+
 			if (!$_db->query())
 			{
 				$this->setError($_db->getErrorMsg());
@@ -680,12 +680,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$cids	= implode(',', $cid);
 		$config	= Jfactory::getConfig();
 
 		$validator = new emailValidation();
-		
+
 		$tmp = explode('@', $config->get('mailfrom'));
 		$mailuser = $tmp[0];
 		$mailserver = $tmp[1];
@@ -702,10 +702,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('id') . ' IN (' .implode(',', $cid) . ')');
 		$query->order($_db->escape($listOrdering).' '.$listDirn);
-		
+
 		$_db->setQuery($query);
 		$subscribers = $_db->loadObjectList();
-		
+
 		// After the validation process we want to show the results
 		// --> therefore we store the results into an array
 		$res = array();
@@ -722,7 +722,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$res[$i]['email']		= $subscriber->email;
 			$res[$i]['name']		= $subscriber->name;
 			$res[$i]['firstname']	= $subscriber->firstname;
-				
+
 			// Skip confirmed email address if they still passed the confirmation process and where identified as invalid
 			if (strstr($subscriber->name, 'INVALID_')){ // Skipped
 				$res[$i]['result'] = 2;
@@ -735,7 +735,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				}
 				continue;
 			}
-				
+
 			$result = $validator->ValidateEmailBox($subscriber->email);
 			if($result === -1) { // Unable to validate the address with this host
 				$res[$i]['result'] = -1;
@@ -746,7 +746,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					ob_flush();
 					flush();
 				}
-					
+
 			}
 			elseif($result) { // The host is able to receive email. The address could be valid.
 				$res[$i]['result'] = 1;
@@ -763,20 +763,20 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				$time	= $date->toSql();
 				$user	= JFactory::getUser();
 				$query	= $_db->getQuery(true);
-				
+
 				$query->update($_db->quoteName('#__bwpostman_subscribers'));
 				$query->set($_db->quoteName('status') . " = " . (int) 1);
 				$query->set($_db->quoteName('confirmation_date') . " = " . $_db->Quote($time, false));
 				$query->set($_db->quoteName('confirmed_by') . " = " . (int) $user->get('id'));
 				$query->where($_db->quoteName('id') . ' = ' . (int) $subscriber->id);
-				
+
 				$_db->setQuery($query);
 
 				if (!$_db->query()) {
 						$this->setError($_db->getErrorMsg());
 						return false;
 					}
-						
+
 			}
 			else { // The host can\'t receive email or this mailbox doesn\'t exist. The address is NOT valid.
 				$res[$i]['result'] = 0;
@@ -790,11 +790,11 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 				// Prepend an INVALID_ to the subscriber name
 				$query	= $_db->getQuery(true);
-							
+
 				$query->update($_db->quoteName('#__bwpostman_subscribers'));
 				$query->set($_db->quoteName('name') . " = " . $_db->Quote('INVALID_'.$subscriber->name));
 				$query->where($_db->quoteName('id') . ' = ' . (int) $subscriber->id);
-								
+
 				$_db->setQuery($query);
 
 				if (!$_db->query()) {
@@ -825,9 +825,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$time			= $date->toSql();
 		$user			= JFactory::getUser();
 		$mailinglists	= array();
-		
+
 		$import_general_data = $session->get('import_general_data');
-		
+
 		// Load the session data which are needed for import operation
 		if(isset($import_general_data) && is_array($import_general_data)){
 			isset ($import_general_data['caption'])		? $caption		= stripcslashes($import_general_data['caption'])	: $caption		= '';
@@ -845,7 +845,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		if (isset($data['jform']['ml_available']))		foreach ($data['jform']['ml_available']		as $key => $value)	$mailinglists[] 	= $value;
 		if (isset($data['jform']['ml_unavailable']))	foreach ($data['jform']['ml_unavailable']	as $key => $value)	$mailinglists[] 	= $value;
 		if (isset($data['jform']['ml_intern']))			foreach ($data['jform']['ml_intern']		as $key => $value)	$mailinglists[] 	= $value;
-		
+
 		if (isset($data['confirm'])) {
 			$confirm = true;
 		}
@@ -888,34 +888,34 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$values["activation"]			= '';
 		$values["emailformat"]			= $data['emailformat'];
 		isset ($data['confirm']) ? $values["status"] = $data['confirm'] : $values["status"] = 0;
-		
+
 		if (false === $fh = fopen($dest, 'r')) {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UNABLE_TO_OPEN_FILE'), 'warning');
 			return false;
-		} 
+		}
 		else {
-				
+
 			// Error-Array --> 2dimensions: [err][csv_row], [err][email], [err][msg], [err][id]
 			$err = array();
 			// Warning-Array --> 2dimensions: [warn][csv_row], [warn][email], [warn][msg]
 			$warn = array();
 			// SendEmailActivation-Array --> 2dimensions [sendmail][csv_row], [sendmail][email]
 			$mail = array();
-				
+
 			$row_nbr = 0;
-			
+
 			if ($ext == 'csv') { // Format = csv
 				JFactory::getApplication()->setUserState('com_bwpostman.subscriber.fileformat', 'csv');
-				
+
 				// Get data from the file and store them into an array
 				while(($row = fgetcsv ($fh, '', $delimiter, $enclosure)) !== FALSE) {
-						
+
 					// Reset the import values. We should do this for every import row preventively.
 					foreach($colNumToDBName as $key => $value) $values[$key] = 0;
-						
+
 					// Get the values from the csv
 					foreach($colNumToDBName as $key => $value) $values[$value] = $row[$key];
-						
+
 					// Count CSV-file line numbers
 					$row_nbr++;
 
@@ -927,7 +927,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 					// Save the row
 					$this->save_import($values, $confirm, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
-						
+
 					// Push the error/mailingdata into the arrays
 					if ($ret_err) {
 						$err[] = $ret_err;
@@ -942,11 +942,11 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					}
 
 				} // Endif format == csv
-					
-			} 
+
+			}
 			else { // Format == xml
 				JFactory::getApplication()->setUserState('com_bwpostman.subscriber.fileformat', 'xml');
-				
+
 				// Parse the XML
 				$parser	= JFactory::getXML($dest);
 
@@ -956,22 +956,22 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 				// Get all fields from the xml file for listing and selecting by the user
 				foreach ($parser->subscriber as $subscriber) $subscribers[]	= $subscriber;
-				
+
 				foreach ($subscribers as $subscriber){
 					$xml_fields	= get_object_vars($subscriber);
-					
+
 					// Reset the import values. We should do this for every import dataset preventively.
 					foreach($colNumToDBName as $key => $value) $values[$key] = 0;
-					
+
 					// Get the values from the xml
 					foreach($colNumToDBName as $key => $value) $values[$value] = $xml_fields[$key];
-											
+
 					// Count XML-dataset numbers
 					$row_nbr++;
 
 					// Save the data
 					$this->save_import($values, $confirm, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
-						
+
 					// Push the error/mailingdata into the arrays
 					if ($ret_err) {
 						$err[] = $ret_err;
@@ -986,14 +986,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					}
 				}
 			}
-							
+
 			fclose($fh); // Close the file
 
 			// Return the error/mailingdata arrays
 			$ret_err 	= $err;
 			$ret_warn 	= $warn;
 			$ret_maildata = $mail;
-				
+
 			return true;
 		}
 	}
@@ -1022,7 +1022,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$ret_err		= '';
 		$ret_warn		= '';
 		$ret_maildata	= '';
-		
+
 		// Check if there is a valid email address
 		if (!JMailHelper::isEmailAddress($values['email'])) {
 			$err['row'] = $row;
@@ -1031,14 +1031,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$ret_err = $err;
 			return false;
 		}
-		 
+
 		// We may set confirmation data if the confirm-box is checked and the import value does not stand against
 		if ($confirm && $values['status'] != '0') {
 			$values["confirmation_date"]	= $time;
 			$values["confirmed_by"]			= $user->get('id');
 			$values["confirmation_ip"]		= $_SERVER['REMOTE_ADDR'];
-		} 
-		
+		}
+
 		// Check if the email address exists in the database
 		$query->select('*');
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
@@ -1050,7 +1050,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		else {
 			$query->where($_db->quoteName('status') . ' IN (0, 1)');
 		}
-		
+
 		$_db->setQuery($query);
 		$subscriber = $_db->loadObject();
 
@@ -1061,7 +1061,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				if ($subscriber->archive_flag) { // Subscriber already exists but is archived
 					$err['msg'] = JText::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_ACCOUNTBLOCKED_BY_SYSTEM');
 				} else { // Subscriber already exists
-						
+
 					if ($subscriber->activation) { // Account is not activated
 						$err['msg'] = JText::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_ACCOUNTNOTACTIVATED');
 					} else {
@@ -1077,13 +1077,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				if ($subscriber->emailformat == $values['emailformat']){
 					$err['row'] 	= $row;		// Get CSV row
 					$err['email'] 	= $values['email'];
-			
+
 					if ($subscriber->archive_flag == 1) {
 						$err['msg'] = JText::_('COM_BWPOSTMAN_TEST_IMPORT_ERROR_ACCOUNTARCHIVED');
 					} else {
 						$err['msg'] = JText::_('COM_BWPOSTMAN_TEST_IMPORT_ERROR_ACCOUNTEXISTS');
 					}
-			
+
 					$err['id'] = $subscriber->id;
 					$ret_err = $err;
 					return false;
@@ -1102,27 +1102,27 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					} else {
 						$warn[0]['msg'] = JText::_('COM_BWPOSTMAN_SUB_IMPORT_INVALID_STATUS_CONFIRMED');
 					}
-				} 
+				}
 				else { // Status = 0
 					if (empty($values['status'])) {
 						$warn[0]['msg'] = JText::_('COM_BWPOSTMAN_SUB_IMPORT_NO_STATUS_UNCONFIRMED');
-					} 
+					}
 					else {
 						$warn[0]['msg'] = JText::_('COM_BWPOSTMAN_SUB_IMPORT_INVALID_STATUS_UNCONFIRMED');
 					}
 				}
 				$values["status"] = $confirm;
 			}
-			
+
 		if ($values['status'] == '0') $values["activation"] = $this->getActivation();
-			
+
 		// Check if the subscriber email address exists in the users-table
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__users'));
 		$query->where($_db->quoteName('email') . ' = ' . $_db->Quote($values['email']));
-		
+
 		$_db->setQuery($query);
 		$user_id = $_db->loadResult();
 
@@ -1131,13 +1131,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if (parent::save($values)) {
 			$subscriber_id	= $this->getState('subscriber.id');
-	
+
 			//Save Mailinglists if selected
 			if ($mailinglists && ($values['status'] != '9')) {
 				foreach ($mailinglists AS $list_id) {
 					if (is_numeric($list_id)) { // We have to test this because IE doesn't accept the value "disabled"
 						$query	= $_db->getQuery(true);
-						
+
 						$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 						$query->columns(array(
 							$_db->quoteName('subscriber_id'),
@@ -1156,7 +1156,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			//Send Email, if confirmed is not set
 			if ($values["status"] == 0) {
 				$subscriber_emaildata	= new stdClass();
-				
+
 				$subscriber_emaildata->row 			= $row;
 				$subscriber_emaildata->name 		= $values["name"];
 				$subscriber_emaildata->firstname	= $values["firstname"];
@@ -1194,7 +1194,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$subQuery	= '';
 
 		$export_fields = $data['export_fields'];
-		
+
 		// Build the subQuery
 		$subQuery = $this->_buildExportSubQuery(isset($data['status0']) ? $data['status0'] : '0', isset($data['status1']) ? $data['status1'] : '0', isset($data['status9']) ? $data['status9'] : '0', isset($data['archive0']) ? $data['archive0'] : '0', isset($data['archive1']) ? $data['archive1'] : '0');
 
@@ -1202,35 +1202,35 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$delimiter = $data['delimiter'];
 			$enclosure = $data['enclosure'];
 			$newline = "\n";
-				
+
 			$export_fields_tmp = array();
 			foreach ($export_fields AS $export_field) {
 				$export_fields_tmp[] = $enclosure.$export_field.$enclosure;
 			}
 
 			$output = implode($delimiter,$export_fields_tmp).$newline;
-				
+
 			// Add DB-Quote to each export field
 			foreach ($export_fields as $key => $value)	$export_fields[$key] = $_db->quoteName($value);
-				
+
 			$export_fields_str = implode(",",$export_fields);
-			
+
 			// Build the query
 			$query	= $_db->getQuery(true);
-			
+
 			$query->select($export_fields_str);
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
 			$query	.= $subQuery;
-			
+
 			$_db->setQuery($query);
-			
+
 			$query2 = "SELECT {$export_fields_str}
 				FROM {$_db->quoteName('#__bwpostman_subscribers')}
 				{$subQuery}"
 				;
 			$_db->setQuery($query2);
 			$subscribers_export = $_db->loadAssocList();
-				
+
 			foreach ($subscribers_export AS $subscriber){
 				$subscriber_export_tmp = array();
 				foreach ($subscriber AS $subscriber_tmp) {
@@ -1240,10 +1240,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				// Write file
 				$output .= implode($delimiter,$subscriber_export_tmp).$newline;
 			}
-		} 
+		}
 		else { // Fileformat == xml
 			$export_fields_str_xml = implode(", ",$export_fields);
-				
+
 			$output = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 						<!-- BwPostman export file -->
 						<!DOCTYPE subscribers [
@@ -1253,21 +1253,21 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 			foreach ($export_fields as $key => $value)	{
 				$output .= "<!ELEMENT {$value} (#PCDATA)>
-							";	  
+							";
 			}
 			$output .= "]>\n<subscribers>\n";
 
 			// Add DB-Quote to each export field
 			foreach ($export_fields as $key => $value)	$export_fields_tmp[$key] = $_db->quoteName($value);
 			$export_fields_str = implode(",",$export_fields_tmp);
-				
+
 			// Build query
 			$query	= $_db->getQuery(true);
-						
+
 			$query->select($export_fields_str);
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
 			$query	.= $subQuery;
-						
+
 			$_db->setQuery($query);
 
 			$subscribers_export = $_db->loadAssocList();
@@ -1300,7 +1300,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$_db		= $this->_db;
 		$subQuery	= '';
 		$where		= false;
-		
+
 		if ($status0 && $status1 && $status9) {
 		}
 		elseif ($status0 && $status1) {
@@ -1329,7 +1329,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		}
 
 		if ($archive0 && $archive1) {
-				
+
 		}
 		elseif ($archive0) {
 			if ($where) {
@@ -1361,7 +1361,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function batch($commands, $pks, $contexts)
 	{
 		// Sanitize user ids.
-		$old_list	= JFactory::getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null); 
+		$old_list	= JFactory::getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
 		$pks		= array_unique($pks);
 		JArrayHelper::toInteger($pks);
 
@@ -1442,7 +1442,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		// Clear the cache unset Session variable
 		$this->cleanCache();
 		JFactory::getSession()->clear('com_bwpostman.subscriber.batch_filter_mailinglist');
-		
+
 		return $result;
 	}
 
@@ -1532,7 +1532,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			else {
 				$skipped++;
 			}
-			
+
 			if ($error = $_db->getErrorMsg())
 			{
 				$this->setError($error);
@@ -1562,7 +1562,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$result_set		= array();
 		$unsubscribed	= 0;
 		$skipped		= 0;
-		
+
 /*		// Check that user has create permission for mailinglist
 		$table		= $this->getTable();
 		$user		= JFactory::getUser();
@@ -1588,13 +1588,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		}
 */
 
-		
+
 		// Subscribers exists so let's proceed
 		while (!empty($pks))
 		{
 			// Pop the first id off the stack
 			$pk = array_shift($pks);
-		
+
 			// Check if subscriber has already subscribed to the desired mailinglist
 			$query = $_db->getQuery(true);
 			$query->select($_db->quoteName('subscriber_id'));
@@ -1603,13 +1603,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$query->where($_db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
 			$_db->setQuery($query);
 			$result = $_db->loadResult();
-		
+
 			if ($error = $_db->getErrorMsg())
 			{
 				$this->setError($error);
 				return false;
 			}
-		
+
 			// If subscription to this mailinglist, then unsubscribe, else only count
 			if ($result) {
 				$query = $_db->getQuery(true);
@@ -1624,7 +1624,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			else {
 				$skipped++;
 			}
-				
+
 			if ($error = $_db->getErrorMsg())
 			{
 				$this->setError($error);
@@ -1634,7 +1634,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$result_set['task']		= 'unsubscribe';
 		$result_set['done']		= $unsubscribed;
 		$result_set['skipped']	= $skipped;
-		
+
 		return $result_set;
 	}
 }

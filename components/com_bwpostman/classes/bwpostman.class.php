@@ -4,7 +4,7 @@
  *
  * BwPostman main class for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -34,13 +34,13 @@ class BwPostman {
 	 */
 	public static function footer()
 	{
-		
+
 		$app = JFactory::getApplication();
-				
+
 		JPluginHelper::importPlugin('bwpostman','copyright');
 
 		$copyright = '<span>BwPostman by </span><a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
-		
+
 		$arguments = array(&$copyright);
 
 		$result = $app->triggerEvent('onPrepareBwpostman', $arguments);

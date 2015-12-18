@@ -4,7 +4,7 @@
  *
  * BwPostman single subscriber import 2 template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -32,13 +32,13 @@ JHTML::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 $jinput	= JFactory::getApplication()->input;
-	
+
 // Split the result array into three arrays which contains errors and warnings which occured during the import process
 $mail_err 		= isset ($this->result['mail_err']) ? $this->result['mail_err'] : '';
 $import_err 	= isset($this->result['import_err']) ? $this->result['import_err'] : '';
 $import_warn 	= isset($this->result['import_warn']) ? $this->result['import_warn'] : '';
 $option			= $jinput->getCmd('option');
-$fileformat		= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat'); 
+$fileformat		= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat');
 
 if ($fileformat == 'xml') {
 	$row_text 	= JText::_('COM_BWPOSTMAN_XML_ROW');
@@ -49,7 +49,7 @@ else {
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-	<?php 
+	<?php
 	if ((empty($mail_err)) && (empty($import_err)) && (empty($import_warn))) echo '<div class="alert alert-success">' . JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS') . '</div>';
 	if (!empty($mail_err)) : { // The subscribers were imported but the confirmation email couldn't be sent ?>
 		<fieldset class="adminform">
@@ -124,10 +124,10 @@ else {
 		</fieldset>
 	<?php } endif;
 	// Import warning ?>
-	 
+
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="controller" value="subscribers" />
-	<input type="hidden" name="option" value="<?php echo $option; ?>" /> 
+	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<?php echo JHTML::_('form.token'); ?>
 </form>
 

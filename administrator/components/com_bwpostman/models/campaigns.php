@@ -4,7 +4,7 @@
  *
  * BwPostman campaigns lists model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -127,7 +127,7 @@ class BwPostmanModelCampaigns extends JModelList
 
 		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
 		$this->setState('filter.search_filter', $filtersearch);
-		
+
 		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
 		$this->setState('filter.access', $access);
 
@@ -179,7 +179,7 @@ class BwPostmanModelCampaigns extends JModelList
 		$query		= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
 		$user		= JFactory::getUser();
-		
+
 		// Build sub query which counts the newsletters of each campaign and query
 		$sub_query->select('COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('id') . ') AS ' . $_db->quoteName('newsletters'));
 		$sub_query->from($_db->quoteName('#__bwpostman_newsletters') . 'AS ' . $_db->quoteName('b'));
@@ -195,31 +195,31 @@ class BwPostmanModelCampaigns extends JModelList
 				) . ', (' . $sub_query . ') AS newsletters'
 		);
 		$query->from('#__bwpostman_campaigns AS a');
-		
+
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		
+
 		// Join over the users for the author.
 		$query->select('ua.name AS author_name');
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
-		
+
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = ' . (int) $access);
 		}
-		
+
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
 			$groups	= implode(',', $user->getAuthorisedViewLevels());
 			$query->where('a.access IN ('.$groups.')');
 		}
-		
+
 		// Filter by published state
 		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
@@ -228,14 +228,14 @@ class BwPostmanModelCampaigns extends JModelList
 		elseif ($published === '') {
 			$query->where('(a.published = 0 OR a.published = 1)');
 		}
-		
+
 		// Filter by archive state
 		$query->where('a.archive_flag = ' . (int) 0);
-		
+
 		// Filter by search word.
 		$filtersearch	= $this->getState('filter.search_filter');
 		$search			= '%' . $_db->escape($this->getState('filter.search'), true) . '%';
-		
+
 		if (!empty($search)) {
 			switch ($filtersearch) {
 				case 'description':
@@ -250,11 +250,11 @@ class BwPostmanModelCampaigns extends JModelList
 				default:
 			}
 		}
-		
+
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
-		
+
 		//sqlsrv change
 		if($orderCol == 'access_level') $orderCol = 'ag.title';
 		$query->order($_db->escape($orderCol.' '.$orderDirn));

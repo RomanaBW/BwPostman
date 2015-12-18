@@ -4,7 +4,7 @@
  *
  * BwPostman  form field Text templates class.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -67,13 +67,13 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 
 		// Get the field options.
 		$options	= $this->getOptions();
-		
+
 		// Get selected template.
 		$selected	= $item->text_template_id;
 
 		// Start the radio field output.
 		$html[]		= '<div class="controls">';
-		
+
 		// note for old templates
 		if ($selected < 1) $html[]	= JText::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
 
@@ -86,21 +86,21 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 				$class		= !empty($this->class) ? ' class="' . $this->class . '"' : '';
 				$lblclass	= ' class="inputbox mailinglists radio"';
 				$inputclass	= ' class="inputbox mailinglists radio"';
-	
+
 				$disabled	= !empty($option->disable) || ($readonly && !$checked);
-	
+
 				$disabled	= $disabled ? ' disabled' : '';
 				$required	= '';
-	
+
 				// Initialize some JavaScript option attributes.
 				$onclick	= !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 				$onchange	= !empty($option->onchange) ? ' onchange="' . $option->onchange . '"' : '';
-					
+
 				$html[]		= '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
 				$html[]		= '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
 								. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $inputclass . $onclick
 								. $onchange . $disabled . ' />';
-	
+
 				$html[]		= '<div class="media-preview add-on fltlft">';
 				$html[]		= '<span class="hasTipPreview" title="&lt;strong&gt;'.$option->description.'&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;div id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot; src=&quot;'.JURI::root() .$option->thumbnail.'&quot; alt=&quot;'.$option->title.'&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'.$option->title.'</span>';
 				$html[]		= '</div>';
@@ -110,10 +110,10 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 		else {
 			$html[]	= JText::_('COM_BWPOSTMAN_NO_DATA');
 		}
-	
+
 		// End the radio field output.
 		$html[]	= '</div>';
-				
+
 		return implode($html);
 	}
 
@@ -126,16 +126,16 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	public function getOptions()
 	{
 		$app	= JFactory::getApplication();
-		
+
 		// Initialize variables.
 		$options	= array();
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data', null);
-		
+
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$options	= array();
-		
+
 
 
 		// Build the select list for the templates
@@ -158,9 +158,9 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 		$query->order($_db->quoteName('title') . ' ASC');
 
 		$_db->setQuery($query);
-		
+
 		$options = $_db->loadObjectList();
-				
+
 		// Check for a database error.
 		if ($_db->getErrorNum()) {
 			$app->enqueueMessage($_db->getErrorMsg(), 'error');
@@ -168,7 +168,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
-		
+
 		return $options;
 	}
 }

@@ -4,7 +4,7 @@
  *
  * BwPostman edit template sub-template header for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -42,5 +42,5 @@ foreach ($fieldSets as $name => $fieldSet) :
 			</ul>
 		</div>
 	</fieldset>
-<?php endforeach; 
+<?php endforeach;
 ?>

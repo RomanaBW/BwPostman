@@ -4,7 +4,7 @@
  *
  * BwPostman single subscriber import 0 template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -96,7 +96,7 @@ $option	= $jinput->getCmd('option');
 						<td width="250" align="center" class="key">
 							<input type="button" class="btn btn-success" name="submitbutton" id=""submitbutton
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>
-										onclick="Joomla.submitbutton('subscribers.prepareImport');" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>" 
+										onclick="Joomla.submitbutton('subscribers.prepareImport');" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
 							/>
 						</td>
 					</tr>
@@ -104,7 +104,7 @@ $option	= $jinput->getCmd('option');
 			</div>
 		</div>
 	</fieldset>
-	
+
 	<input type="hidden" name="task" value="prepareImport" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
@@ -121,8 +121,8 @@ function extCheck() {
 	// get the file name, possibly with path (depends on browser)
 	var filename	= $j("#importfile").val();
 	var format		= $j("input[name='fileformat']:checked").val();
-	
-	
+
+
 	// Use a regular expression to trim everything before final dot
 	var extension = filename.replace(/^.*\./, '');
 
@@ -130,7 +130,7 @@ function extCheck() {
 	// so we account for this possibility now
 	if (extension == filename) {
 		extension = '';
-	} 
+	}
 	else {
 		// if there is an extension, we convert to lower case
 		// (N.B. this conversion will not effect the value of the extension
@@ -169,7 +169,7 @@ function extCheck() {
 
 $j(document).ready(function() {
 	var format	= $j("input[name='fileformat']:checked").val();
-	
+
 	$j( ".delimiter" ).hide();
 	$j( ".enclosure" ).hide();
 	$j( ".caption" ).hide();

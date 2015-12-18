@@ -4,7 +4,7 @@
  *
  * BwPostman installer for module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -23,10 +23,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
  // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+
 /**
  * Script file of BwPostman module
  */
@@ -38,7 +38,7 @@ class mod_BwPostmanInstallerScript
   *
   * @return void
   */
-  function install($parent) 
+  function install($parent)
   {
     $this->showFinished(false);
   }
@@ -49,22 +49,22 @@ class mod_BwPostmanInstallerScript
   *
   * @return void
   */
-  function uninstall($parent) 
+  function uninstall($parent)
   {
 		JFactory::getApplication()->enqueueMessage(JText::_('MOD_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
   }
- 
+
   /**
   * Method to update the extension
   * $parent is the class calling this method
   *
   * @return void
   */
-  function update($parent) 
+  function update($parent)
   {
 		$this->showFinished(true);
   }
- 
+
   /**
   * Method to run before an install/update/uninstall method
   * $parent is the class calling this method
@@ -72,15 +72,15 @@ class mod_BwPostmanInstallerScript
   *
   * @return void
   */
-  function preflight($type, $parent) 
+  function preflight($type, $parent)
   {
 		$app 		= JFactory::getApplication ();
 		$jversion	= new JVersion();
 		$jInstall	= new JInstaller('mod_bwpostman');
-		
+
 		// Get component manifest file version
 		$this->release = $parent->get("manifest")->version;
-		
+
 		// Manifest file minimum Joomla version
 		$this->minimum_joomla_release = $parent->get("manifest")->attributes()->version;
 
@@ -89,42 +89,42 @@ class mod_BwPostmanInstallerScript
 			$app->enqueueMessage(JText::sprintf('MOD_BWPOSTMAN_INSTALL_ERROR_JVERSION', $this->minimum_joomla_release), 'error');
 			return false;
 		}
-		
+
 		if(floatval(phpversion()) < 5)
 		{
 			$app->enqueueMessage(JText::_('MOD_BWPOSTMAN_USES_PHP5'), 'error');
 			return false;
 		}
-		
+
 		// abort if the component being installed is not newer than the currently installed version
 		if ($type == 'update') {
 			$oldRelease = $this->getManifestVar('version');
 			$app->setUserState('mod_bwpostman.update.oldRelease', $oldRelease);
-			
+
 			if (version_compare( $this->release, $oldRelease, 'lt')) {
 				$app->enqueueMessage(JText::sprintf('MOD_BWPOSTMAN_INSTALL_ERROR_INCORRECT_VERSION_SEQUENCE', $oldRelease, $this->release), 'error');
 				return false;
 			}
 		}
   }
- 
+
 	/*
 	 * get a variable from the manifest file (actually, from the manifest cache).
 	 */
 	private function getManifestVar($name) {
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('mod_bwpostman'));
 		$db->SetQuery($query);
-		
+
 		$manifest = json_decode($db->loadResult(), true);
 		return $manifest[$name];
 	}
- 
-  
+
+
   /**
   * Method to run after an install/update/uninstall method
   * $parent is the class calling this method
@@ -132,7 +132,7 @@ class mod_BwPostmanInstallerScript
   *
   * @return void
   */
-  function postflight($type, $parent) 
+  function postflight($type, $parent)
   {
   }
 
@@ -140,7 +140,7 @@ class mod_BwPostmanInstallerScript
 	 * shows the HTML after installation/update
 	 */
 	public function showFinished($update){
-    
+
 		$lang = JFactory::getLanguage();
 		//Load first english files
 		$lang->load('mod_bwpostman.sys',JPATH_SITE,'en_GB',true);
@@ -149,7 +149,7 @@ class mod_BwPostmanInstallerScript
 		//load specific language
 		$lang->load('mod_bwpostman.sys',JPATH_SITE,null,true);
 		$lang->load('mod_bwpostman',JPATH_SITE,null,true);
-		
+
 		$show_update	= false;
 		$show_right		= false;
 		$release		= str_replace('.', '-', $this->release);
@@ -172,7 +172,7 @@ class mod_BwPostmanInstallerScript
 		$string_new			= JText::_('MOD_BWPOSTMAN_INSTALLATION_UPDATE_NEW_DESC');
 		$string_improvement	= JText::_('MOD_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
 		$string_bugfix		= JText::_('MOD_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_DESC');
-		
+
 		if (($string_bugfix != '' || $string_improvement != '' || $string_new != '') && $update) {
 			$show_update	= true;
 		}
@@ -180,7 +180,7 @@ class mod_BwPostmanInstallerScript
 			$show_right	= true;
 		}
 		?>
-		
+
 <link rel="stylesheet" href="../modules/mod_bwpostman/css/install.css" type="text/css" />
 
 <div id="mod_bwp_install_header">
@@ -213,7 +213,7 @@ class mod_BwPostmanInstallerScript
 				<div class="icon" >
 					<?php if ($update) { ?>
 						<a href="<?php echo JROUTE::_('index.php?option=com_modules'); ?>">
-					<?php } 
+					<?php }
 					else { ?>
 						<a href="<?php echo JROUTE::_('index.php?option=com_modules&amp;filter_search=bw'); ?>">
 					<?php } ?>
@@ -246,7 +246,7 @@ class mod_BwPostmanInstallerScript
 					<div class="icon">
 						 <?php if ($update) { ?>
 							<a href="<?php echo JROUTE::_('index.php?option=com_modules'); ?>">
-						<?php } 
+						<?php }
 						else { ?>
 							<a href="<?php echo JROUTE::_('index.php?option=com_modules&amp;filter_search=bw'); ?>">
 						<?php } ?>
@@ -256,7 +256,7 @@ class mod_BwPostmanInstallerScript
 					</div>
 				</div>
 			<?php }?>
-			
+
 			<?php if ($show_update) { ?>
 				<div class="mod_bwp_install_updateinfo">
 					<h2><?php echo JText::_('MOD_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
@@ -299,7 +299,7 @@ class mod_BwPostmanInstallerScript
 		<?php } ?>
 	</div>
 	<div class="clr"></div>
-	
+
 	<div class="mod_bwp_install_footer">
 		<p class="small"><?php echo JText::_('&copy; 2012-'); echo date (" Y")?> by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
 	</div>

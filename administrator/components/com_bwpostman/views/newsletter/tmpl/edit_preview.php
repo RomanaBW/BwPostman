@@ -4,7 +4,7 @@
  *
  * BwPostman single newsletter edit preview template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -39,7 +39,7 @@ $image = JHTML::_('image', 'administrator/templates/'. $this->template .'/images
 function changeTab(tab){
 	if (tab != 'edit_preview') {
 		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');	
+		document.adminForm.task.setAttribute('value','newsletter.changeTab');
 		return true;
 	}
 	else {
@@ -52,7 +52,7 @@ Joomla.submitbutton = function (pressbutton) {
 	if (pressbutton == 'newsletter.cancel') {
 		submitform(pressbutton);
 		return;
-	} 
+	}
 
 	if (pressbutton == 'newsletter.back') {
 		form.task.value = 'back';
@@ -64,13 +64,13 @@ Joomla.submitbutton = function (pressbutton) {
 		document.adminForm.task.setAttribute('value','newsletter.apply');
 		submitform(pressbutton);
 		return;
-	} 
+	}
 
 	if (pressbutton == 'newsletter.save') {
 		document.adminForm.task.setAttribute('value','newsletter.save');
 		submitform(pressbutton);
 		return;
-	} 
+	}
 }
 /* ]]> */
 </script>
@@ -107,7 +107,7 @@ Joomla.submitbutton = function (pressbutton) {
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>
-		
+
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
 				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_HEADER'); ?></legend>
@@ -144,7 +144,7 @@ Joomla.submitbutton = function (pressbutton) {
 					</div>
 				</div>
 			</fieldset>
-			
+
 			<fieldset class="adminform">
 				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
 				<div class="well well-small">
@@ -156,7 +156,7 @@ Joomla.submitbutton = function (pressbutton) {
 			</fieldset>
 		</div>
 
-		<?php 
+		<?php
 			foreach($this->form->getFieldset('basic_1_hidden') as $field) echo $field->input;
 			foreach($this->form->getFieldset('basic_2_hidden') as $field) echo $field->input;
 			foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
@@ -167,9 +167,9 @@ Joomla.submitbutton = function (pressbutton) {
 			foreach($this->form->getFieldset('publish_hidden') as $field) echo $field->input;
 		?>
 
-		
+
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-		
+
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" id="layout" name="layout" value="edit_preview" /><!-- value never changes -->
@@ -182,4 +182,3 @@ Joomla.submitbutton = function (pressbutton) {
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div>
-		

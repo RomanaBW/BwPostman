@@ -4,7 +4,7 @@
  *
  * BwPostman medialist view for backend, based on joomla com_media.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -45,24 +45,24 @@ class BwPostmanViewMediaList extends JViewLegacy
 	{
 		// Do not allow cache
 		JFactory::getApplication()->allowCache(false);
-		
+
 		$jinput			= JFactory::getApplication()->input;
 		$mediaParams	= JComponentHelper::getParams('com_media');
 		$mediaModel		= JModelLegacy::getInstance('List', 'MediaModel');
 		$view			= $jinput->get('view');
-		
+
 		// Set the path definitions
 		$popup_upload = $jinput->get('pop_up', null);
 		$path = 'file_path';
-		
-		
+
+
 		if (substr(strtolower($view), 0, 6) == 'images' || $popup_upload == 1)
 		{
 			$path = 'image_path';
 		}
-		
+
 		define('COM_MEDIA_BASEURL', JUri::root() . $mediaParams->get($path, 'images'));
-		
+
 		$lang	= JFactory::getLanguage();
 
 		JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);

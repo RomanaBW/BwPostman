@@ -4,7 +4,7 @@
  *
  * BwPostman model for a backend element to select a singlenewsletter for a view in frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -158,7 +158,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		$app = JFactory::getApplication();
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		// Build the query
 		$query->select('a.id, a.subject, a.description,  a.mailing_date, a.published, a.archive_flag');
 		$query->from('#__bwpostman_newsletters AS a');

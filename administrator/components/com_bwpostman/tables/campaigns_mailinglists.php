@@ -4,7 +4,7 @@
  *
  * BwPostman campaigns mailing lists cross table for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -65,13 +65,13 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 		$subQuery	= $_db->getQuery(true);
-		
+
 		$subQuery->select($_db->Quote($newid)  . ' AS ' . $_db->quoteName('campaign_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
 		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . (int) $oldid);
 		$_db->setQuery($subQuery);
-		
+
 		$lists		= $_db->loadAssocList();
 
 		foreach ($lists as $list) {
@@ -82,7 +82,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 				$_db->quoteName('mailinglist_id')
 				));
 			$query->values(
-					(int) $list['campaign_id'] . ',' . 
+					(int) $list['campaign_id'] . ',' .
 					(int) $list['mailinglist_id']
 				);
 			$_db->setQuery($query);

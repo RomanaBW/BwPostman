@@ -4,7 +4,7 @@
  *
  * BwPostman mailinglists controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -46,7 +46,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_MLS';
-	
+
 	/**
 	 * Constructor
 	 */
@@ -83,7 +83,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		$jinput		= JFactory::getApplication()->input;
 		$allowed	= FALSE;
 		$user		= JFactory::getUser();
-		
+
 		// Show the layout depending on the task
 		switch($this->getTask())
 		{

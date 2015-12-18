@@ -4,7 +4,7 @@
  *
  * BwPostman all newsletters unsent template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -54,7 +54,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			return false;
 		}
 	}
-	
+
 	Joomla.submitbutton = function (pressbutton) {
 		var form = document.adminForm;
 		if (pressbutton == 'newsletters.archive') {
@@ -67,7 +67,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			}
 		}
 		else {
-			submitform(pressbutton);		
+			submitform(pressbutton);
 		}
 	}
 /* ]]> */
@@ -77,7 +77,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 // Open modalbox if task == startsending --> we will show the sending process in the modalbox
 	$jinput	= JFactory::getApplication()->input;
 	$task	= $jinput->get->get('task');
-	
+
 	if ($task == "startsending") {
 		echo '<script type="text/javascript">'."\n";
 		echo "window.addEvent('load', function() {\n";
@@ -94,7 +94,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		// Open modalbox if task == startsending --> we will show the sending process in the modalbox
 		$jinput	= JFactory::getApplication()->input;
 		$task	= $jinput->get->get('task');
-		
+
 		if ($task != 'startsending'){
 				if ($this->queueEntries) {
 					JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
@@ -114,7 +114,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			// Search tools bar
 			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'unsent'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 		?>
-	
+
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="open">
@@ -137,7 +137,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>
-		
+
 		<div class="row-fluid current">
 			<table class="adminlist table table-striped">
 				<thead>
@@ -152,9 +152,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</tr>
 				</thead>
 				<tbody>
-				<?php 
+				<?php
 					if (count($this->items)) {
-						foreach ($this->items as $i => $item) : 
+						foreach ($this->items as $i => $item) :
 							$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 							$canEdit	= $user->authorise('core.edit',		'com_bwpostman.newsletter.'.$item->id);
 							$canEditOwn	= $user->authorise('core.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
@@ -190,7 +190,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</div>
 				<p class="pagination"><?php echo $this->pagination->getListFooter(); ?></p>
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-				
+
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" id="tab" name="tab" value="unsent" />
 				<input type="hidden" name="layout" value="default" />

@@ -4,7 +4,7 @@
  *
  * BwPostman subscriberslists model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -113,7 +113,7 @@ class BwPostmanModelSubscribers extends JModelList
 		}
 		parent::__construct($config);
 	}
-	
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -130,7 +130,7 @@ class BwPostmanModelSubscribers extends JModelList
 	{
 		$app	= JFactory::getApplication();
 		$jinput	= $app->input;
-		
+
 		// Adjust the context to support modal layouts.
 		if ($layout = $jinput->get('layout'))
 		{
@@ -142,14 +142,14 @@ class BwPostmanModelSubscribers extends JModelList
 
 		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter', '');
 		$this->setState('filter.search_filter', $filtersearch);
-		
+
 		$filter_mailinglist = $this->getUserStateFromRequest($this->context . '.filter.mailinglist', 'filter_mailinglist', '');
 		$this->setState('filter.mailinglist', $filter_mailinglist);
 		$app->setUserState('com_bwpostman.subscriber.batch_filter_mailinglist', $filter_mailinglist);
 
 		$emailformat = $this->getUserStateFromRequest($this->context . '.filter.emailformat', 'filter_emailformat', '');
 		$this->setState('filter.emailformat', $emailformat);
-		
+
 		// List state information.
 		parent::populateState('a.name', 'asc');
 
@@ -176,7 +176,7 @@ class BwPostmanModelSubscribers extends JModelList
 		$id	.= ':'.$this->getState('filter.search_filter');
 		$id	.= ':'.$this->getState('filter.emailformat');
 		$id	.= ':'.$this->getState('filter.mailinglist');
-		
+
 		return parent::getStoreId($id);
 	}
 
@@ -193,7 +193,7 @@ class BwPostmanModelSubscribers extends JModelList
 		$query		= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
 		$user		= JFactory::getUser();
-		
+
 		//Get the tab in which we are for subquery
 		$tab	= JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
 
@@ -208,12 +208,12 @@ class BwPostmanModelSubscribers extends JModelList
 				$tab_int	= 9;
 				break;
 		}
-		
+
 		// Build sub query which counts the mailinglists of each subscriber
 		$sub_query->select('COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('mailinglist_id') . ') AS ' . $_db->quoteName('mailinglists'));
 		$sub_query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . 'AS ' . $_db->quoteName('b'));
 		$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('subscriber_id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('id'));
-		
+
 		// Select the required fields from the table.
 		$query->select(
 				$this->getState(
@@ -223,43 +223,43 @@ class BwPostmanModelSubscribers extends JModelList
 				) . ', (' . $sub_query . ') AS mailinglists'
 		);
 		$query->from('#__bwpostman_subscribers AS a');
-		
+
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		// Filter by mailinglist
 		$mailinglist = $this->getState('filter.mailinglist');
-		
+
 		if ($mailinglist) {
 			$sub_query2	= $_db->getQuery(true);
-			
+
 			$sub_query2->select($_db->quoteName('c') . '.' . $_db->quoteName('subscriber_id'));
 			$sub_query2->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . 'AS ' . $_db->quoteName('c'));
 			$sub_query2->where($_db->quoteName('c') . '.' . $_db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
 
 			$query->where('a.id IN (' . $sub_query2 . ')');
 		}
-		
+
 		// Filter by emailformat.
 		$emailformat = $this->getState('filter.emailformat');
 		if ($emailformat != '') {
 			$query->where('a.emailformat = ' . (int) $emailformat);
 		}
-		
+
 		// Filter by tab (confirmed, unconfirmed, testrecipients)
 		$query->where('a.status = ' . (int) $tab_int);
-		
+
 		// Filter by archive state
 		$query->where('a.archive_flag = ' . (int) 0);
-		
+
 		// Filter by search word.
 		$filtersearch	= $this->getState('filter.search_filter');
 		$search			= $_db->escape($this->getState('filter.search'), true);
-		
+
 		if (!empty($search)) {
 			$search	= '%' . $search . '%';
-			
+
 			switch ($filtersearch) {
 				case 'email':
 					$query->where('a.email LIKE ' . $_db->Quote($search, false));
@@ -279,11 +279,11 @@ class BwPostmanModelSubscribers extends JModelList
 				default:
 			}
 		}
-		
+
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
-		
+
 		//sqlsrv change
 		if($orderCol == 'access_level')
 			$orderCol = 'ag.title';
@@ -313,13 +313,13 @@ class BwPostmanModelSubscribers extends JModelList
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
 		$query->order('title ASC');
 		$_db->setQuery ($query);
-	
+
 		$result = $_db->loadObjectList();
 
 		$mailinglists 	= array ();
 		$mailinglists[]	= JHTML::_('select.option',  '', '- '. JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') .' -');
 		$mailinglists 	= array_merge($mailinglists, $result);
-		
+
 		return $mailinglists;
 	}
 }

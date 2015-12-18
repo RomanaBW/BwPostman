@@ -4,7 +4,7 @@
  *
  * BwPostman campaigns table for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -68,13 +68,13 @@ class BwPostmanTableCampaigns extends JTable
 
 	/** @var datetime Checked-out time */
 	var $checked_out_time = '0000-00-00 00:00:00';
-	
+
 	/** @var tinyint Archive-flag --> 0 = not archived, 1 = archived */
 	var $archive_flag = 0;
 
 	/** @var datetime Archive-date */
 	var $archive_date = '0000-00-00 00:00:00';
-	
+
 	/** @var int ID --> 0 = campaign is not archived, another ID = account is archived by an administrator */
 	var $archived_by = 0;
 
@@ -220,7 +220,7 @@ class BwPostmanTableCampaigns extends JTable
 			$this->setError($e);
 			return false;
 		}
-				
+
 		// Cast properties
 		$this->id	= (int) $this->id;
 
@@ -238,7 +238,7 @@ class BwPostmanTableCampaigns extends JTable
 		$app	= JFactory::getApplication();
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
-		
+
 		// Remove all HTML tags from the title and description
 		$filter				= new JFilterInput(array(), array(), 0, 0);
 		$this->title		= $filter->clean($this->title);
@@ -254,9 +254,9 @@ class BwPostmanTableCampaigns extends JTable
 		$query->select($this->_db->quoteName('id'));
 		$query->from($this->_db->quoteName('#__bwpostman_campaigns'));
 		$query->where($this->_db->quoteName('title') . ' = ' . $this->_db->Quote($this->title));
-		
+
 		$this->_db->setQuery($query);
-		
+
 		$xid = intval($this->_db->loadResult());
 
 		if ($xid && $xid != intval($this->id)) {
@@ -284,7 +284,7 @@ class BwPostmanTableCampaigns extends JTable
 	{
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
-	
+
 		if ($this->id)
 		{
 			// Existing mailing list

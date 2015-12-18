@@ -4,7 +4,7 @@
  *
  * BwPostman single subscriber import 1 template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -53,7 +53,7 @@ JHTML::_('behavior.keepalive');
 	function removeOptions(selectbox) // Method to get all items in the selectbox when submitting
 	{
 		var i;
-		
+
 		for(i=selectbox.options.length-1;i>=0;i--) {
 			if(selectbox.options[i].selected){
 				if (selectbox.options[i].text == 'email') {
@@ -82,7 +82,7 @@ JHTML::_('behavior.keepalive');
 		 	}
 		}
 	}
-	
+
 	function moveDown(element) // Method to move an item down
 	{
 		for(i = (element.options.length - 1); i >= 0; i--) {
@@ -101,9 +101,9 @@ JHTML::_('behavior.keepalive');
 	function check() // Method to check if the user tries to delete the email item and if the numbers of items in both selected boxes are similiar
 	{
 		var count_db_fields = document.getElementById('db_fields').length;
-	
+
 		var count_import_fields = document.getElementById('import_fields').length;
-	
+
 		if (count_db_fields != count_import_fields) {
 		alert ("<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_MATCH_FIELDS', true); ?>");
 		return 0;
@@ -129,7 +129,7 @@ JHTML::_('behavior.keepalive');
 					<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></td>
 					<td><?php echo $this->import['filename']; ?></td>
 				</tr>
-			
+
 				<?php if ($this->import['fileformat'] == 'csv') : {
 					// Show delimiter, enclosure and caption
 					?>
@@ -151,7 +151,7 @@ JHTML::_('behavior.keepalive');
 			</table>
 		</div>
 	</fieldset>
-	
+
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_STP2'); ?></legend>
 			<div class="well well-small">
@@ -163,7 +163,7 @@ JHTML::_('behavior.keepalive');
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>"><?php echo $image; ?></span>
 							</td>
 							<td><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
-								&nbsp; 
+								&nbsp;
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>"><?php echo $image; ?></span>
 							</td>
 							<td>&nbsp;</td>
@@ -196,7 +196,7 @@ JHTML::_('behavior.keepalive');
 						</tr>
 					</table>
 				</div>
-	
+
 				<div class="width-100 fltlft row-fluid">
 					<fieldset class="adminform">
 						<div class="width-33 fltlft span4">
@@ -210,13 +210,13 @@ JHTML::_('behavior.keepalive');
 										<?php
 											$ml_available	= $this->form->getInput('ml_available');
 		 									if (!empty($ml_available)) echo $this->form->getInput('ml_available');
-											else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; 
+											else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>';
 										?>
 									</div>
 								</fieldset>
 							</div>
 						</div>
-						
+
 						<div class="width-33 fltlft span4">
 							<div class="well well-small">
 								<fieldset class="adminform">
@@ -227,15 +227,15 @@ JHTML::_('behavior.keepalive');
 									<div class="row-fluid clearfix">
 										<?php
 											$ml_unavailable	= $this->form->getInput('ml_unavailable');
-											
+
 											if (!empty($ml_unavailable)) { echo $this->form->getInput('ml_unavailable'); }
-											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; } 
+											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; }
 										?>
 									</div>
 								</fieldset>
 							</div>
 						</div>
-						
+
 						<div class="width-33 fltlft span4">
 							<div class="well well-small">
 								<fieldset class="adminform">
@@ -244,10 +244,10 @@ JHTML::_('behavior.keepalive');
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
 									</legend>
 									<div class="row-fluid clearfix">
-										<?php 
+										<?php
 											$ml_intern	= $this->form->getInput('ml_intern');
 											if (!empty($ml_intern)) { echo $this->form->getInput('ml_intern'); }
-											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; } 
+											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; }
 											?>
 									</div>
 								</fieldset>
@@ -255,7 +255,7 @@ JHTML::_('behavior.keepalive');
 						</div>
 					</fieldset>
 				</div>
-		
+
 				<div class="well well-small">
 					<table class="admintable bwptable import">
 						<tr>
@@ -274,7 +274,7 @@ JHTML::_('behavior.keepalive');
 						</tr>
 					</table>
 				</div>
-					
+
 			<table class="admintable bwptable import">
 				<tr>
 					<td width="250" align="center" class="key"><input type="button" class="btn btn-success"
@@ -285,8 +285,8 @@ JHTML::_('behavior.keepalive');
 			</table>
 		</div>
 	</fieldset>
-	
-	
+
+
 	<input type="hidden" name="task" value="import" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />

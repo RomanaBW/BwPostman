@@ -4,7 +4,7 @@
  *
  * BwPostman newsletters controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -53,7 +53,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		
+
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
@@ -86,10 +86,10 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	public function copy()
 	{
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'unsent');
 
@@ -99,7 +99,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 		$n = count ($cid);
 		$model = $this->getModel('newsletter');
-		
+
 		if(!$model->copy($cid)) { // Couldn't copy
 			if ($n > 1) {
 				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_NLS_ERROR_COPYING', true)."'); window.history.go(-1); </script>\n";
@@ -130,10 +130,10 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	function publish()
 	{
 		$jinput	= JFactory::getApplication()->input;
-		
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'sent');
 
@@ -161,15 +161,15 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		$app	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
 		$tab	= $jinput->get('tab', 'unsent');
-		
+
 		$app->setUserState('com_bwpostman.newsletters.tab', $tab);
-		
+
 		$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters', false);
 
 		$this->setRedirect($link);
 	}
 
-	
+
 	/**
 	 * Method to remove all entries from the sendmailqueue-table
 	 *
@@ -182,14 +182,14 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$model = $this->getModel('newsletter');
 		if(!$model->delete_queue()) { // Couldn't clear queue
 			echo "<script> alert ('".JText::_('COM_BWPOSTMAN_NL_ERROR_CLEARING_QUEUE', true)."'); window.history.go(-1); </script>\n";
 		}
 		else { // Cleared queue successfully
 			$msg = JText::_('COM_BWPOSTMAN_NL_CLEARED_QUEUE');
-				
+
 			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters',false);
 			$this->setRedirect($link, $msg);
 		}
@@ -207,7 +207,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$model = $this->getModel('newsletter');
 
 		// Insert the contents into the newsletter
@@ -227,7 +227,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		$model = $this->getModel('newsletter');
 		$model->resetSendAttempts();
 		$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&tab=queue', false);

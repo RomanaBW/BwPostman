@@ -4,7 +4,7 @@
  *
  * BwPostman html helper class for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -85,7 +85,7 @@ abstract class BwPostmanHTMLHelper {
 	 * Method to get the export fields list
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	string	export fields list, html select list multiple
 	 */
 	static public function getExportFieldsList()
@@ -104,78 +104,78 @@ abstract class BwPostmanHTMLHelper {
 
 		$_db->setQuery($query);
 		$columns = $_db->loadObjectList();
-				
+
 		foreach ($columns AS $column) {
 		$export_fields[] = JHTML::_('select.option', $column->Field, $column->Field);
 		}
-		
+
 		$export_list	= JHTML::_('select.genericlist', $export_fields, 'export_fields[]', 'class="inputbox" size="20" multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
-		
+
 		return $export_list;
 	}
-	
+
 	/**
 	 * Method to get the file format list
 	 *
 	 * @access	public
-	 * 
-	 * @param	string	selected	
-	 * 
+	 *
+	 * @param	string	selected
+	 *
 	 * @return 	string	file format list, html select list
 	 */
 	static public function getFileFormatList($selected = '')
 	{
 		$fileformat 	= array();
-		
+
 		$fileformat[] 	= JHTML::_('select.option', 'csv', JText::_('COM_BWPOSTMAN_CSV'));
 		$fileformat[] 	= JHTML::_('select.option', 'xml', JText::_('COM_BWPOSTMAN_XML'));
 		$format_list	= JHTML::_('select.radiolist', $fileformat, 'fileformat', 'class="inputbox"', 'value', 'text', $selected);
-		
+
 		return $format_list;
 	}
-	
+
 	/**
 	 * Method to get the delimiter list
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param	string	selected
-	 * 
+	 *
 	 * @return 	string	delimiter list, html select list
 	 */
 	static public function getDelimiterList($selected = ';')
 	{
 		$delimiter	= array();
-		
+
 		$delimiter[] = JHTML::_('select.option', ',', JTEXT::_('COM_BWPOSTMAN_SUB_DELIMITER_COMMA'));
 		$delimiter[] = JHTML::_('select.option', ';', JTEXT::_('COM_BWPOSTMAN_SUB_DELIMITER_SEMICOLON'));
 		$delimiter[] = JHTML::_('select.option', '\t', JTEXT::_('COM_BWPOSTMAN_SUB_DELIMITER_TABULATOR'));
 		$delimiter[] = JHTML::_('select.option', ' ', JTEXT::_('COM_BWPOSTMAN_SUB_DELIMITER_WHITESPACE'));
-		
+
 		$delimiter_list	= JHTML::_('select.genericlist', $delimiter, 'delimiter', 'class="inputbox" size="1"', 'value', 'text', $selected);
-				
+
 		return $delimiter_list;
 	}
-	
+
 	/**
 	 * Method to get the enclosure list
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param	string	selected
-	 * 
+	 *
 	 * @return 	string	enclosure list, html select list
 	 */
 	static public function getEnclosureList($selected = '"')
 	{
 		$enclosure	= array();
-		
+
 		$enclosure[] = JHTML::_('select.option', '', JTEXT::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION'));
 		$enclosure[] = JHTML::_('select.option', "'", JTEXT::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_QUOTE'));
 		$enclosure[] = JHTML::_('select.option', '"', JTEXT::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_DOUBLEQUOTE'));
-		
+
 		$enclosure_list	= JHTML::_('select.genericlist', $enclosure, 'enclosure', 'class="inputbox" size="1"', 'value', 'text', $selected);
-		
+
 		return $enclosure_list;
 	}
 
@@ -183,34 +183,34 @@ abstract class BwPostmanHTMLHelper {
 	 * Method to get the mail format list
 	 *
 	 * @access	public
-	 * 
-	 * @param	string	selected	
-	 * 
+	 *
+	 * @param	string	selected
+	 *
 	 * @return 	string	mail format list, html select list
 	 */
 	static public function getMailFormatList($selected = '1')
 	{
 		$emailformat 	= array();
-		
+
 		$emailformat[] 	= JHTML::_('select.option', '0', JText::_('COM_BWPOSTMAN_TEXT'));
 		$emailformat[] 	= JHTML::_('select.option', '1', JText::_('COM_BWPOSTMAN_HTML'));
 		$format_list	= JHTML::_('select.radiolist', $emailformat, 'emailformat', 'class="inputbox" ', 'value', 'text', $selected);
-		
+
 		return $format_list;
 	}
-	
+
 	/**
 	 * Method to get the database fields list
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	string	database fields list, html select list
 	 */
 	static public function getDbFieldsList()
 	{
 		$_db_fields	= array();
 		$columns	= array();
-		
+
 		$columns[]	= 'name';
 		$columns[]	= 'firstname';
 		$columns[]	= 'email';
@@ -221,24 +221,24 @@ abstract class BwPostmanHTMLHelper {
 			$db_fields[] = JHTML::_('select.option', $column, $column);
 		}
 		$db_fields = JHTML::_('select.genericlist', $db_fields, 'db_fields[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 240px;"', 'value', 'text');
-				
+
 		return $db_fields;
 	}
-	
+
 	/**
 	 * Method to get the mailinglists select list
 	 *
 	 * @access	public
-	 * 
-	 * @param	array	Mailinglists	
-	 * 
+	 *
+	 * @param	array	Mailinglists
+	 *
 	 * @return 	string	mailinglists select list, html select list
 	 */
 	static public function getMlSelectList($mailinglists = array())
 	{
 		$import_mailinglists	= array();
 		$bwp_mailinglist_values = '';
-		
+
 		if (($mailinglists['public']) || ($mailinglists['special'])) {
 			$import_mailinglists[] = JHTML::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
 			$import_mailinglists[] = JHTML::_('select.option', '- - - '.JText::_('COM_BWPOSTMAN_ML_PUBLIC').' - - -');
@@ -266,7 +266,7 @@ abstract class BwPostmanHTMLHelper {
 		}
 		$import_mailinglists	= JHTML::_('select.genericlist', $import_mailinglists, 'import_mailinglists[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 250px;"', 'value', 'text', $bwp_mailinglist_values);
 		$import_mailinglists	= str_replace('>-', ' disabled="disabled">-', $import_mailinglists);
-		
+
 		return $import_mailinglists;
 	}
 }

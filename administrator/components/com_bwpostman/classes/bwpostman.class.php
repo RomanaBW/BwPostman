@@ -4,7 +4,7 @@
  *
  * BwPostman main class for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -42,13 +42,13 @@ class BwPostman {
 		require_once (JPATH_SITE . '/libraries/joomla/installer/librarymanifest.php');
 		$manifest	= new JLibraryManifest();
 		$manifest->loadManifestFromXML(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.xml');
-		
+
 		$app = JFactory::getApplication();
-		
+
 		JPluginHelper::importPlugin('bwpostman','copyright');
 
 		$copyright = 'BwPostman version ' . $manifest->version . ' by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a><br /><br />';
-		
+
 		$arguments = array(&$copyright);
 
 		$result = $app->triggerEvent('onPrepareBwpostman', $arguments);

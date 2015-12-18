@@ -4,7 +4,7 @@
  *
  * BwPostman single campaigns form template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -41,7 +41,7 @@ if (property_exists($this->item, 'automailing_values')) {
 	<div class="well well-small">
 		<?php
 		//Show tabs with sent and unsent newsletters if we edit a campaign
-		if (!empty($this->item->id)) { 
+		if (!empty($this->item->id)) {
 			//Show no tabs if there is no newsletter assigned
 			if (empty($this->newsletters->unsent)) {
 				echo JText::_('COM_BWPOSTMAN_CAM_NO_ASSIGNED_NL');
@@ -60,11 +60,11 @@ if (property_exists($this->item, 'automailing_values')) {
 					<tbody>
 					<?php
 						$k = 0;
-					
+
 						$newsletters_unsent = $this->newsletters->unsent;
 						for ($i=0, $n=count($newsletters_unsent); $i < $n; $i++) {
 							$item = &$newsletters_unsent[$i];
-					
+
 							$link_html = 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_html_modal&amp;task=insideModal&amp;nl_id='. $item->id;
 							$link_text = 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_text_modal&amp;task=insideModal&amp;nl_id='. $item->id;
 							?>

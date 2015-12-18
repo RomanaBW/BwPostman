@@ -4,7 +4,7 @@
  *
  * BwPostman templates controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -67,7 +67,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 * @param	string	$prefix	The prefix for the PHP class name.
 	 *
 	 * @return	JModel
-	 * 
+	 *
 	 * @since	1.1.0
 	 */
 	public function getModel($name = 'Template', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -87,7 +87,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$jinput		= JFactory::getApplication()->input;
 		$allowed	= FALSE;
 		$user		= JFactory::getUser();
-		
+
 		// Show the layout depending on the task
 		switch($this->getTask())
 		{

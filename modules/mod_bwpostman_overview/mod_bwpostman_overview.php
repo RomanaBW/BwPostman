@@ -4,7 +4,7 @@
  *
  * BwPostman main part of module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Rchive-Module
  * @author Romana Boldt
  * @copyright (C) 2015 Boldt Webservice <forum@boldt-webservice.de>

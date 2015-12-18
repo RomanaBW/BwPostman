@@ -4,7 +4,7 @@
  *
  * BwPostman templates model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -44,7 +44,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * Templates data
 	 *
 	 * @var array
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	var $_data = null;
@@ -53,7 +53,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * Number of all Templates
 	 *
 	 * @var integer
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	var $_total = null;
@@ -62,7 +62,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * Pagination object
 	 *
 	 * @var object
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	var $_pagination = null;
@@ -71,7 +71,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * Templates search
 	 *
 	 * @var string
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	var $_search = null;
@@ -82,7 +82,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * --> value will be "templates"
 	 *
 	 * @var	string
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	var $_key = null;
@@ -90,7 +90,7 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Constructor
 	 * --> handles the pagination and set the Templates key
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	public function __construct()
@@ -140,7 +140,7 @@ class BwPostmanModelTemplates extends JModelList
 
 		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
 		$this->setState('filter.search_filter', $filtersearch);
-		
+
 		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
 		$this->setState('filter.access', $access);
 
@@ -167,7 +167,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param	string		$id	A prefix for the store id.
 	 *
 	 * @return	string		A store id.
-	 * 
+	 *
 	 * @since	1.1.0
 	 */
 	protected function getStoreId($id = '')
@@ -193,7 +193,7 @@ class BwPostmanModelTemplates extends JModelList
 		$query		= $_db->getQuery(true);
 
 		$user		= JFactory::getUser();
-		
+
 		// Select the required fields from the table.
 		$query->select(
 				$this->getState(
@@ -202,19 +202,19 @@ class BwPostmanModelTemplates extends JModelList
 				)
 		);
 		$query->from('#__bwpostman_templates AS a');
-		
+
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		
+
 		// Join over the users for the author.
 		$query->select('ua.name AS author_name');
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
-		
+
 		// Filter show only the new templates id > 0
 		$query->where('a.id > ' . (int) 0);
 
@@ -227,19 +227,19 @@ class BwPostmanModelTemplates extends JModelList
 				$query->where('a.tpl_id > 997');
 			}
 		}
-		
+
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = ' . (int) $access);
 		}
-		
+
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
 			$groups	= implode(',', $user->getAuthorisedViewLevels());
 			$query->where('a.access IN ('.$groups.')');
 		}
-		
+
 		// Filter by published state
 		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
@@ -251,11 +251,11 @@ class BwPostmanModelTemplates extends JModelList
 
 		// Filter by archive state
 		$query->where('a.archive_flag = ' . (int) 0);
-		
+
 		// Filter by search word.
 		$filtersearch	= $this->getState('filter.search_filter');
 		$search			= $_db->escape($this->getState('filter.search'), true);
-		
+
 		if (!empty($search)) {
 			$search			= '%' . $search . '%';
 			switch ($filtersearch) {
@@ -271,7 +271,7 @@ class BwPostmanModelTemplates extends JModelList
 				default:
 			}
 		}
-		
+
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction', 'asc');

@@ -4,7 +4,7 @@
  *
  * BwPostman archive mailinglists template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -65,7 +65,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 				// Search tools bar
 				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 			?>
-		
+
 				<div class="row-fluid">
 					<table class="adminlist table table-striped">
 						<tbody>
@@ -88,7 +88,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
 										</li>
 									</ul>
-						
+
 									<div class="current">
 										<table class="adminlist">
 											<thead>
@@ -109,9 +109,9 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 												</tr>
 											</tfoot>
 											<tbody>
-											<?php 
+											<?php
 											if (count($this->items) > 0) {
-												foreach ($this->items as $i => $item) : 
+												foreach ($this->items as $i => $item) :
 													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.'.$item->id);
 													$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
@@ -152,7 +152,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 					<input type="hidden" name="tab" value="mailinglists" /><!-- value never changes -->
 					<?php echo JHTML::_('form.token'); ?>
 				</div>
-			
+
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 			</div>
 		</div>

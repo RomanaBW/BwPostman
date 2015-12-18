@@ -4,7 +4,7 @@
  *
  * BwPostman single campaigns form template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -40,50 +40,50 @@ $image = '<i class="icon-info"></i>';
 					<?php echo $this->form->getLabel('title'); ?>
 					<div class="controls"><?php echo $this->form->getInput('title'); ?></div>
 				</li>
-	
+
 				<?php if (isset($this->item->err_code)) if (($this->item->err_code == 101) || ($this->item->err_code == 102)) ?>
 				<li>
 					<?php echo $this->form->getLabel('description'); ?>
 					<div class="controls"><?php echo $this->form->getInput('description'); ?></div>
 				</li>
-	
+
 				<li>
 					<?php echo $this->form->getLabel('access'); ?>
 					<div class="controls"><?php echo $this->form->getInput('access'); ?></div>
 				</li>
-	
+
 				<li>
 					<?php echo $this->form->getLabel('published'); ?>
 					<div class="controls"><?php echo $this->form->getInput('published'); ?></div>
 				</li>
 			</ul>
 		</div>
-		
+
 		<div class="width-40 fltrt span4 control-group">
 			<ul class="adminformlist width_50 unstyled">
-				<?php if (empty($this->item->campaign_id)) 
+				<?php if (empty($this->item->campaign_id))
 						$this->form->setFieldAttribute('campaign_id', 'type', 'hidden');
 				?>
 				<li>
 					<?php echo $this->form->getLabel('campaign_id'); ?>
 					<div class="controls"><?php echo $this->form->getInput('campaign_id'); ?></div>
 				</li>
-				
+
 				<li>
 					<?php echo $this->form->getLabel('created_by'); ?>
 					<div class="controls"><?php echo $this->form->getInput('created_by'); ?></div>
 				</li>
-	
+
 				<li>
 					<?php echo $this->form->getLabel('created_date'); ?>
 					<div class="controls"><?php echo $this->form->getInput('created_date'); ?></div>
 				</li>
-	
+
 				<li>
 					<?php echo $this->form->getLabel('modified_by'); ?>
 					<div class="controls"><?php echo $this->form->getInput('modified_by'); ?></div>
 				</li>
-	
+
 				<li>
 					<?php echo $this->form->getLabel('modified_time'); ?>
 					<div class="controls"><?php echo $this->form->getInput('modified_time'); ?></div>
@@ -119,10 +119,10 @@ $image = '<i class="icon-info"></i>';
 													<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">&nbsp;<?php echo $field->label; ?></span>
 												</legend>
 												<div class="row-fluid clearfix">
-													<?php 
+													<?php
 														$input_field	= trim($field->input);
-														if (!empty($input_field)) echo $field->input; 
-														else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; 
+														if (!empty($input_field)) echo $field->input;
+														else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>';
 													?>
 												</div>
 											</fieldset>
@@ -133,7 +133,7 @@ $image = '<i class="icon-info"></i>';
 						</fieldset>
 					</div>
 				</div>
-	
+
 				<div class="width-25 fltlft span3">
 					<div class="well-white well-small">
 						<fieldset class="adminform usergroups">
@@ -161,7 +161,7 @@ Joomla.submitbutton = function (pressbutton) {
 if (pressbutton == 'campaign.cancel') {
 		submitform(pressbutton);
 		return;
-	} 
+	}
 
 	if ((pressbutton == 'campaign.apply') || (pressbutton == 'campaign.save')) {
 		if ($j("input[type=checkbox]:checked").length) {

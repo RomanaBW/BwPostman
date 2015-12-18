@@ -4,7 +4,7 @@
  *
  * BwPostman archive subscribers modal template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -86,9 +86,9 @@ $url	= $base.'components/com_bwpostman/assets/images/icon-48-subscribers.png';
 		</tr>
 		<tr>
 			<td>
-				<?php 
+				<?php
 					$lists = $this->sub->lists;
-						
+
 					if (!empty($lists)) {
 						echo "<ul>";
 						foreach ($lists AS $list) {

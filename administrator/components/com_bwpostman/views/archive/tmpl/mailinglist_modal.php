@@ -4,7 +4,7 @@
  *
  * BwPostman archive mailinglists modal template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -54,7 +54,7 @@ $url	= $base.'components/com_bwpostman/assets/images/icon-48-mailinglists.png';
 		</tr>
 		<tr>
 			<td align="right"><strong><?php echo JText::_('PUBLISHED'); echo ':'; ?></strong></td>
-			<td><?php 
+			<td><?php
 				switch ($this->ml->published) {
 					case "0":
 						echo JText::_('COM_BWPOSTMAN_NO');

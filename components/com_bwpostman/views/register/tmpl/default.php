@@ -4,7 +4,7 @@
  *
  * BwPostman register default template for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -40,13 +40,13 @@ global $arguments;
 /* <![CDATA[ */
 
 function checkRegisterForm() {
-	
+
 	var form = document.bwp_com_form;
 	var errStr = "";
 	var arrCB = document.bwp_com_form.elements['mailinglists[]'];
 	var n =	arrCB.length;
 	var check = 0;
-	
+
 	// Valdiate input fields
   // firstname
   if (((document.bwp_com_form.getElementById("firstname").value == "" || (document.bwp_com_form.getElementById("firstname").value == "<?php echo JText::_('COM_BWPOSTMAN_FIRSTNAME'); ?>"))) && (document.bwp_com_form.getElementById("firstname_field_obligation").value == 1)){
@@ -59,7 +59,7 @@ function checkRegisterForm() {
   // email
   var email = document.bwp_com_form.getElementById("email").value;
 	if (email == "" || (email == "<?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>")){
-		errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>\n";			
+		errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>\n";
 	} else {
   var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (!filter.test(email)) {
@@ -89,7 +89,7 @@ function checkRegisterForm() {
 			errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_DISCLAIMER_CHECK'); ?>\n";
 		}
 	  }
-	  // captcha  
+	  // captcha
 	if (document.bwp_com_form.stringCaptcha) {
 		if (document.bwp_com_form.stringCaptcha.value == '') {
 			errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_CAPTCHA_CHECK'); ?>\n";
@@ -127,11 +127,11 @@ function checkRegisterForm() {
 		<?php // displays a message if no availible mailinglist
 		if ($this->available_mailinglists) {
 		?>
-		
+
 			<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
 				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 			<?php endif; ?>
-				
+
 			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=register'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline" onsubmit="return checkRegisterForm();">
 				<?php // Spamcheck 1 - Input-field: class="user_hightlight" style="position: absolute; top: -5000px;" ?>
 					<p class="user_hightlight">
@@ -139,91 +139,91 @@ function checkRegisterForm() {
 						<input type="text" name="falle" id="falle" size="20"  title="<?php echo addslashes(JText::_('COM_BWPOSTMAN_SPAMCHECK')); ?>" maxlength="50" />
 					</p>
 				<?php // End Spamcheck ?>
-				
+
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php if ($this->params->get('pretext')) :
 						// Show pretext only if set in basic parameters ?>
 						<p class="pre_text"><?php echo nl2br($this->params->get('pretext')); ?></p>
 					<?php endif;
 						// End: Show pretext only if set in basic parameters ?>
-				
+
 					<?php if ($this->user->get('guest')) :
 						// Show editlink only if the user is not logged in ?>
 						<p class="user_edit"><a href="<?php echo JRoute::_('index.php?option=com_bwpostman&amp;view=edit'); ?>"><?php echo JText::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?></a></p>
 					<?php endif;
 						// End: Show editlink only if the user is not logged in ?>
-				
+
 					<?php if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation')) :
 						// Show firstname-field only if set in basic parameters ?>
 						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : ''?>">
 							<label id="firstnamemsg" for="firstname" <?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) echo "class=\"invalid\""; ?>>
 								<?php echo JText::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
-							<?php if ($this->params->get('firstname_field_obligation')) : {  
-								// Is filling out the firstname field obligating ?> 
+							<?php if ($this->params->get('firstname_field_obligation')) : {
+								// Is filling out the firstname field obligating ?>
 								<input type="text" name="firstname" id="firstname" size="40" value="<?php if (!empty($this->subscriber->firstname)) { echo $this->subscriber->firstname; } ?>"
 									class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
 									maxlength="50" />  <span class="append-area"><i class="icon-star"></i></span> <?php } else : { ?> <input type="text" name="firstname" id="firstname" size="40" value="<?php if (!empty($this->subscriber->firstname)) { echo $this->subscriber->firstname; } ?>"
 									class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
-									maxlength="50" /> 
-							<?php } endif; 
+									maxlength="50" />
+							<?php } endif;
 								// End: Is filling out the firstname field obligating ?>
 						</p>
 					<?php endif;
 					// End: Show firstname-field only if set in basic parameters ?>
-				
+
 					<?php if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation')) :
 						// Show name-field only if set in basic parameters ?>
 						<p class="user_name input<?php echo ($this->params->get('name_field_obligation')) ? '-append' : ''?>">
 							<label id="namemsg" for="name" <?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) echo "class=\"invalid\""; ?>>
 								<?php echo JText::_('COM_BWPOSTMAN_NAME'); ?>: </label>
-							<?php if ($this->params->get('name_field_obligation')) : {  
-								// Is filling out the name field obligating ?> 
+							<?php if ($this->params->get('name_field_obligation')) : {
+								// Is filling out the name field obligating ?>
 								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
 									class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
 									maxlength="50" />  <span class="append-area"><i class="icon-star"></i></span> <?php } else : { ?> <input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
 								class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
-								maxlength="50" /> <?php } endif; 
+								maxlength="50" /> <?php } endif;
 							// End: Is filling out the name field obligating ?>
 						</p>
 					<?php endif;
 					// End: Show name-fields only if set in basic parameters ?>
-				
+
 					<p class="user_email input-append">
 						<label id="emailmsg" for="email"
 							<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1)) echo "class=\"invalid\""; ?>>
-							<?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>: 
+							<?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>:
 						</label>
 						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
 							class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
 							maxlength="100" />  <span class="append-area"><i class="icon-star"></i></span>
 					</p>
 					<?php if ($this->params->get('show_emailformat') == 1) {
-						// Show formfield emailformat only if enabled in basic parameters ?>	
+						// Show formfield emailformat only if enabled in basic parameters ?>
 						<div class="user_mailformat">
 							<label id="emailformatmsg"> <?php echo JText::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
 							<?php echo $this->lists['emailformat']; ?>
 						</div>
-				 	<?php } 
-					else { 
+				 	<?php }
+					else {
 						// hidden field with the default emailformat
 						?>
-						<input type="hidden" name="emailformat" value="<?php echo $this->params->get('default_emailformat'); ?>" /> 
+						<input type="hidden" name="emailformat" value="<?php echo $this->params->get('default_emailformat'); ?>" />
 					<?php }
 					// End emailformat
 				?>
 				</div>
-				
+
 				<?php if ($this->available_mailinglists) :
 				// Show available mailinglists
 				?>
 				<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
-				
+
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php
 						$n	= count($this->available_mailinglists);
 						if ($n == 1) { ?>
 							<input type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>" value="<?php echo $this->available_mailinglists[0]->id; ?>" checked="checked" />
-						<?php } 
+						<?php }
 						else { ?>
 							<p class="mail_available">
 								<?php echo JText::_('COM_BWPOSTMAN_MAILINGLISTS'); ?>
@@ -238,38 +238,38 @@ function checkRegisterForm() {
 							<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
 						<?php } ?>
 					</div>
-				
+
 				<?php endif;
 				// End Mailinglists ?>
-				
+
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php if ($this->params->get('disclaimer')) :
-						// Show Disclaimer only if enabled in basic parameters ?>	
+						// Show Disclaimer only if enabled in basic parameters ?>
 						<p class="agree_check">
 							<input type="checkbox" id="agreecheck" name="agreecheck" />
 							<?php if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0) {
 							// Disclaimer article and target_blank or not
-							?>	
+							?>
 							<span><?php $disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id'))); echo '<a href="'.$disclaimer_link.'"'; if ($this->params->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('COM_BWPOSTMAN_DISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
-							<?php } 
+							<?php }
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0) {
 							// Disclaimer menu item and target_blank or not
-							?>	
+							?>
 								<span><?php $disclaimer_link = JRoute::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem')); echo '<a href="'.$disclaimer_link.'"'; if ($this->params->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('COM_BWPOSTMAN_DISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
-							<?php } 
-							else { 
+							<?php }
+							else {
 							// Disclaimer url and target_blank or not
 							?>
 								<span><?php echo '<a href="'. $this->params->get('disclaimer_link') . '"'; if ($this->params->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('COM_BWPOSTMAN_DISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
-							<?php } ?>	
+							<?php } ?>
 						</p>
-					<?php endif; // Show disclaimer ?>	
+					<?php endif; // Show disclaimer ?>
 					<p class="show_disclaimer">
 						<?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?>
 					</p>
 				</div>
-				
-				<?php // Question 
+
+				<?php // Question
 					if ($this->params->get('use_captcha') == 1) : ?>
 					<div class="question">
 						<p class="question-text"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
@@ -280,12 +280,12 @@ function checkRegisterForm() {
 						</p>
 					</div>
 				<?php endif; // End question ?>
-			
-				<?php // Captcha 
+
+				<?php // Captcha
 					if ($this->params->get('use_captcha') == 2) :
 					$codeCaptcha = md5(microtime());
 					?>
-			
+
 					<div class="captcha">
 						<p class="captcha-text"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
 						<p class="security_question_lbl"><img src="<?php echo JURI::base();?>index.php?option=com_bwpostman&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" /></p>
@@ -296,21 +296,21 @@ function checkRegisterForm() {
 					</div>
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 				<?php endif; // End captcha ?>
-				
+
 				<p class="button-register text-right"><button class="button validate btn text-right" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button></p>
-				
-				<input type="hidden" name="option" value="com_bwpostman" /> 
-				<input type="hidden" name="task" value="register_save" /> 
+
+				<input type="hidden" name="option" value="com_bwpostman" />
+				<input type="hidden" name="task" value="register_save" />
 				<input type="hidden" name="id" value="<?php echo $this->subscriber->id; ?>" />
-				<input type="hidden" name="bwp-<?php echo $this->captcha; ?>" value="1" /> 
-				<input type="hidden" name="name_field_obligation" id="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" /> 
-				<input type="hidden" name="firstname_field_obligation" id="firstname_field_obligation" value="<?php echo $this->params->get('firstname_field_obligation'); ?>" /> 
-				<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" /> 
+				<input type="hidden" name="bwp-<?php echo $this->captcha; ?>" value="1" />
+				<input type="hidden" name="name_field_obligation" id="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" />
+				<input type="hidden" name="firstname_field_obligation" id="firstname_field_obligation" value="<?php echo $this->params->get('firstname_field_obligation'); ?>" />
+				<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
 				<?php echo JHTML::_('form.token'); ?>
 			</form>
-			
+
 			<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
-		<?php } else { 
+		<?php } else {
 			echo JText::_('COM_BWPOSTMAN_MESSAGE_NO_AVAILIBLE_MAILINGLIST');
 		}	?>
 	</div>

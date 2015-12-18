@@ -4,7 +4,7 @@
  *
  * BwPostman  form field all media class.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -216,7 +216,7 @@ class JFormFieldAllMedia extends JFormField
 		{
 			$asset = JFactory::getApplication()->input->get('option');
 		}
-		
+
 		if ($asset == 'com_bwpostman') {
 			$asset_txt 	= '';
 		}
@@ -276,7 +276,7 @@ class JFormFieldAllMedia extends JFormField
 			$script[] = '		jMediaRefreshPreview(id);';
 			$script[] = '		$tip.show();';
 			$script[] = '	}';
-				
+
 			// Add the script to the document head.
 			JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 

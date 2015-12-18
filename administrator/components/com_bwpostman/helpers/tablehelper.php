@@ -4,7 +4,7 @@
  *
  * BwPostman table helper class for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -27,6 +27,29 @@
 defined ('_JEXEC') or die ();
 
 abstract class BwPostmanTableHelper {
+
+	/**
+	 * Method to adjust field access in table mailinglists
+	 *
+	 * in prior versions of BwPostman access holds the values like viewlevels, but beginning with 0.
+	 * But 0 is in Joomla the value for new dataset, so in version 1.0.1 of BwPostman this will be adjusted (incremented)
+	 *
+	 * @return	void
+	 *
+	 * @since	1.3.0 here, before in install script since 1.0.1
+	 */
+	public static function adjustMLAccess()
+	{
+		$_db	= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->update($_db->quoteName('#__bwpostman_mailinglists'));
+		$query->set($_db->quoteName('access') . " = " . $_db->quoteName('access') . '+1');
+		$_db->setQuery($query);
+		$_db->execute();
+
+		return;
+	}
 
 	/**
 	 * Method to check, if user_id of subscriber matches ID in joomla user table, updating if mail address exists.
@@ -156,6 +179,16 @@ abstract class BwPostmanTableHelper {
 	 */
 	public static function checkTables()
 	{
+		/* set execution time every table									******************************
+		 * 																	******************************
+		 * Caution!!!!														******************************
+		 * This command may be disabled by ISP or safe mode on!!!!!!!!!!!	******************************
+		 * 																	******************************
+		 */
+//		set_time_limit(ini_get('max_execution_time'));
+
+
+
 		// get needed tables from installation file
 		$neededTables	= self::getNeededTables();
 		if (!is_array($neededTables)) {
@@ -254,9 +287,7 @@ abstract class BwPostmanTableHelper {
 
 			foreach ($tableNames as $table) {
 			// do not save the table "bwpostman_templates_tpl"
-				if (strpos($table, 'templates_tpl') !== false) {
-				}
-				else {
+				if (strpos($table, 'templates_tpl') === false) {
 					$tableName	= self::getGenericTableName($table);
 
 					$file_data[]	= "\t\t<tables>";								// set XML tables section
@@ -270,10 +301,15 @@ abstract class BwPostmanTableHelper {
 					}
 					$file_data	= array();
 
-					self::buildXmlData($tableName, $fp);		// write table data
+					$res    = self::buildXmlData($tableName, $fp);		// write table data
+					if (!$res) {
+						if ($update) echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_ERROR', $file_name) . '</p>';
+						break;
+					}
+					$file_data[]	= self::buildXmlAssets($tableName);				// write data assets
 					$file_data[]	= "\t\t</tables>\n";								// set XML tables section
 					if (!$res = fwrite($fp, implode("\n", $file_data))) {
-						if ($update) echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_ERROR', $file_name) . '</p>';
+						if ($update) echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $file_name) . '</p>';
 						break;
 					}
 					fflush($fp);
@@ -294,6 +330,7 @@ abstract class BwPostmanTableHelper {
 		}
 
 		if ($update) {
+			self::writeFile($file_data);
 			return true;
 		}
 		else {
@@ -319,168 +356,266 @@ abstract class BwPostmanTableHelper {
 			echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_FILE_ERROR', $filename) . '</p>';
 			return false;
 		}
-		else {
-			// Parse the XML
-			$xml	= simplexml_load_file($filename);
+		// Parse the XML
+		$xml	= simplexml_load_file($filename);
 
-			// check if xml file is ok (most error case: non-xml-conform characters in xml file)
-			if (!is_object($xml)) {
-				echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_READ_XML_ERROR', $filename) . '</p>';
-				return false;
-			}
+		// check if xml file is ok (most error case: non-xml-conform characters in xml file)
+		if (!is_object($xml)) {
+			echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_READ_XML_ERROR', $filename) . '</p>';
+			return false;
+		}
 
-			// Initialize some other variables
-			$generals		= array();
-			$table_names	= array();
-			$neededTables	= array();
-			$tables			= array();
-			$x_tables		= array();
+		// delete temporary file
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+		if (JFile::exists($filename)) {
+			JFile::delete($filename);
+		}
 
-			//Get general intormation
-			if (property_exists($xml->database, 'Generals')) {
-				$generals['version']	= $xml->database->Generals->BwPostmanVersion->__toString();
-				$generals['savedate']	= $xml->database->Generals->SaveDate->__toString();
-				echo '<p class="bw_tablecheck_warn">' . 'Version: ' . $generals['version'] . '</p>';
-				echo '<p class="bw_tablecheck_warn">' . 'Datum: ' . $generals['savedate'] . '</p>';
+		// Initialize some other variables
+		$table_names	= array();
+		$neededTables	= array();
+		$tables			= array();
+		$x_tables		= array();
+
+		// Output general intormation
+		if (property_exists($xml->database, 'Generals')) {
+			echo '<p class="bw_tablecheck_warn">' . 'Version: ' . $xml->database->Generals->BwPostmanVersion->__toString() . '</p>';
+			echo '<p class="bw_tablecheck_warn">' . 'Datum: ' . $xml->database->Generals->SaveDate->__toString() . '</p>';
 //				ob_flush();
 //				flush();
 
-			}
+		}
 
-			// Get all tables from the xml file converted to arrays recursively, results in an array/list of table-arrays
-			foreach ($xml->database->tables as $table) $x_tables[]	= $table;
+		// Get all tables from the xml file converted to arrays recursively, results in an array/list of table-arrays
+		foreach ($xml->database->tables as $table) $x_tables[]	= $table;
+		unset($xml);
 
-			if (count($x_tables) == 0) {
-				echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR') . '</p>';
-				return false;
-			}
+		if (count($x_tables) == 0) {
+			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR') . '</p>';
+			return false;
+		}
 
-			// extract table names and install queries
-			foreach ($x_tables as $table) {
-				$table_names[]	= $table->table_structure->table_name->name->__toString();
-				$queries[]		= $table->table_structure->install_query->query->__toString();
-			}
+		// extract table names and install queries
+		foreach ($x_tables as $table) {
+			$table_names[]	= $table->table_structure->table_name->name->__toString();
+			$queries[]		= $table->table_structure->install_query->query->__toString();
+		}
 
-			// paraphrase tables array for better handling and convert objects to strings
-			// process datasets
-			for ($i=0; $i < count($x_tables); $i++) {
-				$items	= array();
-				foreach ($x_tables[$i]->table_data->dataset as $item) {
+		// paraphrase tables array for better handling and convert objects to strings
+		// process datasets
+		for ($i=0; $i < count($x_tables); $i++) {
+			/* set execution time every table									******************************
+			 * 																	******************************
+			 * Caution!!!!														******************************
+			 * This command may be disabled by ISP or safe mode on!!!!!!!!!!!	******************************
+			 * 																	******************************
+			 */
+			//		set_time_limit(ini_get('max_execution_time'));
+
+
+
+			// get table assets
+			if (property_exists($x_tables[$i], 'table_assets')) {
+				$assets	= array();
+				foreach ($x_tables[$i]->table_assets->dataset as $item) {
 					$props	= get_object_vars($item);
+					//dump ($props, 'Props');
 					$p_keys	= array_keys($props);
 					for ($j = 0; $j < count($props); $j++) {
 						if (is_object($props[$p_keys[$j]])) {
 							$props[$p_keys[$j]]	= $props[$p_keys[$j]]->__toString();
 						}
 					}
-					$items[]	= $props;
+					$assets[]	= $props;
 				}
-				$tables[$table_names[$i]]['table_data']	= $items;
+				$tables[$table_names[$i]]['table_assets']	= $assets;
+			}
 
-				// process table keys
-				$items	= array();
-				foreach ($x_tables[$i]->table_structure->keys->key as $key)	{
-					$keys	= get_object_vars($key);
-					$p_keys	= array_keys($keys);
-					for ($j = 0; $j < count($keys); $j++) {
-						if (is_object($keys[$p_keys[$j]])) {
-							$keys[$p_keys[$j]]	= $keys[$p_keys[$j]]->__toString();
-						}
+			// get table data
+			$items	= array();
+			foreach ($x_tables[$i]->table_data->dataset as $item) {
+				$props	= get_object_vars($item);
+				$p_keys	= array_keys($props);
+				for ($j = 0; $j < count($props); $j++) {
+					if (is_object($props[$p_keys[$j]])) {
+						$props[$p_keys[$j]]	= $props[$p_keys[$j]]->__toString();
 					}
-					$items[]	= $keys;
 				}
-				foreach ($items as $item) $tables[$table_names[$i]]['table_structure']['table_keys'][$item['Column_name']]= $item;
+				$items[]	= $props;
+			}
+			$tables[$table_names[$i]]['table_data']	= $items;
 
-				// process table columns
-				$items	= array();
-				foreach ($x_tables[$i]->table_structure->fields->field as $column) {
-					$cols	= get_object_vars($column);
-					$p_keys	= array_keys($cols);
-					for ($j = 0; $j < count($cols); $j++) {
-						if (is_object($cols[$p_keys[$j]])) {
-							$cols[$p_keys[$j]]	= $cols[$p_keys[$j]]->__toString();
-						}
+			// process table keys
+			$items	= array();
+			foreach ($x_tables[$i]->table_structure->keys->key as $key)	{
+				$keys	= get_object_vars($key);
+				$p_keys	= array_keys($keys);
+				for ($j = 0; $j < count($keys); $j++) {
+					if (is_object($keys[$p_keys[$j]])) {
+						$keys[$p_keys[$j]]	= $keys[$p_keys[$j]]->__toString();
 					}
-					$items[]	= $cols;
-
 				}
-				foreach ($items as $item) $tables[$table_names[$i]]['table_structure']['fields'][$item['Column']]= $item;
-
-				// process table name
-				$tables[$table_names[$i]]['table_structure']['table_name']	= $x_tables[$i]->table_structure->table_name->name->__toString();
+				$items[]	= $keys;
 			}
-			unset($x_tables);
+			foreach ($items as $item) $tables[$table_names[$i]]['table_structure']['table_keys'][$item['Column_name']]= $item;
 
-			// check if all needed tables are installed and install missing tables
-			// collect data, for check needed
-			for ($i = 0; $i < count($table_names); $i++) {
-				// get table name, columns and install query
-				$neededTables[$i]					= new stdClass();
-				$neededTables[$i]->name				= $table_names[$i];
-				$neededTables[$i]->columns			= $tables[$table_names[$i]]['table_structure']['fields'];
-				$neededTables[$i]->install_query	= $queries[$i];
-
-				// get primary key
-				$p_key_needed					= array_keys($tables[$table_names[$i]]['table_structure']['table_keys']);
-				$neededTables[$i]->primary_key	= implode(',', $p_key_needed);
-
-
-				// get engine of installed table
-				$start	= strpos($queries[$i], 'ENGINE=');
-				if ($start !== false) {
-					$stop	= strpos($queries[$i], ' ', $start);
-					$length	= $stop - $start - 7;
-					$neededTables[$i]->engine	= substr($queries[$i], $start + 7, $length);
+			// process table columns
+			$items	= array();
+			foreach ($x_tables[$i]->table_structure->fields->field as $column) {
+				$cols	= get_object_vars($column);
+				$p_keys	= array_keys($cols);
+				for ($j = 0; $j < count($cols); $j++) {
+					if (is_object($cols[$p_keys[$j]])) {
+						$cols[$p_keys[$j]]	= $cols[$p_keys[$j]]->__toString();
+					}
 				}
+				$items[]	= $cols;
 
-				// get default charset of installed table
-				$start	= strpos($queries[$i], 'DEFAULT CHARSET=');
-				if ($start !== false) {
-					$neededTables[$i]->charset	= substr($queries[$i], $start + 16);
-				}
+			}
+			foreach ($items as $item) $tables[$table_names[$i]]['table_structure']['fields'][$item['Column']]= $item;
+
+			// process table name
+			$tables[$table_names[$i]]['table_structure']['table_name']	= $x_tables[$i]->table_structure->table_name->name->__toString();
+		}
+		unset($x_tables);
+
+		// check if all needed tables are installed and install missing tables
+		// collect data, for check needed
+		for ($i = 0; $i < count($table_names); $i++) {
+			// get table name, columns and install query
+			$neededTables[$i]					= new stdClass();
+			$neededTables[$i]->name				= $table_names[$i];
+			$neededTables[$i]->columns			= $tables[$table_names[$i]]['table_structure']['fields'];
+			$neededTables[$i]->install_query	= $queries[$i];
+
+			// get primary key
+			$p_key_needed					= array_keys($tables[$table_names[$i]]['table_structure']['table_keys']);
+			$neededTables[$i]->primary_key	= implode(',', $p_key_needed);
+
+
+			// get engine of installed table
+			$start	= strpos($queries[$i], 'ENGINE=');
+			if ($start !== false) {
+				$stop	= strpos($queries[$i], ' ', $start);
+				$length	= $stop - $start - 7;
+				$neededTables[$i]->engine	= substr($queries[$i], $start + 7, $length);
 			}
 
-			// get installed table names and convert them to generic names
-			$genericTableNames		= array();
-			$installedTableNames	= self::getTableNamesFromDB();
-
-			foreach ($installedTableNames as $table) {
-				$genericTableNames[]	= self::getGenericTableName($table);
+			// get default charset of installed table
+			$start	= strpos($queries[$i], 'DEFAULT CHARSET=');
+			if ($start !== false) {
+				$neededTables[$i]->charset	= substr($queries[$i], $start + 16);
 			}
+		}
 
-			// check table names
-			if (!self::checkTableNames($neededTables, $genericTableNames, 'restore')) {
-				echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CHECKNAMES_ERROR') . '</p>';
+		// get installed table names and convert them to generic names
+		$genericTableNames		= array();
+		$installedTableNames	= self::getTableNamesFromDB();
+
+		foreach ($installedTableNames as $table) {
+			$genericTableNames[]	= self::getGenericTableName($table);
+		}
+
+		// check table names
+		if (!self::checkTableNames($neededTables, $genericTableNames, 'restore')) {
+			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CHECKNAMES_ERROR') . '</p>';
+			return false;
+		}
+
+		// check table columns
+		for ($i=0; $i < count($neededTables); $i++) {
+			$res	= self::checkTableColumns($neededTables[$i]);
+
+			if ($res == 2) $i--;
+			if ($res == 0) {
+				echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CHECKCOLS_ERROR') . '</p>';
 				return false;
 			}
+		}
 
-			// check table columns
-			for ($i=0; $i < count($neededTables); $i++) {
-				$res	= self::checkTableColumns($neededTables[$i]);
+		// get paths to table files to include to search path
+		$include_path	= array();
+		$include_path[]	= JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables/';
 
-				if ($res == 2) $i--;
-				if ($res == 0) {
-					echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CHECKCOLS_ERROR') . '</p>';
-					return false;
-				}
+		if (JFolder::exists(JPATH_PLUGINS . '/bwpostman/')) {
+			$plugin_path	= JPATH_PLUGINS . '/bwpostman/';
+			$p_folders		= JFolder::folders($plugin_path);
+
+			foreach ($p_folders as $folder) {
+				if (JFolder::exists($plugin_path . $folder . '/tables/')) $include_path[]	= $plugin_path . $folder . '/tables/';
+			}
+		}
+		JTable::addIncludePath($include_path);
+
+		try {
+			// save database state
+			$_db->transactionStart();
+
+			// delete all existing asset entries
+			$query		= $_db->getQuery(true);
+
+			$query->delete($_db->quoteName('#__assets'));
+			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->Quote('%com_bwpostman.%'));
+
+			$_db->setQuery($query);
+			$asset_delete	= $_db->execute();
+
+			if (!$asset_delete) {
+				echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR') . '</p>';
+				throw new JException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR', $_db->getErrorMsg()));
+			}
+			else {
+				echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_SUCCESS') . '</p>';
 			}
 
-			// Import filesystem libraries. Perhaps not necessary, but does not hurt
-			jimport('joomla.filesystem.folder');
+			// repair holes in lft and rgt values
+			// first get lft from main asset com_bwpostman
+			$query->select($_db->quoteName('lft'));
+			$query->select($_db->quoteName('rgt'));
+			$query->from($_db->quoteName('#__assets'));
+			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->Quote('%com_bwpostman%'));
 
-			// get paths to table files to include to search path
-			$include_path	= array();
-			$include_path[]	= JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables/';
+			$_db->setQuery($query);
+			$base_asset	= $_db->loadAssoc();
+			$gap		= $base_asset['rgt'] - $base_asset['lft'] - 1;
 
-			if (JFolder::exists(JPATH_PLUGINS . '/bwpostman/')) {
-				$plugin_path	= JPATH_PLUGINS . '/bwpostman/';
-				$p_folders		= JFolder::folders($plugin_path);
+			// second set rgt values from all assets above lft of BwPostman
+			$query->update($_db->quoteName('#__asset'));
+			$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " - " . $gap . ")");
+			$query->where($_db->quoteName('lft') . ' >= ' . $base_asset['lft']);
 
-				foreach ($p_folders as $folder) {
-					if (JFolder::exists($plugin_path . $folder . '/tables/')) $include_path[]	= $plugin_path . $folder . '/tables/';
-				}
+			$_db->setQuery($query);
+			$set_asset_right	= $_db->execute();
+
+			// now set lft values from all assets above lft of BwPostman
+			$query->update($_db->quoteName('#__asset'));
+			$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " - " . $gap . ")");
+			$query->where($_db->quoteName('lft') . ' > ' . $base_asset['lft']);
+
+			$_db->setQuery($query);
+			$set_asset_left	= $_db->execute();
+
+			// finally set rgt value of BwPostman
+			$query->update($_db->quoteName('#__asset'));
+			$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('lft') . " + 1)");
+			$query->where($_db->quoteName('lft') . ' = ' . $base_asset['lft']);
+
+			$_db->setQuery($query);
+			$set_asset_base	= $_db->execute();
+
+			if (!$set_asset_left || !$set_asset_right || $set_asset_base) {
+				echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR') . '</p>';
+				throw new JException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR', $_db->getErrorMsg()));
 			}
-			JTable::addIncludePath($include_path);
+			else {
+				echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS') . '</p>';
+				$base_asset['rgt']	= $base_asset['lft'] + 1;
+			}
+
+
+
+
 
 			// get table object
 			foreach ($tables as $table) {
@@ -495,7 +630,8 @@ abstract class BwPostmanTableHelper {
 
 				// set asset name
 				if (property_exists($tableObject, 'asset_id')) {
-					$asset_name	= '%com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1) . '%';
+					$asset_name	        = '%com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1) . '%';
+					$parent_asset_id	= $tableObject->getAssetParentId();
 				}
 				else {
 					$asset_name = '';
@@ -508,128 +644,155 @@ abstract class BwPostmanTableHelper {
 				$deleteTable	= $_db->Execute($query);
 				if (!$deleteTable) {
 					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TRUNCATE_ERROR', $table['table_structure']['table_name']) . '</p>';
-					return false;
+					throw new JException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TRUNCATE_ERROR', $_db->getErrorMsg()));
 				}
 				else {
 					echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TRUNCATE_SUCCESS', $table['table_structure']['table_name']) . '</p>';
-//					ob_flush();
-//					flush();
 				}
 
-				// delete existing assets
-				$query		= $_db->getQuery(true);
-				if ($asset_name != '') {
-					$query->delete($_db->quoteName('#__assets'));
-					$query->where($_db->quoteName('name') . ' LIKE ' . $_db->Quote($asset_name));
+				// import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set, but in empty tables there is nothing to update
+				$max_count		= ini_get('max_execution_time');
+				$s				= 0;
+				$count			= 0;
+				$data_max		= count($table['table_data']);
 
-					$_db->setQuery($query);
-					$deleteAssets	= $_db->Execute($query);
-					if (!$deleteAssets) {
-						echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DELETE_ASSETS_ERROR', $table['table_structure']['table_name']) . '</p>';
-						return false;
-					}
-					else {
-						echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DELETE_ASSETS_SUCCESS', $table['table_structure']['table_name']) . '</p>';
-//						ob_flush();
-//						flush();
-					}
-				} // end delete assets
+				switch ($table['table_structure']['table_name']) {
+					case '#__bwpostman_newsletters':
+					case '#__bwpostman_sendmailcontent':
+					case '#__bwpostman_sendmailqueue':
+					case '#__bwpostman_tc_sendmailcontent':
+					case '#__bwpostman_tc_sendmailqueue':
+						$data_loop_max	= 20;
+						break;
+					case '#__bwpostman_subscribers_mailinglists':
+					case '#__bwpostman_newsletters_mailinglists':
+					case '#__bwpostman_campaigns_mailinglists':
+						$data_loop_max	= 10000;
+						break;
+					default:
+						$data_loop_max	= 1000;
+						break;
+				}
 
-				// import data (cant use table bind/store because we have IDs and Joomla sets mode to update, if ID is set, but in empty tables there is nothing to update
-				foreach ($table['table_data'] as $item) {
+				// if there are datasets
+				if ($data_max) {
+					// …get table keys from data
+					$item	= $table['table_data'][0];
 					$keys	= array();
-					$values	= array();
-
 					foreach ($item as $k =>$v) {
 						$keys[]		= $k;
-						$values[]	= $_db->Quote($v);
-					}
-					$query->clear();
-
-					$query->insert($_db->quoteName($table['table_structure']['table_name']));
-					$query->columns($keys);
-					$query->values(implode(',', $values));
-					$_db->setQuery($query);
-
-					if (!$_db->execute()) {
-						echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $table['table_structure']['table_name'], $item->id) . '</p>';
-						return false;
 					}
 
-					// Asset Tracking
-					if ($asset_name != '') {
-						$tableObject->bind($item);
-						$parentId	= $tableObject->getAssetParentId();
-						$name		= $tableObject->getAssetName();
-						$title		= $tableObject->getAssetTitle();
+					$dataset	= array();
+					$data_loop	= 0;
+					$assetset	= '';
+					$asset_loop	= 0;
 
-						$asset	= JTable::getInstance('Asset', 'JTable', array('dbo' => $tableObject->getDbo()));
-						$asset->loadByName($name);
+					$t_asset_sum	= 0;
+					// … insert datasets…
+					foreach ($table['table_data'] as $item) {
+						$data_loop++;
 
-						// Re-inject the asset id.
-						$item['asset_id'] = $asset->id;
-
-						// Check for an error.
-						if ($error = $asset->getError())
+						// Asset Tracking
+						if ($asset_name != '')
 						{
-							$tableObject->setError($error);
-							return false;
-						}
-
-						// Specify how a new or moved node asset is inserted into the tree.
-						if (empty($item['asset_id']) || $asset->parent_id != $parentId)
-						{
-							$asset->setLocation($parentId, 'last-child');
-						}
-
-						// Prepare the asset to be stored. No rules at this point
-						$asset->parent_id   = $parentId;
-						$asset->name        = $name;
-						$asset->title       = $title;
-
-						if (!$asset->check() || !$asset->store())
-						{
-							$tableObject->setError($asset->getError());
-							return false;
-						}
-
-						// Create an asset_id or heal one that is corrupted.
-						if (empty($item['asset_id']))
-						{
-							// Update the asset_id field in this table.
-							$item['asset_id']	= (int) $asset->id;
-							$key_name			= array_keys( $table['table_structure']['table_keys']);
-
-							$query->clear();
-							$query->update($_db->quoteName($table['table_structure']['table_name']));
-							$query->set('asset_id = ' . (int) $item['asset_id']);
-							$query->where($_db->quoteName($key_name[0]) . ' = ' . (int) $item[$key_name[0]]);
-							$_db->setQuery($query);
-
-							if (!$_db->execute())
+							if (!empty($item['asset_id']))
 							{
-								$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID', $_db->getErrorMsg()));
-								$tableObject->setError($e);
+								$currentAssetId = $item['asset_id'];
+							}
+							$tableObject->bind($item);
+							$parentId = $tableObject->getAssetParentId();
+							$name     = $tableObject->getAssetName();
+							$title    = $tableObject->getAssetTitle();
+
+							$asset = JTable::getInstance('Asset', 'JTable', array('dbo' => $tableObject->getDbo()));
+							$asset->loadByName($name);
+
+							// Re-inject the asset id.
+							$item['asset_id'] = $asset->id;
+
+							// Check for an error.
+							if ($error = $asset->getError())
+							{
+								$tableObject->setError($error);
+
 								return false;
 							}
+
+							// Specify how a new or moved node asset is inserted into the tree.
+							if (empty($item['asset_id']) || $asset->parent_id != $parentId)
+							{
+								$asset->setLocation($parentId, 'last-child');
+							}
+
+							// Prepare the asset to be stored. No rules at this point
+							$asset->parent_id = $parentId;
+							$asset->name      = $name;
+							$asset->title     = $title;
+
+							if (!$asset->check() || !$asset->store())
+							{
+								$tableObject->setError($asset->getError());
+
+								return false;
+							}
+
+							// Create an asset_id or heal one that is corrupted.
+							if (empty($item['asset_id']))
+							{
+								// Update the asset_id field in this table.
+								$item['asset_id'] = (int) $asset->id;
+							}
+							if ($count++ == $max_count)
+							{
+								$count = 0;
+								ini_set('max_execution_time', ini_get('max_execution_time'));
+							}
+							$values = array();
+
+							// collect datasets until loop max
+							foreach ($item as $k => $v)
+							{
+								$values[] = $_db->Quote($v);
+							}
+							$dataset[] = '(' . implode(',', $values) . ')';
+							$s++;
+
+							// if data loop max is reached or last dataset, insert into table
+							if (($data_loop == $data_loop_max) || ($s == $data_max))
+							{
+								$insert_data = implode(',', $dataset);
+								$insert_data = substr($insert_data, 1, (strlen($insert_data) - 2));
+								$query       = $_db->getQuery(true);
+
+								$query->insert($_db->quoteName($table['table_structure']['table_name']));
+								$query->columns($keys);
+								$query->values($insert_data);
+								$_db->setQuery($query);
+								if (!$_db->execute())
+								{
+									echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $table['table_structure']['table_name'], $item->id) . '</p>';
+									throw new JException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $_db->getErrorMsg()));
+								}
+								$data_loop = 0;
+								$dataset   = array();
+							}
 						}
-					}
-				}
+					} // end foreach tabke items
+				} // endif datasets exists
 				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table['table_structure']['table_name']) . '</p>';
-//				ob_flush();
-//				flush();
 
 				if ($table['table_structure']['table_name'] == '#__bwpostman_subscribers') {
 					self::checkUserIds();
 				}
-			} // end foreach x_tables
-		} // end file import
-
-		// delete temporary file
-		jimport('joomla.filesystem.file');
-		if (JFile::exists($filename)) {
-			JFile::delete($filename);
-		}
+			} // end foreach tables
+		} // end try
+		catch (Exception $e) {
+				echo $e->getMessage();
+				$_db->transactionRollback();
+				return false;
+			}
+		$_db->transactionCommit();
 
 		return true;
 	}
@@ -1351,6 +1514,66 @@ abstract class BwPostmanTableHelper {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * Builds the XML assets to export
+	 *
+	 * @param	string	name of table
+	 *
+	 * @return	array	An array of XML lines (strings).
+	 *
+	 * @since	1.0.1
+	 */
+	protected static function buildXmlAssets($tableName)
+	{
+		$target_tables	= array('campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
+		$start	= strpos($tableName, '_', 3);
+		if ($start !== false) {
+			$table_name_raw	= substr($tableName, $start + 1);
+		}
+		if (in_array($table_name_raw, $target_tables)) {
+			$asset_name	= '%com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1) . '%';
+			$buffer = array();
+
+			$_db	= JFactory::getDbo();
+			$query	= $_db->getQuery(true);
+
+			// Get the assets from table
+			$query->select('*');
+			$query->from($_db->quoteName('#__assets'));
+			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->Quote($asset_name));
+
+			$_db->setQuery($query);
+
+			$data	= $_db->loadAssocList();
+
+			$buffer[]	= "\t\t\t" . '<table_assets table="' . $tableName . '">';
+			if (is_array($data)) {
+				foreach ($data as $item)
+				{
+					$buffer[]	= "\t\t\t\t<dataset>";
+					//				$res = fwrite($fp, "\t\t\t\t<dataset>\n");
+					foreach ($item as $key => $value) {
+						$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
+						/*					if (((($tableName == '#__bwpostman_sendmailcontent') || ($tableName == '#__bwpostman_tc_sendmailcontent')) && ($key == 'body'))
+													|| (($tableName == '#__bwpostman_newsletters') && ($key == 'html_version'))
+													|| (($tableName == '#__bwpostman_templates') && (($key == 'tpl_html') || ($key == 'tpl_css') || ($key == 'tpl_article') || ($key == 'tpl_divider')))) {
+												$insert_string = '<![CDATA[' . $insert_string . ']]>';
+											}
+						*/
+						$buffer[]	= "\t\t\t\t\t<" . $key . ">" . $insert_string . "</" . $key . ">";
+					}
+					$buffer[]	= "\t\t\t\t</dataset>";
+				}
+			}
+			$buffer[]	= "\t\t\t</table_assets>";
+		}
+		else {
+			$buffer[]	= "\t\t\t" . '<table_assets table="' . $tableName . '">';
+			$buffer[]	= "\t\t\t</table_assets>";
+		}
+		return implode("\n", $buffer);
 	}
 
 	/**

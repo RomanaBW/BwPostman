@@ -4,7 +4,7 @@
  *
  * BwPostman maintenance model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -60,7 +60,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		$app	= JFactory::getApplication();
 		$msg	= array();
-		
+
 		if (!BwPostmanTableHelper::checkTables()) {
 			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR');
 			$msg['type']	= 'error';
@@ -76,7 +76,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Method to save tables
 	 *
 	 * @access 	public
-	 * @return 	
+	 * @return
 	 */
 	public function saveTables($update = false)
 	{
@@ -89,19 +89,19 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Method to restore tables
 	 *
 	 * @access 	public
-	 * @return 	
+	 * @return
 	 */
 	public function restoreTables($file	= '')
 	{
 		$app	= JFactory::getApplication();
-		
+
 		$msg	= array();
-		
+
 		if ($file == '') {
 			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_ERROR_NO_FILE');
 			$msg['type']	= 'error';
 		}
-		
+
 		if (!BwPostmanTableHelper::restoreTables($file)) {
 			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_ERROR');
 			$msg['type']	= 'error';

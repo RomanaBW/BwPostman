@@ -4,7 +4,7 @@
  *
  * BwPostman  form field selected content class.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -87,7 +87,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . (string) $this->element['ondblclick'] . '"' : '';
-		
+
 		// Get the field options.
 		$options	= (array) $this->getOptions();
 
@@ -107,7 +107,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 	{
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
-		
+
 		// Initialize variables.
 		$options		= array();
 		$user_id		= null;
@@ -120,23 +120,23 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$query_user	= $_db->getQuery(true);
 		$options	= array();
 		$return		= '';
-		
+
 		// get user_ids if exists
 		$query_user->select($_db->quoteName('user_id'));
 		$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query_user->where($_db->quoteName('id') . ' = ' . (int) $this->_id);
-		
+
 		$_db->setQuery($query_user);
 		$user_id = $_db->loadResult();
 
-		// get authorized viewlevels 
+		// get authorized viewlevels
 		if ($user_id) {
 			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
 		}
-		
+
 		// check access for unavailable mailinglists
 		if (in_array(3, $accesslevels)) {
-			$access	= 3; 
+			$access	= 3;
 		}
 		elseif (in_array(2, $accesslevels)) {
 			$access	= 2;
@@ -146,7 +146,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
-		
+
 		return $options;
 	}
 	/**
@@ -161,14 +161,14 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$_db				= JFactory::getDbo();
 		$options			= array();
 		$selected_content	= '';
-				
+
 		if (is_object($app->getUserState('com_bwpostman.edit.newsletter.data'))) {
 			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
 		}
-				
+
 		if ($selected_content) {
 			if (!is_array($selected_content)) $selected_content = explode(',',$selected_content);
-				
+
 			$selected_content_items = array();
 
 			// We do a foreach to protect our ordering
@@ -177,15 +177,15 @@ class JFormFieldSelectedContent extends JFormFieldList
 				$subquery->select($_db->quoteName('cc') . '.' . $_db->quoteName('path'));
 				$subquery->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc'));
 				$subquery->where($_db->quoteName('cc') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('c') . '.' . $_db->quoteName('catid'));
-				
+
 				$query	= $_db->getQuery(true);
 				$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id') . 'AS value');
 				$query->select('CONCAT((' . $subquery . '), " = ",' . $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS ' . $_db->quoteName('text'));
 				$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('c'));
 				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' = ' . (int) $value);
-									
+
 				$_db->setQuery($query);
-					
+
 				$options[] = $_db->loadAssoc();
 			}
 		}

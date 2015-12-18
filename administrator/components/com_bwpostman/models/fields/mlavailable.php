@@ -4,7 +4,7 @@
  *
  * BwPostman  form field available mailinglists class.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -85,7 +85,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data');
 		$nl_id			= $app->getUserState('com_bwpostman.edit.newsletter.id', null);
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
-		
+
 
 		$disabled	= $this->element['disabled'] == 'true' ? true : false;
 		$readonly	= $this->element['readonly'] == 'true' ? true : false;
@@ -126,7 +126,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 			$_db->setQuery($query);
 			$ml_select = $_db->loadColumn();
 		}
-		
+
 		if (is_array($subs_id) && !empty($subs_id)) {
 			$query->select("s.mailinglist_id AS selected");
 			$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS s');
@@ -134,7 +134,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 			$_db->setQuery($query);
 			$ml_select = $_db->loadColumn();
 		}
-	
+
 		$i = 0;
 
 		foreach ($options as $option) {
@@ -147,7 +147,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		return $return;
 	}
 
-	
+
 	/**
 	 * Method to get the field options.
 	 *
@@ -158,36 +158,36 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	{
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
-		
+
 		// Initialize variables.
 		$options		= array();
 		$user_id		= null;
 		$access			= 1;
 		$accesslevels	= array();
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
-		
+
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$query_user	= $_db->getQuery(true);
 		$options	= array();
 		$return		= '';
-		
+
 		// get user_ids if exists
 		if (is_array($subs_id) && !empty($subs_id)) {
 			$query_user->select($_db->quoteName('user_id'));
 			$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
 			$query_user->where($_db->quoteName('id') . ' = ' . (int) $subs_id[0]);
-		
+
 			$_db->setQuery($query_user);
 			$user_id = $_db->loadResult();
 		}
-		
-		// get authorized viewlevels 
+
+		// get authorized viewlevels
 		if ($user_id) {
 			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
 		}
-		
+
 		$query->select("id AS value, title, description AS text");
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
@@ -199,10 +199,10 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 			$query->where($_db->quoteName('access') . ' = ' . (int) 1);
 		}
 		$query->order('title ASC');
-		
+
 		$_db->setQuery($query);
 		$options = $_db->loadObjectList();
-		
+
 		// Check for a database error.
 		if ($_db->getErrorNum()) {
 			$app->enqueueMessage($_db->getErrorMsg(), 'error');

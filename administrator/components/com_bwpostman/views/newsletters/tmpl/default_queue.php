@@ -4,7 +4,7 @@
  *
  * BwPostman all newsletters queue template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -76,7 +76,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			// Search tools bar
 			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'queue'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 		?>
-	
+
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
@@ -99,7 +99,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>
-		
+
 		<div class="row-fluid current">
 			<table class="adminlist table table-striped">
 				<thead>
@@ -113,9 +113,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</tr>
 				</thead>
 				<tbody>
-				<?php 
-					if (count($this->items) > 0) { 
-						foreach ($this->items as $i => $item) : 
+				<?php
+					if (count($this->items) > 0) {
+						foreach ($this->items as $i => $item) :
 							?>
 							<tr class="row<?php echo $i % 2; ?>">
 								<td><?php echo $this->escape($item->subject); ?></td>
@@ -139,7 +139,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</div>
 				<p class="pagination"><?php echo $this->pagination->getListFooter(); ?></p>
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-				
+
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="tab" value="queue" />
 				<input type="hidden" name="layout" value="default" />

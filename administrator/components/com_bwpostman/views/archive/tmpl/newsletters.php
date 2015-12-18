@@ -4,7 +4,7 @@
  *
  * BwPostman archive newsletters template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -65,7 +65,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 				// Search tools bar
 				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 			?>
-		
+
 				<div class="row-fluid">
 					<table class="adminlist table table-striped">
 						<tbody>
@@ -88,7 +88,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
 										</li>
 									</ul>
-						
+
 									<div class="current">
 										<table class="adminlist">
 											<thead>
@@ -116,9 +116,9 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 												</tr>
 											</tfoot>
 											<tbody>
-											<?php 
+											<?php
 											if (count($this->items) > 0) {
-												foreach ($this->items as $i => $item) : 
+												foreach ($this->items as $i => $item) :
 													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.'.$item->id);
 													$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
@@ -126,10 +126,10 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 													?>
 													<tr class="row<?php echo $i % 2; ?>">
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-														<td><?php 
-															echo $item->subject; 
+														<td><?php
+															echo $item->subject;
 															if ($item->mailing_date != '0000-00-00 00:00:00') { ?>&nbsp;&nbsp;
-																<span class="cam_preview">  
+																<span class="cam_preview">
 																	<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::<?php echo $this->escape($item->subject); ?>">
 																		<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id);?>" rel="{handler: 'iframe', size: {x: 650, y: 450}}"><?php echo JText::_('COM_BWPOSTMAN_HTML_NL');?></a>&nbsp;
 																	</span>
@@ -173,7 +173,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 					<input type="hidden" name="view" value="archive" />
 					<?php echo JHTML::_('form.token'); ?>
 				</div>
-			
+
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
  *
  * BwPostman newsletters table for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -98,16 +98,16 @@ class BwPostmanTableNewsletters extends JTable
 
 	/** @var date creation date of the newsletter */
 	var $created_date = '0000-00-00 00:00:00';
-	
+
 	/** @var int Author */
 	var $created_by = 0;
 
 	/** @var date last modification date of the newsletter */
 	var $modified_time = '0000-00-00 00:00:00';
-	
+
 	/** @var int user ID */
 	var $modified_by = 0;
-	
+
 	/** @var date Mailing date */
 	var $mailing_date = '0000-00-00 00:00:00';
 
@@ -116,10 +116,10 @@ class BwPostmanTableNewsletters extends JTable
 
 	/** @var date for publishing up a newsletter */
 	var $publish_up = '0000-00-00 00:00:00';
-	
+
 	/** @var date for publishing down a newsletter */
 	var $publish_down = '0000-00-00 00:00:00';
-	
+
 	/** @var int Checked-out Owner */
 	var $checked_out = 0;
 
@@ -280,7 +280,7 @@ class BwPostmanTableNewsletters extends JTable
 			$this->setError($e);
 			return false;
 		}
-				
+
 		// Cast properties
 		$this->id	= (int) $this->id;
 
@@ -296,7 +296,7 @@ class BwPostmanTableNewsletters extends JTable
 	public function check()
 	{
 		jimport ('joomla.mail.helper');
-		
+
 		$app	= JFactory::getApplication();
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
@@ -320,15 +320,15 @@ class BwPostmanTableNewsletters extends JTable
 		$query->select($this->_db->quoteName('id'));
 		$query->from($this->_tbl);
 		$query->where($this->_db->quoteName('subject') . ' = ' . $this->_db->Quote($this->subject));
-		
+
 		$this->_db->setQuery($query);
-		
+
 		$xid = intval($this->_db->loadResult());
 
 		if ($xid && $xid != intval($this->id)) {
 			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_NL_WARNING_SUBJECT_DOUBLE', $this->subject)), 'warning');
 		}
-		
+
 		// some text should be, too
 		if (($this->html_version == '') && ($this->text_version == '')) {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_CONTENT'), 'error');
@@ -340,19 +340,19 @@ class BwPostmanTableNewsletters extends JTable
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMNAME'), 'error');
 			$fault	= true;
 		}
-		
+
 		// from email is mandatory
 		if ((empty($this->from_email))  || (!JMailHelper::isEmailAddress(trim($this->from_email)))) {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMEMAIL'), 'error');
 			$fault	= true;
-		} 
-		
+		}
+
 		// reply email is mandatory
 		if ((empty($this->reply_email))  || (!JMailHelper::isEmailAddress(trim($this->reply_email)))) {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_REPLYEMAIL'), 'error');
 			$fault	= true;
-		} 
-			
+		}
+
 		if ($fault) {
 //			$app->setUserState('com_bwpostman.edit.newsletter.data', $this);
 			return false;
@@ -377,16 +377,16 @@ class BwPostmanTableNewsletters extends JTable
 			if (!$this->id) return false;
 			$nl_id = $this->id;
 		}
-		
+
 		$_db	= $this->getDBO();
 		$query	= $_db->getQuery(true);
-		
+
 		$query->update($_db->quoteName($this->_tbl));
 		$query->set($_db->quoteName('mailing_date') . " = NOW()");
 		$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
-		
+
 		$_db->setQuery($query);
-		
+
 		if (!$_db->query()){
 			$this->setError($_db->getErrorMsg());
 			return false;
@@ -410,7 +410,7 @@ class BwPostmanTableNewsletters extends JTable
 		$user	= JFactory::getUser();
 		$app	= JFactory::getApplication();
 		$id		= $this->id;
-	
+
 		if ($id)
 		{
 			// Existing newsletter list
@@ -425,10 +425,10 @@ class BwPostmanTableNewsletters extends JTable
 		}
 		$res	= parent::store($updateNulls);
 		$app->setUserState('com_bwpostman.newsletter.id', $this->id);
-		
+
 		// reset tab to basic if adding new newsletter was ok
 //		if ($res && $id == 0) $app->setUserState('com_bwpostman.newsletter.tab', 'edit_basic');
-		
+
 		return $res;
 	}
 }

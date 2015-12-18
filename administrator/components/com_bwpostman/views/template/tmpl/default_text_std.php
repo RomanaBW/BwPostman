@@ -4,7 +4,7 @@
  *
  * BwPostman edit template sub-template text-std for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -85,12 +85,12 @@ $options = array(
 			submitform(pressbutton);
 			return;
 		}
-		
+
 		// Valdiate input fields
 		if (form.jform_title.value == ""){
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
 		} else if (form.jform_description.value== ""){
-			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");			
+			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
 		} else {
 			submitform(pressbutton);
 		}
@@ -104,7 +104,7 @@ $options = array(
 			myField.focus();
 			sel = document.selection.createRange();
 			sel.text = myValue;
-		} 
+		}
 		else if (myField.selectionStart || myField.selectionStart == '0') {
 			// MOZILLA/NETSCAPE support
 			var startPos = myField.selectionStart;
@@ -112,7 +112,7 @@ $options = array(
 			myField.value = myField.value.substring(0, startPos)
 			+ myValue
 			+ myField.value.substring(endPos, myField.value.length);
-		} 
+		}
 		else {
 			myField.value += myValue;
 		}
@@ -155,7 +155,7 @@ $options = array(
 
 	window.onload = function() {
 		var framefenster = document.getElementById("myIframe");
-	
+
 		if(framefenster.contentWindow.document.body){
 			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
 			if(document.all && !window.opera) {
@@ -268,10 +268,10 @@ $options = array(
 									endforeach;
 									// begin footerbuttons
 									$i = 1;
-	
+
 									echo '  <li><div class="clr clearfix"></div>';
 									echo JHtml::_('tabs.start', 'buttons', array('startOffset' => 0));
-	
+
 									while ($i <= 5) :
 										$fieldSets = $this->form->getFieldsets('button'.$i);
 										foreach ($fieldSets as $name => $fieldSet) :
@@ -281,7 +281,7 @@ $options = array(
 												<legend><?php echo $this->escape(JText::_($fieldSet->label)) . ' ' . $i; ?></legend>
 												<div class="well well-small">
 													<ul class="adminformlist unstyled">
-													<?php 
+													<?php
 														foreach ($this->form->getFieldset($name) as $field) :
 															$show = array("jform[button$i][show_button]", "jform[button$i][button_text]", "jform[button$i][button_href]");
 															if (in_array($field->name, $show)) : ?>
@@ -296,7 +296,7 @@ $options = array(
 											</fieldset>
 											<?php
 										endforeach;
-										
+
 										$i++;
 									endwhile;
 									echo JHtml::_('tabs.end');
@@ -319,7 +319,7 @@ $options = array(
 			</div>
 		</fieldset>
 
-		<input type="hidden" name="task" value="" /> 
+		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<?php echo $this->form->getInput('id'); ?>
 		<?php echo $this->form->getInput('asset_id'); ?>

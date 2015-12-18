@@ -4,7 +4,7 @@
  *
  * BwPostman newsletter all default template for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -47,7 +47,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 		<?php endif; ?>
-		
+
 		<form action="<?php echo $this->uri; ?>" method="post" name="adminForm" id="adminForm" class="form-inline form-horizontal">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
 				<div class="clearfix">
@@ -85,7 +85,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</div>
 					<div class="clearfix"></div>
 				</div>
-			</div>	
+			</div>
 			<table id="bwp_newsletters_table<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<thead>
 					<tr>
@@ -96,7 +96,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</thead>
 				<tbody>
 				<?php
-					if (count($this->items) > 0) { 
+					if (count($this->items) > 0) {
 						foreach ($this->items as $i => $item) : ?>
 							<tr class="row<?php echo $i % 2; ?>">
 								<td class="date"><?php $date = JHTML::Date($item->mailing_date, JText::_('DATE_FORMAT_LC3')); echo $date;?></td>
@@ -111,7 +111,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								<td class="clicks"><?php echo $item->hits; ?></td>
 							</tr>
 						<?php
-						endforeach; 
+						endforeach;
 					}
 					else { ?>
 						<tr class="row0">
@@ -119,23 +119,23 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php } ?>
 				</tbody>
 			</table>
-	
+
 			<?php if ($this->pagination->pagesTotal > 1) { ?>
 				<div class="pagination">
 					<?php echo $this->pagination->getPagesLinks(); ?>
 					<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?> </p>
 				</div>
 			<?php } ?>
-			
-			<input type="hidden" name="option" value="com_bwpostman" /> 
+
+			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="" />
-			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" /> 
-			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" /> 
+			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 			<input type="hidden" name="id" value="<?php //echo $this->items->id; ?>" />
 			<?php echo JHTML::_('form.token'); ?>
-	
+
 		</form>
-		
+
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
 	</div>
 </div>

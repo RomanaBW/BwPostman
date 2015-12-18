@@ -4,7 +4,7 @@
  *
  * BwPostman sendmail queue table for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -100,7 +100,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			$this->setError($e);
 			return false;
 		}
-				
+
 		// Cast properties
 		$this->id	= (int) $this->id;
 
@@ -131,14 +131,14 @@ class BwPostmanTableSendmailqueue extends JTable
 		$this->reset();
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select('*');
 		$query->from($_db->quoteName($this->_tbl));
 		$query->where($_db->quoteName('trial') . ' < ' . (int) $trial);
 		$query->order($_db->quoteName($this->_tbl_key).' ASC LIMIT 0,1');
-		
+
 		$_db->setQuery($query);
-		
+
 		if ($result = $_db->loadAssoc()) {
 			if ($this->bind($result)){
 				$this->_trackAssets = 0;
@@ -170,7 +170,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-						
+
 		$query->insert($_db->quoteName($this->_tbl));
 		$query->columns(array(
 			$_db->quoteName('content_id'),
@@ -191,7 +191,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			(int) $trial
 		);
 		$_db->setQuery($query);
-		
+
 		if (!$_db->query()){
 			$this->setError($_db->getErrorMsg());
 			return false;
@@ -207,19 +207,19 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @param 	int Content ID --> from the sendmailcontent-Table
 	 * @param 	int Status --> 0 = unconfirmed, 1 = confirmed
 	 * @param	int		campaign id
-	 * 
+	 *
 	 * @return 	boolean
 	 */
 
 	public function pushAllFromNlId($nl_id, $content_id, $status, $cam_id){
 		if (!$content_id) return false;
-		
+
 		$_db		= $this->_db;
 		$subQuery1	= $_db->getQuery(true);
 		$subQuery2	= $_db->getQuery(true);
 		$subQuery3	= $_db->getQuery(true);
 		$query		= $_db->getQuery(true);
-		
+
 		if ($cam_id != '-1') {
 			$subQuery3->select($_db->quoteName('c') . '.' . $_db->quoteName('mailinglist_id'));
 			$subQuery3->from($_db->quoteName('#__bwpostman_campaigns_mailinglists', 'c'));
@@ -230,11 +230,11 @@ class BwPostmanTableSendmailqueue extends JTable
 			$subQuery3->from($_db->quoteName('#__bwpostman_newsletters_mailinglists', 'c'));
 			$subQuery3->where($_db->quoteName('c') . '.' . $_db->quoteName('newsletter_id') . ' IN (' . $nl_id . ')');
 		}
-		
+
 		$subQuery2->select('DISTINCT' . $_db->quoteName('b') . '.' . $_db->quoteName('subscriber_id'));
 		$subQuery2->from($_db->quoteName('#__bwpostman_subscribers_mailinglists', 'b'));
 		$subQuery2->where($_db->quoteName('b') . '.' . $_db->quoteName('mailinglist_id') . ' IN (' . $subQuery3 . ')');
-		
+
 		$subQuery1->select($_db->Quote($content_id) . ' AS content_id');
 		$subQuery1->select($_db->quoteName('a') . '.' . $_db->quoteName('email') . ' AS ' . $_db->quoteName('recipient'));
 		$subQuery1->select($_db->quoteName('a') . '.' . $_db->quoteName('emailformat') . ' AS ' . $_db->quoteName('mode'));
@@ -245,15 +245,15 @@ class BwPostmanTableSendmailqueue extends JTable
 		$subQuery1->where($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' IN (' . $subQuery2 . ')');
 		$subQuery1->where($_db->quoteName('a') . '.' . $_db->quoteName('status') . ' IN (' . $status . ')');
 		$subQuery1->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		
+
 		$query->insert($this->_tbl);
-		$query .= ' (' . 
-				$_db->quoteName('content_id') . ',' . 
-				$_db->quoteName('recipient') . ',' . 
-				$_db->quoteName('mode') . ',' . 
-				$_db->quoteName('name') . ',' . 
-				$_db->quoteName('firstname') . ',' . 
-				$_db->quoteName('subscriber_id') . 
+		$query .= ' (' .
+				$_db->quoteName('content_id') . ',' .
+				$_db->quoteName('recipient') . ',' .
+				$_db->quoteName('mode') . ',' .
+				$_db->quoteName('name') . ',' .
+				$_db->quoteName('firstname') . ',' .
+				$_db->quoteName('subscriber_id') .
 		')';
 		$query .=$subQuery1;
 
@@ -277,11 +277,11 @@ class BwPostmanTableSendmailqueue extends JTable
 	 */
 	public function pushAllSubscribers($content_id, $status) {
 		if (!$content_id) return false;
-		
+
 		$_db		= $this->_db;
 		$subQuery	= $_db->getQuery(true);
 		$query		= $_db->getQuery(true);
-		
+
 		$subQuery->select($_db->Quote($content_id) . ' AS content_id');
 		$subQuery->select($_db->quoteName('email', 'recipient'));
 		$subQuery->select($_db->quoteName('emailformat', 'mode'));
@@ -291,7 +291,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		$subQuery->from($_db->quoteName('#__bwpostman_subscribers'));
 		$subQuery->where($_db->quoteName('status') . ' IN (' . $status . ')');
 		$subQuery->where($_db->quoteName('archive_flag') . ' = ' . $_db->Quote('0'));
-		
+
 		$query->insert($this->_tbl);
 		$query->columns(array(
 			$_db->quoteName('content_id'),
@@ -302,7 +302,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			$_db->quoteName('subscriber_id')
 		));
 		$query->values($subQuery);
-		
+
 		if (!$_db->query()){
 			$this->setError($_db->getErrorMsg());
 			return false;
@@ -323,16 +323,16 @@ class BwPostmanTableSendmailqueue extends JTable
 		if (!$content_id) return false;
 		if (!is_array($usergroups)) return false;
 		if (!count($usergroups)) return false;
-		
+
 		$_db		= $this->_db;
 
 		$subQuery	= $_db->getQuery(true);
 		$subQuery1	= $_db->getQuery(true);
-			
+
 		$subQuery1->select($_db->quoteName('g') . '.' . $_db->quoteName('user_id'));
 		$subQuery1->from($_db->quoteName('#__user_usergroup_map') . ' AS ' . $_db->quoteName('g'));
 		$subQuery1->where($_db->quoteName('g') . '.' . $_db->quoteName('group_id') . ' IN (' . implode(',', $usergroups) . ')' );
-			
+
 		$subQuery->select($_db->Quote($content_id) . ' AS content_id');
 		$subQuery->select($_db->quoteName('email', 'recipient'));
 		$subQuery->select($_db->Quote($format) . ' AS mode');
@@ -342,7 +342,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		$subQuery->where($_db->quoteName('block') . ' = ' . (int) 0);
 		$subQuery->where($_db->quoteName('activation') . " IN ('', '0')");
 		$subQuery->where($_db->quoteName('id') . ' IN (' . $subQuery1 . ')');
-		
+
 		$_db->setQuery($subQuery);
 		$sub_res	= $_db->loadObjectList();
 
@@ -358,13 +358,13 @@ class BwPostmanTableSendmailqueue extends JTable
 				$_db->quoteName('subscriber_id')
 			));
 			$query->values(
-					$_db->Quote($result->content_id) . ', ' . 
-					$_db->Quote($result->recipient) . ', ' . 
-					$_db->Quote($result->mode) . ', ' . 
-					$_db->Quote($result->name) . ', ' . 
-					$_db->Quote($result->subscriber_id) 
+					$_db->Quote($result->content_id) . ', ' .
+					$_db->Quote($result->recipient) . ', ' .
+					$_db->Quote($result->mode) . ', ' .
+					$_db->Quote($result->name) . ', ' .
+					$_db->Quote($result->subscriber_id)
 			);
-					
+
 			$_db->setQuery($query);
 			if (!$_db->query()){
 				$this->setError($_db->getErrorMsg());
@@ -377,11 +377,11 @@ class BwPostmanTableSendmailqueue extends JTable
 	public function resetTrials(){
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->update($_db->quoteName($this->_tbl));
 		$query->set($_db->quoteName('trial') . " = " . (int) 0);
 		$query->where($_db->quoteName('trial') . ' > ' . (int) 0);
-		
+
 		$_db->setQuery($query);
 
 		if (!$_db->query()){

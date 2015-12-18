@@ -4,7 +4,7 @@
  *
  * BwPostman backend element view to select a singlenewsletter for a view in frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -61,7 +61,7 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'COM_BWPOSTMAN_SELECTNEWSLETTER' ));
-		$document->addStyleSheet(JURI::root(true) . 'components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get data from the model
 		$items 		= $this->get('data');

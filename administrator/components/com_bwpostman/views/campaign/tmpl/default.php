@@ -4,7 +4,7 @@
  *
  * BwPostman single campaigns form template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -63,9 +63,9 @@ $tab_options = array(
 <script type="text/javascript">
 /* <![CDATA[ */
 	Joomla.submitbutton = function (pressbutton) {
-	
+
 		var form = document.adminForm;
-		
+
 		<?php if (property_exists($this, 'autocam_values')) { ?>
 			if (pressbutton == 'delete') {
 				submitform('campaign.apply');
@@ -76,7 +76,7 @@ $tab_options = array(
 		<?php if (property_exists($this->item, 'tc_mailing_data')) { ?>
 			return checkReasonableTimes(pressbutton);
 		<?php } ?>
-		 		
+
 		if (pressbutton == 'campaign.cancel') {
 			submitform(pressbutton);
 			return;
@@ -99,13 +99,13 @@ $tab_options = array(
  		}
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
-		<?php 
+		<?php
 			echo JHtmlBwTabs::start('bwp-cam-nl-pane', $tab_options);
-			
+
 			// Start Tab basic
 			echo JHtmlBwTabs::panel(JText::_(empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id)), 'basic', '');
 			echo $this->loadTemplate('basic');
-				
+
 			// Start Tab assigned/unsent newsletters
 			$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
 			if (property_exists($this->item, 'automailing_values')) {
@@ -115,32 +115,32 @@ $tab_options = array(
 			}
 			echo JHtmlBwTabs::panel($text, 'unsent', '');
 			echo $this->loadTemplate('unsent');
-				
+
 			if (property_exists($this->item, 'tc_mailing_data')) {
 				// Start Tab autovalues
 				echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOVALUES_TITLE'), 'autovalues', '');
 				echo $this->item->tc_mailing_data;
 			}
-				
+
 			if (property_exists($this->item, 'queued_letters')) {
 				// Start Tab automailing queue
 				echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_TITLE'), 'autoqueue', '');
 				echo $this->item->queued_letters;
 			}
-				
+
 			// Start Tab sent newsletters
 			echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_NL_SENT'), 'sent', '');
 			echo $this->loadTemplate('sent');
-				
+
 			// Start Tab permissions
 			echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'), 'rules', '');
 			echo $this->loadTemplate('rules');
-			
+
 			echo JHtmlBwTabs::end();
 		?>
 
-		<input type="hidden" name="task" value="" /> 
-		
+		<input type="hidden" name="task" value="" />
+
 		<?php echo $this->form->getInput('id'); ?>
 		<?php echo $this->form->getInput('asset_id'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>

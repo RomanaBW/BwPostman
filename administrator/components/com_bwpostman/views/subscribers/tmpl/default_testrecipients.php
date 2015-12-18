@@ -4,7 +4,7 @@
  *
  * BwPostman all subscribers test-recipients template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -49,7 +49,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tr>
 	</thead>
 	<tbody>
-	<?php 
+	<?php
 		if (count($this->items)) {
 			foreach ($this->items as $i => $item) :
 				$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
@@ -75,8 +75,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<td align="center"><?php echo ($item->emailformat) ? JText::_('COM_BWPOSTMAN_HTML') : JText::_('COM_BWPOSTMAN_TEXT')?></td>
 					<td align="center"><?php echo ($item->user_id) ? $item->user_id : ''; ?></td>
 					<td align="center"><?php echo $item->id; ?></td>
-				</tr><?php 
-			endforeach; 
+				</tr><?php
+			endforeach;
 		}
 		else {
     	// if no data ?>

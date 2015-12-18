@@ -4,7 +4,7 @@
  *
  * BwPostman template controller for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -48,14 +48,14 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @since	1.1.0
-	 * 
+	 *
 	 * @see		JController
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
 	}
-	
+
 	/**
 	 * Method to call the start layout for the add text template
 	 *
@@ -104,7 +104,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		$user	= JFactory::getUser();
-		
+
 		return ($user->authorise('core.create', 'com_bwpostman'));
 	}
 
@@ -198,7 +198,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 		{
 			$urlVar = $key;
 		}
-		
+
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
 		$checkin = property_exists($table, 'checked_out');
@@ -258,7 +258,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * --> templates-table: archive_flag = 1, set archive_date
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return	Redirect
 	 *
 	 * @since	1.1.0
@@ -266,14 +266,14 @@ class BwPostmanControllerTemplate extends JControllerForm
 	public function archive()
 	{
 		$jinput	= JFactory::getApplication()->input;
-				
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
-		
+
 		// Get the selected template(s)
 		$cid = $jinput->get('cid', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid);
-	
+
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -295,7 +295,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 		}
 		else {
 			$n = count ($cid);
-		
+
 			$model = $this->getModel('template');
 			if(!$model->archive($cid, 1)) {
 				if ($n > 1) {
@@ -313,7 +313,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 					$msg = JText::_('COM_BWPOSTMAN_TPL_ARCHIVED');
 				}
 				$link = JRoute::_('index.php?option=com_bwpostman&view=templates', false);
-		
+
 				$this->setRedirect($link, $msg);
 			}
 		}

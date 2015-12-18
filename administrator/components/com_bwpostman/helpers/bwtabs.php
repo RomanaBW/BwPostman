@@ -4,7 +4,7 @@
  *
  * BwPostman tabs helper class for backend, based on joomla HTML tabs.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -28,7 +28,7 @@ defined('JPATH_PLATFORM') or die;
 
 /**
  * Utility class for Tabs elements.
- * 
+ *
  * @since	1.0.1
  */
 

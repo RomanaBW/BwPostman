@@ -4,7 +4,7 @@
  *
  * BwPostman template view for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -42,14 +42,14 @@ jimport('joomla.application.component.view');
 class BwPostmanViewTemplate extends JViewLegacy
 {
 	protected $pre;
-	
+
 	/**
 	 * Display
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param	string Template
-	 * 
+	 *
 	 * @since	1.1.0
 	 */
 	public function display($tpl = null)
@@ -58,7 +58,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$pre =	JFactory::getApplication()->getUserState('com_bwpostman.edit.template.tpldata');
 
 		$this->pre	= $pre;
-		
+
 		// clear preview data
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', null);
 

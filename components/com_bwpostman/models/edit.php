@@ -4,7 +4,7 @@
  *
  * BwPostman edit model for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -69,11 +69,11 @@ class BwPostmanModelEdit extends JModelAdmin
 		if ($user->guest) { // Subscriber is guest
 			$session				= JFactory::getSession();
 			$session_subscriberid	= $session->get('session_subscriberid');
-			
+
 			if(isset($session_subscriberid) && is_array($session_subscriberid)){ // Session contains subscriber ID
 				$id	= $session_subscriberid['id'];
 			}
-		} 
+		}
 		else { // Subscriber is user
 			$id	= $this->getSubscriberId($user->get('id')); // Get the subscriber ID from the subscribers-table
 		}
@@ -88,7 +88,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param	array	Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
-	 * 
+	 *
 	 * @since  1.0.1
 	*/
 	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
@@ -141,7 +141,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 	}
-	
+
 	/**
 	 * Method to reset the subscriber ID, viewlevel and the subscriber data
 	 *
@@ -167,33 +167,33 @@ class BwPostmanModelEdit extends JModelAdmin
 		$app	= JFactory::getApplication();
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('subscriber.id');
 
 		$query->select('*');
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('id') . ' = ' . (int) $pk);
-		
+
 //		echo nl2br(str_replace('#__','jos_',$query));
 		$_db->setQuery($query);
 		$this->_data	= $_db->loadObject();
 
 		if (!is_object($this->_data)) $this->_data	= $this->fillVoidSubscriber();
 		$this->_id		= $pk;
-		
+
 		$query->clear();
 		$query->select($_db->quoteName('mailinglist_id'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 		$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $pk);
-		
+
 		$_db->setQuery($query);
 		$list_id_values = $_db->loadColumn();
 		$this->_data->mailinglists = $list_id_values;
 
 		return $this->_data;
 	}
-	
+
 	/**
 	 * Method to get all mailinglists which the user is authorized to see
 	 *
@@ -209,7 +209,7 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		// get authorized viewlevels
 			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
-	
+
 		if (!in_array('3', $accesslevels)) {
 			// A user shall only see mailinglists which are public or - if registered - accessible for his viewlevel and published
 			$query->select('*');
@@ -227,23 +227,23 @@ class BwPostmanModelEdit extends JModelAdmin
 			$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
 			$query->order($_db->quoteName('title') . 'ASC');
 		}
-	
+
 		$_db->setQuery ($query);
-	
+
 		$mailinglists = $_db->loadObjectList();
-		
+
 		// Does the subscriber has internal mailinglists?
 		$selected	= $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
-		
+
 		if (is_array($selected)) {
 			$ml_ids		= array();
 			$get_mls	= array();
 			$add_mls	= array();
-			
+
 			// compare available mailinglists with selected mailinglists, get difference
 			foreach ($mailinglists as $value) $ml_ids[]	= $value->id;
 			$get_mls	= array_diff ($selected, $ml_ids);
-			
+
 			// if there are internal mailinglists selected, get them ...
 			if (!empty($get_mls)) {
 				$query->clear();
@@ -251,7 +251,7 @@ class BwPostmanModelEdit extends JModelAdmin
 				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 				$query->where($_db->quoteName('id') . ' IN (' .implode(',', $get_mls) . ')');
 				$query->order($_db->quoteName('title') . 'ASC');
-				
+
 				$_db->setQuery ($query);
 
 				$add_mls = $_db->loadObjectList();
@@ -259,7 +259,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 		// ...and add them to the mailinglists array
 		if (!empty($add_mls)) $mailinglists	= array_merge($mailinglists, $add_mls);
-		
+
 		return $mailinglists;
 	}
 
@@ -275,18 +275,18 @@ class BwPostmanModelEdit extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('user_id') . ' = ' . (int) $uid);
 		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
-		
+
 		$_db->setQuery($query);
 
 		$id = $_db->loadResult();
 
 		if (empty($id)) $id = 0;
-		
+
 		return $id;
 	}
 
@@ -302,12 +302,12 @@ class BwPostmanModelEdit extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('user_id'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
 		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
-		
+
 		$_db->setQuery($query);
 
 		$user_id = $_db->loadResult();
@@ -326,7 +326,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('email'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
@@ -339,10 +339,10 @@ class BwPostmanModelEdit extends JModelAdmin
 	}
 
 	/**
-	 * Method to get a unique activation string 
+	 * Method to get a unique activation string
 	 *
 	 * @access 	public
-	 * @param 	
+	 * @param
 	 * @return 	string	user ID
 	 */
 	public function getActivation()
@@ -350,7 +350,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		jimport('joomla.user.helper');
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		// Create the activation and check if the sting doesn't exist twice or more
 		$match_activation = true;
 		while ($match_activation) {
@@ -363,7 +363,7 @@ class BwPostmanModelEdit extends JModelAdmin
 
 			$_db->setQuery($query);
 			$existingActivation = $_db->loadResult();
-				
+
 			if ($existingActivation == $newActivation) {
 				$match_activation = true;
 			} else {
@@ -383,7 +383,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__menu'));
 		$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=edit'));
@@ -391,10 +391,10 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		$_db->setQuery($query);
 		$itemid = $_db->loadResult();
-		
+
 		if (empty($itemid)) {
 			$query->clear();
-			
+
 			$query->select($_db->quoteName('id'));
 			$query->from($_db->quoteName('#__menu'));
 			$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=register'));
@@ -417,7 +417,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('editlink') . ' = ' . $_db->Quote($editlink));
@@ -450,32 +450,32 @@ class BwPostmanModelEdit extends JModelAdmin
 		$subscriber	= JTable::getInstance('subscribers', 'BwPostmanTable');
 
 		parent::save($data);
-		
+
 		// Get the subscriber id
 		$subscriber_id = $data['id'];
 
 		// Delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
 		$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 		$query->where($_db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
-		
+
 		$_db->setQuery($query);
 		$_db->execute();
 
 		if (isset($data['mailinglists'])) {
 			if (($data['mailinglists']) != '') {
 				$list_id_values = $data['mailinglists'];
-	
+
 				// Store subscribed mailinglists in newsletters_mailinglists-table
 				foreach ($list_id_values AS $list_id) {
 					$query	= $_db->getQuery(true);
-					
+
 					$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 					$query->columns(array(
 							$_db->quoteName('subscriber_id'),
 							$_db->quoteName('mailinglist_id')
 					));
 					$query->values(
-							(int) $subscriber_id . ',' . 
+							(int) $subscriber_id . ',' .
 							(int) $list_id
 					);
 					$_db->setQuery($query);
@@ -494,11 +494,11 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @return 	subscriber object
 	 */
 	public function fillVoidSubscriber(){
-	
+
 		/* Load an empty subscriber */
 		$subscriber = $this->getTable('subscribers', 'BwPostmanTable');
 		$subscriber->load();
-	
+
 		return $subscriber;
 	}
 }

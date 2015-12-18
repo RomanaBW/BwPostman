@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Module
- * 
+ *
  * BwPostman special form field for module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -154,10 +154,10 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 				$class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
 				$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
 				$archived	= ($option->archived) ? '<i class="icon-archive"></i>' : '';
-				
+
 				// Initialize some JavaScript option attributes.
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-	
+
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
 				$html[] = '								<td><input type="checkbox" id="cb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/></td>';
@@ -167,8 +167,8 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 				$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';
 				$html[] = '							</tr>';
 			}
-	
-		} 
+
+		}
 		else {
 				$html[] = '							<tr class="row1">';
 				$html[] = '								<td colspan="6"><strong>'. JText::_('COM_BWPOSTMAN_NO_CAM').'</strong></td>';
@@ -194,10 +194,10 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 	protected function getOptions()
 	{
 		$app	= JFactory::getApplication();
-		
+
 		// Initialize variables.
 		$options		= array();
-		
+
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$nullDate	= $_db->getNullDate();
@@ -205,7 +205,7 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$sub_query	= $_db->getQuery(true);
 		$options	= array();
 		$return		= '';
-		
+
 		// Build sub query which counts the newsletters of each campaign and query
 		$sub_query->select('COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('id') . ') AS ' . $_db->quoteName('newsletters'));
 		$sub_query->from($_db->quoteName('#__bwpostman_newsletters') . 'AS ' . $_db->quoteName('b'));
@@ -223,7 +223,7 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 
 		$_db->setQuery($query);
 		$options = $_db->loadObjectList();
-		
+
 		// Check for a database error.
 		if ($_db->getErrorNum()) {
 			$app->enqueueMessage($_db->getErrorMsg(), 'error');

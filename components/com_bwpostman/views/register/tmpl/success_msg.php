@@ -4,7 +4,7 @@
  *
  * BwPostman register success message template for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -39,36 +39,36 @@ defined ('_JEXEC') or die ('Restricted access');
 	<div id="bwp_com_register_success">
 		<?php if ($this->params->def('show_page_title', 1)) { ?>
 		<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
-		
+
 		<div class="content_inner">
 			<?php }
 			if ($this->success->editlink) { // Case 1
 				if ($this->user->get('guest')) {
 					if (is_null($this->success->itemid)) {
 						$link = JRoute::_($this->uri."index.php?option=com_bwpostman&amp;view=edit&amp;editlink={$this->success->editlink}");
-					} 
+					}
 					else {
 						$link = JRoute::_($this->uri."index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit&amp;editlink={$this->success->editlink}");
 					}
-				} 
+				}
 				else {
 					if (is_null($this->success->itemid)) {
 						$link = JRoute::_($this->uri."index.php?option=com_bwpostman&amp;view=edit") ;
-					} 
+					}
 					else {
 						$link = JRoute::_($this->uri."index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit") ;
 					}
 				}
-			
+
 				$msg = '<div class="success-message">' . JText::sprintf($this->success->success_msg, $link) . '</div>';
-			
+
 				echo $msg;
-			} 
+			}
 			else { 	// Case 2, 3, 4
 				echo '<div class="success-message">' . JText::_($this->success->success_msg) . '</div>';
 			}
 			?>
-			
+
 			<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
 		</div>
 	</div>

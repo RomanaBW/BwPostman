@@ -4,7 +4,7 @@
  *
  * BwPostman single newsletter HTML modal template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -35,7 +35,7 @@ defined ('_JEXEC') or die ('Restricted access');
 	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	  <title><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML'); ?></title>
 	</head>
-	
+
 	<body id="preview_html">
 		<?php
 			$uri 	= JFactory::getURI();
@@ -48,7 +48,7 @@ defined ('_JEXEC') or die ('Restricted access');
 				<td><strong><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?></strong></td>
 			</tr>
 		</table>
-		
+
 		<fieldset>
 		    <table border="0">
 			    <tr>
@@ -69,8 +69,8 @@ defined ('_JEXEC') or die ('Restricted access');
 				</tr>
 		    </table>
 		</fieldset>
-			
-		<fieldset>   
+
+		<fieldset>
 			<table width="100%" border="0">
 				<tr>
 					<td>

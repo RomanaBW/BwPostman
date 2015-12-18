@@ -5,7 +5,7 @@
  *
  * BwPostman  form field campaigns class.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -45,16 +45,16 @@ class JFormFieldCampaignlist extends JFormFieldList {
 	    // Get a db connection.
 	    $_db	= JFactory::getDbo();
 	    $query	= $_db->getQuery(true);
-	    			
+
 		// Get all published campaigns
 		$query->select($_db->quoteName('id') . ' AS value');
 		$query->select($_db->quoteName('title') . 'AS text');
 		$query->select($_db->quoteName('description') . ' AS description');
 		$query->from($_db->quoteName('#__bwpostman_campaigns'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-	
+
 		$_db->setQuery ($query);
-	
+
 		try
 		{
 			$options = $_db->loadObjectList();
@@ -63,7 +63,7 @@ class JFormFieldCampaignlist extends JFormFieldList {
 		{
 			JError::raiseWarning(500, $e->getMessage());
 		}
-	
+
 		$parent = new stdClass;
 		$parent->value	= '-1';
 		$parent->text	= '- '. JText::_('COM_BWPOSTMAN_NL_FILTER_CAMPAIGN') .' -';
@@ -71,7 +71,7 @@ class JFormFieldCampaignlist extends JFormFieldList {
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
-	
+
 		return $options;
 	}
 }

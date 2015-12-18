@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Overview Module
- * 
+ *
  * BwPostman helper class for overview module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Overview-Module
  * @author Romana Boldt
  * @copyright (C) 2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -41,7 +41,7 @@ class modBwPostmanOverviewHelper
 	{
 		$app	= JFactory::getApplication();
 		$menu	= $app->getMenu();
-		
+
 		$item		= $params->get('menu_item');
 		$menuItem	= $menu->getItem($item);
 		$itemid		= (!empty($item)) ? '&Itemid=' . $item : '';
@@ -86,7 +86,7 @@ class modBwPostmanOverviewHelper
 
 		if ($menuItemId) {
 			$menu_params	= self::getMenuItemParams($menuItemId);
-			
+
 			$params->set('access-check', $menu_params->get('access-check'));
 			$params->set('show_type', $menu_params->get('show_type'));
 			$params->set('ml_selected_all', $menu_params->get('ml_selected_all'));
@@ -96,29 +96,29 @@ class modBwPostmanOverviewHelper
 			$params->set('cam_selected_all', $menu_params->get('cam_selected_all'));
 			$params->set('cam_available', $menu_params->get('cam_available'));
 		}
-		
+
 		// Get database
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
-		
+
 		// Define null and now dates
 		$nullDate	= $_db->quote($_db->getNullDate());
 		$nowDate	= $_db->quote(JFactory::getDate()->toSql());
-		
+
 		// get accessible mailing lists
 		$mls	= self::getAccessibleMailinglists($params, 'false');
-		
+
 		$groups	= self::getAccessibleUsergroups($params, 'false');
-		
+
 		if (count($groups) > 0) {
 			// merge mailinglists and usergroups and remove multiple values
 			$mls	= array_merge($mls, $groups);
 			$mls	= array_unique($mls);
 		}
-		
+
 		// get accessible campaigns
 		$cams	= self::getAccessibleCampaigns($params, 'false');
-		
+
 		// get unique newsletter IDs
 		$query->select('DISTINCT(' . $_db->quoteName('a.id') . '), ' .
 				// Use mailing date if publish_up is 0
@@ -126,32 +126,32 @@ class modBwPostmanOverviewHelper
 		$query->from('#__bwpostman_newsletters AS a');
 		$query->where($_db->quoteName('a.published') . ' = 1');
 		$query->where($_db->quoteName('a.mailing_date') . ' != ' . $nullDate);
-		
+
 		// Filter by accessible mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 		$query->where('(m.mailinglist_id IN (' . implode(',', $mls) . ') OR a.campaign_id IN (' . implode(',', $cams) . '))');
-		
-		
+
+
 		// Filter by show type
 		switch ($params->get('show_type', 'arc')) {
 			case 'all':
-			default:	
+			default:
 				break;
-			case 'all_not_arc':	
+			case 'all_not_arc':
 					$query->where('a.archive_flag = 0');
 				break;
-			case 'not_arc_down':	
+			case 'not_arc_down':
 					$query->where('a.archive_flag = 0');
 					$query->where('a.publish_up <= ' . $nowDate);
 					$query->where('(a.publish_down >= ' . $nowDate . ' OR a.publish_down = ' . $nullDate . ')');
 				break;
-			case 'not_arc_but_down':	
+			case 'not_arc_but_down':
 					$query->where('a.archive_flag = 0');
 					$query->where('a.publish_up <= ' . $nowDate);
 					$query->where('a.publish_down <> ' . $nullDate);
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
-			case 'arc':	
+			case 'arc':
 					$query->where('a.archive_flag = 1');
 				break;
 			case 'down':
@@ -166,10 +166,10 @@ class modBwPostmanOverviewHelper
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
 			case 'arc_or_down':
-					$query->where('(a.archive_flag = 1 
+					$query->where('(a.archive_flag = 1
 							OR (
-									a.publish_down <> ' . $nullDate . ' 
-								AND a.publish_down <= ' . $nowDate . ' 
+									a.publish_down <> ' . $nullDate . '
+								AND a.publish_down <= ' . $nowDate . '
 								AND a.publish_up <= ' . $nowDate . '
 							))');
 				break;
@@ -178,13 +178,13 @@ class modBwPostmanOverviewHelper
 		$_db->setQuery($query);
 
 		$nls_result	= $_db->loadAssocList();
-		
+
 		$nls	= array();
 		foreach ($nls_result as $item) {
 			$nls[]	= $item['id'];
 		}
 		if (count($nls) == 0) $nls[]	= 0;
-		
+
 		// Filter by language
 		/*		if (JFactory::getApplication()->getLanguageFilter())
 		 {
@@ -200,10 +200,10 @@ class modBwPostmanOverviewHelper
 		$query->select('a.mailing_date');
 		//		$query->select('DISTINCT (' . $query->month($_db->quoteName('a.mailing_date')) . ') AS sent_month, COUNT(*) AS count_month');
 		$query->from('#__bwpostman_newsletters AS a');
-		
+
 		$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $nls) . ')');
-		
-		
+
+
 		$query->order($_db->quoteName('a.mailing_date') . ' DESC');
 		$query->group($query->year($_db->quoteName('a.mailing_date')));
 		$query->group($query->month($_db->quoteName('a.mailing_date')));
@@ -227,17 +227,17 @@ class modBwPostmanOverviewHelper
 		$app	= JFactory::getApplication();
 		$menu	= $app->getMenu();
 		$params	= $menu->getParams($id);
-		
-/*		
+
+/*
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('params'));
 		$query->from($_db->quoteName('#__menu'));
 		$query->where($_db->quoteName('id') . ' = ' . $id);
-		
+
 		$_db->setQuery($query);
-		
+
 		$params	= json_decode($_db->loadResult());
 */
 		return $params;
@@ -247,11 +247,11 @@ class modBwPostmanOverviewHelper
 	 * Method to get all published mailing lists which the user is authorized to see and wich are selected in menu
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	boolean	with title
-	 * 
-	 * @return 	array	ID and title of allowed mailinglists 
-	 * 
+	 *
+	 * @return 	array	ID and title of allowed mailinglists
+	 *
 	 * @since	1.2.0
 	 */
 	private static function getAccessibleMailinglists(&$params, $title = true)
@@ -259,18 +259,18 @@ class modBwPostmanOverviewHelper
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$check		= $params->get('access-check', 1);
-		
+
 		// fetch only from mailinglists, which are selected, if so
 		$all_mls	= $params->get('ml_selected_all');
 		$sel_mls	= $params->get('ml_available');
-	
+
 		if ($all_mls) {
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			
+
 			$_db->setQuery ($query);
-			
+
 			$res_mls	= $_db->loadAssocList();
 			$mls		= array();
 			if (count($res_mls > 0)) {
@@ -285,7 +285,7 @@ class modBwPostmanOverviewHelper
 
 		// if no mls is left, make array
 		if (count($mls) == 0) $mls[]	= 0;
-		
+
 		// Check permission, if desired
 		if ($all_mls || $check != 'no') {
 			// get authorized viewlevels
@@ -298,18 +298,18 @@ class modBwPostmanOverviewHelper
 			else {
 				$acc_levels[]	= 0;
 			}
-			
+
 			$query	= $_db->getQuery(true);
 
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-	
+
 			$_db->setQuery ($query);
 
 			$res_mls = $_db->loadAssocList();
-			
+
 			$acc_mls	= array();
 			foreach ($res_mls as $item) {
 				$acc_mls[]	= $item['id'];
@@ -319,7 +319,7 @@ class modBwPostmanOverviewHelper
 		}
 
 		if (count($mls) == 0) $mls[]	= 0;
-		
+
 		$mailinglists	= $mls;
 
 		return $mailinglists;
@@ -329,11 +329,11 @@ class modBwPostmanOverviewHelper
 	 * Method to get all campaigns which the user is authorized to see
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	boolean	with title
-	 * 
+	 *
 	 * @return 	array	ID of allowed campaigns
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	private static function getAccessibleCampaigns(&$params, $title = true)
@@ -341,16 +341,16 @@ class modBwPostmanOverviewHelper
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$check		= $params->get('access-check');
-		
+
 		// fetch only from campaigns, which are selected, if so
 		$all_cams	= $params->get('cam_selected_all');
 		$sel_cams	= $params->get('cam_available');
-		
+
 		if ($all_cams) {
 			$query->select('c.id');
 			$query->from('#__bwpostman_campaigns AS c');
 			$_db->setQuery ($query);
-			
+
 			$res_cams	= $_db->loadAssocList();
 			$cams		= array();
 			if (count($res_cams > 0)) {
@@ -377,31 +377,31 @@ class modBwPostmanOverviewHelper
 			else {
 				$acc_levels[]	= 0;
 			}
-				
+
 			$query	= $_db->getQuery(true);
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			
+
 			$_db->setQuery ($query);
 
 			$res_mls = $_db->loadAssocList();
-				
+
 			$acc_mls	= array();
 			foreach ($res_mls as $item) {
 				$acc_mls[]	= $item['id'];
 			}
-			
+
 			$query	= $_db->getQuery(true);
-			
+
 			$query->select('DISTINCT (' . $_db->quoteName('campaign_id') . ')');
 			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
 			$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
 			$query->where($_db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
 
 			$_db->setQuery ($query);
-	
+
 			$acc_cams	= $_db->loadAssocList();
 			if (count($acc_cams > 0)) {
 				$cams		= array();
@@ -412,7 +412,7 @@ class modBwPostmanOverviewHelper
 		}
 		// if no cam is left, make array to return
 		if (count($cams) == 0) $cams[]	= 0;
-		
+
 		$campaigns	= $cams;
 
 		return $campaigns;
@@ -422,11 +422,11 @@ class modBwPostmanOverviewHelper
 	 * Method to get all user groups which the user is authorized to see
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	boolean	with title
-	 * 
+	 *
 	 * @return 	array	ID of allowed campaigns
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	private static function getAccessibleUsergroups(&$params, $title = true)
@@ -434,16 +434,16 @@ class modBwPostmanOverviewHelper
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$check		= $params->get('access-check', 1);
-		
+
 		// fetch only from usergroups, which are selected, if so
 		$all_groups	= $params->get('groups_selected_all');
 		$sel_groups	= $params->get('groups_available');
-		
+
 		if ($all_groups) {
 			$query->select('u.id');
 			$query->from('#__usergroups AS u');
 			$_db->setQuery ($query);
-				
+
 			$res_groups	= $_db->loadAssocList();
 			$groups		= array();
 			if (count($res_groups > 0)) {
@@ -469,12 +469,12 @@ class modBwPostmanOverviewHelper
 			$c_groups	= $sel_groups;
 		}
 		if (count($c_groups) == 0) $c_groups[]	= 0;
-		
+
 		// Check permission, if desired
 		if ($all_groups || $check != 'no') {
 			$user		= JFactory::getUser();
 			$acc_groups	= $user->getAuthorisedGroups();
-				
+
 			//convert usergroups to match bwPostman's needs
 			$a_groups	= array();
 			if (count($acc_groups > 0)) {
@@ -485,7 +485,7 @@ class modBwPostmanOverviewHelper
 			else {
 				$a_groups[]	= 0;
 			}
-			
+
 			$sel_groups	= array_intersect($a_groups, $c_groups);
 		}
 

@@ -4,7 +4,7 @@
  *
  * BwPostman maintenance default template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -44,7 +44,7 @@ if ($this->queueEntries) {
 		<?php else :  ?>
 			<div id="j-main-container">
 		<?php endif; ?>
-	
+
 				<table class="adminlist">
 					<tr>
 						<td>
@@ -55,19 +55,19 @@ if ($this->queueEntries) {
 								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), 0, 0, '', "document.getElementById('loading').style.display = 'block';");
 //								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), '', '');
 //								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), 600, 400);
-								
+
 								$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.saveTables';
 								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES"), 0, 0);
-									
+
 								$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.restoreTables';
 								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablerestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES"), 0, 0);
-									
+
 								$canDo	= BwPostmanHelper::getActions();
 								if ($canDo->get('core.manage')) {
 									$link	= 'index.php?option=com_config&amp;view=component&amp;component='.$option.'&amp;path=';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', JText::_("COM_BWPOSTMAN_SETTINGS"), '', '');
 								}
-												
+
 								$link = 'http://www.boldt-webservice.de/forum/bwpostman.html';
 								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', JText::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');
 								?>
@@ -77,7 +77,7 @@ if ($this->queueEntries) {
 				</table>
 			</div>
 			<div id="loading" style="display: none;"></div>
-			
+
 		</div>
 	</div>
 	<div class="clr clearfix"></div>

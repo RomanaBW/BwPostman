@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Module
- * 
+ *
  * BwPostman special form field for module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -121,7 +121,7 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		// Initialize variables.
 		$html	= array();
 		$stub	= "'mb'";
-		
+
 		// Initialize some field attributes.
 		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
 
@@ -156,7 +156,7 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 			$class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
 			$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
 			$published	= ($option->published) ? '<i class="icon-publish"></i>' : '<i class="icon-unpublish"></i>';
-				
+
 			// Initialize some JavaScript option attributes.
 			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
@@ -171,7 +171,7 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 
 		}
 
-	} 
+	}
 	else {
 			$html[] = '							<tr class="row1">';
 			$html[] = '								<td colspan="6"><strong>'. JText::_('COM_BWPOSTMAN_NO_ML').'</strong></td>';
@@ -197,16 +197,16 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	protected function getOptions()
 	{
 		$app	= JFactory::getApplication();
-		
+
 		// Initialize variables.
 		$options		= array();
-		
+
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$options	= array();
 		$return		= '';
-		
+
 		$query->select("a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published, a.archive_flag AS archived");
 		$query->from('#__bwpostman_mailinglists AS a');
 		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
@@ -215,10 +215,10 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		$query->order($_db->quoteName('text')  . 'ASC');
-		
+
 		$_db->setQuery($query);
 		$options = $_db->loadObjectList();
-		
+
 		// Check for a database error.
 		if ($_db->getErrorNum()) {
 			$app->enqueueMessage($_db->getErrorMsg(), 'error');

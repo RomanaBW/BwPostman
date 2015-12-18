@@ -4,7 +4,7 @@
  *
  * BwPostman all subscribers confirmed template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -52,9 +52,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tr>
 	</thead>
 	<tbody>
-	<?php 
+	<?php
 		if (count($this->items)) {
-			foreach ($this->items as $i => $item) : 
+			foreach ($this->items as $i => $item) :
 				$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 				$canEdit	= $user->authorise('core.edit',		'com_bwpostman.subscriber.'.$item->id);
 				$canEditOwn	= $user->authorise('core.edit.own',	'com_bwpostman.subscriber.'.$item->id) && $item->registered_by == $userId;
@@ -80,7 +80,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<td align="center"><?php echo $item->mailinglists; ?></td>
 					<td align="center"><?php echo $item->id; ?></td>
 				</tr><?php
-			endforeach; 
+			endforeach;
 		}
 		else {
     	// if no data ?>

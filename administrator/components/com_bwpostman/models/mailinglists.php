@@ -4,7 +4,7 @@
  *
  * BwPostman mailinglists model for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -127,7 +127,7 @@ class BwPostmanModelMailinglists extends JModelList
 
 		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
 		$this->setState('filter.search_filter', $filtersearch);
-		
+
 		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
 		$this->setState('filter.access', $access);
 
@@ -177,18 +177,18 @@ class BwPostmanModelMailinglists extends JModelList
 		$sub_query	= $_db->getQuery(true);
 		$sub_query2	= $_db->getQuery(true);
 		$user		= JFactory::getUser();
-		
+
 
 		// Build sub querys which counts the subscribers of each mailinglists
 		$sub_query2->select('d.id');
 		$sub_query2->from('#__bwpostman_subscribers AS d');
 		$sub_query2->where('d.archive_flag = 0');
-		
+
 		$sub_query->select('COUNT(b.subscriber_id) AS subscribers');
 		$sub_query->from('#__bwpostman_subscribers_mailinglists AS b');
 		$sub_query->where('b.mailinglist_id = a.id');
 		$sub_query->where('b.subscriber_id IN (' . $sub_query2 . ')) AS subscribers');
-		
+
 		// Select the required fields from the table.
 		$query->select(
 				$this->getState(
@@ -198,31 +198,31 @@ class BwPostmanModelMailinglists extends JModelList
 				) . ', (' . $sub_query
 		);
 		$query->from('#__bwpostman_mailinglists AS a');
-		
+
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		
+
 		// Join over the users for the author.
 		$query->select('ua.name AS author_name');
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
-		
+
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = ' . (int) $access);
 		}
-		
+
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
 			$groups	= implode(',', $user->getAuthorisedViewLevels());
 			$query->where('a.access IN ('.$groups.')');
 		}
-		
+
 		// Filter by published state
 		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
@@ -231,14 +231,14 @@ class BwPostmanModelMailinglists extends JModelList
 		elseif ($published === '') {
 			$query->where('(a.published = 0 OR a.published = 1)');
 		}
-		
+
 		// Filter by archive state
 		$query->where('a.archive_flag = ' . (int) 0);
-		
+
 		// Filter by search word.
 		$filtersearch	= $this->getState('filter.search_filter');
 		$search			= '%' . $_db->escape($this->getState('filter.search'), true) . '%';
-		
+
 		if (!empty($search)) {
 			switch ($filtersearch) {
 				case 'description':
@@ -247,22 +247,22 @@ class BwPostmanModelMailinglists extends JModelList
 				case 'title_description':
 							$query->where('(a.description LIKE ' . $_db->Quote($search, false) . 'OR a.title LIKE ' . $_db->Quote($search, false) . ')');
 					break;
-				case 'title':	
+				case 'title':
 					$query->where('a.title LIKE ' . $_db->Quote($search, false));
 					break;
-				default:	
+				default:
 			}
 		}
-		
+
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
-	
+
 		//sqlsrv change
 		if($orderCol == 'access_level')
 			$orderCol = 'ag.title';
 		$query->order($_db->escape($orderCol.' '.$orderDirn));
-		
+
 		$_db->setQuery($query);
 
 		return $query;

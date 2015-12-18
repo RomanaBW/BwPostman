@@ -4,7 +4,7 @@
  *
  * BwPostman archive subscribers template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -65,7 +65,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 				// Search tools bar
 				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 			?>
-		
+
 				<div class="row-fluid">
 					<table class="adminlist table table-striped">
 						<tbody>
@@ -88,7 +88,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
 										</li>
 									</ul>
-						
+
 									<div class="current">
 										<table class="adminlist">
 											<thead>
@@ -108,11 +108,11 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 												<tr>
 													<td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
 												</tr>
-											</tfoot>				
+											</tfoot>
 											<tbody>
-											<?php 
+											<?php
 											if (count($this->items) > 0) {
-												foreach ($this->items as $i => $item) : 
+												foreach ($this->items as $i => $item) :
 													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.'.$item->id);
 													$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
@@ -121,19 +121,19 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 														<td>
 															<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_SUB');?>::<?php echo $this->escape($item->name); ?>">
-																<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=archive&format=raw&layout=subscriber_modal&sub_id='. $item->id); ?>" rel="{handler: 'iframe', size: {x: 600, y: 400}}"> <?php 
+																<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=archive&format=raw&layout=subscriber_modal&sub_id='. $item->id); ?>" rel="{handler: 'iframe', size: {x: 600, y: 400}}"> <?php
 																if ($item->name) {
 																	echo $item->name;
 																}
 																else {
 																	echo JText::_('COM_BWPOSTMAN_SUB_NONAME');
 																}
-																?> </a>&nbsp; 
+																?> </a>&nbsp;
 															</span>
 														</td>
 														<td><?php echo $item->firstname; ?></td>
 														<td><?php echo $item->email; ?></td>
-														<td align="center"><?php 
+														<td align="center"><?php
 															switch ($item->status) {
 																case "0": echo JText::_('COM_BWPOSTMAN_ARC_SUB_UNCONFIRMED');
 																break;
@@ -169,7 +169,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 					<input type="hidden" name="tab" value="subscribers" /><!-- value never changes -->
 					<?php echo JHTML::_('form.token'); ?>
 				</div>
-			
+
 				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 			</div>
 		</div>

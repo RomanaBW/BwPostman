@@ -4,7 +4,7 @@
  *
  * BwPostman single newsletter edit text template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -39,7 +39,7 @@ $image = JHTML::_('image', 'administrator/templates/'. $this->template .'/images
 function changeTab(tab){
 	if (tab != 'edit_text') {
 		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');	
+		document.adminForm.task.setAttribute('value','newsletter.changeTab');
 		return true;
 	}
 	else {
@@ -52,7 +52,7 @@ Joomla.submitbutton = function (pressbutton) {
 	if (pressbutton == 'newsletter.cancel') {
 		submitform(pressbutton);
 		return;
-	} 
+	}
 
 	if (pressbutton == 'newsletter.back') {
 		form.task.value = 'back';
@@ -64,13 +64,13 @@ Joomla.submitbutton = function (pressbutton) {
 		document.adminForm.task.setAttribute('value','newsletter.apply');
 		submitform(pressbutton);
 		return;
-	} 
+	}
 
 	if (pressbutton == 'newsletter.save') {
 		document.adminForm.task.setAttribute('value','newsletter.save');
 		submitform(pressbutton);
 		return;
-	} 
+	}
 }
 /* ]]> */
 </script>
@@ -107,15 +107,15 @@ Joomla.submitbutton = function (pressbutton) {
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>
-		
-	
-	
+
+
+
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform form-horizontal">
 				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_TEXT'); ?></legend>
 				<div class="well well-small">
 					<ul class="unstyled">
-						<?php 
+						<?php
 						foreach($this->form->getFieldset('text_version') as $field):
 							// if old template - show no intro fields
 							if (empty($this->item->intro_text_headline) && empty($this->item->intro_text_text)) {
@@ -125,9 +125,9 @@ Joomla.submitbutton = function (pressbutton) {
 								$show = array("jform[text_version]", "jform[intro_text_headline]", "jform[intro_text_text]");
 							}
 							if (in_array($field->name, $show)) :
-								if ($field->hidden) : 
+								if ($field->hidden) :
 									echo $field->input;
-								else : 
+								else :
 									if ($field->name == 'jform[text_version]') { ?>
 										<li <?php echo 'class="' . $field->name  . '"'; ?>>
 											<div class="row-fluid clearfix">
@@ -161,8 +161,8 @@ Joomla.submitbutton = function (pressbutton) {
 					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
 				<div class="clr clearfix"></div>
-					
-				<?php 
+
+				<?php
 					foreach($this->form->getFieldset('basic_1_hidden') as $field) echo $field->input;
 					foreach($this->form->getFieldset('basic_2_hidden') as $field) echo $field->input;
 					foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
@@ -175,7 +175,7 @@ Joomla.submitbutton = function (pressbutton) {
 			</fieldset>
 		</div>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-		
+
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" id="layout" name="layout" value="edit_text" /><!-- value never changes -->
@@ -188,4 +188,3 @@ Joomla.submitbutton = function (pressbutton) {
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div>
-		

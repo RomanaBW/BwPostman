@@ -1,10 +1,10 @@
 <?php
 /**
  * BwPostman Module
- * 
+ *
  * BwPostman special form field for module.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>

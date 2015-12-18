@@ -4,7 +4,7 @@
  *
  * BwPostman single mailinglist form template for backend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -37,9 +37,9 @@ JHtml::_('formbehavior.chosen', 'select');
 <script type="text/javascript">
 /* <![CDATA[ */
 	Joomla.submitbutton = function (pressbutton) {
-	
+
 		var form = document.adminForm;
-		
+
 		if (pressbutton == 'mailinglist.cancel') {
 			submitform(pressbutton);
 			return;
@@ -49,12 +49,12 @@ JHtml::_('formbehavior.chosen', 'select');
 		if (form.jform_title.value == ""){
 			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");
 		} else if (form.jform_description.value== ""){
-			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");			
+			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");
 		} else {
 			submitform(pressbutton);
 		}
 	}
-/* ]]> */	
+/* ]]> */
 </script>
 
 <div id="bwp_editform">
@@ -75,47 +75,47 @@ JHtml::_('formbehavior.chosen', 'select');
 								<?php echo $this->form->getLabel('title'); ?>
 								<div class="controls"><?php echo $this->form->getInput('title'); ?></div>
 							</li>
-				
+
 							<?php if (isset($this->item->err_code)) if ($this->item->err_code == 202) // echo "class=\"invalid\""; ?>
 							<li>
 								<?php echo $this->form->getLabel('description'); ?>
 								<div class="controls"><?php echo $this->form->getInput('description'); ?></div>
 							</li>
-							
+
 							<li>
 								<?php echo $this->form->getLabel('access'); ?>
 								<div class="controls"><?php echo $this->form->getInput('access'); ?></div>
 							</li>
-				
+
 							<li>
 								<?php echo $this->form->getLabel('published'); ?>
 								<div class="controls"><?php echo $this->form->getInput('published'); ?></div>
 							</li>
 						</ul>
 					</div>
-						
+
 					<div class="width-40 fltrt span4 control-group">
 						<ul class="adminformlist width_50 unstyled">
 							<li>
 								<?php echo $this->form->getLabel('campaign_id'); ?>
 								<div class="controls"><?php echo $this->form->getInput('campaign_id'); ?></div>
 							</li>
-							
+
 							<li>
 								<?php echo $this->form->getLabel('created_by'); ?>
 								<div class="controls"><?php echo $this->form->getInput('created_by'); ?></div>
 							</li>
-				
+
 							<li>
 								<?php echo $this->form->getLabel('created_date'); ?>
 								<div class="controls"><?php echo $this->form->getInput('created_date'); ?></div>
 							</li>
-				
+
 							<li>
 								<?php echo $this->form->getLabel('modified_by'); ?>
 								<div class="controls"><?php echo $this->form->getInput('modified_by'); ?></div>
 							</li>
-				
+
 							<li>
 								<?php echo $this->form->getLabel('modified_time'); ?>
 								<div class="controls"><?php echo $this->form->getInput('modified_time'); ?></div>
@@ -126,16 +126,16 @@ JHtml::_('formbehavior.chosen', 'select');
 					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
 			</fieldset>
-	
-			<input type="hidden" name="task" value="" /> 
+
+			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-			
+
 			<?php echo $this->form->getInput('id'); ?>
 			<?php echo $this->form->getInput('asset_id'); ?>
 			<?php echo $this->form->getInput('archive_flag'); ?>
 			<?php echo $this->form->getInput('archive_time'); ?>
 			<?php echo JHTML::_('form.token'); ?>
-	
+
 			<?php if ($this->canDo->get('core.admin')): ?>
 				<div class="fltlft">
 					<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>

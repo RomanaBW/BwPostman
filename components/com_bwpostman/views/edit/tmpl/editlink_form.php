@@ -4,7 +4,7 @@
  *
  * BwPostman editlink form template for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -37,7 +37,7 @@ defined ('_JEXEC') or die ('Restricted access');
 		<?php if ($this->params->def('show_page_title', 1)) { ?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
 		<?php } ?>
-		
+
 		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate">
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink_text">
@@ -48,14 +48,14 @@ defined ('_JEXEC') or die ('Restricted access');
 					<span><input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>" class="inputbox required validate-email" maxlength="100" /></span>
 				</p>
 			</div>
-			
+
 			<button class="button validate btn" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_SENDEDITLINK'); ?></button>
-			
-			<input type="hidden" name="option" value="com_bwpostman" /> 
+
+			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="sendEditlink" />
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
-		
+
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
 	</div>
 </div>

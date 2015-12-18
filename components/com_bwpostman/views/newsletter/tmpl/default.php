@@ -4,7 +4,7 @@
  *
  * BwPostman newsletter single default template for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -62,11 +62,11 @@ defined ('_JEXEC') or die ('Restricted access');
 		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) { ?>
 			<h1 class="contentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 			<?php if ($this->page_title) : ?><h2><?php echo $this->newsletter->subject?></h2><?php endif; ?>
-		<?php } 
+		<?php }
 		else {?>
 			<?php if ($this->page_title) : ?><h1><?php echo $this->newsletter->subject?></h1><?php endif; ?>
 		<?php } ?>
-		
+
 		<p class="mailingdate<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 			<?php echo JHTML::Date($this->newsletter->mailing_date, JText::_('DATE_FORMAT_LC3'));  ?>
 			<?php if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide') { ?>
@@ -77,11 +77,11 @@ defined ('_JEXEC') or die ('Restricted access');
 				</span>
 			<?php } ?>
 		</p>
-	
+
 	<div class="nl_text">
 		<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=nl_preview&amp;format=raw&amp;id=<?php echo $this->newsletter->id; ?>" height="800" style="width:100%; border: 1px solid #c2c2c2;"></iframe>
 	</div>
-	<?php } ?>	
+	<?php } ?>
 		<p class="back_link btn"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo JText::_('JPREV'); ?></a></p>
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
 	</div>

@@ -4,7 +4,7 @@
  *
  * BwPostman newsletter single model for frontend.
  *
- * @version 1.2.4 bwpm
+ * @version 1.3.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
@@ -38,7 +38,7 @@ class BwPostmanModelNewsletter extends JModelItem
 	 * Method to get  newsletter content
 	 *
 	 * @return	mixed	string on success, null on failure.
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function getContent()
@@ -54,7 +54,7 @@ class BwPostmanModelNewsletter extends JModelItem
 		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('mode') . ' = ' . (int) 1);
 		$_db->setQuery($query);
 		$newsletter = $_db->loadResult();
-				
+
 		return $newsletter;
 	}
 

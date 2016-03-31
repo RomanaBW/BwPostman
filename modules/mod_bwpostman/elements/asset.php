@@ -28,10 +28,23 @@ defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.form.formfield');
 
+/**
+ * Class JFormFieldAsset
+ */
 class JFormFieldAsset extends JFormField {
 
+  /**
+   * property to hold type
+   *
+   * @var string
+   */
   protected $type = 'Asset';
 
+	/**
+     * Method to get asset input field
+     *
+     * @return null
+     */
   protected function getInput() {
 
     $doc = JFactory::getDocument();
@@ -65,4 +78,4 @@ class JFormFieldAsset extends JFormField {
     return null;
   }
 }
-?>
+

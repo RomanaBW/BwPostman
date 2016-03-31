@@ -213,7 +213,6 @@ function extCheck() {
 				$j( ".caption" ).show();
 			break;
 	}
-	return;
 }
 
 $j(document).ready(function() {

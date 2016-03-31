@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+/**
+ * Class BwPostman
+ */
 class BwPostman {
 
 	/**
@@ -43,7 +46,7 @@ class BwPostman {
 
 		$arguments = array(&$copyright);
 
-		$result = $app->triggerEvent('onPrepareBwpostman', $arguments);
+		$app->triggerEvent('onPrepareBwpostman', $arguments);
 
 		return $arguments[0];
 	}

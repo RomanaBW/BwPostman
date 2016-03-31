@@ -50,9 +50,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		if (tab != 'default_unsent') {
 			document.adminForm.tab.setAttribute('value',tab);
 		}
-		else {
-			return false;
-		}
 	}
 /* ]]> */
 </script>
@@ -69,84 +66,83 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<?php echo $this->sidebar; ?>
 			</div>
 			<div id="j-main-container" class="span10">
-		<?php else :  ?>
-			<div id="j-main-container">
-		<?php endif; ?>
-		<?php
-			// Search tools bar
-			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'queue'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
-		?>
+			<?php else :  ?>
+				<div id="j-main-container">
+			<?php endif; ?>
+			<?php
+				// Search tools bar
+				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'queue'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+			?>
 
-		<div class="form-horizontal">
-			<ul class="bwp_tabs">
-				<li class="closed">
-					<button onclick="return changeTab('unsent');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
-					</button>
-				</li>
-				<li class="closed">
-					<button onclick="return changeTab('sent');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
-					</button>
-				</li>
-				<?php if (count($this->count_queue) > 0) { ?>
-					<li class="open">
-						<button onclick="return changeTab('queue');" class="buttonAsLink_open">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
+			<div class="form-horizontal">
+				<ul class="bwp_tabs">
+					<li class="closed">
+						<button onclick="return changeTab('unsent');" class="buttonAsLink">
+							<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 						</button>
 					</li>
-				<?php } ?>
-			</ul>
-		</div>
-		<div class="clr clearfix"></div>
-
-		<div class="row-fluid current">
-			<table class="adminlist table table-striped">
-				<thead>
-					<tr>
-						<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-						<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-						<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'a.authors', $listDirn, $listOrder); ?></th>
-						<th width="250" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'a.recipient', $listDirn, $listOrder); ?></th>
-						<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'a.trial', $listDirn, $listOrder); ?></th>
-						<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php
-					if (count($this->items) > 0) {
-						foreach ($this->items as $i => $item) :
-							?>
-							<tr class="row<?php echo $i % 2; ?>">
-								<td><?php echo $this->escape($item->subject); ?></td>
-								<td><?php echo $this->escape($item->description); ?></td>
-								<td><?php echo $item->authors; ?></td>
-								<td><?php echo $item->recipient; ?></td>
-								<td><?php echo $item->trial; ?></td>
-								<td align="center"><?php echo $item->id; ?></td>
-							</tr><?php
-						endforeach;
-					}
-					else {
-					// if no data ?>
-						<tr class="row1">
-							<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
-						</tr><?php
-					}
-				?>
-				</tbody>
-			</table>
-		</div>
-				<p class="pagination"><?php echo $this->pagination->getListFooter(); ?></p>
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="tab" value="queue" />
-				<input type="hidden" name="layout" value="default" />
-				<input type="hidden" name="tpl" value="queue" />
-				<input type="hidden" name="boxchecked" value="0" />
-				<?php echo JHTML::_('form.token'); ?>
+					<li class="closed">
+						<button onclick="return changeTab('sent');" class="buttonAsLink">
+							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
+						</button>
+					</li>
+					<?php if (count($this->count_queue) > 0) { ?>
+						<li class="open">
+							<button onclick="return changeTab('queue');" class="buttonAsLink_open">
+								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
+							</button>
+						</li>
+					<?php } ?>
+				</ul>
 			</div>
+			<div class="clr clearfix"></div>
+
+			<div class="row-fluid current">
+				<table class="adminlist table table-striped">
+					<thead>
+						<tr>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'a.authors', $listDirn, $listOrder); ?></th>
+							<th width="250" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'a.recipient', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'a.trial', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php
+						if (count($this->items) > 0) {
+							foreach ($this->items as $i => $item) :
+								?>
+								<tr class="row<?php echo $i % 2; ?>">
+									<td><?php echo $this->escape($item->subject); ?></td>
+									<td><?php echo $this->escape($item->description); ?></td>
+									<td><?php echo $item->authors; ?></td>
+									<td><?php echo $item->recipient; ?></td>
+									<td><?php echo $item->trial; ?></td>
+									<td align="center"><?php echo $item->id; ?></td>
+								</tr><?php
+							endforeach;
+						}
+						else {
+						// if no data ?>
+							<tr class="row1">
+								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
+							</tr><?php
+						}
+					?>
+					</tbody>
+				</table>
+			</div>
+			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+
+			<input type="hidden" name="task" value="" />
+			<input type="hidden" name="tab" value="queue" />
+			<input type="hidden" name="layout" value="default" />
+			<input type="hidden" name="tpl" value="queue" />
+			<input type="hidden" name="boxchecked" value="0" />
+			<?php echo JHTML::_('form.token'); ?>
 		</div>
 	</form>
 </div>

@@ -88,7 +88,7 @@ $tab_options = array(
 		} else {
 			submitform(pressbutton);
 		}
-	}
+	};
 /* ]]> */
 </script>
 

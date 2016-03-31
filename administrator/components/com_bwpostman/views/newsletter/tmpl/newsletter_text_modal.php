@@ -44,7 +44,7 @@ defined ('_JEXEC') or die ('Restricted access');
 		?>
 		<table>
 			<tr>
-				<td><img src="<?php echo $url; ?>" /></td>
+				<td><img src="<?php echo $url; ?>" alt="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?>" /></td>
 				<td><strong><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT') ?></strong></td>
 			</tr>
 		</table>
@@ -75,7 +75,7 @@ defined ('_JEXEC') or die ('Restricted access');
 				<tr>
 					<td><textarea readonly="readonly" class="inputbox" name="text_version"
 						cols="80" rows="13"
-						style="width: 100%; border: 0px; margin: 0px 0; padding: 0px;"><?php echo $this->item->text_formatted; ?></textarea>
+						style="width: 100%; border: 0; margin: 0; padding: 0;"><?php echo $this->item->text_formatted; ?></textarea>
 					</td>
 				</tr>
 			</table>

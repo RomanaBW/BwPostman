@@ -29,8 +29,16 @@ defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 
+/**
+ * Class JFormFieldAllUsergroups
+ */
 class JFormFieldAllUsergroups extends JFormFieldList {
 
+	/**
+	 * property to hold all user groups
+	 *
+	 * @var string  $type
+	 */
 	protected $type = 'AllUsergroups';
 
 	/**

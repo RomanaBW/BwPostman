@@ -102,7 +102,7 @@ Joomla.submitbutton = function (pressbutton) {
 			submitform(pressbutton);
 		}
 	}
-}
+};
 /* ]]> */
 </script>
 
@@ -165,8 +165,8 @@ Joomla.submitbutton = function (pressbutton) {
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<input class="input-mini" name="mails_per_pageload" id="mails_per_pageload" size="4" maxlength="10"
-									value="<?php echo $this->params->get('default_mails_per_pageload');?>" class="inputbox" />
+								<input class="input-mini inputbox" name="mails_per_pageload" id="mails_per_pageload" size="4" maxlength="10"
+									value="<?php echo $this->params->get('default_mails_per_pageload');?>" />
 								<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD'); ?>&nbsp;
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD_NOTE'); ?>"><?php echo $image; ?></span>
 								<br /><br />

@@ -41,8 +41,25 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  */
 class BwPostmanViewArchive extends JViewLegacy
 {
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 */
 	protected $items;
+
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 */
 	protected $pagination;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 */
 	protected $state;
 
 	/**
@@ -50,7 +67,9 @@ class BwPostmanViewArchive extends JViewLegacy
 	 *
 	 * @access	public
 	 *
-	 * @param	string Template
+	 * @param	string $tpl Template
+	 *
+	 * @return void
 	 */
 	public function display($tpl = null)
 	{

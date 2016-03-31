@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -41,6 +41,11 @@ jimport('joomla.application.component.view');
  */
 class BwPostmanViewTemplate extends JViewLegacy
 {
+	/**
+	 * property to hold preview data
+	 *
+	 * @var string  $pre
+	 */
 	protected $pre;
 
 	/**
@@ -48,9 +53,11 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 *
 	 * @access	public
 	 *
-	 * @param	string Template
+	 * @param	string $tpl Template
 	 *
 	 * @since	1.1.0
+	 *
+	 * @return void
 	 */
 	public function display($tpl = null)
 	{

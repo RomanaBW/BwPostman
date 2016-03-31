@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -79,9 +79,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param	string  $type	    The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
 	 *
@@ -97,7 +97,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @param	int template ID
+	 * @param	int $id     template ID
 	 *
 	 * @since 1.1.0
 	 */
@@ -110,7 +110,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
-	 * @param	object	$record	A record object.
+	 * @param	object	$record	    A record object.
 	 *
 	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
 	 *
@@ -290,13 +290,13 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$item->article = $registry->toArray();
 			}
 
-			// call function to make templatepreview
+			// call function to make template preview
 			$this->makePreviewText($item);
 		}
 
 		// preinstalled text templates
 		if ($item->tpl_id > 999) {
-			// call function to make templatepreview
+			// call function to make template preview
 			$this->makePreviewTextStd($item);
 		}
 
@@ -404,8 +404,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @param	array template IDs
-	 * @param	tinyint Task --> 1 = archive, 0 = unarchive
+	 * @param	array $cid      template IDs
+	 * @param	int $archive    Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
 	 *
@@ -471,7 +471,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @param	array template IDs
+	 * @param	array $pks      template IDs
 	 *
 	 * @return	boolean
 	 *
@@ -480,7 +480,6 @@ class BwPostmanModelTemplate extends JModelAdmin
 	public function delete(&$pks)
 	{
 		$app	= JFactory::getApplication();
-		$result = false;
 
 		// Access check.
 		foreach ($pks as $i) {
@@ -493,7 +492,6 @@ class BwPostmanModelTemplate extends JModelAdmin
 		if (count($pks))
 		{
 			JArrayHelper::toInteger($pks);
-			$_db	= $this->getDbo();
 
 			$lists_table	= JTable::getInstance('templates', 'BwPostmanTable');
 
@@ -568,12 +566,15 @@ class BwPostmanModelTemplate extends JModelAdmin
 		return true;
 	}
 
-  	/**
+	/**
 	 * Method to make the template
 	 *
 	 * @access	public
 	 *
-	 * @return 	$html
+	 * @param   object  $item
+	 * @param   object  $tpl
+	 *
+	 * @return 	string  $html
 	 *
 	 * @since 1.1.0
 	 */
@@ -635,7 +636,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			if ($item->article['divider'] == 1) $intro .= $tpl->divider_tpl;
 		}
 		else {
-			$intro = '          <div class="spacer" style="font-size: 1px;line-height: 20px">&nbsp;</div>';
+			$intro = '          <div class="spacer" style="font-size: 10px;line-height: 20px;">&nbsp;</div>';
 		}
 		$footer = $tpl->footer_tpl;
 		$footer = $item->footer['show_address'] != 1 ? str_replace('[%address_text%]', '', $footer) : str_replace('[%address_text%]', nl2br($item->footer['address_text'], true), $footer);
@@ -713,7 +714,11 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 * Method to make the texttemplate
 	 *
 	 * @access	public
-	 * @return 	$html
+	 *
+	 * @param   object  $item
+	 * @param   object  $tpl
+	 *
+	 * @return 	string  $html
 	 *
 	 * @since 1.1.0
 	 */
@@ -759,7 +764,10 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return 	$tpl
+	 * @param   object  $tpl
+	 * @param   object  $item
+	 *
+	 * @return 	object  $tpl
 	 *
 	 * @since 1.1.0
 	 */
@@ -774,11 +782,15 @@ class BwPostmanModelTemplate extends JModelAdmin
 	}
 
 	/**
-	 * Method to add the HTML-Tags and the css for templatepreview
+	 * Method to add the HTML-Tags and the css for template preview
 	 *
 	 * @access	public
 	 *
-	 * @return 	$text
+	 * @param   string  $text
+	 * @param   string  $css
+	 * @param   string  $basics
+	 *
+	 * @return 	string  $text
 	 *
 	 * @since 1.1.0
 	 */
@@ -845,11 +857,14 @@ class BwPostmanModelTemplate extends JModelAdmin
 	}
 
 	/**
-	 * Method to add sample article for templatepreview
+	 * Method to add sample article for template preview
 	 *
 	 * @access	private
 	 *
-	 * @return 	$article
+	 * @param   string  $article
+	 * @param   string  $item
+	 *
+	 * @return 	string  $article
 	 *
 	 * @since 1.1.0
 	 */
@@ -884,7 +899,10 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return 	$text
+	 * @param   string  $text
+	 * @param   object  $item
+	 *
+	 * @return 	string  $text
 	 *
 	 * @since 1.1.0
 	 */
@@ -948,7 +966,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return
+	 * @param   object  $item
+	 *
+	 * @return void
 	 *
 	 * @since 1.1.0
 	 */
@@ -1004,7 +1024,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return
+	 * @param   object  $item
+	 *
+	 * @return void
 	 *
 	 * @since 1.1.0
 	 */
@@ -1048,7 +1070,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return
+	 * @param   object  $item
+	 *
+	 * @return  void
 	 *
 	 * @since 1.1.0
 	 */
@@ -1118,7 +1142,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return
+	 * @param   object  $item
+	 *
+	 * @return  void
 	 *
 	 * @since 1.1.0
 	 */
@@ -1199,7 +1225,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @access	private
 	 *
-	 * @param 	string HTML-/Text-version
+	 * @param 	string $text    HTML-/Text-version
 	 *
 	 * @return 	boolean
 	 *

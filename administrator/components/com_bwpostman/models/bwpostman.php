@@ -65,7 +65,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 * Method to get general statistic data
 	 *
 	 * @access 	public
-	 * @return 	associative array of General Data
+	 *
+	 * @return 	array       associative array of General Data
 	 */
 	public function getGeneraldata()
 	{
@@ -171,7 +172,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 * Method to get archive statistic data
 	 *
 	 * @access 	public
-	 * @return 	associative array of Archive data
+	 *
+	 * @return 	array       associative array of Archive data
 	 */
 	public function getArchivedata()
 	{

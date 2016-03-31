@@ -51,13 +51,13 @@ class BwPostmanTableCampaigns extends JTable
 	/** @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels */
 	var $access = 0;
 
-	/** @var date creation date of the campaign */
+	/** @var datetime creation date of the campaign */
 	var $created_date = '0000-00-00 00:00:00';
 
 	/** @var int user ID */
 	var $created_by = 0;
 
-	/** @var date last modification date of the campaign */
+	/** @var datetime last modification date of the campaign */
 	var $modified_time = '0000-00-00 00:00:00';
 
 	/** @var int user ID */
@@ -69,7 +69,7 @@ class BwPostmanTableCampaigns extends JTable
 	/** @var datetime Checked-out time */
 	var $checked_out_time = '0000-00-00 00:00:00';
 
-	/** @var tinyint Archive-flag --> 0 = not archived, 1 = archived */
+	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
 	var $archive_flag = 0;
 
 	/** @var datetime Archive-date */
@@ -81,7 +81,7 @@ class BwPostmanTableCampaigns extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -115,7 +115,7 @@ class BwPostmanTableCampaigns extends JTable
 	/**
 	 * Alias function
 	 *
-	 * @return  string
+	 * @return  integer
 	 *
 	 * @since   1.0.1
 	 */
@@ -126,7 +126,7 @@ class BwPostmanTableCampaigns extends JTable
 
 	/**
 	 * Method to compute the default name of the asset.
-	 * The default name is in the form table_name.id
+	 * The default name is in the form component.table_name.id
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return  string
@@ -166,11 +166,11 @@ class BwPostmanTableCampaigns extends JTable
 		// Initialise variables.
 		$assetId = null;
 
-		// Build the query to get the asset id for the component.
+		// Build the query to get the asset id for the table.
 		$query = $this->_db->getQuery(true);
 		$query->select($this->_db->quoteName('id'));
 		$query->from($this->_db->quoteName('#__assets'));
-		$query->where($this->_db->quoteName('name') . " LIKE 'com_bwpostman'");
+		$query->where($this->_db->quoteName('name') . " = 'com_bwpostman.campaign'");
 
 		// Get the asset id from the database.
 		$this->_db->setQuery($query);
@@ -194,8 +194,9 @@ class BwPostmanTableCampaigns extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
-	 * @param object Named array
-	 * @param string Space separated list of fields not to bind
+	 *
+	 * @param array|object  $data       Named array or object
+	 * @param string        $ignore     Space separated list of fields not to bind
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
@@ -231,6 +232,7 @@ class BwPostmanTableCampaigns extends JTable
 	 * Overloaded check method to ensure data integrity
 	 *
 	 * @access public
+	 *
 	 * @return boolean True
 	 */
 	public function check()
@@ -265,8 +267,8 @@ class BwPostmanTableCampaigns extends JTable
 		}
 
 		if ($fault) {
-			return false;
 			$app->setUserState('com_bwpostman.edit.campaign.data', $this);
+			return false;
 		}
 		return true;
 	}

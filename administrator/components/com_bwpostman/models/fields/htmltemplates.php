@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -59,10 +59,6 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 		$html	= array();
 
 		// Initialize some field attributes.
-		$class		= !empty($this->class) ? ' class="radio ' . $this->class . '"' : ' class="radio"';
-		$required	= $this->required ? ' required aria-required="true"' : '';
-		$autofocus	= $this->autofocus ? ' autofocus' : '';
-		$disabled	= $this->disabled ? ' disabled' : '';
 		$readonly	= $this->readonly;
 
 		// Get the field options.
@@ -83,14 +79,12 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 			{
 				// Initialize some option attributes.
 				$checked	= ((string) $option->value == (string) $selected) ? ' checked="checked"' : '';
-				$class		= !empty($this->class) ? ' class="' . $this->class . '"' : '';
 				$lblclass	= ' class="inputbox mailinglists radio"';
 				$inputclass	= ' class="inputbox mailinglists radio"';
 
 				$disabled	= !empty($option->disable) || ($readonly && !$checked);
 
 				$disabled	= $disabled ? ' disabled' : '';
-				$required	= '';
 
 				// Initialize some JavaScript option attributes.
 				$onclick	= !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
@@ -129,15 +123,10 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 		$app	= JFactory::getApplication();
 
 		// Initialize variables.
-		$options	= array();
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data', null);
 
 		// prepare query
 		$_db		= JFactory::getDbo();
-		$query		= $_db->getQuery(true);
-		$options	= array();
-
-
 
 		// Build the select list for the templates
 		$query	= $_db->getQuery(true);

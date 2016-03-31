@@ -42,15 +42,34 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  */
 class BwPostmanViewNewsletters extends JViewLegacy
 {
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 */
 	protected $items;
-	protected $pagination;
-	protected $state;
 
 	/**
-	 * Display
+	 * property to hold pagination object
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @var object  $pagination
+	 */
+	protected $pagination;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 */
+	protected $state;
+
+
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
@@ -63,15 +82,9 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		else {
 			$jinput		= JFactory::getApplication()->input;
 			$uri		= JFactory::getURI();
-			$uri_string	= str_replace('&', '&amp;', $uri->toString());
-			$model		= $this->getModel();
-			$table		= $model->getTable('newsletters', 'BwPostmanTable');
 
 			//check for queue entries
 			$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
-
-			// Build the key for the userState
-			$key = $this->getName();
 
 			$app->setUserState('com_bwpostman.edit.newsletter.referrer', 'newsletters');
 			// The query always contains the tab which we are in, but this might be confusing
@@ -132,7 +145,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolBarHelper::spacer();
 				}
 				if ($canDo->get('core.create'))	{
-					JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'Copy', true);
+					JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
 				}
@@ -160,7 +173,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			default:
 				if ($canDo->get('core.create'))	JToolBarHelper::addNew('newsletter.add');
 				if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('newsletter.edit');
-				if ($canDo->get('core.create'))	JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'Copy', true);
+				if ($canDo->get('core.create'))	JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
 

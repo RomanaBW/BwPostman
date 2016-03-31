@@ -72,7 +72,7 @@ JHtml::_('behavior.tooltip');
 					<td align="center"><?php echo $item->id; ?></td>
 					<td>
 						<span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_BWPOSTMAN_SELECT_NEWSLETTER' );?><?php echo "<br /><br /><strong>".$item->subject.":</strong><br />".$item->description; ?>">
-							<a style="cursor:pointer" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
+							<a style="cursor:pointer;" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
 								<?php echo htmlspecialchars($item->subject, ENT_QUOTES, 'UTF-8'); ?>
 							</a>
 						</span>

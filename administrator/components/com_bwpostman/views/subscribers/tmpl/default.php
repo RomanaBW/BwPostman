@@ -78,14 +78,11 @@ $tab_options = array(
 			if (ConfirmArchive == true) {
 				submitform(pressbutton);
 			}
-			else {
-				return;
-			}
 		}
 		else {
 			submitform(pressbutton);
 		}
-	}
+	};
 	/* ]]> */
 </script>
 
@@ -99,46 +96,45 @@ $tab_options = array(
 		<?php else :  ?>
 			<div id="j-main-container">
 		<?php endif; ?>
-			<?php
-				// Search tools bar
-				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
-			?>
+		<?php
+			// Search tools bar
+			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+		?>
 
-				<div class="row-fluid">
-					<?php
-						echo JHtmlBwTabs::start('bwpostman_subscribers_tabs', $tab_options);
-						echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'), 'confirmed',
-							"
-								document.adminForm.getElementById('tab').setAttribute('value', 'confirmed');
-								Joomla.submitbutton('subscribers.changeTab');
-							");
-						echo $this->loadTemplate('confirmed');
-						echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'), 'unconfirmed',
-							"
-								document.adminForm.getElementById('tab').setAttribute('value', 'unconfirmed');
-								Joomla.submitbutton('subscribers.changeTab');
-							");
-						echo $this->loadTemplate('unconfirmed');
-						echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_TEST'), 'testrecipients',
-							"
-								document.adminForm.getElementById('tab').setAttribute('value', 'testrecipients');
-								Joomla.submitbutton('subscribers.changeTab');
-							");
-						echo $this->loadTemplate('testrecipients');
-						echo JHtmlBwTabs::end();
-					?>
-				</div>
-				<p class="pagination"><?php echo $this->pagination->getListFooter(); ?></p>
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-
-				<?php //Load the batch processing form. ?>
-				<?php echo $this->loadTemplate('batch'); ?>
-
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="boxchecked" value="0" />
-				<input type="hidden" id="tab" name="tab" value="" />
-				<?php echo JHTML::_('form.token'); ?>
+			<div class="row-fluid">
+				<?php
+					echo JHtmlBwTabs::start('bwpostman_subscribers_tabs', $tab_options);
+					echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'), 'confirmed',
+						"
+							document.adminForm.getElementById('tab').setAttribute('value', 'confirmed');
+							Joomla.submitbutton('subscribers.changeTab');
+						");
+					echo $this->loadTemplate('confirmed');
+					echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'), 'unconfirmed',
+						"
+							document.adminForm.getElementById('tab').setAttribute('value', 'unconfirmed');
+							Joomla.submitbutton('subscribers.changeTab');
+						");
+					echo $this->loadTemplate('unconfirmed');
+					echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_TEST'), 'testrecipients',
+						"
+							document.adminForm.getElementById('tab').setAttribute('value', 'testrecipients');
+							Joomla.submitbutton('subscribers.changeTab');
+						");
+					echo $this->loadTemplate('testrecipients');
+					echo JHtmlBwTabs::end();
+				?>
 			</div>
+			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+
+			<?php //Load the batch processing form. ?>
+			<?php echo $this->loadTemplate('batch'); ?>
+
+			<input type="hidden" name="task" value="" />
+			<input type="hidden" name="boxchecked" value="0" />
+			<input type="hidden" id="tab" name="tab" value="" />
+			<?php echo JHTML::_('form.token'); ?>
 		</div>
 	</form>
 </div>

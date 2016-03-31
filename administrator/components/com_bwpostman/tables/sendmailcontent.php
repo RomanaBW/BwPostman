@@ -39,7 +39,7 @@ class BwPostmanTableSendmailcontent extends JTable
 	/** @var int Primary Key --> every ID exists twice (once for mode text, once for mode html */
 	var $id = null;
 
-	/** @var tinyint Primary Key --> 0 = Text, 1 = HTML */
+	/** @var int Primary Key --> 0 = Text, 1 = HTML */
 	var $mode = null;
 
 	/** @var int Newsletter-ID */
@@ -75,7 +75,7 @@ class BwPostmanTableSendmailcontent extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -86,8 +86,9 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
-	 * @param object Named array
-	 * @param string Space separated list of fields not to bind
+	 *
+	 * @param array|object  $data       Named array
+	 * @param string        $ignore     Space separated list of fields not to bind
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
@@ -172,8 +173,11 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * Overloaded load method
 	 *
 	 * @access	public
-	 * @param 	int		ID
-	 * @param 	tinyint	Mode (0 = Text, 1 = HTML)
+	 *
+	 * @param 	int		    $keys       ID
+	 * @param 	boolean	    $reset      Mode (0 = Text, 1 = HTML)
+	 *
+	 * @return mixed
 	 */
 	public function load($keys = null, $reset = true){
 		if (!$keys) return 0;

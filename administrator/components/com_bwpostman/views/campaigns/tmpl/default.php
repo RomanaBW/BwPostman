@@ -70,30 +70,30 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 			?>
 
-				<div class="row-fluid">
-					<table class="adminlist table table-striped">
-						<thead>
-							<tr>
-								<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-								<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-								<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-								<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?></th>
-								<?php
-								if ($this->auto_nbr) { ?>
-									<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOMATION'); ?></th>
-									<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVE'); ?></th>
-								<?php
-								}
-								?>
-								<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
-							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								<td colspan="5"><?php echo $this->pagination->getListFooter(); ?></td>
-							</tr>
-						</tfoot>
-						<tbody>
+			<div class="row-fluid">
+				<table class="adminlist table table-striped">
+					<thead>
+						<tr>
+							<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?></th>
+							<?php
+							if ($this->auto_nbr) { ?>
+								<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOMATION'); ?></th>
+								<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVE'); ?></th>
+							<?php
+							}
+							?>
+							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan="5"><?php echo $this->pagination->getListFooter(); ?></td>
+						</tr>
+					</tfoot>
+					<tbody>
 						<?php
 							if (count($this->items) > 0) {
 								foreach ($this->items as $i => $item) :
@@ -140,17 +140,16 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								</tr><?php
 							}
 						?>
-						</tbody>
-					</table>
-				</div>
-
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="boxchecked" value="0" />
-				<input type="hidden" name="archive_nl" value="0" />
-				<?php echo JHTML::_('form.token'); ?>
-
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+					</tbody>
+				</table>
 			</div>
+
+			<input type="hidden" name="task" value="" />
+			<input type="hidden" name="boxchecked" value="0" />
+			<input type="hidden" name="archive_nl" value="0" />
+			<?php echo JHTML::_('form.token'); ?>
+
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 		</div>
 	</form>
 </div>

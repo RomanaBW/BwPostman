@@ -42,10 +42,11 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 class BwPostmanViewCampaigns extends JViewLegacy
 {
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
@@ -58,9 +59,6 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		else {
 			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-
-			// Build the key for the userState
-			$key = $this->getName();
 
 			// Get data from the model
 			$this->state			= $this->get('State');

@@ -73,9 +73,9 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param	string  $type	    The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
 	 *
@@ -90,7 +90,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Method to reset the mailinglist ID and mailinglist data
 	 *
 	 * @access	public
-	 * @param	int Mailinglist ID
+	 * @param	int $id     Mailinglist ID
 	 */
 	public function setId($id)
 	{
@@ -292,8 +292,10 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * --> when unarchiving it is called by the archive-controller
 	 *
 	 * @access	public
-	 * @param	array Mailinglist IDs
-	 * @param	tinyint Task --> 1 = archive, 0 = unarchive
+	 *
+	 * @param	array   $cid        Mailinglist IDs
+	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
+	 *
 	 * @return	boolean
 	 */
 	public function archive($cid = array(), $archive = 1)
@@ -355,13 +357,14 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * --> is called by the archive-controller
 	 *
 	 * @access	public
-	 * @param	array Mailinglist IDs
+	 *
+	 * @param	array &$pks     Mailinglist IDs
+	 *
 	 * @return	boolean
 	 */
 	public function delete(&$pks)
 	{
 		$app	= JFactory::getApplication();
-		$result = false;
 
 		// Access check.
 		foreach ($pks as $i) {
@@ -377,8 +380,6 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$_db	= $this->getDbo();
 
 			$lists_table	= JTable::getInstance('mailinglists', 'BwPostmanTable');
-			$nll_table		= JTable::getInstance('newsletters_mailinglists', 'BwPostmanTable');
-			$subs_table		= JTable::getInstance('subscribers_mailinglists', 'BwPostmanTable');
 
 			// Delete all entries from the mailinglists-table
 			foreach ($pks as $id) {
@@ -421,8 +422,10 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Method to (un)publish a mailinglist
 	 *
 	 * @access	public
-	 * @param	array Mailinglist IDs
-	 * @param	tinyint Task --> 1 = publish, 0 = unpublish
+	 *
+	 * @param	array   &$pks   Mailinglist IDs
+	 * @param	int     $value  Task --> 1 = publish, 0 = unpublish
+	 *
 	 * @return	boolean
 	 */
 	public function publish(&$pks, $value = 1)
@@ -430,5 +433,6 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		if (parent::publish($pks, $value)) {
 			return true;
 		}
+		return false;
 	}
 }

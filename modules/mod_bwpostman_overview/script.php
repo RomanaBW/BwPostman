@@ -7,7 +7,7 @@
  * @version 1.3.0 bwpm
  * @package BwPostman-Overview-Module
  * @author Romana Boldt
- * @copyright (C) 2015 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2015 - 2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -33,10 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 class mod_BwPostman_overviewInstallerScript
 {
   /**
-  * Method to install the extension
-  * $parent is the class calling this method
-  *
-  * @return void
+   * Method to install the extension
+
+   * @param object  $parent is the class calling this method
+   *
+   * @return void
   */
   function install($parent)
   {
@@ -44,10 +45,11 @@ class mod_BwPostman_overviewInstallerScript
   }
 
   /**
-  * Method to uninstall the extension
-  * $parent is the class calling this method
-  *
-  * @return void
+   * Method to uninstall the extension
+   *
+   * @param object  $parent is the class calling this method
+   *
+   * @return void
   */
   function uninstall($parent)
   {
@@ -55,10 +57,11 @@ class mod_BwPostman_overviewInstallerScript
   }
 
   /**
-  * Method to update the extension
-  * $parent is the class calling this method
-  *
-  * @return void
+   * Method to update the extension
+   *
+   * @param object  $parent is the class calling this method
+   *
+   * @return void
   */
   function update($parent)
   {
@@ -66,11 +69,12 @@ class mod_BwPostman_overviewInstallerScript
   }
 
   /**
-  * Method to run before an install/update/uninstall method
-  * $parent is the class calling this method
-  * $type is the type of change (install, update or discover_install)
-  *
-  * @return void
+   * Method to run before an install/update/uninstall method
+   *
+   * @param string  $type       is the type of change (install, update or discover_install)
+   * @param object  $parent is the class calling this method
+   *
+   * @return boolean            false if error occurs
   */
   function preflight($type, $parent)
   {
@@ -106,10 +110,15 @@ class mod_BwPostman_overviewInstallerScript
 				return false;
 			}
 		}
+	  return true;
   }
 
-	/*
+	/**
 	 * get a variable from the manifest file (actually, from the manifest cache).
+	 *
+	 * @param   string      $name   name of the manifest to get
+	 *
+	 * @return  object      $manifest the manifest for this module
 	 */
 	private function getManifestVar($name) {
 		$db		= JFactory::getDbo();
@@ -126,18 +135,23 @@ class mod_BwPostman_overviewInstallerScript
 
 
   /**
-  * Method to run after an install/update/uninstall method
-  * $parent is the class calling this method
-  * $type is the type of change (install, update or discover_install)
-  *
-  * @return void
+   * Method to run after an install/update/uninstall method
+   *
+   * @param string  $type       is the type of change (install, update or discover_install)
+   * @param object  $parent     is the class calling this method
+
+   * @return void
   */
   function postflight($type, $parent)
   {
   }
 
-	/*
+	/**
 	 * shows the HTML after installation/update
+	 *
+	 * @param boolean    $update     true if update
+	 *
+	 * @return void
 	 */
 	public function showFinished($update){
 

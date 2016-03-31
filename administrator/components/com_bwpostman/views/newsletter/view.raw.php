@@ -31,13 +31,20 @@ defined ('_JEXEC') or die ('Restricted access');
 jimport('joomla.application.component.view');
 
 /**
- * BwPostman Newsletter RAW View
+ * Class BwPostmanViewNewsletter Raw View
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Newsletters
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 */
 	public function display ($tpl = Null)
 	{
 		$app 	= JFactory::getApplication();
@@ -107,10 +114,10 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					echo "</script>\n";
 					if ($sendandpublish == 1){
 						if ($model->publish($id, 1) === true) {
-							echo "<br /><br /><font color='green'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1') . "</font>";
+							echo "<br /><br /><span style='color: #00ff00;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1') . "</span>";
 						}
 						else {
-							echo "<br /><br /><font color='red'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_0') . "</font>";
+							echo "<br /><br /><span style='color: #ff0000;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_0') . "</span>";
 						}
 					}
 					// clear data

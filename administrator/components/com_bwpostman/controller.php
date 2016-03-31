@@ -39,7 +39,10 @@ class BwPostmanController extends JControllerLegacy
 {
 
 	/**
-	 * Display the view
+	 * Display
+	 *
+	 * @param bool $cachable
+	 * @param bool $urlparams
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

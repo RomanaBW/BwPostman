@@ -54,6 +54,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @since	1.0.1
+	 *
 	 * @see		JController
 	 */
 	public function __construct($config = array())
@@ -149,7 +150,6 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$app		= JFactory::getApplication();
 		$jinput		= JFactory::getApplication()->input;
 		$model		= $this->getModel();
 		$table		= $model->getTable();
@@ -226,6 +226,12 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * Override method to save a campaign
 	 *
 	 * @access	public
+	 *
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return  boolean  True if successful, false otherwise.
+	 *
 	 */
 	public function save($key = null, $urlVar = null)
 	{
@@ -242,12 +248,11 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * --> campaigns-table: archive_flag = 1, set archive_date
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function archive()
 	{
-		$jinput	= JFactory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
@@ -308,7 +313,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * Dummy Method for Plugin BwTimeControl
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function dueSend()
 	{
@@ -322,7 +328,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * Dummy Method for Plugin BwTimeControl
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function autotest()
 	{
@@ -336,7 +343,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * Dummy Method for Plugin BwTimeControl
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function activate()
 	{
@@ -351,7 +359,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * Dummy Method for Plugin BwTimeControl
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function suspendNewletterFromSending()
 	{

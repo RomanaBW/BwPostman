@@ -43,14 +43,14 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
 class BwPostmanViewBwPostman extends JViewLegacy
 {
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
-		$document 	= JFactory::getDocument();
 		$uri		= JFactory::getURI();
 		$uri_string	= $uri->toString();
 		$canDo		= BwPostmanHelper::getActions();

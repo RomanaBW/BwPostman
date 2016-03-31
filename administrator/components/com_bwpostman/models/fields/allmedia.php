@@ -34,6 +34,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+/**
+ * Class JFormFieldAllMedia
+ */
 class JFormFieldAllMedia extends JFormField
 {
 	/**
@@ -366,7 +369,7 @@ class JFormFieldAllMedia extends JFormField
 			}
 			else
 			{
-				$html[] = '<div class="media-preview add-on" style="height:auto">';
+				$html[] = '<div class="media-preview add-on" style="height:auto;">';
 				$html[] = ' ' . $previewImgEmpty;
 				$html[] = ' ' . $previewImg;
 				$html[] = '</div>';

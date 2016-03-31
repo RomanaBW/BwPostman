@@ -30,6 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
+/**
+ * Class BwPostmanModelEdit
+ */
 class BwPostmanModelEdit extends JModelAdmin
 {
 
@@ -83,9 +86,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param	string      $type       The table type to instantiate
+	 * @param	string	    $prefix     A prefix for the table class name. Optional.
+	 * @param	array	    $config     Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
 	 *
@@ -146,8 +149,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Method to reset the subscriber ID, viewlevel and the subscriber data
 	 *
 	 * @access	public
-	 * @param	int subcriber ID
-	 * @param	string viewlevel
+	 * @param	int $id     subcriber ID
 	 */
 	protected function setData($id)
 	{
@@ -158,7 +160,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	/**
 	 * Method to get article data.
 	 *
-	 * @param	integer	The id of the article.
+	 * @param	int     $pk 	The id of the article.
 	 *
 	 * @return	mixed	Menu item data object on success, false on failure.
 	 */
@@ -237,7 +239,6 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		if (is_array($selected)) {
 			$ml_ids		= array();
-			$get_mls	= array();
 			$add_mls	= array();
 
 			// compare available mailinglists with selected mailinglists, get difference
@@ -268,7 +269,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * --> is needed for the construct
 	 *
 	 * @access 	public
-	 * @param 	int user ID
+	 *
+	 * @param 	int     $uid    user ID
+	 *
 	 * @return 	int subscriber ID
 	 */
 	public function getSubscriberId($uid)
@@ -295,7 +298,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * --> is needed for the constructor
 	 *
 	 * @access 	public
-	 * @param 	int subscriber ID
+	 *
+	 * @param 	int     $id     subscriber ID
+	 *
 	 * @return 	int user ID
 	 */
 	public function getUserId($id)
@@ -319,7 +324,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Method to get the mailaddress of a subsriber from the subscribers-table depending on the subscriber ID
 	 *
 	 * @access 	public
-	 * @param 	int		subscriber ID
+	 *
+	 * @param 	int		$id     subscriber ID
+	 *
 	 * @return 	string	user ID
 	 */
 	public function getEmailaddress($id)
@@ -342,8 +349,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Method to get a unique activation string
 	 *
 	 * @access 	public
-	 * @param
-	 * @return 	string	user ID
+	 *
+	 * @return 	string	$newActivation
 	 */
 	public function getActivation()
 	{
@@ -410,7 +417,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Checks if an editlink exists in the subscribers-table
 	 *
 	 * @access 	public
-	 * @param 	string to edit the subscriber data
+	 *
+	 * @param 	string  $editlink   to edit the subscriber data
+	 *
 	 * @return 	int subscriber ID
 	 */
 	public function checkEditlink ($editlink)
@@ -436,18 +445,17 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Method to save the subscriber data
 	 *
 	 * @access 	public
-	 * @param 	associative array of data to store
-	 * @param 	associative array of error data
+	 *
+	 * @param 	array   $data   associative array of data to store
+	 *
 	 * @return 	Boolean
+	 *
 	 * @since	1.0.1
 	 */
 	public function save($data)
 	{
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
-		$date		= JFactory::getDate();
-		$time		= $date->toSql();
-		$subscriber	= JTable::getInstance('subscribers', 'BwPostmanTable');
 
 		parent::save($data);
 
@@ -491,7 +499,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * --> the subscriber data filled with default values
 	 *
 	 * @access	public
-	 * @return 	subscriber object
+	 *
+	 * @return 	object  $subscriber     subscriber object
 	 */
 	public function fillVoidSubscriber(){
 

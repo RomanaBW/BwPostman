@@ -49,6 +49,12 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 
 	/**
 	 * Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @since	1.0.1
+	 *
+	 * @see		JController
 	 */
 	public function __construct($config = array())
 	{
@@ -62,10 +68,12 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param	string	$name	The name of the model.
-	 * @param	string	$prefix	The prefix for the PHP class name.
+	 * @param	string	$name   	The name of the model.
+	 * @param	string	$prefix 	The prefix for the PHP class name.
+	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @return	JModel
+
 	 * @since	1.0.1
 	 */
 	public function getModel($name = 'Campaign', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -77,8 +85,14 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 
 	/**
 	 * Display
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController		This object to support chaining.
+	 *
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
 		$jinput	= JFactory::getApplication()->input;
 

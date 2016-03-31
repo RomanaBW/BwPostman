@@ -29,9 +29,17 @@ defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 
+/**
+ * Class JFormFieldAllMailinglists
+ */
 class JFormFieldAllMailinglists extends JFormFieldList {
 
-    protected $type = 'AllMailinglists';
+	/**
+	 * property to hold all mailing lists
+	 *
+	 * @var string  $type
+	 */
+	protected $type = 'AllMailinglists';
 
 	/**
 	 * Method to get the field options.

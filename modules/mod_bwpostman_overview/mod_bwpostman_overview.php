@@ -7,7 +7,7 @@
  * @version 1.3.0 bwpm
  * @package BwPostman-Rchive-Module
  * @author Romana Boldt
- * @copyright (C) 2015 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2015 - 2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

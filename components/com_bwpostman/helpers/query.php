@@ -26,6 +26,9 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * Class BwPostmanHelperQuery
+ */
 class BwPostmanHelperQuery
 {
 	/**

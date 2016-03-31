@@ -46,6 +46,13 @@ class JFormFieldbuttons extends JFormField
 	*/
 	var	$_name = 'Subject';
 
+	/**
+	 * Method to get the field input markup.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   1.0.8
+	 */
 	protected function getinput()
 	{
 		$doc 		= JFactory::getDocument();
@@ -94,4 +101,4 @@ class JFormFieldbuttons extends JFormField
 		return $html;
 	}
 }
-?>
+

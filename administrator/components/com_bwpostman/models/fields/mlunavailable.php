@@ -93,7 +93,6 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 			// Convert the selections field to an array.
 			$registry = new JRegistry;
 			$registry->loadString($value);
-			$value = $registry->toArray();
 		}
 
 		if ($disabled || $readonly) {
@@ -146,10 +145,8 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 	public function getOptions()
 	{
 		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
 
 		// Initialize variables.
-		$options		= array();
 		$user_id		= null;
 		$accesslevels	= array();
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
@@ -158,8 +155,6 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$query_user	= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		// get user_ids if exists
 		if (is_array($subs_id) && !empty($subs_id)) {

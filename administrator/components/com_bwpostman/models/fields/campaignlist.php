@@ -29,9 +29,17 @@ defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 
+/**
+ * Class JFormFieldCampaignlist
+ */
 class JFormFieldCampaignlist extends JFormFieldList {
 
-    protected $type = 'Campaigns';
+	/**
+	 * property to hold campaigns
+	 *
+	 * @var string  $type
+	 */
+	protected $type = 'Campaigns';
 
 	/**
 	 * Method to get the field options.

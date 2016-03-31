@@ -49,6 +49,12 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 	/**
 	 * Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @since	1.0.1
+	 *
+	 * @see		JController
 	 */
 	public function __construct($config = array())
 	{
@@ -63,10 +69,12 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param	string	$name	The name of the model.
-	 * @param	string	$prefix	The prefix for the PHP class name.
+	 * @param	string	$name   	The name of the model.
+	 * @param	string	$prefix 	The prefix for the PHP class name.
+	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @return	JModel
+
 	 * @since	1.0.1
 	 */
 	public function getModel($name = 'Subscriber', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -82,7 +90,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * --> If the validation was succesful, set status = 1 and set confirmation_date and confirmed_by
 	 *
 	 * @access	public
-	 * @return	load Validation Result layout
+	 *
+	 * @return	mixed   load Validation Result layout
 	 */
 	public function validateEmailAdresses()
 	{
@@ -117,7 +126,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		.'//-->'."\n"
 		.'</script>'."\n";
 		exit();
-		exit();
 	}
 
 	/**
@@ -125,16 +133,14 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * --> all data which we store into the session will be cleared
 	 *
 	 * @param	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function finishValidation()
 	{
-		$jinput	= JFactory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
-		$app			= JFactory::getApplication();
 		$session		= JFactory::getSession();
 		$validation_res	= $session->get('validation_res');
 
@@ -151,12 +157,13 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * Method to call the start layout for the import process
 	 *
 	 * @access	public
+	 *
+	 * @return boolean
 	 */
 	public function importSubscribers()
 	{
 		$jinput	= JFactory::getApplication()->input;
 		$user	= JFactory::getUser();
-		$app	= JFactory::getApplication();
 
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
@@ -166,7 +173,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 		// Access check.
 		if (!$user->authorise('core.create', 'com_bwpostman')) {
-			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_NO_PERMISSION'), 'warning');
+//			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_NO_PERMISSION'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=subscribers&layout='.$layout, false);
 			$this->setRedirect($link);
 			return false;
@@ -176,13 +183,15 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$jinput->set('layout', 'import');
 		$link = JRoute::_('index.php?option=com_bwpostman&view=subscriber&layout=import', false);
 		$this->setRedirect($link);
+		return true;
 	}
 
 	/**
 	 * Method for uploading the import file and to prepare the import process
 	 *
 	 * @access	public
-	 * @return	Redirect
+	 *
+	 * @return	boolean
 	 */
 	public function prepareImport()
 	{
@@ -300,7 +309,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 						if ($ext == 'csv') { // CSV file
 							$delimiter = stripcslashes($delimiter);
 							if (($data = fgetcsv ($fh, 1000, $delimiter)) !== FALSE) {
-								$num			= count($data);
 								$import_fields	= array();
 
 								if ($caption) {
@@ -335,7 +343,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 							}
 
 							// Get all fields from the xml file for listing and selecting by the user
-							$fields				= array_keys(get_object_vars($parser->subscriber));
 							$xml_fields_keys	= array_keys(get_object_vars($parser->subscriber));
 							$import_fields		= array();
 
@@ -350,13 +357,15 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
 	 * Method to import subscriber data
 	 *
 	 * @access	public
-	 * @return	Redirect
+	 *
+	 * @return	void
 	 */
 	public function import()
 	{
@@ -365,7 +374,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
-		$app	= JFactory::getApplication();
 		$post	= $jinput->getArray(
 					array(
 						'db_fields' => 'array',
@@ -431,16 +439,14 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * --> all session data which we needed for the import will be cleared
 	 *
 	 * @param	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function finishImport()
 	{
-		$jinput	= JFactory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
-		$app		= JFactory::getApplication();
 		$session	= JFactory::getSession();
 		$finished	= false;
 
@@ -481,12 +487,13 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * Method to call the layout for the export process
 	 *
 	 * @access	public
+	 *
+	 * @return boolean
 	 */
 	public function exportSubscribers()
 	{
 		$jinput	= JFactory::getApplication()->input;
 		$user	= JFactory::getUser();
-		$app	= JFactory::getApplication();
 
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
@@ -496,7 +503,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 		// Access check.
 		if (!$user->authorise('core.edit', 'com_bwpostman')) {
-			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_EXPORT_NO_PERMISSION'), 'warning');
+//			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_EXPORT_NO_PERMISSION'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&controller=subscribers&layout='.$layout, false);
 			$this->setRedirect($link);
 			return false;
@@ -507,6 +514,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$jinput->set('layout', 'export');
 		$link = JRoute::_('index.php?option=com_bwpostman&view=subscriber&layout=export', false);
 		$this->setRedirect($link);
+		return true;
 	}
 
 	/**
@@ -554,14 +562,15 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * Method to send an email
 	 *
 	 * @access	private
+	 *
 	 * @param 	object Subscriber
 	 * @param	int Menu item ID
+	 *
 	 * @return 	boolean True on success | error object
 	 */
 	protected function _sendMail(&$subscriber, $itemid = null)
 	{
 		$app	= JFactory::getApplication();
-		$db		= JFactory::getDBO();
 		$params = JComponentHelper::getParams('com_bwpostman');
 
 		$name 		= $subscriber->name;
@@ -570,7 +579,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$sitename	= $app->getCfg('sitename');
 		$siteURL	= JURI::root();
 
-		$activation = $subscriber->activation;
 		$subject 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
 		if (is_null($itemid)) {
 			$message = JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG', $name, $siteURL, $siteURL."index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");

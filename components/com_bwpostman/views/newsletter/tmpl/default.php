@@ -40,7 +40,7 @@ defined ('_JEXEC') or die ('Restricted access');
 			}
 			framefenster.style.height = framefenster_size + 2 +'px';
 		}
-	}
+	};
 /* ]]> */
 </script>
 

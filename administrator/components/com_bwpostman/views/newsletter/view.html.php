@@ -41,29 +41,45 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
-	protected $form;
-	protected $item;
-	protected $state;
 	/**
-	 * Display
+	 * property to hold form data
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @var array   $form
+	 */
+	protected $form;
+
+	/**
+	 * property to hold selected item
+	 *
+	 * @var array   $item
+	 */
+	protected $item;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 */
+	protected $state;
+
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl=null)
 	{
 		// Initialize variables
 		$dispatcher = JEventDispatcher::getInstance();
-		$res		= JPluginHelper::importPlugin('bwpostman');
 		$app		= JFactory::getApplication();
-		$_db		= JFactory::getDBO();
 
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
 		// Get input data
 		$jinput		= $app->input;
-		$cid		= $jinput->getInt('id', 0);
 		$referrer	= $jinput->get->get('referrer', '', 'string');
 
 		$this->form			= $this->get('Form');
@@ -114,7 +130,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= JFactory::getURI();
 		$userId		= JFactory::getUser()->get('id');
 		$layout		= JFactory::getApplication()->input->get('layout', '');
 

@@ -84,7 +84,6 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 		// Get item and selected mailinglists
 		$item		= $app->getUserState('com_bwpostman.edit.campaign.data');
 		$cam_id		= $app->getUserState('com_bwpostman.edit.campaign.id', null);
-		$subs_id	= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		$disabled	= $this->element['disabled'] == 'true' ? true : false;
 		$readonly	= $this->element['readonly'] == 'true' ? true : false;
@@ -107,7 +106,6 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 			// Convert the selections field to an array.
 			$registry = new JRegistry;
 			$registry->loadString($value);
-			$value = $registry->toArray();
 		}
 
 		if ($disabled || $readonly) {
@@ -148,12 +146,9 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 	public function getOptions()
 	{
 		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
 
 		// Initialize variables.
-		$options		= array();
 		$user_id		= null;
-		$access			= 1;
 		$accesslevels	= array();
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
@@ -161,8 +156,6 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$query_user	= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		// get user_ids if exists
 		if (is_array($subs_id) && !empty($subs_id)) {

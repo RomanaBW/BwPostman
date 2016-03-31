@@ -162,10 +162,10 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 
 			$html[] = '							<tr class="row' . $i % 2 . '">';
 			$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
-			$html[] = '								<td><input type="checkbox" id="mb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/></td>';
+			$html[] = '								<td><input type="checkbox" id="mb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
 			$html[] = '								<td>' . JText::_($option->text) . '</td>';
 			$html[] = '								<td>' . JText::_($option->description) . '</td>';
-			$html[] = '								<td style="text-align: center">' . $published . '</td>';
+			$html[] = '								<td style="text-align: center;">' . $published . '</td>';
 			$html[] = '								<td>' . JText::_($option->access_level) . '</td>';
 			$html[] = '						  </tr>';
 
@@ -198,14 +198,9 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	{
 		$app	= JFactory::getApplication();
 
-		// Initialize variables.
-		$options		= array();
-
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		$query->select("a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published, a.archive_flag AS archived");
 		$query->from('#__bwpostman_mailinglists AS a');

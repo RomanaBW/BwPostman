@@ -7,7 +7,7 @@
  * @version 1.3.0 bwpm
  * @package BwPostman-Overview-Module
  * @author Romana Boldt
- * @copyright (C) 2015 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2015 - 2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -26,14 +26,18 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * Class modBwPostmanOverviewHelper
+ */
 class modBwPostmanOverviewHelper
 {
 	/**
 	 * Retrieve list of newsletters
 	 *
 	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param   int     $module_id      id of this module
 	 *
-	 * @return  array
+	 * @return  array   $lists      array of newsletter objects
 	 *
 	 * @since   1.2.0
 	 */
@@ -43,7 +47,6 @@ class modBwPostmanOverviewHelper
 		$menu	= $app->getMenu();
 
 		$item		= $params->get('menu_item');
-		$menuItem	= $menu->getItem($item);
 		$itemid		= (!empty($item)) ? '&Itemid=' . $item : '';
 
 		$i		= 0;
@@ -75,7 +78,7 @@ class modBwPostmanOverviewHelper
 	 *
 	 * @param   \Joomla\Registry\Registry  &$params  module parameters
 	 *
-	 * @return  string
+	 * @return  array   $rows       array of newsletter objects
 	 *
 	 * @since   1.2.0
 	 */
@@ -198,7 +201,6 @@ class modBwPostmanOverviewHelper
 		$query->select($query->year($_db->quoteName('a.mailing_date')) . ' AS sent_year');
 		$query->select('COUNT(*) AS count_month');
 		$query->select('a.mailing_date');
-		//		$query->select('DISTINCT (' . $query->month($_db->quoteName('a.mailing_date')) . ') AS sent_month, COUNT(*) AS count_month');
 		$query->from('#__bwpostman_newsletters AS a');
 
 		$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $nls) . ')');
@@ -218,6 +220,8 @@ class modBwPostmanOverviewHelper
 	/**
 	 * Method to get the menu item params.
 	 *
+	 * @param   int     $id     id of menu item
+	 *
 	 * @return  array  The field option objects.
 	 *
 	 * @since   1.2.0
@@ -228,18 +232,6 @@ class modBwPostmanOverviewHelper
 		$menu	= $app->getMenu();
 		$params	= $menu->getParams($id);
 
-/*
-		$_db	= JFactory::getDbo();
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('params'));
-		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('id') . ' = ' . $id);
-
-		$_db->setQuery($query);
-
-		$params	= json_decode($_db->loadResult());
-*/
 		return $params;
 	}
 
@@ -248,9 +240,10 @@ class modBwPostmanOverviewHelper
 	 *
 	 * @access 	public
 	 *
-	 * @param	boolean	with title
+	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param	boolean	                    $title   true if with title
 	 *
-	 * @return 	array	ID and title of allowed mailinglists
+	 * @return 	array	$mailinglists       ID and title of allowed mailinglists
 	 *
 	 * @since	1.2.0
 	 */
@@ -273,7 +266,7 @@ class modBwPostmanOverviewHelper
 
 			$res_mls	= $_db->loadAssocList();
 			$mls		= array();
-			if (count($res_mls > 0)) {
+			if (count($res_mls) > 0) {
 				foreach ($res_mls as $item) {
 					$mls[]	= $item['id'];
 				}
@@ -330,9 +323,10 @@ class modBwPostmanOverviewHelper
 	 *
 	 * @access 	public
 	 *
-	 * @param	boolean	with title
+	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param	boolean	                    $title   true if with title
 	 *
-	 * @return 	array	ID of allowed campaigns
+	 * @return 	array	$campaigns          array of ids of allowed campaigns
 	 *
 	 * @since	1.2.0
 	 */
@@ -353,7 +347,7 @@ class modBwPostmanOverviewHelper
 
 			$res_cams	= $_db->loadAssocList();
 			$cams		= array();
-			if (count($res_cams > 0)) {
+			if (count($res_cams) > 0) {
 				foreach ($res_cams as $item) {
 					$cams[]	= $item['id'];
 				}
@@ -369,7 +363,7 @@ class modBwPostmanOverviewHelper
 		if ($all_cams != 'no' || $check != 'no') {
 			// get authorized viewlevels
 			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
-			if (count($accesslevels > 0)) {
+			if (count($accesslevels) > 0) {
 				foreach ($accesslevels as $key => $value) {
 					$acc_levels[]	= $key;
 				}
@@ -403,7 +397,7 @@ class modBwPostmanOverviewHelper
 			$_db->setQuery ($query);
 
 			$acc_cams	= $_db->loadAssocList();
-			if (count($acc_cams > 0)) {
+			if (count($acc_cams) > 0) {
 				$cams		= array();
 				foreach ($acc_cams as $item) {
 					$cams[]	= $item['campaign_id'];
@@ -423,9 +417,10 @@ class modBwPostmanOverviewHelper
 	 *
 	 * @access 	public
 	 *
-	 * @param	boolean	with title
+	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param	boolean	                    $title   true if with title
 	 *
-	 * @return 	array	ID of allowed campaigns
+	 * @return 	array	$groups             array of ids of user groups
 	 *
 	 * @since	1.2.0
 	 */
@@ -446,7 +441,7 @@ class modBwPostmanOverviewHelper
 
 			$res_groups	= $_db->loadAssocList();
 			$groups		= array();
-			if (count($res_groups > 0)) {
+			if (count($res_groups) > 0) {
 				foreach ($res_groups as $item) {
 					$groups[]	= $item['id'];
 				}
@@ -456,7 +451,7 @@ class modBwPostmanOverviewHelper
 			}
 			//convert usergroups to match bwPostman's needs
 			$c_groups	= array();
-			if (count($groups > 0)) {
+			if (count($groups) > 0) {
 				foreach ($groups as $value) {
 					$c_groups[]	= '-' . $value;
 				}
@@ -477,7 +472,7 @@ class modBwPostmanOverviewHelper
 
 			//convert usergroups to match bwPostman's needs
 			$a_groups	= array();
-			if (count($acc_groups > 0)) {
+			if (count($acc_groups) > 0) {
 				foreach ($acc_groups as $value) {
 					$a_groups[]	= '-' . $value;
 				}

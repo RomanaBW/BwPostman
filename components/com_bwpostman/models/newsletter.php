@@ -32,6 +32,9 @@ use Joomla\Registry\Registry;
 // Import MODEL object class
 jimport('joomla.application.component.modelitem');
 
+/**
+ * Class BwPostmanModelNewsletter
+ */
 class BwPostmanModelNewsletter extends JModelItem
 {
 	/**

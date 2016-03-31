@@ -1,10 +1,27 @@
 <?php
 /**
- * @package     Joomla.Libraries
- * @subpackage  Component
+ * BwPostman Newsletter Component
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * BwPostman input field filter helper
+ *
+ * @version 1.3.0 bwpm
+ * @package BwPostman-Admin
+ * @author Romana Boldt
+ * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
+ * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 defined('JPATH_PLATFORM') or die;

@@ -45,6 +45,9 @@ define ('BWPOSTMAN_URL_COMPONENT', 'index.php?option=' . BWPOSTMAN_COMPONENT_NAM
 define ('BWPOSTMAN_URL_SITE', JURI::Root () . BWPOSTMAN_PATH_COMPONENT_RELATIVE . '/');
 define ('BWPOSTMAN_URL_MEDIA', JURI::Root () . 'media/' . BWPOSTMAN_NAME . '/');
 
+// Miscellaneous
+define ('BWPOSTMAN_LOG_MEM', 0);
+
 // import joomla controller library
 jimport('joomla.application.component.controller');
 

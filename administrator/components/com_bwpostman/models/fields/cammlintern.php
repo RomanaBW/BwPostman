@@ -84,7 +84,6 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		// Get item and selected mailinglists
 		$item		= $app->getUserState('com_bwpostman.edit.campaign.data');
 		$cam_id		= $app->getUserState('com_bwpostman.edit.campaign.id', null);
-		$subs_id	= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		$disabled	= $this->element['disabled'] == 'true' ? true : false;
 		$readonly	= $this->element['readonly'] == 'true' ? true : false;
@@ -107,7 +106,6 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 			// Convert the selections field to an array.
 			$registry = new JRegistry;
 			$registry->loadString($value);
-			$value = $registry->toArray();
 		}
 
 		if ($disabled || $readonly) {
@@ -148,20 +146,15 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	public function getOptions()
 	{
 		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
 
 		// Initialize variables.
-		$options		= array();
 		$user_id		= null;
-		$accesslevels	= array();
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 		$query_user	= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		// get user_ids if exists
 		if (is_array($subs_id) && !empty($subs_id)) {
@@ -173,22 +166,10 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 			$user_id = $_db->loadResult();
 		}
 
-		// get authorized viewlevels
-		if ($user_id) {
-			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
-		}
-
 		$query->select("id AS value, title, description AS text");
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 0);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-/*		if (is_array($accesslevels) && !empty($accesslevels)) {
-			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
-		}
-		else {
-			$query->where($_db->quoteName('access') . ' = ' . (int) 1);
-		}
-*/
 		$query->order('title ASC');
 
 		$_db->setQuery($query);

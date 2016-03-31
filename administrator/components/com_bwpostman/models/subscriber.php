@@ -73,9 +73,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param	string  $type	    The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
 	 *
@@ -90,7 +90,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to reset the subscriber/test-recipient ID and subscriber/test-recipient data
 	 *
 	 * @access	public
-	 * @param	int Subscriber ID
+	 *
+	 * @param	int     $id     Subscriber ID
 	 */
 	public function setId($id)
 	{
@@ -118,7 +119,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if (!empty($record->id)) {
 			// Check specific delete permission.
-			if ($user->authorise('core.delete', 'com_bwpostman.subscribers.' . (int) $recordId))
+			if ($user->authorise('core.delete', 'com_bwpostman.subscribers.' . (int) $record))
 			{
 				return true;
 			}
@@ -137,7 +138,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		$app			= JFactory::getApplication();
-		$table			= $this->getTable();
 		$cid			= $app->getUserState('com_bwpostman.edit.subscriber.id', 0);
 		$data			= $app->getUserState('com_bwpostman.edit.subscriber.data', null);
 		$mailinglists	= $app->getUserState('com_bwpostman.edit.subscriber.mailinglists', null);
@@ -340,6 +340,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to create an activation code and to check whether the code already exists or not
 	 *
 	 * @access	public
+	 *
 	 * @return	string Activation code
 	 */
 	public function getActivation()
@@ -373,8 +374,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to store the subscriber data
 	 *
 	 * @access 	public
-	 * @param 	associative array of data to store
-	 * @return 	boolean True on success
+	 *
+	 * @param 	array   $data   associative array of data to store
+	 *
+	 * @return 	boolean         True on success
 	 */
 	public function save ($data)
 	{
@@ -475,8 +478,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				}
 			}
 
-			if (isset($data['activation'])) $ret_activation = $data['activation']; // @todo Always needed?
-
 			// New subscriber has to confirm the account by himself
 			if (($new_subscriber) && (!$confirmed)) {
 				$subscriber->name 		= $data['name'];
@@ -508,14 +509,15 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to send an email
 	 *
 	 * @access	private
-	 * @param 	object Subscriber
-	 * @param	int Menu item ID
+	 *
+	 * @param 	object $subscriber      Subscriber
+	 * @param	int $itemid             Menu item ID
+	 *
 	 * @return 	boolean True on success | error object
 	 */
 	private function _sendMail($subscriber, $itemid = null)
 	{
 		$app		= JFactory::getApplication();
-		$db			= $this->_db;
 		$mailer		= JFactory::getMailer();
 		$siteURL	= JURI::root();
 
@@ -534,8 +536,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$name 		= $subscriber->name;
 		$firstname 	= $subscriber->firstname;
 		if ($firstname != '') $name = $firstname . ' ' . $name; //Cat fo full name
-
-		$activation = $subscriber->activation;
 
 		$subject 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
 
@@ -567,8 +567,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * --> when unarchiving it is called by the archive-controller
 	 *
 	 * @access	public
-	 * @param	array Subscriber/Test-recipient IDs
-	 * @param	tinyint Task --> 1 = archive, 0 = unarchive
+	 * @param	array   $cid        Subscriber/Test-recipient IDs
+	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
 	 * @return	boolean
 	 */
 	public function archive($cid = array(), $archive = 1)
@@ -580,7 +580,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if ($archive == 1)
 		{
-			$time	= $date->toSql();
 			$userid	= $user->get('id');
 
 			// Access check.
@@ -593,7 +592,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		}
 		else
 		{ //
-			$time	= '0000-00-00 00:00:00';
 			$userid	= "-1";
 
 			// Access check.
@@ -629,13 +627,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * --> is called by the archive-controller
 	 *
 	 * @access	public
-	 * @param	array Subscriber/Test-recipient IDs
+	 *
+	 * @param	array $pks      Subscriber/Test-recipient IDs
+	 *
 	 * @return	boolean
 	 */
 	public function delete(&$pks)
 	{
-		$result = false;
-
 		// Access check.
 		foreach ($pks as $i) {
 			if (!BwPostmanHelper::allowDelete($i, 0, 'subscriber'))	return false;
@@ -644,8 +642,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		if (count($pks)) {
 			JArrayHelper::toInteger($pks);
 			$_db	= $this->getDbo();
-
-			$subslist_table	= JTable::getInstance('subscribers_mailinglists', 'BwPostmanTable');
 
 			// Delete subscriber from subscribers-table
 			if (!parent::delete($pks)) {
@@ -673,15 +669,16 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to validate one ore more email addresses
 	 *
 	 * @access	public
-	 * @param	array Subscriber/Test-recipient IDs
-	 * @return	associative array of result data
+	 *
+	 * @param	array   $cid            Subscriber/Test-recipient IDs
+	 * @param   boolean $showProgress
+	 * @return	array   $res            associative array of result data
 	 */
 	public function validate_mail($cid = array(), $showProgress = false)
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 
-		$cids	= implode(',', $cid);
 		$config	= Jfactory::getConfig();
 
 		$validator = new emailValidation();
@@ -701,7 +698,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$query->select('*');
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('id') . ' IN (' .implode(',', $cid) . ')');
-		$query->order($_db->escape($listOrdering).' '.$listDirn);
+//		$query->order($_db->escape($listOrdering).' '.$listDirn);
 
 		$_db->setQuery($query);
 		$subscribers = $_db->loadObjectList();
@@ -810,16 +807,17 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to get the import data from the import file
 	 *
 	 * @access 	public
-	 * @param 	associative array of data which we need to prepare the storing to store
-	 * @param	associative array of import error data
-	 * @param	associative array of import warning data
-	 * @param 	associative array of subscriber email data --> we need this if the admin didn't confirm the accounts
+	 *
+	 * @param 	array   $data           associative array of data which we need to prepare the storing to store
+	 * @param	array   $ret_err        associative array of import error data
+	 * @param	array   $ret_warn       associative array of import warning data
+	 * @param 	array   $ret_maildata   associative array of subscriber email data --> we need this if the admin didn't confirm the accounts
+	 *
 	 * @return 	boolean
 	 */
 	public function import($data, &$ret_err, &$ret_warn, &$ret_maildata)
 	{
 		$app			= JFactory::getApplication();
-		$_db			= $this->_db;
 		$session		= JFactory::getSession();
 		$date			= JFactory::getDate();
 		$time			= $date->toSql();
@@ -858,7 +856,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			// Couldn't find an email column --> return because we need the email for import
 			$this->error = JText::_('COM_BWPOSTMAN_SUB_ERROR_NO_EMAIL_COLUMN');
 			$app->enqueueMessage($this->_error, 'error');
-			return;
+			return false;
 		}
 
 		if ($ext == 'csv') {
@@ -1002,13 +1000,15 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to save single import data set
 	 *
 	 * @access	public
-	 * @param 	associative array of data to store
-	 * @param 	boolean Confirm --> 0 = do not confirm, 1 = confirm
-	 * @param 	int CSV row --> we will use this only if the format is csv
-	 * @param	array of mailinglist IDs
-	 * @param	associative array of import error data
-	 * @param	associative array of import warning data
-	 * @param	associative object of subscriber email data
+	 *
+	 * @param 	array   $values         associative array of data to store
+	 * @param 	boolean $confirm        Confirm --> 0 = do not confirm, 1 = confirm
+	 * @param 	int     $row            CSV row --> we will use this only if the format is csv
+	 * @param	array   $mailinglists   array of mailinglist IDs
+	 * @param	array   $ret_err        associative array of import error data
+	 * @param	array   $ret_warn       associative array of import warning data
+	 * @param	array   $ret_maildata   associative object of subscriber email data
+	 *
 	 * @return	Boolean
 	 */
 	public function save_import($values, $confirm, $row, $mailinglists, &$ret_err, &$ret_warn, &$ret_maildata)
@@ -1185,13 +1185,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to export selected data
 	 *
 	 * @access	public
-	 * @param 	associative array of export option data
-	 * @return 	text File content
+	 *
+	 * @param 	array   $data       associative array of export option data
+	 * @return 	string  $output     File content
 	 */
 	public function export($data)
 	{
 		$_db		= $this->_db;
-		$subQuery	= '';
 
 		$export_fields = $data['export_fields'];
 
@@ -1288,12 +1288,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to build the WHERE-clause for the export function
 	 *
 	 * @access	private
-	 * @param 	int Status = 0 --> account is not confirmed
-	 * @param 	int Status = 1 --> account is confirmed
-	 * @param 	int Status = 9 --> subscriber is test-recipient
-	 * @param 	tinyint Archive_flag = 0 --> subscriber is not archived
-	 * @param 	tinyint Archive_flag = 1 --> subscriber is archived
-	 * @return 	String WHERE-clause
+	 *
+	 * @param 	int     $status0    Status = 0 --> account is not confirmed
+	 * @param 	int     $status1    Status = 1 --> account is confirmed
+	 * @param 	int     $status9    Status = 9 --> subscriber is test-recipient
+	 * @param 	int     $archive0   Archive_flag = 0 --> subscriber is not archived
+	 * @param 	int     $archive1   Archive_flag = 1 --> subscriber is archived
+	 * @return 	String  $subQuery   WHERE-clause
 	 */
 	private function _buildExportSubQuery($status0 = 0, $status1 = 0, $status9 = 0, $archive0 = 0, $archive1 = 0)
 	{
@@ -1414,26 +1415,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 		}
 
-/*		if (!empty($commands['assetgroup_id']))
-		{
-			if (!$this->batchAccess($commands['assetgroup_id'], $pks, $contexts))
-			{
-				return false;
-			}
-
-			$done = true;
-		}
-
-		if (!empty($commands['language_id']))
-		{
-			if (!$this->batchLanguage($commands['language_id'], $pks, $contexts))
-			{
-				return false;
-			}
-
-			$done = true;
-		}
-*/
 		if (!$done) {
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 			return false;
@@ -1649,21 +1630,99 @@ class BwPostmanModelSubscriber extends JModelAdmin
  */
 class emailValidation
 {
+	/**
+	 * property to hold regular expressions for email check
+	 *
+	 * @var string $email_regular_expression
+	 */
 	var $email_regular_expression="^([-!#\$%&'*+./0-9=?A-Z^_`a-z{|}~])+@([-!#\$%&'*+/0-9=?A-Z^_`a-z{|}~]+\\.)+[a-zA-Z]{2,6}\$";
+
+	/**
+	 * property to hold timeout
+	 *
+	 * @var int $timeout
+	 */
 	var $timeout=0;
+
+	/**
+	 * property to hold data timeout
+	 *
+	 * @var int $data_timeout
+	 */
 	var $data_timeout=0;
+
+	/**
+	 * property to hold localhost
+	 *
+	 * @var string  $localhost
+	 */
 	var $localhost="";
+
+	/**
+	 * property to hold local user
+	 *
+	 * @var string $localuser
+	 */
 	var $localuser="";
+
+	/**
+	 * property to hold debug mode
+	 *
+	 * @var int $debug
+	 */
 	var $debug=0;
+
+	/**
+	 * property to hold html debug mode
+	 *
+	 * @var int $html_debug
+	 */
 	var $html_debug=0;
+
+	/**
+	 * property to hold exclude mail address
+	 *
+	 * @var string
+	 */
 	var $exclude_address="";
+
+	/**
+	 * property to hold MXRR
+	 *
+	 * @var string  $getmxrr
+	 */
 	var $getmxrr="GetMXRR";
 
+	/**
+	 * property to hold next token
+	 *
+	 * @var string  $next_token
+	 */
 	var $next_token="";
+
+	/**
+	 * property to hold preg
+	 *
+	 * @var string  $preg
+	 */
 	var $preg;
+
+	/**
+	 * property to hold last code
+	 *
+	 * @var string  $last_code
+	 */
 	var $last_code="";
 
-	public function Tokenize($string,$separator="")
+	/**
+	 * Method to tokenize
+	 *
+	 * @param string    $string
+	 * @param string    $separator
+	 *
+	 * @return string
+	 */
+	public function Tokenize($string, $separator="")
 	{
 		if(!strcmp($separator,""))
 		{
@@ -1687,6 +1746,11 @@ class emailValidation
 		}
 	}
 
+	/**
+	 * Method to debug output
+	 *
+	 * @param string    $message
+	 */
 	public function OutputDebug($message)
 	{
 		$message.="\n";
@@ -1696,6 +1760,13 @@ class emailValidation
 		flush();
 	}
 
+	/**
+	 * Method to get line
+	 *
+	 * @param resource  $connection
+	 *
+	 * @return int|string
+	 */
 	public function GetLine($connection)
 	{
 		for($line="";;)
@@ -1713,8 +1784,17 @@ class emailValidation
 				return($line);
 			}
 		}
+		return(0);
 	}
 
+	/**
+	 * Method to put line
+	 *
+	 * @param resource  $connection
+	 * @param string    $line
+	 *
+	 * @return int
+	 */
 	public function PutLine($connection,$line)
 	{
 		if($this->debug)
@@ -1722,6 +1802,13 @@ class emailValidation
 		return(fputs($connection,"$line\r\n"));
 	}
 
+	/**
+	 * Method to validate email address
+	 *
+	 * @param string    $email
+	 *
+	 * @return bool|int
+	 */
 	public function ValidateEmailAddress($email)
 	{
 		if(IsSet($this->preg))
@@ -1737,11 +1824,18 @@ class emailValidation
 		return(eregi($this->email_regular_expression,$email)!=0);
 	}
 
+	/**
+	 * Method to validate email host
+	 *
+	 * @param string    $email
+	 * @param string    $hosts
+	 *
+	 * @return bool|int
+	 */
 	public function ValidateEmailHost($email,&$hosts)
 	{
 		if(!$this->ValidateEmailAddress($email))
 		return(0);
-		$user=$this->Tokenize($email,"@");
 		$domain=$this->Tokenize("");
 		$hosts=$weights=array();
 		$getmxrr=$this->getmxrr;
@@ -1765,6 +1859,14 @@ class emailValidation
 		return(count($hosts)!=0);
 	}
 
+	/**
+	 * Method to verify result
+	 *
+	 * @param resource  $connection
+	 * @param string    $code
+	 *
+	 * @return int
+	 */
 	public function VerifyResultLines($connection,$code)
 	{
 		while(($line=$this->GetLine($connection)))
@@ -1778,6 +1880,13 @@ class emailValidation
 		return(-1);
 	}
 
+	/**
+	 * Method to validate email box
+	 *
+	 * @param string    $email
+	 *
+	 * @return bool|int
+	 */
 	public function ValidateEmailBox($email)
 	{
 		if(!$this->ValidateEmailHost($email,$hosts))

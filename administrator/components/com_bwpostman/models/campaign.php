@@ -82,9 +82,9 @@ class BwPostmanModelCampaign extends JModelAdmin
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param	string  $type   	The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
 	 *
@@ -99,7 +99,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * Method to reset the campaign ID and campaign data
 	 *
 	 * @access	public
-	 * @param	int Campaign ID
+	 *
+	 * @param	int $id     Campaign ID
 	 */
 	public function setId($id)
 	{
@@ -268,25 +269,6 @@ class BwPostmanModelCampaign extends JModelAdmin
 		if (empty($form)) {
 			return false;
 		}
-		$jinput = JFactory::getApplication()->input;
-
-		// The front end calls this model and uses a_id to avoid id clashes so we need to check for that first.
-		if ($jinput->get('a_id'))
-		{
-			$id =  $jinput->get('a_id', 0);
-		}
-		// The back end uses id so we use that the rest of the time and set it to 0 by default.
-		else
-		{
-			$id =  $jinput->get('id', 0);
-		}
-		// Determine correct permissions to check.
-		if ($this->getState('campaign.id'))
-		{
-			$id = $this->getState('campaign.id');
-		}
-
-		$user = JFactory::getUser();
 
 		// Check to show created data
 		$c_date	= $form->getValue('created_date');
@@ -381,9 +363,9 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * --> when unarchiving it is called by the archive-controller
 	 *
 	 * @access	public
-	 * @param	array Campaign IDs
-	 * @param	tinyint Task --> 1 = archive, 0 = unarchive
-	 * @param	tinyint Archive/Unarchive assigned newsletters (0 = No, 1 = Yes)
+	 * @param	array   $cid        Campaign IDs
+	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
+	 * @param	int     $archive_nl Archive/Unarchive assigned newsletters (0 = No, 1 = Yes)
 	 * @return	boolean
 	 */
 	public function archive($cid = array(), $archive = 1, $archive_nl = 1)
@@ -458,9 +440,10 @@ class BwPostmanModelCampaign extends JModelAdmin
 	/**
 	 * Method to override save function
 	 *
-	 * @param	object	$data	A campaign object.
+	 * @param	array	$data	A campaign object.
 	 *
 	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
+	 *
 	 * @since	1.0.1
 	 */
 	public function save($data)
@@ -522,11 +505,10 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 				JPluginHelper::importPlugin('bwpostman');
 
-				$plug_res	= $dispatcher->trigger('onBwPostmanCampaignSave', array ($data));
+				$dispatcher->trigger('onBwPostmanCampaignSave', array ($data));
 			}
 		}
 		else {
-//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'), 'error');
 			$this->setError(JText::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'));
 			$res	= false;
 		}
@@ -538,14 +520,13 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * --> is called by the archive-controller
 	 *
 	 * @access	public
-	 * @param	array Campaign IDs
-	 * @param	tinyint Remove assigned newsletters (0 = no, 1 = yes)
+	 *
+	 * @param	array &$pks     Campaign IDs
+	 *
 	 * @return	boolean
 	 */
 	public function delete(&$pks)
 	{
-		$result = false;
-		$nl_ids	= array();
 		$jinput	= JFactory::getApplication()->input;
 		$remove_nl	= $jinput->get('remove_nl', false);
 

@@ -134,7 +134,6 @@ class BwPostmanModelArchive extends JModelList
 	{
 		$app			= JFactory::getApplication();
 		$jinput			= $app->input;
-		$orderMainCol	= '';
 
 		// Adjust the context to support modal and tabbed layouts.
 		if ($layout = $app->input->get('layout','newsletters'))
@@ -254,11 +253,9 @@ class BwPostmanModelArchive extends JModelList
 	protected function getListQuery()
 	{
 		$_db		= $this->_db;
-		$query1		= $_db->getQuery(true);
 		$query		= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
 		$sub_query2	= $_db->getQuery(true);
-		$user		= JFactory::getUser();
 		$jinput		= JFactory::getApplication()->input;
 		$layout		= $jinput->get('layout','newsletters');
 
@@ -384,16 +381,16 @@ class BwPostmanModelArchive extends JModelList
 	 *
 	 * @access 	protected
 	 *
+	 * @param string    $layout     selected layout
+	 * @param object    &$query     query to inject the where clause
+	 *
 	 * @return 	string Query
 	 */
 	protected function _buildQueryWhere($layout, &$query)
 	{
-		$app	= JFactory::getApplication();
 		$_db	= $this->_db;
 
 		// Get the search string
-		$where = '';
-
 		$filtersearch	= $this->getState('filter.search_filter');
 		$search			= $_db->escape($this->getState('filter.search'));
 
@@ -602,7 +599,6 @@ class BwPostmanModelArchive extends JModelList
 						}
 					break;
 			}
-			$where_array = array();
 		}
 		return;
 	}
@@ -612,7 +608,7 @@ class BwPostmanModelArchive extends JModelList
 	 *
 	 * @access	public
 	 *
-	 * @param 	int Subscriber ID
+	 * @param 	int $sub_id     Subscriber ID
 	 *
 	 * @return 	object Subscriber
 	 */
@@ -682,7 +678,7 @@ class BwPostmanModelArchive extends JModelList
 	 *
 	 * @access	public
 	 *
-	 * @param 	int Campaign ID
+	 * @param 	int $cam_id     Campaign ID
 	 *
 	 * @return 	object Campaign
 	 */
@@ -720,7 +716,7 @@ class BwPostmanModelArchive extends JModelList
 	 *
 	 * @access	public
 	 *
-	 * @param 	int Mailinglist ID
+	 * @param 	int $ml_id      Mailinglist ID
 	 *
 	 * @return 	object Mailinglist
 	 */

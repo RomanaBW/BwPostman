@@ -41,20 +41,38 @@ jimport('joomla.application.component.view');
  */
 class BwPostmanViewMailinglist extends JViewLegacy
 {
-	protected $form;
-	protected $item;
-	protected $state;
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 */
+	protected $items;
 
 	/**
-	 * Display
+	 * property to hold pagination object
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @var object  $pagination
+	 */
+	protected $pagination;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 */
+	protected $state;
+
+
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
 		$app		= JFactory::getApplication();
-		$_db		= JFactory::getDBO();
 		$template	= $app->getTemplate();
 		$uri		= JFactory::getURI();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());

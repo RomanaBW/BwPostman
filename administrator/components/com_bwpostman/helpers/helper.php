@@ -49,8 +49,15 @@ if (!defined ('BWPOSTMAN_PATH_SITE')) define ('BWPOSTMAN_PATH_SITE', JPATH_ROOT 
 if (!defined ('BWPOSTMAN_PATH_ADMIN')) define ('BWPOSTMAN_PATH_ADMIN', JPATH_ADMINISTRATOR .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
 if (!defined ('BWPOSTMAN_PATH_MEDIA')) define ('BWPOSTMAN_PATH_MEDIA', JPATH_ROOT .'/media/' . BWPOSTMAN_NAME);
 
-
+/**
+ * Class BwPostmanHelper
+ */
 abstract class BwPostmanHelper {
+	/**
+	 * property to hold session
+	 *
+	 * @var array
+	 */
 	static $session = null;
 
 	/**
@@ -230,11 +237,11 @@ abstract class BwPostmanHelper {
 			}
 
 			$select_html		= '<select id="' . $opt . '" name="automailing_values['.$date.'][]" >';
-			foreach ($options as $key => $value) {
+			foreach ($options as $key2 => $value2) {
 
-				$select_html		.= '<option value="' . $key*$intval . '"';
-				if ($selected == $key*$intval) $select_html		.= ' selected="selected"';
-				$select_html		.= '>' . $value . '</option>';
+				$select_html		.= '<option value="' . $key2*$intval . '"';
+				if ($selected == $key2*$intval) $select_html		.= ' selected="selected"';
+				$select_html		.= '>' . $value2 . '</option>';
 			}
 			$select_html		.= '</select>';
 			$selectlist[]	= $select_html;
@@ -245,8 +252,8 @@ abstract class BwPostmanHelper {
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	string		$section	The access section name.
 	 * @param	integer		$id			The item ID.
+	 * @param	string		$section	The access section name.
 	 *
 	 * @return	JObject
 	 */
@@ -680,7 +687,9 @@ abstract class BwPostmanHelper {
 	/**
 	 * Method to get a captcha string
 	 *
+	 * @param int   $mode
 	 * @return	string
+	 *
 	 * @since	0.9.8
 	 */
 	public static function getCaptcha($mode = 1)
@@ -723,16 +732,21 @@ abstract class BwPostmanHelper {
 	/**
 	 * Erzeugt die Rechenaufgabe
 	 *
-	 * @param		resource	$im				Zeiger auf das Bild
-	 * @param		integer		$size			Schriftgrösse
-	 * @param		string		$fileTTF		Pfad zur True-Type-Datei
-	 * @param		integer		$imgHeight		Bildhöhe
-	 *
-	 * @return		string		Gibt die Rechenaufgabe als String für den Dateinamen wieder
+	 * @return	string	$fileName	Gibt die Rechenaufgabe als String für den Dateinamen wieder
 	 */
 
 	static public function showCaptcha() {
-		function mathCaptcha($im,$size,$fileTTF,$imgHeight)
+		/**
+		 * Method to generate captcha
+		 *
+		 * @param $im
+		 * @param $size
+		 * @param $fileTTF
+		 * @param $imgHeight
+		 *
+		 * @return string	$fileName	Gibt die Rechenaufgabe als String für den Dateinamen wieder
+		 */
+		function mathCaptcha($im, $size, $fileTTF, $imgHeight)
 		{
 			$math = range(0,9);
 			shuffle($math);
@@ -760,9 +774,6 @@ abstract class BwPostmanHelper {
 	// da das Programm in regelmaessigen Abstaenden dieses leert!
 	// Kein abschliessenden Slash benutzen!
 	$captchaDir = JPATH_COMPONENT_SITE.'/assets/capimgdir';
-
-	// Schriftgröße
-	$size = 20;
 
 	// Schriftgröße Rechenaufgabe
 	$sizeMath = 20;
@@ -869,6 +880,9 @@ abstract class BwPostmanHelper {
 	 *
 	 * Helper function for external modules and plugins to load the main BwPostman language file(s)
 	 *
+	 * @param   string  $file
+	 * @param   string  $client
+	 *
 	 */
 	public static function loadLanguage($file = 'com_bwpostman', $client = 'site') {
 		static $loaded = array();
@@ -900,6 +914,14 @@ abstract class BwPostmanHelper {
 		return $loaded[$file];
 }
 
+	/**
+	 * Method to parse language file
+	 *
+	 * @param $lang
+	 * @param $filename
+	 *
+	 * @return bool
+	 */
 	protected static function parseLanguage($lang, $filename) {
 		if (!file_exists($filename)) return false;
 

@@ -44,6 +44,11 @@ class JFormFieldsinglenews extends JFormField
 	*/
 	var	$_name = 'Subject';
 
+	/**
+	 * Method to get form input field
+	 *
+	 * @return string
+	 */
 	protected function getinput()
 	{
 		$doc 		= JFactory::getDocument();
@@ -93,4 +98,4 @@ class JFormFieldsinglenews extends JFormField
 		return $html;
 	}
 }
-?>
+

@@ -29,9 +29,17 @@ defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 
+/**
+ * Class JFormFieldAuthors
+ */
 class JFormFieldAuthors extends JFormFieldList {
 
-    protected $type = 'Authors';
+	/**
+	 * property to hold authors
+	 *
+	 * @var string  $type
+	 */
+	protected $type = 'Authors';
 
 	/**
 	 * Method to get the field options.

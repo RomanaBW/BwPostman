@@ -54,7 +54,10 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @since	1.0.1
+	 *
 	 * @see		JController
+
+	 * @since	1.0.1
 	 */
 	public function __construct($config = array())
 	{
@@ -263,7 +266,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @param	string	$key		The name of the key for the primary key.
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	boolean
+	 *
 	 * @since	1.1.0
 	 */
 	public function cancel($key = null)
@@ -335,7 +340,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @return  boolean  True if successful, false otherwise.
 	 *
 	 * @access	public
-	 * @return	Redirect
+	 *
+	 * @return	void
+	 *
 	 * @since	1.1.0
 	 */
 	public function save($key = NULL, $urlVar = NULL)
@@ -664,7 +671,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Check the newsletter form
 		$data	= $model->checkForm($recordId, $error);
 
-		// if checkForm fails redrect to edit
+		// if checkForm fails redirect to edit
 		if ($error) {
 			for ($i = 0; $i <= count($error); $i++)
 			{
@@ -709,7 +716,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 							// Check if there are assigned mailinglists or joomla user groups and if they contain subscribers/users
 							if (!$model->checkRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id'])) {
 								$app->enqueueMessage($ret_msg, 'error');
-								$error	= true;
 								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 								$link = JRoute::_(
 											'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -720,7 +726,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 							else {
 								if (!$model->sendNewsletter($ret_msg, 'recipients', $recordId, $unconfirmed, $data['campaign_id'])) {
 									$app->enqueueMessage($ret_msg, 'error');
-									$error	= true;
 									$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 									$link = JRoute::_(
 											'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -740,7 +745,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 							// Check if there are test-recipients
 							if (!$model->checkTestrecipients()) {
 								$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_TESTRECIPIENTS'), 'error');
-								$error	= true;
 								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 								$link = JRoute::_(
 											'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -751,7 +755,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 							else {
 								if (!$model->sendNewsletter($ret_msg, 'testrecipients', $recordId, $unconfirmed, $data['campaign_id'])) {
 									$app->enqueueMessage($ret_msg, 'error');
-									$error	= true;
 									$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 									$link = JRoute::_(
 											'index.php?option=' . $this->option . '&view=' . $this->view_item
@@ -794,6 +797,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * Method to copy a newsletter
 	 *
 	 * @access	public
+	 *
+	 * @return void
 	 */
 	public function copy()
 	{
@@ -830,7 +835,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * --> subscribers-table: archive_flag = 1, set archive_date
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function archive()
 	{

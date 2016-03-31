@@ -30,18 +30,45 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
+/**
+ * Class BwPostmanViewNewsletters
+ */
 class BwPostmanViewNewsletters extends JViewLegacy
 {
-	protected $state		= null;
-	protected $item			= null;
-	protected $items		= null;
+	/**
+	 * property to hold state data
+	 *
+	 * @var array   $stae
+	 */
+	protected $state;
+
+	/**
+	 * property to hold selected item
+	 *
+	 * @var array   $item
+	 */
+	protected $item;
+
+	/**
+	 * property to hold items
+	 *
+	 * @var array   $items
+	 */
+	protected $items;
+
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $object
+	 */
 	protected $pagination	= null;
 
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
@@ -50,7 +77,6 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$uri		= JFactory::getURI();
 		$uri_string	= $uri->toString();
 		$menu		= $app->getMenu()->getActive();
-		$jinput		= JFactory::getApplication()->input;
 
 		$state		= $this->get('State');
 		$items		= $this->get('Items');

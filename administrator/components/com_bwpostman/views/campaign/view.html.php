@@ -41,15 +41,33 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  */
 class BwPostmanViewCampaign extends JViewLegacy
 {
+	/**
+	 * property to hold form data
+	 *
+	 * @var array   $form
+	 */
 	protected $form;
+
+	/**
+	 * property to hold selected item
+	 *
+	 * @var array   $item
+	 */
 	protected $item;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 */
 	protected $state;
 
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{

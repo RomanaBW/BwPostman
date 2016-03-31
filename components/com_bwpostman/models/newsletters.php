@@ -33,15 +33,38 @@ use Joomla\Registry\Registry;
 jimport('joomla.application.component.modellist');
 jimport('joomla.application.component.helper');
 
+/**
+ * Class BwPostmanModelNewsletters
+ */
 class BwPostmanModelNewsletters extends JModelList
 {
 
+	/**
+	 * property to hold context
+	 *
+	 * @var string  $_context
+	 */
 	public $_context = 'com_bwpostman.newsletters';
 
+	/**
+	 * property to hold extension name
+	 *
+	 * @var string
+	 */
 	protected $_extension = 'com_bwpostman';
 
+	/**
+	 * property to hold items
+	 *
+	 * @var array
+	 */
 	private $_items = null;
 
+	/**
+	 * property to hold newsletters
+	 *
+	 * @var array
+	 */
 	protected $_newsletters = null;
 
 	/**
@@ -80,7 +103,6 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		parent::__construct();
 
-		$app 	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
 
 		$id = $jinput->get('id');
@@ -107,9 +129,9 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param	string  $type	    The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
 	 *
@@ -125,6 +147,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
+	 * @param string    $ordering
+	 * @param string    $direction
+	 *
 	 * @since	1.0.1
 	 */
 	protected function populateState($ordering = NULL, $direction = NULL)
@@ -136,9 +161,6 @@ class BwPostmanModelNewsletters extends JModelList
 
 		// Load state from the request.
 		$this->setState('newsletter.id', $pk);
-
-		// Get the global params
-		$globalParams = JComponentHelper::getParams('com_bwpostman', true);
 
 		// Load the parameters. Merge Global and Menu Item params into new object
 		$params = $app->getParams();
@@ -228,7 +250,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to reset the newsletter ID and newsletter data
 	 *
 	 * @access	public
-	 * @param	int	Newsletter ID
+	 *
+	 * @param	int	$id     Newsletter ID
 	 */
 	public function setId($id = 0)
 	{
@@ -280,7 +303,6 @@ class BwPostmanModelNewsletters extends JModelList
 		$userId	= $user->get('id');
 		$guest	= $user->get('guest');
 		$groups	= $user->getAuthorisedViewLevels();
-		$input	= JFactory::getApplication()->input;
 
 		$this->_pagination = parent::getPagination();
 
@@ -364,7 +386,6 @@ class BwPostmanModelNewsletters extends JModelList
 	protected function getListQuery()
 	{
 		// define variables
-		$user		= JFactory::getUser();
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 
@@ -569,9 +590,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @access 	public
 	 *
-	 * @param	boolean	with title
+	 * @param	boolean	$title          with title
 	 *
-	 * @return 	array	ID and title of allowed mailinglists
+	 * @return 	array	$mailinglists   ID and title of allowed mailinglists
 	 *
 	 * @since	1.2.0
 	 */
@@ -672,9 +693,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @access 	public
 	 *
-	 * @param	boolean	with title
+	 * @param	boolean	$title      with title
 	 *
-	 * @return 	array	ID of allowed campaigns
+	 * @return 	array	$campaigns  ID of allowed campaigns
 	 *
 	 * @since	1.2.0
 	 */
@@ -786,9 +807,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @access 	public
 	 *
-	 * @param	boolean	with title
+	 * @param	boolean	$title      with title
 	 *
-	 * @return 	array	ID of allowed campaigns
+	 * @return 	array	$groups     ID of allowed campaigns
 	 *
 	 * @since	1.2.0
 	 */
@@ -886,9 +907,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @access 	public
 	 *
-	 * @param	int	module ID
+	 * @param	int	    $id     module ID
 	 *
-	 * @return 	object	module object
+	 * @return 	object	$module module object
 	 *
 	 * @since	1.2.0
 	 */

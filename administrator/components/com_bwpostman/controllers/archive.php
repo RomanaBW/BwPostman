@@ -41,6 +41,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 	/**
 	 * Constructor
+	 *
+	 * @param array $config     configuration params
 	 */
 	public function __construct($config = array())
 	{
@@ -231,7 +233,6 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		$app	= JFactory::getApplication();
 		$tab	= $jinput->get('layout','newsletters');
 		$cid	= $jinput->get('cid', array(0), 'post', 'array');
-		$msg	= '';
 		$type	= 'message';
 
 		JArrayHelper::toInteger($cid);

@@ -54,16 +54,16 @@ class BwPostmanTableMailinglists extends JTable
 	/** @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels */
 	var $access = 0;
 
-	/** @var tinyint Published */
+	/** @var int Published */
 	var $published = 0;
 
-	/** @var date creation date of the mailinglist */
+	/** @var datetime creation date of the mailinglist */
 	var $created_date = '0000-00-00 00:00:00';
 
 	/** @var int user ID */
 	var $created_by = 0;
 
-	/** @var date last modification date of the mailinglist */
+	/** @var datetime last modification date of the mailinglist */
 	var $modified_time = '0000-00-00 00:00:00';
 
 	/** @var int user ID */
@@ -72,13 +72,13 @@ class BwPostmanTableMailinglists extends JTable
 	/** @var int Checked-out owner */
 	var $checked_out = 0;
 
-	/** @var date Checked-out time */
+	/** @var datetime Checked-out time */
 	var $checked_out_time = 0;
 
-	/** @var tinyint Archive-flag --> 0 = not archived, 1 = archived */
+	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
 	var $archive_flag = 0;
 
-	/** @var date Archive-date */
+	/** @var datetime Archive-date */
 	var $archive_date = null;
 
 	/** @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator */
@@ -87,7 +87,7 @@ class BwPostmanTableMailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -167,8 +167,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @since   11.1
 	 */
-//	protected function _getAssetParentId(JTable $table = null, $id = null)
-	protected function _getAssetParentId(JTable $table = null, $id = null) // Really so wanted in Joomla 3????
+	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
 		// Initialise variables.
 		$assetId = null;
@@ -201,8 +200,8 @@ class BwPostmanTableMailinglists extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
-	 * @param object Named array
-	 * @param string Space separated list of fields not to bind
+	 * @param array|object  $data       Named array or object
+	 * @param string        $ignore     Space separated list of fields not to bind
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')

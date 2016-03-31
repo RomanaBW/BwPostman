@@ -33,10 +33,10 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $jinput	= JFactory::getApplication()->input;
 
-// Split the result array into three arrays which contains errors and warnings which occured during the import process
-$mail_err 		= isset ($this->result['mail_err']) ? $this->result['mail_err'] : '';
-$import_err 	= isset($this->result['import_err']) ? $this->result['import_err'] : '';
-$import_warn 	= isset($this->result['import_warn']) ? $this->result['import_warn'] : '';
+// Split the result array into three arrays which contains errors and warnings which occurred during the import process
+if (isset ($this->result['mail_err'])) $mail_err = $this->result['mail_err'];
+if (isset($this->result['import_err'])) $import_err = $this->result['import_err'];
+if (isset($this->result['import_warn'])) $import_warn = $this->result['import_warn'];
 $option			= $jinput->getCmd('option');
 $fileformat		= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat');
 

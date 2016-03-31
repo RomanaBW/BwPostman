@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -41,23 +41,41 @@ jimport('joomla.application.component.view');
  */
 class BwPostmanViewTemplate extends JViewLegacy
 {
+	/**
+	 * property to hold form data
+	 *
+	 * @var array   $form
+	 */
 	protected $form;
-	protected $item;
-	protected $state;
 
 	/**
-	 * Display
+	 * property to hold selected item
 	 *
-	 * @access	public
+	 * @var array   $item
+	 */
+	protected $item;
+
+	/**
+	 * property to hold state
 	 *
-	 * @param	string Template
+	 * @var array|object  $state
+	 */
+	protected $state;
+
+
+	/**
+	 * Execute and display a template script.
 	 *
-	 * @since	1.1.0
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @see     fetch()
+	 * @since   1.1.0
 	 */
 	public function display($tpl = null)
 	{
 		$app		= JFactory::getApplication();
-		$_db		= JFactory::getDBO();
 		$template	= $app->getTemplate();
 		$uri		= JFactory::getURI();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());

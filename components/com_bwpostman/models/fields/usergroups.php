@@ -166,7 +166,7 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 
 			$html[] = '							<tr class="row' . $i % 2 . '">';
 			$html[] = '							 <td align="center">' . JText::_($option->value) . '</td>';
-			$html[] = '              <td><input type="checkbox" id="ub'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/></td>';
+			$html[] = '              <td><input type="checkbox" id="ub'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
 			$html[] = '							 <td>' . JText::_($option->text) . '</td>';
 			$html[] = '						  </tr>';
 
@@ -202,8 +202,6 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		if (!isset(static::$options[$hash]))
 		{
 			static::$options[$hash] = parent::getOptions();
-
-			$options = array();
 
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)

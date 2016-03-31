@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -45,13 +45,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE' , true); ?>");
 			if (ConfirmArchive == true) {
 				submitform(pressbutton);
-			} else {
-				return;
 			}
 		} else {
 			submitform(pressbutton);
 		}
-	}
+	};
 /* ]]> */
 </script>
 
@@ -65,87 +63,86 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php else :  ?>
 			<div id="j-main-container">
 		<?php endif; ?>
-			<?php
-				// Search tools bar
-				echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-			?>
+		<?php
+			// Search tools bar
+			echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+		?>
 
-				<div class="row-fluid">
-					<table class="adminlist table table-striped">
-						<thead>
-							<tr>
-								<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-								<th width="250" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-								<th class="center" align="center" width="110" nowrap="nowrap"><?php echo JText::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?></th>
-								<th class="center" align="center" width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?></th>
-								<th class="center" align="center" width="60" nowrap="nowrap"><?php echo JText::_('COM_BWPOSTMAN_TPL_SET_DEFAULT'); ?></th>
-								<th class="center" align="center" width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
-								<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-								<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
-							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
-							</tr>
-						</tfoot>
-						<tbody>
+			<div class="row-fluid">
+				<table class="adminlist table table-striped">
+					<thead>
+						<tr>
+							<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
+							<th width="250" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+							<th class="center" align="center" width="110" nowrap="nowrap"><?php echo JText::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?></th>
+							<th class="center" align="center" width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?></th>
+							<th class="center" align="center" width="60" nowrap="nowrap"><?php echo JText::_('COM_BWPOSTMAN_TPL_SET_DEFAULT'); ?></th>
+							<th class="center" align="center" width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
+						</tr>
+					</tfoot>
+					<tbody>
 						<?php
-							if (count($this->items) > 0) {
-								foreach ($this->items as $i => $item) :
-									$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-									$canEdit	= $user->authorise('core.edit',			'com_bwpostman.template.'.$item->id);
-									$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.template.'.$item->id) && $item->created_by == $userId;
-									$canChange	= $user->authorise('core.edit.state',	'com_bwostman.template.'.$item->id) && $canCheckin;
-									?>
-									<tr class="row<?php echo $i % 2; ?>">
-										<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-										<td>
-										<?php if ($item->checked_out) : ?>
-											<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'templates.', $canCheckin); ?>
+						if (count($this->items) > 0) {
+							foreach ($this->items as $i => $item) :
+								$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+								$canEdit	= $user->authorise('core.edit',			'com_bwpostman.template.'.$item->id);
+								$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.template.'.$item->id) && $item->created_by == $userId;
+								$canChange	= $user->authorise('core.edit.state',	'com_bwostman.template.'.$item->id) && $canCheckin;
+								?>
+								<tr class="row<?php echo $i % 2; ?>">
+									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+									<td>
+									<?php if ($item->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'templates.', $canCheckin); ?>
+									<?php endif; ?>
+									<?php if ($canEdit || $canEditOwn) : ?>
+											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=template.edit&id='. $item->id);?>">
+												<?php echo $this->escape($item->title); ?></a>
+										<?php else : ?>
+											<?php echo $this->escape($item->title); ?>
 										<?php endif; ?>
-										<?php if ($canEdit || $canEditOwn) : ?>
+									</td>
+									<td class="center" align="center" >
+										<?php if ($item->thumbnail) : ?>
+											<?php if ($canEdit || $canEditOwn) : ?>
 												<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=template.edit&id='. $item->id);?>">
-													<?php echo $this->escape($item->title); ?></a>
-											<?php else : ?>
-												<?php echo $this->escape($item->title); ?>
-											<?php endif; ?>
-										</td>
-										<td class="center" align="center" >
-											<?php if ($item->thumbnail) : ?>
-												<?php if ($canEdit || $canEditOwn) : ?>
-													<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=template.edit&id='. $item->id);?>">
-														<img src="<?php echo JURI::root( true ) . '/' . $item->thumbnail; ?>" style="width: 100px;" />
-													</a>
-												<?php else : ?>
 													<img src="<?php echo JURI::root( true ) . '/' . $item->thumbnail; ?>" style="width: 100px;" />
-												<?php endif; ?>
+												</a>
+											<?php else : ?>
+												<img src="<?php echo JURI::root( true ) . '/' . $item->thumbnail; ?>" style="width: 100px;" />
 											<?php endif; ?>
-										</td>
-										<td class="center" align="center"><?php if (($item->tpl_id == 998) || ($item->tpl_id > 999)) { echo 'TEXT'; } else { echo 'HTML'; }?></td>
-										<td class="center" align="center"><?php echo JHtml::_('jgrid.isdefault', ($item->standard != '0' && !empty($item->standard)), $i, 'template.', $canChange && $item->standard != '1');?></td>
-										<td class="center" align="center"><?php echo JHTML::_('jgrid.published', $item->published, $i, 'templates.', $canChange, 'cb'); ?>
-										<td><?php echo nl2br($item->description); ?></td>
-										<td align="center"><?php echo $item->id; ?></td>
-									</tr><?php
-								endforeach;
-							}
-							else { ?>
-								<tr class="row1">
-									<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+										<?php endif; ?>
+									</td>
+									<td class="center" align="center"><?php if (($item->tpl_id == 998) || ($item->tpl_id > 999)) { echo 'TEXT'; } else { echo 'HTML'; }?></td>
+									<td class="center" align="center"><?php echo JHtml::_('jgrid.isdefault', ($item->standard != '0' && !empty($item->standard)), $i, 'template.', $canChange && $item->standard != '1');?></td>
+									<td class="center" align="center"><?php echo JHTML::_('jgrid.published', $item->published, $i, 'templates.', $canChange, 'cb'); ?>
+									<td><?php echo nl2br($item->description); ?></td>
+									<td align="center"><?php echo $item->id; ?></td>
 								</tr><?php
-							}
+							endforeach;
+						}
+						else { ?>
+							<tr class="row1">
+								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+							</tr><?php
+						}
 						?>
-						</tbody>
-					</table>
-				</div>
-
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="boxchecked" value="0" />
-				<?php echo JHTML::_('form.token'); ?>
-
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+					</tbody>
+				</table>
 			</div>
+
+			<input type="hidden" name="task" value="" />
+			<input type="hidden" name="boxchecked" value="0" />
+			<?php echo JHTML::_('form.token'); ?>
+
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 		</div>
 	</form>
 </div>

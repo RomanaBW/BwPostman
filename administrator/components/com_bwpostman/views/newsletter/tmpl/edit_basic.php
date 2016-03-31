@@ -64,12 +64,7 @@ function changeTab(tab){
 		checkSelectedContent(<?php echo $checkContentArgs; ?>);
 		if ($j("#jform_campaign_id option:selected").val() == '-1') {
 			res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-			if (res == false) {
-				return false;
-			}
-			else {
-				return true;
-			}
+			return res;
 		}
 		else {
 			return true;
@@ -132,7 +127,7 @@ Joomla.submitbutton = function (pressbutton) {
 			}
 }
 	}
-}
+};
 
 /* ]]> */
 </script>
@@ -327,9 +322,9 @@ Joomla.submitbutton = function (pressbutton) {
 								</div>
 
 								<div class="width-20 fltlft span3">
-									<input style="width: 50px" type="button" name="left" class="btn-left" value="&lt;"
+									<input style="width: 50px;" type="button" name="left" class="btn-left" value="&lt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_available_content'], document.adminForm['jform_selected_content'])" />
-									<input style="width: 50px" type="button" name="right" class="btn-right" value="&gt;"
+									<input style="width: 50px;" type="button" name="right" class="btn-right" value="&gt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_selected_content'], document.adminForm['jform_available_content'])" />
 								</div>
 

@@ -50,26 +50,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		if (tab != 'default_unsent') {
 			document.adminForm.tab.setAttribute('value',tab);
 		}
-		else {
-			return false;
-		}
 	}
 
 	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
 		if (pressbutton == 'newsletters.archive') {
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE' , true); ?>");
 			if (ConfirmArchive == true) {
 				submitform(pressbutton);
 			}
-			else {
-				return;
-			}
 		}
 		else {
 			submitform(pressbutton);
 		}
-	}
+	};
 /* ]]> */
 </script>
 
@@ -81,9 +74,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	if ($task == "startsending") {
 		echo '<script type="text/javascript">'."\n";
 		echo "window.addEvent('load', function() {\n";
-		echo "SqueezeBox.initialize({handler: 'iframe', size: {x: 600, y: 600}});\n";
 		// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
-		echo "SqueezeBox.setContent('iframe', 'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending'); \n";
+		echo "SqueezeBox.open('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', {handler: 'iframe', size: { x: 600, y: 450 }, closable: false}); \n";
 		echo "});\n";
 		echo "</script>\n";
 	}
@@ -115,89 +107,94 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'unsent'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
 		?>
 
-		<div class="form-horizontal">
-			<ul class="bwp_tabs">
-				<li class="open">
-					<button onclick="return changeTab('unsent');" class="buttonAsLink_open">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
-					</button>
-				</li>
-				<li class="closed">
-					<button onclick="return changeTab('sent');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
-					</button>
-				</li>
-				<?php if ($this->count_queue > 0) { ?>
-					<li class="closed">
-						<button onclick="return changeTab('queue');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
+			<div class="form-horizontal">
+				<ul class="bwp_tabs">
+					<li class="open">
+						<button onclick="return changeTab('unsent');" class="buttonAsLink_open">
+							<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 						</button>
 					</li>
-				<?php } ?>
-			</ul>
-		</div>
-		<div class="clr clearfix"></div>
-
-		<div class="row-fluid current">
-			<table class="adminlist table table-striped">
-				<thead>
-					<tr>
-						<th width="30" nowrap="nowrap" align="center"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-						<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-						<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-						<th width="150" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE', 'a.modified_time', $listDirn, $listOrder); ?></th>
-						<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
-						<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
-						<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php
-					if (count($this->items)) {
-						foreach ($this->items as $i => $item) :
-							$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-							$canEdit	= $user->authorise('core.edit',		'com_bwpostman.newsletter.'.$item->id);
-							$canEditOwn	= $user->authorise('core.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
-							?>
-							<tr class="row<?php echo $i % 2; ?>">
-								<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-								<td>
-									<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', $canCheckin); ?>
-									<?php if ($canEdit || $canEditOwn) : ?>
-										<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&layout=edit_basic&id='. $item->id . '&referrer=newsletters');?>">
-											<?php echo $this->escape($item->subject); ?></a>
-									<?php else : ?>
-										<?php echo $this->escape($item->subject); ?>
-									<?php endif; ?>
-								</td>
-								<td><?php echo $this->escape($item->description); ?></td>
-								<td><?php if ($item->modified_time != '0000-00-00 00:00:00') echo JHtml::date($item->modified_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
-								<td><?php echo $item->authors; ?></td>
-								<td align="center"><?php echo $item->campaign_id; ?></td>
-								<td align="center"><?php echo $item->id; ?></td>
-							</tr><?php
-						endforeach;
-					}
-					else {
-		    		// if no data ?>
-						<tr class="row1">
-							<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-						</tr><?php
-					}
-				?>
-				</tbody>
-			</table>
-		</div>
-				<p class="pagination"><?php echo $this->pagination->getListFooter(); ?></p>
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" id="tab" name="tab" value="unsent" />
-				<input type="hidden" name="layout" value="default" />
-				<input type="hidden" name="tpl" value="unsent" />
-				<input type="hidden" name="boxchecked" value="0" />
-				<?php echo JHTML::_('form.token'); ?>
+					<li class="closed">
+						<button onclick="return changeTab('sent');" class="buttonAsLink">
+							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
+						</button>
+					</li>
+					<?php if ($this->count_queue > 0) { ?>
+						<li class="closed">
+							<button onclick="return changeTab('queue');" class="buttonAsLink">
+								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
+							</button>
+						</li>
+					<?php } ?>
+				</ul>
 			</div>
+			<div class="clr clearfix"></div>
+
+			<div class="row-fluid current">
+				<table class="adminlist table table-striped">
+					<thead>
+						<tr>
+							<th width="30" nowrap="nowrap" align="center"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th width="150" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE', 'a.modified_time', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						if (count($this->items)) {
+							foreach ($this->items as $i => $item) :
+								$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+								$canEdit	= $user->authorise('core.edit',		'com_bwpostman.newsletter.'.$item->id);
+								$canEditOwn	= $user->authorise('core.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
+								?>
+								<tr class="row<?php echo $i % 2; ?>">
+									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+									<td>
+										<?php if (!empty($item->attachment)) { ?>
+											<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+										<?php } ?>
+									</td>
+									<td>
+										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', $canCheckin); ?>
+										<?php if ($canEdit || $canEditOwn) : ?>
+											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&layout=edit_basic&task=newsletter.edit&id='. $item->id . '&referrer=newsletters');?>">
+												<?php echo $this->escape($item->subject); ?></a>
+										<?php else : ?>
+											<?php echo $this->escape($item->subject); ?>
+										<?php endif; ?>
+									</td>
+									<td><?php echo $this->escape($item->description); ?></td>
+									<td><?php if ($item->modified_time != '0000-00-00 00:00:00') echo JHtml::date($item->modified_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+									<td><?php echo $item->authors; ?></td>
+									<td align="center"><?php echo $item->campaign_id; ?></td>
+									<td align="center"><?php echo $item->id; ?></td>
+								</tr><?php
+							endforeach;
+						}
+						else {
+			            // if no data ?>
+							<tr class="row1">
+								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+							</tr><?php
+						}
+						?>
+					</tbody>
+				</table>
+			</div>
+			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+
+			<input type="hidden" name="task" value="" />
+			<input type="hidden" id="tab" name="tab" value="unsent" />
+			<input type="hidden" name="layout" value="default" />
+			<input type="hidden" name="tpl" value="unsent" />
+			<input type="hidden" name="boxchecked" value="0" />
+			<?php echo JHTML::_('form.token'); ?>
 		</div>
 	</form>
 </div>

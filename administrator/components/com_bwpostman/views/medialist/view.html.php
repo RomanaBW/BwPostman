@@ -41,6 +41,13 @@ require_once JPATH_ADMINISTRATOR . '/components/com_media/helpers/media.php';
  */
 class BwPostmanViewMediaList extends JViewLegacy
 {
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 */
 	public function display($tpl = null)
 	{
 		// Do not allow cache
@@ -87,6 +94,11 @@ class BwPostmanViewMediaList extends JViewLegacy
 		parent::display($tpl);
 	}
 
+	/**
+	 * Method to set media folder
+	 *
+	 * @param int $index
+	 */
 	function setFolder($index = 0)
 	{
 		if (isset($this->folders[$index]))
@@ -99,6 +111,11 @@ class BwPostmanViewMediaList extends JViewLegacy
 		}
 	}
 
+	/**
+	 * Method to set image
+	 *
+	 * @param int $index
+	 */
 	function setImage($index = 0)
 	{
 		if (isset($this->images[$index]))
@@ -111,6 +128,11 @@ class BwPostmanViewMediaList extends JViewLegacy
 		}
 	}
 
+	/**
+	 * Method to set document
+	 *
+	 * @param int $index
+	 */
 	function setDocument($index = 0)
 	{
 		if (isset($this->documents[$index]))

@@ -96,40 +96,40 @@ class BwPostmanTableNewsletters extends JTable
 	/** @var string Text-version */
 	var $text_version = null;
 
-	/** @var date creation date of the newsletter */
+	/** @var datetime creation date of the newsletter */
 	var $created_date = '0000-00-00 00:00:00';
 
 	/** @var int Author */
 	var $created_by = 0;
 
-	/** @var date last modification date of the newsletter */
+	/** @var datetime last modification date of the newsletter */
 	var $modified_time = '0000-00-00 00:00:00';
 
 	/** @var int user ID */
 	var $modified_by = 0;
 
-	/** @var date Mailing date */
+	/** @var datetime Mailing date */
 	var $mailing_date = '0000-00-00 00:00:00';
 
-	/** @var tinyint Published */
+	/** @var int Published */
 	var $published = null;
 
-	/** @var date for publishing up a newsletter */
+	/** @var datetime for publishing up a newsletter */
 	var $publish_up = '0000-00-00 00:00:00';
 
-	/** @var date for publishing down a newsletter */
+	/** @var datetime for publishing down a newsletter */
 	var $publish_down = '0000-00-00 00:00:00';
 
 	/** @var int Checked-out Owner */
 	var $checked_out = 0;
 
-	/** @var date Checked-out time */
+	/** @var datetime Checked-out time */
 	var $checked_out_time = 0;
 
-	/** @var tinyint Archive-flag --> 0 = not archived, 1 = archived */
+	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
 	var $archive_flag = 0;
 
-	/** @var date Archive-date */
+	/** @var datetime Archive-date */
 	var $archive_date = 0;
 
 	/** @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator */
@@ -141,7 +141,7 @@ class BwPostmanTableNewsletters extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -254,8 +254,8 @@ class BwPostmanTableNewsletters extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
-	 * @param object Named array
-	 * @param string Space separated list of fields not to bind
+	 * @param array|object  $data       Named array
+	 * @param string        $ignore     Space separated list of fields not to bind
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')

@@ -102,6 +102,7 @@ class BwPostmanModelSubscribers extends JModelList
 				'id', 'a.id',
 				'name', 'a.name',
 				'firstname', 'a.firstname',
+				'gender', 'a.gender',
 				'email', 'a.email',
 				'emailformat', 'a.emailformat',
 				'user_id', 'a.user_id',
@@ -188,11 +189,9 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$jinput		= JFactory::getApplication()->input;
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
-		$user		= JFactory::getUser();
 
 		//Get the tab in which we are for subquery
 		$tab	= JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
@@ -218,7 +217,7 @@ class BwPostmanModelSubscribers extends JModelList
 		$query->select(
 				$this->getState(
 						'list.select',
-						'a.id, a.name, a.firstname, a.email, a.checked_out, a.checked_out_time' .
+						'a.id, a.name, a.firstname, a.gender, a.email, a.checked_out, a.checked_out_time' .
 						', a.emailformat, a.user_id, a.status, a.registered_by'
 				) . ', (' . $sub_query . ') AS mailinglists'
 		);
@@ -303,7 +302,6 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	public function getMailinglists()
 	{
-		$app		= JFactory::getApplication();
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 

@@ -160,8 +160,8 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
-				$html[] = '								<td><input type="checkbox" id="cb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/></td>';
-				$html[] = '								<td style="text-align: center">' . $archived . '</td>';
+				$html[] = '								<td><input type="checkbox" id="cb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+				$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
 				$html[] = '								<td>' . JText::_($option->text) . '</td>';
 				$html[] = '								<td>' . JText::_($option->description) . '</td>';
 				$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';
@@ -195,16 +195,11 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 	{
 		$app	= JFactory::getApplication();
 
-		// Initialize variables.
-		$options		= array();
-
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$nullDate	= $_db->getNullDate();
 		$query		= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		// Build sub query which counts the newsletters of each campaign and query
 		$sub_query->select('COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('id') . ') AS ' . $_db->quoteName('newsletters'));

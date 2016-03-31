@@ -113,21 +113,12 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 */
 	public function getOptions()
 	{
-		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
-
 		// Initialize variables.
-		$options		= array();
 		$user_id		= null;
-		$access			= 1;
-		$accesslevels	= array();
 
 		// prepare query
 		$_db		= JFactory::getDbo();
-		$query		= $_db->getQuery(true);
 		$query_user	= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		// get user_ids if exists
 		$query_user->select($_db->quoteName('user_id'));
@@ -135,21 +126,8 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query_user->where($_db->quoteName('id') . ' = ' . (int) $this->_id);
 
 		$_db->setQuery($query_user);
-		$user_id = $_db->loadResult();
 
 		// get authorized viewlevels
-		if ($user_id) {
-			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
-		}
-
-		// check access for unavailable mailinglists
-		if (in_array(3, $accesslevels)) {
-			$access	= 3;
-		}
-		elseif (in_array(2, $accesslevels)) {
-			$access	= 2;
-		}
-
 		$options = $this->getAvailableContent();
 
 		// Merge any additional options in the XML definition.
@@ -176,8 +154,6 @@ class JFormFieldAvailableContent extends JFormFieldList
 		}
 
 		if (is_array($selected_content)) $selected_content	= implode(',',$selected_content);
-
-		$available_content_items = array();
 
 		// Get available content which is categorized
 		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id'));

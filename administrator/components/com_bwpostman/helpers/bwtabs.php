@@ -67,7 +67,8 @@ class JHtmlBwTabs
 	 * Begins the display of a new panel.
 	 *
 	 * @param	string	$text	Text to display.
-	 * @param	string	$id	Identifier of the panel.
+	 * @param	string	$id 	Identifier of the panel.
+	 * @param	string	$event 	onClick event
 	 *
 	 * @return	string	HTML to start a new panel
 	 *

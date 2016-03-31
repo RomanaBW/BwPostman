@@ -173,7 +173,7 @@ if (pressbutton == 'campaign.cancel') {
 			return false;
 		}
 	}
-}
+};
 
 /* ]]> */
 </script>

@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -42,7 +42,7 @@ class BwPostmanTableTemplates extends JTable
 	/** @var int asset_id */
 	var $asset_id = null;
 
-	/** @var tinyint standardtemplate */
+	/** @var int standard template */
 	var $standard = 0;
 
 	/** @var string title */
@@ -102,16 +102,16 @@ class BwPostmanTableTemplates extends JTable
 	/** @var int access */
 	var $access = null;
 
-	/** @var tinyint Published */
+	/** @var int Published */
 	var $published = 0;
 
-	/** @var date creation date of the newsletter */
+	/** @var datetime creation date of the newsletter */
 	var $created_date = '0000-00-00 00:00:00';
 
 	/** @var int Author */
 	var $created_by = 0;
 
-	/** @var date last modification date of the newsletter */
+	/** @var datetime last modification date of the newsletter */
 	var $modified_time = '0000-00-00 00:00:00';
 
 	/** @var int user ID */
@@ -120,14 +120,14 @@ class BwPostmanTableTemplates extends JTable
 	/** @var int Checked-out owner */
 	var $checked_out = 0;
 
-	/** @var date Checked-out time */
+	/** @var datetime Checked-out time */
 	var $checked_out_time = 0;
 
-	/** @var tinyint Archive-flag --> 0 = not archived, 1 = archived */
+	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
 	var $archive_flag = 0;
 
-	/** @var date Archive-date */
-	var $archive_date = 0;
+	/** @var datetime Archive-date */
+	var $archive_date = '0000-00-00 00:00:00';
 
 	/** @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator */
 	var $archived_by = 0;
@@ -135,7 +135,7 @@ class BwPostmanTableTemplates extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since 1.1.0
 	 */
@@ -251,8 +251,8 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @access public
 	 *
-	 * @param object Named array
-	 * @param string Space separated list of fields not to bind
+	 * @param array|object  $data       Named array
+	 * @param string        $ignore     Space separated list of fields not to bind
 	 *
 	 * @return boolean
 	 *
@@ -461,7 +461,9 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @access private
 	 *
-	 * @return $data
+	 * @param   object  $data
+	 *
+	 * @return object   $data
 	 *
 	 * @since 1.1.0
 	 */

@@ -94,7 +94,7 @@ $option	= $jinput->getCmd('option');
 					</tr>
 					<tr class="button">
 						<td width="250" align="center" class="key">
-							<input type="button" class="btn btn-success" name="submitbutton" id=""submitbutton
+							<input type="button" class="btn btn-success" name="submitbutton" id=""
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>
 										onclick="Joomla.submitbutton('subscribers.prepareImport');" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
 							/>
@@ -164,7 +164,6 @@ function extCheck() {
 		$j( "#importfile" ).val('');
 		break;
 	}
-	return;
 }
 
 $j(document).ready(function() {

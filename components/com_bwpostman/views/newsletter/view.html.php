@@ -30,13 +30,17 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
+/**
+ * Class BwPostmanViewNewsletter
+ */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param 	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{

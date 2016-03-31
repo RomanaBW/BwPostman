@@ -29,8 +29,16 @@ defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 
+/**
+ * Class JFormFieldArcUsergroups
+ */
 class JFormFieldArcUsergroups extends JFormFieldList {
 
+	/**
+	 * property to hold archived user groups
+	 *
+	 * @var string  $type
+	 */
 	protected $type = 'ArcUsergroups';
 
 	/**

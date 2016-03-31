@@ -1,6 +1,10 @@
 <?php
 /**
- * @package     Joomla.Site
+ * BwPostman Newsletter Component
+ *
+ * BwPostman order list layout
+ *
+ * @package     Joomla.Admin
  * @subpackage  Layout
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
@@ -18,7 +22,7 @@ $list	= $data['view']->filterForm->getFieldset($layout);
 ?>
 <?php if ($list) : ?>
 	<div class="ordering-select hidden-phone <?php echo $layout?>">
-		<?php foreach ($list as $fieldName => $field) : 
+		<?php foreach ($list as $fieldName => $field) :
 				if (stripos($fieldName, 'list_') !== false) : ?>
 					<div class="js-stools-field-list">
 						<?php echo $field->input; ?>

@@ -51,10 +51,13 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	$config	An optional associative array of configuration settings.
+	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @since	1.0.1
+	 *
 	 * @see		JController
+
+	 * @since	1.0.1
 	 */
 	public function __construct($config = array())
 	{

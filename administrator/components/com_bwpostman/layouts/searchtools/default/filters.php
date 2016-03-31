@@ -1,6 +1,10 @@
 <?php
 /**
- * @package     Joomla.Site
+ * BwPostman Newsletter Component
+ *
+ * BwPostman filter tool layout
+ *
+ * @package     Joomla.Admin
  * @subpackage  Layout
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.

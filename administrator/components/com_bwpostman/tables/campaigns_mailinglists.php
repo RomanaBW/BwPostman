@@ -45,7 +45,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -56,8 +56,9 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 * Method to copy the entries of this table for one or more campaigns
 	 *
 	 * @access	public
-	 * @param 	int ID of the existing campaign
-	 * @param 	int ID of the copied campaign
+	 * @param 	int $oldid      ID of the existing campaign
+	 * @param 	int $newid      ID of the copied campaign
+	 *
 	 * @return 	boolean
 	 */
 	public function copyLists($oldid, $newid)

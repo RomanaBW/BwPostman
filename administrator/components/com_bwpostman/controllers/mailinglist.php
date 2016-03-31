@@ -150,7 +150,6 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$app		= JFactory::getApplication();
 		$jinput		= JFactory::getApplication()->input;
 		$model		= $this->getModel();
 		$table		= $model->getTable();
@@ -228,7 +227,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 * --> mailinglists-table: archive_flag = 1, set archive_date
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function archive()
 	{

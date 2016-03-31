@@ -61,12 +61,12 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 		<?php else :  ?>
 			<div id="j-main-container">
 		<?php endif; ?>
-			<?php
-				// Search tools bar
-				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
-			?>
+		<?php
+			// Search tools bar
+			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+		?>
 
-				<div class="row-fluid">
+			<div class="row-fluid">
 					<table class="adminlist table table-striped">
 						<tbody>
 							<tr>
@@ -145,19 +145,19 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 														<td align="center"><?php echo $item->campaigns; if ($item->campaign_archive_flag) echo " (".JText::_('ARCHIVED').")";?></td>
 														<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'newsletters.', $canChange); ?></td>
 														<td align="center">
-															<p style="text-align: center"><?php echo ($item->publish_up != '0000-00-00 00:00:00') ? JHtml::date($item->publish_up, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?><br /></p>
-															<p style="text-align: center"><?php echo ($item->publish_down != '0000-00-00 00:00:00') ? JHtml::date($item->publish_down, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?></p>
+															<p style="text-align: center;"><?php echo ($item->publish_up != '0000-00-00 00:00:00') ? JHtml::date($item->publish_up, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?><br /></p>
+															<p style="text-align: center;"><?php echo ($item->publish_down != '0000-00-00 00:00:00') ? JHtml::date($item->publish_down, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?></p>
 														</td>
 														<td align="center"><?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
 														<td align="center"><?php echo $item->id; ?></td>
 													</tr>
 												<?php endforeach;
-												}
-												else { ?>
-													<tr class="row1">
-														<td colspan="10"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-													</tr><?php
-												}
+											}
+											else { ?>
+												<tr class="row1">
+													<td colspan="10"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+												</tr><?php
+											}
 											?>
 											</tbody>
 										</table>
@@ -174,8 +174,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 					<?php echo JHTML::_('form.token'); ?>
 				</div>
 
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-			</div>
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 		</div>
 	</form>
 </div>

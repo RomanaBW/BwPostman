@@ -44,7 +44,7 @@ defined ('_JEXEC') or die ('Restricted access');
 		?>
 		<table>
 			<tr>
-				<td><img src="<?php echo $url; ?>"/></td>
+				<td><img src="<?php echo $url; ?>" alt="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?>" /></td>
 				<td><strong><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?></strong></td>
 			</tr>
 		</table>

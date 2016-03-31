@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -95,7 +95,7 @@ $options = array(
 		} else {
 			submitform(pressbutton);
 		}
-	}
+	};
 
 		// insert placeholder
 		function buttonClick(text, editor) {
@@ -155,7 +155,7 @@ $options = array(
 		if (store == 0 || store === undefined || store === null){
 			checkValues(0);
 		}
-	}
+	};
 /* ]]> */
 </script>
 
@@ -257,10 +257,9 @@ $options = array(
 					<p><button class="btn btn-large btn-block btn-primary" type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;</p>
 					<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>" height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
 				</div>
-			<div class="clr clearfix"></div>
+				<div class="clr clearfix"></div>
 			</div>
-		</div>
-	</fieldset>
+		</fieldset>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />

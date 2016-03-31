@@ -1,5 +1,9 @@
 <?php
 /**
+ * BwPostman Component
+ *
+ * BwPostman  form field color selector
+ *
  * @package     Joomla.Platform
  * @subpackage  Form
  *

@@ -45,7 +45,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	/** @var string Recipient email */
 	var $recipient = null;
 
-	/** @var tinyint Mode --> 0 = Text, 1 = HTML */
+	/** @var int Mode --> 0 = Text, 1 = HTML */
 	var $mode = null;
 
 	/** @var string Recipient name */
@@ -63,7 +63,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -74,8 +74,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
-	 * @param object Named array
-	 * @param string Space separated list of fields not to bind
+	 * @param array|object  $data       Named array
+	 * @param string        $ignore     Space separated list of fields not to bind
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
@@ -122,12 +122,12 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to get the first entry of this table
 	 *
 	 * @access 	public
-	 * @param   int Only pop entries with < trial
+	 * @param   int     $trial  Only pop entries with < trial
+	 *
 	 * @return 	int --> 0 if nothing was selected
 	 */
 	public function pop($trial = 2)
 	{
-		$k = $this->_tbl_key;
 		$this->reset();
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
@@ -158,12 +158,14 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to store a single recipient
 	 *
 	 * @access 	public
-	 * @param 	int int Content ID --> from the sendmailcontent-Table
-	 * @param 	int Emailformat --> 0 = Text, 1 = HTML
-	 * @param 	string Recipient email
-	 * @param   string Recipient name
-	 * @param   int Subscriber ID
-	 * @param   int Number of delivery attempts
+	 *
+	 * @param 	int     $content_id         Content ID --> from the sendmailcontent-Table
+	 * @param 	int     $emailformat        Emailformat --> 0 = Text, 1 = HTML
+	 * @param 	string  $email              Recipient email
+	 * @param   string  $name               Recipient name
+	 * @param   string  $firstname          Recipient first name
+	 * @param   int     $subscriber_id      Subscriber ID
+	 * @param   int     $trial              Number of delivery attempts
 	 * @return 	boolean
 	 */
 	public function push($content_id, $emailformat, $email, $name, $firstname, $subscriber_id, $trial = 0)
@@ -203,10 +205,11 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to store all recipients when clicking the 'send' button
 	 *
 	 * @access	public
-	 * @param 	int Newsletter-ID
-	 * @param 	int Content ID --> from the sendmailcontent-Table
-	 * @param 	int Status --> 0 = unconfirmed, 1 = confirmed
-	 * @param	int		campaign id
+	 *
+	 * @param 	int     $nl_id          Newsletter-ID
+	 * @param 	int     $content_id     Content ID --> from the sendmailcontent-Table
+	 * @param 	int     $status         Status --> 0 = unconfirmed, 1 = confirmed
+	 * @param	int		$cam_id         campaign id
 	 *
 	 * @return 	boolean
 	 */
@@ -271,8 +274,10 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to store all subscribers when clicking the 'send' button
 	 *
 	 * @access	public
-	 * @param 	int Content ID --> --> from the sendmailcontent-Table
-	 * @param 	int Status -->  0 = unconfirmed, 1 = confirmed, 9 = test-recipient
+	 *
+	 * @param 	int     $content_id     Content ID --> --> from the sendmailcontent-Table
+	 * @param 	int     $status         Status -->  0 = unconfirmed, 1 = confirmed, 9 = test-recipient
+	 *
 	 * @return 	boolean
 	 */
 	public function pushAllSubscribers($content_id, $status) {
@@ -314,9 +319,11 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to store all users when clicking the 'send' button
 	 *
 	 * @access	public
-	 * @param 	int Content ID --> from the sendmailcontent-Table
-	 * @param 	array Usergroups
-	 * @param 	int Emailformat --> standard email format defined by BwPostman preferences
+	 *
+	 * @param 	int     $content_id     Content ID --> from the sendmailcontent-Table
+	 * @param 	array   $usergroups     Usergroups
+	 * @param 	int     $format         Emailformat --> standard email format defined by BwPostman preferences
+	 *
 	 * @return 	boolean
 	 */
 	public function pushJoomlaUser($content_id, $usergroups, $format = 0){
@@ -374,6 +381,11 @@ class BwPostmanTableSendmailqueue extends JTable
 		return true;
 	}
 
+	/**
+	 * Method to reset sending trials
+	 *
+	 * @return bool
+	 */
 	public function resetTrials(){
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);

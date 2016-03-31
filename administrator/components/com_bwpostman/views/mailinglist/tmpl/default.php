@@ -53,7 +53,7 @@ JHtml::_('formbehavior.chosen', 'select');
 		} else {
 			submitform(pressbutton);
 		}
-	}
+	};
 /* ]]> */
 </script>
 

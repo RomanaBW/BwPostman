@@ -121,7 +121,6 @@ class BwPostmanControllerFile extends JControllerLegacy
 
 			// Trigger the onContentBeforeSave event.
 			JPluginHelper::importPlugin('content');
-			$dispatcher		= JEventDispatcher::getInstance();
 
 			$object_file	= new JObject($file);
 			$object_file->filepath = $filepath;

@@ -70,7 +70,6 @@ class JFormFieldSelectedContent extends JFormFieldList
 		// Initialize variables.
 		$html	= array();
 		$attr	= '';
-		$return	= '';
 
 		// Initialize some field attributes.
 		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
@@ -105,21 +104,12 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 */
 	public function getOptions()
 	{
-		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
-
 		// Initialize variables.
-		$options		= array();
 		$user_id		= null;
-		$access			= 1;
-		$accesslevels	= array();
 
 		// prepare query
 		$_db		= JFactory::getDbo();
-		$query		= $_db->getQuery(true);
 		$query_user	= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		// get user_ids if exists
 		$query_user->select($_db->quoteName('user_id'));
@@ -128,19 +118,6 @@ class JFormFieldSelectedContent extends JFormFieldList
 
 		$_db->setQuery($query_user);
 		$user_id = $_db->loadResult();
-
-		// get authorized viewlevels
-		if ($user_id) {
-			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
-		}
-
-		// check access for unavailable mailinglists
-		if (in_array(3, $accesslevels)) {
-			$access	= 3;
-		}
-		elseif (in_array(2, $accesslevels)) {
-			$access	= 2;
-		}
 
 		$options = $this->getSelectedContent();
 

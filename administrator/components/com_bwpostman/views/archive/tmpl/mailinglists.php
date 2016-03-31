@@ -61,54 +61,54 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 		<?php else :  ?>
 			<div id="j-main-container">
 		<?php endif; ?>
-			<?php
-				// Search tools bar
-				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
-			?>
+		<?php
+			// Search tools bar
+			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+		?>
 
-				<div class="row-fluid">
-					<table class="adminlist table table-striped">
-						<tbody>
-							<tr>
-								<td valign="top" width="90%">
-									<ul class="bwp_tabs">
-										<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
-											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
-										</li>
-										<li class="closed">
-											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
-										</li>
-										<li class="closed">
-											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
-										</li>
-										<li class="open">
-											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
-										</li>
-										<li class="closed">
-											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
-										</li>
-									</ul>
+			<div class="row-fluid">
+				<table class="adminlist table table-striped">
+					<tbody>
+						<tr>
+							<td valign="top" width="90%">
+								<ul class="bwp_tabs">
+									<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
+										<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
+									</li>
+									<li class="closed">
+										<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
+									</li>
+									<li class="closed">
+										<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
+									</li>
+									<li class="open">
+										<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
+									</li>
+									<li class="closed">
+										<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
+									</li>
+								</ul>
 
-									<div class="current">
-										<table class="adminlist">
-											<thead>
-												<tr>
-													<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-													<th width="250"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ML_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-													<th><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-													<th width="100"><?php echo JHTML::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?></th>
-													<th width="100"><?php echo JHTML::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
-													<th width="180"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?></th>
-													<th width="150"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
-													<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
-												</tr>
-											</thead>
-											<tfoot>
-												<tr>
-													<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
-												</tr>
-											</tfoot>
-											<tbody>
+								<div class="current">
+									<table class="adminlist">
+										<thead>
+											<tr>
+												<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
+												<th width="250"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ML_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+												<th><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+												<th width="100"><?php echo JHTML::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?></th>
+												<th width="100"><?php echo JHTML::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
+												<th width="180"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?></th>
+												<th width="150"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
+												<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+											</tr>
+										</thead>
+										<tfoot>
+											<tr>
+												<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
+											</tr>
+										</tfoot>
+										<tbody>
 											<?php
 											if (count($this->items) > 0) {
 												foreach ($this->items as $i => $item) :
@@ -132,29 +132,28 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 														<td align="center"><?php echo $item->id; ?></td>
 													</tr>
 												<?php endforeach;
-												}
-												else { ?>
-													<tr class="row1">
-														<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-													</tr><?php
-												}
-											?>
-											</tbody>
-										</table>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<input type="hidden" name="task" value="" />
-					<input type="hidden" name="boxchecked" value="0" />
-					<input type="hidden" name="layout" value="mailinglists" /><!-- value can change if one clicks on another tab -->
-					<input type="hidden" name="tab" value="mailinglists" /><!-- value never changes -->
-					<?php echo JHTML::_('form.token'); ?>
-				</div>
-
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+											}
+											else { ?>
+												<tr class="row1">
+													<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+												</tr><?php
+											}
+										?>
+										</tbody>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="hidden" name="task" value="" />
+				<input type="hidden" name="boxchecked" value="0" />
+				<input type="hidden" name="layout" value="mailinglists" /><!-- value can change if one clicks on another tab -->
+				<input type="hidden" name="tab" value="mailinglists" /><!-- value never changes -->
+				<?php echo JHTML::_('form.token'); ?>
 			</div>
+
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 		</div>
 	</form>
 </div>

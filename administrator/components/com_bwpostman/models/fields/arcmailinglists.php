@@ -29,9 +29,17 @@ defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 
+/**
+ * Class JFormFieldArcMailinglists
+ */
 class JFormFieldArcMailinglists extends JFormFieldList {
 
-    protected $type = 'ArcMailinglists';
+	/**
+	 * property to hold archived mailing lists
+	 *
+	 * @var string  $type
+	 */
+	protected $type = 'ArcMailinglists';
 
 	/**
 	 * Method to get the field options.

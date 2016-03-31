@@ -43,10 +43,11 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
 class BwPostmanViewMailinglists extends JViewLegacy
 {
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
@@ -57,10 +58,6 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 		else {
-			// Build the key for the userState
-			$key			= $this->getName();
-			$filter_search	= $app->getUserStateFromRequest($key.'search_filter', 'filter.search_filter', 'title', 'string');
-
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items			= $this->get('Items');

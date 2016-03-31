@@ -29,20 +29,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+/**
+ * Class BwPostmanViewNewsletterelement
+ */
 class BwPostmanViewNewsletterelement extends JViewLegacy
 {
 
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
 		$app = JFactory::getApplication();
 
-		$db			= JFactory::getDBO();
 		$user		= JFactory::getUser();
 		$uri		= JFactory::getURI();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
@@ -53,8 +56,6 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		// Load the ordering, the search and the filters
 		$filter_order 		= $app->getUserStateFromRequest($key.'_filter_order', 'filter_order', 'a.subject', 'cmd');
 		$filter_order_Dir 	= $app->getUserStateFromRequest($key.'_filter_order_Dir', 'filter_order_Dir', '', 'word');
-		$filter_state 		= $app->getUserStateFromRequest($key.'_filter_state', 'filter_state', '', 'word');
-		$filter_search		= $app->getUserStateFromRequest($key.'_filter_search', 'filter_search', 'subject', 'string');
 		$search				= $app->getUserStateFromRequest($key.'_search', 'search', '', 'string');
 		$search				= JString::strtolower($search);
 
@@ -66,7 +67,6 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		// Get data from the model
 		$items 		= $this->get('data');
 		$pagination = $this->get('pagination');
-		$total 		= $this->get('total');
 
 		// Table ordering
 		$lists['order'] = $filter_order;
@@ -86,4 +86,4 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		parent::display($tpl);
 	}
 }//end class
-?>
+

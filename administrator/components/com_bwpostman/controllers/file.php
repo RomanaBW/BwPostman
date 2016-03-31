@@ -64,7 +64,6 @@ class BwPostmanControllerFile extends JControllerLegacy
 		// Check for request forgeries
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 		$params = JComponentHelper::getParams('com_media');
-		$jinput	= JFactory::getApplication()->input;
 
 		// Get some data from the request
 		$files			= $this->input->files->get('Filedata', '', 'array');
@@ -147,7 +146,6 @@ class BwPostmanControllerFile extends JControllerLegacy
 		// Set FTP credentials, if given
 		JClientHelper::setCredentialsFromRequest('ftp');
 		JPluginHelper::importPlugin('content');
-		$dispatcher	= JEventDispatcher::getInstance();
 
 		foreach ($files as &$file)
 		{

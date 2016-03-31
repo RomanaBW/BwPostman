@@ -49,6 +49,12 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 	/**
 	 * Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @since	1.0.1
+	 *
+	 * @see		JController
 	 */
 	public function __construct($config = array())
 	{
@@ -64,10 +70,12 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param	string	$name	The name of the model.
-	 * @param	string	$prefix	The prefix for the PHP class name.
+	 * @param	string	$name   	The name of the model.
+	 * @param	string	$prefix 	The prefix for the PHP class name.
+	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @return	JModel
+
 	 * @since	1.0.1
 	 */
 	public function getModel($name = 'Newsletter', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -174,12 +182,11 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * Method to remove all entries from the sendmailqueue-table
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	void
 	 */
 	public function clear_queue()
 	{
-		$jinput	= JFactory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
@@ -199,12 +206,11 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * Method to add selected content items to the newsletter
 	 *
 	 * @access	public
-	 * @return 	Redirect
+	 *
+	 * @return 	string  $insert_contents    the content of the newsletter
 	 */
 	public function addContent()
 	{
-		$jinput	= JFactory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
@@ -219,12 +225,10 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	/**
 	 * Method to reset the count of delivery attempts in sendmailqueue back to 0.
 	 *
-	 * @return unknown_type
+	 * @return void
 	 */
 	public function resetSendAttempts()
 	{
-		$jinput	= JFactory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 

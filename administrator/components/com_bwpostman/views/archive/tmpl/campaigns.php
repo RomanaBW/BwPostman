@@ -98,7 +98,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
 										</li>
 										<li class="closed">
-											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit(); "class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
+											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
 										</li>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>

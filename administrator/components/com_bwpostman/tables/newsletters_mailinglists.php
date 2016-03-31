@@ -45,7 +45,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -56,8 +56,8 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 * Method to copy the entries of this table for one or more newsletters
 	 *
 	 * @access	public
-	 * @param 	int ID of the existing newsletter
-	 * @param 	int ID of the copied newsletter
+	 * @param 	int $oldid      ID of the existing newsletter
+	 * @param 	int $newid      ID of the copied newsletter
 	 * @return 	boolean
 	 */
 	public function copyLists($oldid, $newid)

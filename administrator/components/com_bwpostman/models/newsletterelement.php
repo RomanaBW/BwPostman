@@ -105,7 +105,6 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 */
 	public function getData()
 	{
-		$pagination = $this->getPagination();
 		if (empty($this->_data))
 		{
 			$query = $this->_buildQuery();

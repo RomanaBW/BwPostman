@@ -26,7 +26,9 @@
 
 defined ('_JEXEC') or die ();
 
-
+/**
+ * Class BwPostmanHTMLHelper
+ */
 abstract class BwPostmanHTMLHelper {
 
 	/**
@@ -58,18 +60,20 @@ abstract class BwPostmanHTMLHelper {
 	 * --> from administrator/mod_quickicon/mod_quickicon.php
 	 *
 	 * @access	public
-	 * @param	string	URL target
-	 * @param	string	Image path
-	 * @param	string	Image description
-	 * @param	int		x_size
-	 * @param	int		y_size
-	 * @param 	string	target
-	 * @param	string	onclick action
+	 * @param	string	$link       URL target
+	 * @param	string	$image      Image path
+	 * @param	string	$text       Image description
+	 * @param	int		$x_size     x_size
+	 * @param	int		$y_size     y_size
+	 * @param 	string	$target     target
+	 * @param	string	$onclick    onclick action
+	 * @param   boolean $closable   modal window closeable
 	 */
-	public static function quickiconButton($link, $image, $text, $x_size = 0, $y_size = 0, $target = '', $onclick = '')
+	public static function quickiconButton($link, $image, $text, $x_size = 0, $y_size = 0, $target = '', $onclick = '', $closable = true)
 	{
 		$lang = JFactory::getLanguage();
-		($x_size && $y_size) ? $modal_text	= 'class="modal" rel="{handler: \'iframe\', size: {x: ' . $x_size . ', y: ' . $y_size . '}"' : $modal_text	= '';
+		$closable = $closable != true ? ', closable: false' : '';
+		($x_size && $y_size) ? $modal_text	= 'class="modal" rel="{handler: \'iframe\', size: {x: ' . $x_size . ', y: ' . $y_size . '}' . $closable . '}"' : $modal_text	= '';
 		?>
 		<div class="btn text-center" style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
 			<div class="icon" >
@@ -119,7 +123,7 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @access	public
 	 *
-	 * @param	string	selected
+	 * @param	string	$selected
 	 *
 	 * @return 	string	file format list, html select list
 	 */
@@ -139,7 +143,7 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @access	public
 	 *
-	 * @param	string	selected
+	 * @param	string	$selected
 	 *
 	 * @return 	string	delimiter list, html select list
 	 */
@@ -162,7 +166,7 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @access	public
 	 *
-	 * @param	string	selected
+	 * @param	string	$selected
 	 *
 	 * @return 	string	enclosure list, html select list
 	 */
@@ -184,7 +188,7 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @access	public
 	 *
-	 * @param	string	selected
+	 * @param	string	$selected
 	 *
 	 * @return 	string	mail format list, html select list
 	 */
@@ -208,7 +212,7 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	static public function getDbFieldsList()
 	{
-		$_db_fields	= array();
+		$db_fields	= array();
 		$columns	= array();
 
 		$columns[]	= 'name';
@@ -230,7 +234,7 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @access	public
 	 *
-	 * @param	array	Mailinglists
+	 * @param	array	$mailinglists
 	 *
 	 * @return 	string	mailinglists select list, html select list
 	 */

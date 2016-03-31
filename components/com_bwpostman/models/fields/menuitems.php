@@ -56,9 +56,6 @@ class JFormFieldMenuItems extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
-		$options	= array();
-
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 

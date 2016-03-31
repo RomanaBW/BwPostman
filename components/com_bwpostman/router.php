@@ -27,6 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+/**
+ *
+ * Method to build sef route
+ *
+ * @param $query
+ *
+ * @return array
+ */
 function BwPostmanBuildRoute(&$query)
 {
 	$segments = array();
@@ -53,8 +61,10 @@ function BwPostmanBuildRoute(&$query)
  * Methode to decode SEF URI segments for BwPostman
  *
  * @access 	public
- * @param 	array SEF URI segments array
- * @return 	array Vars associative array
+ *
+ * @param 	array $segments     SEF URI segments array
+ *
+ * @return 	array $vars         associative array
  */
 function BwPostmanParseRoute ($segments)
 {

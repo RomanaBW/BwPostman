@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -283,5 +283,250 @@ class BwPostmanModelTemplates extends JModelList
 
 		$_db->setQuery($query);
 		return $query;
+	}
+
+	/**
+	 * Method to call the layout for the template upload and install process
+	 *
+	 * @access	public
+	 */
+	public function uploadTplFiles($file)
+	{
+		$msg = '';
+
+		// Import filesystem libraries. Perhaps not necessary, but does not hurt
+		jimport('joomla.filesystem.file');
+
+		// Clean up filename to get rid of strange characters like spaces etc
+		$filename = JFile::makeSafe($file['name']);
+
+		// Set up the source and destination of the file
+		$src = $file['tmp_name'];
+		$ext = JFile::getExt($filename);
+		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
+
+		// If the file isn't okay, redirect to templates
+		if ($file['error'] > 0) {
+
+			//http://de.php.net/features.file-upload.errors
+			$msg = JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD');
+
+			switch ($file['error']) {
+				case '1':
+				case '2': $msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_SIZE');
+					break;
+				case '3': $msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
+					break;
+				case '4': $msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
+					break;
+			}
+
+		}
+		else { // The file is okay
+			// Check if the file has the right extension, we need zip
+			if (strtolower(JFile::getExt($filename)) !== 'zip') {
+				$msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
+			}
+			else { // The file is okay
+				if (false === JFile::upload($src, $archivename, false, true)) {
+					$msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
+				}
+				else { // file is uploaded
+				}
+			}
+		}
+		return $msg;
+	}
+
+	/**
+	 * Method to extract template zip
+	 *
+	 * @access	public
+	 */
+	public function extractTplFiles($file)
+	{
+		echo '<h4>' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT') . '</h4>';
+		// Import filesystem libraries. Perhaps not necessary, but does not hurt
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.folder');
+
+		$filename = JFile::makeSafe($file['name']);
+		$ext = JFile::getExt($filename);
+		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
+		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
+		$new_filename = '/tmp_bwpostman_installtpl.' . $ext;
+
+		$adapter = JArchive::getAdapter('zip');
+		$result = $adapter->extract($archivename, $extractdir);
+
+		if (!$result || $result instanceof Exception) // extract failed
+		{
+			$this->_delMessage();
+			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
+			return false;
+		}
+		echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT_OK') . '</p>';
+		return true;
+	}
+
+	/**
+	 * Method to install template
+	 *
+	 * @param string    $sql
+	 */
+
+	public function installTplFiles(&$sql, $step)
+	{
+		echo '<h4>' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
+		$db		= JFactory::getDBO();
+
+		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
+
+		//we call sql file for the templates data
+		$buffer = file_get_contents($extractdir . $sql);
+
+		// Graceful exit and rollback if read not successful
+		if ( $buffer ) {
+			// Create an array of queries from the sql file
+			jimport('joomla.installer.helper');
+			$queries = JInstallerHelper::splitSql($buffer);
+
+			// No queries to process
+			if (count($queries) != 0) {
+				// Process each query in the $queries array (split out of sql file).
+				foreach ($queries as $query){
+					$query = trim($query);
+					if ($query != '' && $query{0} != '#') {
+						$db->setQuery($query);
+						if ( !$db->query() ) {
+							echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
+							return false;
+						}
+					}
+				}//endfoearch
+			}
+		}
+		else {
+			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
+			return false;
+		}
+		echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step . '_OK') . '</p>';
+		return true;
+	}
+
+	/**
+	 * Method to copy template thumbnail
+	 *
+	 * @access	public
+	 */
+	public function copyThumbsFiles($file)
+	{
+		echo '<h4>' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_THUMBS') . '</h4>';
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+
+		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
+
+		// make new folder and copy template thumbnails
+		$dest = JPATH_ROOT.'/images/bw_postman';
+		if (!JFolder::exists($dest)) JFolder::create(JPATH_ROOT.'/images/bw_postman');
+		if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/index.html')) JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/bw_postman/index.html');
+
+		$warn = false;
+		$files = JFolder::files($imagedir);
+		foreach ($files as $file)
+		{
+			if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/' . $file)) JFile::copy($imagedir . $file, JPATH_ROOT.'/images/bw_postman/' . $file);
+			if (!JFile::exists(JPATH_ROOT . '/media/bw_postman/images/' . $file)) JFile::copy($imagedir . $file, JPATH_ROOT.'/media/bw_postman/images/' . $file);
+			$this->_delMessage();
+			$path_now = JPATH_ROOT.'/images/bw_postman/';
+			if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/' . $file)) {
+				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
+				$warn = true;
+			}
+			else {
+				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+			}
+			$path_now = JPATH_ROOT.'/media/bw_postman/images/';
+			if (!JFile::exists(JPATH_ROOT . '/media/bw_postman/images/' . $file)) {
+				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+				$warn = true;
+			}
+			else {
+				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+			}
+		}
+		if ($warn) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	/**
+	 * Method to delete temp folder
+	 *
+	 * @access	public
+	 */
+	public function deleteTempFolder($file)
+	{
+		echo '<h4>' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER') . '</h4>';
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+
+		$filename = JFile::makeSafe($file['name']);
+		$ext = JFile::getExt($filename);
+		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
+		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
+
+		$warn = false;
+		if (JFile::exists($archivename)) JFile::delete($archivename);
+		if (JFolder::exists($extractdir)) JFolder::delete($extractdir);
+		$this->_delMessage();
+		if (JFile::exists($archivename)) {
+			echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_WARNING', $archivename, $tempPath) . '</p>';
+			$warn = true;
+		}
+		else {
+			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_OK', $archivename, $tempPath) . '</p>';
+		}
+		if (JFolder::exists($extractdir)) {
+			echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_WARNING', '/tmp_bwpostman_installtpl/', $tempPath) . '</p>';
+			$warn = true;
+		}
+		else {
+			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_OK', '/tmp_bwpostman_installtpl/', $tempPath) . '</p>';
+		}
+		if ($warn) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	/**
+	 * Method to delete enqueue messages
+	 *
+	 * @access	private
+	 */
+	private function _delMessage()
+	{
+		$app = JFactory::getApplication();
+		$appReflection = new ReflectionClass(get_class($app));
+		$_messageQueue = $appReflection->getProperty('_messageQueue');
+		$_messageQueue->setAccessible(true);
+		$messages = $_messageQueue->getValue($app);
+		foreach($messages as $key=>$message) {
+			unset($messages[$key]);
+		}
+		$_messageQueue->setValue($app,$messages);
 	}
 }

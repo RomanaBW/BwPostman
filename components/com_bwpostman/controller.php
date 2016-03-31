@@ -33,6 +33,9 @@ jimport('joomla.application.component.controller');
 // Require component admin helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 
+/**
+ * Class BwPostmanController
+ */
 class BwPostmanController extends JControllerLegacy
 {
 
@@ -99,6 +102,7 @@ class BwPostmanController extends JControllerLegacy
 				$subscriberid = 0;
 			}
 
+//			$app_error      = JFactory::getApplication()->getUserState('com_bwpostman.subscriber.register.error', null);
 			$session_error = $session->get('session_error');
 			if(isset($session_error) && is_array($session_error)){
 				$session->clear('session_error');
@@ -112,20 +116,23 @@ class BwPostmanController extends JControllerLegacy
 			if ($subscriberid) { // Guest with subscriber id which is stored in the session
 				$model			= $this->getModel('register');
 				$subscriberdata	= $model->getSubscriberData ((int) $subscriberid);
-				$userid			= (int) $subscriberdata->user_id;
+				if (is_object($subscriberdata))
+				{
+					$userid = (int) $subscriberdata->user_id;
 
-				// The error code numbers are the same like in the subscribers-table check function
-				if ($subscriberdata->archive_flag == 1) {
-					$err->err_code	= 405;
-					$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTBLOCKED';
-				}
-				elseif ($subscriberdata->status == 0) {
-					$err->err_code	= 406;
-					$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTNOTACTIVATED';
-				}
+					// The error code numbers are the same like in the subscribers-table check function
+					if ($subscriberdata->archive_flag == 1) {
+						$err->err_code	= 405;
+						$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTBLOCKED';
+					}
+					elseif ($subscriberdata->status == 0) {
+						$err->err_code	= 406;
+						$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTNOTACTIVATED';
+					}
 
-				if ($err->err_code != 0) {
-					$this->errorSubscriberData($err, $subscriberid, $subscriberdata->email);
+					if ($err->err_code != 0) {
+						$this->errorSubscriberData($err, $subscriberid, $subscriberdata->email);
+					}
 				}
 			}
 			elseif (!$user->get('guest')) { // User
@@ -199,8 +206,9 @@ class BwPostmanController extends JControllerLegacy
 	 * Method to reset the subscriber ID and userid
 	 *
 	 * @access	public
-	 * @param	int subcriber ID
-	 * @param 	int user ID
+	 *
+	 * @param	int $subscriberid   subcriber ID
+	 * @param 	int $userid         user ID
 	 */
 	public function setData($subscriberid = 0, $userid = 0)
 	{
@@ -214,9 +222,10 @@ class BwPostmanController extends JControllerLegacy
 	/**
 	 * Display
 	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param	boolean		$cachable	If true, the view output will be cached
+	 * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
+	 * @return void
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -281,9 +290,11 @@ class BwPostmanController extends JControllerLegacy
 	 * --> only if a guest comes from an editlink-uri
 	 *
 	 * @access	public
-	 * @param 	int subscriber ID
-	 * @param 	int menu item ID
-	 * @return	Redirect
+	 *
+	 * @param 	int $subscriberid   subscriber ID
+	 * @param 	int $itemid         menu item ID
+	 *
+	 * @return	void
 	 */
 	public function loginGuest($subscriberid = 0, $itemid = null)
 	{
@@ -305,9 +316,10 @@ class BwPostmanController extends JControllerLegacy
 	 * Method to process invalid subscriber data
 	 *
 	 * @access	public
-	 * @param 	int subscriber ID
-	 * @param 	associative array of error data
-	 * @param 	string subscriber email
+	 *
+	 * @param 	object   $err            associative array of error data
+	 * @param 	int     $subscriberid   subscriber ID
+	 * @param 	string  $email          subscriber email
 	 */
 	public function errorSubscriberData($err, $subscriberid = null, $email = null)
 	{
@@ -410,8 +422,9 @@ class BwPostmanController extends JControllerLegacy
 	 * Method to process errors which occur if an email couldn't been send
 	 *
 	 * @access	public
-	 * @param	string error message
-	 * @param 	string email error
+	 *
+	 * @param	string $err_msg     error message
+	 * @param 	string $email       email error
 	 */
 	public function errorSendingEmail($err_msg, $email = null)
 	{
@@ -431,9 +444,10 @@ class BwPostmanController extends JControllerLegacy
 	 * Method to process successfully performed actions
 	 *
 	 * @access	public
-	 * @param 	string success message
-	 * @param 	string editlink
-	 * @param 	int menu item ID
+	 *
+	 * @param 	string  $success_msg     success message
+	 * @param 	string  $editlink        editlink
+	 * @param 	int     $itemid         menu item ID
 	 */
 	public function success($success_msg, $editlink = null, $itemid = null)
 	{
@@ -471,6 +485,8 @@ class BwPostmanController extends JControllerLegacy
 						'emailformat' => 'string',
 						'firstname' => 'string',
 						'firstname_field_obligation' => 'string',
+						'gender' => 'string',
+						'special' => 'string',
 						'id' => 'string',
 						'language' => 'string',
 						'mailinglists' => 'array',
@@ -594,16 +610,30 @@ class BwPostmanController extends JControllerLegacy
 						'a_emailformat' => 'string',
 						'a_firstname' => 'string',
 						'a_name' => 'string',
+						'a_gender' => 'string',
+						'a_special' => 'string',
 						'agreecheck' => 'string',
 						'emailformat' => 'string',
 						'firstname' => 'string',
 						'name' => 'string',
+						'gender' => 'string',
+						'special' => 'string',
 						'email' => 'string',
 						'falle' => 'string',
-						'firstname_field_obligation' => 'string',
 						'language' => 'string',
 						'mailinglists' => 'array',
+						'firstname_field_obligation' => 'string',
 						'name_field_obligation' => 'string',
+						'special_field_obligation' => 'string',
+						'firstname_field_obligation_mod' => 'string',
+						'name_field_obligation_mod' => 'string',
+						'special_field_obligation_mod' => 'string',
+						'show_special_mod' => 'string',
+						'show_special' => 'string',
+						'show_name_field' => 'string',
+						'show_name_field_mod' => 'string',
+						'show_firstname_field' => 'string',
+						'show_firstname_field_mod' => 'string',
 						'registration_ip' => 'string',
 						'stringQuestion' => 'string',
 						'stringCaptcha' => 'string',
@@ -612,8 +642,6 @@ class BwPostmanController extends JControllerLegacy
 						'bwp-' . BwPostmanHelper::getCaptcha(2) => 'string',
 						'task' => 'string'
 					));
-
-		$app->setUserState('com_bwpostman.subscriber.register.data', $post);
 
 		if (isset($post['a_firstname'])) {
 			if ($post['a_firstname'] == JText::_('COM_BWPOSTMAN_FIRSTNAME')) {
@@ -633,6 +661,46 @@ class BwPostmanController extends JControllerLegacy
 			unset($post['a_name']);
 		}
 
+		if (isset($post['a_gender'])) {
+			$post['gender']	= $post['a_gender'];
+			unset($post['a_gender']);
+		}
+
+		if (isset($post['a_special'])) {
+			$post['special']	= $post['a_special'];
+			unset($post['a_special']);
+		}
+
+		if (isset($post['name_field_obligation_mod'])) {
+			$post['name_field_obligation']	= $post['name_field_obligation_mod'];
+			unset($post['name_field_obligation_mod']);
+		}
+
+		if (isset($post['firstname_field_obligation_mod'])) {
+			$post['firstname_field_obligation']	= $post['firstname_field_obligation_mod'];
+			unset($post['firstname_field_obligation_mod']);
+		}
+
+		if (isset($post['special_field_obligation_mod'])) {
+			$post['special_field_obligation']	= $post['special_field_obligation_mod'];
+			unset($post['special_field_obligation_mod']);
+		}
+
+		if (isset($post['show_name_field_mod'])) {
+			$post['show_name_field']	= $post['show_name_field_mod'];
+			unset($post['show_name_field_mod']);
+		}
+
+		if (isset($post['show_firstname_field_mod'])) {
+			$post['show_firstname_field']	= $post['show_firstname_field_mod'];
+			unset($post['show_name_firstfield_mod']);
+		}
+
+		if (isset($post['show_special_mod'])) {
+			$post['show_special']	= $post['show_special_mod'];
+			unset($post['show_special_mod']);
+		}
+
 		if (isset($post['a_emailformat'])) {
 			$post['emailformat']	= $post['a_emailformat'];
 			unset($post['a_emailformat']);
@@ -642,6 +710,8 @@ class BwPostmanController extends JControllerLegacy
 			$post['agreecheck']	= $post['agreecheck_mod'];
 			unset($post['agreecheck_mod']);
 		}
+
+		$app->setUserState('com_bwpostman.subscriber.register.data', $post);
 
 		// Subscriber is guest
 		if (!$this->_userid) {
@@ -706,7 +776,8 @@ class BwPostmanController extends JControllerLegacy
 	 * --> through the edit view
 	 *
 	 * @access	public
-	 * @param 	int Subscriber ID
+	 *
+	 * @param 	int $id     Subscriber ID
 	 */
 	public function unsubscribe($id = null)
 	{
@@ -967,15 +1038,15 @@ class BwPostmanController extends JControllerLegacy
 	/**
 	 * Method to send an email
 	 *
-	 * @param 	object subscriber
-	 * @param 	int emailtype	--> 0 = send registration email, 1 = send editlink, 2 = send activation reminder
-	 * @param	int menu item ID
+	 * @param 	object  $subscriber
+	 * @param 	int     $type           emailtype	--> 0 = send registration email, 1 = send editlink, 2 = send activation reminder
+	 * @param	int     $itemid         menu item ID
+	 *
 	 * @return 	boolean True on success | error object
 	 */
 	protected function _sendMail(&$subscriber, $type, $itemid = null)
 	{
 		$app		= JFactory::getApplication();
-		$db			= JFactory::getDBO();
 		$params 	= JComponentHelper::getParams('com_bwpostman');
 		$email 		= $subscriber->email;
 		$name 		= $subscriber->name;
@@ -995,9 +1066,7 @@ class BwPostmanController extends JControllerLegacy
 
 		switch ($type) {
 			case 0: // Send Registration email
-				$activation = $subscriber->activation;
 				$subject 	= JText::sprintf('COM_BWPOSTMAN_SEND_REGISTRATION_SUBJECT', $sitename);
-				$message	= $active_msg;
 
 				if (is_null($itemid)) {
 					$link 	= $siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}";
@@ -1018,7 +1087,6 @@ class BwPostmanController extends JControllerLegacy
 				}
 				break;
 			case 2: // Send Activation reminder
-				$activation = $subscriber->activation;
 				$subject 	= JText::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_SUBJECT', $sitename);
 				if (is_null($itemid)) {
 					$message 	= JText::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG', $name, $sitename, $siteURL."index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");
@@ -1028,8 +1096,7 @@ class BwPostmanController extends JControllerLegacy
 				}
 				break;
 			case 3: // Send confirmation mail because the email address has been changed
-				$activation = $subscriber->activation;
-				$subject 	= JText::_('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_SUBJECT', $sitename);
+				$subject 	= JText::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_SUBJECT', $sitename);
 				if (is_null($itemid)) {
 					$message 	= JText::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG', $name, $siteURL."index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");
 				}

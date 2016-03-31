@@ -54,7 +54,7 @@ if (file_exists(JPATH_BASE . $css_filename)) {
 }
 
 if (!JComponentHelper::isEnabled('com_bwpostman', true)) {
-	$app->enqueueMessage(JText('Module requires the com_bwpostman component'), 'error');
+	$app->enqueueMessage(JText::_('Module requires the com_bwpostman component'), 'error');
 }
 else {
 	$user		= JFactory::getUser();
@@ -83,11 +83,47 @@ else {
 
 		if ($userid > 0) $subscriber = modBwPostmanHelper::getUserData($userid);
 
-		// Build the emailormat select list
-		$emailformat 			= array();
-		$emailformat[] 			= JHTML::_('select.option',  '0', '<span>' . JText::_('COM_BWPOSTMAN_TEXT') . '</span>');
-		$emailformat[]			= JHTML::_('select.option',  '1', '<span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span>');
-		$lists['emailformat']	= JHTML::_('select.radiolist',  $emailformat, 'a_emailformat', 'class="checkbox" ', 'value', 'text', $paramsComponent->get('default_emailformat'));
+		// Build the email format select list
+		$mailformat_selected = $paramsComponent->get('default_emailformat');
+
+		$emailformat 	= '<fieldset id="edit_mailformat" class="radio btn-group">';
+		$emailformat		.= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
+		if(!$mailformat_selected)
+		{
+			$emailformat .= 'checked="checked"';
+		}
+		$emailformat     .= '/>';
+		$emailformat		.= '<label for="formatTextMod"><span>'. JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat     .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
+		if($mailformat_selected)
+		{
+			$emailformat .= 'checked="checked"';
+		}
+		$emailformat     .= '/>';
+		$emailformat     .= '<label for="formatHtmlMod"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat     .= '</fieldset>';
+		$lists['emailformat'] = $emailformat;
+
+		// Build the gender select list
+		$gender_selected = 0;
+
+		$gender 	= '<fieldset id="edit_gender" class="radio btn-group">';
+		$gender		.= '<input type="radio" name="a_gender" id="genMaleMod" value="0"';
+		if(!$gender_selected)
+		{
+			$gender .= 'checked="checked"';
+		}
+		$gender     .= '/>';
+		$gender		.= '<label for="genMaleMod"><span>'. JText::_('MOD_BWPOSTMAN_MALE') . '</span></label>';
+		$gender     .= '<input type="radio" name="a_gender" id="genFemaleMod" value="1"';
+		if($gender_selected)
+		{
+			$gender .= 'checked="checked"';
+		}
+		$gender     .= '/>';
+		$gender     .= '<label for="genFemaleMod"><span>' . JText::_('MOD_BWPOSTMAN_FEMALE') . '</span></label>';
+		$gender     .= '</fieldset>';
+		$lists['gender'] = $gender;
 
 		// Get the usertype
 		$usertype	= JUserHelper::getUserGroups($userid);

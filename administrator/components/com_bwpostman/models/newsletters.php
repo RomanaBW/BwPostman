@@ -48,6 +48,7 @@ class BwPostmanModelNewsletters extends JModelList
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
 				'id', 'a.id',
+				'attachment', 'a.attachment',
 				'subject', 'a.subject',
 				'description', 'a.description',
 				'checked_out', 'a.checked_out',
@@ -191,7 +192,6 @@ class BwPostmanModelNewsletters extends JModelList
 	protected function getListQuery()
 	{
 		$_db	= $this->_db;
-		$app	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
 		$query	= $_db->getQuery(true);
 
@@ -223,7 +223,7 @@ class BwPostmanModelNewsletters extends JModelList
 					$query->select(
 						$this->getState(
 							'list.select',
-							'a.id, a.subject, a.description, a.checked_out, a.checked_out_time' .
+							'a.id, a.subject, a.attachment, a.description, a.checked_out, a.checked_out_time' .
 							', a.published, a.publish_up, a.publish_down, a.created_date, a.created_by, a.modified_time'
 						)
 					);

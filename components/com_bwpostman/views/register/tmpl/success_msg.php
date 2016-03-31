@@ -28,9 +28,9 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Success message - will be shown if
-// 1. the newsletteraccount has been successfully activated --> show a link to the editmode
+// 1. the newsletter account has been successfully activated --> show a link to the edit mode
 // 2. the registration was successful and the confirmation email has been successfully sent
-// 3. the activationcode email has been successfully sent
+// 3. the activation code email has been successfully sent
 // 4. the editlink email has been successfully sent
 
 ?>
@@ -42,7 +42,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 		<div class="content_inner">
 			<?php }
-			if ($this->success->editlink) { // Case 1
+			if (property_exists($this->success, 'editlink')) { // Case 1
 				if ($this->user->get('guest')) {
 					if (is_null($this->success->itemid)) {
 						$link = JRoute::_($this->uri."index.php?option=com_bwpostman&amp;view=edit&amp;editlink={$this->success->editlink}");
@@ -65,6 +65,7 @@ defined ('_JEXEC') or die ('Restricted access');
 				echo $msg;
 			}
 			else { 	// Case 2, 3, 4
+				if (property_exists($this->success, 'success_msg'))
 				echo '<div class="success-message">' . JText::_($this->success->success_msg) . '</div>';
 			}
 			?>

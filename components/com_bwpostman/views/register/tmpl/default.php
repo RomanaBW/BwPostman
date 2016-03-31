@@ -30,6 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 JHTML::_('behavior.tooltip');
 JHTML::_('behavior.keepalive');
 
+// Depends on jQuery UI
+JHtml::_('jquery.ui', array('core'));
+
 require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
 
 global $arguments;
@@ -55,6 +58,10 @@ function checkRegisterForm() {
   // name
 	if (((document.bwp_com_form.getElementById("name").value == "") || (document.bwp_com_form.getElementById("name").value == "<?php echo JText::_('COM_BWPOSTMAN_NAME'); ?>")) && (document.bwp_com_form.getElementById("name_field_obligation").value == 1)){
 		errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>\n";
+	}
+	// additional field
+	if (((document.bwp_com_form.getElementById("special").value == "") || (document.bwp_com_form.getElementById("special").value == "<?php echo JText::_($this->params->get('special_label')); ?>")) && (document.bwp_com_form.getElementById("special_field_obligation").value == 1)){
+		errStr += "<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>\n";
 	}
   // email
   var email = document.bwp_com_form.getElementById("email").value;
@@ -153,8 +160,15 @@ function checkRegisterForm() {
 					<?php endif;
 						// End: Show editlink only if the user is not logged in ?>
 
+					<?php if ($this->params->get('show_gender') == 1) { // Show formfield gender only if enabled in basic parameters ?>
+						<div class="edit_gender">
+							<label id="gendermsg"> <?php echo JText::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
+							<?php echo $this->lists['gender']; ?>
+						</div>
+					<?php } // End gender ?>
+
 					<?php if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation')) :
-						// Show firstname-field only if set in basic parameters ?>
+						// Show first name-field only if set in basic parameters ?>
 						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : ''?>">
 							<label id="firstnamemsg" for="firstname" <?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) echo "class=\"invalid\""; ?>>
 								<?php echo JText::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
@@ -169,7 +183,7 @@ function checkRegisterForm() {
 								// End: Is filling out the firstname field obligating ?>
 						</p>
 					<?php endif;
-					// End: Show firstname-field only if set in basic parameters ?>
+					// End: Show first name-field only if set in basic parameters ?>
 
 					<?php if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation')) :
 						// Show name-field only if set in basic parameters ?>
@@ -188,6 +202,43 @@ function checkRegisterForm() {
 					<?php endif;
 					// End: Show name-fields only if set in basic parameters ?>
 
+					<?php if ($this->params->get('show_special') || $this->params->get('special_field_obligation')) : // Show special only if set in basic parameters or required
+						if($this->params->get('special_desc') != '')
+						{
+							$tip    =  JText::_($this->params->get('special_desc'));
+						}
+						else
+						{
+							$tip    =  JText::_('COM_BWPOSTMAN_SPECIAL');
+						} ?>
+
+						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : ''?>">
+							<label id="specialmsg hasTooltip" title="<?php echo JHtml::tooltipText($tip); ?>" for="special"
+								<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) echo "class=\"invalid\""; ?>>
+								<?php
+								if($this->params->get('special_label') != '')
+								{
+									echo JText::_($this->params->get('special_label'));
+								}
+								else
+								{
+									echo JText::_('COM_BWPOSTMAN_SPECIAL');
+								}
+								?>:
+							</label>
+							<?php if ($this->params->get('special_field_obligation')) : { // Is filling out the special field obligating ?>
+								<input	type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+									class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
+									maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span>
+							<?php }
+							else : { ?>
+								<input	type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+									class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
+									maxlength="50" />
+							<?php } endif; // End: Is filling out the special field obligating ?>
+						</p>
+					<?php endif; // End: Show special field only if set in basic parameters ?>
+
 					<p class="user_email input-append">
 						<label id="emailmsg" for="email"
 							<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1)) echo "class=\"invalid\""; ?>>
@@ -198,7 +249,7 @@ function checkRegisterForm() {
 							maxlength="100" />  <span class="append-area"><i class="icon-star"></i></span>
 					</p>
 					<?php if ($this->params->get('show_emailformat') == 1) {
-						// Show formfield emailformat only if enabled in basic parameters ?>
+						// Show formfield email format only if enabled in basic parameters ?>
 						<div class="user_mailformat">
 							<label id="emailformatmsg"> <?php echo JText::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
 							<?php echo $this->lists['emailformat']; ?>
@@ -305,6 +356,10 @@ function checkRegisterForm() {
 				<input type="hidden" name="bwp-<?php echo $this->captcha; ?>" value="1" />
 				<input type="hidden" name="name_field_obligation" id="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" />
 				<input type="hidden" name="firstname_field_obligation" id="firstname_field_obligation" value="<?php echo $this->params->get('firstname_field_obligation'); ?>" />
+				<input type="hidden" name="special_field_obligation" id="special_field_obligation" value="<?php echo $this->params->get('special_field_obligation'); ?>" />
+				<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
+				<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
+				<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
 				<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
 				<?php echo JHTML::_('form.token'); ?>
 			</form>
@@ -315,3 +370,38 @@ function checkRegisterForm() {
 		}	?>
 	</div>
 </div>
+
+<script type="text/javascript">
+jQuery(document).ready(function()
+{
+	// Turn radios into btn-group
+	jQuery('.radio.btn-group label').addClass('btn');
+	jQuery(".btn-group label:not(.active)").click(function()
+	{
+		var label = jQuery(this);
+		var input = jQuery('#' + label.attr('for'));
+
+		if (!input.prop('checked')) {
+			label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
+			if (input.val() == '') {
+				label.addClass('active btn-primary');
+			} else if (input.val() == 0) {
+				label.addClass('active btn-danger');
+			} else {
+				label.addClass('active btn-success');
+			}
+			input.prop('checked', true);
+		}
+	});
+	jQuery(".btn-group input[checked=checked]").each(function()
+	{
+		if (jQuery(this).val() == '') {
+			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
+		} else if (jQuery(this).val() == 0) {
+			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
+		} else {
+			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
+		}
+	});
+})
+</script>

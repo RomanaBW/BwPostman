@@ -54,7 +54,7 @@ defined ('_JEXEC') or die ('Restricted access');
 			<button class="button validate btn" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_SENDEDITLINK'); ?></button>
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="sendEditlink" />
-			<input type="hidden" name="id" value="<?php echo $this->error->err_code; ?>" />
+			<input type="hidden" name="id" value="<?php echo (property_exists($this->error, 'err_code')) ? $this->error->err_code : ''; ?>" />
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 

@@ -42,10 +42,11 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 class BwPostmanViewSubscribers extends JViewLegacy
 {
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
 	{
@@ -64,6 +65,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 			$this->activeFilters	= $this->get('ActiveFilters');
 			$this->pagination		= $this->get('Pagination');
 			$this->total 			= $this->get('total');
+			$this->params           = JComponentHelper::getParams('com_bwpostman');
 			$this->context			= 'com_bwpostman.subscribers';
 
 			$this->addToolbar();
@@ -85,7 +87,6 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	protected function addToolbar()
 	{
 		$app	= JFactory::getApplication();
-		$jinput	= JFactory::getApplication()->input;
 		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');
 		$canDo	= BwPostmanHelper::getActions(0, 'subscribers');
 		$user	= JFactory::getUser();

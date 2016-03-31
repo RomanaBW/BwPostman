@@ -53,6 +53,8 @@
 				class="list_ordering"
 				>
 				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.attachment ASC">COM_BWPOSTMAN_NL_ATTACHMENT_ASC</option>
+				<option value="a.attachment DESC">COM_BWPOSTMAN_NL_ATTACHMENT_DESC</option>
 				<option value="a.subject ASC">COM_BWPOSTMAN_NL_SUBJECT_ASC</option>
 				<option value="a.subject DESC">COM_BWPOSTMAN_NL_SUBJECT_DESC</option>
 				<option value="a.description ASC">COM_BWPOSTMAN_NL_DESCRIPTION_ASC</option>
@@ -66,7 +68,7 @@
 				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 			</field>
-		
+
 			<field
 				name="limit"
 				type="limitbox"
@@ -162,6 +164,8 @@
 				class="list_ordering"
 				>
 				<option value="">JGLOBAL_SORT_BY</option>
+				<option value="a.attachment ASC">COM_BWPOSTMAN_NL_ATTACHMENT_ASC</option>
+				<option value="a.attachment DESC">COM_BWPOSTMAN_NL_ATTACHMENT_DESC</option>
 				<option value="a.subject ASC">COM_BWPOSTMAN_NL_SUBJECT_ASC</option>
 				<option value="a.subject DESC">COM_BWPOSTMAN_NL_SUBJECT_DESC</option>
 				<option value="a.description ASC">COM_BWPOSTMAN_NL_DESCRIPTION_ASC</option>
@@ -181,7 +185,7 @@
 				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 			</field>
-		
+
 			<field
 				name="limit"
 				type="limitbox"
@@ -259,7 +263,7 @@
 				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 			</field>
-		
+
 			<field
 				name="limit"
 				type="limitbox"

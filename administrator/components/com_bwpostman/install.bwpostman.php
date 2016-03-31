@@ -1,5 +1,4 @@
 <?php
-use Joomla\Registry\Format\Json;
 /**
  * BwPostman Newsletter Component
  *
@@ -25,9 +24,14 @@ use Joomla\Registry\Format\Json;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\Registry\Format\Json;
+
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+/**
+ * Class Com_BwPostmanInstallerScript
+ */
 class Com_BwPostmanInstallerScript
 {
 	/** @var int asset_id */
@@ -98,9 +102,7 @@ class Com_BwPostmanInstallerScript
 		$app 		= JFactory::getApplication ();
 		$session	= JFactory::getSession();
 		$jversion	= new JVersion();
-		$jInstall	= new JInstaller('com_bwpostman');
 
-		$installer				= $parent->getParent();
 		$this->parentInstaller	= $parent->getParent();
 
 		// Get component manifest file version
@@ -156,7 +158,7 @@ class Com_BwPostmanInstallerScript
 		$db->SetQuery($query);
 		$params_default = $db->loadResult();
 		$app->setUserState('com_bwpostman.install.params', $params_default);
-
+		return true;
 	}
 
 
@@ -216,7 +218,7 @@ class Com_BwPostmanInstallerScript
 
 
 		if ($type == 'update') {
-			require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
+//			require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
 
 			$app 		= JFactory::getApplication ();
 			$oldRelease	= $app->getUserState('com_bwpostman.update.oldRelease', '');
@@ -247,28 +249,12 @@ class Com_BwPostmanInstallerScript
 
 			// check all tables of BwPostman
 			// Let Ajax client redirect
-/*			echo '
-<script type="text/javascript">
-	if (window.parent)
-		window.parent.location.href ="' . JUri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&layout=updateCheckSave";
-	else
-		location.href ="' . JUri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&task=updateCheckSave";
-</script>';
-			exit;
-*/
-//			$this->parentInstaller->setRedirectURL('index.php?option=com_bwpostman&view=maintenance&task=maintenance.updateCheckSave');
-
-			// first save all tables
-			echo '<br /><br /><div class="well">';
-			echo '<h1>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h1>';
-			BwPostmanTableHelper::saveTables(true);
-
-			// then make the checks (function repairs tables automatically)
-//			$this->parentInstaller->setRedirectURL('index.php?option=com_bwpostman&view=maintenance&task=maintenance.checkTables');
-
-			echo '<br /><br /><h1>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h1>';
-			$check_res	= BwPostmanTableHelper::checkTables();
-			echo '</div>';
+			echo '<script type="text/javascript">';
+			echo '   var w = 700, h = 600;';
+			echo '    if (window.outerWidth) { w = window.outerWidth * 80 / 100;}';
+			echo '    if (window.outerHeight) { h = window.outerHeight * 80 / 100;}';
+			echo 'window.open("' . JUri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&layout=updateCheckSave", "popup", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no, width="+Math.round(w)+", height="+Math.round(h)+"");';
+			echo '</script>';
 		}
 	}
 
@@ -326,8 +312,10 @@ class Com_BwPostmanInstallerScript
 		$db->execute();
 	}
 
-	/*
+	/**
 	 * get a variable from the manifest file (actually, from the manifest cache).
+	 *
+	 * @param   string  $name
 	 */
 	private function getManifestVar($name) {
 		$db		= JFactory::getDbo();
@@ -343,7 +331,7 @@ class Com_BwPostmanInstallerScript
 	}
 
 
-	/*
+	/**
 	 * Correct campaign_id in newsletters because of an error previous version
 	 */
 	private function _correctCamId() {
@@ -360,7 +348,7 @@ class Com_BwPostmanInstallerScript
 		return true;
 	}
 
-	/*
+	/**
 	 * Fill cross table campaigns mailinglists with values from all newsletters of the specifix campaign
 	 */
 	private function _fillCamCrossTable() {
@@ -433,8 +421,10 @@ class Com_BwPostmanInstallerScript
 		return;
 	}
 
-	/*
+	/**
 	 * sets parameter values in the component's row of the extension table
+	 *
+	 * @param array     $param_array
 	 */
 	private function setParams($param_array) {
 		if ( count($param_array) > 0 ) {
@@ -460,12 +450,14 @@ class Com_BwPostmanInstallerScript
 			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 			$db->SetQuery($query);
 
-			$result = $db->execute();
+			$db->execute();
 		}
 	}
 
-	/*
+	/**
 	 * shows the HTML after installation/update
+	 *
+	 * @param   boolean $update
 	 */
 	public function showFinished($update){
 
@@ -621,7 +613,9 @@ class Com_BwPostmanInstallerScript
 
 
 	/**
-	 * Methode to install sample templates
+	 * Method to install sample templates
+	 *
+	 * @param string    $sql
 	 */
 
 	private function _installdata(&$sql)
@@ -763,17 +757,18 @@ H2	{
 		$db		= JFactory::getDBO();
 		$query	= $db->getQuery(true);
 
-		$query	= $db->getQuery(true);
 		$query->update($db->quoteName('#__extensions'));
 		$query->set($db->quoteName('params') . " = " . $db->quote($params));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 
 		$db->SetQuery($query);
-		$result = $db->execute();
+		$db->execute();
 	}
 
-	/*
+	/**
 	 * install or update access rules for component
+	 *
+	 * @param string    $type
 	 *
 	 * @since	1.2.0
 	 */
@@ -826,6 +821,6 @@ H2	{
 		$query->where($db->quoteName('name') . " = " . $db->quote('com_bwpostman'));
 		$db->SetQuery($query);
 
-		$result = $db->execute();
+		$db->execute();
 	}
 }

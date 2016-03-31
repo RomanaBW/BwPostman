@@ -46,7 +46,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate">
 			<?php
-			if ($this->error->err_code) { // Case 1, 2, 3, 4
+			if (property_exists($this->error, 'err_code')) { // Case 1, 2, 3, 4
 				if ($this->error->err_email) { // Case 4
 					$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
 					echo $msg;
@@ -73,7 +73,7 @@ defined ('_JEXEC') or die ('Restricted access');
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="sendActivation" />
 			<input type="hidden" name="id" value="<?php echo $this->error->err_id; ?>" />
-			<input type="hidden" name="err_code" value="<?php echo $this->error->err_code; ?>" />
+			<input type="hidden" name="err_code" value="<?php echo (property_exists($this->error, 'err_code')) ? $this->error->err_code : ''; ?>" />
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 

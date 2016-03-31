@@ -33,21 +33,23 @@ defined('_JEXEC') or die('Restricted access');
 class mod_BwPostmanInstallerScript
 {
   /**
-  * Method to install the extension
-  * $parent is the class calling this method
-  *
-  * @return void
-  */
+   * Method to install the extension
+   *
+   * @param object  $parent is the class calling this method
+   *
+   * @return void
+   */
   function install($parent)
   {
     $this->showFinished(false);
   }
 
   /**
-  * Method to uninstall the extension
-  * $parent is the class calling this method
-  *
-  * @return void
+   * Method to uninstall the extension
+   *
+   * @param object  $parent     is the class calling this method
+   *
+   * @return void
   */
   function uninstall($parent)
   {
@@ -55,10 +57,11 @@ class mod_BwPostmanInstallerScript
   }
 
   /**
-  * Method to update the extension
-  * $parent is the class calling this method
-  *
-  * @return void
+   * Method to update the extension
+   *
+   * @param object  $parent is the class calling this method
+
+   * @return void
   */
   function update($parent)
   {
@@ -67,16 +70,16 @@ class mod_BwPostmanInstallerScript
 
   /**
   * Method to run before an install/update/uninstall method
-  * $parent is the class calling this method
-  * $type is the type of change (install, update or discover_install)
-  *
-  * @return void
+   *
+   * @param string  $type       is the type of change (install, update or discover_install)
+   * @param object  $parent     is the class calling this method
+   *
+   * @return boolean            false if error occurs
   */
   function preflight($type, $parent)
   {
 		$app 		= JFactory::getApplication ();
 		$jversion	= new JVersion();
-		$jInstall	= new JInstaller('mod_bwpostman');
 
 		// Get component manifest file version
 		$this->release = $parent->get("manifest")->version;
@@ -106,10 +109,15 @@ class mod_BwPostmanInstallerScript
 				return false;
 			}
 		}
+	return true;
   }
 
-	/*
+	/**
 	 * get a variable from the manifest file (actually, from the manifest cache).
+	 *
+	 * @param   string      $name   name of the manifest to get
+	 *
+	 * @return  object      $manifest the manifest for this module
 	 */
 	private function getManifestVar($name) {
 		$db		= JFactory::getDbo();
@@ -126,18 +134,23 @@ class mod_BwPostmanInstallerScript
 
 
   /**
-  * Method to run after an install/update/uninstall method
-  * $parent is the class calling this method
-  * $type is the type of change (install, update or discover_install)
-  *
-  * @return void
+   * Method to run after an install/update/uninstall method
+   *
+   * @param string  $type       is the type of change (install, update or discover_install)
+   * @param object  $parent     is the class calling this method
+
+   * @return void
   */
   function postflight($type, $parent)
   {
   }
 
-	/*
+	/**
 	 * shows the HTML after installation/update
+	 *
+	 * @param boolean    $update     true if update
+	 *
+	 * @return void
 	 */
 	public function showFinished($update){
 

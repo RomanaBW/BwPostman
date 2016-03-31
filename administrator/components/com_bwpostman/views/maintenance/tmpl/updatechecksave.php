@@ -29,9 +29,10 @@ defined ('_JEXEC') or die ('Restricted access');
 
 //JHTML::_('behavior.framework',true);
 JHTML::_('behavior.modal');
-//$uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-//JHTML::_('script','system/modal'.$uncompressed.'.js', true, true);
-//JHTML::_('stylesheet','media/system/css/modal.css');
+JHTML::_('behavior.framework',true);
+$uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
+JHTML::_('script','system/modal'.$uncompressed.'.js', true, true);
+JHTML::_('stylesheet','media/system/css/modal.css');
 
 $model		= $this->getModel();
 
@@ -78,147 +79,80 @@ if ($show_update || $string_special != '') {
 }
 ?>
 
-<link rel="stylesheet" href="components/com_bwpostman/assets/css/install.css" type="text/css" />
-
 <div id="com_bwp_install_header">
 	<a href="http://www.boldt-webservice.de" target="_blank">
-		<img border="0" align="center" src="components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
+		<img src="components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>
 
 <div id="com_bwp_install_outer">
-	<h1><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
-	<div id="com_bwp_install_left">
-		<div class="com_bwp_install_welcome">
-			<p><?php echo JText::_('COM_BWPOSTMAN_DESCRIPTION') ?></p>
-		</div>
-		<div class="com_bwp_install_finished">
-			<h2>
-			<?php
-			if($update){
-				echo JText::sprintf('COM_BWPOSTMAN_UPGRADE_SUCCESSFUL', $release);
-				echo '<br />'.JText::_('COM_BWPOSTMAN_EXTENSION_UPGRADE_REMIND');
-			} else {
-				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_SUCCESSFUL', $release);
-			}
-			?>
-			</h2>
-		</div>
-		<?php if ($show_right) { ?>
-			<div class="cpanel">
-				<div class="icon" >
-					<a href="<?php echo JROUTE::_('index.php?option=com_bwpostman'); ?>"> <?php echo JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png', JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
-					</a>
-				</div>
-				<div class="icon">
-					<a href="<?php echo $manual; ?>" target="_blank">
-						<?php echo JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/icon-48-manual.png', JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
-					</a>
-				</div>
-				<div class="icon">
-					<a href="<?php echo $forum; ?>" target="_blank">
-						<?php echo JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/icon-48-forum.png', JText::_('COM_BWPOSTMAN_INSTALL_FORUM')); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
-					</a>
-				</div>
-			</div>
-		<?php }?>
-	</div>
-
-	<div id="com_bwp_install_right">
-		<?php if ($show_right) { ?>
-			<?php if ($string_special != '') { ?>
-				<div class="com_bwp_install_specialnote">
-					<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
-					<p class="urgent"><?php echo $string_special; ?></p>
-				</div>
-			<?php }?>
-
-			<?php if ($show_update) { ?>
-				<div class="com_bwp_install_updateinfo">
-					<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
-					<?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_CHANGELOG_INFO'); ?>
-					<?php if ($string_new != '') { ?>
-						<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
-						<p><?php echo $string_new; ?></p>
-					<?php }?>
-					<?php if ($string_improvement != '') { ?>
-					<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
-						<p><?php echo $string_improvement; ?></p>
-					<?php }?>
-					<?php if ($string_bugfix != '') { ?>
-						<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
-						<p><?php echo $string_bugfix; ?></p>
-					<?php }?>
-				</div>
-			<?php }?>
-		<?php }
-		else { ?>
-			<div class="cpanel">
-				<div class="icon" >
-					<a href="<?php echo JROUTE::_('index.php?option=com_bwpostman&token='.JSession::getFormToken()); ?>"> <?php echo JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png', JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
-					</a>
-				</div>
-				<div class="icon">
-					<a href="<?php echo $manual; ?>" target="_blank">
-						<?php echo JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png', JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
-					</a>
-				</div>
-				<div class="icon">
-					<a href="<?php echo $forum; ?>" target="_blank">
-						<?php echo JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png', JText::_('COM_BWPOSTMAN_INSTALL_FORUM')); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
-					</a>
-				</div>
-			</div>
-		<?php } ?>
-	</div>
-	<div class="clr"></div>
-<?php /*
-	<div class="com_bwp_install_footer">
-		<p class="small"><?php echo JText::_('&copy; 2012-'); echo date (" Y")?> by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
-	</div>
 </div>
-*/?>
-
-<?php
-/*
-switch ($this->check_res['type']) {
-	case 'error':	$class	= "bw_tablecheck_error bw_maintenance_result err";
-		break;
-	case 'warn':	$class	= "bw_tablecheck_warn bw_maintenance_result";
-		break;
-	case 'message':	$class	= "bw_tablecheck_ok bw_maintenance_result ok";
-		break;
-}*/
-?>
-
-<?php /*
-<div class="<?php echo $class; ?> modal"><?php echo $this->check_res['message']; ?></div>
-<div id="checkResult">
-*/?>
-<div id="sbox" class="modal" rel="{size: {x: 700, y: 500}, handler='string'}">
-	<?php
-//		ob_start();
-		echo '<div class="well">';
-			echo JText::_('COM_BWPOSTMAN_INSTALL_FINISH_SAVE_TABLES');
-			$this->check_res	= $model->saveTables(false);
-			echo JText::_('COM_BWPOSTMAN_INSTALL_FINISH_TABLES_SAVED');
-//			ob_flush();
-//			flush();
-			echo JText::_('COM_BWPOSTMAN_INSTALL_FINISH_CHECK_TABLES');
-//			$this->check_res	= $model->checkTables();
-			echo JText::_('COM_BWPOSTMAN_INSTALL_FINISH_TABLES_CHECKED');
-//			ob_flush();
-//			flush();
-			echo '</div>';
-//		ob_end_clean();
-	?>
+<div id="checkResult" class="row-fluid">
+	<div class="alert"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?></div>
+	<div class="span6 inner well">
+		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
+		<p id="step0" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>
+		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
+		<p id="step1" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
+		<p id="step2" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
+		<p id="step3" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
+		<p id="step4" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
+		<p id="step5" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
+	</div>
+	<div class="span5 well well-small">
+		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
+		<div id="loading2"></div>
+		<div id="result"></div>
 </div>
 </div>
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+
+<script type="text/javascript">
+function doAjax(data, successCallback)
+{
+	var structure =
+	{
+		success: function(data)
+		{
+			// Call the callback function
+			successCallback(data);
+		},
+		error: function(req) {
+			var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
+			jQuery('div#loading2').css({display:'none'});
+			jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
+			jQuery('div#result').html(message);
+			jQuery('div#toolbar').find('button').removeAttr('disabled');
+		}
+	};
+
+	structure.url = starturl;
+	structure.data = data;
+	structure.type = 'POST',
+	structure.dataType = 'json',
+	jQuery.ajax(structure);
+}
+
+function processUpdateStep(data)
+{
+	jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert-'+data.aClass);
+	jQuery('p#step'+data.step).addClass('alert alert-info');
+	// Do AJAX post
+	post = {step : 'step'+data.step};
+	doAjax(post, function(data){
+		if(data.ready != "1"){
+			processUpdateStep(data);
+		} else {
+			jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
+			jQuery('div#loading2').css({display:'none'});
+			jQuery('div#result').html(data.result);
+			jQuery('div#toolbar').find('button').removeAttr('disabled');
+		}
+	});
+}
+jQuery('div#toolbar').find('button').attr("disabled","disabled");
+var starturl = 'index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo JSession::getFormToken(); ?>=1';
+var data = {step: "0"};
+processUpdateStep(data);
+</script>

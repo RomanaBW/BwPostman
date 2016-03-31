@@ -43,7 +43,7 @@
 	background-position:	-144px 0;
 }
 
-#mod_bwpostman .input-append input {
+#mod_bwpostman .input-append input, #mod_bwpostman .input input {
 	-webkit-border-radius:	4px 0 0 4px;
 	-moz-border-radius:		4px 0 0 4px;
 	border-radius:			4px 0 0 4px;
@@ -208,6 +208,38 @@ form#bwp_mod_form {
 
 }
 
+/*------------- additional field --------------------------------*/
+#bwp_mod_form_specialfield {
+
+}
+
+#bwp_mod_form_specialfield input {
+
+}
+
+#bwp_mod_form_specialfield span{
+
+}
+
+/*------------- Gender format -----------------------------*/
+p#bwp_mod_form_genderformat {
+
+}
+
+p#bwp_mod_form_genderformat label {
+
+}
+
+div#bwp_mod_form_genderfield {
+
+}
+
+#mod_bwpostman .radio.btn-group input[type="radio"] {
+	display: none;
+}
+
+
+
 /*------------- Email address ----------------------------*/
 #bwp_mod_form_emailfield {
 
@@ -329,4 +361,48 @@ div#bwp_mod_form_listsfield {
 	padding-bottom:		10px;
 }
 
+#mod_bwpostman .btn {
+	height: auto;
+}
 
+#mod_bwpostman fieldset.btn-group {
+	padding: 0;
+}
+
+#mod_bwpostman .btn-group >.btn {
+	min-width: 60px;
+	padding: 2px 12px;
+}
+
+#mod_bwpostman .radio.btn-group > label:first-of-type {
+	margin-left: 0;
+	-webkit-border-bottom-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	border-top-left-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	-moz-border-radius-topleft: 4px;
+}
+
+#mod_bwpostman .btn-group > .btn:last-child, .btn-group > .dropdown-toggle {
+	border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+#mod_bwpostman .btn-primary.active, .btn-warning.active, .btn-danger.active, .btn-success.active, .btn-info.active, .btn-inverse.active {
+	color: rgba(255, 255, 255, 0.95);
+}
+
+#mod_bwpostman .btn-group > .btn, .btn-group > .dropdown-menu, .btn-group > .popover {
+	font-size: 13px;
+}
+
+#mod_bwpostman .btn.active, .btn:active {
+	background-image: none;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+	outline: 0 none;
+}
+
+#mod_bwpostman .btn:hover, #mod_bwpostman .btn:focus, #mod_bwpostman .btn:active, #mod_bwpostman .btn.active, #mod_bwpostman .btn.disabled, #mod_bwpostman .btn[disabled] {
+	background-color: #e6e6e6;
+}

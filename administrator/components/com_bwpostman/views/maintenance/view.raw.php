@@ -38,6 +38,13 @@ jimport('joomla.application.component.view');
  */
 class BwPostmanViewMaintenance extends JViewLegacy
 {
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 */
 	public function display ($tpl = Null)
 	{
 		$app 	= JFactory::getApplication();

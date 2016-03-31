@@ -33,14 +33,17 @@ jimport('joomla.application.component.view');
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 
+/**
+ * Class BwPostmanViewRegister
+ */
 class BwPostmanViewRegister extends JViewLegacy
 {
 	/**
-	 * Display
-	 * --> load View depending on the layout
+	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 * @param 	string Template
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl=null)
 	{
@@ -82,7 +85,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * View Error Display
 	 *
 	 * @access	private
-	 * @param 	string Template
+	 *
+	 * @param 	string $tpl     Template
 	 */
 	private function _displayError($tpl)
 	{
@@ -145,7 +149,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * View Success Display
 	 *
 	 * @access	private
-	 * @param	string Template
+	 *
+	 * @param	string $tpl     Template
 	 */
 	private function _displaySuccess($tpl)
 	{
@@ -205,7 +210,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * View Default Display
 	 *
 	 * @access	private
-	 * @param 	string Template
+	 *
+	 * @param 	string $tpl     Template
 	 */
 	private function _displayDefault($tpl)
 	{
@@ -277,10 +283,57 @@ class BwPostmanViewRegister extends JViewLegacy
 		} else {
 			$selected = $subscriber->emailformat;
 		}
-		$emailformat 	= array();
-		$emailformat[] 	= JHTML::_('select.option',  '0', JText::_('COM_BWPOSTMAN_TEXT'));
-		$emailformat[] 	= JHTML::_('select.option',  '1', JText::_('COM_BWPOSTMAN_HTML'));
-		$lists['emailformat']= JHTML::_('select.radiolist',  $emailformat, 'emailformat', 'class="inputbox" ', 'value', 'text', $selected);
+		// Build the email format select list
+		if (!isset($subscriber->emailformat)) {
+			$mailformat_selected = $params->get('default_emailformat');
+		}
+		else {
+			$mailformat_selected = $subscriber->emailformat;
+		}
+
+		$emailformat 	= '<fieldset id="edit_mailformat" class="radio btn-group">';
+		$emailformat		.= '<input type="radio" name="emailformat" id="formatText" value="0"';
+		if(!$mailformat_selected)
+		{
+			$emailformat .= 'checked="checked"';
+		}
+		$emailformat     .= '/>';
+		$emailformat		.= '<label for="formatText"><span>'. JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat     .= '<input type="radio" name="emailformat" id="formatHtml" value="1"';
+		if($mailformat_selected)
+		{
+			$emailformat .= 'checked="checked"';
+		}
+		$emailformat     .= '/>';
+		$emailformat     .= '<label for="formatHtml"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat     .= '</fieldset>';
+		$lists['emailformat'] = $emailformat;
+
+		// Build the gender select list
+		if (!isset($subscriber->gender)) {
+			$gender_selected = 0;
+		}
+		else {
+			$gender_selected = $subscriber->gender;
+		}
+
+		$gender 	= '<fieldset id="edit_gender" class="radio btn-group">';
+		$gender		.= '<input type="radio" name="gender" id="genMale" value="0"';
+		if(!$gender_selected)
+		{
+			$gender .= 'checked="checked"';
+		}
+		$gender     .= '/>';
+		$gender		.= '<label for="genMale"><span>'. JText::_('COM_BWPOSTMAN_MALE') . '</span></label>';
+		$gender     .= '<input type="radio" name="gender" id="genFemale" value="1"';
+		if($gender_selected)
+		{
+			$gender .= 'checked="checked"';
+		}
+		$gender     .= '/>';
+		$gender     .= '<label for="genFemale"><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></label>';
+		$gender     .= '</fieldset>';
+		$lists['gender'] = $gender;
 
 		// Save references into view
 		$this->assignRef('available_mailinglists', $available_mailinglists);

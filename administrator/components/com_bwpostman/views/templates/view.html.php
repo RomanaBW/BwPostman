@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -43,28 +43,23 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
 class BwPostmanViewTemplates extends JViewLegacy
 {
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
-	 * @access	public
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @param	string Template
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
-	 * @since	1.1.0
+	 * @since   1.1.0
 	 */
 	public function display($tpl = null)
 	{
 		$app		= JFactory::getApplication();
-		$user		= JFactory::getUser();
 
 		if (!BwPostmanHelper::canView('templates')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 		else {
-		// Build the key for the userState
-			$key			= $this->getName();
-			$filter_search	= $app->getUserStateFromRequest($key.'search_filter', 'filter.search_filter', 'title', 'string');
-
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items			= $this->get('Items');
@@ -91,37 +86,69 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
+		$jinput	= JFactory::getApplication()->input;
+		$layout	= $jinput->getCmd('layout', '');
 		$canDo	= BwPostmanHelper::getActions(0, 'template');
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_TPL'));
 		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
-		// Set toolbar title
-		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_TPL'), 'picture');
+		switch ($layout) {
+			case 'uploadtpl':
+				$alt 	= "COM_BWPOSTMAN_BACK";
+				$bar	= JToolBar::getInstance('toolbar');
+				$backlink 	= 'index.php?option=com_bwpostman&view=templates';
+				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+				JToolBarHelper::title (JText::_('COM_BWPOSTMAN_TPL_UPLOADTPL'), 'upload');
+				JToolBarHelper::spacer();
+				JToolBarHelper::divider();
+				JToolBarHelper::spacer();
+				break;
+			case 'installtpl':
+				$alt 	= "COM_BWPOSTMAN_BACK";
+				$bar	= JToolBar::getInstance('toolbar');
+				$backlink 	= 'index.php?option=com_bwpostman&view=templates';
+				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+				JToolBarHelper::title (JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'), 'plus');
+				JToolBarHelper::spacer();
+				JToolBarHelper::divider();
+				JToolBarHelper::spacer();
+				break;
+			default:
+				// Set toolbar title
+				JToolBarHelper::title (JText::_('COM_BWPOSTMAN_TPL'), 'picture');
 
-		// Set toolbar items for the page
-		if ($canDo->get('core.create'))		JToolBarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
-		if ($canDo->get('core.edit'))		JToolBarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('template.edit');
+				// Set toolbar items for the page
+				if ($canDo->get('core.create'))		JToolBarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
+				if ($canDo->get('core.create'))		JToolBarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
+				if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('template.edit');
 
-		if ($canDo->get('core.edit.state')) {
-			JToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
-			JToolBarHelper::publishList('templates.publish');
-			JToolBarHelper::unpublishList('templates.unpublish');
-		}
+				if ($canDo->get('core.edit.state')) {
+					JToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
+					JToolBarHelper::publishList('templates.publish');
+					JToolBarHelper::unpublishList('templates.unpublish');
+				}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
+				JToolBarHelper::divider();
+				JToolBarHelper::spacer();
 
-		if ($canDo->get('core.archive')) {
-			JToolBarHelper::archiveList('template.archive');
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
-		}
-		if ($canDo->get('core.manage')) {
-			JToolBarHelper::checkin('templates.checkin');
-			JToolBarHelper::divider();
+				if ($canDo->get('core.archive')) {
+					JToolBarHelper::archiveList('template.archive');
+					JToolBarHelper::divider();
+					JToolBarHelper::spacer();
+				}
+				if ($canDo->get('core.manage')) {
+					JToolBarHelper::checkin('templates.checkin');
+					JToolBarHelper::divider();
+				}
+				// templateupload
+				if ($canDo->get('core.create')) {
+					$bar = JToolBar::getInstance('toolbar');
+					JHTML::_( 'behavior.modal' );
+					$html = '<a class="btn btn-small" href="'. JURI::root(true) . '/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl" rel="{handler: \'iframe\', size: {x: 850, y: 500}}" ><span class="icon-upload"></span>' .JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'). '</a>';
+					$bar->appendButton( 'Custom', $html );
+				}
 		}
 		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 		JToolBarHelper::spacer();

@@ -61,6 +61,11 @@ function checkModRegisterForm() {
 	if ((document.getElementById("a_name").value == "") && (document.getElementById("name_field_obligation").value == 1)){
 		errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_NAME', true); ?>\n";
 	}
+	// additional field
+	if ((document.getElementById("a_special").value == "") && (document.getElementById("special_field_obligation").value == 1)){
+		alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($params->get('special_label'))); ?>");
+		errStr += "<?php echo JText::_('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', true); ?>\n";
+	}
 	// email
 	var email = document.getElementById("a_email").value;
 	if (email == ""){
@@ -151,6 +156,21 @@ function checkModRegisterForm() {
 			<?php
 				endif; // End: Show pretext only if set in basic parameters
 
+
+				if ($paramsComponent->get('show_gender') == 1) {
+					// Show formfield gender only if enabled in basic parameters ?>
+					<p id="bwp_mod_form_genderformat">
+						<label id="gendermsg_mod">
+							<?php echo JText::_('MOD_BWPOSTMANGENDER'); ?>:
+						</label>
+					</p>
+					<div id="bwp_mod_form_genderfield">
+						<?php echo $lists['gender']; ?>
+					</div>
+					<?php
+				}
+				// End show gender
+
 				if ($paramsComponent->get('show_firstname_field') OR $paramsComponent->get('firstname_field_obligation')) : // Show firstname-field only if set in basic parameters 			?>
 					<p id="bwp_mod_form_firstnamefield" class="input<?php echo ($paramsComponent->get('firstname_field_obligation')) ? '-append' : '-xx'?>">
 						<?php
@@ -163,18 +183,34 @@ function checkModRegisterForm() {
 					</p>
 				<?php
 				endif;
-				if ($paramsComponent->get('show_name_field') OR $paramsComponent->get('name_field_obligation')) : // Show name-field only if set in basic parameters ?>
-					<p id="bwp_mod_form_namefield" class="input<?php echo ($paramsComponent->get('name_field_obligation')) ? '-append' : ''?>">
-						<?php  // Is filling out the name field obligating
-							isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
-							($paramsComponent->get('name_field_obligation')) ? $required = '<span class="append-area"><i class="icon-star"></i></span>' : $required = ''; ?>
-							<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANNAME')); ?>" value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" />
-							<?php echo $required; ?>
-					</p>
+				?>
 				<?php
-				endif; // End: Show name-field only if set in basic parameters ?>
+				if ($paramsComponent->get('show_name_field')) : // Show name-field only if set in basic parameters ?>
+				<p id="bwp_mod_form_namefield" class="input-append">
+					<?php  // Is filling out the name field obligating
+					isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
+					($paramsComponent->get('name_field_obligation')) ? $required = '<span class="append-area"><i class="icon-star"></i></span>' : $required = ''; ?>
+					<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANNAME')); ?>" value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" />
+					<?php echo $required; ?>
+				</p>
+				<?php
+				endif; // End: Show name field only if set in basic parameters
+				?>
 
-				<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
+			<?php
+			if ($paramsComponent->get('show_special') OR $paramsComponent->get('special_field_obligation')) : // Show additional field only if set in basic parameters ?>
+			<p id="bwp_mod_form_specialfield" class="input<?php echo ($paramsComponent->get('special_field_obligation')) ? '-append' : ''?>">
+				<?php  // Is filling out the additional field obligating
+				isset($subscriber->special) ? $sub_special = $subscriber->special : $sub_special = '';
+				($paramsComponent->get('special_field_obligation')) ? $required = '<span class="append-area"><i class="icon-star"></i></span>' : $required = ''; ?>
+				<input type="text" name="a_special" id="a_special" placeholder="<?php echo addslashes(JText::_($paramsComponent->get('special_label'))); ?>" value="<?php echo $sub_special; ?>" class="inputbox input-small" maxlength="50" />
+				<?php echo $required; ?>
+			</p>
+			<?php
+			endif; // End: Show additional field only if set in basic parameters
+			?>
+
+			<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
 				<p id="bwp_mod_form_emailfield" class="input-append">
 					<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANEMAIL')); ?>" value="<?php echo $sub_email; ?>" class="inputbox input-small" maxlength="100" />
 					<span class="append-area"><i class="icon-star"></i></span>
@@ -217,7 +253,7 @@ function checkModRegisterForm() {
 									<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" name="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 									<span class="mailinglist-title"><?php echo $mailinglist->title;
 									if ($paramsComponent->get('show_desc') == 1) {
-										?>:</strong><br /><?php echo substr($mailinglist->description,0,$paramsComponent->get('desc_lenght')); if (strlen($mailinglist->description) > $paramsComponent->get('desc_lenght')) echo '...';
+										?>:</span><br /><?php echo substr($mailinglist->description,0,$paramsComponent->get('desc_lenght')); if (strlen($mailinglist->description) > $paramsComponent->get('desc_lenght')) echo '...';
 									}
 									else {
 										echo '</span>';
@@ -297,8 +333,12 @@ function checkModRegisterForm() {
 			<?php // TODO: muss hier subscriber->id stehen oder kann das leer bleiben? ?>
 			<!-- <input type="hidden" name="id" value="<?php echo isset($subscriber->id); ?>" /> -->
 			<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
-			<input type="hidden" name="name_field_obligation" id="name_field_obligation" value="<?php echo $paramsComponent->get('name_field_obligation'); ?>" />
-			<input type="hidden" name="firstname_field_obligation" id="firstname_field_obligation" value="<?php echo $paramsComponent->get('firstname_field_obligation'); ?>" />
+			<input type="hidden" name="name_field_obligation_mod" id="name_field_obligation_mod" value="<?php echo $paramsComponent->get('name_field_obligation'); ?>" />
+			<input type="hidden" name="firstname_field_obligation_mod" id="firstname_field_obligation_mod" value="<?php echo $paramsComponent->get('firstname_field_obligation'); ?>" />
+			<input type="hidden" name="special_field_obligation_mod" id="special_field_obligation_mod" value="<?php echo $paramsComponent->get('special_field_obligation'); ?>" />
+			<input type="hidden" name="show_name_field_mod" id="show_name_field_mod" value="<?php echo $paramsComponent->get('show_name_field'); ?>" />
+			<input type="hidden" name="show_firstname_field_mod" id="show_firstname_field_mod" value="<?php echo $paramsComponent->get('show_firstname_field'); ?>" />
+			<input type="hidden" name="show_special_mod" id="show_special_mod" value="<?php echo $paramsComponent->get('show_special'); ?>" />
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 
@@ -309,3 +349,38 @@ function checkModRegisterForm() {
 	<?php
 	}; // End: Show registration form ?>
 </div>
+
+<script type="text/javascript">
+	jQuery(document).ready(function()
+	{
+		// Turn radios into btn-group
+		jQuery('.radio.btn-group label').addClass('btn');
+		jQuery(".btn-group label:not(.active)").click(function()
+		{
+			var label = jQuery(this);
+			var input = jQuery('#' + label.attr('for'));
+
+			if (!input.prop('checked')) {
+				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
+				if (input.val() == '') {
+					label.addClass('active btn-primary');
+				} else if (input.val() == 0) {
+					label.addClass('active btn-danger');
+				} else {
+					label.addClass('active btn-success');
+				}
+				input.prop('checked', true);
+			}
+		});
+		jQuery(".btn-group input[checked=checked]").each(function()
+		{
+			if (jQuery(this).val() == '') {
+				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
+			} else if (jQuery(this).val() == 0) {
+				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
+			} else {
+				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
+			}
+		});
+	})
+</script>

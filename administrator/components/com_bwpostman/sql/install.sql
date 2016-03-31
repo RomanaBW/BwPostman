@@ -1,6 +1,6 @@
--- 
+--
 -- Table structure for table `#__bwpostman_campaigns`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_campaigns`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns` (
@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_mailinglists`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_mailinglists` (
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_mailinglists` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_newsletters`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_newsletters`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters` (
@@ -96,9 +96,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_newsletters_mailinglists`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_newsletters_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters_mailinglists` (
@@ -109,9 +109,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters_mailinglists` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_sendmailcontent`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_sendmailcontent`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailcontent` (
@@ -132,9 +132,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailcontent` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_sendmailqueue`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_sendmailqueue`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailqueue` (
@@ -151,9 +151,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailqueue` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_subscribers`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_subscribers`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
@@ -164,6 +164,8 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
  `firstname` varchar(255) NOT NULL,
  `email` varchar(100) NOT NULL,
  `emailformat` tinyint(1) NOT NULL,
+ `gender` tinyint(1) unsigned NULL,
+ `special` varchar(255) NOT NULL,
  `status` int(1) NOT NULL,
  `activation` varchar(100) NOT NULL,
  `editlink` varchar(100) NOT NULL,
@@ -186,9 +188,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_subscribers_mailinglists`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_subscribers_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers_mailinglists` (
@@ -199,9 +201,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers_mailinglists` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_templates`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_templates`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
@@ -242,9 +244,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_templates`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_templates_tpl`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tpl` (
@@ -263,9 +265,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tpl` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__bwpostman_campaigns_mailinglists`
--- 
+--
 
 DROP TABLE IF EXISTS `#__bwpostman_campaigns_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns_mailinglists` (

@@ -55,12 +55,14 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 			alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_NAME', true); ?>");
 		} else if ((form.jform_firstname.value == "") && (form.firstname_field_obligation.value == 1)){
 				alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME', true); ?>");
+		} else if ((form.jform_special.value == "") && (form.special_field_obligation.value == 1)){
+			alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $this->obligation['special_label']); ?>");
 		} else if (form.jform_email.value== ""){
 			alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL', true); ?>");
 		} else {
 			submitform(pressbutton);
 		}
-	}
+	};
 
 	// This function changes the layout-value if the checkbox 'confirm' exists and if it is not checked
 	function checkConfirmBox() {
@@ -97,6 +99,11 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 					<div class="width-60 fltlft span8 control-group">
 						<ul class="adminformlist unstyled">
 							<li>
+								<?php echo $this->form->getLabel('gender'); ?>
+								<div class="controls"><?php echo $this->form->getInput('gender'); ?></div>
+							</li>
+
+							<li>
 								<?php echo $this->form->getLabel('firstname'); ?>
 								<div class="controls"><?php echo $this->form->getInput('firstname'); ?></div>
 							</li>
@@ -114,6 +121,11 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 							<li>
 								<?php echo $this->form->getLabel('emailformat'); ?>
 								<div class="controls"><?php echo $this->form->getInput('emailformat'); ?></div>
+							</li>
+
+							<li>
+								<?php echo $this->form->getLabel('special'); ?>
+								<div class="controls"><?php echo $this->form->getInput('special'); ?></div>
 							</li>
 
 							<?php if ($new_test != '9') { ?>
@@ -267,6 +279,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="name_field_obligation" value="<?php echo $this->obligation['name']; ?>" />
 		<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->obligation['firstname']; ?>" />
+		<input type="hidden" name="special_field_obligation" value="<?php echo $this->obligation['special']; ?>" />
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div>

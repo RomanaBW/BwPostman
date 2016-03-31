@@ -28,6 +28,7 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 JHTML::_('behavior.tooltip');
+JHtml::_('formbehavior.chosen', 'select');
 
 ?>
 
@@ -50,6 +51,12 @@ JHTML::_('behavior.tooltip');
 		if (form.firstname_field_obligation.value == 1) {
 			if (form.firstname.value == "") {
 				alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
+				fault	= true;
+			}
+		}
+		if (form.special_field_obligation.value == 1) {
+			if (form.special.value == "") {
+				alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>");
 				fault	= true;
 			}
 		}
@@ -106,13 +113,20 @@ JHTML::_('behavior.tooltip');
 		<div class="content_inner">
 			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
 				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-				<?php
-					if ($this->params->get('pretext')) : // Show pretext only if set in basic parameters			?>
-						<p class="bwp_com_form_pretext"><?php echo nl2br($this->params->get('pretext')); ?></p>
-				<?php
-					endif; // End: Show pretext only if set in basic parameters
-				?>
-				<?php if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation')) : // Show firstname-field only if set in basic parameters or required ?>
+					<?php
+						if ($this->params->get('pretext')) : // Show pretext only if set in basic parameters			?>
+							<p class="bwp_com_form_pretext"><?php echo nl2br($this->params->get('pretext')); ?></p>
+					<?php
+						endif; // End: Show pretext only if set in basic parameters
+					?>
+					<?php if ($this->params->get('show_gender') == 1) { // Show formfield gender only if enabled in basic parameters ?>
+						<div class="edit_gender">
+							<label id="gendermsg"> <?php echo JText::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
+							<?php echo $this->lists['gender']; ?>
+						</div>
+					<?php } // End gender ?>
+
+					<?php if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation')) : // Show firstname-field only if set in basic parameters or required ?>
 						<p class="edit_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : ''?>">
 							<label id="firstnamemsg" for="firstname"
 								<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) echo "class=\"invalid\""; ?>>
@@ -151,6 +165,43 @@ JHTML::_('behavior.tooltip');
 							<?php } endif; // End: Is filling out the name field obligating ?>
 						</p>
 					<?php endif; // End: Show name-field only if set in basic parameters ?>
+
+					<?php if ($this->params->get('show_special') || $this->params->get('special_field_obligation')) : // Show special only if set in basic parameters or required
+							if($this->params->get('special_desc') != '')
+							{
+								$tip    =  JText::_($this->params->get('special_desc'));
+							}
+							else
+							{
+								$tip    =  JText::_('COM_BWPOSTMAN_SPECIAL');
+							} ?>
+
+					<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : ''?>">
+						<label id="specialmsg hasTooltip" title="<?php echo JHtml::tooltipText($tip); ?>" for="special"
+							<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) echo "class=\"invalid\""; ?>>
+							<?php
+								if($this->params->get('special_label') != '')
+								{
+									echo JText::_($this->params->get('special_label'));
+								}
+								else
+								{
+									echo JText::_('COM_BWPOSTMAN_SPECIAL');
+								}
+							?>:
+						</label>
+						<?php if ($this->params->get('special_field_obligation')) : { // Is filling out the special field obligating ?>
+							<input	type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+								class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox required";} ?>"
+								maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span>
+						<?php }
+						else : { ?>
+							<input	type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+								class="<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) { echo "invalid"; } else { echo "inputbox";} ?>"
+								maxlength="50" />
+						<?php } endif; // End: Is filling out the special field obligating ?>
+					</p>
+					<?php endif; // End: Show special field only if set in basic parameters ?>
 					<p class="edit_email input-append">
 						<label id="emailmsg" for="email"
 							<?php if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1)) echo "class=\"invalid\""; ?>>
@@ -221,6 +272,10 @@ JHTML::_('behavior.tooltip');
 				<input type="hidden" name="id" value="<?php echo $this->subscriber->id; ?>" />
 				<input type="hidden" name="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" />
 				<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->params->get('firstname_field_obligation'); ?>" />
+				<input type="hidden" name="special_field_obligation" value="<?php echo $this->params->get('special_field_obligation'); ?>" />
+				<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
+				<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
+				<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
 				<?php echo JHTML::_('form.token'); ?>
 			</form>
 
@@ -228,3 +283,37 @@ JHTML::_('behavior.tooltip');
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	jQuery(document).ready(function()
+	{
+		// Turn radios into btn-group
+		jQuery('.radio.btn-group label').addClass('btn');
+		jQuery(".btn-group label:not(.active)").click(function()
+		{
+			var label = jQuery(this);
+			var input = jQuery('#' + label.attr('for'));
+
+			if (!input.prop('checked')) {
+				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
+				if (input.val() == '') {
+					label.addClass('active btn-primary');
+				} else if (input.val() == 0) {
+					label.addClass('active btn-danger');
+				} else {
+					label.addClass('active btn-success');
+				}
+				input.prop('checked', true);
+			}
+		});
+		jQuery(".btn-group input[checked=checked]").each(function()
+		{
+			if (jQuery(this).val() == '') {
+				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
+			} else if (jQuery(this).val() == 0) {
+				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
+			} else {
+				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
+			}
+		});
+	})
+</script>

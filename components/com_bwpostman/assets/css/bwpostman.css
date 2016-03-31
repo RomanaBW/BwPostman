@@ -627,13 +627,71 @@
 	-webkit-border-radius:	4px;
 	-moz-border-radius:		4px;
 	border-radius:			4px;
-	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-	filter:					progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0, enabled=false);
 	*zoom:					1;
 	-webkit-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	box-shadow:				inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+
+#bwp_com_form .btn {
+	height: auto;
+}
+
+#bwp_com_form fieldset.btn-group {
+	padding: 0;
+}
+
+#bwp_com_form .btn-group >.btn {
+	min-width: 60px;
+	padding: 2px 12px;
+}
+
+#bwp_com_form .radio.btn-group > label:first-of-type {
+	margin-left: 0;
+	-webkit-border-bottom-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	border-top-left-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	-moz-border-radius-topleft: 4px;
+}
+
+#bwp_com_form .btn-group > .btn:last-child,
+.btn-group > .dropdown-toggle {
+	border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+#bwp_com_form .btn-primary.active,
+#bwp_com_form .btn-warning.active,
+#bwp_com_form .btn-danger.active,
+#bwp_com_form .btn-success.active,
+#bwp_com_form .btn-info.active,
+#bwp_com_form .btn-inverse.active {
+	color: rgba(255, 255, 255, 0.95);
+}
+
+#bwp_com_form .btn-group > .btn, .btn-group > .dropdown-menu, .btn-group > .popover {
+	font-size: 13px;
+}
+
+#bwp_com_form .btn.active, .btn:active {
+	background-image: none;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+	outline: 0 none;
+}
+
+#bwp_com_form .btn:hover,
+#bwp_com_form .btn:focus,
+#bwp_com_form .btn:active,
+#bwp_com_form .btn.active,
+#bwp_com_form .btn.disabled,
+#bwp_com_form .btn[disabled] {
+	background-color: #e6e6e6;
+}
+
+
 
 #bwpostman .append-area {
 	display:				inline-block;
@@ -646,7 +704,7 @@
 	color:					#333333;
 	text-align:				center;
 	text-shadow:			0 1px 1px rgba(255, 255, 255, 0.75);
-	cursor:					normal;
+	cursor:					default;
 	background-color:		#f5f5f5;
 	*background-color:		#e6e6e6;
 	background-image:		-moz-linear-gradient(top, #ffffff, #e6e6e6);
@@ -663,8 +721,7 @@
 	-webkit-border-radius:	0 4px 4px 0;
 	-moz-border-radius:		0 4px 4px 0;
 	border-radius:			0 4px 4px 0;
-	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-	filter:					progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0, enabled=false);
 	*zoom:					1;
 	-webkit-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -702,8 +759,8 @@
 }
 
 #bwpostman .btn:focus {
-	outline:			thin dotted #333;
-	outline:			5px auto -webkit-focus-ring-color;
+	outline:			thin dotted #333 ;
+	outline:			-webkit-focus-ring-color;
 	outline-offset:		-2px;
 }
 
@@ -783,6 +840,10 @@
 #bwpostman input[type="radio"],
 #bwpostman input[type="checkbox"] {
 	cursor:				pointer;
+}
+
+#bwpostman .radio.btn-group input[type="radio"] {
+	display: none;
 }
 
 #bwpostman input[type="search"] {
@@ -912,6 +973,15 @@
 
 #bwp_com_register .user_name input#name {
 
+}
+
+#bwp_com_register p.gendermsg {
+	display: inline-block;
+	width: 140px;
+}
+
+#bwp_com_register fieldset {
+	margin-bottom : 10px;
 }
 
 #bwp_com_register .user_email {
@@ -1156,6 +1226,19 @@
 
 }
 
+#bwp_com_edit_subscription .edit_gender {
+
+}
+
+#bwp_com_edit_subscription fieldset {
+	margin-bottom : 10px;
+}
+
+
+#bwp_com_edit_subscription .edit_gender label {
+	vertical-align:		top;
+}
+
 #bwp_com_edit_subscription .edit_email {
 
 }
@@ -1174,6 +1257,22 @@
 
 #bwp_com_edit_subscription .edit_emailformat label {
 	vertical-align:		top;
+}
+
+#bwp_com_edit_subscription .edit_special {
+
+}
+
+#bwp_com_edit_subscription .edit_special label#specialmsg {
+
+}
+
+#bwp_com_edit_subscription .edit_special input#special {
+
+}
+
+#bwp_com_edit_subscription .edit_email {
+
 }
 
 #bwp_com_edit_subscription .controls {

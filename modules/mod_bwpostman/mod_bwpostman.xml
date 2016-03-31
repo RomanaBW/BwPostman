@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>MOD_BWPOSTMAN</name>
-	<creationDate>Dec 2015</creationDate>
+	<creationDate>Mar 2016</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>http://www.boldt-webservice.de</authorUrl>
@@ -72,6 +72,56 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				<field name="show_gender"
+				       type="radio"
+				       class="btn-group btn-group-yesno mod_set"
+				       labelclass="mod_set"
+				       default="0"
+				       label="MOD_BWPOSTMAN_SHOW_GENDER"
+				       description="MOD_BWPOSTMAN_SHOW_GENDER_NOTE"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="spacer2_3" type="spacer" hr="true" />
+
+				<field name="show_special"
+				       type="radio"
+				       class="btn-group btn-group-yesno mod_set"
+				       labelclass="mod_set"
+				       default="0"
+				       label="MOD_BWPOSTMAN_SHOW_SPECIAL"
+				       description="MOD_BWPOSTMAN_SHOW_SPECIAL_NOTE"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="special_field_obligation"
+				       type="radio"
+				       class="btn-group btn-group-yesno mod_set"
+				       labelclass="mod_set"
+				       default="0"
+				       label="MOD_BWPOSTMAN_SPECIAL_FIELD_OBLIGATION"
+				       description="MOD_BWPOSTMAN_SPECIAL_FIELD_OBLIGATION_NOTE"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="special_label"
+				       size="50"
+				       type="text"
+				       class=" mod_set"
+				       labelclass="mod_set"
+				       default=""
+				       label="MOD_BWPOSTMAN_SPECIAL_FIELD_LABEL"
+				       description="MOD_BWPOSTMAN_SPECIAL_FIELD_LABEL_NOTE"
+				/>
+
+				<field name="spacer2_3" type="spacer" hr="true" />
+
 				<field name="spacer2_3" type="spacer" class="mod_set" hr="true" />
 				<field name="show_emailformat" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_EMAILFORMAT" description="MOD_BWPOSTMAN_SHOW_EMAILFORMAT_NOTE">
 					<option value="0">JNO</option>

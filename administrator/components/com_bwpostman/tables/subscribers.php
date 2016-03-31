@@ -57,8 +57,14 @@ class BwPostmanTableSubscribers extends JTable
 	/** @var string Email */
 	var $email = null;
 
-	/** @var tinyint Newsletterformat --> 0 = text, 1 = html */
+	/** @var int Newsletterformat --> 0 = text, 1 = html */
 	var $emailformat = null;
+
+	/** @var int gender --> 0 = male, 1 = female */
+	var $gender = null;
+
+	/** @var string special field */
+	var $special = null;
 
 	/** @var int Subscriber status --> 0 = not confirmed, 1 = confirmed, 9 = test-recipient */
 	var $status = null;
@@ -72,7 +78,7 @@ class BwPostmanTableSubscribers extends JTable
 	/** @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels */
 	var $access = 0;
 
-	/** @var date Registration date */
+	/** @var datetime Registration date */
 	var $registration_date = null;
 
 	/** @var int ID --> 0 = subscriber registered himself, another ID = administrator from users-table */
@@ -81,7 +87,7 @@ class BwPostmanTableSubscribers extends JTable
 	/** @var string Registration IP */
 	var $registration_ip = null;
 
-	/** @var date Confirmation date of the subscription */
+	/** @var datetime Confirmation date of the subscription */
 	var $confirmation_date = null;
 
 	/** @var int ID --> -1 = account is not confirmed, 0 = subscriber confirmed the subscription by himself, another ID = administrator from users-table */
@@ -90,7 +96,7 @@ class BwPostmanTableSubscribers extends JTable
 	/** @var string Confirmation IP */
 	var $confirmation_ip = null;
 
-	/** @var date last modification date of the subscriber */
+	/** @var datetime last modification date of the subscriber */
 	var $modified_time = '0000-00-00 00:00:00';
 
 	/** @var int user ID */
@@ -99,13 +105,13 @@ class BwPostmanTableSubscribers extends JTable
 	/** @var int Checked-out owner */
 	var $checked_out = 0;
 
-	/** @var date Checked-out time */
-	var $checked_out_time = 0;
+	/** @var datetime Checked-out time */
+	var $checked_out_time = '0000-00-00 00:00:00';
 
-	/** @var tinyint Archive-flag --> 0 = not archived, 1 = archived */
+	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
 	var $archive_flag = 0;
 
-	/** @var date Archive-date */
+	/** @var datetime Archive-date */
 	var $archive_date = null;
 
 	/** @var int ID --> -1 = account is not archived, 0 = account is archived by the subscriber himself, another ID = account is archived by an administrator */
@@ -114,7 +120,7 @@ class BwPostmanTableSubscribers extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 */
 	public function __construct(& $db)
 	{
@@ -195,16 +201,15 @@ class BwPostmanTableSubscribers extends JTable
 	 * @since   11.1
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
-//	protected function _getAssetParentId($table = null, $id = null)
 	{
 		// Initialise variables.
 		$assetId = null;
 
-		// Build the query to get the asset id for the component.
+		// Build the query to get the asset id for the table.
 		$query = $this->_db->getQuery(true);
 		$query->select($this->_db->quoteName('id'));
 		$query->from($this->_db->quoteName('#__assets'));
-		$query->where($this->_db->quoteName('name') . " LIKE 'com_bwpostman'");
+		$query->where($this->_db->quoteName('name') . " LIKE 'com_bwpostman.subscriber'");
 
 		// Get the asset id from the database.
 		$this->_db->setQuery($query);
@@ -228,8 +233,10 @@ class BwPostmanTableSubscribers extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
-	 * @param object Named array
-	 * @param string Space separated list of fields not to bind
+	 *
+	 * @param array|object  $data       Named array
+	 * @param string        $ignore     Space separated list of fields not to bind
+	 *
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
@@ -275,12 +282,10 @@ class BwPostmanTableSubscribers extends JTable
 		$params	= JComponentHelper::getParams('com_bwpostman');
 		$app	= JFactory::getApplication();
 		$import	= $app->getUserState('com_bwpostman.subscriber.import', false);
-		$xtest	= $app->getUserState('com_bwpostman.subscriber.new_test', $this->status);
 		$data	= $app->getUserState('com_bwpostman.subscriber.register.data', array());
 
 		$session	= JFactory::getSession();
 		$err		= $session->get('session_error');
-		$code		= '';
 		$fault		= false;
 
 		$_db		= $this->_db;
@@ -292,20 +297,16 @@ class BwPostmanTableSubscribers extends JTable
 		if ($xtest =! '9') $tester	= true;
 		if ($import && $this->status == '9') $tester	= true;
 
-		// Remove all HTML tags from the name, firstname and email
+		// Remove all HTML tags from the name, firstname, email and special
 		$filter				= new JFilterInput(array(), array(), 0, 0);
 		$this->name 		= $filter->clean($this->name);
 		$this->firstname	= $filter->clean($this->firstname);
 		$this->email		= $filter->clean($this->email);
-
-		// check if any errorcode exists
-		if ($err['err_code']) {
-			$code = $err['err_code'];
-		}
+		$this->special		= $filter->clean($this->special);
 
 		if (!$import) {
 		// Check for valid firstname
-			if (($params->get('show_firstname_field')) && ($params->get('firstname_field_obligation'))) {
+			if (($data['show_firstname_field']) && ($data['firstname_field_obligation'])) {
 				if (trim($this->firstname) == '') {
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME'), 'error');
 					$fault	= true;
@@ -313,15 +314,23 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Check for valid name
-			if (($params->get('show_name_field')) && ($params->get('name_field_obligation'))) {
+			if (($data['show_name_field']) && ($data['name_field_obligation'])) {
 				if (trim($this->name) == '') {
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_NAME'), 'error');
 					$fault	= true;
 				}
 			}
+
+			// Check for valid additional field
+			if (($data['show_special']) && ($data['special_field_obligation'])) {
+				if (trim($this->special) == '') {
+					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($params->get('special_label'))), 'error');
+					$fault	= true;
+				}
+			}
 		}
 
-		// Check for valid email address
+	// Check for valid email address
 		if (trim($this->email) == '') {
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL'), 'error');
 			$fault	= true;
@@ -392,7 +401,9 @@ class BwPostmanTableSubscribers extends JTable
 
 		if ($fault) {
 			$app->setUserState('com_bwpostman.edit.subscriber.data', $this);
+//			$app->setUserState('com_bwpostman.edit.subscriber.register.errors', $err);
 			$session->set('session_error', $err);
+//			$session->close();
 			return false;
 		}
 
@@ -566,8 +577,9 @@ class BwPostmanTableSubscribers extends JTable
 	/**
 	 * Overridden JTable::delete
 	 *
-	 * @param	mixed	An optional primary key value to delete.  If not set the
-	 *					instance property value is used.
+	 * @param	mixed	$pk     An optional primary key value to delete.  If not set the
+	 *				        	instance property value is used.
+	 *
 	 * @return	boolean	True on success.
 	 *
 	 * @since   1.0.1

@@ -49,19 +49,68 @@ switch ($this->check_res['type']) {
 }
 */
 ?>
-
-<?php /*
-<div class="<?php echo $class; ?> modal"><?php echo $this->check_res['message']; ?></div>
-<div id="checkResult" class="modal" rel="{size: {x: 700, y: 500}, handler:'iframe', closable: true}">
-*/?>
-<div id="checkResult">
-	<?php
-		ob_start();
-		echo '<div class="well">';
-		$model->checkTables();
-		echo '</div>';
-		ob_flush();
-		flush();
-	?>
+<div id="checkResult" class="row-fluid">
+	<div class="span6 inner well">
+		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
+		<p id="step1" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
+		<p id="step2" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
+		<p id="step3" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
+		<p id="step4" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
+		<p id="step5" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
+	</div>
+	<div class="span6 well well-small">
+		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
+		<div id="loading2"></div>
+		<div id="result"></div>
+	</div>
 </div>
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+
+<script type="text/javascript">
+function doAjax(data, successCallback)
+{
+	var structure =
+	{
+		success: function(data)
+		{
+			// Call the callback function
+			successCallback(data);
+		},
+		error: function(req) {
+			var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
+			jQuery('div#loading2').css({display:'none'});
+			jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
+			jQuery('div#result').html(message);
+			jQuery('div#toolbar').find('button').removeAttr('disabled');
+		}
+	};
+
+	structure.url = starturl;
+	structure.data = data;
+	structure.type = 'POST',
+	structure.dataType = 'json',
+	jQuery.ajax(structure);
+}
+
+function processUpdateStep(data)
+{
+	jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert-'+data.aClass);
+	jQuery('p#step'+data.step).addClass('alert alert-info');
+	// Do AJAX post
+	post = {step : 'step'+data.step};
+	doAjax(post, function(data){
+		if(data.ready != "1"){
+			processUpdateStep(data);
+		} else {
+			jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
+			jQuery('div#loading2').css({display:'none'});
+			jQuery('div#result').html(data.result);
+			jQuery('div#toolbar').find('button').removeAttr('disabled');
+		}
+	});
+}
+jQuery('div#toolbar').find('button').attr("disabled","disabled");
+var starturl = 'index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo JSession::getFormToken(); ?>=1';
+var data = {step: "1"};
+processUpdateStep(data);
+</script>

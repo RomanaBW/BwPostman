@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="component" version="3.0" method="upgrade">
 	<name>COM_BWPOSTMAN</name>
-	<creationDate>Dec 2015</creationDate>
+	<creationDate>Mar 2016</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>http://www.boldt-webservice.de</authorUrl>
@@ -91,6 +91,7 @@
 			<folder>elements</folder>
 			<folder>helpers</folder>
 			<folder>layouts</folder>
+			<folder>libraries</folder>
 			<folder>models</folder>
 			<folder>sql</folder>
 			<folder>tables</folder>

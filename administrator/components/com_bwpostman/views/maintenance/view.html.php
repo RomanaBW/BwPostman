@@ -43,7 +43,7 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
 class BwPostmanViewMaintenance extends JViewLegacy
 {
 	/**
-	 * Display
+	 * Execute and display a template script.
 	 *
 	 * @access	public
 	 * @param	string Template
@@ -51,18 +51,17 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
+		JHtml::_('bootstrap.framework');
+		JHtml::_('jquery.framework');
 
 		if (!BwPostmanHelper::canView('maintenance')) {
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 		else {
-			$document 	= JFactory::getDocument();
 			$jinput		= JFactory::getApplication()->input;
 			$model		= $this->getModel();
 			$layout		= $jinput->getCmd('layout', '');
-//dump ($layout, 'View Layout');
-//dump ($tpl, 'View TPL');
 
 			//check for queue entries
 			$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
@@ -106,6 +105,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			}
 
 			if ($layout == 'checkTables') {
+				JFactory::getApplication()->input->set('hidemainmenu', true);
 				$alt 	= "COM_BWPOSTMAN_BACK";
 				$bar	= JToolBar::getInstance('toolbar');
 				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
@@ -121,12 +121,17 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				$alt 	= "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
 				$bar	= JToolBar::getInstance('toolbar');
 				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
-				$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
+				$backlink 	= 'javascript:window.close()';
 				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
 				JToolBarHelper::spacer();
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
+				$style	= '.layout-updateCheckSave .navbar {display:none;}'
+						. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
+						. 'body {padding-top:0;}';
+				$document->addStyleDeclaration( $style );
+				$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
 			}
 
 			if ($canDo->get('core.manage')) JToolBarHelper::preferences('com_bwpostman', '500', '900');
@@ -149,11 +154,11 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				case 'restoreTables':
 					break;
 				case 'doRestore':
-					echo '<div class="well">';
+/*					echo '<div class="well">';
 					$this->check_res	= $model->restoreTables($dest);
 					echo '</div>';
-					break;
-					default:
+*/					break;
+				default:
 			}
 
 			if (empty($layout)) $this->sidebar = JHtmlSidebar::render();

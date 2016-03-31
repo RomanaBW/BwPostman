@@ -193,16 +193,12 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		$app	= JFactory::getApplication();
-
 		// Initialize variables.
-		$options		= array();
+		$app	= JFactory::getApplication();
 
 		// prepare query
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
-		$options	= array();
-		$return		= '';
 
 		$query->select("a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published");
 		$query->from('#__bwpostman_mailinglists AS a');

@@ -49,6 +49,12 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 	/**
 	 * Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @since	1.0.1
+	 *
+	 * @see		JController
 	 */
 	public function __construct($config = array())
 	{
@@ -66,6 +72,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @param	string	$name	The name of the model.
 	 * @param	string	$prefix	The prefix for the PHP class name.
+	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @return	JModel
 	 * @since	1.0.1
@@ -79,6 +86,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 	/**
 	 * Display
+	 *
+	 * @param bool $cachable
+	 * @param bool $urlparams
+	 *
+	 * @return  JController		This object to support chaining.
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -96,7 +108,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function updateCheckSave()
 	{
 		// Require helper classes
-		require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
+//		require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
 		$model	= $this->getModel();
 
 		ob_start();
@@ -104,16 +116,16 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// first save all tables
 		echo '<br /><br /><div class="well">';
 		echo '<h2>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h2>';
-		BwPostmanTableHelper::saveTables(true);
+		$model->saveTables(true);
 		ob_flush();
 		flush();
 
 		// then make the checks (function repairs tables automatically)
-//		echo '<br /><br /><h2>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
-//		$check_res	= BwPostmanTableHelper::checkTables();
-//		echo '</div>';
-//		ob_flush();
-//		flush();
+		echo '<br /><br /><h2>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
+		$check_res	= $model->checkTables();
+		echo '</div>';
+		ob_flush();
+		flush();
 
 		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
 		$this->setRedirect($link);
@@ -134,7 +146,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 		// Access check.
 		if (!$user->authorise('core.admin', 'com_bwpostman')) {
-			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERROR_SAVE_NO_PERMISSION'), 'error');
+			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;

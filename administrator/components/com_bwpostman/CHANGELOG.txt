@@ -5,14 +5,27 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
---- version 1.3.0 released (15-Mar-2016)----
 
-Jan-2016 Romana Boldt
-- bugfix:
-	-
+
+--- version 1.3.0 released (29-Mar-2016)----
+Mar-2016
+- new:
+    - Possibility to import external created mail templates.
+    - Selection for gender of subscriber, at options configurable.
+    - Additional field for further purpose for subscriber, display and obligation configurable at options, label and description for label of additional field configurable also in options by language strings.
+    - List of newsletter at back end displays, whether an attachment belongs to newsletter.
+    - Assets of tables of BwPostman and their corresponding user groups will now be backed up and restored.
 
 - improvement:
-	-
+    - Runtime at restoring tables up to 120 times faster.
+    - Needed memory at update to new version of BwPostman drastically reduced by changing internal workflow.
+    - Needed memory at restoring tables drastically reduced by changing internal workflow.
+    - View of restoring and checking tables now continuously shows the working steps.
+    - Asset handling at restoring tables revised.
+    - Language files revised.
+
+- bugfix:
+	- Selecting attachment while creating/editing a newsletter was not possible - fixed.
 
 
 --- version 1.2.4 released (17-Dec-2015)----

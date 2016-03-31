@@ -42,21 +42,38 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  */
 class BwPostmanViewSubscriber extends JViewLegacy
 {
-	protected $form;
-	protected $item;
-	protected $state;
 	/**
-	 * Display
-	 * --> load View depending on the layout
+	 * property to hold form data
 	 *
-	 * @access	public
-	 * @param 	string Template
+	 * @var array   $form
+	 */
+	protected $form;
+
+	/**
+	 * property to hold selected item
+	 *
+	 * @var array   $item
+	 */
+	protected $item;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 */
+	protected $state;
+
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl=null)
 	{
 		$app	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
-		$model	= $this->getModel();
 		$params = JComponentHelper::getParams('com_bwpostman');
 
 		//check for queue entries
@@ -92,6 +109,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				// Get show fields
 				if (!$params->get('show_name_field'))		$this->form->setFieldAttribute('name', 'type', 'hidden');
 				if (!$params->get('show_firstname_field'))	$this->form->setFieldAttribute('firstname', 'type', 'hidden');
+				if (!$params->get('show_gender'))	        $this->form->setFieldAttribute('gender', 'type', 'hidden');
+				if (!$params->get('show_special'))	        $this->form->setFieldAttribute('special', 'type', 'hidden');
 				if (!$params->get('show_emailformat')) {
 					$this->form->setFieldAttribute('emailformat', 'type', 'hidden');
 				}
@@ -100,10 +119,17 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				}
 
 				// Set required fields
-				$this->obligation['name']		= $params->get('name_field_obligation');
-				$this->obligation['firstname']	= $params->get('firstname_field_obligation');
+				$this->obligation['name']		    = $params->get('name_field_obligation');
+				$this->obligation['firstname']  	= $params->get('firstname_field_obligation');
+				$this->obligation['special']	    = $params->get('special_field_obligation');
+				$this->obligation['special_label']	= JText::_($params->get('special_label'));
 				if ($params->get('name_field_obligation')) 		$this->form->setFieldAttribute('name', 'required', 'true');
 				if ($params->get('firstname_field_obligation'))	$this->form->setFieldAttribute('firstname', 'required', 'true');
+				if ($params->get('special_field_obligation'))	$this->form->setFieldAttribute('special', 'required', true);
+
+				// Set label and description/tooltip for additional field
+				if ($params->get('special_desc') != '') 		$this->form->setFieldAttribute('special', 'description', $params->get('special_desc'));
+				if ($params->get('special_label') != '') 		$this->form->setFieldAttribute('special', 'label', $params->get('special_label'));
 
 				$this->addToolbar();
 		}
@@ -114,12 +140,12 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * View Import Forms
 	 *
 	 * @access	private
-	 * @param	string Template
+	 *
+	 * @param	string $tpl Template
 	 */
 	private function _displayImportForm($tpl)
 	{
 		$app		= JFactory::getApplication();
-		$_db		= JFactory::getDBO();
 		$params 	= JComponentHelper::getParams('com_bwpostman');
 		$session 	= JFactory::getSession();
 		$template	= $app->getTemplate();
@@ -188,14 +214,13 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * View Export Form
 	 *
 	 * @access	private
-	 * @param 	string Template
+	 *
+	 * @param 	string $tpl Template
 	 */
 	private function _displayExportForm($tpl)
 	{
 		$app = JFactory::getApplication();
 
-		$_db		= JFactory::getDBO();
-		$document	= JFactory::getDocument();
 		$template	= $app->getTemplate();
 		$uri		= JFactory::getURI();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
@@ -221,11 +246,10 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * View Validation Form
 	 *
 	 * @access	private
-	 * @param 	string Template
+	 * @param 	string $tpl Template
 	 */
 	private function _displayValidationForm($tpl)
 	{
-		$app		= JFactory::getApplication();
 		$session 	= JFactory::getSession();
 		$uri		= JFactory::getURI();
 		$uri_string	= $uri->toString();

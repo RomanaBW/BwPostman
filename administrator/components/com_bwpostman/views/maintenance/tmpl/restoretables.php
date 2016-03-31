@@ -54,7 +54,7 @@ JHtml::_('bootstrap.tooltip');
        }
      }
   }
-
+ }
 
  /* ]]> */
 </script>

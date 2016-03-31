@@ -52,9 +52,7 @@ if ($this->queueEntries) {
 								<?php
 								$option = $jinput->getCmd('option', 'com_bwpostman');
 								$link = 'index.php?option='.$option.'&view=maintenance&layout=checkTables';
-								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), 0, 0, '', "document.getElementById('loading').style.display = 'block';");
-//								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), '', '');
-//								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), 600, 400);
+								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), '', '');
 
 								$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.saveTables';
 								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES"), 0, 0);
@@ -77,8 +75,6 @@ if ($this->queueEntries) {
 				</table>
 			</div>
 			<div id="loading" style="display: none;"></div>
-
-		</div>
 	</div>
 	<div class="clr clearfix"></div>
 	<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

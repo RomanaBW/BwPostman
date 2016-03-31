@@ -27,13 +27,17 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+/**
+ * Class modBwPostmanHelper
+ */
 class modBwPostmanHelper {
 
 	/**
 	 * Method to get the subscriber ID of the user
 	 *
 	 * @access	public
-	 * @return 	int SubscriberID
+	 *
+	 * @return 	int     $subscriberid   id of the subscriber
 	 */
 	public static function getSubscriberID()
 	{
@@ -43,10 +47,10 @@ class modBwPostmanHelper {
 			$session = JFactory::getSession();
 			$session_subscriberid = $session->get('session_subscriberid');
 
-			if(isset($session_subscriberid) && is_array($session_subscriberid)){ // A session_subscriberid exists
+			if(isset($session_subscriberid) && is_array($session_subscriberid)){ // A session_subscriber id exists
 				$subscriberid = $session_subscriberid['id'];
 			}
-			else { // No session_subscriberid exists
+			else { // No session_subscriber id exists
 				$subscriberid = 0;
 			}
 		}
@@ -61,7 +65,8 @@ class modBwPostmanHelper {
 	 * Method to get the menu item ID which will be needed for some links
 	 *
 	 * @access	public
-	 * @return 	int menu item ID
+	 *
+	 * @return 	int     $itemid     menu item ID
 	 */
 	public static function getItemid()
 	{
@@ -91,10 +96,14 @@ class modBwPostmanHelper {
 	}
 
 	/**
-	 * Method to get all mailinglists which the user is authorized to see
+	 * Method to get all mailing lists which the user is authorized to see
 	 *
 	 * @access 	public
-	 * @return 	mailinglists object
+	 *
+	 * @param   string  $usertype   user type to get mailing lists for
+	 * @param   array   $mod_mls    mailing lists to return, if set
+	 *
+	 * @return 	array   $mailinglists   array of mailing lists objects
 	 */
 	public static function getMailinglists($usertype, $mod_mls)
 	{
@@ -155,8 +164,10 @@ class modBwPostmanHelper {
 	 * --> gives back the id from the subscribers-table
 	 *
 	 * @access	public
-	 * @param 	int Userid
-	 * @return 	int ID
+	 *
+	 * @param 	int     $userid         Joomla! user id
+	 *
+	 * @return 	int     $subscriberid   id of subscriber
 	 */
 	public static function getSubscriberIDfromUserID($userid)
 	{
@@ -178,14 +189,15 @@ class modBwPostmanHelper {
 	 * Method to get the data of a user who has no newsletter account
 	 *
 	 * @access 	public
-	 * @param 	int user ID
-	 * @return 	user object
+	 *
+	 * @param	int     $userid     Joomla! user id
+	 *
+	 * @return 	object  $user       user data
 	 */
 	public static function getUserData ($userid)
 	{
 		$_db	= JFactory::getDBO();
 		$id		= 0;
-		$user	= new stdClass();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('name'));
@@ -206,8 +218,10 @@ class modBwPostmanHelper {
 	 * Method to get the user type if a user is logged in
 	 *
 	 * @access	public
-	 * @param unknown_type $userid
-	 * @return unknown
+	 *
+	 * @param	int     $userid     Joomla! user id
+	 *
+	 * @return string   $usertype   type of Joomla! user
 	 */
 	public static function getUsertype($userid)
 	{
@@ -232,4 +246,4 @@ class modBwPostmanHelper {
 		return $usertype;
 	}
 }
-?>
+

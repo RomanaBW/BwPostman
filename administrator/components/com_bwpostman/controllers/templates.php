@@ -6,7 +6,7 @@
  *
  * @version 1.3.0 bwpm
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
@@ -45,9 +45,11 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	/**
 	 * Constructor
 	 *
-	 * @param	array	$config	An optional associative array of configuration settings.
+	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @since	1.1.0
+	 *
+	 * @see		JController
 	 */
 	public function __construct($config = array())
 	{
@@ -63,11 +65,12 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param	string	$name	The name of the model.
-	 * @param	string	$prefix	The prefix for the PHP class name.
+	 * @param	string	$name   	The name of the model.
+	 * @param	string	$prefix 	The prefix for the PHP class name.
+	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @return	JModel
-	 *
+
 	 * @since	1.1.0
 	 */
 	public function getModel($name = 'Template', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -80,13 +83,16 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	/**
 	 * Display
 	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController		This object to support chaining.
+	 *
 	 * @since	1.1.0
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
 		$jinput		= JFactory::getApplication()->input;
-		$allowed	= FALSE;
-		$user		= JFactory::getUser();
 
 		// Show the layout depending on the task
 		switch($this->getTask())
@@ -103,9 +109,6 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 * Method to (un)publish a template
 	 *
 	 * @access	public
-	 *
-	 * @param	array template IDs
-	 * @param	tinyint Task --> 1 = publish, 0 = unpublish
 	 *
 	 * @return	boolean
 	 *
@@ -144,6 +147,44 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		}
 		else {
 			parent::publish();
+		}
+	}
+
+	/**
+	 * Method to call the layout for the template upload and install process
+	 *
+	 * @access	public
+	 */
+	public function uploadtpl()
+	{
+		$msg = '';
+
+		// Check for request forgeries
+		if (!JSession::checkToken()) $msg = JText::_('COM_BWPOSTMAN_JINVALID_TOKEN');
+
+
+		// Access check.
+		$user	= JFactory::getUser();
+		if (!$user->authorise('core.admin', 'com_bwpostman')) {
+			$msg = JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_PERMISSION');
+		}
+
+		$app	= JFactory::getApplication();
+		$jinput	= JFactory::getApplication()->input;
+		// Get file details from uploaded file
+		$file = $jinput->files->get('uploadfile', null, 'raw');
+		$app->setUserState('com_bwpostman.templates.uploadfile', $file);
+		$model	= $this->getModel('templates');
+
+		if (!$msg) $msg = $model->uploadTplFiles($file);
+
+		if ($msg) {
+			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates', false);
+			$this->setRedirect($link, $msg, 'error');
+		}
+		else {
+			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates&layout=installtpl', false);
+			$this->setRedirect($link);
 		}
 	}
 }

@@ -4,7 +4,7 @@
  *
  * BwPostman register error account blocked template for frontend.
  *
- * @version 1.3.0 bwpm
+ * @version 2.0.0 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>

@@ -4,7 +4,7 @@
  *
  * BwPostman single subscriber import 1 template for backend.
  *
- * @version 1.3.0 bwpm
+ * @version 1.3.1 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>

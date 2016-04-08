@@ -4,7 +4,7 @@
  *
  * BwPostman all templates default template for backend.
  *
- * @version 1.3.0 bwpm
+ * @version 1.3.1 bwpm
  * @package BwPostman-Admin
  * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>

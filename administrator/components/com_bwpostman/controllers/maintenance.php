@@ -4,7 +4,7 @@
  *
  * BwPostman maintenance controller for backend.
  *
- * @version 1.3.0 bwpm
+ * @version 1.3.1 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -108,7 +108,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function updateCheckSave()
 	{
 		// Require helper classes
-//		require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
 		$model	= $this->getModel();
 
 		ob_start();

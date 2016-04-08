@@ -4,7 +4,7 @@
  *
  * BwPostman single newsletter model for backend.
  *
- * @version 1.3.0 bwpm
+ * @version 1.3.1 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -2143,11 +2143,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$app->setUserState('com_bwpostman.newsletter.send.mode', $tblSendMailQueue->mode);
 
- 		// Get Data from sendmailcontent, set attacchment path (TODO, store data in this class to prevent from loding every time a mail will be sent)
+ 		// Get Data from sendmailcontent, set attachment path (TODO, store data in this class to prevent from loding every time a mail will be sent)
 		$app->setUserState('bwtimecontrol.mode', $tblSendMailQueue->mode);
 		$tblSendMailContent->load($tblSendMailQueue->content_id);
 
-		$tblSendMailContent->attachment = JPATH_SITE . '/' . $tblSendMailContent->attachment;
+		if ($tblSendMailContent->attachment) $tblSendMailContent->attachment = JPATH_SITE . '/' . $tblSendMailContent->attachment;
 		if (property_exists($tblSendMailContent, 'email')) $tblSendMailContent->content_id	= $tblSendMailContent->id;
 
 		// check if subscriber is archived
@@ -2228,6 +2228,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 		}
 
+		// Fire the onBwPostmanPersonalize event.
+		$dispatcher->trigger('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue));
+
 		// Send Mail
 		// show queue working only wanted if sending newsletters from component backend directly, not in timecontrolled sending
 		if ($fromComponent) {
@@ -2244,15 +2247,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$sender[0]	= $tblSendMailContent->from_email;
 		$sender[1]	= $tblSendMailContent->from_name;
 
-		$reply[0]	= $tblSendMailContent->reply_email;
-		$reply[1]	= $tblSendMailContent->reply_name;
+//		$reply[0]	= $tblSendMailContent->reply_email;
+//		$reply[1]	= $tblSendMailContent->reply_name;
 
 		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply);
+		$mailer->addReplyTo($tblSendMailContent->reply_email,$tblSendMailContent->reply_name);
 		$mailer->addRecipient($tblSendMailQueue->recipient);
 		$mailer->setSubject($tblSendMailContent->subject);
 		$mailer->setBody($body);
-		$mailer->addAttachment($tblSendMailContent->attachment);
+		if ($tblSendMailContent->attachment) $mailer->addAttachment($tblSendMailContent->attachment);
 
 		if ($tblSendMailQueue->mode == 1) {
 			$mailer->isHTML(true);

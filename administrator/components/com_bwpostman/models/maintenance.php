@@ -4,7 +4,7 @@
  *
  * BwPostman maintenance model for backend.
  *
- * @version 1.3.0 bwpm
+ * @version 1.3.1 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -346,13 +346,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		foreach ($rules as $data)
 		{
 			$item = json_decode($data['rules']);
-			foreach ($item as $rule)
-			{
-				foreach ($rule as $key => $value)
+			if (is_array($item)){
+				foreach ($item as $rule)
 				{
-					if ($value == '1')
+					foreach ($rule as $key => $value)
 					{
-						$allgroups[] = $key;
+						if ($value == '1')
+						{
+							$allgroups[] = $key;
+						}
 					}
 				}
 			}
@@ -1911,10 +1913,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRONG_FILE_ERROR', $file));
 		}
 
-//		$tmp_file = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
-//		$fp       = fopen($tmp_file, 'r');
-//		$xml      = json_decode(fread($fp, filesize($tmp_file)));
-
 		if (BWPOSTMAN_LOG_MEM)
 		{
 			$logger->addEntry(new JLogEntry(sprintf('Speicherverbrauch beim Parsen mit XML-Datei: %01.3f MB', (memory_get_usage(true) / (1024.0 * 1024.0)))));
@@ -2246,8 +2244,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS') . '</p><br />';
 				$base_asset['rgt'] = $base_asset['lft'] + 1;
 			}
-//			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.base_asset', $base_asset);
-//			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.curr_asset_id', $base_asset['lft'] + 1);
 			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
 		} catch (runtimeException $e)
 		{
@@ -2478,6 +2474,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$_db->setQuery($query);
 			$default_asset = $_db->loadAssoc();
+
+			if (!is_array($default_asset)) {
+				$default_asset  = $this->_insertBaseAsset($table);
+			}
 
 			$default_asset['parent_id'] = $default_asset['id'];
 			$default_asset['id'] = 0;

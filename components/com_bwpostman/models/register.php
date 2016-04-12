@@ -4,7 +4,7 @@
  *
  * BwPostman register model for frontend.
  *
- * @version 1.3.1 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -557,7 +557,7 @@ class BwPostmanModelRegister extends JModelAdmin
 		$from['mail']	= JMailHelper::cleanAddress($params->get('default_from_email'));
 		$from['name']	= $params->get('default_from_name');
 		$mail->setSender($from);
-		$mail->AddReplyTo($from);
+		$mail->AddReplyTo($from['mail'], $from['name']);
 
 		// set recipient
 		$recipient_mail	= JMailHelper::cleanAddress($params->get('activation_to_webmaster_email'));

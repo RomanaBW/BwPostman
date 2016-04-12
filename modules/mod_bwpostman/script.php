@@ -4,7 +4,7 @@
  *
  * BwPostman installer for module.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>

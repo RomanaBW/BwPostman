@@ -4,7 +4,7 @@
  *
  * BwPostman backend element template to select a singlenewsletter for a view in frontend.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>

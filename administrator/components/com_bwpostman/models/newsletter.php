@@ -4,7 +4,7 @@
  *
  * BwPostman single newsletter model for backend.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -2114,8 +2114,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');
 
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
+		$dispatcher = JEventDispatcher::getInstance();
 
 		$res				= false;
 		$_db				= $this->_db;
@@ -2143,11 +2143,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$app->setUserState('com_bwpostman.newsletter.send.mode', $tblSendMailQueue->mode);
 
- 		// Get Data from sendmailcontent, set attacchment path (TODO, store data in this class to prevent from loding every time a mail will be sent)
+ 		// Get Data from sendmailcontent, set attachment path (TODO, store data in this class to prevent from loding every time a mail will be sent)
 		$app->setUserState('bwtimecontrol.mode', $tblSendMailQueue->mode);
 		$tblSendMailContent->load($tblSendMailQueue->content_id);
 
-		$tblSendMailContent->attachment = JPATH_SITE . '/' . $tblSendMailContent->attachment;
+		if ($tblSendMailContent->attachment) $tblSendMailContent->attachment = JPATH_SITE . '/' . $tblSendMailContent->attachment;
 		if (property_exists($tblSendMailContent, 'email')) $tblSendMailContent->content_id	= $tblSendMailContent->id;
 
 		// check if subscriber is archived
@@ -2228,8 +2228,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 		}
 
+		// Fire the onBwPostmanPersonalize event.
+		if(!$dispatcher->trigger('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
+		{
+			$tblSendMailQueue->push($tblSendMailQueue->content_id, $tblSendMailQueue->mode, $tblSendMailQueue->recipient, $tblSendMailQueue->name, $tblSendMailQueue->firstname, $tblSendMailQueue->subscriber_id, $tblSendMailQueue->trial + 1);
+			return -1;
+		}
+
 		// Send Mail
-		// show queue working only wanted if sending newsletters from component backend directly, not in timecontrolled sending
+		// show queue working only wanted if sending newsletters from component backend directly, not in time controlled sending
 		if ($fromComponent) {
 			echo "\n<br>{$tblSendMailQueue->recipient} (".JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL').($tblSendMailQueue->trial + 1).") ... ";
 			ob_flush();
@@ -2244,15 +2251,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$sender[0]	= $tblSendMailContent->from_email;
 		$sender[1]	= $tblSendMailContent->from_name;
 
-		$reply[0]	= $tblSendMailContent->reply_email;
-		$reply[1]	= $tblSendMailContent->reply_name;
+//		$reply[0]	= $tblSendMailContent->reply_email;
+//		$reply[1]	= $tblSendMailContent->reply_name;
 
 		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply);
+		$mailer->addReplyTo($tblSendMailContent->reply_email,$tblSendMailContent->reply_name);
 		$mailer->addRecipient($tblSendMailQueue->recipient);
 		$mailer->setSubject($tblSendMailContent->subject);
 		$mailer->setBody($body);
-		$mailer->addAttachment($tblSendMailContent->attachment);
+		if ($tblSendMailContent->attachment) $mailer->addAttachment($tblSendMailContent->attachment);
 
 		if ($tblSendMailQueue->mode == 1) {
 			$mailer->isHTML(true);
@@ -2268,7 +2275,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				echo JText::_('COM_BWPOSTMAN_NL_SENT_SUCCESSFULLY');
 			}
 			else {
-				// Sendmail was successfull, flag "sent" in table TcContent has to be set
+				// Sendmail was successful, flag "sent" in table TcContent has to be set
 				$tblSendMailContent->setSent($tblSendMailContent->id);
 				// and test-entries may be deleted
 				if ($recipients_data->status == 9) {

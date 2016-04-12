@@ -4,7 +4,7 @@
  *
  * BwPostman  form field selected content class.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>

@@ -4,7 +4,7 @@
  *
  * BwPostman edit view for frontend.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -112,16 +112,16 @@ class BwPostmanViewEdit extends JViewLegacy
 		$emailformat		.= '<input type="radio" name="emailformat" id="formatText" value="0"';
 		if(!$mailformat_selected)
 		{
-			$emailformat .= 'checked="checked"';
+			$emailformat .= ' checked="checked"';
 		}
-		$emailformat     .= '/>';
+		$emailformat     .= ' />';
 		$emailformat		.= '<label for="formatText"><span>'. JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat     .= '<input type="radio" name="emailformat" id="formatHtml" value="1"';
 		if($mailformat_selected)
 		{
-			$emailformat .= 'checked="checked"';
+			$emailformat .= ' checked="checked"';
 		}
-		$emailformat     .= '/>';
+		$emailformat     .= ' />';
 		$emailformat     .= '<label for="formatHtml"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
 		$emailformat     .= '</fieldset>';
 		$lists['emailformat'] = $emailformat;
@@ -138,16 +138,16 @@ class BwPostmanViewEdit extends JViewLegacy
 		$gender		.= '<input type="radio" name="gender" id="genMale" value="0"';
 		if($gender_selected === 0)
 		{
-			$gender .= 'checked="checked"';
+			$gender .= ' checked="checked"';
 		}
-		$gender     .= '/>';
+		$gender     .= ' />';
 		$gender		.= '<label for="genMale"><span>'. JText::_('COM_BWPOSTMAN_MALE') . '</span></label>';
 		$gender     .= '<input type="radio" name="gender" id="genFemale" value="1"';
 		if($gender_selected)
 		{
-			$gender .= 'checked="checked"';
+			$gender .= ' checked="checked"';
 		}
-		$gender     .= '/>';
+		$gender     .= ' />';
 		$gender     .= '<label for="genFemale"><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></label>';
 		$gender     .= '</fieldset>';
 		$lists['gender'] = $gender;

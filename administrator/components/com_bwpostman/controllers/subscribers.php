@@ -4,7 +4,7 @@
  *
  * BwPostman subscribers controller for backend.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -244,7 +244,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$src	= $file['tmp_name'];
 
 		$ext	= JFile::getExt($filename);
-		$dest	= JPATH_SITE.'/images/tmp_bwpostman_subscriber_import.'.$ext;
+		$m_params   = JComponentHelper::getParams('com_media');
+		$dest = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/tmp_bwpostman_subscriber_import.' . $ext;
 
 		// Store the post data into the session
 		// If there occured an error we will receive the data from the session
@@ -601,7 +602,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$reply[1]	= $params->get('default_from_name');
 
 		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply);
+		$mailer->addReplyTo($reply[0],$reply[1]);
 		$mailer->addRecipient($subscriber->email);
 		$mailer->setSubject($subject);
 		$mailer->setBody($message);

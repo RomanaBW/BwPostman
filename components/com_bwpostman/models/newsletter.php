@@ -4,7 +4,7 @@
  *
  * BwPostman newsletter single model for frontend.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -49,6 +49,7 @@ class BwPostmanModelNewsletter extends JModelItem
 		$id		= (int) JFactory::getApplication()->input->get('id', 0);
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
+		$user	= JFactory::getUser();
 
 		// build query
 		$query->select($_db->quoteName('body'));
@@ -57,6 +58,13 @@ class BwPostmanModelNewsletter extends JModelItem
 		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('mode') . ' = ' . (int) 1);
 		$_db->setQuery($query);
 		$newsletter = $_db->loadResult();
+
+		// Get the dispatcher and include bwpostman plugins
+		JPluginHelper::importPlugin('bwpostman');
+		$dispatcher = JEventDispatcher::getInstance();
+
+		// Fire the onBwPostmanPersonalize event.
+		$dispatcher->trigger('onBwPostmanPersonalize', array('com_bwpostman.view', &$newsletter, $user->id));
 
 		return $newsletter;
 	}

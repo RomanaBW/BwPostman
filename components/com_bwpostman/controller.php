@@ -4,7 +4,7 @@
  *
  * BwPostman main controller for frontend.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -1122,7 +1122,7 @@ class BwPostmanController extends JControllerLegacy
 		$reply[1]	= $fromname;
 
 		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply);
+		$mailer->addReplyTo($reply[0],$reply[1]);
 		$mailer->addRecipient($email);
 		$mailer->setSubject($subject);
 		$mailer->setBody($message);

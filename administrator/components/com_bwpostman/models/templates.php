@@ -4,7 +4,7 @@
  *
  * BwPostman templates model for backend.
  *
- * @version 2.0.0 bwpm
+ * @version 1.3.2 bwpm
  * @package BwPostman-Admin
  * @author Karl Klostermann
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
@@ -432,28 +432,30 @@ class BwPostmanModelTemplates extends JModelList
 		$imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
 
 		// make new folder and copy template thumbnails
-		$dest = JPATH_ROOT.'/images/bw_postman';
-		if (!JFolder::exists($dest)) JFolder::create(JPATH_ROOT.'/images/bw_postman');
-		if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/index.html')) JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/bw_postman/index.html');
+		$m_params   = JComponentHelper::getParams('com_media');
+		$dest       = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman';
+		$media_path = JPATH_ROOT.'/media/bw_postman/images/';
+
+		if (!JFolder::exists($dest)) JFolder::create($dest);
+		if (!JFile::exists($dest . '/index.html')) JFile::copy(JPATH_ROOT . '/index.html', $dest . '/index.html');
 
 		$warn = false;
 		$files = JFolder::files($imagedir);
 		foreach ($files as $file)
 		{
-			if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/' . $file)) JFile::copy($imagedir . $file, JPATH_ROOT.'/images/bw_postman/' . $file);
-			if (!JFile::exists(JPATH_ROOT . '/media/bw_postman/images/' . $file)) JFile::copy($imagedir . $file, JPATH_ROOT.'/media/bw_postman/images/' . $file);
+			if (!JFile::exists($dest . '/' . $file)) JFile::copy($imagedir . $file, $dest . '/' . $file);
+			if (!JFile::exists($media_path . '/' . $file)) JFile::copy($imagedir . $file, $media_path . '/' . $file);
 			$this->_delMessage();
-			$path_now = JPATH_ROOT.'/images/bw_postman/';
-			if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/' . $file)) {
-				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
-				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
+			$path_now = $dest . '/';
+			if (!JFile::exists($media_path . $file)) {
+				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $media_path) . '</p>';
+				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $media_path) . '</p>';
 				$warn = true;
 			}
 			else {
-				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $media_path) . '</p>';
 			}
-			$path_now = JPATH_ROOT.'/media/bw_postman/images/';
-			if (!JFile::exists(JPATH_ROOT . '/media/bw_postman/images/' . $file)) {
+			if (!JFile::exists($media_path . $file)) {
 				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
 				$warn = true;
 			}

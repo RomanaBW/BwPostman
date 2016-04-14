@@ -6,7 +6,7 @@ This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 1.3.2 released (14-Apr-2016)----
+--- version 2.0.0 released (14-Apr-2016)----
 - improvement:
     Trigger for enhanced personalization modified.
 

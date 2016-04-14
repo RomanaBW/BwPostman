@@ -4,7 +4,7 @@
  *
  * BwPostman helper class for overview module.
  *
- * @version 1.3.2 bwpm
+ * @version 2.0.0 bwpm
  * @package BwPostman-Overview-Module
  * @author Romana Boldt
  * @copyright (C) 2015 - 2016 Boldt Webservice <forum@boldt-webservice.de>

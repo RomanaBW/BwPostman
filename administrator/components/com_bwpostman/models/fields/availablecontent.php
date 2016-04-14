@@ -53,7 +53,6 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 */
 	public function getLabel()
 	{
-		parent::getLabel();
 		$return = '<label for="' . $this->id . '" class="available_content_label">' . JText::_($this->element['label']) . '</label>';
 		return $return;
  	}

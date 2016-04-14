@@ -175,21 +175,37 @@ class Com_BwPostmanInstallerScript
 	{
 		$db	        = JFactory::getDBO();
 		$m_params   = JComponentHelper::getParams('com_media');
-		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman/';
+		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman';
 		$media_path = JPATH_ROOT.'/media/bw_postman/images/';
 
 		// make new folder and copy template thumbnails
-		if (!JFolder::exists(JPATH_ROOT . '/images/bw_postman')) JFolder::create(JPATH_ROOT.'/images/bw_postman');
-		if (!JFile::exists($image_path . 'index.html')) JFile::copy($media_path . 'index.html', $image_path . 'index.html');
-		if (!JFile::exists($image_path . 'deep_blue.png')) JFile::copy($media_path . 'deep_blue.png', $image_path . 'deep_blue.png');
-		if (!JFile::exists($image_path . 'soft_blue.png'))JFile::copy($media_path . 'soft_blue.png', $image_path . 'soft_blue.png');
-		if (!JFile::exists($image_path . 'creme.png')) JFile::copy($media_path . 'creme.png', $image_path . 'creme.png');
-		if (!JFile::exists($image_path . 'sample_html.png')) JFile::copy($media_path . 'sample_html.png', $image_path . 'sample_html.png');
-		if (!JFile::exists($image_path . 'text_template_1.png')) JFile::copy($media_path . 'text_template_1.png', $image_path . 'text_template_1.png');
-		if (!JFile::exists($image_path . 'text_template_2.png')) JFile::copy($media_path . 'text_template_2.png', $image_path . 'text_template_2.png');
-		if (!JFile::exists($image_path . 'text_template_3.png')) JFile::copy($media_path . 'text_template_3.png', $image_path . 'text_template_3.png');
-		if (!JFile::exists($image_path . 'sample_text.png')) JFile::copy($media_path . 'sample_text.png', $image_path . 'sample_text.png');
-		if (!JFile::exists($image_path . 'joomla_black.gif')) JFile::copy($media_path . 'joomla_black.gif', $image_path . 'joomla_black.gif');
+		if (!JFolder::exists($image_path)) JFolder::create($image_path);
+		if (!JFile::exists($image_path . '/index.html')) JFile::copy($media_path . 'index.html', $image_path . '/index.html');
+		if (!JFile::exists($image_path . '/deep_blue.png')) JFile::copy($media_path . 'deep_blue.png', $image_path . '/deep_blue.png');
+		if (!JFile::exists($image_path . '/soft_blue.png'))JFile::copy($media_path . 'soft_blue.png', $image_path . '/soft_blue.png');
+		if (!JFile::exists($image_path . '/creme.png')) JFile::copy($media_path . 'creme.png', $image_path . '/creme.png');
+		if (!JFile::exists($image_path . '/sample_html.png')) JFile::copy($media_path . 'sample_html.png', $image_path . '/sample_html.png');
+		if (!JFile::exists($image_path . '/text_template_1.png')) JFile::copy($media_path . 'text_template_1.png', $image_path . '/text_template_1.png');
+		if (!JFile::exists($image_path . '/text_template_2.png')) JFile::copy($media_path . 'text_template_2.png', $image_path . '/text_template_2.png');
+		if (!JFile::exists($image_path . '/text_template_3.png')) JFile::copy($media_path . 'text_template_3.png', $image_path . '/text_template_3.png');
+		if (!JFile::exists($image_path . '/sample_text.png')) JFile::copy($media_path . 'sample_text.png', $image_path . '/sample_text.png');
+		if (!JFile::exists($image_path . '/joomla_black.gif')) JFile::copy($media_path . 'joomla_black.gif', $image_path . '/joomla_black.gif');
+
+		// make new folder and copy template thumbnails to folder "images" if image_path is not "images"
+		if ($m_params->get('image_path', 'images') != 'images') {
+			$dest = JPATH_ROOT.'/images/bw_postman';
+			if (!JFolder::exists($dest)) JFolder::create(JPATH_ROOT.'/images/bw_postman');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/index.html')) JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/bw_postman/index.html');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/deep_blue.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/deep_blue.png', JPATH_ROOT.'/images/bw_postman/deep_blue.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/soft_blue.png'))JFile::copy(JPATH_ROOT.'/media/bw_postman/images/soft_blue.png', JPATH_ROOT.'/images/bw_postman/soft_blue.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/creme.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/creme.png', JPATH_ROOT.'/images/bw_postman/creme.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/sample_html.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/sample_html.png', JPATH_ROOT.'/images/bw_postman/sample_html.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/text_template_1.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/text_template_1.png', JPATH_ROOT.'/images/bw_postman/text_template_1.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/text_template_2.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/text_template_2.png', JPATH_ROOT.'/images/bw_postman/text_template_2.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/text_template_3.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/text_template_3.png', JPATH_ROOT.'/images/bw_postman/text_template_3.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/sample_text.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/sample_text.png', JPATH_ROOT.'/images/bw_postman/sample_text.png');
+			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/joomla_black.gif')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/joomla_black.gif', JPATH_ROOT.'/images/bw_postman/joomla_black.gif');
+		}
 
 		if ($type == 'install') {
 			// Set BwPostman default settings in the extensions table at install
@@ -305,7 +321,9 @@ class Com_BwPostmanInstallerScript
 //		echo "<div>BwPostman is now removed from your system.</div>";
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_FOLDER_BWPOSTMAN'), 'notice');
+		$m_params   = JComponentHelper::getParams('com_media');
+		$image_path = $m_params->get('image_path', 'images');
+		JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_UNINSTALL_FOLDER_BWPOSTMAN', $image_path), 'notice');
 		$db		= JFactory::getDbo();
 		$query	= 'DELETE FROM '.$db->quoteName('#__postinstall_messages').
 		' WHERE '. $db->quoteName('language_extension').' = '.$db->quote('com_bwpostman');

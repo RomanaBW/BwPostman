@@ -554,16 +554,16 @@ class BwPostmanModelRegister extends JModelAdmin
 		$from	= array();
 
 		// set recipient and reply-to
-		$from['mail']	= JMailHelper::cleanAddress($params->get('default_from_email'));
-		$from['name']	= $params->get('default_from_name');
+		$from[0]	= JMailHelper::cleanAddress($params->get('default_from_email'));
+		$from[1]	= $params->get('default_from_name');
 		$mail->setSender($from);
-		$mail->AddReplyTo($from['mail'], $from['name']);
+		$mail->addReplyTo($from[0],$from[1]);
 
 		// set recipient
 		$recipient_mail	= JMailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
 		$recipient_name	= $params->get('activation_from_name');
-		if (!is_string($recipient_mail)) $recipient_mail = $from['mail'];
-		if (!is_string($recipient_name)) $recipient_name = $from['name'];
+		if (!is_string($recipient_mail)) $recipient_mail = $from[0];
+		if (!is_string($recipient_name)) $recipient_name = $from[1];
 		$mail->addRecipient($recipient_mail, $recipient_name);
 
 		// set subject

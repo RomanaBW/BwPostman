@@ -53,7 +53,6 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 */
 	public function getLabel()
 	{
-		parent::getLabel();
 		$return = '<label for="' . $this->id . '" class="selected_content_label">' . JText::_($this->element['label']) . '</label>';
 		return $return;
 	}

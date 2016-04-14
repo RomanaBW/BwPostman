@@ -36,7 +36,7 @@ $jinput = JFactory::getApplication()->input;
 
 <script type='text/javascript'>
 var image_base_path = '<?php $params = JComponentHelper::getParams('com_media');
-echo $params->get('image_path', 'images'); ?>/';
+echo $params->get('file_path', 'images'); ?>/';
 </script>
 
 

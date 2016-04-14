@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="BwPostman Module Subscription"  description="Build file for BwPostman module subscription" default="pack_subscription">
+	<import file="./bwpostman_variables.xml"/>
 
 	<!-- ============================================  -->
 	<!-- Target: prepare                               -->
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="prepare_subscription">
+	<target name="prepare_subscription" depends="set_variables">
 		<echo msg="Set variables…" />
-		<echo msg="Generals…" />
-		<property name="extension" value="BwPostman" override="true" />
 		<property name="module" value="mod_bwpostman" override="true" />
 
-		<echo msg="Source dirs…" />
-		<property name="source_base_dir" value="/vhosts/dev" override="true" />
-		<property name="source_site_lang_dir" value="${source_base_dir}/language" override="true" />
+		<echo msg="Set source dir…" />
 		<property name="source_module_dir" value="${source_base_dir}/modules/mod_bwpostman" override="true" />
 
-		<echo msg="target dirs…" />
-		<property name="target_base_dir" value="/Support/Software/Joomla/${extension}/${version}" override="true" />
+		<echo msg="Set target dir…" />
 		<property name="target_base_module_dir" value="${target_base_dir}/${module}" override="true" />
 
 		<echo msg="Deleting target directories… " />
-		<delete dir="/Support/Software/Joomla/${extension}/${version}/${module}" includeemptydirs="true" verbose="true" failonerror="false" />
+		<delete dir="/Support/Software/Joomla/${extension}/${version}/${module}" includeemptydirs="true" failonerror="false" />
 
-		<echo msg="Creating target directories… " />
+		<echo msg="Create target directories… " />
 		<mkdir dir="${target_base_module_dir}/files/site/language/de-DE" />
 		<mkdir dir="${target_base_module_dir}/files/site/language/en-GB" />
 	</target>
@@ -40,9 +36,9 @@
 		<echo msg="Copying files to build directory…" />
 
 		<echo msg="Fetch licence…" />
-		<copy file="/Support/Software/Joomla/${extension}/docs/gnu_gpl_v3.txt" tofile="${target_base_module_dir}/files/gnu_gpl_v3.txt"></copy>
+		<copy file="${licence_source}" tofile="${target_base_module_dir}/files/${licence_file}"></copy>
 
-		<echo msg="Copying module 1…" />
+		<echo msg="Copying ${module}…" />
 		<copy todir="${target_base_module_dir}/files/site">
 			<fileset dir="${source_module_dir}">
 				<include name="**" />

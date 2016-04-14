@@ -103,7 +103,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							{
 								echo JText::_('COM_BWPOSTMAN_FEMALE');
 							}
-							elseif ($item->gender === 0) {
+							elseif ($item->gender == '0') {
 								echo JText::_('COM_BWPOSTMAN_MALE');
 							} ?>
 						</td>

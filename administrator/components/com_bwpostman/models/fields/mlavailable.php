@@ -61,7 +61,6 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	 */
 	public function getLabel()
 	{
-		parent::getLabel();
 		$return = JText::_($this->element['label']);
 		return $return;
 	}

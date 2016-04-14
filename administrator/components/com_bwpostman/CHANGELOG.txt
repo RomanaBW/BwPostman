@@ -6,25 +6,16 @@ This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 1.3.2 released (13-Apr-2016)----
+--- version 1.3.2 released (14-Apr-2016)----
 - improvement:
     Trigger for enhanced personalization modified.
 
 - bugfix:
     - Since Joomla 3.5.1 some problems while registering or change subscribers mail address - fixed.
-	- If folder for media was renamed, there ocurred problems with attachment and thumbnails of templates - fixed.
-	- If a user was logged in, which has no subscription, there occurred problems at registerin form - fixed.
-
-
---- version 1.3.1 released (7-Apr-2016)----
-Apr-2016
-- new:
-    - Trigger for enhanced personalization inserted.
-
-- bugfix:
-	- Since Joomla 3.5.1 sending newsletters failed - fixed.
-	- Since Joomla 3.5.1 some php warnings arise while creating or editing newsletters or campaigns - fixed.
-	- Handling of specific table permissions while updating BwPostman throws php warnings - fixed.
+	- If folder for media was renamed, there occurred problems with attachment and thumbnails of templates - fixed.
+	- If a user was logged in, which has no subscription, there occurred problems at register form - fixed.
+    - Since Joomla 3.5.1 building of some language strings have changed - fixed.
+    - "male" was not shown in back end list of subscribers - fixed.
 
 
 --- version 1.3.1 released (7-Apr-2016)----

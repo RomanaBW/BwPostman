@@ -2229,7 +2229,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Fire the onBwPostmanPersonalize event.
-		if(!$dispatcher->trigger('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
+		if(JPluginHelper::isEnabled('bwpostman', 'personalize') && !$dispatcher->trigger('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
 		{
 			$tblSendMailQueue->push($tblSendMailQueue->content_id, $tblSendMailQueue->mode, $tblSendMailQueue->recipient, $tblSendMailQueue->name, $tblSendMailQueue->firstname, $tblSendMailQueue->subscriber_id, $tblSendMailQueue->trial + 1);
 			return -1;

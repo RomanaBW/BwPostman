@@ -7,11 +7,11 @@
 	<authorUrl>http://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
-	<version>1.3.1</version>
+	<version>1.3.2</version>
 	<scriptfile>script.php</scriptfile>
 	<description>MOD_BWPOSTMAN_OVERVIEW_XML_DESCRIPTION</description>
 
-	<files>
+	<files folder="site">
 		<filename module="mod_bwpostman_overview">mod_bwpostman_overview.php</filename>
 		<filename>helper.php</filename>
 		<filename>mod_bwpostman_overview.xml</filename>
@@ -23,12 +23,14 @@
 		<folder>images</folder>
 		<folder>tmpl</folder>
 	</files>
+
 	<languages folder="language">
-		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.ini</language>
-		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.sys.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_bwpostman_overview.ini</language>
+		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_bwpostman_overview.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.sys.ini</language>
 	</languages>
+
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_BWPOSTMAN_OVERVIEW" />
 	<config>
 		<fields name="params">
@@ -192,4 +194,7 @@
 			</fieldset>
 		</fields>
 	</config>
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/mod_bwpostman_overview_update.xml</server>
+	</updateservers>
 </extension>

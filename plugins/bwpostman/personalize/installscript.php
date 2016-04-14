@@ -4,7 +4,7 @@
  *
  * BwPostman Personalize Plugin installer.
  *
- * @version 1.3.2 bwpmpp
+ * @version 2.0.0 bwpmpp
  * @package			BwPostman Personalize Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016 Boldt Webservice <forum@boldt-webservice.de>

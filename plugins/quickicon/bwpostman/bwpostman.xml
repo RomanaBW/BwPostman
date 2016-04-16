@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension>
+<extension version="2.5" type="plugin" group="quickicon" method="upgrade">
+	<name>plg_quickicon_bwpostman</name>
+	<version>1.1.0</version>
+	<creationDate>March 2015</creationDate>
+	<author>Boldt Webservice</author>
+	<authorEmail>bwpostman@boldt-webservice.de</authorEmail>
+	<authorUrl>http://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>GNU/GPLv3 or later</license>
+	<description>PLG_QUICKICON_BWPOSTMAN_DESC</description>
+	<files>
+		<filename plugin="bwpostman">bwpostman.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+</extension>

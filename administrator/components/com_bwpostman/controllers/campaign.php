@@ -76,7 +76,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	{
 		$user	= JFactory::getUser();
 
-		return ($user->authorise('core.create', 'com_bwpostman'));
+		return ($user->authorise('bwpm.create', 'com_bwpostman'));
 	}
 
 	/**
@@ -97,20 +97,20 @@ class BwPostmanControllerCampaign extends JControllerForm
 		$userId		= $user->get('id');
 
 		// Check general edit permission first.
-		if ($user->authorise('core.edit', 'com_bwpostman.campaign'))
+		if ($user->authorise('bwpm.edit', 'com_bwpostman.campaign'))
 		{
 			return true;
 		}
 
 		// Check specific edit permission.
-		if ($user->authorise('core.edit', 'com_bwpostman.campaigns.' . $recordId))
+		if ($user->authorise('bwpm.campaign.edit', 'com_bwpostman.campaigns.' . $recordId))
 		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', 'com_bwpostman.campaign.' . $recordId) || $user->authorise('core.edit.own', 'com_bwpostman'))
+		if ($user->authorise('bwpm.campaign.edit.own', 'com_bwpostman.campaign.' . $recordId) || $user->authorise('bwpm.edit.own', 'com_bwpostman'))
 		{
 			// Now test the owner is the user.
 			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;

@@ -111,14 +111,14 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general delete permission first.
-		if ($user->authorise('core.delete', 'com_bwpostman'))
+		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific delete permission.
-			if ($user->authorise('core.delete', 'com_bwpostman.mailinglists.' . (int) $record->id))
+			if ($user->authorise('bwpm.mailinglist.delete', 'com_bwpostman.mailinglists.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -139,14 +139,14 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general edit state permission first.
-		if ($user->authorise('core.edit.state', 'com_bwpostman'))
+		if ($user->authorise('bwpm.edit.state', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific edit state permission.
-			if ($user->authorise('core.edit.state', 'com_bwpostman.mailinglists.' . (int) $record->id))
+			if ($user->authorise('bwpm.mailinglist.edit.state', 'com_bwpostman.mailinglists.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -223,22 +223,22 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		{
 			$id = $this->getState('mailinglist.id');
 			// Existing record. Can only edit in selected parent.
-			$form->setFieldAttribute('parent_id', 'action', 'core.edit');
+			$form->setFieldAttribute('parent_id', 'action', 'bwpm.edit');
 			// Existing record. Can only edit own mailinglists in selected parent.
-			$form->setFieldAttribute('parent_id', 'action', 'core.edit.own');
+			$form->setFieldAttribute('parent_id', 'action', 'bwpm.edit.own');
 		}
 		else
 		{
 			// New record. Can only create in selected parent.
-			$form->setFieldAttribute('parent_id', 'action', 'core.create');
+			$form->setFieldAttribute('parent_id', 'action', 'bwpm.create');
 		}
 
 		$user = JFactory::getUser();
 
 		// Check for existing mailinglist.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_bwpostman.mailinglist.'.(int) $id))
-		|| ($id == 0 && !$user->authorise('core.edit.state', 'com_bwpostman'))
+		if ($id != 0 && (!$user->authorise('bwpm.edit.state', 'com_bwpostman.mailinglist.'.(int) $id))
+		|| ($id == 0 && !$user->authorise('bwpm.mailinglist.edit.state', 'com_bwpostman'))
 		)
 		{
 			// Disable fields for display.

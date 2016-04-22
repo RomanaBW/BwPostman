@@ -172,7 +172,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$layout = $jinput->get('tab', 'confirmed');
 
 		// Access check.
-		if (!$user->authorise('core.create', 'com_bwpostman')) {
+		if (!$user->authorise('bwpm.create', 'com_bwpostman') && !$user->authorise('bwpm.subscriber.create', 'com_bwpostman.subscriber')) {
 //			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_NO_PERMISSION'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=subscribers&layout='.$layout, false);
 			$this->setRedirect($link);
@@ -503,7 +503,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$layout = $jinput->get('tab', 'confirmed');
 
 		// Access check.
-		if (!$user->authorise('core.edit', 'com_bwpostman')) {
+		if (!$user->authorise('bwpm.edit', 'com_bwpostman') && !$user->authorise('bwpm.subscriber.edit', 'com_bwpostman.subscriber')) {
 //			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_EXPORT_NO_PERMISSION'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&controller=subscribers&layout='.$layout, false);
 			$this->setRedirect($link);

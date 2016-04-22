@@ -6,7 +6,7 @@ This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 2.0.0 released (25-Sept-2016)----
+--- version 2.0.0 released (20-Sept-2016)----
 - new:
     -
 
@@ -14,7 +14,8 @@ Many thanks to all those people who have contributed bug reports and code fixes.
     -
 
 - improvement:
-    -
+    - Collation of tables changed from utf8 to utf8mb4
+    - Access management of component enhanced
 
 
 --- version 1.3.2 released (14-Apr-2016)----

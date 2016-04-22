@@ -129,7 +129,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
         $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
-		if ($isNew && $canDo->get('core.create')) {
+		if ($isNew && $canDo->get('bwpm.create')) {
 			JToolBarHelper::save('mailinglist.save');
 			JToolBarHelper::apply('mailinglist.apply');
 			JToolBarHelper::cancel('mailinglist.cancel');
@@ -139,7 +139,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 			// Can't save the record if it's checked out.
 			if (!$checkedOut) {
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)) {
+				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId)) {
 					JToolBarHelper::save('mailinglist.save');
 					JToolBarHelper::apply('mailinglist.apply');
 				}

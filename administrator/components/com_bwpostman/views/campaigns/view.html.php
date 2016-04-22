@@ -104,13 +104,13 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_CAMS'), 'list');
 
 		// Set toolbar items for the page
-		if ($canDo->get('core.create'))	JToolBarHelper::addNew('campaign.add');
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('campaign.edit');
+		if ($canDo->get('bwpm.create'))	JToolBarHelper::addNew('campaign.add');
+		if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('campaign.edit');
 		JToolBarHelper::divider();
 		JToolBarHelper::spacer();
 
 		// Special archive button because we need a confirm dialog with 3 options
-		if ($canDo->get('core.archive')) {
+		if ($canDo->get('bwpm.archive')) {
 			$bar= JToolBar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";
 			$bar->appendButton('Popup', 'archive', $alt, 'index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive', 500, 110);

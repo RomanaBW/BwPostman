@@ -121,14 +121,14 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general delete permission first.
-		if ($user->authorise('core.delete', 'com_bwpostman'))
+		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific delete permission.
-			if ($user->authorise('core.delete', 'com_bwpostman.templates.' . (int) $record->id))
+			if ($user->authorise('bwpm.template.delete', 'com_bwpostman.templates.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -150,14 +150,14 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general edit state permission first.
-		if ($user->authorise('core.edit.state', 'com_bwpostman'))
+		if ($user->authorise('bwpm.edit.state', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific edit state permission.
-			if ($user->authorise('core.edit.state', 'com_bwpostman.templates.' . (int) $record->id))
+			if ($user->authorise('bwpm.template.edit.state', 'com_bwpostman.templates.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -338,22 +338,22 @@ class BwPostmanModelTemplate extends JModelAdmin
 		{
 			$id = $this->getState('template.id');
 			// Existing record. Can only edit in selected parent.
-			$form->setFieldAttribute('parent_id', 'action', 'core.edit');
+			$form->setFieldAttribute('parent_id', 'action', 'bwpm.edit');
 			// Existing record. Can only edit own mailinglists in selected parent.
-			$form->setFieldAttribute('parent_id', 'action', 'core.edit.own');
+			$form->setFieldAttribute('parent_id', 'action', 'bwpm.edit.own');
 		}
 		else
 		{
 			// New record. Can only create in selected parent.
-			$form->setFieldAttribute('parent_id', 'action', 'core.create');
+			$form->setFieldAttribute('parent_id', 'action', 'bwpm.create');
 		}
 
 		$user = JFactory::getUser();
 
 		// Check for existing mailinglist.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_bwpostman.template.'.(int) $id))
-		|| ($id == 0 && !$user->authorise('core.edit.state', 'com_bwpostman'))
+		if ($id != 0 && (!$user->authorise('bwpm.template.edit.state', 'com_bwpostman.template.'.(int) $id))
+		|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman'))
 		)
 		{
 			// Disable fields for display.
@@ -524,7 +524,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$db   = $this->getDbo();
 
 		// Access checks.
-		if (!$user->authorise('core.edit.state', 'com_bwpostman'))
+		if (!$user->authorise('bwpm.edit.state', 'com_bwpostman'))
 		{
 			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 		}

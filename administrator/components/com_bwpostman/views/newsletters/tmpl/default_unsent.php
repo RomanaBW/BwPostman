@@ -149,8 +149,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						if (count($this->items)) {
 							foreach ($this->items as $i => $item) :
 								$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-								$canEdit	= $user->authorise('core.edit',		'com_bwpostman.newsletter.'.$item->id);
-								$canEditOwn	= $user->authorise('core.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
+								$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.newsletter.'.$item->id);
+								$canEditOwn	= $user->authorise('bwpm.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>

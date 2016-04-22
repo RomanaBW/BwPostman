@@ -162,9 +162,9 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 						if (count($this->items)) {
 							foreach ($this->items as $i => $item) :
 								$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-								$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
-								$canEdit	= $user->authorise('core.edit',		'com_bwpostman.newsletter.'.$item->id);
-								$canEditOwn	= $user->authorise('core.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
+								$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
+								$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.newsletter.'.$item->id);
+								$canEditOwn	= $user->authorise('bwpm.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id, 0, 'cid', 'ub'); ?></td>

@@ -121,14 +121,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general delete permission first.
-		if ($user->authorise('core.delete', 'com_bwpostman'))
+		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific delete permission.
-			if ($user->authorise('core.delete', 'com_bwpostman.campaigns.' . (int) $record->id))
+			if ($user->authorise('bwpm.campaign.delete', 'com_bwpostman.campaign.' . (int) $record->id))
 			{
 				return true;
 			}

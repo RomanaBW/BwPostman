@@ -95,20 +95,20 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_MLS'), 'list');
 
 		// Set toolbar items for the page
-		if ($canDo->get('core.create'))	JToolBarHelper::addNew('mailinglist.add');
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('mailinglist.edit');
+		if ($canDo->get('bwpm.create'))	JToolBarHelper::addNew('mailinglist.add');
+		if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('mailinglist.edit');
 		JToolBarHelper::divider();
-		if ($canDo->get('core.edit.state')) {
+		if ($canDo->get('bwpm.edit.state')) {
 			JToolBarHelper::publishList('mailinglists.publish');
 			JToolBarHelper::unpublishList('mailinglists.unpublish');
 			JToolBarHelper::divider();
 		}
-		if ($canDo->get('core.archive')) {
+		if ($canDo->get('bwpm.archive')) {
 			JToolBarHelper::archiveList('mailinglist.archive');
 			JToolBarHelper::divider();
 			JToolBarHelper::spacer();
 		}
-		if ($canDo->get('core.manage')) {
+		if ($canDo->get('bwpm.manage')) {
 			JToolBarHelper::checkin('mailinglists.checkin');
 			JToolBarHelper::divider();
 		}

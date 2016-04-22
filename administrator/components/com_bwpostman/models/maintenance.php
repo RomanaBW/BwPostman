@@ -2356,27 +2356,27 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				case '#__bwpostman_campaigns':
 						$asset_name = 'com_bwpostman.campaign';
 						$asset_title    = 'BwPostman Campaigns';
-						$asset_rules = '{"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},"core.edit.own":{"6":1,"3":1},"core.archive":[],"core.restore":[],"core.delete":{"6":1}}';
+						$asset_rules = '{"bwpm.campaign.edit":{"6":1,"4":1},"bwpm.campaign.edit.state":{"6":1,"5":1},"bwpm.campaign.edit.own":{"6":1,"3":1},"bwpm.campaign.archive":[],"bwpm.campaign.restore":[],"bwpm.campaign.delete":{"6":1}}';
 					break;
 				case '#__bwpostman_mailinglists':
 						$asset_name = 'com_bwpostman.mailinglist';
 						$asset_title    = 'BwPostman Mailinglists';
-						$asset_rules = '{"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},"core.edit.own":{"6":1,"3":1},"core.archive":[],"core.restore":[],"core.delete":{"6":1}}';
+						$asset_rules = '{"bwpm.mailinglist.edit":{"6":1,"4":1},"bwpm.mailinglist.edit.state":{"6":1,"5":1},"bwpm.mailinglist.edit.own":{"6":1,"3":1},"bwpm.mailinglist.archive":[],"bwpm.mailinglist.restore":[],"bwpm.mailinglist.delete":{"6":1}}';
 					break;
 				case '#__bwpostman_newsletters':
 						$asset_name = 'com_bwpostman.newsletter';
 						$asset_title    = 'BwPostman Newsletters';
-						$asset_rules = '{"core.edit":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.edit.state":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.edit.own":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.delete":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}}';
+						$asset_rules = '{"bwpm.newsletter.edit":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.edit.state":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.edit.own":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.delete":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}}';
 					break;
 				case '#__bwpostman_subscribers':
 						$asset_name = 'com_bwpostman.subscriber';
 						$asset_title    = 'BwPostman Subscribers';
-						$asset_rules = '{"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},"core.edit.own":{"6":1,"3":1},"core.archive":[],"core.restore":[],"core.delete":{"6":1}}';
+						$asset_rules = '{"bwpm.subscriber.edit":{"6":1,"4":1},"bwpm.subscriber.edit.state":{"6":1,"5":1},"bwpm.subscriber.edit.own":{"6":1,"3":1},"bwpm.subscriber.archive":[],"bwpm.subscriber.restore":[],"bwpm.subscriber.delete":{"6":1}}';
 					break;
 				case '#__bwpostman_templates':
 						$asset_name = 'com_bwpostman.template';
 						$asset_title    = 'BwPostman Templates';
-						$asset_rules = '{"core.edit":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":1,"5":0,"8":0},"core.edit.state":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":1,"8":0},"core.edit.own":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":1,"4":0,"5":0,"8":0},"core.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"core.delete":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}}';
+						$asset_rules = '{"bwpm.template.edit":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":1,"5":0,"8":0},"bwpm.template.edit.state":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":1,"8":0},"bwpm.template.edit.own":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":1,"4":0,"5":0,"8":0},"bwpm.template.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.template.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.template.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.template.delete":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}}';
 					break;
 				case 'component':
 				default:

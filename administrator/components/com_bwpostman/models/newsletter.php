@@ -114,14 +114,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general delete permission first.
-		if ($user->authorise('core.delete', 'com_bwpostman'))
+		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific delete permission.
-			if ($user->authorise('core.delete', 'com_bwpostman.newsletters.' . (int) $record->id))
+			if ($user->authorise('bwpm.newsletter.delete', 'com_bwpostman.newsletters.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -142,14 +142,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general edit state permission first.
-		if ($user->authorise('core.edit.state', 'com_bwpostman'))
+		if ($user->authorise('bwpm.edit.state', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific edit state permission.
-			if ($user->authorise('core.edit.state', 'com_bwpostman.newsletters.' . (int) $record->id))
+			if ($user->authorise('bwpm.newsletter.edit.state', 'com_bwpostman.newsletters.' . (int) $record->id))
 			{
 				return true;
 			}
@@ -396,8 +396,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Check for existing newsletter.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_bwpostman.newsletter.'.(int) $id))
-				|| ($id == 0 && !$user->authorise('core.edit.state', 'com_bwpostman'))
+		if ($id != 0 && (!$user->authorise('bwpm.newsletter.edit.state', 'com_bwpostman.newsletter.'.(int) $id))
+				|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman'))
 			)
 		{
 			// Disable fields for display.

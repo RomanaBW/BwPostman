@@ -123,28 +123,28 @@ class BwPostmanViewArchive extends JViewLegacy
 		$layout = $jinput->get('layout', 'newsletters');
 		switch ($layout) { // Which tab are we in?
 			case "newsletters":
-					if ($canDo->get('core.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
-					if ($canDo->get('core.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
+					if ($canDo->get('bwpm.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					if ($canDo->get('bwpm.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
 				break;
 			case "subscribers":
-					if ($canDo->get('core.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
-					if ($canDo->get('core.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
+					if ($canDo->get('bwpm.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					if ($canDo->get('bwpm.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
 				break;
 			case "campaigns":
 					// Special unarchive and delete button because we need a confirm dialog with 3 options
 					$bar= JToolBar::getInstance('toolbar');
 					$alt_archive = "unarchive";
-					if ($canDo->get('core.restore'))	$bar->appendButton('Popup', 'unarchive', $alt_archive, 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive', 500, 130);
+					if ($canDo->get('bwpm.restore'))	$bar->appendButton('Popup', 'unarchive', $alt_archive, 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive', 500, 130);
 					$alt_delete = "delete";
-					if ($canDo->get('core.delete'))		$bar->appendButton('Popup', 'delete', $alt_delete, 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete', 500, 150);
+					if ($canDo->get('bwpm.delete'))		$bar->appendButton('Popup', 'delete', $alt_delete, 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete', 500, 150);
 				break;
 			case "mailinglists":
-					if ($canDo->get('core.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
-					if ($canDo->get('core.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
+					if ($canDo->get('bwpm.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					if ($canDo->get('bwpm.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
 				break;
 			case "templates":
-					if ($canDo->get('core.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
-					if ($canDo->get('core.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
+					if ($canDo->get('bwpm.restore'))	JToolBarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					if ($canDo->get('bwpm.delete'))		JToolBarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
 				break;
 		}
 		JToolBarHelper::spacer();

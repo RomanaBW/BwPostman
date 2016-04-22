@@ -282,9 +282,9 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			return false;
 		}
 
-		if ($canDo->get('core.edit.state'))	JToolBarHelper::custom ('campaign.autotest', 'question-circle', 'question-circle', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST'), true);
-		if ($canDo->get('core.edit.state'))	JToolBarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
-		if ($canDo->get('core.edit.state'))	JToolBarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
+		if ($canDo->get('bwpm.edit.state'))	JToolBarHelper::custom ('campaign.autotest', 'question-circle', 'question-circle', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST'), true);
+		if ($canDo->get('bwpm.edit.state'))	JToolBarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
+		if ($canDo->get('bwpm.edit.state'))	JToolBarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
 	}
 	
 	/**

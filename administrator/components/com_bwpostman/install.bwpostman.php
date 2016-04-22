@@ -173,39 +173,16 @@ class Com_BwPostmanInstallerScript
 
 	public function postflight($type, JAdapterInstance $parent)
 	{
-		$db	        = JFactory::getDBO();
 		$m_params   = JComponentHelper::getParams('com_media');
-		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman';
-		$media_path = JPATH_ROOT.'/media/bw_postman/images/';
-
-		// make new folder and copy template thumbnails
-		if (!JFolder::exists($image_path)) JFolder::create($image_path);
-		if (!JFile::exists($image_path . '/index.html')) JFile::copy($media_path . 'index.html', $image_path . '/index.html');
-		if (!JFile::exists($image_path . '/deep_blue.png')) JFile::copy($media_path . 'deep_blue.png', $image_path . '/deep_blue.png');
-		if (!JFile::exists($image_path . '/soft_blue.png'))JFile::copy($media_path . 'soft_blue.png', $image_path . '/soft_blue.png');
-		if (!JFile::exists($image_path . '/creme.png')) JFile::copy($media_path . 'creme.png', $image_path . '/creme.png');
-		if (!JFile::exists($image_path . '/sample_html.png')) JFile::copy($media_path . 'sample_html.png', $image_path . '/sample_html.png');
-		if (!JFile::exists($image_path . '/text_template_1.png')) JFile::copy($media_path . 'text_template_1.png', $image_path . '/text_template_1.png');
-		if (!JFile::exists($image_path . '/text_template_2.png')) JFile::copy($media_path . 'text_template_2.png', $image_path . '/text_template_2.png');
-		if (!JFile::exists($image_path . '/text_template_3.png')) JFile::copy($media_path . 'text_template_3.png', $image_path . '/text_template_3.png');
-		if (!JFile::exists($image_path . '/sample_text.png')) JFile::copy($media_path . 'sample_text.png', $image_path . '/sample_text.png');
-		if (!JFile::exists($image_path . '/joomla_black.gif')) JFile::copy($media_path . 'joomla_black.gif', $image_path . '/joomla_black.gif');
+		$this->_copyTemplateImagesToMedia($m_params);
 
 		// make new folder and copy template thumbnails to folder "images" if image_path is not "images"
 		if ($m_params->get('image_path', 'images') != 'images') {
-			$dest = JPATH_ROOT.'/images/bw_postman';
-			if (!JFolder::exists($dest)) JFolder::create(JPATH_ROOT.'/images/bw_postman');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/index.html')) JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/bw_postman/index.html');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/deep_blue.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/deep_blue.png', JPATH_ROOT.'/images/bw_postman/deep_blue.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/soft_blue.png'))JFile::copy(JPATH_ROOT.'/media/bw_postman/images/soft_blue.png', JPATH_ROOT.'/images/bw_postman/soft_blue.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/creme.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/creme.png', JPATH_ROOT.'/images/bw_postman/creme.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/sample_html.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/sample_html.png', JPATH_ROOT.'/images/bw_postman/sample_html.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/text_template_1.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/text_template_1.png', JPATH_ROOT.'/images/bw_postman/text_template_1.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/text_template_2.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/text_template_2.png', JPATH_ROOT.'/images/bw_postman/text_template_2.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/text_template_3.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/text_template_3.png', JPATH_ROOT.'/images/bw_postman/text_template_3.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/sample_text.png')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/sample_text.png', JPATH_ROOT.'/images/bw_postman/sample_text.png');
-			if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/joomla_black.gif')) JFile::copy(JPATH_ROOT.'/media/bw_postman/images/joomla_black.gif', JPATH_ROOT.'/images/bw_postman/joomla_black.gif');
+			$this->_copyTemplateImagesToImages();
 		}
+
+		// create sample user groups and access levels
+		$this->_createSampleUsers();
 
 		if ($type == 'install') {
 			// Set BwPostman default settings in the extensions table at install
@@ -213,30 +190,12 @@ class Com_BwPostmanInstallerScript
 		}
 
 		// check if sample templates exits
-		$q					= "SELECT `id` FROM `#__bwpostman_templates`";
-		$db->setQuery($q);
-
-		$templateFields		= $db->loadResult();
-
-		$q					= "SELECT `id` FROM `#__bwpostman_templates_tpl`";
-		$db->setQuery($q);
-
-		$templatetplFields	= $db->loadResult();
-
-		// if not install sampledata
-		$templatessql		= 'bwp_templates.sql';
-		if(!isset($templateFields)) $this->_installdata($templatessql);
-
-		$templatestplsql	= 'bwp_templatestpl.sql';
-		if(!isset($templatetplFields)) $this->_installdata($templatestplsql);
+		$this->_checkSampleTemplates();
 
 		// update/complete component rules
 		$this->_updateRules($type);
 
-
 		if ($type == 'update') {
-//			require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
-
 			$app 		= JFactory::getApplication ();
 			$oldRelease	= $app->getUserState('com_bwpostman.update.oldRelease', '');
 
@@ -246,23 +205,7 @@ class Com_BwPostmanInstallerScript
 			if (version_compare($oldRelease, '1.2.0', 'lt')) $this->_fillCamCrossTable();
 
 			// remove double entries in table extensions
-			$query	= $db->getQuery(true);
-			$query->select($db->quoteName('extension_id'));
-			$query->from($db->quoteName('#__extensions'));
-			$query->where($db->quoteName('element') . ' = ' . $db->Quote('com_bwpostman'));
-			$query->where($db->quoteName('client_id') . ' = ' . $db->Quote('0'));
-
-			$db->setQuery($query);
-			$result	= $db->loadResult();
-
-			if ($result) {
-				$query	= $db->getQuery(true);
-				$query->delete($db->quoteName('#__extensions'));
-				$query->where($db->quoteName('extension_id') . ' =  ' . $db->Quote($result));
-
-				$db->setQuery($query);
-				$db->execute();
-			}
+			$this->_removeDoubleExtensionsEntries();
 
 			// check all tables of BwPostman
 			// Let Ajax client redirect
@@ -438,6 +381,201 @@ class Com_BwPostmanInstallerScript
 		$_db->execute();
 
 		return;
+	}
+
+	/**
+	 * Method to copy the provided template thumbnails to media folder
+	 *
+	 * @param object    $m_params   params of com_media
+	 *
+	 * @return void
+	 *
+	 * @since   2.0.0
+	 */
+	protected function _copyTemplateImagesToMedia($m_params)
+	{
+		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman';
+		$media_path = JPATH_ROOT . '/media/bw_postman/images/';
+
+		// make new folder and copy template thumbnails
+		if (!JFolder::exists($image_path))
+		{
+			JFolder::create($image_path);
+		}
+		if (!JFile::exists($image_path . '/index.html'))
+		{
+			JFile::copy($media_path . 'index.html', $image_path . '/index.html');
+		}
+		if (!JFile::exists($image_path . '/deep_blue.png'))
+		{
+			JFile::copy($media_path . 'deep_blue.png', $image_path . '/deep_blue.png');
+		}
+		if (!JFile::exists($image_path . '/soft_blue.png'))
+		{
+			JFile::copy($media_path . 'soft_blue.png', $image_path . '/soft_blue.png');
+		}
+		if (!JFile::exists($image_path . '/creme.png'))
+		{
+			JFile::copy($media_path . 'creme.png', $image_path . '/creme.png');
+		}
+		if (!JFile::exists($image_path . '/sample_html.png'))
+		{
+			JFile::copy($media_path . 'sample_html.png', $image_path . '/sample_html.png');
+		}
+		if (!JFile::exists($image_path . '/text_template_1.png'))
+		{
+			JFile::copy($media_path . 'text_template_1.png', $image_path . '/text_template_1.png');
+		}
+		if (!JFile::exists($image_path . '/text_template_2.png'))
+		{
+			JFile::copy($media_path . 'text_template_2.png', $image_path . '/text_template_2.png');
+		}
+		if (!JFile::exists($image_path . '/text_template_3.png'))
+		{
+			JFile::copy($media_path . 'text_template_3.png', $image_path . '/text_template_3.png');
+		}
+		if (!JFile::exists($image_path . '/sample_text.png'))
+		{
+			JFile::copy($media_path . 'sample_text.png', $image_path . '/sample_text.png');
+		}
+		if (!JFile::exists($image_path . '/joomla_black.gif'))
+		{
+			JFile::copy($media_path . 'joomla_black.gif', $image_path . '/joomla_black.gif');
+		}
+	}
+
+	/**
+	 * Method to copy the provided template thumbnails to /images/bwpostman
+	 *
+	 * @return void
+	 *
+	 * @since   2.0.0
+	 */
+	protected function _copyTemplateImagesToImages()
+	{
+		$dest = JPATH_ROOT . '/images/bw_postman';
+		if (!JFolder::exists($dest))
+		{
+			JFolder::create(JPATH_ROOT . '/images/bw_postman');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/index.html'))
+		{
+			JFile::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/bw_postman/index.html');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/deep_blue.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/deep_blue.png', JPATH_ROOT . '/images/bw_postman/deep_blue.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/soft_blue.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/soft_blue.png', JPATH_ROOT . '/images/bw_postman/soft_blue.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/creme.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/creme.png', JPATH_ROOT . '/images/bw_postman/creme.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/sample_html.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/sample_html.png', JPATH_ROOT . '/images/bw_postman/sample_html.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/text_template_1.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/text_template_1.png', JPATH_ROOT . '/images/bw_postman/text_template_1.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/text_template_2.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/text_template_2.png', JPATH_ROOT . '/images/bw_postman/text_template_2.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/text_template_3.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/text_template_3.png', JPATH_ROOT . '/images/bw_postman/text_template_3.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/sample_text.png'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/sample_text.png', JPATH_ROOT . '/images/bw_postman/sample_text.png');
+		}
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/joomla_black.gif'))
+		{
+			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/joomla_black.gif', JPATH_ROOT . '/images/bw_postman/joomla_black.gif');
+		}
+	}
+
+	/**
+	 * Method to check, if sample templates are installed. If not, install sample templates
+	 *
+	 * @return void
+	 *
+	 * @since   2.0.0
+	 */
+	protected function _checkSampleTemplates()
+	{
+		$db	        = JFactory::getDBO();
+
+		$q = "SELECT `id` FROM `#__bwpostman_templates`";
+		$db->setQuery($q);
+
+		$templateFields = $db->loadResult();
+
+		$q = "SELECT `id` FROM `#__bwpostman_templates_tpl`";
+		$db->setQuery($q);
+
+		$templatetplFields = $db->loadResult();
+
+		// if not install sample data
+		$templatessql = 'bwp_templates.sql';
+		if (!isset($templateFields))
+		{
+			$this->_installdata($templatessql);
+		}
+
+		$templatestplsql = 'bwp_templatestpl.sql';
+		if (!isset($templatetplFields))
+		{
+			$this->_installdata($templatestplsql);
+		}
+	}
+
+	/**
+	 * Method to create sample user groups and access levels
+	 *
+	 * @return void
+	 *
+	 * @since   2.0.0
+	 */
+	protected function _createSampleUsers() {
+		$usergroupTable  = JTable::getInstance('Usergroup');
+		$usergroup      = array();
+	}
+
+	/**
+	 * Method to remove multiple entries in table extensions. Needed because joomla update may show updates for these unnecessary entries
+	 *
+	 * @return void
+	 *
+	 * @since   2.0.0
+	 */
+	protected function _removeDoubleExtensionsEntries()
+	{
+		$db	= JFactory::getDBO();
+
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('extension_id'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . ' = ' . $db->Quote('com_bwpostman'));
+		$query->where($db->quoteName('client_id') . ' = ' . $db->Quote('0'));
+
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		if ($result)
+		{
+			$query = $db->getQuery(true);
+			$query->delete($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('extension_id') . ' =  ' . $db->Quote($result));
+
+			$db->setQuery($query);
+			$db->execute();
+		}
 	}
 
 	/**
@@ -804,14 +942,14 @@ H2	{
 								"core.manage" => array('7' => 1, '6' => 1),
 								"core.restore" => array('7' => 1, '6' => 1),
 								"core.send" =>array('7' => 1, '6' => 1),
-								"core.view.archive" => array('7' => 1, '6' => 1),
-								"core.view.campaigns" => array('7' => 1, '6' => 1),
-								"core.view.maintenance" => array('7' => 1, '6' => 1),
-								"core.view.manage" => array('7' => 1, '6' => 1),
-								"core.view.mailinglists" => array('7' => 1, '6' => 1),
-								"core.view.newsletters" => array('7' => 1, '6' => 1),
-								"core.view.subscribers" => array('7' => 1, '6' => 1),
-								"core.view.templates" => array('7' => 1, '6' => 1)
+								"bwpm.view.archive" => array('7' => 1, '6' => 1),
+								"bwpm.view.campaigns" => array('7' => 1, '6' => 1),
+								"bwpm.view.maintenance" => array('7' => 1, '6' => 1),
+								"bwpm.view.manage" => array('7' => 1, '6' => 1),
+								"bwpm.view.mailinglists" => array('7' => 1, '6' => 1),
+								"bwpm.view.newsletters" => array('7' => 1, '6' => 1),
+								"bwpm.view.subscribers" => array('7' => 1, '6' => 1),
+								"bwpm.view.templates" => array('7' => 1, '6' => 1)
 							);
 		// get stored component rules
 		$db		= JFactory::getDbo();

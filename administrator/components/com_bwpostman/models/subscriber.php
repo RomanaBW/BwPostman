@@ -112,14 +112,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$user = JFactory::getUser();
 
 		// Check general delete permission first.
-		if ($user->authorise('core.delete', 'com_bwpostman'))
+		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		if (!empty($record->id)) {
 			// Check specific delete permission.
-			if ($user->authorise('core.delete', 'com_bwpostman.subscribers.' . (int) $record))
+			if ($user->authorise('bwpm.subscriber.delete', 'com_bwpostman.subscribers.' . (int) $record))
 			{
 				return true;
 			}
@@ -206,8 +206,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		// Check for existing subscriber.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_bwpostman.subscriber.'.(int) $id))
-		|| ($id == 0 && !$user->authorise('core.edit.state', 'com_bwpostman'))
+		if ($id != 0 && (!$user->authorise('bwpm.subscriber.edit.state', 'com_bwpostman.subscriber.'.(int) $id))
+		|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman'))
 		)
 		{
 			// Disable fields for display.

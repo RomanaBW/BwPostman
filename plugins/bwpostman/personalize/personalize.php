@@ -70,8 +70,6 @@ class plgBwPostmanPersonalize extends JPlugin
 	public function onBwPostmanPersonalize($context= 'com_bwpostman.view', &$body = '', $id = 0)
 	{
 		// get gender
-		$gender = 0;
-
 		if ($context == 'com_bwpostman.send') {
 			$gender = $this->_getGenderFromSubscriberId($id);
 		}
@@ -83,8 +81,10 @@ class plgBwPostmanPersonalize extends JPlugin
 		}
 
 		// Start Plugin
-		$regex_one		= '/({bwpostman_personalize\s*)(.*?)(})/si';
-		$regex_all		= '/{bwpostman_personalize\s*.*?}/si';
+//		$regex_one		= '/({bwpostman_personalize\s*)(.*?)(})/si';
+//		$regex_all		= '/{bwpostman_personalize\s*.*?}/si';
+		$regex_one		= '/(\[bwpostman_personalize\s*)(.*?)(\])/is';
+		$regex_all		= '/\[bwpostman_personalize\s*.*?\]/si';
 		$matches 		= array();
 		$count_matches	= preg_match_all($regex_all, $body, $matches, PREG_OFFSET_CAPTURE | PREG_PATTERN_ORDER);
 
@@ -93,17 +93,18 @@ class plgBwPostmanPersonalize extends JPlugin
 			$bwpm_personalize	= $matches[0][$j][0];
 			preg_match($regex_one, $bwpm_personalize, $bwpm_personalize_parts);
 
-			$parts         = explode("|", $bwpm_personalize_parts[2]);
-			if (isset($parts[$gender + 1])) {
-				// if parameters found set replace value
-				$replace_value = $parts[$gender + 1];
-				$replace_value = trim($replace_value);
-				$replace_value = str_replace('"', '', $replace_value);
+			$gender_strings = $this->_extractGenderStrings($bwpm_personalize_parts);
+
+			if ($gender === null || !isset($gender_strings[$gender])) {
+				// if parameter not found or gender not set replace with last parameter
+				$replace_value  = $gender_strings[count($gender_strings) - 1];
 			}
 			else {
-				// else replace with nothing, we don't want incomplete plugin code in newsletter
-				$replace_value  = '';
+				// else set replace value depending on gender
+				$replace_value = $gender_strings[$gender];
 			}
+//			$replace_value = trim($replace_value);
+//			$replace_value  = str_replace('"', '', $replace_value);
 
 			// modify newsletter body
 			$body = preg_replace($regex_all, $replace_value, $body, 1);
@@ -130,8 +131,6 @@ class plgBwPostmanPersonalize extends JPlugin
 
 		$gender = $this->db->loadResult();
 
-		if ($gender === null) $gender = 0;
-
 		return $gender;
 	}
 
@@ -154,12 +153,31 @@ class plgBwPostmanPersonalize extends JPlugin
 
 		$gender = $this->db->loadResult();
 
-		if ($gender === null)
-			{
-				$gender = 0;
-			}
-
 		return $gender;
+	}
+
+	/**
+	 * Method to extraxt the gender related strings form the plugin string
+	 *
+	 * @param array $bwpm_personalize_parts
+	 *
+	 * @return array    $parts
+	 */
+	protected function _extractGenderStrings($bwpm_personalize_parts)
+	{
+		$parts = explode("|", $bwpm_personalize_parts[2]);
+		$gender_string  = array();
+		foreach ($parts as $part) {
+			$start  = strpos($part, '"');
+			$end    = strrpos($part, '"');
+			if (($start !== false) && ($end !== false))
+			{
+				$string = substr($part, $start + 1, $end - $start - 1);
+				$gender_string[] = substr($part, $start + 1, $end - $start - 1);
+			}
+		}
+
+		return $gender_string;
 	}
 }
 ?>

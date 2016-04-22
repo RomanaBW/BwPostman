@@ -107,21 +107,21 @@ class BwPostmanViewSubscribers extends JViewLegacy
 			default;
 			case "confirmed":
 			case "unconfirmed":
-					if ($canDo->get('core.create'))	JToolBarHelper::addNew('subscriber.add');
-					if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('subscriber.edit');
+					if ($canDo->get('bwpm.create'))	JToolBarHelper::addNew('subscriber.add');
+					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('subscriber.edit');
 					JToolBarHelper::spacer();
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
 
-					if ($canDo->get('core.create'))		JToolBarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
-					if ($canDo->get('core.edit'))		JToolBarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
-					if ($canDo->get('core.archive')) {
+					if ($canDo->get('bwpm.create'))		JToolBarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
+					if ($canDo->get('bwpm.edit'))		JToolBarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+					if ($canDo->get('bwpm.archive')) {
 						JToolBarHelper::divider();
 						JToolBarHelper::spacer();
 						JToolBarHelper::archiveList('subscriber.archive');
 					}
 					// Add a batch button
-					if ($user->authorise('core.create', 'com_bwpostman') && $user->authorise('core.edit', 'com_bwpostman') && $user->authorise('core.edit.state', 'com_bwpostman'))
+					if ($user->authorise('bwpm.create', 'com_bwpostman') && $user->authorise('bwpm.edit', 'com_bwpostman') && $user->authorise('bwpm.edit.state', 'com_bwpostman'))
 					{
 						JHtml::_('bootstrap.modal', 'collapseModal');
 						$title = JText::_('JTOOLBAR_BATCH');
@@ -134,11 +134,11 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					}
 				break;
 			case "testrecipients":
-					if ($canDo->get('core.create'))	JToolBarHelper::addNew('subscriber.add_test');
-					if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('subscriber.edit');
+					if ($canDo->get('bwpm.create'))	JToolBarHelper::addNew('subscriber.add_test');
+					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('subscriber.edit');
 					JToolBarHelper::spacer();
 					JToolBarHelper::divider();
-					if ($canDo->get('core.archive'))	JToolBarHelper::archiveList('subscriber.archive');
+					if ($canDo->get('bwpm.archive'))	JToolBarHelper::archiveList('subscriber.archive');
 				break;
 		}
 		JToolBarHelper::divider();

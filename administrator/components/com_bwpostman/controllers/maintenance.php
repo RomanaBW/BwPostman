@@ -145,7 +145,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$document	= JFactory::getDocument();
 
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman')) {
+		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.save', 'com_bwpostman.maintenance')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
@@ -172,7 +172,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$app	= JFactory::getApplication();
 
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman')) {
+		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.check', 'com_bwpostman.maintenance')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERROR_CHECK_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
@@ -195,7 +195,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$app	= JFactory::getApplication();
 
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman')) {
+		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.restore', 'com_bwpostman.maintenance')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
@@ -223,7 +223,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$model	= $this->getModel();
 
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman')) {
+		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.restore', 'com_bwpostman.maintenance')) {
 			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);

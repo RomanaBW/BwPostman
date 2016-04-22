@@ -56,8 +56,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		if (count($this->items)) {
 			foreach ($this->items as $i => $item) :
 				$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-				$canEdit	= $user->authorise('core.edit',		'com_bwpostman.subscriber.'.$item->id);
-				$canEditOwn	= $user->authorise('core.edit.own',	'com_bwpostman.subscriber.'.$item->id) && $item->registered_by == $userId;
+				$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.subscriber.'.$item->id);
+				$canEditOwn	= $user->authorise('bwpm.edit.own',	'com_bwpostman.subscriber.'.$item->id) && $item->registered_by == $userId;
 				$name		= ($item->name) ? $item->name : JText::_('COM_BWPOSTMAN_SUB_NONAME');
 				?>
 				<tr class="row<?php echo $i % 2; ?>">

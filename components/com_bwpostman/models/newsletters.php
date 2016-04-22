@@ -339,13 +339,13 @@ class BwPostmanModelNewsletters extends JModelList
 				$asset = 'com_bwpostman.newsletter.' . $item->id;
 
 				// Check general edit permission first.
-				if ($user->authorise('core.edit', $asset))
+				if ($user->authorise('bwpm.edit', $asset))
 				{
 					$item->params->set('access-edit', true);
 				}
 
 				// Now check if edit.own is available.
-				elseif (!empty($userId) && $user->authorise('core.edit.own', $asset))
+				elseif (!empty($userId) && $user->authorise('bwpm.edit.own', $asset))
 				{
 					// Check for a valid user and that they are the owner.
 					if ($userId == $item->created_by)

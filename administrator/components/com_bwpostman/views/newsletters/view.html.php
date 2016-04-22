@@ -138,13 +138,13 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		switch ($tab) { // The layout-variable tells us which tab we are in
 			case "sent":
-				if ($canDo->get('core.edit.state'))	{
+				if ($canDo->get('bwpm.edit.state'))	{
 					JToolBarHelper::publishList('newsletters.publish');
 					JToolBarHelper::unpublishList('newsletters.unpublish');
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
 				}
-				if ($canDo->get('core.create'))	{
+				if ($canDo->get('bwpm.create'))	{
 					JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
@@ -154,7 +154,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
 				}
-				if ($canDo->get('core.archive')) {
+				if ($canDo->get('bwpm.archive')) {
 					JToolBarHelper::archiveList('newsletter.archive');
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
@@ -163,7 +163,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			case "queue":
 				$bar= JToolBar::getInstance('toolbar');
 				$alt = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
-				if ($canDo->get('core.send')) {
+				if ($canDo->get('bwpm.send')) {
 					JToolBarHelper::custom('newsletters.resetSendAttempts', 'unpublish.png', 'unpublish_f2.png', 'COM_BWPOSTMAN_NL_RESET_TRIAL', false);
 					$bar->appendButton('Popup', 'envelope', $alt, 'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', 600, 600);
 					JToolBarHelper::custom('newsletters.clear_queue', 'delete.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
@@ -171,18 +171,18 @@ class BwPostmanViewNewsletters extends JViewLegacy
 				break;
 			case "unsent":
 			default:
-				if ($canDo->get('core.create'))	JToolBarHelper::addNew('newsletter.add');
-				if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('newsletter.edit');
-				if ($canDo->get('core.create'))	JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+				if ($canDo->get('bwpm.create'))	JToolBarHelper::addNew('newsletter.add');
+				if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('newsletter.edit');
+				if ($canDo->get('bwpm.create'))	JToolBarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
 
-				if ($canDo->get('core.send')) {
+				if ($canDo->get('bwpm.send')) {
 					JToolBarHelper::custom('newsletter.sendOut', 'envelope', 'send_f2.png', 'COM_BWPOSTMAN_NL_SEND', true);
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
 				}
-				if ($canDo->get('core.archive')) {
+				if ($canDo->get('bwpm.archive')) {
 					JToolBarHelper::archiveList('newsletter.archive');
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();

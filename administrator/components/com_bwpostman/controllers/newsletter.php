@@ -106,20 +106,20 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$userId		= $user->get('id');
 
 		// Check general edit permission first.
-		if ($user->authorise('core.edit', 'com_bwpostman'))
+		if ($user->authorise('bwpm.edit', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		// Check specific edit permission.
-		if ($user->authorise('core.edit', 'com_bwpostman.newsletter.' . $recordId))
+		if ($user->authorise('bwpm.newsletter.edit', 'com_bwpostman.newsletter.' . $recordId))
 		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', 'com_bwpostman.newsletter.' . $recordId) || $user->authorise('core.edit.own', 'com_bwpostman'))
+		if ($user->authorise('bwpm.newsletter.edit.own', 'com_bwpostman.newsletter.' . $recordId) || $user->authorise('bwpm.edit.own', 'com_bwpostman'))
 		{
 			// Now test the owner is the user.
 			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
@@ -162,12 +162,12 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$user		= JFactory::getUser();
 
 		// Check general component send permission first.
-		if ($user->authorise('core.send', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.send', 'com_bwpostman')) {
 			return true;
 		}
 
 		// Check specific send permission.
-		if ($user->authorise('core.send', 'com_bwpostman.newsletter.' . $recordId))
+		if ($user->authorise('bwpm.newsletter.send', 'com_bwpostman.newsletter.' . $recordId))
 		{
 			return true;
 		}

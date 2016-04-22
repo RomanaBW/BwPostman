@@ -124,7 +124,7 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		// TODO: Tune these values based on other permissions.
 		$user		= JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_bwpostman')) &&  (!$user->authorise('core.edit', 'com_bwpostman'))){
+		if ((!$user->authorise('bwpm.edit.state', 'com_bwpostman')) &&  (!$user->authorise('bwpm.edit', 'com_bwpostman'))){
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
 		}

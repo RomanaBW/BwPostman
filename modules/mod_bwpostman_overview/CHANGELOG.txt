@@ -7,7 +7,7 @@ The changelog may not be exhaustive but nearly complete.
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 2.0.0 released (25-Sept-2016)----
+--- version 2.0.0 released (20-Sept-2016)----
 - new:
     -
 

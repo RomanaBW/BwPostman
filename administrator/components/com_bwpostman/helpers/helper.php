@@ -80,7 +80,7 @@ abstract class BwPostmanHelper {
 				$vName == 'bwpostman'
 			);
 
-		if ($canDo->get('core.view.newsletters')) {
+		if ($canDo->get('bwpm.view.newsletters')) {
 			JHtmlSidebar::addEntry
 				(
 					JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
@@ -89,7 +89,7 @@ abstract class BwPostmanHelper {
 				);
 		}
 
-		if ($canDo->get('core.view.subscribers')) {
+		if ($canDo->get('bwpm.view.subscribers')) {
 			JHtmlSidebar::addEntry
 				(
 					JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
@@ -98,7 +98,7 @@ abstract class BwPostmanHelper {
 				);
 		}
 
-		if ($canDo->get('core.view.campaigns')) {
+		if ($canDo->get('bwpm.view.campaigns')) {
 			JHtmlSidebar::addEntry
 				(
 					JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
@@ -107,7 +107,7 @@ abstract class BwPostmanHelper {
 				);
 		}
 
-		if ($canDo->get('core.view.mailinglists')) {
+		if ($canDo->get('bwpm.view.mailinglists')) {
 				JHtmlSidebar::addEntry
 				(
 					JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
@@ -116,7 +116,7 @@ abstract class BwPostmanHelper {
 				);
 		}
 
-		if ($canDo->get('core.view.templates')) {
+		if ($canDo->get('bwpm.view.templates')) {
 			JHtmlSidebar::addEntry
 				(
 					JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
@@ -125,7 +125,7 @@ abstract class BwPostmanHelper {
 				);
 		}
 
-		if ($canDo->get('core.archive') || $canDo->get('core.view.archive')) {
+		if ($canDo->get('bwpm.archive') || $canDo->get('bwpm.view.archive')) {
 			JHtmlSidebar::addEntry
 				(
 					JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
@@ -134,7 +134,7 @@ abstract class BwPostmanHelper {
 				);
 		}
 
-		if ($canDo->get('core.admin') || $canDo->get('core.view.manage')) {
+		if ($canDo->get('core.admin') || $canDo->get('bwpm.view.manage')) {
 			JHtmlSidebar::addEntry
 				(
 					JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
@@ -310,7 +310,7 @@ abstract class BwPostmanHelper {
 		}
 
 		// Next check view permission.
-		if ($user->authorise('core.view.' . $view, 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view, 'com_bwpostman')) {
 			return true;
 		}
 		return false;
@@ -335,8 +335,8 @@ abstract class BwPostmanHelper {
 		}
 
 		// Next check view permission.
-		if ($user->authorise('core.view.' . $view, 'com_bwpostman')) {
-			if ($user->authorise('core.add', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view, 'com_bwpostman')) {
+			if ($user->authorise('bwpm.add', 'com_bwpostman')) {
 				return true;
 			}
 		}
@@ -417,8 +417,8 @@ abstract class BwPostmanHelper {
 		}
 
 		// Next check view permission.
-		if ($user->authorise('core.view.' . $view . 's', 'com_bwpostman')) {
-			if ($user->authorise('core.edit.state', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view . 's', 'com_bwpostman')) {
+			if ($user->authorise('bwpm.edit.state', 'com_bwpostman')) {
 				return true;
 			}
 		}
@@ -444,15 +444,15 @@ abstract class BwPostmanHelper {
 		}
 
 		// Next check view permission.
-		if ($user->authorise('core.view.newsletters', 'com_bwpostman')) {
-			if ($user->authorise('core.send', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.newsletters', 'com_bwpostman')) {
+			if ($user->authorise('bwpm.send', 'com_bwpostman')) {
 				return true;
 			}
 		}
 
 		// Finally check record permission.
-		if ($user->authorise('core.view.newsletters', 'com_bwpostman')) {
-			if ($user->authorise('core.send.newsletter.' . $recordId, 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.newsletters', 'com_bwpostman')) {
+			if ($user->authorise('bwpm.send.newsletter.' . $recordId, 'com_bwpostman')) {
 				return true;
 			}
 		}
@@ -479,8 +479,8 @@ abstract class BwPostmanHelper {
 		}
 
 		// Next check view permission.
-		if ($user->authorise('core.view.' . $view . 's', 'com_bwpostman')) {
-			if ($user->authorise('core.archive', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view . 's', 'com_bwpostman')) {
+			if ($user->authorise('bwpm.archive', 'com_bwpostman')) {
 				return true;
 			}
 		}
@@ -506,29 +506,29 @@ abstract class BwPostmanHelper {
 		$userId		= $user->get('id');
 
 		// Check general component archive permission first.
-		if ($user->authorise('core.archive', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.archive', 'com_bwpostman')) {
 			return true;
 		}
 
 		// Check view archive permission first.
-		if ($user->authorise('core.view.archive', 'com_bwpostman.archive')) {
+		if ($user->authorise('bwpm.view.archive', 'com_bwpostman.archive')) {
 			return true;
 		}
 
 		// Then check context archive permission.
-		if ($user->authorise('core.archive', 'com_bwpostman.archive')) {
+		if ($user->authorise('bwpm.archive', 'com_bwpostman.archive')) {
 			return true;
 		}
 
 		// Next check item archive permission.
-		if ($user->authorise('core.archive', 'com_bwpostman.archive' . '.' . $recordId)) {
+		if ($user->authorise('bwpm.archive', 'com_bwpostman.archive' . '.' . $recordId)) {
 			return true;
 		}
 
 		// Fallback on edit.own (only at context newsletter).
 		if ($context = 'newsletter') {
 			// First test if the permission is available.
-			if ($user->authorise('core.edit.own', 'com_bwpostman.archive' . '.' . $recordId)) {
+			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.archive' . '.' . $recordId)) {
 				// Test if the owner matches 'me'.
 				if ($ownerId == $userId) return true;
 			}
@@ -555,24 +555,24 @@ abstract class BwPostmanHelper {
 		$userId		= $user->get('id');
 
 		// Check general component delete permission first.
-		if ($user->authorise('core.delete', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.delete', 'com_bwpostman')) {
 			return true;
 		}
 
 		// Then check context delete permission.
-		if ($user->authorise('core.delete', 'com_bwpostman.' . $context)) {
+		if ($user->authorise('bwpm.delete', 'com_bwpostman.' . $context)) {
 			return true;
 		}
 
 		// Next check item delete permission.
-		if ($user->authorise('core.delete', 'com_bwpostman.' . $context . '.' . $recordId)) {
+		if ($user->authorise('bwpm.delete', 'com_bwpostman.' . $context . '.' . $recordId)) {
 			return true;
 		}
 
 		// Fallback on edit.own (only at context newsletter).
 		if ($context = 'newsletter') {
 			// First test if the permission is available.
-			if ($user->authorise('core.edit.own', 'com_bwpostman.'.$context . '.' . $recordId)) {
+			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context . '.' . $recordId)) {
 				// Test if the owner matches 'me'.
 				if ($ownerId == $userId) return true;
 			}
@@ -580,7 +580,7 @@ abstract class BwPostmanHelper {
 		// Fallback on edit.own (only at context subscriber at frontend).
 		if ($context = 'subscriber') {
 			// First test if the permission is available.
-			if ($user->authorise('core.edit.own', 'com_bwpostman.'.$context . '.' . $recordId)) {
+			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context . '.' . $recordId)) {
 				// Test if the owner matches 'me'.
 				if ($ownerId == $userId) return true;
 			}
@@ -607,23 +607,23 @@ abstract class BwPostmanHelper {
 		$userId		= $user->get('id');
 
 		// Check general component restore permission first.
-		if ($user->authorise('core.restore', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.restore', 'com_bwpostman')) {
 			return true;
 		}
 
 		// Then check context restore permission.
-		if ($user->authorise('core.restore', 'com_bwpostman.' . $context)) {
+		if ($user->authorise('bwpm.restore', 'com_bwpostman.' . $context)) {
 			return true;
 		}
 
 		// Next check item restore permission.
-		if ($user->authorise('core.restore', 'com_bwpostman.' . $context . '.' . $recordId)) {
+		if ($user->authorise('bwpm.restore', 'com_bwpostman.' . $context . '.' . $recordId)) {
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', 'com_bwpostman.'.$context.'.' . $recordId)) {
+		if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context.'.' . $recordId)) {
 			// Test if the owner matches 'me'.
 			if ($ownerId == $userId) return true;
 		}

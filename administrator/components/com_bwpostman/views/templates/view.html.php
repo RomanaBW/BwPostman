@@ -120,11 +120,11 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolBarHelper::title (JText::_('COM_BWPOSTMAN_TPL'), 'picture');
 
 				// Set toolbar items for the page
-				if ($canDo->get('core.create'))		JToolBarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
-				if ($canDo->get('core.create'))		JToolBarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
-				if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('template.edit');
+				if ($canDo->get('bwpm.create'))		JToolBarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
+				if ($canDo->get('bwpm.create'))		JToolBarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
+				if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('template.edit');
 
-				if ($canDo->get('core.edit.state')) {
+				if ($canDo->get('bwpm.edit.state')) {
 					JToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
 					JToolBarHelper::publishList('templates.publish');
 					JToolBarHelper::unpublishList('templates.unpublish');
@@ -133,7 +133,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolBarHelper::divider();
 				JToolBarHelper::spacer();
 
-				if ($canDo->get('core.archive')) {
+				if ($canDo->get('bwpm.archive')) {
 					JToolBarHelper::archiveList('template.archive');
 					JToolBarHelper::divider();
 					JToolBarHelper::spacer();
@@ -143,7 +143,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 					JToolBarHelper::divider();
 				}
 				// templateupload
-				if ($canDo->get('core.create')) {
+				if ($canDo->get('bwpm.create')) {
 					$bar = JToolBar::getInstance('toolbar');
 					JHTML::_( 'behavior.modal' );
 					$html = '<a class="btn btn-small" href="'. JURI::root(true) . '/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl" rel="{handler: \'iframe\', size: {x: 850, y: 500}}" ><span class="icon-upload"></span>' .JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'). '</a>';

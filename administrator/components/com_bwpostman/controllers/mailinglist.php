@@ -75,7 +75,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	{
 		$user	= JFactory::getUser();
 
-		return ($user->authorise('core.create', 'com_bwpostman'));
+		return ($user->authorise('bwpm.create', 'com_bwpostman'));
 	}
 
 	/**
@@ -96,20 +96,20 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		$userId		= $user->get('id');
 
 		// Check general edit permission first.
-		if ($user->authorise('core.edit', 'com_bwpostman'))
+		if ($user->authorise('bwpm.edit', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		// Check specific edit permission.
-		if ($user->authorise('core.edit', 'com_bwpostman.mailinglist.' . $recordId))
+		if ($user->authorise('bwpm.mailinglist.edit', 'com_bwpostman.mailinglist.' . $recordId))
 		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', 'com_bwpostman.mailinglist.' . $recordId) || $user->authorise('core.edit.own', 'com_bwpostman'))
+		if ($user->authorise('bwpm.mailinglist.edit.own', 'com_bwpostman.mailinglist.' . $recordId) || $user->authorise('bwpm.edit.own', 'com_bwpostman'))
 		{
 			// Now test the owner is the user.
 			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;

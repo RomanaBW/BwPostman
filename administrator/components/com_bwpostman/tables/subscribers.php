@@ -283,6 +283,7 @@ class BwPostmanTableSubscribers extends JTable
 		$app	= JFactory::getApplication();
 		$import	= $app->getUserState('com_bwpostman.subscriber.import', false);
 		$data	= $app->getUserState('com_bwpostman.subscriber.register.data', array());
+		$params = JComponentHelper::getParams('com_bwpostman');
 
 		$session	= JFactory::getSession();
 		$err		= $session->get('session_error');
@@ -305,8 +306,8 @@ class BwPostmanTableSubscribers extends JTable
 		$this->special		= $filter->clean($this->special);
 
 		if (!$import) {
-		// Check for valid firstname
-			if (($data['show_firstname_field']) && ($data['firstname_field_obligation'])) {
+		// Check for valid first name
+			if (($params->get('show_firstname_field')) && ($params->get('firstname_field_obligation'))) {
 				if (trim($this->firstname) == '') {
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME'), 'error');
 					$fault	= true;
@@ -314,7 +315,7 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Check for valid name
-			if (($data['show_name_field']) && ($data['name_field_obligation'])) {
+			if (($params->get('show_name_field')) && ($params->get('name_field_obligation'))) {
 				if (trim($this->name) == '') {
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_NAME'), 'error');
 					$fault	= true;
@@ -322,7 +323,7 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Check for valid additional field
-			if (($data['show_special']) && ($data['special_field_obligation'])) {
+			if (($params->get('show_special')) && ($params->get('name_field_obligation'))) {
 				if (trim($this->special) == '') {
 					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($params->get('special_label'))), 'error');
 					$fault	= true;

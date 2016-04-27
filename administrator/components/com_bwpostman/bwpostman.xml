@@ -78,6 +78,7 @@
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>bwpostman.php</filename>
+			<filename>install.bwpostman.php</filename>
 			<filename>CHANGELOG.txt</filename>
 			<filename>controller.php</filename>
 			<filename>config.xml</filename>
@@ -110,7 +111,8 @@
 	<scriptfile>install.bwpostman.php</scriptfile>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/com_bwpostman_update.xml</server>
+<!--		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/com_bwpostman_update.xml</server>-->
+		<server type="extension" priority="1" name="BwPostman Updates">http://www.webservice3.nil/update-servers/com_bwpostman_update_lokal.xml</server>
 	</updateservers>
 
 </extension>

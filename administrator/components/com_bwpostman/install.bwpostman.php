@@ -24,10 +24,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Joomla\Registry\Format\Json;
+//use Joomla\Registry\Format\Json;
 
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
+
+// Require some classes
+//require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries/exceptions/BwException.php');
+//require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * Class Com_BwPostmanInstallerScript
@@ -36,6 +40,18 @@ class Com_BwPostmanInstallerScript
 {
 	/** @var int asset_id */
 	var $release = null;
+
+
+	/** @var array sampleUserGroups */
+	var $test_arr   = array('x' => array('y', 'z', 'q'));
+
+	var $all_bwpm_groups    = array('bwpm_usergroups'           => array('BwPostmanManager', 'BwPostmanPublisher', 'BwPostmanEditor'),
+									'mailinglist_usergroups'    => array('BwPostmanMailinglistAdmin', 'BwPostmanMailinglistPublisher', 'BwPostmanMailinglistEditor'),
+									'subscriber_usergroups'     => array('BwPostmanSubscriberAdmin', 'BwPostmanSubscriberPublisher', 'BwPostmanSubscriberEditor'),
+									'newsletter_usergroups'     => array('BwPostmanNewsletterAdmin', 'BwPostmanNewsletterPublisher', 'BwPostmanNewsletterEditor'),
+									'campaign_usergroups'       => array('BwPostmanCampaignAdmin', 'BwPostmanCampaignPublisher', 'BwPostmanCampaignEditor'),
+									'template_usergroups'       => array('BwPostmanTemplateAdmin', 'BwPostmanTemplatePublisher', 'BwPostmanTemplateEditor'),
+								);
 
 	/**
 	 * Constructor
@@ -181,12 +197,12 @@ class Com_BwPostmanInstallerScript
 			$this->_copyTemplateImagesToImages();
 		}
 
-		// create sample user groups and access levels
-		$this->_createSampleUsers();
-
 		if ($type == 'install') {
 			// Set BwPostman default settings in the extensions table at install
 			$this->_setDefaultParams();
+
+			// create sample user groups and access levels
+//			$this->_createSampleUsergroups();
 		}
 
 		// check if sample templates exits
@@ -203,6 +219,8 @@ class Com_BwPostmanInstallerScript
 
 			if (version_compare($oldRelease, '1.2.0', 'lt')) $this->_correctCamId();
 			if (version_compare($oldRelease, '1.2.0', 'lt')) $this->_fillCamCrossTable();
+
+//			if (version_compare($oldRelease, '2.0.0', 'lt')) $this->_createSampleUsergroups();
 
 			// remove double entries in table extensions
 			$this->_removeDoubleExtensionsEntries();
@@ -262,6 +280,8 @@ class Com_BwPostmanInstallerScript
 	public function uninstall(JAdapterInstance $adapter)
 	{
 //		echo "<div>BwPostman is now removed from your system.</div>";
+//		$this->_deleteSampleUsergroups();
+
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
 		$m_params   = JComponentHelper::getParams('com_media');
@@ -392,7 +412,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	protected function _copyTemplateImagesToMedia($m_params)
+	private function _copyTemplateImagesToMedia($m_params)
 	{
 		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman';
 		$media_path = JPATH_ROOT . '/media/bw_postman/images/';
@@ -451,7 +471,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	protected function _copyTemplateImagesToImages()
+	private function _copyTemplateImagesToImages()
 	{
 		$dest = JPATH_ROOT . '/images/bw_postman';
 		if (!JFolder::exists($dest))
@@ -507,7 +527,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	protected function _checkSampleTemplates()
+	private function _checkSampleTemplates()
 	{
 		$db	        = JFactory::getDBO();
 
@@ -538,14 +558,159 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Method to create sample user groups and access levels
 	 *
-	 * @return void
+	 * @return boolean  true on success
 	 *
 	 * @since   2.0.0
 	 */
-	protected function _createSampleUsers() {
-		$usergroupTable  = JTable::getInstance('Usergroup');
-		$usergroup      = array();
+	private function _createSampleUsergroups()
+	{
+		try
+		{
+			// get the model for user groups
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+
+			// get group ID of manager
+			$manager_id = $this->_getGroupId('Manager');
+
+			// Create user group BwPostmanAdmin
+			if (!$ret = $groupModel->save(array('id' => 0, 'parent_id' => $manager_id, 'title' => 'BwPostmanAdmin'))) {
+				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret));
+			}
+			$admin_groupId = $this->_getGroupId('BwPostmanAdmin');
+
+			// Create user group BwPostmanSectionAdmin
+			if (!$groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanSectionAdmin'))) {
+				throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+			}
+
+			// Create BwPostman user groups
+			$parent_id   = $admin_groupId;
+			foreach ($this->all_bwpm_groups['bwpm_usergroups'] as $item)
+			{
+				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item))) {
+					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+				}
+				$parent_id = $this->_getGroupId($item);
+			}
+
+			// Create BwPostmanMailinglist user groups
+			$parent_id   = $admin_groupId;
+			foreach ($this->all_bwpm_groups['mailinglist_usergroups'] as $item)
+			{
+				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item))) {
+					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+				}
+				$parent_id = $this->_getGroupId($item);
+			}
+
+			// Create BwPostmanSubscriber user groups
+			$parent_id   = $admin_groupId;
+			foreach ($this->all_bwpm_groups['subscriber_usergroups'] as $item)
+			{
+				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item))) {
+					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+				}
+				$parent_id = $this->_getGroupId($item);
+			}
+
+			// Create BwPostmanNewsletter user groups
+			$parent_id   = $admin_groupId;
+			foreach ($this->all_bwpm_groups['newsletter_usergroups'] as $item)
+			{
+				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item))) {
+					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+				}
+				$parent_id = $this->_getGroupId($item);
+			}
+
+			// Create BwPostmanCampaign user groups
+			$parent_id   = $admin_groupId;
+			foreach ($this->all_bwpm_groups['campaign_usergroups'] as $item)
+			{
+				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item))) {
+					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+				}
+				$parent_id = $this->_getGroupId($item);
+			}
+
+			// Create BwPostmanTemplate user groups
+			$parent_id   = $admin_groupId;
+			foreach ($this->all_bwpm_groups['template_usergroups'] as $item)
+			{
+				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item))) {
+					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+				}
+				$parent_id = $this->_getGroupId($item);
+			}
+
+			return true;
+		}
+		catch (BwException $e)
+		{
+			echo $e->getMessage();
+			return false;
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+			return false;
+		}
+
 	}
+
+	/**
+	 * Method to delete sample user groups and access levels
+	 *
+	 * @return boolean  true on success
+	 *
+	 * @since   2.0.0
+	 */
+	private function _deleteSampleUsergroups()
+	{
+		try
+		{
+
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+			return false;
+		}
+	}
+
+	/**
+	 * Gets the group Id of the selected groupname
+	 *
+	 * @param   string  $name  The name of the group
+	 *
+	 * @return  int  the ID of the group
+	 */
+
+	private function _getGroupId($name)
+	{
+		$_db		= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->select($_db->quoteName('id'))
+			->from($_db->quoteName('#__usergroups'))
+			->where("`title` LIKE '". $_db->escape($name)."'");
+
+		$_db->setQuery($query);
+
+		$error = $_db->getErrorMsg();
+		if ($error) {
+//			$this->setError($error);
+			echo 'Fehler GroupId: ' . $error . '<br />';
+			return false;
+		}
+
+		$result = $_db->loadResult();
+
+		return $result;
+	}
+
 
 	/**
 	 * Method to remove multiple entries in table extensions. Needed because joomla update may show updates for these unnecessary entries
@@ -554,7 +719,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	protected function _removeDoubleExtensionsEntries()
+	private function _removeDoubleExtensionsEntries()
 	{
 		$db	= JFactory::getDBO();
 

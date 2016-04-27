@@ -591,7 +591,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							$start = stripos($column, 'NULL');
 							if ($start !== false)
 							{
-								$col_arr->Null = substr($column, $start, 4);
+								$col_arr->Null = 'YES';
+//								$col_arr->Null = substr($column, $start, 4);
 								$sub_txt       = str_replace('NULL', '', $column);
 								$column        = trim($sub_txt);
 							}
@@ -933,7 +934,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// check for needed col names
 			if (array_search($neededColumns[$i]['Column'], $search_cols_1) === false)
 			{
-				($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = '';
+				($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = ' NULL ';
 				(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $_db->Quote($neededColumns[$i]['Default']) : $default = '';
 
 				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COLS', $neededColumns[$i]['Column'], $checkTable->name) . '</p>';
@@ -984,7 +985,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
 			$diff = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
-
 			if (!empty($diff))
 			{
 				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES', implode(',', array_keys($diff)), $neededColumns[$i]['Column'], $checkTable->name) . '</p>';
@@ -992,7 +992,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				// install missing columns
 				foreach (array_keys($diff) as $missingCol)
 				{
-					($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = '';
+					($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = 'YES';
 					(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $_db->Quote($neededColumns[$i]['Default']) : $default = '';
 					$query = "ALTER TABLE " . $_db->quoteName($checkTable->name);
 					$query .= " MODIFY " . $_db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type'] . $null . $default;
@@ -1003,7 +1003,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					$_db->setQuery($query);
 					$alterCol = $_db->Execute($query);
-
 					if (!$alterCol)
 					{
 						echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_ERROR', $missingCol, $neededColumns[$i]['Column'], $checkTable->name) . '</p>';

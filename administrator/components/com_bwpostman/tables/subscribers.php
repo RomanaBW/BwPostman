@@ -555,11 +555,15 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @since   1.0.1
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = true)
 	{
 		$app	= JFactory::getApplication();
 		$date	= JFactory::getDate();
 		$user	= JFactory::getUser();
+
+		if ($this->gender   == ''){
+			$this->gender   = NULL;
+		}
 
 		if ($this->id)
 		{

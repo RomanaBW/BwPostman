@@ -60,7 +60,7 @@ class BwPostmanTableSubscribers extends JTable
 	/** @var int Newsletterformat --> 0 = text, 1 = html */
 	var $emailformat = null;
 
-	/** @var int gender --> 0 = male, 1 = female */
+	/** @var int gender --> 0 = male, 1 = female NULL = unknown */
 	var $gender = null;
 
 	/** @var string special field */

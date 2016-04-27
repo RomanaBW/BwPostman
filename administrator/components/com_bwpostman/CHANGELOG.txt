@@ -11,7 +11,8 @@ Many thanks to all those people who have contributed bug reports and code fixes.
     -
 
 - bugfix:
-    -
+    - Table check at attribute NULL corrected
+    - Typo in english language file corrected
 
 - improvement:
     - Collation of tables changed from utf8 to utf8mb4

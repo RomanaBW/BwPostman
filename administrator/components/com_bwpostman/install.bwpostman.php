@@ -227,12 +227,13 @@ class Com_BwPostmanInstallerScript
 
 			// check all tables of BwPostman
 			// Let Ajax client redirect
-			echo '<script type="text/javascript">';
-			echo '   var w = 700, h = 600;';
-			echo '    if (window.outerWidth) { w = window.outerWidth * 80 / 100;}';
-			echo '    if (window.outerHeight) { h = window.outerHeight * 80 / 100;}';
-			echo 'window.open("' . JUri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&layout=updateCheckSave", "popup", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no, width="+Math.round(w)+", height="+Math.round(h)+"");';
-			echo '</script>';
+			$modal =	'<script type="text/javascript">'."\n".
+						'	var w = 700, h = 600;'."\n".
+						'	if (window.outerWidth) { w = window.outerWidth * 80 / 100;}'."\n".
+						'	if (window.outerHeight) { h = window.outerHeight * 80 / 100;}'."\n".
+						'	window.open("' . JUri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&layout=updateCheckSave", "popup", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no, width="+Math.round(w)+", height="+Math.round(h)+"");'."\n".
+						'</script>';
+			$app->enqueueMessage(JText::_('Installing BwPostman ... ').$modal);
 		}
 	}
 

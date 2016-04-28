@@ -283,7 +283,18 @@ class BwPostmanTableSubscribers extends JTable
 		$app	= JFactory::getApplication();
 		$import	= $app->getUserState('com_bwpostman.subscriber.import', false);
 		$data	= $app->getUserState('com_bwpostman.subscriber.register.data', array());
-		$params = JComponentHelper::getParams('com_bwpostman');
+		if ($app->isSite() && isset($data['module_title']))
+		{
+			if ($data['module_title'] != '')
+			{
+				$module = JModuleHelper::getModule('mod_bwpostman', $data['module_title']);
+				$module_params  = new JRegistry($module->params);
+				if ($module_params->get('com_params') == 0)
+				{
+					$params = $module_params;
+				}
+			}
+		}
 
 		$session	= JFactory::getSession();
 		$err		= $session->get('session_error');
@@ -323,7 +334,7 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Check for valid additional field
-			if (($params->get('show_special')) && ($params->get('name_field_obligation'))) {
+			if (($params->get('show_special')) && ($params->get('special_field_obligation'))) {
 				if (trim($this->special) == '') {
 					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($params->get('special_label'))), 'error');
 					$fault	= true;
@@ -350,8 +361,8 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// agreecheck
-			if (JComponentHelper::getParams('com_bwpostman')->get('disclaimer') == 1){
-				if(!isset($data['agreecheck']) && !isset($data['agreecheck_mod'])) {
+			if ($params->get('disclaimer') == 1){
+				if(!isset($data['agreecheck'])) {
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_AGREECHECK'), 'error');
 					$fault	= true;
 				}
@@ -375,9 +386,9 @@ class BwPostmanTableSubscribers extends JTable
 
 			// Captchacheck 1
 			// Set error message if captchatest failed
-			if (JComponentHelper::getParams('com_bwpostman')->get('use_captcha') == 1){
+			if ($params->get('use_captcha') == 1){
 			// start check
-				if(trim($data['stringQuestion']) != trim(JComponentHelper::getParams('com_bwpostman')->get('security_answer'))) {
+				if(trim($data['stringQuestion']) != trim($params->get('security_answer'))) {
 					// input wrong - set error
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
 					$fault	= true;
@@ -385,7 +396,7 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Captchacheck 2
-			if (JComponentHelper::getParams('com_bwpostman')->get('use_captcha') == 2){
+			if ($params->get('use_captcha') == 2){
 				// Temp folder of captcha-images
 				$captchaDir = JPATH_COMPONENT_SITE.'/assets/capimgdir/';
 				// del old images after ? minutes
@@ -402,9 +413,7 @@ class BwPostmanTableSubscribers extends JTable
 
 		if ($fault) {
 			$app->setUserState('com_bwpostman.edit.subscriber.data', $this);
-//			$app->setUserState('com_bwpostman.edit.subscriber.register.errors', $err);
 			$session->set('session_error', $err);
-//			$session->close();
 			return false;
 		}
 
@@ -556,7 +565,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @since   1.0.1
 	 */
-	public function store($updateNulls = true)
+	public function store($updateNulls = false)
 	{
 		$app	= JFactory::getApplication();
 		$date	= JFactory::getDate();

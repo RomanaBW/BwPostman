@@ -12,7 +12,8 @@ Many thanks to all those people who have contributed bug reports and code fixes.
     -
 
 - bugfix:
-    -
+    - check for module specific params corrected
+    - form check by javascript corrected
 
 - improvement:
     -

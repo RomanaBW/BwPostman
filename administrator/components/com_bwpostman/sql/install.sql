@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns` (
  `archive_date` datetime NOT NULL default '0000-00-00 00:00:00',
  `archived_by` varchar(11) NOT NULL default '0',
  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_mailinglists` (
  `archive_date` datetime NOT NULL,
  `archived_by` varchar(11) NOT NULL default '0',
  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters` (
  `archived_by` varchar(11) NOT NULL default '0',
  `hits` int(11) NOT NULL,
  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters_mailinglists` (
  `newsletter_id` int(11) NOT NULL,
  `mailinglist_id` int(11) NOT NULL,
  PRIMARY KEY (`newsletter_id`,`mailinglist_id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailcontent` (
  `reply_email` varchar(100) NOT NULL,
  `reply_name` varchar(255) NOT NULL,
  PRIMARY KEY (`id`,`mode`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailqueue` (
  `subscriber_id` int(11) NOT NULL default '0',
  `trial` int(5) NOT NULL default '0',
  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
  `archive_date` datetime NOT NULL default '0000-00-00 00:00:00',
  `archived_by` varchar(11) NOT NULL default '-1',
  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers_mailinglists` (
  `subscriber_id` int(11) NOT NULL,
  `mailinglist_id` int(11) NOT NULL,
  PRIMARY KEY (`subscriber_id`,`mailinglist_id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -218,7 +218,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
   `tpl_article` text NOT NULL,
   `tpl_divider` text NOT NULL,
   `tpl_id` int(11) NOT NULL DEFAULT '0',
-  `basics` varchar(255) NOT NULL,
+  `basics` text NOT NULL,
   `header` varchar(1000) NOT NULL,
   `intro` text NOT NULL,
   `article` varchar(1000) NOT NULL,
@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
   `archive_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `archived_by` varchar(11) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tpl` (
   `footer_tpl` text NOT NULL,
   `button_tpl` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -274,5 +274,5 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns_mailinglists` (
  `campaign_id` int(11) NOT NULL,
  `mailinglist_id` int(11) NOT NULL,
  PRIMARY KEY (`campaign_id`,`mailinglist_id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE utf8mb4_unicode_ci;
 

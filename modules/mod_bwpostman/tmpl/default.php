@@ -29,6 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 JHTML::_('behavior.tooltip');
 JHTML::_('behavior.keepalive');
+JHtml::_('behavior.formvalidator');
 
 require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
 
@@ -54,17 +55,22 @@ function checkModRegisterForm() {
 
 	// Valdiate input fields
 	// firstname
-	if ((document.getElementById("a_firstname").value == "")  && (document.getElementById("firstname_field_obligation").value == 1)){
-		errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_FIRSTNAME', true); ?>\n";
+	if (document.bwp_com_form.a_firstname) {
+		if ((document.getElementById("a_firstname").value == "") && (document.getElementById("firstname_field_obligation_mod").value == 1)) {
+			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_FIRSTNAME', true); ?>\n";
+		}
 	}
 	// name
-	if ((document.getElementById("a_name").value == "") && (document.getElementById("name_field_obligation").value == 1)){
-		errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_NAME', true); ?>\n";
+	if (document.bwp_com_form.a_name) {
+		if ((document.getElementById("a_name").value == "") && (document.getElementById("name_field_obligation_mod").value == 1)) {
+			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_NAME', true); ?>\n";
+		}
 	}
 	// additional field
-	if ((document.getElementById("a_special").value == "") && (document.getElementById("special_field_obligation").value == 1)){
-		alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($params->get('special_label'))); ?>");
-		errStr += "<?php echo JText::_('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', true); ?>\n";
+	if (document.bwp_com_form.a_special) {
+		if ((document.getElementById("a_special").value == "") && (document.getElementById("special_field_obligation_mod").value == 1)) {
+			errStr += "<?php echo JText::_('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', true); ?>\n";
+		}
 	}
 	// email
 	var email = document.getElementById("a_email").value;
@@ -333,6 +339,7 @@ function checkModRegisterForm() {
 			<?php // TODO: muss hier subscriber->id stehen oder kann das leer bleiben? ?>
 			<!-- <input type="hidden" name="id" value="<?php echo isset($subscriber->id); ?>" /> -->
 			<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+			<input type="hidden" name="module_title" value="<?php echo $module_title; ?>" />
 			<input type="hidden" name="name_field_obligation_mod" id="name_field_obligation_mod" value="<?php echo $paramsComponent->get('name_field_obligation'); ?>" />
 			<input type="hidden" name="firstname_field_obligation_mod" id="firstname_field_obligation_mod" value="<?php echo $paramsComponent->get('firstname_field_obligation'); ?>" />
 			<input type="hidden" name="special_field_obligation_mod" id="special_field_obligation_mod" value="<?php echo $paramsComponent->get('special_field_obligation'); ?>" />

@@ -29,6 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 JHTML::_('behavior.tooltip');
 JHTML::_('behavior.keepalive');
+JHtml::_('behavior.formvalidator');
 
 // Depends on jQuery UI
 JHtml::_('jquery.ui', array('core'));
@@ -52,16 +53,22 @@ function checkRegisterForm() {
 
 	// Valdiate input fields
   // firstname
-  if (((document.bwp_com_form.getElementById("firstname").value == "" || (document.bwp_com_form.getElementById("firstname").value == "<?php echo JText::_('COM_BWPOSTMAN_FIRSTNAME'); ?>"))) && (document.bwp_com_form.getElementById("firstname_field_obligation").value == 1)){
-		errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>\n";
+	if (document.bwp_com_form.firstname) {
+		if (((document.bwp_com_form.getElementById("firstname").value == "" || (document.bwp_com_form.getElementById("firstname").value == "<?php echo JText::_('COM_BWPOSTMAN_FIRSTNAME'); ?>"))) && (document.bwp_com_form.getElementById("firstname_field_obligation").value == 1)) {
+			errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>\n";
+		}
 	}
   // name
-	if (((document.bwp_com_form.getElementById("name").value == "") || (document.bwp_com_form.getElementById("name").value == "<?php echo JText::_('COM_BWPOSTMAN_NAME'); ?>")) && (document.bwp_com_form.getElementById("name_field_obligation").value == 1)){
-		errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>\n";
+	if (document.bwp_com_form.name) {
+		if (((document.bwp_com_form.getElementById("name").value == "") || (document.bwp_com_form.getElementById("name").value == "<?php echo JText::_('COM_BWPOSTMAN_NAME'); ?>")) && (document.bwp_com_form.getElementById("name_field_obligation").value == 1)) {
+			errStr += "<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>\n";
+		}
 	}
 	// additional field
-	if (((document.bwp_com_form.getElementById("special").value == "") || (document.bwp_com_form.getElementById("special").value == "<?php echo JText::_($this->params->get('special_label')); ?>")) && (document.bwp_com_form.getElementById("special_field_obligation").value == 1)){
-		errStr += "<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>\n";
+	if (document.bwp_com_form.special) {
+		if (((document.bwp_com_form.getElementById("special").value == "") || (document.bwp_com_form.getElementById("special").value == "<?php echo JText::_($this->params->get('special_label')); ?>")) && (document.bwp_com_form.getElementById("special_field_obligation").value == 1)) {
+			errStr += "<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>\n";
+		}
 	}
   // email
   var email = document.bwp_com_form.getElementById("email").value;

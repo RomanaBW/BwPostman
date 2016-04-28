@@ -29,6 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 JHTML::_('behavior.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
+JHtml::_('behavior.formvalidator');
 
 ?>
 
@@ -42,22 +43,28 @@ JHtml::_('formbehavior.chosen', 'select');
 		form.edit.value = pressbutton;
 
 		// Valdiate input fields
-		if (form.name_field_obligation.value == 1) {
-			if (form.name.value == "") {
-				alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
-				fault	= true;
+		if (document.bwp_com_form.name) {
+			if (form.name_field_obligation.value == 1) {
+				if (form.name.value == "") {
+					alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
+					fault = true;
+				}
 			}
 		}
-		if (form.firstname_field_obligation.value == 1) {
-			if (form.firstname.value == "") {
-				alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
-				fault	= true;
+		if (document.bwp_com_form.firstname) {
+			if (form.firstname_field_obligation.value == 1) {
+				if (form.firstname.value == "") {
+					alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
+					fault = true;
+				}
 			}
 		}
-		if (form.special_field_obligation.value == 1) {
-			if (form.special.value == "") {
-				alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>");
-				fault	= true;
+		if (document.bwp_com_form.special) {
+			if (form.special_field_obligation.value == 1) {
+				if (form.special.value == "") {
+					alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>");
+					fault = true;
+				}
 			}
 		}
 		if (form.email.value== "") {

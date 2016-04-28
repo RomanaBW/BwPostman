@@ -839,6 +839,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$newtext .= '   <meta property="og:title" content="HTML Newsletter" />'."\n";
 		$newtext .= '   <style type="text/css">'."\n";
 		$newtext .= '   '.$css."\n";
+		if (isset($basics['custom_css'])) {
+			$newtext .= $basics['custom_css']."\n";
+		}
 		$newtext .= '   </style>'."\n";
 		$newtext .= ' </head>'."\n";
 			if (isset($basics['paper_bg'])) {

@@ -1629,6 +1629,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$css	= $params->get('css_for_html_newsletter');
 			$newtext .= '   '.$css."\n";
 		}
+		if (isset($tpl->basics['custom_css'])) {
+			$newtext .= $tpl->basics['custom_css']."\n";
+		}
 		$newtext .= '   </style>'."\n";
 		$newtext .= ' </head>'."\n";
 

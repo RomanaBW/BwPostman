@@ -238,13 +238,21 @@ $options = array(
 								<div><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_DESC'); ?></div>
 								<div class="well well-small">
 									<textarea id="jform_tpl_html" rows="20" cols="50" name="jform[tpl_html]" style="width: 95%;"><?php echo htmlspecialchars($this->item->tpl_html, ENT_COMPAT, 'UTF-8'); ?></textarea>
+									<div class="clr clearfix" style="margin-top: 10px"></div>
 										<?php
 											$link = JURI::base() . '#';
+											if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
+												$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+												$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
+											}
+											else {
 											$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
+											}
 											foreach ($linktexts as $key => $linktext) {
 												echo "                    <a class=\"btn btn-small pull-left\" onclick=\"buttonClick('jform_tpl_html', '" . $linktext . "');return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
 												echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
 											}
+											if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
 										?>
 								</div>
 								<div class="clr clearfix"></div>

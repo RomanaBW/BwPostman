@@ -51,6 +51,44 @@ $options = array(
 
 <script type="text/javascript">
 /* <![CDATA[ */
+	// insert placeholder
+	jQuery(function($){
+		$.fn.EnableInsertAtCaret = function() {
+			$(this).on("focus", function() {
+				$(".insertatcaretactive").removeClass("insertatcaretactive");
+				$(this).addClass("insertatcaretactive");
+			});
+		};
+		$("#jform_intro_intro_text,#jform_intro_intro_headline").EnableInsertAtCaret();
+	});
+
+	function InsertAtCaret(myValue) {
+		return jQuery(".insertatcaretactive").each(function(i) {
+			if (document.selection) {
+				//For browsers like Internet Explorer
+				this.focus();
+				sel = document.selection.createRange();
+				sel.text = myValue;
+				this.focus();
+			}
+			else if (this.selectionStart || this.selectionStart == '0') {
+				//For browsers like Firefox and Webkit based
+				var startPos = this.selectionStart;
+				var endPos = this.selectionEnd;
+				var scrollTop = this.scrollTop;
+				this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
+				this.focus();
+				this.selectionStart = startPos + myValue.length;
+				this.selectionEnd = startPos + myValue.length;
+				this.scrollTop = scrollTop;
+			}
+			else {
+				this.value += myValue;
+				this.focus();
+			}
+		})
+	}
+
 	Joomla.submitbutton = function (pressbutton) {
 		var form = document.adminForm;
 
@@ -96,30 +134,7 @@ $options = array(
 		} else {
 			submitform(pressbutton);
 		}
-	}
-;
-	// insert placeholder
-	function buttonClick(Field, myValue) {
-		myField = document.getElementById(Field);
-
-		if (document.selection) {
-			// IE support
-			myField.focus();
-			sel = document.selection.createRange();
-			sel.text = myValue;
-		}
-		else if (myField.selectionStart || myField.selectionStart == '0') {
-			// MOZILLA/NETSCAPE support
-			var startPos = myField.selectionStart;
-			var endPos = myField.selectionEnd;
-			myField.value = myField.value.substring(0, startPos)
-			+ myValue
-			+ myField.value.substring(endPos, myField.value.length);
-		}
-		else {
-			myField.value += myValue;
-		}
-	}
+	};
 
 	// check form field values
 	function checkValues(turn) {

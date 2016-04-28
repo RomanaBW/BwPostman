@@ -236,11 +236,18 @@ $options = array(
 										<?php echo $this->form->getInput('tpl_html'); ?>
 										<?php
 										$link = JURI::base() . '#';
+										if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
+											$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+											$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
+										}
+										else {
 										$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
+										}
 										foreach ($linktexts as $key => $linktext) {
 											echo "                    <a class=\"btn btn-small pull-left\" onclick=\"buttonClick('". $linktext ."','jform_tpl_html');return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
 											echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
 										}
+										if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
 										?>
 									</div>
 								<div class="clr clearfix"></div>

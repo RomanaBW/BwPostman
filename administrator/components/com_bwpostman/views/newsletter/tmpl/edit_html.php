@@ -133,18 +133,26 @@ Joomla.submitbutton = function (pressbutton) {
 											<?php echo '<div class="width-20 fltlft span2">'; ?>
 											<?php echo $field->label; ?>
 											<?php echo '</div><div class="width-80 fltlft span10">'.JTEXT::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE'); ?>
+											<?php echo "</div>"; ?>
+										</div>
+										<div class="row-fluid clearfix"><?php echo $field->input; ?></div>
+										<div class="row-fluid clearfix">
 											<?php
 												$link = JURI::base() . '#';
+												if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
+													$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+													$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+												}
+												else {
 												$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+												}
 												foreach ($linktexts as $key => $linktext) {
 													echo "                    <a class=\"btn btn-small pull-left\" onclick=\"buttonClick('". $linktext ."','jform_html_version');return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
 													echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
 												}
+												if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
 											?>
-											<?php echo "</div>"; ?>
 										</div>
-
-										<div class="row-fluid clearfix"><?php echo $field->input; ?></div>
 									</li>
 									<?php
 								}

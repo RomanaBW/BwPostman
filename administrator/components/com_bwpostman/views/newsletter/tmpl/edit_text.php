@@ -113,6 +113,9 @@ Joomla.submitbutton = function (pressbutton) {
 			<fieldset class="adminform form-horizontal">
 				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_TEXT'); ?></legend>
 				<div class="well well-small">
+											<div class="row-fluid clearfix">
+												<?php echo '<div class="span12">'.JTEXT::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE').'</div>'; ?>
+											</div>
 					<ul class="unstyled">
 						<?php
 						foreach($this->form->getFieldset('text_version') as $field):
@@ -130,20 +133,28 @@ Joomla.submitbutton = function (pressbutton) {
 									if ($field->name == 'jform[text_version]') { ?>
 										<li <?php echo 'class="' . $field->name  . '"'; ?>>
 											<div class="row-fluid clearfix">
-												<?php echo '<div class="width-20 fltlft span2">'; ?>
+												<?php echo '<div class="span12">'; ?>
 												<?php echo $field->label; ?>
-												<?php echo '</div><div class="width-80 fltlft span10">'.JTEXT::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE'); ?>
-												<?php
-													$link = JURI::base() . '#';
-													$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
-													foreach ($linktexts as $key => $linktext) {
-														echo "                    <a class=\"btn btn-small pull-left\" onclick=\"insertAtCursor('jform_text_version', '" . $linktext . "');return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
-														echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
-													}
-												?>
-												<?php echo "</div>"; ?>
+												<?php echo '</div>'; ?>
 											</div>
 											<div class="row-fluid clearfix"><?php echo $field->input; ?></div>
+											<div class="row-fluid clearfix" style="margin-top: 10px">
+												<?php
+													$link = JURI::base() . '#';
+													if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
+														$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+														$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+													}
+													else {
+													$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+													}
+													foreach ($linktexts as $key => $linktext) {
+														echo "                    <a class=\"btn btn-small pull-left\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</a>";
+														echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
+													}
+													if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+												?>
+											</div>
 										</li>
 										<?php
 									}

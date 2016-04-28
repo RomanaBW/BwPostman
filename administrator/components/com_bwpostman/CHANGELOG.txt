@@ -8,13 +8,14 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 
 --- version 2.0.0 released (20-Sept-2016)----
 - new:
-    -
+    - Additional field "Custom CSS" at standard templates added
+    - Buttons for enhanced personalization inserted at editing templates and newsletters
 
 - bugfix:
     - Table check at attribute NULL corrected
     - Typo in english language file corrected
-    - form check by javascript corrected
-    - saving gender without entry (=gender unknown) now possible
+    - Form check by javascript corrected
+    - Saving gender without entry (=gender unknown) now possible
 
 
 - improvement:

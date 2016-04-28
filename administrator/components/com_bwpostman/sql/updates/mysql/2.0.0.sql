@@ -64,7 +64,7 @@ ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_html` TEXT NOT NULL COLL
 ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_css` TEXT NOT NULL COLLATE `utf8mb4_unicode_ci`;
 ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_article` TEXT NOT NULL COLLATE `utf8mb4_unicode_ci`;
 ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_divider` TEXT NOT NULL COLLATE `utf8mb4_unicode_ci`;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `basics` VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`;
+ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `basics` TEXT NOT NULL COLLATE `utf8mb4_unicode_ci`;
 ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `header` VARCHAR(1000) NOT NULL COLLATE `utf8mb4_unicode_ci`;
 ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `intro` TEXT NOT NULL COLLATE `utf8mb4_unicode_ci`;
 ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `article` VARCHAR(1000) NOT NULL COLLATE `utf8mb4_unicode_ci`;
@@ -88,3 +88,7 @@ ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `footer_tpl` TEXT NOT NUL
 ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `button_tpl` TEXT NOT NULL COLLATE `utf8mb4_unicode_ci`;
 
 ALTER TABLE `#__bwpostman_campaigns_mailinglists` COLLATE `utf8mb4_unicode_ci`;
+
+UPDATE `#__bwpostman_templates` SET `tpl_html` = REPLACE(`tpl_html`,'<div class="shadow" style="','<div class="shadow" style="height: 2px; ');
+UPDATE `#__bwpostman_templates_tpl` SET `header_tpl` = REPLACE(`header_tpl`,'<div class=\\"shadow\\" style=\\"','<div class=\\"shadow\\" style=\\"height: 2px; ');
+UPDATE `#__bwpostman_templates_tpl` SET `footer_tpl` = REPLACE(`footer_tpl`,'<div class="shadow" style="','<div class="shadow" style="height: 2px; ');

@@ -607,33 +607,22 @@ class BwPostmanController extends JControllerLegacy
 		$post	= $jinput->getArray(
 					array(
 						'agreecheck_mod' => 'string',
-						'a_emailformat' => 'string',
-						'a_firstname' => 'string',
-						'a_name' => 'string',
-						'a_gender' => 'string',
-						'a_special' => 'string',
 						'agreecheck' => 'string',
+						'a_emailformat' => 'string',
 						'emailformat' => 'string',
+						'a_firstname' => 'string',
 						'firstname' => 'string',
+						'a_name' => 'string',
 						'name' => 'string',
+						'a_gender' => 'string',
 						'gender' => 'string',
+						'a_special' => 'string',
 						'special' => 'string',
 						'email' => 'string',
 						'falle' => 'string',
 						'language' => 'string',
 						'mailinglists' => 'array',
-						'firstname_field_obligation' => 'string',
-						'name_field_obligation' => 'string',
-						'special_field_obligation' => 'string',
-						'firstname_field_obligation_mod' => 'string',
-						'name_field_obligation_mod' => 'string',
-						'special_field_obligation_mod' => 'string',
-						'show_special_mod' => 'string',
-						'show_special' => 'string',
-						'show_name_field' => 'string',
-						'show_name_field_mod' => 'string',
-						'show_firstname_field' => 'string',
-						'show_firstname_field_mod' => 'string',
+						'module_title' => 'string',
 						'registration_ip' => 'string',
 						'stringQuestion' => 'string',
 						'stringCaptcha' => 'string',
@@ -669,36 +658,6 @@ class BwPostmanController extends JControllerLegacy
 		if (isset($post['a_special'])) {
 			$post['special']	= $post['a_special'];
 			unset($post['a_special']);
-		}
-
-		if (isset($post['name_field_obligation_mod'])) {
-			$post['name_field_obligation']	= $post['name_field_obligation_mod'];
-			unset($post['name_field_obligation_mod']);
-		}
-
-		if (isset($post['firstname_field_obligation_mod'])) {
-			$post['firstname_field_obligation']	= $post['firstname_field_obligation_mod'];
-			unset($post['firstname_field_obligation_mod']);
-		}
-
-		if (isset($post['special_field_obligation_mod'])) {
-			$post['special_field_obligation']	= $post['special_field_obligation_mod'];
-			unset($post['special_field_obligation_mod']);
-		}
-
-		if (isset($post['show_name_field_mod'])) {
-			$post['show_name_field']	= $post['show_name_field_mod'];
-			unset($post['show_name_field_mod']);
-		}
-
-		if (isset($post['show_firstname_field_mod'])) {
-			$post['show_firstname_field']	= $post['show_firstname_field_mod'];
-			unset($post['show_name_firstfield_mod']);
-		}
-
-		if (isset($post['show_special_mod'])) {
-			$post['show_special']	= $post['show_special_mod'];
-			unset($post['show_special_mod']);
 		}
 
 		if (isset($post['a_emailformat'])) {

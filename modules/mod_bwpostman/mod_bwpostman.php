@@ -33,6 +33,7 @@ jimport('joomla.application.component.helper');
 
 $app		= JFactory::getApplication();
 $document	= JFactory::getDocument();
+$module     = JModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
 if (is_file(JPATH_ADMINISTRATOR.'/components/com_bwpostman/bwpostman.php')) {
@@ -68,11 +69,13 @@ else {
 	if ($params->get('com_params') == 0) {
 		// Moduleparams
 		$paramsComponent = $params;
+		$module_title   = $module->title;
 	}
 	else {
 		// Get the parameters of the component
 		// --> we need these parameters because we have to ensure that both the component and the module will work with the same settings
 		$paramsComponent = $app->getPageParameters('com_bwpostman');
+		$module_title   = '';
 	}
 
 	if ($subscriberid) {

@@ -81,8 +81,6 @@ class plgBwPostmanPersonalize extends JPlugin
 		}
 
 		// Start Plugin
-//		$regex_one		= '/({bwpostman_personalize\s*)(.*?)(})/si';
-//		$regex_all		= '/{bwpostman_personalize\s*.*?}/si';
 		$regex_one		= '/(\[bwpostman_personalize\s*)(.*?)(\])/is';
 		$regex_all		= '/\[bwpostman_personalize\s*.*?\]/si';
 		$matches 		= array();
@@ -95,16 +93,13 @@ class plgBwPostmanPersonalize extends JPlugin
 
 			$gender_strings = $this->_extractGenderStrings($bwpm_personalize_parts);
 
-			if ($gender === null || !isset($gender_strings[$gender])) {
-				// if parameter not found or gender not set replace with last parameter
-				$replace_value  = $gender_strings[count($gender_strings) - 1];
+			// if gender not set replace with last parameter
+			if ($gender === null)
+			{
+				$gender = 2;
 			}
-			else {
-				// else set replace value depending on gender
-				$replace_value = $gender_strings[$gender];
-			}
-//			$replace_value = trim($replace_value);
-//			$replace_value  = str_replace('"', '', $replace_value);
+			// set replace value depending on gender
+			$replace_value = $gender_strings[$gender];
 
 			// modify newsletter body
 			$body = preg_replace($regex_all, $replace_value, $body, 1);
@@ -166,16 +161,29 @@ class plgBwPostmanPersonalize extends JPlugin
 	protected function _extractGenderStrings($bwpm_personalize_parts)
 	{
 		$parts = explode("|", $bwpm_personalize_parts[2]);
+		array_shift($parts);
 		$gender_string  = array();
+
 		foreach ($parts as $part) {
+			// extract sting between double quote
 			$start  = strpos($part, '"');
 			$end    = strrpos($part, '"');
 			if (($start !== false) && ($end !== false))
 			{
-				$string = substr($part, $start + 1, $end - $start - 1);
 				$gender_string[] = substr($part, $start + 1, $end - $start - 1);
 			}
+			// if there are not two double quotes set string to original string (do nothing)
+			else
+			{
+				$gender_string[] = $bwpm_personalize_parts[0];
+			}
 		}
+		// if personalization paramenters are incomplete, fill with original string (do nothing)
+		while (count($gender_string) < 3)
+		{
+			$gender_string[] = $bwpm_personalize_parts[0];
+		}
+
 
 		return $gender_string;
 	}

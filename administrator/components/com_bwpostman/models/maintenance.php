@@ -277,7 +277,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// Get the assets for component from database
 		$query->select('*');
 		$query->from($_db->quoteName('#__assets'));
-		$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman'));
+		$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman'));
 
 		$_db->setQuery($query);
 
@@ -338,7 +338,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// Get all asset rules of BwPostman
 		$query->select('rules');
 		$query->from($_db->quoteName('#__assets'));
-		$query->where($_db->quoteName('name') . ' LIKE ' . $_db->Quote('%com_bwpostman%'));
+		$query->where($_db->quoteName('name') . ' LIKE ' . $_db->quote('%com_bwpostman%'));
 
 		$_db->setQuery($query);
 
@@ -703,7 +703,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$query = $queries[$missingTable];
 
 				$_db->setQuery($query);
-				$createDB = $_db->Execute($query);
+				$createDB = $_db->execute();
 				if (!$createDB)
 				{
 					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_ERROR', $missingTable) . '</p>';
@@ -733,7 +733,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					$query = "DROP TABLE IF EXISTS " . $obsoleteTable;
 
 					$_db->setQuery($query);
-					$deleteDB = $_db->Execute($query);
+					$deleteDB = $_db->execute();
 					if (!$deleteDB)
 					{
 						echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE_DELETE_ERROR', $obsoleteTable) . '</p>';
@@ -775,7 +775,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				$query = 'ALTER TABLE ' . $_db->quoteName($table->name) . ' ENGINE=INNODB DEFAULT CHARSET=utf8';
 				$_db->setQuery($query);
-				$modifyTable = $_db->Execute($query);
+				$modifyTable = $_db->execute();
 				if (!$modifyTable)
 				{
 					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ERROR', $table->name) . '</p>';
@@ -827,12 +827,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 					$query = 'ALTER TABLE ' . $_db->quoteName($table->name) . ' MODIFY ' . $_db->quoteName($installed_key) . ' ' . $type . ', DROP PRIMARY KEY';
 					$_db->setQuery($query);
-					$dropKey = $_db->execute($query);
+					$dropKey = $_db->execute();
 				}
 
 				$query = 'ALTER TABLE ' . $_db->quoteName($table->name) . ' ADD PRIMARY KEY (' . $_db->quoteName($table->primary_key) . ')';
 				$_db->setQuery($query);
-				$modifyKey = $_db->execute($query);
+				$modifyKey = $_db->execute();
 				if (!$modifyKey)
 				{
 					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_ERROR', $table->name) . '</p>';
@@ -857,7 +857,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					$query = 'ALTER TABLE ' . $_db->quoteName($table->name) . ' MODIFY ' . $_db->quoteName($table->primary_key) . ' INT AUTO_INCREMENT';
 					$_db->setQuery($query);
-					$incrementKey = $_db->execute($query);
+					$incrementKey = $_db->execute();
 					if (!$incrementKey)
 					{
 						echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_ERROR', $table->name) . '</p>';
@@ -935,13 +935,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			if (array_search($neededColumns[$i]['Column'], $search_cols_1) === false)
 			{
 				($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = ' NULL ';
-				(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $_db->Quote($neededColumns[$i]['Default']) : $default = '';
+				(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $_db->quote($neededColumns[$i]['Default']) : $default = '';
 
 				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COLS', $neededColumns[$i]['Column'], $checkTable->name) . '</p>';
 				$query = "ALTER TABLE " . $_db->quoteName($checkTable->name) . " ADD " . $_db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type'] . $null . $default . " AFTER " . $_db->quoteName($neededColumns[$i - 1]['Column']);
 
 				$_db->setQuery($query);
-				$insertCol = $_db->Execute($query);
+				$insertCol = $_db->execute();
 
 				if (!$insertCol)
 				{
@@ -964,7 +964,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$query = "ALTER TABLE " . $_db->quoteName($checkTable->name) . " DROP " . $_db->quoteName($installedColumns[$i]['Field']);
 
 				$_db->setQuery($query);
-				$deleteCol = $_db->Execute($query);
+				$deleteCol = $_db->execute();
 
 				if (!$deleteCol)
 				{
@@ -993,7 +993,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				foreach (array_keys($diff) as $missingCol)
 				{
 					($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = 'YES';
-					(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $_db->Quote($neededColumns[$i]['Default']) : $default = '';
+					(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $_db->quote($neededColumns[$i]['Default']) : $default = '';
 					$query = "ALTER TABLE " . $_db->quoteName($checkTable->name);
 					$query .= " MODIFY " . $_db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type'] . $null . $default;
 					if (array_key_exists('Extra', $neededColumns[$i]))
@@ -1002,7 +1002,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 
 					$_db->setQuery($query);
-					$alterCol = $_db->Execute($query);
+					$alterCol = $_db->execute();
 					if (!$alterCol)
 					{
 						echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_ERROR', $missingCol, $neededColumns[$i]['Column'], $checkTable->name) . '</p>';
@@ -1179,7 +1179,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						// collect data sets until loop max
 						foreach ($item as $k => $v)
 						{
-							$values[] = $_db->Quote($v);
+							$values[] = $_db->quote($v);
 						}
 						$dataset[] = '(' . implode(',', $values) . ')';
 						$s++;
@@ -1420,7 +1420,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// Get the assets for this table from database
 			$query->select('*');
 			$query->from($_db->quoteName('#__assets'));
-			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->Quote($asset_name));
+			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->quote($asset_name));
 
 			$_db->setQuery($query);
 
@@ -1585,7 +1585,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// create this table anew
 			$query = str_replace("\n", '', $tables[$table]['queries']);
 			$_db->setQuery($query);
-			$create_table = $_db->Execute($query);
+			$create_table = $_db->execute();
 			if (!$create_table)
 			{
 				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table, $_db->getErrorMsg()));
@@ -1685,7 +1685,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 										$values['rgt'] = $curr_asset_id++;
 									break;
 								default:
-										$values[$k] = $_db->Quote($v);
+										$values[$k] = $_db->quote($v);
 									break;
 							}
 						}
@@ -1750,7 +1750,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					// collect data sets until loop max
 					foreach ($item as $k => $v)
 					{
-						$values[] = $_db->Quote($v);
+						$values[] = $_db->quote($v);
 					}
 					$dataset[] = '(' . implode(',', $values) . ')';
 					$s++;
@@ -2131,7 +2131,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRITE_TMPFILE_ERROR', $tmp_file));
 			}
-			$write_data = '';
 			$i++;
 			if (BWPOSTMAN_LOG_MEM)
 			{
@@ -2159,7 +2158,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$query = $_db->getQuery(true);
 			$query->delete($_db->quoteName('#__assets'));
-			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->Quote('%com_bwpostman.%'));
+			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->quote('%com_bwpostman.%'));
 
 			$_db->setQuery($query);
 			$asset_delete = $_db->execute();
@@ -2278,23 +2277,23 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			switch ($table)
 			{
 				case '#__bwpostman_campaigns':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.campaign'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.campaign'));
 					break;
 				case '#__bwpostman_mailinglists':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.mailinglist'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.mailinglist'));
 					break;
 				case '#__bwpostman_newsletters':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.newsletter'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.newsletter'));
 					break;
 				case '#__bwpostman_subscribers':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.subscriber'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.subscriber'));
 					break;
 				case '#__bwpostman_templates':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.template'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.template'));
 					break;
 				case 'component':
 				default:
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman'));
 					break;
 			}
 
@@ -2311,7 +2310,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get write the table asset
+	 * Method to write the table asset
 	 *
 	 * @param   string  $table
 	 *
@@ -2353,35 +2352,35 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			switch ($table)
 			{
 				case '#__bwpostman_campaigns':
-						$asset_name = 'com_bwpostman.campaign';
-						$asset_title    = 'BwPostman Campaigns';
+						$asset_name  = 'com_bwpostman.campaign';
+						$asset_title = 'BwPostman Campaigns';
 						$asset_rules = '{"bwpm.campaign.edit":{"6":1,"4":1},"bwpm.campaign.edit.state":{"6":1,"5":1},"bwpm.campaign.edit.own":{"6":1,"3":1},"bwpm.campaign.archive":[],"bwpm.campaign.restore":[],"bwpm.campaign.delete":{"6":1}}';
 					break;
 				case '#__bwpostman_mailinglists':
-						$asset_name = 'com_bwpostman.mailinglist';
-						$asset_title    = 'BwPostman Mailinglists';
+						$asset_name  = 'com_bwpostman.mailinglist';
+						$asset_title = 'BwPostman Mailinglists';
 						$asset_rules = '{"bwpm.mailinglist.edit":{"6":1,"4":1},"bwpm.mailinglist.edit.state":{"6":1,"5":1},"bwpm.mailinglist.edit.own":{"6":1,"3":1},"bwpm.mailinglist.archive":[],"bwpm.mailinglist.restore":[],"bwpm.mailinglist.delete":{"6":1}}';
 					break;
 				case '#__bwpostman_newsletters':
-						$asset_name = 'com_bwpostman.newsletter';
-						$asset_title    = 'BwPostman Newsletters';
+						$asset_name  = 'com_bwpostman.newsletter';
+						$asset_title = 'BwPostman Newsletters';
 						$asset_rules = '{"bwpm.newsletter.edit":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.edit.state":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.edit.own":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.newsletter.delete":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}}';
 					break;
 				case '#__bwpostman_subscribers':
-						$asset_name = 'com_bwpostman.subscriber';
-						$asset_title    = 'BwPostman Subscribers';
+						$asset_name  = 'com_bwpostman.subscriber';
+						$asset_title = 'BwPostman Subscribers';
 						$asset_rules = '{"bwpm.subscriber.edit":{"6":1,"4":1},"bwpm.subscriber.edit.state":{"6":1,"5":1},"bwpm.subscriber.edit.own":{"6":1,"3":1},"bwpm.subscriber.archive":[],"bwpm.subscriber.restore":[],"bwpm.subscriber.delete":{"6":1}}';
 					break;
 				case '#__bwpostman_templates':
-						$asset_name = 'com_bwpostman.template';
-						$asset_title    = 'BwPostman Templates';
+						$asset_name  = 'com_bwpostman.template';
+						$asset_title = 'BwPostman Templates';
 						$asset_rules = '{"bwpm.template.edit":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":1,"5":0,"8":0},"bwpm.template.edit.state":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":1,"8":0},"bwpm.template.edit.own":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":1,"4":0,"5":0,"8":0},"bwpm.template.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.template.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.template.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},"bwpm.template.delete":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}}';
 					break;
 				case 'component':
 				default:
-						$asset_name = 'com_bwpostman';
-						$asset_title    = 'BwPostman Component';
-						$asset_rules    = $com_asset['rules'];
+						$asset_name  = 'com_bwpostman';
+						$asset_title = 'BwPostman Component';
+						$asset_rules = $com_asset['rules'];
 					break;
 			}
 
@@ -2396,14 +2395,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$_db->quoteName('rules')
 			));
 			$query->values(
-				$_db->Quote(0) . ',' .
-				$_db->Quote($com_asset['id']) . ',' .
-				$_db->Quote((int)$com_asset['rgt']) . ',' .
-				$_db->Quote((int)$com_asset['rgt'] + 1) . ',' .
-				$_db->Quote((int)$com_asset['level'] + 1) . ',' .
-				$_db->Quote($asset_name) . ',' .
-				$_db->Quote($asset_title) . ',' .
-				$_db->Quote($asset_rules)
+				$_db->quote(0) . ',' .
+				$_db->quote($com_asset['id']) . ',' .
+				$_db->quote((int)$com_asset['rgt']) . ',' .
+				$_db->quote((int)$com_asset['rgt'] + 1) . ',' .
+				$_db->quote((int)$com_asset['level'] + 1) . ',' .
+				$_db->quote($asset_name) . ',' .
+				$_db->quote($asset_title) . ',' .
+				$_db->quote($asset_rules)
 			);
 			$_db->setQuery($query);
 			$insert_asset   = $_db->execute();
@@ -2455,33 +2454,33 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			switch ($table)
 			{
 				case '#__bwpostman_campaigns':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.campaign'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.campaign'));
 					break;
 				case '#__bwpostman_mailinglists':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.mailinglist'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.mailinglist'));
 					break;
 				case '#__bwpostman_newsletters':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.newsletter'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.newsletter'));
 					break;
 				case '#__bwpostman_subscribers':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.subscriber'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.subscriber'));
 					break;
 				case '#__bwpostman_templates':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman.template'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.template'));
 					break;
 				case 'component':
 				default:
-						$query->where($_db->quoteName('name') . ' = ' . $_db->Quote('com_bwpostman'));
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman'));
 					break;
 			}
 
 			$_db->setQuery($query);
 			$default_asset = $_db->loadAssoc();
-
+//echo dump ($default_asset, 'Default Asset Tabelle ' . $table);
 			$default_asset['parent_id'] = $default_asset['id'];
-			$default_asset['id'] = 0;
-			$default_asset['level'] = (int) $default_asset['level'] + 1;
-			$default_asset['rules'] = $default_asset['rules'];
+			$default_asset['id']        = 0;
+			$default_asset['level']     = (int) $default_asset['level'] + 1;
+			$default_asset['rules']     = $default_asset['rules'];
 
 			return $default_asset;
 
@@ -2695,7 +2694,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$query->select($_db->quoteName('id'));
 			$query->from($_db->quoteName('#__usergroups'));
-			$query->where($_db->quoteName('title') . ' = ' . $_db->Quote($item['title']));
+			$query->where($_db->quoteName('title') . ' = ' . $_db->quote($item['title']));
 
 			$_db->setQuery($query);
 			$result = $_db->loadAssoc();
@@ -2721,7 +2720,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$query = $_db->getQuery(true);
 				$query->select($_db->quoteName('id'));
 				$query->from($_db->quoteName('#__usergroups'));
-				$query->where($_db->quoteName('title') . ' = ' . $_db->Quote($item['title']));
+				$query->where($_db->quoteName('title') . ' = ' . $_db->quote($item['title']));
 
 				$_db->setQuery($query);
 				$result = $_db->loadResult();

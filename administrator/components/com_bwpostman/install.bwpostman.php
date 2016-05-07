@@ -202,7 +202,7 @@ class Com_BwPostmanInstallerScript
 			$this->_setDefaultParams();
 
 			// create sample user groups and access levels
-//			$this->_createSampleUsergroups();
+			$this->_createSampleUsergroups();
 		}
 
 		// check if sample templates exits
@@ -220,7 +220,7 @@ class Com_BwPostmanInstallerScript
 			if (version_compare($oldRelease, '1.2.0', 'lt')) $this->_correctCamId();
 			if (version_compare($oldRelease, '1.2.0', 'lt')) $this->_fillCamCrossTable();
 
-//			if (version_compare($oldRelease, '2.0.0', 'lt')) $this->_createSampleUsergroups();
+			if (version_compare($oldRelease, '2.0.0', 'lt')) $this->_createSampleUsergroups();
 
 			// remove double entries in table extensions
 			$this->_removeDoubleExtensionsEntries();
@@ -281,7 +281,7 @@ class Com_BwPostmanInstallerScript
 	public function uninstall(JAdapterInstance $adapter)
 	{
 //		echo "<div>BwPostman is now removed from your system.</div>";
-//		$this->_deleteSampleUsergroups();
+		$this->_deleteSampleUsergroups();
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
@@ -672,7 +672,54 @@ class Com_BwPostmanInstallerScript
 	{
 		try
 		{
+			$_db	    = JFactory::getDbo();
+			$user_id    = JFactory::getUser()->get('id');
+			$query	= $_db->getQuery(true);
 
+			// get group ids of BwPostman user groups
+			$query->select($_db->quoteName('id'));
+			$query->from($_db->quoteName('#__usergroups'));
+			$query->where($_db->quoteName('title') . ' LIKE ' . $_db->Quote('%BwPostman%'));
+			$_db->setQuery($query);
+
+			$bwpostman_groups  = $_db->loadColumn();
+
+			// get group id of BwPostman main user group
+			$query	= $_db->getQuery(true);
+			$query->select($_db->quoteName('id'));
+			$query->from($_db->quoteName('#__usergroups'));
+			$query->where($_db->quoteName('title') . ' = ' . $_db->Quote('BwPostmanAdmin'));
+			$_db->setQuery($query);
+
+			$bwpostman_main_group  = $_db->loadResult();
+
+			// get group ids of BwPostman user groups, where actual user is member
+			$query	= $_db->getQuery(true);
+			$query->select($_db->quoteName('group_id'));
+			$query->from($_db->quoteName('#__user_usergroup_map'));
+			$query->where($_db->quoteName('user_id') . ' = ' . (int) $user_id);
+			$query->where($_db->quoteName('group_id') . ' IN (' . implode(',', $bwpostman_groups) . ')');
+			$_db->setQuery($query);
+
+			$member_ids  = $_db->loadColumn();
+
+			// delete actual user from BwPostman user groups
+			foreach ($member_ids as $item)
+			{
+				JUserHelper::removeUserFromGroup($user_id, $item);
+			}
+			JAccess::clearStatics();
+
+			// get the model for user groups
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+
+			// delete main user group of BwPostman (all other user groups of BwPostman will be deleted automatically by Joomla)
+			if (!$groupModel->delete($bwpostman_main_group))
+			{
+				throw new Exception(JText::_('COM_BWPOSTMAN_DEINSTALLATION_ERROR_REMOVE_USERGROUPS'));
+			}
+			return true;
 		}
 		catch (Exception $e)
 		{

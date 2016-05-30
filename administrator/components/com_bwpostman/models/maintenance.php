@@ -526,6 +526,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$table->charset = substr($query, $start + 16, $length);
 					}
 
+					// get default collation
+					$start = stripos($query, 'COLLATE');
+					if ($start !== false)
+					{
+						$stop             = stripos($query, ';', $start);
+						$length           = $stop - $start - 8;
+						$table->collation = substr($query, $start + 8, $length);
+					}
+
 					// get primary key
 					$start = strripos($query, '(`') + 2;
 					if ($start !== false)
@@ -754,6 +763,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		foreach ($neededTables as $table)
 		{
 			$create_statement = $_db->getTableCreate($table->name);
+			$engine    = '';
+			$c_set     = '';
+			$collation = '';
 
 			// get engine of installed table
 			$start = strpos($create_statement[$table->name], 'ENGINE=');
@@ -768,12 +780,27 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$start = strpos($create_statement[$table->name], 'DEFAULT CHARSET=');
 			if ($start !== false)
 			{
-				$c_set = substr($create_statement[$table->name], $start + 16);
+				$stop   = strpos($create_statement[$table->name], ' ', $start);
+				$length = $stop - $start;
+				$c_set = substr($create_statement[$table->name], $start + 16, $length);
 			}
 
-			if ((strcasecmp($engine, $table->engine) != 0) || (strcasecmp($c_set, $table->charset) != 0))
+			// get collation of installed table
+			$start = strpos($create_statement[$table->name], 'COLLATE=', $stop);
+			if ($start !== false)
 			{
-				$query = 'ALTER TABLE ' . $_db->quoteName($table->name) . ' ENGINE=INNODB DEFAULT CHARSET=utf8';
+				$collation = substr($create_statement[$table->name], $start + 8);
+			}
+
+			if ((strcasecmp($engine, $table->engine) != 0) || (strcasecmp($c_set, $table->charset) != 0) || (strcasecmp($collation, $table->collation) != 0))
+			{
+				$engine_text    = '';
+				$c_set_text     = '';
+				$collation_text = '';
+				if ($engine != '') $engine_text    = ' ENGINE=' . $engine;
+				if ($c_set != '') $c_set_text     = ' DEFAULT CHARSET=' . $c_set;
+				if ($collation != '') $collation_text = ' COLLATION ' . $collation;
+				$query = 'ALTER TABLE ' . $_db->quoteName($table->name) . $engine_text . $c_set_text . $collation_text;
 				$_db->setQuery($query);
 				$modifyTable = $_db->execute();
 				if (!$modifyTable)
@@ -988,7 +1015,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			if (!empty($diff))
 			{
 				echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES', implode(',', array_keys($diff)), $neededColumns[$i]['Column'], $checkTable->name) . '</p>';
-
 				// install missing columns
 				foreach (array_keys($diff) as $missingCol)
 				{
@@ -2593,10 +2619,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			// …get table column names
 			$table_colnames     = array_keys($_db->getTableColumns($table));
-//			$asset_col          = array_search('asset_id', $table_colnames);
-//			if($asset_col !== false) {
-//				unset($table_colnames[$asset_col]);
-//			}
 
 			$insert_data = implode(',', $dataset);
 			$insert_data = substr($insert_data, 1, (strlen($insert_data) - 2));

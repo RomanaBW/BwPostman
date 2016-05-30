@@ -1,0 +1,25 @@
+actor: Tester
+paths:
+    tests: tests
+    log: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+settings:
+    bootstrap: _bootstrap.php
+    colors: true
+    memory_limit: 2048M
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+
+modules:
+    enabled:
+        - Db:
+            dsn: 'mysql:host=192.168.2.100;dbname=bwtest'
+            user: 'root'
+            password: 'Susi'
+            dump: tests/_data/testdata_bwpostman_complete.sql
+    config:
+        Codeception\Extension\RemoteDebug:
+            sessionName: PHPSTORM

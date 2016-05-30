@@ -1,0 +1,10 @@
+TRUNCATE `jos_bwpostman_campaigns`;
+TRUNCATE `jos_bwpostman_campaigns_mailinglists`;
+TRUNCATE `jos_bwpostman_mailinglists`;
+TRUNCATE `jos_bwpostman_newsletters`;
+TRUNCATE `jos_bwpostman_newsletters_mailinglists`;
+TRUNCATE `jos_bwpostman_sendmailcontent`;
+TRUNCATE `jos_bwpostman_sendmailqueue`;
+TRUNCATE `jos_bwpostman_subscribers`;
+TRUNCATE `jos_bwpostman_templates`;
+TRUNCATE `jos_bwpostman_templates_tpl`;

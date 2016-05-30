@@ -4,22 +4,22 @@
 
 DROP TABLE IF EXISTS `#__bwpostman_campaigns`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns` (
- `id` int(11) NOT NULL auto_increment,
- `asset_id` int(10) NOT NULL,
- `title` varchar(400) NOT NULL,
- `description` varchar(2000) NOT NULL,
- `access` int(11) NOT NULL,
- `published` tinyint(1) NOT NULL default '0',
- `created_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `created_by` int(10) unsigned NOT NULL default '0',
- `modified_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `modified_by` int(10) unsigned NOT NULL default '0',
- `checked_out` int(11) NOT NULL default '0',
- `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `archive_flag` tinyint(1) unsigned NOT NULL default '0',
- `archive_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `archived_by` varchar(11) NOT NULL default '0',
- PRIMARY KEY (`id`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `asset_id` INT(10) NOT NULL DEFAULT '0',
+  `title` VARCHAR(400) NOT NULL DEFAULT '',
+  `description` VARCHAR(2000) NOT NULL DEFAULT '',
+  `access` INT(11) NOT NULL DEFAULT '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '0',
+  `created_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+  `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` INT(11) NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archive_flag` TINYINT(1) unsigned NOT NULL DEFAULT '0',
+  `archive_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archived_by` INT(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -30,23 +30,23 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns` (
 
 DROP TABLE IF EXISTS `#__bwpostman_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_mailinglists` (
- `id` int(11) NOT NULL auto_increment,
- `asset_id` int(10) NOT NULL,
- `title` varchar(400) NOT NULL,
- `description` varchar(2000) NOT NULL,
- `campaign_id` int(11) NOT NULL,
- `access` int(11) NOT NULL,
- `published` tinyint(1) NOT NULL default '0',
- `created_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `created_by` int(10) unsigned NOT NULL default '0',
- `modified_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `modified_by` int(10) unsigned NOT NULL default '0',
- `checked_out` int(11) NOT NULL default '0',
- `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `archive_flag` tinyint(1) unsigned NOT NULL default '0',
- `archive_date` datetime NOT NULL,
- `archived_by` varchar(11) NOT NULL default '0',
- PRIMARY KEY (`id`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `asset_id` INT(10) NOT NULL DEFAULT '0',
+  `title` VARCHAR(400) NOT NULL DEFAULT '',
+  `description` VARCHAR(2000) NOT NULL DEFAULT '',
+  `campaign_id` INT(11) NOT NULL DEFAULT '0',
+  `access` INT(11) NOT NULL DEFAULT '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '0',
+  `created_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` INT(11) NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archive_flag` TINYINT(1) unsigned NOT NULL DEFAULT '0',
+  `archive_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archived_by` INT(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -57,41 +57,41 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_mailinglists` (
 
 DROP TABLE IF EXISTS `#__bwpostman_newsletters`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters` (
- `id` int(11) NOT NULL auto_increment,
- `asset_id` int(10) NOT NULL,
- `from_name` varchar(400) NOT NULL,
- `from_email` varchar(320) NOT NULL,
- `reply_email` varchar(320) NOT NULL,
- `template_id` int(11) NOT NULL,
- `text_template_id` int(11) NOT NULL,
- `campaign_id` int(11) NOT NULL,
- `usergroups` varchar(400) NOT NULL,
- `selected_content` varchar(400) NOT NULL,
- `subject` varchar(1000) NOT NULL,
- `description` varchar(2000) NOT NULL,
- `access` int(11) NOT NULL,
- `attachment` varchar(1000) NOT NULL,
- `intro_headline` varchar(1000) NOT NULL,
- `intro_text` text NOT NULL,
- `intro_text_headline` varchar(1000) NOT NULL,
- `intro_text_text` text NOT NULL,
- `html_version` longtext NOT NULL,
- `text_version` longtext NOT NULL,
- `created_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `created_by` int(10) unsigned NOT NULL default '0',
- `modified_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `modified_by` int(10) unsigned NOT NULL default '0',
- `mailing_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `published` tinyint(1) unsigned NOT NULL default '0',
- `publish_up` datetime NOT NULL default '0000-00-00 00:00:00',
- `publish_down` datetime NOT NULL default '0000-00-00 00:00:00',
- `checked_out` int(11) NOT NULL default '0',
- `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `archive_flag` tinyint(1) unsigned NOT NULL default '0',
- `archive_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `archived_by` varchar(11) NOT NULL default '0',
- `hits` int(11) NOT NULL,
- PRIMARY KEY (`id`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `asset_id` INT(10) NOT NULL DEFAULT '0',
+  `from_name` VARCHAR(400) NOT NULL DEFAULT '',
+  `from_email` VARCHAR(320) NOT NULL DEFAULT '',
+  `reply_email` VARCHAR(320) NOT NULL DEFAULT '',
+  `template_id` INT(11) NOT NULL DEFAULT '0',
+  `text_template_id` INT(11) NOT NULL DEFAULT '0',
+  `campaign_id` INT(11) NOT NULL DEFAULT '0',
+  `usergroups` VARCHAR(400) NOT NULL DEFAULT '',
+  `selected_content` VARCHAR(400) NOT NULL DEFAULT '',
+  `subject` VARCHAR(1000) NOT NULL DEFAULT '',
+  `description` VARCHAR(2000) NOT NULL DEFAULT '',
+  `access` INT(11) NOT NULL DEFAULT '0',
+  `attachment` VARCHAR(1000) NOT NULL DEFAULT '',
+  `intro_headline` VARCHAR(1000) NOT NULL DEFAULT '',
+  `intro_text` TEXT NOT NULL DEFAULT '',
+  `intro_text_headline` VARCHAR(1000) NOT NULL DEFAULT '',
+  `intro_text_text` TEXT NOT NULL DEFAULT '',
+  `html_version` LONGTEXT NOT NULL DEFAULT '',
+  `text_version` LONGTEXT NOT NULL DEFAULT '',
+  `created_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `mailing_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` TINYINT(1) unsigned NOT NULL DEFAULT '0',
+  `publish_up` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `checked_out` INT(11) NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archive_flag` TINYINT(1) unsigned NOT NULL DEFAULT '0',
+  `archive_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archived_by` INT(11) NOT NULL DEFAULT '0',
+  `hits` INT(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -102,9 +102,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters` (
 
 DROP TABLE IF EXISTS `#__bwpostman_newsletters_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters_mailinglists` (
- `newsletter_id` int(11) NOT NULL,
- `mailinglist_id` int(11) NOT NULL,
- PRIMARY KEY (`newsletter_id`,`mailinglist_id`)
+  `newsletter_id` INT(11) NOT NULL,
+  `mailinglist_id` INT(11) NOT NULL,
+  PRIMARY KEY (`newsletter_id`,`mailinglist_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -115,19 +115,19 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters_mailinglists` (
 
 DROP TABLE IF EXISTS `#__bwpostman_sendmailcontent`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailcontent` (
- `id` int(11) NOT NULL,
- `mode` int(1) NOT NULL,
- `nl_id` int(11) NOT NULL,
- `from_name` varchar(400) NOT NULL,
- `from_email` varchar(320) NOT NULL,
- `subject` varchar(1000) NOT NULL,
- `body` longtext NOT NULL,
- `cc_email` varchar(320) NOT NULL,
- `bcc_email` varchar(320) NOT NULL,
- `attachment` text NOT NULL,
- `reply_email` varchar(320) NOT NULL,
- `reply_name` varchar(400) NOT NULL,
- PRIMARY KEY (`id`,`mode`)
+  `id` INT(11) NOT NULL,
+  `mode` INT(1) NOT NULL,
+  `nl_id` INT(11) NOT NULL DEFAULT '0',
+  `from_name` VARCHAR(400) NOT NULL DEFAULT '',
+  `from_email` VARCHAR(320) NOT NULL DEFAULT '',
+  `subject` VARCHAR(1000) NOT NULL DEFAULT '',
+  `body` LONGTEXT NOT NULL DEFAULT '',
+  `cc_email` VARCHAR(320) NOT NULL DEFAULT '',
+  `bcc_email` VARCHAR(320) NOT NULL DEFAULT '',
+  `attachment` TEXT NOT NULL DEFAULT '',
+  `reply_email` VARCHAR(320) NOT NULL DEFAULT '',
+  `reply_name` VARCHAR(400) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`,`mode`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -138,15 +138,15 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailcontent` (
 
 DROP TABLE IF EXISTS `#__bwpostman_sendmailqueue`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailqueue` (
- `id` int(11) NOT NULL auto_increment,
- `content_id` int(11) NOT NULL,
- `recipient` varchar(320) NOT NULL,
- `mode` int(1) NOT NULL,
- `name` varchar(400) NOT NULL,
- `firstname` varchar(400) NOT NULL,
- `subscriber_id` int(11) NOT NULL default '0',
- `trial` int(5) NOT NULL default '0',
- PRIMARY KEY (`id`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `content_id` INT(11) NOT NULL DEFAULT '0',
+  `recipient` VARCHAR(320) NOT NULL DEFAULT '',
+  `mode` INT(1) NOT NULL DEFAULT '0',
+  `name` VARCHAR(400) NOT NULL DEFAULT '',
+  `firstname` VARCHAR(400) NOT NULL DEFAULT '',
+  `subscriber_id` INT(11) NOT NULL DEFAULT '0',
+  `trial` INT(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -157,33 +157,33 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailqueue` (
 
 DROP TABLE IF EXISTS `#__bwpostman_subscribers`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
- `id` int(11) NOT NULL auto_increment,
- `asset_id` int(10) NOT NULL,
- `user_id` int(11) NOT NULL,
- `name` varchar(400) NOT NULL,
- `firstname` varchar(400) NOT NULL,
- `email` varchar(320) NOT NULL,
- `emailformat` tinyint(1) NOT NULL,
- `gender` tinyint(1) unsigned NULL,
- `special` varchar(400) NOT NULL,
- `status` int(1) NOT NULL,
- `activation` varchar(400) NOT NULL,
- `editlink` varchar(400) NOT NULL,
- `access` int(11) NOT NULL,
- `registration_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `registered_by` int(11) NOT NULL default '0',
- `registration_ip` varchar(156) NOT NULL,
- `confirmation_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `confirmed_by` int(11) NOT NULL default '0',
- `confirmation_ip` varchar(156) NOT NULL,
- `modified_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `modified_by` int(10) unsigned NOT NULL default '0',
- `checked_out` int(11) NOT NULL default '0',
- `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
- `archive_flag` tinyint(1) NOT NULL default '0',
- `archive_date` datetime NOT NULL default '0000-00-00 00:00:00',
- `archived_by` varchar(11) NOT NULL default '-1',
- PRIMARY KEY (`id`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `asset_id` INT(10) NOT NULL DEFAULT '0',
+  `user_id` INT(11) NOT NULL DEFAULT '0',
+  `name` VARCHAR(400) NOT NULL DEFAULT '',
+  `firstname` VARCHAR(400) NOT NULL DEFAULT '',
+  `email` VARCHAR(320) NOT NULL DEFAULT '',
+  `emailformat` TINYINT(1) NOT NULL DEFAULT '1',
+  `gender` TINYINT(1) unsigned NULL,
+  `special` VARCHAR(400) NOT NULL DEFAULT '',
+  `status` INT(1) NOT NULL DEFAULT '0',
+  `activation` VARCHAR(400) NOT NULL DEFAULT '',
+  `editlink` VARCHAR(400) NOT NULL DEFAULT '',
+  `access` INT(11) NOT NULL DEFAULT '0',
+  `registration_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `registered_by` INT(11) NOT NULL DEFAULT '0',
+  `registration_ip` VARCHAR(156) NOT NULL DEFAULT '',
+  `confirmation_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `confirmed_by` INT(11) NOT NULL DEFAULT '0',
+  `confirmation_ip` VARCHAR(156) NOT NULL DEFAULT '',
+  `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` INT(11) NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archive_flag` TINYINT(1) NOT NULL DEFAULT '0',
+  `archive_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archived_by` INT(11) NOT NULL DEFAULT '-1',
+  PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -194,9 +194,9 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
 
 DROP TABLE IF EXISTS `#__bwpostman_subscribers_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers_mailinglists` (
- `subscriber_id` int(11) NOT NULL,
- `mailinglist_id` int(11) NOT NULL,
- PRIMARY KEY (`subscriber_id`,`mailinglist_id`)
+  `subscriber_id` INT(11) NOT NULL,
+  `mailinglist_id` INT(11) NOT NULL,
+  PRIMARY KEY (`subscriber_id`,`mailinglist_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -207,38 +207,38 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers_mailinglists` (
 
 DROP TABLE IF EXISTS `#__bwpostman_templates`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `asset_id` int(10) NOT NULL,
-  `standard` tinyint(1) NOT NULL DEFAULT '0',
-  `title` varchar(400) NOT NULL,
-  `description` varchar(1000) NOT NULL,
-  `thumbnail` varchar(1000) NOT NULL,
-  `tpl_html` text NOT NULL,
-  `tpl_css` text NOT NULL,
-  `tpl_article` text NOT NULL,
-  `tpl_divider` text NOT NULL,
-  `tpl_id` int(11) NOT NULL DEFAULT '0',
-  `basics` text NOT NULL,
-  `header` varchar(1000) NOT NULL,
-  `intro` text NOT NULL,
-  `article` varchar(1000) NOT NULL,
-  `footer` varchar(1000) NOT NULL,
-  `button1` varchar(1000) NOT NULL,
-  `button2` varchar(1000) NOT NULL,
-  `button3` varchar(1000) NOT NULL,
-  `button4` varchar(1000) NOT NULL,
-  `button5` varchar(1000) NOT NULL,
-  `access` int(11) NOT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '0',
-  `created_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `modified_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `checked_out` int(11) NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `archive_flag` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `archive_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `archived_by` varchar(11) NOT NULL DEFAULT '0',
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `asset_id` INT(10) NOT NULL DEFAULT '0',
+  `standard` TINYINT(1) NOT NULL DEFAULT '0',
+  `title` VARCHAR(400) NOT NULL DEFAULT '',
+  `description` VARCHAR(2000) NOT NULL DEFAULT '',
+  `thumbnail` VARCHAR(2000) NOT NULL DEFAULT '',
+  `tpl_html` TEXT NOT NULL DEFAULT '',
+  `tpl_css` TEXT NOT NULL DEFAULT '',
+  `tpl_article` TEXT NOT NULL DEFAULT '',
+  `tpl_divider` TEXT NOT NULL DEFAULT '',
+  `tpl_id` INT(11) NOT NULL DEFAULT '0',
+  `basics` VARCHAR(400) NOT NULL DEFAULT '',
+  `header` VARCHAR(1600) NOT NULL DEFAULT '',
+  `intro` TEXT NOT NULL DEFAULT '',
+  `article` TEXT NOT NULL DEFAULT '',
+  `footer` VARCHAR(1600) NOT NULL DEFAULT '',
+  `button1` VARCHAR(1600) NOT NULL DEFAULT '',
+  `button2` VARCHAR(1600) NOT NULL DEFAULT '',
+  `button3` VARCHAR(1600) NOT NULL DEFAULT '',
+  `button4` VARCHAR(1600) NOT NULL DEFAULT '',
+  `button5` VARCHAR(1600) NOT NULL DEFAULT '',
+  `access` INT(11) NOT NULL DEFAULT '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '0',
+  `created_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` INT(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` INT(11) NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archive_flag` TINYINT(1) unsigned NOT NULL DEFAULT '0',
+  `archive_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `archived_by` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -250,16 +250,16 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
 
 DROP TABLE IF EXISTS `#__bwpostman_templates_tpl`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tpl` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(400) NOT NULL,
-  `css` text NOT NULL,
-  `header_tpl` text NOT NULL,
-  `intro_tpl` text NOT NULL,
-  `divider_tpl` text NOT NULL,
-  `article_tpl` text NOT NULL,
-  `readon_tpl` text NOT NULL,
-  `footer_tpl` text NOT NULL,
-  `button_tpl` text NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(400) NOT NULL DEFAULT '',
+  `css` TEXT NOT NULL DEFAULT '',
+  `header_tpl` TEXT NOT NULL DEFAULT '',
+  `intro_tpl` TEXT NOT NULL DEFAULT '',
+  `divider_tpl` TEXT NOT NULL DEFAULT '',
+  `article_tpl` TEXT NOT NULL DEFAULT '',
+  `readon_tpl` TEXT NOT NULL DEFAULT '',
+  `footer_tpl` TEXT NOT NULL DEFAULT '',
+  `button_tpl` TEXT NOT NULL DEFAULT '',
   PRIMARY KEY  (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -271,8 +271,8 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tpl` (
 
 DROP TABLE IF EXISTS `#__bwpostman_campaigns_mailinglists`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_campaigns_mailinglists` (
- `campaign_id` int(11) NOT NULL,
- `mailinglist_id` int(11) NOT NULL,
- PRIMARY KEY (`campaign_id`,`mailinglist_id`)
+  `campaign_id` INT(11) NOT NULL,
+  `mailinglist_id` INT(11) NOT NULL,
+  PRIMARY KEY (`campaign_id`,`mailinglist_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 

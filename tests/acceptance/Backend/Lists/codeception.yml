@@ -14,12 +14,15 @@ extensions:
         - Codeception\Extension\RunFailed
 
 modules:
-    enabled:
-        - Db:
-            dsn: 'mysql:host=192.168.2.100;dbname=bwtest'
-            user: 'root'
-            password: 'Susi'
-            dump: tests/_data/testdata_bwpostman_complete.sql
     config:
         Codeception\Extension\RemoteDebug:
             sessionName: PHPSTORM
+
+        Db:
+            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
+            user: 'root'
+            password: 'Susi'
+#            dump: 'daten/vhosts/dev/joomla-cms/tests/_data/testdata_bwpostman_complete.sql'
+            populate: true
+            cleanup: false
+            reconnect: true

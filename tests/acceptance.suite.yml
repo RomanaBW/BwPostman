@@ -1,0 +1,41 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+modules:
+    enabled:
+#        - PhpBrowser:
+#            url: http://www.bwtest.nil
+        - \Helper\Acceptance
+        - WebDriver
+        - Db
+        - \Helper\Acceptance
+    config:
+        WebDriver:
+                url: http://www.bwtest.nil
+                window_size: 1920x1080
+                browser: phantomjs
+                connection_timeout: 60
+                restart: false
+
+        Db:
+            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
+            user: 'root'
+            password: 'Susi'
+            dump: 'tests/_data/dump.sql'
+            populate: true
+            cleanup: false
+            reconnect: true
+
+
+env:
+    firefox:
+        modules:
+          config:
+            Webdriver:
+              browser:'firefox'
+    phantom:
+      # nothing changed here

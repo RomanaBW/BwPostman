@@ -6,5 +6,6 @@ TRUNCATE `jos_bwpostman_newsletters_mailinglists`;
 TRUNCATE `jos_bwpostman_sendmailcontent`;
 TRUNCATE `jos_bwpostman_sendmailqueue`;
 TRUNCATE `jos_bwpostman_subscribers`;
+TRUNCATE `jos_bwpostman_subscribers_mailinglists`;
 TRUNCATE `jos_bwpostman_templates`;
 TRUNCATE `jos_bwpostman_templates_tpl`;

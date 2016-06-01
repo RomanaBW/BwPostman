@@ -15,7 +15,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage, \Page\Generals $Generals)
 	{
@@ -35,7 +35,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function CreateOneMailinglistCancelMainView(AcceptanceTester $I, \Page\MainviewPage $mainView, \Page\MailinglistEditPage $MlEdit, \Page\Generals $Generals)
 	{
@@ -66,7 +66,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function CreateOneMailinglistCompleteMainView(AcceptanceTester $I, \Page\MainviewPage $mainView, \Page\MailinglistEditPage $MlEdit, \Page\Generals $Generals)
 	{
@@ -108,7 +108,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function ArchiveAndDeleteOneMailinglist(AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\Generals $Generals)
 	{
@@ -161,7 +161,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function CreateOneMailinglistCancelListView(AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\MailinglistEditPage $MlEdit, \Page\Generals $Generals)
 	{
@@ -188,7 +188,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function CreateOneMailinglistListView(AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\MailinglistEditPage $MlEdit, \Page\Generals $Generals)
 	{
@@ -227,7 +227,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function CreateMailinglistTwiceListView(AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\MailinglistEditPage $MlEdit, \Page\Generals $Generals)
 	{
@@ -268,7 +268,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function CreateOneMailinglistListViewJSTest(AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\MailinglistEditPage $MlEdit, \Page\Generals $Generals)
 	{
@@ -303,7 +303,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{

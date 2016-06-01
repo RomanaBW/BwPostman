@@ -16,7 +16,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage, \Page\Generals $Generals)
 	{
@@ -35,7 +35,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function CreateMultipleMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -70,7 +70,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function EditMailinglistWithoutChangesCancelListView(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -108,7 +108,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function EditMailinglistWithChangesCancelListView(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -150,7 +150,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function EditMailinglistWithChangesSaveAndCloseListView(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -192,7 +192,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function EditMailinglistWithChangesSaveOnlyThenVloseListView(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -247,7 +247,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function SortMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -601,7 +601,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function FilterMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -726,7 +726,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function PaginationMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -792,7 +792,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function SearchMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -996,7 +996,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function LockedMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -1043,7 +1043,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 /*	public function ArchiveAndDeleteAllMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
@@ -1076,7 +1076,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function _logout(\Page\Login $loginPage)
 	{

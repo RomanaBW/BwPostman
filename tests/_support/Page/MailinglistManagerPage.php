@@ -17,7 +17,7 @@ class MailinglistManagerPage
      *
      * @var    array
      *
-     * @since  1.2.0
+     * @since  2.0.0
      */
     public static $toolbar = array (
         'New' => './/*[@id=\'toolbar-new\']/button',
@@ -60,7 +60,7 @@ class MailinglistManagerPage
      *
      * @return  void
      *
-     * @since   1.2.0
+     * @since   2.0.0
      */
     public static function HelperArcDelOneMl(\AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\Generals $Generals)
 		{

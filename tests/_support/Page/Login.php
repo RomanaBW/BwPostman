@@ -46,7 +46,7 @@ class Login
 	 *
 	 * @return	object  $this
 	 *
-	 * @since  1.2.0
+	 * @since  2.0.0
 	 */
 	public function loginAsAdmin($name, $password, \Page\Generals $Generals)
 	{
@@ -68,7 +68,7 @@ class Login
 	 *
 	 * @return  object  $this
 	 *
-	 * @since   1.2.0
+	 * @since   2.0.0
 	 */
 	public function logoutFromAdmin()
 	{

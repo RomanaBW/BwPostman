@@ -25,7 +25,7 @@ class MailinglistEditPage
 	 *
 	 * @var    array
 	 *
-	 * @since  1.2.0
+	 * @since  2.0.0
 	 */
 	public static $toolbar = array (
 		'Save & Close' => './/*[@id=\'toolbar-save\']/button',

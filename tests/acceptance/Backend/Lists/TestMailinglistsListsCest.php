@@ -12,6 +12,7 @@ class TestMailinglistsListsCest
 	 * Test method to login into backend
 	 *
 	 * @param   \Page\Login         $loginPage
+	 * @param   \Page\Generals      $Generals
 	 *
 	 * @return  void
 	 *
@@ -20,45 +21,6 @@ class TestMailinglistsListsCest
 	public function _login(\Page\Login $loginPage, \Page\Generals $Generals)
 	{
 		$loginPage->loginAsAdmin('Webmemsahib', 'BESU#PW§1', $Generals);
-	}
-
-	/**
-	 * Test method to create a single mailing list from main view, save it and go back to list view
-	 *
-	 * @param   \Step\Acceptance\Admin          $I
-	 * @param   \Page\MailinglistManagerPage    $MlManage
-	 * @param   \Page\MailinglistEditPage       $MlEdit
-	 * @param   \Page\Generals                  $Generals
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @since   1.2.0
-	 */
-	public function CreateOneMailinglistListView(\Step\Acceptance\Admin $I, \Page\MailinglistManagerPage $MlManage, \Page\MailinglistEditPage $MlEdit, \Page\Generals $Generals)
-	{
-		$I->wantTo("Create_one_mailinglist_list_view");
-		$I->amOnPage($MlManage::$url);
-		$I->click($MlManage::$toolbar['New']);
-		$I->fillField($MlEdit::$title, "general mailing list");
-		$I->click($MlEdit::$toolbar['Save']);
-		$I->executeJS("window.confirm = function(msg){return true;};");
-//		$I->acceptPopup('You have to enter a description for the mailinglist.');
-		$I->fillField($MlEdit::$title, "");
-		$I->fillField($MlEdit::$description, "A pretty description would be nice.");
-		$I->click($MlEdit::$toolbar['Save']);
-		$I->executeJS("window.confirm = function(msg){return true;};");
-//		$I->acceptPopup('You have to enter a title for the mailinglist.');
-		$I->fillField($MlEdit::$title, "general mailing list");
-		$I->click($MlEdit::$toolbar['Save & Close']);
-		$I->see("Message", $Generals::$alert_header);
-		$I->see("Mailinglist saved successfully!", $Generals::$alert_msg);
-		$I->see('Mailinglists', $Generals::$pageTitle);
-		$MlManage::HelperArcDelOneMl($I, $MlManage, $Generals);
-		$I->see('Mailinglists', $Generals::$pageTitle);
 	}
 
 	/**
@@ -75,24 +37,27 @@ class TestMailinglistsListsCest
 	 *
 	 * @since   1.2.0
 	 */
-/*	public function CreateMultipleMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
+	public function CreateMultipleMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
 	{
 
 		$I->wantTo("Create_multiple_mailinglists");
 		$I->amOnPage("/administrator/index.php?option=com_bwpostman");
 		$I->click("img[alt=\"Mailinglists\"]");
 
-			// while loop
-			$I->click("//button[@onclick=\"Joomla.submitbutton('mailinglist.add')\"]");
-	        $I->fillField("#jform_title", "javascript{ml_arr_title[storedVars.i];}");
-	        $I->fillField("#jform_description", "javascript{ml_arr_description[storedVars.i];}");
-	        $I->selectOption("#jform_access", "undefined");
-	        $I->selectOption("#jform_published", "undefined");
-	        $I->click("button.btn.btn-small");
-	        $I->see("Message", "h4.alert-heading");
-	        $I->see("Mailinglist saved successfully!", "p.alert-message");
+        $I->see("Mailinglists", "h1.page-title");
 }
+
+/*	public function CreateMultipleMailinglists2(AcceptanceTester $I, \Page\Login $loginPage)
+	{
+
+		$I->wantTo("Create_multiple_mailinglists second");
+		$I->amOnPage("/administrator/index.php?option=com_bwpostman");
+		$I->click("img[alt=\"Mailinglists\"]");
+
+		$I->see("Mailinglists", "h1.page-title");
+	}
 */
+
 	/**
 	 * Test method to create a single mailing list from main view and cancel creation
 	 *
@@ -1107,14 +1072,13 @@ class TestMailinglistsListsCest
 	/**
 	 * Test method to logout from backend
 	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
+	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
 	 *
 	 * @since   1.2.0
 	 */
-	public function _logout(\Step\Acceptance\Admin $I, \Page\Login $loginPage)
+	public function _logout(\Page\Login $loginPage)
 	{
 		$loginPage->logoutFromAdmin();
 	}

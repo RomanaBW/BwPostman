@@ -33,11 +33,38 @@ class Generals
 	public static $header       = '/html/body/div[2]/section/div/div/div[2]/form/div/fieldset/legend';
 
 	/**
-	 * Array of submenu xpath values for this page
+	 * Version to test
+	 *
+	 * @var    string
+	 *
+	 * @since  2.0.0
+	 */
+	public static $versionToTest = '2.0.0';
+
+	/**
+	 * Array of user groups
 	 *
 	 * @var    array
 	 *
-	 * @since  1.2.0
+	 * @since  2.0.0
+	 */
+	public static $usergroups = array ('undefined', 'Public', 'Registered', 'Special', 'Guest', 'Super Users');
+
+	/**
+	 * Array of states
+	 *
+	 * @var    array
+	 *
+	 * @since  2.0.0
+	 */
+	public static $state = array ('unpublish', 'publish');
+
+	/**
+	 * Array of submenu xpath values for all pages
+	 *
+	 * @var    array
+	 *
+	 * @since  2.0.0
 	 */
 	public static $submenu = array (
 		'BwPostman' => './/*[@id=\'submenu\']/li[1]/a',
@@ -63,6 +90,17 @@ class Generals
     {
         return static::$url.$param;
     }
+
+	/**
+	 * Method to get install file name
+	 *
+	 * @return     string
+	 *
+	 * @since  2.0.0
+	 */
+	public static function getInstallFileName () {
+		return '/Support/Software/Joomla/BwPostman/' . self::$versionToTest . '/com_bwpostman/com_bwpostman.' . self::$versionToTest . '.zip';
+	}
 
 
 }

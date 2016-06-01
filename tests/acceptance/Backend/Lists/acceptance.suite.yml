@@ -7,11 +7,7 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - Db:
-            dsn: 'mysql:host=192.168.2.100;dbname=bwtest'
-            user: 'root'
-            password: 'Susi'
-            dump: tests/_data/testdata_bwpostman_complete.sql
+#        - Db:
 
 #        - PhpBrowser:
 #            url: http://www.bwtest.nil
@@ -23,4 +19,12 @@ modules:
             connection_timeout: 60
             restart: false
         - \Helper\Acceptance
+
+env:
+    firefox:
+        modules:
+          config:
+            Webdriver:
+              browser:'firefox'
+    phantom:
 

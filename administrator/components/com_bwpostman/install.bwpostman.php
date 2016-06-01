@@ -46,7 +46,7 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * @var string  $reference_table        reference table to check if it is converted already
 	 */
-	var $reference_table = 'bwpostman_templates_tpl';
+	var $reference_table = 'bwpostman_campaigns';
 
 	/**
 	 * @var string  $conversion_file        file name of sql conversion file

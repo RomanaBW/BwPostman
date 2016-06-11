@@ -148,7 +148,7 @@ function checkModRegisterForm() {
 	else {
 		// Show registration form only if a mailinglist is selectable?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=register'); ?>" method="post" id="bwp_mod_form" name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=register.save'); ?>" method="post" id="bwp_mod_form" name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
 
 			<?php // Spamcheck 1 - Input-field: class="user_hightlight" style="position: absolute; top: -5000px;" ?>
 				<p class="user_hightlight">
@@ -333,7 +333,7 @@ function checkModRegisterForm() {
 			<p class="mod-button-register text-right"><button class="button validate btn" type="submit"><?php echo JText::_('MOD_BWPOSTMANBUTTON_REGISTER'); ?></button></p>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
-			<input type="hidden" name="task" value="register_save" />
+			<input type="hidden" name="task" value="register.save" />
 			<input type="hidden" name="bwp-<?php echo $captcha; ?>" value="1" />
 
 			<?php // TODO: muss hier subscriber->id stehen oder kann das leer bleiben? ?>

@@ -63,7 +63,7 @@ JHtml::_('formbehavior.chosen', 'select');
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
  		}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
 				<legend><?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id); ?></legend>

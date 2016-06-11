@@ -118,7 +118,7 @@ JHtml::_('behavior.formvalidator');
 		<?php endif; ?>
 
 		<div class="content_inner">
-			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
+			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=save'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
 				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 					<?php
 						if ($this->params->get('pretext')) : // Show pretext only if set in basic parameters			?>
@@ -275,6 +275,7 @@ JHtml::_('behavior.formvalidator');
 
 				<input type="hidden" name="option" value="com_bwpostman" />
 				<input type="hidden" name="task" value="save" />
+				<input type="hidden" name="view" value="edit" />
 				<input type="hidden" name="edit" value="" />
 				<input type="hidden" name="id" value="<?php echo $this->subscriber->id; ?>" />
 				<input type="hidden" name="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" />

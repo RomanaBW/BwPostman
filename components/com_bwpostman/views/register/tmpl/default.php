@@ -358,7 +358,7 @@ function checkRegisterForm() {
 				<p class="button-register text-right"><button class="button validate btn text-right" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button></p>
 
 				<input type="hidden" name="option" value="com_bwpostman" />
-				<input type="hidden" name="task" value="register_save" />
+				<input type="hidden" name="task" value="register.save" />
 				<input type="hidden" name="id" value="<?php echo $this->subscriber->id; ?>" />
 				<input type="hidden" name="bwp-<?php echo $this->captcha; ?>" value="1" />
 				<input type="hidden" name="name_field_obligation" id="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" />

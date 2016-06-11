@@ -30,6 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
+require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+
+
 /**
  * Class BwPostmanModelEdit
  */
@@ -78,7 +81,7 @@ class BwPostmanModelEdit extends JModelAdmin
 			}
 		}
 		else { // Subscriber is user
-			$id	= $this->getSubscriberId($user->get('id')); // Get the subscriber ID from the subscribers-table
+			$id	= BwPostmanSubscriberHelper::getSubscriberId($user->get('id')); // Get the subscriber ID from the subscribers-table
 		}
 		$this->setData($id);
 	}
@@ -158,9 +161,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	}
 
 	/**
-	 * Method to get article data.
+	 * Method to get subscriber data.
 	 *
-	 * @param	int     $pk 	The id of the article.
+	 * @param	int     $pk 	The id of the subscriber.
 	 *
 	 * @return	mixed	Menu item data object on success, false on failure.
 	 */
@@ -265,36 +268,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the subscriber ID of a user from the subscribers-table depending on the user ID
-	 * --> is needed for the construct
-	 *
-	 * @access 	public
-	 *
-	 * @param 	int     $uid    user ID
-	 *
-	 * @return 	int subscriber ID
-	 */
-	public function getSubscriberId($uid)
-	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('user_id') . ' = ' . (int) $uid);
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
-
-		$_db->setQuery($query);
-
-		$id = $_db->loadResult();
-
-		if (empty($id)) $id = 0;
-
-		return $id;
-	}
-
-	/**
-	 * Method to get the user ID of a subsriber from the subscribers-table depending on the subscriber ID
+	 * Method to get the user ID of a subscriber from the subscribers-table depending on the subscriber ID
 	 * --> is needed for the constructor
 	 *
 	 * @access 	public
@@ -321,7 +295,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the mailaddress of a subsriber from the subscribers-table depending on the subscriber ID
+	 * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
 	 *
 	 * @access 	public
 	 *
@@ -424,6 +398,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function checkEditlink ($editlink)
 	{
+		if ($editlink === null)
+			return 0;
+
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 

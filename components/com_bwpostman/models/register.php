@@ -30,6 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
+require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+
+
 /**
  * Class BwPostmanModelRegister
  */
@@ -146,61 +149,6 @@ class BwPostmanModelRegister extends JModelAdmin
 		$mailinglists = $_db->loadObjectList();
 
 		return $mailinglists;
-	}
-
-	/**
-	 * Method to check by user ID if a user has a newsletter account (user = no guest)
-	 *
-	 * @access 	public
-	 *
-	 * @param 	int $uid    user ID
-	 *
-	 * @return 	int $id     subscriber ID
-	 */
-	public function getSubscriberID ($uid)
-	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('user_id') . ' = ' . (int) $uid);
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
-
-		$_db->setQuery((string) $query);
-		$id = $_db->loadResult();
-
-		if (empty($id)) {
-			$id = 0;
-		}
-		return $id;
-	}
-
-	/**
-	 * Method to get the data of a subscriber who has a newsletter account from the subscribers-table
-	 * because we need to know if his account is okay or archived or not activated (user = no guest)
-	 *
-	 * @access 	public
-	 *
-	 * @param 	int     $id         subscriber ID
-	 *
-	 * @return 	object  $subscriber subscriber object
-	 */
-	public function getSubscriberData ($id)
-	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
-
-		$_db->setQuery($query);
-
-		$subscriber = $_db->loadObject();
-
-		return $subscriber;
 	}
 
 	/**

@@ -179,7 +179,7 @@ class BwPostmanModelMailinglists extends JModelList
 		$user		= JFactory::getUser();
 
 
-		// Build sub querys which counts the subscribers of each mailinglists
+		// Build sub queries which counts the subscribers of each mailinglists
 		$sub_query2->select('d.id');
 		$sub_query2->from('#__bwpostman_subscribers AS d');
 		$sub_query2->where('d.archive_flag = 0');

@@ -46,7 +46,7 @@ class BwPostmanViewEdit extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$session 	= JFactory::getSession();
-		$user 		= JFactory::getUser();
+		$this->user	= JFactory::getUser();
 		$params		= $app->getPageParameters();
 		$menu		= $app->getMenu()->getActive();
 		$model		= $this->getModel('edit');
@@ -61,7 +61,7 @@ class BwPostmanViewEdit extends JViewLegacy
 			}
 			$subscriber->id	= 0;
 			$session->clear('subscriber_data');
-			$selected_mailinglists = $subscriber->mailinglists;
+			$this->selected_mailinglists = $subscriber->mailinglists;
 		}
 		else {
 			$subscriber	= $this->get('Item');
@@ -69,13 +69,13 @@ class BwPostmanViewEdit extends JViewLegacy
 				$subscriber = $model->fillVoidSubscriber();
 			}
 			else {
-				$selected_mailinglists = $subscriber->mailinglists;
+				$this->selected_mailinglists = $subscriber->mailinglists;
 			}
 		}
-		if (is_array($selected_mailinglists)) $app->setUserState('com_bwpostman.subscriber.selected_lists', $selected_mailinglists);
+		if (is_array($this->selected_mailinglists)) $app->setUserState('com_bwpostman.subscriber.selected_lists', $this->selected_mailinglists);
 
 		// Get the mailinglists which the subscriber is authorized to see
-		$available_mailinglists = $this->get('mailinglists');
+		$this->available_mailinglists = $this->get('mailinglists');
 
 		// Because the application sets a default page title, we need to get it
 		// right from the menu item itself
@@ -153,12 +153,9 @@ class BwPostmanViewEdit extends JViewLegacy
 		$lists['gender'] = $gender;
 
 		// Save a reference into the view
-		$this->assignRef('available_mailinglists', $available_mailinglists);
-		$this->assignRef('selected_mailinglists', $selected_mailinglists);
-		$this->assignRef('lists', $lists);
-		$this->assignRef('subscriber', $subscriber);
-		$this->assignRef('params', $params);
-		$this->assignRef('user', $user);
+		$this->lists        = $lists;
+		$this->subscriber   = $subscriber;
+		$this->params       = $params;
 
 		// Set parent display
 		parent::display($tpl);

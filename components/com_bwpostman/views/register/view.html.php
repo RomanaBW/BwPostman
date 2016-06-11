@@ -57,8 +57,8 @@ class BwPostmanViewRegister extends JViewLegacy
 		$this->captcha	= BwPostmanHelper::getCaptcha(1);
 
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
+		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
 
 		switch ($layout) {
 			case "error_accountblocked":
@@ -78,7 +78,7 @@ class BwPostmanViewRegister extends JViewLegacy
 				return;
 				break;
 		}
-		parent::display($tpl);
+//		parent::display($tpl);
 	}
 
 	/**
@@ -90,20 +90,20 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	private function _displayError($tpl)
 	{
-		$app		= JFactory::getApplication();
-		$uri_root	= JFactory::getURI()->root();
-		$config		= JFactory::getConfig();
-		$params		= $app->getPageParameters();
-		$menu		= $app->getMenu()->getActive();
-		$err		= JFactory::getSession()->get('session_error', null);
-		$error		= new stdClass();
+		$app		    = JFactory::getApplication();
+		$this->uri_root	= JUri::root();
+		$this->config	= JFactory::getConfig();
+		$params		    = $app->getPageParameters();
+		$menu		    = $app->getMenu()->getActive();
+		$err		    = JFactory::getSession()->get('session_error', null);
+		$this->error	= new stdClass();
 
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		if(isset($err) && is_array($err)){
 			foreach ($err AS $key => $value) {
-				$error->$key = $value;
+				$this->error->$key = $value;
 			}
 		}
 
@@ -126,17 +126,14 @@ class BwPostmanViewRegister extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
+		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
 
 		// Load the form validation behavior
-		JHTML::_('behavior.formvalidation');
+		JHtml::_('behavior.formvalidation');
 
 		// Save references into view
-		$this->assignRef('config', $config);
-		$this->assignRef('error', $error);
-		$this->assignRef('params', $params);
-		$this->assignRef('uri', $uri_root);
+		$this->params = $params;
 
 		//reset error state
 		$app->setUserState('com_bwpostman.subscriber.register.error', null);
@@ -154,19 +151,18 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	private function _displaySuccess($tpl)
 	{
-		$app		= JFactory::getApplication();
-		$uri		= JFactory::getURI();
-		$root		= $uri->root();
-		$user 		= JFactory::getUser();
-		$session	= JFactory::getSession();
-		$success	= new stdClass();
-		$params		= $app->getPageParameters();
-		$menu		= $app->getMenu()->getActive();
+		$app	    	= JFactory::getApplication();
+		$this->root		= JUri::root();
+		$this->user		= JFactory::getUser();
+		$session	    = JFactory::getSession();
+		$this->success 	= new stdClass();
+		$params		    = $app->getPageParameters();
+		$menu		    = $app->getMenu()->getActive();
 
 		$session_success = $session->get('session_success');
 		if(isset($session_success) && is_array($session_success)){
 			foreach ($session_success AS $key => $value) {
-				$success->$key = $value;
+				$this->success->$key = $value;
 				$session->clear('session_success');
 			}
 		}
@@ -193,14 +189,11 @@ class BwPostmanViewRegister extends JViewLegacy
 
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
+		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
 
 		// Save references into view
-		$this->assignRef('params', $params);
-		$this->assignRef('success', $success);
-		$this->assignRef('uri', $root);
-		$this->assignRef('user', $user);
+		$this->params   = $params;
 
 		// Set parent display
 		parent::display();
@@ -224,7 +217,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		$subscriber	= new stdClass();
 
 
-		// If there occured an error while storing the data load the data from the session
+		// If there occurred an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');
 
 		if(isset($subscriber_data) && is_array($subscriber_data)){
@@ -269,18 +262,19 @@ class BwPostmanViewRegister extends JViewLegacy
 
 		$document = JFactory::getDocument();
 		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
+		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
 
 		// Load the form validation behavior
-		JHTML::_('behavior.formvalidation');
+		JHtml::_('behavior.formvalidation');
 
-		// Build the emailormat select list
+/*		// Build the emailformat select list
 		if (!isset($subscriber->emailformat)) {
 			$selected = $params->get('default_emailformat');
 		} else {
 			$selected = $subscriber->emailformat;
 		}
+*/
 		// Build the email format select list
 		if (!isset($subscriber->emailformat)) {
 			$mailformat_selected = $params->get('default_emailformat');
@@ -334,12 +328,12 @@ class BwPostmanViewRegister extends JViewLegacy
 		$lists['gender'] = $gender;
 
 		// Save references into view
-		$this->assignRef('available_mailinglists', $available_mailinglists);
-		$this->assignRef('lists', $lists);
-		$this->assignRef('params', $params);
-		$this->assignRef('selected_mailinglists', $selected_mailinglists);
-		$this->assignRef('subscriber', $subscriber);
-		$this->assignRef('user', $user);
+		$this->available_mailinglists   = $available_mailinglists;
+		$this->lists                    = $lists;
+		$this->params                   = $params;
+		$this->selected_mailinglists    = $selected_mailinglists;
+		$this->subscriber               = $subscriber;
+		$this->user                     = $user;
 
 		parent::display($tpl);
 	}

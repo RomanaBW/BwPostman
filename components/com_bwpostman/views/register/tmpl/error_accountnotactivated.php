@@ -71,6 +71,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 			<button class="button validate btn" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_SENDACTIVATION'); ?></button>
 			<input type="hidden" name="option" value="com_bwpostman" />
+			<input type="hidden" name="view" value="register" />
 			<input type="hidden" name="task" value="sendActivation" />
 			<input type="hidden" name="id" value="<?php echo $this->error->err_id; ?>" />
 			<input type="hidden" name="err_code" value="<?php echo (property_exists($this->error, 'err_code')) ? $this->error->err_code : ''; ?>" />

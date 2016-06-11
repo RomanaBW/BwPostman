@@ -37,10 +37,10 @@ JHtml::_('searchtools.form', $formSelector, $data['options']);
 <div class="js-stools clearfix">
 	<div class="clearfix">
 		<div class="js-stools-container-bar">
-			<?php echo JLayoutHelper::render('default.bar', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools'); ?>
+			<?php echo JLayoutHelper::render('default.bar', $data, $basePath = JPATH_COMPONENT_ADMINISTRATOR .'/layouts/searchtools'); ?>
 		</div>
 		<div class="js-stools-container-list hidden-phone hidden-tablet">
-			<?php echo JLayoutHelper::render('default.list', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools'); ?>
+			<?php echo JLayoutHelper::render('default.list', $data, $basePath = JPATH_COMPONENT_ADMINISTRATOR .'/layouts/searchtools'); ?>
 		</div>
 	</div>
 	<!-- Filters div -->

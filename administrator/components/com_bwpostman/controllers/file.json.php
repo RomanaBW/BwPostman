@@ -106,7 +106,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 
 			$filepath = JPath::clean(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
 
-			if (!MediaHelper::canUpload($file, $err))
+			if (!$mediaHelper->canUpload($file, $err))
 			{
 				JLog::add('Invalid: ' . $filepath . ': ' . $err, JLog::INFO, 'upload');
 
@@ -122,8 +122,8 @@ class BwPostmanControllerFile extends JControllerLegacy
 			// Trigger the onContentBeforeSave event.
 			JPluginHelper::importPlugin('content');
 
-			$object_file	= new JObject($file);
-			$object_file->filepath = $filepath;
+			$object_file	        = new JObject($file);
+			$object_file->filepath  = $filepath;
 
 			if (JFile::exists($object_file->filepath))
 			{

@@ -27,8 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import CONTROLLER object class
+// Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -175,8 +177,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		// Access check.
 		if (!$this->allowEdit(array($key => $recordId), $key))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-			$this->setMessage($this->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
 
 			$this->setRedirect(
 				JRoute::_(
@@ -192,8 +193,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
-			$this->setMessage($this->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()), 'error');
 
 			// …and do not allow the user to see the record.
 			$this->setRedirect(
@@ -209,7 +209,6 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		{
 			// Check-out succeeded, push the new record id into the session.
 			$this->holdEditId($context, $recordId);
-//			$app->setUserState($context . '.data', null);
 
 			$this->setRedirect(
 				JRoute::_(
@@ -238,25 +237,31 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get the selected mailinglist(s)
-		$cid = $jinput->get('cid', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid);
+		$cid = $jinput->get('cid', array(0), 'post');
+		ArrayHelper::toInteger($cid);
 
 		$n = count ($cid);
 
 		$model = $this->getModel('mailinglist');
-		if(!$model->archive($cid, 1)) {
-			if ($n > 1) {
+		if(!$model->archive($cid, 1))
+		{
+			if ($n > 1)
+			{
 				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_MLS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 			}
-			else {
+			else
+			{
 				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ML_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 			}
 		}
-		else {
-			if ($n > 1) {
+		else
+		{
+			if ($n > 1)
+			{
 				$msg = JText::_('COM_BWPOSTMAN_MLS_ARCHIVED');
 			}
-			else {
+			else
+			{
 				$msg = JText::_('COM_BWPOSTMAN_ML_ARCHIVED');
 			}
 			$link = JRoute::_('index.php?option=com_bwpostman&view=mailinglists', false);

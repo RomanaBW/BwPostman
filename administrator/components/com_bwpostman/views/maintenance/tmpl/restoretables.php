@@ -55,7 +55,6 @@ JHtml::_('bootstrap.tooltip');
      }
   }
  }
-
  /* ]]> */
 </script>
 
@@ -95,7 +94,7 @@ JHtml::_('bootstrap.tooltip');
 	<input type="hidden" name="task" value="doRestore" />
 	<input type="hidden" name="controller" value="maintenance" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 <div id="loading" style="display: none;"></div>
 

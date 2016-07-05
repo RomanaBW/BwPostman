@@ -168,7 +168,8 @@ abstract class BwPostmanHelper {
 	 *
 	 * @return boolean True.
 	 */
-	public static function installed() {
+	public static function installed()
+	{
 		return true;
 	}
 
@@ -185,7 +186,7 @@ abstract class BwPostmanHelper {
 	static public function replaceLinks(&$text)
 	{
 		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
-		$text = preg_replace($search_str,' ${1}="'.JURI::root().'${2}"',$text);
+		$text = preg_replace($search_str,' ${1}="'.JUri::root().'${2}"',$text);
 		return true;
 	}
 
@@ -205,40 +206,46 @@ abstract class BwPostmanHelper {
 		$options	= array();
 		$selectlist	= array();
 		$intval		= 1;
-		if ($date == 'minute') {
-			$intval = JComponentHelper::getParams('Com_bwpostman')->getValue('autocam_minute_intval') ;
+		if ($date == 'minute')
+		{
+			$intval = JComponentHelper::getParams('Com_bwpostman')->get('autocam_minute_intval') ;
 		}
 
 		switch ($date) {
-			case 'day':		for ($i = 0; $i <= 31; $i++) {
+			case 'day':		for ($i = 0; $i <= 31; $i++)
+							{
 								$options[] = $i;
 							}
 							break;
 
-			case 'hour':	for ($i = 0; $i < 24; $i++) {
+			case 'hour':	for ($i = 0; $i < 24; $i++)
+							{
 								$options[] = $i;
 							}
 							break;
 
-			case 'minute':	for ($i = 0; $i < 60; $i += $intval) {
+			case 'minute':	for ($i = 0; $i < 60; $i += $intval)
+							{
 								$options[] = $i;
 							}
 							break;
 		}
 
-		foreach ($selectval->$date as $key => $value) {
-//			$attribs	= 'class="inputbox" size="1"';
+		foreach ($selectval->$date as $key => $value)
+		{
 			$opt		= "automailing_values[" . $date . "][".$key."]";
-			if ($value != '0') {
+			if ($value != '0')
+			{
 				$selected	= $value;
 			}
-			else {
+			else
+			{
 				$selected	= 0;
 			}
 
 			$select_html		= '<select id="' . $opt . '" name="automailing_values['.$date.'][]" >';
-			foreach ($options as $key2 => $value2) {
-
+			foreach ($options as $key2 => $value2)
+			{
 				$select_html		.= '<option value="' . $key2*$intval . '"';
 				if ($selected == $key2*$intval) $select_html		.= ' selected="selected"';
 				$select_html		.= '>' . $value2 . '</option>';
@@ -275,11 +282,13 @@ abstract class BwPostmanHelper {
 
 		$com_actions	= JAccess::getActionsFromFile($path, "/access/section[@name='component']/");
 
-		if ($section != '') {
+		if ($section != '')
+		{
 			$sec_actions	= JAccess::getActionsFromFile($path, "/access/section[@name='" . $section . "']/");
 			$actions		= array_merge($com_actions, $sec_actions);
 		}
-		else {
+		else
+		{
 			$actions	= $com_actions;
 		}
 
@@ -305,12 +314,14 @@ abstract class BwPostmanHelper {
 		$user	= JFactory::getUser();
 
 		// Check general component permission first.
-		if ($user->authorise('core.admin', 'com_bwpostman')) {
+		if ($user->authorise('core.admin', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Next check view permission.
-		if ($user->authorise('bwpm.view.' . $view, 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view, 'com_bwpostman'))
+		{
 			return true;
 		}
 		return false;
@@ -330,13 +341,16 @@ abstract class BwPostmanHelper {
 		$user	= JFactory::getUser();
 
 		// Check general component permission first.
-		if ($user->authorise('core.admin', 'com_bwpostman')) {
+		if ($user->authorise('core.admin', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Next check view permission.
-		if ($user->authorise('bwpm.view.' . $view, 'com_bwpostman')) {
-			if ($user->authorise('bwpm.add', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view, 'com_bwpostman'))
+		{
+			if ($user->authorise('bwpm.add', 'com_bwpostman'))
+			{
 				return true;
 			}
 		}
@@ -412,13 +426,16 @@ abstract class BwPostmanHelper {
 		$user	= JFactory::getUser();
 
 		// Check general component permission first.
-		if ($user->authorise('core.admin', 'com_bwpostman')) {
+		if ($user->authorise('core.admin', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Next check view permission.
-		if ($user->authorise('bwpm.view.' . $view . 's', 'com_bwpostman')) {
-			if ($user->authorise('bwpm.edit.state', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view . 's', 'com_bwpostman'))
+		{
+			if ($user->authorise('bwpm.edit.state', 'com_bwpostman'))
+			{
 				return true;
 			}
 		}
@@ -439,20 +456,25 @@ abstract class BwPostmanHelper {
 		$user	= JFactory::getUser();
 
 		// Check general component permission first.
-		if ($user->authorise('core.admin', 'com_bwpostman')) {
+		if ($user->authorise('core.admin', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Next check view permission.
-		if ($user->authorise('bwpm.view.newsletters', 'com_bwpostman')) {
-			if ($user->authorise('bwpm.send', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.newsletters', 'com_bwpostman'))
+		{
+			if ($user->authorise('bwpm.send', 'com_bwpostman'))
+			{
 				return true;
 			}
 		}
 
 		// Finally check record permission.
-		if ($user->authorise('bwpm.view.newsletters', 'com_bwpostman')) {
-			if ($user->authorise('bwpm.send.newsletter.' . $recordId, 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.newsletters', 'com_bwpostman'))
+		{
+			if ($user->authorise('bwpm.send.newsletter.' . $recordId, 'com_bwpostman'))
+			{
 				return true;
 			}
 		}
@@ -463,24 +485,26 @@ abstract class BwPostmanHelper {
 	 * Method to check if you can archive a record.
 	 *
 	 * @param	string	$view		The view to test. Has to be the single mode name.
-	 * @param	array	$data	An array of input data.
 	 *
 	 * @return	boolean
 	 *
 	 * @since	1.2.0
 	 */
-	public static function canArchive($view = '', $data = array())
+	public static function canArchive($view = '')
 	{
 		$user	= JFactory::getUser();
 
 		// Check general component permission first.
-		if ($user->authorise('core.admin', 'com_bwpostman')) {
+		if ($user->authorise('core.admin', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Next check view permission.
-		if ($user->authorise('bwpm.view.' . $view . 's', 'com_bwpostman')) {
-			if ($user->authorise('bwpm.archive', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.view.' . $view . 's', 'com_bwpostman'))
+		{
+			if ($user->authorise('bwpm.archive', 'com_bwpostman'))
+			{
 				return true;
 			}
 		}
@@ -506,29 +530,34 @@ abstract class BwPostmanHelper {
 		$userId		= $user->get('id');
 
 		// Check general component archive permission first.
-		if ($user->authorise('bwpm.archive', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.archive', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Check view archive permission first.
-		if ($user->authorise('bwpm.view.archive', 'com_bwpostman.archive')) {
+		if ($user->authorise('bwpm.view.archive', 'com_bwpostman.archive'))
+		{
 			return true;
 		}
 
 		// Then check context archive permission.
-		if ($user->authorise('bwpm.archive', 'com_bwpostman.archive')) {
+		if ($user->authorise('bwpm.archive', 'com_bwpostman.archive'))
+		{
 			return true;
 		}
 
 		// Next check item archive permission.
-		if ($user->authorise('bwpm.archive', 'com_bwpostman.archive' . '.' . $recordId)) {
+		if ($user->authorise('bwpm.archive', 'com_bwpostman.archive' . '.' . $recordId))
+		{
 			return true;
 		}
 
 		// Fallback on edit.own (only at context newsletter).
-		if ($context = 'newsletter') {
+		if ($context == 'newsletter') {
 			// First test if the permission is available.
-			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.archive' . '.' . $recordId)) {
+			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.archive' . '.' . $recordId))
+			{
 				// Test if the owner matches 'me'.
 				if ($ownerId == $userId) return true;
 			}
@@ -555,32 +584,39 @@ abstract class BwPostmanHelper {
 		$userId		= $user->get('id');
 
 		// Check general component delete permission first.
-		if ($user->authorise('bwpm.delete', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Then check context delete permission.
-		if ($user->authorise('bwpm.delete', 'com_bwpostman.' . $context)) {
+		if ($user->authorise('bwpm.delete', 'com_bwpostman.' . $context))
+		{
 			return true;
 		}
 
 		// Next check item delete permission.
-		if ($user->authorise('bwpm.delete', 'com_bwpostman.' . $context . '.' . $recordId)) {
+		if ($user->authorise('bwpm.delete', 'com_bwpostman.' . $context . '.' . $recordId))
+		{
 			return true;
 		}
 
 		// Fallback on edit.own (only at context newsletter).
-		if ($context = 'newsletter') {
+		if ($context == 'newsletter')
+		{
 			// First test if the permission is available.
-			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context . '.' . $recordId)) {
+			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context . '.' . $recordId))
+			{
 				// Test if the owner matches 'me'.
 				if ($ownerId == $userId) return true;
 			}
 		}
 		// Fallback on edit.own (only at context subscriber at frontend).
-		if ($context = 'subscriber') {
+		if ($context == 'subscriber')
+		{
 			// First test if the permission is available.
-			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context . '.' . $recordId)) {
+			if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context . '.' . $recordId))
+			{
 				// Test if the owner matches 'me'.
 				if ($ownerId == $userId) return true;
 			}
@@ -607,23 +643,27 @@ abstract class BwPostmanHelper {
 		$userId		= $user->get('id');
 
 		// Check general component restore permission first.
-		if ($user->authorise('bwpm.restore', 'com_bwpostman')) {
+		if ($user->authorise('bwpm.restore', 'com_bwpostman'))
+		{
 			return true;
 		}
 
 		// Then check context restore permission.
-		if ($user->authorise('bwpm.restore', 'com_bwpostman.' . $context)) {
+		if ($user->authorise('bwpm.restore', 'com_bwpostman.' . $context))
+		{
 			return true;
 		}
 
 		// Next check item restore permission.
-		if ($user->authorise('bwpm.restore', 'com_bwpostman.' . $context . '.' . $recordId)) {
+		if ($user->authorise('bwpm.restore', 'com_bwpostman.' . $context . '.' . $recordId))
+		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context.'.' . $recordId)) {
+		if ($user->authorise('bwpm.edit.own', 'com_bwpostman.'.$context.'.' . $recordId))
+		{
 			// Test if the owner matches 'me'.
 			if ($ownerId == $userId) return true;
 		}
@@ -650,9 +690,17 @@ abstract class BwPostmanHelper {
 
 		$_db->setQuery($query);
 
-		$ml_published = $_db->loadResult();
+		try
+		{
+			$ml_published = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		if ($ml_published <1){
+		if ($ml_published <1)
+		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_WARNING_NO_PUBLISHED_MAILINGLIST'), 'warning');
 		}
 		unset($ml_published);
@@ -676,10 +724,12 @@ abstract class BwPostmanHelper {
 
 		$_db->setQuery($query);
 
-		if ($_db->loadResult() > 0) {
+		if ($_db->loadResult() > 0)
+		{
 			return true;
 		}
-		else {
+		else
+		{
 			return false;
 		}
 	}
@@ -696,11 +746,14 @@ abstract class BwPostmanHelper {
 	{
 		$zahl		= 1960;
 		$no_spam	= '';
-		if ($mode == 1) {
+		if ($mode == 1)
+		{
 			$no_spam = (date("dmy", time())) * $zahl;
 		}
-		if ($mode == 2) {
-			if (date('H', time())=='00') {
+		if ($mode == 2)
+		{
+			if (date('H', time())=='00')
+			{
 				$no_spam = (date("dmy", time()-86400)) * $zahl;
 			}
 		}
@@ -742,11 +795,10 @@ abstract class BwPostmanHelper {
 		 * @param $im
 		 * @param $size
 		 * @param $fileTTF
-		 * @param $imgHeight
 		 *
 		 * @return string	$fileName	Gibt die Rechenaufgabe als String für den Dateinamen wieder
 		 */
-		function mathCaptcha($im, $size, $fileTTF, $imgHeight)
+		function mathCaptcha($im, $size, $fileTTF)
 		{
 			$math = range(0,9);
 			shuffle($math);
@@ -797,7 +849,7 @@ abstract class BwPostmanHelper {
 	imagepng($im,$captchaDir.'/'.$_GET['codeCaptcha'].'_'.$fileName.'.png');
 	imagedestroy($im);
 	// Bild ausgeben
-	readfile(JURI::base().'components/com_bwpostman/assets/capimgdir/'.$_GET['codeCaptcha'].'_'.$fileName.'.png');
+	readfile(JUri::base().'components/com_bwpostman/assets/capimgdir/'.$_GET['codeCaptcha'].'_'.$fileName.'.png');
 	}
 
 
@@ -844,23 +896,31 @@ abstract class BwPostmanHelper {
 			return FALSE;
 
 		$handle = @opendir($dir);
-		while (false !== ($file = readdir($handle))) {
-			if (preg_match("=^\.{1,2}$=", $file)) {
+		while (false !== ($file = readdir($handle)))
+		{
+			if (preg_match("=^\.{1,2}$=", $file))
+			{
 				continue;
 			}
-			if (is_dir($dir.$file)) {
+			if (is_dir($dir.$file))
+			{
 				continue;
 			}
-			else {
+			else
+			{
 				$lastTime = ceil((time() - filemtime($dir.$file)) / 60);
-				if($lastTime > $delFile) {
+				if($lastTime > $delFile)
+				{
 					if ($file != 'index.html') unlink($dir.$file);
 				}
-				else {
-					if(strtolower($file) == strtolower($codeCaptcha.'_'.$stringCaptcha.'.png')) {
+				else
+				{
+					if(strtolower($file) == strtolower($codeCaptcha.'_'.$stringCaptcha.'.png'))
+					{
 						$captchaTrue = TRUE;
 					}
-					if (preg_match("=^$codeCaptcha=i", $file)) {
+					if (preg_match("=^$codeCaptcha=i", $file))
+					{
 						if ($file != 'index.html') unlink($dir.$file);
 					}
 				}
@@ -883,25 +943,31 @@ abstract class BwPostmanHelper {
 	 * @param   string  $file
 	 * @param   string  $client
 	 *
+	 * @return  array
+	 *
 	 */
-	public static function loadLanguage($file = 'com_bwpostman', $client = 'site') {
+	public static function loadLanguage($file = 'com_bwpostman', $client = 'site')
+	{
 		static $loaded = array();
 //		BWPOSTMAN_PROFILER ? BwPostmanProfiler::instance()->start('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
 
-		if ($client == 'site') {
+		if ($client == 'site')
+		{
 			$lookup1 = JPATH_SITE;
 			$lookup2 = BWPOSTMAN_PATH_SITE;
 		}
-		else {
+		else
+		{
 			$client = 'admin';
 			$lookup1 = JPATH_ADMINISTRATOR;
 			$lookup2 = BWPOSTMAN_PATH_ADMIN;
 		}
-		if (empty($loaded["{$client}/{$file}"])) {
+		if (empty($loaded["{$client}/{$file}"]))
+		{
 			$lang		= JFactory::getLanguage();
 			$english	= false;
-			if ($lang->getTag() != 'en-GB' && !JDEBUG && !$lang->getDebug()
-				) {
+			if ($lang->getTag() != 'en-GB' && !JDEBUG && !$lang->getDebug())
+			{
 				$lang->load($file, $lookup2, 'en-GB', true, false);
 				$english = true;
 			}
@@ -922,7 +988,8 @@ abstract class BwPostmanHelper {
 	 *
 	 * @return bool
 	 */
-	protected static function parseLanguage($lang, $filename) {
+	protected static function parseLanguage($lang, $filename)
+	{
 		if (!file_exists($filename)) return false;
 
 		$version = phpversion();
@@ -932,16 +999,20 @@ abstract class BwPostmanHelper {
 		$track_errors = ini_get('track_errors');
 		ini_set('track_errors', true);
 
-		if ($version >= '5.3.1') {
+		if ($version >= '5.3.1')
+		{
 			$contents = file_get_contents($filename);
 			$contents = str_replace('_QQ_', '"\""', $contents);
 			$strings = @parse_ini_string($contents);
 		}
-		else {
+		else
+		{
 			$strings = @parse_ini_file($filename);
 
-			if ($version == '5.3.0' && is_array($strings)) {
-				foreach ($strings as $key => $string) {
+			if ($version == '5.3.0' && is_array($strings))
+			{
+				foreach ($strings as $key => $string)
+				{
 					$strings[$key] = str_replace('_QQ_', '"', $string);
 				}
 			}
@@ -950,7 +1021,8 @@ abstract class BwPostmanHelper {
 		// Restore error tracking to what it was before.
 		ini_set('track_errors', $track_errors);
 
-		if (!is_array($strings)) {
+		if (!is_array($strings))
+		{
 			$strings = array();
 		}
 

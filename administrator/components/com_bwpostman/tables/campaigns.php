@@ -165,6 +165,7 @@ class BwPostmanTableCampaigns extends JTable
 	{
 		// Initialise variables.
 		$assetId = null;
+		$result  = 0;
 
 		// Build the query to get the asset id for the table.
 		$query = $this->_db->getQuery(true);
@@ -174,7 +175,15 @@ class BwPostmanTableCampaigns extends JTable
 
 		// Get the asset id from the database.
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadResult())
+		try
+		{
+			$result = $this->_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		if ($result)
 		{
 			$assetId = (int) $result;
 		}
@@ -197,29 +206,33 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @param array|object  $data       Named array or object
 	 * @param string        $ignore     Space separated list of fields not to bind
+	 *
+	 * @throws BwException
+	 *
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
 	{
 		// Bind the rules.
-		if (is_object($data)) {
+		if (is_object($data))
+		{
 			if (property_exists($data, 'rules') && is_array($data->rules))
 			{
 				$rules = new JAccessRules($data->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data)) {
+		elseif (is_array($data))
+		{
 			if (array_key_exists('rules', $data) && is_array($data['rules']))
 			{
 				$rules = new JAccessRules($data['rules']);
 				$this->setRules($rules);
 			}
 		}
-		else {
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-			$this->setError($e);
-			return false;
+		else
+		{
+			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -236,10 +249,11 @@ class BwPostmanTableCampaigns extends JTable
 	 * @return boolean True
 	 */
 	public function check()
-{
+	{
 		$app	= JFactory::getApplication();
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
+		$xid    = 0;
 
 		// Remove all HTML tags from the title and description
 		$filter				= new JFilterInput(array(), array(), 0, 0);
@@ -247,7 +261,8 @@ class BwPostmanTableCampaigns extends JTable
 		$this->description	= $filter->clean($this->description);
 
 		// Check for valid title
-		if (trim($this->title) == '') {
+		if (trim($this->title) == '')
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_ERROR_TITLE'), 'error');
 			$fault	= true;
 		}
@@ -255,18 +270,27 @@ class BwPostmanTableCampaigns extends JTable
 		// Check for existing title
 		$query->select($this->_db->quoteName('id'));
 		$query->from($this->_db->quoteName('#__bwpostman_campaigns'));
-		$query->where($this->_db->quoteName('title') . ' = ' . $this->_db->Quote($this->title));
+		$query->where($this->_db->quoteName('title') . ' = ' . $this->_db->quote($this->title));
 
 		$this->_db->setQuery($query);
 
-		$xid = intval($this->_db->loadResult());
+		try
+		{
+			$xid = intval($this->_db->loadResult());
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		if ($xid && $xid != intval($this->id)) {
+		if ($xid && $xid != intval($this->id))
+		{
 			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_CAM_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
 			$fault	= true;
 		}
 
-		if ($fault) {
+		if ($fault)
+		{
 			$app->setUserState('com_bwpostman.edit.campaign.data', $this);
 			return false;
 		}

@@ -40,7 +40,7 @@ echo $params->get('file_path', 'images'); ?>/';
 </script>
 
 
-<form action="index.php?option=com_bwpostman&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author'); ?>" class="form-vertical" id="imageForm" method="post" enctype="multipart/form-data">
+<form action="<?php JRoute::_('index.php?option=com_bwpostman&amp;asset=' . $jinput->getCmd('asset')); ?>&amp;author=<?php echo $jinput->getCmd('author'); ?>" class="form-vertical" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
 		<span id="message"></span><?php echo JHtml::_('image', 'media/dots.gif', '...', array('width' => 22, 'height' => 12), true) ?>
 	</div>
@@ -63,7 +63,7 @@ echo $params->get('file_path', 'images'); ?>/';
 		</div>
 	</div>
 
-	<iframe id="imageframe" name="imageframe" src="index.php?option=com_bwpostman&amp;view=mediaList&amp;tmpl=component&amp;folder=&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>"></iframe>
+	<iframe id="imageframe" name="imageframe" src="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=mediaList&amp;tmpl=component&amp;folder=&amp;asset=' . $jinput->getCmd('asset'));?>&amp;author=<?php echo $jinput->getCmd('author');?>"></iframe>
 
 	<div class="well">
 		<div class="row">

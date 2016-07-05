@@ -42,21 +42,22 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<thead>
 		<tr>
 			<th width="30" nowrap="nowrap" align="center"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-			<th width="200" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?></th>
-			<th width="150" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?></th>
+			<th width="200" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?></th>
+			<th width="150" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?></th>
 			<?php if($this->params->get('show_gender')) { ?>
-				<th width="150" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_GENDER', 'a.gender', $listDirn, $listOrder); ?></th>
+				<th width="150" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_GENDER', 'a.gender', $listDirn, $listOrder); ?></th>
 			<?php } ?>
-			<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?></th>
-			<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?></th>
-			<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_JOOMLA_USERID', 'a.user_id', $listDirn, $listOrder); ?></th>
-			<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?></th>
-			<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+			<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?></th>
+			<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?></th>
+			<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_JOOMLA_USERID', 'a.user_id', $listDirn, $listOrder); ?></th>
+			<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?></th>
+			<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 		</tr>
 	</thead>
 	<tbody>
 	<?php
-		if (count($this->items)) {
+		if (count($this->items))
+		{
 			foreach ($this->items as $i => $item) :
 				$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 				$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.subscriber.'.$item->id);
@@ -82,7 +83,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							{
 								echo JText::_('COM_BWPOSTMAN_FEMALE');
 							}
-							elseif ($item->gender == '0') {
+							elseif ($item->gender == '0')
+							{
 								echo JText::_('COM_BWPOSTMAN_MALE');
 							}
 							?>
@@ -96,7 +98,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</tr><?php
 			endforeach;
 		}
-		else {
+		else
+		{
     	// if no data ?>
 			<tr class="row1">
 				<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>

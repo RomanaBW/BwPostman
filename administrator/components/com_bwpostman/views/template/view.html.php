@@ -51,7 +51,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 	/**
 	 * property to hold selected item
 	 *
-	 * @var array   $item
+	 * @var object   $item
 	 */
 	protected $item;
 
@@ -62,6 +62,33 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 */
 	protected $state;
 
+	/**
+	 * property to hold queue entries
+	 *
+	 * @var boolean $queueEntries
+	 */
+	public $queueEntries;
+
+	/**
+	 * property to hold template
+	 *
+	 * @var boolean $template
+	 */
+	public $template;
+
+	/**
+	 * property to hold can do properties
+	 *
+	 * @var array $canDo
+	 */
+	public $canDo;
+
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 */
+	public $request_url;
 
 	/**
 	 * Execute and display a template script.
@@ -77,7 +104,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$template	= $app->getTemplate();
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		$app->setUserState('com_bwpostman.edit.template.id', JFactory::getApplication()->input->getInt('id', 0));
@@ -115,21 +142,22 @@ class BwPostmanViewTemplate extends JViewLegacy
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$userId		= JFactory::getUser()->get('id');
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('BWP_TPL_DETAILS'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
 		$browser = JBrowser::getInstance();
 		$user_browser = $browser->getBrowser();
 
-		if ($user_browser == 'msie') {
-			$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
+		if ($user_browser == 'msie')
+		{
+			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
@@ -141,44 +169,50 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$this->canDo	= $canDo;
 
 		// For new records, check the create permission.
-		if ($isNew && $canDo->get('bwpm.create')) {
-			JToolBarHelper::save('template.save');
-			JToolBarHelper::apply('template.apply');
-			JToolBarHelper::cancel('template.cancel');
+		if ($isNew && $canDo->get('bwpm.create'))
+		{
+			JToolbarHelper::save('template.save');
+			JToolbarHelper::apply('template.apply');
+			JToolbarHelper::cancel('template.cancel');
 
-			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
 		}
-		else {
+		else
+		{
 			// Can't save the record if it's checked out.
-			if (!$checkedOut) {
+			if (!$checkedOut)
+			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId)) {
-					JToolBarHelper::save('template.save');
-					JToolBarHelper::apply('template.apply');
+				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+				{
+					JToolbarHelper::save('template.save');
+					JToolbarHelper::apply('template.apply');
 				}
 			}
 			// If checked out, we can still copy
-			if ($canDo->get('bwpm.create')) {
-				JToolBarHelper::save2copy('template.save2copy');
+			if ($canDo->get('bwpm.create'))
+			{
+				JToolbarHelper::save2copy('template.save2copy');
 			}
 			// Rename the cancel button for existing items
-			JToolBarHelper::cancel('template.cancel', 'JTOOLBAR_CLOSE');
-			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS').':  <strong>' . $this->item->title  . '  </strong><small>[ ' . JText::_('EDIT').' ]</small> ', 'edit');
+			JToolbarHelper::cancel('template.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS').':  <strong>' . $this->item->title  . '  </strong><small>[ ' . JText::_('EDIT').' ]</small> ', 'edit');
 		}
 
 		$backlink 	= $_SERVER['HTTP_REFERER'];
 		$siteURL 	= $uri->base();
 
 		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL.'index.php?option=com_bwpostman') {
-			JToolBarHelper::spacer();
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
-			JToolBarHelper::back();
+		if ($backlink == $siteURL.'index.php?option=com_bwpostman')
+		{
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
+			JToolbarHelper::back();
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-		JToolBarHelper::spacer();
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
 	}
 }

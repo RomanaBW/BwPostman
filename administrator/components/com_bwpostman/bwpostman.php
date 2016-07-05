@@ -42,8 +42,8 @@ define ('BWPOSTMAN_PATH_MEDIA', JPATH_ROOT . '/media/' . BWPOSTMAN_NAME);
 
 // URLs
 define ('BWPOSTMAN_URL_COMPONENT', 'index.php?option=' . BWPOSTMAN_COMPONENT_NAME);
-define ('BWPOSTMAN_URL_SITE', JURI::Root () . BWPOSTMAN_PATH_COMPONENT_RELATIVE . '/');
-define ('BWPOSTMAN_URL_MEDIA', JURI::Root () . 'media/' . BWPOSTMAN_NAME . '/');
+define ('BWPOSTMAN_URL_SITE', JUri::root() . BWPOSTMAN_PATH_COMPONENT_RELATIVE . '/');
+define ('BWPOSTMAN_URL_MEDIA', JUri::root() . 'media/' . BWPOSTMAN_NAME . '/');
 
 // Miscellaneous
 define ('BWPOSTMAN_LOG_MEM', 0);
@@ -58,7 +58,11 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/classes/admin.class.php');
 $user	= JFactory::getUser();
 $app	= JFactory::getApplication();
 // Access check.
-if ((!$user->authorise('core.manage', 'com_bwpostman'))) return $app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
+if ((!$user->authorise('core.manage', 'com_bwpostman')))
+{
+	$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
+	return false;
+}
 
 
 // Get an instance of the controller

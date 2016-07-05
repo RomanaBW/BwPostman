@@ -27,11 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-JHTML::_('behavior.modal');
-JHTML::_('behavior.framework',true);
+JHtml::_('behavior.modal');
+JHtml::_('behavior.framework',true);
 $uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHTML::_('script','system/modal'.$uncompressed.'.js', true, true);
-JHTML::_('stylesheet','media/system/css/modal.css');
+JHtml::_('script','system/modal'.$uncompressed.'.js', true, true);
+JHtml::_('stylesheet','media/system/css/modal.css');
 
 $model		= $this->getModel();
 $token      = JSession::getFormToken();
@@ -109,20 +109,26 @@ switch ($this->check_res['type']) {
 		jQuery('p#step'+data.step).addClass('alert alert-info');
 		// Do AJAX post
 		post = {step : 'step'+data.step};
-		doAjax(post, function(data){
-			if(data.ready != "1"){
+		doAjax(post, function(data)
+		{
+			if(data.ready != "1")
+			{
 				jQuery('div#result').html(data.result);
 				jQuery('div#error').html(data.error);
 				processUpdateStep(data);
-			} else {
+			}
+			else
+			{
 				jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
 				jQuery('div#loading2').css({display:'none'});
 				jQuery('div#result').html(data.result);
-				if (data.error != '') {
+				if (data.error != '')
+				{
 					jQuery('div.resultSet').css('background-color', '#f2dede');
 					jQuery('div.resultSet').css('border-color', '#eed3d7');
 				}
-				else {
+				else
+				{
 					jQuery('div.resultSet').css('background-color', '#dff0d8');
 					jQuery('div.resultSet').css('border-color', '#d6e9c6');
 				}

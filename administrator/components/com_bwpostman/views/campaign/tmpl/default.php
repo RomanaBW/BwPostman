@@ -28,8 +28,8 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 //Load tabs behavior for the Tabs
@@ -37,7 +37,7 @@ JHtml::_('formbehavior.chosen', 'select');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/bwtabs.php');
 
 // Load the modal behavior for the newsletter preview
-JHTML::_('behavior.modal', 'a.popup');
+JHtml::_('behavior.modal', 'a.popup');
 
 $tab_options = array(
     'onActive' => 'function(title, description){
@@ -62,32 +62,40 @@ $tab_options = array(
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) {
-
+	Joomla.submitbutton = function (pressbutton)
+	{
 		var form = document.adminForm;
 
-		<?php if (property_exists($this, 'autocam_values')) { ?>
-			if (pressbutton == 'delete') {
-				submitform('campaign.apply');
-				return;
-			}
-		<?php } ?>
-
-		<?php if (property_exists($this->item, 'tc_mailing_data')) { ?>
-			return checkReasonableTimes(pressbutton);
-		<?php } ?>
-
-		if (pressbutton == 'campaign.cancel') {
+		if (pressbutton == 'campaign.cancel')
+		{
 			submitform(pressbutton);
 			return;
 		}
 
 		// Valdiate input fields
-		if (form.jform_title.value == ""){
+		if (form.jform_title.value == "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>");
-		} else {
+		}
+		else
+		{
 			submitform(pressbutton);
 		}
+
+		<?php if (property_exists($this, 'autocam_values'))
+		{ ?>
+		if (pressbutton == 'delete')
+		{
+			submitform('campaign.apply');
+			return;
+		}
+		<?php } ?>
+
+		<?php if (property_exists($this->item, 'tc_mailing_data'))
+		{ ?>
+		return checkReasonableTimes(pressbutton);
+		<?php
+		} ?>
 	};
 /* ]]> */
 </script>
@@ -108,21 +116,25 @@ $tab_options = array(
 
 			// Start Tab assigned/unsent newsletters
 			$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
-			if (property_exists($this->item, 'automailing_values')) {
-				if ($this->item->automailing_values !== null) {
+			if (property_exists($this->item, 'automailing_values'))
+			{
+				if ($this->item->automailing_values !== null)
+				{
 					$text	= JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
 				}
 			}
 			echo JHtmlBwTabs::panel($text, 'unsent', '');
 			echo $this->loadTemplate('unsent');
 
-			if (property_exists($this->item, 'tc_mailing_data')) {
+			if (property_exists($this->item, 'tc_mailing_data'))
+			{
 				// Start Tab autovalues
 				echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOVALUES_TITLE'), 'autovalues', '');
 				echo $this->item->tc_mailing_data;
 			}
 
-			if (property_exists($this->item, 'queued_letters')) {
+			if (property_exists($this->item, 'queued_letters'))
+			{
 				// Start Tab automailing queue
 				echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_TITLE'), 'autoqueue', '');
 				echo $this->item->queued_letters;
@@ -145,7 +157,7 @@ $tab_options = array(
 		<?php echo $this->form->getInput('asset_id'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 
 	<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

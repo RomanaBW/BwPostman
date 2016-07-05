@@ -27,8 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import CONTROLLER object class
+// Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -37,7 +39,9 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * BwPostman Campaign Controller
  *
  * @since		1.0.1
+ *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Campaigns
  */
 class BwPostmanControllerCampaign extends JControllerForm
@@ -175,8 +179,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		// Access check.
 		if (!$this->allowEdit(array($key => $recordId), $key))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-			$this->setMessage($this->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
 
 			$this->setRedirect(
 				JRoute::_(
@@ -192,8 +195,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
-			$this->setMessage($this->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
 
 			// …and do not allow the user to see the record.
 			$this->setRedirect(
@@ -209,7 +211,6 @@ class BwPostmanControllerCampaign extends JControllerForm
 		{
 			// Check-out succeeded, push the new record id into the session.
 			$this->holdEditId($context, $recordId);
-//			$app->setUserState($context . '.data', null);
 
 			$this->setRedirect(
 				JRoute::_(
@@ -262,44 +263,56 @@ class BwPostmanControllerCampaign extends JControllerForm
 		$archive_nl = $jinput->get('archive_nl');
 
 		// Get the selected campaign(s)
-		$cid = $jinput->get('cid', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid);
+		$cid = $jinput->get('cid', array(0), 'post');
+		ArrayHelper::toInteger($cid);
 
 		$n = count ($cid);
 
 		$model = $this->getModel('campaign');
-		if(!$model->archive($cid, 1, $archive_nl)) {
+		if(!$model->archive($cid, 1, $archive_nl))
+		{
 			if ($n > 1) {
-				if ($archive_nl) {
+				if ($archive_nl)
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAMS_NL_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
-				else {
+				else
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAMS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
 			}
 			else {
-				if ($archive_nl) {
+				if ($archive_nl)
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAM_NL_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
-				else {
+				else
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAM_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
 			}
 		}
-		else {
-			if ($n > 1) {
-				if ($archive_nl) {
+		else
+		{
+			if ($n > 1)
+			{
+				if ($archive_nl)
+				{
 					$msg = JText::_('COM_BWPOSTMAN_CAMS_NL_ARCHIVED');
 				}
-				else {
+				else
+				{
 					$msg = JText::_('COM_BWPOSTMAN_CAMS_ARCHIVED');
 				}
 			}
-			else {
-				if ($archive_nl) {
+			else
+			{
+				if ($archive_nl)
+				{
 					$msg = JText::_('COM_BWPOSTMAN_CAM_NL_ARCHIVED');
 				}
-				else {
+				else
+				{
 					$msg = JText::_('COM_BWPOSTMAN_CAM_ARCHIVED');
 				}
 			}

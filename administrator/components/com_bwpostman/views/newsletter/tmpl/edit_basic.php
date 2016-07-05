@@ -29,7 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 //JHtml::_('formbehavior.chosen', 'select');
 
 $image = '<i class="icon-info"></i>';
@@ -57,78 +57,97 @@ $checkRecipientArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELE
 /* <![CDATA[ */
 var $j	= jQuery.noConflict();
 
-function changeTab(tab){
-	if (tab != 'edit_basic') {
+function changeTab(tab)
+{
+	if (tab != 'edit_basic')
+	{
 		document.adminForm.tab.setAttribute('value',tab);
 		document.adminForm.task.setAttribute('value','newsletter.changeTab');
 		checkSelectedContent(<?php echo $checkContentArgs; ?>);
-		if ($j("#jform_campaign_id option:selected").val() == '-1') {
+		if ($j("#jform_campaign_id option:selected").val() == '-1')
+		{
 			res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
 			return res;
 		}
-		else {
+		else
+		{
 			return true;
 		}
 	}
-	else {
+	else
+	{
 		return false;
 	}
 }
 
-Joomla.submitbutton = function (pressbutton) {
+Joomla.submitbutton = function (pressbutton)
+{
 	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel') {
+	if (pressbutton == 'newsletter.cancel')
+	{
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.back') {
+	if (pressbutton == 'newsletter.back')
+	{
 		form.task.value = 'back';
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.apply') {
-		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true) {
+	if (pressbutton == 'newsletter.apply')
+	{
+		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
+		{
 			document.adminForm.task.setAttribute('value','newsletter.apply');
-			if ($j("#jform_campaign_id option:selected").val() == '-1') {
+			if ($j("#jform_campaign_id option:selected").val() == '-1')
+			{
 				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-				if (res == false) {
+				if (res == false)
+				{
 					return false;
 				}
-				else {
+				else
+				{
 					submitform(pressbutton);
 					return true;
 				}
 			}
-			else {
+			else
+			{
 				submitform(pressbutton);
 				return true;
 			}
 		}
 	}
 
-	if (pressbutton == 'newsletter.save') {
-		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true) {
+	if (pressbutton == 'newsletter.save')
+	{
+		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
+		{
 			document.adminForm.task.setAttribute('value','newsletter.save');
-			if ($j("#jform_campaign_id option:selected").val() == '-1') {
+			if ($j("#jform_campaign_id option:selected").val() == '-1')
+			{
 				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-				if (res == false) {
+				if (res == false)
+				{
 					return false;
 				}
-				else {
+				else
+				{
 					submitform(pressbutton);
 					return true;
 				}
 			}
-			else {
+			else
+			{
 				submitform(pressbutton);
 				return true;
 			}
-}
+		}
 	}
 };
-
 /* ]]> */
 </script>
 
@@ -165,12 +184,10 @@ Joomla.submitbutton = function (pressbutton) {
 		</div>
 		<div class="clr clearfix"></div>
 
-
-
 		<div class="tab-wrapper-bwp">
 			<div class="form-horizontal">
 				<fieldset class="adminform">
-					<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_GENERAL'); ?></legend>
+					<legend><?php echo JText::_('COM_BWPOSTMAN_NL_GENERAL'); ?></legend>
 					<div class="well well-small">
 						<div class="width-50 fltlft span6 control-group">
 							<ul class="adminformlist unstyled">
@@ -221,7 +238,7 @@ Joomla.submitbutton = function (pressbutton) {
 			<fieldset class="adminform">
 				<legend>
 					<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>"><?php echo $image; ?></span>
-					<span>&nbsp;<?php echo JTEXT::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?></span>
+					<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?></span>
 				</legend>
 				<div class="well">
 					<?php foreach($this->form->getFieldset('templates') as $field): ?>
@@ -246,14 +263,14 @@ Joomla.submitbutton = function (pressbutton) {
 			<fieldset class="adminform">
 				<div class="row-fluid">
 					<fieldset class="adminform" id="recipients">
-						<legend class="required"><?php echo JTEXT::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
+						<legend class="required"><?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
 						<div class="well">
 							<div class="width-75 fltlft span9">
 								<div class="well-white well-small">
 									<fieldset class="adminform">
 										<legend>
 											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>"><?php echo $image; ?></span>
-											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;<?php echo JTEXT::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?></span>
+											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?></span>
 										</legend>
 										<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
 											<?php if ($field->hidden): ?>
@@ -287,7 +304,7 @@ Joomla.submitbutton = function (pressbutton) {
 									<fieldset class="adminform usergroups">
 										<legend>
 											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>"><?php echo $image; ?></span>
-											<span>&nbsp;<?php echo JTEXT::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
+											<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 										</legend>
 										<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
 											<?php echo $field->input; ?>
@@ -305,7 +322,7 @@ Joomla.submitbutton = function (pressbutton) {
 						<fieldset class="adminform">
 							<legend>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>"><?php echo $image; ?></span>
-								<span>&nbsp;<?php echo JTEXT::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
+								<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
 							</legend>
 							<div class="well well-small">
 								<div class="width-40 fltlft span4">
@@ -381,7 +398,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>
 
@@ -389,20 +406,26 @@ Joomla.submitbutton = function (pressbutton) {
 /* <![CDATA[ */
 var $j	= jQuery.noConflict();
 
-$j(document).ready(function() {
-	if ($j("#jform_campaign_id option:selected").val() != '-1') {
+$j(document).ready(function()
+{
+	if ($j("#jform_campaign_id option:selected").val() != '-1')
+	{
 		$j( "#recipients" ).hide();
 	}
-	else {
+	else
+	{
 		$j( "#recipients" ).show();
 	}
 });
 
-$j("#jform_campaign_id").on("change", function() {
-	if ($j("#jform_campaign_id option:selected").val() != '-1') {
+$j("#jform_campaign_id").on("change", function()
+{
+	if ($j("#jform_campaign_id option:selected").val() != '-1')
+	{
 		$j( "#recipients" ).hide();
 	}
-	else {
+	else
+	{
 		$j( "#recipients" ).show();
 	}
 });

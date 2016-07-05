@@ -28,45 +28,53 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-$image = JHTML::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image = JHtml::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
 ?>
 
 <script type="text/javascript">
 /* <![CDATA[ */
-function changeTab(tab){
-	if (tab != 'edit_text') {
+function changeTab(tab)
+{
+	if (tab != 'edit_text')
+	{
 		document.adminForm.tab.setAttribute('value',tab);
 		document.adminForm.task.setAttribute('value','newsletter.changeTab');
 		return true;
 	}
-	else {
+	else
+	{
 		return false;
 	}
 }
 
-Joomla.submitbutton = function (pressbutton) {
+Joomla.submitbutton = function (pressbutton)
+{
 	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel') {
+	if (pressbutton == 'newsletter.cancel')
+	{
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.back') {
+	if (pressbutton == 'newsletter.back')
+	{
 		form.task.value = 'back';
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.apply') {
+	if (pressbutton == 'newsletter.apply')
+	{
 		document.adminForm.task.setAttribute('value','newsletter.apply');
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.save') {
+	if (pressbutton == 'newsletter.save')
+	{
 		document.adminForm.task.setAttribute('value','newsletter.save');
 		submitform(pressbutton);
 	}
@@ -107,23 +115,23 @@ Joomla.submitbutton = function (pressbutton) {
 		</div>
 		<div class="clr clearfix"></div>
 
-
-
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform form-horizontal">
-				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_TEXT'); ?></legend>
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_TEXT'); ?></legend>
 				<div class="well well-small">
-											<div class="row-fluid clearfix">
-												<?php echo '<div class="span12">'.JTEXT::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE').'</div>'; ?>
-											</div>
+					<div class="row-fluid clearfix">
+						<?php echo '<div class="span12">'.JText::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE').'</div>'; ?>
+					</div>
 					<ul class="unstyled">
 						<?php
 						foreach($this->form->getFieldset('text_version') as $field):
 							// if old template - show no intro fields
-							if (empty($this->item->intro_text_headline) && empty($this->item->intro_text_text)) {
+							if (empty($this->item->intro_text_headline) && empty($this->item->intro_text_text))
+							{
 								$show = array("jform[text_version]");
 							}
-							else {
+							else
+							{
 								$show = array("jform[text_version]", "jform[intro_text_headline]", "jform[intro_text_text]");
 							}
 							if (in_array($field->name, $show)) :
@@ -138,9 +146,9 @@ Joomla.submitbutton = function (pressbutton) {
 												<?php echo '</div>'; ?>
 											</div>
 											<div class="row-fluid clearfix"><?php echo $field->input; ?></div>
-											<div class="row-fluid clearfix" style="margin-top: 10px">
+											<div class="row-fluid clearfix" style="margin-top: 10px;">
 												<?php
-													$link = JURI::base() . '#';
+													$link = JUri::base() . '#';
 													if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
 														$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
 														$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
@@ -158,7 +166,8 @@ Joomla.submitbutton = function (pressbutton) {
 										</li>
 										<?php
 									}
-									else { ?>
+									else
+									{ ?>
 										<li><?php echo $field->label; ?>
 											<div class="row-fluid controls"><?php echo $field->input; ?></div>
 										</li>
@@ -195,6 +204,6 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

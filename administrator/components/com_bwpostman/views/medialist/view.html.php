@@ -39,6 +39,62 @@ require_once JPATH_ADMINISTRATOR . '/components/com_media/helpers/media.php';
 class BwPostmanViewMediaList extends JViewLegacy
 {
 	/**
+	 * property to hold base url
+	 *
+	 * @var object  $baseURL
+	 */
+	public $baseURL;
+
+	/**
+	 * property to hold images
+	 *
+	 * @var array  $images
+	 */
+	public $images;
+
+	/**
+	 * property to hold documents
+	 *
+	 * @var array  $documents
+	 */
+	public $documents;
+
+	/**
+	 * property to hold folders
+	 *
+	 * @var array  $folders
+	 */
+	public $folders;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var object  $state
+	 */
+	public $state;
+
+	/**
+	 * property to hold temporary folder
+	 *
+	 * @var object  $_tmp_folder
+	 */
+	protected $_tmp_folder;
+
+	/**
+	 * property to hold temporary image
+	 *
+	 * @var object  $_tmp_img
+	 */
+	protected $_tmp_img;
+
+	/**
+	 * property to hold temporary doc
+	 *
+	 * @var object  $_tmp_doc
+	 */
+	protected $_tmp_doc;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -73,7 +129,8 @@ class BwPostmanViewMediaList extends JViewLegacy
 		$lang	= JFactory::getLanguage();
 
 		JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
-		if ($lang->isRTL()) {
+		if ($lang->isRtl())
+		{
 			JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
 		}
 

@@ -30,8 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 ?>
 
-<form id="adminForm" action="index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component" method="post" name="adminForm">
-
+<form id="adminForm" action="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component'); ?>" method="post" name="adminForm">
 	<table class="adminform">
 		<tr>
 			<td width="100%">
@@ -51,11 +50,11 @@ JHtml::_('behavior.tooltip');
 	<table class="adminlist table">
 		<thead>
 			<tr>
-				<th width="10"><?php echo JHTML::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'Subject', 'a.subject', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-				<th class="title" style="text-align:center;"><?php echo JHTML::_('grid.sort', 'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+				<th width="10"><?php echo JHtml::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+				<th class="title"><?php echo JHtml::_('grid.sort', 'Subject', 'a.subject', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+				<th class="title" style="text-align:center;"><?php echo JHtml::_('grid.sort', 'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $this->lists['order_Dir'], $this->lists['order']); ?></th>
 				<th class="title" style="text-align:center;"><?php echo JText::_('JPUBLISHED'); ?></th>
-				<th class="title" style="text-align:center;"><?php echo JHTML::_('grid.sort', 'Archived', 'a.archive_flag', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+				<th class="title" style="text-align:center;"><?php echo JHtml::_('grid.sort', 'Archived', 'a.archive_flag', $this->lists['order_Dir'], $this->lists['order']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -78,7 +77,7 @@ JHtml::_('behavior.tooltip');
 						</span>
 					</td>
 					<td align="center" style="text-align:center;"><?php echo $item->mailing_date; ?></td>
-					<td align="center" style="text-align:center;"><?php echo JHTML::_('grid.published', $item, $i); ?></td>
+					<td align="center" style="text-align:center;"><?php echo JHtml::_('grid.published', $item, $i); ?></td>
 					<td align="center" style="text-align:center;"><?php $archived = ($item->archive_flag == 0) ? '<i class="icon-archive"></i>' : ''; echo $archived; ?></td>
 				</tr>
 				<?php endforeach;
@@ -97,5 +96,5 @@ JHtml::_('behavior.tooltip');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>

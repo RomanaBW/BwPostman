@@ -30,6 +30,8 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.model');
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * BwPostman newsletterelement model
  * Provides a view of single newsletters
@@ -90,7 +92,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		$this->_key = $this->getName();
 
 		// Get the pagination request variables
-		$limit		= $app->getUserStateFromRequest($this->_key.'_limit', 'limit', $app->getCfg('list_limit'), 0);
+		$limit		= $app->getUserStateFromRequest($this->_key.'_limit', 'limit', $app->get('list_limit'), 0);
 		$limitstart	= $app->getUserStateFromRequest($this->_key.'_limitstart', 'limitstart', 0);
 
 		$this->setState('limit', $limit);
@@ -122,7 +124,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	public function getTotal()
 	{
 		// Load the content if it doesn't already exist
-		if (!$this->_total) {
+		if (!$this->_total)
+		{
 			$query = $this->_buildQuery();
 			$this->_total = $this->_getListCount($query);
 		}
@@ -141,7 +144,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		if (empty($this->_pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+			$this->_pagination = new JPagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
 		}
 		return $this->_pagination;
 	}
@@ -164,7 +167,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 		// Filter by published state
 		$query->where('a.published != ' . (int) 0);
-		$query->where($_db->quoteName('a.mailing_date') . ' != ' . $_db->Quote('0000-00-00 00:00:00'));
+		$query->where($_db->quoteName('a.mailing_date') . ' != ' . $_db->quote('0000-00-00 00:00:00'));
 
 		// Get the search string
 		$search = $this->getSearch();
@@ -172,10 +175,12 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		// Get the search filter
 		$filter_search = $app->getUserStateFromRequest($this->_key.'_filter_search', 'filter_search', 'subject', 'string');
 
-		if ($search != '') {
+		if ($search != '')
+		{
 			$fields = explode(',', $filter_search);
 
-			foreach ($fields as $field) {
+			foreach ($fields as $field)
+			{
 				$search = $_db->quote('%' . str_replace(' ', '%', $_db->escape(trim($search), true) . '%'));
 				$query->where('a.'.$field . " LIKE " . $search);
 			}
@@ -185,11 +190,13 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		$filter_order		= $app->getUserStateFromRequest($this->_key.'_filter_order', '.filter_order', 'a.subject', 'word');
 		$filter_order_Dir	= $app->getUserStateFromRequest($this->_key.'_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-		if ($filter_order == 'a.subject'){
+		if ($filter_order == 'a.subject')
+		{
 			$query->order('a.subject '.$filter_order_Dir);
 		}
-		else {
-			$query->order($_db->escape($filter_order.' '.$filter_order_Dir) , 'a.subject' );
+		else
+		{
+			$query->order($_db->escape($filter_order.' '.$filter_order_Dir));
 		}
 
 		return $query;
@@ -203,7 +210,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 */
 	private function getSearch()
 	{
-		if (!$this->_search) {
+		if (!$this->_search)
+		{
 			$app = JFactory::getApplication();
 
 			$search = $app->getUserStateFromRequest($this->_key.'_search', 'search', '', 'string');

@@ -40,6 +40,7 @@ class JFormFieldbuttons extends JFormField
 	 * Element name
 	 *
 	 * @access	protected
+	 *         
 	 * @var		string
 	 *
 	 * @since   1.0.8
@@ -59,10 +60,12 @@ class JFormFieldbuttons extends JFormField
 		$fieldName	= $this->name;
 
 		$newsletter = JTable::getInstance('newsletters', 'BwPostmanTable');
-		if ($this->value) {
+		if ($this->value)
+		{
 			$newsletter->load($this->value);
 		}
-		else {
+		else
+		{
 			$newsletter->subject = JText::_('COM_BWPOSTMAN_SELECT_BUTTON_LABEL');
 		}
 
@@ -77,19 +80,22 @@ class JFormFieldbuttons extends JFormField
 		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp;field='.$fieldName;
 		$doc->addScriptDeclaration($js);
 
-		JHTML::_('behavior.modal', 'a.modal');
+		JHtml::_('behavior.modal', 'a.modal');
 
 		// The active newsletter id field.
-		if (0 == (int)$this->value) {
+		if (0 == (int)$this->value)
+		{
 			$value = '';
 		}
-		else {
+		else
+		{
 			$value = (int)$this->value;
 		}
 
 		// class='required' for client side validation
 		$class = '';
-		if ($this->required) {
+		if ($this->required)
+		{
 			$class = ' class="required modal-value"';
 		}
 

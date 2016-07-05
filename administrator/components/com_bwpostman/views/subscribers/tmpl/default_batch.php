@@ -40,7 +40,8 @@ $options = array(
 	JHtml::_('select.option', 'u', JText::_('COM_BWPOSTMAN_SUB_HTML_BATCH_UNSUBSCRIBE'))
 );
 
-if ($filter_id) {
+if ($filter_id)
+{
 	$options[]	= JHtml::_('select.option', 'm', JText::_('COM_BWPOSTMAN_SUB_HTML_BATCH_MOVE'));
 }
 

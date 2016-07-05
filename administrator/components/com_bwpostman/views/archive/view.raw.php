@@ -39,6 +39,27 @@ jimport('joomla.application.component.view');
 class BwPostmanViewArchive extends JViewLegacy
 {
 	/**
+	 * property to hold subscriber object
+	 *
+	 * @var object  $sub
+	 */
+	protected $sub;
+
+	/**
+	 * property to hold campaign object
+	 *
+	 * @var object  $cam
+	 */
+	protected $cam;
+
+	/**
+	 * property to hold mailinglist object
+	 *
+	 * @var object  $ml
+	 */
+	protected $ml;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -52,7 +73,8 @@ class BwPostmanViewArchive extends JViewLegacy
 		$layout	= $jinput->get('layout');
 		$model	= $this->getModel('archive');
 
-		switch ($layout) { // Which tab are we in?
+		switch ($layout)
+		{ // Which tab are we in?
 			case "subscriber_modal":
 				$sub_id		= $jinput->get('sub_id');
 				$this->sub	= $model->getSingleSubscriber((int) $sub_id);

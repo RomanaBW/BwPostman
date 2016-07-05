@@ -26,6 +26,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry as JRegistry;
 
 $user	= JFactory::getUser();
 $params	= new JRegistry;

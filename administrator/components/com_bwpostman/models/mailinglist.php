@@ -27,8 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import MODEL object class
+// Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -66,7 +68,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		parent::__construct();
 
 		$jinput	= JFactory::getApplication()->input;
-		$array	= $jinput->get('cid',  0, '', 'array');
+		$array	= $jinput->get('cid',  0, '');
 		$this->setId((int)$array[0]);
 	}
 
@@ -90,6 +92,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Method to reset the mailinglist ID and mailinglist data
 	 *
 	 * @access	public
+	 *
 	 * @param	int $id     Mailinglist ID
 	 */
 	public function setId($id)
@@ -104,6 +107,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	object	$record	A record object.
 	 *
 	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
+	 *
 	 * @since	1.0.1
 	 */
 	protected function canDelete($record)
@@ -116,7 +120,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			return true;
 		}
 
-		if (!empty($record->id)) {
+		if (!empty($record->id))
+		{
 			// Check specific delete permission.
 			if ($user->authorise('bwpm.mailinglist.delete', 'com_bwpostman.mailinglists.' . (int) $record->id))
 			{
@@ -132,6 +137,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	object	$record	A record object.
 	 *
 	 * @return	boolean	True if allowed to change the state of the record. Defaults to the permission set in the component.
+	 *
 	 * @since	1.0.1
 	 */
 	protected function canEditState($record)
@@ -144,7 +150,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			return true;
 		}
 
-		if (!empty($record->id)) {
+		if (!empty($record->id))
+		{
 			// Check specific edit state permission.
 			if ($user->authorise('bwpm.mailinglist.edit.state', 'com_bwpostman.mailinglists.' . (int) $record->id))
 			{
@@ -169,20 +176,25 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		$cid	= $app->getUserState('com_bwpostman.edit.mailinglist.id', 0);
 		$data	= $app->getUserState('com_bwpostman.edit.mailinglist.data', null);
 
-		if (!$data) {
+		if (!$data)
+		{
 			// Initialise variables.
-			if (is_array($cid)) {
-				if (!empty($cid)) {
+			if (is_array($cid))
+			{
+				if (!empty($cid))
+				{
 					$cid = $cid[0];
 				}
-				else {
+				else
+				{
 					$cid = 0;
 				}
 			}
-			(!empty($pk)) ? $pk	= $pk : $pk	= (int) $cid;
+			if (empty($pk)) $pk	= (int) $cid;
 			$item	= parent::getItem($pk);
 		}
-		else {
+		else
+		{
 			$item	= new stdClass();
 			foreach ($data as $key => $value) $item->$key	= $value;
 		}
@@ -196,13 +208,15 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return	mixed	A JForm object on success, false on failure
+	 *
 	 * @since	1.0.1
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.mailinglist', 'mailinglist', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 		$jinput = JFactory::getApplication()->input;
@@ -238,8 +252,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		// Check for existing mailinglist.
 		// Modify the form based on Edit State access controls.
 		if ($id != 0 && (!$user->authorise('bwpm.edit.state', 'com_bwpostman.mailinglist.'.(int) $id))
-		|| ($id == 0 && !$user->authorise('bwpm.mailinglist.edit.state', 'com_bwpostman'))
-		)
+			|| ($id == 0 && !$user->authorise('bwpm.mailinglist.edit.state', 'com_bwpostman')))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('state', 'disabled', 'true');
@@ -250,20 +263,23 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		}
 		// Check to show campaign_id
 		$campaign_id	= $jinput->get('campaign_id');
-		if (empty($campaign_id)) {
+		if (empty($campaign_id))
+		{
 			$form->setFieldAttribute('campaign_id', 'type', 'hidden');
 		}
 
 		// Check to show created data
 		$c_date	= $form->getValue('created_date');
-		if ($c_date == '0000-00-00 00:00:00') {
+		if ($c_date == '0000-00-00 00:00:00')
+		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
 		}
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00') {
+		if ($m_date == '0000-00-00 00:00:00')
+		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
 		}
@@ -274,6 +290,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return	mixed	The data for the form.
+	 *
 	 * @since	1.0.1
 	 */
 	protected function loadFormData()
@@ -281,7 +298,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_bwpostman.mailinglist.edit.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 		return $data;
@@ -305,11 +323,13 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		$date	= JFactory::getDate();
 		$uid	= JFactory::getUser()->get('id');
 
-		if ($archive == 1) {
+		if ($archive == 1)
+		{
 			$time = $date->toSql();
 
 			// Access check.
-			foreach ($cid as $i) {
+			foreach ($cid as $i)
+			{
 				if (!BwPostmanHelper::allowArchive($i, 0, 'mailinglist'))
 				{
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_ARCHIVE_RIGHTS_MISSING'), 'error');
@@ -317,12 +337,14 @@ class BwPostmanModelMailinglist extends JModelAdmin
 				}
 			}
 		}
-		else {
+		else
+		{
 			$time	= '0000-00-00 00:00:00';
 			$uid	= 0;
 
 			// Access check.
-			foreach ($cid as $i) {
+			foreach ($cid as $i)
+			{
 				if (!BwPostmanHelper::allowRestore($i, 0, 'mailinglist'))
 				{
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_RESTORE_RIGHTS_MISSING'), 'error');
@@ -333,20 +355,23 @@ class BwPostmanModelMailinglist extends JModelAdmin
 
 		if (count($cid))
 		{
-			JArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$query	= $_db->getQuery(true);
 
 			$query->update($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->set($_db->quoteName('archive_flag') . " = " . $_db->Quote((int) $archive));
-			$query->set($_db->quoteName('archive_date') . " = " . $_db->Quote($time, false));
+			$query->set($_db->quoteName('archive_flag') . " = " . $_db->quote((int) $archive));
+			$query->set($_db->quoteName('archive_date') . " = " . $_db->quote($time, false));
 			$query->set($_db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($_db->quoteName('id') . ' IN (' .implode(',', $cid) . ')');
 
 			$_db->setQuery($query);
-
-			if (!$_db->query()) {
-				$this->setError($_db->getErrorMsg());
-				return false;
+			try
+			{
+				$_db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 		return true;
@@ -367,7 +392,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		$app	= JFactory::getApplication();
 
 		// Access check.
-		foreach ($pks as $i) {
+		foreach ($pks as $i)
+		{
 			if (!BwPostmanHelper::allowDelete($i, 0, 'mailinglist'))
 			{
 				return false;
@@ -376,13 +402,14 @@ class BwPostmanModelMailinglist extends JModelAdmin
 
 		if (count($pks))
 		{
-			JArrayHelper::toInteger($pks);
+			ArrayHelper::toInteger($pks);
 			$_db	= $this->getDbo();
 
 			$lists_table	= JTable::getInstance('mailinglists', 'BwPostmanTable');
 
 			// Delete all entries from the mailinglists-table
-			foreach ($pks as $id) {
+			foreach ($pks as $id)
+			{
 				if (!$lists_table->delete($id))
 				{
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_DELETED'), 'error');
@@ -397,7 +424,11 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$query->where('mailinglist_id IN (' .implode(',', $pks) . ')');
 			$_db->setQuery($query);
 
-			if (!$_db->query())
+			try
+			{
+				$_db->execute();
+			}
+			catch (RuntimeException $e)
 			{
 				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_SUBS_DELETED'), 'warning');
 			}
@@ -409,12 +440,15 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$query->where('mailinglist_id IN (' .implode(',', $pks) . ')');
 			$_db->setQuery($query);
 
-			if (!$_db->query())
+			try
+			{
+				$_db->execute();
+			}
+			catch (RuntimeException $e)
 			{
 				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_MLS_DELETED'), 'warning');
 			}
 		}
-
 		return true;
 	}
 
@@ -430,7 +464,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	public function publish(&$pks, $value = 1)
 	{
-		if (parent::publish($pks, $value)) {
+		if (parent::publish($pks, $value))
+		{
 			return true;
 		}
 		return false;

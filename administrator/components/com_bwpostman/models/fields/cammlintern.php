@@ -26,6 +26,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\Registry\Registry as JRegistry;
+
 JFormHelper::loadFieldClass('radio');
 
 /**
@@ -40,6 +42,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.1
 	 */
 	public $type = 'CamMlIntern';
@@ -48,6 +51,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	 * The subscriber id to check for
 	 *
 	 * @var    int
+	 *
 	 * @since  1.0.1
 	 */
 	private $_subscriber_id = null;
@@ -90,42 +94,60 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		$return		= '';
 
 		$type = 'checkbox';
-		if ($v = $this->element['class']) {
+		$v = $this->element['class'];
+		if ($v)
+		{
 			$attributes .= 'class="' . $v . '" ';
 		}
-		else {
+		else
+		{
 			$attributes .= 'class="inputbox" ';
 		}
-		if ($m = $this->element['multiple']) {
+		$m = $this->element['multiple'];
+		if ($m)
+		{
 			$type = 'checkbox';
 		}
 
 		$value = $this->value;
-		if (!is_array($value)) {
+		if (!is_array($value))
+		{
 			// Convert the selections field to an array.
 			$registry = new JRegistry;
 			$registry->loadString($value);
 		}
 
-		if ($disabled || $readonly) {
+		if ($disabled || $readonly)
+		{
 			$attributes .= 'disabled="disabled"';
 		}
 		$options = (array) $this->getOptions();
 
-			if (is_object($item)) {
+		if (is_object($item))
+		{
 			(property_exists($item, 'ml_intern')) ? $ml_select	= $item->ml_intern : $ml_select = '';
 		}
-		if (is_array($cam_id) && !empty($cam_id)) {
+		if (is_array($cam_id) && !empty($cam_id))
+		{
 			$query->select("m.mailinglist_id AS selected");
 			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
 			$query->where($_db->quoteName('m.newsletter_id') . ' IN (' . implode(',', $cam_id) . ')');
 			$_db->setQuery($query);
-			$ml_select = $_db->loadColumn();
+
+			try
+			{
+				$ml_select = $_db->loadColumn();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		$i = 0;
 
-		foreach ($options as $option) {
+		foreach ($options as $option)
+		{
 			if (is_array($ml_select)) $selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
 			$i++;
 			$return	.= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
@@ -140,6 +162,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
+	 *
 	 * @since	1.0.1
 	 */
 	public function getOptions()
@@ -148,6 +171,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 
 		// Initialize variables.
 		$user_id		= null;
+		$options        = array();
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
@@ -156,13 +180,22 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		$query_user	= $_db->getQuery(true);
 
 		// get user_ids if exists
-		if (is_array($subs_id) && !empty($subs_id)) {
+		if (is_array($subs_id) && !empty($subs_id))
+		{
 			$query_user->select($_db->quoteName('user_id'));
 			$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
 			$query_user->where($_db->quoteName('id') . ' = ' . (int) $subs_id[0]);
 
 			$_db->setQuery($query_user);
-			$user_id = $_db->loadResult();
+
+			try
+			{
+				$user_id = $_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		$query->select("id AS value, title, description AS text");
@@ -172,11 +205,14 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		$query->order('title ASC');
 
 		$_db->setQuery($query);
-		$options = $_db->loadObjectList();
 
-		// Check for a database error.
-		if ($_db->getErrorNum()) {
-			$app->enqueueMessage($_db->getErrorMsg(), 'error');
+		try
+		{
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

@@ -32,6 +32,7 @@ JFormHelper::loadFieldClass('list');
  * Form Field class for the Joomla Framework.
  *
  * @package		BwPostman.Administrator
+ *
  * @since		1.0.1
  */
 class JFormFieldAvailableContent extends JFormFieldList
@@ -40,6 +41,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.1
 	 */
 	public $type = 'AvailableContent';
@@ -108,6 +110,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
+	 *
 	 * @since	1.0.1
 	 */
 	public function getOptions()
@@ -120,6 +123,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query_user	= $_db->getQuery(true);
 
 		// get user_ids if exists
+		// @Todo: Why this query?
 		$query_user->select($_db->quoteName('user_id'));
 		$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query_user->where($_db->quoteName('id') . ' = ' . (int) $this->_id);
@@ -138,6 +142,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 * Method to get the available content items which can be used to compose a newsletter
 	 *
 	 * @access	public
+	 *         
 	 * @return	array
 	 */
 	private function getAvailableContent()
@@ -147,26 +152,39 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query				= $_db->getQuery(true);
 		$options			= array();
 		$selected_content	= '';
+		$categories         = array();
+		$rows_list_uncat    = array();
 
 		if ($app->getUserState('com_bwpostman.edit.newsletter.data')) {
 			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
 		}
 
-		if (is_array($selected_content)) $selected_content	= implode(',',$selected_content);
+		if (is_array($selected_content))
+			$selected_content	= implode(',',$selected_content);
 
 		// Get available content which is categorized
 		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id'));
 		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('title') . ' AS ' . $_db->quoteName('category_name'));
 		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' AS ' . $_db->quoteName('parent'));
 		$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('c'));
-		$query->where($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' > ' . $_db->Quote('0'));
+		$query->where($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' > ' . $_db->quote('0'));
 		$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') .' ASC');
 
 		$_db->setQuery($query);
 
-		$categories = $_db->loadObjectList();
+		try
+		{
+			$categories = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		foreach($categories as $category){
+		foreach($categories as $category)
+		{
+			$rows_list  = array();
+
 			$query	= $_db->getQuery(true);
 			$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
 			$query->select('CONCAT(' . $_db->quoteName('cc') . '.' . $_db->quoteName('path') . ', " = ",' . $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS ' . $_db->quoteName('text'));
@@ -178,16 +196,25 @@ class JFormFieldAvailableContent extends JFormFieldList
 			$query->where($_db->quoteName('c') . '.' . $_db->quoteName('catid') . ' = ' . (int) $category->id);
 			$query->where($_db->quoteName('cc') . '.' . $_db->quoteName('parent_id') . ' = ' . (int) $category->parent);
 
-			if ($selected_content)	$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
+			if ($selected_content)
+				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
 
 			$query->order($_db->quoteName('cc') . '.' . $_db->quoteName('path').' ASC');
 			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('created').' DESC');
 			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title').' ASC');
 
 			$_db->setQuery($query);
-			$rows_list = $_db->loadObjectList();
+			try
+			{
+				$rows_list = $_db->loadObjectList();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
-			if(sizeof($rows_list) > 0)	$options	= array_merge($options, $rows_list);
+			if(sizeof($rows_list) > 0)
+				$options	= array_merge($options, $rows_list);
 		}
 
 		// Get available content which is uncategorized
@@ -199,14 +226,23 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query->where($_db->quoteName('state') . ' > ' . (int) 0);
 		$query->where($_db->quoteName('catid') . ' = ' . (int) 0);
 
-		if ($selected_content)	$query->where($_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
+		if ($selected_content)
+			$query->where($_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
 
 		$query->order($_db->quoteName('created').' DESC');
 		$query->order($_db->quoteName('title').' ASC');
 
 		$_db->setQuery($query);
-		$rows_list_uncat = $_db->loadObjectList();
+		try
+		{
+			$rows_list_uncat = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
+		// @ToDo: must there not stand $options?
 		if(sizeof($rows_list_uncat) > 0)	$options	= array_merge($rows_list, $rows_list_uncat);
 
 		return $options;

@@ -29,7 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 $image = '<i class="icon-info"></i>';
@@ -52,9 +52,12 @@ $options = array(
 <script type="text/javascript">
 /* <![CDATA[ */
 	// insert placeholder
-	jQuery(function($){
-		$.fn.EnableInsertAtCaret = function() {
-			$(this).on("focus", function() {
+	jQuery(function($)
+	{
+		$.fn.EnableInsertAtCaret = function()
+		{
+			$(this).on("focus", function()
+			{
 				$(".insertatcaretactive").removeClass("insertatcaretactive");
 				$(this).addClass("insertatcaretactive");
 			});
@@ -62,16 +65,20 @@ $options = array(
 		$("#jform_intro_intro_text,#jform_intro_intro_headline").EnableInsertAtCaret();
 	});
 
-	function InsertAtCaret(myValue) {
-		return jQuery(".insertatcaretactive").each(function(i) {
-			if (document.selection) {
+	function InsertAtCaret(myValue)
+	{
+		return jQuery(".insertatcaretactive").each(function(i)
+		{
+			if (document.selection)
+			{
 				//For browsers like Internet Explorer
 				this.focus();
 				sel = document.selection.createRange();
 				sel.text = myValue;
 				this.focus();
 			}
-			else if (this.selectionStart || this.selectionStart == '0') {
+			else if (this.selectionStart || this.selectionStart == '0')
+			{
 				//For browsers like Firefox and Webkit based
 				var startPos = this.selectionStart;
 				var endPos = this.selectionEnd;
@@ -82,40 +89,49 @@ $options = array(
 				this.selectionEnd = startPos + myValue.length;
 				this.scrollTop = scrollTop;
 			}
-			else {
+			else
+			{
 				this.value += myValue;
 				this.focus();
 			}
 		})
 	}
 
-	Joomla.submitbutton = function (pressbutton) {
+	Joomla.submitbutton = function (pressbutton)
+	{
 		var form = document.adminForm;
 
-		if (pressbutton == 'template.save') {
+		if (pressbutton == 'template.save')
+		{
 			writeStore("inputs", 0);
 			writeStore("jpanetabs_template_tabs", 0);
 			writeStore("jpanetabs_buttons" ,0);
 		}
 
-		if (pressbutton == 'template.apply') {
+		if (pressbutton == 'template.apply')
+		{
 			writeStore("inputs", 0);
 		}
 
-		if (pressbutton == 'template.save2copy') {
+		if (pressbutton == 'template.save2copy')
+		{
 			writeStore("inputs", 0);
 		}
 
-		if (pressbutton == 'template.cancel') {
+		if (pressbutton == 'template.cancel')
+		{
 			// check if form field values has changed
 			var inputs_old = readStore("inputs");
 			inputs = checkValues(1);
-			if (inputs_old === inputs){
+			if (inputs_old === inputs)
+			{
 			}
-			else {
+			else
+			{
 			// confirm if cancel or not
 			confirmCancel =confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
-			if (confirmCancel == false) {
+			if (confirmCancel == false)
+			{
 				return;
 			}
 			}
@@ -127,66 +143,84 @@ $options = array(
 		}
 
 		// Valdiate input fields
-		if (form.jform_title.value == ""){
+		if (form.jform_title.value == "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
-		} else if (form.jform_description.value== ""){
+		}
+		else if (form.jform_description.value== "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
-		} else {
+		}
+		else
+		{
 			submitform(pressbutton);
 		}
 	};
 
 	// check form field values
-	function checkValues(turn) {
+	function checkValues(turn)
+	{
 		var inputs = '';
 		var elements = document.adminForm.elements;
-		for (var i=0; i<elements.length; i++){
+		for (var i=0; i<elements.length; i++)
+		{
 			var fieldValue = elements[i].value;
 			if (elements[i].getAttribute('checked') != false) {var fieldChecked = elements[i].getAttribute('checked');}
 			inputs += fieldValue + fieldChecked;
 		}
-		if (turn == 0){
+		if (turn == 0)
+		{
 			writeStore("inputs", inputs);
 		}
-		else {
+		else
+		{
 			return inputs;
 		}
 	}
 
 	// write to storage
-	function writeStore(item, value) {
-		if (Browser.Features.localstorage) {
+	function writeStore(item, value)
+	{
+		if (Browser.Features.localstorage)
+		{
 			localStorage[item] = value;
 		}
-		else {
+		else
+		{
 			Cookie.write(item, value);
 		}
 	}
 
 	// read storage
 	function readStore(item) {
-		if (Browser.Features.localstorage) {
+		if (Browser.Features.localstorage)
+		{
 			itemValue = localStorage[item];
 		}
-		else {
+		else
+		{
 			itemValue = Cookie.read(item);
 		}
 		return itemValue;
 	}
 
-	window.onload = function() {
+	window.onload = function()
+	{
 		var framefenster = document.getElementById("myIframe");
 
-		if(framefenster.contentWindow.document.body){
+		if(framefenster.contentWindow.document.body)
+		{
 			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
-			if(document.all && !window.opera) {
+			if(document.all && !window.opera)
+			{
 				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
 			}
 			framefenster.style.height = framefenster_size + 'px';
 		}
 		// check if store is empty or 0
 		var store = readStore("inputs");
-		if (store == 0 || store === undefined || store === null){
+		if (store == 0 || store === undefined || store === null)
+		{
 			checkValues(0);
 		}
 	};
@@ -195,13 +229,14 @@ $options = array(
 
 <div id="bwp_view_lists">
 	<?php
-		if ($this->queueEntries) {
+		if ($this->queueEntries)
+		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
  		}
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
-			<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_TEMPLATE'); ?></legend>
+			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEMPLATE'); ?></legend>
 			<div class="well well-small">
 				<div class="fltlft width-40 span5 control-group">
 					<?php
@@ -209,7 +244,7 @@ $options = array(
 						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'), 'panel1');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
+						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<li>
@@ -245,7 +280,7 @@ $options = array(
 				</div>
 				<div id="email_preview" class="fltlft span7">
 					<p><button class="btn btn-large btn-block btn-primary" type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;</p>
-					<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>" height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
+					<iframe id="myIframe" name="myIframeHtml" src="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=' . $this->item->id); ?>" height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>
@@ -258,7 +293,7 @@ $options = array(
 		<?php echo $this->form->getInput('tpl_id'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 	</form>
 </div>

@@ -28,7 +28,7 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Load the modal behavior for the campaign preview
-JHTML::_('behavior.modal', 'a.popup');
+JHtml::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the statistics
 jimport('joomla.html.html.sliders');
@@ -154,13 +154,13 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td width="200"><?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT_NUM').': '; ?></td>
 								<td width="50">
-									<b><a href="index.php?option=com_bwpostman&view=newsletters&layout=sent"><?php echo $this->general['nl_unsent']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=sent'); ?>"><?php echo $this->general['nl_unsent']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_NL_SENT_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=newsletters&layout=sent"><?php echo $this->general['nl_sent']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=sent'); ?>"><?php echo $this->general['nl_sent']; ?></a></b>
 								</td>
 							</tr>
 						<?php
@@ -169,13 +169,13 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_SUB_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=subscribers"><?php echo $this->general['sub']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=subscribers'); ?>"><?php echo $this->general['sub']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_TEST_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=subscribers"><?php echo $this->general['test']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=subscribers'); ?>"><?php echo $this->general['test']; ?></a></b>
 								</td>
 							</tr>
 						<?php
@@ -184,7 +184,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_CAM_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=campaigns"><?php echo $this->general['cam']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=campaigns'); ?>"><?php echo $this->general['cam']; ?></a></b>
 								</td>
 							</tr>
 						<?php
@@ -193,13 +193,13 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ML_PUBLIC_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=mailinglists"><?php echo $this->general['ml_published']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"><?php echo $this->general['ml_published']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ML_INTERNAL_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=mailinglists"><?php echo $this->general['ml_unpublished']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"><?php echo $this->general['ml_unpublished']; ?></a></b>
 								</td>
 							</tr>
 						<?php }
@@ -207,13 +207,13 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_TPL_HTML_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=templates"><?php echo $this->general['html_templates']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=templates'); ?>"><?php echo $this->general['html_templates']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=templates"><?php echo $this->general['text_templates']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=templates'); ?>"><?php echo $this->general['text_templates']; ?></a></b>
 								</td>
 							</tr>
 						<?php } ?>
@@ -229,7 +229,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td width="200"><?php echo JText::_('COM_BWPOSTMAN_ARC_NL_NUM').': '; ?></td>
 								<td width="50">
-									<b><a href="index.php?option=com_bwpostman&view=archive&layout=newsletters"><?php echo $this->archive['arc_nl']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=newsletters'); ?>"><?php echo $this->archive['arc_nl']; ?></a></b>
 								</td>
 							</tr>
 						<?php
@@ -238,7 +238,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_SUB_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=archive&layout=subscribers"><?php echo $this->archive['arc_sub']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=subscribers'); ?>"><?php echo $this->archive['arc_sub']; ?></a></b>
 								</td>
 							</tr>
 						<?php
@@ -247,7 +247,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_CAM_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=archive&layout=campaigns"><?php echo $this->archive['arc_cam']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=campaigns'); ?>"><?php echo $this->archive['arc_cam']; ?></a></b>
 								</td>
 							</tr>
 						<?php
@@ -256,7 +256,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_ML_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=archive&layout=mailinglists"><?php echo $this->archive['arc_ml']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=mailinglists'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
 								</td>
 							</tr>
 						<?php }
@@ -264,7 +264,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=archive&layout=templates"><?php echo $this->archive['arc_ml']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
 								</td>
 							</tr>
 						<?php }
@@ -272,7 +272,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 							<tr>
 								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM').': '; ?></td>
 								<td>
-									<b><a href="index.php?option=com_bwpostman&view=archive&layout=templates"><?php echo $this->archive['arc_ml']; ?></a></b>
+									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
 								</td>
 							</tr>
 						<?php } ?>

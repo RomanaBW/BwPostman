@@ -28,10 +28,10 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 // Load the modal behavior for the newsletter preview
-JHTML::_('behavior.modal');
+JHtml::_('behavior.modal');
 JHtml::_('formbehavior.chosen', 'select');
 
 $user		= JFactory::getUser();
@@ -94,13 +94,13 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 										<thead>
 											<tr>
 												<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-												<th width="250" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+												<th width="250" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
 												<th width="150" nowrap="nowrap"><?php echo JText::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?></th>
-												<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-												<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?></th>
-												<th width="100"><?php echo JHTML::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
-												<th width="120"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
-												<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+												<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+												<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?></th>
+												<th width="100"><?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
+												<th width="120"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
+												<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 											</tr>
 										</thead>
 										<tfoot>
@@ -120,7 +120,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 													<tr class="row<?php echo $i % 2; ?>">
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 														<td><?php echo $item->title; ?></td>
-														<td><?php if ($item->thumbnail) : ?><img src="<?php echo JURI::root( true ) . '/' . $item->thumbnail; ?>" style="width: 140px;" /><?php endif; ?></td>
+														<td><?php if ($item->thumbnail) : ?><img src="<?php echo JUri::root( true ) . '/' . $item->thumbnail; ?>" style="width: 140px;" /><?php endif; ?></td>
 														<td><?php echo $item->description; ?></td>
 														<td align="center"><?php echo $item->tpl_id; ?></td>
 														<td align="center"><?php if ($item->published) { echo JText::_('COM_BWPOSTMAN_YES'); } else { echo JText::_('COM_BWPOSTMAN_NO');} ?></td>
@@ -146,7 +146,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 				<input type="hidden" name="boxchecked" value="0" />
 				<input type="hidden" name="layout" value="templates" /><!-- value can change if one clicks on another tab -->
 				<input type="hidden" name="tab" value="templates" /><!-- value never changes -->
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo JHtml::_('form.token'); ?>
 			</div>
 
 			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

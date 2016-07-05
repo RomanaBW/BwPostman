@@ -26,7 +26,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.modal');
 JHtml::_('behavior.multiselect');
 
 JHtml::_('bootstrap.tooltip');
@@ -34,7 +34,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
-JHTML::_('behavior.modal', 'a.popup');
+JHtml::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the Tabs
 jimport('joomla.html.html.tabs');
@@ -49,22 +49,29 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.checkAll2 = function(checkbox, stub) {
-	    if (!stub) {
+	Joomla.checkAll2 = function(checkbox, stub)
+	{
+	    if (!stub)
+	    {
 	        stub = 'ub';
 	    }
-	    if (checkbox.form) {
+	    if (checkbox.form)
+	    {
 	        var c = 0, i, e;
-	        for (i = 0, n = checkbox.form.elements.length; i < n; i++) {
+	        for (i = 0, n = checkbox.form.elements.length; i < n; i++)
+	        {
 	            e = checkbox.form.elements[i];
-	            if (e.type == checkbox.type) {
-	                if ((stub && e.id.indexOf(stub) == 0) || !stub) {
+	            if (e.type == checkbox.type)
+	            {
+	                if ((stub && e.id.indexOf(stub) == 0) || !stub)
+	                {
 	                    e.checked = checkbox.checked;
 	                    c += (e.checked == true ? 1 : 0);
 	                }
 	            }
 	        }
-	        if (checkbox.form.boxchecked) {
+	        if (checkbox.form.boxchecked)
+	        {
 	            checkbox.form.boxchecked.value = c;
 	        }
 	        return true;
@@ -72,23 +79,30 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 	    return false;
 	};
 
-	function changeTab(tab){
-		if (tab != 'default_unsent') {
+	function changeTab(tab)
+	{
+		if (tab != 'default_unsent')
+		{
 			document.adminForm.tab.setAttribute('value',tab);
 		}
-		else {
+		else
+		{
 			return false;
 		}
 	}
 
-	Joomla.submitbutton = function (pressbutton) {
-		if (pressbutton == 'newsletters.archive') {
+	Joomla.submitbutton = function (pressbutton)
+	{
+		if (pressbutton == 'newsletters.archive')
+		{
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true) {
+			if (ConfirmArchive == true)
+			{
 				submitform(pressbutton);
 			}
 		}
-		else {
+		else
+		{
 			submitform(pressbutton);
 		}
 	};
@@ -97,7 +111,8 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 
 <div id="bwp_view_lists">
 	<?php
-		if ($this->queueEntries) {
+		if ($this->queueEntries)
+		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 		}
 	?>
@@ -143,23 +158,24 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 					<thead>
 						<tr>
 							<th width="30" nowrap="nowrap" align="center"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll2(this)" /></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th width="150" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'Published', 'a.published', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th width="150" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'Published', 'a.published', $listDirn, $listOrder); ?></th>
 							<th width="100" nowrap="nowrap">
-								<?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?><br />
-								<?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?><br />
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
 								</th>
-							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php
-						if (count($this->items)) {
+						if (count($this->items))
+						{
 							foreach ($this->items as $i => $item) :
 								$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 								$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
@@ -201,7 +217,8 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 								</tr><?php
 							endforeach;
 						}
-						else {
+						else
+						{
 						// if no data ?>
 							<tr class="row1">
 								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
@@ -219,7 +236,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			<input type="hidden" name="layout" value="default" />
 			<input type="hidden" name="tpl" value="sent" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>
 </div>

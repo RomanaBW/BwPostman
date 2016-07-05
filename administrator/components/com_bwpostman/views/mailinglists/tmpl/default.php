@@ -40,19 +40,20 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) {
-
-		if (pressbutton == 'archive') {
+	Joomla.submitbutton = function (pressbutton) 
+	{
+		if (pressbutton == 'archive') 
+		{
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_ML_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true) {
+			if (ConfirmArchive == true)
+			{
 				submitform(pressbutton);
-			} else {
-				return;
 			}
-		} else {
+		}
+		else
+		{
 			submitform(pressbutton);
 		}
-
 	};
 /* ]]> */
 </script>
@@ -77,12 +78,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<thead>
 						<tr>
 							<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-							<th width="250" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+							<th width="250" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 						</tr>
 					</thead>
 					<tfoot>
@@ -112,7 +113,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									<?php endif; ?>
 								</td>
 								<td><?php echo $item->description; ?></td>
-								<td align="center"><?php echo JHTML::_('jgrid.published', $item->published, $i, 'mailinglists.', $canChange, 'cb'); ?>
+								<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'mailinglists.', $canChange, 'cb'); ?>
 								<td><?php echo $this->escape($item->access_level); ?></td>
 								<td align="center"><?php echo $item->subscribers; ?></td>
 								<td align="center"><?php echo $item->id; ?></td>
@@ -130,7 +131,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo JHtml::_('form.token'); ?>
 			</div>
 			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 		</div>

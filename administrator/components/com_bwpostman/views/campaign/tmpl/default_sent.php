@@ -38,10 +38,12 @@ defined ('_JEXEC') or die ('Restricted access');
 			}
 			else {
 				$firstset	= $this->newsletters->sent[0];
-				if (property_exists($firstset, 'email')) {
+				if (property_exists($firstset, 'email'))
+				{
 					$automation	= true;
 				}
-				else {
+				else
+				{
 					$automation	= false;
 				}
 				?>
@@ -50,23 +52,28 @@ defined ('_JEXEC') or die ('Restricted access');
 						<tr>
 							<th>
 							<?php
-								if ($automation) {
+								if ($automation)
+								{
 									echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAIL_NUMBER');
 								}
-								else {
+								else
+								{
 									echo JText::_('NUM');
 								} ?>
 							</th>
 							<th align="left"><?php echo JText::_('SUBJECT'); ?></th>
 							<th width="150"><?php echo JText::_('COM_BWPOSTMAN_NL_MAILING_DATE'); ?></th>
 							<?php
-								if ($automation) { ?>
+								if ($automation)
+								{ ?>
 									<th width="150"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_RECIPIENT'); ?></th>
 								<?php }
-								else { ?>
+								else
+								{ ?>
 									<th width="150"><?php echo JText::_('AUTHOR'); ?></th>
 									<th width="150"><?php echo JText::_('PUBLISHED'); ?></th>
-								<?php }
+								<?php
+								}
 							?>
 						</tr>
 					</thead>
@@ -84,10 +91,12 @@ defined ('_JEXEC') or die ('Restricted access');
 							<tr class="<?php echo "item$k"; ?>">
 								<td align="center">
 								<?php
-									if ($automation) {
+									if ($automation)
+									{
 										echo $item->mail_number;
 									}
-									else {
+									else
+									{
 										echo $item->id;
 									} ?>
 								</td>
@@ -104,12 +113,14 @@ defined ('_JEXEC') or die ('Restricted access');
 									</span>
 								</td>
 								<?php
-								if ($automation) { ?>
+								if ($automation)
+								{ ?>
 									<td align="center"><?php echo JHtml::date($item->sent_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
 									<td align="center"><?php echo $item->email; ?></td>
 								<?php
 								}
-								else { ?>
+								else
+								{ ?>
 									<td align="center"><?php echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
 									<td align="center"><?php echo $item->author; ?></td>
 									<td align="center"><?php if ($item->published) { echo JText::_('COM_BWPOSTMAN_YES'); } else { echo JText::_('COM_BWPOSTMAN_NO');}?>

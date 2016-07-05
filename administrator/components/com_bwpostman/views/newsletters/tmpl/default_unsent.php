@@ -32,7 +32,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
-JHTML::_('behavior.modal', 'a.popup');
+JHtml::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the Tabs
 jimport('joomla.html.html.tabs');
@@ -46,20 +46,26 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	function changeTab(tab){
-		if (tab != 'default_unsent') {
+	function changeTab(tab)
+	{
+		if (tab != 'default_unsent')
+		{
 			document.adminForm.tab.setAttribute('value',tab);
 		}
 	}
 
-	Joomla.submitbutton = function (pressbutton) {
-		if (pressbutton == 'newsletters.archive') {
+	Joomla.submitbutton = function (pressbutton)
+	{
+		if (pressbutton == 'newsletters.archive')
+		{
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true) {
+			if (ConfirmArchive == true)
+			{
 				submitform(pressbutton);
 			}
 		}
-		else {
+		else
+		{
 			submitform(pressbutton);
 		}
 	};
@@ -71,7 +77,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	$jinput	= JFactory::getApplication()->input;
 	$task	= $jinput->get->get('task');
 
-	if ($task == "startsending") {
+	if ($task == "startsending")
+	{
 		echo '<script type="text/javascript">'."\n";
 		echo "window.addEvent('load', function() {\n";
 		// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
@@ -87,8 +94,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		$jinput	= JFactory::getApplication()->input;
 		$task	= $jinput->get->get('task');
 
-		if ($task != 'startsending'){
-				if ($this->queueEntries) {
+		if ($task != 'startsending')
+		{
+				if ($this->queueEntries)
+				{
 					JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 				}
 	 		}
@@ -135,18 +144,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<thead>
 						<tr>
 							<th width="30" nowrap="nowrap" align="center"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th width="150" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE', 'a.modified_time', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th width="150" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE', 'a.modified_time', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
+							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-						if (count($this->items)) {
+						if (count($this->items))
+						{
 							foreach ($this->items as $i => $item) :
 								$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 								$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.newsletter.'.$item->id);
@@ -176,7 +186,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								</tr><?php
 							endforeach;
 						}
-						else {
+						else
+						{
 			            // if no data ?>
 							<tr class="row1">
 								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
@@ -194,7 +205,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="layout" value="default" />
 			<input type="hidden" name="tpl" value="unsent" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>
 </div>

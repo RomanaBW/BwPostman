@@ -36,6 +36,55 @@ require_once JPATH_ADMINISTRATOR . '/components/com_media/models/manager.php';
 class BwPostmanViewMedia extends JViewLegacy
 {
 	/**
+	 * property to hold session
+	 *
+	 * @var object  $session
+	 */
+	public $session;
+
+	/**
+	 * property to hold config
+	 *
+	 * @var object  $config
+	 */
+	public $config;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var object  $state
+	 */
+	public $state;
+
+	/**
+	 * property to hold folder list
+	 *
+	 * @var array  $folderList
+	 */
+	public $folderList;
+
+	/**
+	 * property to hold require ftp
+	 *
+	 * @var boolean  $require_ftp
+	 */
+	public $require_ftp;
+
+	/**
+	 * property to hold folders id
+	 *
+	 * @var int $folders_id
+	 */
+	public $folders_id;
+
+	/**
+	 * property to hold folders
+	 *
+	 * @var array  $folders
+	 */
+	public $folders;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -55,7 +104,8 @@ class BwPostmanViewMedia extends JViewLegacy
 
 		if (!$app->isAdmin())
 		{
-			return $app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
+			$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
+			return;
 		}
 
 		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
@@ -67,7 +117,7 @@ class BwPostmanViewMedia extends JViewLegacy
 		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
 		JHtml::_('stylesheet', 'system/mootree.css', array(), true);
 
-		if ($lang->isRTL())
+		if ($lang->isRtl())
 		{
 			JHtml::_('stylesheet', 'media/popup-imagemanager_rtl.css', array(), true);
 			JHtml::_('stylesheet', 'media/mootree_rtl.css', array(), true);

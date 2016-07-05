@@ -42,18 +42,18 @@ jimport('joomla.application.component.view');
 class BwPostmanViewMailinglist extends JViewLegacy
 {
 	/**
-	 * property to hold selected items
+	 * property to hold form data
 	 *
-	 * @var array   $items
+	 * @var array   $form
 	 */
-	protected $items;
+	protected $form;
 
 	/**
-	 * property to hold pagination object
+	 * property to hold selected item
 	 *
-	 * @var object  $pagination
+	 * @var object   $item
 	 */
-	protected $pagination;
+	protected $item;
 
 	/**
 	 * property to hold state
@@ -61,6 +61,34 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * @var array|object  $state
 	 */
 	protected $state;
+
+	/**
+	 * property to hold can do properties
+	 *
+	 * @var array $canDo
+	 */
+	public $canDo;
+
+	/**
+	 * property to hold queue entries property
+	 *
+	 * @var boolean $queueEntries
+	 */
+	public $queueEntries;
+
+	/**
+	 * property to hold request url
+	 *
+	 * @var object  $request_url
+	 */
+	protected $request_url;
+
+	/**
+	 * property to hold template
+	 *
+	 * @var object $template
+	 */
+	public $template;
 
 
 	/**
@@ -74,7 +102,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$template	= $app->getTemplate();
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		$app->setUserState('com_bwpostman.edit.mailinglist.id', JFactory::getApplication()->input->getInt('id', 0));
@@ -104,21 +132,22 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$userId		= JFactory::getUser()->get('id');
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_ML_DETAILS'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
 		$browser = JBrowser::getInstance();
 		$user_browser = $browser->getBrowser();
 
-		if ($user_browser == 'msie') {
-			$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
+		if ($user_browser == 'msie')
+		{
+			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
@@ -129,39 +158,44 @@ class BwPostmanViewMailinglist extends JViewLegacy
         $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
-		if ($isNew && $canDo->get('bwpm.create')) {
-			JToolBarHelper::save('mailinglist.save');
-			JToolBarHelper::apply('mailinglist.apply');
-			JToolBarHelper::cancel('mailinglist.cancel');
-			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+		if ($isNew && $canDo->get('bwpm.create'))
+		{
+			JToolbarHelper::save('mailinglist.save');
+			JToolbarHelper::apply('mailinglist.apply');
+			JToolbarHelper::cancel('mailinglist.cancel');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
 		}
-		else {
+		else
+		{
 			// Can't save the record if it's checked out.
-			if (!$checkedOut) {
+			if (!$checkedOut)
+			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId)) {
-					JToolBarHelper::save('mailinglist.save');
-					JToolBarHelper::apply('mailinglist.apply');
+				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+				{
+					JToolbarHelper::save('mailinglist.save');
+					JToolbarHelper::apply('mailinglist.apply');
 				}
 			}
 			// Rename the cancel button for existing items
-			JToolBarHelper::cancel('mailinglist.cancel', 'JTOOLBAR_CLOSE');
-			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+			JToolbarHelper::cancel('mailinglist.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
 		}
 
 		$backlink 	= $_SERVER['HTTP_REFERER'];
 		$siteURL 	= $uri->base();
 
 		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL.'index.php?option=com_bwpostman') {
-			JToolBarHelper::spacer();
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
-			JToolBarHelper::back();
+		if ($backlink == $siteURL.'index.php?option=com_bwpostman')
+		{
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
+			JToolbarHelper::back();
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-		JToolBarHelper::spacer();
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
 	}
 }

@@ -89,29 +89,33 @@ class BwPostmanTableSendmailcontent extends JTable
 	 *
 	 * @param array|object  $data       Named array
 	 * @param string        $ignore     Space separated list of fields not to bind
+	 *
+	 * @throws BwException
+	 *
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
 	{
 		// Bind the rules.
-		if (is_object($data)) {
+		if (is_object($data))
+		{
 			if (property_exists($data, 'rules') && is_array($data->rules))
 			{
 				$rules = new JAccessRules($data->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data)) {
+		elseif (is_array($data))
+		{
 			if (array_key_exists('rules', $data) && is_array($data['rules']))
 			{
 				$rules = new JAccessRules($data['rules']);
 				$this->setRules($rules);
 			}
 		}
-		else {
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-			$this->setError($e);
-			return false;
+		else
+		{
+			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -142,31 +146,41 @@ class BwPostmanTableSendmailcontent extends JTable
 	public function store($updateNulls = false)
 	{
 		$k		= $this->_tbl_key;
+		$res    = 0;
 		$query	= $this->_db->getQuery(true);
 
-			if (!$this->$k) {
+		if (!$this->$k)
+		{
 			// Find the next possible id and insert
 			$query->select('IFNULL(MAX(id)+1,1) AS ' . $this->_db->quoteName('id'));
 			$query->from($this->_db->quoteName($this->_tbl));
 			$this->_db->setQuery($query);
 
-			$res = $this->_db->loadResult();
-			if ($res) $this->$k = $res;
+			try
+			{
+				$res = $this->_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+			if ($res)
+				$this->$k = $res;
 		}
 
-		if ($this->$k) {
+		if ($this->$k)
+		{
 			// An id value is set
-			$ret = $this->_db->insertObject($this->_tbl, $this);
-		} else {
-			$ret = 0;
+			try
+			{
+				$this->_db->insertObject($this->_tbl, $this);
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage(get_class($this).'::store failed - ' . $e->getMessage());
+			}
 		}
-
-		if (!$ret) {
-			$this->setError(get_class($this).'::store failed - '.$this->_db->getErrorMsg());
-			return false;
-		} else {
-			return true;
-		}
+		return true;
 	}
 
 	/**
@@ -179,13 +193,16 @@ class BwPostmanTableSendmailcontent extends JTable
 	 *
 	 * @return mixed
 	 */
-	public function load($keys = null, $reset = true){
-		if (!$keys) return 0;
+	public function load($keys = null, $reset = true)
+	{
+		if (!$keys)
+			return 0;
 		// If (empty($mode)) return 0;
 		$app	= JFactory::getApplication();
 		$mode	= $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
+		$result = array();
 
 		$this->reset();
 
@@ -196,12 +213,14 @@ class BwPostmanTableSendmailcontent extends JTable
 
 		$_db->setQuery($query);
 
-		if ($result = $_db->loadAssoc()) {
-			return $this->bind($result);
+		try
+		{
+			$result = $_db->loadAssoc();
 		}
-		else{
-			$this->setError($_db->getErrorMsg());
-			return false;
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(),'error');
 		}
+		return $this->bind($result);
 	}
 }

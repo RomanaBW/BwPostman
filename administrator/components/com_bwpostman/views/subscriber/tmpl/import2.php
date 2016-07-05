@@ -28,7 +28,7 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Keep session alive while editing
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 $jinput	= JFactory::getApplication()->input;
@@ -40,10 +40,12 @@ if (isset($this->result['import_warn'])) $import_warn = $this->result['import_wa
 $option			= $jinput->getCmd('option');
 $fileformat		= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat');
 
-if ($fileformat == 'xml') {
+if ($fileformat == 'xml')
+{
 	$row_text 	= JText::_('COM_BWPOSTMAN_XML_ROW');
 }
-else {
+else
+{
 	$row_text 	= JText::_('COM_BWPOSTMAN_CSV_ROW');
 }
 ?>
@@ -51,7 +53,8 @@ else {
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<?php
 	if ((empty($mail_err)) && (empty($import_err)) && (empty($import_warn))) echo '<div class="alert alert-success">' . JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS') . '</div>';
-	if (!empty($mail_err)) : { // The subscribers were imported but the confirmation email couldn't be sent ?>
+	if (!empty($mail_err))
+	{ // The subscribers were imported but the confirmation email couldn't be sent ?>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR_CONFIRMEMAIL'); ?></legend>
 			<table class="adminlist table table-bordered">
@@ -73,9 +76,11 @@ else {
 				</tbody>
 			</table>
 		</fieldset>
-	<?php } endif;
+	<?php
+	}
 	// Email error
-	if (!empty($import_err)) : {
+	if (!empty($import_err))
+	{
 	// Subscriber couldn't be imported ?>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR'); ?></legend>
@@ -98,9 +103,11 @@ else {
 				</tbody>
 			</table>
 		</fieldset>
-	<?php } endif;
+	<?php
+	};
 	// Import error
-	if (!empty($import_warn)) : {
+	if (!empty($import_warn))
+	{
 	// The subscriber was imported but some data were changed ?>
 		<fieldset class="adminform"><legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_WARNING'); ?></legend>
 			<table class="adminlist">
@@ -122,13 +129,14 @@ else {
 				</tbody>
 			</table>
 		</fieldset>
-	<?php } endif;
+	<?php
+	}
 	// Import warning ?>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

@@ -44,7 +44,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $app	= JFactory::getApplication();
 $tab	= $app->getUserState($this->context . '.tab', 'confirmed');
 
-switch ($tab) {
+switch ($tab)
+{
 	default:
 	case 'confirmed'		: $tab_offset	= 0;
 		break;
@@ -56,11 +57,13 @@ switch ($tab) {
 $tab_cookie	= false;
 
 $tab_options = array(
-		'onActive' => 'function(title, description){
+		'onActive' => 'function(title, description)
+		{
         description.setStyle("display", "block");
         title.addClass("open").removeClass("closed");
     }',
-		'onBackground' => 'function(title, description){
+		'onBackground' => 'function(title, description)
+		{
         description.setStyle("display", "none");
         title.addClass("closed").removeClass("open");
     }',
@@ -71,15 +74,19 @@ $tab_options = array(
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) {
+	Joomla.submitbutton = function (pressbutton)
+	{
 
-		if (pressbutton == 'archive') {
+		if (pressbutton == 'archive')
+		{
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true) {
+			if (ConfirmArchive == true)
+			{
 				submitform(pressbutton);
 			}
 		}
-		else {
+		else
+		{
 			submitform(pressbutton);
 		}
 	};
@@ -134,7 +141,7 @@ $tab_options = array(
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" id="tab" name="tab" value="" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>
 </div>

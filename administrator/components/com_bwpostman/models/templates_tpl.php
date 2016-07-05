@@ -29,6 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
+use Joomla\Registry\Registry as JRegistry;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');

@@ -28,13 +28,13 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 	// Keep session alive while editing
-	JHTML::_('behavior.keepalive');
+	JHtml::_('behavior.keepalive');
 ?>
 
 <?php
 $jinput	= JFactory::getApplication()->input;
-$image_pos = JHTML::_('image', 'administrator/images/tick.png', JText::_('COM_BWPOSTMAN_NOTES'));
-$image_neg = JHTML::_('image', 'administrator/images/publish_x.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image_pos = JHtml::_('image', 'administrator/images/tick.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image_neg = JHtml::_('image', 'administrator/images/publish_x.png', JText::_('COM_BWPOSTMAN_NOTES'));
 $option = $jinput->getCmd('option');
 
 ?>
@@ -73,7 +73,7 @@ $option = $jinput->getCmd('option');
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<input type="hidden" name="task" value="finishValidation" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

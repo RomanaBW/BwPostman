@@ -34,6 +34,7 @@ JFormHelper::loadFieldClass('radio');
  * Multiselect is available by default.
  *
  * @package		BwPostman.Administrator
+ *
  * @since		1.2.0
  */
 class JFormFieldTextTemplates extends JFormFieldRadio
@@ -42,6 +43,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.2.0
 	 */
 	protected $type = 'TextTemplates';
@@ -71,9 +73,11 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 		$html[]		= '<div class="controls">';
 
 		// note for old templates
-		if ($selected < 1) $html[]	= JText::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
+		if ($selected < 1)
+			$html[]	= JText::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
 
-		if (count($options) > 0) {
+		if (count($options) > 0)
+		{
 		// Build the radio field output.
 			foreach ($options as $i => $option)
 			{
@@ -96,12 +100,13 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 								. $onchange . $disabled . ' />';
 
 				$html[]		= '<div class="media-preview add-on fltlft">';
-				$html[]		= '<span class="hasTipPreview" title="&lt;strong&gt;'.$option->description.'&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;div id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot; src=&quot;'.JURI::root() .$option->thumbnail.'&quot; alt=&quot;'.$option->title.'&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'.$option->title.'</span>';
+				$html[]		= '<span class="hasTipPreview" title="&lt;strong&gt;'.$option->description.'&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;div id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot; src=&quot;'.JUri::root() .$option->thumbnail.'&quot; alt=&quot;'.$option->title.'&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'.$option->title.'</span>';
 				$html[]		= '</div>';
 				$html[]		= '</label>';
 			}
 		}
-		else {
+		else
+		{
 			$html[]	= JText::_('COM_BWPOSTMAN_NO_DATA');
 		}
 
@@ -123,11 +128,10 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 
 		// Initialize variables.
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$options    = array();
 
 		// prepare query
 		$_db		= JFactory::getDbo();
-
-
 
 		// Build the select list for the templates
 		$query	= $_db->getQuery(true);
@@ -137,24 +141,28 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 		$query->select($_db->quoteName('thumbnail')  . ' AS ' . $_db->quoteName('thumbnail'));
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		// special for old newsletters with template_id < 1
-		if ($item->text_template_id < 1 && !is_null($item->text_template_id)) {
-			$query->where($_db->quoteName('id') . ' >= ' . $_db->Quote('-2'));
+		if ($item->text_template_id < 1 && !is_null($item->text_template_id))
+		{
+			$query->where($_db->quoteName('id') . ' >= ' . $_db->quote('-2'));
 		}
-		else {
-			$query->where($_db->quoteName('id') . ' > ' . $_db->Quote('0'));
+		else
+		{
+			$query->where($_db->quoteName('id') . ' > ' . $_db->quote('0'));
 		}
-		$query->where($_db->quoteName('archive_flag') . ' = ' . $_db->Quote('0'));
-		$query->where($_db->quoteName('published') . ' = ' . $_db->Quote('1'));
-		$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->Quote('997'));
+		$query->where($_db->quoteName('archive_flag') . ' = ' . $_db->quote('0'));
+		$query->where($_db->quoteName('published') . ' = ' . $_db->quote('1'));
+		$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->quote('997'));
 		$query->order($_db->quoteName('title') . ' ASC');
 
 		$_db->setQuery($query);
 
-		$options = $_db->loadObjectList();
-
-		// Check for a database error.
-		if ($_db->getErrorNum()) {
-			$app->enqueueMessage($_db->getErrorMsg(), 'error');
+		try
+		{
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

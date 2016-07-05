@@ -28,45 +28,53 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-$image = JHTML::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image = JHtml::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
 ?>
 
 <script type="text/javascript">
 /* <![CDATA[ */
-function changeTab(tab){
-	if (tab != 'edit_preview') {
+function changeTab(tab)
+{
+	if (tab != 'edit_preview')
+	{
 		document.adminForm.tab.setAttribute('value',tab);
 		document.adminForm.task.setAttribute('value','newsletter.changeTab');
 		return true;
 	}
-	else {
+	else
+	{
 		return false;
 	}
 }
 
-Joomla.submitbutton = function (pressbutton) {
+Joomla.submitbutton = function (pressbutton)
+{
 	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel') {
+	if (pressbutton == 'newsletter.cancel')
+	{
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.back') {
+	if (pressbutton == 'newsletter.back')
+	{
 		form.task.value = 'back';
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.apply') {
+	if (pressbutton == 'newsletter.apply')
+	{
 		document.adminForm.task.setAttribute('value','newsletter.apply');
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.save') {
+	if (pressbutton == 'newsletter.save')
+	{
 		document.adminForm.task.setAttribute('value','newsletter.save');
 		submitform(pressbutton);
 	}
@@ -109,7 +117,7 @@ Joomla.submitbutton = function (pressbutton) {
 
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
-				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_HEADER'); ?></legend>
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_HEADER'); ?></legend>
 				<div class="well well-small">
 					<table class="admintable">
 						<tr>
@@ -135,20 +143,20 @@ Joomla.submitbutton = function (pressbutton) {
 				</div>
 			</fieldset>
 			<fieldset class="adminform">
-				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeHtml"
-						src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_html_preview&amp;format=raw&amp;task=previewHTML&amp;nl_id=<?php echo $this->item->id; ?>"
+						src="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_html_preview&amp;format=raw&amp;task=previewHTML&amp;nl_id=' . $this->item->id); ?>"
 						height="500" width="100%" style="border: 1px solid #999999;"></iframe>
 					</div>
 				</div>
 			</fieldset>
 
 			<fieldset class="adminform">
-				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeText"
-						src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_text_preview&amp;format=raw&amp;task=previewText&amp;nl_id=<?php echo $this->item->id; ?>"
+						src="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_text_preview&amp;format=raw&amp;task=previewText&amp;nl_id=' . $this->item->id); ?>"
 						height="400" width="100%" style="border: 1px solid #999999;"></iframe>
 					</div>
 				</div>
@@ -166,7 +174,6 @@ Joomla.submitbutton = function (pressbutton) {
 			foreach($this->form->getFieldset('publish_hidden') as $field) echo $field->input;
 		?>
 
-
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
@@ -178,6 +185,6 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

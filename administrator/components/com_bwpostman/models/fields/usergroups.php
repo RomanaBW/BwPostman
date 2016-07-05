@@ -32,6 +32,7 @@ defined('JPATH_PLATFORM') or die;
  * Multiselect is available by default.
  *
  * @package		BwPostman.Administrator
+ *
  * @since		1.0.2
  */
 class JFormFieldUsergroups extends JFormField
@@ -40,6 +41,7 @@ class JFormFieldUsergroups extends JFormField
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.2
 	 */
 	protected $type = 'Usergroups';

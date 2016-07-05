@@ -83,7 +83,8 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	public function __construct()
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'title', 'a.title',
@@ -117,7 +118,8 @@ class BwPostmanModelMailinglists extends JModelList
 		$app = JFactory::getApplication();
 
 		// Adjust the context to support modal layouts.
-		if ($layout = $app->input->get('layout'))
+		$layout = $app->input->get('layout');
+		if ($layout)
 		{
 			$this->context .= '.' . $layout;
 		}
@@ -151,6 +153,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 * @param	string		$id	A prefix for the store id.
 	 *
 	 * @return	string		A store id.
+	 *
 	 * @since	1.0.1
 	 */
 	protected function getStoreId($id = '')
@@ -212,7 +215,9 @@ class BwPostmanModelMailinglists extends JModelList
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
 
 		// Filter by access level.
-		if ($access = $this->getState('filter.access')) {
+		$access = $this->getState('filter.access');
+		if ($access)
+		{
 			$query->where('a.access = ' . (int) $access);
 		}
 
@@ -225,10 +230,12 @@ class BwPostmanModelMailinglists extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
+		if (is_numeric($published))
+		{
 			$query->where('a.published = ' . (int) $published);
 		}
-		elseif ($published === '') {
+		elseif ($published === '')
+		{
 			$query->where('(a.published = 0 OR a.published = 1)');
 		}
 
@@ -239,16 +246,18 @@ class BwPostmanModelMailinglists extends JModelList
 		$filtersearch	= $this->getState('filter.search_filter');
 		$search			= '%' . $_db->escape($this->getState('filter.search'), true) . '%';
 
-		if (!empty($search)) {
-			switch ($filtersearch) {
+		if (!empty($search))
+		{
+			switch ($filtersearch)
+			{
 				case 'description':
-							$query->where('a.description LIKE ' . $_db->Quote($search, false));
+							$query->where('a.description LIKE ' . $_db->quote($search, false));
 					break;
 				case 'title_description':
-							$query->where('(a.description LIKE ' . $_db->Quote($search, false) . 'OR a.title LIKE ' . $_db->Quote($search, false) . ')');
+							$query->where('(a.description LIKE ' . $_db->quote($search, false) . 'OR a.title LIKE ' . $_db->quote($search, false) . ')');
 					break;
 				case 'title':
-					$query->where('a.title LIKE ' . $_db->Quote($search, false));
+							$query->where('a.title LIKE ' . $_db->quote($search, false));
 					break;
 				default:
 			}

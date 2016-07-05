@@ -51,7 +51,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 	/**
 	 * property to hold selected item
 	 *
-	 * @var array   $item
+	 * @var object   $item
 	 */
 	protected $item;
 
@@ -61,6 +61,27 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * @var array|object  $state
 	 */
 	protected $state;
+
+	/**
+	 * property to hold can do properties
+	 *
+	 * @var array $canDo
+	 */
+	public $canDo;
+
+	/**
+	 * property to hold queue entries property
+	 *
+	 * @var boolean $queueEntries
+	 */
+	public $queueEntries;
+
+	/**
+	 * property to hold newsletters list
+	 *
+	 * @var array $newsletters
+	 */
+	public $newsletters;
 
 	/**
 	 * Execute and display a template script.
@@ -104,21 +125,22 @@ class BwPostmanViewCampaign extends JViewLegacy
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance('SERVER');
 		$userId		= JFactory::getUser()->get('id');
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAM_DETAILS'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
 		$browser		= JBrowser::getInstance();
 		$user_browser	= $browser->getBrowser();
 
-		if ($user_browser == 'msie') {
-			$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
+		if ($user_browser == 'msie')
+		{
+			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
@@ -129,30 +151,36 @@ class BwPostmanViewCampaign extends JViewLegacy
         $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
-		if ($isNew && $canDo->get('bwpm.create'))  {
-			JToolBarHelper::save('campaign.save');
-			JToolBarHelper::apply('campaign.apply');
-			JToolBarHelper::cancel('campaign.cancel');
-			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+		if ($isNew && $canDo->get('bwpm.create'))
+		{
+			JToolbarHelper::save('campaign.save');
+			JToolbarHelper::apply('campaign.apply');
+			JToolbarHelper::cancel('campaign.cancel');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
 		}
-		else {
+		else
+		{
 			// Can't save the record if it's checked out.
-			if (!$checkedOut) {
+			if (!$checkedOut)
+			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId)) {
-					JToolBarHelper::save('campaign.save');
-					JToolBarHelper::apply('campaign.apply');
+				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+				{
+					JToolbarHelper::save('campaign.save');
+					JToolbarHelper::apply('campaign.apply');
 				}
 			}
 			// Rename the cancel button for existing items
-			if (JFactory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove') {
-				JToolBarHelper::cancel('campaign.save', 'JTOOLBAR_CLOSE');
+			if (JFactory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
+			{
+				JToolbarHelper::cancel('campaign.save', 'JTOOLBAR_CLOSE');
 			}
-			else {
-				JToolBarHelper::cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
+			else
+			{
+				JToolbarHelper::cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
 			}
 
-			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
 		}
 
 		JFactory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
@@ -160,16 +188,17 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$siteURL 	= $uri->base();
 
 		// If we came from the main page we will show a back-button
-		if ($backlink == $siteURL.'index.php?option=com_bwpostman') {
-			JToolBarHelper::spacer();
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
-			JToolBarHelper::back();
+		if ($backlink == $siteURL.'index.php?option=com_bwpostman')
+		{
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
+			JToolbarHelper::back();
 		}
-		JToolBarHelper::spacer();
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-		JToolBarHelper::spacer();
+		JToolbarHelper::spacer();
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
 	}
 }

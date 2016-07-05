@@ -26,12 +26,15 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\Registry\Registry as JRegistry;
+
 JFormHelper::loadFieldClass('radio');
 
 /**
  * Form Field class for the Joomla Framework.
  *
  * @package		BwPostman.Administrator
+ *
  * @since		1.0.1
  */
 class JFormFieldMlUnavailable extends JFormFieldRadio
@@ -40,6 +43,7 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.1
 	 */
 	public $type = 'MlUnavailable';
@@ -78,23 +82,30 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		$return		= '';
 
 		$type = 'checkbox';
-		if ($v = $this->element['class']) {
+		$v = $this->element['class'];
+		if ($v)
+		{
 			$attributes .= 'class="' . $v . '" ';
-		} else {
+		}
+		else
+		{
 			$attributes .= 'class="inputbox" ';
 		}
-		if ($m = $this->element['multiple']) {
+		$m = $this->element['multiple'];
+		if ($m) {
 			$type = 'checkbox';
 		}
 
 		$value = $this->value;
-		if (!is_array($value)) {
+		if (!is_array($value))
+		{
 			// Convert the selections field to an array.
 			$registry = new JRegistry;
 			$registry->loadString($value);
 		}
 
-		if ($disabled || $readonly) {
+		if ($disabled || $readonly)
+		{
 			$attributes .= 'disabled="disabled"';
 		}
 		$options = (array) $this->getOptions();
@@ -104,29 +115,49 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		$nl_id		= $app->getUserState('com_bwpostman.edit.newsletter.id', null);
 		$subs_id	= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
-		if (is_object($item)) {
+		if (is_object($item))
+		{
 			(property_exists($item, 'ml_unavailable')) ? $ml_select	= $item->ml_unavailable : $ml_select = '';
 		}
-		elseif (is_array($nl_id) && !empty($nl_id)) {
+		elseif (is_array($nl_id) && !empty($nl_id))
+		{
 			$query->select("m.mailinglist_id AS selected");
 			$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS m');
 			$query->where($_db->quoteName('m.newsletter_id') . ' IN (' . implode(',', $nl_id) . ')');
 			$_db->setQuery($query);
-			$ml_select = $_db->loadColumn();
+
+			try
+			{
+				$ml_select = $_db->loadColumn();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
-		if (is_array($subs_id) && !empty($subs_id)) {
+		if (is_array($subs_id) && !empty($subs_id))
+		{
 			$query->select("s.mailinglist_id AS selected");
 			$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS s');
 			$query->where($_db->quoteName('s.subscriber_id') . ' IN (' . implode(',', $subs_id) . ')');
 			$_db->setQuery($query);
-			$ml_select = $_db->loadColumn();
+			try
+			{
+				$ml_select = $_db->loadColumn();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		$i = 0;
 
-		foreach ($options as $option) {
-			if (is_array($ml_select)) $selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
+		foreach ($options as $option)
+		{
+			if (is_array($ml_select))
+				$selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
 			$i++;
 			$return	.= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
 			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]' . '" value="' . $option->value . '"' . $attributes . $selected . ' />';
@@ -139,6 +170,7 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
+	 *
 	 * @since	1.0.1
 	 */
 	public function getOptions()
@@ -148,6 +180,7 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		// Initialize variables.
 		$user_id		= null;
 		$accesslevels	= array();
+		$options        = array();
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
@@ -156,17 +189,26 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		$query_user	= $_db->getQuery(true);
 
 		// get user_ids if exists
-		if (is_array($subs_id) && !empty($subs_id)) {
+		if (is_array($subs_id) && !empty($subs_id))
+		{
 			$query_user->select($_db->quoteName('user_id'));
 			$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
 			$query_user->where($_db->quoteName('id') . ' = ' . (int) $subs_id[0]);
 
 			$_db->setQuery($query_user);
-			$user_id = $_db->loadResult();
+			try
+			{
+				$user_id = $_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		// get authorized viewlevels
-		if ($user_id) {
+		if ($user_id)
+		{
 			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
 		}
 
@@ -174,20 +216,24 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		if (is_array($accesslevels) && !empty($accesslevels)) {
+		if (is_array($accesslevels) && !empty($accesslevels))
+		{
 			$query->where($_db->quoteName('access') . ' NOT IN (' . implode(',', $accesslevels) . ')');
 		}
-		else {
+		else
+		{
 			$query->where($_db->quoteName('access') . ' > ' . (int) 1);
 		}
 		$query->order('title ASC');
 
 		$_db->setQuery($query);
-		$options = $_db->loadObjectList();
-
-		// Check for a database error.
-		if ($_db->getErrorNum()) {
-			$app->enqueueMessage($_db->getErrorMsg(), 'error');
+		try
+		{
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

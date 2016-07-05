@@ -26,7 +26,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\Registry\Registry;
 
 /**
  * Component helper class
@@ -98,7 +97,8 @@ class BwPostmanInstallHelper
 	 */
 	public static function convertToUtf8Mb4($reference_table = '', $conversion_file = '')
 	{
-		$_db = JFactory::getDBO();
+		$_db        = JFactory::getDbo();
+		$converted  = false;
 
 		// This is only required for MySQL databases
 		$name = $_db->getName();
@@ -133,7 +133,7 @@ class BwPostmanInstallHelper
 						{
 							$_db->setQuery($query)->execute();
 						}
-						catch (Exception $e)
+						catch (RuntimeException $e)
 						{
 							$converted = false;
 
@@ -165,9 +165,10 @@ class BwPostmanInstallHelper
 	public static function tablesAreConverted($test_table = '')
 	{
 		//get database name
-		$config = JFactory::getConfig();
-		$dbprefix = $config->get('dbprefix');
+		$config     = JFactory::getConfig();
+		$dbprefix   = $config->get('dbprefix');
 		$table_name = $dbprefix . $test_table;
+		$ret        = false;
 
 		$_db = JFactory::getDbo();
 
@@ -179,16 +180,13 @@ class BwPostmanInstallHelper
 
 			if ($table_status['Collation'] == 'utf8mb4_unicode_ci')
 			{
-				return true;
-			}
-			else
-			{
-				return false;
+				$ret = true;
 			}
 		}
-		catch (Exception $e)
+		catch (RuntimeException $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+		return $ret;
 	}
 }

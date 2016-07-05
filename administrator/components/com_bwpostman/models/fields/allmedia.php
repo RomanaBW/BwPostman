@@ -43,6 +43,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $type = 'Media';
@@ -51,6 +52,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The initialised state of the document object.
 	 *
 	 * @var    boolean
+	 *
 	 * @since  1.0.4
 	 */
 	protected static $initialised = false;
@@ -59,6 +61,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The authorField.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $authorField;
@@ -67,6 +70,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The asset.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $asset;
@@ -75,6 +79,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The link.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $link;
@@ -83,6 +88,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The authorField.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $preview;
@@ -91,6 +97,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The preview.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $directory;
@@ -99,6 +106,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The previewWidth.
 	 *
 	 * @var    int
+	 *
 	 * @since  1.0.4
 	 */
 	protected $previewWidth;
@@ -107,6 +115,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The previewHeight.
 	 *
 	 * @var    int
+	 * 
 	 * @since  1.0.4
 	 */
 	protected $previewHeight;
@@ -220,10 +229,12 @@ class JFormFieldAllMedia extends JFormField
 			$asset = JFactory::getApplication()->input->get('option');
 		}
 
-		if ($asset == 'com_bwpostman') {
+		if ($asset == 'com_bwpostman')
+		{
 			$asset_txt 	= '';
 		}
-		else {
+		else
+		{
 			$asset_txt 	= '&amp;asset=' . $asset;
 		}
 

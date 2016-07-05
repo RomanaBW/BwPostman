@@ -27,8 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import MODEL object class
+// Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -39,6 +41,7 @@ jimport('joomla.application.component.helper');
  * Provides methodes to add and edit campaigns
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Campaigns
  */
 class BwPostmanModelCampaign extends JModelAdmin
@@ -75,7 +78,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		parent::__construct();
 
-		$array = $jinput->get('cid',  0, '', 'array');
+		$array = $jinput->get('cid',  0, '');
 		$this->setId((int)$array[0]);
 	}
 
@@ -114,6 +117,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @param	object	$record	A record object.
 	 *
 	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
+	 *
 	 * @since	1.0.1
 	 */
 	protected function canDelete($record)
@@ -126,7 +130,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 			return true;
 		}
 
-		if (!empty($record->id)) {
+		if (!empty($record->id))
+		{
 			// Check specific delete permission.
 			if ($user->authorise('bwpm.campaign.delete', 'com_bwpostman.campaign.' . (int) $record->id))
 			{
@@ -162,7 +167,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 					$cid = 0;
 				}
 			}
-			(!empty($pk)) ? $pk	= $pk : $pk	= (int) $cid;
+			if (empty($pk)) $pk	= (int) $cid;
 			$item	= parent::getItem($pk);
 
 					//get associated mailinglists
@@ -171,11 +176,19 @@ class BwPostmanModelCampaign extends JModelAdmin
 			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
 			$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $item->id);
 			$_db->setQuery($query);
-			$item->mailinglists= $_db->loadColumn();
+			try
+			{
+				$item->mailinglists= $_db->loadColumn();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
 			//extract associated usergroups
 			$usergroups	= array();
-			foreach ($item->mailinglists as $mailinglist) {
+			foreach ($item->mailinglists as $mailinglist)
+			{
 				if ((int) $mailinglist < 0) $usergroups[]	= -(int)$mailinglist;
 			}
 			$item->usergroups	= $usergroups;
@@ -192,13 +205,24 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			$_db->setQuery($query);
 
-			$mls_avaliable	= $_db->loadColumn();
+			$mls_avaliable  = array();
+
+			try
+			{
+				$mls_avaliable	= $_db->loadColumn();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 			$res_avaliable	= array_intersect($item->mailinglists, $mls_avaliable);
 
-			if (count($res_avaliable) > 0) {
+			if (count($res_avaliable) > 0)
+			{
 				$item->ml_available	= $res_avaliable;
 			}
-			else {
+			else
+			{
 				$item->ml_available	= array();
 			}
 
@@ -215,10 +239,12 @@ class BwPostmanModelCampaign extends JModelAdmin
 			$mls_unavaliable	= $_db->loadColumn();
 			$res_unavaliable	= array_intersect($item->mailinglists, $mls_unavaliable);
 
-			if (count($res_unavaliable) > 0) {
+			if (count($res_unavaliable) > 0)
+			{
 				$item->ml_unavailable	= $res_unavaliable;
 			}
-			else {
+			else
+			{
 				$item->ml_unavailable	= array();
 			}
 
@@ -232,17 +258,28 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			$_db->setQuery($query);
 
-			$mls_intern		= $_db->loadColumn();
+			$mls_intern = array();
+			try
+			{
+				$mls_intern		= $_db->loadColumn();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 			$res_intern		= array_intersect($item->mailinglists, $mls_intern);
 
-			if (count($res_intern) > 0) {
+			if (count($res_intern) > 0)
+			{
 				$item->ml_intern	= $res_intern;
 			}
-			else {
+			else
+			{
 				$item->ml_intern	= array();
 			}
 		}
-		else {
+		else
+		{
 			$item	= new stdClass();
 			foreach ($data as $key => $value) $item->$key	= $value;
 		}
@@ -257,6 +294,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return	mixed	A JForm object on success, false on failure
+	 *
 	 * @since	1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -266,20 +304,23 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		// @todo XML-file will not be processed
 
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
 		// Check to show created data
 		$c_date	= $form->getValue('created_date');
-		if ($c_date == '0000-00-00 00:00:00' || $c_date == null) {
+		if ($c_date == '0000-00-00 00:00:00' || $c_date == null)
+		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
 		}
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00' || $m_date == null) {
+		if ($m_date == '0000-00-00 00:00:00' || $m_date == null)
+		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
 		}
@@ -290,6 +331,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return	mixed	The data for the form.
+	 *
 	 * @since	1.6
 	 */
 	protected function loadFormData()
@@ -327,7 +369,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		$_db->setQuery($query);
 
-		$newsletters->sent = $_db->loadObjectList();
+		try
+		{
+			$newsletters->sent = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$query = $_db->getQuery(true);
 		$query->select($_db->quoteName('a') . '.*');
@@ -340,7 +389,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		$_db->setQuery($query);
 
-		$newsletters->unsent = $_db->loadObjectList();
+		try
+		{
+			$newsletters->unsent = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$query = $_db->getQuery(true);
 		$query->select($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' AS nl_id');
@@ -353,7 +409,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		$_db->setQuery($query);
 
-		$newsletters->all = $_db->loadObjectList();
+		try
+		{
+			$newsletters->all = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $newsletters;
 	}
@@ -363,9 +426,11 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * --> when unarchiving it is called by the archive-controller
 	 *
 	 * @access	public
+	 *
 	 * @param	array   $cid        Campaign IDs
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
 	 * @param	int     $archive_nl Archive/Unarchive assigned newsletters (0 = No, 1 = Yes)
+	 *
 	 * @return	boolean
 	 */
 	public function archive($cid = array(), $archive = 1, $archive_nl = 1)
@@ -376,23 +441,28 @@ class BwPostmanModelCampaign extends JModelAdmin
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 
-		if ($archive == 1) {
+		if ($archive == 1)
+		{
 			$time = $date->toSql();
 
 			// Access check.
-			foreach ($cid as $i) {
+			foreach ($cid as $i)
+			{
 				if (!BwPostmanHelper::allowArchive($i, 0, 'campaign'))
 				{
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_ARCHIVE_RIGHTS_MISSING'), 'error');
 					return false;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			$time	= '0000-00-00 00:00:00';
 			$uid	= 0;
 
 			// Access check.
-			foreach ($cid as $i) {
+			foreach ($cid as $i)
+			{
 				if (!BwPostmanHelper::allowRestore($i, 0, 'campaign'))
 				{
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
@@ -403,34 +473,42 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		if (count($cid))
 		{
-			JArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 
 			$query->update($_db->quoteName('#__bwpostman_campaigns'));
 			$query->set($_db->quoteName('archive_flag') . ' = ' . (int) $archive);
-			$query->set($_db->quoteName('archive_date') . ' = ' . $_db->Quote($time, false));
+			$query->set($_db->quoteName('archive_date') . ' = ' . $_db->quote($time, false));
 			$query->where($_db->quoteName('id') . ' IN (' .implode(',', $cid) . ')');
 
 			$_db->setQuery($query);
 
-			if (!$_db->query()) {
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
-				$this->setError($_db->getErrorMsg());
-				return false;
+			try
+			{
+				$_db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
 			}
 
 			// Archive_nl = 1 if the user want to (un)archive the assigned newsletters
-			if ($archive_nl) {
+			if ($archive_nl)
+			{
 				$query->clear();
 				$query->update($_db->quoteName('#__bwpostman_newsletters'));
 				$query->set($_db->quoteName('archive_flag') . ' = ' . (int) $archive);
-				$query->set($_db->quoteName('archive_date') . ' = ' . $_db->Quote($time, false));
+				$query->set($_db->quoteName('archive_date') . ' = ' . $_db->quote($time, false));
 				$query->set($_db->quoteName('archived_by') . " = " . (int) $uid);
 				$query->where($_db->quoteName('campaign_id') . ' IN (' .implode(',', $cid) . ')');
 
 				$_db->setQuery($query);
-				if (!$_db->query()) {
-					$this->setError($_db->getErrorMsg());
-					return false;
+				try
+				{
+					$_db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 			}
 		}
@@ -449,30 +527,49 @@ class BwPostmanModelCampaign extends JModelAdmin
 	public function save($data)
 	{
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
-		if (isset($data['ml_available']))	foreach ($data['ml_available'] as $key => $value)	$data['mailinglists'][] 	= $value;
-		if (isset($data['ml_unavailable']))	foreach ($data['ml_unavailable'] as $key => $value)	$data['mailinglists'][] 	= $value;
-		if (isset($data['ml_intern']))		foreach ($data['ml_intern'] as $key => $value)		$data['mailinglists'][] 	= $value;
+		if (isset($data['ml_available']))
+			foreach ($data['ml_available'] as $key => $value)
+				$data['mailinglists'][] 	= $value;
+		if (isset($data['ml_unavailable']))
+			foreach ($data['ml_unavailable'] as $key => $value)
+				$data['mailinglists'][] 	= $value;
+		if (isset($data['ml_intern']))
+			foreach ($data['ml_intern'] as $key => $value)
+				$data['mailinglists'][] 	= $value;
 
 		// merge usergroups into mailinglists, single array may not exist, therefore array_merge would not give a result
-		if (isset($data['usergroups']) && !empty($data['usergroups']))	foreach ($data['usergroups'] as $key => $value)	$data['mailinglists'][] = '-' . $value;
+		if (isset($data['usergroups']) && !empty($data['usergroups']))
+			foreach ($data['usergroups'] as $key => $value)
+				$data['mailinglists'][] = '-' . $value;
 
-		if (isset($data['mailinglists'])) {
+		if (isset($data['mailinglists']))
+		{
 			$res	= parent::save($data);
 
-			if ($res) {
+			if ($res)
+			{
 				$jinput		= JFactory::getApplication()->input;
 				$_db		= $this->_db;
 				$query		= $_db->getQuery(true);
 
 				// Delete all entrys of the newsletter from newsletters_mailinglists table
-				if ($data['id']){
+				if ($data['id'])
+				{
 					$query->delete($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
 					$query->where($_db->quoteName('campaign_id') . ' =  ' . (int) $data['id']);
 
 					$_db->setQuery($query);
-					$_db->Execute($query);
+					try
+					{
+						$_db->execute();
+					}
+					catch (RuntimeException $e)
+					{
+						JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					}
 				}
-				else {
+				else
+				{
 					//get id of new inserted data to write cross table newsletters-mailinglists and inject into form
 					$data['id']	= $this->getState('campaign.id');
 					$jinput->set('id', $data['id']);
@@ -485,7 +582,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 				}
 
 			// Store the selected BwPostman mailinglists into campaigns_mailinglists-table
-				foreach ($data['mailinglists'] AS $mailinglists_value) {
+				foreach ($data['mailinglists'] AS $mailinglists_value)
+				{
 					$query	= $_db->getQuery(true);
 
 					$query->insert($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
@@ -498,7 +596,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 							(int) $mailinglists_value
 					);
 					$_db->setQuery($query);
-					$_db->execute();
+					try
+					{
+						$_db->execute();
+					}
+					catch (RuntimeException $e)
+					{
+						JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					}
 				}
 
 				$dispatcher = JEventDispatcher::getInstance();
@@ -508,8 +613,9 @@ class BwPostmanModelCampaign extends JModelAdmin
 				$dispatcher->trigger('onBwPostmanCampaignSave', array ($data));
 			}
 		}
-		else {
-			$this->setError(JText::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'));
+		else
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'), 'error');
 			$res	= false;
 		}
 		return $res;
@@ -531,7 +637,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 		$remove_nl	= $jinput->get('remove_nl', false);
 
 		// Access check.
-		foreach ($pks as $i) {
+		foreach ($pks as $i)
+		{
 			if (!BwPostmanHelper::allowDelete($i, 0, 'campaign'))
 			{
 				return false;
@@ -540,12 +647,13 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		if (count($pks))
 		{
-			JArrayHelper::toInteger($pks);
+			ArrayHelper::toInteger($pks);
 
 			// Delete campaigns from campaigns-table
 			$cams_table = JTable::getInstance('campaigns', 'BwPostmanTable');
 
-			foreach ($pks as $id) {
+			foreach ($pks as $id)
+			{
 				if (!$cams_table->delete($id))
 				{
 					return false;
@@ -553,8 +661,9 @@ class BwPostmanModelCampaign extends JModelAdmin
 			}
 
 			// Remove_nl = 1 if the user want to delete the assigned newsletters
-			if ($remove_nl) {
-
+			$nl_ids = array();
+			if ($remove_nl)
+			{
 				// Delete newsletter from newsletters-table
 				$nl_table	= JTable::getInstance('newsletters', 'BwPostmanTable');
 				$_db		= $this->getDbo();
@@ -564,9 +673,17 @@ class BwPostmanModelCampaign extends JModelAdmin
 				$query->from($_db->quoteName('#__bwpostman_newsletters'));
 				$query->where($_db->quoteName('campaign_id') . ' IN (' .implode(',', $pks) . ')');
 				$_db->setQuery($query);
-				$nl_ids = $_db->loadColumn();
+				try
+				{
+					$nl_ids = $_db->loadColumn();
+				}
+				catch (RuntimeException $e)
+				{
+					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				}
 
-				foreach ($nl_ids as $id) {
+				foreach ($nl_ids as $id)
+				{
 					if (!$nl_table->delete($id))
 					{
 						return false;

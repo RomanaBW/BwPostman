@@ -54,7 +54,8 @@ defined ('_JEXEC') or die ('Restricted access');
 				// Call the callback function
 				successCallback(data);
 			},
-			error: function(req) {
+			error: function(req)
+			{
 				var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
 				jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
 				jQuery('div#result').html(message);
@@ -77,18 +78,24 @@ defined ('_JEXEC') or die ('Restricted access');
 		jQuery('p#step'+data.step).addClass('alert alert-info');
 		// Do AJAX post
 		post = {step : 'step'+data.step};
-		doAjax(post, function(data){
-			if(data.ready != "1"){
+		doAjax(post, function(data)
+		{
+			if(data.ready != "1")
+			{
 				jQuery('div#result').append(data.result);
 				processUpdateStep(data);
-			} else {
+			}
+			else
+			{
 				jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
 				jQuery('div#result').append(data.result);
-				if (data.aClass != 'error') {
+				if (data.aClass != 'error')
+				{
 					jQuery('div.resultSet').css('background-color', '#dff0d8');
 					jQuery('div.resultSet').css('border-color', '#d6e9c6');
 				}
-				else {
+				else
+				{
 					jQuery('div.resultSet').css('background-color', '#f2dede');
 					jQuery('div.resultSet').css('border-color', '#eed3d7');
 				}

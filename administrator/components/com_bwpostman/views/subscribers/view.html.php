@@ -42,6 +42,76 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 class BwPostmanViewSubscribers extends JViewLegacy
 {
 	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 */
+	protected $items;
+
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 */
+	protected $pagination;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 */
+	protected $state;
+
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 */
+	public $filterForm;
+
+	/**
+	 * property to hold sactive filters
+	 *
+	 * @var object  $activeFilters
+	 */
+	public $activeFilters;
+
+	/**
+	 * property to hold total value
+	 *
+	 * @var string $total
+	 */
+	public $total;
+
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 */
+	public $sidebar;
+
+	/**
+	 * property to hold mailinglists
+	 *
+	 * @var array  $mailinglists
+	 */
+	public $mailinglists;
+
+	/**
+	 * property to hold params
+	 *
+	 * @var object  $params
+	 */
+	public $params;
+
+	/**
+	 * property to hold context
+	 *
+	 * @var string  $context
+	 */
+	public $context;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -52,11 +122,13 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('subscribers')) {
+		if (!BwPostmanHelper::canView('subscribers'))
+		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUB')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
-		else {
+		else
+		{
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items 			= $this->get('Items');
@@ -92,33 +164,34 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$user	= JFactory::getUser();
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAMS'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_SUB'), 'users');
+		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_SUB'), 'users');
 
 		// Set toolbar items for the page
-		switch ($tab) { // The layout-variable tells us which tab we are in
+		switch ($tab)
+		{ // The layout-variable tells us which tab we are in
 			default;
 			case "confirmed":
 			case "unconfirmed":
-					if ($canDo->get('bwpm.create'))	JToolBarHelper::addNew('subscriber.add');
-					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('subscriber.edit');
-					JToolBarHelper::spacer();
-					JToolBarHelper::divider();
-					JToolBarHelper::spacer();
+					if ($canDo->get('bwpm.create'))	JToolbarHelper::addNew('subscriber.add');
+					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolbarHelper::editList('subscriber.edit');
+					JToolbarHelper::spacer();
+					JToolbarHelper::divider();
+					JToolbarHelper::spacer();
 
-					if ($canDo->get('bwpm.create'))		JToolBarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
-					if ($canDo->get('bwpm.edit'))		JToolBarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+					if ($canDo->get('bwpm.create'))		JToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
+					if ($canDo->get('bwpm.edit'))		JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
 					if ($canDo->get('bwpm.archive')) {
-						JToolBarHelper::divider();
-						JToolBarHelper::spacer();
-						JToolBarHelper::archiveList('subscriber.archive');
+						JToolbarHelper::divider();
+						JToolbarHelper::spacer();
+						JToolbarHelper::archiveList('subscriber.archive');
 					}
 					// Add a batch button
 					if ($user->authorise('bwpm.create', 'com_bwpostman') && $user->authorise('bwpm.edit', 'com_bwpostman') && $user->authorise('bwpm.edit.state', 'com_bwpostman'))
@@ -134,20 +207,21 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					}
 				break;
 			case "testrecipients":
-					if ($canDo->get('bwpm.create'))	JToolBarHelper::addNew('subscriber.add_test');
-					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolBarHelper::editList('subscriber.edit');
-					JToolBarHelper::spacer();
-					JToolBarHelper::divider();
-					if ($canDo->get('bwpm.archive'))	JToolBarHelper::archiveList('subscriber.archive');
+					if ($canDo->get('bwpm.create'))	JToolbarHelper::addNew('subscriber.add_test');
+					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolbarHelper::editList('subscriber.edit');
+					JToolbarHelper::spacer();
+					JToolbarHelper::divider();
+					if ($canDo->get('bwpm.archive'))	JToolbarHelper::archiveList('subscriber.archive');
 				break;
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
-		if ($canDo->get('core.manage')) {
-			JToolBarHelper::checkin('subscribers.checkin');
-			JToolBarHelper::divider();
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
+		if ($canDo->get('core.manage'))
+		{
+			JToolbarHelper::checkin('subscribers.checkin');
+			JToolbarHelper::divider();
 		}
 
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 	}
 }

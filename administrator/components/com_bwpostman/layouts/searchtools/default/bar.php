@@ -13,6 +13,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\Registry\Registry as JRegistry;
+
 $data = $displayData;
 
 // Receive overridable options

@@ -27,8 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import CONTROLLER object class
+// Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controlleradmin');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -103,24 +105,30 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 		// Get the selected newsletter(s)
 		$cid = $jinput->get('cid', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		$n = count ($cid);
 		$model = $this->getModel('newsletter');
 
-		if(!$model->copy($cid)) { // Couldn't copy
-			if ($n > 1) {
+		if(!$model->copy($cid))
+		{ // Couldn't copy
+			if ($n > 1)
+			{
 				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_NLS_ERROR_COPYING', true)."'); window.history.go(-1); </script>\n";
 			}
-			else {
+			else
+			{
 				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_NL_ERROR_COPYING', true)."'); window.history.go(-1); </script>\n";
 			}
 		}
-		else { // Copied successfully
-			if ($n > 1) {
+		else
+		{ // Copied successfully
+			if ($n > 1)
+			{
 				$msg = JText::_('COM_BWPOSTMAN_NLS_COPIED');
 			}
-			else {
+			else
+			{
 				$msg = JText::_('COM_BWPOSTMAN_NL_COPIED');
 			}
 
@@ -150,10 +158,12 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 		parent::publish();
 
-		if ($view == 'archive') {
+		if ($view == 'archive')
+		{
 			$this->setRedirect('index.php?option=com_bwpostman&view=archive&layout=newsletters');
 		}
-		else {
+		else
+		{
 			$this->setRedirect('index.php?option=com_bwpostman&view=newsletters&layout='.$layout);
 		}
 	}
@@ -191,10 +201,12 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
 		$model = $this->getModel('newsletter');
-		if(!$model->delete_queue()) { // Couldn't clear queue
+		if(!$model->delete_queue())
+		{ // Couldn't clear queue
 			echo "<script> alert ('".JText::_('COM_BWPOSTMAN_NL_ERROR_CLEARING_QUEUE', true)."'); window.history.go(-1); </script>\n";
 		}
-		else { // Cleared queue successfully
+		else
+		{ // Cleared queue successfully
 			$msg = JText::_('COM_BWPOSTMAN_NL_CLEARED_QUEUE');
 
 			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters',false);

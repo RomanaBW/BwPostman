@@ -29,7 +29,7 @@ defined('_JEXEC') or die;
 $jinput = JFactory::getApplication()->input;
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">
-	<a href="index.php?option=com_bwpostman&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>" target="imageframe">
+	<a href="'<?php JRoute::_('index.php?option=com_bwpostman&amp;view=mediaList&amp;tmpl=component&amp;folder=' . $this->_tmp_folder->path_relative); ?>&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>" target="imageframe">
 		<div class="height-50">
 			<i class="icon-folder-2"></i>
 		</div>

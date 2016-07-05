@@ -225,6 +225,7 @@ class BwPostmanTableNewsletters extends JTable
 	{
 		// Initialise variables.
 		$assetId = null;
+		$result  = 0;
 
 		// Build the query to get the asset id for the component.
 		$query = $this->_db->getQuery(true);
@@ -234,7 +235,15 @@ class BwPostmanTableNewsletters extends JTable
 
 		// Get the asset id from the database.
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadResult())
+		try
+		{
+			$result = $this->_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		if ($result)
 		{
 			$assetId = (int) $result;
 		}
@@ -254,31 +263,36 @@ class BwPostmanTableNewsletters extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
+	 *
 	 * @param array|object  $data       Named array
 	 * @param string        $ignore     Space separated list of fields not to bind
+	 *
+	 * @throws BwException
+	 *
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
 	{
 		// Bind the rules.
-		if (is_object($data)) {
+		if (is_object($data))
+		{
 			if (property_exists($data, 'rules') && is_array($data->rules))
 			{
 				$rules = new JAccessRules($data->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data)) {
+		elseif (is_array($data))
+		{
 			if (array_key_exists('rules', $data) && is_array($data['rules']))
 			{
 				$rules = new JAccessRules($data['rules']);
 				$this->setRules($rules);
 			}
 		}
-		else {
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-			$this->setError($e);
-			return false;
+		else
+		{
+			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -300,6 +314,7 @@ class BwPostmanTableNewsletters extends JTable
 		$app	= JFactory::getApplication();
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
+		$xid    = 0;
 
 		// Check the publish down date is not earlier than publish up.
 		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up)
@@ -311,7 +326,8 @@ class BwPostmanTableNewsletters extends JTable
 		}
 
 		// no subject is unkind
-		if ($this->subject == '') {
+		if ($this->subject == '')
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_SUBJECT'), 'error');
 			$fault	= true;
 		}
@@ -319,41 +335,54 @@ class BwPostmanTableNewsletters extends JTable
 		// Check for existing subject
 		$query->select($this->_db->quoteName('id'));
 		$query->from($this->_tbl);
-		$query->where($this->_db->quoteName('subject') . ' = ' . $this->_db->Quote($this->subject));
+		$query->where($this->_db->quoteName('subject') . ' = ' . $this->_db->quote($this->subject));
 
 		$this->_db->setQuery($query);
 
-		$xid = intval($this->_db->loadResult());
+		try
+		{
+			$xid = intval($this->_db->loadResult());
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		if ($xid && $xid != intval($this->id)) {
+		if ($xid && $xid != intval($this->id))
+		{
 			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_NL_WARNING_SUBJECT_DOUBLE', $this->subject)), 'warning');
 		}
 
 		// some text should be, too
-		if (($this->html_version == '') && ($this->text_version == '')) {
+		if (($this->html_version == '') && ($this->text_version == ''))
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_CONTENT'), 'error');
 			$fault	= true;
 		}
 
 		// from name is mandatory
-		if (empty($this->from_name)) {
+		if (empty($this->from_name))
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMNAME'), 'error');
 			$fault	= true;
 		}
 
 		// from email is mandatory
-		if ((empty($this->from_email))  || (!JMailHelper::isEmailAddress(trim($this->from_email)))) {
+		if ((empty($this->from_email))  || (!JMailHelper::isEmailAddress(trim($this->from_email))))
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMEMAIL'), 'error');
 			$fault	= true;
 		}
 
 		// reply email is mandatory
-		if ((empty($this->reply_email))  || (!JMailHelper::isEmailAddress(trim($this->reply_email)))) {
+		if ((empty($this->reply_email))  || (!JMailHelper::isEmailAddress(trim($this->reply_email))))
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_REPLYEMAIL'), 'error');
 			$fault	= true;
 		}
 
-		if ($fault) {
+		if ($fault)
+		{
 //			$app->setUserState('com_bwpostman.edit.newsletter.data', $this);
 			return false;
 		}
@@ -368,17 +397,20 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function markAsSent($id = null)
 	{
-		if ($id){
+		if ($id)
+		{
 			// Take the given id
 			$nl_id = $id;
 		}
-		else {
+		else
+		{
 			// Take the id loaded in this object
-			if (!$this->id) return false;
+			if (!$this->id)
+				return false;
 			$nl_id = $this->id;
 		}
 
-		$_db	= $this->getDBO();
+		$_db	= $this->getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName($this->_tbl));
@@ -387,9 +419,13 @@ class BwPostmanTableNewsletters extends JTable
 
 		$_db->setQuery($query);
 
-		if (!$_db->query()){
-			$this->setError($_db->getErrorMsg());
-			return false;
+		try
+		{
+			$_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 		return true;
 

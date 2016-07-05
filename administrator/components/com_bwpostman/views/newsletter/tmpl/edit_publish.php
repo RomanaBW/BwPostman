@@ -29,7 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 $image = '<i class="icon-info"></i>';
@@ -37,14 +37,17 @@ $image = '<i class="icon-info"></i>';
 
 <script type="text/javascript">
 /* <![CDATA[ */
-Joomla.submitbutton = function (pressbutton) {
+Joomla.submitbutton = function (pressbutton) 
+{
 	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel') {
+	if (pressbutton == 'newsletter.cancel') 
+	{
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.publish_save') {
+	if (pressbutton == 'newsletter.publish_save') 
+	{
 		form.task.setAttribute('value','newsletter.publish_save');
 		submitform(pressbutton);
 	}
@@ -56,7 +59,7 @@ Joomla.submitbutton = function (pressbutton) {
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
 		<div class="form-horizontal">
 			<fieldset class="adminform">
-				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_EDIT_PUBLISHED'); ?></legend>
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_EDIT_PUBLISHED'); ?></legend>
 				<div class="well well-small">
 					<div class="width-50 fltlft span6 control-group">
 						<ul class="adminformlist unstyled">
@@ -111,6 +114,6 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

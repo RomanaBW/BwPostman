@@ -171,6 +171,7 @@ class BwPostmanTableMailinglists extends JTable
 	{
 		// Initialise variables.
 		$assetId = null;
+		$result  = 0;
 
 		// Build the query to get the asset id for the component.
 		$query = $this->_db->getQuery(true);
@@ -180,7 +181,15 @@ class BwPostmanTableMailinglists extends JTable
 
 		// Get the asset id from the database.
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadResult())
+		try
+		{
+			$result = $this->_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		if ($result)
 		{
 			$assetId = (int) $result;
 		}
@@ -200,31 +209,36 @@ class BwPostmanTableMailinglists extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access public
+	 *
 	 * @param array|object  $data       Named array or object
 	 * @param string        $ignore     Space separated list of fields not to bind
+	 *
+	 * @throws BwException
+	 *
 	 * @return boolean
 	 */
 	public function bind($data, $ignore='')
 	{
 		// Bind the rules.
-		if (is_object($data)) {
+		if (is_object($data))
+		{
 			if (property_exists($data, 'rules') && is_array($data->rules))
 			{
 				$rules = new JAccessRules($data->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data)) {
+		elseif (is_array($data))
+		{
 			if (array_key_exists('rules', $data) && is_array($data['rules']))
 			{
 				$rules = new JAccessRules($data['rules']);
 				$this->setRules($rules);
 			}
 		}
-		else {
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-			$this->setError($e);
-			return false;
+		else
+		{
+			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -245,6 +259,7 @@ class BwPostmanTableMailinglists extends JTable
 		$_db	= $this->_db;
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
+		$xid    = 0;
 
 		// Remove all HTML tags from the title and description
 		$filter				= new JFilterInput(array(), array(), 0, 0);
@@ -252,13 +267,15 @@ class BwPostmanTableMailinglists extends JTable
 		$this->description	= $filter->clean($this->description);
 
 		// Check for valid title
-		if (trim($this->title) == '') {
+		if (trim($this->title) == '')
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE'), 'error');
 			$fault	= true;
 		}
 
 		// Check for valid title
-		if (trim($this->description) == '') {
+		if (trim($this->description) == '')
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'), 'error');
 			$fault	= true;
 		}
@@ -266,15 +283,21 @@ class BwPostmanTableMailinglists extends JTable
 		// Check for existing title
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('title') . ' = ' . $_db->Quote($this->title));
+		$query->where($_db->quoteName('title') . ' = ' . $_db->quote($this->title));
 
 		$_db->setQuery($query);
 
-		$xid = intval($this->_db->loadResult());
+		try
+		{
+			$xid = intval($this->_db->loadResult());
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if ($xid && $xid != intval($this->id)) {
 			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_ML_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
-			$fault	= true;
 			return false;
 		}
 		if ($fault) {
@@ -314,5 +337,5 @@ class BwPostmanTableMailinglists extends JTable
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
 
 		return $res;
-			}
+	}
 }

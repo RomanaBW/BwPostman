@@ -31,19 +31,18 @@ defined ('_JEXEC') or die ('Restricted access');
 require_once (JPATH_COMPONENT_SITE.'/classes/bwpostman.class.php');
 
 // Set the table directory
-JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
+JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 // Require the base controller
 require_once (JPATH_COMPONENT.'/controller.php');
 
 // Require specific controller
 $jinput	= JFactory::getApplication()->input;
-if($view = $jinput->getCmd('view')) {
+$view   = $jinput->get('view', '');
+if($view) {
 	$path = JPATH_COMPONENT.'/controllers/'.$view.'.php';
 	if (file_exists($path)) {
 		require_once $path;
-	} else {
-		$view = '';
 	}
 }
 

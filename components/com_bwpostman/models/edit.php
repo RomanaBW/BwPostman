@@ -72,15 +72,18 @@ class BwPostmanModelEdit extends JModelAdmin
 		$user		= JFactory::getUser();
 		$id			= 0;
 
-		if ($user->guest) { // Subscriber is guest
+		if ($user->guest)
+		{ // Subscriber is guest
 			$session				= JFactory::getSession();
 			$session_subscriberid	= $session->get('session_subscriberid');
 
-			if(isset($session_subscriberid) && is_array($session_subscriberid)){ // Session contains subscriber ID
+			if(isset($session_subscriberid) && is_array($session_subscriberid))
+			{ // Session contains subscriber ID
 				$id	= $session_subscriberid['id'];
 			}
 		}
-		else { // Subscriber is user
+		else
+		{ // Subscriber is user
 			$id	= BwPostmanSubscriberHelper::getSubscriberId($user->get('id')); // Get the subscriber ID from the subscribers-table
 		}
 		$this->setData($id);
@@ -111,7 +114,6 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	protected function populateState()
 	{
-		$app	= JFactory::getApplication('site');
 		$jinput	= JFactory::getApplication()->input;
 
 		// Load state from the request.
@@ -121,13 +123,10 @@ class BwPostmanModelEdit extends JModelAdmin
 		$offset = $jinput->getUint('limitstart');
 		$this->setState('list.offset', $offset);
 
-		// Load the parameters.
-		$params = $app->getParams();
-		$this->setState('params', $params);
-
 		// TODO: Tune these values based on other permissions.
-		$user		= JFactory::getUser();
-		if ((!$user->authorise('bwpm.edit.state', 'com_bwpostman')) &&  (!$user->authorise('bwpm.edit', 'com_bwpostman'))){
+		$user	= JFactory::getUser();
+		if ((!$user->authorise('bwpm.edit.state', 'com_bwpostman')) &&  (!$user->authorise('bwpm.edit', 'com_bwpostman')))
+		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
 		}
@@ -142,14 +141,84 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return	mixed	A JForm object on success, false on failure
+
 	 * @since	1.0.1
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
+		JForm::addFieldPath('JPATH_COMPONENT/models/fields');
+
+		// Get the form.
+		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
+		if (empty($form))
+		{
+			return false;
+		}
+		$jinput	= JFactory::getApplication()->input;
+		$id		= $jinput->get('id', 0);
+		$user	= JFactory::getUser();
+
+		// Check for existing subscriber.
+		// Modify the form based on Edit State access controls.
+		if ($id != 0 && (!$user->authorise('bwpm.subscriber.edit.state', 'com_bwpostman.subscriber.'.(int) $id))
+				|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman'))
+			)
+		{
+			// Disable fields for display.
+			$form->setFieldAttribute('status', 'disabled', 'true');
+
+			// Disable fields while saving.
+			// The controller has already verified this is an subscriber you can edit.
+			$form->setFieldAttribute('state', 'filter', 'unset');
+		}
+
+		// Check for required name
+		if (!$form->getValue('name_field_obligation'))
+		{
+			$form->setFieldAttribute('name', 'required', false);
+		}
+
+		// Check for required first name
+		if ($form->getValue('firstname_field_obligation'))
+		{
+			$form->setFieldAttribute('firstname', 'required', true);
+		}
+
+		// Check to show confirmation data or checkbox
+		$c_date	= strtotime($form->getValue('confirmation_date'));
+		if (empty($c_date))
+		{
+			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
+			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');
+			$form->setFieldAttribute('confirmation_ip', 'type', 'hidden');
+		}
+		else
+		{
+			$form->setFieldAttribute('status', 'type', 'hidden');
+		}
+
+		// Check to show registration data
+		$r_date	= $form->getValue('registration_date');
+		if (empty($r_date))
+		{
+			$form->setFieldAttribute('registration_date', 'type', 'hidden');
+			$form->setFieldAttribute('registered_by', 'type', 'hidden');
+			$form->setFieldAttribute('registration_ip', 'type', 'hidden');
+		}
+
+		// Check to show modified data
+		$m_date	= $form->getValue('modified_time');
+		if ($m_date == '0000-00-00 00:00:00')
+		{
+			$form->setFieldAttribute('modified_time', 'type', 'hidden');
+			$form->setFieldAttribute('modified_by', 'type', 'hidden');
+		}
+
+		return $form;
 	}
 
 	/**
-	 * Method to reset the subscriber ID, viewlevel and the subscriber data
+	 * Method to reset the subscriber ID, view level and the subscriber data
 	 *
 	 * @access	public
 	 * @param	int $id     subcriber ID
@@ -169,129 +238,40 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		$app	= JFactory::getApplication();
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$app	        = JFactory::getApplication();
+		$list_id_values = null;
+		$_db	        = $this->_db;
+		$query	        = $_db->getQuery(true);
 
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('subscriber.id');
 
+		// Get subscriber data from subscribers table
 		$query->select('*');
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('id') . ' = ' . (int) $pk);
 
-//		echo nl2br(str_replace('#__','jos_',$query));
-		$_db->setQuery($query);
-		$this->_data	= $_db->loadObject();
+		try
+		{
+			$_db->setQuery($query);
+			$this->_data	= $_db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		if (!is_object($this->_data)) $this->_data	= $this->fillVoidSubscriber();
-		$this->_id		= $pk;
+		// if no data get, take default values
+		if (!is_object($this->_data))
+		{
+			$this->_data	= BwPostmanSubscriberHelper::fillVoidSubscriber();
+		}
 
-		$query->clear();
-		$query->select($_db->quoteName('mailinglist_id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $pk);
-
-		$_db->setQuery($query);
-		$list_id_values = $_db->loadColumn();
-		$this->_data->mailinglists = $list_id_values;
+		// set id and mailinglists property
+		$this->_id  = $pk;
+		$this->_data->mailinglists  = $this->_getMailinglistsOfSubscriber($pk);
 
 		return $this->_data;
-	}
-
-	/**
-	 * Method to get all mailinglists which the user is authorized to see
-	 *
-	 * @access 	public
-	 * @return 	object Mailinglists
-	 */
-	public function getMailinglists()
-	{
-		$app		= JFactory::getApplication();
-		$user_id	= self::getUserId($this->_id);
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-
-		// get authorized viewlevels
-			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
-
-		if (!in_array('3', $accesslevels)) {
-			// A user shall only see mailinglists which are public or - if registered - accessible for his viewlevel and published
-			$query->select('*');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-			$query->order($_db->quoteName('title') . 'ASC');
-		}
-		else {
-			// A user with a super user status shall see all mailinglists
-			$query->select('*');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-			$query->order($_db->quoteName('title') . 'ASC');
-		}
-
-		$_db->setQuery ($query);
-
-		$mailinglists = $_db->loadObjectList();
-
-		// Does the subscriber has internal mailinglists?
-		$selected	= $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
-
-		if (is_array($selected)) {
-			$ml_ids		= array();
-			$add_mls	= array();
-
-			// compare available mailinglists with selected mailinglists, get difference
-			foreach ($mailinglists as $value) $ml_ids[]	= $value->id;
-			$get_mls	= array_diff ($selected, $ml_ids);
-
-			// if there are internal mailinglists selected, get them ...
-			if (!empty($get_mls)) {
-				$query->clear();
-				$query->select('*');
-				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('id') . ' IN (' .implode(',', $get_mls) . ')');
-				$query->order($_db->quoteName('title') . 'ASC');
-
-				$_db->setQuery ($query);
-
-				$add_mls = $_db->loadObjectList();
-			}
-		}
-		// ...and add them to the mailinglists array
-		if (!empty($add_mls)) $mailinglists	= array_merge($mailinglists, $add_mls);
-
-		return $mailinglists;
-	}
-
-	/**
-	 * Method to get the user ID of a subscriber from the subscribers-table depending on the subscriber ID
-	 * --> is needed for the constructor
-	 *
-	 * @access 	public
-	 *
-	 * @param 	int     $id     subscriber ID
-	 *
-	 * @return 	int user ID
-	 */
-	public function getUserId($id)
-	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('user_id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
-
-		$_db->setQuery($query);
-
-		$user_id = $_db->loadResult();
-
-		return $user_id;
 	}
 
 	/**
@@ -305,16 +285,23 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function getEmailaddress($id)
 	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$emailaddress   = null;
+		$_db	        = $this->_db;
+		$query	        = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('email'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
 
-		$_db->setQuery($query);
-
-		$emailaddress = $_db->loadResult();
+		try
+		{
+			$_db->setQuery($query);
+			$emailaddress = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $emailaddress;
 	}
@@ -329,25 +316,33 @@ class BwPostmanModelEdit extends JModelAdmin
 	public function getActivation()
 	{
 		jimport('joomla.user.helper');
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$newActivation      = true;
+		$existingActivation = true;
+		$_db	            = $this->_db;
+		$query	            = $_db->getQuery(true);
 
 		// Create the activation and check if the sting doesn't exist twice or more
 		$match_activation = true;
-		while ($match_activation) {
-			$newActivation = JApplication::getHash(JUserHelper::genRandomPassword());
+		while ($match_activation)
+		{
+			$newActivation = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
 
 			$query->clear();
 			$query->select($_db->quoteName('activation'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('activation') . ' = ' . $_db->Quote($newActivation));
+			$query->where($_db->quoteName('activation') . ' = ' . $_db->quote($newActivation));
 
-			$_db->setQuery($query);
-			$existingActivation = $_db->loadResult();
+			try
+			{
+				$_db->setQuery($query);
+				$existingActivation = $_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
-			if ($existingActivation == $newActivation) {
-				$match_activation = true;
-			} else {
+			if (!$existingActivation == $newActivation) {
 				$match_activation = false;
 			}
 		}
@@ -362,27 +357,43 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function getItemid()
 	{
+		$itemid = null;
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=edit'));
+		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=edit'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 
-		$_db->setQuery($query);
-		$itemid = $_db->loadResult();
+		try
+		{
+			$_db->setQuery($query);
+			$itemid = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		if (empty($itemid)) {
+		if (empty($itemid))
+		{
 			$query->clear();
 
 			$query->select($_db->quoteName('id'));
 			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=register'));
+			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 
-			$_db->setQuery($query);
-			$itemid = $_db->loadResult();
+			try
+			{
+				$_db->setQuery($query);
+				$itemid = $_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 		return $itemid;
 	}
@@ -406,12 +417,18 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('editlink') . ' = ' . $_db->Quote($editlink));
+		$query->where($_db->quoteName('editlink') . ' = ' . $_db->quote($editlink));
 		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
 
-		$_db->setQuery($query);
-
-		$id = $_db->loadResult();
+		try
+		{
+			$_db->setQuery($query);
+			$id = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if (empty($id)) $id = 0;
 
@@ -431,60 +448,51 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-
 		parent::save($data);
 
 		// Get the subscriber id
 		$subscriber_id = $data['id'];
 
 		// Delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
-		$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($_db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
+		BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber($subscriber_id);
 
-		$_db->setQuery($query);
-		$_db->execute();
-
-		if (isset($data['mailinglists'])) {
+		// Store subscribed mailinglists in newsletters_mailinglists-table
+		if (isset($data['mailinglists']))
+		{
 			if (($data['mailinglists']) != '') {
-				$list_id_values = $data['mailinglists'];
-
-				// Store subscribed mailinglists in newsletters_mailinglists-table
-				foreach ($list_id_values AS $list_id) {
-					$query	= $_db->getQuery(true);
-
-					$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-					$query->columns(array(
-							$_db->quoteName('subscriber_id'),
-							$_db->quoteName('mailinglist_id')
-					));
-					$query->values(
-							(int) $subscriber_id . ',' .
-							(int) $list_id
-					);
-					$_db->setQuery($query);
-					$_db->execute();
-				}
+				BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
 			}
 		}
 		return true;
 	}
 
 	/**
-	 * Method to fill void data
-	 * --> the subscriber data filled with default values
+	 * Method to get associated mailing lists
 	 *
-	 * @access	public
+	 * @param $pk
 	 *
-	 * @return 	object  $subscriber     subscriber object
+	 * @return mixed
 	 */
-	public function fillVoidSubscriber(){
+	private function _getMailinglistsOfSubscriber($pk)
+	{
+		$list_id_values = null;
+		$_db    = $this->_db;
+		$query  = $_db->getQuery(true);
 
-		/* Load an empty subscriber */
-		$subscriber = $this->getTable('subscribers', 'BwPostmanTable');
-		$subscriber->load();
+		$query->select($_db->quoteName('mailinglist_id'));
+		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $pk);
 
-		return $subscriber;
+		try
+		{
+			$_db->setQuery($query);
+
+			$list_id_values = $_db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		return $list_id_values;
 	}
 }

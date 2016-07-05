@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+use Joomla\Registry\Registry as JRegistry;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -45,9 +47,9 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	/**
 	 * property to hold selected item
 	 *
-	 * @var array   $item
+	 * @var object   $params
 	 */
-	protected $item;
+	protected $params;
 
 	/**
 	 * property to hold items
@@ -64,6 +66,48 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	protected $pagination	= null;
 
 	/**
+	 * property to hold form object
+	 *
+	 * @var object  $form
+	 */
+	protected $form	= null;
+
+	/**
+	 * property to hold filter form object
+	 *
+	 * @var object  $filterForm
+	 */
+	protected $filterForm	= null;
+
+	/**
+	 * property to hold active filters object
+	 *
+	 * @var object  $activeFilters
+	 */
+	protected $activeFilters	= null;
+
+	/**
+	 * property to hold mailinglists object
+	 *
+	 * @var object  $mailinglists
+	 */
+	protected $mailinglists	= null;
+
+	/**
+	 * property to hold campaigns object
+	 *
+	 * @var object  $campaigns
+	 */
+	protected $campaigns	= null;
+
+	/**
+	 * property to hold usergroups object
+	 *
+	 * @var object  $usergroups
+	 */
+	protected $usergroups	= null;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -74,8 +118,6 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	{
 
 		$app		= JFactory::getApplication();
-		$uri		= JFactory::getURI();
-		$uri_string	= $uri->toString();
 		$menu		= $app->getMenu()->getActive();
 
 		$state		= $this->get('State');
@@ -144,14 +186,17 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		// Because the application sets a default page title, we need to get it
 		// right from the menu item itself
-		if (is_object($menu)) {
+		if (is_object($menu))
+		{
 			$menu_params = new JRegistry();
 			$menu_params->loadString($menu->params, 'JSON');
-			if (!$menu_params->get('page_heading')) {
+			if (!$menu_params->get('page_heading'))
+			{
 				$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));
 			}
 		}
-		else {
+		else
+		{
 			$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));
 		}
 
@@ -162,11 +207,9 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle($this->params->get('page_title'));
 
-		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
-
-		// Save a reference into view
-		$this->assign('uri', str_replace('&', '&amp;', $uri_string));
+		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename))
+			$document->addStyleSheet(JUri::root(true) . $css_filename);
 
 		// Set parent display
 		parent::display($tpl);

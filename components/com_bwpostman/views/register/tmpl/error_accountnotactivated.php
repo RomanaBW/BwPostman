@@ -39,23 +39,27 @@ defined ('_JEXEC') or die ('Restricted access');
 <div id="bwpostman">
 	<div id="bwp_com_error_account_notactivated">
 		<?php if ($this->params->def('show_page_title', 1)) { ?>
-		<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
 		<?php }
 		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
 		?>
 
 		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate">
 			<?php
-			if (property_exists($this->error, 'err_code')) { // Case 1, 2, 3, 4
-				if ($this->error->err_email) { // Case 4
+			if (property_exists($this->error, 'err_code'))
+			{ // Case 1, 2, 3, 4
+				if ($this->error->err_email)
+				{ // Case 4
 					$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
 					echo $msg;
 				}
-				else { // Case 1, 2, 3
+				else
+				{ // Case 1, 2, 3
 					echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
 				}
 			}
-			else {  // Case 5
+			else
+			{  // Case 5
 				echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
 			?>
 
@@ -75,7 +79,7 @@ defined ('_JEXEC') or die ('Restricted access');
 			<input type="hidden" name="task" value="sendActivation" />
 			<input type="hidden" name="id" value="<?php echo $this->error->err_id; ?>" />
 			<input type="hidden" name="err_code" value="<?php echo (property_exists($this->error, 'err_code')) ? $this->error->err_code : ''; ?>" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</form>
 
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>

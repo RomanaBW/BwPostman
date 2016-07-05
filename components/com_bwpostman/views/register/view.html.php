@@ -29,15 +29,59 @@ defined ('_JEXEC') or die ('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
+jimport('joomla.application.component.helper');
 
-// Require helper class
+// Require helper classes
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanViewRegister
  */
 class BwPostmanViewRegister extends JViewLegacy
 {
+	/**
+	 * The subscriber data
+	 *
+	 * @var    object
+	 */
+	public $subscriber = null;
+
+	/**
+	 * several needed lists
+	 *
+	 * @var    array
+	 */
+	public $lists = null;
+
+	/**
+	 * The component parameters
+	 *
+	 * @var    object   Registry object
+	 */
+	public $params = null;
+
+	/**
+	 * The component captcha
+	 *
+	 * @var    string
+	 */
+	public $captcha = null;
+
+	/**
+	 * The current error object
+	 *
+	 * @var    object
+	 */
+	public $error = null;
+
+	/**
+	 * The current success object
+	 *
+	 * @var    object
+	 */
+	public $success = null;
+
 	/**
 	 * Execute and display a template script.
 	 *
@@ -47,294 +91,146 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	public function display($tpl=null)
 	{
-		$app		= JFactory::getApplication();
-		$layout		= $this->getLayout();
-		$document	= JFactory::getDocument();
+		$app		    = JFactory::getApplication();
+		$document       = JFactory::getDocument();
+		$this->params	= JComponentHelper::getParams('com_bwpostman', true);
+		$layout		    = $this->getLayout();
 
-		$params			= $app->getPageParameters();
-		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 		$this->captcha	= BwPostmanHelper::getCaptcha(1);
 
-		$document->setTitle($params->get('page_title'));
+		// Add document css
+		$templateName	= $app->getTemplate();
+		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+
 		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
 
-		switch ($layout) {
+		switch ($layout)
+		{
 			case "error_accountblocked":
 			case "error_accountgeneral":
 			case "error_accountnotactivated":
 			case "error_email":
 			case "error_geteditlink":
-				$this->_displayError($tpl);
-				return;
+				$this->_displayError();
 				break;
 			case "success_msg":
-				$this->_displaySuccess($tpl);
-				return;
+				$this->_displaySuccess();
 				break;
 			default:
-				$this->_displayDefault($tpl);
-				return;
+				$this->_displayDefault();
 				break;
 		}
-//		parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**
 	 * View Error Display
 	 *
 	 * @access	private
-	 *
-	 * @param 	string $tpl     Template
 	 */
-	private function _displayError($tpl)
+	private function _displayError()
 	{
-		$app		    = JFactory::getApplication();
-		$this->uri_root	= JUri::root();
-		$this->config	= JFactory::getConfig();
-		$params		    = $app->getPageParameters();
-		$menu		    = $app->getMenu()->getActive();
-		$err		    = JFactory::getSession()->get('session_error', null);
-		$this->error	= new stdClass();
+		$session	    = JFactory::getSession();
+		$this->error    = new stdClass();
+		$err	    = $session->get('session_error', null);
 
-		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
-
-		if(isset($err) && is_array($err)){
-			foreach ($err AS $key => $value) {
+		if(isset($err) && is_array($err))
+		{
+			foreach ($err AS $key => $value)
+			{
 				$this->error->$key = $value;
 			}
+			$session->clear('session_error');
 		}
-
-		// Because the application sets a default page title, we need to get it
-		// right from the menu item itself
-		if (is_object($menu)) {
-			$menu_params = new JRegistry();
-			$menu_params->loadString($menu->params, 'JSON');
-			if (!$menu_params->get('page_title')) {
-				$title = JText::_('COM_BWPOSTMAN_NL_REGISTRATION');
-			}
-			else {
-				$title = $menu_params->get('page_title');
-			}
-		}
-		else {
-			$params->set('page_title',	JText::_('COM_BWPOSTMAN_NL_REGISTRATION'));
-		}
-
-		// Get document object, set document title and add css
-		$document = JFactory::getDocument();
-		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
-
-		// Load the form validation behavior
-		JHtml::_('behavior.formvalidation');
-
-		// Save references into view
-		$this->params = $params;
 
 		//reset error state
-		$app->setUserState('com_bwpostman.subscriber.register.error', null);
-
-		// Set parent display
-		parent::display();
+		JFactory::getApplication()->setUserState('com_bwpostman.subscriber.register.error', null);
 	}
 
 	/**
 	 * View Success Display
 	 *
 	 * @access	private
-	 *
-	 * @param	string $tpl     Template
 	 */
-	private function _displaySuccess($tpl)
+	private function _displaySuccess()
 	{
-		$app	    	= JFactory::getApplication();
-		$this->root		= JUri::root();
-		$this->user		= JFactory::getUser();
 		$session	    = JFactory::getSession();
-		$this->success 	= new stdClass();
-		$params		    = $app->getPageParameters();
-		$menu		    = $app->getMenu()->getActive();
+		$this->success  = new stdClass();
 
 		$session_success = $session->get('session_success');
-		if(isset($session_success) && is_array($session_success)){
-			foreach ($session_success AS $key => $value) {
+		if(isset($session_success) && is_array($session_success))
+		{
+			foreach ($session_success AS $key => $value)
+			{
 				$this->success->$key = $value;
 				$session->clear('session_success');
 			}
 		}
-
-		// Because the application sets a default page title, we need to get it
-		// right from the menu item itself
-		if (is_object($menu)) {
-			$menu_params = new JRegistry();
-			$menu_params->loadString($menu->params, 'JSON');
-			if (!$menu_params->get('page_title')) {
-				$title = JText::_('COM_BWPOSTMAN_NL_REGISTRATION');
-			}
-			else {
-				$title = $menu_params->get('page_title');
-			}
-		}
-		else {
-			$params->set('page_title',	JText::_('COM_BWPOSTMAN_NL_REGISTRATION'));
-		}
-
-		// Get document object, set document title and add css
-		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
-
-		$document = JFactory::getDocument();
-		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
-
-		// Save references into view
-		$this->params   = $params;
-
-		// Set parent display
-		parent::display();
 	}
 
 	/**
 	 * View Default Display
 	 *
 	 * @access	private
-	 *
-	 * @param 	string $tpl     Template
 	 */
-	private function _displayDefault($tpl)
+	private function _displayDefault()
 	{
-		$app		= JFactory::getApplication();
 		$user		= JFactory::getUser();
 		$session	= JFactory::getSession();
-		$reg_model	= $this->getModel('register');
-		$params		= $app->getPageParameters('com_bwpostman');
-		$menu		= $app->getMenu()->getActive();
 		$subscriber	= new stdClass();
-
+		$lists      = array();
 
 		// If there occurred an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');
 
-		if(isset($subscriber_data) && is_array($subscriber_data)){
-			foreach ($subscriber_data AS $key => $value) {
+		if(isset($subscriber_data) && is_array($subscriber_data))
+		{
+			foreach ($subscriber_data AS $key => $value)
+			{
 				$subscriber->$key = $value;
 			}
 			$subscriber->id	= 0;
 			$session->clear('subscriber_data');
-			$selected_mailinglists = $subscriber->mailinglists;
 		}
-		else {
-			$subscriber = $reg_model->fillVoidSubscriber();
+		else
+		{
+			$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
 			// If the user is logged into the website get the data from users-table
-			if (!$user->get('guest')) {
+			if (!$user->get('guest'))
+			{
 				$subscriber->name = $user->get('name');
 				$subscriber->email = $user->get('email');
 			}
 		}
 
 		// Get the mailinglists which the subscriber is authorized to see
-		$available_mailinglists = $this->get('mailinglists');
+		$lists['available_mailinglists'] = BwPostmanSubscriberHelper::getAuthorizedMailinglists($subscriber->id);
 
-		// Because the application sets a default page title, we need to get it
-		// right from the menu item itself
-		if (is_object($menu)) {
-			$menu_params = new JRegistry();
-			$menu_params->loadString($menu->params, 'JSON');
-			if (!$menu_params->get('page_title')) {
-				$title = JText::_('COM_BWPOSTMAN_NL_REGISTRATION');
-			}
-			else {
-				$title = $menu_params->get('page_title');
-			}
-		}
-		else {
-			$params->set('page_title',	JText::_('COM_BWPOSTMAN_NL_REGISTRATION'));
-		}
-
-		// Get document object, set document title and add css
-		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
-
-		$document = JFactory::getDocument();
-		$document->setTitle($params->get('page_title'));
-		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
-
-		// Load the form validation behavior
-		JHtml::_('behavior.formvalidation');
-
-/*		// Build the emailformat select list
-		if (!isset($subscriber->emailformat)) {
-			$selected = $params->get('default_emailformat');
-		} else {
-			$selected = $subscriber->emailformat;
-		}
-*/
 		// Build the email format select list
-		if (!isset($subscriber->emailformat)) {
-			$mailformat_selected = $params->get('default_emailformat');
+		if (!isset($subscriber->emailformat))
+		{
+			$mailformat_selected = $this->params->get('default_emailformat');
 		}
-		else {
+		else
+		{
 			$mailformat_selected = $subscriber->emailformat;
 		}
-
-		$emailformat 	= '<fieldset id="edit_mailformat" class="radio btn-group">';
-		$emailformat		.= '<input type="radio" name="emailformat" id="formatText" value="0"';
-		if(!$mailformat_selected)
-		{
-			$emailformat .= ' checked="checked"';
-		}
-		$emailformat     .= ' />';
-		$emailformat		.= '<label for="formatText"><span>'. JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
-		$emailformat     .= '<input type="radio" name="emailformat" id="formatHtml" value="1"';
-		if($mailformat_selected)
-		{
-			$emailformat .= 'checked="checked"';
-		}
-		$emailformat     .= ' />';
-		$emailformat     .= '<label for="formatHtml"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
-		$emailformat     .= '</fieldset>';
-		$lists['emailformat'] = $emailformat;
+		$lists['emailformat'] = BwPostmanSubscriberHelper::buildMailformatSelectList($mailformat_selected);
 
 		// Build the gender select list
-		if (!isset($subscriber->gender)) {
+		if (!isset($subscriber->gender))
+		{
 			$gender_selected = 0;
 		}
-		else {
+		else
+		{
 			$gender_selected = $subscriber->gender;
 		}
-
-		$gender 	= '<fieldset id="edit_gender" class="radio btn-group">';
-		$gender		.= '<input type="radio" name="gender" id="genMale" value="0"';
-		if(!$gender_selected)
-		{
-			$gender .= ' checked="checked"';
-		}
-		$gender     .= ' />';
-		$gender		.= '<label for="genMale"><span>'. JText::_('COM_BWPOSTMAN_MALE') . '</span></label>';
-		$gender     .= '<input type="radio" name="gender" id="genFemale" value="1"';
-		if($gender_selected)
-		{
-			$gender .= ' checked="checked"';
-		}
-		$gender     .= ' />';
-		$gender     .= '<label for="genFemale"><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></label>';
-		$gender     .= '</fieldset>';
-		$lists['gender'] = $gender;
+		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList($gender_selected);
 
 		// Save references into view
-		$this->available_mailinglists   = $available_mailinglists;
-		$this->lists                    = $lists;
-		$this->params                   = $params;
-		$this->selected_mailinglists    = $selected_mailinglists;
-		$this->subscriber               = $subscriber;
-		$this->user                     = $user;
-
-		parent::display($tpl);
+		$this->lists        = $lists;
+		$this->subscriber   = $subscriber;
 	}
 }

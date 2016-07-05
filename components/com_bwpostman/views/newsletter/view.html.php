@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+use Joomla\Registry\Registry as JRegistry;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -35,6 +37,41 @@ jimport('joomla.application.component.view');
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
+	/**
+	 * Attachment enabled?
+	 *
+	 * @var    boolean
+	 */
+	public $attachment_enabled = true;
+
+	/**
+	 * Page title
+	 *
+	 * @var    string
+	 */
+	public $page_title = true;
+
+	/**
+	 * Backlink
+	 *
+	 * @var    string
+	 */
+	public $backlink = true;
+
+	/**
+	 * The current newsletter
+	 *
+	 * @var    object
+	 */
+	public $newsletter = true;
+
+	/**
+	 * Params
+	 *
+	 * @var    object JRegistry object
+	 */
+	public $params = true;
+
 	/**
 	 * Execute and display a template script.
 	 *
@@ -46,7 +83,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 		$id		= (int) $app->input->get('id', 0);
-		$params	= $app->getPageParameters();
+		$params	= JComponentHelper::getParams('com_bwpostman');
 
 		// Count how often the newsletter has been viewed
 		$newsletter = JTable::getInstance('newsletters', 'BwPostmanTable');
@@ -58,14 +95,17 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document = JFactory::getDocument();
-		if ($params->get('page_heading') != '') {
+		if ($params->get('page_heading') != '')
+		{
 			$document->setTitle($params->get('page_title'));
 		}
-		else {
+		else
+		{
 			$document->setTitle($newsletter->subject);
 		}
-		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
+		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename))
+			$document->addStyleSheet(JUri::root(true) . $css_filename);
 
 		// Get the global list params and preset them
 		$globalParams				= JComponentHelper::getParams('com_bwpostman', true);
@@ -73,14 +113,18 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->page_title			= $globalParams->get('subject_as_title');
 
 		$menuParams = new JRegistry;
+		$menu = $app->getMenu()->getActive();
 
-		if ($menu = $app->getMenu()->getActive()) {
+		if ($menu)
+		{
 			$menuParams->loadString($menu->params);
 		}
 
 		// if we came from list view to show single newsletter, then params of list view shall take effect
-		if (is_object($menu)) {
-			if (stristr($menu->link, 'view=newsletter&') == false) {
+		if (is_object($menu))
+		{
+			if (stristr($menu->link, 'view=newsletter&') == false)
+			{
 				// Get the menu item state
 				$nls_state	= $app->getUserState('com_bwpostman.newsletters.params');
 
@@ -89,17 +133,21 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					$this->attachment_enabled	= $nls_state->get('attachment_enable');
 				}
 			}
-			else { // we come from single menu link, use menu params if set, otherwise global details params are used
-				if ($menuParams->get('attachment_single_enable') !== null) {
+			else
+			{ // we come from single menu link, use menu params if set, otherwise global details params are used
+				if ($menuParams->get('attachment_single_enable') !== null)
+				{
 					$this->attachment_enabled	= $menuParams->get('attachment_single_enable');
 				}
-				else {
+				else
+				{
 					$this->attachment_enabled	= $globalParams->get('attachment_single_enable');
 				}
 			}
 		}
 
-		if ($newsletter->published == 0) {
+		if ($newsletter->published == 0)
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_NL_NOT_AVAILABLE'), 'error');
 		}
 
@@ -107,9 +155,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$backlink = $_SERVER['HTTP_REFERER'];
 
 		// Save a reference into the view
-		$this->assignRef('backlink', $backlink);
-		$this->assignRef('newsletter', $newsletter);
-		$this->assignRef('params', $params);
+		$this->backlink = $backlink;
+		$this->newsletter = $newsletter;
+		$this->params = $params;
 
 		// Set parent display
 		parent::display($tpl);

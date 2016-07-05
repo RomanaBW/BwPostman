@@ -56,19 +56,26 @@ class JFormFieldMenuItems extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$_db	= JFactory::getDbo();
-		$query	= $_db->getQuery(true);
+		$options    = null;
+		$_db	    = JFactory::getDbo();
+		$query	    = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id') . ' AS value');
 		$query->select($_db->quoteName('title') . ' AS text');
 		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=archive') . ' OR ' . $_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=newsletters'));
+		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=archive') . ' OR ' . $_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=newsletters'));
 		$query->where($_db->quoteName('client_id') . ' = ' . (int) 0);
 		$query->order($_db->quoteName('title').' ASC');
 
-		$_db->setQuery($query);
-
-		$options	= $_db->loadObjectList();
+		try
+		{
+			$_db->setQuery($query);
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

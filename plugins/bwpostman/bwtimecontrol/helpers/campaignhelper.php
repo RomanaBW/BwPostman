@@ -26,19 +26,26 @@
 
 defined ('_JEXEC') or die ('Restricted access');
 
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\Registry\Registry;
+
 jimport('libraries.joomla.application.component.helper.php');
 
-class BwPostmanCampaignHelper {
+/**
+ * Class BwPostmanCampaignHelper
+ */
+class BwPostmanCampaignHelper
+{
 
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param	string  $type	    The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
-	 * 
+	 *
 	 * @since  1.2.0
 	*/
 	static public function getTable($type = 'Tc_Campaign', $prefix = 'BwPostmanTable', $config = array())
@@ -51,29 +58,29 @@ class BwPostmanCampaignHelper {
 	 * Method to get the tc-data ID for a given campaign
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param 	int		campaign ID
-	 * 
+	 *
 	 * @return 	int		tc-data ID
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function getTcIdFromCampaign ($campaign_id = 0)
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$query->select($db->quoteName('tc_id'));
 		$query->from($db->quoteName('#__bwpostman_tc_campaign'));
 		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $campaign_id);
 		$db->setQuery($query);
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
-	
+
 		$id = $db->loadResult();
-		
+
 		return $id;
 	}
 	/**
@@ -106,7 +113,7 @@ class BwPostmanCampaignHelper {
 
 		// Convert to the JObject before adding other data.
 		$properties = $table->getProperties(1);
-		$item = JArrayHelper::toObject($properties, 'JObject');
+		$item = ArrayHelper::toObject($properties, 'JObject');
 
 		if (property_exists($item, 'params'))
 		{
@@ -133,7 +140,7 @@ class BwPostmanCampaignHelper {
 		$form = self::_loadForm('bwpostman.bwtimecontrol', 'tccampaign', array('control' => 'jform', 'load_data' => $loadData));
 
 		// @todo XML-file will not be processed
-				
+
 		if (empty($form)) {
 			return false;
 		}
@@ -157,7 +164,7 @@ class BwPostmanCampaignHelper {
 	static protected function _loadForm($name, $source = null, $options = array(), $clear = false, $xpath = false)
 	{
 		// Handle the optional arguments.
-		$options['control'] = JArrayHelper::getValue($options, 'control', false);
+		$options['control'] = ArrayHelper::getValue($options, 'control', false);
 
 		// Get the form.
 		JForm::addFormPath(JPATH_PLUGINS.'/bwpostman/bwtimecontrol/forms');
@@ -165,7 +172,7 @@ class BwPostmanCampaignHelper {
 		try
 		{
 			$form = JForm::getInstance($name, $source, $options, false, $xpath);
-				
+
 			if (isset($options['load_data']) && $options['load_data'])
 			{
 				// Get the data for the form.
@@ -193,14 +200,14 @@ class BwPostmanCampaignHelper {
 	 * Method to get selectlist for dates
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	string				sort of date --> day, hour, minute
 	 * @param 	int					length of listarray
 	 * @param 	array of objects	selectval selected values
 	 * @param	int					interval value
-	 * 
+	 *
 	 * @return 	string				selectlist
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function getDateList($date = 'minute', $length = 10, $selectval, $intval)
@@ -236,7 +243,7 @@ class BwPostmanCampaignHelper {
 			else {
 				$selected	= 0;
 			}
-				
+
 			$select_html		= '<select id="' . $opt . '" name="automailing_values['.$date.'][]" >';
 			foreach ($options as $key => $value) {
 
@@ -247,9 +254,9 @@ class BwPostmanCampaignHelper {
 			$select_html		.= '</select>';
 			$selectlist[]	= $select_html;
 		}
-		
+
 //dump ($selectlist, 'Helper Selectlist');
-		
+
 		return $selectlist;
 	}
 
@@ -257,23 +264,23 @@ class BwPostmanCampaignHelper {
 	 * Method to get selectlists for campaign letters
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	array				campaign letters
 	 * @param 	array of objects	selected values
-	 * 
+	 *
 	 * @return 	string				selectlist
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function getNlSelectlists($newsletters, $selectval)
 	{
 		$options	= array();
 		$selectlist	= array();
-		
+
 		$no_select	= array('nl_id' => 0, 'title' => "- " . JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_NOSELECT') . " -");
 
 		array_unshift($newsletters, $no_select);
-		
+
 		foreach ($selectval as $key => $value) {
 			$attribs	= 'class="inputbox" size="1"';
 			$opt		= "automailing_values[nl_id][".$key."]";
@@ -283,7 +290,7 @@ class BwPostmanCampaignHelper {
 			else {
 				$selected	= 0;
 			}
-				
+
 			$select_html		= '<select id="' . $opt . '" name="automailing_values[nl_id][]" >';
 			foreach ($newsletters as $newsletter) {
 				$select_html		.= '<option value="' . $newsletter['nl_id'] . '"';
@@ -300,13 +307,13 @@ class BwPostmanCampaignHelper {
 	 * Method to build HTML for the autovalues tab
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	autocampaign data
 	 * @param 	object	document
 	 * @param 	object	params
-	 * 
+	 *
 	 * @return 	string	HTML code for tab autovalues
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function buildAutovaluesTab($item, &$document, $params)
@@ -315,9 +322,9 @@ class BwPostmanCampaignHelper {
 		$form		= BwPostmanCampaignHelper::getForm($item->tc_id);
 		$intval		= $params->get('bwtimecontrol_minute_intval');
 		$daysmax	= $params->get('bwtimecontrol_days_max');
-		
+
 		$am_max_val = 0;
-		
+
 		// Get automailing data from table
 		// Check for automailing and count campaign letters
 		if ($item->automailing) {
@@ -332,14 +339,14 @@ class BwPostmanCampaignHelper {
 			$selectval->nl_id[0]	= 0;
 			$hide_style 			= "hidden_content";
 		}
-		
+
 		// build select lists for campaign letters
 		// @todo assemble 'building newsletters select list' in one helper function! Here only the list is needed!
 		$newsletters	= BwPostmanCampaignHelper::getAllCampaignLetters($item->campaign_id);
 		$nl_select		= BwPostmanCampaignHelper::getNlSelectlists($newsletters, $selectval->nl_id);
 		$nl_list		= array();
 		$nl_item		= array();
-		
+
 		foreach ($newsletters as $newsletter) {
 			$nl_item['nl_id']	= $newsletter['nl_id'];
 			$title				= $newsletter['title'];
@@ -348,22 +355,22 @@ class BwPostmanCampaignHelper {
 			$title				= str_replace("'", "", $title);
 			$title				= str_replace('"', '\\"', $title);
 			$nl_item['title']	= $title;
-				
+
 			$nl_list[]		= $nl_item;
 		}
 		$nl_item['nl_id']		= 0;
 		$nl_item['title']		= "- " . JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_NOSELECT') . " -";
-		
+
 		array_unshift($nl_list, $nl_item);
-		
+
 		JFactory::getApplication()->setUserState('bwtimecontrol.nbr_campaign_letters', count($newsletters));
-		
+
 		// build select lists for date
 		$day_select		= BwPostmanCampaignHelper::getDateList('day', $am_max_val+1, $selectval, $daysmax);
 		$hour_select	= BwPostmanCampaignHelper::getDateList('hour', $am_max_val+1, $selectval, 1);
 		$minute_select	= BwPostmanCampaignHelper::getDateList('minute', $am_max_val+1, $selectval, $intval);
 		$m_max			= count($day_select);
-		
+
 		// set error object for JS
 		$err_obj	= new stdClass();
 		$err_obj->TC1	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_JS_ERROR_CAM_TIMECHECK1');
@@ -373,20 +380,20 @@ class BwPostmanCampaignHelper {
 		$err_obj->TC5	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_JS_ERROR_CAM_TIMECHECK5');
 		$err_obj->TC6	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_JS_ERROR_CAM_TIMECHECK6');
 		$err_obj->TC7	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_JS_ERROR_CAM_TIMECHECK7');
-		
+
 		$script1	= "var nllist	= '" . json_encode($nl_list) . "';";
 		$script1	.= "var err_obj	= '" . json_encode($err_obj) . "';";
-		
+
 		// set additional JS and CSS
 		$document->addScriptDeclaration($script1);
 		$document->addScript(JUri::root() . 'plugins/bwpostman/bwtimecontrol/assets/js/bwtimecontrol.js');
 		$document->addStyleDeclaration('.hidden_content {display: none;}');
-		
+
 		// Set additional HTML for automailing values
 		$content	 = '<fieldset class="adminform">';
 		$content	.= '<legend>' . JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOVALUES_TITLE') . '</legend>';
 		$content	.= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_CAM_CHANGE_NOTE');
-		
+
 		$content	.= '<div class="control-group">';
 		$content	.= '<ul class="adminformlist unstyled">';
 		foreach($form->getFieldset('basic') as $field) {
@@ -418,7 +425,7 @@ class BwPostmanCampaignHelper {
 		$content	.= '<th class="key">' . '<span class="bwplabel">' . JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_CAM_AM_MAIL_AFTER_NL') . '</span>' . '</th>';
 		$content	.= '<th class="key">&nbsp;</th>';
 		$content	.= '</tr>';
-		
+
 		for ($m = 0; $m < $m_max; $m++) {
 			$content	.= '<tr class="bwptable ' . $hide_style . '" name="hidden_content">';
 			$content	.= '<td width="200" align="right" class="key">' . '<span class="bwplabel">' . JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_CAM_AM_MAIL_NR', ($m+1)) . '</span>' . '</td>';
@@ -438,21 +445,21 @@ class BwPostmanCampaignHelper {
 		$content	.= '</table>';
 		$content	.= '</fieldset>';
 		$content	.= '<p class="' . $hide_style . '" name="hidden_content"><span class="required_description">' . JText::_('COM_BWPOSTMAN_REQUIRED') . '</span></p>';
-		
+
 		return $content;
 	}
-	
+
 	/**
 	 * Method to build HTML for the autovalues tab
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	autocampaign data
 	 * @param 	object	document
 	 * @param 	object	params
-	 * 
+	 *
 	 * @return 	string	HTML code for tab autovalues
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function buildAutoqueueTab($cam_id)
@@ -480,18 +487,18 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 			$content	.= '<tbody>';
 
 			$k = 0;
-			
+
 			for ($i=0, $n=count($autoletters->queued); $i < $n; $i++)
 			{
 				$item		= &$autoletters->queued[$i];
 				$link_html	= 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_html_modal&amp;task=insideModal&amp;nl_id='. $item->id;
 				$link_text	= 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_text_modal&amp;task=insideModal&amp;nl_id='. $item->id;
-				
+
 				$checked	= '';
 				if ($item->suspended) {
 					$checked	= 'checked="checked" ';
 				}
-				
+
 				$content	.= '<tr class="item' . $k . '">';
 				$content	.= '<td align="center">' . $item->id . '</td>';
 				$content	.= '<td align="center">' . $item->mail_number . '</td>';
@@ -518,13 +525,13 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 				$content	.= '<td align="center">' . $item->email . '</td>';
 				$content	.= '</td>';
 				$content	.= '</tr>';
-				
+
 				$k = 1 - $k;
 			}
 
 			$content	.= '</tbody>';
 			$content	.= '</table>';
-		} 
+		}
 		else {
 			$content = JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_NO_ENTRY');
 		}
@@ -532,15 +539,15 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		return $content;
 	}
 
-	
+
 	/**
 	 * Method to handle changes to newsletter that eventually belongs to a timecontrolled campaign
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param 	int		queue_id
 	 * @param 	int		suspended
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function suspendNewsletterFromSending ($id, $suspended)
@@ -551,16 +558,16 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		else {
 			$suspended = 0;
 		}
-		
+
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
-		
+
 		$query->update($_db->quoteName('#__bwpostman_tc_sendmailqueue'));
 		$query->set($_db->quoteName('suspended') . " = " . $_db->Quote($suspended));
 		$query->where($_db->quoteName('id') . ' = ' . $_db->Quote($id));
-		
+
 		$_db->setQuery($query);
-		
+
 		return $_db->execute();
 	}
 
@@ -568,9 +575,9 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 	 * Method to deactive a tc-campaign
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param 	int		campaign ID
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	private function _deactiveCampaign ($campaign_id)
@@ -578,13 +585,13 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 		$tc_id	= self::getTcIdFromCampaign($campaign_id);
-		
+
 		$query->update($_db->quoteName('#__bwpostman_tc_campaign'));
 		$query->set($_db->quoteName('active') . " = " . (int) 0);
 		$query->where($_db->quoteName('tc_id') . ' = ' . $_db->Quote($tc_id));
-		
+
 		$_db->setQuery($query);
-		
+
 		return $_db->execute();
 	}
 
@@ -592,7 +599,7 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 	 * Method to handle changes to newsletter that eventually belongs to a timecontrolled campaign
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function processChangesOfNewsletterEdit ()
@@ -600,16 +607,16 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		// Get data form current editing state
 		$app			= JFactory::getApplication();
 		$nl_data_new	= $app->getUserState('bwtimecontrol.newsletter.new_data', null);
-		
+
 		if ($nl_data_new === null) {
 			// NL edited, but changes not saved
 			return;
 		}
 		$campaign_new	= $nl_data_new['campaign_id'];
-		
+
 		// Get date from state at beginning of editing
 		$nl_data_old	= $app->getUserState('bwtimecontrol.newsletter.old_data', null);
-		
+
 		if ($nl_data_old === null) {
 			// NL copied, no old state data
 			$campaign_old	= 0;
@@ -623,12 +630,12 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		// Get automated campaigns IDs
 		$tc_id_new	= BwPostmanCampaignHelper::getTcIdFromCampaign($campaign_new);
 		$tc_id_old	= BwPostmanCampaignHelper::getTcIdFromCampaign($campaign_old);
-		
+
 		//if none of the states have a timecontrolled campaign do nothing
 		if ($tc_id_new === null && $tc_id_old === null) {
 			return;
 		}
-		
+
 		// check for changes to campaign
 		if ($campaign_new != $campaign_old) {
 			// If campaign has changed, process these changes
@@ -652,7 +659,7 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		}
 		$app->setUserState('bwtimecontrol.newsletter.new_data', null);
 	}
-	
+
 	/**
 	 * Method to add a newsletter to a timecontrolled campaign
 	 *
@@ -660,7 +667,7 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 	 *
 	 * @param 	int			campaign id
 	 * @param 	int			newsletter id
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	private static function _addNewsletterToCampaign ($cam_id, $nl_id)
@@ -674,13 +681,13 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		array_push($auto_values->hour, (string) 0);
 		array_push($auto_values->minute, (string) 0);
 		array_push($auto_values->nl_id, (string) $nl_id);
-		
+
 		$tc_data->automailing_values	= json_encode($auto_values);
-		
+
 		JFactory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_edit', $tc_data);
 		$controller->setRedirect('index.php?option=com_bwpostman&task=campaign.edit&id=' . $cam_id);
 	}
-	
+
 	/**
 	 * Method to remove a newsletter from a timecontrolled campaign
 	 *
@@ -688,19 +695,19 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 	 *
 	 * @param 	int			campaign id
 	 * @param 	int			newsletter id
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	private static function _removeNewsletterFromCampaign ($cam_id, $nl_id)
 	{
 		$app	= JFactory::getApplication();
-		
+
 		// Get row index of newsletter in automailing values
 		$tc_data		= self::getItem($cam_id);
 		$auto_values	= json_decode($tc_data->automailing_values);
 		$controller		= JControllerLegacy::getInstance('BwPostman');
 		$row			= array_search($nl_id, $auto_values->nl_id);
-		
+
 		if ($row === false) {
 			$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ERROR_REMOVE_NL_FROM_CAMPAIGN'), 'error');
 			return false;
@@ -712,35 +719,35 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 //dump ($auto_values, 'decodierte automailing Values');
 
 		$tc_data->automailing_values	= json_encode($auto_values);
-		
+
 		$app->setUserState('bwtimecontrol.cam_data.nl_edit', $tc_data);
 		$app->setUserState('bwtimecontrol.cam_data.nl_referrer', 'remove');
 		$app->setUserState('bwtimecontrol.newsletter.save.returnlink', 'index.php?option=com_bwpostman&view=newsletters');
 		$controller->setRedirect('index.php?option=com_bwpostman&task=campaign.edit&id=' . $cam_id);
-		
+
 		// @todo set old flag in tc_sendmailcontent
-		
+
 		// @todo remove newsletter form tc_sendmailqueue
 
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Method to get all campaigns with automation
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @return 	array campaign IDs
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	public function getAllAutocampaigns ()
 	{
 		$automailing	= array();
-	
+
 		$lists_id		= self::_getAllMailinglistsIds();
-	
+
 		foreach ($lists_id as $list_id) {
 			$campaign_id	= self::_getCampaignIdFromLists($list_id);
 			if ($campaign_id > 0) {
@@ -748,19 +755,19 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 				if ($result == 1) $automailing[] = $campaign_id;
 			}
 		}
-		
+
 		return $automailing;
 	}
-	
+
 	/**
 	 * Method to get all newsletters assigned to given campaign
-	 * 
+	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param	int		campaign id
 	 *
 	 * @return 	array	newsletters of this campaign
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	static public function getAllCampaignLetters ($campaign_id)
@@ -768,35 +775,35 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		$newsletters	= array();
 		$_db			= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
-		
+
 		$query->select($_db->quoteName('id')  . ' AS ' . $_db->quoteName('nl_id'));
 		$query->select($_db->quoteName('subject')  . ' AS ' . $_db->quoteName('title'));
 		$query->from($_db->quoteName('#__bwpostman_newsletters'));
 		$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $campaign_id);
-		
+
 		$_db->setQuery($query);
 		$newsletters	= $_db->loadAssocList();
-		
+
 		return $newsletters;
 	}
-	
+
 	/**
 	 * Method to get the subscribed campaigns with automation
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param 	int subscriber ID
-	 * 
+	 *
 	 * @return 	array campaign IDs
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	public function getAutomailings ($id)
 	{
 		$automailing	= array();
-	
+
 		$lists_id		= self::_getMailinglistsIds($id);
-	
+
 		foreach ($lists_id as $list_id) {
 			$campaign_id	= self::_getCampaignIdFromLists($list_id);
 			if ($campaign_id > 0) {
@@ -806,25 +813,25 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		}
 		return $automailing;
 	}
-	
+
 	/**
 	 * Make partial send. Send only, say like 50 newsletters and the next 50 in a next call.
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param $mailsToSend
 	 *
 	 * @return int	0 -> queue is empty, >0 -> sent
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static protected function _sendMailsFromQueue($mailsPerStep = 100)
 	{
 		$controller	= JControllerLegacy::getInstance('BwPostman');
 		$model		= $controller->getModel('newsletter');
-		
+
 		$sendMailCounter	= 0;
-		
+
 		while(1){
 			$ret = $model->sendMail(false);
 			if ($ret == 0){                              // Queue is empty!
@@ -838,39 +845,39 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Method to get the existing entries for a specific subscriber and campaign
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param 	int		subscriber ID
 	 * @param 	int		campaign ID
 	 * @param 	int		email adress of subscriber
-	 * 
+	 *
 	 * @return 	boolean	rows affected
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	public function getSubsQueueEntries ($id = 0, $campaign_id = 0, $email = '')
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_tc_sendmailqueue'));
 		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $id);
 		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $campaign_id);
 		$db->setQuery($query);
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
-	
+
 		$result = $db->getAffectedRows();
-		
+
 		if ($result > 0) {
 			$rows = self::_changeMailAddress($id, $email);
 			if ($rows == true) {
@@ -883,162 +890,162 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		else {
 			return false;
 		}
-	
+
 	}
-	
+
 	/**
 	 * Method to change email address
 	 *
 	 * @access 	private
-	 * 
+	 *
 	 * @return 	int lists ID
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	private function _changeMailAddress ($id = 0, $email = 'hugo')
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-	
+
 		$query->update($db->quoteName('#__bwpostman_tc_sendmailqueue'));
 		$query->set($db->quoteName('email') . ' = ' . $db->quote($email));
 		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $id);
 		$db->setQuery($query);
-		
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 			return false;
 		}
-	
+
 		return true;
 	}
-	
+
 	/**
 	 * Method to get all mailinglist IDs
 	 *
 	 * @access 	private
-	 * 
+	 *
 	 * @return 	int lists ID
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	private function _getAllMailinglistsIds ()
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-	
+
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
 		$db->setQuery($query);
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
-	
+
 		$lists_id = $db->loadResultArray();
-	
+
 		return $lists_id;
 	}
-	
+
 	/**
 	 * Method to get the mailinglist IDs of single subscriber
 	 *
 	 * @access 	private
-	 * 
+	 *
 	 * @param 	int subscriber ID
-	 * 
+	 *
 	 * @return 	int lists ID
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	private function _getMailinglistsIds ($id)
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-	
+
 		$query->select($db->quoteName('list_id'));
 		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
 		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $id);
 		$db->setQuery($query);
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
-	
+
 		$lists_id = $db->loadResultArray();
-	
+
 		return $lists_id;
 	}
-	
+
 	/**
 	 * Method to get the campaign ID form lists-table
 	 *
 	 * @access 	private
-	 * 
+	 *
 	 * @param 	int lists ID
-	 * 
+	 *
 	 * @return 	int campaign ID
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	private function _getCampaignIdFromLists ($id)
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-	
+
 		$query->select($db->quoteName('campaign_id'));
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($db->quoteName('id') . ' = ' . (int) $id);
 		$db->setQuery($query);
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
-	
+
 		$campaign_id = $db->loadResult();
-	
+
 		return $campaign_id;
 	}
-	
+
 	/**
 	 * Method to get the autmailing state form campaign-table
 	 *
 	 * @access 	private
-	 * 
+	 *
 	 * @param 	int campaign ID
-	 * 
+	 *
 	 * @return 	int automailing state
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	private function _getAutoMailingFromCampaign ($id)
 	{
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-	
+
 		$query->select($db->quoteName('automailing'));
 		$query->from($db->quoteName('#__bwpostman_tc_campaign'));
 		$query->where($db->quoteName('tc_id') . ' = ' . (int) $id);
 		$db->setQuery($query);
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
 		$autostate	= $db->loadResult();
-	
+
 		return $autostate;
 	}
-	
+
 	/**
 	 * Method to delete pending mails from tc-queue
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param 	int subscriber ID
 	 * @param 	int campaign ID
-	 * 
+	 *
 	 * @return 	int affected rows
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	public function deletePendingMailsFromQueue ($sid = 0, $cid = 0)
@@ -1046,14 +1053,14 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		if ($sid > 0) {
 			$db		= JFactory::getDbo();
 			$query	= $db->getQuery(true);
-				
+
 			$query->delete($db->quoteName('#__bwpostman_tc_sendmailqueue'));
 			$query->where($db->quoteName('subscriber_id') . ' = ' . $db->Quote($sid));
 			$query->where($db->quoteName('sent_time') . ' = ' . $db->Quote('0000-00-00 00:00:00'));
 			if ($cid != 0) $query->where($db->quoteName('campaign_id') . ' = ' . $db->Quote($cid));
-				
+
 			$db->setQuery($query);
-				
+
 			if (!$db->query()) {
 				JError::raiseError(500, $db->getErrorMsg());
 			}
@@ -1061,23 +1068,23 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Method to get all assigned newsletters, queued sendings and done sendings
 	 *
 	 * @access 	public
-	 * 
+	 *
 	 * @param 	int campaign ID
-	 * 
+	 *
 	 * @return 	object Autoletters
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public static function getAutoletters($cam_id = 0)
 	{
 		$db = JFactory::getDbo();
 		$autoletters	= new stdClass();
-	
+
 		$query = $db->getQuery (true);
 		$query->select('a.*');
 		$query->select(' v.' . $db->quoteName('name') . ' AS author');
@@ -1087,7 +1094,7 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 		$db->setQuery($query);
 		$autoletters->assigned = $db->loadObjectList();
-	
+
 		$query = $db->getQuery(true);
 		$query->select('a.*');
 		$query->select(' c.' . $db->quoteName('subject') . ' AS subject');
@@ -1098,7 +1105,7 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		$query->order($db->quoteName('sending_planned') . ' ASC ');
 		$db->setQuery($query);
 		$autoletters->queued = $db->loadObjectList();
-	
+
 		$query = $db->getQuery(true);
 		$query->select('a.*');
 		$query->select(' c.' . $db->quoteName('subject') . ' AS subject');
@@ -1109,39 +1116,39 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		$query->order($db->quoteName('sent_time') . ' DESC ');
 		$db->setQuery($query);
 		$autoletters->sent_queue = $db->loadObjectList();
-	
+
 		return $autoletters;
-	
+
 	}
-	
+
 	/**
 	 * Method for a new entry in tc_content to hold main function private
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return	boolean	True on success
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public static function newTcContent($nl_data) {
-	
+
 		return self::_addTcSendMailContent($nl_data);
 	}
-	
+
 	/**
 	 * Method to check for different array values (array_diff don't does what I want)
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	array	post data
-	 * 
+	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function arr_diff($a, $b) {
 		$diff	= array();
-	
+
 		if (count($a) >= count($b)) {
 			foreach ($a as $key => $value) {
 				if (isset($b[$key])) {
@@ -1164,28 +1171,28 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		}
 		return $diff;
 	}
-	
+
 	/**
 	 * Method to get all complete and not sent mails of a certain campaign
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	int	campaign ID
-	 * 
+	 *
 	 * @return	array of objects
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	static public function getCompleteDuedMails($c_id) {
-	
+
 		$db = JFactory::getDbo();
-	
+
 		$query1 = $db->getQuery(true);
 		$query1->select('COUNT(*)');
 		$query1->from($db->quoteName('#__bwpostman_newsletters'));
 		$query1->where($db->quoteName('campaign_id') . ' = ' . $db->quote((int) $c_id));
 		$db->setQuery($query1);
-	
+
 		$query2 = $db->getQuery(true);
 		$query2->select($db->quoteName('subscriber_id'));
 		$query2->from($db->quoteName('#__bwpostman_tc_sendmailqueue'));
@@ -1197,7 +1204,7 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		$db->setQuery($query2);
 //dump ($db->loadAssocList(), 'Ergebnis Query 2');
 //dump (str_replace('#__','jos_',$query2), 'Query 2');
-	
+
 		$query3 = $db->getQuery(true);
 		//		$query3->select('*'); // Wenen alle Daten benötigt werden
 		//		distinct(`subscriber_id`), `created`, `campaign_id` // Wenn nur diese Daten DISTINCT benötigt werden (macht diesen Teil der Abfrage fast überflüssig...)
@@ -1212,88 +1219,88 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		$query3->order($db->quoteName('subscriber_id') . 'ASC');
 		$query3->order($db->quoteName('created') . 'DESC');
 		$query3->order($db->quoteName('mail_number') . 'ASC');
-	
+
 		$db->setQuery($query3);
 //dump ($db->getQuery(), 'Query get');
-//dump (str_replace('#__','jos_',$query3), 'Query 3');	
+//dump (str_replace('#__','jos_',$query3), 'Query 3');
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
-	
+
 		$result = $db->loadAssocList();
 //dump ($result, 'Result getCompleteDuedMails');
-	
+
 		return $result;
 	}
-	
-	
+
+
 	/**
 	 * Method to delete complete sets
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @param 	array	post data
-	 * 
+	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	private static function deleteMailSetsfromQueue($set_data) {
-	
+
 		$db = JFactory::getDbo();
-	
+
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName('#__bwpostman_tc_sendmailqueue'));
 		$query->where($db->quoteName('created') . ' = ' . $db->quote($set_data['created']));
 		$query->where($db->quoteName('subscriber_id') . ' = ' . $db->quote($set_data['subscriber_id']));
 		$query->where($db->quoteName('campaign_id') . ' = ' . $db->quote($set_data['campaign_id']));
 		$db->setQuery($query);
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 		}
-	
+
 	}
-	
+
 	/**
 	 * Method to delete single mail from Content
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @param 	int	mail number
 	 * @param 	int	campaign id
-	 * 
+	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static private function deleteSingleMailFromContent($mail_number, $campaign_id) {
-	
+
 		$db = JFactory::getDbo();
-	
+
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName('#__bwpostman_tc_sendmailcontent'));
 		$query->where($db->quoteName('mail_number') . ' = ' . $db->quote($mail_number + 1));
 		$query->where($db->quoteName('campaign_id') . ' = ' . $db->quote($campaign_id));
 		$db->setQuery($query);
 //dump ($db->getQuery(), 'Query');
-	
+
 		if (!$db->query()) {
 			JError::raiseError(500, $db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Method to process changes done while editing campaign
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	array	plugin data
-	 * 
+	 *
 	 * @return	boolean
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function processChanges($data)
@@ -1301,10 +1308,10 @@ dump ($url->getQuery(), 'QueueTab Request URL');
 		// initialize variables
 		$app		= JFactory::getApplication();
 		$changes	= array();
-	
+
 		$new_auto		= json_decode($data['automailing_values']);
 		$old_cam_data	= $app->getUserState('bwtimecontrol.campaign.old_data', null);
-		
+
 		if (!is_object($old_cam_data->automailing_values)) {
 			$old_auto	= json_decode($old_cam_data->automailing_values);
 		}
@@ -1315,21 +1322,21 @@ dump ($old_cam_data, 'ProcessChanges Old Data 1');
 //dump ($data, 'ProcessChanges New Data 1');
 //dump ($old_auto, 'Old Auto');
 //dump ($new_auto, 'New Auto');
-	
+
 		$diff_day		= self::arr_diff($old_auto->day, $new_auto->day);
 		$diff_hour		= self::arr_diff($old_auto->hour, $new_auto->hour);
 		$diff_minute	= self::arr_diff($old_auto->minute, $new_auto->minute);
 		$diff_nl		= self::arr_diff($old_auto->nl_id, $new_auto->nl_id);
-	
+
 		$changes	= array();
-	
+
 		if (!empty ($diff_day))		$changes['automailing_values']['day']		= $diff_day;
 		if (!empty ($diff_hour))	$changes['automailing_values']['hour']		= $diff_hour;
 		if (!empty ($diff_minute))	$changes['automailing_values']['minute']	= $diff_minute;
 		if (!empty ($diff_nl))		$changes['automailing_values']['nl_id']		= $diff_nl;		// @todo: Is this needed?
 		($old_cam_data->chaining != $data['chaining']) ? $changes['chaining'] = 1 : $changes['chaining'] = 0;
 //dump ($changes, 'ProcessChanges Check changes 1');
-	
+
 		if (isset($changes['automailing_values'])) {
 			if (isset($changes['automailing_values']['nl_id'])) {
 				// Mails have changed
@@ -1349,7 +1356,7 @@ dump ($old_cam_data, 'ProcessChanges Old Data 1');
 					}
 				}
 			}
-	
+
 			if (isset($changes['automailing_values']['day'])
 			 || isset($changes['automailing_values']['hour'])
 			 || isset($changes['automailing_values']['minute'])
@@ -1367,24 +1374,24 @@ dump ($old_cam_data, 'ProcessChanges Old Data 1');
 				}
 			}
 		}
-	
+
 //dump ($changes, 'Model Check changes 3');
 		return true;
 	}
-	
+
 	/**
 	 * Method to get ID of actual content (HTML and text entry) of a mail from TcContent table
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @param 	int 	mail number
-	 * 
+	 *
 	 * @return 	array	HTML- and text-ID
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	static private function _getTcSingleContentId($mail_id, $campaign_id){
-	
+
 //dump ($mail_id, 'Mail ID');
 
 		$ret	= array();
@@ -1421,11 +1428,11 @@ dump ($result, 'Result Get TcSingleContent Content-IDs');
 	 * Method to status of sending of actual content
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @param 	int 	content ID
-	 * 
+	 *
 	 * @return 	bool	status for sent
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static private function _getTcSentStatus($content_id){
@@ -1464,11 +1471,11 @@ dump ($result, 'Result Get TcSingleContent Content-IDs');
 	 * with another function in table tc_sendmailqueue
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @param 	object	Newsletter data
-	 * 
+	 *
 	 * @return 	boolean true if everything went fine.
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static private function _addTcSendMailContent($nl_data)
@@ -1495,7 +1502,7 @@ dump ($tc_id, 'tc-ID');
 		// Get Newsletter-Model
 		$controller	= JControllerLegacy::getInstance('BwPostman');
 		$nl_model	= $controller->getModel('newsletter');
-		
+
 		// Initialize the sendmailContent
 		$tblTcSendmailContent = self::getTable('Tc_Sendmailcontent', 'BwPostmanTable');
 
@@ -1520,7 +1527,7 @@ dump ($tc_id, 'tc-ID');
 		if (!BwPostmanHelper::replaceLinks($html_version)) return false;
 		if (!BwPostmanHelper::replaceLinks($text_version)) return false;
 		if (!$nl_model->_addHtmlTags($html_version)) return false;
-			
+
 		// We have to create two entries in the tcsendmailContent table. One entry for the textmail body and one for the htmlmail.
 		for ($mode = 0;$mode <= 1; $mode++){
 
@@ -1533,7 +1540,7 @@ dump ($tc_id, 'tc-ID');
 			}
 			$tblTcSendmailContent->id 	= $tc_id[$mode];
 			$tblTcSendmailContent->sent	= self::_getTcSentStatus($tc_id[$mode]);
-				
+
 			// Set the mode (0=text,1=html)
 			$tblTcSendmailContent->mode = $mode;
 //dump ($tblTcSendmailContent, 'Tabellenobjekt tc-Content 2');
@@ -1546,14 +1553,14 @@ dump ($tc_id, 'tc-ID');
 				JError::raiseError('Fehler beim Binden der tcContent-Daten', $tblTcSendmailContent->getError());
 				return false;
 			}
-			
+
 			// Check the data.
 			if (!$tblTcSendmailContent->check())
 			{
 				JError::raiseError('Fehler beim Überprüfen der tcContent-Daten', $tblTcSendmailContent->getError());
 				return false;
 			}
-			
+
 			if (!$tblTcSendmailContent->store()) {
 //dumpMessage ('tc-Content Store error');
 				//				$tblTcSendmailContent->setError($error);
@@ -1571,16 +1578,16 @@ dump ($tc_id, 'tc-ID');
 	 * Method to prepare queuing campaign
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	int 	Campaign ID
 	 * @param 	int 	subscriber ID, set if we come from single subscription
 	 * @param 	int 	testsending --> either 0 = subscribers or 1 = test-recipients
 	 * @param	string	task to execute
-	 * 
+	 *
 	 * @param	boolean	Status --> 0 = do not send to unconfirmed, 1 = send also to unconfirmed
-	 * 
+	 *
 	 * @return 	boolean False if there occured an error
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function HandleQueue($campaign_id = 0, $subscriber_id = 0, $task = 'save', $send_to_unconfirmed = 0)
@@ -1613,8 +1620,8 @@ dump ($subscribers, 'Test Subscribers');
 
 				case 'deactivate':	$ret[0]			= self::_deactiveCampaign($campaign_id);
 					break;
-				
-				case 'default':		
+
+				case 'default':
 				case 'save':		// @todo as appropriate revise sending_planned
 				case 'activate':	// @todo as appropriate toggle state active
 			}
@@ -1622,7 +1629,7 @@ dump ($subscribers, 'Test Subscribers');
 		else { // campaign is not active
 			switch ($task) {
 				case 'activate':	$subscribers	= self::_getSubscriberIDs($campaign_id);
-					
+
 									$query->update($db->quoteName('#__bwpostman_tc_campaign'));
 									$query->set($db->quoteName('active') . ' = 1');
 									$query->where($db->quoteName('tc_id') . ' = ' . (int) $campaign_id);
@@ -1648,7 +1655,7 @@ dump ($subscribers, 'Test Subscribers');
 				case 'save':		// fill TcSendMailContent
 					break;
 
-				case 'default':		
+				case 'default':
 				case 'subscribe':
 				case 'deactivate':
 					break;
@@ -1665,9 +1672,9 @@ dump ($subscribers, 'Test Subscribers');
 	 *
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	void
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function sendDueNewsletters()
@@ -1682,9 +1689,9 @@ dump ($subscribers, 'Test Subscribers');
 	 * only necessary for testsending to have the list which entries we may delete form queue
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @return 	objectList		due newsletters
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	private function _getDueNewsletters()
@@ -1711,20 +1718,20 @@ dump ($subscribers, 'Test Subscribers');
 	 * Method to get content-ids and mail_number form tc_sendMailQueue
 	 *
 	 * @access	private
-	 * 
-	 * @param 	int			Campaign ID 
+	 *
+	 * @param 	int			Campaign ID
 	 * @param 	int			mode
-	 *  
+	 *
 	 * @return 	objectList	content-id and mail-number
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	static private function _getTcContentIDs($campaign_id = 0, $mode)
 	{
-		
+
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->clear();
 		$query->select($db->quoteName('id'));
 		$query->select($db->quoteName('mail_number'));
@@ -1740,19 +1747,19 @@ dump ($subscribers, 'Test Subscribers');
 			return FALSE;
 		}
 		return $db->loadObjectList();
-	
+
 	}
-	
+
 
 	/**
 	 * Method to get subscribers of a certain mailinglist
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @param 	int			mailinglist ID
-	 * 
+	 *
 	 * @return 	array		subscriber IDs
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	static private function _getSubscriberIDs($mailinglist_id = 0)
@@ -1762,7 +1769,7 @@ dump ($subscribers, 'Test Subscribers');
 		}
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->select('sl.' . $db->quoteName('subscriber_id') . ' AS id');
 		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS sl');
 		$query->leftJoin($db->quoteName('#__bwpostman_subscribers') . ' AS s ON s.' . $db->quoteName('id') . ' = sl.' . $db->quoteName('subscriber_id'));
@@ -1774,23 +1781,23 @@ dump ($subscribers, 'Test Subscribers');
 			return FALSE;
 		}
 		return $db->loadAssocList();
-	
+
 	}
-	
+
 	/**
 	 * Method to get all test-recipients
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @return 	array		test-recipient IDs
-	 * 
+	 *
 	 * @since	1.2.0 *
 	 */
 	static private function _getTestrecipientsIDs()
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_subscribers'));
 		$query->where($db->quoteName('status') . ' = ' . (int) 9);
@@ -1803,26 +1810,26 @@ dump ($subscribers, 'Test Subscribers');
 		return $db->loadAssocList();
 	}
 
-	
+
 	/**
 	 * Method to get sending times form now on
 	 *
 	 * @access	private
-	 * 
-	 * @param 	int 	Campaign ID 
+	 *
+	 * @param 	int 	Campaign ID
 	 * @param 	int 	mode
-	 *  
+	 *
 	 * @return 	array	sending times
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static private function _getSendingTime($campaign_id = 0)
 	{
-		
+
 		$item			= JFactory::getApplication()->getUserState('bwtimecontrol.item', null);
 		$date 			= JFactory::getDate();
 		$sending_time	= array();
-		
+
 		if (($item->publish_up != '0000-00-00 00:00:00') && ($item->publish_up >= $date->toSql())) {
 			$start_time = JFactory::getDate($item->publish_up)->toUnix();
 		}
@@ -1832,10 +1839,10 @@ dump ($subscribers, 'Test Subscribers');
 		$old_time = $start_time;
 //dump (JFactory::getDate('now')->toSql(), 'Now');
 //dump (JFactory::getDate($start_time)->toSql(), 'Start-Time');
-		
+
 		$automailing_values = json_decode($item->automailing_values);
 //dump ($automailing_values, 'Auto-Values');
-		
+
 		foreach ($automailing_values->nl_id as $key => $value) {
 //dump ($key, 'Key');
 //dump ($value, 'Value');
@@ -1848,32 +1855,32 @@ dump ($subscribers, 'Test Subscribers');
 				else {
 					$sending_time[] =  JFactory::getDate($start_time + $automailing_values->day[$key]*3600*24 + $automailing_values->hour[$key]*3600 + $automailing_values->minute[$key]*60)->toSQL(); // unix-timestamp
 				}
-				
+
 			}
 		}
 		return $sending_time;
 	}
-	
+
 
 	/**
 	 * Method to push the campaign newsletters into tc_sendMailQueue
 	 *
-	 * If a newsletter of an automailing campaign shall be sent, the mail will be separated in two 
+	 * If a newsletter of an automailing campaign shall be sent, the mail will be separated in two
 	 * parts to save storage:
-	 * The content/body of the mail will be stored two times in a separate table, one time for HTML, 
-	 * the other time for text-mode with another function. With this the body is prepared for sending 
-	 * and only stored two times. 
-	 * The "rest" of the mail (recipient, sender, mode, ...) is variant for each mail and is stored 
+	 * The content/body of the mail will be stored two times in a separate table, one time for HTML,
+	 * the other time for text-mode with another function. With this the body is prepared for sending
+	 * and only stored two times.
+	 * The "rest" of the mail (recipient, sender, mode, ...) is variant for each mail and is stored
 	 * with this function in table tc_sendmailqueue
 	 *
 	 * @access	private
-	 * 
-	 * @param 	int		Campaign ID 
+	 *
+	 * @param 	int		Campaign ID
 	 * @param 	array	subscriber ids
 	 * @param 	int		testmode, regular = 0, testmode = 1
-	 * 
+	 *
 	 * @return 	boolean	False if there occured an error
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static private function _fillTcSendMailQueue($campaign_id = 0, $subscribers, $test = 0)
@@ -1893,12 +1900,12 @@ dump ($campaign_id, 'FillQueue C-ID');
 		if(!$item->active && $test == 0) {
 			JError::raiseError(500, JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_FILL_QUEUE_CAM_NOT_ACTIVE'));
 		}
-		
+
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		// get content ids for newsletters
-		
+
 		// build 2 querys to get all content-ids concerning this campaign, one for text, one for HTML
 		$mails_text		= self::_getTcContentIDs($campaign_id, 0);
 		$mailmax_text	= count ($mails_text);
@@ -1914,7 +1921,7 @@ dump ($mails_html, 'HTML-Mail-IDs');
 		else {
 			$mailMax = $mailmax_html;
 		}
-		
+
 		// calculate sending times
 		$sending_time	=  self::_getSendingTime($campaign_id);
 dump ($sending_time, 'FillQueue Sending_time');
@@ -1922,7 +1929,7 @@ dump ($mailMax, 'FillQueue Mail Max');
 
 		$tblTcQueue					= self::getTable('Tc_Sendmailqueue', 'BwPostmanTable');
 		$tblTcQueue->campaign_id	= $campaign_id;
-		
+
 		// for each newsletter of the campaign we have to build an entry for each recipient in the tc-queue
 		for ($mail = 0; $mail < $mailMax; $mail++) {
 			$tblTcQueue->mail_number		= $mails_html[$mail]->mail_number;
@@ -1941,7 +1948,7 @@ dump ($mail, 'FillQueue Mail Nummer');
 				$query->where($db->quoteName('campaign_id') . ' = ' . (int) $campaign_id);
 				$query->where($db->quoteName('sent_time') . ' = ' . $db->quote('0000-00-00 00:00:00'));
 				$db->setQuery($query);
-				
+
 				if (!$db->query()) {
 					JError::raiseError(500, $db->getErrorMsg());
 				}
@@ -1961,7 +1968,7 @@ dump ($mail, 'FillQueue Mail Nummer');
 				$query->where($db->quoteName('id') . ' = ' . (int) $recipient['id']);
 				$db->setQuery($query);
 //dump ($db->getQuery(), 'Query Queue Subscriber');
-				
+
 				if (!$db->query()) {
 					JError::raiseError(500, $db->getErrorMsg());
 				}
@@ -1969,23 +1976,23 @@ dump ($mail, 'FillQueue Mail Nummer');
 //dump ($db->getQuery(), 'Query Subscriber Data');
 				if (is_object($subscriber_data)) {
 //dump ($subscriber_data, 'Subscriber Data');
-					
+
 					if ($subscriber_data->emailformat == 1) {
 						$tblTcQueue->tc_content_id	= $mails_html[$mail]->id;
 					}
 					else {
 						$tblTcQueue->tc_content_id	= $mails_text[$mail]->id;
 					}
-					
+
 					$tblTcQueue->mode			= $subscriber_data->emailformat;
 					$tblTcQueue->name			= $subscriber_data->name;
 					$tblTcQueue->firstname		= $subscriber_data->firstname;
 					$tblTcQueue->email			= $subscriber_data->email;
 					$tblTcQueue->subscriber_id	= $subscriber_data->id;
 dump ($tblTcQueue, 'Table Tc-Queue gefuellt');
-	
+
 					// Write newsletters in tc-Queue
-	
+
 					$ret	= $tblTcQueue->store();
 					if ($ret == FALSE) {
 						JError::raiseError(500, $db->getErrorMsg());
@@ -1997,16 +2004,16 @@ dump ($ret, 'Table Tc-Queue speichern');
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Method to fill tc_sendmailcontent
 	 *
 	 * @access	private
-	 * 
+	 *
 	 * @param 	array 	bwtimecontrol data
-	 *  
+	 *
 	 * @return 	bool	true on success
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	static public function storeCampaign($data = NULL)
@@ -2014,21 +2021,21 @@ dump ($ret, 'Table Tc-Queue speichern');
 		// Get Newsletter-Model
 		$controller	= JControllerLegacy::getInstance('BwPostman');
 		$model		= $controller->getModel('newsletter');
-		
+
 		// If automailing then we have to fill tc_sendmailContent and eventually update the campaign ID for each newsletter in the campaign
 		if ($data['automailing']) {
 			// get the newsletter IDs from Post data
 			$nl_id = array();
 			$automailing_values = json_decode($data['automailing_values']);
 //dump ($automailing_values, 'Helper storeCampaign Automailing Values');
-		
+
 			foreach ($automailing_values->nl_id as $key) {
 				if ($key > 0) {
 					$nl_id[] = $key;
 				}
 			}
 //dump ($nl_id, 'Helper storeCampaign NL-ID');
-		
+
 			$i = 1;
 			foreach ($nl_id as $key) {
 				$newsletter				= $model->getItem($key);

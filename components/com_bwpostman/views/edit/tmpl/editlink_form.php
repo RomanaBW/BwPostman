@@ -53,7 +53,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="view" value="edit" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</form>
 
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>

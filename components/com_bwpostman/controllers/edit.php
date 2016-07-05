@@ -37,7 +37,7 @@ require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 
 /**
- * Class BwPostmanController
+ * Class BwPostmanControllerEdit
  */
 class BwPostmanControllerEdit extends JControllerLegacy
 {
@@ -81,7 +81,6 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$session->clear('session_success');
 		}
 
-
 		// initialize variables
 		$subscriberid   = 0;
 		$model			= $this->getModel('edit');
@@ -91,17 +90,18 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$user 	        = JFactory::getUser();
 		$user_is_guest  = $user->get('guest');
 		$userid 		= (int) $user->get('id');
+
+		// if user is logged in fetch subscriber id
 		if ($userid)
 		{
-			$subscriberid	= (int) BwPostmanSubscriberHelper::getSubscriberID($userid); // = 0 if the user no newsletter account
+			$subscriberid	= (int) BwPostmanSubscriberHelper::getSubscriberID($userid); // = 0 if the user has no newsletter subscription
 		}
-
 
 		// Check if the variable editlink exists in the uri
 		$uri		= JUri::getInstance();
 		$editlink	= $uri->getVar("editlink", null);
 
-		// Get subscriber id from session
+		// Get subscriber id from session, clear session if necessary
 		$session_subscriberid = $session->get('session_subscriberid');
 		if(isset($session_subscriberid) && is_array($session_subscriberid)) {
 			if ($user_is_guest) {
@@ -133,7 +133,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				}
 				$active_subscription    = $this->_checkActiveSubscription($subscriberdata, $err);
 
-				if ($active_subscription) {
+				if (!$active_subscription) {
 					BwPostmanSubscriberHelper::errorSubscriberData($err, $subscriberid, $subscriberdata->email);
 				}
 			}
@@ -146,6 +146,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			elseif (empty($editlink))
 			{
 				BwPostmanSubscriberHelper::errorEditlink();
+				$this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=register&layout=error_geteditlink', false));
 			}
 			else
 			{
@@ -153,6 +154,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 				if (!$subscriberid) {
 					BwPostmanSubscriberHelper::errorEditlink();
+					$this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=register&layout=error_geteditlink', false));
 				}
 				else
 				{
@@ -163,6 +165,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					if (!$active_subscription)
 					{
 						BwPostmanSubscriberHelper::errorSubscriberData($err, $subscriberid, $subscriberdata->email);
+						parent::display();
 					}
 					else
 					{
@@ -173,8 +176,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 				}
 			}
-			$this->setData((int) $subscriberid, (int) $userid);
 		}
+		$this->setData((int) $subscriberid, (int) $userid);
 	}
 
 	/**
@@ -219,7 +222,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			}
 			elseif ((!$this->_userid) && ($this->_subscriberid)) {
 			}
-			else {
+			else
+			{
 				$jinput->set('layout', 'editlink_form');
 			}
 		}
@@ -263,15 +267,14 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 		if (isset($post['unsubscribe'])) {
 			$this->unsubscribe($post['id']);
-			$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 		}
 		else {
 			$model  = $this->getModel('edit');
 			$itemid = $model->getItemid();
-			$link   = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid, false);
 
 			// Email address has changed
-			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id']))){
+			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id'])))
+			{
 				$newEmail					= true;
 				$post['status'] 			= 0;
 				$post['confirmation_date'] 	= 0;
@@ -280,7 +283,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			}
 
 			// Store the data if possible
-			if (!$model->save($post)) {
+			if (!$model->save($post))
+			{
 				// Store the input data into the session object
 				$session			= JFactory::getSession();
 				$error              = $model->getError();
@@ -289,7 +293,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 				$jinput->set('view', 'edit');
 			}
-			else { // Storing the data has been successful
+			else
+			{ // Storing the data has been successful
 				if ($newEmail) { // A new email address has been stored --> the account needs to be confirmed again
 					$subscriber = new stdClass();
 					$subscriber->name 		= $post['name'];
@@ -302,10 +307,13 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					// Send confirmation mail
 					$res = BwPostmanSubscriberHelper::sendMail($subscriber, $type, $itemid);
 
-					if ($res === true) { // Email has been sent
-						$success_msg = 'COM_BWPOSTMAN_SUCCESS_CONFIRMEMAIL';
+					if ($res === true)
+					{ // Email has been sent
+						$success_msg    = 'COM_BWPOSTMAN_SUCCESS_CONFIRMEMAIL';
 						BwPostmanSubscriberHelper::success($success_msg);
-					} else { // Email has not been sent
+					}
+					else
+					{ // Email has not been sent
 						$err_msg 	= 'COM_BWPOSTMAN_ERROR_CONFIRMEMAIL';
 						BwPostmanSubscriberHelper::errorSendingEmail($err_msg, $post['email']);
 					}
@@ -317,12 +325,12 @@ class BwPostmanControllerEdit extends JControllerLegacy
 						$session->clear('session_subscriberid');
 					}
 					$jinput->set('view', 'register');
-					$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 				}
-				else { // No new email address has been stored --> the account doesn't need to be confirmed again
+				else
+				{ // No new email address has been stored --> the account doesn't need to be confirmed again
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CHANGES_SAVED_SUCCESSFULLY', 'message'));
 
-					// If the user has choosen the button "save modifications & leave edit mode" we clear the session object
+					// If the user has chosen the button "save modifications & leave edit mode" we clear the session object
 					// now no subscriber_id is stored into the session
 					if ($post['edit'] == "submitleave") {
 						$session				= JFactory::getSession();
@@ -333,10 +341,9 @@ class BwPostmanControllerEdit extends JControllerLegacy
 						}
 						$jinput->set('view', 'register');
 						$app->setUserState('subscriber.id', 0);
-						$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 					}
 					else {
-						$uid	= $model->getUserId($post['id']);
+						$uid	= BwPostmanSubscriberHelper::getUserId($post['id']);
 						$this->setData($post['id'], $uid);
 
 						$app->setUserState('subscriber.id', $post['id']);
@@ -345,8 +352,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				}
 			}
 		}
-	$this->setRedirect($link);
-	parent::display();
+		parent::display();
 	}
 
 	/**
@@ -362,9 +368,9 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	{
 		// Initialize some variables
 		$jinput	= JFactory::getApplication()->input;
-		$db		= JFactory::getDbo();
 		$model	= $this->getModel('register');
 		$itemid	= $model->getItemid();
+		$email  = '';
 
 		// We come from the edit view
 		if ($id) {
@@ -373,16 +379,6 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$editlink			= $unsubscribedata->editlink;
 
 		// We come from an unsubscribe-link
-		}
-		else {
-			// Do we have an code?
-			$editlink = $jinput->get('code', '', 'alnum');
-			$editlink = $db->escape($editlink);
-
-			// Do we have an email address?
-			$email = $jinput->get('email', '', 'string');
-			$email = $db->escape($email);
-
 		}
 
 		// Editlink-variable or email-variable is empty
@@ -527,14 +523,5 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$result = false;
 		}
 		return $result;
-	}
-
-	/**
-	 * Method to show a captcha
-	 *
-	 * @since	1.0.1
-	 */
-	public function showCaptcha() {
-		BwPostmanHelper::showCaptcha();
 	}
 }

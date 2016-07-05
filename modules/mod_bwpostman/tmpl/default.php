@@ -318,7 +318,7 @@ function checkModRegisterForm() {
 					$codeCaptcha = md5(microtime()); ?>
 					<div class="captcha">
 						<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
-						<p class="security_question_lbl"><img src="<?php echo JURI::base();?>index.php?option=com_bwpostman&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" /></p>
+						<p class="security_question_lbl"><img src="<?php echo JURI::base();?>index.php?option=com_bwpostman&view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" /></p>
 						<p class="captcha input-append">
 							<label id="a_captcha" for="a_stringCaptcha"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringCaptcha" id="a_stringCaptcha" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" /> <span class="append-area"><i class="icon-star"></i></span>
@@ -333,7 +333,8 @@ function checkModRegisterForm() {
 			<p class="mod-button-register text-right"><button class="button validate btn" type="submit"><?php echo JText::_('MOD_BWPOSTMANBUTTON_REGISTER'); ?></button></p>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
-			<input type="hidden" name="task" value="register.save" />
+			<input type="hidden" name="task" value="save" />
+			<input type="hidden" name="view" value="register" />
 			<input type="hidden" name="bwp-<?php echo $captcha; ?>" value="1" />
 
 			<?php // TODO: muss hier subscriber->id stehen oder kann das leer bleiben? ?>

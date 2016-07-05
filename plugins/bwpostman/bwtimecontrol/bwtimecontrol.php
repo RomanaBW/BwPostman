@@ -30,11 +30,13 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 // Require helper class
 require_once (JPATH_PLUGINS.'/bwpostman/bwtimecontrol/helpers/campaignhelper.php');
 
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
+
 class plgBwPostmanBwTimeControl extends JPlugin {
 
 	function __construct($subject, $config) {
 		$this->_enabled = false;
-		
+
 		// Do not load if BwPostman version is not supported or BwPostman isn't detected
 		// TODO check licence!
         if (JComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
@@ -43,7 +45,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
         else {
         	$this->_enabled = true;
         }
-        
+
 		parent::__construct ( $subject, $config );
 
 		$this->loadLanguage('plg_bwpostman_bwtimecontrol.sys');
@@ -53,9 +55,9 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 	 * Method to send dued mails
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignsTaskDueSend ()
@@ -65,7 +67,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 
 		$app		= JFactory::getApplication();
 		$user		= JFactory::getUser();
@@ -79,18 +81,18 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$allowed	= BwPostmanHelper::allowEditState($model->getId(), 0, 'campaign');
 			$this->setError(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_CAMS_ERROR_EDIT_NOT_PERMITTED'));
 		}
-		
+
 		// Auto-parameter check, means check if licence data are entered in Params
 		if (!$model->checkparams()) {
 			JError::raiseWarning('503', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_NO_PARAMS'));
 			$app->redirect('index.php?option=com_bwpostman&controller=campaigns');
 		}
-		
+
 		// If the campaign we want to activate is checked out an error occurs
 		if ($model->isCheckedOut($user->get('id'))) {
 			JError::raiseWarning('SOME_ERROR_CODE', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_CAM_EDIT_BY_ANOTHER_ADMIN'));
 			$app->redirect('index.php?option=com_bwpostman&controller=campaigns');
-		} 
+		}
 */
 		$ret	= BwPostmanCampaignHelper::sendDueNewsletters();
 
@@ -106,19 +108,19 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_SUCCESS_DUESEND', $ret);
 			$type	= 'message';
 		}
-		
+
 		$link = 'index.php?option=com_bwpostman&view=campaigns';
-				
+
 		$controller->setRedirect($link, $msg, $type);
 	}
-	
+
 	/**
 	 * Method to  test automation
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignsTaskAutoTest ()
@@ -128,7 +130,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 		$app		= JFactory::getApplication();
 		$jinput		= JFactory::getApplication()->input;
 		$user		= JFactory::getUser();
@@ -138,10 +140,10 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		$model		= $controller->getModel('campaign');
 		$allowed	= false;
 		$link		= 'index.php?option=com_bwpostman&view=campaigns';
-		
+
 		// Get the selected campaign(s)
 		$cids	= $jinput->get('cid', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cids);
+		ArrayHelper::toInteger($cids);
 
 		if (count($cids) > 1) {
 			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_ONLY_ONE_CAMPAIGN');
@@ -158,9 +160,9 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$controller->setRedirect($link, $msg, $type);
 			return false;
 		}
-		
+
 		$ret	= BwPostmanCampaignHelper::HandleQueue($item->campaign_id, 0, 'test', 0);
-		
+
 		if ($ret[1] == 0) {
 			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_EMPTY_QUEUE');
 			$type	= 'message';
@@ -173,22 +175,22 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_SUCCESS_SEND', $ret[1]);
 			$type	= 'message';
 		}
-		
+
 		if ($ret[0] === false) {
 			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_ERROR_FILL_QUEUE');
 			$type	= 'error';
 		}
 		$controller->setRedirect($link, $msg, $type);
-		
+
 	}
-	
+
 	/**
 	 * Method to activate automated campaign
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignsTaskActivate ()
@@ -198,7 +200,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 		$app		= JFactory::getApplication();
 		$jinput		= $app->input;
 		$user		= JFactory::getUser();
@@ -209,10 +211,10 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		$model		= $controller->getModel('campaign');
 		$allowed	= false;
 		$link		= 'index.php?option=com_bwpostman&view=campaigns';
-		
+
 		// Get the selected campaign
 		$cids	= $jinput->get('cid', array(0), 'post', 'array');
-		
+
 		if (count($cids) > 1) {
 			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_ONLY_ONE_CAMPAIGN');
 			$type	= 'warning';
@@ -228,9 +230,9 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$controller->setRedirect($link, $msg, $type);
 			return false;
 		}
-		
+
 		$item	= BwPostmanCampaignHelper::getItem($id);
-					
+
 		// Automailing check
 		if ($item->automailing != '1') {
 			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_NO_AUTO_CAMPAIGN', $cids[0]);
@@ -238,12 +240,12 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$controller->setRedirect($link, $msg, $type);
 			return false;
 		}
-		
+
 		// task for deactivation?
 		if ($item->active) $task = 'deactivate';
 
 		$ret	= BwPostmanCampaignHelper::HandleQueue($item->campaign_id, 0, $task, 0);
-		
+
 		if ($ret[1] == 0) {
 			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_EMPTY_QUEUE');
 			$type	= 'message';
@@ -256,22 +258,22 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_SUCCESS_SEND', $ret[1]);
 			$type	= 'message';
 		}
-		
+
 		if ($ret[0] === false) {
 			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_ERROR_FILL_QUEUE');
 			$type	= 'error';
 		}
-		
+
 		$controller->setRedirect($link, $msg, $type);
 	}
-	
+
 	/**
 	 * Method to prepare toolbar buttons for BwTimeControl
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignsPrepareToolbar ($canDo)
@@ -286,14 +288,14 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		if ($canDo->get('bwpm.edit.state'))	JToolBarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
 		if ($canDo->get('bwpm.edit.state'))	JToolBarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
 	}
-	
+
 	/**
 	 * Method to switch content table and queue table to BwTimeControl-tables
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanBeforeNewsletterSend (&$table_name, &$tblSendMailQueue, &$tblSendMailContent)
@@ -308,14 +310,14 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		$tblSendMailContent	= BwPostmanCampaignHelper::getTable('tc_sendmailcontent', 'BwPostmanTable');
 		$table_name			= '#__bwpostman_tc_sendmailqueue';
 	}
-	
+
 	/**
 	 * Method to prepare content for listing BwTimeControl values
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	campaign list
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignsPrepare (&$items)
@@ -325,7 +327,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 		$k	= 0;
 		foreach ($items as $item) {
 			// Get TC-ID
@@ -345,18 +347,18 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		}
 		return $k;
 	}
-	
+
 	/**
 	 * Method to prepare content for editing BwTimeControl values
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	campaign data
 	 * @param 	object	newsletters lists
 	 * @param 	object	document
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignPrepare (&$cam_data, &$newsletters, &$document, $cam_data_nl_edit = null)
@@ -368,32 +370,32 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		}
 		JFactory::getApplication()->setUserState('bwtimecontrol.campaign_id', $cam_data->id);
 		$cam_data_nl_edit = JFactory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_edit', null);
-		
+
 		// Get ID, item and initialize
 		$id			= BwPostmanCampaignHelper::getTcIdFromCampaign($cam_data->id);
 		$item		= BwPostmanCampaignHelper::getItem($id);
-		
+
 		if (is_object($cam_data_nl_edit)) {
 			$item->automailing_values		= json_decode($cam_data_nl_edit->automailing_values);
-			$cam_data->automailing_values	= $cam_data_nl_edit->automailing_values; 
+			$cam_data->automailing_values	= $cam_data_nl_edit->automailing_values;
 			$cam_data->chaining				= $cam_data_nl_edit->chaining;
 		}
 		else {
 			$item->automailing_values		= json_decode($item->automailing_values);
-			$cam_data->automailing_values	= $item->automailing_values; 
+			$cam_data->automailing_values	= $item->automailing_values;
 			$cam_data->chaining				= $item->chaining;
 		}
-		
+
 		// get HTML code for autovalues tab
 		$cam_data->tc_mailing_data	= BwPostmanCampaignHelper::buildAutovaluesTab($item, $document, $this->params);
-		
+
 		// get HTML code for autoqueue tab
 		$cam_data->queued_letters	= BwPostmanCampaignHelper::buildAutoqueueTab($cam_data->id);
 		$newsletters->sent			= BwPostmanCampaignHelper::getAutoletters($cam_data->id)->sent_queue;
-		
+
 		// set state of campaign data before edit
 		JFactory::getApplication()->setUserState('bwtimecontrol.campaign.old_data', $cam_data);
-		
+
 		// reset state
 		JFactory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_edit', null);
 		return true;
@@ -403,10 +405,10 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 	 * Method to suspend a queued newsletter from sending
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	int		queue_id
 	 * @param 	int		suspended
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignTaskSuspendNewsletterFromSending (&$get_data)
@@ -416,10 +418,10 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 		$id			= $get_data['id'];
 		$suspended	= $get_data['suspended'];
-		
+
 		if (!$id) {
 			if ($suspended) {
 				$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_SUSPEND_REACTIVATE_NO_ID');
@@ -431,7 +433,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			JFactory::getApplication()->enqueueMessage($msg, $type);
 			return false;
 		}
-		
+
 		$res	= BwPostmanCampaignHelper::suspendNewsletterFromSending($id, $suspended);
 		if ($res) {
 			if ($suspended) {
@@ -456,16 +458,16 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Method to save BwTimeControl data of a campaign
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	int		campaign_id
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanCampaignSave ($campaign_id)
@@ -475,14 +477,14 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 		// get "old" campaign data before edit
 		$old_cam_data	= JFactory::getApplication()->getUserState('bwtimecontrol.campaign.old_data', null);
-		
+
 		// get "new" data to save
 		$jinput	= JFactory::getApplication()->input;
 		$table	= BwPostmanCampaignHelper::getTable();
-		
+
 		$data		= $jinput->get('jform', array(), 'array');
 		$am_values	= $jinput->get('automailing_values', array((array) 'day', (array) 'hour', (array) 'minute', (array) 'nl_id'), 'array');
 
@@ -502,11 +504,11 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 				$am_values['hour']		= array_merge($am_values['hour']);
 				$am_values['minute']	= array_merge($am_values['minute']);
 				$am_values['nl_id']		= array_merge($am_values['nl_id']);
-					
+
 				// Convert the automailing values to a JSON string.
 				$am_values = json_encode ($am_values);
 			}
-			
+
 			// merge data to save
 			$plg_data	= array();
 			foreach ($data as $key => $value) {
@@ -517,9 +519,9 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 					case 'asset_id':
 						break;
 					case 'id':				$plg_data['campaign_id'] = $value;
-						break;		
+						break;
 					case 'created_date':	$plg_data['created'] = $value;
-						break;		
+						break;
 					case 'modified_time':	$plg_data['modified'] = $value;
 						break;
 					case 'archive_time':	$plg_data['archive_date'] = $value;
@@ -528,21 +530,21 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 				}
 			}
 			$plg_data['automailing_values']	= $am_values;
-		
+
 			// Bind the data.
 			if (!$table->bind($plg_data))
 			{
 				$this->setError($table->getError());
 				return false;
 			}
-			
+
 			// Check the data.
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
 				return false;
 			}
-			
+
 			// Store the data.
 			if (!$table->store())
 			{
@@ -550,20 +552,20 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 				return false;
 			}
 			BwPostmanCampaignHelper::getItem(BwPostmanCampaignHelper::getTcIdFromCampaign($campaign_id));
-				
+
 			// Fill tc_sendmailcontent
 			if (!BwPostmanCampaignHelper::storeCampaign($plg_data)) {
 				return false;
 			}
-			
+
 			// if we come from edit (not new) campaign, check for changes and process them if neccessary
 			if (is_object($old_cam_data)) {
 				if ($old_cam_data->id != 0) {
 					BwPostmanCampaignHelper::processChanges($plg_data);
 				}
 			}
-			
-				
+
+
 		}
 		return true;
 	}
@@ -572,12 +574,12 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 	 * Method to redirect back to newsletters list after editing campaign, if newsletter changed his campaign
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	campaign data
 	 * @param 	object	document
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanAfterCampaignControllerSave ()
@@ -600,14 +602,14 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		// unset redirect states
 		$app->setUserState('bwtimecontrol.newsletter.save.returnlink', null);
 	}
-	
+
 	/**
 	 * Method to set state with newsletter data before it is edited (old data)
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	bool	true on success
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanBeforeNewsletterEdit (&$item, $referrer)
@@ -623,17 +625,17 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			JFactory::getApplication()->setUserState('bwtimecontrol.newsletter.old_data', $item);
 		}
 	}
-	
+
 	/**
 	 * Method to redirect to edit campaign, if newsletter changes his campaign at task save
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	campaign data
 	 * @param 	object	document
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanAfterNewsletterSave ()
@@ -645,17 +647,17 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		}
 		BwPostmanCampaignHelper::processChangesOfNewsletterEdit();
 	}
-	
+
 	/**
 	 * Method to redirect to edit campaign, if newsletter changes his campaign at task cancel
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	campaign data
 	 * @param 	object	document
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanAfterNewsletterCancel ()
@@ -667,17 +669,17 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		}
 		BwPostmanCampaignHelper::processChangesOfNewsletterEdit();
 	}
-	
+
 	/**
 	 * Method to copy a newsletter that belongs to a timecontrolled campaign
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	object	campaign data
 	 * @param 	object	document
-	 * 
+	 *
 	 * @return 	array	return values
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanAfterNewsletterCopy ()
@@ -689,16 +691,16 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		}
 		BwPostmanCampaignHelper::processChangesOfNewsletterEdit();
 	}
-	
+
 	/**
 	 * Method to check, if archiving newsletters is possible. Newsletters of a timecontrolled campaign may not be archived
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @param 	array	Newsletter-IDs
 	 * @param	string	return message
 	 * @param 	bool	result
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanBeforeNewsletterArchive (&$cid, &$msg, &$res)
@@ -708,11 +710,11 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 		foreach ($cid as $id) {
 			// get newsletter item
 			$nl_data	= BwPostmanCampaignHelper::getItem($id);
-			
+
 			// get TC-ID of campaign
 			$tc_id	= BwPostmanCampaignHelper::getTcIdFromCampaign($nl_data->campaign_id);
 
@@ -722,14 +724,14 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to update table tc_sendmail_content after a newsletter is edited
 	 *
 	 * @access	public
-	 * 
+	 *
 	 * @return 	bool	true on success
-	 * 
+	 *
 	 * @since	1.2.0
 	 */
 	public function onBwPostmanAfterNewsletterModelSave (&$item)
@@ -739,17 +741,17 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 		{
 			return false;
 		}
-		
+
 		// Set current newsletter data to 'new' state every time we come to edit newsletter
 		JFactory::getApplication()->setUserState('bwtimecontrol.newsletter.new_data', $item);
-		
+
 		$nl_id			= $item['id'];
 		$campaign_id	= $item['campaign_id'];
-		
+
 		$app	= JFactory::getApplication();
 		$jinput	= $app->input;
 		$task	= $jinput->getString('task', null);
-		
+
 		// reaction to changes in newsletter only if editing is finished
 		if ($task == 'save') {
 			$nl_data_old	= JFactory::getApplication()->getUserState('bwtimecontrol.newsletter.old_data');
@@ -757,7 +759,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 			$controller		= JControllerLegacy::getInstance('BwPostman');
 			$tc_id_new		= BwPostmanCampaignHelper::getTcIdFromCampaign($campaign_id);
 			$tc_id_old		= BwPostmanCampaignHelper::getTcIdFromCampaign($was_campaign);
-				
+
 			// if newsletter comes new to this campaign, redirect to edit campaign to insert new newsletter.
 			if (($campaign_id != $was_campaign) && $campaign_id > 0 && ($tc_id_new > 0)) {
 				$app->setUserState('bwtimecontrol.newsletter.save.link', 'index.php?option=com_bwpostman&task=campaign.edit&id=' . $campaign_id);
@@ -778,7 +780,7 @@ class plgBwPostmanBwTimeControl extends JPlugin {
 				$query	= $_db->getQuery(true);
 dump ($nl_data_old, 'alte NL-Daten');
 dump ($task, 'Task');
-				
+
 				// check if campaign is already sent
 				// if so, update tc_sendmail_content. Handling depends on newsletter already sent or not
 
@@ -787,10 +789,10 @@ dump ($task, 'Task');
 				$query->from($_db->quoteName('#__bwpostman_newsletters'));
 				$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
 				$_db->setQuery($query);
-				
+
 				$nl_data	= $_db->loadObject();
 dump ($nl_data, 'Event NL-Data');
-				
+
 				// get tc_content_data list from tc_sendmail_content table
 				$query->clear();
 				$query->select($_db->quoteName('id'));
@@ -804,11 +806,11 @@ dump ($nl_data, 'Event NL-Data');
 				$query->where($_db->quoteName('old') . ' = ' . (int) 0);
 				$query->order($_db->quoteName('mode') . ' ASC');
 				$_db->setQuery($query);
-					
+
 				if (!$_db->query()) {
 					JError::raiseError(500, $_db->getErrorMsg());
 				}
-						
+
 				$sent_list	= $_db->loadAssocList();
 dump ($sent_list, 'Sent List 1');
 				// check if sent is set
@@ -816,7 +818,7 @@ dump ($sent_list, 'Sent List 1');
 				foreach ($sent_list as $key) {
 					$sent += $key['sent'];
 				}
-						
+
 				// if already sent...
 				if ($sent > 0) {
 					//...set flag "old" and for saftey's sake flag "sent" (maybe there is only sent one of HTML or text)...
@@ -841,12 +843,12 @@ dump ($sent_list, 'Sent List 1');
 					foreach ($sent_list as $key) {
 						// Get Newsletter-Model
 						$nl_model	= $controller->getModel('newsletter');
-						
+
 						// Preprocess html and text version of the newsletter
 						if (!BwPostmanHelper::replaceLinks($nl_data->text_version)) return false;
 						if (!BwPostmanHelper::replaceLinks($nl_data->html_version)) return false;
 						if (!$nl_model->_addHtmlTags($nl_data->text_version)) return false;
-						
+
 //dump ($key, 'Key');
 						$query	= $_db->getQuery(true);
 						$query->update($_db->quoteName('#__bwpostman_tc_sendmailcontent'));
@@ -856,7 +858,7 @@ dump ($sent_list, 'Sent List 1');
 						else {
 							$query->set($_db->quoteName('body').' = '.$_db->quote($nl_data->html_version));
 						}
-							
+
 						$query->set($_db->quoteName('attachment').' = '.$_db->quote($nl_data->attachment));
 						$query->where($_db->quoteName('id').' = '. (int) $key['id']);
 						$_db->setQuery($query);
@@ -864,7 +866,7 @@ dump ($sent_list, 'Sent List 1');
 							JError::raiseError(500, $db->getErrorMsg());
 						}
 					}
-						
+
 				}
 			}
 		}

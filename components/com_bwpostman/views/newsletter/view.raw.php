@@ -55,7 +55,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	{
 		$this->newsletter = $this->get('Content');
 
-
 		// Call parent display
 		parent::display($tpl);
 	}

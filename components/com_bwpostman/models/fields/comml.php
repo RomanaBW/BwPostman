@@ -145,41 +145,39 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('JFIELD_ACCESS_LABEL') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
-    $html[] = '				<tbody>';
+		$html[] = '				<tbody>';
 
-    if (count($options) > 0) {
-
-		foreach ($options as $i => $option)
+		if (count($options) > 0)
 		{
+			foreach ($options as $i => $option)
+			{
+				// Initialize some option attributes.
+				$checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
+				$class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
+				$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
+				$archived	= ($option->archived) ? '<i class="icon-archive"></i>' : '';
+				$published	= ($option->published) ? '<i class="icon-publish"></i>' : '<i class="icon-unpublish"></i>';
 
-			// Initialize some option attributes.
-			$checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
-			$class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
-			$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
-			$archived	= ($option->archived) ? '<i class="icon-archive"></i>' : '';
-			$published	= ($option->published) ? '<i class="icon-publish"></i>' : '<i class="icon-unpublish"></i>';
+				// Initialize some JavaScript option attributes.
+				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-			// Initialize some JavaScript option attributes.
-			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-
-			$html[] = '							<tr class="row' . $i % 2 . '">';
-			$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
-			$html[] = '								<td><input type="checkbox" id="mb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
-			$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
-			$html[] = '								<td>' . JText::_($option->text) . '</td>';
-			$html[] = '								<td>' . JText::_($option->description) . '</td>';
-			$html[] = '								<td style="text-align: center;">' . $published . '</td>';
-			$html[] = '								<td>' . JText::_($option->access_level) . '</td>';
-			$html[] = '						  </tr>';
-
+				$html[] = '							<tr class="row' . $i % 2 . '">';
+				$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
+				$html[] = '								<td><input type="checkbox" id="mb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+				$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
+				$html[] = '								<td>' . JText::_($option->text) . '</td>';
+				$html[] = '								<td>' . JText::_($option->description) . '</td>';
+				$html[] = '								<td style="text-align: center;">' . $published . '</td>';
+				$html[] = '								<td>' . JText::_($option->access_level) . '</td>';
+				$html[] = '						  </tr>';
+			}
 		}
-
-	}
-	else {
+		else
+		{
 			$html[] = '							<tr class="row1">';
 			$html[] = '								<td colspan="7"><strong>'. JText::_('COM_BWPOSTMAN_NO_ML').'</strong></td>';
 			$html[] = '							</tr>';
-	}
+		}
 		$html[] = '				</tbody>';
 		$html[] = '			</table>';
 		$html[] = '		</div>';
@@ -199,7 +197,8 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		$app	= JFactory::getApplication();
+		$app	    = JFactory::getApplication();
+		$options    = null;
 
 		// prepare query
 		$_db		= JFactory::getDbo();
@@ -213,14 +212,15 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		$query->order($_db->quoteName('text')  . 'ASC');
 
-		$_db->setQuery($query);
-		$options = $_db->loadObjectList();
-
-		// Check for a database error.
-		if ($_db->getErrorNum()) {
-			$app->enqueueMessage($_db->getErrorMsg(), 'error');
+		try
+		{
+			$_db->setQuery($query);
+			$options = $_db->loadObjectList();
 		}
-
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 

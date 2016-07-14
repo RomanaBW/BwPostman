@@ -24,10 +24,12 @@ class TestMailinglistsListsCest
 	}
 
 	/**
-	 * Test method to create multiple mailing lists
+	 * Test method sorting mailing lists by click to column in table header
 	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
+	 * @param   AcceptanceTester                $I
+	 * @param   \Page\MainviewPage              $mainView
+	 * @param   \Page\MailinglistManagerPage    $MlManage
+	 * @param   \Page\Generals                  $Generals
 	 *
 	 * @before  _login
 	 *
@@ -37,32 +39,60 @@ class TestMailinglistsListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateMultipleMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
+/*	public function SortMailinglistsByTableHeader(AcceptanceTester $I, \Page\MainviewPage $mainView, \Page\MailinglistManagerPage $MlManage, \Page\Generals $Generals, \Helper\Acceptance $helper)
 	{
 
-		$I->wantTo("Create_multiple_mailinglists");
-		$I->amOnPage("/administrator/index.php?option=com_bwpostman");
-		$I->click("img[alt=\"Mailinglists\"]");
+		$I->wantTo("Sort mailinglists");
+		$I->amOnPage($MlManage::$url);
+		$I->wait(5);
 
-        $I->see("Mailinglists", "h1.page-title");
-}
+		// Get list length
+		$list_length = $helper->getListLength($I);
 
-/*	public function CreateMultipleMailinglists2(AcceptanceTester $I, \Page\Login $loginPage)
-	{
+		// loop over sorting criterion
+		$i          = 2;
+		$columns    = implode(', ', $MlManage::$select_criteria);
+		$columns    = str_replace('subscribers', $helper->getQueryNumberOfSubscribers($Generals), $columns);
+		foreach ($MlManage::$sort_criteria as $key => $criterion) {
+			$i++;
+			if ($i == 8) $i = 2;
+			// sort ascending
+			$row_values_nominal = $helper->getListData('mailinglists AS `a`', $columns, $MlManage::$select_criteria[$key], 'ASC', $list_length);
+			$I->click(sprintf($MlManage::$table_headcol_link_location, $i));
+			$I->expectTo('see arrow up at ' . $criterion);
+			$I->seeElement(sprintf($MlManage::$table_headcol_arrow_location, $i), array('class' => $MlManage::$sort_arrows['up']));
+			$I->expectTo('see text ' . $MlManage::$sort_criteria_select[$key] . ' ascending');
+			$I->see($MlManage::$sort_criteria_select[$key] . ' ascending', $MlManage::$select_list_selected_location);
 
-		$I->wantTo("Create_multiple_mailinglists second");
-		$I->amOnPage("/administrator/index.php?option=com_bwpostman");
-		$I->click("img[alt=\"Mailinglists\"]");
+			// loop over row values
+			$row_values_actual  = $helper->GetTableRows($I);
+			for ($k = 0; $k < count($list_length); $k++) {
+				$I->assertContains($row_values_nominal[$k][$key], $row_values_actual[$k]);
+			}
 
-		$I->see("Mailinglists", "h1.page-title");
+			// sort descending
+			$row_values_nominal = $helper->getListData('mailinglists AS `a`', $columns, $MlManage::$select_criteria[$key], 'DESC', $list_length);
+			$I->click(sprintf($MlManage::$table_headcol_link_location, $i));
+			$I->expectTo('see arrow up at ' . $criterion);
+			$I->seeElement(sprintf($MlManage::$table_headcol_arrow_location, $i), array('class' => $MlManage::$sort_arrows['down']));
+			$I->expectTo('see text ' . $MlManage::$sort_criteria_select[$key] . ' descending');
+			$I->see($MlManage::$sort_criteria_select[$key] . ' descending', $MlManage::$select_list_selected_location);
+
+			// loop over row values
+			$row_values_actual  = $helper->GetTableRows($I);
+			for ($k = 0; $k < count($list_length); $k++) {
+				$I->assertContains($row_values_nominal[$k][$key], $row_values_actual[$k]);
+			}
+		}
 	}
 */
-
 	/**
-	 * Test method to create a single mailing list from main view and cancel creation
+	 * Test method sorting mailing lists by selection at select list
 	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
+	 * @param   AcceptanceTester                $I
+	 * @param   \Page\MainviewPage              $mainView
+	 * @param   \Page\MailinglistManagerPage    $MlManage
+	 * @param   \Page\Generals                  $Generals
 	 *
 	 * @before  _login
 	 *
@@ -72,523 +102,55 @@ class TestMailinglistsListsCest
 	 *
 	 * @since   2.0.0
 	 */
-/*	public function EditMailinglistWithoutChangesCancelListView(AcceptanceTester $I, \Page\Login $loginPage)
+	public function SortMailinglistsBySelectList(AcceptanceTester $I, \Page\MainviewPage $mainView, \Page\MailinglistManagerPage $MlManage, \Page\Generals $Generals, \Helper\Acceptance $helper)
 	{
 
-		$I->wantTo("Edit_mailinglist_without_changes_cancel_list_view");
-		$I->amOnPage("/administrator/index.php?option=com_bwpostman");
-		$I->click("img[alt=\"Mailinglists\"]");
-		$I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.1|title|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.2|description|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.3|published|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.4|access|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.5|subscribers|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.6|id|
-        $I->click("01 Mailingliste 3 A");
-		$I->click("#toolbar-cancel > button.btn.btn-small");
-		$I->see("Mailinglists", "h1.page-title");
-		$I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[2]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[3]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[5]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[6]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[7]|undefined|
+		$I->wantTo("Sort mailinglists");
+		$I->amOnPage($MlManage::$url);
+		$I->wait(5);
 
-}
-*/
-	/**
-	 * Test method to create a single mailing list from main view and cancel creation
-	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-/*	public function EditMailinglistWithChangesCancelListView(AcceptanceTester $I, \Page\Login $loginPage)
-	{
+		// Get list length
+		$list_length = $helper->getListLength($I);
 
-		$I->wantTo("Edit_mailinglist_with_changes_cancel_list_view");
-		$I->amOnPage("/administrator/index.php?option=com_bwpostman");
-		$I->click("img[alt=\"Mailinglists\"]");
-		$I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.1|title|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.2|description|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.3|published|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.4|access|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.5|subscribers|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.6|id|
-        $I->click("01 Mailingliste 3 A");
-		$I->fillField("#jform_title", "01 Mailingliste 3 AX");
-		$I->fillField("#jform_description", "01 Mailingliste 3 weiterer Lauf A X");
-		$I->selectOption("#jform_access", "5");
-		$I->selectOption("#jform_published", "0");
-		$I->click("#toolbar-cancel > button.btn.btn-small");
-		$I->see("Mailinglists", "h1.page-title");
-		$I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[2]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[3]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[5]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[6]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[7]|undefined|
+		// loop over sorting criterion
+		$i          = 2;
+		$columns    = implode(', ', $MlManage::$select_criteria);
+		$columns    = str_replace('subscribers', $helper->getQueryNumberOfSubscribers($Generals), $columns);
+		foreach ($MlManage::$sort_criteria as $key => $criterion) {
+			$i++;
+			if ($i == 8) $i = 2;
+			// sort ascending
+			$row_values_nominal = $helper->getListData('mailinglists AS `a`', $columns, $MlManage::$select_criteria[$key], 'ASC', $list_length);
+			$helper->clickJQuerySelectedElement($I, 'list_fullordering', $MlManage::$sort_criteria_select[$key], 'ascending', 'adminForm');
+			$I->wait(1);
+			$I->expectTo('see arrow up at ' . $criterion);
+			$I->seeElement(sprintf($MlManage::$table_headcol_arrow_location, $i), array('class' => $MlManage::$sort_arrows['up']));
+			$I->expectTo('see text ' . $MlManage::$sort_criteria_select[$key] . ' ascending');
+			$I->see($MlManage::$sort_criteria_select[$key] . ' ascending', $MlManage::$select_list_selected_location);
 
-}
-*/
-	/**
-	 * Test method to create a single mailing list from main view and cancel creation
-	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-/*	public function EditMailinglistWithChangesSaveAndCloseListView(AcceptanceTester $I, \Page\Login $loginPage)
-	{
+			// loop over row values
+			$row_values_actual  = $helper->GetTableRows($I);
+			for ($k = 0; $k < count($list_length); $k++) {
+				$I->assertContains($row_values_nominal[$k][$key], $row_values_actual[$k]);
+			}
 
-		$I->wantTo("Edit_mailinglist_with_changes_save_and_close_list_view");
-		$I        $I->amOnPage("/administrator/index.php?option=com_bwpostman");
-        $I->click("img[alt=\"Mailinglists\"]");
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.1|title|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.2|description|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.3|published|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.4|access|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.5|subscribers|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.6|id|
-        $I->click("01 Mailingliste 3 A");
-        $I->fillField("#jform_title", "01 Mailingliste 3 A X");
-        $I->fillField("#jform_description", "01 Mailingliste 3 weiterer Lauf A X");
-        $I->selectOption("#jform_access", "5");
-        $I->selectOption("#jform_published", "0");
-        $I->click("//button[@onclick=\"Joomla.submitbutton('mailinglist.save')\"]");
-        $I->see("Mailinglists", "h1.page-title");
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[2]|01 Mailingliste 3 A X|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[3]|01 Mailingliste 3 weiterer Lauf A X|
-        $I->verifyText ====css =#j-main-container table tbody tr:nth-child(3) td:nth-child(4) a span.icon-unpublish||
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[5]|Guest|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[6]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[7]|undefined|
+			// sort descending
+			$row_values_nominal = $helper->getListData('mailinglists AS `a`', $columns, $MlManage::$select_criteria[$key], 'DESC', $list_length);
+			$helper->clickJQuerySelectedElement($I, 'list_fullordering', $MlManage::$sort_criteria_select[$key], 'descending', 'adminForm');
+			$I->wait(1);
+			$I->expectTo('see arrow down at ' . $criterion);
+			$I->seeElement(sprintf($MlManage::$table_headcol_arrow_location, $i), array('class' => $MlManage::$sort_arrows['down']));
+			$I->expectTo('see text ' . $MlManage::$sort_criteria_select[$key] . ' descending');
+			$I->see($MlManage::$sort_criteria_select[$key] . ' descending', $MlManage::$select_list_selected_location);
 
-}
-*/
-	/**
-	 * Test method to create a single mailing list from main view and cancel creation
-	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-/*	public function EditMailinglistWithChangesSaveOnlyThenVloseListView(AcceptanceTester $I, \Page\Login $loginPage)
-	{
+			// loop over row values
+			$row_values_actual  = $helper->GetTableRows($I);
+			for ($k = 0; $k < count($list_length); $k++) {
+				$I->assertContains($row_values_nominal[$k][$key], $row_values_actual[$k]);
+			}
+		}
+	}
 
-		$I->wantTo("Edit_mailinglist_with_changes_save_only_then_close_list_view");
-		$I->amOnPage("/administrator/index.php?option=com_bwpostman");
-		$I->click("img[alt=\"Mailinglists\"]");
-		$I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.1|title|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.2|description|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.3|published|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.4|access|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.5|subscribers|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.3.6|id|
-        $I->click("01 Mailingliste 3 A X");
-		$I->storeValue ====id = jform_modified_time | mod_time_1 |
-			$I->fillField("#jform_title", "01 Mailingliste 3 A");
-		$I->fillField("#jform_description", "01 Mailingliste 3 weiterer Lauf A");
-		$I->selectOption("#jform_access", "2");
-		$I->selectOption("#jform_published", "1");
-		$I->click("//button[@onclick=\"Joomla.submitbutton('mailinglist.apply')\"]");
-        $I->see("Mailinglist details: [ Edit ]", "h1.page-title");
-        $I->see("Message", "h4.alert-heading");
-        $I->see("Mailinglist saved successfully!", "p.alert-message");
-        $I->seeInField("#jform_title", "01 Mailingliste 3 A");
-        $I->seeInField("#jform_description", "01 Mailingliste 3 weiterer Lauf A");
-        $I->see("Registered", "a.chzn-single > span");
-        $I->see("pulished", "a.chzn-single.chzn-color-state > span");
-        $I->storeValue ====id = jform_modified_time | mod_time_2 |
-        $I->echo ====undefined ||
-        $I->echo ====undefined ||
-        $I->assertEval ====storedVars['mod_time_1'] != storedVars['mod_time_2'] | true |
-	        $I->click("//button[@onclick=\"Joomla.submitbutton('mailinglist.cancel')\"]");
-        $I->see("Mailinglists", "h1.page-title");
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[2]|01 Mailingliste 3 A|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[3]|01 Mailingliste 3 weiterer Lauf A|
-        $I->verifyText ====css =#j-main-container table tbody tr:nth-child(3) td:nth-child(4) a span.icon-publish||
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[5]|Registered|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[6]|undefined|
-        $I->verifyText ====//div[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[7]|undefined|
-
-}
-*/
-	/**
-	 * Test method to create a single mailing list from main view and cancel creation
-	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-/*	public function SortMailinglists(AcceptanceTester $I, \Page\Login $loginPage)
-	{
-
-		$I->wantTo("Sort_mailinglists_V2");
-		$I->store ====javascript{
-		ml_arr_title . length;
-	}|length |
-	$I->amOnPage("/administrator/index.php?option=com_bwpostman&view=mailinglists");
-        $I        $I->click("Description");
-        $I        $I->getEval ====delete storedVars['ml_arr_subs'] ||
-	$I->getEval ====delete storedVars['ml_arr_ids'] ||
-	$I->store ====0 | i |
-	$I->store ====1 | k |
-	$I->while ====storedVars . i < storedVars . length ||
-	$I->storeTable ====//div[@id='j-main-container']/div[2]/table.undefined.5|cur_val_subs|
-        $I->storeTable ====//div[@id='j-main-container']/div[2]/table.undefined.6|cur_val_id|
-        $I->push ====undefined | ml_arr_subs |
-        $I->push ====undefined | ml_arr_ids |
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->store ====javascript{
-		storedVars . k++;
-	}||
-        $I->endWhile ====||
-        $I        $I->runScript ====javascript{
-		ml_arr_subs_asc  = sortArr(storedVars . ml_arr_subs, 'asc');
-		ml_arr_ids_asc   = sortArr(storedVars . ml_arr_ids, 'asc');
-		ml_arr_subs_desc = sortArr(storedVars . ml_arr_subs, 'desc');
-		ml_arr_ids_desc  = sortArr(storedVars . ml_arr_ids, 'desc');
-	}||
-        $I        $I->click("a.js-stools-column-order.hasTooltip");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_title_asc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[2]");
-        $I->see("Title ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[2]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->click("a.js-stools-column-order.hasTooltip");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_title_desc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[2]");
-        $I->see("Title descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[2]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->click("Description");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_description_asc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[3]");
-        $I->see("Description ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[3]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->click("Description");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_description_desc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[3]");
-        $I->see("Description descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[3]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->click("published");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_pub_asc[storedVars . i];
-	}|cur_pub |
-	$I->echo ====undefined ||
-		$I->see("", "//a[@onclick="return listItemTask('cbundefined', 'mailinglists.undefined')"]");
-        $I->see("Status ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[4]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->endWhile ====||
-        $I        $I->click("published");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_pub_desc[storedVars . i];
-	}|cur_pub |
-	$I->see("", "//a[@onclick="return listItemTask('cbundefined', 'mailinglists.undefined')"]");
-        $I->see("Status descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[4]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->endWhile ====||
-        $I        $I->click("Access Level");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_acc_asc[storedVars . i];
-	}|cur_acc |
-	$I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[5]");
-        $I->see("Access ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[5]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->click("Access Level");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_acc_desc[storedVars . i];
-	}|cur_acc |
-	$I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[5]");
-        $I->see("Access descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[5]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->click("# subscribers");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_subs_asc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[6]");
-        $I->see("# subscribed mailing lists ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[6]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->click("# subscribers");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_subs_desc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[6]");
-        $I->see("# subscribed mailing lists descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[6]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->click("ID");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_ids_asc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[7]");
-        $I->see("ID ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[7]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->click("ID");
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_ids_desc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[7]");
-        $I->see("ID descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[7]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->selectAndWait ====id = list_fullordering | value = a . title ASC |
-	$I->pause ====500 ||
-	$I->store ====0 | i |
-	$I->while ====storedVars . i < storedVars . length ||
-	$I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_title_asc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[2]");
-        $I->see("Title ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[2]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->selectAndWait ====id = list_fullordering | value = a . title DESC |
-	$I->pause ====500 ||
-	$I->store ====0 | i |
-	$I->while ====storedVars . i < storedVars . length ||
-	$I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_title_desc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[2]");
-        $I->see("Title descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[2]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->selectAndWait ====id = list_fullordering | value = a . description ASC |
-	$I->pause ====500 ||
-	$I->store ====0 | i |
-	$I->while ====storedVars . i < storedVars . length ||
-	$I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_description_asc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[3]");
-        $I->see("Description ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[3]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "a.description DESC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("javascript{ml_arr_description_desc[storedVars.i-1];}", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[3]");
-        $I->see("Description descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[3]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "a.published ASC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_pub_asc[storedVars . i];
-	}|cur_pub |
-	$I->see("", "//a[@onclick="return listItemTask('cbundefined', 'mailinglists.undefined')"]");
-        $I->see("Status ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[4]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "a.published DESC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_pub_desc[storedVars . i];
-	}|cur_pub |
-	$I->see("", "//a[@onclick="return listItemTask('cbundefined', 'mailinglists.undefined')"]");
-        $I->see("Status descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[4]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "a.access ASC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_acc_asc[storedVars . i];
-	}|cur_acc |
-	$I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[5]");
-        $I->see("Access ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[5]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "a.access DESC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->store ====javascript{
-		ml_arr_acc_desc[storedVars . i];
-	}|cur_acc |
-	$I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[5]");
-        $I->see("Access descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[5]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "subscribers ASC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->storeEval ====storedVars . ml_arr_subs[undefined] | cur_subs |
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[6]");
-        $I->see("# subscribed mailing lists ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[6]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "subscribers DESC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->storeEval ====storedVars . ml_arr_subs[storedVars . length - (storedVars . i + 1)] | cur_subs |
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[6]");
-        $I->see("# subscribed mailing lists descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[6]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "a.id ASC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->storeEval ====storedVars . ml_arr_ids[undefined] | cur_id |
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[7]");
-        $I->see("ID ascending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[7]/a/span||
-        $I->see("", "span.icon-arrow-up-3");
-        $I->endWhile ====||
-        $I        $I->selectOption("#list_fullordering", "a.id DESC");
-        $I->pause ====500 ||
-        $I->store ====0 | i |
-        $I->while ====storedVars . i < storedVars . length ||
-        $I->storeEval ====storedVars . ml_arr_ids[storedVars . length - (storedVars . i + 1)] | cur_id |
-        $I->store ====javascript{
-		storedVars . i++;
-	}||
-        $I->see("undefined", "//div[@id='j-main-container']/div[2]/table/tbody/tr[undefined]/td[7]");
-        $I->see("ID descending", "a.chzn-single > span");
-        $I->assertElementPresent ====//th[7]/a/span||
-        $I->assertElementPresent ====css = span . icon - arrow - down - 3 ||
-        $I->endWhile ====||
-        $I->click("a.js-stools-column-order.hasTooltip");
-
-}
-*/
 	/**
 	 * Test method to create a single mailing list from main view and cancel creation
 	 *

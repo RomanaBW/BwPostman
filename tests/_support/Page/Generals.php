@@ -42,6 +42,15 @@ class Generals
 	public static $versionToTest = '2.0.0';
 
 	/**
+	 * database prefix
+	 *
+	 * @var    string
+	 *
+	 * @since  2.0.0
+	 */
+	public static $db_prefix = 'jos_';
+
+	/**
 	 * Array of user groups
 	 *
 	 * @var    array
@@ -57,7 +66,25 @@ class Generals
 	 *
 	 * @since  2.0.0
 	 */
-	public static $state = array ('unpublish', 'publish');
+	public static $states = array ('unpublish', 'publish');
+
+	/**
+	 * Array of sorting order values
+	 *
+	 * @var    array
+	 *
+	 * @since  2.0.0
+	 */
+	public static $sort_orders = array ('ascending', 'descending');
+
+	/**
+	 * Array of list limit values
+	 *
+	 * @var    array
+	 *
+	 * @since  2.0.0
+	 */
+	public static $list_limits = array (5, 10, 20);
 
 	/**
 	 * Array of submenu xpath values for all pages

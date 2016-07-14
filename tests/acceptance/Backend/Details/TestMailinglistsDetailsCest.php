@@ -28,6 +28,7 @@ class TestMailinglistsDetailsCest
 	 * @param   AcceptanceTester            $I
 	 * @param   \Page\MainviewPage          $mainView
 	 * @param   \Page\MailinglistEditPage   $MlEdit
+	 * @param   \Page\Generals             $Generals
 	 *
 	 * @before  _login
 	 *

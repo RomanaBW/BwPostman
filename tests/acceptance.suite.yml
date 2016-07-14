@@ -12,12 +12,13 @@ modules:
         - \Helper\Acceptance
         - WebDriver
         - Db
-        - \Helper\Acceptance
+        - Asserts
     config:
         WebDriver:
                 url: http://www.bwtest.nil
                 window_size: 1920x1080
                 browser: phantomjs
+#                browser: firefox
                 connection_timeout: 60
                 restart: false
 

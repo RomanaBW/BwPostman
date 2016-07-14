@@ -1,9 +1,15 @@
 <?php
 namespace Page;
 
+use Codeception\Module\WebDriver;
+
 class MailinglistManagerPage
 {
-    // include url of current page
+	/**
+	 * url of current page
+	 *
+	 * @var string
+	 */
     public static $url = '/administrator/index.php?option=com_bwpostman&view=mailinglists';
 
     /**
@@ -28,11 +34,101 @@ class MailinglistManagerPage
         'Help' => './/*[@id=\'toolbar-help\']/button',
     );
 
-    /**
+	/**
+	 * Array of sorting criteria values for this page
+	 * This array meets table headings
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	public static $sort_criteria = array(
+		'description' => 'Description',
+		'published' => 'published',
+		'access' => 'Access level',
+		'subscribers' => '# subscribers',
+		'id' => 'ID',
+		'title' => 'Title'
+	);
+
+	/**
+	 * Array of sorting criteria values for this page
+	 * This array select list values
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	public static $sort_criteria_select = array(
+		'description' => 'Description',
+		'published' => 'Status',
+		'access' => 'Access',
+		'subscribers' => '# subscribed mailing lists',
+		'id' => 'ID',
+		'title' => 'Title'
+	);
+
+	/**
+	 * Array of criteria to select from database
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	public static $select_criteria = array(
+		'description' => 'a.description',
+		'published' => 'a.published',
+		'access' => 'a.access',
+		'subscribers' => 'subscribers',
+		'id' => 'a.id',
+		'title' => 'a.title'
+	);
+
+	/**
+	 * Array of criteria to select from database
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	public static $sort_arrows = array(
+		'up' => 'icon-arrow-up-3',
+		'down' => 'icon-arrow-down-3'
+	);
+
+	/**
+	 * Location of selected value in sort select list
+	 *
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $select_list_selected_location = './/*[@id=\'list_fullordering_chzn\']/a/span';
+
+	/**
+	 * Location of table column
+	 *
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $table_headcol_link_location = ".//*[@id='j-main-container']/div[2]/table/thead/tr/th[%s]/a";
+
+	/**
+	 * Location of table column arrow
+	 *
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $table_headcol_arrow_location = ".//*[@id='j-main-container']/div[2]/table/thead/tr/th[%s]/a/span";
+
+	/**
      * Array of filter id values for this page
      *
      * @var array
-     * @since 3.2
+     *
+     * @since 2.0.0
      */
     public static $filters = array(
         'Sort Table By:' => 'list_fullordering',
@@ -46,7 +142,7 @@ class MailinglistManagerPage
     );
 
     /**
-     * Hepler method archive and delete a single mailing list, without testing, that is done before
+     * Helper method archive and delete a single mailing list, without testing, that is done before
      *
      * @param   AcceptanceTester                $I
      * @param   \Page\MailinglistManagerPage    $MlManage
@@ -62,7 +158,7 @@ class MailinglistManagerPage
      *
      * @since   2.0.0
      */
-    public static function HelperArcDelOneMl(\AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\Generals $Generals)
+    public static function HelperArcDelOneMl(AcceptanceTester $I, \Page\MailinglistManagerPage $MlManage, \Page\Generals $Generals)
 		{
 			$I->wantTo("Archive and delete one Mailinglist, helper method");
 			$I->amOnPage($MlManage::$url);
@@ -87,4 +183,5 @@ class MailinglistManagerPage
 			$I->waitForElement($Generals::$pageTitle);
 			$I->amOnPage($MlManage::$url);
 	}
+
 }

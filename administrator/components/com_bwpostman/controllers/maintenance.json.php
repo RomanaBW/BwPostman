@@ -149,8 +149,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			$appWeb    = new JApplicationWeb();
-	        $appWeb->setHeader('Content-Type', 'application/json', true);
+//			$appWeb    = new JApplicationWeb();
+//	        $appWeb->setHeader('Content-Type', 'application/json', true);
+			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 	        $app->close();
 		}
@@ -198,7 +199,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			if($step == 'step1') {
 				$content    = '';
 				$session->set('trestore_content', '');
-				$session->set('trestore_i', '');
+				$session->set('trestore_i', 0);
 				JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', '');
 			}
 
@@ -440,8 +441,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			$appWeb    = new JApplicationWeb();
-			$appWeb->setHeader('Content-Type', 'application/json', true);
+//			$appWeb    = new JApplicationWeb();
+//			$appWeb->setHeader('Content-Type', 'application/json', true);
+			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}
@@ -463,8 +465,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			$appWeb    = new JApplicationWeb();
-			$appWeb->setHeader('Content-Type', 'application/json', true);
+//			$appWeb    = new JApplicationWeb();
+//			$appWeb->setHeader('Content-Type', 'application/json', true);
+			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}
@@ -485,8 +488,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			$appWeb    = new JApplicationWeb();
-			$appWeb->setHeader('Content-Type', 'application/json', true);
+//			$appWeb    = new JApplicationWeb();
+//			$appWeb->setHeader('Content-Type', 'application/json', true);
+			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}

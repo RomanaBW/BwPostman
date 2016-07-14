@@ -262,7 +262,7 @@ class Com_BwPostmanInstallerScript
 		$this->_checkSampleTemplates();
 
 		// update/complete component rules
-		$this->_updateRules($type);
+		$this->_updateRules();
 
 		if ($type == 'update')
 		{
@@ -655,8 +655,8 @@ class Com_BwPostmanInstallerScript
 		$_db	= JFactory::getDbo();
 		$query  = $_db->getQuery(true);
 
-		$query->select($_db->quote('id'));
-		$query->from($_db->quote('#__bwpostman_templates'));
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName('#__bwpostman_templates'));
 		$_db->setQuery($query);
 
 		try
@@ -670,8 +670,8 @@ class Com_BwPostmanInstallerScript
 
 		$query  = $_db->getQuery(true);
 
-		$query->select($_db->quote('id'));
-		$query->from($_db->quote('#__bwpostman_templates_tpl'));
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName('#__bwpostman_templates_tpl'));
 		$_db->setQuery($query);
 
 		try
@@ -1099,11 +1099,11 @@ class Com_BwPostmanInstallerScript
 		}
 		?>
 
-<link rel="stylesheet" href="<?php JRoute::_('components/com_bwpostman/assets/css/install.css'); ?>" type="text/css" />
+<link rel="stylesheet" href="components/com_bwpostman/assets/css/install.css" type="text/css" />
 
 <div id="com_bwp_install_header">
 	<a href="http://www.boldt-webservice.de" target="_blank">
-		<img border="0" align="center" src="<?php JRoute::_('components/com_bwpostman/assets/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+		<img border="0" align="center" src="components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>
@@ -1235,10 +1235,10 @@ class Com_BwPostmanInstallerScript
 		$buffer = file_get_contents(JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/' . $sql);
 
 		// Graceful exit and rollback if read not successful
-		if ( $buffer )
+		if ($buffer)
 		{
 			// Create an array of queries from the sql file
-			jimport('joomla.installer.helper');
+//			jimport('joomla.installer.helper');
 			$queries = JDatabaseDriver::splitSql($buffer);
 
 			// No queries to process

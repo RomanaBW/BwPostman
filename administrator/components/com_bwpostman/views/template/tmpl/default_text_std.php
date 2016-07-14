@@ -347,7 +347,7 @@ $options = array(
 				</div>
 				<div id="email_preview" class="fltlft span7">
 					<p><button class="btn btn-large btn-block btn-primary" type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;</p>
-					<iframe id="myIframe" name="myIframeHtml" src="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=' . $this->item->id); ?>" width="100%" style="border: 1px solid #c2c2c2; min-height:200px;"></iframe>
+					<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>" width="100%" style="border: 1px solid #c2c2c2; min-height:200px;"></iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>

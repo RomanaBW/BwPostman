@@ -146,7 +146,7 @@ Joomla.submitbutton = function (pressbutton)
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeHtml"
-						src="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_html_preview&amp;format=raw&amp;task=previewHTML&amp;nl_id=' . $this->item->id); ?>"
+							src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_html_preview&amp;format=raw&amp;task=previewHTML&amp;nl_id=<?php echo $this->item->id; ?>"
 						height="500" width="100%" style="border: 1px solid #999999;"></iframe>
 					</div>
 				</div>
@@ -156,7 +156,7 @@ Joomla.submitbutton = function (pressbutton)
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeText"
-						src="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_text_preview&amp;format=raw&amp;task=previewText&amp;nl_id=' . $this->item->id); ?>"
+						src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_text_preview&amp;format=raw&amp;task=previewText&amp;nl_id=<?php echo $this->item->id; ?>"
 						height="400" width="100%" style="border: 1px solid #999999;"></iframe>
 					</div>
 				</div>

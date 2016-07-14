@@ -1088,6 +1088,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	array   $pks        Newsletter IDs
 	 *
 	 * @return	boolean
+	 *
+	 * @since
 	 */
 	public function delete(&$pks)
 	{

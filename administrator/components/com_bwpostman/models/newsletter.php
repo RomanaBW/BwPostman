@@ -584,7 +584,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$item->selected_content = explode(',', $item->selected_content);
 
 			$renderer	= new contentRenderer();
-			$content	= $renderer->getContent((array) $item->selected_content, $item->subject, $item->template_id, $item->text_template_id);
+			$content	= $renderer->getContent((array) $item->selected_content, $item->template_id, $item->text_template_id);
 			$item->html_version	= $content['html_version'];
 			$item->text_version	= $content['text_version'];
 		}
@@ -1483,7 +1483,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$template_id		= $jinput->get('template_id');
 		$text_template_id	= $jinput->get('text_template_id');
 		$renderer			= new contentRenderer();
-		$content			= $renderer->getContent($nl_content, $nl_subject, $template_id, $text_template_id);
+		$content			= $renderer->getContent($nl_content, $template_id, $text_template_id);
 
 		return $content;
 	}
@@ -1593,7 +1593,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				// only render new content, if selection from article list has changed
 				$renderer	= new contentRenderer();
-				$content	= $renderer->getContent($nl_content, $form_data['subject'], $form_data['template_id'], $form_data['text_template_id']);
+				$content	= $renderer->getContent($nl_content, $form_data['template_id'], $form_data['text_template_id']);
 
 				$form_data['html_version']	= $content['html_version'];
 				$form_data['text_version']	= $content['text_version'];
@@ -1745,7 +1745,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since	1.1.0
 	 */
-	public function getTemplate(&$template_id)
+	public function getTemplate($template_id)
 	{
 		$tpl    = new stdClass();
 		$params = JComponentHelper::getParams('com_bwpostman');

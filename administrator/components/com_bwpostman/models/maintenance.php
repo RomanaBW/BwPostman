@@ -374,13 +374,18 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		foreach ($rules as $data)
 		{
 			$item = json_decode($data['rules']);
-			foreach ($item as $rule)
+			// @ToDo: Do this saveguard against misspelled rules also at restore!!!!!
+			// @ToDo: Ensure, that php errors and warnings don't appear in XML file
+			if (!empty($item))
 			{
-				foreach ($rule as $key => $value)
+				foreach ($item as $rule)
 				{
-					if ($value == '1')
+					foreach ($rule as $key => $value)
 					{
-						$allgroups[] = $key;
+						if ($value == '1')
+						{
+							$allgroups[] = $key;
+						}
 					}
 				}
 			}
@@ -522,167 +527,177 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$txt_array[] = $row;
 					}
 				}
-				//build complete text string
-				$txt     = implode(' ', $txt_array);
-				$queries = array();
 
-				// extract full queries
-				$length = strpos($txt, 'CREATE', 1);
-				while ($length)
-				{
-					$queries[] = substr($txt, 0, $length);
-					$sub_txt   = substr($txt, $length);
-					$txt       = $sub_txt;
+				$queries    = array();
+				$string     = '';
+				$i          = 0;
+				foreach ($txt_array as $key => $value) {
+					$pos = strpos ($value, 'CREATE');
+					if ($pos !== false) {
+						if ($i != 0)
+						{ // fill array only with complete query
+							$queries[]  = $string;
+						}
+						$string      = $value . ' ';
+					}
+					else
+					{
+						$string  .= $value . ' ';
+					}
+					$i++;
 				}
-				$queries[] = $txt;
+				$queries[]  = $string;
 
-				foreach ($queries as $query)
+				if (count($queries))
 				{
-					$table = new stdClass();
-					$query = implode(array_map('trim', preg_split('/(\n|\r\r)/i', $query)));
-					$query = preg_replace('/\s+/', ' ', trim($query));
-
-					$table->install_query = $query;
-
-					// get table name
-					$start = strpos($query, '#');
-					if ($start !== false)
+					foreach ($queries as $query)
 					{
-						$stop        = strpos($query, '`', $start);
-						$length      = $stop - $start;
-						$table->name = substr($query, $start, $length);
-					}
-					// get engine
-					$start = stripos($query, 'ENGINE');
-					if ($start !== false)
-					{
-						$stop          = strpos($query, ' ', $start);
-						$length        = $stop - $start;
-						$table->engine = substr($query, $start + 7, $length - 7);
-					}
+						$table = new stdClass();
+						$query = implode(array_map('trim', preg_split('/(\n|\r\r)/i', $query)));
+						$query = preg_replace('/\s+/', ' ', trim($query));
 
-					// get default character set
-					$start = stripos($query, 'DEFAULT CHARSET');
-					if ($start !== false)
-					{
-						$stop           = stripos($query, ' COLLATE');
-						$length         = $stop - $start - 16;
-						$table->charset = substr($query, $start + 16, $length);
-					}
+						$table->install_query = $query;
 
-					// get default collation
-					$start = stripos($query, 'COLLATE');
-					if ($start !== false)
-					{
-						$stop             = stripos($query, ';', $start);
-						$length           = $stop - $start - 8;
-						$table->collation = substr($query, $start + 8, $length);
-					}
-
-					// get primary key
-					$start = strripos($query, '(`') + 2;
-					if ($start !== false)
-					{
-						$stop               = strripos($query, '`)');
-						$length             = $stop - $start;
-						$table->primary_key = str_replace("`", '', substr($query, $start, $length));
-					}
-
-					// eliminate primary key
-					$start = stripos($query, ',PRIMARY');
-					if ($start !== false)
-					{
-						$stop    = strpos($query, '`)') + 2;
-						$length  = $stop - $start;
-						$search  = substr($query, $start, $length);
-						$sub_txt = str_replace($search, '', $query);
-						$query   = trim($sub_txt);
-					}
-
-					// get columns definitions
-					$start = strpos($query, '(');
-					if ($start !== false)
-					{
-						$stop          = strripos($query, ')');
-						$length        = $stop - $start;
-						$column_string = substr($query, $start + 1, $length - 1);
-						$columns       = explode(',', $column_string);
-
-						foreach ($columns as $column)
+						// get table name
+						$start = strpos($query, '#');
+						if ($start !== false)
 						{
-							$col_arr = new stdClass();
+							$stop        = strpos($query, '`', $start);
+							$length      = $stop - $start;
+							$table->name = substr($query, $start, $length);
+						}
+						// get engine
+						$start = stripos($query, 'ENGINE');
+						if ($start !== false)
+						{
+							$stop          = strpos($query, ' ', $start);
+							$length        = $stop - $start;
+							$table->engine = substr($query, $start + 7, $length - 7);
+						}
 
-							// get column name
-							$column = trim($column);
-							$length = strpos($column, ' ');
-							if ($length > 0)
-							{
-								$col_arr->Column = substr($column, 1, $length - 2);
-								$sub_txt         = substr($column, $length + 1);
-								$column          = $sub_txt;
-							}
+						// get default character set
+						$start = stripos($query, 'DEFAULT CHARSET');
+						if ($start !== false)
+						{
+							$stop           = stripos($query, ' COLLATE');
+							$length         = $stop - $start - 16;
+							$table->charset = substr($query, $start + 16, $length);
+						}
 
-							// get column type
-							$length = strpos($column, ' ');
-							if ($length > 0)
-							{
-								$col_arr->Type = substr($column, 0, $length);
-								$sub_txt       = substr($column, $length + 1);
-								$column        = $sub_txt;
-							}
+						// get default collation
+						$start = stripos($query, 'COLLATE');
+						if ($start !== false)
+						{
+							$stop             = stripos($query, ';', $start);
+							$length           = $stop - $start - 8;
+							$table->collation = substr($query, $start + 8, $length);
+						}
 
-							// get NOT NULL
-							$start = stripos($column, 'NOT NULL');
-							if ($start !== false)
-							{
-								$col_arr->Null = 'NO';
-								$sub_txt       = str_replace('NOT NULL', '', $column);
-								$column        = trim($sub_txt);
-							}
+						// get primary key
+						$start = strripos($query, '(`') + 2;
+						if ($start !== false)
+						{
+							$stop               = strripos($query, '`)');
+							$length             = $stop - $start;
+							$table->primary_key = str_replace("`", '', substr($query, $start, $length));
+						}
 
-							// get NULL
-							$start = stripos($column, 'NULL');
-							if ($start !== false)
-							{
-								$col_arr->Null = 'YES';
-								$sub_txt       = str_replace('NULL', '', $column);
-								$column        = trim($sub_txt);
-							}
+						// eliminate primary key
+						$start = stripos($query, ',PRIMARY');
+						if ($start !== false)
+						{
+							$stop    = strpos($query, '`)') + 2;
+							$length  = $stop - $start;
+							$search  = substr($query, $start, $length);
+							$sub_txt = str_replace($search, '', $query);
+							$query   = trim($sub_txt);
+						}
 
-							// get autoincrement
-							$start = stripos($column, 'auto_increment');
-							if ($start !== false)
-							{
-								$col_arr->Extra = substr($column, $start, 15);
-								$sub_txt        = str_replace('auto_increment', '', $column);
-								$column         = trim($sub_txt);
-								$table->auto    = $col_arr->Column;
-							}
+						// get columns definitions
+						$start = strpos($query, '(');
+						if ($start !== false)
+						{
+							$stop          = strripos($query, ')');
+							$length        = $stop - $start;
+							$column_string = substr($query, $start + 1, $length - 1);
+							$columns       = explode(',', $column_string);
 
-							// get default
-							$start = stripos($column, 'default');
-							if ($start !== false)
+							foreach ($columns as $column)
 							{
-								$start            = $start + 9;
-								$stop             = strpos($column, "'", $start);
-								$length           = $stop - $start;
-								$col_arr->Default = substr($column, $start, $length);
-								$sub_txt          = str_replace($col_arr->Default, '', $column);
-								$column           = trim($sub_txt);
-							}
-							// get unsigned
-							$start = stripos($column, 'unsigned');
-							if ($start !== false)
-							{
-								$col_arr->Type .= ' unsigned';
-							}
-							$table->columns[] = $col_arr;
-						} // end foreach columns
-						$tables[] = $table;
-					} // end get columns definitions
-				} // end foreach queries
+								$col_arr = new stdClass();
+
+								// get column name
+								$column = trim($column);
+								$length = strpos($column, ' ');
+								if ($length > 0)
+								{
+									$col_arr->Column = substr($column, 1, $length - 2);
+									$sub_txt         = substr($column, $length + 1);
+									$column          = $sub_txt;
+								}
+
+								// get column type
+								$length = strpos($column, ' ');
+								if ($length > 0)
+								{
+									$col_arr->Type = substr($column, 0, $length);
+									$sub_txt       = substr($column, $length + 1);
+									$column        = $sub_txt;
+								}
+
+								// get NOT NULL
+								$start = stripos($column, 'NOT NULL');
+								if ($start !== false)
+								{
+									$col_arr->Null = 'NO';
+									$sub_txt       = str_replace('NOT NULL', '', $column);
+									$column        = trim($sub_txt);
+								}
+
+								// get NULL
+								$start = stripos($column, 'NULL');
+								if ($start !== false)
+								{
+									$col_arr->Null = 'YES';
+									$sub_txt       = str_replace('NULL', '', $column);
+									$column        = trim($sub_txt);
+								}
+
+								// get autoincrement
+								$start = stripos($column, 'auto_increment');
+								if ($start !== false)
+								{
+									$col_arr->Extra = substr($column, $start, 15);
+									$sub_txt        = str_replace('auto_increment', '', $column);
+									$column         = trim($sub_txt);
+									$table->auto    = $col_arr->Column;
+								}
+
+								// get default
+								$start = stripos($column, 'default');
+								if ($start !== false)
+								{
+									$start            = $start + 9;
+									$stop             = strpos($column, "'", $start);
+									$length           = $stop - $start;
+									$col_arr->Default = substr($column, $start, $length);
+									$sub_txt          = str_replace($col_arr->Default, '', $column);
+									$column           = trim($sub_txt);
+								}
+								// get unsigned
+								$start = stripos($column, 'unsigned');
+								if ($start !== false)
+								{
+									$col_arr->Type .= ' unsigned';
+								}
+								$table->columns[] = $col_arr;
+							} // end foreach columns
+							$tables[] = $table;
+						} // end get columns definitions
+					} // end foreach queries
+				} // end if queries exists
 			} // end get file content
-		} // end foreach filenames
+		} // end foreach file names
 		return $tables;
 	}
 
@@ -1748,30 +1763,32 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			// get raw table name, table object and asset name
+			// @ToDo: process plugin tables
 			$table_name_raw = $this->_getRawTableName($table);
 			$tableObject    = JTable::getInstance($table_name_raw, 'BwPostmanTable');
+			$asset_name     = '';
 
 			// set asset name
-			if (property_exists($tableObject, 'asset_id'))
+			// next if (surrounding tables without assets) is a workaround for plugin table
+			if (is_object($tableObject))
 			{
-				// write table asset
-				$base_asset = $this->_insertBaseAsset($table);
-				if (!is_array($base_asset))
+				if (property_exists($tableObject, 'asset_id'))
 				{
-					throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR', $table));
-				}
-				else
-				{
-//					echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $table) . '</p>';
-				}
-				$curr_asset_id  = $base_asset['lft'] + 1;
+					// write table asset
+					$base_asset = $this->_insertBaseAsset($table);
+					if (!is_array($base_asset))
+					{
+						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR', $table));
+					}
+					else
+					{
+						//					echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $table) . '</p>';
+					}
+					$curr_asset_id = $base_asset['lft'] + 1;
 
-//				$asset_name = 'com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1);
-				$asset_name = $base_asset['name'];
-			}
-			else
-			{
-				$asset_name = '';
+					//				$asset_name = 'com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1);
+					$asset_name = $base_asset['name'];
+				}
 			}
 
 			// set some loop values (block size, …)
@@ -1808,55 +1825,63 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if (isset($tables[$table]['table_assets']))
 				{
-					foreach ($tables[$table]['table_assets'] as $asset)
-					{
-						$asset_loop++;
-
-						if ($count++ == $max_count)
+					if ($tables[$table]['table_assets'][0]['name'] === $asset_name)
+					{ // update base asset
+						$update_asset   = array_shift($tables[$table]['table_assets']);
+						$this->_updateBaseAsset($update_asset);
+					}
+					else
+					{ // process dataset assets
+						foreach ($tables[$table]['table_assets'] as $asset)
 						{
-							$count = 0;
-							ini_set('max_execution_time', ini_get('max_execution_time'));
-						}
-						$values = array();
+							$asset_loop++;
 
-						// collect data sets until loop max
-						foreach ($asset as $k => $v)
-						{
-							// rewrite parent_id, lft and rgt
-							switch ($k)
+							if ($count++ == $max_count)
 							{
-								case 'id':
+								$count = 0;
+								ini_set('max_execution_time', ini_get('max_execution_time'));
+							}
+							$values = array();
+
+							// collect data sets until loop max
+							foreach ($asset as $k => $v)
+							{
+								// rewrite parent_id, lft and rgt
+								switch ($k)
+								{
+									case 'id':
 										$asset_transform[$s]['old'] = $v;
 										$values['id']               = 0;
-									break;
-								case 'parent_id':
+										break;
+									case 'parent_id':
 										$values['parent_id'] = $base_asset['id'];
-									break;
-								case 'lft':
+										break;
+									case 'lft':
 										$values['lft'] = $curr_asset_id++;
-									break;
-								case 'rgt':
+										break;
+									case 'rgt':
 										$values['rgt'] = $curr_asset_id++;
-									break;
-								default:
+										break;
+									default:
 										$values[$k] = $_db->quote($v);
-									break;
+										break;
+								}
 							}
-						}
-						$dataset[] = '(' . implode(',', $values) . ')';
-						$s++;
+							$dataset[] = '(' . implode(',', $values) . ')';
+							$s++;
 
-						// if asset loop max is reached or last data set, insert into table
-						if (($asset_loop == $asset_loop_max) || ($s == $asset_max))
-						{
-							// write collected assets to table
-							$this->_writeLoopAssets($dataset, $s, $base_asset, $asset_transform);
+							// if asset loop max is reached or last data set, insert into table
+							if (($asset_loop == $asset_loop_max) || ($s == $asset_max))
+							{
+								// write collected assets to table
+								$this->_writeLoopAssets($dataset, $s, $base_asset, $asset_transform);
 
-							//reset loop values
-							$asset_loop = 0;
-							$dataset    = array();
-						}
-					} // end foreach table assets
+								//reset loop values
+								$asset_loop = 0;
+								$dataset    = array();
+							}
+						} // end foreach table assets
+					} // end switch base asset
 				} // end table assets exists
 			} // end asset inserting
 
@@ -2598,6 +2623,44 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $e)
 		{
 			throw new BwException (JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $table));
+		}
+	}
+
+	/**
+	 * Method to write the table asset
+	 *
+	 * @param   array  $asset
+	 *
+	 * @throws  BwException
+	 *
+	 * @since    1.3.0
+	 */
+	protected function _updateBaseAsset($asset = array())
+	{
+		try
+		{
+			if (empty($asset))
+			{
+				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR_EMPTY'));
+			}
+			$_db   = JFactory::getDbo();
+			$query = $_db->getQuery(true);
+
+			$query->update($_db->quoteName('#__assets'));
+			$query->set($_db->quoteName('rules') . " = " . $_db->quote($asset['rules']));
+			$query->where($_db->quoteName('name') . ' = ' . $_db->quote($asset['name']));
+
+			$_db->setQuery($query);
+			$update_asset   = $_db->execute();
+
+			if (!$update_asset)
+			{
+				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR'));
+			}
+		}
+		catch (RuntimeException $e)
+		{
+			throw new BwException (JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $asset['name']));
 		}
 	}
 

@@ -1650,7 +1650,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public function sendNewsletter(&$ret_msg, $recipients, $nl_id, $unconfirmed, $cam_id)
 	{
 		// Prepare the newsletter content
-		$id	= $this->_addSendMailContent($nl_id, $recipients);
+		$id	= $this->_addSendMailContent($nl_id);
 		if ($id	=== false)
 		{
 			$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_PREPARING');

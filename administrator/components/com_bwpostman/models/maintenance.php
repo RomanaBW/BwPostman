@@ -33,8 +33,8 @@ jimport('joomla.application.component.model');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require some classes
-require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries/exceptions/BwException.php');
-require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries/logging/BwLogger.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman maintenance page model
@@ -66,6 +66,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @return  mixed
 	 *
 	 * @throws  BwException on errors
+	 *
+	 * @since
 	 */
 	public function saveTables($update = false)
 	{
@@ -469,7 +471,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to get the needed tables and its properties from sql install file
 	 *
-	 * @return    boolean        true if all is ok
+	 * @return    mixed array/bool        true if all is ok
 	 *
 	 * @since    1.0.1
 	 */
@@ -1470,7 +1472,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @param    string   $tableName name of table
 	 * @param    resource $handle    handle of backup file
 	 *
-	 * @return    array        An array of XML lines (strings).
+	 * @return   bool        True on success
 	 *
 	 * @throws  BwException if writing file is not possible
 	 *

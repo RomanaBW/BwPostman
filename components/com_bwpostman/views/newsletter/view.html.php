@@ -129,8 +129,11 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				$nls_state	= $app->getUserState('com_bwpostman.newsletters.params');
 
 				// if we have a menu state, use this and overwrite global settings
-				if ($nls_state->get('attachment_enable') !== null) {
-					$this->attachment_enabled	= $nls_state->get('attachment_enable');
+				if (is_object($nls_state))
+				{
+					if ($nls_state->get('attachment_enable') !== null) {
+						$this->attachment_enabled	= $nls_state->get('attachment_enable');
+					}
 				}
 			}
 			else

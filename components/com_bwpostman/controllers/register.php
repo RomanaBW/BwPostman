@@ -350,7 +350,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			$subs_id		= null;
 			$err->err_id    = null;
 			$err->err_code	= 408; // Email address does not exist
-			$err->err_msg	= 'COM_BWPOSTMAN_ERROR_EMAILDOESNTEXIST';
+			$err->err_msg	= JText::sprintf('COM_BWPOSTMAN_ERROR_EMAILDOESNTEXIST', $post['email'], JRoute::_('index.php?option=com_bwpostman&view=register'));
 		}
 		elseif ($subscriberdata->archive_flag == 1)
 		{

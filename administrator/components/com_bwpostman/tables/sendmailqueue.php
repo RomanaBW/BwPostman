@@ -27,43 +27,82 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+
+
 /**
  * #__bwpostman_sendmailqueue table handler
  * Table for storing the recipients to whom a newsletter shall be send
  *
  * @package		BwPostman-Admin
  * @subpackage	Newsletters
+ *
+ * @since
  */
 class BwPostmanTableSendmailqueue extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since
+	 */
 	var $id = null;
 
-	/** @var int Content-ID --> from the sendmailcontent-Table */
+	/**
+	 * @var int Content-ID --> from the sendmailcontent-Table
+	 *
+	 * @since
+	 */
 	var $content_id = null;
 
-	/** @var string Recipient email */
+	/**
+	 * @var string Recipient email
+	 *
+	 * @since
+	 */
 	var $recipient = null;
 
-	/** @var int Mode --> 0 = Text, 1 = HTML */
+	/**
+	 * @var int Mode --> 0 = Text, 1 = HTML
+	 *
+	 * @since
+	 */
 	var $mode = null;
 
-	/** @var string Recipient name */
+	/**
+	 * @var string Recipient name
+	 *
+	 * @since
+	 */
 	var $name = null;
 
-	/** @var string Recipient firstname */
+	/**
+	 * @var string Recipient firstname
+	 *
+	 * @since
+	 */
 	var $firstname = null;
 
-	/** @var int Subscriber ID */
+	/**
+	 * @var int Subscriber ID
+	 *
+	 * @since
+	 */
 	var $subscriber_id = null;
 
-	/** @var int Number of delivery attempts */
+	/**
+	 * @var int Number of delivery attempts
+	 *
+	 * @since
+	 */
 	var $trial = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since
 	 */
 	public function __construct(& $db)
 	{
@@ -81,42 +120,53 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @throws BwException
 	 *
 	 * @return boolean
+	 *
+	 * @since
 	 */
 	public function bind($data, $ignore='')
 	{
-		// Bind the rules.
-		if (is_object($data))
-		{
-			if (property_exists($data, 'rules') && is_array($data->rules))
+		try
+		{// Bind the rules.
+			if (is_object($data))
 			{
-				$rules = new JAccessRules($data->rules);
-				$this->setRules($rules);
+				if (property_exists($data, 'rules') && is_array($data->rules))
+				{
+					$rules = new JAccessRules($data->rules);
+					$this->setRules($rules);
+				}
 			}
-		}
-		elseif (is_array($data))
-		{
-			if (array_key_exists('rules', $data) && is_array($data['rules']))
+			elseif (is_array($data))
 			{
-				$rules = new JAccessRules($data['rules']);
-				$this->setRules($rules);
+				if (array_key_exists('rules', $data) && is_array($data['rules']))
+				{
+					$rules = new JAccessRules($data['rules']);
+					$this->setRules($rules);
+				}
 			}
+			else
+			{
+				throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			}
+
+			// Cast properties
+			$this->id = (int) $this->id;
+
+			return parent::bind($data, $ignore);
 		}
-		else
+		catch (BwException $e)
 		{
-			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
-
-		// Cast properties
-		$this->id	= (int) $this->id;
-
-		return parent::bind($data, $ignore);
 	}
 
 	/**
 	 * Overloaded check method to ensure data integrity
 	 *
 	 * @access public
+
 	 * @return boolean True
+	 *
+	 * @since
 	 */
 	public function check()
 	{
@@ -127,9 +177,12 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to get the first entry of this table
 	 *
 	 * @access 	public
+
 	 * @param   int     $trial  Only pop entries with < trial
 	 *
 	 * @return 	int --> 0 if nothing was selected
+	 *
+	 * @since
 	 */
 	public function pop($trial = 2)
 	{
@@ -175,7 +228,10 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @param   string  $firstname          Recipient first name
 	 * @param   int     $subscriber_id      Subscriber ID
 	 * @param   int     $trial              Number of delivery attempts
+
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function push($content_id, $emailformat, $email, $name, $firstname, $subscriber_id, $trial = 0)
 	{
@@ -225,6 +281,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @param	int		$cam_id         campaign id
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 
 	public function pushAllFromNlId($nl_id, $content_id, $status, $cam_id)
@@ -298,6 +356,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @param 	int     $status         Status -->  0 = unconfirmed, 1 = confirmed, 9 = test-recipient
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function pushAllSubscribers($content_id, $status)
 	{
@@ -349,6 +409,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @param 	int     $format         Emailformat --> standard email format defined by BwPostman preferences
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function pushJoomlaUser($content_id, $usergroups, $format = 0)
 	{
@@ -426,6 +488,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to reset sending trials
 	 *
 	 * @return bool
+	 *
+	 * @since
 	 */
 	public function resetTrials()
 	{

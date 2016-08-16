@@ -42,49 +42,53 @@ JHtml::_('behavior.formvalidator');
 
 		form.edit.value = pressbutton;
 
-		// Valdiate input fields
-		if (document.bwp_com_form.name)
+		// Validate input fields only, if unsubscribe is not selected
+		if (form.unsubscribe.checked == false)
 		{
-			if (form.name_field_obligation.value == 1)
+			if (document.bwp_com_form.name)
 			{
-				if (form.name.value == "")
+				if (form.name_field_obligation.value == 1)
 				{
-					alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
-					fault = true;
+					if (form.name.value == "")
+					{
+						alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
+						fault = true;
+					}
 				}
 			}
-		}
-		if (document.bwp_com_form.firstname)
-		{
-			if (form.firstname_field_obligation.value == 1)
+
+			if (document.bwp_com_form.firstname)
 			{
-				if (form.firstname.value == "")
+				if (form.firstname_field_obligation.value == 1)
 				{
-					alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
-					fault = true;
+					if (form.firstname.value == "")
+					{
+						alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
+						fault = true;
+					}
 				}
 			}
-		}
-		if (document.bwp_com_form.special)
-		{
-			if (form.special_field_obligation.value == 1)
+			if (document.bwp_com_form.special)
 			{
-				if (form.special.value == "")
+				if (form.special_field_obligation.value == 1)
 				{
-					alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>");
-					fault = true;
+					if (form.special.value == "")
+					{
+						alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>");
+						fault = true;
+					}
 				}
 			}
-		}
-		if (form.email.value== "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>");
-			fault	= true;
-		}
-		if (checkNlBoxes()== false)
-		{
-			alert ("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NL_CHECK', true); ?>");
-			fault	= true;
+			if (form.email.value== "")
+			{
+				alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>");
+				fault	= true;
+			}
+			if (checkNlBoxes()== false)
+			{
+				alert ("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NL_CHECK', true); ?>");
+				fault	= true;
+			}
 		}
 		if (fault == false)
 		{

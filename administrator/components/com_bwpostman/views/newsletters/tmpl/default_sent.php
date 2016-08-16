@@ -198,10 +198,10 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 											<p><?php echo $this->escape($item->subject); ?></p>
 										<?php endif; ?>
 										<p class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
-											<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id);?>" rel="{handler: 'iframe', size: {x: 650, y: 450}}"><?php echo JText::_('COM_BWPOSTMAN_HTML_NL');?></a>&nbsp;
+											<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id);?>" rel="{handler: 'iframe', size: {x: 650, y: 450}, iframeOptions: {id: 'htmlFrame'}}"><?php echo JText::_('COM_BWPOSTMAN_HTML_NL');?></a>&nbsp;
 										</p>
 										<p class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
-											<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id='. $item->id);?>" rel="{handler: 'iframe', size: {x: 650, y: 450}}"><?php echo JText::_('COM_BWPOSTMAN_TEXT_NL');?></a>&nbsp;
+											<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id='. $item->id);?>" rel="{handler: 'iframe', size: {x: 650, y: 450}, iframeOptions: {id: 'textFrame'}}"><?php echo JText::_('COM_BWPOSTMAN_TEXT_NL');?></a>&nbsp;
 										</p>
 									</td>
 									<td><?php echo $this->escape($item->description); ?></td>

@@ -104,11 +104,11 @@ defined ('_JEXEC') or die ('Restricted access');
 									<span class="cam_preview">
 										<span class="editlinktip hasTip"
 											title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
-											<?php echo '<a class="popup" href="'.$link_html.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}}">'.JText::_('COM_BWPOSTMAN_HTML_NL').'</a>'; ?>&nbsp;
+											<?php echo '<a class="popup" href="'.$link_html.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}, iframeOptions: {id: \'htmlFrame\'}}">'.JText::_('COM_BWPOSTMAN_HTML_NL').'</a>'; ?>&nbsp;
 											</span>
 										<span class="editlinktip hasTip"
 											title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
-											<?php echo '<a class="popup" href="'.$link_text.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}}">'.JText::_('COM_BWPOSTMAN_TEXT_NL').'</a>'; ?>
+											<?php echo '<a class="popup" href="'.$link_text.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}, iframeOptions: {id: \'textFrame\'}}">'.JText::_('COM_BWPOSTMAN_TEXT_NL').'</a>'; ?>
 										</span>
 									</span>
 								</td>

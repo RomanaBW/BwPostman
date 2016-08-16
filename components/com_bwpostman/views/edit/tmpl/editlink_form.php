@@ -53,6 +53,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="view" value="edit" />
+			<input type="hidden" name="task" value="sendEditlink" />
 			<?php echo JHtml::_('form.token'); ?>
 		</form>
 

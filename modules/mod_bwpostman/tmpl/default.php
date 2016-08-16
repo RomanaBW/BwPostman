@@ -53,7 +53,7 @@ function checkModRegisterForm() {
 	var n =	arrCB.length;
 	var check = 0;
 
-	// Valdiate input fields
+	// Validate input fields
 	// firstname
 	if (document.bwp_com_form.a_firstname) {
 		if ((document.getElementById("a_firstname").value == "") && (document.getElementById("firstname_field_obligation_mod").value == 1)) {
@@ -305,7 +305,6 @@ function checkModRegisterForm() {
 					<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 					<p class="security_question_lbl"><?php echo $paramsComponent->get('security_question'); ?></p>
 					<p class="question input-append">
-						<label id="question_mod" for="a_stringQuestion"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA_LABEL'); ?>:</label>
 						<input type="text" name="stringQuestion" id="a_stringQuestion" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50"  class="input-small" /> <span class="append-area"><i class="icon-star"></i></span>
 					</p>
 				</div>
@@ -320,7 +319,6 @@ function checkModRegisterForm() {
 						<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 						<p class="security_question_lbl"><img src="<?php echo JURI::base();?>index.php?option=com_bwpostman&view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" /></p>
 						<p class="captcha input-append">
-							<label id="a_captcha" for="a_stringCaptcha"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringCaptcha" id="a_stringCaptcha" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" /> <span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>

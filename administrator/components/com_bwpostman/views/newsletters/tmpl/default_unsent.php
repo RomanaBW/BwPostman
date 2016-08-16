@@ -82,7 +82,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		echo '<script type="text/javascript">'."\n";
 		echo "window.addEvent('load', function() {\n";
 		// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
-		echo "SqueezeBox.open('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', {handler: 'iframe', size: { x: 600, y: 450 }, closable: false}); \n";
+		echo "SqueezeBox.open('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', {handler: 'iframe', size: { x: 600, y: 450 }, closable: false, closeBtn: false, iframeOptions: {id: 'sendFrame', name: 'sendFrame'}}); \n";
 		echo "});\n";
 		echo "</script>\n";
 	}

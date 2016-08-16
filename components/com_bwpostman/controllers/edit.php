@@ -38,6 +38,8 @@ require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanControllerEdit
+ *
+ * @since   2.0.0
  */
 class BwPostmanControllerEdit extends JControllerLegacy
 {
@@ -46,6 +48,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 * Subscriber ID
 	 *
 	 * @var int
+	 *
+	 * @since   2.0.0
 	 */
 	var $_subscriberid;
 
@@ -53,11 +57,15 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 * User ID in subscriber-table
 	 *
 	 * @var int
+	 *
+	 * @since   2.0.0
 	 */
 	var $_userid;
 
 	/**
 	 * Constructor
+	 *
+	 * @since   2.0.0
 	 */
 	public function __construct()
 	{
@@ -185,8 +193,10 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 *
 	 * @access	public
 	 *
-	 * @param	int $subscriberid   subcriber ID
+	 * @param	int $subscriberid   subscriber ID
 	 * @param 	int $userid         user ID
+	 *
+	 * @since   2.0.0
 	 */
 	public function setData($subscriberid = 0, $userid = 0)
 	{
@@ -204,6 +214,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return void
+	 *
+	 * @since   2.0.0
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -234,7 +246,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 * Method to save changes from the edit-view
 	 *
 	 * @access public
-	 * @since	1.0.1
+	 *
+	 * @since   2.0.0
 	 */
 	public function save()
 	{
@@ -363,6 +376,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 * @access	public
 	 *
 	 * @param 	int $id     Subscriber ID
+	 *
+	 * @since   2.0.0
 	 */
 	public function unsubscribe($id = null)
 	{
@@ -422,6 +437,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 * --> is needed to get access to the edit form
 	 *
 	 * @access public
+	 *
+	 * @since   2.0.0
 	 */
 	public function sendEditlink ()
 	{

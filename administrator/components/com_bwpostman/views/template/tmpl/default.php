@@ -129,7 +129,7 @@ $options = array(
 			else
 			{
 			// confirm if cancel or not
-			confirmCancel =confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
+			confirmCancel = confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
 			if (confirmCancel == false)
 			{
 				return;

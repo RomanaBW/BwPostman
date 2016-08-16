@@ -57,6 +57,8 @@ class BwPostmanController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		parent::display();
+		parent::display($cachable, $urlparams);
+
+		return $this;
 	}
 }

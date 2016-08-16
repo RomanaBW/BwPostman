@@ -43,6 +43,12 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  */
 class BwPostmanControllerTemplates extends JControllerAdmin
 {
+	/**
+	 * @var		string	The prefix to use with controller messages.
+	 *
+	 * @since	2.0.0
+	 */
+	protected $text_prefix = 'COM_BWPOSTMAN_TPLS';
 
 	/**
 	 * Constructor

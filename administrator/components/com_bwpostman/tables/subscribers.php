@@ -321,7 +321,7 @@ class BwPostmanTableSubscribers extends JTable
 		$tester		= false;
 		$format_txt	= array(0 => 'Text', 1 => 'HTML');
 
-		if ($xtest != '9')
+		if ($xtest == '9')
 			$tester	= true;
 		if ($import && $this->status == '9')
 			$tester	= true;

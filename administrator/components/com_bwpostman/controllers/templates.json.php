@@ -89,7 +89,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					break;
 
 				case 'step2':
-					// install data to table #__bwpostmann_templates_tpl
+					// install data to table #__bwpostman_templates_tpl
 					$templatestplsql = 'bwp_templatestpl.sql';
 					if (!$model->installTplFiles($templatestplsql, $step))
 					{
@@ -103,7 +103,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					break;
 
 				case 'step3':
-					// install data to table #__bwpostmann_templates
+					// install data to table #__bwpostman_templates
 					$templatessql = 'bwp_templates.sql';
 					if (!$model->installTplFiles($templatessql, $step))
 					{

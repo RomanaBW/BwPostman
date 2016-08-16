@@ -35,6 +35,8 @@ jimport('joomla.application.component.view');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Newsletters
+ *
+ * @since   2.0.0
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
@@ -42,6 +44,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold selected item
 	 *
 	 * @var object   $item
+	 *
+	 * @since   2.0.0
 	 */
 	protected $item;
 
@@ -51,6 +55,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since   2.0.0
 	 */
 	public function display ($tpl = Null)
 	{
@@ -101,7 +107,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 			if ($model->checkTrials(2))
 			{
-				echo '<div class="modal" style="height: 150px;overflow: auto;margin-bottom: 15px;">';
+				echo '<div class="modal" style="height: 150px;overflow: auto;margin-bottom: 15px;" id="progress">';
 				$ret	= $model->sendMailsFromQueue($mails_per_step);
 				echo '</div>';
 				// number of queue entries during sending

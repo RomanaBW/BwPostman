@@ -47,7 +47,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	function confirmArchive(archive_value) // Get the selected value from modalbox
+	function confirmArchive(archive_value) // Get the selected value from modal box
 	{
 		document.adminForm.archive_nl.value = archive_value;
 		Joomla.submitbutton('campaign.archive');

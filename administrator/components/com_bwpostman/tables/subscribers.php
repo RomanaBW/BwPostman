@@ -30,7 +30,7 @@ defined ('_JEXEC') or die ('Restricted access');
 use Joomla\Registry\Registry as JRegistry;
 
 // Require component admin helper class
-require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/helper.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * #__bwpostman_subscribers table handler
@@ -38,91 +38,202 @@ require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/helper.php'
  *
  * @package		BwPostman-Admin
  * @subpackage	Subscribers
+ *
+ * @since
  */
 class BwPostmanTableSubscribers extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since
+	 */
 	var $id = null;
 
-	/** @var int asset_id */
+	/**
+	 * @var int asset_id
+	 *
+	 * @since
+	 */
 	var $asset_id = null;
 
-	/** @var int User-ID --> 0 = subscriber is not registered for the website, another ID = Subscriber is registered for the website (ID comes from users-table) */
+	/**
+	 * @var int User-ID --> 0 = subscriber is not registered for the website, another ID = Subscriber is registered for
+	 *      the website (ID comes from users-table)
+	 *
+	 * @since
+	 */
 	var $user_id = null;
 
-	/** @var string Name */
+	/**
+	 * @var string Name
+	 *
+	 * @since
+	 */
 	var $name = null;
 
-	/** @var string Firstname */
+	/**
+	 * @var string Firstname
+	 *
+	 * @since
+	 */
 	var $firstname = null;
 
-	/** @var string Email */
+	/**
+	 * @var string Email
+	 *
+	 * @since
+	 */
 	var $email = null;
 
-	/** @var int Newsletterformat --> 0 = text, 1 = html */
+	/**
+	 * @var int Newsletterformat --> 0 = text, 1 = html
+	 *
+	 * @since
+	 */
 	var $emailformat = null;
 
-	/** @var int gender --> 0 = male, 1 = female NULL = unknown */
+	/**
+	 * @var int gender --> 0 = male, 1 = female NULL = unknown
+	 *
+	 * @since
+	 */
 	var $gender = null;
 
-	/** @var string special field */
+	/**
+	 * @var string special field
+	 *
+	 * @since
+	 */
 	var $special = null;
 
-	/** @var int Subscriber status --> 0 = not confirmed, 1 = confirmed, 9 = test-recipient */
+	/**
+	 * @var int Subscriber status --> 0 = not confirmed, 1 = confirmed, 9 = test-recipient
+	 *
+	 * @since
+	 */
 	var $status = null;
 
-	/** @var string Activation code for the subscription */
+	/**
+	 * @var string Activation code for the subscription
+	 *
+	 * @since
+	 */
 	var $activation = null;
 
-	/** @var string Code for editing the subscription in the frontend */
+	/**
+	 * @var string Code for editing the subscription in the frontend
+	 *
+	 * @since
+	 */
 	var $editlink = null;
 
-	/** @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels */
+	/**
+	 * @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+	 *
+	 * @since
+	 */
 	var $access = 0;
 
-	/** @var datetime Registration date */
+	/**
+	 * @var datetime Registration date
+	 *
+	 * @since
+	 */
 	var $registration_date = null;
 
-	/** @var int ID --> 0 = subscriber registered himself, another ID = administrator from users-table */
+	/**
+	 * @var int ID --> 0 = subscriber registered himself, another ID = administrator from users-table
+	 *
+	 * @since
+	 */
 	var $registered_by = null;
 
-	/** @var string Registration IP */
+	/**
+	 * @var string Registration IP
+	 *
+	 * @since
+	 */
 	var $registration_ip = null;
 
-	/** @var datetime Confirmation date of the subscription */
+	/**
+	 * @var datetime Confirmation date of the subscription
+	 *
+	 * @since
+	 */
 	var $confirmation_date = null;
 
-	/** @var int ID --> -1 = account is not confirmed, 0 = subscriber confirmed the subscription by himself, another ID = administrator from users-table */
+	/**
+	 * @var int ID --> -1 = account is not confirmed, 0 = subscriber confirmed the subscription by himself, another ID
+	 *      = administrator from users-table
+	 *
+	 * @since
+	 */
 	var $confirmed_by = null;
 
-	/** @var string Confirmation IP */
+	/**
+	 * @var string Confirmation IP
+	 *
+	 * @since
+	 */
 	var $confirmation_ip = null;
 
-	/** @var datetime last modification date of the subscriber */
+	/**
+	 * @var datetime last modification date of the subscriber
+	 *
+	 * @since
+	 */
 	var $modified_time = '0000-00-00 00:00:00';
 
-	/** @var int user ID */
+	/**
+	 * @var int user ID
+	 *
+	 * @since
+	 */
 	var $modified_by = 0;
 
-	/** @var int Checked-out owner */
+	/**
+	 * @var int Checked-out owner
+	 *
+	 * @since
+	 */
 	var $checked_out = 0;
 
-	/** @var datetime Checked-out time */
+	/**
+	 * @var datetime Checked-out time
+	 *
+	 * @since
+	 */
 	var $checked_out_time = '0000-00-00 00:00:00';
 
-	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
+	/**
+	 * @var int Archive-flag --> 0 = not archived, 1 = archived
+	 *
+	 * @since
+	 */
 	var $archive_flag = 0;
 
-	/** @var datetime Archive-date */
+	/**
+	 * @var datetime Archive-date
+	 *
+	 * @since
+	 */
 	var $archive_date = null;
 
-	/** @var int ID --> -1 = account is not archived, 0 = account is archived by the subscriber himself, another ID = account is archived by an administrator */
+	/**
+	 * @var int ID --> -1 = account is not archived, 0 = account is archived by the subscriber himself, another ID =
+	 *      account is archived by an administrator
+	 *
+	 * @since
+	 */
 	var $archived_by = -1;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since
 	 */
 	public function __construct(& $db)
 	{
@@ -172,7 +283,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  string
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetName()
 	{
@@ -185,7 +296,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  string
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -200,7 +311,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  integer
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
@@ -251,6 +362,8 @@ class BwPostmanTableSubscribers extends JTable
 	 * @throws  BwException
 	 *
 	 * @return boolean
+	 *
+	 * @since
 	 */
 	public function bind($data, $ignore='')
 	{
@@ -286,7 +399,10 @@ class BwPostmanTableSubscribers extends JTable
 	 * Overloaded check method to ensure data integrity of a subscriber
 	 *
 	 * @access public
+
 	 * @return boolean True on success
+	 *
+	 * @since
 	 */
 	public function check()
 	{
@@ -611,7 +727,10 @@ class BwPostmanTableSubscribers extends JTable
 	 * Overloaded load method to get all test-recipients when a newsletter shall be sent to them
 	 *
 	 * @access	public
+
 	 * @return 	array
+	 *
+	 * @since
 	 */
 	public function loadTestrecipients()
 	{

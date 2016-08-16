@@ -37,6 +37,8 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Archive
+ *
+ * @since   0.9.1
  */
 class BwPostmanControllerArchive extends JControllerLegacy
 {
@@ -45,6 +47,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * Constructor
 	 *
 	 * @param array $config     configuration params
+	 *
+	 * @since   0.9.1
 	 */
 	public function __construct($config = array())
 	{
@@ -56,6 +60,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
 	 * @access	public
+	 *
+	 * @since   0.9.1
 	 */
 	public function unarchive()
 	{
@@ -262,6 +268,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
 	 * @access	public
+	 *
+	 * @since   0.9.1
 	 */
 	public function delete()
 	{

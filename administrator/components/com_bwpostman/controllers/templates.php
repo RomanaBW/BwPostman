@@ -40,6 +40,8 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Templates
+ *
+ * @since       1.1.0
  */
 class BwPostmanControllerTemplates extends JControllerAdmin
 {
@@ -172,6 +174,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 * Method to call the layout for the template upload and install process
 	 *
 	 * @access	public
+	 *
+	 * @since       1.1.0
 	 */
 	public function uploadtpl()
 	{

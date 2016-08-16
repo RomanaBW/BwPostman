@@ -31,6 +31,8 @@ defined ('_JEXEC') or die ('Restricted access');
  * BwPostman Footer
  *
  * @package BwPostman-Admin
+ *
+ * @since   0.9.1
  */
 class BwPostmanAdmin {
 
@@ -38,6 +40,8 @@ class BwPostmanAdmin {
 	 * Method to write the BwPostman footer
 	 *
 	 * @return string
+	 *
+	 * @since   0.9.1
 	 */
 	static public function footer()
 	{

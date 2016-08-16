@@ -38,11 +38,14 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Mailinglists
+ *
+ * @since       0.9.1
  */
 class BwPostmanControllerMailinglists extends JControllerAdmin
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
+	 *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_MLS';
@@ -73,7 +76,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @return	JModel
-
+	 *
 	 * @since	1.0.1
 	 */
 	public function getModel($name = 'Mailinglist', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -90,6 +93,8 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 * @param   boolean  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  JController		This object to support chaining.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

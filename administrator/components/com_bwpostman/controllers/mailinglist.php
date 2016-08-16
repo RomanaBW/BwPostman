@@ -46,6 +46,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 {
 	/**
 	 * @var		string  The prefix to use with controller messages.
+
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_ML';
@@ -56,6 +57,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 * @param 	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @since	1.0.1
+
 	 * @see		JController
 	 */
 	public function __construct($config = array())
@@ -228,6 +230,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since       0.9.1
 	 */
 	public function archive()
 	{

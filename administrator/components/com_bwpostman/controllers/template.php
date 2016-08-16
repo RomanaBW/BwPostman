@@ -38,9 +38,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 /**
  * BwPostman template Controller
  *
- * @since		1.1.0
  * @package 	BwPostman-Admin
  * @subpackage 	templates
+ *
+ * @since       1.1.0
  */
 class BwPostmanControllerTemplate extends JControllerForm
 {
@@ -355,6 +356,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * @access	public
 	 *
 	 * @return	void
+	 *
+	 * @throws  Exception
 	 *
 	 * @since	1.1.0
 	 */

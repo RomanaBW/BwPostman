@@ -37,6 +37,8 @@ require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/models/maintenance.
  *
  * @package		BwPostman-Admin
  * @subpackage	Campaigns
+ *
+ * @since       1.0.1
  */
 class BwPostmanControllerMaintenance extends JControllerLegacy
 {

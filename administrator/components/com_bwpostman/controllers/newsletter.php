@@ -38,14 +38,16 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 /**
  * BwPostman Newsletter Controller
  *
- * @since		1.0.1
  * @package 	BwPostman-Admin
  * @subpackage 	Newsletters
+ *
+ * @since       1.0.1
  */
 class BwPostmanControllerNewsletter extends JControllerForm
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
+	 *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_NL';
@@ -55,10 +57,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @since	1.0.1
-	 *
 	 * @see		JController
-
+	 *
 	 * @since	1.0.1
 	 */
 	public function __construct($config = array())
@@ -650,6 +650,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @access	public
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function sendmail()
 	{
@@ -816,6 +818,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @access	public
 	 *
 	 * @return void
+	 *
+	 * @since       0.9.1
 	 */
 	public function copy()
 	{
@@ -855,6 +859,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since       0.9.1
 	 */
 	public function archive()
 	{

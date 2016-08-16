@@ -40,11 +40,14 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanControllerNewsletters extends JControllerAdmin
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
+	 *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_NLS';
@@ -91,7 +94,10 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * Method to copy one or more newsletters
 	 *
 	 * @access	public
+	 *
 	 * @return 	Redirect
+	 *
+	 * @since       0.9.1
 	 */
 	public function copy()
 	{
@@ -141,6 +147,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * Method to publish a list of newsletters.
 	 *
 	 * @return	void
+	 *
 	 * @since	1.0.1
 	 */
 	function publish()
@@ -172,6 +179,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * Method to set the tab state while changing tabs, used for building the appropriate toolbar
 	 *
 	 * @access	public
+	 *
 	 * @since	1.0.1
 	 */
 	public function changeTab()
@@ -194,6 +202,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since       0.9.1
 	 */
 	public function clear_queue()
 	{
@@ -220,6 +230,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * @access	public
 	 *
 	 * @return 	string  $insert_contents    the content of the newsletter
+	 *
+	 * @since       0.9.1
 	 */
 	public function addContent()
 	{
@@ -238,6 +250,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * Method to reset the count of delivery attempts in sendmailqueue back to 0.
 	 *
 	 * @return void
+	 *
+	 * @since       0.9.1
 	 */
 	public function resetSendAttempts()
 	{

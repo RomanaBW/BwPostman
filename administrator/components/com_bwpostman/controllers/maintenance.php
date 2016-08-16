@@ -34,15 +34,18 @@ jimport('joomla.application.component.controller');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 
 /**
- * BwPostman Campaigns Controller
+ * BwPostman Maintenance Controller
  *
  * @package		BwPostman-Admin
- * @subpackage	Campaigns
+ * @subpackage	Maintenance
+ *
+ * @since       1.0.1
  */
 class BwPostmanControllerMaintenance extends JControllerLegacy
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
+	 *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_MAINTENANCE';
@@ -75,6 +78,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @return	JModel
+	 *
 	 * @since	1.0.1
 	 */
 	public function getModel($name = 'Maintenance', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -91,6 +95,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param bool $urlparams
 	 *
 	 * @return  JController		This object to support chaining.
+	 *
+	 * @since       1.0.1
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -107,8 +113,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function updateCheckSave()
 	{
-		// Require helper classes
-//		require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/tablehelper.php');
 		$model	= $this->getModel();
 
 		ob_start();
@@ -138,6 +142,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @access	public
 	 *
 	 * @return boolean
+	 *
+	 * @since       1.0.1
 	 */
 	public function saveTables()
 	{
@@ -170,6 +176,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @access	public
 	 *
 	 * @return boolean
+	 *
+	 * @since       1.0.1
 	 */
 	public function checkTables()
 	{
@@ -194,6 +202,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Method to call the layout for the restore tables process
 	 *
 	 * @access	public
+	 *
+	 * @since       1.0.1
 	 */
 	public function restoreTables()
 	{
@@ -220,6 +230,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @access	public
 	 *
 	 * @return boolean
+	 *
+	 * @since       1.0.1
 	 */
 	public function doRestore()
 	{
@@ -286,7 +298,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
 				$this->setRedirect($link, $msg, 'error');
 
-			// Check if the extension is identical to the selected fileformat
+			// Check if the extension is identical to the selected file format
 			// --> if not, redirect to import.php
 			}
 			else

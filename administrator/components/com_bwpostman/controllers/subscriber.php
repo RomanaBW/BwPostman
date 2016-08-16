@@ -46,6 +46,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
+	 *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_SUB';
@@ -231,7 +232,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	/**
 	 * Overwrite for method to add a new record for a subscriber
 	 *
-	 *
+	 * @since       0.9.1
 	 */
 	public function add()
 	{
@@ -259,7 +260,10 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * --> subscribers-table: archive_flag = 1, set archive_date
 	 *
 	 * @access	public
+	 *
 	 * @return 	Redirect
+	 *
+	 * @since       0.9.1
 	 */
 	public function archive()
 	{
@@ -338,6 +342,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @param	object	$model	The model.
 	 *
 	 * @return	boolean	True if successful, false otherwise and internal error is set.
+	 *
 	 * @since	1.0.8
 	 *
 	 */

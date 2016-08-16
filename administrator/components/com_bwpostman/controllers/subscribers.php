@@ -40,11 +40,14 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanControllerSubscribers extends JControllerAdmin
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
+	 *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_SUBS';
@@ -89,13 +92,15 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	/**
 	 * Method to validate one or more email addresses
 	 * --> If the validation failed, add INVALID_ to the name
-	 * --> If the validation was succesful, set status = 1 and set confirmation_date and confirmed_by
+	 * --> If the validation was successful, set status = 1 and set confirmation_date and confirmed_by
 	 *
 	 * @access	public
 	 *
 	 * @return	mixed   load Validation Result layout
+	 *
+	 * @since       0.9.1
 	 */
-	public function validateEmailAdresses()
+	public function validateEmailAddresses()
 	{
 		$jinput	= JFactory::getApplication()->input;
 
@@ -137,6 +142,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @param	public
 	 *
 	 * @return 	void
+	 *
+	 * @since       0.9.1
 	 */
 	public function finishValidation()
 	{
@@ -162,6 +169,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @access	public
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function importSubscribers()
 	{
@@ -196,6 +205,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @access	public
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function prepareImport()
 	{
@@ -258,7 +269,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$dest = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/tmp_bwpostman_subscriber_import.' . $ext;
 
 		// Store the post data into the session
-		// If there occured an error we will receive the data from the session
+		// If there occurred an error we will receive the data from the session
 		// We also need the data for the next import-step
 		if ($fileformat == 'csv')
 		{
@@ -398,6 +409,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @access	public
 	 *
 	 * @return	void
+	 *
+	 * @since       0.9.1
 	 */
 	public function import()
 	{
@@ -478,6 +491,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @param	public
 	 *
 	 * @return 	void
+	 *
+	 * @since       0.9.1
 	 */
 	public function finishImport()
 	{
@@ -532,6 +547,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @access	public
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function exportSubscribers()
 	{
@@ -566,6 +583,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * --> we will take the raw-view which calls the export-function in the model
 	 *
 	 * @access	public
+	 *
+	 * @since       0.9.1
 	 */
 	public function export()
 	{
@@ -611,6 +630,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @param	int     $itemid     Menu item ID
 	 *
 	 * @return 	mixed True on success | error object
+	 *
+	 * @since       0.9.1
 	 */
 	protected function _sendMail(&$subscriber, $itemid = null)
 	{
@@ -661,6 +682,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * Method to set the tab state while changing tabs, used for building the appropriate toolbar
 	 *
 	 * @access	public
+	 *
+	 * @since       0.9.1
 	 */
 	public function changeTab()
 	{

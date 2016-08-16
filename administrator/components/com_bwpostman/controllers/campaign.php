@@ -38,16 +38,17 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 /**
  * BwPostman Campaign Controller
  *
- * @since		1.0.1
- *
  * @package 	BwPostman-Admin
  *
  * @subpackage 	Campaigns
+ *
+ * @since   1.0.1
  */
 class BwPostmanControllerCampaign extends JControllerForm
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
+
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_CAM';
@@ -233,6 +234,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 *
 	 * @return  boolean  True if successful, false otherwise.
 	 *
+	 * @since	1.0.1
+	 *
 	 */
 	public function save($key = null, $urlVar = null)
 	{
@@ -251,6 +254,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since	1.0.1
 	 */
 	public function archive()
 	{
@@ -328,6 +333,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since	1.0.1
 	 */
 	public function dueSend()
 	{
@@ -343,6 +350,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since	1.0.1
 	 */
 	public function autotest()
 	{
@@ -358,6 +367,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since	1.0.1
 	 */
 	public function activate()
 	{
@@ -374,8 +385,10 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	void
+	 *
+	 * @since	1.0.1
 	 */
-	public function suspendNewletterFromSending()
+	public function suspendNewsletterFromSending()
 	{
 		$dispatcher = JEventDispatcher::getInstance();
 

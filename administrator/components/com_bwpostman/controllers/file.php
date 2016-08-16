@@ -49,6 +49,8 @@ class BwPostmanControllerFile extends JControllerLegacy
 	 * The folder we are uploading into
 	 *
 	 * @var		string
+	 *
+	 * @since       1.0.4
 	 */
 	protected $folder = '';
 
@@ -184,7 +186,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 	/**
 	 * Check that the user is authorized to perform this action
 	 *
-	 * @param	string		$action		the action to be peformed (create or delete)
+	 * @param	string		$action		the action to be performed (create or delete)
 	 *
 	 * @return	boolean
 	 *

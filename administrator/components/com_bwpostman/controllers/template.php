@@ -45,6 +45,13 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 class BwPostmanControllerTemplate extends JControllerForm
 {
 	/**
+	 * @var		string	The prefix to use with controller messages.
+	 *
+	 * @since	2.0.0
+	 */
+	protected $text_prefix = 'COM_BWPOSTMAN_TPL';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.

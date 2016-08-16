@@ -34,7 +34,7 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require some classes
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman maintenance page model

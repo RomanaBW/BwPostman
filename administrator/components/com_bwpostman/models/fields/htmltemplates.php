@@ -57,8 +57,9 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 	 */
 	protected function getInput()
 	{
-		$item	= JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
-		$html	= array();
+		$item	    = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$html	    = array();
+		$selected   = '';
 
 		// Initialize some field attributes.
 		$readonly	= $this->readonly;
@@ -67,7 +68,10 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 		$options	= $this->getOptions();
 
 		// Get selected template.
-		$selected	= $item->template_id;
+		if (is_object($item))
+		{
+			$selected	= $item->template_id;
+		}
 
 		// Start the radio field output.
 		$html[]	= '<div class="controls">';
@@ -142,13 +146,16 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 		$query->select($_db->quoteName('thumbnail')  . ' AS ' . $_db->quoteName('thumbnail'));
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		// special for old newsletters with template_id < 1
-		if ($item->template_id < 1 && !is_null($item->template_id))
+		if (is_object($item))
 		{
-			$query->where($_db->quoteName('id') . ' >= ' . $_db->quote('-1'));
-		}
-		else
-		{
-			$query->where($_db->quoteName('id') . ' > ' . $_db->quote('0'));
+			if ($item->template_id < 1 && !is_null($item->template_id))
+			{
+				$query->where($_db->quoteName('id') . ' >= ' . $_db->quote('-1'));
+			}
+			else
+			{
+				$query->where($_db->quoteName('id') . ' > ' . $_db->quote('0'));
+			}
 		}
 		$query->where($_db->quoteName('archive_flag') . ' = ' . $_db->quote('0'));
 		$query->where($_db->quoteName('published') . ' = ' . $_db->quote('1'));

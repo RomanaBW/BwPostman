@@ -412,7 +412,7 @@ class BwPostmanModelTemplates extends JModelList
 		$buffer = file_get_contents($extractdir . $sql);
 
 		// Graceful exit and rollback if read not successful
-		if ( $buffer )
+		if ($buffer)
 		{
 			// Create an array of queries from the sql file
 			jimport('joomla.installer.helper');

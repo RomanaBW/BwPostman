@@ -114,7 +114,7 @@ JHtml::_('behavior.formvalidator');
 			{
 				check++;
 			}
-			if (check == 0 && form.unsubscribe.checked == false)
+			if (check == 0)
 			{
 				return false;
 			}

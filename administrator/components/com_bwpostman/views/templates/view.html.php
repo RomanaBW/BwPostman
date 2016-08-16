@@ -202,7 +202,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 				{
 					$bar = JToolbar::getInstance('toolbar');
 					JHtml::_( 'behavior.modal' );
-					$html = '<a class="btn btn-small" href="'. JUri::root(true) . '/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl" rel="{handler: \'iframe\', size: {x: 850, y: 500}}" ><span class="icon-upload"></span>' .JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'). '</a>';
+					$html = '<a class="btn btn-small" href="'. JUri::root(true) . '/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl" rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}" ><span class="icon-upload"></span>' .JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'). '</a>';
 					$bar->appendButton( 'Custom', $html );
 				}
 		}

@@ -30,41 +30,55 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Require some classes
-//require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries/exceptions/BwException.php');
-//require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries/logging/BwLogger.php');
+require_once (JPATH_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+require_once (JPATH_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 /**
  * Class Com_BwPostmanInstallerScript
+ *
+ * @since       0.9.6.3
  */
 class Com_BwPostmanInstallerScript
 {
 	/**
 	 * @var JAdapterInstance $parentInstaller
+	 *
+	 * @since       0.9.6.3
 	 */
 	var $parentInstaller;
 
 	/**
 	 * @var string $minimum_joomla_release
+	 *
+	 * @since       2.0.0
 	 */
 	var $minimum_joomla_release;
 
 	/**
 	 * @var string release
+	 *
+	 * @since       2.0.0
 	 */
 	var $release = null;
 
 	/**
 	 * @var string  $reference_table        reference table to check if it is converted already
+	 *
+	 * @since       2.0.0
 	 */
 	var $reference_table = 'bwpostman_campaigns';
 
 	/**
 	 * @var string  $conversion_file        file name of sql conversion file
+	 *
+	 * @since       2.0.0
 	 */
 	var $conversion_file = '/components/com_bwpostman/sql/utf8mb4conversion/utf8mb4-conversion-01.sql';
 
 	/**
 	 * @var array $all_bwpm_groups          array which holds user groups of BwPostman
+	 *
+	 * @since       2.0.0
 	 */
 	var $all_bwpm_groups    = array('bwpm_usergroups'           => array('BwPostmanManager', 'BwPostmanPublisher', 'BwPostmanEditor'),
 	                                'mailinglist_usergroups'    => array('BwPostmanMailinglistAdmin', 'BwPostmanMailinglistPublisher', 'BwPostmanMailinglistEditor'),
@@ -78,6 +92,7 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Constructor
 	 *
+	 * @since       2.0.0
 	 */
 		public function __constructor()
 	 {
@@ -94,6 +109,8 @@ class Com_BwPostmanInstallerScript
 
 	/**
 	 * Executes additional installation processes
+	 *
+	 * @since       0.9.6.3
 	 */
 	private function _bwpostman_install()
 	{
@@ -139,6 +156,8 @@ class Com_BwPostmanInstallerScript
 	 * @param   JAdapterInstance	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
+	 *
+	 * @since       0.9.6.3
 	 */
 
 	public function preflight($type, JAdapterInstance $parent)
@@ -236,6 +255,8 @@ class Com_BwPostmanInstallerScript
 	 * @param   JAdapterInstance	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
+	 *
+	 * @since       0.9.6.3
 	 */
 
 	public function postflight($type, JAdapterInstance $parent)
@@ -305,6 +326,8 @@ class Com_BwPostmanInstallerScript
 	 * Called on installation
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.6.3
 	 */
 
 	public function install()
@@ -320,6 +343,8 @@ class Com_BwPostmanInstallerScript
 	 * Called on update
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.6.3
 	 */
 
 	public function update()
@@ -332,9 +357,11 @@ class Com_BwPostmanInstallerScript
 
 
 	/**
-	 * Called on uninstallation
+	 * Called on un-installation
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.6.3
 	 */
 
 	public function uninstall()
@@ -370,6 +397,8 @@ class Com_BwPostmanInstallerScript
 	 * @param   string  $name
 	 *
 	 * @return  array  $manifest
+	 *
+	 * @since       0.9.6.3
 	 */
 	private function getManifestVar($name)
 	{
@@ -398,6 +427,8 @@ class Com_BwPostmanInstallerScript
 	 * Correct campaign_id in newsletters because of an error previous version
 	 *
 	 * @return  boolean  True on success
+	 *
+	 * @since
 	 */
 	private function _correctCamId()
 	{
@@ -422,9 +453,11 @@ class Com_BwPostmanInstallerScript
 	}
 
 	/**
-	 * Fill cross table campaigns mailinglists with values from all newsletters of the specifix campaign
+	 * Fill cross table campaigns mailinglists with values from all newsletters of the specific campaign
 	 *
 	 * @return  boolean  True on success
+	 *
+	 * @since
 	 */
 	private function _fillCamCrossTable()
 	{
@@ -911,11 +944,13 @@ class Com_BwPostmanInstallerScript
 	}
 
 	/**
-	 * Gets the group Id of the selected groupname
+	 * Gets the group Id of the selected group name
 	 *
 	 * @param   string  $name  The name of the group
 	 *
 	 * @return  int  the ID of the group
+	 *
+	 * @since
 	 */
 
 	private function _getGroupId($name)
@@ -936,7 +971,7 @@ class Com_BwPostmanInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage('Fehler GroupId: ' . $e->getMessage() . '<br />', 'error');
+			JFactory::getApplication()->enqueueMessage('Error GroupId: ' . $e->getMessage() . '<br />', 'error');
 		}
 		return $result;
 	}
@@ -996,6 +1031,8 @@ class Com_BwPostmanInstallerScript
 	 * @param array     $param_array
 	 *
 	 * @return  void
+	 *
+	 * @since
 	 */
 	private function setParams($param_array)
 	{
@@ -1049,6 +1086,8 @@ class Com_BwPostmanInstallerScript
 	 * @param   boolean $update
 	 *
 	 * @return  void
+	 *
+	 * @since
 	 */
 	public function showFinished($update)
 	{
@@ -1224,6 +1263,8 @@ class Com_BwPostmanInstallerScript
 	 * @param string    $sql
 	 *
 	 * @return  void
+	 *
+	 * @since
 	 */
 
 	private function _installdata(&$sql)
@@ -1261,7 +1302,7 @@ class Com_BwPostmanInstallerScript
 							$app->enqueueMessage(JText::_('COM_BWPOSTMAN_TEMPLATES_NOT_INSTALLED'), 'warning');
 						}
 					}
-				}//endfoearch
+				}//end foreach
 			}
 		}
 	}
@@ -1270,6 +1311,8 @@ class Com_BwPostmanInstallerScript
 	 * returns default values for params
 	 *
 	 * @return  string	Json-encoded default values for params
+	 *
+	 * @since
 	 */
 
 	private function _setDefaultParams()
@@ -1393,9 +1436,9 @@ H2	{
 	/**
 	 * install or update access rules for component
 	 *
-	 * @since	1.2.0
-	 *
 	 * @return  void
+	 *
+	 * @since	1.2.0
 	 */
 	private function _updateRules()
 	{

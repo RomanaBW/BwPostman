@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldArcUsergroups
+ *
+ * @since       1.2.0
  */
 class JFormFieldArcUsergroups extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldArcUsergroups extends JFormFieldList {
 	 * property to hold archived user groups
 	 *
 	 * @var string  $type
+	 *
+	 * @since       1.2.0
 	 */
 	protected $type = 'ArcUsergroups';
 

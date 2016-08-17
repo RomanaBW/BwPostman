@@ -35,15 +35,19 @@ jimport('joomla.application.component.modellist');
  * Provides a general view of all mailinglists
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Mailinglists
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelMailinglists extends JModelList
 {
-
 	/**
 	 * Mailinglists data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -51,6 +55,8 @@ class BwPostmanModelMailinglists extends JModelList
 	 * Number of all mailinglist
 	 *
 	 * @var integer
+	 *
+	 * @since       0.9.1
 	 */
 	var $_total = null;
 
@@ -58,6 +64,8 @@ class BwPostmanModelMailinglists extends JModelList
 	 * Pagination object
 	 *
 	 * @var object
+	 *
+	 * @since       0.9.1
 	 */
 	var $_pagination = null;
 
@@ -65,6 +73,8 @@ class BwPostmanModelMailinglists extends JModelList
 	 * Mailinglists search
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_search = null;
 
@@ -74,12 +84,16 @@ class BwPostmanModelMailinglists extends JModelList
 	 * --> value will be "lists"
 	 *
 	 * @var	string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_key = null;
 
 	/**
 	 * Constructor
 	 * --> handles the pagination and set the mailinglists key
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -171,7 +185,10 @@ class BwPostmanModelMailinglists extends JModelList
 	 * Method to build the MySQL query
 	 *
 	 * @access 	protected
+	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{

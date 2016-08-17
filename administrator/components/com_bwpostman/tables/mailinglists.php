@@ -32,62 +32,131 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the mailinglist data
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Mailinglists
+ *
+ * @since       0.9.1
  */
 class BwPostmanTableMailinglists extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since       0.9.1
+	 */
 	var $id = null;
 
-	/** @var int asset_id */
+	/**
+	 * @var int asset_id
+	 *
+	 * @since       1.0.1
+	 */
 	var $asset_id = null;
 
-	/** @var string Mailinglist title */
+	/**
+	 * @var string Mailinglist title
+	 *
+	 * @since       0.9.1
+	 */
 	var $title = null;
 
-	/** @var string Mailinglist description */
+	/**
+	 * @var string Mailinglist description
+	 *
+	 * @since       0.9.1
+	 */
 	var $description = null;
 
-	/** @var int campaign ID */
+	/**
+	 * @var int campaign ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $campaign_id = 0;
 
-	/** @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels */
+	/**
+	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+	 *
+	 * @since       0.9.1
+	 */
 	var $access = 0;
 
-	/** @var int Published */
+	/**
+	 * @var int Published
+	 *
+	 * @since       0.9.1
+	 */
 	var $published = 0;
 
-	/** @var datetime creation date of the mailinglist */
+	/**
+	 * @var datetime creation date of the mailinglist
+	 *
+	 * @since       0.9.1
+	 */
 	var $created_date = '0000-00-00 00:00:00';
 
-	/** @var int user ID */
+	/**
+	 * @var int user ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $created_by = 0;
 
-	/** @var datetime last modification date of the mailinglist */
+	/**
+	 * @var datetime last modification date of the mailinglist
+	 *
+	 * @since       0.9.1
+	 */
 	var $modified_time = '0000-00-00 00:00:00';
 
-	/** @var int user ID */
+	/**
+	 * @var int user ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $modified_by = 0;
 
-	/** @var int Checked-out owner */
+	/**
+	 * @var int Checked-out owner
+	 *
+	 * @since       0.9.1
+	 */
 	var $checked_out = 0;
 
-	/** @var datetime Checked-out time */
+	/**
+	 * @var datetime Checked-out time
+	 *
+	 * @since       0.9.1
+	 */
 	var $checked_out_time = 0;
 
-	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
+	/**
+	 * @var int Archive-flag --> 0 = not archived, 1 = archived
+	 *
+	 * @since       0.9.1
+	 */
 	var $archive_flag = 0;
 
-	/** @var datetime Archive-date */
+	/**
+	 * @var datetime Archive-date
+	 *
+	 * @since       0.9.1
+	 */
 	var $archive_date = null;
 
-	/** @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator */
+	/**
+	 * @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator
+	 *
+	 * @since       0.9.1
+	 */
 	var $archived_by = 0;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -216,6 +285,8 @@ class BwPostmanTableMailinglists extends JTable
 	 * @throws BwException
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{
@@ -251,7 +322,10 @@ class BwPostmanTableMailinglists extends JTable
 	 * Overloaded check method to ensure data integrity
 	 *
 	 * @access public
+	 *
 	 * @return boolean True
+	 *
+	 * @since       0.9.1
 	 */
 	public function check()
 	{

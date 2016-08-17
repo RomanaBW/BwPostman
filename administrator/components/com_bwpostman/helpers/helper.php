@@ -30,8 +30,6 @@ defined ('_JEXEC') or die ('Restricted access');
 //
 // Component development:
 //
-// Newsletter encoding 1=on, 0=off
-if (!defined ('BWPOSTMAN_NL_ENCODING')) define ('BWPOSTMAN_NL_ENCODING', 1);
 // Newsletter sending 1=on, 0=off
 if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
 
@@ -51,17 +49,21 @@ if (!defined ('BWPOSTMAN_PATH_MEDIA')) define ('BWPOSTMAN_PATH_MEDIA', JPATH_ROO
 
 /**
  * Class BwPostmanHelper
+ *
+ * @since
  */
 abstract class BwPostmanHelper {
 	/**
 	 * property to hold session
 	 *
 	 * @var array
+	 *
+	 * @since
 	 */
 	static $session = null;
 
 	/**
-	 * Configure the Linkbar.
+	 * Configure the Link bar.
 	 *
 	 * @param	string	$vName	The name of the task view.
 	 *
@@ -167,6 +169,8 @@ abstract class BwPostmanHelper {
 	 * @see BwPostmanHelper::setup()
 	 *
 	 * @return boolean True.
+	 *
+	 * @since
 	 */
 	public static function installed()
 	{
@@ -182,6 +186,8 @@ abstract class BwPostmanHelper {
 	 * @param 	string $text    HTML-/Text-version
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	static public function replaceLinks(&$text)
 	{
@@ -196,10 +202,12 @@ abstract class BwPostmanHelper {
 	 * @access	public
 	 *
 	 * @param 	string		$date		sort of date --> day, hour, minute
-	 * @param 	int			$length		length of listarray
+	 * @param 	int			$length		length of list array
 	 * @param 	array   	$selectval  selected values
 	 *
 	 * @return 	string				selectlist
+	 *
+	 * @since
 	 */
 	public function getDateList($date = 'minute', $length = 10, $selectval)
 	{
@@ -263,6 +271,8 @@ abstract class BwPostmanHelper {
 	 * @param	string		$section	The access section name.
 	 *
 	 * @return	JObject
+	 *
+	 * @since
 	 */
 
 	public static function getActions($id = 0, $section = '')
@@ -519,6 +529,7 @@ abstract class BwPostmanHelper {
 	 * @param	string	$context	The name of the context.
 	 *
 	 * @return	boolean
+	 *
 	 * @since	1.2.0
 	 */
 	public static function allowArchive($recordId = 0, $ownerId = 0, $context = '')
@@ -573,6 +584,7 @@ abstract class BwPostmanHelper {
 	 * @param	string	$context	The name of the context.
 	 *
 	 * @return	boolean
+	 *
 	 * @since	1.2.0
 	 */
 	public static function allowDelete($recordId = 0, $ownerId = 0, $context = '')
@@ -632,6 +644,7 @@ abstract class BwPostmanHelper {
 	 * @param	string	$context	The name of the context.
 	 *
 	 * @return	boolean
+	 *
 	 * @since	1.2.0
 	 */
 	public static function allowRestore($recordId = 0, $ownerId = 0, $context = '')
@@ -674,6 +687,7 @@ abstract class BwPostmanHelper {
 	 * Method to get all published mailinglists
 	 *
 	 * @return	string
+	 *
 	 * @since	0.9.8
 	 */
 	public static function getMailinglistsWarning()
@@ -712,7 +726,7 @@ abstract class BwPostmanHelper {
 	 *
 	 * @return	bool	true if there are entries in the queue, otherwise false
 	 *
-	 * since	1.0.3
+	 * @since	1.0.3
 	 */
 	static public function checkQueueEntries()
 	{
@@ -786,6 +800,8 @@ abstract class BwPostmanHelper {
 	 * Erzeugt die Rechenaufgabe
 	 *
 	 * @return	string	$fileName	Gibt die Rechenaufgabe als String für den Dateinamen wieder
+	 *
+	 * @since
 	 */
 
 	static public function showCaptcha() {
@@ -797,6 +813,8 @@ abstract class BwPostmanHelper {
 		 * @param $fileTTF
 		 *
 		 * @return string	$fileName	Gibt die Rechenaufgabe als String für den Dateinamen wieder
+		 *
+		 * @since
 		 */
 		function mathCaptcha($im, $size, $fileTTF)
 		{
@@ -881,6 +899,8 @@ abstract class BwPostmanHelper {
 	 * @param		integer		$delFile			Die Zeit in Minuten, nachdem ein Captcha-Bild gelöscht wird
 	 *
 	 * @return		bool		TRUE/FALSE
+	 *
+	 * @since
 	 */
 	public static function CheckCaptcha($codeCaptcha,$stringCaptcha,$dir,$delFile=5)
 	{
@@ -945,6 +965,7 @@ abstract class BwPostmanHelper {
 	 *
 	 * @return  array
 	 *
+	 * @since
 	 */
 	public static function loadLanguage($file = 'com_bwpostman', $client = 'site')
 	{
@@ -987,6 +1008,8 @@ abstract class BwPostmanHelper {
 	 * @param $filename
 	 *
 	 * @return bool
+	 *
+	 * @since
 	 */
 	protected static function parseLanguage($lang, $filename)
 	{

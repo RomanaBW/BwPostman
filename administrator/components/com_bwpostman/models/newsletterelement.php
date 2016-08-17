@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman model for a backend element to select a singlenewsletter for a view in frontend.
+ * BwPostman model for a backend element to select a single newsletter for a view in frontend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -38,6 +38,8 @@ use Joomla\String\StringHelper as JString;
  *
  * @package		BwPostman-Admin
  * @subpackage	Newsletterelement
+ *
+ * @since
  */
 class BwPostmanModelNewsletterelement extends JModelLegacy
 {
@@ -46,6 +48,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Newsletters data
 	 *
 	 * @var array
+	 *
+	 * @since
 	 */
 	var $_data = null;
 
@@ -53,6 +57,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Number of all newsletters
 	 *
 	 * @var integer
+	 *
+	 * @since
 	 */
 	var $_total = null;
 
@@ -60,6 +66,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Pagination object
 	 *
 	 * @var object
+	 *
+	 * @since
 	 */
 	var $_pagination = null;
 
@@ -67,6 +75,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Newsletters search
 	 *
 	 * @var string
+	 *
+	 * @since
 	 */
 	var $_search = null;
 
@@ -76,12 +86,16 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * --> value will be "mailinglists"
 	 *
 	 * @var	string
+	 *
+	 * @since
 	 */
 	var $_key = null;
 
 	/**
 	 * Constructor
 	 * --> handles the pagination and set the mailinglists key
+	 *
+	 * @since
 	 */
 	public function __construct()
 	{
@@ -100,10 +114,13 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	}
 
 	/**
-	 * Methode to get the mailinglists data
+	 * Method to get the mailinglists data
 	 *
 	 * @access	public
+	 *
 	 * @return 	object Mailinglists-data
+	 *
+	 * @since
 	 */
 	public function getData()
 	{
@@ -119,7 +136,10 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Method to get the total number of mailinglists that shall be displayed
 	 *
 	 * @access 	public
+	 *
 	 * @return 	int Total number
+	 *
+	 * @since
 	 */
 	public function getTotal()
 	{
@@ -136,7 +156,10 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Method to get a pagination object for the mailinglists view
 	 *
 	 * @access 	public
+	 *
 	 * @return 	object Pagination
+	 *
+	 * @since
 	 */
 	public function getPagination()
 	{
@@ -153,7 +176,10 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Method to build the MySQL query
 	 *
 	 * @access 	private
+	 *
 	 * @return 	string Query
+	 *
+	 * @since
 	 */
 	private function _buildQuery()
 	{
@@ -206,7 +232,10 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 * Method to get the search term
 	 *
 	 * @access 	public
+	 *
 	 * @return 	string
+	 *
+	 * @since
 	 */
 	private function getSearch()
 	{

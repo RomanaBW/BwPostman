@@ -37,10 +37,13 @@ jimport('joomla.application.component.helper');
 
 /**
  * BwPostman campaign model
- * Provides methodes to add and edit campaigns
+ * Provides methods to add and edit campaigns
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Campaigns
+ *
+ * @since 1.1.0
  */
 class BwPostmanModelTemplates_Tpl extends JModelAdmin
 {

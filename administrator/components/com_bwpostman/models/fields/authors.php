@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldAuthors
+ *
+ * @since       1.0.8
  */
 class JFormFieldAuthors extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldAuthors extends JFormFieldList {
 	 * property to hold authors
 	 *
 	 * @var string  $type
+	 *
+	 * @since       1.0.8
 	 */
 	protected $type = 'Authors';
 

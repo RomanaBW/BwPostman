@@ -35,7 +35,10 @@ jimport('joomla.application.component.modellist');
  * Provides a general view of all templates
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	templates
+ *
+ * @since 1.1.0
  */
 class BwPostmanModelTemplates extends JModelList
 {
@@ -186,7 +189,10 @@ class BwPostmanModelTemplates extends JModelList
 	 * Method to build the MySQL query
 	 *
 	 * @access 	protected
+	 *
 	 * @return 	string Query
+	 *
+	 * @since 1.1.0
 	 */
 	protected function getListQuery()
 	{
@@ -303,6 +309,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param   string
 	 *
 	 * @return  string
+	 *
+	 * @since 1.1.0
 	 */
 	public function uploadTplFiles($file)
 	{
@@ -364,6 +372,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param   string
 	 *
 	 * @return  boolean
+	 *
+	 * @since 1.1.0
 	 */
 	public function extractTplFiles($file)
 	{
@@ -398,6 +408,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param string    $step
 	 *
 	 * @return boolean
+	 *
+	 * @since 1.1.0
 	 */
 
 	public function installTplFiles(&$sql, $step)
@@ -438,7 +450,7 @@ class BwPostmanModelTemplates extends JModelList
 							JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 						}
 					}
-				}//endfoearch
+				}//end foreach
 			}
 		}
 		else
@@ -454,6 +466,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * Method to copy template thumbnail
 	 *
 	 * @access	public
+	 *
+	 * @since 1.1.0
 	 */
 	public function copyThumbsFiles()
 	{
@@ -540,6 +554,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param   string  $file
 	 *
 	 * @return boolean
+	 *
+	 * @since 1.1.0
 	 */
 	public function deleteTempFolder($file)
 	{
@@ -591,6 +607,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * Method to delete enqueue messages
 	 *
 	 * @access	private
+	 *
+	 * @since 1.1.0
 	 */
 	private function _delMessage()
 	{

@@ -27,6 +27,8 @@
 
 /**
  * Basic exception class implemented by every exception of BwPostman
+ *
+ * @since       2.0.0
  */
 class BwException extends Exception
 {

@@ -32,38 +32,81 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the templates data
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Templates
+ *
+ * @since       1.1.0
  */
 class BwPostmanTableTemplates_Tpl extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since       1.1.0
+	 */
 	var $id = null;
 
-	/** @var string title */
+	/**
+	 * @var string title
+	 *
+	 * @since       1.1.0
+	 */
 	var $title = null;
 
-	/** @var string css */
+	/**
+	 * @var string css
+	 *
+	 * @since       1.1.0
+	 */
 	var $css = null;
 
-	/** @var string header_tpl */
+	/**
+	 * @var string header_tpl
+	 *
+	 * @since       1.1.0
+	 */
 	var $header_tpl = null;
 
-	/** @var string intro_tpl */
+	/**
+	 * @var string intro_tpl
+	 *
+	 * @since       1.1.0
+	 */
 	var $intro_tpl = null;
 
-	/** @var string divider_tpl */
+	/**
+	 * @var string divider_tpl
+	 *
+	 * @since       1.1.0
+	 */
 	var $divider_tpl = null;
 
-	/** @var string article_tpl */
+	/**
+	 * @var string article_tpl
+	 *
+	 * @since       1.1.0
+	 */
 	var $article_tpl = null;
 
-	/** @var string readon_tpl */
+	/**
+	 * @var string readon_tpl
+	 *
+	 * @since       1.1.0
+	 */
 	var $readon_tpl = null;
 
-	/** @var string footer_tpl */
+	/**
+	 * @var string footer_tpl
+	 *
+	 * @since       1.1.0
+	 */
 	var $footer_tpl = null;
 
-	/** @var string button_tpl */
+	/**
+	 * @var string button_tpl
+	 *
+	 * @since       1.1.0
+	 */
 	var $button_tpl = null;
 
 	/**

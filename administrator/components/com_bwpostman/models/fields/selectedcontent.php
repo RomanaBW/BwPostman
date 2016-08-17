@@ -141,6 +141,8 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 * @access	public
 	 *
 	 * @return	array
+	 *
+	 * @since       1.0.1
 	 */
 	private function getSelectedContent()
 	{

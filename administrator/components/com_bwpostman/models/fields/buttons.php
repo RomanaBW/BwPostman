@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman backend element to select a singlenewsletter for a view in frontend.
+ * BwPostman backend element to select a single newsletter for a view in frontend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -32,6 +32,8 @@ defined ('_JEXEC') or die ('Restricted access');
  *
  * @version 1.0.8 bwpm
  * @package BwPostman-Admin
+ *
+ * @since       1.0.8
  */
 
 class JFormFieldbuttons extends JFormField
@@ -40,7 +42,7 @@ class JFormFieldbuttons extends JFormField
 	 * Element name
 	 *
 	 * @access	protected
-	 *         
+	 *
 	 * @var		string
 	 *
 	 * @since   1.0.8

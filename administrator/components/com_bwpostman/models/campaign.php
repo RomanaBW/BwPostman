@@ -38,11 +38,13 @@ jimport('joomla.application.component.helper');
 
 /**
  * BwPostman campaign model
- * Provides methodes to add and edit campaigns
+ * Provides methods to add and edit campaigns
  *
  * @package		BwPostman-Admin
  *
  * @subpackage	Campaigns
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelCampaign extends JModelAdmin
 {
@@ -50,6 +52,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * Campaign ID
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	private $_id = null;
 
@@ -57,6 +61,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * Automailing?
 	 *
 	 * @var bool
+	 *
+	 * @since
 	 */
 	private $_am = FALSE;
 
@@ -64,6 +70,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * Campaign data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	private $_data = null;
 
@@ -71,6 +79,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * Constructor
 	 * Determines the campaign ID
 	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -104,6 +113,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @access	public
 	 *
 	 * @param	int $id     Campaign ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function setId($id)
 	{
@@ -170,7 +181,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 			if (empty($pk)) $pk	= (int) $cid;
 			$item	= parent::getItem($pk);
 
-					//get associated mailinglists
+			//get associated mailinglists
 			$query	= $_db->getQuery(true);
 			$query->select($_db->quoteName('mailinglist_id'));
 			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
@@ -195,7 +206,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			if ($pk == 0) $item->id	= 0;
 
-			// get avaliable mailinglists to predefine for state
+			// get available mailinglists to predefine for state
 			$query	= $_db->getQuery(true);
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
@@ -205,28 +216,28 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			$_db->setQuery($query);
 
-			$mls_avaliable  = array();
+			$mls_available  = array();
 
 			try
 			{
-				$mls_avaliable	= $_db->loadColumn();
+				$mls_available	= $_db->loadColumn();
 			}
 			catch (RuntimeException $e)
 			{
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
-			$res_avaliable	= array_intersect($item->mailinglists, $mls_avaliable);
+			$res_available	= array_intersect($item->mailinglists, $mls_available);
 
-			if (count($res_avaliable) > 0)
+			if (count($res_available) > 0)
 			{
-				$item->ml_available	= $res_avaliable;
+				$item->ml_available	= $res_available;
 			}
 			else
 			{
 				$item->ml_available	= array();
 			}
 
-			// get unavaliable mailinglists to predefine for state
+			// get unavailable mailinglists to predefine for state
 			$query	= $_db->getQuery(true);
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
@@ -236,12 +247,12 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			$_db->setQuery($query);
 
-			$mls_unavaliable	= $_db->loadColumn();
-			$res_unavaliable	= array_intersect($item->mailinglists, $mls_unavaliable);
+			$mls_unavailable	= $_db->loadColumn();
+			$res_unavailable	= array_intersect($item->mailinglists, $mls_unavailable);
 
-			if (count($res_unavaliable) > 0)
+			if (count($res_unavailable) > 0)
 			{
-				$item->ml_unavailable	= $res_unavaliable;
+				$item->ml_unavailable	= $res_unavailable;
 			}
 			else
 			{
@@ -350,7 +361,10 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * Method to get all newsletters which are assigned to the campaign
 	 *
 	 * @access 	public
+	 *
 	 * @return 	object Newsletters
+	 *
+	 * @since
 	 */
 	public function getNewsletters()
 	{
@@ -432,6 +446,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @param	int     $archive_nl Archive/Unarchive assigned newsletters (0 = No, 1 = Yes)
 	 *
 	 * @return	boolean
+	 *
+	 * @since
 	 */
 	public function archive($cid = array(), $archive = 1, $archive_nl = 1)
 	{
@@ -552,7 +568,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				$_db		= $this->_db;
 				$query		= $_db->getQuery(true);
 
-				// Delete all entrys of the newsletter from newsletters_mailinglists table
+				// Delete all entries of the newsletter from newsletters_mailinglists table
 				if ($data['id'])
 				{
 					$query->delete($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
@@ -581,7 +597,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 				}
 
-			// Store the selected BwPostman mailinglists into campaigns_mailinglists-table
+				// Store the selected BwPostman mailinglists into campaigns_mailinglists-table
 				foreach ($data['mailinglists'] AS $mailinglists_value)
 				{
 					$query	= $_db->getQuery(true);
@@ -630,6 +646,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @param	array &$pks     Campaign IDs
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function delete(&$pks)
 	{

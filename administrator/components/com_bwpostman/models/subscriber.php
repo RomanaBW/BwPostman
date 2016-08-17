@@ -38,11 +38,13 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 
 /**
  * BwPostman subscriber model
- * Provides methodes to add and edit subscribers/test-recipients
+ * Provides methods to add and edit subscribers/test-recipients
  *
  * @package		BwPostman-Admin
  *
  * @subpackage	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelSubscriber extends JModelAdmin
 {
@@ -50,6 +52,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Subscriber/Test-recipient id
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_id = null;
 
@@ -57,6 +61,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Subscriber/Test-recipient data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -64,6 +70,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Constructor
 	 * Determines the subscriber/test-recipient ID
 	 *
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -96,6 +104,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @access	public
 	 *
 	 * @param	int     $id     Subscriber ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function setId($id)
 	{
@@ -109,6 +119,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	object	$record	A record object.
 	 *
 	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
+	 *
 	 * @since	1.0.1
 	 */
 	protected function canDelete($record)
@@ -138,7 +149,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	integer	$pk	The id of the primary key.
 	 *
 	 * @return	mixed	Object on success, false on failure.
-	 * @since	1.6
+	 *
+	 * @since	1.0,1
 	 */
 	public function getItem($pk = null)
 	{
@@ -217,7 +229,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @return	mixed	A JForm object on success, false on failure
 	 *
-	 * @since	1.6
+	 * @since	1.0.1
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -300,7 +312,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return	mixed	The data for the form.
-	 * @since	1.6
+	 *
+	 * @since	1.0.1
 	 */
 	protected function loadFormData()
 	{
@@ -321,6 +334,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	int menu item ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function getItemid()
 	{
@@ -352,6 +367,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return	string Editlink
+	 *
+	 * @since       0.9.1
 	 */
 	public function getEditlink()
 	{
@@ -396,6 +413,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return	string Activation code
+	 *
+	 * @since       0.9.1
 	 */
 	public function getActivation()
 	{
@@ -442,6 +461,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param 	array   $data   associative array of data to store
 	 *
 	 * @return 	boolean         True on success
+	 *
+	 * @since       0.9.1
 	 */
 	public function save ($data)
 	{
@@ -537,7 +558,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				// Get the subscriber ID
 				$subscriber_id = $this->getState('subscriber.id');
 
-				// Delete all entrys of the subscriber from subscribers_mailinglists-Table
+				// Delete all entries of the subscriber from subscribers_mailinglists-Table
 				$query = $_db->getQuery(true);
 
 				$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
@@ -614,6 +635,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	int $itemid             Menu item ID
 	 *
 	 * @return 	boolean True on success | error object
+	 *
+	 * @since       0.9.1
 	 */
 	private function _sendMail($subscriber, $itemid = null)
 	{
@@ -675,6 +698,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function archive($cid = array(), $archive = 1)
 	{
@@ -744,6 +769,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	array $pks      Subscriber/Test-recipient IDs
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function delete(&$pks)
 	{
@@ -796,6 +823,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param   boolean $showProgress
 	 *
 	 * @return	array   $res            associative array of result data
+	 *
+	 * @since       0.9.1
 	 */
 	public function validate_mail($cid = array(), $showProgress = false)
 	{
@@ -910,7 +939,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				}
 			}
 			else
-			{ // The host can\'t receive email or this mailbox doesn\'t exist. The address is NOT valid.
+			{ // The host can't receive email or this mailbox doesn't exist. The address is NOT valid.
 				$res[$i]['result'] = 0;
 				$res[$i]['result_txt'] = JText::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL');
 				$i++;
@@ -954,6 +983,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param 	array   $ret_maildata   associative array of subscriber email data --> we need this if the admin didn't confirm the accounts
 	 *
 	 * @return 	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function import($data, &$ret_err, &$ret_warn, &$ret_maildata)
 	{
@@ -1023,7 +1054,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 		}
 
-		// Create correlation of db fields and csv fields in form of $correlationtable[csv_column_number] = db_column_name
+		// Create correlation of db fields and csv fields in form of $correlation table[csv_column_number] = db_column_name
 		$colNumToDBName = array();
 		for ($i = 0;$i < count($db_fields);$i++)
 		{
@@ -1096,7 +1127,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					// Save the row
 					$this->save_import($values, $confirm, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
 
-					// Push the error/mailingdata into the arrays
+					// Push the error/mailing data into the arrays
 					if ($ret_err)
 					{
 						$err[] = $ret_err;
@@ -1125,7 +1156,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 				if ($parser->name()!= "subscribers")
 				{
-					// TODO: es ist kein bwpostman xml file! koennen trotzdem fortfahren, falls geeignete felder drin sind
+					// TODO: There is no bwpostman xml file! Perhaps one may proceed if there are appropriate fields
 				}
 
 				// Get all fields from the xml file for listing and selecting by the user
@@ -1151,7 +1182,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					// Save the data
 					$this->save_import($values, $confirm, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
 
-					// Push the error/mailingdata into the arrays
+					// Push the error/mailing data into the arrays
 					if ($ret_err)
 					{
 						$err[] = $ret_err;
@@ -1172,7 +1203,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 			fclose($fh); // Close the file
 
-			// Return the error/mailingdata arrays
+			// Return the error/mailing data arrays
 			$ret_err 	= $err;
 			$ret_warn 	= $warn;
 			$ret_maildata = $mail;
@@ -1195,6 +1226,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	array   $ret_maildata   associative object of subscriber email data
 	 *
 	 * @return	Boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function save_import($values, $confirm, $row, $mailinglists, &$ret_err, &$ret_warn, &$ret_maildata)
 	{
@@ -1422,6 +1455,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param 	array   $data       associative array of export option data
 	 *
 	 * @return 	string  $output     File content
+	 *
+	 * @since       0.9.1
 	 */
 	public function export($data)
 	{
@@ -1546,7 +1581,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param 	int     $status9    Status = 9 --> subscriber is test-recipient
 	 * @param 	int     $archive0   Archive_flag = 0 --> subscriber is not archived
 	 * @param 	int     $archive1   Archive_flag = 1 --> subscriber is archived
+	 *
 	 * @return 	String  $subQuery   WHERE-clause
+	 *
+	 * @since       0.9.1
 	 */
 	private function _buildExportSubQuery($status0 = 0, $status1 = 0, $status9 = 0, $archive0 = 0, $archive1 = 0)
 	{
@@ -1623,7 +1661,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param   array  $pks       		An array of item ids.
 	 * @param   array  $contexts		An array of contexts.
 	 *
-	 * @return  boolean  Returns true on success, false on failure.
+	 * @return  mixed  Returns array on success, false on failure.
 	 *
 	 * @since   1.0.8
 	 */
@@ -1822,7 +1860,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param   integer  $mailinglist	The mailinglist ID.
 	 * @param   array    $pks       	An array of row IDs.
 	 *
-	 * @return  boolean  True on success.
+	 * @return  array
 	 *
 	 * @since   1.0.8
 	 */
@@ -1841,7 +1879,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		if (!$canCreate)
 		{
 			// Error since user cannot create in parent project
-			$this->setError(JText::_('COM_BWPLAN_BATCH_CANNOT_CREATE'));
+			$this->setError(JText::_('COM_BWPOSTMAN_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
@@ -1852,7 +1890,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			if (!$user->authorise('core.edit', $extension . '.project.' . $pk))
 			{
 				// Error since user cannot edit this project
-				$this->setError(JText::_('COM_BWPLAN_BATCH_CANNOT_EDIT'));
+				$this->setError(JText::_('COM_BWPOSTMAN_BATCH_CANNOT_EDIT'));
 				return false;
 			}
 		}
@@ -1922,7 +1960,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
  * --> Carried over from the previous BwPostman version without any changes
 
  * @package		BwPostman-Admin
+ *
  * @subpackage	Subscribers
+ *
+ * @since       0.9.1
  */
 class emailValidation
 {
@@ -1930,6 +1971,8 @@ class emailValidation
 	 * property to hold regular expressions for email check
 	 *
 	 * @var string $email_regular_expression
+	 *
+	 * @since       0.9.1
 	 */
 	var $email_regular_expression="^([-!#\$%&'*+./0-9=?A-Z^_`a-z{|}~])+@([-!#\$%&'*+/0-9=?A-Z^_`a-z{|}~]+\\.)+[a-zA-Z]{2,6}\$";
 
@@ -1937,6 +1980,8 @@ class emailValidation
 	 * property to hold timeout
 	 *
 	 * @var int $timeout
+	 *
+	 * @since       0.9.1
 	 */
 	var $timeout=0;
 
@@ -1944,6 +1989,8 @@ class emailValidation
 	 * property to hold data timeout
 	 *
 	 * @var int $data_timeout
+	 *
+	 * @since       0.9.1
 	 */
 	var $data_timeout=0;
 
@@ -1951,6 +1998,8 @@ class emailValidation
 	 * property to hold localhost
 	 *
 	 * @var string  $localhost
+	 *
+	 * @since       0.9.1
 	 */
 	var $localhost="";
 
@@ -1958,6 +2007,8 @@ class emailValidation
 	 * property to hold local user
 	 *
 	 * @var string $localuser
+	 *
+	 * @since       0.9.1
 	 */
 	var $localuser="";
 
@@ -1965,6 +2016,8 @@ class emailValidation
 	 * property to hold debug mode
 	 *
 	 * @var int $debug
+	 *
+	 * @since       0.9.1
 	 */
 	var $debug=0;
 
@@ -1972,6 +2025,8 @@ class emailValidation
 	 * property to hold html debug mode
 	 *
 	 * @var int $html_debug
+	 *
+	 * @since       0.9.1
 	 */
 	var $html_debug=0;
 
@@ -1979,6 +2034,8 @@ class emailValidation
 	 * property to hold exclude mail address
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $exclude_address="";
 
@@ -1986,6 +2043,8 @@ class emailValidation
 	 * property to hold MXRR
 	 *
 	 * @var string  $getmxrr
+	 *
+	 * @since       0.9.1
 	 */
 	var $getmxrr="GetMXRR";
 
@@ -1993,6 +2052,8 @@ class emailValidation
 	 * property to hold next token
 	 *
 	 * @var string  $next_token
+	 *
+	 * @since       0.9.1
 	 */
 	var $next_token="";
 
@@ -2000,6 +2061,8 @@ class emailValidation
 	 * property to hold preg
 	 *
 	 * @var string  $preg
+	 *
+	 * @since       0.9.1
 	 */
 	var $preg;
 
@@ -2007,6 +2070,8 @@ class emailValidation
 	 * property to hold last code
 	 *
 	 * @var string  $last_code
+	 *
+	 * @since       0.9.1
 	 */
 	var $last_code="";
 
@@ -2017,6 +2082,8 @@ class emailValidation
 	 * @param string    $separator
 	 *
 	 * @return string
+	 *
+	 * @since       0.9.1
 	 */
 	public function Tokenize($string, $separator="")
 	{
@@ -2046,6 +2113,8 @@ class emailValidation
 	 * Method to debug output
 	 *
 	 * @param string    $message
+	 *
+	 * @since       0.9.1
 	 */
 	public function OutputDebug($message)
 	{
@@ -2062,6 +2131,8 @@ class emailValidation
 	 * @param resource  $connection
 	 *
 	 * @return int|string
+	 *
+	 * @since       0.9.1
 	 */
 	public function GetLine($connection)
 	{
@@ -2090,6 +2161,8 @@ class emailValidation
 	 * @param string    $line
 	 *
 	 * @return int
+	 *
+	 * @since       0.9.1
 	 */
 	public function PutLine($connection,$line)
 	{
@@ -2104,6 +2177,8 @@ class emailValidation
 	 * @param string    $email
 	 *
 	 * @return bool|int
+	 *
+	 * @since       0.9.1
 	 */
 	public function ValidateEmailAddress($email)
 	{
@@ -2127,6 +2202,8 @@ class emailValidation
 	 * @param string    $hosts
 	 *
 	 * @return bool|int
+	 *
+	 * @since       0.9.1
 	 */
 	public function ValidateEmailHost($email,&$hosts)
 	{
@@ -2162,6 +2239,8 @@ class emailValidation
 	 * @param string    $code
 	 *
 	 * @return int
+	 *
+	 * @since       0.9.1
 	 */
 	public function VerifyResultLines($connection,$code)
 	{
@@ -2182,6 +2261,8 @@ class emailValidation
 	 * @param string    $email
 	 *
 	 * @return bool|int
+	 *
+	 * @since       0.9.1
 	 */
 	public function ValidateEmailBox($email)
 	{

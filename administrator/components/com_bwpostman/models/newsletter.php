@@ -45,6 +45,8 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * @package		BwPostman-Admin
  *
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelNewsletter extends JModelAdmin
 {
@@ -52,6 +54,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Newsletter id
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_id = null;
 
@@ -59,6 +63,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Newsletter data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -66,6 +72,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Constructor
 	 * Determines the newsletter ID
 	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -98,6 +105,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @param	int $id     Newsletter ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function setId($id)
 	{
@@ -244,7 +253,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$item->id = 0;
 				}
 
-				// get avaliable mailinglists to predefine for state
+				// get available mailinglists to predefine for state
 				$query = $_db->getQuery(true);
 				$query->select('id');
 				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
@@ -254,19 +263,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				$_db->setQuery($query);
 
-				$mls_avaliable = $_db->loadColumn();
-				$res_avaliable = array_intersect($item->mailinglists, $mls_avaliable);
+				$mls_available = $_db->loadColumn();
+				$res_available = array_intersect($item->mailinglists, $mls_available);
 
-				if (count($res_avaliable) > 0)
+				if (count($res_available) > 0)
 				{
-					$item->ml_available = $res_avaliable;
+					$item->ml_available = $res_available;
 				}
 				else
 				{
 					$item->ml_available = array();
 				}
 
-				// get unavaliable mailinglists to predefine for state
+				// get unavailable mailinglists to predefine for state
 				$query = $_db->getQuery(true);
 				$query->select('id');
 				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
@@ -276,12 +285,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				$_db->setQuery($query);
 
-				$mls_unavaliable = $_db->loadColumn();
-				$res_unavaliable = array_intersect($item->mailinglists, $mls_unavaliable);
+				$mls_unavailable = $_db->loadColumn();
+				$res_unavailable = array_intersect($item->mailinglists, $mls_unavailable);
 
-				if (count($res_unavaliable) > 0)
+				if (count($res_unavailable) > 0)
 				{
-					$item->ml_unavailable = $res_unavaliable;
+					$item->ml_unavailable = $res_unavailable;
 				}
 				else
 				{
@@ -311,7 +320,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				// Preset template ids
-				// Old template for existing newsletters not set during update to 1.1.x, so we have to mangage this here also
+				// Old template for existing newsletters not set during update to 1.1.x, so we have to manage this here also
 
 				// preset HTML-Template for old newsletters
 				if ($item->id == 0)
@@ -555,6 +564,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	object Newsletter with formatted pieces
+	 *
+	 * @since
 	 */
 	public function getSingleNewsletter ()
 	{
@@ -640,6 +651,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return	array
+	 *
+	 * @since
 	 */
 	public function getSelectedContent()
 	{
@@ -711,6 +724,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param   string  $view
 	 *
 	 * @return 	int     $itemid     menu item ID
+	 *
+	 * @since       0.9.1
 	 */
 	static public function getItemid($view)
 	{
@@ -796,6 +811,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param   array   $data       data to save
 	 *
 	 * @return 	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function save($data)
 	{
@@ -833,7 +850,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-	// Delete all entrys of the newsletter from newsletters_mailinglists table
+	// Delete all entries of the newsletter from newsletters_mailinglists table
 		if ($data['id'])
 		{
 			$query->delete($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
@@ -908,6 +925,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function archive($cid = array(), $archive = 1)
 	{
@@ -981,6 +1000,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param 	array   $cid        Newsletter-IDs
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function copy($cid = array())
 	{
@@ -1089,7 +1110,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	boolean
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function delete(&$pks)
 	{
@@ -1138,6 +1159,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function delete_queue()
 	{
@@ -1164,7 +1187,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param 	int		$recordId       Newsletter ID
 	 * @param	array	$err            errors
 	 *
-	 * @return	boolean
+	 * @return	mixed
+	 *
+	 * @since
 	 */
 	public function checkForm($recordId = 0, &$err)
 	{
@@ -1222,7 +1247,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		else
 		{
-			// If there is a from_email adress check if the adress is valid
+			// If there is a from_email address check if the address is valid
 			if (!JMailHelper::isEmailAddress(trim($data['reply_email'])))
 			{
 				$err[$i]['err_code'] = 307;
@@ -1258,7 +1283,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	boolean	$send_to_unconfirmed    Status --> 0 = do not send to unconfirmed, 1 = sent also to unconfirmed
 	 * @param	int		$cam_id                 campaign id
 	 *
-	 * @return 	object Test-recipients data
+	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function checkRecipients(&$ret_msg, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
@@ -1439,6 +1466,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function checkTestrecipients()
 	{
@@ -1475,6 +1504,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	array $content  associative array of content data
+	 *
+	 * @since
 	 */
 	public function composeNl()
 	{
@@ -1494,6 +1525,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Method to fetch the content out of the selected content items
 	 *
 	 * @access	public
+	 *
+	 * @since
 	 */
 	public function changeTab()
 	{
@@ -1648,6 +1681,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	int		$cam_id         campaign id
 	 *
 	 * @return	boolean	                False if there occurred an error
+	 *
+	 * @since
 	 */
 	public function sendNewsletter(&$ret_msg, $recipients, $nl_id, $unconfirmed, $cam_id)
 	{
@@ -1679,6 +1714,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Method to reset the count of sending attempts in sendmailqueue.
 	 *
 	 * @return void
+	 *
+	 * @since
 	 */
 	public function resetSendAttempts()
 	{
@@ -1693,6 +1730,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	string
 	 *
+	 * @since
 	 */
 	public function _selectedContent()
 	{
@@ -1727,6 +1765,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param 	string $text        HTML-/Text-version
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 *
 	 */
 	static private function _replaceLinks(&$text)
@@ -1866,6 +1906,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param   int     $id
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	private function _addHtmlTags (&$text, &$id)
 	{
@@ -1922,6 +1964,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @since
 	 */
 	private function _addHTMLFooter(&$text, &$id)
 	{
@@ -2015,6 +2058,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @since
 	 */
 	private function _addTextFooter (&$text, &$id)
 	{
@@ -2049,6 +2093,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	int		content ID
 	 *
+	 * @since
 	 */
 	private function _getSingleContentId($nl_id)
 	{
@@ -2086,6 +2131,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	int|boolean 	                int content ID, if everything went fine, else boolean false
 	 *
+	 * @since
 	 */
 	private function _addSendMailContent($nl_id)
 	{
@@ -2185,7 +2231,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (!$this->_replaceLinks($newsletters_data->text_version))
 			return false;
 
-		// We have to create two entries in the sendmailContent table. One entry for the textmail body and one for the htmlmail.
+		// We have to create two entries in the sendmailContent table. One entry for the text mail body and one for the html mail.
 		for ($mode = 0;$mode <= 1; $mode++)
 		{
 			// Set the body and the id, if exists
@@ -2227,6 +2273,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	int		$cam_id                 campaign id
 	 *
 	 * @return 	boolean False if there occured an error
+	 *
+	 * @since
 	 */
 	private function _addSendMailQueue(&$ret_msg, $content_id, $recipients, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
@@ -2371,7 +2419,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	bool|int	true if no entries or there are entries with number trials less than 2, otherwise false
 	 *
-	 * since 1.0.3
+	 * @since 1.0.3
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
@@ -2423,6 +2471,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param int   $mailsPerStep     number mails to send
 	 *
 	 * @return int	0 -> queue is empty, 1 -> maximum reached
+	 *
+	 * @since
 	 */
 	public function sendMailsFromQueue($mailsPerStep = 100)
 	{
@@ -2454,11 +2504,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @param	bool 	true if we came from component
 	 *
-	 * @return	int		(-1, if there was an error; 0, if no mail adresses left in the queue; 1, if one Mail was send).
+	 * @return	int		(-1, if there was an error; 0, if no mail addresses left in the queue; 1, if one Mail was send).
+	 *
+	 * @since
 	 */
 	public function sendMail($fromComponent = false)
 	{
-		// intitialize
+		// initialize
 		$app				= JFactory::getApplication();
 		$uri  				= JUri::getInstance();
 		$itemid_unsubscribe	= $this->getItemid('register');
@@ -2641,8 +2693,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ($tblSendMailQueue->mode == 1)
 		{
 			$mailer->isHtml(true);
-			if (BWPOSTMAN_NL_ENCODING)
-				$mailer->Encoding = 'base64';
 		}
 
 		if (BWPOSTMAN_NL_SENDING)
@@ -2669,7 +2719,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			// Sendmail was not successful, we need to add the recipient to the queue again.
 			if ($fromComponent)
 			{
-				// show message only wanted if sending newsletters from component backend directly, not in timecontrolled sending
+				// show message only wanted if sending newsletters from component backend directly, not in time controlled sending
 				echo JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING');
 			}
 			$tblSendMailQueue->push($tblSendMailQueue->content_id, $tblSendMailQueue->mode, $tblSendMailQueue->recipient, $tblSendMailQueue->name, $tblSendMailQueue->firstname, $tblSendMailQueue->subscriber_id, $tblSendMailQueue->trial + 1);
@@ -2681,11 +2731,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 /**
  * Content Renderer Class
- * Provides methodes render the selected contents from which the newsletters shall be generated
- * --> Refering to BwPostman 1.6 beta and Communicator 2.0.0rc1 (??)
+ * Provides methods render the selected contents from which the newsletters shall be generated
+ * --> Referring to BwPostman 1.6 beta and Communicator 2.0.0rc1 (??)
  *
  * @package		BwPostman-Admin
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class contentRenderer
 {
@@ -2697,6 +2749,8 @@ class contentRenderer
 	 * @param   string  $row
 	 *
 	 * @return 	int     $itemid     menu item ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function getItemid($row)
 	{
@@ -2745,6 +2799,8 @@ class contentRenderer
 	 * @param string	$text_template_id
 	 *
 	 * @return string	content
+	 *
+	 * @since       0.9.1
 	 */
 	public function getContent($nl_content, $template_id, $text_template_id)
 	{
@@ -2816,6 +2872,8 @@ class contentRenderer
 	 * @param int   $id
 	 *
 	 * @return mixed
+	 *
+	 * @since       0.9.1
 	 */
 	public function retrieveContent($id)
 	{
@@ -2886,6 +2944,8 @@ class contentRenderer
 	 * @param object    $tpl
 	 *
 	 * @return string
+	 *
+	 * @since       0.9.1
 	 */
 	public function replaceContentHtml($id, $tpl)
 	{
@@ -2964,6 +3024,8 @@ class contentRenderer
 	 * @param $tpl
 	 *
 	 * @return string
+	 *
+	 * @since       1.1.0
 	 */
 	public function replaceContentHtmlNew($id, $tpl)
 	{
@@ -3045,6 +3107,8 @@ class contentRenderer
 	 * @param object    $text_tpl
 	 *
 	 * @return string
+	 *
+	 * @since       1.1.0
 	 */
 	public function replaceContentTextNew($id, $text_tpl)
 	{
@@ -3111,6 +3175,8 @@ class contentRenderer
 	 * @param object    $text_tpl
 	 *
 	 * @return string
+	 *
+	 * @since       0.9.1
 	 */
 	public function replaceContentText($id, $text_tpl)
 	{
@@ -3174,6 +3240,8 @@ class contentRenderer
 	 * @param $text
 	 *
 	 * @return mixed
+	 *
+	 * @since       0.9.1
 	 */
 	private function unHTMLSpecialCharsAll($text) {
 
@@ -3188,6 +3256,8 @@ class contentRenderer
 	 * @param string    $text
 	 *
 	 * @return  string  $text
+	 *
+	 * @since       0.9.1
 	 */
 	private function deHTMLEntities($text) {
 		$search = array(
@@ -3237,10 +3307,12 @@ class contentRenderer
 
 /**
  * Utility class for writing the HTML for content
- * --> Refering to Communicator 2.0.0rc1
+ * --> Referring to Communicator 2.0.0rc1
  *
  * @package 		BwPostman-Admin
  * @subpackage 	Newsletters
+ *
+ * @since       0.9.1
  */
 class HTML_content
 {
@@ -3251,6 +3323,8 @@ class HTML_content
 	 * @param   object  $params
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.1
 	 */
 	public function Title(&$row, &$params)
 	{
@@ -3277,6 +3351,8 @@ class HTML_content
 	 * @param   object  $row
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.1
 	 */
 	public function Category(&$row)
 	{
@@ -3293,6 +3369,8 @@ class HTML_content
 	 * @param   object  $row
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.1
 	 */
 	public function Author(&$row)
 	{
@@ -3308,6 +3386,8 @@ class HTML_content
 	 * @param   object  $row
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.1
 	 */
 	public function CreateDate(&$row)
 	{
@@ -3330,6 +3410,8 @@ class HTML_content
 	 * @param   object  $params
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.1
 	 */
 	public function URL(&$row, &$params)
 	{
@@ -3350,6 +3432,8 @@ class HTML_content
 	 * @param   object  $params
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.1
 	 */
 	public function ModifiedDate(&$row, &$params)
 	{
@@ -3370,12 +3454,14 @@ class HTML_content
 	}
 
 	/**
-	 * Writes Readmore Button
+	 * Writes read more button
 	 *
 	 * @param   object  $row
 	 * @param   object  $params
 	 *
 	 * @return  void
+	 *
+	 * @since       0.9.1
 	 */
 	public function ReadMore (&$row, &$params)
 	{

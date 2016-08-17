@@ -32,50 +32,103 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the prepared data for sending a newsletter
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanTableSendmailcontent extends JTable
 {
-	/** @var int Primary Key --> every ID exists twice (once for mode text, once for mode html */
+	/**
+	 * @var int Primary Key --> every ID exists twice (once for mode text, once for mode html
+	 *
+	 * @since       0.9.1
+	 */
 	var $id = null;
 
-	/** @var int Primary Key --> 0 = Text, 1 = HTML */
+	/**
+	 * @var int Primary Key --> 0 = Text, 1 = HTML
+	 *
+	 * @since       0.9.1
+	 */
 	var $mode = null;
 
-	/** @var int Newsletter-ID */
+	/**
+	 * @var int Newsletter-ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $nl_id = null;
 
-	/** @var string Sender name */
+	/**
+	 * @var string Sender name
+	 *
+	 * @since       0.9.1
+	 */
 	var $from_name = null;
 
-	/** @var string Sender email */
+	/**
+	 * @var string Sender email
+	 *
+	 * @since       0.9.1
+	 */
 	var $from_email = null;
 
-	/** @var string Subject */
+	/**
+	 * @var string Subject
+	 *
+	 * @since       0.9.1
+	 */
 	var $subject = null;
 
-	/** @var String Email-body */
+	/**
+	 * @var String Email-body
+	 *
+	 * @since       0.9.1
+	 */
 	var $body = null;
 
-	/** @var string CC email*/
+	/**
+	 * @var string CC email
+	 *
+	 * @since       0.9.1
+	 */
 	var $cc_email = null;
 
-	/** @var string BCC email */
+	/**
+	 * @var string BCC email
+	 *
+	 * @since       0.9.1
+	 */
 	var $bcc_email = null;
 
-	/** @var string Attachment */
+	/**
+	 * @var string Attachment
+	 *
+	 * @since       0.9.1
+	 */
 	var $attachment = null;
 
-	/** @var string Reply-to email */
+	/**
+	 * @var string Reply-to email
+	 *
+	 * @since       0.9.1
+	 */
 	var $reply_email = null;
 
-	/** @var string Reply-to name */
+	/**
+	 * @var string Reply-to name
+	 *
+	 * @since       0.9.1
+	 */
 	var $reply_name = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -93,6 +146,8 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * @throws BwException
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{
@@ -128,7 +183,10 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * Overloaded check method to ensure data integrity
 	 *
 	 * @access public
+	 *
 	 * @return boolean True
+	 *
+	 * @since       0.9.1
 	 */
 	public function check()
 	{
@@ -140,8 +198,12 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * Overloaded store method
 	 *
 	 * @access 	public
+	 *
 	 * @param	boolean True to update fields even if they are null.
+	 *
 	 * @return 	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function store($updateNulls = false)
 	{
@@ -192,6 +254,8 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * @param 	boolean	    $reset      Mode (0 = Text, 1 = HTML)
 	 *
 	 * @return mixed
+	 *
+	 * @since       0.9.1
 	 */
 	public function load($keys = null, $reset = true)
 	{

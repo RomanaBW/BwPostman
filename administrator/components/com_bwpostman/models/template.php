@@ -38,11 +38,13 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 
 /**
  * BwPostman mailinglist model
- * Provides methodes to add and edit mailinglists
+ * Provides methods to add and edit mailinglists
  *
  * @package		BwPostman-Admin
  *
  * @subpackage	Mailinglists
+ *
+ * @since 1.1.0
  */
 class BwPostmanModelTemplate extends JModelAdmin
 {
@@ -221,7 +223,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$item->$key	= $value;
 		}
 
-			// preinstalled html and text templates
+			// pre-installed html and text templates
 			if (($item->tpl_id != 0) && ($item->tpl_id != 998))
 			{
 				// Convert the fields to an array.
@@ -290,14 +292,14 @@ class BwPostmanModelTemplate extends JModelAdmin
 				}
 			}
 
-		// only preinstalled html templates
+		// only pre-installed html templates
 		if (($item->tpl_id != 0) && ($item->tpl_id != 998) && ($item->tpl_id < 999))
 		{
-			// call function to make html templatepreview
+			// call function to make html template preview
 			$this->makePreview($item);
 		}
 
-		// usermade html templates
+		// user-made html templates
 		if ($item->tpl_id == 0)
 		{
 			if (is_string($item->article))
@@ -307,11 +309,11 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$item->article = $registry->toArray();
 			}
 
-			// call function to make templatepreview
+			// call function to make template preview
 			$this->makePreviewHtml($item);
 		}
 
-		// usermade text templates
+		// user-made text templates
 		if ($item->tpl_id == 998)
 		{
 			if (is_string($item->article))
@@ -325,7 +327,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			$this->makePreviewText($item);
 		}
 
-		// preinstalled text templates
+		// pre-installed text templates
 		if ($item->tpl_id > 999)
 		{
 			// call function to make template preview
@@ -785,7 +787,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	}
 
 	/**
-	 * Method to make the texttemplate
+	 * Method to make the text template
 	 *
 	 * @access	public
 	 *
@@ -973,7 +975,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			if ($item['show_author'] == 1)
 			{
 				$sample_content .= '<span><small>';
-				$sample_content .= JText::sprintf('COM_CONTENT_WRITTEN_BY', 'Anonymus');
+				$sample_content .= JText::sprintf('COM_CONTENT_WRITTEN_BY', 'Anonymous');
 				$sample_content .= '</small></span>';
 			}
 			$sample_content .= '</p>' . "\n\n";

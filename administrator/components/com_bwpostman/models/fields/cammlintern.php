@@ -34,6 +34,7 @@ JFormHelper::loadFieldClass('radio');
  * Form Field class for the Joomla Framework.
  *
  * @package		BwPostman.Administrator
+ *
  * @since		1.0.1
  */
 class JFormFieldCamMlIntern extends JFormFieldRadio

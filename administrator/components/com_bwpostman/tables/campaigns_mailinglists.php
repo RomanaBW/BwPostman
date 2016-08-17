@@ -32,20 +32,33 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the mailinglists to which a campaign shall be send
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Campaigns
+ *
+ * @since
  */
 class BwPostmanTableCampaigns_Mailinglists extends JTable
 {
-	/** @var int Primary Key Campaign-ID */
+	/**
+	 * @var int Primary Key Campaign-ID
+	 *
+	 * @since
+	 */
 	var $campaign_id = null;
 
-	/** @var int Primary Key Mailinglist-ID */
+	/**
+	 * @var int Primary Key Mailinglist-ID
+	 *
+	 * @since
+	 */
 	var $mailinglist_id = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since
 	 */
 	public function __construct(& $db)
 	{
@@ -56,10 +69,13 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 * Method to copy the entries of this table for one or more campaigns
 	 *
 	 * @access	public
+	 *
 	 * @param 	int $oldid      ID of the existing campaign
 	 * @param 	int $newid      ID of the copied campaign
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function copyLists($oldid, $newid)
 	{

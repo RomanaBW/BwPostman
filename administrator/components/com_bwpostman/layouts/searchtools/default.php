@@ -15,7 +15,7 @@ defined('JPATH_BASE') or die;
 
 $data = $displayData;
 
-// Receive overridable options
+// Receive overrideable options
 $data['options'] = !empty($data['options']) ? $data['options'] : array();
 
 // Set some basic options

@@ -39,21 +39,21 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
  * @package		BwPostman-Admin
  * @subpackage	Subscribers
  *
- * @since
+ * @since       0.9.1
  */
 class BwPostmanTableSubscribers extends JTable
 {
 	/**
 	 * @var int Primary Key
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $id = null;
 
 	/**
 	 * @var int asset_id
 	 *
-	 * @since
+	 * @since       1.0.1
 	 */
 	var $asset_id = null;
 
@@ -61,105 +61,105 @@ class BwPostmanTableSubscribers extends JTable
 	 * @var int User-ID --> 0 = subscriber is not registered for the website, another ID = Subscriber is registered for
 	 *      the website (ID comes from users-table)
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $user_id = null;
 
 	/**
 	 * @var string Name
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $name = null;
 
 	/**
 	 * @var string Firstname
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $firstname = null;
 
 	/**
 	 * @var string Email
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $email = null;
 
 	/**
-	 * @var int Newsletterformat --> 0 = text, 1 = html
+	 * @var int newsletter format --> 0 = text, 1 = html
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $emailformat = null;
 
 	/**
 	 * @var int gender --> 0 = male, 1 = female NULL = unknown
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $gender = null;
 
 	/**
 	 * @var string special field
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $special = null;
 
 	/**
 	 * @var int Subscriber status --> 0 = not confirmed, 1 = confirmed, 9 = test-recipient
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $status = null;
 
 	/**
 	 * @var string Activation code for the subscription
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $activation = null;
 
 	/**
 	 * @var string Code for editing the subscription in the frontend
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $editlink = null;
 
 	/**
-	 * @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $access = 0;
 
 	/**
 	 * @var datetime Registration date
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $registration_date = null;
 
 	/**
 	 * @var int ID --> 0 = subscriber registered himself, another ID = administrator from users-table
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $registered_by = null;
 
 	/**
 	 * @var string Registration IP
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $registration_ip = null;
 
 	/**
 	 * @var datetime Confirmation date of the subscription
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $confirmation_date = null;
 
@@ -167,56 +167,56 @@ class BwPostmanTableSubscribers extends JTable
 	 * @var int ID --> -1 = account is not confirmed, 0 = subscriber confirmed the subscription by himself, another ID
 	 *      = administrator from users-table
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $confirmed_by = null;
 
 	/**
 	 * @var string Confirmation IP
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $confirmation_ip = null;
 
 	/**
 	 * @var datetime last modification date of the subscriber
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $modified_time = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $checked_out = 0;
 
 	/**
 	 * @var datetime Checked-out time
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $checked_out_time = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $archive_flag = 0;
 
 	/**
 	 * @var datetime Archive-date
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $archive_date = null;
 
@@ -224,7 +224,7 @@ class BwPostmanTableSubscribers extends JTable
 	 * @var int ID --> -1 = account is not archived, 0 = account is archived by the subscriber himself, another ID =
 	 *      account is archived by an administrator
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $archived_by = -1;
 
@@ -233,7 +233,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -363,7 +363,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return boolean
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{
@@ -402,7 +402,7 @@ class BwPostmanTableSubscribers extends JTable
 
 	 * @return boolean True on success
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function check()
 	{
@@ -488,7 +488,7 @@ class BwPostmanTableSubscribers extends JTable
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL'), 'error');
 			$fault	= true;
 		}
-		// If there is a email adress check if the adress is valid
+		// If there is a email address check if the address is valid
 		elseif (!JMailHelper::isEmailAddress(trim($this->email)))
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_EMAIL_INVALID', $this->email), 'error');
@@ -515,7 +515,7 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Spamcheck 1
-			// Set error message if a not visible (top: -5000px) inputfield is empty
+			// Set error message if a not visible (top: -5000px) input field is empty
 			if($data['falle'] != '')
 			{
 				// input wrong - set error
@@ -532,8 +532,8 @@ class BwPostmanTableSubscribers extends JTable
 				$fault	= true;
 			}
 
-			// Captchacheck 1
-			// Set error message if captchatest failed
+			// Captcha check 1
+			// Set error message if captcha test failed
 			if ($params->get('use_captcha') == 1)
 			{
 			// start check
@@ -545,7 +545,7 @@ class BwPostmanTableSubscribers extends JTable
 				}
 			}
 
-			// Captchacheck 2
+			// Captcha check 2
 			if ($params->get('use_captcha') == 2)
 			{
 				// Temp folder of captcha-images

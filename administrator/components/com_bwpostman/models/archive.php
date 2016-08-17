@@ -36,12 +36,16 @@ jimport('joomla.application.component.modellist');
  *
  * @package		BwPostman-Admin
  * @subpackage	Archive
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelArchive extends JModelList
 {
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -251,6 +255,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @access 	protected
 	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{
@@ -390,6 +396,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @param object    &$query     query to inject the where clause
 	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function _buildQueryWhere($layout, &$query)
 	{
@@ -639,6 +647,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @param 	int $sub_id     Subscriber ID
 	 *
 	 * @return 	object Subscriber
+	 *
+	 * @since
 	 */
 	public function getSingleSubscriber ($sub_id = null)
 	{
@@ -727,6 +737,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @param 	int $cam_id     Campaign ID
 	 *
 	 * @return 	object Campaign
+	 *
+	 * @since
 	 */
 	public function getSingleCampaign ($cam_id = null)
 	{
@@ -772,6 +784,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @param 	int $ml_id      Mailinglist ID
 	 *
 	 * @return 	object Mailinglist
+	 *
+	 * @since
 	 */
 	public function getSingleMailinglist ($ml_id = null)
 	{

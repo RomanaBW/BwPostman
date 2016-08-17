@@ -142,8 +142,10 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 * Method to get the available content items which can be used to compose a newsletter
 	 *
 	 * @access	public
-	 *         
+	 *
 	 * @return	array
+	 *
+	 * @since       1.0.1
 	 */
 	private function getAvailableContent()
 	{

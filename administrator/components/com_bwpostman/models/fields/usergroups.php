@@ -29,7 +29,7 @@ defined('JPATH_PLATFORM') or die;
 /**
  * Form Field class for the Joomla Platform.
  * Supports a nested check box field listing user groups.
- * Multiselect is available by default.
+ * Multi select is available by default.
  *
  * @package		BwPostman.Administrator
  *

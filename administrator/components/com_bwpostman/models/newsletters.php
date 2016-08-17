@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman newsletterslists model for backend.
+ * BwPostman newsletters lists model for backend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -37,12 +37,16 @@ jimport('joomla.application.component.modellist');
  * @package		BwPostman-Admin
  *
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelNewsletters extends JModelList
 {
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -172,6 +176,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @access	public
 	 *
 	 * @return 	int count Queue-data
+	 *
+	 * @since       0.9.1
 	 */
 	public function getCountQueue()
 	{
@@ -200,7 +206,10 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to build the MySQL query
 	 *
 	 * @access 	private
+	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{

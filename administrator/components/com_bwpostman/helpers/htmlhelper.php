@@ -28,6 +28,8 @@ defined ('_JEXEC') or die ();
 
 /**
  * Class BwPostmanHTMLHelper
+ *
+ * @since
  */
 abstract class BwPostmanHTMLHelper {
 
@@ -36,7 +38,7 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @param	integer		$rowNum			The row index
 	 * @param	integer		$recId			The record id
-	 * @param	boolean		$checkedOut		True if item is checke out
+	 * @param	boolean		$checkedOut		True if item is checked out
 	 * @param	string		$name			The name of the form element
 	 * @param	string		$id_name		The id-name of the form element
 	 *
@@ -68,6 +70,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @param 	string	$target     target
 	 * @param	string	$onclick    onclick action
 	 * @param   boolean $closable   modal window closeable
+	 *
+	 * @since
 	 */
 	public static function quickiconButton($link, $image, $text, $x_size = 0, $y_size = 0, $target = '', $onclick = '', $closable = true)
 	{
@@ -91,6 +95,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @access	public
 	 *
 	 * @return 	string	export fields list, html select list multiple
+	 *
+	 * @since
 	 */
 	static public function getExportFieldsList()
 	{
@@ -134,6 +140,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @param	string	$selected
 	 *
 	 * @return 	string	file format list, html select list
+	 *
+	 * @since
 	 */
 	static public function getFileFormatList($selected = '')
 	{
@@ -154,6 +162,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @param	string	$selected
 	 *
 	 * @return 	string	delimiter list, html select list
+	 *
+	 * @since
 	 */
 	static public function getDelimiterList($selected = ';')
 	{
@@ -177,6 +187,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @param	string	$selected
 	 *
 	 * @return 	string	enclosure list, html select list
+	 *
+	 * @since
 	 */
 	static public function getEnclosureList($selected = '"')
 	{
@@ -199,6 +211,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @param	string	$selected
 	 *
 	 * @return 	string	mail format list, html select list
+	 *
+	 * @since
 	 */
 	static public function getMailFormatList($selected = '1')
 	{
@@ -217,6 +231,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @access	public
 	 *
 	 * @return 	string	database fields list, html select list
+	 *
+	 * @since
 	 */
 	static public function getDbFieldsList()
 	{
@@ -246,6 +262,8 @@ abstract class BwPostmanHTMLHelper {
 	 * @param	array	$mailinglists
 	 *
 	 * @return 	string	mailinglists select list, html select list
+	 *
+	 * @since
 	 */
 	static public function getMlSelectList($mailinglists = array())
 	{

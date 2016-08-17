@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman subscriberslists model for backend.
+ * BwPostman subscribers lists model for backend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -35,7 +35,10 @@ jimport('joomla.application.component.modellist');
  * Provides a general view of all confirmed and unconfirmed subscribers as well as test-recipients
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelSubscribers extends JModelList
 {
@@ -43,6 +46,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Subscribers/Test-recipients data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -50,6 +55,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Number of all Subscribers/Test-recipients
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_total = null;
 
@@ -57,6 +64,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Pagination object
 	 *
 	 * @var object
+	 *
+	 * @since       0.9.1
 	 */
 	var $_pagination = null;
 
@@ -64,6 +73,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Subscribers/Test-recipients Search
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_search = null;
 
@@ -71,6 +82,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 * filter_mailinglist for subscribers/Test-recipients
 	 *
 	 * @var int
+	 *
 	 * @since	1.0.8
 	 */
 	var $_filter_mailinglist = null;
@@ -80,6 +92,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * --> empty = nothing is selected, 0 = Text, 1 = HTML
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_filter_emailformat = null;
 
@@ -88,12 +102,16 @@ class BwPostmanModelSubscribers extends JModelList
 	 * --> to specify the search
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_filter_search = null;
 
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -187,7 +205,10 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Method to build the MySQL query
 	 *
 	 * @access 	private
+	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{
@@ -306,7 +327,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 *
 	 * @access 	public
 	 *
-	 * @return 	object Mailinglists
+	 * @return 	array mailinglists
 	 *
 	 * @since	1.0.8
 	 */

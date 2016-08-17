@@ -32,56 +32,117 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the campaign data
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Campaigns
+ *
+ * @since       0.9.1
  */
 class BwPostmanTableCampaigns extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since       0.9.1
+	 */
 	var $id = null;
 
-	/** @var int asset_id */
+	/**
+	 * @var int asset_id
+	 *
+	 * @since       1.0.1
+	 */
 	var $asset_id = null;
 
-	/** @var string Campaign title */
+	/**
+	 * @var string Campaign title
+	 *
+	 * @since       0.9.1
+	 */
 	var $title = null;
 
-	/** @var string Campaign description */
+	/**
+	 * @var string Campaign description
+	 *
+	 * @since       0.9.1
+	 */
 	var $description = null;
 
-	/** @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels */
+	/**
+	 * @var int Access level/View level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+	 *
+	 * @since       0.9.1
+	 */
 	var $access = 0;
 
-	/** @var datetime creation date of the campaign */
+	/**
+	 * @var datetime creation date of the campaign
+	 *
+	 * @since       0.9.1
+	 */
 	var $created_date = '0000-00-00 00:00:00';
 
-	/** @var int user ID */
+	/**
+	 * @var int user ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $created_by = 0;
 
-	/** @var datetime last modification date of the campaign */
+	/**
+	 * @var datetime last modification date of the campaign
+	 *
+	 * @since       0.9.1
+	 */
 	var $modified_time = '0000-00-00 00:00:00';
 
-	/** @var int user ID */
+	/**
+	 * @var int user ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $modified_by = 0;
 
-	/** @var int Checked-out owner */
+	/**
+	 * @var int Checked-out owner
+	 *
+	 * @since       0.9.1
+	 */
 	var $checked_out = 0;
 
-	/** @var datetime Checked-out time */
+	/**
+	 * @var datetime Checked-out time
+	 *
+	 * @since       0.9.1
+	 */
 	var $checked_out_time = '0000-00-00 00:00:00';
 
-	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
+	/**
+	 * @var int Archive-flag --> 0 = not archived, 1 = archived
+	 *
+	 * @since       0.9.1
+	 */
 	var $archive_flag = 0;
 
-	/** @var datetime Archive-date */
+	/**
+	 * @var datetime Archive-date
+	 *
+	 * @since       0.9.1
+	 */
 	var $archive_date = '0000-00-00 00:00:00';
 
-	/** @var int ID --> 0 = campaign is not archived, another ID = account is archived by an administrator */
+	/**
+	 * @var int ID --> 0 = campaign is not archived, another ID = account is archived by an administrator
+	 *
+	 * @since       0.9.1
+	 */
 	var $archived_by = 0;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -131,7 +192,7 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @return  string
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetName()
 	{
@@ -144,7 +205,7 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @return  string
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -159,7 +220,7 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @return  integer
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
@@ -210,6 +271,8 @@ class BwPostmanTableCampaigns extends JTable
 	 * @throws BwException
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{
@@ -247,6 +310,8 @@ class BwPostmanTableCampaigns extends JTable
 	 * @access public
 	 *
 	 * @return boolean True
+	 *
+	 * @since       0.9.1
 	 */
 	public function check()
 	{

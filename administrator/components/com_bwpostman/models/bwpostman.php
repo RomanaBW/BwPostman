@@ -35,6 +35,8 @@ jimport('joomla.application.component.model');
  *
  * @package		BwPostman-Admin
  * @subpackage	CoverPage
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelBwPostman extends JModelLegacy
 {
@@ -42,6 +44,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 * General statistic data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_general = null;
 
@@ -49,11 +53,15 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 * Archive statistic data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_archive = null;
 
 	/**
 	 * Constructor
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -67,6 +75,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 * @access 	public
 	 *
 	 * @return 	array       associative array of General Data
+	 *
+	 * @since       0.9.1
 	 */
 	public function getGeneraldata()
 	{
@@ -237,6 +247,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 * @access 	public
 	 *
 	 * @return 	array       associative array of Archive data
+	 *
+	 * @since
 	 */
 	public function getArchivedata()
 	{

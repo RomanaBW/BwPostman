@@ -36,6 +36,8 @@ defined('JPATH_PLATFORM') or die;
 
 /**
  * Class JFormFieldAllMedia
+ *
+ * @since       1.0.4
  */
 class JFormFieldAllMedia extends JFormField
 {

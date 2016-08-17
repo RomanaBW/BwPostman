@@ -32,116 +32,257 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table to store the newsletters
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanTableNewsletters extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since       0.9.1
+	 */
 	var $id = null;
 
-	/** @var int asset_id */
+	/**
+	 * @var int asset_id
+	 *
+	 * @since       1.0.1
+	 */
 	var $asset_id = null;
 
-	/** @var string Sender name */
+	/**
+	 * @var string Sender name
+	 *
+	 * @since       0.9.1
+	 */
 	var $from_name = null;
 
-	/** @var string Sender email */
+	/**
+	 * @var string Sender email
+	 *
+	 * @since       0.9.1
+	 */
 	var $from_email = null;
 
-	/** @var string Reply-to email */
+	/**
+	 * @var string Reply-to email
+	 *
+	 * @since       0.9.1
+	 */
 	var $reply_email = null;
 
-	/** @var int Template-ID */
+	/**
+	 * @var int Template-ID
+	 *
+	 * @since       1.1.0
+	 */
 	var $template_id = null;
 
-	/** @var int Text-Template-ID */
+	/**
+	 * @var int Text-Template-ID
+	 *
+	 * @since       1.1.0
+	 */
 	var $text_template_id = null;
 
-	/** @var int Campaign-ID */
+	/**
+	 * @var int Campaign-ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $campaign_id = null;
 
-	/** @var string Usergroups */
+	/**
+	 * @var string Usergroups
+	 *
+	 * @since       0.9.1
+	 */
 	var $usergroups = null;
 
-	/** @var string Selected content */
+	/**
+	 * @var string Selected content
+	 *
+	 * @since       0.9.1
+	 */
 	var $selected_content = null;
 
-	/** @var string Subject */
+	/**
+	 * @var string Subject
+	 *
+	 * @since       0.9.1
+	 */
 	var $subject = null;
 
-	/** @var string Newsletter description */
+	/**
+	 * @var string Newsletter description
+	 *
+	 * @since       0.9.1
+	 */
 	var $description = null;
 
-	/** @var int Accesslevel/Viewlevel --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels */
+	/**
+	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+	 *
+	 * @since       0.9.1
+	 */
 	var $access = 0;
 
-	/** @var string attachment */
+	/**
+	 * @var string attachment
+	 *
+	 * @since       0.9.7
+	 */
 	var $attachment = null;
 
-	/** @var string HTML headline */
+	/**
+	 * @var string HTML headline
+	 *
+	 * @since       1.1.0
+	 */
 	var $intro_headline = null;
 
-		/** @var string HTML intro text */
+	/**
+	 * @var string HTML intro text
+	 *
+	 * @since       1.1.0
+	 */
 	var $intro_text = null;
 
-	/** @var string TEXT headline */
+	/**
+	 * @var string TEXT headline
+	 *
+	 * @since       1.1.0
+	 */
 	var $intro_text_headline = null;
 
-	/** @var string TEXT intro text */
+	/**
+	 * @var string TEXT intro text
+	 *
+	 * @since       1.1.0
+	 */
 	var $intro_text_text = null;
 
-/** @var string HTML-version */
+	/**
+	 * @var string HTML-version
+	 *
+	 * @since       0.9.1
+	 */
 	var $html_version = null;
 
-	/** @var string Text-version */
+	/**
+	 * @var string Text-version
+	 *
+	 * @since       0.9.1
+	 */
 	var $text_version = null;
 
-	/** @var datetime creation date of the newsletter */
+	/**
+	 * @var datetime creation date of the newsletter
+	 *
+	 * @since       0.9.1
+	 */
 	var $created_date = '0000-00-00 00:00:00';
 
-	/** @var int Author */
+	/**
+	 * @var int Author
+	 *
+	 * @since       0.9.1
+	 */
 	var $created_by = 0;
 
-	/** @var datetime last modification date of the newsletter */
+	/**
+	 * @var datetime last modification date of the newsletter
+	 *
+	 * @since       0.9.1
+	 */
 	var $modified_time = '0000-00-00 00:00:00';
 
-	/** @var int user ID */
+	/**
+	 * @var int user ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $modified_by = 0;
 
-	/** @var datetime Mailing date */
+	/**
+	 * @var datetime Mailing date
+	 *
+	 * @since       0.9.1
+	 */
 	var $mailing_date = '0000-00-00 00:00:00';
 
-	/** @var int Published */
+	/**
+	 * @var int Published
+	 *
+	 * @since       0.9.1
+	 */
 	var $published = null;
 
-	/** @var datetime for publishing up a newsletter */
+	/**
+	 * @var datetime for publishing up a newsletter
+	 *
+	 * @since       1.2.0
+	 */
 	var $publish_up = '0000-00-00 00:00:00';
 
-	/** @var datetime for publishing down a newsletter */
+	/**
+	 * @var datetime for publishing down a newsletter
+	 *
+	 * @since       1.2.0
+	 */
 	var $publish_down = '0000-00-00 00:00:00';
 
-	/** @var int Checked-out Owner */
+	/**
+	 * @var int Checked-out Owner
+	 *
+	 * @since       0.9.1
+	 */
 	var $checked_out = 0;
 
-	/** @var datetime Checked-out time */
+	/**
+	 * @var datetime Checked-out time
+	 *
+	 * @since       0.9.1
+	 */
 	var $checked_out_time = 0;
 
-	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
+	/**
+	 * @var int Archive-flag --> 0 = not archived, 1 = archived
+	 *
+	 * @since       0.9.1
+	 */
 	var $archive_flag = 0;
 
-	/** @var datetime Archive-date */
+	/**
+	 * @var datetime Archive-date
+	 *
+	 * @since       0.9.1
+	 */
 	var $archive_date = 0;
 
-	/** @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator */
+	/**
+	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
+	 *
+	 * @since       0.9.1
+	 */
 	var $archived_by = 0;
 
-	/** @var int Number of views at the frontend */
+	/**
+	 * @var int Number of views at the frontend
+	 *
+	 * @since       0.9.1
+	 */
 	var $hits = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -191,7 +332,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @return  string
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetName()
 	{
@@ -204,7 +345,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @return  string
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -219,7 +360,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @return  integer
 	 *
-	 * @since   11.1
+	 * @since   1.0.1
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
@@ -270,6 +411,8 @@ class BwPostmanTableNewsletters extends JTable
 	 * @throws BwException
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{
@@ -305,7 +448,10 @@ class BwPostmanTableNewsletters extends JTable
 	 * Overloaded check method to ensure data integrity
 	 *
 	 * @access public
+	 *
 	 * @return boolean True
+	 *
+	 * @since       0.9.1
 	 */
 	public function check()
 	{
@@ -393,7 +539,10 @@ class BwPostmanTableNewsletters extends JTable
 	 * Function markAsSent
 	 *
 	 * @param $id
+	 *
 	 * @return boolean True on success
+	 *
+	 * @since       0.9.1
 	 */
 	public function markAsSent($id = null)
 	{

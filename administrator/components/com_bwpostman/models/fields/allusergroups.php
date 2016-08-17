@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldAllUsergroups
+ *
+ * @since
  */
 class JFormFieldAllUsergroups extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldAllUsergroups extends JFormFieldList {
 	 * property to hold all user groups
 	 *
 	 * @var string  $type
+	 *
+	 * @since
 	 */
 	protected $type = 'AllUsergroups';
 

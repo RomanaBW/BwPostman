@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldAllMailinglists
+ *
+ * @since
  */
 class JFormFieldAllMailinglists extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldAllMailinglists extends JFormFieldList {
 	 * property to hold all mailing lists
 	 *
 	 * @var string  $type
+	 *
+	 * @since
 	 */
 	protected $type = 'AllMailinglists';
 

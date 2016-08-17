@@ -37,28 +37,28 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException
  * @package		BwPostman-Admin
  * @subpackage	Newsletters
  *
- * @since
+ * @since       0.9.1
  */
 class BwPostmanTableSendmailqueue extends JTable
 {
 	/**
 	 * @var int Primary Key
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $id = null;
 
 	/**
 	 * @var int Content-ID --> from the sendmailcontent-Table
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $content_id = null;
 
 	/**
 	 * @var string Recipient email
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $recipient = null;
 
@@ -72,28 +72,28 @@ class BwPostmanTableSendmailqueue extends JTable
 	/**
 	 * @var string Recipient name
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $name = null;
 
 	/**
 	 * @var string Recipient firstname
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $firstname = null;
 
 	/**
 	 * @var int Subscriber ID
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $subscriber_id = null;
 
 	/**
 	 * @var int Number of delivery attempts
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	var $trial = null;
 
@@ -102,7 +102,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -121,7 +121,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return boolean
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{
@@ -150,13 +150,13 @@ class BwPostmanTableSendmailqueue extends JTable
 
 			// Cast properties
 			$this->id = (int) $this->id;
-
-			return parent::bind($data, $ignore);
 		}
 		catch (BwException $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
+		return parent::bind($data, $ignore);
 	}
 
 	/**
@@ -166,7 +166,7 @@ class BwPostmanTableSendmailqueue extends JTable
 
 	 * @return boolean True
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function check()
 	{
@@ -182,7 +182,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return 	int --> 0 if nothing was selected
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function pop($trial = 2)
 	{
@@ -231,7 +231,7 @@ class BwPostmanTableSendmailqueue extends JTable
 
 	 * @return 	boolean
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function push($content_id, $emailformat, $email, $name, $firstname, $subscriber_id, $trial = 0)
 	{
@@ -282,7 +282,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return 	boolean
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 
 	public function pushAllFromNlId($nl_id, $content_id, $status, $cam_id)
@@ -357,7 +357,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return 	boolean
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function pushAllSubscribers($content_id, $status)
 	{
@@ -410,7 +410,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return 	boolean
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function pushJoomlaUser($content_id, $usergroups, $format = 0)
 	{
@@ -489,7 +489,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return bool
 	 *
-	 * @since
+	 * @since       0.9.1
 	 */
 	public function resetTrials()
 	{

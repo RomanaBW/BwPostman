@@ -30,6 +30,8 @@ jimport('libraries.joomla.log.logger.w3c');
 
 /**
  * Basic logging class implemented by every logger of BwPostman
+ *
+ * @since       2.0.0
  */
 class BwLogger extends JLogLoggerW3c
 {

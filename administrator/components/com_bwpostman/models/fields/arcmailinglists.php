@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldArcMailinglists
+ *
+ * @since           1.2.0
  */
 class JFormFieldArcMailinglists extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldArcMailinglists extends JFormFieldList {
 	 * property to hold archived mailing lists
 	 *
 	 * @var string  $type
+	 *
+	 * @since       1.2.0
 	 */
 	protected $type = 'ArcMailinglists';
 

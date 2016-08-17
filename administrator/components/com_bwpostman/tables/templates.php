@@ -34,104 +34,235 @@ use Joomla\Registry\Registry as JRegistry;
  * Table for storing the templates data
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Templates
+ *
+ * @since       1.1.0
  */
 class BwPostmanTableTemplates extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since       1.1.0
+	 */
 	var $id = null;
 
-	/** @var int asset_id */
+	/**
+	 * @var int asset_id
+	 *
+	 * @since       1.1.0
+	 */
 	var $asset_id = null;
 
-	/** @var int standard template */
+	/**
+	 * @var int standard template
+	 *
+	 * @since       1.1.0
+	 */
 	var $standard = 0;
 
-	/** @var string title */
+	/**
+	 * @var string title
+	 *
+	 * @since       1.1.0
+	 */
 	var $title = null;
 
-	/** @var string description */
+	/**
+	 * @var string description
+	 *
+	 * @since       1.1.0
+	 */
 	var $description = null;
 
-	/** @var string thumbnail url */
+	/**
+	 * @var string thumbnail url
+	 *
+	 * @since       1.1.0
+	 */
 	var $thumbnail = null;
 
-	/** @var string tpl_html */
+	/**
+	 * @var string tpl_html
+	 *
+	 * @since       1.1.0
+	 */
 	var $tpl_html = null;
 
-	/** @var string tpl_css */
+	/**
+	 * @var string tpl_css
+	 *
+	 * @since       1.1.0
+	 */
 	var $tpl_css = null;
 
-	/** @var string tpl_article */
+	/**
+	 * @var string tpl_article
+	 *
+	 * @since       1.1.0
+	 */
 	var $tpl_article = null;
 
-	/** @var string tpl_divider */
+	/**
+	 * @var string tpl_divider
+	 *
+	 * @since       1.1.0
+	 */
 	var $tpl_divider = null;
 
-	/** @var int tpl_id */
+	/**
+	 * @var int tpl_id
+	 *
+	 * @since       1.1.0
+	 */
 	var $tpl_id = null;
 
-	/** @var string basics */
+	/**
+	 * @var string basics
+	 *
+	 * @since       1.1.0
+	 */
 	var $basics = null;
 
-	/** @var string header */
+	/**
+	 * @var string header
+	 *
+	 * @since       1.1.0
+	 */
 	var $header = null;
 
-	/** @var string intro */
+	/**
+	 * @var string intro
+	 *
+	 * @since       1.1.0
+	 */
 	var $intro = null;
 
-	/** @var string article */
+	/**
+	 * @var string article
+	 *
+	 * @since       1.1.0
+	 */
 	var $article = null;
 
-	/** @var string footer */
+	/**
+	 * @var string footer
+	 *
+	 * @since       1.1.0
+	 */
 	var $footer = null;
 
-	/** @var string button1 */
+	/**
+	 * @var string button1
+	 *
+	 * @since       1.1.0
+	 */
 	var $button1 = null;
 
-	/** @var string button2 */
+	/**
+	 * @var string button2
+	 *
+	 * @since       1.1.0
+	 */
 	var $button2 = null;
 
-	/** @var string button3 */
+	/**
+	 * @var string button3
+	 *
+	 * @since       1.1.0
+	 */
 	var $button3 = null;
 
-	/** @var string button4 */
+	/**
+	 * @var string button4
+	 *
+	 * @since       1.1.0
+	 */
 	var $button4 = null;
 
-	/** @var string button5 */
+	/**
+	 * @var string button5
+	 *
+	 * @since       1.1.0
+	 */
 	var $button5 = null;
 
-	/** @var int access */
+	/**
+	 * @var int access
+	 *
+	 * @since       1.1.0
+	 */
 	var $access = null;
 
-	/** @var int Published */
+	/**
+	 * @var int Published
+	 *
+	 * @since       1.1.0
+	 */
 	var $published = 0;
 
-	/** @var datetime creation date of the newsletter */
+	/**
+	 * @var datetime creation date of the newsletter
+	 *
+	 * @since       1.1.0
+	 */
 	var $created_date = '0000-00-00 00:00:00';
 
-	/** @var int Author */
+	/**
+	 * @var int Author
+	 *
+	 * @since       1.1.0
+	 */
 	var $created_by = 0;
 
-	/** @var datetime last modification date of the newsletter */
+	/**
+	 * @var datetime last modification date of the newsletter
+	 *
+	 * @since       1.1.0
+	 */
 	var $modified_time = '0000-00-00 00:00:00';
 
-	/** @var int user ID */
+	/**
+	 * @var int user ID
+	 *
+	 * @since       1.1.0
+	 */
 	var $modified_by = 0;
 
-	/** @var int Checked-out owner */
+	/**
+	 * @var int Checked-out owner
+	 *
+	 * @since       1.1.0
+	 */
 	var $checked_out = 0;
 
-	/** @var datetime Checked-out time */
+	/**
+	 * @var datetime Checked-out time
+	 *
+	 * @since       1.1.0
+	 */
 	var $checked_out_time = 0;
 
-	/** @var int Archive-flag --> 0 = not archived, 1 = archived */
+	/**
+	 * @var int Archive-flag --> 0 = not archived, 1 = archived
+	 *
+	 * @since       1.1.0
+	 */
 	var $archive_flag = 0;
 
-	/** @var datetime Archive-date */
+	/**
+	 * @var datetime Archive-date
+	 *
+	 * @since       1.1.0
+	 */
 	var $archive_date = '0000-00-00 00:00:00';
 
-	/** @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator */
+	/**
+	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
+	 *
+	 * @since       1.1.0
+	 */
 	var $archived_by = 0;
 
 	/**
@@ -332,7 +463,7 @@ class BwPostmanTableTemplates extends JTable
 		// *** prepare the template data ***
 		$item = $this;
 
-		// usermade html template
+		// user-made html template
 		if ($item->tpl_id == 0)
 		{
 			if (isset($this->article) && is_array($this->article))
@@ -342,7 +473,7 @@ class BwPostmanTableTemplates extends JTable
 				$this->article = (string) $registry;
 			}
 		}
-		// usermade text template
+		// user-made text template
 		elseif ($item->tpl_id == 998)
 		{
 			if (isset($this->article) && is_array($this->article))
@@ -352,7 +483,7 @@ class BwPostmanTableTemplates extends JTable
 				$this->article = (string) $registry;
 			}
 		}
-		// preinstalled text template
+		// pre-installed text template
 		elseif ($item->tpl_id > 999)
 		{
 			// first get templates tpls
@@ -378,7 +509,7 @@ class BwPostmanTableTemplates extends JTable
 			// convert object array to string
 			self::converttostr($this);
 		}
-		// preinstalled html template
+		// pre-installed html template
 		else
 		{
 			// first get templates tpls

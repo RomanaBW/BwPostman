@@ -32,20 +32,33 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the subscriber data
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanTableSubscribers_Mailinglists extends JTable
 {
-	/** @var int Primary Key subscriber-id*/
+	/**
+	 * @var int Primary Key subscriber-id
+	 *
+	 * @since       0.9.1
+	 */
 	var $subscriber_id = null;
 
-	/** @var int Primary Key list-id */
+	/**
+	 * @var int Primary Key list-id
+	 *
+	 * @since       0.9.1
+	 */
 	var $mailinglist_id = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -63,6 +76,8 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 * @throws  BwException
 	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{

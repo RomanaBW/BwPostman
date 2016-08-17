@@ -32,20 +32,33 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the mailinglists to which a newsletter shall be send
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanTableNewsletters_Mailinglists extends JTable
 {
-	/** @var int Primary Key Newsletter-ID */
+	/**
+	 * @var int Primary Key Newsletter-ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $newsletter_id = null;
 
-	/** @var int Primary Key Mailinglist-ID */
+	/**
+	 * @var int Primary Key Mailinglist-ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $mailinglist_id = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -56,9 +69,13 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 * Method to copy the entries of this table for one or more newsletters
 	 *
 	 * @access	public
+	 *
 	 * @param 	int $oldid      ID of the existing newsletter
 	 * @param 	int $newid      ID of the copied newsletter
+	 *
 	 * @return 	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function copyLists($oldid, $newid)
 	{

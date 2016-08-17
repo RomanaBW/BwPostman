@@ -120,7 +120,7 @@ class BwPostmanFilterHelper
 				}
 
 				// Collect the black or white list tags and attributes.
-				// Each list is cummulative.
+				// Each list is cumulative.
 				if ($filterType == 'BL')
 				{
 					$blackList           = true;
@@ -158,7 +158,7 @@ class BwPostmanFilterHelper
 		// Unfiltered assumes first priority.
 		if ($unfiltered)
 		{
-			// Dont apply filtering.
+			// Don't apply filtering.
 		}
 		else
 		{

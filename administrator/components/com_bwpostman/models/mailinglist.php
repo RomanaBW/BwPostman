@@ -37,10 +37,13 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 
 /**
  * BwPostman mailinglist model
- * Provides methodes to add and edit mailinglists
+ * Provides methods to add and edit mailinglists
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Mailinglists
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelMailinglist extends JModelAdmin
 {
@@ -48,6 +51,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Mailinglist ID
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_id = null;
 
@@ -55,6 +60,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Mailinglist data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -62,6 +69,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Constructor
 	 * Determines the mailinglist ID
 	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -94,6 +102,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @access	public
 	 *
 	 * @param	int $id     Mailinglist ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function setId($id)
 	{
@@ -315,6 +325,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function archive($cid = array(), $archive = 1)
 	{
@@ -386,6 +398,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	array &$pks     Mailinglist IDs
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function delete(&$pks)
 	{
@@ -461,6 +475,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	int     $value  Task --> 1 = publish, 0 = unpublish
 	 *
 	 * @return	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function publish(&$pks, $value = 1)
 	{

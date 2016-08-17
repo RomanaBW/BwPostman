@@ -35,7 +35,10 @@ jimport('joomla.application.component.modellist');
  * Provides a general view of all campaigns
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Campaigns
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelCampaigns extends JModelList
 {
@@ -44,6 +47,8 @@ class BwPostmanModelCampaigns extends JModelList
 	 * Campaigns data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -51,6 +56,8 @@ class BwPostmanModelCampaigns extends JModelList
 	 * Number of all campaigns
 	 *
 	 * @var integer
+	 *
+	 * @since       0.9.1
 	 */
 	var $_total = null;
 
@@ -58,6 +65,8 @@ class BwPostmanModelCampaigns extends JModelList
 	 * Pagination object
 	 *
 	 * @var object
+	 *
+	 * @since       0.9.1
 	 */
 	var $_pagination = null;
 
@@ -65,6 +74,8 @@ class BwPostmanModelCampaigns extends JModelList
 	 * Campaigns search
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_search = null;
 
@@ -74,12 +85,16 @@ class BwPostmanModelCampaigns extends JModelList
 	 * --> value will be "campaigns"
 	 *
 	 * @var	string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_key = null;
 
 	/**
 	 * Constructor
 	 * --> handles the pagination and set the campaigns key
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -176,6 +191,8 @@ class BwPostmanModelCampaigns extends JModelList
 	 * @access 	private
 	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{

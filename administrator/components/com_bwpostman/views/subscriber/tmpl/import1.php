@@ -50,7 +50,7 @@ JHtml::_('behavior.keepalive');
 
 
 //-----------------------------------------------------------------------------
-//refering to: http://www.plus2net.com/javascript_tutorial/list-remove.php
+//referring to: http://www.plus2net.com/javascript_tutorial/list-remove.php
 //-----------------------------------------------------------------------------
 	function removeOptions(selectbox) // Method to get all items in the selectbox when submitting
 	{
@@ -109,7 +109,7 @@ JHtml::_('behavior.keepalive');
 		}
 	}
 
-	function check() // Method to check if the user tries to delete the email item and if the numbers of items in both selected boxes are similiar
+	function check() // Method to check if the user tries to delete the email item and if the numbers of items in both selected boxes are similar
 	{
 		var count_db_fields = document.getElementById('db_fields').length;
 
@@ -147,7 +147,7 @@ JHtml::_('behavior.keepalive');
 					?>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></td>
-						<td><?php if ($this->import['delimiter'] == '\t') { echo "Tabulator"; } elseif ($this->import['delimiter'] == ' ') { echo "Leerzeichen"; } else {echo $this->import['delimiter'];} ?></td>
+						<td><?php if ($this->import['delimiter'] == '\t') { echo "Tabulator"; } elseif ($this->import['delimiter'] == ' ') { echo "Space"; } else {echo $this->import['delimiter'];} ?></td>
 					</tr>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></td>
@@ -283,7 +283,7 @@ JHtml::_('behavior.keepalive');
 							<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>"><?php echo $image; ?></span>
 							</td>
-							<td><input type="checkbox" id="confirm" name="confirm" value="1" /></td>
+							<td><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></td>
 						</tr>
 					</table>
 				</div>

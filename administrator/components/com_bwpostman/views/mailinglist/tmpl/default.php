@@ -47,7 +47,7 @@ JHtml::_('formbehavior.chosen', 'select');
 			return;
 		}
 
-		// Valdiate input fields
+		// Validate input fields
 		if (form.jform_title.value == "")
 		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");

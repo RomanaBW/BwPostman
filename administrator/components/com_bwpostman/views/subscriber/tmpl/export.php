@@ -49,7 +49,7 @@ JHtml::_('bootstrap.tooltip');
 
 
 //-----------------------------------------------------------------------------
-//in Anlehnung an: http://www.plus2net.com/javascript_tutorial/list-remove.php
+// Like: http://www.plus2net.com/javascript_tutorial/list-remove.php
 //-----------------------------------------------------------------------------
 	function removeOptions(selectbox)
 	{
@@ -156,13 +156,13 @@ JHtml::_('bootstrap.tooltip');
 					<td class="bwptable mailformat">
 						<div class="bwpmailformat">
 							<?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_STATUS'); ?>
-							<p class="state"><input type="checkbox" id="status1" name="status" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_CONFIRMED'); ?></p>
-							<p class="state"><input type="checkbox" id="status0" name="status" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_UNCONFIRMED'); ?></p>
-							<p class="state"><input type="checkbox" id="status9" name="status" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_TEST'); ?></p>
+							<p class="state"><input type="checkbox" id="status1" name="status" title="status" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_CONFIRMED'); ?></p>
+							<p class="state"><input type="checkbox" id="status0" name="status" title="status" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_UNCONFIRMED'); ?></p>
+							<p class="state"><input type="checkbox" id="status9" name="status" title="status" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_TEST'); ?></p>
 							<br />
 							<?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVE'); ?><br />
-							<p class="archive"><input type="checkbox" id="archive0" name="archive" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_UNARCHIVED'); ?></p>
-							<p class="archive"><input type="checkbox" id="archive1" name="archive" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVED'); ?></p>
+							<p class="archive"><input type="checkbox" id="archive0" name="archive" title="archive" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_UNARCHIVED'); ?></p>
+							<p class="archive"><input type="checkbox" id="archive1" name="archive" title="archive" value="1" /><?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVED'); ?></p>
 						</div>
 					</td>
 				</tr>

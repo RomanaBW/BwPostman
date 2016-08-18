@@ -52,7 +52,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 			submitform(pressbutton);
 			return;
 		}
-		// Valdiate input fields
+		// Validate input fields
 		if ((form.jform_name.value == "") && (form.name_field_obligation.value == 1))
 		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_NAME', true); ?>");

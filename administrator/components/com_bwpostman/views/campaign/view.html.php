@@ -37,7 +37,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * BwPostman Campaign View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Campaigns
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewCampaign extends JViewLegacy
 {
@@ -45,6 +48,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * property to hold form data
 	 *
 	 * @var array   $form
+	 *
+	 * @since       0.9.1
 	 */
 	protected $form;
 
@@ -52,6 +57,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * property to hold selected item
 	 *
 	 * @var object   $item
+	 *
+	 * @since       0.9.1
 	 */
 	protected $item;
 
@@ -59,6 +66,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
@@ -66,6 +75,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * property to hold can do properties
 	 *
 	 * @var array $canDo
+	 *
+	 * @since       0.9.1
 	 */
 	public $canDo;
 
@@ -73,6 +84,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
 	 */
 	public $queueEntries;
 
@@ -80,6 +93,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * property to hold newsletters list
 	 *
 	 * @var array $newsletters
+	 *
+	 * @since       0.9.1
 	 */
 	public $newsletters;
 
@@ -89,6 +104,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
@@ -121,6 +138,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{
@@ -133,7 +151,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAM_DETAILS'));
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
-		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
+		// Get the user browser --> if the user has MS IE load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
 		$browser		= JBrowser::getInstance();
 		$user_browser	= $browser->getBrowser();

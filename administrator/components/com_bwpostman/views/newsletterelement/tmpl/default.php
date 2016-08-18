@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman backend element template to select a singlenewsletter for a view in frontend.
+ * BwPostman backend element template to select a single newsletter for a view in frontend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -35,7 +35,7 @@ JHtml::_('behavior.tooltip');
 		<tr>
 			<td width="100%">
 				<?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>
-				<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
+				<input type="text" name="search" title="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>" data-placement="bottom" style="margin-bottom:9px;">
 					<span class="icon-search"></span><?php echo '&#160;' . JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>

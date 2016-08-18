@@ -40,9 +40,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) 
+	Joomla.submitbutton = function (pressbutton)
 	{
-		if (pressbutton == 'archive') 
+		if (pressbutton == 'archive')
 		{
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_ML_CONFIRM_ARCHIVE' , true); ?>");
 			if (ConfirmArchive == true)
@@ -98,7 +98,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 							$canEdit	= $user->authorise('bwpm.edit',			'com_bwpostman.mailinglist.'.$item->id);
 							$canEditOwn	= $user->authorise('bwpm.edit.own',		'com_bwpostman.mailinglist.'.$item->id) && $item->created_by == $userId;
-							$canChange	= $user->authorise('bwpm.edit.state',	'com_bwostman.mailinglist.'.$item->id) && $canCheckin;
+							$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.mailinglist.'.$item->id) && $canCheckin;
 							?>
 							<tr class="row<?php echo $i % 2; ?>">
 								<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>

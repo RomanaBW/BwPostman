@@ -100,7 +100,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 								$canEdit	= $user->authorise('bwpm.edit',			'com_bwpostman.template.'.$item->id);
 								$canEditOwn	= $user->authorise('bwpm.edit.own',		'com_bwpostman.template.'.$item->id) && $item->created_by == $userId;
-								$canChange	= $user->authorise('bwpm.edit.state',	'com_bwostman.template.'.$item->id) && $canCheckin;
+								$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.template.'.$item->id) && $canCheckin;
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>

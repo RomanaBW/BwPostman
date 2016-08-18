@@ -39,6 +39,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * property to hold session
 	 *
 	 * @var object  $session
+	 *
+	 * @since       1.0.4
 	 */
 	public $session;
 
@@ -46,6 +48,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * property to hold config
 	 *
 	 * @var object  $config
+	 *
+	 * @since       1.0.4
 	 */
 	public $config;
 
@@ -53,6 +57,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var object  $state
+	 *
+	 * @since       1.0.4
 	 */
 	public $state;
 
@@ -60,6 +66,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * property to hold folder list
 	 *
 	 * @var array  $folderList
+	 *
+	 * @since       1.0.4
 	 */
 	public $folderList;
 
@@ -67,6 +75,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * property to hold require ftp
 	 *
 	 * @var boolean  $require_ftp
+	 *
+	 * @since       1.0.4
 	 */
 	public $require_ftp;
 
@@ -74,6 +84,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * property to hold folders id
 	 *
 	 * @var int $folders_id
+	 *
+	 * @since       1.0.4
 	 */
 	public $folders_id;
 
@@ -81,6 +93,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * property to hold folders
 	 *
 	 * @var array  $folders
+	 *
+	 * @since       1.0.4
 	 */
 	public $folders;
 
@@ -90,6 +104,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       1.0.4
 	 */
 	public function display($tpl = null)
 	{

@@ -166,8 +166,8 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
 							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'Published', 'a.published', $listDirn, $listOrder); ?></th>
 							<th width="100" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?><br />
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?><br />
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
 								</th>
 							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 						</tr>

@@ -114,7 +114,7 @@
 
 	<updateservers>
 <!--		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/com_bwpostman_update.xml</server>-->
-		<server type="extension" priority="1" name="BwPostman Updates">http://www.webservice3.nil/update-servers/com_bwpostman_update_lokal.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">http://www.webservice3.nil/update-servers/com_bwpostman_update_local.xml</server>
 	</updateservers>
 
 </extension>

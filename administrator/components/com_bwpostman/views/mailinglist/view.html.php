@@ -37,7 +37,10 @@ jimport('joomla.application.component.view');
  * BwPostman Mailinglist View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Mailinglists
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewMailinglist extends JViewLegacy
 {
@@ -45,6 +48,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * property to hold form data
 	 *
 	 * @var array   $form
+	 *
+	 * @since       0.9.1
 	 */
 	protected $form;
 
@@ -52,6 +57,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * property to hold selected item
 	 *
 	 * @var object   $item
+	 *
+	 * @since       0.9.1
 	 */
 	protected $item;
 
@@ -59,6 +66,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
@@ -66,6 +75,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * property to hold can do properties
 	 *
 	 * @var array $canDo
+	 *
+	 * @since       0.9.1
 	 */
 	public $canDo;
 
@@ -73,6 +84,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
 	 */
 	public $queueEntries;
 
@@ -80,6 +93,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * property to hold request url
 	 *
 	 * @var object  $request_url
+	 *
+	 * @since       0.9.1
 	 */
 	protected $request_url;
 
@@ -87,6 +102,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * property to hold template
 	 *
 	 * @var object $template
+	 *
+	 * @since       0.9.1
 	 */
 	public $template;
 
@@ -97,6 +114,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
@@ -128,6 +147,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{

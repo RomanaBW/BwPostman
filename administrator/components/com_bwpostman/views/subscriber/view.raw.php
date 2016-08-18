@@ -34,7 +34,10 @@ jimport('joomla.application.component.view');
  * BwPostman Subscriber RAW View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewSubscriber extends JViewLegacy
 {
@@ -44,6 +47,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display ($tpl = Null)
 	{

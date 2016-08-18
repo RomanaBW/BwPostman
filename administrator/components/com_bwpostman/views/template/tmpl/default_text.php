@@ -95,7 +95,7 @@ $options = array(
 			return;
 		}
 
-		// Valdiate input fields
+		// Validate input fields
 		if (form.jform_title.value == "")
 		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
@@ -269,8 +269,8 @@ $options = array(
 							<li>
 								<div><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_DESC'); ?></div>
 								<div class="well well-small">
-									<textarea id="jform_tpl_html" rows="20" cols="50" name="jform[tpl_html]" style="width: 95%;"><?php echo htmlspecialchars($this->item->tpl_html, ENT_COMPAT, 'UTF-8'); ?></textarea>
-									<div class="clr clearfix" style="margin-top: 10px"></div>
+									<textarea id="jform_tpl_html" rows="20" cols="50" name="jform[tpl_html]" title="jform[tpl_html]" style="width: 95%;"><?php echo htmlspecialchars($this->item->tpl_html, ENT_COMPAT, 'UTF-8'); ?></textarea>
+									<div class="clr clearfix" style="margin-top: 10px;"></div>
 										<?php
 											$link = JUri::base() . '#';
 											if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {

@@ -37,7 +37,10 @@ jimport('joomla.application.component.view');
  * BwPostman template View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	template
+ *
+ * @since       1.1.0
  */
 class BwPostmanViewTemplate extends JViewLegacy
 {
@@ -45,6 +48,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold form data
 	 *
 	 * @var array   $form
+	 *
+	 * @since       1.1.0
 	 */
 	protected $form;
 
@@ -52,6 +57,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold selected item
 	 *
 	 * @var object   $item
+	 *
+	 * @since       1.1.0
 	 */
 	protected $item;
 
@@ -59,6 +66,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       1.1.0
 	 */
 	protected $state;
 
@@ -66,6 +75,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold queue entries
 	 *
 	 * @var boolean $queueEntries
+	 *
+	 * @since       1.1.0
 	 */
 	public $queueEntries;
 
@@ -73,6 +84,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold template
 	 *
 	 * @var boolean $template
+	 *
+	 * @since       1.1.0
 	 */
 	public $template;
 
@@ -80,6 +93,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold can do properties
 	 *
 	 * @var array $canDo
+	 *
+	 * @since       1.1.0
 	 */
 	public $canDo;
 
@@ -87,6 +102,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold request url
 	 *
 	 * @var string $request_url
+	 *
+	 * @since       1.1.0
 	 */
 	public $request_url;
 
@@ -98,6 +115,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
 	 * @see     fetch()
+	 *
 	 * @since   1.1.0
 	 */
 	public function display($tpl = null)
@@ -123,9 +141,9 @@ class BwPostmanViewTemplate extends JViewLegacy
 
 		$this->addToolbar();
 
-		// call usermade html template
+		// call user-made html template
 		if ($this->item->tpl_id == '0')  $tpl = 'html';
-		// call usermade text template
+		// call user-made text template
 		if ($this->item->tpl_id == '998') $tpl = 'text';
 		// call standard text template
 		if ($this->item->tpl_id > '999')  $tpl = 'text_std';

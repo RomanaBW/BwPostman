@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman medialist default template for backend, based on joomla com_media.
+ * BwPostman media list default template for backend, based on joomla com_media.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin

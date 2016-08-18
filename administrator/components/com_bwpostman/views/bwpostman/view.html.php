@@ -38,7 +38,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman General View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	CoverPage
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewBwPostman extends JViewLegacy
 {
@@ -46,6 +49,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 * property to hold archive data
 	 *
 	 * @var string $archive
+	 *
+	 * @since       0.9.1
 	 */
 	public $archive;
 
@@ -53,6 +58,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 * property to hold general data
 	 *
 	 * @var string $general
+	 *
+	 * @since       0.9.1
 	 */
 	public $general;
 
@@ -60,6 +67,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 * property to hold can do properties
 	 *
 	 * @var array $canDo
+	 *
+	 * @since       0.9.1
 	 */
 	public $canDo;
 
@@ -67,6 +76,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 * property to hold request url
 	 *
 	 * @var string $request_url
+	 *
+	 * @since       0.9.1
 	 */
 	public $request_url;
 
@@ -74,6 +85,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
 	 */
 	public $queueEntries;
 
@@ -81,6 +94,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
 	 */
 	public $sidebar;
 
@@ -90,6 +105,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{

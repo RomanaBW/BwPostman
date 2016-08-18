@@ -37,7 +37,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * BwPostman Newsletter View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
@@ -45,6 +48,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold form data
 	 *
 	 * @var array   $form
+	 *
+	 * @since       0.9.1
 	 */
 	protected $form;
 
@@ -52,6 +57,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold selected item
 	 *
 	 * @var object   $item
+	 *
+	 * @since       0.9.1
 	 */
 	protected $item;
 
@@ -59,6 +66,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
@@ -66,6 +75,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold can do properties
 	 *
 	 * @var array $canDo
+	 *
+	 * @since       0.9.1
 	 */
 	public $canDo;
 
@@ -73,6 +84,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
 	 */
 	public $queueEntries;
 
@@ -80,6 +93,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold params
 	 *
 	 * @var object $params
+	 *
+	 * @since       0.9.1
 	 */
 	public $params;
 
@@ -87,6 +102,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold content_exists
 	 *
 	 * @var boolean $content_exists
+	 *
+	 * @since       0.9.1
 	 */
 	public $content_exists;
 
@@ -94,6 +111,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold selected_content_old
 	 *
 	 * @var string $selected_content_old
+	 *
+	 * @since       0.9.1
 	 */
 	public $selected_content_old;
 
@@ -101,6 +120,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold old id of template
 	 *
 	 * @var boolean $template_id_old
+	 *
+	 * @since       0.9.1
 	 */
 	public $template_id_old;
 
@@ -108,6 +129,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to old id of text template
 	 *
 	 * @var boolean $text_template_id_old
+	 *
+	 * @since       0.9.1
 	 */
 	public $text_template_id_old;
 
@@ -117,6 +140,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl=null)
 	{
@@ -181,6 +206,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{

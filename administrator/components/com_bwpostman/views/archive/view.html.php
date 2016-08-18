@@ -37,7 +37,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * BwPostman Archive View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Archive
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewArchive extends JViewLegacy
 {
@@ -45,6 +48,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold selected items
 	 *
 	 * @var array   $items
+	 *
+	 * @since       0.9.1
 	 */
 	protected $items;
 
@@ -52,6 +57,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold pagination object
 	 *
 	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
 	 */
 	protected $pagination;
 
@@ -59,6 +66,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
@@ -66,13 +75,17 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold filter form
 	 *
 	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
 	 */
 	public $filterForm;
 
 	/**
-	 * property to hold sactive filters
+	 * property to hold active filters
 	 *
 	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
 	 */
 	public $activeFilters;
 
@@ -80,6 +93,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold request url
 	 *
 	 * @var string $request_url
+	 *
+	 * @since       0.9.1
 	 */
 	public $request_url;
 
@@ -87,6 +102,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
 	 */
 	public $sidebar;
 
@@ -98,6 +115,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * @param	string $tpl Template
 	 *
 	 * @return void
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
@@ -134,6 +153,7 @@ class BwPostmanViewArchive extends JViewLegacy
 	/**
 	 * Add the page title, submenu and toolbar.
 	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{

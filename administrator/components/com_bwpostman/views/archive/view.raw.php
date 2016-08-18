@@ -34,7 +34,10 @@ jimport('joomla.application.component.view');
  * BwPostman Archive RAW View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Archive
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewArchive extends JViewLegacy
 {
@@ -42,6 +45,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold subscriber object
 	 *
 	 * @var object  $sub
+	 *
+	 * @since       0.9.1
 	 */
 	protected $sub;
 
@@ -49,6 +54,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold campaign object
 	 *
 	 * @var object  $cam
+	 *
+	 * @since       0.9.1
 	 */
 	protected $cam;
 
@@ -56,6 +63,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * property to hold mailinglist object
 	 *
 	 * @var object  $ml
+	 *
+	 * @since       0.9.1
 	 */
 	protected $ml;
 
@@ -65,6 +74,8 @@ class BwPostmanViewArchive extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display ($tpl = Null)
 	{

@@ -38,7 +38,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman templates View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	templates
+ *
+ * @since       1.1.0
  */
 class BwPostmanViewTemplates extends JViewLegacy
 {
@@ -46,6 +49,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 * property to hold selected items
 	 *
 	 * @var array   $items
+	 *
+	 * @since       1.1.0
 	 */
 	protected $items;
 
@@ -53,6 +58,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 * property to hold pagination object
 	 *
 	 * @var object  $pagination
+	 *
+	 * @since       1.1.0
 	 */
 	protected $pagination;
 
@@ -60,6 +67,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       1.1.0
 	 */
 	protected $state;
 
@@ -67,13 +76,17 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 * property to hold filter form
 	 *
 	 * @var object  $filterForm
+	 *
+	 * @since       1.1.0
 	 */
 	public $filterForm;
 
 	/**
-	 * property to hold sactive filters
+	 * property to hold active filters
 	 *
 	 * @var object  $activeFilters
+	 *
+	 * @since       1.1.0
 	 */
 	public $activeFilters;
 
@@ -81,6 +94,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 * property to hold total value
 	 *
 	 * @var string $total
+	 *
+	 * @since       1.1.0
 	 */
 	public $total;
 
@@ -88,6 +103,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
+	 *
+	 * @since       1.1.0
 	 */
 	public $sidebar;
 
@@ -134,6 +151,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 	/**
 	 * Add the page title, submenu and toolbar.
 	 *
+	 * @since       1.1.0
 	 */
 	protected function addToolbar()
 	{
@@ -197,7 +215,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 					JToolbarHelper::checkin('templates.checkin');
 					JToolbarHelper::divider();
 				}
-				// templateupload
+				// template upload
 				if ($canDo->get('bwpm.create'))
 				{
 					$bar = JToolbar::getInstance('toolbar');

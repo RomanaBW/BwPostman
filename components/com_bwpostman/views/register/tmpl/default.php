@@ -48,7 +48,7 @@ function checkRegisterForm() {
 	var n =	arrCB.length;
 	var check = 0;
 
-	// Valdiate input fields
+	// Validate input fields
   // firstname
 	if (document.bwp_com_form.firstname)
 	{

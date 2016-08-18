@@ -38,7 +38,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman Subscriber View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewSubscriber extends JViewLegacy
 {
@@ -46,6 +49,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold form data
 	 *
 	 * @var array   $form
+	 *
+	 * @since       0.9.1
 	 */
 	protected $form;
 
@@ -53,6 +58,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold selected item
 	 *
 	 * @var object   $item
+	 *
+	 * @since       0.9.1
 	 */
 	protected $item;
 
@@ -60,6 +67,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold row object
 	 *
 	 * @var object   $row
+	 *
+	 * @since       0.9.1
 	 */
 	protected $row;
 
@@ -67,6 +76,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
@@ -74,6 +85,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold obligation values
 	 *
 	 * @var array   $obligation
+	 *
+	 * @since       0.9.1
 	 */
 	protected $obligation;
 
@@ -81,6 +94,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold queue entries
 	 *
 	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
 	 */
 	public $queueEntries;
 
@@ -88,6 +103,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold template
 	 *
 	 * @var boolean $template
+	 *
+	 * @since       0.9.1
 	 */
 	public $template;
 
@@ -95,6 +112,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold can do properties
 	 *
 	 * @var array $canDo
+	 *
+	 * @since       0.9.1
 	 */
 	public $canDo;
 
@@ -102,6 +121,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold import
 	 *
 	 * @var array $import
+	 *
+	 * @since       0.9.1
 	 */
 	public $import;
 
@@ -109,6 +130,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold lists
 	 *
 	 * @var array $lists
+	 *
+	 * @since       0.9.1
 	 */
 	public $lists;
 
@@ -116,6 +139,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold request url
 	 *
 	 * @var string $request_url
+	 *
+	 * @since       0.9.1
 	 */
 	public $request_url;
 
@@ -123,6 +148,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold raw format of request url
 	 *
 	 * @var string $request_url_raw
+	 *
+	 * @since       0.9.1
 	 */
 	public $request_url_raw;
 
@@ -130,6 +157,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold result
 	 *
 	 * @var string $result
+	 *
+	 * @since       0.9.1
 	 */
 	public $result;
 
@@ -139,6 +168,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl=null)
 	{
@@ -163,7 +194,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				break;
 			case 'edit':
 			default:
-				// get templatename
+				// get template name
 				$this->template	= $app->getTemplate();
 
 				// Get the data from the model
@@ -213,6 +244,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * View Import Forms
 	 *
 	 * @access	private
+	 *
+	 * @since       0.9.1
 	 */
 	private function _displayImportForm()
 	{
@@ -286,6 +319,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * View Export Form
 	 *
 	 * @access	private
+	 *
+	 * @since       0.9.1
 	 */
 	private function _displayExportForm()
 	{
@@ -317,6 +352,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 *
 	 * @access	private
 	 * @param 	string $tpl Template
+	 *
+	 * @since       0.9.1
 	 */
 	private function _displayValidationForm($tpl)
 	{
@@ -353,6 +390,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
+	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{

@@ -11,7 +11,7 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 	// Get the selected content from the form and store it into an array
 	var selected_content_newArray = [];
 	for (var i=0; i<selected_content_new.options.length; i++) {
-		
+
 		var o = selected_content_new.options[i];
 		o.selected = true;
 		selected_content_newArray[i] = o.value;
@@ -41,7 +41,7 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 	if (content_exists.value == 1) {
 
 		// Check the number of entries and compare them
-		if (selected_content_newArray.length != selected_content_oldArray.length) { // The lenghts of the arrays are not equal
+		if (selected_content_newArray.length != selected_content_oldArray.length) { // The lengths of the arrays are not equal
 			confirmAddContent = confirm(text_confirm_content);
 			if (confirmAddContent == true) {
 				if (selected_content_new.options.length == 0) {
@@ -52,13 +52,13 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 					document.adminForm.add_content.value = 1;
 				}
 				return true;
-			} 
+			}
 			else {
 				document.adminForm.add_content.value = 0;
 				return false;
-			} 
-		} 
-		else { // The lenghts of the arrays are equal
+			}
+		}
+		else { // The lengths of the arrays are equal
 
 			// Method to check if template_id changed
 			if (template_id != template_id_old.value) { // The values are not equal
@@ -96,7 +96,7 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 					return false;
 				}
 			}
-		
+
 			// Compare the entries of the arrays
 			for (var j=0; j<selected_content_newArray.length; j++) {
 
@@ -105,12 +105,11 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 					if (confirmAddContent == true) {
 						document.adminForm.add_content.value = 1;
 						return true;
-					} 
+					}
 					else {
 						document.adminForm.add_content.value = 0;
 						return false;
 					}
-					return;
 				}
 			}
 			// The values of both arrays are equal, so we doesn't have to do anything
@@ -123,7 +122,7 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 			}
 			return true;
 		}
-	} 
+	}
 	else { // There is no selected content and no old html- or text-version, but may be possibly new entered data in html- or text-editor, so let's save, model will check for content
 		// no content selected
 		document.adminForm.add_content.value = -1;
@@ -140,55 +139,55 @@ function checkSelectedRecipients (ml_available, ml_unavailable, ml_intern, userg
 		if (ml_available[i].checked == true) {
 			count_selected++;
 		}
-	}	
+	}
 
 	for (var i=0; i<ml_unavailable.length; i++) {
 		if (ml_unavailable[i].checked == true) {
 			count_selected++;
 		}
-	}	
+	}
 
 	for (var i=0; i<ml_intern.length; i++) {
 		if (ml_intern[i].checked == true) {
 			count_selected++;
 		}
-	}	
+	}
 
 	for (var i=0; i<usergroups.length; i++) {
 		if (usergroups[i].checked == true) {
 			count_selected++;
 		}
-	}	
+	}
 
 	if (count_selected == 0) {
 		alert (message);
 		return false;
 	}
 	return true;
-}	
+}
 
 
 function addContentTag(type, field){
-	
+
 	var form = document.adminForm;
 	var tempval=eval("document.adminForm."+field+'_'+type);
 	var tempfield=eval("document.adminForm."+field);
-	
+
   	if(tempval.options[tempval.selectedIndex].value != 0) {
     	if(type == 'content') {
     		var text = '[CONTENT id="' + tempval.options[tempval.selectedIndex].value + '"]';
     	}
     	if(type == 'bookmark') {
-    		var text = '[BOOKMARK id="' + tempval.options[tempval.selectedIndex].value 
+    		var text = '[BOOKMARK id="' + tempval.options[tempval.selectedIndex].value
     					+ '" title="' + tempval.options[tempval.selectedIndex].text + '"]';
     	}
-    	
+
     	if(field == "html_message") {
     		tinyMCE.execCommand('mceInsertContent', false, text);
     	}
     	if(field == 'message' || field == 'pdf_message' || field == 'nl_content'  ) {
     		insertAtCursor(tempfield, text);
-    	}    	
+    	}
   	}
 }
 
@@ -206,7 +205,7 @@ function addAttachmentTag(){
 
 function insertAtCursor(Field, myValue) {
 	myField = document.getElementById(Field);
-	
+
   //IE support
   if (document.selection) {
     myField.focus();
@@ -230,7 +229,7 @@ function buttonClick(text, editor) {
 	jInsertEditorText(text, editor);
 }
 
-// insert placeholder at cursorposition
+// insert placeholder at cursor position
 jQuery(function($){
 	$.fn.EnableInsertAtCaret = function() {
 		$(this).on("focus", function() {
@@ -287,18 +286,18 @@ function checkSelectedOption (selectbox) { // Method to check if "All subscriber
 		if (o.selected == true) {
 			count_selected++;
 		}
-	}	
+	}
 
 	if ((selectbox.value == -1) && (count_selected > 1)) {
 		alert ("<?php echo JText::_('BWP_NL_ALL_SELECTED' , true); ?>");
 		for (var i=0; i<selectbox.options.length; i++) {
 			var o = selectbox.options[i];
 			if (o.value != -1) {
-				o.selected = false;	
+				o.selected = false;
 			}
 		}
 	}
-}	
+}
 
 
 //-------------------------------------------------------------------

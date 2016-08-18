@@ -136,8 +136,8 @@ function doAjax(data, successCallback)
 
 	structure.url = starturl;
 	structure.data = data;
-	structure.type = 'POST',
-	structure.dataType = 'json',
+	structure.type = 'POST';
+	structure.dataType = 'json';
 	jQuery.ajax(structure);
 }
 

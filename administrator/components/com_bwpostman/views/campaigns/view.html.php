@@ -37,7 +37,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * BwPostman Campaigns View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Campaigns
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewCampaigns extends JViewLegacy
 {
@@ -45,6 +48,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * property to hold selected items
 	 *
 	 * @var array   $items
+	 *
+	 * @since       0.9.1
 	 */
 	protected $items;
 
@@ -52,6 +57,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * property to hold pagination object
 	 *
 	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
 	 */
 	protected $pagination;
 
@@ -59,6 +66,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
@@ -66,13 +75,17 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * property to hold filter form
 	 *
 	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
 	 */
 	public $filterForm;
 
 	/**
-	 * property to hold sactive filters
+	 * property to hold active filters
 	 *
 	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
 	 */
 	public $activeFilters;
 
@@ -80,6 +93,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * property to hold auto nbr
 	 *
 	 * @var string $auto_nbr
+	 *
+	 * @since       0.9.1
 	 */
 	public $auto_nbr;
 
@@ -87,6 +102,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
 	 */
 	public $sidebar;
 
@@ -94,6 +111,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * property to hold total value
 	 *
 	 * @var object  $total
+	 *
+	 * @since       0.9.1
 	 */
 	public $total;
 
@@ -103,6 +122,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
@@ -145,6 +166,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	/**
 	 * Add the page title, submenu and toolbar.
 	 *
+	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{

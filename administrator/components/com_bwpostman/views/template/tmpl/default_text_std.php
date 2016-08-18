@@ -95,7 +95,7 @@ $options = array(
 			return;
 		}
 
-		// Valdiate input fields
+		// Validate input fields
 		if (form.jform_title.value == "")
 		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
@@ -300,7 +300,7 @@ $options = array(
 											<?php
 										endif;
 									endforeach;
-									// begin footerbuttons
+									// begin footer buttons
 									$i = 1;
 
 									echo '  <li><div class="clr clearfix"></div>';

@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman backend element view to select a singlenewsletter for a view in frontend.
+ * BwPostman backend element view to select a single newsletter for a view in frontend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -32,6 +32,8 @@ jimport( 'joomla.application.component.view');
 use Joomla\String\StringHelper as JStringHelper;
 /**
  * Class BwPostmanViewNewsletterelement
+ *
+ * @since       1.0.1
  */
 class BwPostmanViewNewsletterelement extends JViewLegacy
 {
@@ -39,6 +41,8 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 * property to hold selected items
 	 *
 	 * @var array   $items
+	 *
+	 * @since       1.0.1
 	 */
 	protected $items;
 
@@ -46,6 +50,8 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 * property to hold pagination object
 	 *
 	 * @var object  $pagination
+	 *
+	 * @since       1.0.1
 	 */
 	protected $pagination;
 
@@ -53,6 +59,8 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 * property to hold mailing lists
 	 *
 	 * @var array   $lists
+	 *
+	 * @since       1.0.1
 	 */
 	protected $lists;
 
@@ -60,6 +68,8 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 * property to hold user object
 	 *
 	 * @var object  $user
+	 *
+	 * @since       1.0.1
 	 */
 	protected $user;
 
@@ -67,6 +77,8 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 * property to hold request url
 	 *
 	 * @var string   $request_url
+	 *
+	 * @since       1.0.1
 	 */
 	protected $request_url;
 
@@ -76,6 +88,8 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       1.0.1
 	 */
 	public function display($tpl = null)
 	{

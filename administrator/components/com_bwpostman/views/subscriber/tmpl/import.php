@@ -87,7 +87,7 @@ $option	= $jinput->getCmd('option');
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>"><?php echo $image; ?></span>
 						</td>
 						<td>
-							<input type="checkbox" id="caption" name="caption"
+							<input type="checkbox" id="caption" name="caption" title="caption"
 								<?php if (isset ($this->import['caption'])) { if ($this->import['caption'] == 1) echo "checked"; } ?>
 							/>
 						</td>

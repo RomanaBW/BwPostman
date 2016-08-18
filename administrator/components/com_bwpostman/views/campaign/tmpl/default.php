@@ -48,7 +48,7 @@ $tab_options = array(
         description.setStyle("display", "none");
         title.addClass("closed").removeClass("open");
     }',
-    'useCookie' => 'true', // note the quotes around true, since it must be a string. But if you put false there, you must not use qoutes otherwise JHtmlBwTabs will handle it as true
+    'useCookie' => 'true', // note the quotes around true, since it must be a string. But if you put false there, you must not use quotes otherwise JHtmlBwTabs will handle it as true
 );
 
 /**
@@ -72,7 +72,7 @@ $tab_options = array(
 			return;
 		}
 
-		// Valdiate input fields
+		// Validate input fields
 		if (form.jform_title.value == "")
 		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>");

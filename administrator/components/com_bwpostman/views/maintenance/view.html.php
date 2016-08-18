@@ -38,7 +38,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman maintenance View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	CoverPage
+ *
+ * @since       1.0.1
  */
 class BwPostmanViewMaintenance extends JViewLegacy
 {
@@ -46,6 +49,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * property to hold queue entries
 	 *
 	 * @var boolean   $queueEntries
+	 *
+	 * @since       1.0.1
 	 */
 	protected $queueEntries;
 
@@ -53,6 +58,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * property to hold template object
 	 *
 	 * @var object  $template
+	 *
+	 * @since       1.0.1
 	 */
 	protected $template;
 
@@ -60,6 +67,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       1.0.1
 	 */
 	protected $state;
 
@@ -67,20 +76,26 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * property to hold filter form
 	 *
 	 * @var object  $filterForm
+	 *
+	 * @since       1.0.1
 	 */
 	public $filterForm;
 
 	/**
-	 * property to hold sactive filters
+	 * property to hold active filters
 	 *
 	 * @var object  $activeFilters
+	 *
+	 * @since       1.0.1
 	 */
 	public $activeFilters;
 
 	/**
-	 * property to hold checl res
+	 * property to hold check res
 	 *
 	 * @var string $check_res
+	 *
+	 * @since       1.0.1
 	 */
 	public $check_res;
 
@@ -88,6 +103,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
+	 *
+	 * @since       1.0.1
 	 */
 	public $sidebar;
 
@@ -95,6 +112,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * property to hold total value
 	 *
 	 * @var object  $total
+	 *
+	 * @since       1.0.1
 	 */
 	public $total;
 
@@ -106,6 +125,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * @param	string $tpl Template
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       1.0.1
 	 */
 	public function display($tpl = null)
 	{

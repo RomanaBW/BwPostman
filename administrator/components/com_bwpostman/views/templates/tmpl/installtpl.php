@@ -67,8 +67,8 @@ defined ('_JEXEC') or die ('Restricted access');
 
 		structure.url = starturl;
 		structure.data = data;
-		structure.type = 'POST',
-			structure.dataType = 'json',
+		structure.type = 'POST';
+			structure.dataType = 'json';
 			jQuery.ajax(structure);
 	}
 

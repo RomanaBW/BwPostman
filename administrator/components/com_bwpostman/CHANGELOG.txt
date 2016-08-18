@@ -286,7 +286,7 @@ Mar-Apr-2014 Romana Boldt
         + a user-defined control question
         + or a captcha with a simple math question
       in the registration form.
-- improvement: The display of the articleauthor and the creation date in the newsletter can be controlled in the options.
+- improvement: The display of the article author and the creation date in the newsletter can be controlled in the options.
 - bugfix: Minor bugs in the client-side and server-side validation of form fields has been corrected.
 
 

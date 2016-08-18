@@ -29,33 +29,41 @@ defined ('_JEXEC') or die ('Restricted access');
 
 /**
  * Class modBwPostmanHelper
+ *
+ * @since       0.9.1
  */
-class modBwPostmanHelper {
-
+class modBwPostmanHelper
+{
 	/**
 	 * Method to get the subscriber ID of the user
 	 *
 	 * @access	public
 	 *
 	 * @return 	int     $subscriberid   id of the subscriber
+	 *
+	 * @since       0.9.1
 	 */
 	public static function getSubscriberID()
 	{
 		$user 	= JFactory::getUser();
 
-		if ($user->get('guest')) { // User is guest
+		if ($user->get('guest'))
+		{ // User is guest
 			$session = JFactory::getSession();
 			$session_subscriberid = $session->get('session_subscriberid');
 
-			if(isset($session_subscriberid) && is_array($session_subscriberid)){ // A session_subscriber id exists
+			if(isset($session_subscriberid) && is_array($session_subscriberid))
+			{ // A session_subscriber id exists
 				$subscriberid = $session_subscriberid['id'];
 			}
-			else { // No session_subscriber id exists
+			else
+			{ // No session_subscriber id exists
 				$subscriberid = 0;
 			}
 		}
-		else { // User is logged in
-			$subscriberid = modBwPostmanHelper::getSubscriberIDfromUserID($user->get('id'));
+		else
+		{ // User is logged in
+			$subscriberid = modBwPostmanHelper::getSubscriberIdFromUserID($user->get('id'));
 		}
 
 		return $subscriberid;
@@ -67,26 +75,29 @@ class modBwPostmanHelper {
 	 * @access	public
 	 *
 	 * @return 	int     $itemid     menu item ID
+	 *
+	 * @since       0.9.1
 	 */
 	public static function getItemid()
 	{
-		$_db = JFactory::getDBO();
+		$_db = JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=edit'));
+		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=edit'));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 
 		$_db->setQuery($query);
 		$itemid = $_db->loadResult();
 
-		if (empty($itemid)) {
+		if (empty($itemid))
+		{
 			$query	= $_db->getQuery(true);
 
 			$query->select($_db->quoteName('id'));
 			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->Quote('index.php?option=com_bwpostman&view=register'));
+			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 			$_db->setQuery($query);
 			$itemid = $_db->loadResult();
@@ -104,22 +115,27 @@ class modBwPostmanHelper {
 	 * @param   array   $mod_mls    mailing lists to return, if set
 	 *
 	 * @return 	array   $mailinglists   array of mailing lists objects
+	 *
+	 * @since       0.9.1
 	 */
 	public static function getMailinglists($usertype, $mod_mls)
 	{
-		$_db = JFactory::getDBO();
+		$_db = JFactory::getDbo();
 
 		// if mailinglists are checked in the module parameters
-		if (isset($mod_mls)) {
+		if (isset($mod_mls))
+		{
 			$query	= $_db->getQuery(true);
 
 			$query->select('*');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $mod_mls) . ')');
 		}
-		else {
+		else
+		{
 			// no mailinglist is checked in the module parameters
-			if (empty($usertype)) {
+			if (empty($usertype))
+			{
 				// A guest shall only see mailinglists which are public
 				$query	= $_db->getQuery(true);
 
@@ -130,7 +146,8 @@ class modBwPostmanHelper {
 				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
 				$query->order($_db->quoteName('title') . 'ASC');
 			}
-			elseif ($usertype == 'Registered') {
+			elseif ($usertype == 'Registered')
+			{
 				// A registered user shall only see mailinglists which are registered or public
 				$query	= $_db->getQuery(true);
 
@@ -141,7 +158,8 @@ class modBwPostmanHelper {
 				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
 				$query->order($_db->quoteName('title') . 'ASC');
 			}
-			else {
+			else
+			{
 				// A user with a higher status than registered shall see all mailinglists
 				$query	= $_db->getQuery(true);
 
@@ -168,10 +186,12 @@ class modBwPostmanHelper {
 	 * @param 	int     $userid         Joomla! user id
 	 *
 	 * @return 	int     $subscriberid   id of subscriber
+	 *
+	 * @since       0.9.1
 	 */
-	public static function getSubscriberIDfromUserID($userid)
+	public static function getSubscriberIdFromUserID($userid)
 	{
-		$_db	= JFactory::getDBO();
+		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -193,10 +213,12 @@ class modBwPostmanHelper {
 	 * @param	int     $userid     Joomla! user id
 	 *
 	 * @return 	object  $user       user data
+	 *
+	 * @since       0.9.1
 	 */
 	public static function getUserData ($userid)
 	{
-		$_db	= JFactory::getDBO();
+		$_db	= JFactory::getDbo();
 		$id		= 0;
 		$query	= $_db->getQuery(true);
 
@@ -222,13 +244,16 @@ class modBwPostmanHelper {
 	 * @param	int     $userid     Joomla! user id
 	 *
 	 * @return string   $usertype   type of Joomla! user
+	 *
+	 * @since       0.9.1
 	 */
 	public static function getUsertype($userid)
 	{
-		$_db		= JFactory::getDBO();
+		$_db		= JFactory::getDbo();
 		$usertype	= '';
 
-		if ($userid) {
+		if ($userid)
+		{
 			$query	= $_db->getQuery(true);
 
 			$query->select($_db->quoteName('usertype'));

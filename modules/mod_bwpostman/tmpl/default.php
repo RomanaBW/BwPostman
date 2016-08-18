@@ -27,8 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
 
 require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
@@ -141,11 +141,13 @@ function checkModRegisterForm() {
 
 <div id="mod_bwpostman">
 	<?php
-	if ($n == 0) {
-		// Don't show registration form if no mailinglist is selectable ?>
-		<p class="bwp_mod_error_no_mailinglists"><?php echo addslashes(JText::_('MOD_BWPOSTMANERROR_NO_MAILINGLIST_AVAILABLE')); ?></p> <?php
-	}
-	else {
+		if ($n == 0)
+		{
+			// Don't show registration form if no mailinglist is selectable ?>
+			<p class="bwp_mod_error_no_mailinglists"><?php echo addslashes(JText::_('MOD_BWPOSTMANERROR_NO_MAILINGLIST_AVAILABLE')); ?></p> <?php
+		}
+		else
+		{
 		// Show registration form only if a mailinglist is selectable?>
 
 		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=register.save'); ?>" method="post" id="bwp_mod_form" name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
@@ -163,7 +165,8 @@ function checkModRegisterForm() {
 				endif; // End: Show pretext only if set in basic parameters
 
 
-				if ($paramsComponent->get('show_gender') == 1) {
+				if ($paramsComponent->get('show_gender') == 1)
+				{
 					// Show formfield gender only if enabled in basic parameters ?>
 					<p id="bwp_mod_form_genderformat">
 						<label id="gendermsg_mod">
@@ -221,7 +224,8 @@ function checkModRegisterForm() {
 					<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANEMAIL')); ?>" value="<?php echo $sub_email; ?>" class="inputbox input-small" maxlength="100" />
 					<span class="append-area"><i class="icon-star"></i></span>
 				</p>
-				<?php if ($paramsComponent->get('show_emailformat') == 1) {
+				<?php if ($paramsComponent->get('show_emailformat') == 1)
+				{
 					// Show formfield emailformat only if enabled in basic parameters ?>
 					<p id="bwp_mod_form_emailformat">
 						<label id="emailformatmsg_mod">
@@ -233,11 +237,13 @@ function checkModRegisterForm() {
 					</div>
 				<?php
 				}
-				else {
+				else
+				{
 					// hidden field with the default emailformat
 					?>
 					<input type="hidden" name="emailformat" value="<?php echo $paramsComponent->get('default_emailformat'); ?>" />
-				<?php }
+				<?php
+				}
 				// End emailformat
 				?>
 
@@ -245,10 +251,12 @@ function checkModRegisterForm() {
 				$n	= count($mailinglists);
 				if (($mailinglists) && ($n > 0)) :
 
-				if ($n == 1) { ?>
-					<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" /><?php
+				if ($n == 1)
+				{ ?>
+					<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>" title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" /><?php
 				}
-				else { ?>
+				else
+				{ ?>
 					<p id="bwp_mod_form_lists" class="required">
 						<?php  echo JText::_('MOD_BWPOSTMANLISTS').' <i class="icon-star"></i>'; ?>
 					</p>
@@ -256,10 +264,10 @@ function checkModRegisterForm() {
 						<?php
 							foreach ($mailinglists AS $i => $mailinglist){ ?>
 								<p class="a_mailinglist_item_<?php echo $i; ?>">
-									<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" name="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
+									<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" name="<?php echo "mailinglists[]"; ?>" title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 									<span class="mailinglist-title"><?php echo $mailinglist->title;
 									if ($paramsComponent->get('show_desc') == 1) {
-										?>:</span><br /><?php echo substr($mailinglist->description,0,$paramsComponent->get('desc_lenght')); if (strlen($mailinglist->description) > $paramsComponent->get('desc_lenght')) echo '...';
+										?>:</span><br /><?php echo substr($mailinglist->description,0,$paramsComponent->get('desc_length')); if (strlen($mailinglist->description) > $paramsComponent->get('desc_length')) echo '...';
 									}
 									else {
 										echo '</span>';
@@ -276,20 +284,24 @@ function checkModRegisterForm() {
 
 				if ($paramsComponent->get('disclaimer')) :// Show Disclaimer only if enabled in basic parameters ?>
 					<p id="bwp_mod_form_disclaimer">
-						<input type="checkbox" id="agreecheck_mod" name="agreecheck_mod" />&nbsp;
+						<input type="checkbox" id="agreecheck_mod" name="agreecheck_mod" title="agreecheck_mod"/>&nbsp;
 						<?php
-						if ($paramsComponent->get('disclaimer_selection') == 1 && $paramsComponent->get('article_id') > 0) {
+						if ($paramsComponent->get('disclaimer_selection') == 1 && $paramsComponent->get('article_id') > 0)
+						{
 							// Disclaimer article and target_blank or not
 						?>
 							<span class="bwp_mod_disclaimer"><?php echo '<a href="'.JRoute::_(ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id'))) .'"'; if ($paramsComponent->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('MOD_BWPOSTMANDISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
 						<?php
 						}
-						elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0) {
+						elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
+						{
 						// Disclaimer menu item and target_blank or not
 						?>
 							<span class="bwp_mod_disclaimer"><?php $disclaimer_link = JRoute::_('index.php?Itemid=' . $paramsComponent->get('disclaimer_menuitem')); echo '<a href="'.$disclaimer_link.'"'; if ($paramsComponent->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('MOD_BWPOSTMANDISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
-						<?php }
-						else {
+						<?php
+						}
+						else
+						{
 						// Disclaimer url and target_blank or not
 						?>
 							<span class="bwp_mod_disclaimer"><?php echo '<a href="'. $paramsComponent->get('disclaimer_link') . '"'; if ($paramsComponent->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('MOD_BWPOSTMANDISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
@@ -317,7 +329,7 @@ function checkModRegisterForm() {
 					$codeCaptcha = md5(microtime()); ?>
 					<div class="captcha">
 						<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
-						<p class="security_question_lbl"><img src="<?php echo JURI::base();?>index.php?option=com_bwpostman&view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" /></p>
+						<p class="security_question_lbl"><img src="<?php echo JUri::base();?>index.php?option=com_bwpostman&view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" /></p>
 						<p class="captcha input-append">
 							<input type="text" name="stringCaptcha" id="a_stringCaptcha" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" /> <span class="append-area"><i class="icon-star"></i></span>
 						</p>
@@ -335,7 +347,7 @@ function checkModRegisterForm() {
 			<input type="hidden" name="view" value="register" />
 			<input type="hidden" name="bwp-<?php echo $captcha; ?>" value="1" />
 
-			<?php // TODO: muss hier subscriber->id stehen oder kann das leer bleiben? ?>
+			<?php // TODO: Has subscriber->id to be here or may this remain empty? ?>
 			<!-- <input type="hidden" name="id" value="<?php echo isset($subscriber->id); ?>" /> -->
 			<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
 			<input type="hidden" name="module_title" value="<?php echo $module_title; ?>" />
@@ -345,7 +357,7 @@ function checkModRegisterForm() {
 			<input type="hidden" name="show_name_field_mod" id="show_name_field_mod" value="<?php echo $paramsComponent->get('show_name_field'); ?>" />
 			<input type="hidden" name="show_firstname_field_mod" id="show_firstname_field_mod" value="<?php echo $paramsComponent->get('show_firstname_field'); ?>" />
 			<input type="hidden" name="show_special_mod" id="show_special_mod" value="<?php echo $paramsComponent->get('show_special'); ?>" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</form>
 
 		<p id="bwp_mod_form_required">(<i class="icon-star"></i>) <?php echo JText::_('MOD_BWPOSTMANREQUIRED'); ?></p>

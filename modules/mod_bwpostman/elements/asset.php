@@ -30,13 +30,17 @@ jimport('joomla.form.formfield');
 
 /**
  * Class JFormFieldAsset
+ *
+ * @since
  */
-class JFormFieldAsset extends JFormField {
-
+class JFormFieldAsset extends JFormField
+{
 	/**
 	* property to hold type
 	*
 	* @var string
+	 *
+	* @since
 	*/
 	protected $type = 'Asset';
 
@@ -44,50 +48,52 @@ class JFormFieldAsset extends JFormField {
 	 * Method to get asset input field
 	 *
 	 * @return null
+	 *
+	 * @since
 	 */
-	protected function getInput() {
-
-	$doc = JFactory::getDocument();
-	$doc->addScriptDeclaration('
-		window.onload=display_yes_no;
-		function display_yes_no()
-		{
-			var radios = document.getElementsByName("jform[params][com_params]");
-			for (var i = 0, length = radios.length; i < length; i++) 
+	protected function getInput()
+	{
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration('
+			window.onload=display_yes_no;
+			function display_yes_no()
 			{
-				if (radios[i].checked) 
+				var radios = document.getElementsByName("jform[params][com_params]");
+				for (var i = 0, length = radios.length; i < length; i++) 
 				{
-					value = (radios[i].value);
-					break
+					if (radios[i].checked) 
+					{
+						value = (radios[i].value);
+						break
+					}
+				}
+				if (value == 1) 
+				{
+					css_Style = "none";
+				} 
+				else 
+				{
+					css_Style = "block";
+				}
+				document.getElementById("jform_params_disclaimer_menuitem").style.display=css_Style;
+				document.getElementById("jform_params_article_id_name").parentNode.parentNode.style.display=css_Style;
+				var mod_set = document.getElementsByClassName("mod_set");
+				var length1 = mod_set.length;
+				for (var i = 0; i < length1; i++) 
+				{
+					mod_set[i].style.display=css_Style;
+				}
+				if (document.getElementById("jform_params_disclaimer_menuitem_chzn")) 
+				{
+					document.getElementById("jform_params_disclaimer_menuitem_chzn").style.display=css_Style;
+				}
+				else 
+				{
+					document.getElementById("jform_params_disclaimer_menuitem").style.display=css_Style;
+					document.getElementById("jform_params_disclaimer_menuitem_chzn").style.display=css_Style;
 				}
 			}
-			if (value == 1) 
-			{
-				css_Style = "none";
-			} 
-			else 
-			{
-				css_Style = "block";
-			}
-			document.getElementById("jform_params_disclaimer_menuitem").style.display=css_Style;
-			document.getElementById("jform_params_article_id_name").parentNode.parentNode.style.display=css_Style;
-			var mod_set = document.getElementsByClassName("mod_set");
-			var length1 = mod_set.length;
-			for (var i = 0; i < length1; i++) 
-			{
-				mod_set[i].style.display=css_Style;
-			}
-			if (document.getElementById("jform_params_disclaimer_menuitem_chzn")) 
-			{
-				document.getElementById("jform_params_disclaimer_menuitem_chzn").style.display=css_Style;
-			}
-			else 
-			{
-				document.getElementById("jform_params_disclaimer_menuitem").style.display=css_Style;
-				document.getElementById("jform_params_disclaimer_menuitem_chzn").style.display=css_Style;
-			}
-		}
-	');
+		');
 
 	return null;
 	}

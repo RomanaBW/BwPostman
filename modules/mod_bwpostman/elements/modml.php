@@ -36,7 +36,7 @@ JFormHelper::loadFieldClass('checkboxes');
  * @package     Joomla.Platform
  * @subpackage  Form
  * @see         JFormFieldCheckbox
- * @since       11.1
+ * @since
  */
 class JFormFieldModMl extends JFormFieldCheckboxes
 {
@@ -44,7 +44,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 * The form field type.
 	 *
 	 * @var    string
-	 * @since  11.1
+	 * @since
 	 */
 	protected $type = 'ModMl';
 
@@ -52,7 +52,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 * Flag to tell the field to always be in multiple values mode.
 	 *
 	 * @var    boolean
-	 * @since  11.1
+	 * @since
 	 */
 	protected $forceMultiple = true;
 
@@ -61,7 +61,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since   11.1
+	 * @since
 	 */
 	protected function getLabel()
 	{
@@ -114,7 +114,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   11.1
+	 * @since
 	 */
 	protected function getInput()
 	{
@@ -143,37 +143,36 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 		$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('JFIELD_ACCESS_LABEL') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
-    $html[] = '				<tbody>';
+	    $html[] = '				<tbody>';
 
-    if (count($options) > 0) {
+	    if (count($options) > 0)
+	    {
+			foreach ($options as $i => $option)
+			{
+				// Initialize some option attributes.
+				$checked = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
+				$class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
+				$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
 
-		foreach ($options as $i => $option)
-		{
+				// Initialize some JavaScript option attributes.
+				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-			// Initialize some option attributes.
-			$checked = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
-			$class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
-			$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
-
-			// Initialize some JavaScript option attributes.
-			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-
-			$html[] = '							<tr class="row' . $i % 2 . '">';
-			$html[] = '							 <td align="center">' . JText::_($option->value) . '</td>';
-			$html[] = '              <td><input type="checkbox" id="cb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/></td>';
-			$html[] = '							 <td>' . JText::_($option->text) . '</td>';
-			$html[] = '							 <td>' . JText::_($option->description) . '</td>';
-			$html[] = '							 <td align="center">' . JHTML::_('jgrid.published', $option->published, $i, 'mailinglists.', '', '') . '</td>';
-			$html[] = '							 <td>' . JText::_($option->access_level) . '</td>';
-			$html[] = '						  </tr>';
-
-		}
-
-    } else {
-			$html[] = '							<tr class="row1">';
-			$html[] = '								<td colspan="6"><strong>'. JText::_('MOD_BWPOSTMAN_NO_ML').'</strong></td>';
-			$html[] = '							</tr>';
-    }
+				$html[] = '							<tr class="row' . $i % 2 . '">';
+				$html[] = '							 <td align="center">' . JText::_($option->value) . '</td>';
+				$html[] = '              <td><input type="checkbox" id="cb'  . $i . '" name="' . $this->name . '" ' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
+				$html[] = '							 <td>' . JText::_($option->text) . '</td>';
+				$html[] = '							 <td>' . JText::_($option->description) . '</td>';
+				$html[] = '							 <td align="center">' . JHtml::_('jgrid.published', $option->published, $i, 'mailinglists.', '', '') . '</td>';
+				$html[] = '							 <td>' . JText::_($option->access_level) . '</td>';
+				$html[] = '						  </tr>';
+			}
+	    }
+	    else
+	    {
+				$html[] = '							<tr class="row1">';
+				$html[] = '								<td colspan="6"><strong>'. JText::_('MOD_BWPOSTMAN_NO_ML').'</strong></td>';
+				$html[] = '							</tr>';
+	    }
 		$html[] = '				</tbody>';
 		$html[] = '     </table>';
 		$html[] = '    </div>';
@@ -189,7 +188,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 *
 	 * @return  array  The field option objects.
 	 *
-	 * @since   11.1
+	 * @since
 	 */
 	protected function getOptions()
 	{

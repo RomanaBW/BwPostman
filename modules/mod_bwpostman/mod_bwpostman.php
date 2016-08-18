@@ -36,10 +36,12 @@ $document	= JFactory::getDocument();
 $module     = JModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
-if (is_file(JPATH_ADMINISTRATOR.'/components/com_bwpostman/bwpostman.php')) {
+if (is_file(JPATH_ADMINISTRATOR.'/components/com_bwpostman/bwpostman.php'))
+{
 	require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/helper.php');
 }
-else {
+else
+{
 	$app->enqueueMessage(JText::_('MOD_BWPOSTMANERROR_COMPONENT_NOT_INSTALLED'), 'error');
 	return false;
 }
@@ -49,15 +51,18 @@ else {
 $templateName	= $app->getTemplate();
 $css_filename	= '/templates/' . $templateName . '/css/mod_bwpostman.css';
 
-$document->addStyleSheet(JURI::root(true) . '/modules/mod_bwpostman/css/bwpostman.css');
-if (file_exists(JPATH_BASE . $css_filename)) {
-	$document->addStyleSheet(JURI::root(true) . $css_filename);
+$document->addStyleSheet(JUri::root(true) . '/modules/mod_bwpostman/css/bwpostman.css');
+if (file_exists(JPATH_BASE . $css_filename))
+{
+	$document->addStyleSheet(JUri::root(true) . $css_filename);
 }
 
-if (!JComponentHelper::isEnabled('com_bwpostman', true)) {
+if (!JComponentHelper::isEnabled('com_bwpostman'))
+{
 	$app->enqueueMessage(JText::_('Module requires the com_bwpostman component'), 'error');
 }
-else {
+else
+{
 	$user		= JFactory::getUser();
 	$userid		= $user->get('id');
 	$usertype	= '';
@@ -66,22 +71,26 @@ else {
 	$captcha		= BwPostmanHelper::getCaptcha(1);
 
 	// use module or component parameters
-	if ($params->get('com_params') == 0) {
-		// Moduleparams
+	if ($params->get('com_params') == 0)
+	{
+		// Module params
 		$paramsComponent = $params;
 		$module_title   = $module->title;
 	}
-	else {
+	else
+	{
 		// Get the parameters of the component
 		// --> we need these parameters because we have to ensure that both the component and the module will work with the same settings
 		$paramsComponent = $app->getPageParameters('com_bwpostman');
 		$module_title   = '';
 	}
 
-	if ($subscriberid) {
+	if ($subscriberid)
+	{
 		$layout = "_linktocomponent";
 	}
-	else {
+	else
+	{
 		$layout = "default";
 
 		if ($userid > 0) $subscriber = modBwPostmanHelper::getUserData($userid);
@@ -91,6 +100,7 @@ else {
 
 		$emailformat 	= '<fieldset id="edit_mailformat" class="radio btn-group">';
 		$emailformat		.= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
+
 		if(!$mailformat_selected)
 		{
 			$emailformat .= 'checked="checked"';
@@ -98,6 +108,7 @@ else {
 		$emailformat     .= '/>';
 		$emailformat		.= '<label for="formatTextMod"><span>'. JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat     .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
+
 		if($mailformat_selected)
 		{
 			$emailformat .= 'checked="checked"';
@@ -112,6 +123,7 @@ else {
 
 		$gender 	= '<fieldset id="edit_gender" class="radio btn-group">';
 		$gender		.= '<input type="radio" name="a_gender" id="genMaleMod" value="0"';
+
 		if(!$gender_selected)
 		{
 			$gender .= 'checked="checked"';
@@ -119,6 +131,7 @@ else {
 		$gender     .= '/>';
 		$gender		.= '<label for="genMaleMod"><span>'. JText::_('MOD_BWPOSTMAN_MALE') . '</span></label>';
 		$gender     .= '<input type="radio" name="a_gender" id="genFemaleMod" value="1"';
+
 		if($gender_selected)
 		{
 			$gender .= 'checked="checked"';
@@ -142,12 +155,14 @@ else {
 		// Build the mailinglist select list
 		$available_mailinglists	= array();
 		// only when count($mailinglists) > 0
-		if ($n > 0) {
-			foreach ($mailinglists AS $mailinglist) {
-				$available_mailinglists[] = JHTML::_('select.option', $mailinglist->id, $mailinglist->title .':<br />'.$mailinglist->description);
+		if ($n > 0)
+		{
+			foreach ($mailinglists AS $mailinglist)
+			{
+				$available_mailinglists[] = JHtml::_('select.option', $mailinglist->id, $mailinglist->title .':<br />'.$mailinglist->description);
 			}
 		}
-		$lists['list']	= JHTML::_('select.genericlist', $available_mailinglists, 'list[]', 'class="inputbox" size="'.$n.'" multiple="multiple" style="padding: 6px; width: 150px;"', 'value', 'text');
+		$lists['list']	= JHtml::_('select.genericlist', $available_mailinglists, 'list[]', 'class="inputbox" size="'.$n.'" multiple="multiple" style="padding: 6px; width: 150px;"', 'value', 'text');
 	}
 
 	$itemid = modBwPostmanHelper::getItemID();

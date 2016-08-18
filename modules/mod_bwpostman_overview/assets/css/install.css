@@ -1,5 +1,5 @@
 /**
- * BwPostman Newsletter Overview Modul
+ * BwPostman Newsletter Overview Module
  *
  * BwPostman CSS-styles for installation.
  *
@@ -83,7 +83,6 @@ div.top_line {
 }
 
 .mod_bwp_install_specialnote {
-/*	background: rgba(180, 90, 0, 0.2);*/
 	border-radius: 5px;
 	border: rgba(180, 90, 0, 1) 3px solid;
 	margin: 0 0 2em 0;
@@ -92,7 +91,6 @@ div.top_line {
 }
 
 .mod_bwp_install_updateinfo {
-/*	background: rgba(0, 90, 0, 0.2);*/
 	border-radius: 5px;
 	border: rgba(00, 90, 0, 1) 1px solid;
 	margin: 0 0 2em 0;

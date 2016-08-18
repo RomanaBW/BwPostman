@@ -169,8 +169,8 @@ only version number set according to component (bugfix in component)
 --- version 0.9.8 released (Apr-09-2014)----
 
 Apr-9-2014 Romana Boldt
-- integrate question and captcha formfields
-- integrate spamprotection
+- integrate question and captcha form fields
+- integrate spam protection
 - some smaller internal changes in code
 
 

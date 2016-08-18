@@ -23,10 +23,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
  // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+
 /**
  * Script file of BwTimeControl plugin
  */
@@ -38,7 +38,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
   *
   * @return void
   */
-  function install($parent) 
+  function install($parent)
   {
     $this->showFinished(false);
   }
@@ -49,22 +49,22 @@ class plgBwpostmanBwtimecontrolInstallerScript
   *
   * @return void
   */
-  function uninstall($parent) 
+  function uninstall($parent)
   {
 		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
   }
- 
+
   /**
   * Method to update the extension
   * $parent is the class calling this method
   *
   * @return void
   */
-  function update($parent) 
+  function update($parent)
   {
 		$this->showFinished(true);
   }
- 
+
   /**
   * Method to run before an install/update/uninstall method
   * $parent is the class calling this method
@@ -72,15 +72,15 @@ class plgBwpostmanBwtimecontrolInstallerScript
   *
   * @return void
   */
-  function preflight($type, $parent) 
+  function preflight($type, $parent)
   {
 		$app 		= JFactory::getApplication ();
 		$jversion	= new JVersion();
 		$jInstall	= new JInstaller('plg_bwpostman_bwtimecontrol');
-		
+
 		// Get component manifest file version
 		$this->release = $parent->get("manifest")->version;
-		
+
 		// Manifest file minimum Joomla version
 		$this->minimum_joomla_release = $parent->get("manifest")->attributes()->version;
 
@@ -89,25 +89,25 @@ class plgBwpostmanBwtimecontrolInstallerScript
 			$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_INSTALL_ERROR_JVERSION', $this->minimum_joomla_release), 'error');
 			return false;
 		}
-		
+
 		if(floatval(phpversion()) < 5)
 		{
 			$app->enqueueMessage(JText::_('BWPOSTMAN_USES_PHP5'), 'error');
 			return false;
 		}
-		
+
 		// abort if the component being installed is not newer than the currently installed version
 		if ($type == 'update') {
 			$oldRelease = $this->getManifestVar('version');
 			$app->setUserState('PLG_BWPOSTMAN.update.oldRelease', $oldRelease);
-			
+
 			if (version_compare( $this->release, $oldRelease, 'lt')) {
 				$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_INSTALL_ERROR_INCORRECT_VERSION_SEQUENCE', $oldRelease, $this->release), 'error');
 				return false;
 			}
 		}
   }
- 
+
   /**
   * Method to run after an install/update/uninstall method
   * $parent is the class calling this method
@@ -115,7 +115,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
   *
   * @return void
   */
-  function postflight($type, $parent) 
+  function postflight($type, $parent)
   {
   }
 
@@ -125,21 +125,21 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	private function getManifestVar($name) {
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('PLG_BWPOSTMAN_BWTIMECONTROL'));
 		$db->SetQuery($query);
-		
+
 		$manifest = json_decode($db->loadResult(), true);
 		return $manifest[$name];
 	}
- 
+
   /*
 	 * shows the HTML after installation/update
 	 */
 	public function showFinished($update){
-    
+
 		$lang = JFactory::getLanguage();
 		//Load first english files
 		$lang->load('plg_bwpostman_bwtimecontrol.sys',JPATH_ADMINISTRATOR,'en_GB',true);
@@ -148,7 +148,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		//load specific language
 		$lang->load('plg_bwpostman_bwtimecontrol.sys',JPATH_ADMINISTRATOR,null,true);
 		$lang->load('plg_bwpostman_bwtimecontrol',JPATH_ADMINISTRATOR,null,true);
-		
+
 		$show_update	= false;
 		$show_right		= false;
 		$release		= str_replace('.', '-', $this->release);
@@ -171,7 +171,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		$string_new			= JText::_('PLG_BWPOSTMAN_INSTALLATION_UPDATE_NEW_DESC');
 		$string_improvement	= JText::_('PLG_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
 		$string_bugfix		= JText::_('PLG_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_DESC');
-		
+
 		if (($string_bugfix != '' || $string_improvement != '' || $string_new != '') && $update) {
 			$show_update	= true;
 		}
@@ -179,9 +179,9 @@ class plgBwpostmanBwtimecontrolInstallerScript
 			$show_right	= true;
 		}
 		?>
-		
+
 <link rel="stylesheet" href="../plugins/bwpostman/bwtimecontrol/assets/css/install.css" type="text/css" />
-		
+
 <div id="plg_bwp_install_header">
 	<a href="http://www.boldt-webservice.de" target="_blank">
 		<img border="0" align="center" src="../plugins/bwpostman/bwtimecontrol/assets/images/bw_header.png" alt="Boldt Webservice" />
@@ -245,7 +245,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 					</div>
 				</div>
 			<?php }?>
-			
+
 			<?php if ($show_update) { ?>
 				<div class="plg_bwp_install_updateinfo">
 					<h2><?php echo JText::_('PLG_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
@@ -267,7 +267,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		else { ?>
 			<div class="cpanel">
 				<div class="icon" >
-					<a href="<?php echo JROUTE::_('index.php?option=com_plugins&amp;filter_search=timecontrol&amp;token='.JUtility::getToken()); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_plugins&amp;filter_search=timecontrol&amp;token='.JUtility::getToken()); ?>">
             <img alt="<?php echo JText::_('PLG_BWPOSTMAN_INSTALL_GO_PLUGINS'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-bwpostman.png">
 						<span><?php echo JText::_('PLG_BWPOSTMAN_INSTALL_GO_PLUGINS'); ?></span>
 					</a>
@@ -288,7 +288,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		<?php } ?>
 	</div>
 	<div class="clr"></div>
-	
+
 	<div class="plg_bwp_install_footer">
 		<p class="small"><?php echo JText::_('&copy; 2013-'); echo date (" Y")?> by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
 	</div>

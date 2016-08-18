@@ -35,11 +35,15 @@ require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanModelRegister
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelRegister extends JModelAdmin
 {
 	/**
 	 * Constructor
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -98,6 +102,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return	mixed	A JForm object on success, false on failure
+	 *
 	 * @since	1.0.1
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -110,6 +115,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	int menu item ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function getItemid()
 	{
@@ -143,6 +150,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param 	string $email   user email
 	 *
 	 * @return 	int     $uid    user ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function isRegUser ($email)
 	{
@@ -176,6 +185,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param 	string  $email  subscriber email
 	 *
 	 * @return 	int     $id     subscriber ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function isRegSubscriber ($email)
 	{
@@ -255,6 +266,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param 	int     $pks        subscriber ID
 	 *
 	 * @return 	Boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function delete(&$pks = null)
 	{
@@ -294,6 +307,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param 	string $activation_ip   IP used for activation
 	 *
 	 * @return 	Boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function activateSubscriber($activation, &$ret_err_msg, &$ret_editlink, $activation_ip)
 	{
@@ -372,7 +387,10 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param 	string $editlink
 	 * @param 	string $email
 	 * @param 	string $ret_err_msg     error message
+	 *
 	 * @return 	Boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function unsubscribe ($editlink, $email, &$ret_err_msg)
 	{
@@ -425,6 +443,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param 	int		$subscriber_id      subscriber id
 	 *
 	 * @return 	Boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function sendActivationNotification($subscriber_id)
 	{
@@ -558,6 +578,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * Method to create the activation and check if the sting does not exist twice or more
 	 *
 	 * @return string   $activation
+	 *
+	 * @since       0.9.1
 	 */
 	private function _createActivation()
 	{
@@ -603,6 +625,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * Method to create the editlink and check if the sting does not exist twice or more
 	 *
 	 * @return string   $editlink
+	 *
+	 * @since       0.9.1
 	 */
 	private function _createEditlink()
 	{

@@ -32,6 +32,8 @@ jimport('joomla.application.component.modelitem');
 
 /**
  * Class BwPostmanModelNewsletter
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelNewsletter extends JModelItem
 {

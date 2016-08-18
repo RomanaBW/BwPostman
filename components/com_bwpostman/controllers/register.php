@@ -40,6 +40,8 @@ require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanControllerRegister
+ *
+ * @since       2.0.0
  */
 class BwPostmanControllerRegister extends JControllerLegacy
 {
@@ -48,6 +50,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * Subscriber ID
 	 *
 	 * @var int
+	 *
+	 * @since       2.0.0
 	 */
 	var $_subscriberid;
 
@@ -55,6 +59,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * User ID in subscriber-table
 	 *
 	 * @var int
+	 *
+	 * @since       2.0.0
 	 */
 	var $_userid;
 
@@ -63,6 +69,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * Checks the session variables and deletes them if necessary
 	 * Sets the userid and subscriberid
 	 * Checks if something is wrong with the subscriber-data (not activated/blocked)
+	 *
+	 * @since       2.0.0
 	 */
 	public function __construct()
 	{
@@ -76,6 +84,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return void
+	 *
+	 * @since       2.0.0
 	 */
 /*	public function display($cachable = false, $urlparams = false)
 	{
@@ -260,6 +270,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * Method to activate an account via the activation link
 	 *
 	 * @access public
+	 *
+	 * @since       2.0.0
 	 */
 	public function activate()
 	{
@@ -313,6 +325,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * --> is needed if someone forgot the activation link
 	 *
 	 * @access public
+	 *
+	 * @since       2.0.0
 	 */
 	public function sendActivation()
 	{

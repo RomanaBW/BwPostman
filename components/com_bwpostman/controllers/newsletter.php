@@ -36,7 +36,9 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException
 
 
 /**
- * Class BwPostmanController
+ * Class BwPostmanControllerNewsletter
+ *
+ * @since       2.0.0
  */
 class BwPostmanControllerNewsletter extends JControllerLegacy
 {
@@ -48,6 +50,8 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 	 * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return void
+	 *
+	 * @since       2.0.0
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

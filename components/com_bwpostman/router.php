@@ -34,6 +34,8 @@ defined ('_JEXEC') or die ('Restricted access');
  * @param $query
  *
  * @return array
+ *
+ * @since
  */
 function BwPostmanBuildRoute(&$query)
 {
@@ -61,13 +63,15 @@ function BwPostmanBuildRoute(&$query)
 }
 
 /**
- * Methode to decode SEF URI segments for BwPostman
+ * Method to decode SEF URI segments for BwPostman
  *
  * @access 	public
  *
  * @param 	array $segments     SEF URI segments array
  *
  * @return 	array $vars         associative array
+ *
+ * @since
  */
 function BwPostmanParseRoute ($segments)
 {

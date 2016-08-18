@@ -34,6 +34,8 @@ jimport('joomla.application.component.view');
 
 /**
  * Class BwPostmanViewNewsletter
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
@@ -41,6 +43,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * Attachment enabled?
 	 *
 	 * @var    boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public $attachment_enabled = true;
 
@@ -48,6 +52,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * Page title
 	 *
 	 * @var    string
+	 *
+	 * @since       0.9.1
 	 */
 	public $page_title = true;
 
@@ -55,6 +61,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * Backlink
 	 *
 	 * @var    string
+	 *
+	 * @since       0.9.1
 	 */
 	public $backlink = true;
 
@@ -62,6 +70,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * The current newsletter
 	 *
 	 * @var    object
+	 *
+	 * @since       0.9.1
 	 */
 	public $newsletter = true;
 
@@ -69,6 +79,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * Params
 	 *
 	 * @var    object JRegistry object
+	 *
+	 * @since       0.9.1
 	 */
 	public $params = true;
 
@@ -78,6 +90,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{

@@ -34,13 +34,17 @@ jimport('joomla.application.component.view');
 
 /**
  * Class BwPostmanViewNewsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewNewsletters extends JViewLegacy
 {
 	/**
 	 * property to hold state data
 	 *
-	 * @var array   $stae
+	 * @var array   $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
@@ -48,6 +52,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold selected item
 	 *
 	 * @var object   $params
+	 *
+	 * @since       0.9.1
 	 */
 	protected $params;
 
@@ -55,6 +61,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold items
 	 *
 	 * @var array   $items
+	 *
+	 * @since       0.9.1
 	 */
 	protected $items;
 
@@ -62,6 +70,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold pagination object
 	 *
 	 * @var object  $object
+	 *
+	 * @since       0.9.1
 	 */
 	protected $pagination	= null;
 
@@ -69,6 +79,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold form object
 	 *
 	 * @var object  $form
+	 *
+	 * @since       0.9.1
 	 */
 	protected $form	= null;
 
@@ -76,6 +88,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold filter form object
 	 *
 	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
 	 */
 	protected $filterForm	= null;
 
@@ -83,6 +97,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold active filters object
 	 *
 	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
 	 */
 	protected $activeFilters	= null;
 
@@ -90,6 +106,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold mailinglists object
 	 *
 	 * @var object  $mailinglists
+	 *
+	 * @since       0.9.1
 	 */
 	protected $mailinglists	= null;
 
@@ -97,6 +115,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold campaigns object
 	 *
 	 * @var object  $campaigns
+	 *
+	 * @since       0.9.1
 	 */
 	protected $campaigns	= null;
 
@@ -104,6 +124,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold usergroups object
 	 *
 	 * @var object  $usergroups
+	 *
+	 * @since       0.9.1
 	 */
 	protected $usergroups	= null;
 
@@ -113,6 +135,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
@@ -182,7 +206,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		array_unshift($this->mailinglists, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
 		array_unshift($this->campaigns, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
-		array_unshift($this->usergroups, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_USEGROUPS')));
+		array_unshift($this->usergroups, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
 
 		// Because the application sets a default page title, we need to get it
 		// right from the menu item itself

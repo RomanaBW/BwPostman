@@ -35,6 +35,8 @@ jimport('joomla.application.component.helper');
 
 /**
  * Class BwPostmanModelNewsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelNewsletters extends JModelList
 {
@@ -43,6 +45,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * property to hold context
 	 *
 	 * @var string  $_context
+	 *
+	 * @since       0.9.1
 	 */
 	public $_context = 'com_bwpostman.newsletters';
 
@@ -50,6 +54,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * property to hold extension name
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	protected $_extension = 'com_bwpostman';
 
@@ -57,6 +63,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * property to hold newsletters
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	protected $_newsletters = null;
 
@@ -64,6 +72,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Newsletter id
 	 *
 	 * @var integer
+	 *
+	 * @since       0.9.1
 	 */
 	var $_id = null;
 
@@ -71,6 +81,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Newsletter data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -78,6 +90,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Number of all Newsletters which are shown
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_total = null;
 
@@ -85,6 +99,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Pagination object
 	 *
 	 * @var object
+	 *
+	 * @since       0.9.1
 	 */
 	var $_pagination = null;
 
@@ -92,12 +108,15 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Newsletter filter
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_filter = null;
 
 	/**
 	 * Constructor
 	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -154,7 +173,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	protected function populateState($ordering = NULL, $direction = NULL)
 	{
-		// Initiliase variables.
+		// Initialize variables.
 		$app	= JFactory::getApplication('site');
 		$jinput	= $app->input;
 		$pk		= $jinput->getInt('id');
@@ -252,6 +271,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @access	public
 	 *
 	 * @param	int	$id     Newsletter ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function setId($id = 0)
 	{
@@ -299,7 +320,7 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Method to get a list of newsletters.
 	 *
-	 * Overriden to inject convert the attribs field into a JParameter object.
+	 * Overridden to inject convert the attributes field into a JParameter object.
 	 *
 	 * @return	mixed	An array of objects on success, false on failure.
 	 *
@@ -613,7 +634,7 @@ class BwPostmanModelNewsletters extends JModelList
 	}
 
 	/**
-	 * Method to get all published mailing lists which the user is authorized to see and wich are selected in menu
+	 * Method to get all published mailing lists which the user is authorized to see and which are selected in menu
 	 *
 	 * @access 	public
 	 *

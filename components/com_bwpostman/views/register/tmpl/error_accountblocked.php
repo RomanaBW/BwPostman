@@ -31,8 +31,8 @@ defined ('_JEXEC') or die ('Restricted access');
 // Will be shown if
 // 1. the editlink in the uri is correct but the account is blocked
 // 2. the user has a newsletter account which is blocked
-// 3. the the newsletteraccount of a subscriber with session-stored ID is blocked
-// 4. the registration failed because the a newsletteraccount with the this email already exists, but it is blocked
+// 3. the the newsletter account of a subscriber with session-stored ID is blocked
+// 4. the registration failed because the a newsletter account with the this email already exists, but it is blocked
 ?>
 
 

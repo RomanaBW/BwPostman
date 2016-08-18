@@ -28,6 +28,8 @@ defined('_JEXEC') or die;
 
 /**
  * Class BwPostmanSubscriberHelper
+ *
+ * @since       2.0.0
  */
 class BwPostmanSubscriberHelper
 {
@@ -213,7 +215,7 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Method to process wrong or empty editlinks
+	 * Method to process wrong or empty edit links
 	 *
 	 * @access    public
 	 *
@@ -282,7 +284,7 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Method to process errors which occur if an email couldn't been send
+	 * Method to process errors which occur if an email could not been send
 	 *
 	 * @access    public
 	 *
@@ -508,7 +510,7 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Methoid to delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
+	 * Method to delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
 	 *
 	 * @param $subscriber_id
 	 *

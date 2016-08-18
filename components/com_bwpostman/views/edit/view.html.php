@@ -36,6 +36,8 @@ require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanViewEdit
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewEdit extends JViewLegacy
 {
@@ -43,6 +45,8 @@ class BwPostmanViewEdit extends JViewLegacy
 	 * The subscriber data
 	 *
 	 * @var    object
+	 *
+	 * @since       0.9.1
 	 */
 	public $subscriber = null;
 
@@ -50,6 +54,8 @@ class BwPostmanViewEdit extends JViewLegacy
 	 * several needed lists
 	 *
 	 * @var    array
+	 *
+	 * @since       0.9.1
 	 */
 	public $lists = null;
 
@@ -57,6 +63,8 @@ class BwPostmanViewEdit extends JViewLegacy
 	 * The component parameters
 	 *
 	 * @var    object   Registry object
+	 *
+	 * @since       0.9.1
 	 */
 	public $params = null;
 
@@ -66,6 +74,8 @@ class BwPostmanViewEdit extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
@@ -73,7 +83,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		$session 	    = JFactory::getSession();
 		$this->params	= JComponentHelper::getParams('com_bwpostman', true);
 
-		// If there occured an error while storing the data load the data from the session
+		// If there occurred an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');
 
 		if(isset($subscriber_data) && is_array($subscriber_data))

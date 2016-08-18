@@ -37,6 +37,8 @@ require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanViewRegister
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewRegister extends JViewLegacy
 {
@@ -44,6 +46,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * The subscriber data
 	 *
 	 * @var    object
+	 *
+	 * @since       0.9.1
 	 */
 	public $subscriber = null;
 
@@ -51,6 +55,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * several needed lists
 	 *
 	 * @var    array
+	 *
+	 * @since       0.9.1
 	 */
 	public $lists = null;
 
@@ -58,6 +64,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * The component parameters
 	 *
 	 * @var    object   Registry object
+	 *
+	 * @since       0.9.1
 	 */
 	public $params = null;
 
@@ -65,6 +73,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * The component captcha
 	 *
 	 * @var    string
+	 *
+	 * @since       0.9.1
 	 */
 	public $captcha = null;
 
@@ -72,6 +82,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * The current error object
 	 *
 	 * @var    object
+	 *
+	 * @since       0.9.1
 	 */
 	public $error = null;
 
@@ -79,6 +91,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * The current success object
 	 *
 	 * @var    object
+	 *
+	 * @since       0.9.1
 	 */
 	public $success = null;
 
@@ -88,6 +102,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl=null)
 	{
@@ -128,6 +144,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * View Error Display
 	 *
 	 * @access	private
+	 *
+	 * @since       0.9.1
 	 */
 	private function _displayError()
 	{
@@ -152,6 +170,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * View Success Display
 	 *
 	 * @access	private
+	 *
+	 * @since       0.9.1
 	 */
 	private function _displaySuccess()
 	{
@@ -173,6 +193,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 * View Default Display
 	 *
 	 * @access	private
+	 *
+	 * @since       0.9.1
 	 */
 	private function _displayDefault()
 	{

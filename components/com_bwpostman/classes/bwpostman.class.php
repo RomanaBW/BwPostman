@@ -29,11 +29,15 @@ defined ('_JEXEC') or die ('Restricted access');
 
 /**
  * Class BwPostman
+ *
+ * @since       0.9.1
  */
 class BwPostman {
 
 	/**
 	 * Method to write the BwPostman footer
+	 *
+	 * @since       0.9.1
 	 */
 	public static function footer()
 	{

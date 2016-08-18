@@ -35,6 +35,8 @@ require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanModelEdit
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelEdit extends JModelAdmin
 {
@@ -43,6 +45,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Subscriber ID
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_id;
 
@@ -50,6 +54,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * User ID in subscriber-table
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_userid;
 
@@ -57,6 +63,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Subscriber data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data;
 
@@ -64,6 +72,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Constructor
 	 * Builds object, determines the subscriber ID and the viewlevel
 	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -221,7 +230,10 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Method to reset the subscriber ID, view level and the subscriber data
 	 *
 	 * @access	public
-	 * @param	int $id     subcriber ID
+	 *
+	 * @param	int $id     subscriber ID
+	 *
+	 * @since       0.9.1
 	 */
 	protected function setData($id)
 	{
@@ -235,6 +247,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param	int     $pk 	The id of the subscriber.
 	 *
 	 * @return	mixed	Menu item data object on success, false on failure.
+	 *
+	 * @since       0.9.1
 	 */
 	public function getItem($pk = null)
 	{
@@ -282,6 +296,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param 	int		$id     subscriber ID
 	 *
 	 * @return 	string	user ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function getEmailaddress($id)
 	{
@@ -312,6 +328,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @access 	public
 	 *
 	 * @return 	string	$newActivation
+	 *
+	 * @since       0.9.1
 	 */
 	public function getActivation()
 	{
@@ -353,7 +371,10 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Method to get the menu item ID which will be needed for some links
 	 *
 	 * @access	public
+	 *
 	 * @return 	int menu item ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function getItemid()
 	{
@@ -406,6 +427,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param 	string  $editlink   to edit the subscriber data
 	 *
 	 * @return 	int subscriber ID
+	 *
+	 * @since       0.9.1
 	 */
 	public function checkEditlink ($editlink)
 	{
@@ -472,6 +495,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param $pk
 	 *
 	 * @return mixed
+	 *
+	 * @since       0.9.1
 	 */
 	private function _getMailinglistsOfSubscriber($pk)
 	{

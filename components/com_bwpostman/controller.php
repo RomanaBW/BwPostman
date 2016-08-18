@@ -33,6 +33,8 @@ jimport('joomla.application.component.controller');
 
 /**
  * Class BwPostmanController
+ *
+ * @since       0.9.1
  */
 class BwPostmanController extends JControllerLegacy
 {
@@ -41,6 +43,8 @@ class BwPostmanController extends JControllerLegacy
 	 * Checks the session variables and deletes them if necessary
 	 * Sets the userid and subscriberid
 	 * Checks if something is wrong with the subscriber-data (not activated/blocked)
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -53,7 +57,9 @@ class BwPostmanController extends JControllerLegacy
 	 * @param	boolean		$cachable	If true, the view output will be cached
 	 * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return void
+	 * @return object       $this
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

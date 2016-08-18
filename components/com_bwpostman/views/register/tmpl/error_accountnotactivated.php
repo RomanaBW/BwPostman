@@ -30,9 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 // Displays a button to send the activation code
 // Will be shown if
 // 1. the editlink in the uri is correct but the account is not activated
-// 2. the user has a newsletteraccount which is not activated
-// 3. the newsletteraccount of a subscriber with a session-stored ID is not activated
-// 4. the registration failed because a newsletteraccount with the input email already exists but is not activated
+// 2. the user has a newsletter account which is not activated
+// 3. the newsletter account of a subscriber with a session-stored ID is not activated
+// 4. the registration failed because a newsletter account with the input email already exists but is not activated
 // 5. the activation code in the uri is empty or doesn't exist in the subscribers-table
 ?>
 

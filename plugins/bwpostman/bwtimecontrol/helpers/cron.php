@@ -24,8 +24,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\Registry\Registry as Registry;
+
 /**
  * Cron handler
+ *
+ * @since  1.2.0
  */
 
 /* Get the Joomla framework */
@@ -85,13 +89,23 @@ $bwpostmancron->runCron();
  * Handles all cron requests
  *
  * @package BwPostman
+ *
+ * @since	1.2.0
  */
 class BwPostmanCron {
-	
-	/** @var $basepath string the base of the installation */
+
+	/**
+	 * @var $basepath string the base of the installation
+	 *
+	 * @since	1.2.0
+	 */
 	var $basepath = '';
-	
-	/** @var $_variables array of user set variables to override template settings */
+
+	/**
+	 * @var $_variables array of user set variables to override template settings
+	 *
+	 * @since	1.2.0
+	 */
 	protected $_variables = array();
 
 	/**
@@ -99,20 +113,16 @@ class BwPostmanCron {
 	 *
 	 * @copyright
 	 * @author 		Romana Boldt
-	 * @todo
-	 * @see
 	 * @access 		public
 	 * @param
 	 * @return
-	 * @since 		1.2.0 
+	 * @since 		1.2.0
 	 */
 	public function __construct() {
 
-		$app	= JFactory::getApplication('site');
 
 		$this->CollectVariables();
-		$user = $this->_variables['username'];
-		
+
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
 		$query->select($db->quoteName('id'));
@@ -124,7 +134,7 @@ class BwPostmanCron {
 		// Merge the default translation with the current translation
 		$lang		= JFactory::getLanguage();
 		$user		= JFactory::getUser($uid);
-		
+
 		$user_lang	= $user->getParam('admin_language');
 		$user_lang	= $user->getParam('language');
 		if (($user_lang != NULL) && ($user_lang != '')) {
@@ -133,7 +143,7 @@ class BwPostmanCron {
 		else {
 			$def_lang	= $lang->setLanguage($lang->getTag());
 		}
-		
+
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR, $lang->getTag(), true, true);
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR, $def_lang, true, true);
 
@@ -141,7 +151,7 @@ class BwPostmanCron {
 		$domainname = $this->_variables['domain'];
 		// Check for the trailing slash at the domain name
 		if (substr($domainname, -1) == '/') $domainname = substr($domainname, 0, -1);
-		
+
 		// Fill the server global with necessary information
 		$_SERVER['REQUEST_METHOD']	= 'post';
 		$_SERVER['HTTP_HOST']		= $domainname;
@@ -156,6 +166,8 @@ class BwPostmanCron {
 
 	/**
 	 * Initialise some settings
+	 *
+	 * @since  1.2.0
 	 */
 	public function runCron() {
 		// Start the clock
@@ -164,69 +176,73 @@ class BwPostmanCron {
 		// First check if we deal with a valid user
 		if ($this->Login()) {
 			// Set some global values
-			$jinput = JFactory::getApplication()->input;
-			$jfilter = new JFilterInput();
 
 			// Check if we are running cron mode and set some necessary variables
 			$_SERVER['SERVER_ADDR'] = $_SERVER['HTTP_HOST'];
 			$_SERVER['SCRIPT_NAME'] = '/index.php';
 			$_SERVER['REQUEST_URI'] = '/';
 			$_SERVER['PHP_SELF'] = '/index.php';
-			
+
 			$this->ExecuteJob();
-			
+
 			echo sprintf(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_PROCESSING_FINISHED'), date('jS F Y, g:i a'))."\n";
 			$duration = time() - $starttime;
 			if ($duration < 60) echo JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_PROCESSING_SECONDS', $duration)."\n";
 			else echo JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_PROCESSING_MINUTES', (number_format($duration/60, 2)))."\n";
-			
+
 			// Done, lets log the user out
 			$this->UserLogout();
 		}
 		else {
 			$error = JError::getError();
-			echo $error->message."\n";
+//			echo $error->message."\n";
 		}
 	}
-	
+
 	/**
 	 * Collect the variables
 	 *
-	 * Running from the command line, values needed to run the functions to send dued mails must be get from plugin options
+	 * Running from the command line, values needed to run the functions to send due mails must be get from plugin options
 	 * Here we get them from options, put them in $this->_variables so that they are available to the script
+	 *
+	 * @since  1.2.0
 	 */
 	private function CollectVariables() {
 		$plugin = JPluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
-		$params = new JRegistry($plugin->params);
-		
+		$params = new Registry($plugin->params);
+
 //										  $params->get('bwtimecontrol_minute_intval');
 		$this->_variables['username']	= $params->get('bwtimecontrol_username',null);
 		$this->_variables['password']	= $params->get('bwtimecontrol_passwd',null);
 		$this->_variables['domain']		= $params->get('bwtimecontrol_domain',null);
 //var_dump ($this->_variables);
 	}
-	
+
 	/**
 	 * Check if the user exists
+	 *
+	 * @since  1.2.0
 	 */
 	private function Login() {
 		global $app;
-		
+
 		$app = JFactory::getApplication();
 		$jfilter = new JFilterInput();
 		$credentials['username'] = $jfilter->clean($this->_variables['username'], 'username');
 		$credentials['password'] = $jfilter->clean($this->_variables['password']);
 
 		$result = $app->login($credentials, array('entry_url' => ''));
-		
+
 		if (!JError::isError($result)) {
 			return true;
 		}
 		else return false;
 	}
-	 
+
 	/**
 	 * Process the requested job
+	 *
+	 * @since  1.2.0
 	 */
 	private function ExecuteJob() {
 		$jinput = JFactory::getApplication()->input;
@@ -238,15 +254,17 @@ class BwPostmanCron {
 
 		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/bwpostman.php');
 	}
-	
+
 	/**
 	 * Log the user out
+	 *
+	 * @since  1.2.0
 	 */
 	private function UserLogout() {
 		global $app;
 		ob_start();
 		$error = $app->logout();
-		
+
 		if(JError::isError($error)) {
 			ob_end_clean();
 			echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_PROBLEM_LOGOUT_USER');
@@ -257,4 +275,4 @@ class BwPostmanCron {
 		}
 	}
 }
-?>
+

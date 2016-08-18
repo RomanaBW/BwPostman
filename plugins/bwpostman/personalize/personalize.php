@@ -28,12 +28,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 
-if (!JComponentHelper::isEnabled('com_bwpostman', true)) {
-	return JError::raiseError(JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_ERROR'), JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_COMPONENT_NOT_INSTALLED'));
+if (!JComponentHelper::isEnabled('com_bwpostman')) {
+	JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_COMPONENT_NOT_INSTALLED'), 'error');
+	return false;
 }
 
 /**
  * Class plgBwPostmanPersonalize
+ *
+ * @since       2.0.0
  */
 class plgBwPostmanPersonalize extends JPlugin
 {
@@ -42,7 +45,7 @@ class plgBwPostmanPersonalize extends JPlugin
 	 *
 	 * @var    JDatabaseDriver
 	 *
-	 * @since  1.4
+	 * @since       2.0.0
 	 */
 	protected $db;
 
@@ -51,7 +54,7 @@ class plgBwPostmanPersonalize extends JPlugin
 	 *
 	 * @var    JApplication
 	 *
-	 * @since  1.4
+	 * @since       2.0.0
 	 */
 	protected $app;
 
@@ -66,9 +69,12 @@ class plgBwPostmanPersonalize extends JPlugin
 	 * @param int       $id         subscriber ID or user ID, depends on the context
 	 *
 	 * @return bool
+	 *
+	 * @since       2.0.0
 	 */
 	public function onBwPostmanPersonalize($context= 'com_bwpostman.view', &$body = '', $id = 0)
 	{
+		$gender = null;
 		// get gender
 		if ($context == 'com_bwpostman.send') {
 			$gender = $this->_getGenderFromSubscriberId($id);
@@ -113,6 +119,8 @@ class plgBwPostmanPersonalize extends JPlugin
 	 * @param int   $id     subscriber ID
 	 *
 	 * @return int  $gender gender of subscriber
+	 *
+	 * @since       2.0.0
 	 */
 	protected function _getGenderFromSubscriberId($id)
 	{
@@ -135,6 +143,8 @@ class plgBwPostmanPersonalize extends JPlugin
 	 * @param int   $id     user ID
 	 *
 	 * @return int  $gender gender of subscriber
+	 *
+	 * @since       2.0.0
 	 */
 	protected function _getGenderFromUserId($id)
 	{
@@ -152,11 +162,13 @@ class plgBwPostmanPersonalize extends JPlugin
 	}
 
 	/**
-	 * Method to extraxt the gender related strings form the plugin string
+	 * Method to extract the gender related strings form the plugin string
 	 *
 	 * @param array $bwpm_personalize_parts
 	 *
 	 * @return array    $parts
+	 *
+	 * @since       2.0.0
 	 */
 	protected function _extractGenderStrings($bwpm_personalize_parts)
 	{
@@ -178,7 +190,7 @@ class plgBwPostmanPersonalize extends JPlugin
 				$gender_string[] = $bwpm_personalize_parts[0];
 			}
 		}
-		// if personalization paramenters are incomplete, fill with original string (do nothing)
+		// if personalization parameters are incomplete, fill with original string (do nothing)
 		while (count($gender_string) < 3)
 		{
 			$gender_string[] = $bwpm_personalize_parts[0];
@@ -188,4 +200,4 @@ class plgBwPostmanPersonalize extends JPlugin
 		return $gender_string;
 	}
 }
-?>
+

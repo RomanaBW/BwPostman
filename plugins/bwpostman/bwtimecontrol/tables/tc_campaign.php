@@ -35,65 +35,133 @@ defined ('_JEXEC') or die ('Restricted access');
  */
 class BwPostmanTableTc_Campaign extends JTable
 {
-	/** @var int Primary Key */
+	/**
+	 * @var int Primary Key
+	 *
+	 * @since       2.0.0
+	 */
 	var $tc_id = null;
 
-	/** @var int campaign_id */
+	/**
+	 * @var int campaign_id
+	 *
+	 * @since       2.0.0
+	 */
 	var $campaign_id = null;
 
-	/** @var boolean automailing */
+	/**
+	 * @var boolean automailing
+	 *
+	 * @since       2.0.0
+	 */
 	var $automailing = FALSE;
 
-	/** @var JSON encoded automailing values */
+	/**
+	 * @var string JSON encoded automailing values
+	 *
+	 * @since       2.0.0
+	 */
 	var $automailing_values = null;
 
-	/** @var boolean chaining */
+	/**
+	 * @var boolean chaining
+	 *
+	 * @since       2.0.0
+	 */
 	var $chaining = TRUE;
 
-	/** @var string mail ordering */
+	/**
+	 * @var string mail ordering
+	 *
+	 * @since       2.0.0
+	 */
 	var $mail_ordering = null;
 
-	/** @var boolean active */
+	/**
+	 * @var boolean active
+	 *
+	 * @since       2.0.0
+	 */
 	var $active = FALSE;
 
-	/** @var int Checked-out owner */
+	/**
+	 * @var int Checked-out owner
+	 *
+	 * @since       2.0.0
+	 */
 	var $checked_out = 0;
 
-	/** @var datetime Checked-out time */
+	/**
+	 * @var datetime Checked-out time
+	 *
+	 * @since       2.0.0
+	 */
 	var $checked_out_time = '0000-00-00 00:00:00';
 
-	/** @var date publish up time */
+	/**
+	 * @var string  date publish up time
+	 *
+	 * @since       2.0.0
+	 */
 	var $publish_up = '0000-00-00 00:00:00';
 
-	/** @var datetime publish down time */
+	/**
+	 * @var datetime publish down time
+	 *
+	 * @since       2.0.0
+	 */
 	var $publish_down = '0000-00-00 00:00:00';
 
-	/** @var date creation date of the newsletter */
+	/**
+	 * @var string creation date of the newsletter
+	 *
+	 * @since       2.0.0
+	 */
 	var $created = '0000-00-00 00:00:00';
-	
-	/** @var int Author */
+
+	/**
+	 * @var int Author
+	 *
+	 * @since       2.0.0
+	 */
 	var $created_by = 0;
 
-	/** @var date last modification date of the newsletter */
+	/**
+	 * @var string date last modification date of the newsletter
+	 *
+	 * @since       2.0.0
+	 */
 	var $modified = '0000-00-00 00:00:00';
-	
-	/** @var int user ID */
+
+	/**
+	 * @var int user ID
+	 *
+	 * @since       2.0.0
+	 */
 	var $modified_by = 0;
-	
-	/** @var tinyint Archive-flag --> 0 = not archived, 1 = archived */
+
+	/**
+	 * @var int Archive-flag --> 0 = not archived, 1 = archived
+	 *
+	 * @since       2.0.0
+	 */
 	var $archive_flag = 0;
 
-	/** @var datetime Archive-date */
+	/**
+	 * @var datetime Archive-date
+	 *
+	 * @since       2.0.0
+	 */
 	var $archive_date = '0000-00-00 00:00:00';
 
 	/**
 	 * Constructor
 	 *
-	 * @param 	db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
-	 * @since   1.2.0
+	 * @since       1.2.0
 	 */
-	function __construct(& $db)
+	public function __construct(& $db)
 	{
 		parent::__construct('#__bwpostman_tc_campaign', 'tc_id', $db);
 	}
@@ -102,8 +170,10 @@ class BwPostmanTableTc_Campaign extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access 	public
-	 * @param 	array Named array
-	 * @param 	string Space separated list of fields not to bind
+	 *
+	 * @param array|object  $data       Named array or object
+	 * @param 	string $ignore          Space separated list of fields not to bind
+	 *
 	 * @return 	boolean
 	 *
 	 * @since   1.2.0
@@ -130,10 +200,10 @@ class BwPostmanTableTc_Campaign extends JTable
 			$this->setError($e);
 			return false;
 		}
-				
+
 		// Cast properties
 		$this->tc_id	= (int) $this->tc_id;
-		
+
 		$result	= parent::bind($data, $ignore);
 
 		return $result;
@@ -154,7 +224,7 @@ class BwPostmanTableTc_Campaign extends JTable
 		$am_values	= json_decode ($this->automailing_values);
 		$num_rows	= count($am_values->nl_id);
 		$num_nls	= $app->getUserState('bwtimecontrol.nbr_campaign_letters', 0);
-		
+
 		// check for reasonable times
 		for ($i = 0; $i < $num_rows; $i++) {
 			// build times per row in minutes
@@ -164,16 +234,16 @@ class BwPostmanTableTc_Campaign extends JTable
 				// ...check for no selected sending time
 				if ($sum_time[$i] == 0 && $i > 0) {
 					$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_TABLEERROR_CAM_TIMECHECK1', $i+1), 'error');
-					return false; 
+					return false;
 				}
 				// ...check for unreasonable non-chained sending times
 				if ($this->chaining == 0  && $i > 0 && $sum_time[$i] <= $sum_time[$i-1]) {
 					$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_TABLEERROR_CAM_TIMECHECK4', $i+1), 'error');
 					return false;
-				} 
+				}
 			}
 		}
-		
+
 		// check for appropriate line numbers
 		if ($num_rows < $num_nls) {
 			$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_TABLEERROR_CAM_TIMECHECK6'), 'error');
@@ -199,7 +269,7 @@ class BwPostmanTableTc_Campaign extends JTable
 	{
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
-	
+
 		if ($this->tc_id)
 		{
 			// Existing mailing list

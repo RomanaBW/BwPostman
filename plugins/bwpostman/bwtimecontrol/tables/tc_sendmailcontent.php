@@ -32,63 +32,131 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the prepared data for automatic/time-controlled sending a newsletter
  *
  * @package		BwPostman BwTimeControl Plugin
+ *
+ * @since   1.2.0
  */
 class BwPostmanTableTc_Sendmailcontent extends JTable
 {
-	/** @var int Primary Key --> every ID exists twice (once for mode text, once for mode html */
+	/**
+	 * @var int Primary Key --> every ID exists twice (once for mode text, once for mode html
+	 *
+	 * @since   1.2.0
+	 */
 	var $id = null;
 
-	/** @var tinyint --> 0 = Text, 1 = HTML */
+	/**
+	 * @var int --> 0 = Text, 1 = HTML
+	 *
+	 * @since   1.2.0
+	 */
 	var $mode = null;
 
-	/** @var int Newsletter-ID */
+	/**
+	 * @var int Newsletter-ID
+	 *
+	 * @since   1.2.0
+	 */
 	var $nl_id = null;
-		
-	/** @var int Campaign-ID */
+
+	/**
+	 * @var int Campaign-ID
+	 *
+	 * @since   1.2.0
+	 */
 	var $campaign_id = null;
-		
-	/** @var int Mailnumber for Kampaign */
+
+	/**
+	 * @var int mail number for campaign
+	 *
+	 * @since   1.2.0
+	 */
 	var $mail_number = null;
-		
-	/** @var tinyint --> 0 = not sent, 1 = sent */
+
+	/**
+	 * @var int --> 0 = not sent, 1 = sent
+	 *
+	 * @since   1.2.0
+	 */
 	var $sent = null;
 
-	/** @var tinyint --> 0 = actual, 1 = old */
+	/**
+	 * @var int --> 0 = actual, 1 = old
+	 *
+	 * @since   1.2.0
+	 */
 	var $old = null;
 
-	/** @var string Sender name */
+	/**
+	 * @var string Sender name
+	 *
+	 * @since   1.2.0
+	 */
 	var $from_name = null;
 
-	/** @var string Sender email */
+	/**
+	 * @var string Sender email
+	 *
+	 * @since   1.2.0
+	 */
 	var $from_email = null;
 
-	/** @var string Subject */
+	/**
+	 * @var string Subject
+	 *
+	 * @since   1.2.0
+	 */
 	var $subject = null;
 
-	/** @var String Email-body */
+	/**
+	 * @var String Email-body
+	 *
+	 * @since   1.2.0
+	 */
 	var $body = null;
 
-	/** @var string CC email*/
+	/**
+	 * @var string CC email
+	 *
+	 * @since   1.2.0
+	 */
 	var $cc_email = null;
 
-	/** @var string BCC email */
+	/**
+	 * @var string BCC email
+	 *
+	 * @since   1.2.0
+	 */
 	var $bcc_email = null;
 
-	/** @var string Attachment */
+	/**
+	 * @var string Attachment
+	 *
+	 * @since   1.2.0
+	 */
 	var $attachment = null;
 
-	/** @var string Reply-to email */
+	/**
+	 * @var string Reply-to email
+	 *
+	 * @since   1.2.0
+	 */
 	var $reply_email = null;
 
-	/** @var string Reply-to name */
+	/**
+	 * @var string Reply-to name
+	 *
+	 * @since   1.2.0
+	 */
 	var $reply_name = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param db Database object
+	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       1.2.0
 	 */
-	function __construct($db)
+	public function __construct(& $db)
 	{
 		parent::__construct('#__bwpostman_tc_sendmailcontent', 'id', $db);
 	}
@@ -97,8 +165,10 @@ class BwPostmanTableTc_Sendmailcontent extends JTable
 	 * Overloaded bind function
 	 *
 	 * @access 	public
-	 * @param 	array Named array
-	 * @param 	string Space separated list of fields not to bind
+	 *
+	 * @param array|object  $data       Named array or object
+	 * @param 	string $ignore          Space separated list of fields not to bind
+	 *
 	 * @return 	boolean
 	 *
 	 * @since   1.2.0
@@ -125,7 +195,7 @@ class BwPostmanTableTc_Sendmailcontent extends JTable
 			$this->setError($e);
 			return false;
 		}
-				
+
 		// Cast properties
 		$this->id	= (int) $this->id;
 
@@ -166,7 +236,9 @@ class BwPostmanTableTc_Sendmailcontent extends JTable
 	 * Set reminder "sent"
 	 *
 	 * @access 	public
-	 * @param   int  ID
+	 *
+	 * @param   int  $id    ID
+	 *
 	 * @return 	boolean
 	 *
 	 * @since   1.2.0
@@ -176,15 +248,15 @@ class BwPostmanTableTc_Sendmailcontent extends JTable
 		if (!$id) return 0;
 dump ($id, 'SetSent ID');
 
-		$db = $this->getDBO();
+		$db = $this->getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->update($this->_tbl);
 		$query->set($db->quoteName('sent').' = '.$db->quote(1));
 		$query->where($db->quoteName('id').' = '.(int) $id);
 		$db->setQuery($query);
-		$db->query();
-			
+		$db->execute();
+
 		return true;
 	}
 
@@ -192,30 +264,33 @@ dump ($id, 'SetSent ID');
 	 * Overloaded load method
 	 *
 	 * @access	public
-	 * 
-	 * @param 	int 	ID
-	 * @param 	tinyint Mode (0 = Text, 1 = HTML)
+	 *
+	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.
+	 *                           If not set the instance property value is used.
+	 * @param   boolean  $reset  True to reset the default values before loading the new row.
+	 *
+	 * @return  bool    true on success
 	 *
 	 * @since   1.2.0
 	 */
-	public function load($keys = NULL, $reset = true)
+	public function load($keys = null, $reset = true)
 	{
 		if (!$keys) return 0;
-		
+
 		$mode	= JFactory::getApplication()->getUserState('bwtimecontrol.mode', false);
 		if ($mode === false) return 0;
 
-		$db		= $this->getDBO();
+		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select('*');
 		$query->from($this->_tbl);
-		$query->where('id = ' . $db->Quote($keys));
-		$query->where('mode = ' . $db->Quote($mode));
+		$query->where('id = ' . $db->quote($keys));
+		$query->where('mode = ' . $db->quote($mode));
 		$db->setQuery($query);
 
 		$result = $db->loadObject();
-		
+
 		if ($result) {
 			if ($this->bind($result)){
 				return true;
@@ -225,5 +300,6 @@ dump ($id, 'SetSent ID');
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
+		return true;
 	}
 }

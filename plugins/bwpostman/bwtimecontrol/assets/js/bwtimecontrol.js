@@ -9,10 +9,10 @@ function checkReasonableTimes(pressbutton) {
 //	 	for (var i = 0; i < nl_list.length; i++) {
 //	 		alert("NL-Titel: " + nl_list[i].title);
 //	 	}
-		
+
 	 	var chaining		= document.getElementsByName("jform[chaining]");
 	 	var chaining_val	= 1;
-	 	
+
 	 	for (var i = 0; i < chaining.length; i++) {
 	 		if (chaining[i].checked) chaining_val = chaining[i].value;
 	 	}
@@ -46,9 +46,9 @@ function checkReasonableTimes(pressbutton) {
 					alert (errobj.TC4 + (i+1) + errobj.TC5);
 				return false;
 				}
-			}	
+			}
 		}
-	
+
 //alert ("Anzahl Sum: " + arr_sum.length + '\n' + "Anzahl NL: " + nbr_nl);
 		if (nbr_nl > arr_sum.length) {
 			alert (errobj.TC6);
@@ -62,10 +62,10 @@ function checkReasonableTimes(pressbutton) {
 				document.getElementById("values").deleteRow((max_row));
 				max_row--;
 			}
-		} 
+		}
 	//	var n =	arr_nl.length;
 	//	alert ("Array-Laenge = " + n);
-		
+
 		if (arr_nl.length == 0 && document.getElementsByName("jform[automailing]")[1].checked) {
 			alert (errobj.TC3);
 			return false;
@@ -74,15 +74,15 @@ function checkReasonableTimes(pressbutton) {
 	submitform(pressbutton);
 	return;
 }
-	
-	
+
+
 function display_hidden_content()
 {
  	var automailing 	= document.getElementsByName("jform[automailing]");
  	var nbr_elements	= document.getElementsByName("hidden_content");
  	var css_Style		= "";
- 	var autimailing_val	= 1;
- 	
+ 	var automailing_val	= 1;
+
  	for (var i = 0; i < automailing.length; i++) {
  		if (automailing[i].checked) automailing_val = automailing[i].value;
  	}
@@ -99,7 +99,7 @@ function display_hidden_content()
 }
 
 
-function rowDelete (id) 
+function rowDelete (id)
 {
 //	alert("Zeilennummer: " + id);
 //	alert("NL: " + document.getElementsByName("automailing_values[nl_id][]"));
@@ -118,10 +118,10 @@ function rowInsert (intval, button_text) {
 
 	var table	= document.getElementById("values");
 	var row		= table.rows.length - 1;
-	
+
 	var nl_list	= '';
 	nl_list	= JSON.parse(nllist);
-	
+
 	var TR = document.getElementById("values").insertRow((row));
 	var classTrTyp1 = document.createAttribute("class");
 	classTrTyp1.nodeValue = "bwptable";
@@ -129,7 +129,7 @@ function rowInsert (intval, button_text) {
 	var classTrTyp2 = document.createAttribute("name");
 	classTrTyp2.nodeValue = "hidden_content";
 	TR.setAttributeNode(classTrTyp2);
-	  
+
 	var TD1 = document.createElement("td"); // first field: mailnumber
 	var classTyp1 = document.createAttribute("class");
 	classTyp1.nodeValue = "key";
@@ -147,13 +147,13 @@ function rowInsert (intval, button_text) {
 	var TD1text = document.createTextNode((row)+". Mail");
 	TD1span.appendChild(TD1text);
 	TD1.appendChild(TD1span);
-	  
+
 	var TD2 = document.createElement("td"); // second field: list day
 	var TD2SelectElement = document.createElement("select");
 	var classTyp2 = document.createAttribute("class");
 	TD2SelectElement.setAttribute('class','auto_value_day');
-	TD2SelectElement.setAttribute('name','automailing_values[day][]');  
-	TD2SelectElement.setAttribute('id','automailing_values[day][' + (row) + ']');  
+	TD2SelectElement.setAttribute('name','automailing_values[day][]');
+	TD2SelectElement.setAttribute('id','automailing_values[day][' + (row) + ']');
 	var option2;
 	for (var k = 0; k <= 31; k++) {
 		option2 = document.createElement ("option");
@@ -163,12 +163,12 @@ function rowInsert (intval, button_text) {
 		TD2SelectElement.appendChild (option2);
 	}
 	TD2.appendChild(TD2SelectElement);
-	 
+
 	var TD3 = document.createElement("td"); // third field: list hour
 	var TD3SelectElement = document.createElement("select");
 	TD3SelectElement.setAttribute('class','auto_value_hour');
-	TD3SelectElement.setAttribute('name','automailing_values[hour][]');  
-	TD3SelectElement.setAttribute('id','automailing_values[hour][' + (row) + ']');  
+	TD3SelectElement.setAttribute('name','automailing_values[hour][]');
+	TD3SelectElement.setAttribute('id','automailing_values[hour][' + (row) + ']');
 	var option3;
 	for (var k = 0; k < 24; k++) {
 		option3 = document.createElement ("option");
@@ -178,12 +178,12 @@ function rowInsert (intval, button_text) {
 		TD3SelectElement.appendChild (option3);
 	}
 	TD3.appendChild(TD3SelectElement);
-	 
-	var TD4 = document.createElement("td"); // fouth field: list minute 
+
+	var TD4 = document.createElement("td"); // fouth field: list minute
 	var TD4SelectElement = document.createElement("select");
 	TD4SelectElement.setAttribute('class','automailing_value_minute');
-	TD4SelectElement.setAttribute('name','automailing_values[minute][]');  
-	TD4SelectElement.setAttribute('id','automailing_values[minute][' + (row) + ']');  
+	TD4SelectElement.setAttribute('name','automailing_values[minute][]');
+	TD4SelectElement.setAttribute('id','automailing_values[minute][' + (row) + ']');
 	var option4;
 	for (var k = 0; k < 60; k += intval) {
 		option4 = document.createElement ("option");
@@ -193,12 +193,12 @@ function rowInsert (intval, button_text) {
 		TD4SelectElement.appendChild (option4);
 	}
 	TD4.appendChild(TD4SelectElement);
-	    
+
 	var TD5 = document.createElement("td"); // fifth field: list newsletter
 	var TD5SelectElement = document.createElement("select");
 	TD5SelectElement.setAttribute('class','auto_value_nl');
-	TD5SelectElement.setAttribute('name','automailing_values[nl_id][]');  
-	TD5SelectElement.setAttribute('id','automailing_values[nl_id][' + (row) + ']');  
+	TD5SelectElement.setAttribute('name','automailing_values[nl_id][]');
+	TD5SelectElement.setAttribute('id','automailing_values[nl_id][' + (row) + ']');
 	var option5;
 
 	for (id = 0; id < nl_list.length; id++) {
@@ -209,64 +209,64 @@ function rowInsert (intval, button_text) {
 		TD5SelectElement.appendChild (option5);
 	}
 	TD5.appendChild(TD5SelectElement);
-	    
+
 	var TD6 = document.createElement("td"); // sixth field: button apply
 
-	var TD6InputElement = document.createElement("input"); 
+	var TD6InputElement = document.createElement("input");
 	TD6InputElement.setAttribute('type','button');
 	TD6InputElement.setAttribute('class','btn btn-small btn-success');
 	TD6InputElement.setAttribute('onclick','Joomla.submitbutton("campaign.apply")');
 	TD6InputElement.setAttribute('value',button_text);
-	
+
 	TD6.appendChild(TD6InputElement);
-	  
+
 	TR.appendChild(TD1);
 	TR.appendChild(TD2);
 	TR.appendChild(TD3);
 	TR.appendChild(TD4);
 	TR.appendChild(TD5);
-	TR.appendChild(TD6);  
+	TR.appendChild(TD6);
 }
-             
+
 function checkLicenceCode(domain, licencecode){
-	
+
 	domain		= domain || '';
 	licencecode	= licencecode || '';
-	
+
 	var xmlHttpObject	= false;
 	var result			= '';
-	
+
 	// Überprüfen ob XMLHttpRequest-Klasse vorhanden und erzeugen von Objekte für IE7, Firefox, etc.
-	if (typeof XMLHttpRequest != 'undefined') 
+	if (typeof XMLHttpRequest != 'undefined')
 	{
 	    xmlHttpObject = new XMLHttpRequest();
 	}
 
 	// Wenn im oberen Block noch kein Objekt erzeugt, dann versuche XMLHTTP-Objekt zu erzeugen
 	// Notwendig für IE6 oder IE5
-	if (!xmlHttpObject) 
+	if (!xmlHttpObject)
 	{
-	    try 
+	    try
 	    {
 	        xmlHttpObject = new ActiveXObject("Msxml2.XMLHTTP");
 	    }
-	    catch(e) 
+	    catch(e)
 	    {
-	        try 
+	        try
 	        {
 	            xmlHttpObject = new ActiveXObject("Microsoft.XMLHTTP");
 	        }
-	        catch(e) 
+	        catch(e)
 	        {
 	            xmlHttpObject = null;
 	        }
 	    }
 	}
-	
+
     // Zieladresse festlegen
 //	var server_url	= 'http://www.boldt-webservice.de/index.php?option=com_bwkeygen&amp;controller=licence&amp;task=checkLicence';
 	var server_url	= 'http://www.dev3.nil/index.php?option=com_bwkeygen&amp;controller=licence&amp;task=checkLicence';
-	
+
     // Übergabe-Parameter setzen
 	var domain		= encodeURIComponent(domain);
 	var licencecode	= encodeURIComponent(licencecode);
@@ -289,8 +289,8 @@ function checkLicenceCode(domain, licencecode){
         	   alert("An error has occured making the request");
         	}
         }
-    }   
-    
+    }
+
     // Wenn Dokument geladen ausführen
  //   window.onload = function() {
         // Anfrage vorbereiten, ruft gewünschte Seite auf
@@ -298,10 +298,10 @@ function checkLicenceCode(domain, licencecode){
 
         // Request Header erstellen
         xmlHttpObject.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        
+
         // Anfrage abschicken
         xmlHttpObject.send(parameters);
-        
+
         // Handler hinterlegen
         xmlHttpObject.onreadystatechange = handleStateChange;
 //    }

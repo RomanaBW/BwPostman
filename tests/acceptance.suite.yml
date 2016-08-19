@@ -7,23 +7,29 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-#        - PhpBrowser:
-#            url: http://www.bwtest.nil
         - \Helper\Acceptance
         - WebDriver
         - Db
         - Asserts
     config:
         WebDriver:
+#                url: http://www.dev.nil
                 url: http://www.bwtest.nil
+#                url: http://www.test.nil
                 window_size: 1920x1080
-                browser: phantomjs
+#                browser: phantomjs
+#                port: 4447
+                browser: chrome
+                port: 4445
 #                browser: firefox
+#                port: 4446
                 connection_timeout: 60
                 restart: false
 
         Db:
+#            dsn: 'mysql:host=universe.bet2.nil;dbname=dev'
             dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
+#            dsn: 'mysql:host=universe.bet2.nil;dbname=test'
             user: 'root'
             password: 'Susi'
             dump: 'tests/_data/dump.sql'

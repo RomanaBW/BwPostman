@@ -7,24 +7,45 @@ namespace Page;
  * This class contains general helper properties and methods for testing back end
  *
  * @package Page
+ * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
+ * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ * @since   2.0.0
  */
 class Login
 {
     // include url of current page
     public static $url = '/administrator/index.php';
 
-    /**
+    /*
      * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
      */
 
 	public static $usernameField = 'username';
 	public static $passwordField = 'passwd';
-	public static $loginButton = 'button';
+	public static $loginButton   = 'button';
+	public static $form          = ".//*[@id='form-login']";
+	public static $loginArea     = "//*[@id='form-login']/fieldset/div[4]/div/div/button";
+// replace with following, if language selection is not shown
+//	public static $loginArea     = "//*[@id='form-login']/fieldset/div[3]/div/div/button";
 
 	/**
 	 * @var object  $tester AcceptanceTester
+	 *
+	 * @since       2.0.0
 	 */
 	protected $tester;
 
@@ -32,6 +53,8 @@ class Login
 	 * Login constructor.
 	 *
 	 * @param \AcceptanceTester $I
+	 *
+	 * @since       2.0.0
 	 */
 	public function __construct(\AcceptanceTester $I)
 	{
@@ -41,24 +64,23 @@ class Login
 	/**
 	 * Helper method to login into backend and go to component BwPostman
 	 *
-	 * @param   string  $name       user name
-	 * @param   string  $password   password
+	 * @param   array              $user           array of user name and password
 	 *
 	 * @return	object  $this
 	 *
 	 * @since  2.0.0
 	 */
-	public function loginAsAdmin($name, $password, \Page\Generals $Generals)
+	public function logIntoBackend($user)
 	{
 		$I = $this->tester;
 
 
 		$I->wantTo('log in as a backend user');
 		$I->amOnPage(self::$url);
-		$I->fillField(self::$usernameField, $name);
-		$I->fillField(self::$passwordField, $password);
+		$I->fillField(self::$usernameField, $user['user']);
+		$I->fillField(self::$passwordField, $user['password']);
 		$I->click(self::$loginButton);
-		$I->see("Control Panel", $Generals::$pageTitle);
+		$I->see(Generals::$control_panel, Generals::$pageTitle);
 
 		return $this;
 	}
@@ -66,19 +88,20 @@ class Login
 	/**
 	 * Method to logout from backend
 	 *
+	 * @param \AcceptanceTester $I
+
 	 * @return  object  $this
 	 *
 	 * @since   2.0.0
 	 */
-	public function logoutFromAdmin()
+	public function logoutFromBackend(\AcceptanceTester $I)
 	{
-		$I = $this->tester;
-
-		$I->wantTo('log out from backend');
-		$I->click("Log out");
-		$I->see("Log in", "//form[@id='form-login']/fieldset/div[4]/div/div/button");
+		$I->click(Generals::$nav_user_menu);
+		$I->click(Generals::$nav_user_menu_logout);
+//		$I->click(Generals::$logout_txt);
+		$I->waitForElement(self::$form);
+		$I->see(Generals::$login_txt, self::$loginArea);
 
 		return $this;
 	}
-
 }

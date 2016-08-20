@@ -181,7 +181,7 @@ class Com_BwPostmanInstallerScript
 			return false;
 		}
 
-		if(floatval(phpversion()) < 5)
+		if(floatval(phpversion()) < 5.3)
 		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_USES_PHP5'), 'error');
 			return false;

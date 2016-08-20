@@ -119,7 +119,7 @@ class mod_BwPostman_overviewInstallerScript
 			return false;
 		}
 
-		if(floatval(phpversion()) < 5)
+		if(floatval(phpversion()) < 5.3)
 		{
 			$app->enqueueMessage(JText::_('MOD_BWPOSTMAN_OVERVIEW_USES_PHP5'), 'error');
 			return false;

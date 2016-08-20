@@ -30,8 +30,8 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Require some classes
-require_once (JPATH_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
-require_once (JPATH_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
+require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/exceptions/BwException.php');
+require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * Class Com_BwPostmanInstallerScript

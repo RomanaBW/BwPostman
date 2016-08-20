@@ -36,17 +36,46 @@ class Acceptance extends Codeception\Module
 	{
 		return "mysql -u " . Generals::$db_user . " -p" . Generals::$db_pw . " " . Generals::$db_db . " < " . Generals::$db_data_path;
 	}
+
 	/**
 	 * Method to fill database with test data before tests are processed
 	 *
 	 * @since   2.0.0
 	 */
-	public function _beforeSuite()
+	public function _getBackupQuery()
 	{
-		$query_base = self::_getQueryBase();
+		$credentials    = $this->_getDbCredentials();
 
+		$command    = "mysqldump -u " . Generals::$db_user . " -p" . Generals::$db_pw;
+		$options    = "  --skip-add-drop-table --single-transaction ";
+		$database   = Generals::$db_db;
+		$special    = " | sed -r 's/CREATE TABLE (`[^`]+`)/TRUNCATE TABLE \\1;\\nCREATE TABLE IF NOT EXISTS \\1/g'";
+		$target     = " > " . Generals::$db_data_path;
+
+		$tables     = DbHelper::getTableNames($credentials);
+
+		$query   = $command . $options . $database . " " . $tables . $special . $target;
+
+		return $query;
+	}
+	/**
+	 * Method to fill database with test data before tests are processed
+	 *
+	 * @since   2.0.0
+	 */
+	public function _beforeSuite($I)
+	{
+		$query_base     = self::_getQueryBase();
+		$backup_query   = self::_getBackupQuery();
+
+		// connect to server
 		$connection = ssh2_connect(Generals::$ssh_server, Generals::$ssh_port, Generals::$ssh_options);
 		ssh2_auth_pubkey_file($connection, Generals::$ssh_user, Generals::$ssh_key_pub, Generals::$ssh_key_rsa);
+
+		// backup dev tables
+		ssh2_exec($connection, $backup_query . Generals::$db_data_end);
+
+		// inject test data
 		ssh2_exec($connection, $query_base . Generals::$db_data_start);
 
 		// get component options
@@ -63,8 +92,11 @@ class Acceptance extends Codeception\Module
 	{
 		$query_base = self::_getQueryBase();
 
+		// connect to server
 		$connection = ssh2_connect(Generals::$ssh_server, Generals::$ssh_port, Generals::$ssh_options);
 		ssh2_auth_pubkey_file($connection, Generals::$ssh_user, Generals::$ssh_key_pub, Generals::$ssh_key_rsa);
+
+		// restore dev tables
 		ssh2_exec($connection, $query_base . Generals::$db_data_end);
 	}
 

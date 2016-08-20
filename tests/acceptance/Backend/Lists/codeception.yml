@@ -20,8 +20,8 @@ modules:
 
         Db:
             dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
-            user: 'root'
-            password: 'Susi'
+            user: 'AdminTester'
+            password: 'BwPostmanTester'
 #            dump: 'daten/vhosts/dev/joomla-cms/tests/_data/testdata_bwpostman_complete.sql'
             populate: true
             cleanup: false

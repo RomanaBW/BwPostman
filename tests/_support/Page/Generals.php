@@ -51,10 +51,21 @@ class Generals
 	protected $tester;
 
 	// backend users
-	public static $admin        = array('user' =>'Webmemsahib', 'password' =>'BESU#PW§1', 'author' => 'Super User');
-//	public static $admin        = array('user' =>'Webmemsahib', 'password' =>'@Miriam01#', 'author' => 'Super User');
+	public static $admin        = array('user' =>'AdminTester', 'password' =>'BwPostmanTest', 'author' => 'Super User');
 
-	// ssh and database connection
+	/* ssh and database connection
+	 *
+	 * These tests are designed to run on a remote machine by a local machine,
+	 * i.e. a local test machine runs the test on the remote server ( may be in
+	 * the same local network). For this there is used a ssh connection to initialize
+	 * the database, because Codeceptions database skills are very modest and slow.
+	 *
+	 * Therefore I use straight console commands to initialize an reset the database.
+	 *
+	 *
+	 *
+	 *
+	*/
 	public static $ssh_server       = 'universe';
 	public static $ssh_port         = 22;
 	public static $ssh_user         = 'romana';
@@ -62,12 +73,13 @@ class Generals
 	public static $ssh_key_pub      = '/home/romana/.ssh/romana_rsa.pub';
 	public static $ssh_key_rsa      = '/home/romana/.ssh/romana_rsa';
 
-	public static $db_user          = 'root';
-	public static $db_pw            = 'Susi';
-	public static $db_db            = 'bwtest';
+	public static $db_user          = 'AdminTester';
+	public static $db_pw            = 'BwPostmanTest';
+	public static $db_db            = 'dev';
+//	public static $db_db            = 'bwtest';
 	public static $db_data_path     = '/daten/vhosts/dev/joomla-cms/tests/_data/';
 	public static $db_data_start    = 'testdata_bwpostman_complete.sql';
-	public static $db_data_end      = 'testdata_bwpostman_truncate.sql';
+	public static $db_data_end      = 'testdata_bwpostman_reset.sql';
 
 	public static $extension            = "BwPostman";
 	public static $first_list_entry     = ".//*[@id='cb0']";

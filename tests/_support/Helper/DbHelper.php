@@ -251,4 +251,53 @@ codecept_debug('Arrived in DbHelper');
 		return $result['extension_id'];
 	}
 
+	/**
+	 * DbHelper Method to get all table names
+	 *
+	 * @param   array       $credentials        credentials of database
+	 *
+	 * @return  string      $names_string       all table names divided by space
+	 *
+	 * @since   2.0.0
+	 */
+	public static function getTableNames(array $credentials)
+	{
+		$tables   = array();
+/*
+		$tables_t     = array();
+		$tables_t[]   = "jos_bwpostman_campaigns";
+		$tables_t[]   = "jos_bwpostman_campaigns_mailinglists";
+		$tables_t[]   = "jos_bwpostman_mailinglists";
+		$tables_t[]   = "jos_bwpostman_newsletters";
+		$tables_t[]   = "jos_bwpostman_newsletters_mailinglists";
+		$tables_t[]   = "jos_bwpostman_sendmailcontent";
+		$tables_t[]   = "jos_bwpostman_sendmailqueue";
+		$tables_t[]   = "jos_bwpostman_subscribers";
+		$tables_t[]   = "jos_bwpostman_subscribers_mailinglists";
+		$tables_t[]   = "jos_bwpostman_tc_campaign";
+		$tables_t[]   = "jos_bwpostman_tc_sendmailcontent";
+		$tables_t[]   = "jos_bwpostman_tc_sendmailqueue";
+		$tables_t[]   = "jos_bwpostman_templates";
+		$tables_t[]   = "jos_bwpostman_templates_tpl";
+*/
+		$query      = "SHOW TABLES LIKE '%bwpostman%'";
+		$criteria   = array();
+		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+
+		$sth        = $driver->executeQuery($query, $criteria);
+		$result     = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+		foreach ($result as $item)
+		{
+			foreach ($item as $key => $value)
+			{
+				$tables[] = $value;
+			}
+		}
+
+		$names_string   = implode(" ", $tables);
+
+		return $names_string;
+	}
+
 }

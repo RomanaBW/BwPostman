@@ -38,9 +38,7 @@ class Login
 	public static $passwordField = 'passwd';
 	public static $loginButton   = 'button';
 	public static $form          = ".//*[@id='form-login']";
-	public static $loginArea     = "//*[@id='form-login']/fieldset/div[4]/div/div/button";
-// replace with following, if language selection is not shown
-//	public static $loginArea     = "//*[@id='form-login']/fieldset/div[3]/div/div/button";
+	public static $loginArea     = ".//*/button[contains(., 'Log in')]";
 
 	/**
 	 * @var object  $tester AcceptanceTester
@@ -73,14 +71,23 @@ class Login
 	public function logIntoBackend($user)
 	{
 		$I = $this->tester;
+//		$I = $this;
 
+		// if snapshot exists - skipping login
+//		if ($I->loadSessionSnapshot('login')) {
+//			return;
+//		}
 
+		// log in
 		$I->wantTo('log in as a backend user');
 		$I->amOnPage(self::$url);
 		$I->fillField(self::$usernameField, $user['user']);
 		$I->fillField(self::$passwordField, $user['password']);
 		$I->click(self::$loginButton);
 		$I->see(Generals::$control_panel, Generals::$pageTitle);
+
+		// saving snapshot
+//		$I->saveSessionSnapshot('login');
 
 		return $this;
 	}
@@ -98,7 +105,7 @@ class Login
 	{
 		$I->click(Generals::$nav_user_menu);
 		$I->click(Generals::$nav_user_menu_logout);
-//		$I->click(Generals::$logout_txt);
+
 		$I->waitForElement(self::$form);
 		$I->see(Generals::$login_txt, self::$loginArea);
 

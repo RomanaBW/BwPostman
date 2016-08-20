@@ -13,8 +13,8 @@ modules:
         - Asserts
     config:
         WebDriver:
-#                url: http://www.dev.nil
-                url: http://www.bwtest.nil
+                url: http://www.dev.nil
+#                url: http://www.bwtest.nil
 #                url: http://www.test.nil
                 window_size: 1920x1080
 #                browser: phantomjs
@@ -27,11 +27,11 @@ modules:
                 restart: false
 
         Db:
-#            dsn: 'mysql:host=universe.bet2.nil;dbname=dev'
-            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
+            dsn: 'mysql:host=universe.bet2.nil;dbname=dev'
+#            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
 #            dsn: 'mysql:host=universe.bet2.nil;dbname=test'
-            user: 'root'
-            password: 'Susi'
+            user: 'AdminTester'
+            password: 'BwPostmanTest'
             dump: 'tests/_data/dump.sql'
             populate: true
             cleanup: false

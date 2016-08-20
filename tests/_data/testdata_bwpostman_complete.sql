@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_campaigns`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_campaigns` (
   `id` int(11) NOT NULL,
   `asset_id` int(10) NOT NULL DEFAULT '0',
@@ -86,6 +87,7 @@ REPLACE INTO `jos_bwpostman_campaigns` (`id`, `asset_id`, `title`, `description`
 -- Erstellt am: 16. Aug 2016 um 18:28
 --
 
+TRUNCATE `jos_bwpostman_campaigns_mailinglists`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_campaigns_mailinglists` (
   `campaign_id` int(11) NOT NULL,
   `mailinglist_id` int(11) NOT NULL
@@ -16319,6 +16321,7 @@ REPLACE INTO `jos_bwpostman_campaigns_mailinglists` (`campaign_id`, `mailinglist
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_mailinglists`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_mailinglists` (
   `id` int(11) NOT NULL,
   `asset_id` int(10) NOT NULL DEFAULT '0',
@@ -16390,6 +16393,7 @@ REPLACE INTO `jos_bwpostman_mailinglists` (`id`, `asset_id`, `title`, `descripti
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_newsletters`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_newsletters` (
   `id` int(11) NOT NULL,
   `asset_id` int(10) NOT NULL DEFAULT '0',
@@ -16568,6 +16572,7 @@ REPLACE INTO `jos_bwpostman_newsletters` (`id`, `asset_id`, `from_name`, `from_e
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_newsletters_mailinglists`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_newsletters_mailinglists` (
   `newsletter_id` int(11) NOT NULL,
   `mailinglist_id` int(11) NOT NULL
@@ -16882,6 +16887,7 @@ REPLACE INTO `jos_bwpostman_newsletters_mailinglists` (`newsletter_id`, `mailing
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_sendmailcontent`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_sendmailcontent` (
   `id` int(11) NOT NULL,
   `mode` int(1) NOT NULL,
@@ -17158,6 +17164,7 @@ REPLACE INTO `jos_bwpostman_sendmailcontent` (`id`, `mode`, `nl_id`, `from_name`
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_sendmailqueue`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_sendmailqueue` (
   `id` int(11) NOT NULL,
   `content_id` int(11) NOT NULL DEFAULT '0',
@@ -17177,6 +17184,7 @@ CREATE TABLE IF NOT EXISTS `jos_bwpostman_sendmailqueue` (
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_subscribers`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_subscribers` (
   `id` int(11) NOT NULL,
   `asset_id` int(10) NOT NULL DEFAULT '0',
@@ -18031,6 +18039,7 @@ REPLACE INTO `jos_bwpostman_subscribers` (`id`, `asset_id`, `user_id`, `name`, `
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_subscribers_mailinglists`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_subscribers_mailinglists` (
   `subscriber_id` int(11) NOT NULL,
   `mailinglist_id` int(11) NOT NULL
@@ -30170,6 +30179,7 @@ REPLACE INTO `jos_bwpostman_subscribers_mailinglists` (`subscriber_id`, `mailing
 -- Erstellt am: 13. Aug 2016 um 15:03
 --
 
+TRUNCATE `jos_bwpostman_templates`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_templates` (
   `id` int(11) NOT NULL,
   `asset_id` int(10) NOT NULL DEFAULT '0',
@@ -30252,6 +30262,7 @@ REPLACE INTO `jos_bwpostman_templates` (`id`, `asset_id`, `standard`, `title`, `
 -- Erstellt am: 23. Jul 2016 um 07:39
 --
 
+TRUNCATE `jos_bwpostman_templates_tpl`;
 CREATE TABLE IF NOT EXISTS `jos_bwpostman_templates_tpl` (
   `id` int(11) NOT NULL,
   `title` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -30281,109 +30292,3 @@ REPLACE INTO `jos_bwpostman_templates_tpl` (`id`, `title`, `css`, `header_tpl`, 
 (1001, 'Texttemplate 2', '', '{"no_header":"",\r\n"logo_with_text":"************************************************************\\r\\n\\r\\n[%header_firstline%]\\r\\n\\r\\n[%header_secondline%]\\r\\n\\r\\n************************************************************\\r\\n",\r\n"only_logo":"",\r\n"only_text":"",\r\n"header_image":"",\r\n"header_text":""}', '\r\n[%intro_headline%]\r\n[%intro_text%]\r\n\r\n', '************************************************************', '*** [%content_title%] ***\r\n[%content_text%]\r\n[%readon_button%]\r\n', '** [%readon_text%] **\r\n[%readon_href%]', '************************************************************\r\n\r\n[%edit_link%]\r\n[%unsubscribe_link%]\r\n\r\n[%address_text%]\r\n\r\n*** [%button_headline%] ***\r\n[%button%]\r\n************************************************************\r\n', '** [%button_text%] **\r\n   [%button_href%]'),
 (1002, 'Texttemplate 3', '', '{"no_header":"",\r\n"logo_with_text":"############################################################\\r\\n\\r\\n[%header_firstline%]\\r\\n\\r\\n[%header_secondline%]\\r\\n\\r\\n############################################################\\r\\n",\r\n"only_logo":"",\r\n"only_text":"",\r\n"header_image":"",\r\n"header_text":""}', '\r\n[%intro_headline%]\r\n[%intro_text%]\r\n\r\n', '############################################################', '### [%content_title%] ###\r\n[%content_text%]\r\n[%readon_button%]\r\n', '## [%readon_text%] ##\r\n[%readon_href%]', '############################################################\r\n\r\n[%edit_link%]\r\n[%unsubscribe_link%]\r\n\r\n[%address_text%]\r\n\r\n### [%button_headline%] ###\r\n[%button%]\r\n############################################################\r\n', '## [%button_text%] ##\r\n   [%button_href%]');
 
---
--- Indizes der exportierten Tabellen
---
-
---
--- Indizes für die Tabelle `jos_bwpostman_campaigns`
---
-ALTER TABLE `jos_bwpostman_campaigns`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_mailinglists`
---
-ALTER TABLE `jos_bwpostman_mailinglists`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_newsletters`
---
-ALTER TABLE `jos_bwpostman_newsletters`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_newsletters_mailinglists`
---
-ALTER TABLE `jos_bwpostman_newsletters_mailinglists`
-  ADD PRIMARY KEY (`newsletter_id`,`mailinglist_id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_sendmailcontent`
---
-ALTER TABLE `jos_bwpostman_sendmailcontent`
-  ADD PRIMARY KEY (`id`,`mode`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_sendmailqueue`
---
-ALTER TABLE `jos_bwpostman_sendmailqueue`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_subscribers`
---
-ALTER TABLE `jos_bwpostman_subscribers`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_subscribers_mailinglists`
---
-ALTER TABLE `jos_bwpostman_subscribers_mailinglists`
-  ADD PRIMARY KEY (`subscriber_id`,`mailinglist_id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_templates`
---
-ALTER TABLE `jos_bwpostman_templates`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `jos_bwpostman_templates_tpl`
---
-ALTER TABLE `jos_bwpostman_templates_tpl`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `jos_bwpostman_campaigns`
---
-ALTER TABLE `jos_bwpostman_campaigns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
---
--- AUTO_INCREMENT für Tabelle `jos_bwpostman_mailinglists`
---
-ALTER TABLE `jos_bwpostman_mailinglists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
---
--- AUTO_INCREMENT für Tabelle `jos_bwpostman_newsletters`
---
-ALTER TABLE `jos_bwpostman_newsletters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=183;
---
--- AUTO_INCREMENT für Tabelle `jos_bwpostman_sendmailqueue`
---
-ALTER TABLE `jos_bwpostman_sendmailqueue`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=259;
---
--- AUTO_INCREMENT für Tabelle `jos_bwpostman_subscribers`
---
-ALTER TABLE `jos_bwpostman_subscribers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4038;
---
--- AUTO_INCREMENT für Tabelle `jos_bwpostman_templates`
---
-ALTER TABLE `jos_bwpostman_templates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
---
--- AUTO_INCREMENT für Tabelle `jos_bwpostman_templates_tpl`
---
-ALTER TABLE `jos_bwpostman_templates_tpl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1003;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -298,7 +298,8 @@ class Com_BwPostmanInstallerScript
 			if (version_compare($oldRelease, '1.2.0', 'lt'))
 				$this->_fillCamCrossTable();
 
-			if (version_compare($oldRelease, '2.0.0', 'le'))
+			// @ToDo: Reflect, how to reinstall sample groups, if user deleted them and wants them back
+			if (version_compare($oldRelease, '2.0.0', 'lt'))
 				$this->_createSampleUsergroups();
 
 			// convert tables to UTF8MB4

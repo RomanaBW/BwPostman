@@ -29,9 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Require some classes
-require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/exceptions/BwException.php');
-require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+// Require some classes not possible at this point, because files are not yet installed!
+//require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/exceptions/BwException.php');
+//require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * Class Com_BwPostmanInstallerScript

@@ -765,7 +765,7 @@ class Com_BwPostmanInstallerScript
 				throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
 			}
 
-			// Create BwPostman user groups
+			// Create BwPostman user groups section-wise
 			foreach ($this->all_bwpm_groups as $groups)
 			{
 				$parent_id  = $admin_groupId;
@@ -778,67 +778,6 @@ class Com_BwPostmanInstallerScript
 					$parent_id = $this->_getGroupId($item);
 				}
 			}
-/*
-			// Create BwPostmanMailinglist user groups
-			$parent_id  = $admin_groupId;
-			$groups     = $this->all_bwpm_groups['mailinglist_usergroups'];
-			foreach ($groups as $item)
-			{
-				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
-				{
-					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-				}
-				$parent_id = $this->_getGroupId($item);
-			}
-
-			// Create BwPostmanSubscriber user groups
-			$parent_id  = $admin_groupId;
-			$groups     = $this->all_bwpm_groups['subscriber_usergroups'];
-			foreach ($groups as $item)
-			{
-				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
-				{
-					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-				}
-				$parent_id = $this->_getGroupId($item);
-			}
-
-			// Create BwPostmanNewsletter user groups
-			$parent_id  = $admin_groupId;
-			$groups     = $this->all_bwpm_groups['newsletter_usergroups'];
-			foreach ($groups as $item)
-			{
-				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
-				{
-					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-				}
-				$parent_id = $this->_getGroupId($item);
-			}
-
-			// Create BwPostmanCampaign user groups
-			$parent_id  = $admin_groupId;
-			$groups     = $this->all_bwpm_groups['campaign_usergroups'];
-			foreach ($groups as $item)
-			{
-				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
-				{
-					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-				}
-				$parent_id = $this->_getGroupId($item);
-			}
-
-			// Create BwPostmanTemplate user groups
-			$parent_id  = $admin_groupId;
-			$groups     = $this->all_bwpm_groups['template_usergroups'];
-			foreach ($groups as $item)
-			{
-				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
-				{
-					throw new BwException(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-				}
-				$parent_id = $this->_getGroupId($item);
-			}
-*/
 			return true;
 		}
 		catch (BwException $e)

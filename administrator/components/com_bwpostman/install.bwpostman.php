@@ -181,7 +181,7 @@ class Com_BwPostmanInstallerScript
 			return false;
 		}
 
-		if(floatval(phpversion()) < 5.3)
+		if(version_compare(phpversion(), '5.3.10', 'lt'))
 		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_USES_PHP5'), 'error');
 			return false;
@@ -298,7 +298,7 @@ class Com_BwPostmanInstallerScript
 			if (version_compare($oldRelease, '1.2.0', 'lt'))
 				$this->_fillCamCrossTable();
 
-			if (version_compare($oldRelease, '2.0.0', 'lt'))
+			if (version_compare($oldRelease, '2.0.0', 'le'))
 				$this->_createSampleUsergroups();
 
 			// convert tables to UTF8MB4
@@ -766,19 +766,23 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// Create BwPostman user groups
-			$parent_id   = $admin_groupId;
-			foreach ($this->all_bwpm_groups['bwpm_usergroups'] as $item)
+			foreach ($this->all_bwpm_groups as $groups)
 			{
-				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
+				$parent_id  = $admin_groupId;
+				foreach ($groups as $item)
 				{
-					throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+					if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
+					{
+						throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+					}
+					$parent_id = $this->_getGroupId($item);
 				}
-				$parent_id = $this->_getGroupId($item);
 			}
-
+/*
 			// Create BwPostmanMailinglist user groups
-			$parent_id   = $admin_groupId;
-			foreach ($this->all_bwpm_groups['mailinglist_usergroups'] as $item)
+			$parent_id  = $admin_groupId;
+			$groups     = $this->all_bwpm_groups['mailinglist_usergroups'];
+			foreach ($groups as $item)
 			{
 				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
 				{
@@ -788,8 +792,9 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// Create BwPostmanSubscriber user groups
-			$parent_id   = $admin_groupId;
-			foreach ($this->all_bwpm_groups['subscriber_usergroups'] as $item)
+			$parent_id  = $admin_groupId;
+			$groups     = $this->all_bwpm_groups['subscriber_usergroups'];
+			foreach ($groups as $item)
 			{
 				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
 				{
@@ -799,8 +804,9 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// Create BwPostmanNewsletter user groups
-			$parent_id   = $admin_groupId;
-			foreach ($this->all_bwpm_groups['newsletter_usergroups'] as $item)
+			$parent_id  = $admin_groupId;
+			$groups     = $this->all_bwpm_groups['newsletter_usergroups'];
+			foreach ($groups as $item)
 			{
 				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
 				{
@@ -810,8 +816,9 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// Create BwPostmanCampaign user groups
-			$parent_id   = $admin_groupId;
-			foreach ($this->all_bwpm_groups['campaign_usergroups'] as $item)
+			$parent_id  = $admin_groupId;
+			$groups     = $this->all_bwpm_groups['campaign_usergroups'];
+			foreach ($groups as $item)
 			{
 				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
 				{
@@ -821,8 +828,9 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// Create BwPostmanTemplate user groups
-			$parent_id   = $admin_groupId;
-			foreach ($this->all_bwpm_groups['template_usergroups'] as $item)
+			$parent_id  = $admin_groupId;
+			$groups     = $this->all_bwpm_groups['template_usergroups'];
+			foreach ($groups as $item)
 			{
 				if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
 				{
@@ -830,7 +838,7 @@ class Com_BwPostmanInstallerScript
 				}
 				$parent_id = $this->_getGroupId($item);
 			}
-
+*/
 			return true;
 		}
 		catch (BwException $e)

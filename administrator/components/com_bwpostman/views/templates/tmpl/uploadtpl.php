@@ -66,7 +66,7 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="task" value="uploadtpl" />
 	<input type="hidden" name="controller" value="templates" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 <div id="loading" style="display: none;"></div>
 

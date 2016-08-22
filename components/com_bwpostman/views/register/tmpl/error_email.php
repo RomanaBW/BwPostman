@@ -37,26 +37,28 @@ defined ('_JEXEC') or die ('Restricted access');
 <div id="bwpostman">
 	<div id="bwp_com_error_email">
 		<?php if ($this->params->def('show_page_title', 1)) { ?>
-		<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
 		<?php }
 
-		$admin_email = $this->params->def('default_from_email', $this->config->get('mailfrom'));
+		$admin_email = $this->params->def('default_from_email', JFactory::getConfig()->get('mailfrom'));
 
 		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
 
-		if ($this->error->err_email) {
+		if ($this->error->err_email)
+		{
 			// Case 1
 			$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
 			echo $msg;
 		}
-		else {
+		else
+		{
 			// Case 2
 			// Case 3
 			echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
 		}
 
 		$msg1 = '<p class="contact-admin">' . JText::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
-		echo JHTML::_('content.prepare', $msg1);
+		echo JHtml::_('content.prepare', $msg1);
 		?>
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
 	</div>

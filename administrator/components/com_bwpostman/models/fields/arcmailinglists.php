@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldArcMailinglists
+ *
+ * @since           1.2.0
  */
 class JFormFieldArcMailinglists extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldArcMailinglists extends JFormFieldList {
 	 * property to hold archived mailing lists
 	 *
 	 * @var string  $type
+	 *
+	 * @since       1.2.0
 	 */
 	protected $type = 'ArcMailinglists';
 
@@ -72,7 +76,7 @@ class JFormFieldArcMailinglists extends JFormFieldList {
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$parent = new stdClass;

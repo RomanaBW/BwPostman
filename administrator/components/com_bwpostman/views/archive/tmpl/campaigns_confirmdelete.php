@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman archive campaigns confirmdelete template for backend.
+ * BwPostman archive campaigns confirm delete template for backend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin

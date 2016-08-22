@@ -27,13 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-use Joomla\Registry\Registry;
-
 // Import MODEL object class
 jimport('joomla.application.component.modelitem');
 
 /**
  * Class BwPostmanModelNewsletter
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelNewsletter extends JModelItem
 {
@@ -46,7 +46,8 @@ class BwPostmanModelNewsletter extends JModelItem
 	 */
 	public function getContent()
 	{
-		$id		= (int) JFactory::getApplication()->input->get('id', 0);
+		$id		    = (int) JFactory::getApplication()->input->get('id', 0);
+		$newsletter = null;
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 		$user	= JFactory::getUser();
@@ -56,8 +57,16 @@ class BwPostmanModelNewsletter extends JModelItem
 		$query->from($_db->quoteName('#__bwpostman_sendmailcontent') . ' AS ' . $_db->quoteName('a'));
 		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('nl_id') . ' = ' . $id);
 		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('mode') . ' = ' . (int) 1);
-		$_db->setQuery($query);
-		$newsletter = $_db->loadResult();
+
+		try
+		{
+			$_db->setQuery($query);
+			$newsletter = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Get the dispatcher and include bwpostman plugins
 		JPluginHelper::importPlugin('bwpostman');

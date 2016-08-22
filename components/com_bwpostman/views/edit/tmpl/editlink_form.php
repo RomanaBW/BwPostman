@@ -38,7 +38,7 @@ defined ('_JEXEC') or die ('Restricted access');
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate">
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=sendEditlink'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate">
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink_text">
 					<?php echo JText::_('COM_BWPOSTMAN_EDITLINK_MSG'); ?>
@@ -52,8 +52,9 @@ defined ('_JEXEC') or die ('Restricted access');
 			<button class="button validate btn" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_SENDEDITLINK'); ?></button>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
+			<input type="hidden" name="view" value="edit" />
 			<input type="hidden" name="task" value="sendEditlink" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</form>
 
 		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>

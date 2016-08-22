@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman subscriberslists model for backend.
+ * BwPostman subscribers lists model for backend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -35,7 +35,10 @@ jimport('joomla.application.component.modellist');
  * Provides a general view of all confirmed and unconfirmed subscribers as well as test-recipients
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelSubscribers extends JModelList
 {
@@ -43,6 +46,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Subscribers/Test-recipients data
 	 *
 	 * @var array
+	 *
+	 * @since       0.9.1
 	 */
 	var $_data = null;
 
@@ -50,6 +55,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Number of all Subscribers/Test-recipients
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_total = null;
 
@@ -57,6 +64,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Pagination object
 	 *
 	 * @var object
+	 *
+	 * @since       0.9.1
 	 */
 	var $_pagination = null;
 
@@ -64,6 +73,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Subscribers/Test-recipients Search
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_search = null;
 
@@ -71,6 +82,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 * filter_mailinglist for subscribers/Test-recipients
 	 *
 	 * @var int
+	 *
 	 * @since	1.0.8
 	 */
 	var $_filter_mailinglist = null;
@@ -80,6 +92,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * --> empty = nothing is selected, 0 = Text, 1 = HTML
 	 *
 	 * @var int
+	 *
+	 * @since       0.9.1
 	 */
 	var $_filter_emailformat = null;
 
@@ -88,12 +102,16 @@ class BwPostmanModelSubscribers extends JModelList
 	 * --> to specify the search
 	 *
 	 * @var string
+	 *
+	 * @since       0.9.1
 	 */
 	var $_filter_search = null;
 
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -133,7 +151,8 @@ class BwPostmanModelSubscribers extends JModelList
 		$jinput	= $app->input;
 
 		// Adjust the context to support modal layouts.
-		if ($layout = $jinput->get('layout'))
+		$layout = $jinput->get('layout');
+		if ($layout)
 		{
 			$this->context .= '.' . $layout;
 		}
@@ -168,6 +187,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 * @param	string		$id	A prefix for the store id.
 	 *
 	 * @return	string		A store id.
+	 *
 	 * @since	1.0.1
 	 */
 	protected function getStoreId($id = '')
@@ -185,7 +205,10 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Method to build the MySQL query
 	 *
 	 * @access 	private
+	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{
@@ -194,9 +217,11 @@ class BwPostmanModelSubscribers extends JModelList
 		$sub_query	= $_db->getQuery(true);
 
 		//Get the tab in which we are for subquery
-		$tab	= JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
+		$tab	    = JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
+		$tab_int    = 1;
 
-		switch ($tab) {
+		switch ($tab)
+		{
 			case ("confirmed"):
 				$tab_int	= 1;
 				break;
@@ -230,7 +255,8 @@ class BwPostmanModelSubscribers extends JModelList
 		// Filter by mailinglist
 		$mailinglist = $this->getState('filter.mailinglist');
 
-		if ($mailinglist) {
+		if ($mailinglist)
+		{
 			$sub_query2	= $_db->getQuery(true);
 
 			$sub_query2->select($_db->quoteName('c') . '.' . $_db->quoteName('subscriber_id'));
@@ -242,7 +268,8 @@ class BwPostmanModelSubscribers extends JModelList
 
 		// Filter by emailformat.
 		$emailformat = $this->getState('filter.emailformat');
-		if ($emailformat != '') {
+		if ($emailformat != '')
+		{
 			$query->where('a.emailformat = ' . (int) $emailformat);
 		}
 
@@ -256,24 +283,26 @@ class BwPostmanModelSubscribers extends JModelList
 		$filtersearch	= $this->getState('filter.search_filter');
 		$search			= $_db->escape($this->getState('filter.search'), true);
 
-		if (!empty($search)) {
+		if (!empty($search))
+		{
 			$search	= '%' . $search . '%';
 
-			switch ($filtersearch) {
+			switch ($filtersearch)
+			{
 				case 'email':
-					$query->where('a.email LIKE ' . $_db->Quote($search, false));
+					$query->where('a.email LIKE ' . $_db->quote($search, false));
 					break;
 				case 'name_email':
-					$query->where('(a.email LIKE ' . $_db->Quote($search, false) . 'OR a.name LIKE ' . $_db->Quote($search, false) . ')');
+					$query->where('(a.email LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')');
 					break;
 				case 'fullname':
-					$query->where('(a.firstname LIKE ' . $_db->Quote($search, false) . 'OR a.name LIKE ' . $_db->Quote($search, false) . ')');
+					$query->where('(a.firstname LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')');
 					break;
 				case 'firstname':
-					$query->where('a.firstname LIKE ' . $_db->Quote($search, false));
+					$query->where('a.firstname LIKE ' . $_db->quote($search, false));
 					break;
 				case 'name':
-					$query->where('a.name LIKE ' . $_db->Quote($search, false));
+					$query->where('a.name LIKE ' . $_db->quote($search, false));
 					break;
 				default:
 			}
@@ -297,13 +326,16 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Method to get all mailinglists
 	 *
 	 * @access 	public
-	 * @return 	object Mailinglists
+	 *
+	 * @return 	array mailinglists
+	 *
 	 * @since	1.0.8
 	 */
 	public function getMailinglists()
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
+		$result = array();
+		$_db	= $this->_db;
+		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id') . ' AS value');
 		$query->select($_db->quoteName('title') . ' AS text');
@@ -312,10 +344,17 @@ class BwPostmanModelSubscribers extends JModelList
 		$query->order('title ASC');
 		$_db->setQuery ($query);
 
-		$result = $_db->loadObjectList();
+		try
+		{
+			$result = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$mailinglists 	= array ();
-		$mailinglists[]	= JHTML::_('select.option',  '', '- '. JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') .' -');
+		$mailinglists[]	= JHtml::_('select.option',  '', '- '. JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') .' -');
 		$mailinglists 	= array_merge($mailinglists, $result);
 
 		return $mailinglists;

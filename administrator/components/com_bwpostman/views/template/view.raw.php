@@ -37,7 +37,10 @@ jimport('joomla.application.component.view');
  * BwPostman template View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	template
+ *
+ * @since       1.1.0
  */
 class BwPostmanViewTemplate extends JViewLegacy
 {
@@ -45,6 +48,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 * property to hold preview data
 	 *
 	 * @var string  $pre
+	 *
+	 * @since       1.1.0
 	 */
 	protected $pre;
 
@@ -61,7 +66,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		// load template data and decode objekt
+		// load template data and decode object
 		$pre =	JFactory::getApplication()->getUserState('com_bwpostman.edit.template.tpldata');
 
 		$this->pre	= $pre;

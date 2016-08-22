@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldCampaignlist
+ *
+ * @since       1.0.8
  */
 class JFormFieldCampaignlist extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldCampaignlist extends JFormFieldList {
 	 * property to hold campaigns
 	 *
 	 * @var string  $type
+	 *
+	 * @since       1.0.8
 	 */
 	protected $type = 'Campaigns';
 
@@ -69,7 +73,7 @@ class JFormFieldCampaignlist extends JFormFieldList {
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$parent = new stdClass;

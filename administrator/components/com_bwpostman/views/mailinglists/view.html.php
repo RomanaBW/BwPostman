@@ -38,26 +38,96 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman Lists View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Mailinglists
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewMailinglists extends JViewLegacy
 {
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 *
+	 * @since       0.9.1
+	 */
+	protected $items;
+
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
+	 */
+	protected $pagination;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected $state;
+
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
+	 */
+	public $filterForm;
+
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
+	 */
+	public $activeFilters;
+
+	/**
+	 * property to hold total value
+	 *
+	 * @var string $total
+	 *
+	 * @since       0.9.1
+	 */
+	public $total;
+
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
+	 */
+	public $sidebar;
+
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('mailinglists')) {
+		if (!BwPostmanHelper::canView('mailinglists'))
+		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
-		else {
+		else
+		{
 			// Get data from the model
 			$this->state			= $this->get('State');
 			$this->items			= $this->get('Items');
@@ -81,6 +151,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	/**
 	 * Add the page title, submenu and toolbar.
 	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{
@@ -89,31 +160,34 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_MLS'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_MLS'), 'list');
+		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MLS'), 'list');
 
 		// Set toolbar items for the page
-		if ($canDo->get('core.create'))	JToolBarHelper::addNew('mailinglist.add');
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('mailinglist.edit');
-		JToolBarHelper::divider();
-		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::publishList('mailinglists.publish');
-			JToolBarHelper::unpublishList('mailinglists.unpublish');
-			JToolBarHelper::divider();
+		if ($canDo->get('bwpm.create'))	JToolbarHelper::addNew('mailinglist.add');
+		if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolbarHelper::editList('mailinglist.edit');
+		JToolbarHelper::divider();
+		if ($canDo->get('bwpm.edit.state'))
+		{
+			JToolbarHelper::publishList('mailinglists.publish');
+			JToolbarHelper::unpublishList('mailinglists.unpublish');
+			JToolbarHelper::divider();
 		}
-		if ($canDo->get('core.archive')) {
-			JToolBarHelper::archiveList('mailinglist.archive');
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
+		if ($canDo->get('bwpm.archive'))
+		{
+			JToolbarHelper::archiveList('mailinglist.archive');
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
 		}
-		if ($canDo->get('core.manage')) {
-			JToolBarHelper::checkin('mailinglists.checkin');
-			JToolBarHelper::divider();
+		if ($canDo->get('bwpm.manage'))
+		{
+			JToolbarHelper::checkin('mailinglists.checkin');
+			JToolbarHelper::divider();
 		}
 
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-		JToolBarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
 	}
 }

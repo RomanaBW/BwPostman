@@ -24,7 +24,6 @@
 				description="COM_BWPOSTMAN_SUBS_FIELD_GENDER_DESC"
 				required="false"
 				class="chzn-state"
-				filter="intval"
 		>
 			<option value="">
 				COM_BWPOSTMAN_SUB_SELECT_GENDER</option>

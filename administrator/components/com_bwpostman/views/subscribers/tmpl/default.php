@@ -44,7 +44,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $app	= JFactory::getApplication();
 $tab	= $app->getUserState($this->context . '.tab', 'confirmed');
 
-switch ($tab) {
+switch ($tab)
+{
 	default:
 	case 'confirmed'		: $tab_offset	= 0;
 		break;
@@ -56,30 +57,36 @@ switch ($tab) {
 $tab_cookie	= false;
 
 $tab_options = array(
-		'onActive' => 'function(title, description){
+		'onActive' => 'function(title, description)
+		{
         description.setStyle("display", "block");
         title.addClass("open").removeClass("closed");
     }',
-		'onBackground' => 'function(title, description){
+		'onBackground' => 'function(title, description)
+		{
         description.setStyle("display", "none");
         title.addClass("closed").removeClass("open");
     }',
 		'startOffset' => $tab_offset,  // 0 starts on the first tab, 1 starts the second, etc...
-		'useCookie' => $tab_cookie, // note the quotes around true, since it must be a string. But if you put false there, you must not use qoutes otherwise JHtmlTabs will handle it as true
+		'useCookie' => $tab_cookie, // note the quotes around true, since it must be a string. But if you put false there, you must not use quotes otherwise JHtmlTabs will handle it as true
 );
 ?>
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) {
+	Joomla.submitbutton = function (pressbutton)
+	{
 
-		if (pressbutton == 'archive') {
+		if (pressbutton == 'archive')
+		{
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true) {
+			if (ConfirmArchive == true)
+			{
 				submitform(pressbutton);
 			}
 		}
-		else {
+		else
+		{
 			submitform(pressbutton);
 		}
 	};
@@ -134,7 +141,7 @@ $tab_options = array(
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" id="tab" name="tab" value="" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>
 </div>

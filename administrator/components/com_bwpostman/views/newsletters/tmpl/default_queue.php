@@ -32,7 +32,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
-JHTML::_('behavior.modal', 'a.popup');
+JHtml::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the Tabs
 jimport('joomla.html.html.tabs');
@@ -46,8 +46,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	function changeTab(tab){
-		if (tab != 'default_unsent') {
+	function changeTab(tab)
+	{
+		if (tab != 'default_unsent')
+		{
 			document.adminForm.tab.setAttribute('value',tab);
 		}
 	}
@@ -56,7 +58,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <div id="bwp_view_lists">
 	<?php
-		if ($this->queueEntries) {
+		if ($this->queueEntries)
+		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 		}
 	?>
@@ -101,17 +104,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<table class="adminlist table table-striped">
 					<thead>
 						<tr>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'a.authors', $listDirn, $listOrder); ?></th>
-							<th width="250" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'a.recipient', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'a.trial', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'a.authors', $listDirn, $listOrder); ?></th>
+							<th width="250" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'a.recipient', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'a.trial', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php
-						if (count($this->items) > 0) {
+						if (count($this->items) > 0)
+						{
 							foreach ($this->items as $i => $item) :
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
@@ -124,7 +128,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								</tr><?php
 							endforeach;
 						}
-						else {
+						else
+						{
 						// if no data ?>
 							<tr class="row1">
 								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
@@ -142,7 +147,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="layout" value="default" />
 			<input type="hidden" name="tpl" value="queue" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>
 </div>

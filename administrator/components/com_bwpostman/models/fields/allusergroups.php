@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldAllUsergroups
+ *
+ * @since
  */
 class JFormFieldAllUsergroups extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldAllUsergroups extends JFormFieldList {
 	 * property to hold all user groups
 	 *
 	 * @var string  $type
+	 *
+	 * @since
 	 */
 	protected $type = 'AllUsergroups';
 
@@ -72,7 +76,7 @@ class JFormFieldAllUsergroups extends JFormFieldList {
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$parent = new stdClass;

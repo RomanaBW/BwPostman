@@ -38,7 +38,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman Subscriber View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewSubscriber extends JViewLegacy
 {
@@ -46,22 +49,118 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * property to hold form data
 	 *
 	 * @var array   $form
+	 *
+	 * @since       0.9.1
 	 */
 	protected $form;
 
 	/**
 	 * property to hold selected item
 	 *
-	 * @var array   $item
+	 * @var object   $item
+	 *
+	 * @since       0.9.1
 	 */
 	protected $item;
+
+	/**
+	 * property to hold row object
+	 *
+	 * @var object   $row
+	 *
+	 * @since       0.9.1
+	 */
+	protected $row;
 
 	/**
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
+
+	/**
+	 * property to hold obligation values
+	 *
+	 * @var array   $obligation
+	 *
+	 * @since       0.9.1
+	 */
+	protected $obligation;
+
+	/**
+	 * property to hold queue entries
+	 *
+	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public $queueEntries;
+
+	/**
+	 * property to hold template
+	 *
+	 * @var boolean $template
+	 *
+	 * @since       0.9.1
+	 */
+	public $template;
+
+	/**
+	 * property to hold can do properties
+	 *
+	 * @var array $canDo
+	 *
+	 * @since       0.9.1
+	 */
+	public $canDo;
+
+	/**
+	 * property to hold import
+	 *
+	 * @var array $import
+	 *
+	 * @since       0.9.1
+	 */
+	public $import;
+
+	/**
+	 * property to hold lists
+	 *
+	 * @var array $lists
+	 *
+	 * @since       0.9.1
+	 */
+	public $lists;
+
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 *
+	 * @since       0.9.1
+	 */
+	public $request_url;
+
+	/**
+	 * property to hold raw format of request url
+	 *
+	 * @var string $request_url_raw
+	 *
+	 * @since       0.9.1
+	 */
+	public $request_url_raw;
+
+	/**
+	 * property to hold result
+	 *
+	 * @var string $result
+	 *
+	 * @since       0.9.1
+	 */
+	public $result;
 
 	/**
 	 * Execute and display a template script.
@@ -69,6 +168,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl=null)
 	{
@@ -81,18 +182,19 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 		$layout = $jinput->get('layout', '');
 
-		switch ($layout) {
+		switch ($layout)
+		{
 			case 'export':
-				self::_displayExportForm($tpl);
+				self::_displayExportForm();
 				break;
 			case 'import':
 			case 'import1':
 			case 'import2':
-				self::_displayImportForm($tpl);
+				self::_displayImportForm();
 				break;
 			case 'edit':
 			default:
-				// get templatename
+				// get template name
 				$this->template	= $app->getTemplate();
 
 				// Get the data from the model
@@ -101,7 +203,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$this->state	= $this->get('State');
 
 				$this->canDo	= BwPostmanHelper::getActions($this->item->id, 'subscriber');
-				if ($this->item->id) {
+				if ($this->item->id)
+				{
 					$app->setUserState('com_bwpostman.subscriber.new_test', $this->item->status);
 					$app->setUserState('com_bwpostman.subscriber.subscriber_id', $this->item->id);
 				}
@@ -114,7 +217,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				if (!$params->get('show_emailformat')) {
 					$this->form->setFieldAttribute('emailformat', 'type', 'hidden');
 				}
-				else {
+				else
+				{
 					$this->form->setFieldAttribute('default_emailformat', 'default', $params->get('default_emailformat'));
 				}
 
@@ -141,21 +245,22 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 *
 	 * @access	private
 	 *
-	 * @param	string $tpl Template
+	 * @since       0.9.1
 	 */
-	private function _displayImportForm($tpl)
+	private function _displayImportForm()
 	{
 		$app		= JFactory::getApplication();
 		$params 	= JComponentHelper::getParams('com_bwpostman');
 		$session 	= JFactory::getSession();
 		$template	= $app->getTemplate();
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		$import					= array();
 		$lists					= array();
 		$session_delimiter		= ';';
 		$session_enclosure		= '"';
+		$result                 = true;
 
 		$app->setUserState('com_bwpostman.subscriber.import', true);
 
@@ -188,7 +293,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		// Build the select list for the importfile fields from the session object for the layout import2
 		$import_fields = $session->get('import_fields');
 		if (isset($import_fields)) {
-			$lists['import_fields']	= JHTML::_('select.genericlist', $import_fields, 'import_fields[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
+			$lists['import_fields']	= JHtml::_('select.genericlist', $import_fields, 'import_fields[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
 		}
 
 		// Get the emailformat select list for the layout import2
@@ -201,11 +306,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		}
 
 		// Save a reference into view
-		$this->assignRef('import', $import);
-		$this->assignRef('lists', $lists);
-		$this->assignRef('request_url',	$uri_string);
-		$this->assignRef('result', $result);
-		$this->assignRef('template', $template);
+		$this->import       = $import;
+		$this->lists        = $lists;
+		$this->request_url  = $uri_string;
+		$this->result       = $result;
+		$this->template     = $template;
 
 		$this->addToolbar();
 	}
@@ -215,14 +320,14 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 *
 	 * @access	private
 	 *
-	 * @param 	string $tpl Template
+	 * @since       0.9.1
 	 */
-	private function _displayExportForm($tpl)
+	private function _displayExportForm()
 	{
 		$app = JFactory::getApplication();
 
 		$template	= $app->getTemplate();
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		// Get the select lists for the export_fields, file format, delimiter, enclosure
@@ -235,9 +340,9 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$uri->setVar('format','raw');
 
 		// Save a reference into view
-		$this->assignRef('lists', $lists);
-		$this->assignRef('request_url_raw',	$uri_string);
-		$this->assignRef('template', $template);
+		$this->lists            = $lists;
+		$this->request_url_raw  = $uri_string;
+		$this->template         = $template;
 
 		$this->addToolbar();
 	}
@@ -247,34 +352,36 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 *
 	 * @access	private
 	 * @param 	string $tpl Template
+	 *
+	 * @since       0.9.1
 	 */
 	private function _displayValidationForm($tpl)
 	{
 		$session 	= JFactory::getSession();
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$uri_string	= $uri->toString();
 
 		// Get the result data from the session
 		$validation_res = $session->get('validation_res');
+		$row            = new stdClass();
 		if (isset($validation_res) && (is_array($validation_res))) {
-			$row    = new stdClass();
 			foreach ($validation_res AS $key => $value) {
 				$row->$key = $value;
 			}
 		}
 
 		// Save a reference into view
-		$this->assignRef('request_url',	str_replace('&', '&amp;', $uri_string));
-		$this->assignRef('row', $row);
+		$this->request_url	= str_replace('&', '&amp;', $uri_string);
+		$this->row          = $row;
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar items
-		JToolBarHelper::title(JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'), 'subscribers');
-		JToolBarHelper::cancel('subscriber.finishValidation', 'COM_BWPOSTMAN_SUB_VALIDATION_FINISH');
+		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'), 'subscribers');
+		JToolbarHelper::cancel('subscriber.finishValidation', 'COM_BWPOSTMAN_SUB_VALIDATION_FINISH');
 
 		// Set parent display
 		parent::display($tpl);
@@ -283,11 +390,13 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
+	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$userId		= JFactory::getUser()->get('id');
 		$layout		= JFactory::getApplication()->input->get('layout', '');
 		$tester		= false;
@@ -303,10 +412,10 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 		// Get document object, set document title and add css
 		$document	= JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		$alt 	= "COM_BWPOSTMAN_BACK";
-		$bar	= JToolBar::getInstance('toolbar');
+		$bar	= JToolbar::getInstance('toolbar');
 
 		switch ($layout) {
 			case 'export':
@@ -314,31 +423,31 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'));
 
 				// Set toolbar items
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
-				JToolBarHelper::cancel('subscriber.cancel');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
+				JToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'import':
 				// Set toolbar items
 				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
-				JToolBarHelper::cancel('subscriber.cancel');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+				JToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'import1':
 				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
 				$backlink 	= 'index.php?option=com_bwpostman&view=subscriber&layout=import';
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolBarHelper::cancel('subscriber.cancel');
+				JToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'import2':
 				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'));
 				$backlink = 'index.php?option=com_bwpostman&view=subscriber&layout=import1';
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolBarHelper::cancel('subscriber.cancel');
+				JToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'edit':
@@ -359,23 +468,23 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 				// For new records, check the create permission.
 				if ($this->item->id < 1 && $canDo->get('core.create')) {
-					JToolBarHelper::save('subscriber.save');
-					JToolBarHelper::apply('subscriber.apply');
-					JToolBarHelper::cancel('subscriber.cancel');
-					JToolBarHelper::title($title .': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+					JToolbarHelper::save('subscriber.save');
+					JToolbarHelper::apply('subscriber.apply');
+					JToolbarHelper::cancel('subscriber.cancel');
+					JToolbarHelper::title($title .': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
 				}
 				else {
 					// Can't save the record if it's checked out.
 					if (!$checkedOut) {
 						// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-						if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)) {
-							JToolBarHelper::save('subscriber.save');
-							JToolBarHelper::apply('subscriber.apply');
+						if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId)) {
+							JToolbarHelper::save('subscriber.save');
+							JToolbarHelper::apply('subscriber.apply');
 						}
 					}
 					// Rename the cancel button for existing items
-					JToolBarHelper::cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
-					JToolBarHelper::title($title .': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+					JToolbarHelper::cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
+					JToolbarHelper::title($title .': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
 				}
 
 				$backlink 	= $_SERVER['HTTP_REFERER'];
@@ -383,15 +492,15 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 				// If we came from the cover page we will show a back-button
 				if ($backlink == $siteURL.'index.php?option=com_bwpostman') {
-					JToolBarHelper::spacer();
-					JToolBarHelper::divider();
-					JToolBarHelper::spacer();
-					JToolBarHelper::back();
+					JToolbarHelper::spacer();
+					JToolbarHelper::divider();
+					JToolbarHelper::spacer();
+					JToolbarHelper::back();
 				}
 		}
-		JToolBarHelper::spacer();
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 	}
 }

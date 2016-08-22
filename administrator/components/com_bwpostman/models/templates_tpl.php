@@ -29,6 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
+use Joomla\Registry\Registry as JRegistry;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -36,10 +37,13 @@ jimport('joomla.application.component.helper');
 
 /**
  * BwPostman campaign model
- * Provides methodes to add and edit campaigns
+ * Provides methods to add and edit campaigns
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Campaigns
+ *
+ * @since 1.1.0
  */
 class BwPostmanModelTemplates_Tpl extends JModelAdmin
 {

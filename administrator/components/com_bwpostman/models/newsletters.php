@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman newsletterslists model for backend.
+ * BwPostman newsletters lists model for backend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -35,17 +35,23 @@ jimport('joomla.application.component.modellist');
  * Provides a general view of all unsent and sent newsletters
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelNewsletters extends JModelList
 {
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'attachment', 'a.attachment',
@@ -89,7 +95,8 @@ class BwPostmanModelNewsletters extends JModelList
 		$app = JFactory::getApplication();
 
 		// Adjust the context to support modal layouts.
-		if ($layout = $app->input->get('tab', 'unsent'))
+		$layout = $app->input->get('tab', 'unsent');
+		if ($layout)
 		{
 			$this->context .= '.' . $layout;
 			$this->setState('tab', $layout);
@@ -167,18 +174,30 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to count the queue data
 	 *
 	 * @access	public
+	 *
 	 * @return 	int count Queue-data
+	 *
+	 * @since       0.9.1
 	 */
 	public function getCountQueue()
 	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$count_queue    = 0;
+
+		$_db   = $this->_db;
+		$query = $_db->getQuery(true);
 
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
 
 		$_db->setQuery($query);
-		$count_queue = $_db->loadResult();
+		try
+		{
+			$count_queue = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $count_queue;
 	}
@@ -187,7 +206,10 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Method to build the MySQL query
 	 *
 	 * @access 	private
+	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{
@@ -202,7 +224,8 @@ class BwPostmanModelNewsletters extends JModelList
 		//Get the tab in which we are for correct query
 		$tab	= $jinput->get('tab', 'unsent');
 
-		switch ($tab) {
+		switch ($tab)
+		{
 			case ("unsent"):
 			default:
 					$tab_int	= ' = ';
@@ -216,7 +239,8 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 
-		switch ($tab) {
+		switch ($tab)
+		{
 			case ("unsent"):
 			case ("sent"):
 			default:
@@ -243,31 +267,41 @@ class BwPostmanModelNewsletters extends JModelList
 					$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
 
 					// Filter by campaign
-					if ($campaign = $this->getState('filter.campaign_id')) {
+					$campaign = $this->getState('filter.campaign_id');
+					if ($campaign)
+					{
 						$query->where('a.campaign_id = ' . (int) $campaign);
 					}
 
 					// Filter by mailinglist
-					if ($mailinglist = $this->getState('filter.mailinglists')) {
+					$mailinglist = $this->getState('filter.mailinglists');
+					if ($mailinglist)
+					{
 						$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 						$query->where('m.mailinglist_id = ' . (int) $mailinglist);
 					}
 
 					// Filter by usergroup
-					if ($usergroup = $this->getState('filter.usergroups')) {
+					$usergroup = $this->getState('filter.usergroups');
+					if ($usergroup)
+					{
 						$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 						$query->where('m.mailinglist_id = ' . -(int) $usergroup);
 					}
 
 					// Filter by authors
-					if ($authors = $this->getState('filter.authors')) {
+					$authors = $this->getState('filter.authors');
+					if ($authors)
+					{
 						$query->where('a.created_by = ' . (int) $authors);
 					}
 
 					// Filter by published state
 					$published = $this->getState('filter.published');
-					if (is_numeric($published)) {
-						switch ($published) {
+					if (is_numeric($published))
+					{
+						switch ($published)
+						{
 							case 0:
 							case 1:
 							default:
@@ -291,7 +325,8 @@ class BwPostmanModelNewsletters extends JModelList
 						}
 
 					}
-					elseif ($published === '') {
+					elseif ($published === '')
+					{
 						$query->where('(a.published = 0 OR a.published = 1)');
 					}
 
@@ -305,26 +340,28 @@ class BwPostmanModelNewsletters extends JModelList
 					$filtersearch	= $this->getState('filter.search_filter');
 					$search			= $_db->escape($this->getState('filter.search'), true);
 
-					if (!empty($search)) {
+					if (!empty($search))
+					{
 						$search			= '%' . $search . '%';
-						switch ($filtersearch) {
+						switch ($filtersearch)
+						{
 							case 'subject':
-									$query->where('a.subject LIKE ' . $_db->Quote($search));
+									$query->where('a.subject LIKE ' . $_db->quote($search));
 								break;
 							case 'description':
-									$query->where('a.description LIKE ' . $_db->Quote($search));
+									$query->where('a.description LIKE ' . $_db->quote($search));
 								break;
 							case 'subject_description':
-									$query->where('(a.subject LIKE ' . $_db->Quote($search). 'OR a.description LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.subject LIKE ' . $_db->quote($search). 'OR a.description LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'html_text_version':
-									$query->where('(a.html_version LIKE ' . $_db->Quote($search, false) . 'OR a.text_version LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.html_version LIKE ' . $_db->quote($search, false) . 'OR a.text_version LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'text_version':
-									$query->where('a.text_version LIKE ' . $_db->Quote($search. false));
+									$query->where('a.text_version LIKE ' . $_db->quote($search. false));
 								break;
 							case 'html_version':
-									$query->where('a.html_version LIKE ' . $_db->Quote($search, false));
+									$query->where('a.html_version LIKE ' . $_db->quote($search, false));
 								break;
 							default:
 						}
@@ -355,12 +392,16 @@ class BwPostmanModelNewsletters extends JModelList
 					$query->leftJoin('#__users AS ua ON ua.id = n.created_by');
 
 					// Filter by campaign
-					if ($campaign = $this->getState('filter.campaign_id')) {
+				$campaign = $this->getState('filter.campaign_id');
+					if ($campaign)
+					{
 						$query->where('n.campaign_id = ' . (int) $campaign);
 					}
 
 					// Filter by authors
-					if ($authors = $this->getState('filter.authors')) {
+				$authors = $this->getState('filter.authors');
+					if ($authors)
+					{
 						$query->where('n.created_by = ' . (int) $authors);
 					}
 
@@ -368,26 +409,28 @@ class BwPostmanModelNewsletters extends JModelList
 					$filtersearch	= $this->getState('filter.search_filter');
 					$search			= $_db->escape($this->getState('filter.search'), true);
 
-					if (!empty($search)) {
+					if (!empty($search))
+					{
 						$search			= '%' . $search . '%';
-						switch ($filtersearch) {
+						switch ($filtersearch)
+						{
 							case 'subject':
-								$query->where('n.subject LIKE ' . $_db->Quote($search));
+								$query->where('n.subject LIKE ' . $_db->quote($search));
 								break;
 							case 'description':
-								$query->where('n.description LIKE ' . $_db->Quote($search));
+								$query->where('n.description LIKE ' . $_db->quote($search));
 								break;
 							case 'subject_description':
-								$query->where('(n.subject LIKE ' . $_db->Quote($search). 'OR n.description LIKE ' . $_db->Quote($search, false) . ')');
+								$query->where('(n.subject LIKE ' . $_db->quote($search). 'OR n.description LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'html_text_version':
-								$query->where('(n.html_version LIKE ' . $_db->Quote($search, false) . 'OR q.text_version LIKE ' . $_db->Quote($search, false) . ')');
+								$query->where('(n.html_version LIKE ' . $_db->quote($search, false) . 'OR q.text_version LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'text_version':
-								$query->where('n.text_version LIKE ' . $_db->Quote($search. false));
+								$query->where('n.text_version LIKE ' . $_db->quote($search. false));
 								break;
 							case 'html_version':
-								$query->where('n.html_version LIKE ' . $_db->Quote($search, false));
+								$query->where('n.html_version LIKE ' . $_db->quote($search, false));
 								break;
 							default:
 						}

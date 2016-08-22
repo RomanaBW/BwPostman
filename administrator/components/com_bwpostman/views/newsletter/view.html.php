@@ -37,7 +37,10 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * BwPostman Newsletter View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
@@ -45,13 +48,17 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold form data
 	 *
 	 * @var array   $form
+	 *
+	 * @since       0.9.1
 	 */
 	protected $form;
 
 	/**
 	 * property to hold selected item
 	 *
-	 * @var array   $item
+	 * @var object   $item
+	 *
+	 * @since       0.9.1
 	 */
 	protected $item;
 
@@ -59,8 +66,73 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * property to hold state
 	 *
 	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
+
+	/**
+	 * property to hold can do properties
+	 *
+	 * @var array $canDo
+	 *
+	 * @since       0.9.1
+	 */
+	public $canDo;
+
+	/**
+	 * property to hold queue entries property
+	 *
+	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public $queueEntries;
+
+	/**
+	 * property to hold params
+	 *
+	 * @var object $params
+	 *
+	 * @since       0.9.1
+	 */
+	public $params;
+
+	/**
+	 * property to hold content_exists
+	 *
+	 * @var boolean $content_exists
+	 *
+	 * @since       0.9.1
+	 */
+	public $content_exists;
+
+	/**
+	 * property to hold selected_content_old
+	 *
+	 * @var string $selected_content_old
+	 *
+	 * @since       0.9.1
+	 */
+	public $selected_content_old;
+
+	/**
+	 * property to hold old id of template
+	 *
+	 * @var boolean $template_id_old
+	 *
+	 * @since       0.9.1
+	 */
+	public $template_id_old;
+
+	/**
+	 * property to old id of text template
+	 *
+	 * @var boolean $text_template_id_old
+	 *
+	 * @since       0.9.1
+	 */
+	public $text_template_id_old;
 
 	/**
 	 * Execute and display a template script.
@@ -68,6 +140,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl=null)
 	{
@@ -93,20 +167,26 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		// set some needed flags
 		// flag, if rendered content exists or not
-		if ($this->item->html_version || $this->item->text_version) {
+		if ($this->item->html_version || $this->item->text_version)
+		{
 			$this->content_exists = true;
-		} else {
+		}
+		else
+		{
 			$this->content_exists = false;
 		}
 
 		// flag for selected content before editing
-		if (is_array($this->item->selected_content)) {
+		if (is_array($this->item->selected_content))
+		{
 			$this->selected_content_old	= implode(',', $this->item->selected_content);
 		}
-		elseif (isset($this->item->selected_content)) {
+		elseif (isset($this->item->selected_content))
+		{
 			$this->selected_content_old	= $this->item->selected_content;
 		}
-		else {
+		else
+		{
 			$this->selected_content_old	= '';
 		}
 
@@ -126,6 +206,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{
@@ -136,8 +217,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// Get document object, set document title and add css
 		$document	= JFactory::getDocument();
 		$document->setTitle('COM_BWPOSTMAN_NL_DETAILS');
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(JURI::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		JHtml::_('jquery.framework');
+		$document->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
 
 		// Set toolbar title and items
 		$canDo			= BwPostmanHelper::getActions($this->item->id, 'newsletter');
@@ -147,50 +229,52 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$isNew = ($this->item->id == 0);
 
 		// If we come from sent newsletters, we have to do other stuff than normal
-		if ($layout == 'edit_publish') {
-			JToolBarHelper::save('newsletter.publish_save');
-			JToolBarHelper::cancel('newsletter.cancel');
-			JToolBarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+		if ($layout == 'edit_publish')
+		{
+			JToolbarHelper::save('newsletter.publish_save');
+			JToolbarHelper::cancel('newsletter.cancel');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
 		}
-		else {
-
+		else
+		{
 			// For new records, check the create permission.
-			if ($isNew && $canDo->get('core.create')) {
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
-				JToolBarHelper::save('newsletter.save');
-				JToolBarHelper::apply('newsletter.apply');
+			if ($isNew && $canDo->get('bwpm.create'))
+			{
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+				JToolbarHelper::save('newsletter.save');
+				JToolbarHelper::apply('newsletter.apply');
 
 				$task		= JFactory::getApplication()->input->get('task', '', 'string');
 				// If we came from the main page we will show a back button
-				if ($task == 'add') {
-					JToolBarHelper::back();
+				if ($task == 'add')
+				{
+					JToolbarHelper::back();
 				}
-				else {
-					JToolBarHelper::cancel('newsletter.cancel');
+				else
+				{
+					JToolbarHelper::cancel('newsletter.cancel');
 				}
 			}
-			else {
+			else
+			{
 				// Can't save the record if it's checked out.
-				if (!$checkedOut) {
+				if (!$checkedOut)
+				{
 					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-					if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)) {
-						JToolBarHelper::save('newsletter.save');
-						JToolBarHelper::apply('newsletter.apply');
+					if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+					{
+						JToolbarHelper::save('newsletter.save');
+						JToolbarHelper::apply('newsletter.apply');
 					}
 				}
 				// Rename the cancel button for existing items
-				JToolBarHelper::cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+				JToolbarHelper::cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
 			}
-	/*		JToolBarHelper::spacer();
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
-			if ($canDo->get('core.create') || $canDo->get('core.edit') || $canDo->get('core.send')) JToolBarHelper::custom('newsletter.checkForm', 'thumbs-up', 'checkform_f2', 'COM_BWPOSTMAN_NL_CHECK_FORM', false);
-	*/
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-		JToolBarHelper::spacer();
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
 	}
 }

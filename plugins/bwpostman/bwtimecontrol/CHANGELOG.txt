@@ -1,0 +1,12 @@
+******************************************
+Changelog for BwPostman Timecontrol Plugin
+******************************************
+ 
+This is a changelog for the Joomla!3.3 and Joomla!2.5 plugin BwPostman BwTimeControl
+Many thanks to all those people who have contributed bug reports and code fixes.
+ 
+--- version 1.2.0 released (15-Mar-2015)----
+
+Known bugs
+	- The user, that runs the cronjob, mandatory must have a defined admin language to avoid warnings from joomla language filter 
+ 

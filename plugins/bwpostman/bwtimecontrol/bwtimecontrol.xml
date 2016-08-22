@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension>
+<extension version="2.5" type="plugin" group="bwpostman" method="upgrade">
+	<name>PLG_BWPOSTMAN_BWTIMECONTROL</name>
+	<version>1.2.0</version>
+	<creationDate>March 2015</creationDate>
+	<author>Boldt Webservice</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>http://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>GNU/GPLv3 or later</license>
+	<description>PLG_BWPOSTMAN_BWTIMECONTROL_DESC</description>
+	<scriptfile>install.bwtimecontrol.php</scriptfile>
+
+	<files>
+		<filename plugin="bwtimecontrol">bwtimecontrol.php</filename>
+		<filename>bwtimecontrol.php</filename>
+		<filename>bwtimecontrol.xml</filename>
+		<filename>index.html</filename>
+		<filename>install.bwtimecontrol.php</filename>
+		<folder>assets</folder>
+		<folder>forms</folder>
+		<folder>helpers</folder>
+		<folder>language</folder>
+		<folder>log</folder>
+		<folder>sql</folder>
+		<folder>tables</folder>
+	</files>
+	
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/uninstall.sql</file>
+		</sql>
+	</uninstall>
+ 
+   <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+	<scriptfile>install.bwtimecontrol.php</scriptfile>
+	
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_bwtimecontrol.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_bwtimecontrol.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_bwpostman_bwtimecontrol.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_bwpostman_bwtimecontrol.ini</language>
+	</languages>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/plg_bwtimecontrol_update2.xml</server>
+	</updateservers>	
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="bwtimecontrol_licence_code" type="text" size="50"
+					default="" label="PLG_BWPOSTMAN_BWTIMECONTROL_LICENCE_CODE" description="PLG_BWPOSTMAN_BWTIMECONTROL_LICENCE_CODE_NOTE"
+				/>
+				<field name="bwtimecontrol_domain" type="text" size="50" default=""
+					label="PLG_BWPOSTMAN_BWTIMECONTROL_DOMAIN" description="PLG_BWPOSTMAN_BWTIMECONTROL_DOMAIN_NOTE"
+				/>
+				<field name="bwtimecontrol_username" type="text" size="50" default=""
+					label="PLG_BWPOSTMAN_BWTIMECONTROL_USERNAME" description="PLG_BWPOSTMAN_BWTIMECONTROL_USERNAME_NOTE"
+				/>
+				<field name="bwtimecontrol_passwd" type="password" size="50" default=""
+					label="PLG_BWPOSTMAN_BWTIMECONTROL_PASSWD" description="PLG_BWPOSTMAN_BWTIMECONTROL_PASSWD_NOTE"
+				/>
+				<field name="bwtimecontrol_days_max" type="text" size="2"
+					default="30" label="PLG_BWPOSTMAN_BWTIMECONTROL_DAYS_MAX" description="PLG_BWPOSTMAN_BWTIMECONTROL_DAYS_MAX_NOTE"
+				/>
+				<field name="bwtimecontrol_minute_intval" type="text" size="2"
+					default="15" label="PLG_BWPOSTMAN_BWTIMECONTROL_MINUTE_INTVAL" description="PLG_BWPOSTMAN_BWTIMECONTROL_MINUTE_INTVAL_NOTE"
+				/>
+				<field name="bwtimecontrol_licence_code" type="text" size="50"
+					default="" label="PLG_BWPOSTMAN_BWTIMECONTROL_LICENCE_CODE" description="PLG_BWPOSTMAN_BWTIMECONTROL_LICENCE_CODE_NOTE"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+	
+</extension>

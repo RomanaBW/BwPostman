@@ -29,7 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 
 
 $image = '<i class="icon-info"></i>';
@@ -50,32 +50,41 @@ $options = array(
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) {
+	Joomla.submitbutton = function (pressbutton)
+	{
 		var form = document.adminForm;
 
-		if (pressbutton == 'template.save') {
+		if (pressbutton == 'template.save')
+		{
 			writeStore("inputs", 0);
 			writeStore("jpanetabs_template_tabs", 0);
 			writeStore("jpanetabs_buttons" ,0);
 		}
 
-		if (pressbutton == 'template.apply') {
+		if (pressbutton == 'template.apply')
+		{
 			writeStore("inputs", 0);
 		}
 
-		if (pressbutton == 'template.save2copy') {
+		if (pressbutton == 'template.save2copy')
+		{
 			writeStore("inputs", 0);
 		}
 
-		if (pressbutton == 'template.cancel') {
+		if (pressbutton == 'template.cancel')
+		{
 			// check if form field values has changed
 			var inputs_old = readStore("inputs");
 			inputs = checkValues(1);
-			if (inputs_old === inputs){
-			} else {
+			if (inputs_old === inputs)
+			{
+			}
+			else
+			{
 				// confirm if cancel or not
 				confirmCancel =confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
-				if (confirmCancel == false) {
+				if (confirmCancel == false)
+				{
 					return;
 				}
 			}
@@ -86,26 +95,34 @@ $options = array(
 			return;
 		}
 
-		// Valdiate input fields
-		if (form.jform_title.value == ""){
+		// Validate input fields
+		if (form.jform_title.value == "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
-		} else if (form.jform_description.value== ""){
+		}
+		else if (form.jform_description.value== "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
-		} else {
+		}
+		else
+		{
 			submitform(pressbutton);
 		}
 	};
 
 	// insert placeholder
-	function buttonClick(Field, myValue) {
+	function buttonClick(Field, myValue)
+	{
 		myField = document.getElementById(Field);
-		if (document.selection) {
+		if (document.selection)
+		{
 			// IE support
 			myField.focus();
 			sel = document.selection.createRange();
 			sel.text = myValue;
 		}
-		else if (myField.selectionStart || myField.selectionStart == '0') {
+		else if (myField.selectionStart || myField.selectionStart == '0')
+		{
 			// MOZILLA/NETSCAPE support
 			var startPos = myField.selectionStart;
 			var endPos = myField.selectionEnd;
@@ -113,50 +130,66 @@ $options = array(
 			+ myValue
 			+ myField.value.substring(endPos, myField.value.length);
 		}
-		else {
+		else
+		{
 			myField.value += myValue;
 		}
 	}
 
 	// check form field values
-	function checkValues(turn) {
+	function checkValues(turn)
+	{
 		var inputs = '';
 		var elements = document.adminForm.elements;
-		for (var i=0; i<elements.length; i++){
+		for (var i=0; i<elements.length; i++)
+		{
 			var fieldValue = elements[i].value;
 			if (elements[i].getAttribute('checked') != false) {var fieldChecked = elements[i].getAttribute('checked');}
 			inputs += fieldValue + fieldChecked;
 		}
-		if (turn == 0){
+		if (turn == 0)
+		{
 			writeStore("inputs", inputs);
-		} else {
+		}
+		else
+		{
 			return inputs;
 		}
 	}
 
 	// write to storage
-	function writeStore(item, value) {
-		if (Browser.Features.localstorage) {
+	function writeStore(item, value)
+	{
+		if (Browser.Features.localstorage)
+		{
 			localStorage[item] = value;
-		} else {
+		}
+		else
+		{
 			Cookie.write(item, value);
 		}
 	}
 
 	// read storage
-	function readStore(item) {
-		if (Browser.Features.localstorage) {
+	function readStore(item)
+	{
+		if (Browser.Features.localstorage)
+		{
 			itemValue = localStorage[item];
-		} else {
+		}
+		else
+		{
 			itemValue = Cookie.read(item);
 		}
 		return itemValue;
 	}
 
-	window.onload = function() {
+	window.onload = function()
+	{
 		var framefenster = document.getElementById("myIframe");
 
-		if(framefenster.contentWindow.document.body){
+		if(framefenster.contentWindow.document.body)
+		{
 			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
 			if(document.all && !window.opera) {
 				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
@@ -165,7 +198,8 @@ $options = array(
 		}
 		// check if store is empty or 0
 		var store = readStore("inputs");
-		if (store == 0 || store === undefined || store === null){
+		if (store == 0 || store === undefined || store === null)
+		{
 			checkValues(0);
 		}
 	};
@@ -180,7 +214,7 @@ $options = array(
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
-			<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_TEXT_TEMPLATE'); ?></legend>
+			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_TEMPLATE'); ?></legend>
 			<div class="well well-small">
 				<div class="fltlft width-40 span5 control-group">
 					<?php
@@ -188,7 +222,7 @@ $options = array(
 						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'), 'panel1');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
+						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<li>
@@ -211,7 +245,7 @@ $options = array(
 						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL') , 'panel2');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'); ?></legend>
+						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
@@ -233,7 +267,7 @@ $options = array(
 						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL') , 'panel4');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
+						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
@@ -253,7 +287,7 @@ $options = array(
 						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL') , 'panel5');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JTEXT::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'); ?></legend>
+						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
@@ -266,7 +300,7 @@ $options = array(
 											<?php
 										endif;
 									endforeach;
-									// begin footerbuttons
+									// begin footer buttons
 									$i = 1;
 
 									echo '  <li><div class="clr clearfix"></div>';
@@ -326,7 +360,7 @@ $options = array(
 		<?php echo $this->form->getInput('tpl_id'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 	</form>
 </div>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset addfieldpath="/administrator/components/com_bwpostman/models/fields">
+		<field
+			name="id"
+			type="text"
+			class="readonly"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC"
+			default="0"
+			readonly="true"
+		/>
+
+		<field
+			name="user_id"
+			type="hidden"
+		/>
+
+		<field
+				name="gender"
+				type="list"
+				label="COM_BWPOSTMAN_SUBS_FIELD_GENDER_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_SUBS_FIELD_GENDER_DESC"
+				required="false"
+				class="chzn-state"
+		>
+			<option value="">
+				COM_BWPOSTMAN_SUB_SELECT_GENDER</option>
+			<option value="1">
+				COM_BWPOSTMAN_FEMALE</option>
+			<option value="0">
+				COM_BWPOSTMAN_MALE</option>
+		</field>
+
+		<field
+			name="name"
+			type="text"
+			label="COM_BWPOSTMAN_SUBS_FIELD_NAME_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_SUBS_FIELD_NAME_DESC"
+			class="inputbox"
+			size="30"
+			required="true"
+		/>
+
+		<field
+			name="firstname"
+			type="text"
+			label="COM_BWPOSTMAN_SUBS_FIELD_FIRSTNAME_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_SUBS_FIELD_FIRSTNAME_DESC"
+			class="inputbox"
+			size="30"
+		/>
+
+		<field
+				name="special"
+				type="text"
+				label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
+				class="inputbox"
+				required="false"
+				size="30"
+		/>
+
+		<field
+				name="email"
+				type="email"
+				class="inputbox"
+				size="30"
+				label="COM_BWPOSTMAN_SUBS_FIELD_EMAIL_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_SUBS_FIELD_EMAIL_DESC"
+				required="true"
+				validate="email"
+		/>
+
+		<field
+				name="emailformat"
+				type="list"
+				label="COM_BWPOSTMAN_SUBS_FIELD_EMAILFORMAT_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_SUBS_FIELD_EMAILFORMAT_DESC"
+				class="chzn-state"
+				filter="intval"
+				default="1"
+		>
+			<option value="1">
+				COM_BWPOSTMAN_HTML</option>
+			<option value="0">
+				COM_BWPOSTMAN_TEXT</option>
+		</field>
+
+		<field
+			name="status"
+		    type="hidden"
+		/>
+
+		<field
+			name="buttonspacer"
+			description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
+			type="spacer"
+		/>
+
+		<field
+			name="activation"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="editlink"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="registration_date"
+			type="hidden"
+		/>
+
+		<field
+			name="registered_by"
+			type="hidden"
+		/>
+
+		<field
+			name="registration_ip"
+			type="hidden"
+		/>
+
+		<field
+			name="confirmation_date"
+			type="hidden"
+		/>
+
+		<field
+			name="confirmed_by"
+			type="hidden"
+		/>
+
+		<field
+			name="confirmation_ip"
+			type="hidden"
+		/>
+
+		<field
+			name="modified_time"
+			type="hidden"
+		/>
+
+		<field
+			name="modified_by"
+			type="hidden"
+		/>
+
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="archive_flag"
+			type="hidden"
+		/>
+
+		<field
+			name="archive_time"
+			type="hidden"
+		/>
+
+		<field
+			name="archive_by"
+			type="hidden"
+		/>
+
+		<field
+			name="ip"
+			type="hidden"
+		/>
+
+		<field
+			name="ml_available"
+			type="mlavailable"
+			label="COM_BWPOSTMAN_SUBS_FIELD_ML_AVAILABLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_SUBS_FIELD_ML_AVAILABLE_DESC"
+			class="inputbox mailinglists"
+		/>
+
+		<field
+			name="ml_unavailable"
+			type="mlunavailable"
+			label="COM_BWPOSTMAN_SUBS_FIELD_ML_UNAVAILABLE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_SUBS_FIELD_ML_UNAVAILABLE_DESC"
+			class="inputbox mailinglists"
+		/>
+
+		<field
+			name="ml_intern"
+			type="mlintern"
+			label="COM_BWPOSTMAN_SUBS_FIELD_ML_INTERN_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_SUBS_FIELD_ML_INTERN_DESC"
+			class="inputbox mailinglists"
+		/>
+
+		<field
+			name="mailinglists"
+			type="hidden"
+		/>
+
+  		<field
+			name="rules"
+			type="hidden"
+		/>
+	</fieldset>
+</form>

@@ -27,8 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import CONTROLLER object class
+// Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -44,6 +46,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
+	 *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_SUB';
@@ -101,20 +104,20 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		$userId		= $user->get('id');
 
 		// Check general edit permission first.
-		if ($user->authorise('core.edit', 'com_bwpostman'))
+		if ($user->authorise('bwpm.edit', 'com_bwpostman'))
 		{
 			return true;
 		}
 
 		// Check specific edit permission.
-		if ($user->authorise('core.edit', 'com_bwpostman.subscriber.' . $recordId))
+		if ($user->authorise('bwpm.subscriber.edit', 'com_bwpostman.subscriber.' . $recordId))
 		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', 'com_bwpostman.subscriber.' . $recordId) || $user->authorise('core.edit.own', 'com_bwpostman'))
+		if ($user->authorise('bwpm.subscriber.edit.own', 'com_bwpostman.subscriber.' . $recordId) || $user->authorise('bwpm.edit.own', 'com_bwpostman'))
 		{
 			// Now test the owner is the user.
 			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
@@ -181,8 +184,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		// Access check.
 		if (!$this->allowEdit(array($key => $recordId), $key))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-			$this->setMessage($this->getError(), 'error');
+			$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
 
 			$this->setRedirect(
 				JRoute::_(
@@ -198,8 +200,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
-			$this->setMessage($this->getError(), 'error');
+			$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()), 'error');
 
 			// …and do not allow the user to see the record.
 			$this->setRedirect(
@@ -231,7 +232,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	/**
 	 * Overwrite for method to add a new record for a subscriber
 	 *
-	 *
+	 * @since       0.9.1
 	 */
 	public function add()
 	{
@@ -259,11 +260,13 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * --> subscribers-table: archive_flag = 1, set archive_date
 	 *
 	 * @access	public
+	 *
 	 * @return 	Redirect
+	 *
+	 * @since       0.9.1
 	 */
 	public function archive()
 	{
-		$app	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
@@ -273,43 +276,57 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		$layout = $jinput->get('tab', 'confirmed');
 
 		// Get the selected campaign(s)
-		$cid = $jinput->get('cid', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid);
+		$cid = $jinput->get('cid', array(0), 'post');
+		ArrayHelper::toInteger($cid);
 
 		$n = count ($cid);
 
 		$model = $this->getModel('subscriber');
 		if(!$model->archive($cid, 1)) { // Couldn't archive
-			if ($layout == 'testrecipients') {
-				if ($n > 1) {
+			if ($layout == 'testrecipients')
+			{
+				if ($n > 1)
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_TESTS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
-				else {
+				else
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_TEST_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
-			}else {
-				if ($n > 1) {
+			}
+			else
+			{
+				if ($n > 1)
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_SUBS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
-				else {
+				else
+				{
 					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_SUB_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
 				}
 			}
 		}
-		else { // Archived successfully
-			if ($layout == 'testrecipients') {
-				if ($n > 1) {
+		else
+		{ // Archived successfully
+			if ($layout == 'testrecipients')
+			{
+				if ($n > 1)
+				{
 					$msg = JText::_('COM_BWPOSTMAN_TESTS_ARCHIVED');
 				}
-				else {
+				else
+				{
 					$msg = JText::_('COM_BWPOSTMAN_TEST_ARCHIVED');
 				}
 			}
-			else {
-				if ($n > 1) {
+			else
+			{
+				if ($n > 1)
+				{
 					$msg = JText::_('COM_BWPOSTMAN_SUBS_ARCHIVED');
 				}
-				else {
+				else
+				{
 					$msg = JText::_('COM_BWPOSTMAN_SUB_ARCHIVED');
 				}
 			}
@@ -325,6 +342,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @param	object	$model	The model.
 	 *
 	 * @return	boolean	True if successful, false otherwise and internal error is set.
+	 *
 	 * @since	1.0.8
 	 *
 	 */
@@ -342,12 +360,15 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		// Build an array of item contexts to check
 		$contexts = array();
-		foreach ($cid as $id) {
+		foreach ($cid as $id)
+		{
 			// If we're coming from com_categories, we need to use extension vs. option
-			if (isset($this->extension)) {
+			if (isset($this->extension))
+			{
 				$option = $this->extension;
 			}
-			else {
+			else
+			{
 				$option = $this->option;
 			}
 			$contexts[$id] = $option . '.' . $this->context . '.' . $id;
@@ -360,20 +381,25 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		$results	= $model->batch($vars, $cid, $contexts);
 
 		// Check results.
-		if (is_array($results)) {
-			foreach ($results as $result) {
-				if ($result['task']	== 'subscribe') {
+		if (is_array($results))
+		{
+			foreach ($results as $result)
+			{
+				if ($result['task']	== 'subscribe')
+				{
 					$sub_text	= JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE', $vars['mailinglist_id']);
 					$message	= JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
 					$message	.= ' ' . JText::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_N_ITEMS', $result['done']);
 					$message	.= ' ' . JText::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
 				}
-				if ($result['task']	== 'unsubscribe') {
+				if ($result['task']	== 'unsubscribe')
+				{
 					if ($message == '') {
 						$sub_text	= JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE', $vars['mailinglist_id']);
 						$message	= JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
 					}
-					else {
+					else
+					{
 						$sub_text	= JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE', $old_list);
 						$message	.= '<br />' . JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
 					}
@@ -383,10 +409,12 @@ class BwPostmanControllerSubscriber extends JControllerForm
 				$this->setMessage($message);
 			}
 		}
-		elseif ($results < 0) {
+		elseif ($results < 0)
+		{
 			$this->setMessage(JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_NOTHING_TO_MOVE', $old_list), 'warning');
 		}
-		else {
+		else
+		{
 			$this->setMessage(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_FAILED', $model->getError()), 'warning');
 		}
 

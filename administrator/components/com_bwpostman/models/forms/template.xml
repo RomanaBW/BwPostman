@@ -3,7 +3,7 @@
 	<fieldset label="COM_BWPOSTMAN_TPL_BASICS_LABEL">
 		<field
 			name="id"
-			type="hidden" 
+			type="hidden"
 			class="readonly"
 			label="JGLOBAL_FIELD_ID_LABEL"
 			labelclass="control-label"
@@ -57,7 +57,7 @@
 		/>
 
 	</fieldset>
-	
+
 	<fields name="basics">
 		<fieldset name="jbasics">
 			<field name="spacer1" type="spacer" class="divider" hr="true" />
@@ -78,7 +78,7 @@
 				class="inputbox chzn-state"
 				label="COM_BWPOSTMAN_TPL_ZOOM_LABEL"
 				labelclass="control-label"
-				description ="COM_BWPOSTMAN_TPL_ZOOM_DESC" 
+				description ="COM_BWPOSTMAN_TPL_ZOOM_DESC"
 				default="1"
 			>
 				<option value="1">100%</option>
@@ -97,7 +97,7 @@
 				class="inputbox chzn-state"
 				label="COM_BWPOSTMAN_TPL_ZOOM_PADDING_LABEL"
 				labelclass="control-label"
-				description ="COM_BWPOSTMAN_TPL_ZOOM_PADDING_DESC" 
+				description ="COM_BWPOSTMAN_TPL_ZOOM_PADDING_DESC"
 				default="1"
 				>
 				<option value="1">100%</option>
@@ -151,9 +151,20 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_LEGAL_COLOR_DESC"
 			/>
+			<field name="spacer12" type="spacer" class="divider" hr="true" />
+			<field
+				name="custom_css"
+				type="textarea"
+				label="COM_BWPOSTMAN_TPL_FIELD_CUSTOM_CSS_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_FIELD_CUSTOM_CSS_DESC"
+				class="inputbox"
+				rows="3"
+				cols="50"
+			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="header">
 		<fieldset name="jheader" label="COM_BWPOSTMAN_TPL_HEADER_LABEL">
 			<field
@@ -162,7 +173,7 @@
 				class="inputbox chzn-color-state"
 				label="COM_BWPOSTMAN_TPL_THEME_HEADER_LABEL"
 				labelclass="control-label"
-				description ="COM_BWPOSTMAN_TPL_THEME_HEADER_DESC" 
+				description ="COM_BWPOSTMAN_TPL_THEME_HEADER_DESC"
 				default="logo_with_text"
 				>
 				<option value="logo_with_text">COM_BWPOSTMAN_TPL_THEME_HEADER_LOGOWITHSLOGAN</option>
@@ -191,52 +202,52 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_LOGO_FIELD_DESC"
 			/>
-			<field 
-				name="logo_width" 
-				type="text" 
+			<field
+				name="logo_width"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_LOGO_WIDTH_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_LOGO_WIDTH_DESC" 
-				class="inputbox" 
+				description="COM_BWPOSTMAN_TPL_LOGO_WIDTH_DESC"
+				class="inputbox"
 				size="4"
 				filter="integer"
 			/>
-			<field 
-				name="firstline" 
-				type="text" 
+			<field
+				name="firstline"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_FIRSTLINE_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_FIRSTLINE_DESC" 
-				class="inputbox" 
+				description="COM_BWPOSTMAN_TPL_FIRSTLINE_DESC"
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="size_firstline" 
-				type="text" 
+			<field
+				name="size_firstline"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_SIZE_FIRSTLINE_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_SIZE_FIRSTLINE_DESC" 
+				description="COM_BWPOSTMAN_TPL_SIZE_FIRSTLINE_DESC"
 				   default="36"
-				class="inputbox" 
+				class="inputbox"
 				size="2"
 			/>
-			<field 
-				name="secondline" 
-				type="text" 
+			<field
+				name="secondline"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_SECONDLINE_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_SECONDLINE_DESC" 
-				class="inputbox" 
+				description="COM_BWPOSTMAN_TPL_SECONDLINE_DESC"
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="size_secondline" 
-				type="text" 
+			<field
+				name="size_secondline"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_SIZE_SECONDLINE_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_SIZE_SECONDLINE_DESC" 
+				description="COM_BWPOSTMAN_TPL_SIZE_SECONDLINE_DESC"
 				default="16"
-				class="inputbox" 
+				class="inputbox"
 				size="2"
 			/>
 			<field
@@ -265,7 +276,7 @@
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="intro">
 		<fieldset name="jintro" label="COM_BWPOSTMAN_TPL_INTRO_LABEL">
 			<field
@@ -280,30 +291,30 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field 
-				name="intro_headline" 
-				type="text" 
+			<field
+				name="intro_headline"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC" 
-				class="inputbox" 
+				description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC"
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="intro_text" 
-				type="textarea" 
+			<field
+				name="intro_text"
+				type="textarea"
 				label="COM_BWPOSTMAN_TPL_INTROTEXT_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC" 
+				description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC"
 				default="Lorem ipsum dolor sit amet consectetuer sem venenatis eros id lacus. Consequat dolor urna justo pede Phasellus justo est Lorem nunc et."
-				class="inputbox" 
+				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="article">
 		<fieldset name="jarticle" label="COM_BWPOSTMAN_TPL_ARTICLE_LABEL">
 			<field
@@ -392,7 +403,7 @@
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="footer">
 		<fieldset name="jfooter" label="COM_BWPOSTMAN_TPL_FOOTER_LABEL">
 			<field
@@ -445,29 +456,29 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field 
-				name="address_text" 
-				type="textarea" 
+			<field
+				name="address_text"
+				type="textarea"
 				label="COM_BWPOSTMAN_TPL_ADDRESSTEXT_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_ADDRESSTEXT_DESC" 
+				description="COM_BWPOSTMAN_TPL_ADDRESSTEXT_DESC"
 				default="Name&#13;&#10;Address&#13;&#10;..."
-				class="inputbox" 
+				class="inputbox"
 				rows="3"
 				cols="50"
 			/>
-			<field 
-				name="button_headline" 
-				type="text" 
+			<field
+				name="button_headline"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_HEADLINE_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_HEADLINE_DESC" 
-				class="inputbox" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_HEADLINE_DESC"
+				class="inputbox"
 				size="30"
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="button1">
 		<fieldset name="jbutton1" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
 			<field
@@ -482,24 +493,24 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field 
-				name="button_text" 
-				type="text" 
+			<field
+				name="button_text"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Website"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="button_href" 
-				type="text" 
+			<field
+				name="button_href"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="http://www.mywebsite.com"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -531,7 +542,7 @@
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="button2">
 		<fieldset name="jbutton2" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
 			<field
@@ -546,24 +557,24 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field 
-				name="button_text" 
-				type="text" 
+			<field
+				name="button_text"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Facebook"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="button_href" 
-				type="text" 
+			<field
+				name="button_href"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="http://www.facebook.com"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -595,7 +606,7 @@
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="button3">
 		<fieldset name="jbutton3" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
 			<field
@@ -610,24 +621,24 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field 
-				name="button_text" 
-				type="text" 
+			<field
+				name="button_text"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Twitter"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="button_href" 
-				type="text" 
+			<field
+				name="button_href"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="http://www.twitter.com/"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -659,7 +670,7 @@
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="button4">
 		<fieldset name="jbutton4" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
 			<field
@@ -674,24 +685,24 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field 
-				name="button_text" 
-				type="text" 
+			<field
+				name="button_text"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Google+"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="button_href" 
-				type="text" 
+			<field
+				name="button_href"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="https://plus.google.com/"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -723,7 +734,7 @@
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fields name="button5">
 		<fieldset name="jbutton5" label="COM_BWPOSTMAN_TPL_BUTTON_LABEL">
 			<field
@@ -738,24 +749,24 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field 
-				name="button_text" 
-				type="text" 
+			<field
+				name="button_text"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_TEXT_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Linkedin"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
-			<field 
-				name="button_href" 
-				type="text" 
+			<field
+				name="button_href"
+				type="text"
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
-				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC" 
+				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="https://www.linkedin.com/"
-				class="inputbox" 
+				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -787,31 +798,31 @@
 			/>
 		</fieldset>
 	</fields>
-	
+
 	<fieldset>
 		<field
 			name="tpl_id"
 			type="hidden"
 			default="0"
 		/>
-		<field 
-			name="archive_flag" 
-			type="hidden" 
+		<field
+			name="archive_flag"
+			type="hidden"
 		/>
-		<field 
-			name="archive_time" 
-			type="hidden" 
+		<field
+			name="archive_time"
+			type="hidden"
 		/>
-		<field 
-			name="archive_by" 
-			type="hidden" 
+		<field
+			name="archive_by"
+			type="hidden"
 		/>
 		<field
 			name="tpl_html"
 			type="editor"
 			label="COM_BWPOSTMAN_TPL_HTML_LABEL"
 			labelclass="control-label"
-			description ="COM_BWPOSTMAN_TPL_HTML_DESC" 
+			description ="COM_BWPOSTMAN_TPL_HTML_DESC"
 			filter="JComponentHelper::filterText"
 		/>
 		<field

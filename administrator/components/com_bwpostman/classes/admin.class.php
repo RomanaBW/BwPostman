@@ -31,24 +31,38 @@ defined ('_JEXEC') or die ('Restricted access');
  * BwPostman Footer
  *
  * @package BwPostman-Admin
+ *
+ * @since   0.9.1
  */
 class BwPostmanAdmin {
 
 	/**
 	 * Method to write the BwPostman footer
+	 *
+	 * @return string
+	 *
+	 * @since   0.9.1
 	 */
 	static public function footer()
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db		    = JFactory::getDbo();
+		$query	    = $db->getQuery(true);
+		$manifest   = array();
 
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-		$db->SetQuery($query);
+		$db->setQuery($query);
 
-		$manifest = json_decode($db->loadResult(), true);
+		try
+		{
+			$manifest = json_decode($db->loadResult(), true);
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		echo 'BwPostman version ' . $manifest['version'] . ' by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
+		return 'BwPostman version ' . $manifest['version'] . ' by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 	}
 }

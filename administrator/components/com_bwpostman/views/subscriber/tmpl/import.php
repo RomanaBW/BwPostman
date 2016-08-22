@@ -28,10 +28,10 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 // Keep session alive while importing
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('bootstrap.tooltip');
 
@@ -87,7 +87,7 @@ $option	= $jinput->getCmd('option');
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>"><?php echo $image; ?></span>
 						</td>
 						<td>
-							<input type="checkbox" id="caption" name="caption"
+							<input type="checkbox" id="caption" name="caption" title="caption"
 								<?php if (isset ($this->import['caption'])) { if ($this->import['caption'] == 1) echo "checked"; } ?>
 							/>
 						</td>
@@ -108,7 +108,7 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="task" value="prepareImport" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
@@ -117,7 +117,8 @@ $option	= $jinput->getCmd('option');
 /* <![CDATA[ */
 var $j	= jQuery.noConflict();
 
-function extCheck() {
+function extCheck()
+{
 	// get the file name, possibly with path (depends on browser)
 	var filename	= $j("#importfile").val();
 	var format		= $j("input[name='fileformat']:checked").val();
@@ -128,33 +129,40 @@ function extCheck() {
 
 	// If there is no dot anywhere in filename, we would have extension == filename,
 	// so we account for this possibility now
-	if (extension == filename) {
+	if (extension == filename)
+	{
 		extension = '';
 	}
-	else {
+	else
+	{
 		// if there is an extension, we convert to lower case
 		// (N.B. this conversion will not effect the value of the extension
 		// on the file upload.)
 		extension = extension.toLowerCase();
 	}
-	switch (extension) {
+	switch (extension)
+	{
 		case 'xml':
-				if (format == 'xml') {
+				if (format == 'xml')
+				{
 					$j( ".button" ).show();
 				}
-				else {
+				else
+				{
 					alert ('<?php echo JText::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
 					$j( "#importfile" ).val('');
 				}
 			break;
 		case 'csv':
-			if (format == 'csv') {
+			if (format == 'csv')
+			{
 				$j( ".button" ).show();
 				$j( ".delimiter" ).show();
 				$j( ".enclosure" ).show();
 				$j( ".caption" ).show();
 			}
-			else {
+			else
+			{
 				alert ('<?php echo JText::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
 				$j( "#importfile" ).val('');
 			}
@@ -166,7 +174,8 @@ function extCheck() {
 	}
 }
 
-$j(document).ready(function() {
+$j(document).ready(function()
+{
 	var format	= $j("input[name='fileformat']:checked").val();
 
 	$j( ".delimiter" ).hide();
@@ -174,18 +183,22 @@ $j(document).ready(function() {
 	$j( ".caption" ).hide();
 	$j( ".button" ).hide();
 
-	if (typeof (format) == 'undefined') {
+	if (typeof (format) == 'undefined')
+	{
 		$j( ".importfile" ).hide();
 	}
-	else {
+	else
+	{
 		$j( ".importfile" ).show();
-		if ($j( "#importfile" ).val() != '') {
+		if ($j( "#importfile" ).val() != '')
+		{
 			extCheck();
 		}
 	}
 });
 
-$j("input[name='fileformat']").on("change", function() {
+$j("input[name='fileformat']").on("change", function()
+{
 	$j( ".importfile" ).show();
 	$j( ".delimiter" ).hide();
 	$j( ".enclosure" ).hide();
@@ -194,8 +207,10 @@ $j("input[name='fileformat']").on("change", function() {
 	$j( "#importfile" ).val('');
 });
 
-$j("#importfile").on("change", function() {
-	if ($j( "#importfile" ).val() != '') {
+$j("#importfile").on("change", function()
+{
+	if ($j( "#importfile" ).val() != '')
+	{
 		extCheck();
 	}
 });

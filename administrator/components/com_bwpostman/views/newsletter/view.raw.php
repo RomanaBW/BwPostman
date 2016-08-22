@@ -35,15 +35,28 @@ jimport('joomla.application.component.view');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Newsletters
+ *
+ * @since   2.0.0
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since   2.0.0
+	 */
+	protected $item;
+
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since   2.0.0
 	 */
 	public function display ($tpl = Null)
 	{
@@ -59,19 +72,25 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
 
 		// Build delay message
-		if ((int) $params->get('mails_per_pageload_delay_unit') == 1000) {
-			if ((int) $params->get('mails_per_pageload_delay') == 1) {
+		if ((int) $params->get('mails_per_pageload_delay_unit') == 1000)
+		{
+			if ((int) $params->get('mails_per_pageload_delay') == 1)
+			{
 				$delay_message	= JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_MESSAGE', JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS',$delay/1000));
 			}
-			else {
+			else
+			{
 				$delay_message	= JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_MESSAGE', JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS',$delay/1000));
 			}
 		}
-		else {
-					if ((int) $params->get('mails_per_pageload_delay') == 1) {
+		else
+		{
+			if ((int) $params->get('mails_per_pageload_delay') == 1)
+			{
 				$delay_message	= JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_MESSAGE', JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES',$delay/1000));
 			}
-			else {
+			else
+			{
 				$delay_message	= JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_MESSAGE', JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES',$delay/1000));
 			}
 		}
@@ -81,12 +100,14 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$nl_id	= $jinput->get('nl_id');
 		$app->setUserState('com_bwpostman.viewraw.newsletter.id', $nl_id);
 
-		if ($task == 'continue_sending'){
+		if ($task == 'continue_sending')
+		{
 			// set number of queue entries before start sending
 			$sumentries	= is_null($app->getUserState('com_bwpostman.newsletters.entries', null)) ? $app->setUserState('com_bwpostman.newsletters.entries', $model->checkTrials(2,1)) : $app->getUserState('com_bwpostman.newsletters.entries', null);
 
-			if ($model->checkTrials(2)) {
-				echo '<div class="modal" style="height: 150px;overflow: auto;margin-bottom: 15px;">';
+			if ($model->checkTrials(2))
+			{
+				echo '<div class="modal" style="height: 150px;overflow: auto;margin-bottom: 15px;" id="progress">';
 				$ret	= $model->sendMailsFromQueue($mails_per_step);
 				echo '</div>';
 				// number of queue entries during sending
@@ -95,13 +116,15 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				// progressbar
 				echo '<div id="progress" style="border: 1px solid silver; width: 98%; line-height: 30px; padding: 2px;"><span style="position: absolute; left: 48%;"><b>'. $percent .' %</b></span><div style="background-color: green; width: '.$percent.'%; height: 30px;"></div></div><br />'. JText::sprintf('COM_BWPOSTMAN_NL_SENT_MESSAGE', $entries, $sumentries).'<br />';
 
-				if ($ret == 1){   // There are more mails in the queue.
+				if ($ret == 1)
+				{   // There are more mails in the queue.
 					echo $delay_message;
 					echo '<script type="text/javascript">'."\n";
 					echo "setTimeout('window.location.reload()'," .$delay. "); \n";
 					echo "</script>\n";
 				}
-				if ($ret == 0){   // No more mails to send.
+				if ($ret == 0)
+				{   // No more mails to send.
 					// reset number of queue entries before start sending
 					$app->setUserState('com_bwpostman.newsletters.entries', null);
 					echo JText::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED');
@@ -112,11 +135,14 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					echo "function goBackToQueue(){window.parent.location.href = 'index.php?option=com_bwpostman&view=newsletters&layout=queue';} \n";
 					echo "setTimeout('goBackToQueue()',5000); \n";
 					echo "</script>\n";
-					if ($sendandpublish == 1){
-						if ($model->publish($id, 1) === true) {
+					if ($sendandpublish == 1)
+					{
+						if ($model->publish($id, 1) === true)
+						{
 							echo "<br /><br /><span style='color: #00ff00;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1') . "</span>";
 						}
-						else {
+						else
+						{
 							echo "<br /><br /><span style='color: #ff0000;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_0') . "</span>";
 						}
 					}
@@ -125,18 +151,21 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					$app->setUserState('com_bwpostman.newsletters.publish_id', null);
 				}
 			}
-			else {
+			else
+			{
 				// reset number of queue entries before start sending
 				$app->setUserState('com_bwpostman.newsletters.entries', null);
 				echo JText::_('COM_BWPOSTMAN_NL_SENDING_NO_QUEUE_ENTRIES_TO_SEND');
 			}
 		}
-		elseif ($task == 'insideModal') {
+		elseif ($task == 'insideModal')
+		{
 			// Get the newsletter
 			$this->item	= $model->getItem($nl_id);
 			$this->item	= $model->getSingleNewsletter();
 		}
-		else {
+		else
+		{
 			// Get the newsletter
 			$this->item	= $model->getSingleNewsletter();
 		}

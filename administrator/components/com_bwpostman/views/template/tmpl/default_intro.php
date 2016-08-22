@@ -42,12 +42,22 @@ foreach ($fieldSets as $name => $fieldSet) :
 			<div class="clr clearfix"></div>
 			<div><?php echo JText::_('COM_BWPOSTMAN_TPL_INTRO_TEXT_DESC'); ?></div>
 			<?php
-				$link = JURI::base() . '#';
+				$link = JUri::base() . '#';
+				if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+				{
+					$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+					$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+				}
+				else
+				{
 				$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
-				foreach ($linktexts as $key => $linktext) {
-					echo "                    <a class=\"btn btn-small pull-left\" onclick=\"buttonClick('jform_intro_intro_text', '" . $linktext . "');return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
+				}
+				foreach ($linktexts as $key => $linktext)
+				{
+					echo "                    <a class=\"btn btn-small pull-left\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</a>";
 					echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
 				}
+				if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
 			?>
 		</div>
 		<div class="clr clearfix"></div>

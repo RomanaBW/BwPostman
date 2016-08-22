@@ -32,20 +32,33 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the mailinglists to which a campaign shall be send
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Campaigns
+ *
+ * @since
  */
 class BwPostmanTableCampaigns_Mailinglists extends JTable
 {
-	/** @var int Primary Key Campaign-ID */
+	/**
+	 * @var int Primary Key Campaign-ID
+	 *
+	 * @since
+	 */
 	var $campaign_id = null;
 
-	/** @var int Primary Key Mailinglist-ID */
+	/**
+	 * @var int Primary Key Mailinglist-ID
+	 *
+	 * @since
+	 */
 	var $mailinglist_id = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since
 	 */
 	public function __construct(& $db)
 	{
@@ -56,26 +69,38 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 * Method to copy the entries of this table for one or more campaigns
 	 *
 	 * @access	public
+	 *
 	 * @param 	int $oldid      ID of the existing campaign
 	 * @param 	int $newid      ID of the copied campaign
 	 *
 	 * @return 	boolean
+	 *
+	 * @since
 	 */
 	public function copyLists($oldid, $newid)
 	{
+		$lists      = array();
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 		$subQuery	= $_db->getQuery(true);
 
-		$subQuery->select($_db->Quote($newid)  . ' AS ' . $_db->quoteName('campaign_id'));
+		$subQuery->select($_db->quote($newid)  . ' AS ' . $_db->quoteName('campaign_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
 		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . (int) $oldid);
 		$_db->setQuery($subQuery);
 
-		$lists		= $_db->loadAssocList();
+		try
+		{
+			$lists		= $_db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		foreach ($lists as $list) {
+		foreach ($lists as $list)
+		{
 			$query->clear();
 			$query->insert($_db->quoteName($this->_tbl));
 			$query->columns(array(
@@ -88,9 +113,13 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 				);
 			$_db->setQuery($query);
 
-			if (!$_db->query()){
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
-			return false;
+			try
+			{
+				$_db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
 			}
 		}
 		return true;

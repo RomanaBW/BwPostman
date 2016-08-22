@@ -149,34 +149,32 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
-    $html[] = '				<tbody>';
+		$html[] = '				<tbody>';
 
-    if (count($options) > 0) {
+		if (count($options) > 0) {
+			foreach ($options as $i => $option)
+			{
+				// Initialize some option attributes.
+				$checked = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
+				$class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
+				$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
 
-		foreach ($options as $i => $option)
+				// Initialize some JavaScript option attributes.
+				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+
+				$html[] = '							<tr class="row' . $i % 2 . '">';
+				$html[] = '							 <td align="center">' . JText::_($option->value) . '</td>';
+				$html[] = '              <td><input type="checkbox" id="ub'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
+				$html[] = '							 <td>' . JText::_($option->text) . '</td>';
+				$html[] = '						  </tr>';
+			}
+	    }
+		else
 		{
-
-			// Initialize some option attributes.
-			$checked = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
-			$class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
-			$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
-
-			// Initialize some JavaScript option attributes.
-			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-
-			$html[] = '							<tr class="row' . $i % 2 . '">';
-			$html[] = '							 <td align="center">' . JText::_($option->value) . '</td>';
-			$html[] = '              <td><input type="checkbox" id="ub'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
-			$html[] = '							 <td>' . JText::_($option->text) . '</td>';
-			$html[] = '						  </tr>';
-
-		}
-
-    } else {
 			$html[] = '							<tr class="row1">';
 			$html[] = '								<td colspan="3"><strong>'. JText::_('COM_BWPOSTMAN_NO_CAM').'</strong></td>';
 			$html[] = '							</tr>';
-    }
+		}
 		$html[] = '				</tbody>';
 		$html[] = '     </table>';
 		$html[] = '    </div>';
@@ -203,8 +201,8 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		{
 			static::$options[$hash] = parent::getOptions();
 
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
+			$_db = JFactory::getDbo();
+			$query = $_db->getQuery(true)
 			->select('CONCAT("-",a.id) AS value')
 			->select('a.title AS text')
 			->select('COUNT(DISTINCT b.id) AS level')
@@ -212,16 +210,21 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 			->join('LEFT', '#__usergroups  AS b ON a.lft > b.lft AND a.rgt < b.rgt')
 			->group('a.id, a.title, a.lft, a.rgt')
 			->order('a.lft ASC');
-			$db->setQuery($query);
-
-			if ($options = $db->loadObjectList())
+			try
 			{
+				$_db->setQuery($query);
+				$options = $_db->loadObjectList();
+
 				foreach ($options as &$option)
 				{
 					$option->text = str_repeat('- ', $option->level) . $option->text;
 				}
 
 				static::$options[$hash] = array_merge(static::$options[$hash], $options);
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 

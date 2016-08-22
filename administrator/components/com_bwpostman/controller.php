@@ -34,6 +34,8 @@ jimport('joomla.application.component.controller');
  * BwPostman Component Controller
  *
  * @package 	BwPostman-Admin
+ *
+ * @since       0.9.1
  */
 class BwPostmanController extends JControllerLegacy
 {
@@ -43,6 +45,10 @@ class BwPostmanController extends JControllerLegacy
 	 *
 	 * @param bool $cachable
 	 * @param bool $urlparams
+	 *
+	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -53,6 +59,7 @@ class BwPostmanController extends JControllerLegacy
 	 * Method to call the start layout for the add text template
 	 *
 	 * @access	public
+	 *
 	 * @since	1.1.0
 	 */
 	public function addtext()
@@ -70,6 +77,7 @@ class BwPostmanController extends JControllerLegacy
 	 * Method to call the start layout for the add html template
 	 *
 	 * @access	public
+	 *
 	 * @since	1.1.0
 	 */
 	public function addhtml()

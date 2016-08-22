@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman backend element view to select a singlenewsletter for a view in frontend.
+ * BwPostman backend element view to select a single newsletter for a view in frontend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -29,11 +29,58 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+use Joomla\String\StringHelper as JStringHelper;
 /**
  * Class BwPostmanViewNewsletterelement
+ *
+ * @since       1.0.1
  */
 class BwPostmanViewNewsletterelement extends JViewLegacy
 {
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 *
+	 * @since       1.0.1
+	 */
+	protected $items;
+
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       1.0.1
+	 */
+	protected $pagination;
+
+	/**
+	 * property to hold mailing lists
+	 *
+	 * @var array   $lists
+	 *
+	 * @since       1.0.1
+	 */
+	protected $lists;
+
+	/**
+	 * property to hold user object
+	 *
+	 * @var object  $user
+	 *
+	 * @since       1.0.1
+	 */
+	protected $user;
+
+	/**
+	 * property to hold request url
+	 *
+	 * @var string   $request_url
+	 *
+	 * @since       1.0.1
+	 */
+	protected $request_url;
 
 	/**
 	 * Execute and display a template script.
@@ -41,13 +88,15 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       1.0.1
 	 */
 	public function display($tpl = null)
 	{
 		$app = JFactory::getApplication();
 
 		$user		= JFactory::getUser();
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		// Build the key for the userState
@@ -57,12 +106,12 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		$filter_order 		= $app->getUserStateFromRequest($key.'_filter_order', 'filter_order', 'a.subject', 'cmd');
 		$filter_order_Dir 	= $app->getUserStateFromRequest($key.'_filter_order_Dir', 'filter_order_Dir', '', 'word');
 		$search				= $app->getUserStateFromRequest($key.'_search', 'search', '', 'string');
-		$search				= JString::strtolower($search);
+		$search				= JStringHelper::strtolower($search);
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'COM_BWPOSTMAN_SELECTNEWSLETTER' ));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get data from the model
 		$items 		= $this->get('data');
@@ -76,11 +125,11 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		$lists['search'] = $search;
 
 		// Save a reference into view
-		$this->assignRef('items', $items);
-		$this->assignRef('lists', $lists);
-		$this->assignRef('pagination', $pagination);
-		$this->assignRef('request_url',	$uri_string);
-		$this->assignRef('user', $user);
+		$this->items        = $items;
+		$this->lists        = $lists;
+		$this->pagination   = $pagination;
+		$this->request_url  = $uri_string;
+		$this->user         = $user;
 
 		// Call parent display
 		parent::display($tpl);

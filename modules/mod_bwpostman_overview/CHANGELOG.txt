@@ -7,6 +7,17 @@ The changelog may not be exhaustive but nearly complete.
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+--- version 2.0.0 released (20-Sept-2016)----
+- new:
+    -
+
+- bugfix:
+    -
+
+- improvement:
+    -
+
+
 --- version 1.3.2 released (14-Apr-2016)----
 -new:
 - Update server added.

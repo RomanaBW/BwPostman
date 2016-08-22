@@ -18,8 +18,11 @@ JFormHelper::loadFieldClass('color');
  * This implementation is designed to be compatible with HTML5's <input type="color">
  *
  * @package     Joomla.Platform
+ *
  * @subpackage  Form
+ *
  * @link        http://www.w3.org/TR/html-markup/input.color.html
+ *
  * @since       11.3
  */
 class JFormFieldMyColor extends JFormFieldColor
@@ -28,6 +31,7 @@ class JFormFieldMyColor extends JFormFieldColor
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  11.3
 	 */
 	protected $type = 'MyColor';
@@ -42,9 +46,9 @@ class JFormFieldMyColor extends JFormFieldColor
 	protected function getInput()
 	{
 		// Initialize some field attributes.
-		$size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-		$classes = (string) $this->element['class'];
-		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+		$size       = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+		$classes    = (string) $this->element['class'];
+		$disabled   = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
 		if (!$disabled)
 		{

@@ -38,15 +38,95 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman maintenance View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	CoverPage
+ *
+ * @since       1.0.1
  */
 class BwPostmanViewMaintenance extends JViewLegacy
 {
 	/**
+	 * property to hold queue entries
+	 *
+	 * @var boolean   $queueEntries
+	 *
+	 * @since       1.0.1
+	 */
+	protected $queueEntries;
+
+	/**
+	 * property to hold template object
+	 *
+	 * @var object  $template
+	 *
+	 * @since       1.0.1
+	 */
+	protected $template;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       1.0.1
+	 */
+	protected $state;
+
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       1.0.1
+	 */
+	public $filterForm;
+
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       1.0.1
+	 */
+	public $activeFilters;
+
+	/**
+	 * property to hold check res
+	 *
+	 * @var string $check_res
+	 *
+	 * @since       1.0.1
+	 */
+	public $check_res;
+
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       1.0.1
+	 */
+	public $sidebar;
+
+	/**
+	 * property to hold total value
+	 *
+	 * @var object  $total
+	 *
+	 * @since       1.0.1
+	 */
+	public $total;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @access	public
-	 * @param	string Template
+	 *
+	 * @param	string $tpl Template
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       1.0.1
 	 */
 	public function display($tpl = null)
 	{
@@ -54,11 +134,13 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		JHtml::_('bootstrap.framework');
 		JHtml::_('jquery.framework');
 
-		if (!BwPostmanHelper::canView('maintenance')) {
+		if (!BwPostmanHelper::canView('maintenance'))
+		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
-		else {
+		else
+		{
 			$jinput		= JFactory::getApplication()->input;
 			$model		= $this->getModel();
 			$layout		= $jinput->getCmd('layout', '');
@@ -67,83 +149,88 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
 			$this->template	= $app->getTemplate();
-			$dest			= $app->getUserState('com_bwpostman.maintenance.dest', '');
 
 			// Get document object, set document title and add css
 			$document = JFactory::getDocument();
 			$document->setTitle(JText::_('COM_BWPOSTMAN'));
-			$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 			// Set toolbar title
-			JToolBarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
+			JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
 
 			$canDo = BwPostmanHelper::getActions();
 
 			// Set toolbar items for the page
-			if ($layout == 'restoreTables') {
+			if ($layout == 'restoreTables')
+			{
 				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= JToolBar::getInstance('toolbar');
+				$bar	= JToolbar::getInstance('toolbar');
 				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
 				$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolBarHelper::spacer();
-				JToolBarHelper::divider();
-				JToolBarHelper::spacer();
+				JToolbarHelper::spacer();
+				JToolbarHelper::divider();
+				JToolbarHelper::spacer();
 			}
 
-				if ($layout == 'doRestore') {
+				if ($layout == 'doRestore')
+				{
 				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= JToolBar::getInstance('toolbar');
+				$bar	= JToolbar::getInstance('toolbar');
 				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
 				$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolBarHelper::spacer();
-				JToolBarHelper::divider();
-				JToolBarHelper::spacer();
+				JToolbarHelper::spacer();
+				JToolbarHelper::divider();
+				JToolbarHelper::spacer();
 			}
 
-			if ($layout == 'checkTables') {
+			if ($layout == 'checkTables')
+			{
 				JFactory::getApplication()->input->set('hidemainmenu', true);
 				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= JToolBar::getInstance('toolbar');
+				$bar	= JToolbar::getInstance('toolbar');
 				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
 				$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolBarHelper::spacer();
-				JToolBarHelper::divider();
-				JToolBarHelper::spacer();
+				JToolbarHelper::spacer();
+				JToolbarHelper::divider();
+				JToolbarHelper::spacer();
 			}
 
-			if ($layout == 'updateCheckSave') {
+			if ($layout == 'updateCheckSave')
+			{
 				$alt 	= "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
-				$bar	= JToolBar::getInstance('toolbar');
+				$bar	= JToolbar::getInstance('toolbar');
 				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
 				$backlink 	= 'javascript:window.close()';
-				JToolBarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolBarHelper::spacer();
-				JToolBarHelper::divider();
-				JToolBarHelper::spacer();
+				JToolbarHelper::spacer();
+				JToolbarHelper::divider();
+				JToolbarHelper::spacer();
 				$style	= '.layout-updateCheckSave .navbar {display:none;}'
 						. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
 						. 'body {padding-top:0;}';
 				$document->addStyleDeclaration( $style );
-				$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
+				$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
 			}
 
-			if ($canDo->get('core.manage')) JToolBarHelper::preferences('com_bwpostman', '500', '900');
-			JToolBarHelper::spacer();
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
-			JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-			JToolBarHelper::spacer();
+			if ($canDo->get('core.manage'))
+				JToolbarHelper::preferences('com_bwpostman', '500', '900');
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
+			JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+			JToolbarHelper::spacer();
 
 			BwPostmanHelper::addSubmenu('maintenance');
 
-			switch ($layout) {
+			switch ($layout)
+			{
 				case 'updateCheckSave':
 					break;
 				case 'checkTables':
@@ -154,10 +241,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				case 'restoreTables':
 					break;
 				case 'doRestore':
-/*					echo '<div class="well">';
-					$this->check_res	= $model->restoreTables($dest);
-					echo '</div>';
-*/					break;
+					break;
 				default:
 			}
 

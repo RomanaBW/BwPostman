@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman medialist default template for backend, based on joomla com_media.
+ * BwPostman media list default template for backend, based on joomla com_media.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -26,7 +26,9 @@
 
 defined('_JEXEC') or die;
 ?>
-<?php if (count($this->images) > 0 || count($this->folders) > 0 || count($this->documents) > 0) { ?>
+<?php
+if (count($this->images) > 0 || count($this->folders) > 0 || count($this->documents) > 0)
+{ ?>
 	<ul class="manager thumbnails">
 		<?php for ($i = 0, $n = count($this->folders); $i < $n; $i++) :
 				$this->setFolder($i);
@@ -44,9 +46,13 @@ defined('_JEXEC') or die;
 			endfor; ?>
 	</ul>
 
-<?php } else { ?>
+<?php
+}
+else
+{ ?>
 	<div id="media-noimages">
 		<div class="alert alert-info"><?php echo JText::_('COM_BWPOSTMAN_MEDIA_NO_MEDIA_FOUND'); ?></div>
 	</div>
-<?php } ?>
+<?php
+} ?>
 

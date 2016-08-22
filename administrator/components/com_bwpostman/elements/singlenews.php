@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman backend element to select a singlenewsletter for a view in frontend.
+ * BwPostman backend element to select a single newsletter for a view in frontend.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -30,8 +30,10 @@ defined ('_JEXEC') or die ('Restricted access');
 /**
  * Renders a newsletter element
  *
- * @version 1.0.8 bwpm
+ * @version 2.0.0 bwpm
  * @package BwPostman-Admin
+ *
+ * @since       1.0.8
  */
 
 class JFormFieldsinglenews extends JFormField
@@ -41,6 +43,8 @@ class JFormFieldsinglenews extends JFormField
 	 *
 	 * @access	protected
 	 * @var		string
+	 *
+	 * @since       1.0.8
 	*/
 	var	$_name = 'Subject';
 
@@ -48,6 +52,8 @@ class JFormFieldsinglenews extends JFormField
 	 * Method to get form input field
 	 *
 	 * @return string
+	 *
+	 * @since       1.0.8
 	 */
 	protected function getinput()
 	{
@@ -75,7 +81,7 @@ class JFormFieldsinglenews extends JFormField
 		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component';
 		$doc->addScriptDeclaration($js);
 
-		JHTML::_('behavior.modal', 'a.modal');
+		JHtml::_('behavior.modal', 'a.modal');
 
 		// The active newsletter id field.
 		if (0 == (int)$this->value) {
@@ -93,7 +99,7 @@ class JFormFieldsinglenews extends JFormField
 
 		$html  = '<span class="input-append">';
 		$html .= '<input type="text" class="input-medium" id="a_name" value="' . $newsletter->subject . '" disabled="disabled" size="35" />';
-		$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_NEWSLETTER') . '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+		$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_NEWSLETTER') . '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}, iframeOptions: {id: \'nlsFrame\'}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
 		$html .= "\n<input type=\"hidden\" id=\"a_id\" $class name=\"$fieldName\" value=\"$value\" />";
 		return $html;
 	}

@@ -27,32 +27,42 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
+use Joomla\Registry\Registry as JRegistry;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 /**
  * Class BwPostmanViewNewsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewNewsletters extends JViewLegacy
 {
 	/**
 	 * property to hold state data
 	 *
-	 * @var array   $stae
+	 * @var array   $state
+	 *
+	 * @since       0.9.1
 	 */
 	protected $state;
 
 	/**
 	 * property to hold selected item
 	 *
-	 * @var array   $item
+	 * @var object   $params
+	 *
+	 * @since       0.9.1
 	 */
-	protected $item;
+	protected $params;
 
 	/**
 	 * property to hold items
 	 *
 	 * @var array   $items
+	 *
+	 * @since       0.9.1
 	 */
 	protected $items;
 
@@ -60,8 +70,64 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * property to hold pagination object
 	 *
 	 * @var object  $object
+	 *
+	 * @since       0.9.1
 	 */
 	protected $pagination	= null;
+
+	/**
+	 * property to hold form object
+	 *
+	 * @var object  $form
+	 *
+	 * @since       0.9.1
+	 */
+	protected $form	= null;
+
+	/**
+	 * property to hold filter form object
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
+	 */
+	protected $filterForm	= null;
+
+	/**
+	 * property to hold active filters object
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
+	 */
+	protected $activeFilters	= null;
+
+	/**
+	 * property to hold mailinglists object
+	 *
+	 * @var object  $mailinglists
+	 *
+	 * @since       0.9.1
+	 */
+	protected $mailinglists	= null;
+
+	/**
+	 * property to hold campaigns object
+	 *
+	 * @var object  $campaigns
+	 *
+	 * @since       0.9.1
+	 */
+	protected $campaigns	= null;
+
+	/**
+	 * property to hold usergroups object
+	 *
+	 * @var object  $usergroups
+	 *
+	 * @since       0.9.1
+	 */
+	protected $usergroups	= null;
 
 	/**
 	 * Execute and display a template script.
@@ -69,13 +135,13 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
 
 		$app		= JFactory::getApplication();
-		$uri		= JFactory::getURI();
-		$uri_string	= $uri->toString();
 		$menu		= $app->getMenu()->getActive();
 
 		$state		= $this->get('State');
@@ -140,18 +206,21 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		array_unshift($this->mailinglists, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
 		array_unshift($this->campaigns, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
-		array_unshift($this->usergroups, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_USEGROUPS')));
+		array_unshift($this->usergroups, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
 
 		// Because the application sets a default page title, we need to get it
 		// right from the menu item itself
-		if (is_object($menu)) {
+		if (is_object($menu))
+		{
 			$menu_params = new JRegistry();
 			$menu_params->loadString($menu->params, 'JSON');
-			if (!$menu_params->get('page_heading')) {
+			if (!$menu_params->get('page_heading'))
+			{
 				$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));
 			}
 		}
-		else {
+		else
+		{
 			$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));
 		}
 
@@ -162,11 +231,9 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle($this->params->get('page_title'));
 
-		$document->addStyleSheet(JURI::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JURI::root(true) . $css_filename);
-
-		// Save a reference into view
-		$this->assign('uri', str_replace('&', '&amp;', $uri_string));
+		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		if (file_exists(JPATH_BASE . $css_filename))
+			$document->addStyleSheet(JUri::root(true) . $css_filename);
 
 		// Set parent display
 		parent::display($tpl);

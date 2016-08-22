@@ -28,11 +28,11 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 //JHtml::_('formbehavior.chosen', 'select');
 
 // Keep session alive while editing
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 ?>
 
 <script type="text/javascript">
@@ -40,25 +40,30 @@ JHTML::_('behavior.keepalive');
 //-----------------------------------------------------------------------------
 //http://www.mattkruse.com/javascript/selectbox/source.html
 //-----------------------------------------------------------------------------
-	function selectAllOptions(obj) {
-		for (var i=0; i<obj.options.length; i++) {
+	function selectAllOptions(obj)
+	{
+		for (var i=0; i<obj.options.length; i++)
+		{
 			obj.options[i].selected = true;
 		}
 	}
 
 
 //-----------------------------------------------------------------------------
-//refering to: http://www.plus2net.com/javascript_tutorial/list-remove.php
+//referring to: http://www.plus2net.com/javascript_tutorial/list-remove.php
 //-----------------------------------------------------------------------------
 	function removeOptions(selectbox) // Method to get all items in the selectbox when submitting
 	{
 		var i;
 
-		for(i=selectbox.options.length-1;i>=0;i--) {
+		for(i=selectbox.options.length-1;i>=0;i--)
+		{
 			if(selectbox.options[i].selected){
-				if (selectbox.options[i].text == 'email') {
+				if (selectbox.options[i].text == 'email')
+				{
 					alert ("<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_REMOVING_EMAIL', true); ?>");
-				} else {
+				} else
+				{
 				selectbox.remove(i);
 				}
 			}
@@ -70,9 +75,12 @@ JHTML::_('behavior.keepalive');
 //-----------------------------------------------------------------------------
 	function moveUp(element) // Method to move an item up
 	{
-		for(i = 0; i < element.options.length; i++) {
-			if(element.options[i].selected == true) {
-		   		if(i != 0) {
+		for(i = 0; i < element.options.length; i++)
+		{
+			if(element.options[i].selected == true)
+			{
+		   		if(i != 0)
+			    {
 			    	var temp = new Option(element.options[i-1].text,element.options[i-1].value);
 				    var temp2 = new Option(element.options[i].text,element.options[i].value);
 				    element.options[i-1] = temp2;
@@ -85,9 +93,12 @@ JHTML::_('behavior.keepalive');
 
 	function moveDown(element) // Method to move an item down
 	{
-		for(i = (element.options.length - 1); i >= 0; i--) {
-			if(element.options[i].selected == true) {
-		   		if(i != (element.options.length - 1)) {
+		for(i = (element.options.length - 1); i >= 0; i--)
+		{
+			if(element.options[i].selected == true)
+			{
+		   		if(i != (element.options.length - 1))
+			    {
 		     		var temp = new Option(element.options[i+1].text,element.options[i+1].value);
 		     		var temp2 = new Option(element.options[i].text,element.options[i].value);
 		     		element.options[i+1] = temp2;
@@ -98,7 +109,7 @@ JHTML::_('behavior.keepalive');
 		}
 	}
 
-	function check() // Method to check if the user tries to delete the email item and if the numbers of items in both selected boxes are similiar
+	function check() // Method to check if the user tries to delete the email item and if the numbers of items in both selected boxes are similar
 	{
 		var count_db_fields = document.getElementById('db_fields').length;
 
@@ -130,22 +141,24 @@ JHTML::_('behavior.keepalive');
 					<td><?php echo $this->import['filename']; ?></td>
 				</tr>
 
-				<?php if ($this->import['fileformat'] == 'csv') : {
+				<?php if ($this->import['fileformat'] == 'csv')
+				{
 					// Show delimiter, enclosure and caption
 					?>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></td>
-						<td><?php if ($this->import['delimiter'] == '\t') { echo "Tabulator"; } elseif ($this->import['delimiter'] == ' ') { echo "Leerzeichen"; } else {echo $this->import['delimiter'];} ?></td>
+						<td><?php if ($this->import['delimiter'] == '\t') { echo "Tabulator"; } elseif ($this->import['delimiter'] == ' ') { echo "Space"; } else {echo $this->import['delimiter'];} ?></td>
 					</tr>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></td>
-						<td><?php if ($this->import['enclosure'] == '') echo JTEXT::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION'); else echo $this->import['enclosure']; ?></td>
+						<td><?php if ($this->import['enclosure'] == '') echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION'); else echo $this->import['enclosure']; ?></td>
 					</tr>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></td>
 						<td><?php if (empty($this->import['caption'])) { echo JText::_('COM_BWPOSTMAN_NO'); } else { echo JText::_('COM_BWPOSTMAN_YES');} ?></td>
 					</tr>
-				<?php } endif;
+				<?php
+				}
 				// End CSV format
 				?>
 			</table>
@@ -270,7 +283,7 @@ JHTML::_('behavior.keepalive');
 							<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>"><?php echo $image; ?></span>
 							</td>
-							<td><input type="checkbox" id="confirm" name="confirm" value="1" /></td>
+							<td><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></td>
 						</tr>
 					</table>
 				</div>
@@ -290,7 +303,7 @@ JHTML::_('behavior.keepalive');
 	<input type="hidden" name="task" value="import" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

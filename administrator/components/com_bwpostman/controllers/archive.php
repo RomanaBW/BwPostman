@@ -27,14 +27,18 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import CONTROLLER object class
+// Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controller');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 /**
  * BwPostman Archive Controller
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Archive
+ *
+ * @since   0.9.1
  */
 class BwPostmanControllerArchive extends JControllerLegacy
 {
@@ -43,6 +47,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * Constructor
 	 *
 	 * @param array $config     configuration params
+	 *
+	 * @since   0.9.1
 	 */
 	public function __construct($config = array())
 	{
@@ -54,6 +60,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
 	 * @access	public
+	 *
+	 * @since   0.9.1
 	 */
 	public function unarchive()
 	{
@@ -65,29 +73,36 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 		$tab = $jinput->get('layout','newsletters');
 
-		$cid = $jinput->get('cid', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid);
+		$cid = $jinput->get('cid', array(0), 'post');
+		ArrayHelper::toInteger($cid);
 
 		$n = count ($cid);
 
-		switch ($tab) {
+		switch ($tab)
+		{
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
 					$model = $this->getModel('newsletter');
-					if(!$model->archive($cid, 0)) {
-						if ($n > 1) {
+					if(!$model->archive($cid, 0))
+					{
+						if ($n > 1)
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NLS', true)."'); window.history.go(-1); </script>\n";
 						}
-						else {
+						else
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NL', true)."'); window.history.go(-1); </script>\n";
 						}
 					}
-					else {
-						if ($n > 1) {
+					else
+					{
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_UNARCHIVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_NL_UNARCHIVED');
 						}
 
@@ -99,19 +114,25 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the subscribers_tab
 			case "subscribers":
 					$model = $this->getModel('subscriber');
-					if(!$model->archive($cid, 0)) {
-						if ($n > 1) {
+					if(!$model->archive($cid, 0))
+					{
+						if ($n > 1)
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUBS', true)."'); window.history.go(-1); </script>\n";
 						}
-						else {
+						else
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUB', true)."'); window.history.go(-1); </script>\n";
 						}
 					}
-					else {
-						if ($n > 1) {
+					else
+					{
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_UNARCHIVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_UNARCHIVED');
 						}
 
@@ -126,38 +147,51 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					$unarchive_nl = $jinput->get('unarchive_nl');
 
 					$model = $this->getModel('campaign');
-					if(!$model->archive($cid, 0, $unarchive_nl)) {
-						if ($n > 1) {
-							if ($unarchive_nl) {
+					if(!$model->archive($cid, 0, $unarchive_nl))
+					{
+						if ($n > 1)
+						{
+							if ($unarchive_nl)
+							{
 								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS_NL', true)."'); window.history.go(-1); </script>\n";
 							}
-							else {
+							else
+							{
 								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS', true)."'); window.history.go(-1); </script>\n";
 							}
 						}
-						else {
-							if ($unarchive_nl) {
+						else
+						{
+							if ($unarchive_nl)
+							{
 								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM_NL', true)."'); window.history.go(-1); </script>\n";
 							}
-							else {
+							else
+							{
 								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM', true)."'); window.history.go(-1); </script>\n";
 							}
 						}
 					}
 					else {
-						if ($n > 1) {
-							if ($unarchive_nl) {
+						if ($n > 1)
+						{
+							if ($unarchive_nl)
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_UNARCHIVED');
 							}
-							else {
+							else
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_UNARCHIVED');
 							}
 						}
-						else {
-							if ($unarchive_nl) {
+						else
+						{
+							if ($unarchive_nl)
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_UNARCHIVED');
 							}
-							else {
+							else
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_UNARCHIVED');
 							}
 						}
@@ -169,19 +203,25 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the mailinglists_tab
 			case "mailinglists":
 					$model = $this->getModel('mailinglist');
-					if(!$model->archive($cid, 0)) {
-						if ($n > 1) {
+					if(!$model->archive($cid, 0))
+					{
+						if ($n > 1)
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_MLS', true)."'); window.history.go(-1); </script>\n";
 						}
-						else {
+						else
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_ML', true)."'); window.history.go(-1); </script>\n";
 						}
 					}
-					else {
-						if ($n > 1) {
+					else
+					{
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_UNARCHIVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ML_UNARCHIVED');
 						}
 						$app->enqueueMessage($msg);
@@ -192,19 +232,25 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the templates_tab
 			case "templates":
 					$model = $this->getModel('template');
-					if(!$model->archive($cid, 0)) {
-						if ($n > 1) {
+					if(!$model->archive($cid, 0))
+					{
+						if ($n > 1)
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPLS', true)."'); window.history.go(-1); </script>\n";
 						}
-						else {
+						else
+						{
 							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPL', true)."'); window.history.go(-1); </script>\n";
 						}
 					}
-					else {
-						if ($n > 1) {
+					else
+					{
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_UNARCHIVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_UNARCHIVED');
 						}
 						$app->enqueueMessage($msg);
@@ -222,6 +268,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
 	 * @access	public
+	 *
+	 * @since   0.9.1
 	 */
 	public function delete()
 	{
@@ -232,32 +280,39 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 		$app	= JFactory::getApplication();
 		$tab	= $jinput->get('layout','newsletters');
-		$cid	= $jinput->get('cid', array(0), 'post', 'array');
+		$cid	= $jinput->get('cid', array(0), 'post');
 		$type	= 'message';
 
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		$n = count ($cid);
 
-		switch ($tab) {
+		switch ($tab)
+		{
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
 					$model = $this->getModel('newsletter');
-					if(!$model->delete($cid)) {
+					if(!$model->delete($cid))
+					{
 						$type	= 'error';
-						if ($n > 1) {
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NLS');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NL');
 						}
 					}
-					else {
-						if ($n > 1) {
+					else
+					{
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_REMOVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_NL_REMOVED');
 						}
 					}
@@ -266,20 +321,26 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the subscribers_tab
 			case "subscribers":
 					$model = $this->getModel('subscriber');
-					if(!$model->delete($cid)) {
+					if(!$model->delete($cid))
+					{
 						$type	= 'error';
-						if ($n > 1) {
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUBS');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUB');
 						}
 					}
-					else {
-						if ($n > 1) {
+					else
+					{
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_REMOVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_REMOVED');
 						}
 					}
@@ -290,39 +351,49 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					// If archive_nl = 1 the assigned newsletters shall be archived, too
 					$remove_nl = $jinput->get('remove_nl');
 					$model = $this->getModel('campaign');
-					if(!$model->delete($cid, $remove_nl)) {
+					if(!$model->delete($cid, $remove_nl))
+					{
 						$type	= 'error';
 						if ($n > 1) {
-							if ($remove_nl) {
+							if ($remove_nl)
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NL');
 							}
-							else {
+							else
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS');
 							}
 						}
 						else {
-							if ($remove_nl) {
+							if ($remove_nl)
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM_NL');
 							}
-							else {
+							else
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM');
 							}
 						}
 					}
 					else {
-						if ($n > 1) {
-							if ($remove_nl) {
+						if ($n > 1)
+						{
+							if ($remove_nl)
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_REMOVED');
 							}
-							else {
+							else
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_REMOVED');
 							}
 						}
 						else {
-							if ($remove_nl) {
+							if ($remove_nl)
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_REMOVED');
 							}
-							else {
+							else
+							{
 								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_REMOVED');
 							}
 						}
@@ -332,21 +403,27 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the mailinglists_tab
 			case "mailinglists":
 					$model = $this->getModel('mailinglist');
-					if(!$model->delete($cid)) {
+					if(!$model->delete($cid))
+					{
 						$type	= 'error';
-						if ($n > 1) {
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_ML');
 						}
 
 					}
-					else {
-						if ($n > 1) {
+					else
+					{
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_REMOVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ML_REMOVED');
 						}
 					}
@@ -355,21 +432,26 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				// We are in the templates_tab
 				case "templates":
 					$model = $this->getModel('template');
-					if(!$model->delete($cid)) {
+					if(!$model->delete($cid))
+					{
 						$type	= 'error';
-						if ($n > 1) {
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPLS');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPL');
 						}
 
 					}
 					else {
-						if ($n > 1) {
+						if ($n > 1)
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_REMOVED');
 						}
-						else {
+						else
+						{
 							$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_REMOVED');
 						}
 					}

@@ -34,22 +34,27 @@ defined ('_JEXEC') or die ('Restricted access');
  * @param $query
  *
  * @return array
+ *
+ * @since
  */
 function BwPostmanBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (isset ($query['view'])) {
+	if (isset ($query['view']))
+	{
 		$segments[]= $query['view'];
 		unset($query['view']);
 	}
 
-	if (isset ($query['task'])) {
+	if (isset ($query['task']))
+	{
 		$segments[]= $query['task'];
 		unset($query['task']);
 	}
 
-	if (isset ($query['id'])){
+	if (isset ($query['id']))
+	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
@@ -58,27 +63,32 @@ function BwPostmanBuildRoute(&$query)
 }
 
 /**
- * Methode to decode SEF URI segments for BwPostman
+ * Method to decode SEF URI segments for BwPostman
  *
  * @access 	public
  *
  * @param 	array $segments     SEF URI segments array
  *
  * @return 	array $vars         associative array
+ *
+ * @since
  */
 function BwPostmanParseRoute ($segments)
 {
 	$vars = array();
 
-	if (isset ($segments[0])){
+	if (isset ($segments[0]))
+	{
 		$vars['view'] = $segments[0];
 	}
 
-	if (isset ($segments[1])){
+	if (isset ($segments[1]))
+	{
 		$vars['task'] = $segments[1];
 	}
 
-	if (isset ($segments[1])){
+	if (isset ($segments[1]))
+	{
 		$vars['id'] = $segments[1];
 	}
 

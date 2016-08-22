@@ -27,13 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-$uri 	= JFactory::getURI();
-$base	= $uri->base();
-$url	= $base.'components/com_bwpostman/assets/images/icon-48-mailinglists.png';
+
 ?>
 <table>
 	<tr>
-		<td><img src="<?php echo $url; ?>" /></td>
+		<td><img src="<?php echo JUri::base() . 'components/com_bwpostman/assets/images/icon-48-mailinglists.png'; ?>" /></td>
 		<td><strong><?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_ML') ?></strong></td>
 	</tr>
 </table>

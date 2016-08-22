@@ -30,6 +30,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Script file of BwPostman module
+ *
+ * @since       2.0.0
  */
 class plgBwPostmanPersonalizeInstallerScript
 {
@@ -39,6 +41,8 @@ class plgBwPostmanPersonalizeInstallerScript
    * @param object  $parent is the class calling this method
    *
    * @return void
+   *
+   * @since       2.0.0
    */
   function install($parent)
   {
@@ -48,11 +52,11 @@ class plgBwPostmanPersonalizeInstallerScript
   /**
    * Method to uninstall the extension
    *
-   * @param object  $parent     is the class calling this method
-   *
    * @return void
+   *
+   * @since       2.0.0
   */
-  function uninstall($parent)
+  function uninstall()
   {
 		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_UNINSTALL_THANKYOU'), 'message');
   }
@@ -63,6 +67,8 @@ class plgBwPostmanPersonalizeInstallerScript
    * @param object  $parent is the class calling this method
 
    * @return void
+   *
+   * @since       2.0.0
   */
   function update($parent)
   {
@@ -73,11 +79,12 @@ class plgBwPostmanPersonalizeInstallerScript
    * Method to run after an install/update/uninstall method
    *
    * @param string  $type       is the type of change (install, update or discover_install)
-   * @param object  $parent     is the class calling this method
 
    * @return void
+   *
+   * @since       2.0.0
   */
-  function postflight($type, $parent)
+  function postflight($type)
   {
 	  // We only need to perform this if the extension is being installed, not updated
 	  if ( $type == 'install' )

@@ -36,30 +36,37 @@ JHtml::_('formbehavior.chosen', 'select');
 $image = '<i class="icon-info"></i>';
 
 // Load the tooltip behavior for the notes
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 
 $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);
 ?>
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) {
+	Joomla.submitbutton = function (pressbutton)
+	{
 
 		var form = document.adminForm;
-		if (pressbutton == 'subscriber.cancel') {
+		if (pressbutton == 'subscriber.cancel')
+		{
 			submitform(pressbutton);
 			return;
 		}
-		// Valdiate input fields
-		if ((form.jform_name.value == "") && (form.name_field_obligation.value == 1)){
+		// Validate input fields
+		if ((form.jform_name.value == "") && (form.name_field_obligation.value == 1))
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_NAME', true); ?>");
-		} else if ((form.jform_firstname.value == "") && (form.firstname_field_obligation.value == 1)){
+		} else if ((form.jform_firstname.value == "") && (form.firstname_field_obligation.value == 1))
+		{
 				alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME', true); ?>");
-		} else if ((form.jform_special.value == "") && (form.special_field_obligation.value == 1)){
+		} else if ((form.jform_special.value == "") && (form.special_field_obligation.value == 1))
+		{
 			alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $this->obligation['special_label']); ?>");
-		} else if (form.jform_email.value== ""){
+		} else if (form.jform_email.value== "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL', true); ?>");
-		} else {
+		} else
+		{
 			submitform(pressbutton);
 		}
 	};
@@ -87,7 +94,8 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 
 <div id="bwp_editform">
 	<?php
-		if ($this->queueEntries) {
+		if ($this->queueEntries)
+		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
  		}
 	?>
@@ -280,6 +288,6 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		<input type="hidden" name="name_field_obligation" value="<?php echo $this->obligation['name']; ?>" />
 		<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->obligation['firstname']; ?>" />
 		<input type="hidden" name="special_field_obligation" value="<?php echo $this->obligation['special']; ?>" />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

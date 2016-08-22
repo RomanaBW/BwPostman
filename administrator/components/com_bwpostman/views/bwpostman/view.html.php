@@ -38,20 +38,79 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
  * BwPostman General View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	CoverPage
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewBwPostman extends JViewLegacy
 {
+	/**
+	 * property to hold archive data
+	 *
+	 * @var string $archive
+	 *
+	 * @since       0.9.1
+	 */
+	public $archive;
+
+	/**
+	 * property to hold general data
+	 *
+	 * @var string $general
+	 *
+	 * @since       0.9.1
+	 */
+	public $general;
+
+	/**
+	 * property to hold can do properties
+	 *
+	 * @var array $canDo
+	 *
+	 * @since       0.9.1
+	 */
+	public $canDo;
+
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 *
+	 * @since       0.9.1
+	 */
+	public $request_url;
+
+	/**
+	 * property to hold queue entries property
+	 *
+	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public $queueEntries;
+
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
+	 */
+	public $sidebar;
+
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
-		$uri		= JFactory::getURI();
+		$uri		= JUri::getInstance('SERVER');
 		$uri_string	= $uri->toString();
 		$canDo		= BwPostmanHelper::getActions();
 
@@ -67,20 +126,21 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolBarHelper::title (JText::_('COM_BWPOSTMAN'), 'envelope');
+		JToolbarHelper::title (JText::_('COM_BWPOSTMAN'), 'envelope');
 
 		// Set toolbar items for the page
-		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_bwpostman', '500', '900');
-			JToolBarHelper::spacer();
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
+		if ($canDo->get('core.admin'))
+		{
+			JToolbarHelper::preferences('com_bwpostman', '500', '900');
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
 		}
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-		JToolBarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
 
 		BwPostmanHelper::addSubmenu('bwpostman');
 

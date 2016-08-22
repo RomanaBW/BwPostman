@@ -36,12 +36,16 @@ jimport('joomla.application.component.modellist');
  *
  * @package		BwPostman-Admin
  * @subpackage	Archive
+ *
+ * @since       0.9.1
  */
 class BwPostmanModelArchive extends JModelList
 {
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
@@ -136,7 +140,8 @@ class BwPostmanModelArchive extends JModelList
 		$jinput			= $app->input;
 
 		// Adjust the context to support modal and tabbed layouts.
-		if ($layout = $app->input->get('layout','newsletters'))
+		$layout = $app->input->get('layout','newsletters');
+		if ($layout)
 		{
 			$this->context .= '.' . $layout;
 		}
@@ -166,7 +171,8 @@ class BwPostmanModelArchive extends JModelList
 		$tpl_id = $this->getUserStateFromRequest($this->context . '.filter.tpl_id', 'filter_tpl_id');
 		$this->setState('filter.tpl_id', $tpl_id);
 
-		switch ($layout) { // Which tab are we in?
+		switch ($layout)
+		{ // Which tab are we in?
 			default:
 			case "newsletters":
 					$orderMainCol	= 'a.subject';
@@ -249,6 +255,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @access 	protected
 	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{
@@ -259,8 +267,8 @@ class BwPostmanModelArchive extends JModelList
 		$jinput		= JFactory::getApplication()->input;
 		$layout		= $jinput->get('layout','newsletters');
 
-		switch ($layout) {
-			// We are in the newsletters_tab
+		switch ($layout)
+		{ // We are in the newsletters_tab
 			default:
 			case "newsletters":
 					$orderMainCol	= 'subject';
@@ -349,7 +357,8 @@ class BwPostmanModelArchive extends JModelList
 				break;
 		}
 		// Filter by access level.
-		if ($access = $this->getState('filter.access')) {
+		$access = $this->getState('filter.access');
+		if ($access) {
 			$query->where($_db->quoteName('a') . '.' . $_db->quoteName('access') . ' = ' . (int) $access);
 		}
 
@@ -365,10 +374,12 @@ class BwPostmanModelArchive extends JModelList
 		//sqlsrv change
 		if($orderCol == 'access_level') $orderCol = 'ag.title';
 
-		if (($orderCol == '') || ($orderCol == 'a.' . $orderMainCol)) {
+		if (($orderCol == '') || ($orderCol == 'a.' . $orderMainCol))
+		{
 			$query->order($_db->quoteName('a')  . '.' . $_db->quoteName($orderMainCol) . ' ' . $orderDirn);
 		}
-		else {
+		else
+		{
 			$query->order($_db->escape($orderCol . ' ' . $orderDirn) . ', ' . $_db->quoteName('a')  . '.' . $_db->quoteName($orderMainCol));
 		}
 		$_db->setQuery($query);
@@ -385,6 +396,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @param object    &$query     query to inject the where clause
 	 *
 	 * @return 	string Query
+	 *
+	 * @since       0.9.1
 	 */
 	protected function _buildQueryWhere($layout, &$query)
 	{
@@ -395,12 +408,14 @@ class BwPostmanModelArchive extends JModelList
 		$search			= $_db->escape($this->getState('filter.search'));
 
 		// get select list filters
-		switch ($layout) { // Which tab are we in?
+		switch ($layout)
+		{ // Which tab are we in?
 			case "newsletters":
 					// Get the mailinglist
 					$filter_mailinglist = $this->getState('filter.mailinglists');
 
-					if ($filter_mailinglist != '') {
+					if ($filter_mailinglist != '')
+					{
 						$query->where($_db->quoteName('nm')  . '.' . $_db->quoteName('mailinglist_id') . " = " . (int)$filter_mailinglist);
 						$query->leftJoin($_db->quoteName('#__bwpostman_newsletters_mailinglists') .' AS ' . $_db->quoteName('nm') . ' ON ' . $_db->quoteName('nm') . '.' . $_db->quoteName('newsletter_id') . ' =  ' . $_db->quoteName('a') . '.' . $_db->quoteName('id'));
 					}
@@ -408,7 +423,8 @@ class BwPostmanModelArchive extends JModelList
 					// Get the usergroup
 					$filter_usergroup = $this->getState('filter.usergroups');
 
-					if ($filter_usergroup != '') {
+					if ($filter_usergroup != '')
+					{
 						$query->where($_db->quoteName('nm')  . '.' . $_db->quoteName('mailinglist_id') . " = " . (int)$filter_usergroup);
 						$query->leftJoin($_db->quoteName('#__bwpostman_newsletters_mailinglists') .' AS ' . $_db->quoteName('nm') . ' ON ' . $_db->quoteName('nm') . '.' . $_db->quoteName('newsletter_id') . ' =  ' . $_db->quoteName('a') . '.' . $_db->quoteName('id'));
 					}
@@ -416,22 +432,26 @@ class BwPostmanModelArchive extends JModelList
 					// Get the campaign
 					$filter_campaign = $this->getState('filter.campaigns');
 
-					if ($filter_campaign != '') {
+					if ($filter_campaign != '')
+					{
 						$query->where($_db->quoteName('a')  . '.' . $_db->quoteName('campaign_id') . " = " . (int)$filter_campaign);
 					}
 
 					// Get the author
 					$filter_author = $this->getState('filter.authors');
-					if ($filter_author != '') {
+					if ($filter_author != '')
+					{
 						$query->where($_db->quoteName('a')  . '.' . $_db->quoteName('created_by') . " = " . (int)$filter_author);
 					}
 
 					// Filter by published state
 					$published = $this->getState('filter.published');
-					if (is_numeric($published)) {
+					if (is_numeric($published))
+					{
 						$query->where('a.published = ' . (int) $published);
 					}
-					elseif ($published === '') {
+					elseif ($published === '')
+					{
 						$query->where('(a.published = 0 OR a.published = 1)');
 					}
 
@@ -443,7 +463,8 @@ class BwPostmanModelArchive extends JModelList
 					// Filter by mailinglist
 					$mailinglist = $this->getState('filter.mailinglist');
 
-					if ($mailinglist) {
+					if ($mailinglist)
+					{
 						$sub_query2	= $_db->getQuery(true);
 
 						$sub_query2->select($_db->quoteName('c') . '.' . $_db->quoteName('subscriber_id'));
@@ -455,13 +476,15 @@ class BwPostmanModelArchive extends JModelList
 
 					// Filter by emailformat.
 					$emailformat = $this->getState('filter.emailformat');
-					if ($emailformat != '') {
+					if ($emailformat != '')
+					{
 						$query->where('a.emailformat = ' . (int) $emailformat);
 					}
 
 					// Get the status
 					$filter_status = $this->getState('filter.status');
-					if ($filter_status != '') {
+					if ($filter_status != '')
+					{
 						$query->where('a.status = ' . (int)$filter_status);
 					}
 				break;
@@ -473,14 +496,16 @@ class BwPostmanModelArchive extends JModelList
 					// Get the state
 					$filter_published = $this->getState('filter.published');
 
-					if ($filter_published != '') {
+					if ($filter_published != '')
+					{
 						$query->where($_db->quoteName('a')  . '.' . $_db->quoteName('published') . " = " . (int) $filter_published);
 					}
 
 					// Get the access level
 					$filter_access = $this->getState('filter.access');
 
-					if ($filter_access != '') {
+					if ($filter_access != '')
+					{
 						$query->where($_db->quoteName('a')  . '.' . $_db->quoteName('access') . " = " . (int)$filter_access);
 					}
 				break;
@@ -489,16 +514,20 @@ class BwPostmanModelArchive extends JModelList
 					// Get the state
 					$filter_published = $this->getState('filter.published');
 
-					if ($filter_published != '') {
+					if ($filter_published != '')
+					{
 						$query->where($_db->quoteName('a')  . '.' . $_db->quoteName('published') . " = " . (int) $filter_published);
 					}
 
 					// Filter by format.
-					if ($format = $this->getState('filter.tpl_id')) {
-						if ($format == '1') {
+				$format = $this->getState('filter.tpl_id');
+					if ($format) {
+						if ($format == '1')
+						{
 							$query->where('a.tpl_id < 998');
 						}
-						if ($format == '2') {
+						if ($format == '2')
+						{
 							$query->where('a.tpl_id > 997');
 						}
 					}
@@ -508,92 +537,99 @@ class BwPostmanModelArchive extends JModelList
 				break;
 		}
 
-		if (!empty($search)) {
+		if (!empty($search))
+		{
 			$search	= '%' . $search . '%';
 
 			// get select list filters
-			switch ($layout) { // Which tab are we in?
+			switch ($layout)
+			{ // Which tab are we in?
 				case "newsletters":
-						switch ($filtersearch) {
+						switch ($filtersearch)
+						{
 							case 'subject':
-									$query->where('a.subject LIKE ' . $_db->Quote($search));
+									$query->where('a.subject LIKE ' . $_db->quote($search));
 								break;
 							case 'description':
-									$query->where('a.description LIKE ' . $_db->Quote($search));
+									$query->where('a.description LIKE ' . $_db->quote($search));
 								break;
 							case 'subject_description':
-									$query->where('(a.subject LIKE ' . $_db->Quote($search). 'OR a.description LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.subject LIKE ' . $_db->quote($search). 'OR a.description LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'html_text_version':
-									$query->where('(a.html_version LIKE ' . $_db->Quote($search, false) . 'OR a.text_version LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.html_version LIKE ' . $_db->quote($search, false) . 'OR a.text_version LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'text_version':
-									$query->where('a.text_version LIKE ' . $_db->Quote($search. false));
+									$query->where('a.text_version LIKE ' . $_db->quote($search. false));
 								break;
 							case 'html_version':
-									$query->where('a.html_version LIKE ' . $_db->Quote($search, false));
+									$query->where('a.html_version LIKE ' . $_db->quote($search, false));
 								break;
 							default:
 						}
 					break;
 				case "subscribers":
-						switch ($filtersearch) {
+						switch ($filtersearch)
+						{
 							case 'email':
-									$query->where('a.email LIKE ' . $_db->Quote($search, false));
+									$query->where('a.email LIKE ' . $_db->quote($search, false));
 								break;
 							case 'name_email':
-									$query->where('(a.email LIKE ' . $_db->Quote($search, false) . 'OR a.name LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.email LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'fullname':
-									$query->where('(a.firstname LIKE ' . $_db->Quote($search, false) . 'OR a.name LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.firstname LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'firstname':
-									$query->where('a.firstname LIKE ' . $_db->Quote($search, false));
+									$query->where('a.firstname LIKE ' . $_db->quote($search, false));
 								break;
 							case 'name':
-									$query->where('a.name LIKE ' . $_db->Quote($search, false));
+									$query->where('a.name LIKE ' . $_db->quote($search, false));
 								break;
 							default:
 						}
 					break;
 				case "campaigns":
-						switch ($filtersearch) {
+						switch ($filtersearch)
+						{
 							case 'description':
-									$query->where('a.description LIKE ' . $_db->Quote($search, false));
+									$query->where('a.description LIKE ' . $_db->quote($search, false));
 								break;
 							case 'title_description':
-									$query->where('(a.description LIKE ' . $_db->Quote($search, false) . 'OR a.title LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.description LIKE ' . $_db->quote($search, false) . 'OR a.title LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'title':
-									$query->where('a.title LIKE ' . $_db->Quote($search, false));
+									$query->where('a.title LIKE ' . $_db->quote($search, false));
 								break;
 							default:
 						}
 					break;
 				case "mailinglists":
-						switch ($filtersearch) {
+						switch ($filtersearch)
+						{
 							case 'description':
-									$query->where('a.description LIKE ' . $_db->Quote($search, false));
+									$query->where('a.description LIKE ' . $_db->quote($search, false));
 								break;
 							case 'title_description':
-									$query->where('(a.description LIKE ' . $_db->Quote($search, false) . 'OR a.title LIKE ' . $_db->Quote($search, false) . ')');
+									$query->where('(a.description LIKE ' . $_db->quote($search, false) . 'OR a.title LIKE ' . $_db->quote($search, false) . ')');
 								break;
 							case 'title':
-									$query->where('a.title LIKE ' . $_db->Quote($search, false));
+									$query->where('a.title LIKE ' . $_db->quote($search, false));
 								break;
 							default:
 						}
 					break;
 				case "templates":
-						switch ($filtersearch) {
+						switch ($filtersearch)
+						{
 							case 'description':
-									$query->where('a.description LIKE ' . $_db->Quote($search));
+									$query->where('a.description LIKE ' . $_db->quote($search));
 								break;
 							case 'title_description':
-									$query->where('(a.description LIKE ' . $_db->Quote($search) . 'OR a.title LIKE ' . $_db->Quote($search) . ')');
+									$query->where('(a.description LIKE ' . $_db->quote($search) . 'OR a.title LIKE ' . $_db->quote($search) . ')');
 								break;
 							case 'title':
-									$query->where('a.title LIKE ' . $_db->Quote($search));
+									$query->where('a.title LIKE ' . $_db->quote($search));
 								break;
 							default:
 						}
@@ -611,9 +647,12 @@ class BwPostmanModelArchive extends JModelList
 	 * @param 	int $sub_id     Subscriber ID
 	 *
 	 * @return 	object Subscriber
+	 *
+	 * @since
 	 */
 	public function getSingleSubscriber ($sub_id = null)
 	{
+		$subscriber = array();
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 		$subQuery1	= $_db->getQuery(true);
@@ -641,7 +680,14 @@ class BwPostmanModelArchive extends JModelList
 		$query->where( $_db->quoteName('s') . '.' . $_db->quoteName('id') . ' = ' . (int) $sub_id);
 
 		$_db->setQuery($query);
-		$subscriber = $_db->loadObject();
+		try
+		{
+			$subscriber = $_db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$query->clear();
 		$query->select($_db->quoteName('mailinglist_id'));
@@ -650,11 +696,21 @@ class BwPostmanModelArchive extends JModelList
 
 		$_db->setQuery($query);
 
-		$mailinglist_id_values = $_db->loadColumn();
+		try
+		{
+			$mailinglist_id_values = $_db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
-		if (!empty($mailinglist_id_values)) {
+		if (!empty($mailinglist_id_values))
+		{
 			$mailinglist_ids = implode (',', $mailinglist_id_values);
-		} else {
+		}
+		else
+		{
 			$mailinglist_ids = 0;
 		}
 
@@ -681,6 +737,8 @@ class BwPostmanModelArchive extends JModelList
 	 * @param 	int $cam_id     Campaign ID
 	 *
 	 * @return 	object Campaign
+	 *
+	 * @since
 	 */
 	public function getSingleCampaign ($cam_id = null)
 	{
@@ -706,7 +764,14 @@ class BwPostmanModelArchive extends JModelList
 		$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
 
 		$_db->setQuery($query);
-		$campaign->newsletters = $_db->loadObjectList();
+		try
+		{
+			$campaign->newsletters = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $campaign;
 	}
@@ -719,11 +784,14 @@ class BwPostmanModelArchive extends JModelList
 	 * @param 	int $ml_id      Mailinglist ID
 	 *
 	 * @return 	object Mailinglist
+	 *
+	 * @since
 	 */
 	public function getSingleMailinglist ($ml_id = null)
 	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$mailinglist    = new stdClass();
+		$_db	        = $this->_db;
+		$query	        = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('a')  . '.' . '*');
 		$query->from($_db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $_db->quoteName('a'));
@@ -733,8 +801,14 @@ class BwPostmanModelArchive extends JModelList
 		$query->join('LEFT', $_db->quoteName('#__viewlevels') . ' AS ' . $_db->quoteName('ag') . ' ON ' . $_db->quoteName('ag') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('access'));
 
 		$_db->setQuery($query);
-		$mailinglist = $_db->loadObject();
-
+		try
+		{
+			$mailinglist = $_db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 		return $mailinglist;
 	}
 }

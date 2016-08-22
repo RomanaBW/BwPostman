@@ -27,12 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-//JHTML::_('behavior.framework',true);
-JHTML::_('behavior.modal');
-JHTML::_('behavior.framework',true);
+//JHtml::_('behavior.framework',true);
+JHtml::_('behavior.modal');
+JHtml::_('behavior.framework',true);
 $uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHTML::_('script','system/modal'.$uncompressed.'.js', true, true);
-JHTML::_('stylesheet','media/system/css/modal.css');
+JHtml::_('script','system/modal'.$uncompressed.'.js', true, true);
+JHtml::_('stylesheet','media/system/css/modal.css');
 
 $model		= $this->getModel();
 
@@ -52,29 +52,35 @@ $lang->load('com_bwpostman',JPATH_ADMINISTRATOR,null,true);
 $show_update	= false;
 $show_right		= false;
 $lang_ver		= substr($lang->getTag(), 0, 2);
-if ($lang_ver != 'de') {
+if ($lang_ver != 'de')
+{
 	$lang_ver = 'en';
 	$forum	= "http://www.boldt-webservice.de/en/forum-en/bwpostman.html";
 }
-else {
+else
+{
 	$forum	= "http://www.boldt-webservice.de/de/forum/bwpostman.html";
 }
 $manual	= "http://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
 
-if ($update) {
+if ($update)
+{
 	$string_special		= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_SPECIAL_NOTE_DESC');
 }
-else {
+else
+{
 	$string_special		= JText::_('COM_BWPOSTMAN_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
 }
 $string_new			= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_DESC');
 $string_improvement	= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
 $string_bugfix		= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_DESC');
 
-if (($string_bugfix != '' || $string_improvement != '' || $string_new != '') && $update) {
+if (($string_bugfix != '' || $string_improvement != '' || $string_new != '') && $update)
+{
 	$show_update	= true;
 }
-if ($show_update || $string_special != '') {
+if ($show_update || $string_special != '')
+{
 	$show_right	= true;
 }
 ?>
@@ -118,7 +124,8 @@ function doAjax(data, successCallback)
 			// Call the callback function
 			successCallback(data);
 		},
-		error: function(req) {
+		error: function(req)
+		{
 			var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
 			jQuery('div#loading2').css({display:'none'});
 			jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
@@ -129,8 +136,8 @@ function doAjax(data, successCallback)
 
 	structure.url = starturl;
 	structure.data = data;
-	structure.type = 'POST',
-	structure.dataType = 'json',
+	structure.type = 'POST';
+	structure.dataType = 'json';
 	jQuery.ajax(structure);
 }
 
@@ -141,9 +148,12 @@ function processUpdateStep(data)
 	// Do AJAX post
 	post = {step : 'step'+data.step};
 	doAjax(post, function(data){
-		if(data.ready != "1"){
+		if(data.ready != "1")
+		{
 			processUpdateStep(data);
-		} else {
+		}
+		else
+		{
 			jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
 			jQuery('div#loading2').css({display:'none'});
 			jQuery('div#result').html(data.result);

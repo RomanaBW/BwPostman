@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman medialist sub-template document for backend, based on joomla com_media.
+ * BwPostman media list sub-template document for backend, based on joomla com_media.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -26,6 +26,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry as JRegistry;
 
 $user	= JFactory::getUser();
 $params	= new JRegistry;

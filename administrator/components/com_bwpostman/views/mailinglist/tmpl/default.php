@@ -28,29 +28,36 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 ?>
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton) {
+	Joomla.submitbutton = function (pressbutton)
+	{
 
 		var form = document.adminForm;
 
-		if (pressbutton == 'mailinglist.cancel') {
+		if (pressbutton == 'mailinglist.cancel')
+		{
 			submitform(pressbutton);
 			return;
 		}
 
-		// Valdiate input fields
-		if (form.jform_title.value == ""){
+		// Validate input fields
+		if (form.jform_title.value == "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");
-		} else if (form.jform_description.value== ""){
+		}
+		else if (form.jform_description.value== "")
+		{
 			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");
-		} else {
+		}
+		else
+		{
 			submitform(pressbutton);
 		}
 	};
@@ -59,11 +66,12 @@ JHtml::_('formbehavior.chosen', 'select');
 
 <div id="bwp_editform">
 	<?php
-		if ($this->queueEntries) {
+		if ($this->queueEntries)
+		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
  		}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
 				<legend><?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id); ?></legend>
@@ -134,7 +142,7 @@ JHtml::_('formbehavior.chosen', 'select');
 			<?php echo $this->form->getInput('asset_id'); ?>
 			<?php echo $this->form->getInput('archive_flag'); ?>
 			<?php echo $this->form->getInput('archive_time'); ?>
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 
 			<?php if ($this->canDo->get('core.admin')): ?>
 				<div class="fltlft">

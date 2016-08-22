@@ -34,7 +34,10 @@ jimport('joomla.application.component.view');
  * BwPostman Maintenance RAW View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Subscribers
+ *
+ * @since       1.0.1
  */
 class BwPostmanViewMaintenance extends JViewLegacy
 {
@@ -44,6 +47,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       1.0.1
 	 */
 	public function display ($tpl = Null)
 	{
@@ -53,14 +58,15 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		$layout	= $jinput->get('layout');
 
-		if ($layout == 'saveTables') {
+		if ($layout == 'saveTables')
+		{
 			$db		= JFactory::getDbo();
 			$query	= $db->getQuery(true);
 
 			$query->select($db->quoteName('manifest_cache'));
 			$query->from($db->quoteName('#__extensions'));
 			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-			$db->SetQuery($query);
+			$db->setQuery($query);
 
 			$manifest	= json_decode($db->loadResult(), true);
 			$version	= str_replace('.', '_', $manifest['version']);
@@ -72,27 +78,29 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			jimport('joomla.environment.browser');
 			$browser		= JBrowser::getInstance();
 			$user_browser	= $browser->getBrowser();
+			$appWeb         = new JApplicationWeb();
 
-			JResponse::clearHeaders();
+			$appWeb->clearHeaders();
 
-			JResponse::setHeader('Content-Type', $mime_type, true); // Joomla will overwrite this...
-			JResponse::setHeader('Content-Disposition', "attachment; filename=\"$filename\"", true);
-			JResponse::setHeader('Expires', gmdate('D, d M Y H:i:s') . ' GMT', true);
-			JResponse::setHeader('Pragma', 'no-cache', true);
+			$appWeb->setHeader('Content-Type', $mime_type, true); // Joomla will overwrite this...
+			$appWeb->setHeader('Content-Disposition', "attachment; filename=\"$filename\"", true);
+			$appWeb->setHeader('Expires', gmdate('D, d M Y H:i:s') . ' GMT', true);
+			$appWeb->setHeader('Pragma', 'no-cache', true);
 
-			if ($user_browser == "msie"){
-				JResponse::setHeader('Cache-Control','must-revalidate, post-check=0, pre-check=0', true);
-				JResponse::setHeader('Pragma', 'public', true);
+			if ($user_browser == "msie")
+			{
+				$appWeb->setHeader('Cache-Control','must-revalidate, post-check=0, pre-check=0', true);
+				$appWeb->setHeader('Pragma', 'public', true);
 			}
 
-			// Joomla overwrites content-type, we can't use JResponse::setHeader()
+			// Joomla overwrites content-type, we can't use $appWeb->setHeader()
 			$document = JFactory::getDocument();
 			$document->setMimeEncoding("application/xml");
 
 			@ob_end_clean();
 			ob_start();
 
-			JResponse::sendHeaders();
+			$appWeb->sendHeaders();
 
 			// Get the export data
 			$model	= $this->getModel('maintenance');
@@ -100,14 +108,16 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			readfile($model->saveTables(false));
 		}
 
-		if ($layout == 'doRestore') {
+		if ($layout == 'doRestore')
+		{
 			$model	= $this->getModel();
 			$dest	= $app->getUserState('com_bwpostman.maintenance.dest', '');
 
 			$model->restoreTables($dest);
 		}
 
-		if ($layout == 'checkTables') {
+		if ($layout == 'checkTables')
+		{
 			$model	= $this->getModel();
 
 			echo '<div class="modal" rel="{size: {x: 700, y: 500}}">';

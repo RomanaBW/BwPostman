@@ -27,11 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-JHTML::_('behavior.modal');
-JHTML::_('behavior.framework',true);
+JHtml::_('behavior.modal');
+JHtml::_('behavior.framework',true);
 $uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHTML::_('script','system/modal'.$uncompressed.'.js', true, true);
-JHTML::_('stylesheet','media/system/css/modal.css');
+JHtml::_('script','system/modal'.$uncompressed.'.js', true, true);
+JHtml::_('stylesheet','media/system/css/modal.css');
 
 $model		= $this->getModel();
 
@@ -87,8 +87,8 @@ function doAjax(data, successCallback)
 
 	structure.url = starturl;
 	structure.data = data;
-	structure.type = 'POST',
-	structure.dataType = 'json',
+	structure.type = 'POST';
+	structure.dataType = 'json';
 	jQuery.ajax(structure);
 }
 
@@ -99,9 +99,12 @@ function processUpdateStep(data)
 	// Do AJAX post
 	post = {step : 'step'+data.step};
 	doAjax(post, function(data){
-		if(data.ready != "1"){
+		if(data.ready != "1")
+		{
 			processUpdateStep(data);
-		} else {
+		}
+		else
+		{
 			jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
 			jQuery('div#loading2').css({display:'none'});
 			jQuery('div#result').html(data.result);

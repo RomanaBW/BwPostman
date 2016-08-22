@@ -32,6 +32,8 @@ jimport('joomla.application.component.view');
 
 /**
  * Class BwPostmanViewNewsletter
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewNewsletter extends JViewLegacy
 {
@@ -39,6 +41,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 * Property to hold newsletter content
 	 *
 	 * @var object
+	 *
+	 * @since       0.9.1
 	 */
 	protected $newsletter;
 
@@ -54,7 +58,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$this->newsletter = $this->get('Content');
-
 
 		// Call parent display
 		parent::display($tpl);

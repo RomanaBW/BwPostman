@@ -48,7 +48,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 		<?php endif; ?>
 
-		<form action="<?php echo $this->uri; ?>" method="post" name="adminForm" id="adminForm" class="form-inline form-horizontal">
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline form-horizontal">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
 				<div class="clearfix">
 					<div class="search_left">
@@ -73,13 +73,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<div class="js-stools-field-filter filter_year"><?php echo $this->form->yearField; ?></div>
 						<?php endif; ?>
 						<?php if ($this->params->get('ml_filter_enable') != 'hide' && count($this->mailinglists) > 2) : ?>
-							<div class="js-stools-field-filter filter_mls"><?php echo JHTML::_('select.genericlist', $this->mailinglists, 'filter.mailinglist', 'class="inputbox input-medium filter-mailinglist"', 'id', 'title', $this->state->get('filter.mailinglist'), 'filter.mailinglist'); ?></div>
+							<div class="js-stools-field-filter filter_mls"><?php echo JHtml::_('select.genericlist', $this->mailinglists, 'filter.mailinglist', 'class="inputbox input-medium filter-mailinglist"', 'id', 'title', $this->state->get('filter.mailinglist'), 'filter.mailinglist'); ?></div>
 						<?php endif; ?>
 						<?php if ($this->params->get('groups_filter_enable') != 'hide' && count($this->usergroups) > 2) : ?>
-							<div class="js-stools-field-filter filter_groups"><?php echo JHTML::_('select.genericlist', $this->usergroups, 'filter.usergroup', 'class="inputbox input-medium filter-usergroup"', 'id', 'title', $this->state->get('filter.usergroup'), 'filter.usergroup'); ?></div>
+							<div class="js-stools-field-filter filter_groups"><?php echo JHtml::_('select.genericlist', $this->usergroups, 'filter.usergroup', 'class="inputbox input-medium filter-usergroup"', 'id', 'title', $this->state->get('filter.usergroup'), 'filter.usergroup'); ?></div>
 						<?php endif; ?>
 						<?php if ($this->params->get('cam_filter_enable') != 'hide' && count($this->campaigns) > 2) : ?>
-							<div class="js-stools-field-filter filter_cams"><?php echo JHTML::_('select.genericlist', $this->campaigns, 'filter.campaign', 'class="inputbox input-medium filter-campaign"', 'id', 'title', $this->state->get('filter.campaign'), 'filter.campaign'); ?></div>
+							<div class="js-stools-field-filter filter_cams"><?php echo JHtml::_('select.genericlist', $this->campaigns, 'filter.campaign', 'class="inputbox input-medium filter-campaign"', 'id', 'title', $this->state->get('filter.campaign'), 'filter.campaign'); ?></div>
 						<?php endif; ?>
 						<div class="js-stools-field-filter filter_list"><?php echo $this->form->limitField; ?></div>
 					</div>
@@ -89,9 +89,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<table id="bwp_newsletters_table<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<thead>
 					<tr>
-						<th class="date_head"><?php echo JHTML::_('grid.sort',  'COM_BWPOSTMAN_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
-						<th class="subject_head"><?php echo JHTML::_('grid.sort',  'COM_BWPOSTMAN_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-						<th class="clicks_head"><?php echo JHTML::_('grid.sort',  'COM_BWPOSTMAN_HITS', 'a.hits', $listDirn, $listOrder); ?></th>
+						<th class="date_head"><?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
+						<th class="subject_head"><?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
+						<th class="clicks_head"><?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_HITS', 'a.hits', $listDirn, $listOrder); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -99,7 +99,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					if (count($this->items) > 0) {
 						foreach ($this->items as $i => $item) : ?>
 							<tr class="row<?php echo $i % 2; ?>">
-								<td class="date"><?php $date = JHTML::Date($item->mailing_date, JText::_('DATE_FORMAT_LC3')); echo $date;?></td>
+								<td class="date"><?php $date = JHtml::date($item->mailing_date, JText::_('DATE_FORMAT_LC3')); echo $date;?></td>
 								<td class="subject">
 									<a href="<?php echo JRoute::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id={$item->id}"); ?>"><?php echo $item->subject; ?></a>
 									<?php if (!empty($item->attachment) && $this->params->get('attachment_enable') != 'hide') { ?>
@@ -132,7 +132,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 			<input type="hidden" name="id" value="<?php //echo $this->items->id; ?>" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 
 		</form>
 
@@ -144,19 +144,22 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 /* <![CDATA[ */
 var $j	= jQuery.noConflict();
 
-$j(".filter-mailinglist").on("change", function() {
+$j(".filter-mailinglist").on("change", function()
+{
 	$j(".filter-campaign").prop('selectedIndex', 0);
 	$j(".filter-usergroup").prop('selectedIndex', 0);
 	$j('#adminForm').submit();
-	});
+});
 
-$j(".filter-usergroup").on("change", function() {
+$j(".filter-usergroup").on("change", function()
+{
 	$j(".filter-mailinglist").prop('selectedIndex', 0);
 	$j(".filter-campaign").prop('selectedIndex', 0);
 	$j('#adminForm').submit();
 });
 
-$j(".filter-campaign").on("change", function() {
+$j(".filter-campaign").on("change", function()
+{
 	$j(".filter-mailinglist").prop('selectedIndex', 0);
 	$j(".filter-usergroup").prop('selectedIndex', 0);
 	$j('#adminForm').submit();

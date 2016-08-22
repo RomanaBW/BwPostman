@@ -49,6 +49,8 @@ class BwPostmanControllerFile extends JControllerLegacy
 	 * The folder we are uploading into
 	 *
 	 * @var		string
+	 *
+	 * @since       1.0.4
 	 */
 	protected $folder = '';
 
@@ -102,7 +104,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 		if (($postMaxSize > 0 && $contentLength > $postMaxSize)
 			|| ($memoryLimit != -1 && $contentLength > $memoryLimit))
 		{
-			JError::raiseWarning(100, JText::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNUPLOADTOOLARGE'));
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNUPLOADTOOLARGE'), 'warning');
 
 			return false;
 		}
@@ -121,7 +123,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 				|| ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
 			{
 				// File size exceed either 'upload_max_filesize' or 'upload_maxsize'.
-				JError::raiseWarning(100, JText::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNFILETOOLARGE'));
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNFILETOOLARGE'), 'warning');
 
 				return false;
 			}
@@ -129,7 +131,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 			if (JFile::exists($file['filepath']))
 			{
 				// A file with this name already exists
-				JError::raiseWarning(100, JText::_('COM_BWPOSTMAN_MEDIA_ERROR_FILE_EXISTS'));
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_FILE_EXISTS'), 'warning');
 
 				return false;
 			}
@@ -147,12 +149,15 @@ class BwPostmanControllerFile extends JControllerLegacy
 		JClientHelper::setCredentialsFromRequest('ftp');
 		JPluginHelper::importPlugin('content');
 
+		// Instantiate the media helper
+		$mediaHelper = new JHelperMedia;
+
 		foreach ($files as &$file)
 		{
 			// The request is valid
 			$err = null;
 
-			if (!MediaHelper::canUpload($file, $err))
+			if (!$mediaHelper->canUpload($file, $err))
 			{
 				// The file can't be uploaded
 
@@ -165,7 +170,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 			if (!JFile::upload($object_file->tmp_name, $object_file->filepath))
 			{
 				// Error in upload
-				JError::raiseWarning(100, JText::_('COM_BWPOSTMAN_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'), 'warning');
 
 				return false;
 			}
@@ -181,7 +186,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 	/**
 	 * Check that the user is authorized to perform this action
 	 *
-	 * @param	string		$action		the action to be peformed (create or delete)
+	 * @param	string		$action		the action to be performed (create or delete)
 	 *
 	 * @return	boolean
 	 *
@@ -192,7 +197,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 		if (!JFactory::getUser()->authorise('core.' . strtolower($action), 'com_media'))
 		{
 			// User is not authorised
-			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));
+			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'), 'warning');
 
 			return false;
 		}
@@ -226,5 +231,4 @@ class BwPostmanControllerFile extends JControllerLegacy
 			'filepath'	=> JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
 		);
 	}
-
 }

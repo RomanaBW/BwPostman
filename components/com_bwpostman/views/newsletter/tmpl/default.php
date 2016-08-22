@@ -30,12 +30,15 @@ defined ('_JEXEC') or die ('Restricted access');
 ?>
 <script type="text/javascript">
 /* <![CDATA[ */
-	window.onload = function() {
+	window.onload = function()
+	{
 		var framefenster = document.getElementById("myIframe");
 
-		if(framefenster.contentWindow.document.body){
+		if(framefenster.contentWindow.document.body)
+		{
 			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
-			if(document.all && !window.opera) {
+			if(document.all && !window.opera)
+			{
 				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
 			}
 			framefenster.style.height = framefenster_size + 2 +'px';
@@ -68,7 +71,7 @@ defined ('_JEXEC') or die ('Restricted access');
 		<?php } ?>
 
 		<p class="mailingdate<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-			<?php echo JHTML::Date($this->newsletter->mailing_date, JText::_('DATE_FORMAT_LC3'));  ?>
+			<?php echo JHtml::date($this->newsletter->mailing_date, JText::_('DATE_FORMAT_LC3'));  ?>
 			<?php if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide') { ?>
 				<span class="btn" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
 					<a class="link-attachment" href="<?php echo JUri::base() . '/' . $this->newsletter->attachment; ?>" target="_blank">

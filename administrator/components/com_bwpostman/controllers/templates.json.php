@@ -37,6 +37,8 @@ require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/models/templates.ph
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Templates
+ *
+ * @since       1.1.0
  */
 class BwPostmanControllerTemplates extends JControllerAdmin
 {
@@ -44,27 +46,33 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 * Method to call the layout for the template upload and install process
 	 *
 	 * @access	public
+	 *
+	 * @since       1.1.0
 	 */
 	public function installtpl()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken('get')) {
+		if (!JSession::checkToken('get'))
+		{
 			throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 		}
 
 		$app	= JFactory::getApplication();
+		$appWeb = new JApplicationWeb();
 		$jinput	= $app->input;
 
-		$step = $jinput->get('step', 1);
+		$step       = $jinput->get('step', 1);
         $alertClass = 'success';
-		$ready = "0";
+		$ready      = "0";
+		$msg        = null;
 
 		// Get file details from uploaded file
 		$file = $app->getUserState('com_bwpostman.templates.uploadfile', '');
 
 		$model	= $this->getModel('templates');
 
-		try {
+		try
+		{
 			// start output buffer
 			ob_start();
 
@@ -73,9 +81,11 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 				default:
 				case 'step1':
 					// extract archive
-					if (!$model->extractTplFiles($file)) {
+					if (!$model->extractTplFiles($file))
+					{
 						$model->deleteTempFolder($file);
 						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						$alertClass = 'error';
                      	$ready = "1";
 					}
@@ -83,10 +93,12 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					break;
 
 				case 'step2':
-					// install data to table #__bwpostmann_templates_tpl
+					// install data to table #__bwpostman_templates_tpl
 					$templatestplsql = 'bwp_templatestpl.sql';
-					if (!$model->installTplFiles($templatestplsql, $step)) {
+					if (!$model->installTplFiles($templatestplsql, $step))
+					{
 						$model->deleteTempFolder($file);
+						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$alertClass = 'error';
                     	$ready = "1";
@@ -95,11 +107,13 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					break;
 
 				case 'step3':
-					// install data to table #__bwpostmann_templates
+					// install data to table #__bwpostman_templates
 					$templatessql = 'bwp_templates.sql';
-					if (!$model->installTplFiles($templatessql, $step)) {
+					if (!$model->installTplFiles($templatessql, $step))
+					{
 						$model->deleteTempFolder($file);
 						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						$alertClass = 'error';
                     	$ready = "1";
 					}
@@ -108,7 +122,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 				case 'step4':
 					// copy thumbnail
-					if (!$model->copyThumbsFiles($file)) {
+					if (!$model->copyThumbsFiles($file))
+					{
 						$alertClass = 'warning';
 					}
 					$step = "5";
@@ -116,7 +131,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 				case 'step5':
 					// delete temp folder
-					if (!$model->deleteTempFolder($file)) {
+					if (!$model->deleteTempFolder($file))
+					{
 						$alertClass = 'warning';
 					}
 					$app->setUserState('com_bwpostman.templates.uploadfile', '');
@@ -127,9 +143,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			}
 
 			// return the contents of the output buffer
-			$content = ob_get_contents();
-
-			$result = $content;
+			$content    = ob_get_contents();
+			$result     = $content;
 
 			// clean the output buffer and turn off output buffering
 			ob_end_clean();
@@ -144,13 +159,14 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 
 			// ajax response
-			JResponse::setHeader('Content-Type', 'application/json', true);
+			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}
 		catch (BwException $e)
 		{
 			$result  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
+			$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 			$alertClass = 'error';
 			$ready      = "1";
 			$step       = "6";
@@ -164,24 +180,18 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			);
 
 			// ajax response
-			JResponse::setHeader('Content-Type', 'application/json', true);
+			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}
 
-
-
-
-
-
-
-
-
-		if ($msg) { // install failed
+		if ($msg)
+		{ // install failed
 			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, $msg, 'error');
 		}
-		else { // template installed
+		else
+		{ // template installed
 			$msg	= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_OK');
 			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, $msg);

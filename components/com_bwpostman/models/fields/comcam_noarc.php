@@ -145,7 +145,6 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$html[] = '				<tbody>';
 
 		if (count($options) > 0) {
-
 			foreach ($options as $i => $option) {
 				// Initialize some option attributes.
 				$checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
@@ -165,7 +164,8 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 			}
 
 		}
-		else {
+		else
+		{
 				$html[] = '							<tr class="row1">';
 				$html[] = '								<td colspan="5"><strong>'. JText::_('COM_BWPOSTMAN_NO_CAM').'</strong></td>';
 				$html[] = '							</tr>';
@@ -189,7 +189,8 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		$app	= JFactory::getApplication();
+		$app	    = JFactory::getApplication();
+		$options    = null;
 
 		// prepare query
 		$_db		= JFactory::getDbo();
@@ -211,12 +212,14 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		$query->order($_db->quoteName('text')  . 'ASC');
 
-		$_db->setQuery($query);
-		$options = $_db->loadObjectList();
-
-		// Check for a database error.
-		if ($_db->getErrorNum()) {
-			$app->enqueueMessage($_db->getErrorMsg(), 'error');
+		try
+		{
+			$_db->setQuery($query);
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

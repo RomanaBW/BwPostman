@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman medialist view for backend, based on joomla com_media.
+ * BwPostman media list view for backend, based on joomla com_media.
  *
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
@@ -39,11 +39,85 @@ require_once JPATH_ADMINISTRATOR . '/components/com_media/helpers/media.php';
 class BwPostmanViewMediaList extends JViewLegacy
 {
 	/**
+	 * property to hold base url
+	 *
+	 * @var object  $baseURL
+	 *
+	 * @since       1.0.4
+	 */
+	public $baseURL;
+
+	/**
+	 * property to hold images
+	 *
+	 * @var array  $images
+	 *
+	 * @since       1.0.4
+	 */
+	public $images;
+
+	/**
+	 * property to hold documents
+	 *
+	 * @var array  $documents
+	 *
+	 * @since       1.0.4
+	 */
+	public $documents;
+
+	/**
+	 * property to hold folders
+	 *
+	 * @var array  $folders
+	 *
+	 * @since       1.0.4
+	 */
+	public $folders;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var object  $state
+	 *
+	 * @since       1.0.4
+	 */
+	public $state;
+
+	/**
+	 * property to hold temporary folder
+	 *
+	 * @var object  $_tmp_folder
+	 *
+	 * @since       1.0.4
+	 */
+	protected $_tmp_folder;
+
+	/**
+	 * property to hold temporary image
+	 *
+	 * @var object  $_tmp_img
+	 *
+	 * @since       1.0.4
+	 */
+	protected $_tmp_img;
+
+	/**
+	 * property to hold temporary doc
+	 *
+	 * @var object  $_tmp_doc
+	 *
+	 * @since       1.0.4
+	 */
+	protected $_tmp_doc;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       1.0.4
 	 */
 	public function display($tpl = null)
 	{
@@ -73,7 +147,8 @@ class BwPostmanViewMediaList extends JViewLegacy
 		$lang	= JFactory::getLanguage();
 
 		JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
-		if ($lang->isRTL()) {
+		if ($lang->isRtl())
+		{
 			JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
 		}
 
@@ -98,6 +173,8 @@ class BwPostmanViewMediaList extends JViewLegacy
 	 * Method to set media folder
 	 *
 	 * @param int $index
+	 *
+	 * @since       1.0.4
 	 */
 	function setFolder($index = 0)
 	{
@@ -115,6 +192,8 @@ class BwPostmanViewMediaList extends JViewLegacy
 	 * Method to set image
 	 *
 	 * @param int $index
+	 *
+	 * @since       1.0.4
 	 */
 	function setImage($index = 0)
 	{
@@ -132,6 +211,8 @@ class BwPostmanViewMediaList extends JViewLegacy
 	 * Method to set document
 	 *
 	 * @param int $index
+	 *
+	 * @since       1.0.4
 	 */
 	function setDocument($index = 0)
 	{

@@ -40,7 +40,7 @@ echo $params->get('file_path', 'images'); ?>/';
 </script>
 
 
-<form action="index.php?option=com_bwpostman&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author'); ?>" class="form-vertical" id="imageForm" method="post" enctype="multipart/form-data">
+<form action="index.php?option=com_bwpostman&amp;asset=<?php echo $jinput->getCmd('asset'); ?>&amp;author=<?php echo $jinput->getCmd('author'); ?>" class="form-vertical" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
 		<span id="message"></span><?php echo JHtml::_('image', 'media/dots.gif', '...', array('width' => 22, 'height' => 12), true) ?>
 	</div>

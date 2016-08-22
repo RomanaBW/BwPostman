@@ -27,8 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die ('Restricted access');
 
-// Import CONTROLLER object class
+// Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controlleradmin');
+
+use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
@@ -38,9 +40,17 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Templates
+ *
+ * @since       1.1.0
  */
 class BwPostmanControllerTemplates extends JControllerAdmin
 {
+	/**
+	 * @var		string	The prefix to use with controller messages.
+	 *
+	 * @since	2.0.0
+	 */
+	protected $text_prefix = 'COM_BWPOSTMAN_TPLS';
 
 	/**
 	 * Constructor
@@ -123,8 +133,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get the selected template(s)
-		$cid = $jinput->get('cid', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid);
+		$cid = $jinput->get('cid', array(0), 'post');
+		ArrayHelper::toInteger($cid);
 
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
@@ -136,16 +146,26 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$query->where($db->quoteName('standard')." = ".$db->quote(1));
 
 		$db->setQuery($query);
-		$db->execute();
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
 		$count_std = $db->getNumRows();
 
 		// unpublish only, if no standard template is selected
-		if ($count_std > 0 && $this->getTask() == 'unpublish') {
-			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
+		if ($count_std > 0 && $this->getTask() == 'unpublish')
+		{
+			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=templates',false);
-			$this->setRedirect($link, $msg);
+			$this->setRedirect($link, JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
 		}
-		else {
+		else
+		{
 			parent::publish();
 		}
 	}
@@ -154,6 +174,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 * Method to call the layout for the template upload and install process
 	 *
 	 * @access	public
+	 *
+	 * @since       1.1.0
 	 */
 	public function uploadtpl()
 	{
@@ -165,7 +187,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 		// Access check.
 		$user	= JFactory::getUser();
-		if (!$user->authorise('core.admin', 'com_bwpostman')) {
+		if (!$user->authorise('core.admin', 'com_bwpostman'))
+		{
 			$msg = JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_PERMISSION');
 		}
 
@@ -178,11 +201,13 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 		if (!$msg) $msg = $model->uploadTplFiles($file);
 
-		if ($msg) {
+		if ($msg)
+		{
 			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, $msg, 'error');
 		}
-		else {
+		else
+		{
 			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates&layout=installtpl', false);
 			$this->setRedirect($link);
 		}

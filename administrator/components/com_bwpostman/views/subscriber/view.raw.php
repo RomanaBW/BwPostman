@@ -34,7 +34,10 @@ jimport('joomla.application.component.view');
  * BwPostman Subscriber RAW View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Subscribers
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewSubscriber extends JViewLegacy
 {
@@ -44,6 +47,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display ($tpl = Null)
 	{
@@ -52,9 +57,12 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		// Get the post data
 		$post	= $app->getUserState('com_bwpostman.subscribers.export.data');
 
-		if ($post['fileformat'] == 'csv') {
+		if ($post['fileformat'] == 'csv')
+		{
 			$mime_type = "application/csv";
-		} else {
+		}
+		else
+		{
 			$mime_type = "application/xml";
 		}
 
@@ -65,32 +73,36 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		jimport('joomla.environment.browser');
 		$browser		= JBrowser::getInstance();
 		$user_browser	= $browser->getBrowser();
+		$appWeb         = new JApplicationWeb();
 
-		JResponse::clearHeaders();
+		$appWeb->clearHeaders();
 
-		JResponse::setHeader('Content-Type', $mime_type, true); // Joomla will overwrite this...
-		if ($post['fileformat'] == 'csv') {
-			JResponse::setHeader('Content-Disposition', "attachment; filename=\"$filename.csv\"", true);
+		$appWeb->setHeader('Content-Type', $mime_type, true); // Joomla will overwrite this...
+		if ($post['fileformat'] == 'csv')
+		{
+			$appWeb->setHeader('Content-Disposition', "attachment; filename=\"$filename.csv\"", true);
 		}
-		else {
-			JResponse::setHeader('Content-Disposition', "attachment; filename=\"$filename.xml\"", true);
+		else
+		{
+			$appWeb->setHeader('Content-Disposition', "attachment; filename=\"$filename.xml\"", true);
 		}
-		JResponse::setHeader('Expires', gmdate('D, d M Y H:i:s') . ' GMT', true);
-		JResponse::setHeader('Pragma', 'no-cache', true);
+		$appWeb->setHeader('Expires', gmdate('D, d M Y H:i:s') . ' GMT', true);
+		$appWeb->setHeader('Pragma', 'no-cache', true);
 
-		if ($user_browser == "msie"){
-			JResponse::setHeader('Cache-Control','must-revalidate, post-check=0, pre-check=0', true);
-			JResponse::setHeader('Pragma', 'public', true);
+		if ($user_browser == "msie")
+		{
+			$appWeb->setHeader('Cache-Control','must-revalidate, post-check=0, pre-check=0', true);
+			$appWeb->setHeader('Pragma', 'public', true);
 		}
 
-		// Joomla overwrites content-type, we can't use JResponse::setHeader()
+		// Joomla overwrites content-type, we can't use $appWeb->setHeader()
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding($mime_type);
 
 		@ob_end_clean();
 		ob_start();
 
-		JResponse::sendHeaders();
+		$appWeb->sendHeaders();
 
 		// Get the export data
 		$model = $this->getModel('subscriber');

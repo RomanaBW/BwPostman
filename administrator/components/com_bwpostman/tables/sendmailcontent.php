@@ -32,50 +32,103 @@ defined ('_JEXEC') or die ('Restricted access');
  * Table for storing the prepared data for sending a newsletter
  *
  * @package		BwPostman-Admin
+ *
  * @subpackage	Newsletters
+ *
+ * @since       0.9.1
  */
 class BwPostmanTableSendmailcontent extends JTable
 {
-	/** @var int Primary Key --> every ID exists twice (once for mode text, once for mode html */
+	/**
+	 * @var int Primary Key --> every ID exists twice (once for mode text, once for mode html
+	 *
+	 * @since       0.9.1
+	 */
 	var $id = null;
 
-	/** @var int Primary Key --> 0 = Text, 1 = HTML */
+	/**
+	 * @var int Primary Key --> 0 = Text, 1 = HTML
+	 *
+	 * @since       0.9.1
+	 */
 	var $mode = null;
 
-	/** @var int Newsletter-ID */
+	/**
+	 * @var int Newsletter-ID
+	 *
+	 * @since       0.9.1
+	 */
 	var $nl_id = null;
 
-	/** @var string Sender name */
+	/**
+	 * @var string Sender name
+	 *
+	 * @since       0.9.1
+	 */
 	var $from_name = null;
 
-	/** @var string Sender email */
+	/**
+	 * @var string Sender email
+	 *
+	 * @since       0.9.1
+	 */
 	var $from_email = null;
 
-	/** @var string Subject */
+	/**
+	 * @var string Subject
+	 *
+	 * @since       0.9.1
+	 */
 	var $subject = null;
 
-	/** @var String Email-body */
+	/**
+	 * @var String Email-body
+	 *
+	 * @since       0.9.1
+	 */
 	var $body = null;
 
-	/** @var string CC email*/
+	/**
+	 * @var string CC email
+	 *
+	 * @since       0.9.1
+	 */
 	var $cc_email = null;
 
-	/** @var string BCC email */
+	/**
+	 * @var string BCC email
+	 *
+	 * @since       0.9.1
+	 */
 	var $bcc_email = null;
 
-	/** @var string Attachment */
+	/**
+	 * @var string Attachment
+	 *
+	 * @since       0.9.1
+	 */
 	var $attachment = null;
 
-	/** @var string Reply-to email */
+	/**
+	 * @var string Reply-to email
+	 *
+	 * @since       0.9.1
+	 */
 	var $reply_email = null;
 
-	/** @var string Reply-to name */
+	/**
+	 * @var string Reply-to name
+	 *
+	 * @since       0.9.1
+	 */
 	var $reply_name = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
@@ -89,29 +142,35 @@ class BwPostmanTableSendmailcontent extends JTable
 	 *
 	 * @param array|object  $data       Named array
 	 * @param string        $ignore     Space separated list of fields not to bind
+	 *
+	 * @throws BwException
+	 *
 	 * @return boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function bind($data, $ignore='')
 	{
 		// Bind the rules.
-		if (is_object($data)) {
+		if (is_object($data))
+		{
 			if (property_exists($data, 'rules') && is_array($data->rules))
 			{
 				$rules = new JAccessRules($data->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data)) {
+		elseif (is_array($data))
+		{
 			if (array_key_exists('rules', $data) && is_array($data['rules']))
 			{
 				$rules = new JAccessRules($data['rules']);
 				$this->setRules($rules);
 			}
 		}
-		else {
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-			$this->setError($e);
-			return false;
+		else
+		{
+			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -124,7 +183,10 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * Overloaded check method to ensure data integrity
 	 *
 	 * @access public
+	 *
 	 * @return boolean True
+	 *
+	 * @since       0.9.1
 	 */
 	public function check()
 	{
@@ -136,37 +198,51 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * Overloaded store method
 	 *
 	 * @access 	public
+	 *
 	 * @param	boolean True to update fields even if they are null.
+	 *
 	 * @return 	boolean
+	 *
+	 * @since       0.9.1
 	 */
 	public function store($updateNulls = false)
 	{
 		$k		= $this->_tbl_key;
+		$res    = 0;
 		$query	= $this->_db->getQuery(true);
 
-			if (!$this->$k) {
+		if (!$this->$k)
+		{
 			// Find the next possible id and insert
 			$query->select('IFNULL(MAX(id)+1,1) AS ' . $this->_db->quoteName('id'));
 			$query->from($this->_db->quoteName($this->_tbl));
 			$this->_db->setQuery($query);
 
-			$res = $this->_db->loadResult();
-			if ($res) $this->$k = $res;
+			try
+			{
+				$res = $this->_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+			if ($res)
+				$this->$k = $res;
 		}
 
-		if ($this->$k) {
+		if ($this->$k)
+		{
 			// An id value is set
-			$ret = $this->_db->insertObject($this->_tbl, $this);
-		} else {
-			$ret = 0;
+			try
+			{
+				$this->_db->insertObject($this->_tbl, $this);
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage(get_class($this).'::store failed - ' . $e->getMessage());
+			}
 		}
-
-		if (!$ret) {
-			$this->setError(get_class($this).'::store failed - '.$this->_db->getErrorMsg());
-			return false;
-		} else {
-			return true;
-		}
+		return true;
 	}
 
 	/**
@@ -178,14 +254,19 @@ class BwPostmanTableSendmailcontent extends JTable
 	 * @param 	boolean	    $reset      Mode (0 = Text, 1 = HTML)
 	 *
 	 * @return mixed
+	 *
+	 * @since       0.9.1
 	 */
-	public function load($keys = null, $reset = true){
-		if (!$keys) return 0;
+	public function load($keys = null, $reset = true)
+	{
+		if (!$keys)
+			return 0;
 		// If (empty($mode)) return 0;
 		$app	= JFactory::getApplication();
 		$mode	= $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
+		$result = array();
 
 		$this->reset();
 
@@ -196,12 +277,14 @@ class BwPostmanTableSendmailcontent extends JTable
 
 		$_db->setQuery($query);
 
-		if ($result = $_db->loadAssoc()) {
-			return $this->bind($result);
+		try
+		{
+			$result = $_db->loadAssoc();
 		}
-		else{
-			$this->setError($_db->getErrorMsg());
-			return false;
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(),'error');
 		}
+		return $this->bind($result);
 	}
 }

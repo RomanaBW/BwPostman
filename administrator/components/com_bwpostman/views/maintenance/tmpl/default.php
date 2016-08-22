@@ -29,7 +29,8 @@ defined ('_JEXEC') or die ('Restricted access');
 
 $jinput	= JFactory::getApplication()->input;
 
-if ($this->queueEntries) {
+if ($this->queueEntries)
+{
 	JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 }
 ?>

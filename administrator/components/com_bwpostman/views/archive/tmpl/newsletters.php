@@ -28,10 +28,10 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 // Load the modal behavior for the newsletter preview
-JHTML::_('behavior.modal');
+JHtml::_('behavior.modal');
 JHtml::_('formbehavior.chosen', 'select');
 
 $user		= JFactory::getUser();
@@ -96,18 +96,18 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 													<th width="30" nowrap="nowrap">
 														<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 													</th>
-													<th><?php echo JHTML::_('searchtools.sort',  'Subject', 'a.subject', $listDirn, $listOrder); ?></th>
-													<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-													<th width="150" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
-													<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?></th>
-													<th width="100" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME' , 'campaigns', $listDirn, $listOrder); ?></th>
-													<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_PUBLISHED' , 'a.published', $listDirn, $listOrder); ?></th>
+													<th><?php echo JHtml::_('searchtools.sort',  'Subject', 'a.subject', $listDirn, $listOrder); ?></th>
+													<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+													<th width="150" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
+													<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?></th>
+													<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME' , 'campaigns', $listDirn, $listOrder); ?></th>
+													<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_PUBLISHED' , 'a.published', $listDirn, $listOrder); ?></th>
 													<th nowrap="nowrap">
-														<?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?><br />
-														<?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUPLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
+														<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?><br />
+														<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
 													</th>
-													<th width="150"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
-													<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+													<th width="150"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
+													<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 												</tr>
 											</thead>
 											<tfoot>
@@ -171,7 +171,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 					<input type="hidden" name="layout" value="newsletters" /><!-- value can change if one clicks on another tab -->
 					<input type="hidden" name="tab" value="newsletters" /><!-- value never changes -->
 					<input type="hidden" name="view" value="archive" />
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo JHtml::_('form.token'); ?>
 				</div>
 
 			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

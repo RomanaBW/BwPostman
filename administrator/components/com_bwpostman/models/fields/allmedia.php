@@ -36,6 +36,8 @@ defined('JPATH_PLATFORM') or die;
 
 /**
  * Class JFormFieldAllMedia
+ *
+ * @since       1.0.4
  */
 class JFormFieldAllMedia extends JFormField
 {
@@ -43,6 +45,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $type = 'Media';
@@ -51,6 +54,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The initialised state of the document object.
 	 *
 	 * @var    boolean
+	 *
 	 * @since  1.0.4
 	 */
 	protected static $initialised = false;
@@ -59,6 +63,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The authorField.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $authorField;
@@ -67,6 +72,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The asset.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $asset;
@@ -75,6 +81,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The link.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $link;
@@ -83,6 +90,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The authorField.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $preview;
@@ -91,6 +99,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The preview.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.4
 	 */
 	protected $directory;
@@ -99,6 +108,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The previewWidth.
 	 *
 	 * @var    int
+	 *
 	 * @since  1.0.4
 	 */
 	protected $previewWidth;
@@ -107,6 +117,7 @@ class JFormFieldAllMedia extends JFormField
 	 * The previewHeight.
 	 *
 	 * @var    int
+	 *
 	 * @since  1.0.4
 	 */
 	protected $previewHeight;
@@ -220,10 +231,12 @@ class JFormFieldAllMedia extends JFormField
 			$asset = JFactory::getApplication()->input->get('option');
 		}
 
-		if ($asset == 'com_bwpostman') {
+		if ($asset == 'com_bwpostman')
+		{
 			$asset_txt 	= '';
 		}
-		else {
+		else
+		{
 			$asset_txt 	= '&amp;asset=' . $asset;
 		}
 
@@ -402,10 +415,10 @@ class JFormFieldAllMedia extends JFormField
 
 			$html[] = '<a class="modal btn" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '" href="'
 				. ($this->readonly ? ''
-				: ($this->link ? $this->link
-				: 'index.php?option=com_bwpostman&amp;view=media&amp;tmpl=component' . $asset_txt . '&amp;author='
-				. $this->form->getValue($this->authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
-				. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+					: ($this->link ? $this->link
+						: 'index.php?option=com_bwpostman&amp;view=media&amp;tmpl=component' . $asset_txt . '&amp;author='
+						. $this->form->getValue($this->authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
+				. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}, iframeOptions: {name: \'mediaFrame\', id: \'mediaFrame\'}}">';
 			$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a><a class="btn hasTooltip" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '" href="#" onclick="';
 			$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
 			$html[] = 'return false;';

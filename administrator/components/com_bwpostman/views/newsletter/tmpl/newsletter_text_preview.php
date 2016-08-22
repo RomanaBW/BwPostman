@@ -36,7 +36,7 @@ defined ('_JEXEC') or die ('Restricted access');
 		<title>Newsletter HTML Preview</title>
 	</head>
 	<body id="preview_text" style="margin: 0; padding: 0;">
-		<textarea readonly="readonly" class="inputbox" name="text_version" cols="80" rows="20"
+		<textarea readonly="readonly" class="inputbox" name="text_version" title="text_version" cols="80" rows="20"
 			style="width: 100%; height:400px; margin: 0; padding: 0; border:none;"><?php echo $this->item->text_formatted; ?></textarea>
 	</body>
 </html>

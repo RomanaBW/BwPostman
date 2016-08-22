@@ -47,7 +47,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	function confirmArchive(archive_value) // Get the selected value from modalbox
+	function confirmArchive(archive_value) // Get the selected value from modal box
 	{
 		document.adminForm.archive_nl.value = archive_value;
 		Joomla.submitbutton('campaign.archive');
@@ -75,17 +75,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<thead>
 						<tr>
 							<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?></th>
 							<?php
-							if ($this->auto_nbr) { ?>
+							if ($this->auto_nbr)
+							{ ?>
 								<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOMATION'); ?></th>
 								<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVE'); ?></th>
 							<?php
 							}
 							?>
-							<th width="30" nowrap="nowrap"><?php echo JHTML::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 						</tr>
 					</thead>
 					<tfoot>
@@ -95,11 +96,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</tfoot>
 					<tbody>
 						<?php
-							if (count($this->items) > 0) {
+							if (count($this->items) > 0)
+							{
 								foreach ($this->items as $i => $item) :
 									$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-									$canEdit	= $user->authorise('core.edit',			'com_bwpostman.campaign.'.$item->id);
-									$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.campaign.'.$item->id) && $item->created_by == $userId;
+									$canEdit	= $user->authorise('bwpm.edit',			'com_bwpostman.campaign.'.$item->id);
+									$canEditOwn	= $user->authorise('bwpm.edit.own',		'com_bwpostman.campaign.'.$item->id) && $item->created_by == $userId;
 									?>
 									<tr class="row<?php echo $i % 2; ?>">
 										<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
@@ -134,7 +136,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									</tr><?php
 								endforeach;
 							}
-							else { ?>
+							else
+							{ ?>
 								<tr class="row1">
 									<td colspan="5"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 								</tr><?php
@@ -147,7 +150,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" name="archive_nl" value="0" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 
 			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 		</div>

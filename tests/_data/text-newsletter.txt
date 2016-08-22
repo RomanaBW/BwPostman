@@ -1,0 +1,30 @@
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+My Companyname
+
+Our Slogan is the best
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Intro-Headline
+
+Hallo [FULLNAME],
+Lorem ipsum dolor sit amet consectetuer sem venenatis eros
+id lacus. Consequat dolor urna justo pede Phasellus justo
+est Lorem nunc et.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+[%content%]
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+[%edit_link%]
+[%unsubscribe_link%]
+
+### Folgen Sie uns / Follow us: ###
++ Facebook +
+http://www.facebook.com
++ Twitter +
+http://www.twitter.com/
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+[%impressum%]

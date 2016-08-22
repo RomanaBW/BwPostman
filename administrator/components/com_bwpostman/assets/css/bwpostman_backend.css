@@ -811,7 +811,7 @@ div.ordering-select.hidden-phone.sent li.active-result.queue,
 div.ordering-select.hidden-phone.queue li.active-result.sent,
 div.ordering-select.hidden-phone.queue li.active-result.unsent,
 div.ordering-select.hidden-phone.testrecipients li.active-result.confirmed,
-div.ordering-select.hidden-phone.testrecipients li.active-result.uncinformed {
+div.ordering-select.hidden-phone.testrecipients li.active-result.unconfirmed {
 	display:			none;
 }
 

@@ -6,6 +6,25 @@ This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+--- version 2.0.0 released (20-Sept-2016)----
+- new:
+    - Additional field "Custom CSS" at standard templates added
+    - Buttons for enhanced personalization inserted at editing templates and newsletters
+
+- bugfix:
+    - Table check at attribute NULL corrected
+    - Typo in english language file corrected
+    - Form check by javascript corrected
+    - Saving gender without entry (=gender unknown) now possible
+    - Table campaigns_mailinglists was not deleted at uninstall
+
+
+- improvement:
+    - Collation of tables changed from utf8 to utf8mb4
+    - Access management of component enhanced
+    - table column archived_by changed to integer
+
+
 --- version 1.3.2 released (14-Apr-2016)----
 - improvement:
     Trigger for enhanced personalization modified.
@@ -267,7 +286,7 @@ Mar-Apr-2014 Romana Boldt
         + a user-defined control question
         + or a captcha with a simple math question
       in the registration form.
-- improvement: The display of the articleauthor and the creation date in the newsletter can be controlled in the options.
+- improvement: The display of the article author and the creation date in the newsletter can be controlled in the options.
 - bugfix: Minor bugs in the client-side and server-side validation of form fields has been corrected.
 
 

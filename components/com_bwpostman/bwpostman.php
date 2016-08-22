@@ -31,28 +31,27 @@ defined ('_JEXEC') or die ('Restricted access');
 require_once (JPATH_COMPONENT_SITE.'/classes/bwpostman.class.php');
 
 // Set the table directory
-JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
+JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 // Require the base controller
 require_once (JPATH_COMPONENT.'/controller.php');
 
-// Require specific controller if requested
+// Require specific controller
 $jinput	= JFactory::getApplication()->input;
-if($controller = $jinput->getWord('controller')) {
-	$path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
+$view   = $jinput->get('view', '');
+if($view) {
+	$path = JPATH_COMPONENT.'/controllers/'.$view.'.php';
 	if (file_exists($path)) {
 		require_once $path;
-	} else {
-		$controller = '';
 	}
 }
 
 // Create the controller
-$classname    = 'BwPostmanController'.ucfirst($controller);
-$controller   = new $classname();
+$classname    = 'BwPostmanController'.ucfirst($view);
+$controller   = new $classname;
 
 // Perform the Request task
-$controller->execute($jinput->getCmd('task'));
+$controller->execute($jinput->getCmd('task', 'display'));
 
 // Redirect if set by the controller
 $controller->redirect();

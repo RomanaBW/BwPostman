@@ -38,9 +38,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 	<body id="preview_html">
 		<?php
-			$uri 	= JFactory::getURI();
-			$base	= $uri->base();
-			$url	= $base.'components/com_bwpostman/assets/images/icon-48-newsletters.png';
+			$url	= JUri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
 		?>
 		<table>
 			<tr>

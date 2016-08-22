@@ -32,6 +32,7 @@ JFormHelper::loadFieldClass('list');
  * Form Field class for the Joomla Framework.
  *
  * @package		BwPostman.Administrator
+ *
  * @since		1.0.1
  */
 class JFormFieldSelectedContent extends JFormFieldList
@@ -40,6 +41,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var    string
+	 *
 	 * @since  1.0.1
 	 */
 	public $type = 'SelectedContent';
@@ -99,6 +101,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
+	 *
 	 * @since	1.0.1
 	 */
 	public function getOptions()
@@ -116,7 +119,14 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$query_user->where($_db->quoteName('id') . ' = ' . (int) $this->_id);
 
 		$_db->setQuery($query_user);
-		$user_id = $_db->loadResult();
+		try
+		{
+			$user_id = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$options = $this->getSelectedContent();
 
@@ -129,7 +139,10 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 * Method to get the available content items which can be used to compose a newsletter
 	 *
 	 * @access	public
+	 *
 	 * @return	array
+	 *
+	 * @since       1.0.1
 	 */
 	private function getSelectedContent()
 	{
@@ -138,17 +151,21 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$options			= array();
 		$selected_content	= '';
 
-		if (is_object($app->getUserState('com_bwpostman.edit.newsletter.data'))) {
+		if (is_object($app->getUserState('com_bwpostman.edit.newsletter.data')))
+		{
 			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
 		}
 
-		if ($selected_content) {
-			if (!is_array($selected_content)) $selected_content = explode(',',$selected_content);
+		if ($selected_content)
+		{
+			if (!is_array($selected_content))
+				$selected_content = explode(',',$selected_content);
 
 			$selected_content_items = array();
 
 			// We do a foreach to protect our ordering
-			foreach ($selected_content as $value) {
+			foreach ($selected_content as $value)
+			{
 				$subquery	= $_db->getQuery(true);
 				$subquery->select($_db->quoteName('cc') . '.' . $_db->quoteName('path'));
 				$subquery->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc'));
@@ -162,7 +179,14 @@ class JFormFieldSelectedContent extends JFormFieldList
 
 				$_db->setQuery($query);
 
-				$options[] = $_db->loadAssoc();
+				try
+				{
+					$options[] = $_db->loadAssoc();
+				}
+				catch (RuntimeException $e)
+				{
+					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				}
 			}
 		}
 		return $options;

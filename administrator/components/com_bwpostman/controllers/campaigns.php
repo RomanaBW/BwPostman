@@ -38,11 +38,14 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  *
  * @package 	BwPostman-Admin
  * @subpackage 	Campaigns
+ *
+ * @since       0.9.1
  */
 class BwPostmanControllerCampaigns extends JControllerAdmin
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
+
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_CAMS';
@@ -91,6 +94,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 *
 	 * @return  JController		This object to support chaining.
 	 *
+	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{

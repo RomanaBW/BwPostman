@@ -28,6 +28,8 @@ defined('_JEXEC') or die;
 
 /**
  * Class modBwPostmanOverviewHelper
+ *
+ * @since       1.2.0
  */
 class modBwPostmanOverviewHelper
 {
@@ -43,9 +45,6 @@ class modBwPostmanOverviewHelper
 	 */
 	public static function getList(&$params, $module_id	= 0)
 	{
-		$app	= JFactory::getApplication();
-		$menu	= $app->getMenu();
-
 		$item		= $params->get('menu_item');
 		$itemid		= (!empty($item)) ? '&Itemid=' . $item : '';
 
@@ -60,8 +59,8 @@ class modBwPostmanOverviewHelper
 			$sent_month	= $date->format('n');
 			$sent_year	= $date->format('Y');
 
-			$sent_year_cal	= JHTML::_('date', $row->mailing_date, 'Y');
-			$month_name_cal	= JHTML::_('date', $row->mailing_date, 'F');
+			$sent_year_cal	= JHtml::_('date', $row->mailing_date, 'Y');
+			$month_name_cal	= JHtml::_('date', $row->mailing_date, 'F');
 
 			$lists[$i]		= new stdClass;
 
@@ -113,7 +112,8 @@ class modBwPostmanOverviewHelper
 
 		$groups	= self::getAccessibleUsergroups($params, 'false');
 
-		if (count($groups) > 0) {
+		if (count($groups) > 0)
+		{
 			// merge mailinglists and usergroups and remove multiple values
 			$mls	= array_merge($mls, $groups);
 			$mls	= array_unique($mls);
@@ -136,7 +136,8 @@ class modBwPostmanOverviewHelper
 
 
 		// Filter by show type
-		switch ($params->get('show_type', 'arc')) {
+		switch ($params->get('show_type', 'arc'))
+		{
 			case 'all':
 			default:
 				break;
@@ -183,7 +184,8 @@ class modBwPostmanOverviewHelper
 		$nls_result	= $_db->loadAssocList();
 
 		$nls	= array();
-		foreach ($nls_result as $item) {
+		foreach ($nls_result as $item)
+		{
 			$nls[]	= $item['id'];
 		}
 		if (count($nls) == 0) $nls[]	= 0;
@@ -204,7 +206,6 @@ class modBwPostmanOverviewHelper
 		$query->from('#__bwpostman_newsletters AS a');
 
 		$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $nls) . ')');
-
 
 		$query->order($_db->quoteName('a.mailing_date') . ' DESC');
 		$query->group($query->year($_db->quoteName('a.mailing_date')));
@@ -236,7 +237,7 @@ class modBwPostmanOverviewHelper
 	}
 
 	/**
-	 * Method to get all published mailing lists which the user is authorized to see and wich are selected in menu
+	 * Method to get all published mailing lists which the user is authorized to see and which are selected in menu
 	 *
 	 * @access 	public
 	 *
@@ -257,7 +258,8 @@ class modBwPostmanOverviewHelper
 		$all_mls	= $params->get('ml_selected_all');
 		$sel_mls	= $params->get('ml_available');
 
-		if ($all_mls) {
+		if ($all_mls)
+		{
 			$query->select('id');
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
@@ -272,7 +274,8 @@ class modBwPostmanOverviewHelper
 				}
 			}
 		}
-		else {
+		else
+		{
 			$mls	= $sel_mls;
 		}
 
@@ -280,15 +283,20 @@ class modBwPostmanOverviewHelper
 		if (count($mls) == 0) $mls[]	= 0;
 
 		// Check permission, if desired
-		if ($all_mls || $check != 'no') {
+		if ($all_mls || $check != 'no')
+		{
 			// get authorized viewlevels
 			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
-			if (count($accesslevels > 0)) {
-				foreach ($accesslevels as $key => $value) {
+			$acc_levels     = array();
+			if (count($accesslevels) > 0)
+			{
+				foreach ($accesslevels as $key => $value)
+				{
 					$acc_levels[]	= $key;
 				}
 			}
-			else {
+			else
+			{
 				$acc_levels[]	= 0;
 			}
 
@@ -304,7 +312,8 @@ class modBwPostmanOverviewHelper
 			$res_mls = $_db->loadAssocList();
 
 			$acc_mls	= array();
-			foreach ($res_mls as $item) {
+			foreach ($res_mls as $item)
+			{
 				$acc_mls[]	= $item['id'];
 			}
 
@@ -340,35 +349,44 @@ class modBwPostmanOverviewHelper
 		$all_cams	= $params->get('cam_selected_all');
 		$sel_cams	= $params->get('cam_available');
 
-		if ($all_cams) {
+		if ($all_cams)
+		{
 			$query->select('c.id');
 			$query->from('#__bwpostman_campaigns AS c');
 			$_db->setQuery ($query);
 
 			$res_cams	= $_db->loadAssocList();
 			$cams		= array();
-			if (count($res_cams) > 0) {
-				foreach ($res_cams as $item) {
+			if (count($res_cams) > 0)
+			{
+				foreach ($res_cams as $item)
+				{
 					$cams[]	= $item['id'];
 				}
 			}
 		}
-		else {
+		else
+		{
 			$cams	= $sel_cams;
 		}
 		// if no cam is left, make (empty) array
 		if (count($cams) == 0) $cams[]	= 0;
 
 		// Check permission, if desired
-		if ($all_cams != 'no' || $check != 'no') {
+		if ($all_cams != 'no' || $check != 'no')
+		{
 			// get authorized viewlevels
 			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
-			if (count($accesslevels) > 0) {
-				foreach ($accesslevels as $key => $value) {
+			$acc_levels     = array();
+			if (count($accesslevels) > 0)
+			{
+				foreach ($accesslevels as $key => $value)
+				{
 					$acc_levels[]	= $key;
 				}
 			}
-			else {
+			else
+			{
 				$acc_levels[]	= 0;
 			}
 
@@ -383,7 +401,8 @@ class modBwPostmanOverviewHelper
 			$res_mls = $_db->loadAssocList();
 
 			$acc_mls	= array();
-			foreach ($res_mls as $item) {
+			foreach ($res_mls as $item)
+			{
 				$acc_mls[]	= $item['id'];
 			}
 
@@ -397,9 +416,11 @@ class modBwPostmanOverviewHelper
 			$_db->setQuery ($query);
 
 			$acc_cams	= $_db->loadAssocList();
-			if (count($acc_cams) > 0) {
+			if (count($acc_cams) > 0)
+			{
 				$cams		= array();
-				foreach ($acc_cams as $item) {
+				foreach ($acc_cams as $item)
+				{
 					$cams[]	= $item['campaign_id'];
 				}
 			}
@@ -434,50 +455,62 @@ class modBwPostmanOverviewHelper
 		$all_groups	= $params->get('groups_selected_all');
 		$sel_groups	= $params->get('groups_available');
 
-		if ($all_groups) {
+		if ($all_groups)
+		{
 			$query->select('u.id');
 			$query->from('#__usergroups AS u');
 			$_db->setQuery ($query);
 
 			$res_groups	= $_db->loadAssocList();
 			$groups		= array();
-			if (count($res_groups) > 0) {
-				foreach ($res_groups as $item) {
+			if (count($res_groups) > 0)
+			{
+				foreach ($res_groups as $item)
+				{
 					$groups[]	= $item['id'];
 				}
 			}
-			else {
+			else
+			{
 				$groups[]	= 0;
 			}
 			//convert usergroups to match bwPostman's needs
 			$c_groups	= array();
-			if (count($groups) > 0) {
-				foreach ($groups as $value) {
+			if (count($groups) > 0)
+			{
+				foreach ($groups as $value)
+				{
 					$c_groups[]	= '-' . $value;
 				}
 			}
-			else {
+			else
+			{
 				$c_groups[]	= 0;
 			}
 		}
-		else {
+		else
+		{
 			$c_groups	= $sel_groups;
 		}
 		if (count($c_groups) == 0) $c_groups[]	= 0;
 
 		// Check permission, if desired
-		if ($all_groups || $check != 'no') {
+		if ($all_groups || $check != 'no')
+		{
 			$user		= JFactory::getUser();
 			$acc_groups	= $user->getAuthorisedGroups();
 
 			//convert usergroups to match bwPostman's needs
 			$a_groups	= array();
-			if (count($acc_groups) > 0) {
-				foreach ($acc_groups as $value) {
+			if (count($acc_groups) > 0)
+			{
+				foreach ($acc_groups as $value)
+				{
 					$a_groups[]	= '-' . $value;
 				}
 			}
-			else {
+			else
+			{
 				$a_groups[]	= 0;
 			}
 

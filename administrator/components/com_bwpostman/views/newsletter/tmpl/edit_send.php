@@ -29,73 +29,85 @@ defined ('_JEXEC') or die ('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
-JHTML::_('behavior.keepalive');
+JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 $image = '<i class="icon-info"></i>';
 
-$image_testrecipients	= JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/send.png', JText::_('COM_BWPOSTMAN_NL_SEND_TO_TESTRECIPIENTS'));
-$image_newsletter		= JHTML::_('image', 'administrator/components/com_bwpostman/assets/images/send_f2.png', JText::_('COM_BWPOSTMAN_NL_SENDMAIL'));
+$image_testrecipients	= JHtml::_('image', 'administrator/components/com_bwpostman/assets/images/send.png', JText::_('COM_BWPOSTMAN_NL_SEND_TO_TESTRECIPIENTS'));
+$image_newsletter		= JHtml::_('image', 'administrator/components/com_bwpostman/assets/images/send_f2.png', JText::_('COM_BWPOSTMAN_NL_SENDMAIL'));
 ?>
 
 <script type="text/javascript">
 /* <![CDATA[ */
 
 // This function stay here instead of external JS file to get nearly free of parameters on buttons
-function changeTab(tab, task){
+function changeTab(tab, task)
+{
 	if (tab != 'edit_send') {
 //		document.adminForm.layout.setAttribute('value',tab);
 		document.adminForm.tab.setAttribute('value',tab);
 		document.adminForm.task.setAttribute('value','newsletter.changeTab');
 		return true;
 	}
-	else {
+	else
+	{
 		return false;
 	}
 }
 
-Joomla.submitbutton = function (pressbutton) {
+Joomla.submitbutton = function (pressbutton)
+{
 	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel') {
+	if (pressbutton == 'newsletter.cancel')
+	{
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.back') {
+	if (pressbutton == 'newsletter.back')
+	{
 		form.task.value = 'back';
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.apply') {
+	if (pressbutton == 'newsletter.apply')
+	{
 		form.task.setAttribute('value','newsletter.apply');
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.save') {
+	if (pressbutton == 'newsletter.save')
+	{
 		form.task.setAttribute('value','newsletter.save');
 		submitform(pressbutton);
 		return;
 	}
 
-	if (pressbutton == 'newsletter.sendmail') {
+	if (pressbutton == 'newsletter.sendmail')
+	{
 		confirmSendNl = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING', true); ?>");
-		if (confirmSendNl == true) {
+		if (confirmSendNl == true)
+		{
 			form.task.setAttribute('value','newsletter.sendmail');
 			submitform(pressbutton);
 		}
 	}
 
-	if (pressbutton == 'newsletter.sendmailandpublish') {
+	if (pressbutton == 'newsletter.sendmailandpublish')
+	{
 		confirmSendNl = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING_AND_PUBLISH', true); ?>");
-		if (confirmSendNl == true) {
+		if (confirmSendNl == true)
+		{
 			form.task.setAttribute('value','newsletter.sendmail');
 			submitform(pressbutton);
 		}
 	}
 
-	if (pressbutton == 'newsletter.sendtestmail') {
+	if (pressbutton == 'newsletter.sendtestmail')
+	{
 		confirmSendNl = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING', true); ?>");
 		if (confirmSendNl == true) {
 			form.task.setAttribute('value','newsletter.sendmail');
@@ -139,11 +151,9 @@ Joomla.submitbutton = function (pressbutton) {
 		</div>
 		<div class="clr clearfix"></div>
 
-
-
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
-				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_SENDMAIL'); ?></legend>
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL'); ?></legend>
 				<div class="well well-small">
 					<table class="admintable">
 						<tr valign="top">
@@ -165,7 +175,7 @@ Joomla.submitbutton = function (pressbutton) {
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<input class="input-mini inputbox" name="mails_per_pageload" id="mails_per_pageload" size="4" maxlength="10"
+								<input class="input-mini inputbox" name="mails_per_pageload" id="mails_per_pageload" title="mails_per_pageload" size="4" maxlength="10"
 									value="<?php echo $this->params->get('default_mails_per_pageload');?>" />
 								<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD'); ?>&nbsp;
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD_NOTE'); ?>"><?php echo $image; ?></span>
@@ -175,7 +185,7 @@ Joomla.submitbutton = function (pressbutton) {
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<?php if ($this->canDo->get('core.send')) : ?>
+								<?php if ($this->canDo->get('bwpm.send')) : ?>
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmail');"
 										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_BUTTON'); ?>" />
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmailandpublish');"
@@ -188,7 +198,7 @@ Joomla.submitbutton = function (pressbutton) {
 			</fieldset>
 
 			<fieldset class="adminform">
-				<legend><?php echo JTEXT::_('COM_BWPOSTMAN_NL_SENDTESTMAIL'); ?></legend>
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_SENDTESTMAIL'); ?></legend>
 				<div class="well well-small">
 					<table class="admintable">
 						<tr valign="top">
@@ -203,7 +213,7 @@ Joomla.submitbutton = function (pressbutton) {
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<?php if ($this->canDo->get('core.send')) : ?>
+								<?php if ($this->canDo->get('bwpm.send')) : ?>
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendtestmail');"
 										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDTESTMAIL_BUTTON'); ?>" />
 								<?php endif; ?>
@@ -236,6 +246,6 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

@@ -37,26 +37,105 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
  * BwPostman Campaigns View
  *
  * @package 	BwPostman-Admin
+ *
  * @subpackage 	Campaigns
+ *
+ * @since       0.9.1
  */
 class BwPostmanViewCampaigns extends JViewLegacy
 {
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 *
+	 * @since       0.9.1
+	 */
+	protected $items;
+
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
+	 */
+	protected $pagination;
+
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected $state;
+
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
+	 */
+	public $filterForm;
+
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
+	 */
+	public $activeFilters;
+
+	/**
+	 * property to hold auto nbr
+	 *
+	 * @var string $auto_nbr
+	 *
+	 * @since       0.9.1
+	 */
+	public $auto_nbr;
+
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
+	 */
+	public $sidebar;
+
+	/**
+	 * property to hold total value
+	 *
+	 * @var object  $total
+	 *
+	 * @since       0.9.1
+	 */
+	public $total;
+
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('campaigns')) {
+		if (!BwPostmanHelper::canView('campaigns'))
+		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_CAMS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
-		else {
+		else
+		{
 			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
@@ -87,6 +166,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	/**
 	 * Add the page title, submenu and toolbar.
 	 *
+	 *
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
 	{
@@ -98,35 +179,39 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		// Get document object, set document title and add css
 		$document	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_CAMS'));
-		$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolBarHelper::title (JText::_('COM_BWPOSTMAN_CAMS'), 'list');
+		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_CAMS'), 'list');
 
 		// Set toolbar items for the page
-		if ($canDo->get('core.create'))	JToolBarHelper::addNew('campaign.add');
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))	JToolBarHelper::editList('campaign.edit');
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer();
+		if ($canDo->get('bwpm.create'))
+			JToolbarHelper::addNew('campaign.add');
+		if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))
+			JToolbarHelper::editList('campaign.edit');
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
 
 		// Special archive button because we need a confirm dialog with 3 options
-		if ($canDo->get('core.archive')) {
-			$bar= JToolBar::getInstance('toolbar');
+		if ($canDo->get('bwpm.archive'))
+		{
+			$bar= JToolbar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";
 			$bar->appendButton('Popup', 'archive', $alt, 'index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive', 500, 110);
-			JToolBarHelper::spacer();
-			JToolBarHelper::divider();
-			JToolBarHelper::spacer();
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
 		}
-		if ($canDo->get('core.manage')) {
-			JToolBarHelper::checkin('campaigns.checkin');
-			JToolBarHelper::divider();
+		if ($canDo->get('core.manage'))
+		{
+			JToolbarHelper::checkin('campaigns.checkin');
+			JToolbarHelper::divider();
 		}
 
 		// trigger BwTimeControl event
 		$dispatcher->trigger('onBwPostmanCampaignsPrepareToolbar', array($canDo));
 
-		JToolBarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-		JToolBarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::spacer();
 	}
 }

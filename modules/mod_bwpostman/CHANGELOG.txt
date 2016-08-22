@@ -7,6 +7,18 @@ The changelog may not be exhaustive but nearly complete.
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+--- version 2.0.0 released (20-Sept-2016)----
+- new:
+    -
+
+- bugfix:
+    - Check for module specific params corrected
+    - Form check by javascript corrected
+
+- improvement:
+    -
+
+
 --- version 1.3.2 released (14-Apr-2016)----
 - bugfix:
 	- Since Joomla 3.5.1 building of some language strings have changed - fixed.
@@ -157,8 +169,8 @@ only version number set according to component (bugfix in component)
 --- version 0.9.8 released (Apr-09-2014)----
 
 Apr-9-2014 Romana Boldt
-- integrate question and captcha formfields
-- integrate spamprotection
+- integrate question and captcha form fields
+- integrate spam protection
 - some smaller internal changes in code
 
 

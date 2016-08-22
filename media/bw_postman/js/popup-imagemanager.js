@@ -46,7 +46,7 @@ var ImageManager = this.ImageManager = {
 		this.frame		= window.frames['imageframe'];
 		this.frameurl	= this.frame.location.href;
 
-		// Setup imave listing frame
+		// Setup image listing frame
 		this.imageframe = document.getElementById('imageframe');
 		this.imageframe.manager = this;
 		$(this.imageframe).on('load', function(){ ImageManager.onloadimageview(); });

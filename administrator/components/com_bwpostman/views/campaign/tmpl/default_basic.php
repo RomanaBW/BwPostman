@@ -98,14 +98,14 @@ $image = '<i class="icon-info"></i>';
 <fieldset class="adminform">
 	<div class="row-fluid">
 		<fieldset class="adminform">
-			<legend class="required"><?php echo JTEXT::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
+			<legend class="required"><?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
 			<div class="well">
 				<div class="width-75 fltlft span9">
 					<div class="well-white well-small">
 						<fieldset class="adminform">
 							<legend>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>"><?php echo $image; ?></span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;<?php echo JTEXT::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?></span>
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?></span>
 							</legend>
 							<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
 								<?php if ($field->hidden): ?>
@@ -139,7 +139,7 @@ $image = '<i class="icon-info"></i>';
 						<fieldset class="adminform usergroups">
 							<legend>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>"><?php echo $image; ?></span>
-								<span>&nbsp;<?php echo JTEXT::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
+								<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 							</legend>
 							<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
 								<?php echo $field->input; ?>
@@ -157,18 +157,23 @@ $image = '<i class="icon-info"></i>';
 /* <![CDATA[ */
 var $j	= jQuery.noConflict();
 
-Joomla.submitbutton = function (pressbutton) {
-if (pressbutton == 'campaign.cancel') {
+Joomla.submitbutton = function (pressbutton)
+{
+	if (pressbutton == 'campaign.cancel')
+	{
 		submitform(pressbutton);
 		return;
 	}
 
-	if ((pressbutton == 'campaign.apply') || (pressbutton == 'campaign.save')) {
-		if ($j("input[type=checkbox]:checked").length) {
+	if ((pressbutton == 'campaign.apply') || (pressbutton == 'campaign.save'))
+	{
+		if ($j("input[type=checkbox]:checked").length)
+		{
 			submitform(pressbutton);
 			return true;
 		}
-		else {
+		else
+		{
 			alert('<?php echo JText::_("COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED"); ?>');
 			return false;
 		}

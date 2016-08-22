@@ -31,6 +31,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldAuthors
+ *
+ * @since       1.0.8
  */
 class JFormFieldAuthors extends JFormFieldList {
 
@@ -38,6 +40,8 @@ class JFormFieldAuthors extends JFormFieldList {
 	 * property to hold authors
 	 *
 	 * @var string  $type
+	 *
+	 * @since       1.0.8
 	 */
 	protected $type = 'Authors';
 
@@ -55,11 +59,10 @@ class JFormFieldAuthors extends JFormFieldList {
 		$query	= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
 
-		// Build the subquery
+		// Build the sub query
 		$sub_query->select('nl.created_by');
 		$sub_query->from('#__bwpostman_newsletters AS nl');
 		$sub_query->group('nl.created_by');
-//		$sub_query->where('nl.mailing_date != ' . $_db->Quote('0000-00-00 00:00:00'));
 
 		// Get all authors that composed a newsletter
 		$query->select('u.id AS value');
@@ -75,7 +78,7 @@ class JFormFieldAuthors extends JFormFieldList {
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$parent = new stdClass;

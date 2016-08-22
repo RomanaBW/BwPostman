@@ -73,6 +73,7 @@ class TestPlaygroundCest
 	 */
 	public function setOption(AcceptanceTester $I)
 	{
+		// @ToDo: ATTENTION: This method may cause damage to whole column in table at database
 		$option = 'default_from_name';
 		$value  = 'Changed Bw-Test';
 

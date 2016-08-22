@@ -1037,6 +1037,7 @@ class Acceptance extends Codeception\Module
 	 */
 	public function setManifestOption($extension = 'com_bwpostman', $option, $value)
 	{
+		// @ToDo: ATTENTION: This method may cause damage to whole column in table at database
 		$credentials    = $this->_getDbCredentials();
 		$criteria       = array();
 		$options        = Generals::$com_options;
@@ -1045,7 +1046,7 @@ class Acceptance extends Codeception\Module
 
 		$options_string = json_encode($options);
 
-		DbHelper::setManifestOptionsFromDatabase($extension, $options_string, $criteria, $credentials);
+		DbHelper::setManifestOptionsInDatabase($extension, $options_string, $criteria, $credentials);
 	}
 
 	/**

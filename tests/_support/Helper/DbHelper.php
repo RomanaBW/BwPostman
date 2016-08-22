@@ -184,8 +184,9 @@ codecept_debug("Activation-Code: $result");
 	 *
 	 * @since   2.0.0
 	 */
-	public static function setManifestOptionsFromDatabase($extension, $options, $criteria = array(), array $credentials)
+	public static function setManifestOptionsInDatabase($extension, $options, $criteria = array(), array $credentials)
 	{
+		// @ToDo: ATTENTION: This method may cause damage to whole column in table at database
 		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
 		if (substr_compare($extension, 'mod_', 0, 4))
@@ -241,7 +242,6 @@ codecept_debug('Arrived in DbHelper');
 		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
 		$table_name = Generals::$db_prefix . 'extensions';
-//		$criteria[] = "WHERE `element` = '" . $extension . "'";
 
 		$query      = "SELECT `extension_id` FROM $table_name WHERE `element` = 'com_bwpostman'";
 		$sth        = $driver->executeQuery($query, $criteria);

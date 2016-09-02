@@ -79,7 +79,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 * @param	string	$prefix 	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModel
+	 * @return	JModelLegacy
 
 	 * @since	1.1.0
 	 */
@@ -96,12 +96,19 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JController		This object to support chaining.
+	 * @return  BwPostmanControllerTemplates		This object to support chaining.
 	 *
 	 * @since	1.1.0
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
+		if (!BwPostmanHelper::canView('template'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
+
 		$jinput		= JFactory::getApplication()->input;
 
 		// Show the layout depending on the task
@@ -113,6 +120,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 				break;
 		}
 		parent::display();
+		return $this;
 	}
 
 	/**
@@ -135,6 +143,12 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		// Get the selected template(s)
 		$cid = $jinput->get('cid', array(0), 'post');
 		ArrayHelper::toInteger($cid);
+
+		// Access check
+		if (!BwPostmanHelper::canEditState('template', $cid))
+		{
+			return false;
+		}
 
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
@@ -179,17 +193,13 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 */
 	public function uploadtpl()
 	{
-		$msg = '';
-
 		// Check for request forgeries
-		if (!JSession::checkToken()) $msg = JText::_('COM_BWPOSTMAN_JINVALID_TOKEN');
-
+		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
 		// Access check.
-		$user	= JFactory::getUser();
-		if (!$user->authorise('core.admin', 'com_bwpostman'))
+		if (!BwPostmanHelper::canAdd('template'))
 		{
-			$msg = JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_PERMISSION');
+			return false;
 		}
 
 		$app	= JFactory::getApplication();
@@ -199,7 +209,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$app->setUserState('com_bwpostman.templates.uploadfile', $file);
 		$model	= $this->getModel('templates');
 
-		if (!$msg) $msg = $model->uploadTplFiles($file);
+		$msg = $model->uploadTplFiles($file);
 
 		if ($msg)
 		{

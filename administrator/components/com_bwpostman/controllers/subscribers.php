@@ -72,13 +72,35 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	}
 
 	/**
+	 * Display
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  BwPostmanControllerSubscribers		This object to support chaining.
+	 *
+	 * @since   2.0.0
+	 */
+	public function display($cachable = false, $urlparams = array())
+	{
+		if (!BwPostmanHelper::canView('subscriber'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
+		parent::display();
+		return $this;
+	}
+
+	/**
 	 * Proxy for getModel.
 	 *
 	 * @param	string	$name   	The name of the model.
 	 * @param	string	$prefix 	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModel
+	 * @return	JModelLegacy
 
 	 * @since	1.0.1
 	 */

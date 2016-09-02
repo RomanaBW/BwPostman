@@ -123,33 +123,19 @@ class BwPostmanModelCampaign extends JModelAdmin
 	}
 
 	/**
-	 * Method to test whether a record can be deleted.
+	 * Method to test whether the state of a record can be changed
 	 *
 	 * @param	object	$record	A record object.
 	 *
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
+	 * @return	boolean	True if allowed to change state of the record.
 	 *
 	 * @since	1.0.1
 	 */
-	protected function canDelete($record)
+	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$permission = BwPostmanHelper::canEditState('campaign', $record->id);
 
-		// Check general delete permission first.
-		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		if (!empty($record->id))
-		{
-			// Check specific delete permission.
-			if ($user->authorise('bwpm.campaign.delete', 'com_bwpostman.campaign.' . (int) $record->id))
-			{
-				return true;
-			}
-		}
-		return false;
+		return $permission;
 	}
 
 	/**
@@ -172,14 +158,22 @@ class BwPostmanModelCampaign extends JModelAdmin
 			// Initialise variables.
 			if (is_array($cid)) {
 				if (!empty($cid)) {
-					$cid = $cid[0];
+					$cid = (int)$cid[0];
 				}
 				else {
 					$cid = 0;
 				}
 			}
-			if (empty($pk)) $pk	= (int) $cid;
+			if (empty($pk)) $pk	= $cid;
+
 			$item	= parent::getItem($pk);
+
+			// check permission
+			if (!BwPostmanHelper::canEdit('campaign', $item))
+			{
+				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+				return false;
+			}
 
 			//get associated mailinglists
 			$query	= $_db->getQuery(true);
@@ -451,46 +445,37 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function archive($cid = array(), $archive = 1, $archive_nl = 1)
 	{
-		$app	= JFactory::getApplication();
 		$date	= JFactory::getDate();
 		$uid	= JFactory::getUser()->get('id');
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
+
+		ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
 		{
 			$time = $date->toSql();
 
 			// Access check.
-			foreach ($cid as $i)
+			if (!BwPostmanHelper::canArchive('campaign', $cid))
 			{
-				if (!BwPostmanHelper::allowArchive($i, 0, 'campaign'))
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_ARCHIVE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
+				return false;
 			}
 		}
 		else
 		{
+			// Access check.
+			if (!BwPostmanHelper::canRestore('campaign', $cid))
+			{
+				return false;
+			}
+
 			$time	= '0000-00-00 00:00:00';
 			$uid	= 0;
-
-			// Access check.
-			foreach ($cid as $i)
-			{
-				if (!BwPostmanHelper::allowRestore($i, 0, 'campaign'))
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
-			}
 		}
 
 		if (count($cid))
 		{
-			ArrayHelper::toInteger($cid);
-
 			$query->update($_db->quoteName('#__bwpostman_campaigns'));
 			$query->set($_db->quoteName('archive_flag') . ' = ' . (int) $archive);
 			$query->set($_db->quoteName('archive_date') . ' = ' . $_db->quote($time, false));
@@ -651,21 +636,18 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	    = JFactory::getApplication()->input;
 		$remove_nl	= $jinput->get('remove_nl', false);
-
-		// Access check.
-		foreach ($pks as $i)
-		{
-			if (!BwPostmanHelper::allowDelete($i, 0, 'campaign'))
-			{
-				return false;
-			}
-		}
 
 		if (count($pks))
 		{
 			ArrayHelper::toInteger($pks);
+
+			// Access check.
+			if (!BwPostmanHelper::canDelete('campaign', $pks))
+			{
+				return false;
+			}
 
 			// Delete campaigns from campaigns-table
 			$cams_table = JTable::getInstance('campaigns', 'BwPostmanTable');

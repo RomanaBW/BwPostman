@@ -59,18 +59,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		if (count($this->items))
 		{
 			foreach ($this->items as $i => $item) :
-				$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-				$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.subscriber.'.$item->id);
-				$canEditOwn	= $user->authorise('bwpm.edit.own',	'com_bwpostman.subscriber.'.$item->id) && $item->registered_by == $userId;
-				$name		= ($item->name) ? $item->name : JText::_('COM_BWPOSTMAN_SUB_NONAME');
+				$name	= ($item->name) ? $item->name : JText::_('COM_BWPOSTMAN_SUB_NONAME');
 				?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id, 0, 'cid', 'cb'); ?></td>
 					<td>
 						<?php if ($item->checked_out) : ?>
-							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'subscribers.', $canCheckin, 'cb'); ?>
+							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'subscribers.', BwPostmanHelper::canCheckin('subscriber', $item->checked_out), 'cb'); ?>
 						<?php endif; ?>
-						<?php if ($canEdit || $canEditOwn) : ?>
+						<?php if (BwPostmanHelper::canEdit('subscriber', $item)) : ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=subscriber.edit&id='. $item->id);?>">
 								<?php echo $this->escape($name); ?></a>
 						<?php else : ?>

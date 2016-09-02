@@ -72,15 +72,6 @@ class BwPostmanViewCampaign extends JViewLegacy
 	protected $state;
 
 	/**
-	 * property to hold can do properties
-	 *
-	 * @var array $canDo
-	 *
-	 * @since       0.9.1
-	 */
-	public $canDo;
-
-	/**
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
@@ -123,7 +114,6 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 		$this->state	= $this->get('State');
-		$this->canDo	= BwPostmanHelper::getActions($this->item->id, 'campaign');
 
 		// Get the assigned newsletters
 		$this->newsletters = $this->get('Newsletters');
@@ -165,11 +155,10 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$isNew = ($this->item->id < 1);
 
 		// Set toolbar title and items
-        $canDo		= BwPostmanHelper::getActions($this->item->id, 'campaign');
         $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
-		if ($isNew && $canDo->get('bwpm.create'))
+		if ($isNew && BwPostmanHelper::canAdd('campaign'))
 		{
 			JToolbarHelper::save('campaign.save');
 			JToolbarHelper::apply('campaign.apply');
@@ -182,7 +171,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 			if (!$checkedOut)
 			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+				if (BwPostmanHelper::canEdit('campaign', $this->item))
 				{
 					JToolbarHelper::save('campaign.save');
 					JToolbarHelper::apply('campaign.apply');

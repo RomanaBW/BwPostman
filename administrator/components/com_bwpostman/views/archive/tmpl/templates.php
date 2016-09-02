@@ -105,7 +105,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 										</thead>
 										<tfoot>
 											<tr>
-												<td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td>
+												<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
 											</tr>
 										</tfoot>
 										<tbody>
@@ -131,7 +131,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 											}
 											else { ?>
 												<tr class="row1">
-													<td colspan="7"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+													<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 												</tr><?php
 											}
 										?>

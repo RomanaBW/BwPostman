@@ -75,6 +75,28 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	}
 
 	/**
+	 * Display
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  BwPostmanControllerNewsletter		This object to support chaining.
+	 *
+	 * @since   2.0.0
+	 */
+	public function display($cachable = false, $urlparams = array())
+	{
+		if (!BwPostmanHelper::canView('newsletter'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
+		parent::display();
+		return $this;
+	}
+
+	/**
 	 * Method override to check if you can add a new record.
 	 *
 	 * @param	array	$data		An array of input data.
@@ -85,66 +107,21 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		$user	= JFactory::getUser();
-
-		return ($user->authorise('core.create', 'com_bwpostman'));
+		return BwPostmanHelper::canAdd('newsletter');
 	}
 
 	/**
 	 * Method override to check if you can edit a record.
 	 *
 	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
 	 *
 	 * @return	boolean
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = array())
 	{
-		// Initialise variables.
-		$recordId	= (int) isset($data[$key]) ? $data[$key] : 0;
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
-
-		// Check general edit permission first.
-		if ($user->authorise('bwpm.edit', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		// Check specific edit permission.
-		if ($user->authorise('bwpm.newsletter.edit', 'com_bwpostman.newsletter.' . $recordId))
-		{
-			return true;
-		}
-
-		// Fallback on edit.own.
-		// First test if the permission is available.
-		if ($user->authorise('bwpm.newsletter.edit.own', 'com_bwpostman.newsletter.' . $recordId) || $user->authorise('bwpm.edit.own', 'com_bwpostman'))
-		{
-			// Now test the owner is the user.
-			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
-			if (empty($ownerId) && $recordId)
-			{
-				// Need to do a lookup from the model.
-				$record = $this->getModel()->getItem($recordId);
-
-				if (empty($record))
-				{
-					return false;
-				}
-
-				$ownerId = $record->created_by;
-			}
-
-			// If the owner matches 'me' then do the test.
-			if ($ownerId == $userId)
-			{
-				return true;
-			}
-		}
-		return false;
+		return BwPostmanHelper::canEdit('newsletter', $data);
 	}
 
 
@@ -152,30 +129,28 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * Method to check if you can send a newsletter.
 	 *
 	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
 	 *
 	 * @return	boolean
 	 *
-	 * @since	1.0.1
+	 * @since	2.0.0
 	 */
-	public static function allowSend($data = array(), $key = 'id')
+	public static function allowSend($data = array())
 	{
-		// Initialise variables.
-		$recordId	= (int) isset($data[$key]) ? $data[$key] : 0;
-		$user		= JFactory::getUser();
+		return BwPostmanHelper::canSend($data['id']);
+	}
 
-		// Check general component send permission first.
-		if ($user->authorise('bwpm.send', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		// Check specific send permission.
-		if ($user->authorise('bwpm.newsletter.send', 'com_bwpostman.newsletter.' . $recordId))
-		{
-			return true;
-		}
-		return false;
+	/**
+	 * Method to check if you can archive records
+	 *
+	 * @param	array 	$recordIds		an array of items to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowArchive($recordIds = array())
+	{
+		return BwPostmanHelper::canArchive('newsletter', $recordIds);
 	}
 
 	/**
@@ -216,10 +191,16 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$checkin	= property_exists($table, 'checked_out');
 
 		// Access check.
-		if (!$this->allowEdit(array($key => $recordId), $key))
+		if ($recordId == 0)
 		{
-			$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
-
+			$allowed    = $this->allowAdd();
+		}
+		else
+		{
+			$allowed    = $this->allowEdit(array($recordId));
+		}
+		if (!$allowed)
+		{
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
@@ -351,13 +332,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		$app		= JFactory::getApplication();
-		$lang		= JFactory::getLanguage();
 		$model		= $this->getModel();
 		$table		= $model->getTable();
-		$checkin	= property_exists($table, 'checked_out');
-		$context	= "$this->option.edit.$this->context";
-		$task		= $this->getTask();
 
 		// Determine the name of the primary key for the data.
 		if (empty($key))
@@ -372,6 +348,32 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		$recordId = $this->input->getInt($urlVar);
+
+		// Access check.
+		if ($recordId == 0)
+		{
+			$allowed    = $this->allowAdd();
+		}
+		else
+		{
+			$allowed    = $this->allowEdit(array($recordId));
+		}
+		if (!$allowed)
+		{
+			$this->setRedirect(
+				JRoute::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_list
+					. $this->getRedirectToListAppend(), false
+				)
+			);
+			return false;
+		}
+
+		$app		= JFactory::getApplication();
+		$lang		= JFactory::getLanguage();
+		$checkin	= property_exists($table, 'checked_out');
+		$context	= "$this->option.edit.$this->context";
+		$task		= $this->getTask();
 
 		if (($task == 'save') || ($task == 'apply') || ($task == 'save2copy') || ($task == 'publish_save'))
 		{
@@ -405,20 +407,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			// Reset the ID and then treat the request as for Apply.
 			$data[$key] = 0;
 			$task = 'apply';
-		}
-
-		// Access check.
-		if (!$this->allowSave($data, $key))
-		{
-			$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
-
-			$this->setRedirect(
-				JRoute::_(
-					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
-				)
-			);
-			return false;
 		}
 
 		// Validate the posted data.
@@ -829,7 +817,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$app	= JFactory::getApplication();
 
 		// Access check.
-		if (!self::allowAdd())
+		if (!$this->allowAdd())
 		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPY_CREATE_RIGHTS_MISSING'), 'error');
 		}
@@ -858,7 +846,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 *
 	 * @access	public
 	 *
-	 * @return 	void
+	 * @return 	bool    true on success
 	 *
 	 * @since       0.9.1
 	 */
@@ -880,6 +868,19 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$cid	= $this->input->get('cid', array(0), 'post');
 
 		ArrayHelper::toInteger($cid);
+
+		// Access check.
+		if (BwPostmanHelper::canArchive('newsletter', $cid))
+		{
+			$this->setRedirect(
+				JRoute::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_list
+					. $this->getRedirectToListAppend(), false
+				)
+			);
+			return false;
+		}
+
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanBeforeNewsletterArchive', array(&$cid, &$msg, &$res));
 

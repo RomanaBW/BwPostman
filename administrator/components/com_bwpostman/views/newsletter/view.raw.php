@@ -102,6 +102,12 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		if ($task == 'continue_sending')
 		{
+			// Access check
+			if (!BwPostmanHelper::canSend())
+			{
+				return false;
+			}
+
 			// set number of queue entries before start sending
 			$sumentries	= is_null($app->getUserState('com_bwpostman.newsletters.entries', null)) ? $app->setUserState('com_bwpostman.newsletters.entries', $model->checkTrials(2,1)) : $app->getUserState('com_bwpostman.newsletters.entries', null);
 

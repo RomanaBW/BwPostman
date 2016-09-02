@@ -114,33 +114,19 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	}
 
 	/**
-	 * Method to test whether a record can be deleted.
+	 * Method to test whether a record can have its state edited.
 	 *
 	 * @param	object	$record	A record object.
 	 *
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
+	 * @return	boolean	True if allowed to change the state of the record. Defaults to the permission set in the component.
 	 *
-	 * @since	1.0.1
+	 * @since	2.0.0
 	 */
-	protected function canDelete($record)
+	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$permission = BwPostmanHelper::canEditState('subscriber', $record->id);
 
-		// Check general delete permission first.
-		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		if (!empty($record->id))
-		{
-			// Check specific delete permission.
-			if ($user->authorise('bwpm.subscriber.delete', 'com_bwpostman.subscribers.' . (int) $record))
-			{
-				return true;
-			}
-		}
-		return false;
+		return $permission;
 	}
 
 	/**
@@ -175,7 +161,15 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 			if (empty($pk))
 				$pk	= (int) $cid;
+
 			$item	= parent::getItem($pk);
+
+			// check permission
+			if (!BwPostmanHelper::canEdit('subscriber', $item))
+			{
+				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+				return false;
+			}
 
 			$_db	= $this->_db;
 			$query	= $_db->getQuery(true);
@@ -713,13 +707,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$userid	= $user->get('id');
 
 			// Access check.
-			foreach ($cid as $i)
+			if (!BwPostmanHelper::canArchive('subscriber', $cid))
 			{
-				if (!BwPostmanHelper::allowArchive($i, 0, 'subscriber'))
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ARCHIVE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
+				return false;
 			}
 		}
 		else
@@ -727,12 +717,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$userid	= "-1";
 
 			// Access check.
-			foreach ($cid as $i)
-			{
-				if (!BwPostmanHelper::allowRestore($i, 0, 'subscriber')) {
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_RESTORE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
+			if (!BwPostmanHelper::canRestore('subscriber', $cid)) {
+				return false;
 			}
 		}
 
@@ -775,9 +761,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function delete(&$pks)
 	{
 		// Access check.
-		foreach ($pks as $i)
+		if (!BwPostmanHelper::canDelete('subscriber', $pks))
 		{
-			if (!BwPostmanHelper::allowDelete($i, 0, 'subscriber'))	return false;
+			return false;
 		}
 
 		if (count($pks))
@@ -982,12 +968,18 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	array   $ret_warn       associative array of import warning data
 	 * @param 	array   $ret_maildata   associative array of subscriber email data --> we need this if the admin didn't confirm the accounts
 	 *
-	 * @return 	boolean
+	 * @return 	boolean true on success
 	 *
 	 * @since       0.9.1
 	 */
 	public function import($data, &$ret_err, &$ret_warn, &$ret_maildata)
 	{
+		// Access check
+		if (!BwPostmanHelper::canAdd('subscriber'))
+		{
+			return false;
+		}
+
 		$app			= JFactory::getApplication();
 		$session		= JFactory::getSession();
 		$date			= JFactory::getDate();
@@ -1225,12 +1217,18 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param	array   $ret_warn       associative array of import warning data
 	 * @param	array   $ret_maildata   associative object of subscriber email data
 	 *
-	 * @return	Boolean
+	 * @return	Boolean true on success
 	 *
 	 * @since       0.9.1
 	 */
 	public function save_import($values, $confirm, $row, $mailinglists, &$ret_err, &$ret_warn, &$ret_maildata)
 	{
+		// Access check
+		if (!BwPostmanHelper::canAdd('subscriber'))
+		{
+			return false;
+		}
+
 		jimport('joomla.mail.helper');
 		$_db			= $this->_db;
 		$query			= $_db->getQuery(true);
@@ -1460,6 +1458,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 */
 	public function export($data)
 	{
+		// Access check
+		if (!BwPostmanHelper::canManage())
+		{
+			return false;
+		}
+
 		$_db	= $this->_db;
 		$output = '';
 
@@ -1672,6 +1676,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$pks		= array_unique($pks);
 		ArrayHelper::toInteger($pks);
 
+		// Access check
+		if (!BwPostmanHelper::canEdit('subscriber', $pks))
+		{
+			return false;
+		}
+
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))
 		{
@@ -1759,40 +1769,17 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 */
 	protected function batchAdd($mailinglist, $pks)
 	{
+		// Access check
+		if (!BwPostmanHelper::canEdit('subscriber', $pks))
+		{
+			return false;
+		}
+
 		$_db		= $this->getDbo();
 		$result_set	= array();
 		$subscribed	= 0;
 		$skipped	= 0;
 
-/*
-		// Check that user has create permission for mailinglist
-		$table		= $this->getTable('Subscribers_Mailinglists');
-		$user		= JFactory::getUser();
-		$extension	= JFactory::getApplication()->input->get('extension', '', 'word');
-		$canCreate	= ($mailinglist == $table->getRootId()) ? $user->authorise('core.create', $extension) : $user->authorise('core.create', $extension . '.subscriber.' . $mailinglist);
-		if (!$canCreate)
-		{
-			// Error since user cannot create in mailinglist
-			$this->setError(JText::_('COM_BWPOSTMAN_BATCH_CANNOT_CREATE'));
-			return false;
-		}
-
-		// If the parent is 0, set it to the ID of the root item in the tree
-		if (empty($parentId))
-		{
-			if (!$parentId = $table->getRootId())
-			{
-				$this->setError($_db->getErrorMsg());
-				return false;
-			}
-			// Make sure we can create in root
-			elseif (!$user->authorise('core.create', $extension))
-			{
-				$this->setError(JText::_('COM_BWPOSTMAN_BATCH_CANNOT_CREATE'));
-				return false;
-			}
-		}
-*/
 		// Subscribers exists so let's proceed
 		while (!empty($pks))
 		{
@@ -1860,42 +1847,22 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param   integer  $mailinglist	The mailinglist ID.
 	 * @param   array    $pks       	An array of row IDs.
 	 *
-	 * @return  array
+	 * @return  array|bool
 	 *
 	 * @since   1.0.8
 	 */
 	protected function batchRemove($mailinglist, $pks)
 	{
+		// Access check
+		if (!BwPostmanHelper::canEdit('subscriber', $pks))
+		{
+			return false;
+		}
+
 		$_db			= $this->getDbo();
 		$result_set		= array();
 		$unsubscribed	= 0;
 		$skipped		= 0;
-
-/*		// Check that user has create permission for mailinglist
-		$table		= $this->getTable();
-		$user		= JFactory::getUser();
-		$extension	= JFactory::getApplication()->input->get('extension', '', 'word');
-		$canCreate	= ($parentId == $table->getRootId()) ? $user->authorise('core.create', $extension) : $user->authorise('core.create', $extension . '.category.' . $parentId);
-		if (!$canCreate)
-		{
-			// Error since user cannot create in parent project
-			$this->setError(JText::_('COM_BWPOSTMAN_BATCH_CANNOT_CREATE'));
-			return false;
-		}
-
-		// Check that user has edit permission for every subscriber being unsubscribed
-		// Note that the entire batch operation fails if any project lacks edit permission
-		foreach ($pks as $pk)
-		{
-			if (!$user->authorise('core.edit', $extension . '.project.' . $pk))
-			{
-				// Error since user cannot edit this project
-				$this->setError(JText::_('COM_BWPOSTMAN_BATCH_CANNOT_EDIT'));
-				return false;
-			}
-		}
-*/
-
 
 		// Subscribers exists so let's proceed
 		while (!empty($pks))

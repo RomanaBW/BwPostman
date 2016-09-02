@@ -95,25 +95,21 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php
 						if (count($this->items) > 0) {
 							foreach ($this->items as $i => $item) :
-							$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-							$canEdit	= $user->authorise('bwpm.edit',			'com_bwpostman.mailinglist.'.$item->id);
-							$canEditOwn	= $user->authorise('bwpm.edit.own',		'com_bwpostman.mailinglist.'.$item->id) && $item->created_by == $userId;
-							$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.mailinglist.'.$item->id) && $canCheckin;
 							?>
 							<tr class="row<?php echo $i % 2; ?>">
 								<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 								<td>
 									<?php if ($item->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'mailinglists.', $canCheckin); ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'mailinglists.', BwPostmanHelper::canCheckin($item->checked_out)); ?>
 									<?php endif; ?>
-									<?php if ($canEdit || $canEditOwn) : ?>
+									<?php if (BwPostmanHelper::canEdit('mailinglist', $item)) : ?>
 										<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=mailinglist.edit&id='. $item->id);?>"><?php echo $this->escape($item->title); ?></a>
 									<?php else : ?>
 										<?php echo $this->escape($item->title); ?>
 									<?php endif; ?>
 								</td>
 								<td><?php echo $item->description; ?></td>
-								<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'mailinglists.', $canChange, 'cb'); ?>
+								<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'mailinglists.', BwPostmanHelper::canEditState('mailinglist', $item->id), 'cb'); ?>
 								<td><?php echo $this->escape($item->access_level); ?></td>
 								<td align="center"><?php echo $item->subscribers; ?></td>
 								<td align="center"><?php echo $item->id; ?></td>

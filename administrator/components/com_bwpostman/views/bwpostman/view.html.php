@@ -64,15 +64,6 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	public $general;
 
 	/**
-	 * property to hold can do properties
-	 *
-	 * @var array $canDo
-	 *
-	 * @since       0.9.1
-	 */
-	public $canDo;
-
-	/**
 	 * property to hold request url
 	 *
 	 * @var string $request_url
@@ -112,7 +103,6 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	{
 		$uri		= JUri::getInstance('SERVER');
 		$uri_string	= $uri->toString();
-		$canDo		= BwPostmanHelper::getActions();
 
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
@@ -120,7 +110,6 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		// Get data from the model
 		$this->archive		= $this->get('Archivedata');
 		$this->general		= $this->get('Generaldata');
-		$this->canDo		= $canDo;
 		$this->request_url	= $uri_string;
 
 		// Get document object, set document title and add css
@@ -132,7 +121,7 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		JToolbarHelper::title (JText::_('COM_BWPOSTMAN'), 'envelope');
 
 		// Set toolbar items for the page
-		if ($canDo->get('core.admin'))
+		if (BwPostmanHelper::canAdmin())
 		{
 			JToolbarHelper::preferences('com_bwpostman', '500', '900');
 			JToolbarHelper::spacer();

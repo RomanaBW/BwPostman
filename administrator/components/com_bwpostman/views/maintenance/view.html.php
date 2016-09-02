@@ -158,8 +158,6 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			// Set toolbar title
 			JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
 
-			$canDo = BwPostmanHelper::getActions();
-
 			// Set toolbar items for the page
 			if ($layout == 'restoreTables')
 			{
@@ -219,7 +217,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
 			}
 
-			if ($canDo->get('core.manage'))
+			if (BwPostmanHelper::canAdmin())
 				JToolbarHelper::preferences('com_bwpostman', '500', '900');
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();

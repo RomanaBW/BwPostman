@@ -142,7 +142,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ($this->count_queue > 0) { ?>
+					<?php if ((count($this->count_queue) > 0) && BwPostmanHelper::canSend()) { ?>
 						<li class="closed">
 							<button onclick="return changeTab('queue');" class="buttonAsLink">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
@@ -177,10 +177,6 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 						if (count($this->items))
 						{
 							foreach ($this->items as $i => $item) :
-								$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-								$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
-								$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.newsletter.'.$item->id);
-								$canEditOwn	= $user->authorise('bwpm.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id, 0, 'cid', 'ub'); ?></td>
@@ -190,8 +186,8 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 										<?php } ?>
 									</td>
 									<td nowrap="nowrap">
-										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', $canCheckin, 'ub'); ?>
-										<?php if ($canEdit || $canEditOwn) : ?>
+										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', BwPostmanHelper::canCheckin('newsletter', $item->checked_out), 'ub'); ?>
+										<?php if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', $item)) : ?>
 											<p><a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&layout=edit_publish&task=newsletter.edit&id='. $item->id);?>">
 												<?php echo $this->escape($item->subject); ?></a></p>
 										<?php else : ?>
@@ -208,7 +204,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 									<td><?php echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
 									<td><?php echo $item->authors; ?></td>
 									<td align="center"><?php echo $item->campaign_id; ?></td>
-									<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'newsletters.', $canChange, 'ub'); ?></td>
+									<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'newsletters.', BwPostmanHelper::canEditState('newsletter', $item->id), 'ub'); ?></td>
 									<td align="center">
 										<p><?php echo ($item->publish_up != '0000-00-00 00:00:00') ? JHtml::date($item->publish_up, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?><br /></p>
 										<p><?php echo ($item->publish_down != '0000-00-00 00:00:00') ? JHtml::date($item->publish_down, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?></p>

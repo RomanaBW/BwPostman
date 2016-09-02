@@ -61,8 +61,7 @@ if ($this->queueEntries)
 								$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.restoreTables';
 								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablerestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES"), 0, 0);
 
-								$canDo	= BwPostmanHelper::getActions();
-								if ($canDo->get('core.manage')) {
+								if (BwPostmanHelper::canAdmin()) {
 									$link	= 'index.php?option=com_config&amp;view=component&amp;component='.$option.'&amp;path=';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', JText::_("COM_BWPOSTMAN_SETTINGS"), '', '');
 								}

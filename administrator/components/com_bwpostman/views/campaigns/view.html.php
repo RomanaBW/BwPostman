@@ -171,7 +171,6 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo	= BwPostmanHelper::getActions(0, 'campaign');
 
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
@@ -185,15 +184,15 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_CAMS'), 'list');
 
 		// Set toolbar items for the page
-		if ($canDo->get('bwpm.create'))
+		if (BwPostmanHelper::canAdd('campaign'))
 			JToolbarHelper::addNew('campaign.add');
-		if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))
+		if (BwPostmanHelper::canEdit('campaign'))
 			JToolbarHelper::editList('campaign.edit');
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
 
 		// Special archive button because we need a confirm dialog with 3 options
-		if ($canDo->get('bwpm.archive'))
+		if (BwPostmanHelper::canArchive('campaign'))
 		{
 			$bar= JToolbar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";
@@ -202,14 +201,14 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 		}
-		if ($canDo->get('core.manage'))
+		if (BwPostmanHelper::canManage())
 		{
 			JToolbarHelper::checkin('campaigns.checkin');
 			JToolbarHelper::divider();
 		}
 
 		// trigger BwTimeControl event
-		$dispatcher->trigger('onBwPostmanCampaignsPrepareToolbar', array($canDo));
+		$dispatcher->trigger('onBwPostmanCampaignsPrepareToolbar');
 
 		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 		JToolbarHelper::spacer();

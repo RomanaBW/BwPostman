@@ -155,8 +155,6 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo	= BwPostmanHelper::getActions(0, 'mailinglists');
-
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_MLS'));
@@ -166,22 +164,22 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MLS'), 'list');
 
 		// Set toolbar items for the page
-		if ($canDo->get('bwpm.create'))	JToolbarHelper::addNew('mailinglist.add');
-		if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolbarHelper::editList('mailinglist.edit');
+		if (BwPostmanHelper::canAdd('mailinglist'))	    JToolbarHelper::addNew('mailinglist.add');
+		if (BwPostmanHelper::canEdit('mailinglist'))	JToolbarHelper::editList('mailinglist.edit');
 		JToolbarHelper::divider();
-		if ($canDo->get('bwpm.edit.state'))
+		if (BwPostmanHelper::canEditState('mailinglist', 0))
 		{
 			JToolbarHelper::publishList('mailinglists.publish');
 			JToolbarHelper::unpublishList('mailinglists.unpublish');
 			JToolbarHelper::divider();
 		}
-		if ($canDo->get('bwpm.archive'))
+		if (BwPostmanHelper::canArchive('mailinglist'))
 		{
 			JToolbarHelper::archiveList('mailinglist.archive');
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 		}
-		if ($canDo->get('bwpm.manage'))
+		if (BwPostmanHelper::canManage())
 		{
 			JToolbarHelper::checkin('mailinglists.checkin');
 			JToolbarHelper::divider();

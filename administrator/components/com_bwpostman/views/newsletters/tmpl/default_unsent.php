@@ -128,7 +128,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ($this->count_queue > 0) { ?>
+					<?php if ((count($this->count_queue) > 0) && BwPostmanHelper::canSend()) { ?>
 						<li class="closed">
 							<button onclick="return changeTab('queue');" class="buttonAsLink">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
@@ -158,9 +158,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						if (count($this->items))
 						{
 							foreach ($this->items as $i => $item) :
-								$canCheckin	= $user->authorise('core.manage',	'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-								$canEdit	= $user->authorise('bwpm.edit',		'com_bwpostman.newsletter.'.$item->id);
-								$canEditOwn	= $user->authorise('bwpm.edit.own',	'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
@@ -170,8 +167,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										<?php } ?>
 									</td>
 									<td>
-										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', $canCheckin); ?>
-										<?php if ($canEdit || $canEditOwn) : ?>
+										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', BwPostmanHelper::canCheckin('newsletter', $item->checked_out)); ?>
+										<?php if (BwPostmanHelper::canEdit('newsletter', $item)) : ?>
 											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&layout=edit_basic&task=newsletter.edit&id='. $item->id . '&referrer=newsletters');?>">
 												<?php echo $this->escape($item->subject); ?></a>
 										<?php else : ?>

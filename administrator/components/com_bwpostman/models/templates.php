@@ -314,6 +314,12 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	public function uploadTplFiles($file)
 	{
+		// Access check.
+		if (!BwPostmanHelper::canAdd('template'))
+		{
+			return false;
+		}
+
 		$msg = '';
 
 		// Import filesystem libraries. Perhaps not necessary, but does not hurt

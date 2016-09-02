@@ -72,15 +72,6 @@ class BwPostmanViewMailinglist extends JViewLegacy
 	protected $state;
 
 	/**
-	 * property to hold can do properties
-	 *
-	 * @var array $canDo
-	 *
-	 * @since       0.9.1
-	 */
-	public $canDo;
-
-	/**
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
@@ -132,7 +123,6 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 		$this->state	= $this->get('State');
-		$this->canDo	= BwPostmanHelper::getActions($this->item->id, 'mailinglist');
 
 		// Save a reference into view
 		$this->request_url	= $uri_string;
@@ -174,11 +164,10 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$isNew = ($this->item->id < 1);
 
 		// Set toolbar title and items
-        $canDo		= BwPostmanHelper::getActions($this->item->id, 'mailinglist');
         $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
-		if ($isNew && $canDo->get('bwpm.create'))
+		if ($isNew && BwPostmanHelper::canAdd('mailinglist'))
 		{
 			JToolbarHelper::save('mailinglist.save');
 			JToolbarHelper::apply('mailinglist.apply');
@@ -191,7 +180,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 			if (!$checkedOut)
 			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+				if (BwPostmanHelper::canAdd('mailinglist'))
 				{
 					JToolbarHelper::save('mailinglist.save');
 					JToolbarHelper::apply('mailinglist.apply');

@@ -75,7 +75,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 * @param	string	$prefix 	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModel
+	 * @return	JModelLegacy
 
 	 * @since	1.0.1
 	 */
@@ -92,12 +92,19 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JController		This object to support chaining.
+	 * @return  BwPostmanControllerCampaigns		This object to support chaining.
 	 *
 	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
+		if (!BwPostmanHelper::canView('campaign'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
+
 		$jinput	= JFactory::getApplication()->input;
 
 		switch($this->getTask())
@@ -139,5 +146,6 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 				break;
 		}
 		parent::display();
+		return $this;
 	}
 }

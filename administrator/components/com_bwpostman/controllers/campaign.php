@@ -35,6 +35,7 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 
+
 /**
  * BwPostman Campaign Controller
  *
@@ -69,6 +70,28 @@ class BwPostmanControllerCampaign extends JControllerForm
 	}
 
 	/**
+	 * Display
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  BwPostmanControllerCampaign		This object to support chaining.
+	 *
+	 * @since   2.0.0
+	 */
+	public function display($cachable = false, $urlparams = array())
+	{
+		if (!BwPostmanHelper::canView('campaign'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
+		parent::display();
+		return $this;
+	}
+
+	/**
 	 * Method override to check if you can add a new record.
 	 *
 	 * @param	array	$data		An array of input data.
@@ -79,9 +102,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		$user	= JFactory::getUser();
-
-		return ($user->authorise('bwpm.create', 'com_bwpostman'));
+		return BwPostmanHelper::canAdd('campaign');
 	}
 
 	/**
@@ -96,48 +117,21 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Initialise variables.
-		$recordId	= (int) isset($data[$key]) ? $data[$key] : 0;
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
+		return BwPostmanHelper::canEdit('campaign', $data);
+	}
 
-		// Check general edit permission first.
-		if ($user->authorise('bwpm.edit', 'com_bwpostman.campaign'))
-		{
-			return true;
-		}
-
-		// Check specific edit permission.
-		if ($user->authorise('bwpm.campaign.edit', 'com_bwpostman.campaigns.' . $recordId))
-		{
-			return true;
-		}
-
-		// Fallback on edit.own.
-		// First test if the permission is available.
-		if ($user->authorise('bwpm.campaign.edit.own', 'com_bwpostman.campaign.' . $recordId) || $user->authorise('bwpm.edit.own', 'com_bwpostman'))
-		{
-			// Now test the owner is the user.
-			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
-			if (empty($ownerId) && $recordId)
-			{
-				// Need to do a lookup from the model.
-				$record = $this->getModel()->getItem($recordId);
-
-				if (empty($record))
-				{
-					return false;
-				}
-				$ownerId = $record->created_by;
-			}
-
-			// If the owner matches 'me' then do the test.
-			if ($ownerId == $userId)
-			{
-				return true;
-			}
-		}
-		return false;
+	/**
+	 * Method to check if you can archive records
+	 *
+	 * @param	array 	$recordIds		an array of items to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowArchive($recordIds = array())
+	{
+		return BwPostmanHelper::canArchive('campaign', $recordIds);
 	}
 
 	/**
@@ -178,17 +172,22 @@ class BwPostmanControllerCampaign extends JControllerForm
 		$checkin = property_exists($table, 'checked_out');
 
 		// Access check.
-		if (!$this->allowEdit(array($key => $recordId), $key))
+		if ($recordId == 0)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
-
+			$allowed    = $this->allowAdd();
+		}
+		else
+		{
+			$allowed    = $this->allowEdit(array($recordId));
+		}
+		if (!$allowed)
+		{
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
 					. $this->getRedirectToListAppend(), false
 				)
 			);
-
 			return false;
 		}
 
@@ -232,7 +231,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @param   string  $key     The name of the primary key of the URL variable.
 	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
-	 * @return  boolean  True if successful, false otherwise.
+	 * @return  void
 	 *
 	 * @since	1.0.1
 	 *
@@ -253,7 +252,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 *
 	 * @access	public
 	 *
-	 * @return 	void
+	 * @return 	bool    true on success
 	 *
 	 * @since	1.0.1
 	 */
@@ -270,6 +269,18 @@ class BwPostmanControllerCampaign extends JControllerForm
 		// Get the selected campaign(s)
 		$cid = $jinput->get('cid', array(0), 'post');
 		ArrayHelper::toInteger($cid);
+
+		// Access check.
+		if (BwPostmanHelper::canArchive('campaign', $cid))
+		{
+			$this->setRedirect(
+				JRoute::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_list
+					. $this->getRedirectToListAppend(), false
+				)
+			);
+			return false;
+		}
 
 		$n = count ($cid);
 

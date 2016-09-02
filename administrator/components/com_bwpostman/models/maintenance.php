@@ -75,6 +75,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	public function saveTables($update = false)
 	{
+		// Access check.
+		if (!BwPostmanHelper::canAdmin())
+		{
+			return false;
+		}
+
 		// Import JFolder and JFileObject class
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');

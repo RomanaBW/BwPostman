@@ -56,6 +56,57 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	}
 
 	/**
+	 * Display
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  BwPostmanControllerArchive		This object to support chaining.
+	 *
+	 * @since   2.0.0
+	 */
+	public function display($cachable = false, $urlparams = array())
+	{
+		if (!BwPostmanHelper::canView('archive'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
+		parent::display();
+		return $this;
+	}
+
+	/**
+	 * Method to check if you can restore records
+	 *
+	 * @param   string      $view           The view to test.
+	 * @param	array 	    $recordIds		the item to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowRestore($view = 'newsletter', $recordIds = array())
+	{
+		return BwPostmanHelper::canRestore($view, $recordIds);
+	}
+
+	/**
+	 * Method to check if you can delete records
+	 *
+	 * @param   string      $view           The view to test.
+	 * @param	array 	    $recordIds		the item to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowDelete($view = 'newsletter', $recordIds = array())
+	{
+		return BwPostmanHelper::canDelete($view, $recordIds);
+	}
+	/**
 	 * Method to unarchive items
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
@@ -75,6 +126,13 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 		$cid = $jinput->get('cid', array(0), 'post');
 		ArrayHelper::toInteger($cid);
+
+		// Access check.
+		$view   = substr($tab, 0, -1);
+		if (BwPostmanHelper::canRestore($view, $cid))
+		{
+			return false;
+		}
 
 		$n = count ($cid);
 
@@ -284,6 +342,13 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		$type	= 'message';
 
 		ArrayHelper::toInteger($cid);
+
+		// Access check.
+		$view   = substr($tab, 0, -1);
+		if (BwPostmanHelper::canDelete($view, $cid))
+		{
+			return false;
+		}
 
 		$n = count ($cid);
 

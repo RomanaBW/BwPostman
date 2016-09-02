@@ -92,12 +92,19 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   boolean  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JController		This object to support chaining.
+	 * @return  BwPostmanControllerMailinglists		This object to support chaining.
 	 *
 	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
+		if (!BwPostmanHelper::canView('mailinglist'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
+
 		$jinput		= JFactory::getApplication()->input;
 
 		// Show the layout depending on the task

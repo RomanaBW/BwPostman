@@ -77,7 +77,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param	string	$prefix	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModel
+	 * @return	JModelLegacy
 	 *
 	 * @since	1.0.1
 	 */
@@ -91,16 +91,23 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Display
 	 *
-	 * @param bool $cachable
-	 * @param bool $urlparams
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JController		This object to support chaining.
+	 * @return  BwPostmanControllerMaintenance		This object to support chaining.
 	 *
-	 * @since       1.0.1
+	 * @since   1.0.1
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
+		if (!BwPostmanHelper::canView('maintenance'))
+		{
+			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
 		parent::display();
+		return $this;
 	}
 
 	/**
@@ -147,19 +154,18 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function saveTables()
 	{
-		$jinput		= JFactory::getApplication()->input;
-		$user		= JFactory::getUser();
-		$app		= JFactory::getApplication();
-		$document	= JFactory::getDocument();
-
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.save', 'com_bwpostman.maintenance'))
+		if (!BwPostmanHelper::canAdmin())
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
 		}
+
+		$jinput		= JFactory::getApplication()->input;
+		$user		= JFactory::getUser();
+		$app		= JFactory::getApplication();
+		$document	= JFactory::getDocument();
 
 		$jinput->set('view', 'subscriber');
 
@@ -181,13 +187,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function checkTables()
 	{
-		$user	= JFactory::getUser();
-		$app	= JFactory::getApplication();
-
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.check', 'com_bwpostman.maintenance'))
+		if (!BwPostmanHelper::canAdmin())
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERROR_CHECK_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
@@ -207,13 +209,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function restoreTables()
 	{
-		$user	= JFactory::getUser();
-		$app	= JFactory::getApplication();
-
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.restore', 'com_bwpostman.maintenance'))
+		if (!BwPostmanHelper::canAdmin())
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
@@ -235,22 +233,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function doRestore()
 	{
-		$jinput	= JFactory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
-		$user	= JFactory::getUser();
-		$app	= JFactory::getApplication();
-
 		// Access check.
-		if (!$user->authorise('core.admin', 'com_bwpostman') && !$user->authorise('bwpm.maintenance.restore', 'com_bwpostman.maintenance'))
+		if (!BwPostmanHelper::canAdmin())
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_PERMISSION'), 'error');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
 		}
+
+		$jinput	= JFactory::getApplication()->input;
+
+		$app	= JFactory::getApplication();
 
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('restorefile');

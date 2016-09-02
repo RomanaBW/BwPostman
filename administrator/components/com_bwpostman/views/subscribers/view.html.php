@@ -186,7 +186,6 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');
-		$canDo	= BwPostmanHelper::getActions(0, 'subscribers');
 		$user	= JFactory::getUser();
 
 		// Get the toolbar object instance
@@ -206,21 +205,21 @@ class BwPostmanViewSubscribers extends JViewLegacy
 			default;
 			case "confirmed":
 			case "unconfirmed":
-					if ($canDo->get('bwpm.create'))	JToolbarHelper::addNew('subscriber.add');
-					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolbarHelper::editList('subscriber.edit');
+					if (BwPostmanHelper::canAdd('subscriber'))	JToolbarHelper::addNew('subscriber.add');
+					if (BwPostmanHelper::canEdit('subscriber'))	JToolbarHelper::editList('subscriber.edit');
 					JToolbarHelper::spacer();
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 
-					if ($canDo->get('bwpm.create'))		JToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
-					if ($canDo->get('bwpm.edit'))		JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
-					if ($canDo->get('bwpm.archive')) {
+					if (BwPostmanHelper::canAdd('subscriber'))		JToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
+					if (BwPostmanHelper::canEdit('subscriber'))		JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+					if (BwPostmanHelper::canArchive('subscriber')) {
 						JToolbarHelper::divider();
 						JToolbarHelper::spacer();
 						JToolbarHelper::archiveList('subscriber.archive');
 					}
 					// Add a batch button
-					if ($user->authorise('bwpm.create', 'com_bwpostman') && $user->authorise('bwpm.edit', 'com_bwpostman') && $user->authorise('bwpm.edit.state', 'com_bwpostman'))
+					if (BwPostmanHelper::canAdd('subscriber') || BwPostmanHelper::canEdit('subscriber'))
 					{
 						JHtml::_('bootstrap.modal', 'collapseModal');
 						$title = JText::_('JTOOLBAR_BATCH');
@@ -233,16 +232,16 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					}
 				break;
 			case "testrecipients":
-					if ($canDo->get('bwpm.create'))	JToolbarHelper::addNew('subscriber.add_test');
-					if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolbarHelper::editList('subscriber.edit');
+					if (BwPostmanHelper::canAdd('subscriber'))	JToolbarHelper::addNew('subscriber.add_test');
+					if (BwPostmanHelper::canEdit('subscriber'))	JToolbarHelper::editList('subscriber.edit');
 					JToolbarHelper::spacer();
 					JToolbarHelper::divider();
-					if ($canDo->get('bwpm.archive'))	JToolbarHelper::archiveList('subscriber.archive');
+					if (BwPostmanHelper::canArchive('subscriber'))	JToolbarHelper::archiveList('subscriber.archive');
 				break;
 		}
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
-		if ($canDo->get('core.manage'))
+		if (BwPostmanHelper::canManage())
 		{
 			JToolbarHelper::checkin('subscribers.checkin');
 			JToolbarHelper::divider();

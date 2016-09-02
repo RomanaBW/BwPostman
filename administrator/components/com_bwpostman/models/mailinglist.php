@@ -112,63 +112,19 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	}
 
 	/**
-	 * Method to test whether a record can be deleted.
-	 *
-	 * @param	object	$record	A record object.
-	 *
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
-	 *
-	 * @since	1.0.1
-	 */
-	protected function canDelete($record)
-	{
-		$user = JFactory::getUser();
-
-		// Check general delete permission first.
-		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		if (!empty($record->id))
-		{
-			// Check specific delete permission.
-			if ($user->authorise('bwpm.mailinglist.delete', 'com_bwpostman.mailinglists.' . (int) $record->id))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Method to test whether a record can have its state edited.
 	 *
 	 * @param	object	$record	A record object.
 	 *
-	 * @return	boolean	True if allowed to change the state of the record. Defaults to the permission set in the component.
+	 * @return	boolean	True if allowed to change the state of the record.
 	 *
 	 * @since	1.0.1
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$permission = BwPostmanHelper::canEditState('mailinglist', $record->id);
 
-		// Check general edit state permission first.
-		if ($user->authorise('bwpm.edit.state', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		if (!empty($record->id))
-		{
-			// Check specific edit state permission.
-			if ($user->authorise('bwpm.mailinglist.edit.state', 'com_bwpostman.mailinglists.' . (int) $record->id))
-			{
-				return true;
-			}
-		}
-		return false;
+		return $permission;
 	}
 
 	/**
@@ -201,7 +157,15 @@ class BwPostmanModelMailinglist extends JModelAdmin
 				}
 			}
 			if (empty($pk)) $pk	= (int) $cid;
+
 			$item	= parent::getItem($pk);
+
+			// check permission
+			if (!BwPostmanHelper::canEdit('mailinglist', $item))
+			{
+				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+				return false;
+			}
 		}
 		else
 		{
@@ -331,7 +295,6 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	public function archive($cid = array(), $archive = 1)
 	{
 		$_db	= $this->_db;
-		$app	= JFactory::getApplication();
 		$date	= JFactory::getDate();
 		$uid	= JFactory::getUser()->get('id');
 
@@ -340,29 +303,21 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$time = $date->toSql();
 
 			// Access check.
-			foreach ($cid as $i)
+			if (!BwPostmanHelper::canArchive('mailinglist', $cid))
 			{
-				if (!BwPostmanHelper::allowArchive($i, 0, 'mailinglist'))
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_ARCHIVE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
+				return false;
 			}
 		}
 		else
 		{
+			// Access check.
+			if (!BwPostmanHelper::canRestore('mailinglist', $cid))
+			{
+				return false;
+			}
+
 			$time	= '0000-00-00 00:00:00';
 			$uid	= 0;
-
-			// Access check.
-			foreach ($cid as $i)
-			{
-				if (!BwPostmanHelper::allowRestore($i, 0, 'mailinglist'))
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_RESTORE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
-			}
 		}
 
 		if (count($cid))
@@ -405,18 +360,15 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	{
 		$app	= JFactory::getApplication();
 
-		// Access check.
-		foreach ($pks as $i)
-		{
-			if (!BwPostmanHelper::allowDelete($i, 0, 'mailinglist'))
-			{
-				return false;
-			}
-		}
-
 		if (count($pks))
 		{
 			ArrayHelper::toInteger($pks);
+			// Access check.
+			if (!BwPostmanHelper::canDelete('mailinglist', $pks))
+			{
+				return false;
+			}
+
 			$_db	= $this->getDbo();
 
 			$lists_table	= JTable::getInstance('mailinglists', 'BwPostmanTable');

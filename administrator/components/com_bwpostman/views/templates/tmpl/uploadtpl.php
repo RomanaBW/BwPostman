@@ -41,27 +41,34 @@ $option	= $jinput->getCmd('option');
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_SELECT_UPLOAD_FILE'); ?></legend>
 		<div class="well well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_USER_MESSAGE')?></div>
-		<div class="well well-small">
-			<div class="row-fluid">
-				<table class="admintable bwptable uploadtpl">
-					<tr>
-						<td align="right" class="key">
-							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>"><?php echo $image; ?></span>
-						</td>
-						<td>
-							<input type="file" name="uploadfile" id="uploadfile" />
-						</td>
-					</tr>
-					<tr>
-						<td width="250" align="center" class="key">
-							<input type="button" class="btn btn-success" name="submitbutton"
-								onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
-						</td>
-					</tr>
-				</table>
+		<?php
+		if (BwPostmanHelper::canAdd('template'))
+		{
+			?>
+			<div class="well well-small">
+				<div class="row-fluid">
+					<table class="admintable bwptable uploadtpl">
+						<tr>
+							<td align="right" class="key">
+								<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?></span>
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>"><?php echo $image; ?></span>
+							</td>
+							<td>
+								<input type="file" name="uploadfile" id="uploadfile" />
+							</td>
+						</tr>
+						<tr>
+							<td width="250" align="center" class="key">
+								<input type="button" class="btn btn-success" name="submitbutton"
+									onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
-		</div>
+			<?php
+		}
+		?>
 	</fieldset>
 	<input type="hidden" name="task" value="uploadtpl" />
 	<input type="hidden" name="controller" value="templates" />

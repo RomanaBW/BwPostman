@@ -157,7 +157,6 @@ class BwPostmanViewTemplates extends JViewLegacy
 	{
 		$jinput	= JFactory::getApplication()->input;
 		$layout	= $jinput->getCmd('layout', '');
-		$canDo	= BwPostmanHelper::getActions(0, 'template');
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_BWPOSTMAN_TPL'));
@@ -190,11 +189,11 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolbarHelper::title (JText::_('COM_BWPOSTMAN_TPL'), 'picture');
 
 				// Set toolbar items for the page
-				if ($canDo->get('bwpm.create'))		JToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
-				if ($canDo->get('bwpm.create'))		JToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
-				if (($canDo->get('bwpm.edit')) || ($canDo->get('bwpm.edit.own')))	JToolbarHelper::editList('template.edit');
+				if (BwPostmanHelper::canAdd('template'))		JToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
+				if (BwPostmanHelper::canAdd('template'))		JToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
+				if (BwPostmanHelper::canEdit('template'))	JToolbarHelper::editList('template.edit');
 
-				if ($canDo->get('bwpm.edit.state'))
+				if (BwPostmanHelper::canEditState('template', 0))
 				{
 					JToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
 					JToolbarHelper::publishList('templates.publish');
@@ -204,19 +203,19 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
 
-				if ($canDo->get('bwpm.archive'))
+				if (BwPostmanHelper::canArchive('template'))
 				{
 					JToolbarHelper::archiveList('template.archive');
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if ($canDo->get('core.manage'))
+				if (BwPostmanHelper::canManage())
 				{
 					JToolbarHelper::checkin('templates.checkin');
 					JToolbarHelper::divider();
 				}
 				// template upload
-				if ($canDo->get('bwpm.create'))
+				if (BwPostmanHelper::canAdd('template'))
 				{
 					$bar = JToolbar::getInstance('toolbar');
 					JHtml::_( 'behavior.modal' );

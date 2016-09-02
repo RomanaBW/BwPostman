@@ -109,15 +109,6 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	public $template;
 
 	/**
-	 * property to hold can do properties
-	 *
-	 * @var array $canDo
-	 *
-	 * @since       0.9.1
-	 */
-	public $canDo;
-
-	/**
 	 * property to hold import
 	 *
 	 * @var array $import
@@ -202,7 +193,6 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$this->item		= $this->get('Item');
 				$this->state	= $this->get('State');
 
-				$this->canDo	= BwPostmanHelper::getActions($this->item->id, 'subscriber');
 				if ($this->item->id)
 				{
 					$app->setUserState('com_bwpostman.subscriber.new_test', $this->item->status);
@@ -461,13 +451,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$document->setTitle($title);
 
 				// Set toolbar title and items
-				$canDo			= BwPostmanHelper::getActions($this->item->id, 'subscriber');
 				$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-				$this->canDo	= $canDo;
 
 				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 				// For new records, check the create permission.
-				if ($this->item->id < 1 && $canDo->get('core.create')) {
+				if ($this->item->id < 1 && BwPostmanHelper::canAdd('subscriber')) {
 					JToolbarHelper::save('subscriber.save');
 					JToolbarHelper::apply('subscriber.apply');
 					JToolbarHelper::cancel('subscriber.cancel');
@@ -477,7 +465,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 					// Can't save the record if it's checked out.
 					if (!$checkedOut) {
 						// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-						if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId)) {
+						if (BwPostmanHelper::canEdit('subscriber', $this->item)) {
 							JToolbarHelper::save('subscriber.save');
 							JToolbarHelper::apply('subscriber.apply');
 						}

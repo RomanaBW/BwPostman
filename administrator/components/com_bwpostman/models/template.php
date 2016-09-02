@@ -114,36 +114,6 @@ class BwPostmanModelTemplate extends JModelAdmin
 	}
 
 	/**
-	 * Method to test whether a record can be deleted.
-	 *
-	 * @param	object	$record	    A record object.
-	 *
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
-	 *
-	 * @since	1.1.0
-	 */
-	protected function canDelete($record)
-	{
-		$user = JFactory::getUser();
-
-		// Check general delete permission first.
-		if ($user->authorise('bwpm.delete', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		if (!empty($record->id))
-		{
-			// Check specific delete permission.
-			if ($user->authorise('bwpm.template.delete', 'com_bwpostman.templates.' . (int) $record->id))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Method to test whether a record can have its state edited.
 	 *
 	 * @param	object	$record	A record object.
@@ -154,23 +124,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$permission = BwPostmanHelper::canEditState('template', $record->id);
 
-		// Check general edit state permission first.
-		if ($user->authorise('bwpm.edit.state', 'com_bwpostman'))
-		{
-			return true;
-		}
-
-		if (!empty($record->id))
-		{
-			// Check specific edit state permission.
-			if ($user->authorise('bwpm.template.edit.state', 'com_bwpostman.templates.' . (int) $record->id))
-			{
-				return true;
-			}
-		}
-		return false;
+		return $permission;
 	}
 
 	/**
@@ -207,7 +163,15 @@ class BwPostmanModelTemplate extends JModelAdmin
 			}
 			if (empty($pk))
 				$pk	= (int) $cid;
+
 			$item	= parent::getItem($pk);
+
+			// check permission
+			if (!BwPostmanHelper::canEdit('template', $item))
+			{
+				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+				return false;
+			}
 		}
 		// if $data from table templates check()
 		else if ($data)
@@ -217,7 +181,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 		}
 		else
 		{
-			// if §form_data - only when click to button preview
+			// if $form_data - only when click to button preview
 			$item	= new stdClass();
 			foreach ($form_data as $key => $value)
 				$item->$key	= $value;
@@ -461,29 +425,21 @@ class BwPostmanModelTemplate extends JModelAdmin
 			$time = $date->toSql();
 
 			// Access check.
-			foreach ($cid as $i)
+			if (!BwPostmanHelper::canArchive('template', $cid))
 			{
-				if (!BwPostmanHelper::allowArchive($i, 0, 'template'))
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_TPL_ARCHIVE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
+				return false;
 			}
 		}
 		else
 		{
+			// Access check.
+			if (!BwPostmanHelper::canRestore('template', $cid))
+			{
+				return false;
+			}
+
 			$time	= '0000-00-00 00:00:00';
 			$uid	= 0;
-
-			// Access check.
-			foreach ($cid as $i)
-			{
-				if (!BwPostmanHelper::allowRestore($i, 0, 'template'))
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_TPL_RESTORE_RIGHTS_MISSING'), 'error');
-					return false;
-				}
-			}
 		}
 
 		if (count($cid))
@@ -528,12 +484,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$app	= JFactory::getApplication();
 
 		// Access check.
-		foreach ($pks as $i)
+		if (!BwPostmanHelper::canDelete('template', $pks))
 		{
-			if (!BwPostmanHelper::allowDelete($i, 0, 'template'))
-			{
-				return false;
-			}
+			return false;
 		}
 
 		if (count($pks))

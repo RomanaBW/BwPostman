@@ -97,18 +97,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						if (count($this->items) > 0)
 						{
 							foreach ($this->items as $i => $item) :
-								$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-								$canEdit	= $user->authorise('bwpm.edit',			'com_bwpostman.template.'.$item->id);
-								$canEditOwn	= $user->authorise('bwpm.edit.own',		'com_bwpostman.template.'.$item->id) && $item->created_by == $userId;
-								$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.template.'.$item->id) && $canCheckin;
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 									<td>
 									<?php if ($item->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'templates.', $canCheckin); ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'templates.', BwPostmanHelper::canCheckin('template', $item->checked_out)); ?>
 									<?php endif; ?>
-									<?php if ($canEdit || $canEditOwn) : ?>
+									<?php if (BwPostmanHelper::canEdit('template', $item)) : ?>
 											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=template.edit&id='. $item->id);?>">
 												<?php echo $this->escape($item->title); ?></a>
 										<?php else : ?>
@@ -117,7 +113,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									</td>
 									<td class="center" align="center" >
 										<?php if ($item->thumbnail) : ?>
-											<?php if ($canEdit || $canEditOwn) : ?>
+											<?php if (BwPostmanHelper::canEdit('template', $item)) : ?>
 												<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=template.edit&id='. $item->id);?>">
 													<img src="<?php echo JUri::root( true ) . '/' . $item->thumbnail; ?>" style="width: 100px;" />
 												</a>
@@ -127,8 +123,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										<?php endif; ?>
 									</td>
 									<td class="center" align="center"><?php if (($item->tpl_id == 998) || ($item->tpl_id > 999)) { echo 'TEXT'; } else { echo 'HTML'; }?></td>
-									<td class="center" align="center"><?php echo JHtml::_('jgrid.isdefault', ($item->standard != '0' && !empty($item->standard)), $i, 'template.', $canChange && $item->standard != '1');?></td>
-									<td class="center" align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'templates.', $canChange, 'cb'); ?>
+									<td class="center" align="center"><?php echo JHtml::_('jgrid.isdefault', ($item->standard != '0' && !empty($item->standard)), $i, 'template.', BwPostmanHelper::canEditState('template', $item->id) && $item->standard != '1');?></td>
+									<td class="center" align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'templates.', BwPostmanHelper::canEditState('template', $item->id), 'cb'); ?>
 									<td><?php echo nl2br($item->description); ?></td>
 									<td align="center"><?php echo $item->id; ?></td>
 								</tr><?php

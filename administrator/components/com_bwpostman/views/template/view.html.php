@@ -90,15 +90,6 @@ class BwPostmanViewTemplate extends JViewLegacy
 	public $template;
 
 	/**
-	 * property to hold can do properties
-	 *
-	 * @var array $canDo
-	 *
-	 * @since       1.1.0
-	 */
-	public $canDo;
-
-	/**
 	 * property to hold request url
 	 *
 	 * @var string $request_url
@@ -133,7 +124,6 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 		$this->state	= $this->get('State');
-		$this->canDo	= BwPostmanHelper::getActions($this->item->id, 'template');
 
 		// Save a reference into view
 		$this->request_url	= $uri_string;
@@ -182,12 +172,10 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$isNew = ($this->item->id < 1);
 
 		// Set toolbar title and items
-		$canDo = BwPostmanHelper::getActions($this->item->id, 'template');
 		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$this->canDo	= $canDo;
 
 		// For new records, check the create permission.
-		if ($isNew && $canDo->get('bwpm.create'))
+		if ($isNew && BwPostmanHelper::canAdd('template'))
 		{
 			JToolbarHelper::save('template.save');
 			JToolbarHelper::apply('template.apply');
@@ -201,14 +189,14 @@ class BwPostmanViewTemplate extends JViewLegacy
 			if (!$checkedOut)
 			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+				if (BwPostmanHelper::canEdit('template', $this->item))
 				{
 					JToolbarHelper::save('template.save');
 					JToolbarHelper::apply('template.apply');
 				}
 			}
 			// If checked out, we can still copy
-			if ($canDo->get('bwpm.create'))
+			if (BwPostmanHelper::canAdd('template'))
 			{
 				JToolbarHelper::save2copy('template.save2copy');
 			}

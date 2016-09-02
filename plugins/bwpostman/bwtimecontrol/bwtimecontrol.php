@@ -274,7 +274,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @since	1.2.0
 	 */
-	public function onBwPostmanCampaignsPrepareToolbar ($canDo)
+	public function onBwPostmanCampaignsPrepareToolbar ()
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
@@ -282,9 +282,9 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		if ($canDo->get('bwpm.edit.state'))	JToolbarHelper::custom ('campaign.autotest', 'question-circle', 'question-circle', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST'), true);
-		if ($canDo->get('bwpm.edit.state'))	JToolbarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
-		if ($canDo->get('bwpm.edit.state'))	JToolbarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
+		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.autotest', 'question-circle', 'question-circle', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST'), true);
+		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
+		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
 
 		return true;
 	}

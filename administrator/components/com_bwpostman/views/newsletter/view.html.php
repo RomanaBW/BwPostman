@@ -72,15 +72,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	protected $state;
 
 	/**
-	 * property to hold can do properties
-	 *
-	 * @var array $canDo
-	 *
-	 * @since       0.9.1
-	 */
-	public $canDo;
-
-	/**
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
@@ -159,7 +150,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->form			= $this->get('Form');
 		$this->item			= $this->get('Item');
 		$this->state		= $this->get('State');
-		$this->canDo		= BwPostmanHelper::getActions($this->item->id, 'newsletter');
 		$this->template		= $app->getTemplate();
 		$this->params		= JComponentHelper::getParams('com_bwpostman');
 
@@ -222,9 +212,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$document->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
 
 		// Set toolbar title and items
-		$canDo			= BwPostmanHelper::getActions($this->item->id, 'newsletter');
 		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$this->canDo	= $canDo;
 
 		$isNew = ($this->item->id == 0);
 
@@ -238,7 +226,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		else
 		{
 			// For new records, check the create permission.
-			if ($isNew && $canDo->get('bwpm.create'))
+			if ($isNew && BwPostmanHelper::canAdd('newsletter'))
 			{
 				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
 				JToolbarHelper::save('newsletter.save');
@@ -261,7 +249,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				if (!$checkedOut)
 				{
 					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-					if ($canDo->get('bwpm.edit') || ($canDo->get('bwpm.edit.own') && $this->item->created_by == $userId))
+					if (BwPostmanHelper::canEdit('newsletter', $this->item))
 					{
 						JToolbarHelper::save('newsletter.save');
 						JToolbarHelper::apply('newsletter.apply');

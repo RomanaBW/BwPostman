@@ -31,7 +31,7 @@ defined ('_JEXEC') or die ('Restricted access');
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?></legend>
 	<div class="well well-small">
-		<?php if ($this->canDo->get('core.admin')): ?>
+		<?php if (BwPostmanHelper::canAdmin()): ?>
 			<div class="fltlft">
 				<fieldset class="panelform">
 					<?php echo $this->form->getLabel('rules'); ?>

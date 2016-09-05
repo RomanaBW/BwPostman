@@ -33,6 +33,7 @@ jimport('joomla.application.component.model');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require some classes
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
@@ -1162,7 +1163,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		$_db            = JFactory::getDbo();
 		// set tables that has column asset_id
-		$tablesToCheck = array('#__bwpostman_campaigns', '#__bwpostman_mailinglists', '#__bwpostman_newsletters', '#__bwpostman_subscribers');
+		$tablesToCheck = array('#__bwpostman_campaigns', '#__bwpostman_mailinglists', '#__bwpostman_newsletters', '#__bwpostman_subscribers', '#__bwpostman_templates');
 		$asset_loop     = 0;
 
 
@@ -1170,6 +1171,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		foreach ($tablesToCheck as $table)
 		{
 			$base_asset     = $this->_getBaseAsset($table);
+			if (!is_array($base_asset) || !key_exists('rules', $base_asset))
+			{
+				$base_asset = $this->_insertBaseAsset($table);
+			}
 			$curr_asset_id  = $base_asset['rgt'];
 			$items          = array();
 

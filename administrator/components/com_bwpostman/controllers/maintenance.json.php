@@ -88,6 +88,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					break;
 
 				case 'step1':
+					$session->set('tcheck_content', '');
+					$session->set('tcheck_needTa', '');
+					$session->set('tcheck_inTaNa', '');
+
 					// get needed tables from installation file
 					$this->_getNeededTables($session);
 					$step = "2";
@@ -160,7 +164,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		catch (BwException $e)
 		{
 		echo $e->getMessage();
-		$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR');
+		$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
 		$msg['type']	= 'error';
 		}
 	}
@@ -201,7 +205,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			if($step == 'step1') {
 				$content    = '';
 				$session->set('trestore_content', '');
+				$session->set('tcheck_content', '');
 				$session->set('trestore_i', 0);
+				$session->set('trestore_tablenames', '');
+				$session->set('tcheck_needTa', '');
+				$session->set('tcheck_inTaNa', '');
 				JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', '');
 			}
 
@@ -214,7 +222,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step1':
 					try
 					{
-
 						if(BWPOSTMAN_LOG_MEM) $mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 						// parse table data
 						$table_names = $model->parseTablesData($file);

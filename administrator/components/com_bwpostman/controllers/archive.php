@@ -32,6 +32,9 @@ jimport('joomla.application.component.controller');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
+// Import helper class
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+
 /**
  * BwPostman Archive Controller
  *
@@ -129,8 +132,13 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 		// Access check.
 		$view   = substr($tab, 0, -1);
-		if (BwPostmanHelper::canRestore($view, $cid))
+		if (!BwPostmanHelper::canRestore($view, $cid))
 		{
+			$this->setRedirect(
+				JRoute::_(
+					'index.php?option=com_bwpostman&view=archive&layout=' . $tab, false
+				)
+			);
 			return false;
 		}
 
@@ -345,8 +353,13 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 		// Access check.
 		$view   = substr($tab, 0, -1);
-		if (BwPostmanHelper::canDelete($view, $cid))
+		if (!$this->allowDelete($view, $cid))
 		{
+			$this->setRedirect(
+				JRoute::_(
+					'index.php?option=com_bwpostman&view=archive&layout=' . $tab, false
+				)
+			);
 			return false;
 		}
 

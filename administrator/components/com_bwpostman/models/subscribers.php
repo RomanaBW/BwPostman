@@ -108,6 +108,15 @@ class BwPostmanModelSubscribers extends JModelList
 	var $_filter_search = null;
 
 	/**
+	 * The query object
+	 *
+	 * @var	object
+	 *
+	 * @since       2.0.0
+	 */
+	private $_query;
+
+	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
 	 *
@@ -212,11 +221,176 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-		$sub_query	= $_db->getQuery(true);
+		$this->_query	= $this->_db->getQuery(true);
 
-		//Get the tab in which we are for subquery
+		$sub_query  = $this->_getSubQuery();
+
+		// Select the required fields from the table.
+		$this->_query->select(
+				$this->getState(
+						'list.select',
+						'a.id, a.name, a.firstname, a.gender, a.email, a.checked_out, a.checked_out_time' .
+						', a.emailformat, a.user_id, a.status, a.registered_by'
+				) . ', (' . $sub_query . ') AS mailinglists'
+		);
+		$this->_query->from($this->_db->quoteName('#__bwpostman_subscribers', 'a'));
+
+		$this->_getQueryJoins();
+		$this->_getQueryWhere();
+		$this->_getQueryOrder();
+
+		$this->_db->setQuery($this->_query);
+
+		return $this->_query;
+	}
+
+	/**
+	 * Method to get the subquery this query needs
+	 * This subquery counts the mailinglists of each subscriber
+	 *
+	 * @return JDatabaseQuery
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getSubQuery()
+	{
+		$sub_query  = $this->_db->getQuery(true);
+
+		$sub_query->select('COUNT(' . $this->_db->quoteName('b.mailinglist_id') . ') AS ' . $this->_db->quoteName('mailinglists'));
+		$sub_query->from($this->_db->quoteName('#__bwpostman_subscribers_mailinglists', 'b'));
+		$sub_query->where($this->_db->quoteName('b.subscriber_id') . ' = ' . $this->_db->quoteName('a.id'));
+
+		return $sub_query;
+	}
+
+	/**
+	 * Method to get the joins this query needs
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryJoins()
+	{
+		// Join over the users for the checked out user.
+		$this->_query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out'));
+	}
+
+	/**
+	 * Method to build the MySQL query 'where' part
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryWhere()
+	{
+		$this->_getFilterByAccessLevelFilter();
+		$this->_getFilterByViewLevel();
+		$this->_getFilterByComponentPermissions();
+		$this->_getFilterBySubscriberState();
+		$this->_getFilterByMailinglist();
+		$this->_getFilterByMailformat();
+		$this->_getFilterByArchiveState();
+		$this->_getFilterBySearchword();
+
+	}
+
+	/**
+	 * Method to build the MySQL query 'order' part
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryOrder()
+	{
+		$orderCol  = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction', 'asc');
+
+		//sqlsrv change
+		if ($orderCol == 'access_level')
+		{
+			$orderCol = 'ag.title';
+		}
+		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+	}
+
+	/**
+	 * Method to get the filter by access level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByAccessLevelFilter()
+	{
+		$access = $this->getState('filter.access');
+		if ($access)
+		{
+			$this->_query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+		}
+	}
+
+	/**
+	 * Method to get the filter by Joomla view level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByViewLevel()
+	{
+		$user	= JFactory::getUser();
+
+		if (!$user->authorise('core.admin'))
+		{
+			$groups	= implode(',', $user->getAuthorisedViewLevels());
+			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
+		}
+	}
+
+	/**
+	 * Method to get the filter by BwPostman permissions
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByComponentPermissions()
+	{
+		$allowed_ids    = BwPostmanHelper::getAllowedRecords('subscriber');
+
+		if ($allowed_ids != 'all')
+		{
+			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+		}
+	}
+
+	/**
+	 * Method to get the filter by subscriber state (confirmed, unconfirmed, testrecipient)
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterBySubscriberState()
+	{
 		$tab	    = JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
 		$tab_int    = 1;
 
@@ -233,55 +407,79 @@ class BwPostmanModelSubscribers extends JModelList
 				break;
 		}
 
-		// Build sub query which counts the mailinglists of each subscriber
-		$sub_query->select('COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('mailinglist_id') . ') AS ' . $_db->quoteName('mailinglists'));
-		$sub_query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . 'AS ' . $_db->quoteName('b'));
-		$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('subscriber_id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('id'));
+		$this->_query->where('a.status = ' . (int) $tab_int);
+	}
 
-		// Select the required fields from the table.
-		$query->select(
-				$this->getState(
-						'list.select',
-						'a.id, a.name, a.firstname, a.gender, a.email, a.checked_out, a.checked_out_time' .
-						', a.emailformat, a.user_id, a.status, a.registered_by'
-				) . ', (' . $sub_query . ') AS mailinglists'
-		);
-		$query->from('#__bwpostman_subscribers AS a');
-
-		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-
-		// Filter by mailinglist
+	/**
+	 * Method to get the filter by selected mailinglist
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByMailinglist()
+	{
 		$mailinglist = $this->getState('filter.mailinglist');
 
 		if ($mailinglist)
 		{
-			$sub_query2	= $_db->getQuery(true);
+			$query	= $this->_db->getQuery(true);
 
-			$sub_query2->select($_db->quoteName('c') . '.' . $_db->quoteName('subscriber_id'));
-			$sub_query2->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . 'AS ' . $_db->quoteName('c'));
-			$sub_query2->where($_db->quoteName('c') . '.' . $_db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
+			$query->select($this->_db->quoteName('c.subscriber_id'));
+			$query->from($this->_db->quoteName('#__bwpostman_subscribers_mailinglists', 'c'));
+			$query->where($this->_db->quoteName('c.mailinglist_id') . ' = ' . (int) $mailinglist);
 
-			$query->where('a.id IN (' . $sub_query2 . ')');
+			$this->_query->where('a.id IN (' . $query . ')');
 		}
+	}
 
-		// Filter by emailformat.
+	/**
+	 * Method to get the filter by selected email format
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByMailformat()
+	{
 		$emailformat = $this->getState('filter.emailformat');
 		if ($emailformat != '')
 		{
-			$query->where('a.emailformat = ' . (int) $emailformat);
+			$this->_query->where($this->_db->quoteName('a.emailformat') . ' = ' . (int) $emailformat);
 		}
+	}
 
-		// Filter by tab (confirmed, unconfirmed, testrecipients)
-		$query->where('a.status = ' . (int) $tab_int);
+	/**
+	 * Method to get the filter by archived state
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByArchiveState()
+	{
+		$this->_query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+	}
 
-		// Filter by archive state
-		$query->where('a.archive_flag = ' . (int) 0);
-
-		// Filter by search word.
-		$filtersearch	= $this->getState('filter.search_filter');
-		$search			= $_db->escape($this->getState('filter.search'), true);
+	/**
+	 * Method to get the filter by search word
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterBySearchword()
+	{
+		$filtersearch = $this->getState('filter.search_filter');
+		$search			= $this->_db->escape($this->getState('filter.search'), true);
 
 		if (!empty($search))
 		{
@@ -290,38 +488,24 @@ class BwPostmanModelSubscribers extends JModelList
 			switch ($filtersearch)
 			{
 				case 'email':
-					$query->where('a.email LIKE ' . $_db->quote($search, false));
+					$this->_query->where($this->_db->quoteName('a.email') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'name_email':
-					$query->where('(a.email LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')');
+					$this->_query->where('(' . $this->_db->quoteName('a.email') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false) . ')');
 					break;
 				case 'fullname':
-					$query->where('(a.firstname LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')');
+					$this->_query->where('(' . $this->_db->quoteName('a.firstname') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false) . ')');
 					break;
 				case 'firstname':
-					$query->where('a.firstname LIKE ' . $_db->quote($search, false));
+					$this->_query->where($this->_db->quoteName('a.firstname') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'name':
-					$query->where('a.name LIKE ' . $_db->quote($search, false));
+					$this->_query->where($this->_db->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				default:
 			}
 		}
-
-		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction', 'asc');
-
-		//sqlsrv change
-		if($orderCol == 'access_level')
-			$orderCol = 'ag.title';
-		$query->order($_db->escape($orderCol.' '.$orderDirn));
-
-		$_db->setQuery($query);
-
-		return $query;
 	}
-
 	/**
 	 * Method to get all mailinglists
 	 *
@@ -334,19 +518,18 @@ class BwPostmanModelSubscribers extends JModelList
 	public function getMailinglists()
 	{
 		$result = array();
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$query	= $this->_db->getQuery(true);
 
-		$query->select($_db->quoteName('id') . ' AS value');
-		$query->select($_db->quoteName('title') . ' AS text');
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->select($this->_db->quoteName('id') . ' AS value');
+		$query->select($this->_db->quoteName('title') . ' AS text');
+		$query->from($this->_db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($this->_db->quoteName('archive_flag') . ' = ' . (int) 0);
 		$query->order('title ASC');
-		$_db->setQuery ($query);
+		$this->_db->setQuery ($query);
 
 		try
 		{
-			$result = $_db->loadObjectList();
+			$result = $this->_db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

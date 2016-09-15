@@ -47,7 +47,6 @@
 		<field
 			name="checked_out"
 			type="hidden"
-			filter="unset"
 		/>
 
 		<field

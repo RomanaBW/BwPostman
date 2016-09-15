@@ -261,7 +261,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 					</fieldset>
 				</div>
 			<?php  endif ?>
-			<?php if ($this->canDo->get('core.admin')): ?>
+			<?php if (BwPostmanHelper::canAdmin()): ?>
 				<div class="fltlft">
 					<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 

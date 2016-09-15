@@ -385,8 +385,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 								//Save the import_fields from the csv-file into the session
 								$session->set('import_fields', $import_fields);
-
-								fclose($fh);
 							}
 							else
 							{ // File cannot be read
@@ -416,6 +414,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 							}
 							$session->set('import_fields', $import_fields);
 						}
+
+						fclose($fh);
 					}
 					$link = JRoute::_('index.php?option=com_bwpostman&view=subscriber&layout=import1', false);
 					$this->setRedirect($link);

@@ -30,6 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
+// Import helper class
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+
 /**
  * BwPostman archive model
  * Provides a general view of all archived items

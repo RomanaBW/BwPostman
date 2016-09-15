@@ -812,7 +812,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @since       0.9.1
 	 */
-	public function validate_mail($cid = array(), $showProgress = false)
+	public function validate_mail($cid = array(0), $showProgress = false)
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);

@@ -242,7 +242,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (BwPostmanHelper::canArchive('mailinglist', $cid))
+		if (!BwPostmanHelper::canArchive('mailinglist', $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

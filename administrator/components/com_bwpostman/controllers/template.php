@@ -278,7 +278,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (BwPostmanHelper::canArchive('template', $cid))
+		if (!BwPostmanHelper::canArchive('template', $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

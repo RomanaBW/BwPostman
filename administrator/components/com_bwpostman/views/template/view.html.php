@@ -169,10 +169,10 @@ class BwPostmanViewTemplate extends JViewLegacy
 		}
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
-		$isNew = ($this->item->id < 1);
+		$isNew          = ($this->item->id < 1);
+		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// Set toolbar title and items
-		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
 		if ($isNew && BwPostmanHelper::canAdd('template'))

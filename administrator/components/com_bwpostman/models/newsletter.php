@@ -2473,8 +2473,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Funktion zum Senden *eines* Newsletters an einen Empfaenger aus der sendMailQueue.
-	 * ACHTUNG! Es wird immer mit dem ersten Eintrag angefangen zu senden.
+	 * Method to send a *single* newsletter to a recipient from sendMailQueue.
+	 * CAUTION! This always begins with the first entry! If there are entries left from previous attempts,
+	 * then it begins with them!
 	 *
 	 * @param	bool 	true if we came from component
 	 *
@@ -2503,7 +2504,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$tblSendMailQueue	= $this->getTable('sendmailqueue', 'BwPostmanTable');
 		$tblSendMailContent	= $this->getTable('sendmailcontent', 'BwPostmanTable');
 
-		// trigger BwTimeControl event, if we came not from component
+		// trigger BwTimeControl event, if we come not from component
 		// needed for changing table objects for queue and content, show/hide messages, ...
 		if (!$fromComponent)
 		{

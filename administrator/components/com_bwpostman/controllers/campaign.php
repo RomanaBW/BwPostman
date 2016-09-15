@@ -271,7 +271,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (BwPostmanHelper::canArchive('campaign', $cid))
+		if (!BwPostmanHelper::canArchive('campaign', $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

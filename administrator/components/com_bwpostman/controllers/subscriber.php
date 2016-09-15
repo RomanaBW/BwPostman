@@ -277,7 +277,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (BwPostmanHelper::canArchive('subscriber', $cid))
+		if (!BwPostmanHelper::canArchive('subscriber', $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

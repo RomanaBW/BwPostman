@@ -807,7 +807,7 @@ class Com_BwPostmanInstallerScript
 		{
 			$_db	            = JFactory::getDbo();
 			$user_id            = JFactory::getUser()->get('id');
-			$bwpostman_groups   = '';
+			$bwpostman_groups   = array(0);
 			$query              = $_db->getQuery(true);
 
 			// get group ids of BwPostman user groups

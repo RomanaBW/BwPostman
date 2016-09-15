@@ -88,6 +88,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					break;
 
 				case 'step1':
+					// initialize session to prevent memory overflow
 					$session->set('tcheck_content', '');
 					$session->set('tcheck_needTa', '');
 					$session->set('tcheck_inTaNa', '');
@@ -204,6 +205,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$ready      = "0";
 			if($step == 'step1') {
 				$content    = '';
+
+				// initialize session to prevent memory overflow
 				$session->set('trestore_content', '');
 				$session->set('tcheck_content', '');
 				$session->set('trestore_i', 0);

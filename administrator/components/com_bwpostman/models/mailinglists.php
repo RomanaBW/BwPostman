@@ -30,6 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
+// Import helper class
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+
 /**
  * BwPostman mailinglists model
  * Provides a general view of all mailinglists
@@ -88,6 +91,15 @@ class BwPostmanModelMailinglists extends JModelList
 	 * @since       0.9.1
 	 */
 	var $_key = null;
+
+	/**
+	 * The query object
+	 *
+	 * @var	object
+	 *
+	 * @since       2.0.0
+	 */
+	private $_query;
 
 	/**
 	 * Constructor
@@ -192,105 +204,242 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-		$sub_query	= $_db->getQuery(true);
-		$sub_query2	= $_db->getQuery(true);
-		$user		= JFactory::getUser();
+		$this->_query	= $this->_db->getQuery(true);
+		$sub_query      = $this->_getSubQuery();
 
-
-		// Build sub queries which counts the subscribers of each mailinglists
-		$sub_query2->select('d.id');
-		$sub_query2->from('#__bwpostman_subscribers AS d');
-		$sub_query2->where('d.archive_flag = 0');
-
-		$sub_query->select('COUNT(b.subscriber_id) AS subscribers');
-		$sub_query->from('#__bwpostman_subscribers_mailinglists AS b');
-		$sub_query->where('b.mailinglist_id = a.id');
-		$sub_query->where('b.subscriber_id IN (' . $sub_query2 . ')) AS subscribers');
 
 		// Select the required fields from the table.
-		$query->select(
+		$this->_query->select(
 				$this->getState(
 						'list.select',
 						'a.id, a.title, a.description, a.checked_out, a.checked_out_time' .
 						', a.published, a.access, a.created_date, a.created_by'
 				) . ', (' . $sub_query
 		);
-		$query->from('#__bwpostman_mailinglists AS a');
+		$this->_query->from($this->_db->quoteName('#__bwpostman_mailinglists', 'a'));
 
+		$this->_getQueryJoins();
+		$this->_getQueryWhere();
+		$this->_getQueryOrder();
+
+		$this->_db->setQuery($this->_query);
+
+		return $this->_query;
+	}
+
+	/**
+	 * Method to get the subquery this query needs
+	 * This subquery counts the subscribers of each mailinglists
+	 *
+	 * @return JDatabaseQuery
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getSubQuery()
+	{
+		$sub_query  = $this->_db->getQuery(true);
+		$sub_query2	= $this->_db->getQuery(true);
+
+		$sub_query2->select($this->_db->quoteName('d.id'));
+		$sub_query2->from($this->_db->quoteName('#__bwpostman_subscribers','d'));
+		$sub_query2->where($this->_db->quoteName('d.archive_flag') . ' = 0');
+
+		$sub_query->select('COUNT(' . $this->_db->quoteName('b.subscriber_id') . ') AS ' . $this->_db->quoteName('subscribers'));
+		$sub_query->from($this->_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS ' . 'b');
+		$sub_query->where($this->_db->quoteName('b.mailinglist_id') . ' = ' . $this->_db->quoteName('a.id'));
+		$sub_query->where($this->_db->quoteName('b.subscriber_id') . ' IN (' . $sub_query2 . ')) AS subscribers');
+
+		return $sub_query;
+	}
+
+	/**
+	 * Method to get the joins this query needs
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryJoins()
+	{
 		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$this->_query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out'));
 
 		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		$this->_query->select($this->_db->quoteName('ag.title') . ' AS access_level');
+		$this->_query->join('LEFT', $this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access'));
 
 		// Join over the users for the author.
-		$query->select('ua.name AS author_name');
-		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+		$this->_query->select($this->_db->quoteName('ua.name') , ' AS author_name');
+		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by'));
+	}
 
-		// Filter by access level.
+	/**
+	 * Method to build the MySQL query 'where' part
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryWhere()
+	{
+		$this->_getFilterByAccessLevelFilter();
+		$this->_getFilterByViewLevel();
+		$this->_getFilterByComponentPermissions();
+		$this->_getFilterByPublishedState();
+		$this->_getFilterByArchiveState();
+		$this->_getFilterBySearchword();
+
+	}
+
+	/**
+	 * Method to build the MySQL query 'order' part
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryOrder()
+	{
+		$orderCol  = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction', 'asc');
+
+		//sqlsrv change
+		if ($orderCol == 'access_level')
+		{
+			$orderCol = 'ag.title';
+		}
+		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+	}
+
+	/**
+	 * Method to get the filter by access level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByAccessLevelFilter()
+	{
 		$access = $this->getState('filter.access');
 		if ($access)
 		{
-			$query->where('a.access = ' . (int) $access);
+			$this->_query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
 		}
+	}
 
-		// Implement View Level Access
+	/**
+	 * Method to get the filter by Joomla view level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByViewLevel()
+	{
+		$user	= JFactory::getUser();
+
 		if (!$user->authorise('core.admin'))
 		{
 			$groups	= implode(',', $user->getAuthorisedViewLevels());
-			$query->where('a.access IN ('.$groups.')');
+			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
 		}
+	}
 
-		// Filter by published state
+	/**
+	 * Method to get the filter by BwPostman permissions
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByComponentPermissions()
+	{
+		$allowed_ids    = BwPostmanHelper::getAllowedRecords('mailinglist');
+
+		if ($allowed_ids != 'all')
+		{
+			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+		}
+	}
+
+	/**
+	 * Method to get the filter by published state
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByPublishedState()
+	{
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$this->_query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published = 0 OR a.published = 1)');
+			$this->_query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
 		}
+	}
 
-		// Filter by archive state
-		$query->where('a.archive_flag = ' . (int) 0);
+	/**
+	 * Method to get the filter by archived state
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByArchiveState()
+	{
+		$this->_query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+	}
 
-		// Filter by search word.
-		$filtersearch	= $this->getState('filter.search_filter');
-		$search			= '%' . $_db->escape($this->getState('filter.search'), true) . '%';
+	/**
+	 * Method to get the filter by search word
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterBySearchword()
+	{
+		$filtersearch = $this->getState('filter.search_filter');
+		$search       = '%' . $this->_db->escape($this->getState('filter.search'), true) . '%';
 
 		if (!empty($search))
 		{
 			switch ($filtersearch)
 			{
 				case 'description':
-							$query->where('a.description LIKE ' . $_db->quote($search, false));
+					$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'title_description':
-							$query->where('(a.description LIKE ' . $_db->quote($search, false) . 'OR a.title LIKE ' . $_db->quote($search, false) . ')');
+					$this->_query->where('(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')');
 					break;
 				case 'title':
-							$query->where('a.title LIKE ' . $_db->quote($search, false));
+					$this->_query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				default:
 			}
 		}
-
-		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction', 'asc');
-
-		//sqlsrv change
-		if($orderCol == 'access_level')
-			$orderCol = 'ag.title';
-		$query->order($_db->escape($orderCol.' '.$orderDirn));
-
-		$_db->setQuery($query);
-
-		return $query;
 	}
 }

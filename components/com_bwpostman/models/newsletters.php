@@ -731,7 +731,7 @@ class BwPostmanModelNewsletters extends JModelList
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
-			$acc_mls	= array();
+			$acc_mls	= array(0);
 			foreach ($res_mls as $item)
 			{
 				$acc_mls[]	= $item['id'];
@@ -739,8 +739,6 @@ class BwPostmanModelNewsletters extends JModelList
 
 			$mls	= array_intersect($mls, $acc_mls);
 		}
-
-		if (count($mls) == 0) $mls[]	= 0;
 
 		if ($title === true)
 		{
@@ -863,7 +861,7 @@ class BwPostmanModelNewsletters extends JModelList
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
-			$acc_mls	= array();
+			$acc_mls	= array(0);
 			foreach ($res_mls as $item)
 			{
 				$acc_mls[]	= $item['id'];

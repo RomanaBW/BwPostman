@@ -144,7 +144,7 @@ JHtml::_('formbehavior.chosen', 'select');
 			<?php echo $this->form->getInput('archive_time'); ?>
 			<?php echo JHtml::_('form.token'); ?>
 
-			<?php if ($this->canDo->get('core.admin')): ?>
+			<?php if (BwPostmanHelper::canAdmin()): ?>
 				<div class="fltlft">
 					<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 					<?php echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES'), 'access-rules'); ?>

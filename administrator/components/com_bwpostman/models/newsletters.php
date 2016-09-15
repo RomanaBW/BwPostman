@@ -30,6 +30,9 @@ defined ('_JEXEC') or die ('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
+// Import helper class
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+
 /**
  * BwPostman newsletters model
  * Provides a general view of all unsent and sent newsletters
@@ -42,6 +45,15 @@ jimport('joomla.application.component.modellist');
  */
 class BwPostmanModelNewsletters extends JModelList
 {
+	/**
+	 * The query object
+	 *
+	 * @var	object
+	 *
+	 * @since       2.0.0
+	 */
+	private $_query;
+
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
@@ -183,16 +195,15 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$count_queue    = 0;
 
-		$_db   = $this->_db;
-		$query = $_db->getQuery(true);
+		$this->_query = $this->_db->getQuery(true);
 
-		$query->select('COUNT(*)');
-		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
+		$this->_query->select('COUNT(*)');
+		$this->_query->from($this->_db->quoteName('#__bwpostman_sendmailqueue'));
 
-		$_db->setQuery($query);
+		$this->_db->setQuery($this->_query);
 		try
 		{
-			$count_queue = $_db->loadResult();
+			$count_queue = $this->_db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -213,13 +224,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$_db	= $this->_db;
-		$jinput	= JFactory::getApplication()->input;
-		$query	= $_db->getQuery(true);
-
-		// Define null and now dates, get params
-		$nullDate	= $_db->quote($_db->getNullDate());
-		$nowDate	= $_db->quote(JFactory::getDate()->toSql());
+		$jinput	        = JFactory::getApplication()->input;
+		$this->_query	= $this->_db->getQuery(true);
 
 		//Get the tab in which we are for correct query
 		$tab	= $jinput->get('tab', 'unsent');
@@ -227,220 +233,409 @@ class BwPostmanModelNewsletters extends JModelList
 		switch ($tab)
 		{
 			case ("unsent"):
-			default:
-					$tab_int	= ' = ';
-				break;
-			case ("sent"):
-					$tab_int	= ' <> ';
-				break;
-			case ("queue"):
-					$tab_int	= ' = ';
-				break;
-		}
-
-
-		switch ($tab)
-		{
-			case ("unsent"):
 			case ("sent"):
 			default:
-					$query->select(
+					$this->_query->select(
 						$this->getState(
 							'list.select',
 							'a.id, a.subject, a.attachment, a.description, a.checked_out, a.checked_out_time' .
 							', a.published, a.publish_up, a.publish_down, a.created_date, a.created_by, a.modified_time'
 						)
 					);
-					$query->select('a.mailing_date');
-					$query->select('a.description');
-					$query->select('c.title AS campaign_id');
-					$query->from('#__bwpostman_newsletters AS a');
-					$query->leftJoin('#__bwpostman_campaigns AS c ON c.id = a.campaign_id');
-					$query->where('a.archive_flag = 0');
+					$this->_query->select($this->_db->quoteName('a.mailing_date'));
+					$this->_query->select($this->_db->quoteName('a.description'));
+					$this->_query->select($this->_db->quoteName('c.title') . ' AS ' . $this->_db->quoteName('campaign_id'));
 
-					// Join over the users for the checked out user.
-					$query->select('uc.name AS editor');
-					$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-
-					// Join over the users for the authors.
-					$query->select('ua.name AS authors');
-					$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
-
-					// Filter by campaign
-					$campaign = $this->getState('filter.campaign_id');
-					if ($campaign)
-					{
-						$query->where('a.campaign_id = ' . (int) $campaign);
-					}
-
-					// Filter by mailinglist
-					$mailinglist = $this->getState('filter.mailinglists');
-					if ($mailinglist)
-					{
-						$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
-						$query->where('m.mailinglist_id = ' . (int) $mailinglist);
-					}
-
-					// Filter by usergroup
-					$usergroup = $this->getState('filter.usergroups');
-					if ($usergroup)
-					{
-						$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
-						$query->where('m.mailinglist_id = ' . -(int) $usergroup);
-					}
-
-					// Filter by authors
-					$authors = $this->getState('filter.authors');
-					if ($authors)
-					{
-						$query->where('a.created_by = ' . (int) $authors);
-					}
-
-					// Filter by published state
-					$published = $this->getState('filter.published');
-					if (is_numeric($published))
-					{
-						switch ($published)
-						{
-							case 0:
-							case 1:
-							default:
-									$query->where('a.published = ' . (int) $published);
-								break;
-							case 2:
-									$query->where('a.publish_down <> ' . $nullDate);
-									$query->where('a.publish_down <= ' . $nowDate);
-								break;
-							case 3:
-									$query->where('(publish_down >= ' . $nowDate . ' OR publish_down = ' . $nullDate . ')');
-								break;
-							case 4:
-									$query->where('a.publish_up <= ' . $nowDate);
-									$query->where('a.publish_down <> ' . $nullDate);
-									$query->where('a.publish_down > ' . $nowDate);
-								break;
-							case 5:
-									$query->where('a.publish_up > ' . $nowDate);
-								break;
-						}
-
-					}
-					elseif ($published === '')
-					{
-						$query->where('(a.published = 0 OR a.published = 1)');
-					}
-
-					// Filter by mailing date
-					$query->where('a.mailing_date' . $tab_int . "'0000-00-00 00:00:00'");
-
-					// Filter by archive state
-					$query->where('a.archive_flag = ' . (int) 0);
-
-					// Filter by search word.
-					$filtersearch	= $this->getState('filter.search_filter');
-					$search			= $_db->escape($this->getState('filter.search'), true);
-
-					if (!empty($search))
-					{
-						$search			= '%' . $search . '%';
-						switch ($filtersearch)
-						{
-							case 'subject':
-									$query->where('a.subject LIKE ' . $_db->quote($search));
-								break;
-							case 'description':
-									$query->where('a.description LIKE ' . $_db->quote($search));
-								break;
-							case 'subject_description':
-									$query->where('(a.subject LIKE ' . $_db->quote($search). 'OR a.description LIKE ' . $_db->quote($search, false) . ')');
-								break;
-							case 'html_text_version':
-									$query->where('(a.html_version LIKE ' . $_db->quote($search, false) . 'OR a.text_version LIKE ' . $_db->quote($search, false) . ')');
-								break;
-							case 'text_version':
-									$query->where('a.text_version LIKE ' . $_db->quote($search. false));
-								break;
-							case 'html_version':
-									$query->where('a.html_version LIKE ' . $_db->quote($search, false));
-								break;
-							default:
-						}
-					}
-
-					// Add the list ordering clause.
-					$orderCol	= $this->state->get('list.ordering', 'a.subject');
-					$orderDirn	= $this->state->get('list.direction', 'asc');
-
-					//sqlsrv change
-					if($orderCol == 'modified_time')
-						$orderCol = 'a.modified_time';
-
-					$query->order($_db->escape($orderCol.' '.$orderDirn));
-
-					$_db->setQuery($query);
+					$this->_query->from($this->_db->quoteName('#__bwpostman_newsletters') . 'AS a');
 				break;
 
 			case ("queue"):
-					$query->select('DISTINCT(' . $_db->quoteName('c')  . '.' . $_db->quoteName('nl_id') . ')');
-					$query->select($_db->quoteName('c')  . '.' . $_db->quoteName('subject') . ' AS subject');
-					$query->select($_db->quoteName('q')  . '.*');
-					$query->select($_db->quoteName('n')  . '.' . $_db->quoteName('description'));
-					$query->select($_db->quoteName('ua') . '.' . $_db->quoteName('name') . ' AS authors');
-					$query->from($_db->quoteName('#__bwpostman_sendmailcontent')  . ' AS ' . $_db->quoteName('c'));
-					$query->rightJoin('#__bwpostman_sendmailqueue AS q ON q.content_id = c.id');
-					$query->leftJoin('#__bwpostman_newsletters AS n ON n.id = c.nl_id');
-					$query->leftJoin('#__users AS ua ON ua.id = n.created_by');
+					$this->_query->select('DISTINCT(' . $this->_db->quoteName('c.nl_id') . ')');
+					$this->_query->select($this->_db->quoteName('c.subject') . ' AS subject');
+					$this->_query->select($this->_db->quoteName('q.*'));
+					$this->_query->select($this->_db->quoteName('a.description'));
+					$this->_query->select($this->_db->quoteName('ua.name') . ' AS authors');
 
-					// Filter by campaign
-				$campaign = $this->getState('filter.campaign_id');
-					if ($campaign)
-					{
-						$query->where('n.campaign_id = ' . (int) $campaign);
-					}
-
-					// Filter by authors
-				$authors = $this->getState('filter.authors');
-					if ($authors)
-					{
-						$query->where('n.created_by = ' . (int) $authors);
-					}
-
-					// Filter by search word.
-					$filtersearch	= $this->getState('filter.search_filter');
-					$search			= $_db->escape($this->getState('filter.search'), true);
-
-					if (!empty($search))
-					{
-						$search			= '%' . $search . '%';
-						switch ($filtersearch)
-						{
-							case 'subject':
-								$query->where('n.subject LIKE ' . $_db->quote($search));
-								break;
-							case 'description':
-								$query->where('n.description LIKE ' . $_db->quote($search));
-								break;
-							case 'subject_description':
-								$query->where('(n.subject LIKE ' . $_db->quote($search). 'OR n.description LIKE ' . $_db->quote($search, false) . ')');
-								break;
-							case 'html_text_version':
-								$query->where('(n.html_version LIKE ' . $_db->quote($search, false) . 'OR q.text_version LIKE ' . $_db->quote($search, false) . ')');
-								break;
-							case 'text_version':
-								$query->where('n.text_version LIKE ' . $_db->quote($search. false));
-								break;
-							case 'html_version':
-								$query->where('n.html_version LIKE ' . $_db->quote($search, false));
-								break;
-							default:
-						}
-					}
-
-					$query->order($_db->quoteName('q')  . '.' . $_db->quoteName('id'));
-
-					$_db->setQuery($query);
+					$this->_query->from($this->_db->quoteName('#__bwpostman_sendmailcontent', 'c'));
 				break;
 		}
-		return $query;
+		$this->_getQueryJoins($tab);
+		$this->_getQueryWhere($tab);
+		$this->_getQueryOrder($tab);
+
+		$this->_db->setQuery($this->_query);
+
+		return $this->_query;
+	}
+
+	/**
+	 * Method to get the joins this query needs
+	 *
+	 * @access 	private
+	 *
+	 * @param   string  $tab
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryJoins($tab)
+	{
+		if ($tab == 'sent' || $tab == 'unsent')
+		{
+			// join over campaigns
+			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_campaigns', 'c') . ' ON ' . $this->_db->quoteName('c.id') . ' = ' . $this->_db->quoteName('a.campaign_id'));
+
+			// Join over the users for the checked out user.
+			$this->_query->select($this->_db->quoteName('uc.name') . ' AS editor');
+			$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out'));
+
+			// Join over the users for the author.
+			$this->_query->select($this->_db->quoteName('ua.name') . ' AS authors');
+			$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by'));
+		}
+		elseif ($tab == 'queue')
+		{
+			$this->_query->rightJoin($this->_db->quoteName('#__bwpostman_sendmailqueue', 'q') . ' ON ' . $this->_db->quoteName('q.content_id') . ' = ' . $this->_db->quoteName('c.id'));
+			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_newsletters', 'a') . ' ON ' . $this->_db->quoteName('a.id') . ' = ' . $this->_db->quoteName('c.nl_id'));
+			$this->_query->leftJoin($this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('n.created_by'));
+		}
+	}
+
+	/**
+	 * Method to build the MySQL query 'where' part
+	 *
+	 * @access 	private
+	 *
+	 * @param   string     $tab
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryWhere($tab)
+	{
+		$this->_getFilterByAccessLevelFilter();
+		$this->_getFilterByViewLevel();
+		$this->_getFilterByComponentPermissions();
+		$this->_getFilterByCampaign();
+		$this->_getFilterByAuthor();
+		$this->_getFilterBySearchword($tab);
+
+		if ($tab == 'sent' || $tab == 'unsent')
+		{
+			$this->_getFilterByPublishedState();
+			$this->_getFilterByArchiveState();
+			$this->_getFilterByMailinglist();
+			$this->_getFilterByUsergroup();
+			$this->_getFilterByMailingDate($tab);
+		}
+	}
+
+	/**
+	 * Method to build the MySQL query 'order' part
+	 *
+	 * @access 	private
+	 *
+	 * @param   string  $tab
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryOrder($tab)
+	{
+		if ($tab == 'sent' || $tab == 'unsent')
+		{
+			$orderCol  = $this->state->get('list.ordering', 'a.subject');
+			$orderDirn = $this->state->get('list.direction', 'asc');
+
+			//sqlsrv change
+			if ($orderCol == 'modified_time')
+			{
+				$orderCol = 'a.modified_time';
+			}
+			$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+		}
+		elseif ($tab == 'queue')
+		{
+			$this->_query->order($this->_db->quoteName('q')  . '.' . $this->_db->quoteName('id'));
+		}
+	}
+
+	/**
+	 * Method to get the filter by access level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByAccessLevelFilter()
+	{
+		$access = $this->getState('filter.access');
+		if ($access)
+		{
+			$this->_query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+		}
+	}
+
+	/**
+	 * Method to get the filter by Joomla view level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByViewLevel()
+	{
+		$user	= JFactory::getUser();
+
+		if (!$user->authorise('core.admin'))
+		{
+			$groups	= implode(',', $user->getAuthorisedViewLevels());
+			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
+		}
+	}
+
+	/**
+	 * Method to get the filter by BwPostman permissions
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByComponentPermissions()
+	{
+		$allowed_ids    = BwPostmanHelper::getAllowedRecords('newsletter');
+
+		if ($allowed_ids != 'all')
+		{
+			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+		}
+	}
+
+	/**
+	 * Method to get the filter by selected campaign
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByCampaign()
+	{
+		$campaign = $this->getState('filter.campaign_id');
+		if ($campaign)
+		{
+			$this->_query->where('a.campaign_id = ' . (int) $campaign);
+		}
+	}
+
+	/**
+	 * Method to get the filter by selected author
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByAuthor()
+	{
+		$authors = $this->getState('filter.authors');
+		if ($authors)
+		{
+			$this->_query->where('a.created_by = ' . (int) $authors);
+		}
+	}
+
+	/**
+	 * Method to get the filter by search word
+	 *
+	 * @access 	private
+	 *
+	 * @param   string  $tab
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterBySearchword($tab)
+	{
+		$filtersearch = $this->getState('filter.search_filter');
+		$search			= $this->_db->escape($this->getState('filter.search'), true);
+
+		if (!empty($search))
+		{
+			$search	= '%' . $search . '%';
+
+			switch ($filtersearch)
+			{
+				case 'subject':
+					$this->_query->where($this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search));
+					break;
+				case 'description':
+					$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search));
+					break;
+				case 'subject_description':
+					$this->_query->where('(' . $this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search). ' OR ' . $this->_db->quoteName('a.description') .' LIKE ' . $this->_db->quote($search, false) . ')');
+					break;
+				case 'html_text_version':
+					if ($tab == 'unsent' || $tab == 'sent')
+					{
+						$this->_query->where('(' . $this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.text_version') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+					}
+					elseif ($tab == 'queue')
+					{
+						$this->_query->where('(' . $this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false) . 'OR ' . $this->_db->quoteName('q.text_version') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+					}
+					break;
+				case 'text_version':
+					$this->_query->where($this->_db->quoteName('a.text_version') . ' LIKE ' . $this->_db->quote($search. false));
+					break;
+				case 'html_version':
+					$this->_query->where($this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false));
+					break;
+				default:
+			}
+		}
+	}
+
+	/**
+	 * Method to get the filter by published state
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByPublishedState()
+	{
+		// Define null and now dates, get params
+		$nullDate	= $this->_db->quote($this->_db->getNullDate());
+		$nowDate	= $this->_db->quote(JFactory::getDate()->toSql());
+
+		$published = $this->getState('filter.published');
+		if (is_numeric($published))
+		{
+			switch ($published)
+			{
+				case 0:
+				case 1:
+				default:
+					$this->_query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
+					break;
+				case 2:
+					$this->_query->where($this->_db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->_query->where($this->_db->quoteName('a.publish_down') . ' <= ' . $nowDate);
+					break;
+				case 3:
+					$this->_query->where($this->_db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $nullDate . ')');
+					break;
+				case 4:
+					$this->_query->where($this->_db->quoteName('a.publish_up') . ' <= ' . $nowDate);
+					$this->_query->where($this->_db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->_query->where($this->_db->quoteName('a.publish_down') . ' > ' . $nowDate);
+					break;
+				case 5:
+					$this->_query->where($this->_db->quoteName('a.publish_up') . ' > ' . $nowDate);
+					break;
+			}
+		}
+		elseif ($published === '')
+		{
+			$this->_query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
+		}
+	}
+
+
+	/**
+	 * Method to get the filter by archived state
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByArchiveState()
+	{
+		$this->_query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+	}
+
+	/**
+	 * Method to get the filter by selected mailinglist
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByMailinglist()
+	{
+		$mailinglist = $this->getState('filter.mailinglists');
+		if ($mailinglist)
+		{
+			$this->_query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
+			$this->_query->where('m.mailinglist_id = ' . (int) $mailinglist);
+		}
+	}
+
+	/**
+	 * Method to get the filter by selected usergroup
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByUsergroup()
+	{
+		$usergroup = $this->getState('filter.usergroups');
+		if ($usergroup)
+		{
+			$this->_query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
+			$this->_query->where('m.mailinglist_id = ' . -(int) $usergroup);
+		}
+	}
+
+	/**
+	 * Method to get the filter by mailingdate
+	 *
+	 * @access 	private
+	 *
+	 * @param   string  $tab
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByMailingDate($tab)
+	{
+		switch ($tab)
+		{
+			case ("unsent"):
+			default:
+				$tab_int	= ' = ';
+				break;
+			case ("sent"):
+				$tab_int	= ' <> ';
+				break;
+			case ("queue"):
+				$tab_int	= ' = ';
+				break;
+		}
+
+		$this->_query->where('a.mailing_date' . $tab_int . "'0000-00-00 00:00:00'");
 	}
 }

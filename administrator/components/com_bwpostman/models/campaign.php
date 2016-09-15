@@ -443,7 +443,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function archive($cid = array(), $archive = 1, $archive_nl = 1)
+	public function archive($cid = array(0), $archive = 1, $archive_nl = 1)
 	{
 		$date	= JFactory::getDate();
 		$uid	= JFactory::getUser()->get('id');
@@ -521,7 +521,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 *
 	 * @param	array	$data	A campaign object.
 	 *
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
+	 * @return	boolean	True if allowed to save the record. Defaults to the permission set in the component.
 	 *
 	 * @since	1.0.1
 	 */
@@ -638,6 +638,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	{
 		$jinput	    = JFactory::getApplication()->input;
 		$remove_nl	= $jinput->get('remove_nl', false);
+		$app	    = JFactory::getApplication();
 
 		if (count($pks))
 		{
@@ -649,47 +650,91 @@ class BwPostmanModelCampaign extends JModelAdmin
 				return false;
 			}
 
-			// Delete campaigns from campaigns-table
+			// Delete campaigns from campaigns table
 			$cams_table = JTable::getInstance('campaigns', 'BwPostmanTable');
 
 			foreach ($pks as $id)
 			{
 				if (!$cams_table->delete($id))
 				{
+					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_CAM_DELETED', $id), 'error');
 					return false;
 				}
-			}
-
-			// Remove_nl = 1 if the user want to delete the assigned newsletters
-			$nl_ids = array();
-			if ($remove_nl)
-			{
-				// Delete newsletter from newsletters-table
-				$nl_table	= JTable::getInstance('newsletters', 'BwPostmanTable');
-				$_db		= $this->getDbo();
-				$query		= $_db->getQuery(true);
-
-				$query->select($_db->quoteName('id'));
-				$query->from($_db->quoteName('#__bwpostman_newsletters'));
-				$query->where($_db->quoteName('campaign_id') . ' IN (' .implode(',', $pks) . ')');
-				$_db->setQuery($query);
-				try
+				// Remove campaigns mailinglists entries
+				if (!$this->_deleteCampaignsMailinglistsEntry($id))
 				{
-					$nl_ids = $_db->loadColumn();
-				}
-				catch (RuntimeException $e)
-				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_ML_DELETED', $id), 'error');
+					return false;
 				}
 
-				foreach ($nl_ids as $id)
+				// Remove_nl = 1 if the user want to delete the assigned newsletters
+				if ($remove_nl)
 				{
-					if (!$nl_table->delete($id))
+					if (!$this->_deleteCampaignsNewsletters($id))
 					{
+						$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 						return false;
 					}
 				}
 			}
+		}
+		return true;
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return bool
+	 *
+	 * @since   2.0.0
+	 */
+	private function _deleteCampaignsMailinglistsEntry($id)
+	{
+		$_db            = $this->getDbo();
+		$query          = $_db->getQuery(true);
+
+		$query->delete($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
+		$query->where($_db->quoteName('campaign_id') . ' =  ' . $_db->quote($id));
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return bool
+	 *
+	 * @since   2.0.0
+	 */
+	private function _deleteCampaignsNewsletters($id)
+	{
+		$_db            = $this->getDbo();
+		$query          = $_db->getQuery(true);
+
+		$query->delete($_db->quoteName('#__bwpostman_newsletters'));
+		$query->where($_db->quoteName('campaign_id') . ' =  ' . $_db->quote($id));
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
 		}
 		return true;
 	}

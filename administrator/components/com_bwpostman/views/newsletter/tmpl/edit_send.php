@@ -185,7 +185,7 @@ Joomla.submitbutton = function (pressbutton)
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<?php if ($this->canDo->get('bwpm.send')) : ?>
+								<?php if (BwPostmanHelper::canSend()) : ?>
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmail');"
 										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_BUTTON'); ?>" />
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmailandpublish');"
@@ -213,7 +213,7 @@ Joomla.submitbutton = function (pressbutton)
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<?php if ($this->canDo->get('bwpm.send')) : ?>
+								<?php if (BwPostmanHelper::canSend()) : ?>
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendtestmail');"
 										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDTESTMAIL_BUTTON'); ?>" />
 								<?php endif; ?>

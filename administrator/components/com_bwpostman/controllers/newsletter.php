@@ -114,12 +114,13 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * Method override to check if you can edit a record.
 	 *
 	 * @param	array	$data	An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
 	 *
 	 * @return	boolean
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowEdit($data = array())
+	protected function allowEdit($data = array(), $key = 'id')
 	{
 		return BwPostmanHelper::canEdit('newsletter', $data);
 	}
@@ -870,7 +871,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (BwPostmanHelper::canArchive('newsletter', $cid))
+		if (!BwPostmanHelper::canArchive('newsletter', $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

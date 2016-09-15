@@ -129,7 +129,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			// write file header
-			$file_data   = array();
+			$file_data   = array('');
 			$file_data[] = $this->buildXmlHeader();
 
 			if (fwrite($handle, implode("\n", $file_data)) === false)
@@ -220,11 +220,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name));
 			}
+			fclose($handle);
 		}
 		catch (BwException $e)
 		{
 			echo $e->getMessage();
 			JFile::delete($file_name);
+			fclose($handle);
 
 			return false;
 		}
@@ -1691,6 +1693,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$tmp_file   = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 			$fp         = fopen($tmp_file, 'r');
 			$tables     = unserialize(fread($fp, filesize($tmp_file)));
+			fclose($fp);
 
 			if (count($usergroups))
 			{
@@ -1980,10 +1983,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (BwException $e)
 		{
+			fclose($fp);
 			throw new BwException($e->getMessage());
 		}
 		catch (RuntimeException $e)
 		{
+			fclose($fp);
 			throw new BwException($e->getMessage());
 		}
 	}
@@ -2104,6 +2109,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// get XML data
 		$xml = simplexml_load_file($file);
+		fclose($fh);
 
 		// check if xml file is ok (most error case: non-xml-conform characters in xml file)
 		if (!is_object($xml))
@@ -2343,6 +2349,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS') . '</p><br />';
 		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tmp_file', $tmp_file);
+		fclose($fp);
 
 		return $table_names;
 	}

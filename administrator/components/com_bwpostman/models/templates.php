@@ -91,6 +91,15 @@ class BwPostmanModelTemplates extends JModelList
 	var $_key = null;
 
 	/**
+	 * The query object
+	 *
+	 * @var	object
+	 *
+	 * @since       2.0.0
+	 */
+	private $_query;
+
+	/**
 	 * Constructor
 	 * --> handles the pagination and set the Templates key
 	 *
@@ -196,34 +205,181 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-
-		$user		= JFactory::getUser();
+		$this->_query		= $this->_db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select(
+		$this->_query->select(
 				$this->getState(
 						'list.select',
-						'a.id, a.title, a.thumbnail, a.standard, a.description, a.tpl_id, a.checked_out, a.checked_out_time, a.published, a.access, a.created_date, a.created_by'
+						'a.id, a.title, a.thumbnail, a.standard, a.description, a.tpl_id, 
+						a.checked_out, a.checked_out_time, a.published, a.access, a.created_date, a.created_by'
 				)
 		);
-		$query->from('#__bwpostman_templates AS a');
+		$this->_query->from($this->_db->quoteName('#__bwpostman_templates', 'a'));
 
+		$this->_getQueryJoins();
+		$this->_getQueryWhere();
+		$this->_getQueryOrder();
+
+		$this->_db->setQuery($this->_query);
+
+		return $this->_query;
+	}
+
+	/**
+	 * Method to get the joins this query needs
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryJoins()
+	{
 		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$this->_query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out'));
 
 		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		$this->_query->select($this->_db->quoteName('ag.title') . ' AS access_level');
+		$this->_query->join('LEFT', $this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access'));
 
 		// Join over the users for the author.
-		$query->select('ua.name AS author_name');
-		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+		$this->_query->select($this->_db->quoteName('ua.name') , ' AS author_name');
+		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by'));
+	}
 
+	/**
+	 * Method to build the MySQL query 'where' part
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryWhere()
+	{
+		$this->_getFilterByAccessLevelFilter();
+		$this->_getFilterByViewLevel();
+		$this->_getFilterByComponentPermissions();
+		$this->_getFilterByNewTemplates();
+		$this->_getFilterByTemplateFormat();
+		$this->_getFilterByPublishedState();
+		$this->_getFilterByArchiveState();
+		$this->_getFilterBySearchword();
+
+	}
+
+	/**
+	 * Method to build the MySQL query 'order' part
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getQueryOrder()
+	{
+		$orderCol  = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction', 'asc');
+
+		//sqlsrv change
+		if ($orderCol == 'access_level')
+		{
+			$orderCol = 'ag.title';
+		}
+		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+	}
+
+	/**
+	 * Method to get the filter by access level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByAccessLevelFilter()
+	{
+		$access = $this->getState('filter.access');
+		if ($access)
+		{
+			$this->_query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+		}
+	}
+
+	/**
+	 * Method to get the filter by Joomla view level
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByViewLevel()
+	{
+		$user	= JFactory::getUser();
+
+		if (!$user->authorise('core.admin'))
+		{
+			$groups	= implode(',', $user->getAuthorisedViewLevels());
+			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
+		}
+	}
+
+	/**
+	 * Method to get the filter by BwPostman permissions
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByComponentPermissions()
+	{
+		$allowed_ids    = BwPostmanHelper::getAllowedRecords('template');
+
+		if ($allowed_ids != 'all')
+		{
+			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+		}
+	}
+
+	/**
+	 * Method to get only new templates
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByNewTemplates()
+	{
 		// Filter show only the new templates id > 0
-		$query->where('a.id > ' . (int) 0);
+		$this->_query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
+	}
+
+
+		/**
+	 * Method to get the filter by selected template format
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByTemplateFormat()
+	{
+		// Filter show only the new templates id > 0
+		$this->_query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
 
 		// Filter by format.
 		$format = $this->getState('filter.tpl_id');
@@ -231,74 +387,83 @@ class BwPostmanModelTemplates extends JModelList
 		{
 			if ($format == '1')
 			{
-				$query->where('a.tpl_id < 998');
+				$this->_query->where($this->_db->quoteName('a.tpl_id') , ' < 998');
 			}
 			if ($format == '2')
 			{
-				$query->where('a.tpl_id > 997');
+				$this->_query->where($this->_db->quoteName('a.tpl_id') . ' > 997');
 			}
 		}
+	}
 
-		// Filter by access level.
-		$access = $this->getState('filter.access');
-		if ($access) {
-			$query->where('a.access = ' . (int) $access);
-		}
-
-		// Implement View Level Access
-		if (!$user->authorise('core.admin'))
-		{
-			$groups	= implode(',', $user->getAuthorisedViewLevels());
-			$query->where('a.access IN ('.$groups.')');
-		}
-
-		// Filter by published state
+	/**
+	 * Method to get the filter by published state
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByPublishedState()
+	{
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$this->_query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published = 0 OR a.published = 1)');
+			$this->_query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
 		}
+	}
 
-		// Filter by archive state
-		$query->where('a.archive_flag = ' . (int) 0);
+	/**
+	 * Method to get the filter by archived state
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterByArchiveState()
+	{
+		$this->_query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+	}
 
-		// Filter by search word.
-		$filtersearch	= $this->getState('filter.search_filter');
-		$search			= $_db->escape($this->getState('filter.search'), true);
+	/**
+	 * Method to get the filter by search word
+	 *
+	 * @access 	private
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function _getFilterBySearchword()
+	{
+		$filtersearch = $this->getState('filter.search_filter');
+		$search			= $this->_db->escape($this->getState('filter.search'), true);
 
 		if (!empty($search))
 		{
 			$search			= '%' . $search . '%';
+
 			switch ($filtersearch)
 			{
 				case 'description':
-					$query->where('a.description LIKE ' . $_db->quote($search));
+					$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'title_description':
-					$query->where('(a.description LIKE ' . $_db->quote($search) . 'OR a.title LIKE ' . $_db->quote($search) . ')');
+					$this->_query->where('(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')');
 					break;
 				case 'title':
-					$query->where('a.title LIKE ' . $_db->quote($search));
+					$this->_query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				default:
 			}
 		}
-
-		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction', 'asc');
-
-		//sqlsrv change
-		if($orderCol == 'access_level')
-			$orderCol = 'ag.title';
-		$query->order($_db->escape($orderCol.' '.$orderDirn));
-
-		$_db->setQuery($query);
-		return $query;
 	}
 
 	/**
@@ -440,12 +605,12 @@ class BwPostmanModelTemplates extends JModelList
 			if (count($queries) != 0)
 			{
 				// Process each query in the $queries array (split out of sql file).
-				foreach ($queries as $query)
+				foreach ($queries as $this->_query)
 				{
-					$query = trim($query);
-					if ($query != '' && $query{0} != '#')
+					$this->_query = trim($this->_query);
+					if ($this->_query != '' && $this->_query{0} != '#')
 					{
-						$db->setQuery($query);
+						$db->setQuery($this->_query);
 
 						try
 						{

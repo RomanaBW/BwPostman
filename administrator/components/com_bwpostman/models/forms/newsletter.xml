@@ -430,11 +430,6 @@
 			name="text_template_id"
 			type="hidden"
 		/>
-
-		<field
-			name="rules"
-			type="hidden"
-		/>
 	</fieldset>
 
 	<fieldset name="basic_1_hidden">

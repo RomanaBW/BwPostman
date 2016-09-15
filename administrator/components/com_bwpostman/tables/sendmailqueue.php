@@ -145,7 +145,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			}
 			else
 			{
-				throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+//				throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 			}
 
 			// Cast properties
@@ -180,7 +180,7 @@ class BwPostmanTableSendmailqueue extends JTable
 
 	 * @param   int     $trial  Only pop entries with < trial
 	 *
-	 * @return 	int --> 0 if nothing was selected
+	 * @return 	boolean     false if no entry was found
 	 *
 	 * @since       0.9.1
 	 */
@@ -206,14 +206,17 @@ class BwPostmanTableSendmailqueue extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(),'error');
 		}
-		if ($this->bind($result))
+		if (count($result))
 		{
-			$this->_trackAssets = 0;
-			$this->delete($this->id);
+			if ($this->bind($result))
+			{
+				$this->_trackAssets = 0;
+				$this->delete($this->id);
 
-			return true;
+				return true;
+			}
 		}
-		return $_db->getAffectedRows();
+		return false;
 	}
 
 	/**

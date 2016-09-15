@@ -311,6 +311,7 @@ $options = array(
 		<?php echo $this->form->getInput('id'); ?>
 		<?php echo $this->form->getInput('asset_id'); ?>
 		<?php echo $this->form->getInput('tpl_id', null, 998); ?>
+		<?php echo $this->form->getInput('checked_out'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
 		<?php echo JHtml::_('form.token'); ?>

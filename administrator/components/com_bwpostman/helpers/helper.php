@@ -473,7 +473,7 @@ abstract class BwPostmanHelper
 		$res  = false;
 
 		// Check general component permission first.
-		if ($user->authorise('core.admin', 'com_bwpostman') || $user->authorise('core.manage', 'com_bwpostman'))
+		if (self::canAdmin())
 		{
 			$res = true;
 		}
@@ -1207,5 +1207,233 @@ abstract class BwPostmanHelper
 		}
 
 		return $ownerId;
+	}
+
+	/**
+	 * Method to get the allowed records as comma separated list
+	 *
+	 * @param   string  $view       The name of the context.
+	 *
+	 * @return  string  $allowed_ids
+	 *
+	 * @since   2.0.0
+	 */
+	public static function getAllowedRecords($view)
+	{
+		// check for general permissions
+		if (self::canAdmin())
+		{
+			return 'all';
+		}
+
+		$asset_records = self::_getSectionAssetNames($view);
+		$item_records  = self::_extractIdFromAssetName($asset_records);
+		$allowed_items = self::_checkRecordsForPermission($view, $item_records);
+
+		$general_permission = array_search(0, $allowed_items);
+		if ($general_permission !== false)
+		{
+			return 'all';
+		}
+
+		// check for mailinglist specific permissions
+		if ($view != 'mailinglist')
+		{
+			$mailinglist_items = self::_getMailinglistSpecificRecords($view);
+
+			// merge values
+			// @ToDo: Is merge correct? Or do I have to intersect?
+			if (count($mailinglist_items))
+			{
+				$allowed_items = array_merge(array_values($allowed_items), array_values($mailinglist_items));
+			}
+		}
+
+		$allowed_items  = array_unique($allowed_items);
+		$allowed_ids    = implode(',', $allowed_items);
+
+		return $allowed_ids;
+	}
+
+	/**
+	 * Method to get an array of strings of all asset names of the component section
+	 * The array items are of the form 'component.section.id', where th part with id may be empty (section-wide permission)
+	 *
+	 * @param   string  $view           The name of the context.
+	 *
+	 * @return  array   $asset_records  section names of assets
+	 *
+	 * @since   2.0.0
+	 */
+	private static function _getSectionAssetNames($view)
+	{
+		$asset_records  = array();
+		$_db            = JFactory::getDbo();
+
+		try
+		{
+			$asset_query = $_db->getQuery(true);
+
+			$asset_query->select($_db->quoteName('name'));
+			$asset_query->from($_db->quoteName('#__assets'));
+			$asset_query->where($_db->quoteName('name') . ' LIKE ' . $_db->quote('%com_bwpostman.' . $view . '%'));
+
+			$_db->setQuery($asset_query);
+
+			$asset_records = $_db->loadAssocList();
+		}
+		catch (Exception $e)
+		{
+			$asset_records['name']  = 'com_bwpostman.' . $view;
+		}
+
+		// If no record is available, set one with general section name (but should not appear on correct installation).
+		if (!count($asset_records))
+		{
+			$asset_records['name']  = 'com_bwpostman.' . $view;
+		}
+
+		return $asset_records;
+	}
+
+	/**
+	 * Method to extract the ID from asset name and inject it in the array
+	 *
+	 * @param   array    $asset_records
+	 *
+	 * @return  array    $items
+	 *
+	 * @since   2.0.0
+	 */
+	private static function _extractIdFromAssetName($asset_records)
+	{
+		$items = array();
+
+		foreach ($asset_records as $record)
+		{
+			$item   = array();
+			$name = explode('.', $record['name']);
+			if (isset($name[2]))
+			{
+				$item['id'] = (int) $name[2];
+			}
+			else
+			{
+				$item['id'] = 0;
+			}
+			$items[]    = $item;
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Method to check for item specific permission
+	 * items without permission will be removed
+	 *
+	 * @param   string $view    The name of the context.
+	 * @param   array           $items
+	 *
+	 * @return  array           $allowed_ids
+	 *
+	 * @since   2.0.0
+	 */
+	private static function _checkRecordsForPermission($view, $items)
+	{
+		$allowed_ids = array();
+
+		foreach ($items as $item)
+		{
+			$allowed = BwPostmanHelper::canEdit($view, $item);
+			if ($allowed)
+			{
+				$allowed_ids[] = $item['id'];
+			}
+		}
+
+		// If no record is permitted, set one ID with zero. A record from database never has an ID of zero.
+		if (!count($allowed_ids))
+		{
+			$allowed_ids[]  = 0;
+		}
+
+		return $allowed_ids;
+	}
+
+	/**
+	 * Method to check for item campaign specific permissions
+	 * items without permission will be removed
+	 *
+	 * @param   string $view    The name of the context.
+	 *
+	 * @return  array           $allowed_ids
+	 *
+	 * @since   2.0.0
+	 */
+	private static function _getMailinglistSpecificRecords($view)
+	{
+		$allowed_ids    = array();
+		$result         = array();
+
+		// Get the mailinglists the user may handle
+		$asset_records          = self::_getSectionAssetNames('mailinglist');
+		$item_records           = self::_extractIdFromAssetName($asset_records);
+		$allowed_mailinglists   = self::_checkRecordsForPermission('mailinglist', $item_records);
+
+		$general_permission = array_search(0, $allowed_mailinglists);
+		if ($general_permission !== false)
+		{
+			return $allowed_ids;
+		}
+
+		$table  = '';
+		$field  = '';
+		switch ($view)
+		{
+			case 'campaigns':
+					$table  = '#__bwpostman_campaigns_mailinglists';
+					$field  = 'campaign_id';
+				break;
+			case 'newsletter':
+					$table  = '#__bwpostman_newsletters_mailinglists';
+					$field  = 'newsletter_id';
+				break;
+			case 'subscriber':
+					$table  = '#__bwpostman_subscribers_mailinglists';
+					$field  = 'subscriber_id';
+				break;
+			case 'template':
+				// @ToDo: Remove comments, when this cross table is implemented
+//					$table  = '#__bwpostman_template_mailinglists';
+//					$field  = 'template_id';
+				break;
+			default:
+		}
+		if ($table != '' && $field != '')
+		{
+			try
+			{
+				$_db	= JFactory::getDbo();
+				$query	= $_db->getQuery(true);
+
+				$query->select($_db->quoteName($field));
+				$query->from($_db->quoteName($table));
+				$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode (',', $allowed_mailinglists) . ')');
+
+				$_db->setQuery($query);
+
+				$result = $_db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				return $allowed_ids;
+			}
+		}
+
+		foreach ($result as $item)
+		{
+			$allowed_ids[]    = (int)$item[$field];
+		}
+		return $allowed_ids;
 	}
 }

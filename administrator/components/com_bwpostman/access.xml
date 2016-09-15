@@ -49,8 +49,8 @@
 		<action name="bwpm.campaign.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_DELETE_DESC" />
 	</section>
 	<section name="campaigns">
-		<action name="bwpm.campaigns.manage" title="COM_BWPOSTMAN_ACTION_MANAGE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_MANAGE_DESC" />
-		<action name="bwpm.campaigns.admin" title="COM_BWPOSTMAN_ACTION_ADMIN" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_DESC" />
+		<action name="bwpm.campaigns.admin" title="COM_BWPOSTMAN_ACTION_ADMIN" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_ADMIN_DESC" />
+		<action name="bwpm.campaigns.manage" title="COM_BWPOSTMAN_ACTION_MANAGE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_MANAGE_DESC" />
 		<action name="bwpm.campaigns.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDIT_DESC" />
 		<action name="bwpm.campaigns.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDITSTATE_DESC" />
 		<action name="bwpm.campaigns.edit.own" title="COM_BWPOSTMAN_ACTION_EDITOWN" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_EDITOWN_DESC" />
@@ -59,6 +59,8 @@
 		<action name="bwpm.campaigns.delete" title="COM_BWPOSTMAN_ACTION_DELETE" description="COM_BWPOSTMAN_CAMPAIGN_ACCESS_DELETE_DESC" />
 	</section>
 	<section name="mailinglist">
+		<action name="bwpm.mailinglist.admin" title="COM_BWPOSTMAN_ACTION_ADMIN" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_ADMIN_DESC" />
+		<action name="bwpm.mailinglist.manage" title="COM_BWPOSTMAN_ACTION_MANAGE" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_MANAGE_DESC" />
 		<action name="bwpm.mailinglist.create" title="COM_BWPOSTMAN_ACTION_CREATE" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_CREATE_DESC" />
 		<action name="bwpm.mailinglist.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_EDIT_DESC" />
 		<action name="bwpm.mailinglist.edit.state" title="COM_BWPOSTMAN_ACTION_EDITSTATE" description="COM_BWPOSTMAN_MAILINGLIST_ACCESS_EDITSTATE_DESC" />

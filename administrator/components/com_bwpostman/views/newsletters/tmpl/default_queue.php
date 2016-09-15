@@ -114,7 +114,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</thead>
 					<tbody>
 					<?php
-						if (count($this->items) > 0)
+						if (count($this->items))
 						{
 							foreach ($this->items as $i => $item) :
 								?>

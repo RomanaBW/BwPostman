@@ -63,7 +63,6 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template and cancel from main view");
 		$I->amOnPage(MainView::$url);
-//		$I->wait(5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addHtmlTemplateButton);
 
@@ -71,8 +70,6 @@ class TestTemplatesDetailsCest
 
 		$I->click(TplEdit::$toolbar['Back']);
 
-//		$I->click(Generals::$submenu['BwPostman']);
-//		$I->waitForElement(Generals::$pageTitle);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
@@ -596,15 +593,14 @@ class TestTemplatesDetailsCest
 	 */
 	private function _fillHtmlContent(AcceptanceTester $I)
 	{
-// fill HTML
-		$I->click(TplEdit::$tpl_tab3);
-		$I->scrollTo(TplEdit::$button_editor_toggle);
-		$I->click(TplEdit::$button_editor_toggle);
+		$I->clickAndWait(TplEdit::$tpl_tab3, 1);
+		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
+		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
 		$I->fillField(TplEdit::$html_style, TplEdit::$html_style_content);
-		$I->scrollTo(TplEdit::$button_editor_toggle);
+		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
-		$I->click(TplEdit::$button_refresh_preview);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 		$I->click(TplEdit::$toolbar['Save']);
 	}
 
@@ -616,11 +612,10 @@ class TestTemplatesDetailsCest
 	 */
 	private function _fillCssContent(AcceptanceTester $I)
 	{
-// fill CSS
 		$I->click(TplEdit::$tpl_tab2);
 		$I->fillField(TplEdit::$css_style, TplEdit::$css_style_content);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
-		$I->click(TplEdit::$button_refresh_preview);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 	}
 
 	/**

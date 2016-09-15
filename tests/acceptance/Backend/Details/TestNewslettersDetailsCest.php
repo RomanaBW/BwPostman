@@ -67,7 +67,7 @@ class TestNewslettersDetailsCest
 		$I->click(MainView::$addNewsletterButton);
 
 		$this->_fillFormSimple($I);
- 		$I->click(NlEdit::$toolbar['Back']);
+ 		$I->clickAndWait(NlEdit::$toolbar['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -287,29 +287,29 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		$content_title = $this->_fillFormSimple($I);
+		$I->wait(2);
 
 		$start  = strpos($content_title, "=") + 2;
 		$content_title  = substr($content_title, $start);
 
 		// change to tab 2
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
-		$I->click(NlEdit::$tab2);
+		$I->clickAndWait(NlEdit::$tab2, 3);
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
 		$I->wait(1);
 		$I->see($content_title, NlEdit::$tab2_editor);
 		$I->switchToIFrame();
 
 		// change to tab 3
-		$I->click(NlEdit::$tab3);
+		$I->clickAndWait(NlEdit::$tab3, 3);
 		$I->see($content_title, NlEdit::$tab3_editor);
 
 
 		// change to tab 4
-		$I->click(NlEdit::$tab4);
+		$I->clickAndWait(NlEdit::$tab4, 5);
 		$I->scrollTo(NlEdit::$tab4_preview_html);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(NlEdit::$tab4_preview_html_divider, 0, 20); // scroll to divider before article
-		$I->wait(1);
 		$I->see($content_title, NlEdit::$preview_html);
 		$I->switchToIFrame();
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
@@ -435,6 +435,7 @@ class TestNewslettersDetailsCest
 		$I->scrollTo(NlEdit::$legend_templates);
 		$I->click(NlEdit::$template_html);
 		$I->click(NlEdit::$template_text);
+//		$I->wait(15);
 
 		$this->_selectRecipients($I);
 
@@ -509,10 +510,12 @@ class TestNewslettersDetailsCest
 		// omit from_name
 		$I->scrollTo(NlEdit::$legend_general);
 		$I->fillField(NlEdit::$from_name, '');
+		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_msg);
+$I->wait(10);
 
 		// omit from_email
 		$this->_selectRecipients($I);

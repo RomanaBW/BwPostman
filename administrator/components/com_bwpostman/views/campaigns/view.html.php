@@ -129,7 +129,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('campaigns'))
+		if (!BwPostmanHelper::canView('campaign'))
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_CAMS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -201,7 +201,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 		}
-		if (BwPostmanHelper::canManage())
+		if (BwPostmanHelper::canEditState('campaign'))
 		{
 			JToolbarHelper::checkin('campaigns.checkin');
 			JToolbarHelper::divider();

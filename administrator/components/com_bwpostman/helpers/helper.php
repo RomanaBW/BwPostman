@@ -141,7 +141,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canAdmin() || self::canManage())
+		if (self::canAdmin())
 		{
 			JHtmlSidebar::addEntry
 			(
@@ -222,19 +222,19 @@ abstract class BwPostmanHelper
 		// Check view permission.
 		if (!self::canView($view))
 		{
-			$res = false;
+			return false;
 		}
 
 		// Check general component permission
 		if ($user->authorise('bwpm.' . $action, 'com_bwpostman'))
 		{
-			$res = true;
+			return true;
 		}
 
 		// Check specific view permission
 		if ($user->authorise('bwpm.' . $view . '.' . $action, 'com_bwpostman.' . $view))
 		{
-			$res = true;
+			return true;
 		}
 
 		// Check record specific permission
@@ -402,7 +402,7 @@ abstract class BwPostmanHelper
 
 		if (!$res)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ADMIN_NO_PERMISSION'), 'error');
+//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ADMIN_NO_PERMISSION'), 'error');
 		}
 
 		return $res;
@@ -485,7 +485,7 @@ abstract class BwPostmanHelper
 		}
 		if (!$res)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_VIEW_NO_PERMISSION'), 'error');
+//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_VIEW_NO_PERMISSION'), 'error');
 		}
 
 		return $res;
@@ -581,8 +581,8 @@ abstract class BwPostmanHelper
 		}
 
 		if (!$res)
-			{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+		{
+//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 		}
 
 		return $res;
@@ -723,7 +723,7 @@ abstract class BwPostmanHelper
 
 		if (!$res)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
+//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
 		}
 
 		return $res;
@@ -1199,7 +1199,7 @@ abstract class BwPostmanHelper
 			if (empty($record))
 			{
 				//@ ToDo: Specify error message, insert in language files
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_SUITABLE_RECORD'), 'error');
+//				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_SUITABLE_RECORD'), 'error');
 
 				return false;
 			}

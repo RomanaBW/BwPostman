@@ -146,17 +146,6 @@
 			type="hidden"
 		/>
 
- 		<field
-			name="rules"
-			type="rules"
-			label=""
-			translate_label="false"
-			class="inputbox"
-			filter="rules"
-			component="com_bwpostman"
-			section="campaign">
-		</field>
-
 <!--
 		<field
 			name="publish_up"
@@ -188,6 +177,19 @@
 			default="0"
 		/>
 -->
+	</fieldset>
+
+	<fieldset name="rules">
+		<field
+				name="rules"
+				type="rules"
+				label=""
+				translate_label="false"
+				class="inputbox"
+				filter="rules"
+				component="com_bwpostman"
+				section="campaign"
+		/>
 	</fieldset>
 
 	<fieldset name="mailinglists">

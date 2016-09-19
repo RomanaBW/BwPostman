@@ -92,6 +92,18 @@
 			</fileset>
 		</copy>
 
+		<echo msg="Copying plugin personalize…" />
+		<copy todir="${target_base_translations_dir_de}/admin">
+			<fileset dir="${source_admin_lang_dir}/de-DE">
+				<include name="**/*bwpostman_personalize*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_translations_dir_en}/admin">
+			<fileset dir="${source_admin_lang_dir}/en-GB">
+				<include name="**/*bwpostman_personalize*.ini" />
+			</fileset>
+		</copy>
+
 		<echo msg="Copying manifest files…" />
 		<copy file="${manifest_dir_de}/lang_bwpostman_de-DE.xml" tofile="${target_base_translations_dir_de}/lang_bwpostman_de-DE.xml" />
 		<copy file="${manifest_dir_en}/lang_bwpostman_en-GB.xml" tofile="${target_base_translations_dir_en}/lang_bwpostman_en-GB.xml" />
@@ -109,14 +121,14 @@
 		<echo msg="Creating archive…" />
 
 		<echo msg="…de-DE…" />
-		<zip destfile="${target_base_translations_dir_de}/lang_${component}.${version}.de-DE.zip">
+		<zip destfile="${target_base_translations_dir_de}/lang_${extension}.${version}.de-DE.zip">
 			<fileset dir="${target_base_translations_dir_de}">
 				<include name="**/**" />
 			</fileset>
 		</zip>
 
 		<echo msg="…en-GB…" />
-		<zip destfile="${target_base_translations_dir_en}/lang_${component}.${version}.en-GB.zip">
+		<zip destfile="${target_base_translations_dir_en}/lang_${extension}.${version}.en-GB.zip">
 			<fileset dir="${target_base_translations_dir_en}">
 				<include name="**/**" />
 			</fileset>
@@ -140,6 +152,21 @@
 						<include name="*.zip"/>
 						<include name="*.pdf"/>
 					</fileset>
+				</scp>
+
+				<scp
+						username="${username}"
+						password="${password}"
+						host="${host}"
+						todir="${upload_lang_dir}"
+						file="${target_base_translations_dir_en}/lang_${extension}.${version}.en-GB.zip">
+				</scp>
+				<scp
+						username="${username}"
+						password="${password}"
+						host="${host}"
+						todir="${upload_lang_dir}"
+						file="${target_base_translations_dir_de}/lang_${extension}.${version}.de-DE.zip">
 				</scp>
 				<echo msg="Upload to webserver OK!" />
 			</then>

@@ -152,9 +152,20 @@ class BwPostmanModelCampaign extends JModelAdmin
 		$app	= JFactory::getApplication();
 		$cid	= $app->getUserState('com_bwpostman.edit.campaign.id', 0);
 		$data	= $app->getUserState('com_bwpostman.edit.campaign.data', null);
+		$task   = $app->input->getCmd('task', '');
 		$_db	= $this->_db;
+		$id     = 0;
 
-		if (!$data) {
+		if (is_object($data) && property_exists($data, 'id'))
+		{
+			$id = $data->id;
+		}
+		elseif (is_array($data) && key_exists('id', $data))
+		{
+			$id = $data['id'];
+		}
+
+		if (!$data || ($id != $pk)) {
 			// Initialise variables.
 			if (is_array($cid)) {
 				if (!empty($cid)) {
@@ -171,7 +182,10 @@ class BwPostmanModelCampaign extends JModelAdmin
 			// check permission
 			if (!BwPostmanHelper::canEdit('campaign', $item))
 			{
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+				if ($task === 'edit')
+				{
+					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+				}
 				return false;
 			}
 

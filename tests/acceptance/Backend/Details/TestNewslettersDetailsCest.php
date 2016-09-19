@@ -515,7 +515,6 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save']);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_msg);
-$I->wait(10);
 
 		// omit from_email
 		$this->_selectRecipients($I);

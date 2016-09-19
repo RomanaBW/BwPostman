@@ -106,7 +106,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
-		$app->setUserState('com_bwpostman.edit.campaign.id', JFactory::getApplication()->input->getInt('id', 0));
+		$app->setUserState('com_bwpostman.edit.campaign.id', $app->input->getInt('id', 0));
 
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();

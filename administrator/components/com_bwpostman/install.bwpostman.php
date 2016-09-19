@@ -96,7 +96,7 @@ class Com_BwPostmanInstallerScript
 	 */
 		public function __constructor()
 	 {
-		$this->reference_table  = 'bwpostman_templates_tpl';
+		$this->reference_table  = 'bwpostman_mailinglists';
 		$this->conversion_file  = '/components/com_bwpostman/sql/utf8mb4conversion/utf8mb4-conversion-01.sql';
 		$this->all_bwpm_groups  = array('bwpm_usergroups'           => array('BwPostmanManager', 'BwPostmanPublisher', 'BwPostmanEditor'),
 		                                'mailinglist_usergroups'    => array('BwPostmanMailinglistAdmin', 'BwPostmanMailinglistPublisher', 'BwPostmanMailinglistEditor'),

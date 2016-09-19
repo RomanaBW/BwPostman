@@ -31,13 +31,11 @@ defined ('_JEXEC') or die ('Restricted access');
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?></legend>
 	<div class="well well-small">
-		<?php if (BwPostmanHelper::canAdmin()): ?>
-			<div class="fltlft">
-				<fieldset class="panelform">
-					<?php echo $this->form->getLabel('rules'); ?>
-					<?php echo $this->form->getInput('rules'); ?>
-				</fieldset>
-			</div>
-		<?php endif ?>
+		<div class="fltlft">
+			<fieldset class="panelform">
+				<?php echo $this->form->getLabel('rules'); ?>
+				<?php echo $this->form->getInput('rules'); ?>
+			</fieldset>
+		</div>
 	</div>
 </fieldset>

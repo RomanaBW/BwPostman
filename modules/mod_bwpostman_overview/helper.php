@@ -311,13 +311,11 @@ class modBwPostmanOverviewHelper
 
 			$res_mls = $_db->loadAssocList();
 
-			$acc_mls	= array();
+			$acc_mls	= array(0);
 			foreach ($res_mls as $item)
 			{
 				$acc_mls[]	= $item['id'];
 			}
-
-			$mls	= array_intersect($mls, $acc_mls);
 		}
 
 		if (count($mls) == 0) $mls[]	= 0;
@@ -400,7 +398,7 @@ class modBwPostmanOverviewHelper
 
 			$res_mls = $_db->loadAssocList();
 
-			$acc_mls	= array();
+			$acc_mls	= array(0);
 			foreach ($res_mls as $item)
 			{
 				$acc_mls[]	= $item['id'];

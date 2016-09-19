@@ -22,6 +22,8 @@
 		<files folder="admin" target="administrator/language">
 			<filename>en-GB.com_bwpostman.ini</filename>
 			<filename>en-GB.com_bwpostman.sys.ini</filename>
+			<filename>en-GB.plg_bwpostman_personalize.ini</filename>
+			<filename>en-GB.plg_bwpostman_personalize.sys.ini</filename>
 		</files>
 	</fileset>
 

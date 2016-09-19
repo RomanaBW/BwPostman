@@ -129,15 +129,26 @@ class BwPostmanViewArchive extends JViewLegacy
 		}
 		else
 		{
-			$uri		= JUri::getInstance('SERVER');
-
 			// Get data from the model
 			$this->items 			= $this->get('Items');
 			$this->pagination		= $this->get('Pagination');
 			$this->filterForm		= $this->get('FilterForm');
 			$this->activeFilters	= $this->get('ActiveFilters');
 			$this->state			= $this->get('State');
-			$this->request_url		= str_replace('&','&amp;', $uri->toString());
+
+			$request_result = $this->_checkForAllowedTab();
+
+			if ($request_result === false)
+			{
+				$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_ARC')), 'error');
+				$app->redirect('index.php?option=com_bwpostman');
+			}
+
+			if ($request_result === 'redirect')
+			{
+				$app->redirect($this->request_url);
+				// http://www.dev.nil/administrator/index.php?option=com_bwpostman&view=archive&layout=newsletters
+			}
 
 			$this->addToolbar();
 
@@ -201,5 +212,94 @@ class BwPostmanViewArchive extends JViewLegacy
 		JToolbarHelper::spacer();
 		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
 		JToolbarHelper::spacer();
+	}
+
+	/**
+	 * Check permission for archive tab and set layout to allowed one, if needed
+	 *
+	 * @since       2.0.0
+	 */
+	private function _checkForAllowedTab()
+	{
+		$uri        = JUri::getInstance('SERVER');
+		$uri_string = $uri->toString();
+		$uri_short  = substr($uri_string, strrpos($uri_string, '/') + 1, strlen($uri_string));
+
+		$layout = $this->_extractLayout($uri_short);
+		if ($layout == false)
+		{
+			return false;
+		}
+
+		$allowed_layout = $this->_getAllowedLayout($layout);
+
+		if ($allowed_layout == false)
+		{
+			return false;
+		}
+
+		if ($allowed_layout != $layout)
+		{
+			$this->request_url = str_replace($layout, $allowed_layout, $uri_short);
+			return 'redirect';
+		}
+
+		return true;
+	}
+
+	/**
+	 *
+	 * @param   string      $uri_string
+	 *
+	 * @return string|bool $layout  requested layout or false on error
+	 *
+	 * @since version
+	 */
+	private function _extractLayout($uri_string)
+	{
+		$uri_array = explode('&', $uri_string);
+
+		if (count($uri_array) != 3)
+		{
+			return false;
+		}
+
+		$layout_arr = explode('=', $uri_array[2]);
+
+		if (count($layout_arr) != 2)
+		{
+			return false;
+		}
+
+		$layout = $layout_arr[1];
+
+		return $layout;
+	}
+
+	/**
+	 *
+	 * @param   string      $layout
+	 *
+	 * @return string|bool $allowed_layout  allowed layout or false on error
+	 *
+	 * @since version
+	 */
+	private function _getAllowedLayout($layout)
+	{
+		if (BwPostmanHelper::canView(substr($layout, 0, -1)))
+		{
+			return $layout;
+		}
+
+		// check for some allowed layout
+		$all_layouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'campaign');
+		foreach ($all_layouts as $item)
+		{
+			$allowed    = BwPostmanHelper::canView($item);
+			if ($allowed)
+			{
+				return  $item . 's';
+			}
+		}
 	}
 }

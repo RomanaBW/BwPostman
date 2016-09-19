@@ -52,7 +52,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 ?>
 
 <div id="bwp_view_lists">
-	<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+	<form action="<?php echo JRoute::_($this->request_url); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
 				<?php echo $this->sidebar; ?>
@@ -72,21 +72,43 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 						<tr>
 							<td valign="top" width="90%">
 								<ul class="bwp_tabs">
-									<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
-										<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
-									</li>
-									<li class="open">
-										<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
-									</li>
-									<li class="closed">
-										<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
-									</li>
-									<li class="closed">
-										<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
-									</li>
-									<li class="closed">
-										<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
-									</li>
+									<?php
+									if (BwPostmanHelper::canView('newsletter')) {
+									?>
+										<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
+											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
+										</li>
+										<?php
+									}
+									if (BwPostmanHelper::canView('subscriber')) {
+									?>
+										<li class="open">
+											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
+										</li>
+										<?php
+									}
+									if (BwPostmanHelper::canView('campaign')) {
+									?>
+										<li class="closed">
+											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
+										</li>
+										<?php
+									}
+									if (BwPostmanHelper::canView('mailinglist')) {
+									?>
+										<li class="closed">
+											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
+										</li>
+										<?php
+									}
+									if (BwPostmanHelper::canView('template')) {
+									?>
+										<li class="closed">
+											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
+										</li>
+										<?php
+									}
+									?>
 								</ul>
 
 								<div class="current">

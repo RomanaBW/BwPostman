@@ -219,65 +219,72 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 					</table>
 					<?php
 
-					echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_ARC_STATS'), 'general');
-
-					?>
-					<table class="adminlist">
+					if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('archive'))
+					{
+						echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_ARC_STATS'), 'general');
+						?>
+						<table class="adminlist">
+							<?php
+							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('newsletter')))
+							{ ?>
+								<tr>
+									<td width="200"><?php echo JText::_('COM_BWPOSTMAN_ARC_NL_NUM') . ': '; ?></td>
+									<td width="50">
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=newsletters'); ?>"><?php echo $this->archive['arc_nl']; ?></a></b>
+									</td>
+								</tr>
+								<?php
+							}
+							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('subscriber')))
+							{ ?>
+								<tr>
+									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_SUB_NUM') . ': '; ?></td>
+									<td>
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=subscribers'); ?>"><?php echo $this->archive['arc_sub']; ?></a></b>
+									</td>
+								</tr>
+								<?php
+							}
+							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('campaign')))
+							{ ?>
+								<tr>
+									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_CAM_NUM') . ': '; ?></td>
+									<td>
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=campaigns'); ?>"><?php echo $this->archive['arc_cam']; ?></a></b>
+									</td>
+								</tr>
+								<?php
+							}
+							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('mailinglist')))
+							{ ?>
+								<tr>
+									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_ML_NUM') . ': '; ?></td>
+									<td>
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=mailinglists'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
+									</td>
+								</tr>
+							<?php }
+							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('template')))
+							{ ?>
+								<tr>
+									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM') . ': '; ?></td>
+									<td>
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
+									</td>
+								</tr>
+							<?php }
+							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('template')))
+							{ ?>
+								<tr>
+									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM') . ': '; ?></td>
+									<td>
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
+									</td>
+								</tr>
+							<?php } ?>
+						</table>
 						<?php
-						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('archive') || BwPostmanHelper::canView('newsletter')) { ?>
-							<tr>
-								<td width="200"><?php echo JText::_('COM_BWPOSTMAN_ARC_NL_NUM').': '; ?></td>
-								<td width="50">
-									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=newsletters'); ?>"><?php echo $this->archive['arc_nl']; ?></a></b>
-								</td>
-							</tr>
-						<?php
-						}
-						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('archive') || BwPostmanHelper::canView('subscriber')) { ?>
-							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_SUB_NUM').': '; ?></td>
-								<td>
-									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=subscribers'); ?>"><?php echo $this->archive['arc_sub']; ?></a></b>
-								</td>
-							</tr>
-						<?php
-						}
-						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('archive') || BwPostmanHelper::canView('campaign')) { ?>
-							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_CAM_NUM').': '; ?></td>
-								<td>
-									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=campaigns'); ?>"><?php echo $this->archive['arc_cam']; ?></a></b>
-								</td>
-							</tr>
-						<?php
-						}
-						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('archive') || BwPostmanHelper::canView('mailinglist')) { ?>
-							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_ML_NUM').': '; ?></td>
-								<td>
-									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=mailinglists'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
-								</td>
-							</tr>
-						<?php }
-						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('archive') || BwPostmanHelper::canView('template')) { ?>
-							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM').': '; ?></td>
-								<td>
-									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
-								</td>
-							</tr>
-						<?php }
-						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('archive') || BwPostmanHelper::canView('template')) { ?>
-							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM').': '; ?></td>
-								<td>
-									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
-								</td>
-							</tr>
-						<?php } ?>
-					</table>
-
-					<?php
+					}
 					echo JHtml::_('sliders.end');
 					?></td>
 				</tr>

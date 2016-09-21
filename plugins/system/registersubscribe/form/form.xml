@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="registerSubscribe">
+		<fieldset name="registerSubscribe" >
+			<field
+				name="registerSubscribe"
+				id="registerSubscribe"
+				type="radio"
+				class="btn-group btn-group-yesno"
+				label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_CHECKBOX_LABEL"
+				description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_CHECKBOX_DESC"
+			    default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+					name="registerSubscribe_selected_mailformat"
+					id="registerSubscribe_selected_mailformat"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_MAILFORMAT_LABEL"
+					description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_MAILFORMAT_DESC"
+					default="1"
+			>
+				<option value="0">PLG_BWPOSTMAN_TEXT</option>
+				<option value="1">PLG_BWPOSTMAN_HTML</option>
+			</field>
+
+			<field name="spacer2_4" type="spacer" hr="true" />
+
+		</fieldset>
+	</fields>
+</form>

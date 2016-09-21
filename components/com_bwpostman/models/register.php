@@ -583,6 +583,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	private function _createActivation()
 	{
+		// @ToDo: Move to helper class to get access by plugins
 		$_db                = $this->_db;
 		$query              = $_db->getQuery(true);
 		$current_activation = null;
@@ -630,6 +631,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	private function _createEditlink()
 	{
+		// @ToDo: Move to helper class to get access by plugins
 		$_db                = $this->_db;
 		$query              = $_db->getQuery(true);
 		$current_editlink   = null;

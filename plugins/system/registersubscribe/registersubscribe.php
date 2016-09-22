@@ -30,6 +30,8 @@ defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
 
+require_once (JPATH_PLUGINS . '/system/registersubscribe/helpers/registersubscribehelper.php');
+
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 /**
@@ -40,7 +42,7 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 class PlgSystemRegisterSubscribe extends JPlugin
 {
 	/**
-	 * Load the language file on instantiation (for Joomla! 3.X only)
+	 * Load the language file on instantiation
 	 *
 	 * @var    boolean
 	 *
@@ -60,65 +62,97 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	);
 
 	/**
-	 * Event method onUserAfterSave
+	 * Property to hold component enabled status
 	 *
-	 * @param   array   $data       User data
-	 * @param   bool    $isNew      true on new user
-	 * @param   bool    $result     result of saving user
-	 * @param   string  $error      error message translated by JText()
-	 *
-	 * @return  bool
+	 * @var    bool
 	 *
 	 * @since  2.0.0
 	 */
-	public function onUserAfterSave($data, $isNew, $result, $error)
+	protected $componentEnabled = false;
+
+	/**
+	 * Property to hold component version
+	 *
+	 * @var    string
+	 *
+	 * @since  2.0.0
+	 */
+	protected $componentVersion = 0;
+
+	/**
+	 * PlgSystemRegisterSubscribe constructor.
+	 *
+	 * @param object $subject
+	 * @param array  $config
+	 *
+	 * @since   2.0.0
+	 */
+	public function __construct(& $subject, $config)
 	{
-		if ($result == false)
-		{
-			return false;
-		}
+		parent::__construct($subject, $config);
 
-		// Sanitize data
-		$user_mail   = ArrayHelper::getValue($data, 'email', '', 'string');
-		$user_id     = ArrayHelper::getValue($data, 'id', 0, 'int');
-		$user_name   = ArrayHelper::getValue($data, 'name', '', 'string');
-		$mailformat  = ArrayHelper::getValue($data, 'registerSubscribe_selected_mailformat', 1, 'int');
-
-		if ($isNew)
-		{
-			if ($this->_hasSubscription($user_mail))
-			{
-				$this->_updateUserIdAtSubscribers($user_mail, $user_id);
-				return true;
-			}
-
-			$res = $this->_subscribeToBwPostman($user_mail, $user_id, $user_name, $mailformat);
-
-			return $res;
-		}
-
-		if (ArrayHelper::getValue($data, 'activation', '', 'string') != '')
-		{
-			$res    = $this->_activateSubscription($user_id);
-
-			return $res;
-		}
-
-		if ($this->params->get('auto_update_email_option') === true)
-		{
-			$subscriber = $this->_getSubscriptionData($user_id);
-
-			if (is_array($subscriber) && ($subscriber['email']) != $user_mail)
-			{
-				$subscriber['email']    = $user_mail;
-				$res                    = $this->_updateEmailOfSubscription($subscriber);
-				return $res;
-			}
-		}
-
-		return true;
+		$this->setComponentStatus();
+		$this->setComponentVersion();
 	}
 
+	/**
+	 * Method to set status of component activation property
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	protected function setComponentStatus()
+	{
+		$_db        = JFactory::getDbo();
+		$query      = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('enabled'));
+		$query->from($_db->quoteName('#__extensions'));
+		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$enabled                = $_db->loadResult();
+			$this->componentEnabled = $enabled;
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			$this->componentEnabled = false;
+		}
+	}
+
+	/**
+	 * Method to set component version property
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	protected function setComponentVersion()
+	{
+		$_db        = JFactory::getDbo();
+		$query      = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('manifest_cache'));
+		$query->from($_db->quoteName('#__extensions'));
+		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
+		$_db->setQuery($query);
+
+		try
+		{
+			$manifest               = json_decode($_db->loadResult(), true);
+			$this->componentVersion = $manifest['version'];
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			$this->componentVersion = 0;
+		}
+	}
 	/**
 	 * Event method onContentPrepareForm
 	 *
@@ -131,6 +165,11 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
+		if (!$this->componentEnabled)
+		{
+			return false;
+		}
+
 		if (!($form instanceof JForm))
 		{
 			$this->_subject->setError('JERROR_NOT_A_FORM');
@@ -162,31 +201,92 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	}
 
 	/**
-	 * Event method onUserAfterDelete
+	 * Event method onUserAfterSave
 	 *
-	 * @param   array   $data     Data that was being deleted
-	 * @param   bool    $success  Flag to indicate whether deletion was successful
-	 * @param   string  $msg      Message after deletion
+	 * @param   array   $data       User data
+	 * @param   bool    $isNew      true on new user
+	 * @param   bool    $result     result of saving user
+	 * @param   string  $error      error message translated by JText()
 	 *
-	 * @return  null
+	 * @return  bool
 	 *
 	 * @since  2.0.0
 	 */
-	public function onUserAfterDelete($data, $success, $msg)
+	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
-		if (!$success)
+		if (!$this->componentEnabled)
 		{
 			return false;
 		}
 
-		$res    = true;
-
-		if ($this->params->get('auto_delete_option') === true)
+		if ($result == false)
 		{
-			$res = $this->_deleteSubscription(ArrayHelper::getValue($data, 'id', 0, 'int'));
+			return false;
 		}
 
-		return $res;
+		if (!ArrayHelper::getValue($data, 'registerSubscribe', '', 'boolean'))
+		{
+			return false;
+		}
+
+		// Sanitize data
+		$user_mail   = ArrayHelper::getValue($data, 'email', '', 'string');
+		$user_id     = ArrayHelper::getValue($data, 'id', 0, 'int');
+		$user_name   = ArrayHelper::getValue($data, 'name', '', 'string');
+		$mailformat  = ArrayHelper::getValue($data, 'registerSubscribe_selected_mailformat', 1, 'int');
+
+		if ($isNew)
+		{
+			try
+			{
+				if (RegisterSubscriberHelper::hasSubscription($user_mail))
+				{
+					$update_userid_result = RegisterSubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
+
+					return $update_userid_result;
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->_subject->setError($e->getMessage());
+				return false;
+			}
+
+
+			$create_result = $this->subscribeToBwPostman($user_mail, $user_id, $user_name, $mailformat);
+
+			return $create_result;
+		}
+
+		if (ArrayHelper::getValue($data, 'activation', '', 'string') != '')
+		{
+			$activate_result    = $this->activateSubscription($user_id);
+
+			return $activate_result;
+		}
+
+		if ($this->params->get('auto_update_email_option') === true)
+		{
+			try
+			{
+				$subscriber = RegisterSubscriberHelper::getSubscriptionData($user_id);
+
+				if (is_array($subscriber) && ($subscriber['email']) != $user_mail)
+				{
+					$subscriber['email'] = $user_mail;
+					$update_email_result = $this->updateEmailOfSubscription($subscriber);
+
+					return $update_email_result;
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->_subject->setError($e->getMessage());
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -201,18 +301,34 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function _subscribeToBwPostman($user_mail, $user_id, $user_name, $mailformat)
+	protected function subscribeToBwPostman($user_mail, $user_id, $user_name, $mailformat)
 	{
-		$subscriber = $this->_createSubscriberData($user_mail, $user_id, $user_name, $mailformat);
-
-		$subscriber_id  = $this->_saveSubscriber($subscriber);
-		if (!$subscriber_id)
+		try
 		{
+			$subscriber     = RegisterSubscriberHelper::createSubscriberData($user_mail, $user_id, $user_name, $mailformat);
+
+			$subscriber_id  = RegisterSubscriberHelper::saveSubscriber($subscriber);
+			if (!$subscriber_id)
+			{
+				return false;
+			}
+
+			$mailinglist_ids    = json_decode($this->params->get('mailinglist_to_subscribe'));
+			$ml_save_result     = RegisterSubscriberHelper::saveSubscribersMailinglists($subscriber_id, $mailinglist_ids);
+
+			if (!$ml_save_result)
+			{
+				return false;
+			}
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
 			return false;
 		}
-
-		if (!$this->_saveSubscribersMailinglists($subscriber_id))
+		catch (BwException $e)
 		{
+			$this->_subject->setError($e->getMessage());
 			return false;
 		}
 
@@ -228,7 +344,7 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function _activateSubscription($user_id)
+	protected function activateSubscription($user_id)
 	{
 		// Is it a valid user to activate?
 		if ($user_id == 0)
@@ -256,21 +372,21 @@ class PlgSystemRegisterSubscribe extends JPlugin
 		try
 		{
 			$res = $_db->execute();
+
+			$params    = JComponentHelper::getParams('com_bwpostman');
+			$send_mail = $params->get('activation_to_webmaster');
+
+			if ($send_mail && $res)
+			{
+				$subscriber = RegisterSubscriberHelper::getSubscriptionData($user_id);
+				$model      = JModelLegacy::getInstance('Register', 'BwPostmanModel');
+				$model->sendActivationNotification($subscriber['id']);
+			}
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			return false;
-		}
-
-		$params 		= JComponentHelper::getParams('com_bwpostman');
-		$send_mail		= $params->get('activation_to_webmaster');
-
-		if ($send_mail && $res)
-		{
-			$subscriber = $this->_getSubscriptionData($user_id);
-			$model      = JModelLegacy::getInstance('Register', 'BwPostmanModel');
-			$model->sendActivationNotification($subscriber['id']);
 		}
 
 		return true;
@@ -285,28 +401,53 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function _updateEmailOfSubscription($subscriber)
+	protected function updateEmailOfSubscription($subscriber)
 	{
-		try
+		$_db	= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->update($_db->quoteName('#__bwpostman_subscribers'));
+		$query->set($_db->quoteName('email') . " = " . $_db->quote($subscriber['email']));
+		$query->where($_db->quoteName('id') . ' = ' . $_db->quote($subscriber['id']));
+
+		$_db->setQuery($query);
+
+		$result  = $_db->execute();
+
+		return $result;
+	}
+
+	/**
+	 * Event method onUserAfterDelete
+	 *
+	 * @param   array   $data     Data that was being deleted
+	 * @param   bool    $success  Flag to indicate whether deletion was successful
+	 * @param   string  $msg      Message after deletion
+	 *
+	 * @return  null
+	 *
+	 * @since  2.0.0
+	 */
+	public function onUserAfterDelete($data, $success, $msg)
+	{
+		if (!$this->componentEnabled)
 		{
-			$_db	= JFactory::getDbo();
-			$query	= $_db->getQuery(true);
-
-			$query->update($_db->quoteName('#__bwpostman_subscribers'));
-			$query->set($_db->quoteName('email') . " = " . $_db->quote($subscriber['email']));
-			$query->where($_db->quoteName('id') . ' = ' . $_db->quote($subscriber['id']));
-
-			$_db->setQuery($query);
-
-			$result  = $_db->execute();
-		}
-		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
 			return false;
 		}
 
-		return $result;
+		if (!$success)
+		{
+			return false;
+		}
+
+		$delete_result  = true;
+
+		if ($this->params->get('auto_delete_option') === true)
+		{
+			$delete_result = $this->deleteSubscription(ArrayHelper::getValue($data, 'id', 0, 'int'));
+		}
+
+		return $delete_result;
 	}
 
 	/**
@@ -318,31 +459,31 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function _deleteSubscription($user_id)
+	protected function deleteSubscription($user_id)
 	{
-		$subscriber                 = $this->_getSubscriptionData($user_id);
-		$res                        = false;
-		$res_delete_mailinglists    = false;
-		$res_delete_subscriber      = false;
-
-		if (!is_array($subscriber))
+		try
 		{
-			return true;
+			$subscriber = RegisterSubscriberHelper::getSubscriptionData($user_id);
+
+			$res                        = false;
+			$res_delete_mailinglists    = false;
+			$res_delete_subscriber      = false;
+
+			if (!is_array($subscriber))
+			{
+				return true;
+			}
+
+			if ($subscriber['id'] != 0)
+			{
+				$res_delete_subscriber      = $this->deleteSubscriber($subscriber['id']);
+				$res_delete_mailinglists    = $this->deleteSubscribedMailinglists($subscriber['id']);
+			}
 		}
-
-		if ($subscriber['id'] != 0)
+		catch (Exception $e)
 		{
-			try
-			{
-				$res_delete_subscriber      = $this->_deleteSubscriber($subscriber['id']);
-				$res_delete_mailinglists    = $this->_deleteSubscribedMailinglists($subscriber['id']);
-			}
-			catch (Exception $e)
-			{
-				$this->_subject->setError($e->getMessage());
-
-				return false;
-			}
+			$this->_subject->setError($e->getMessage());
+			return false;
 		}
 
 		if ($res_delete_mailinglists || $res_delete_subscriber)
@@ -350,134 +491,6 @@ class PlgSystemRegisterSubscribe extends JPlugin
 			$res    = true;
 		}
 		return $res;
-	}
-
-	/**
-	 * Method to check if user has a subscription
-	 *
-	 * @param   string  $user_mail   User email address
-	 *
-	 * @return  bool     true if subscription present
-	 *
-	 * @since  2.0.0
-	 */
-	protected function _hasSubscription($user_mail)
-	{
-		if ($user_mail == '')
-		{
-			return false;
-		}
-
-		try
-		{
-			$_db	= JFactory::getDbo();
-			$query	= $_db->getQuery(true);
-
-			$query->select($_db->quoteName('email'));
-			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('email') . ' = ' . $_db->quote($user_mail));
-
-			$_db->setQuery($query);
-
-			$result  = $_db->loadResult();
-		}
-		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
-			return false;
-		}
-		if ($result)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Method to update user ID in table subscribers
-	 *
-	 * @param   string  $user_mail   User email address
-	 * @param   int     $user_id   User ID
-	 *
-	 * @return  bool     true if subscription present
-	 *
-	 * @since  2.0.0
-	 */
-	protected function _updateUserIdAtSubscribers($user_mail, $user_id)
-	{
-		if ($user_id == 0)
-		{
-			return false;
-		}
-
-		try
-		{
-			$_db	= JFactory::getDbo();
-			$query	= $_db->getQuery(true);
-
-			$query->update($_db->quoteName('#__bwpostman_subscribers'));
-			$query->set($_db->quoteName('user_id') . " = " . $_db->quote($user_id));
-			$query->where($_db->quoteName('email') . ' = ' . $_db->quote($user_mail));
-
-			$_db->setQuery($query);
-
-			$result  = $_db->execute();
-		}
-		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
-			return false;
-		}
-		if ($result)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Method to get subscription email from BwPostman
-	 *
-	 * @param   int  $user_id   User ID
-	 *
-	 * @return  array|bool     subscriber mailaddress and id, or false on error
-	 *
-	 * @since  2.0.0
-	 */
-	protected function _getSubscriptionData($user_id)
-	{
-		if ($user_id == 0)
-		{
-			return true;
-		}
-
-		try
-		{
-			$_db	= JFactory::getDbo();
-			$query	= $_db->getQuery(true);
-
-			$query->select($_db->quoteName('email'));
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('user_id') . ' = ' . $_db->quote($user_id));
-
-			$_db->setQuery($query);
-
-			// @ToDo: What is the result on 'not found'?
-			$subscriber  = $_db->loadAssoc();
-		}
-		catch (Exception $e)
-	    {
-		    $this->_subject->setError($e->getMessage());
-		    return false;
-	    }
-		return $subscriber;
 	}
 
 	/**
@@ -489,7 +502,7 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function _deleteSubscriber($subscriber_id)
+	protected function deleteSubscriber($subscriber_id)
 	{
 		try
 		{
@@ -520,7 +533,7 @@ class PlgSystemRegisterSubscribe extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function _deleteSubscribedMailinglists($subscriber_id)
+	protected function deleteSubscribedMailinglists($subscriber_id)
 	{
 		try
 		{
@@ -541,227 +554,4 @@ class PlgSystemRegisterSubscribe extends JPlugin
 		}
 		return $res;
 	}
-
-	/**
-	 * Method to create the activation and check if the sting does not exist twice or more
-	 *
-	 * @return string   $activation
-	 *
-	 * @since       2.0.0
-	 */
-	protected function _createActivation()
-	{
-		// @ToDo: When this method has moved to helper class, this one here is redundant
-		$_db                = JFactory::getDbo();
-		$query              = $_db->getQuery(true);
-		$current_activation = null;
-		$match_activation   = true;
-
-		while ($match_activation)
-		{
-			$current_activation = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
-
-			$query->select($_db->quoteName('activation'));
-			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('activation') . ' = ' . $_db->quote($current_activation));
-
-			$_db->setQuery($query);
-
-			try
-			{
-				$activation = $_db->loadResult();
-			}
-			catch (Exception $e)
-			{
-				$this->_subject->setError($e->getMessage());
-				return false;
-			}
-
-			if ($activation == $current_activation)
-			{
-				$match_activation = true;
-			}
-			else
-			{
-				$match_activation = false;
-			}
-		}
-
-		return $current_activation;
-	}
-
-	/**
-	 * Method to create the editlink and check if the sting does not exist twice or more
-	 *
-	 * @return string   $editlink
-	 *
-	 * @since       0.9.1
-	 */
-	protected function _createEditlink()
-	{
-		// @ToDo: When this method has moved to helper class, this one here is redundant
-		$_db                = JFactory::getDbo();
-		$query              = $_db->getQuery(true);
-		$current_editlink   = null;
-		$match_editlink     = true;
-		$editlink           = '';
-
-		while ($match_editlink)
-		{
-			$current_editlink = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
-
-			$query->select($_db->quoteName('editlink'));
-			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('editlink') . ' = ' . $_db->quote($current_editlink));
-
-			$_db->setQuery($query);
-
-			try
-			{
-				$editlink = $_db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			if ($editlink == $current_editlink)
-			{
-				$match_editlink = true;
-			}
-			else
-			{
-				$match_editlink = false;
-			}
-		}
-
-		return $current_editlink;
-	}
-	/**
-	 * Method to save subscriber data into table
-	 *
-	 * @param   array   $subscriber     subscriber data
-	 *
-	 * @return bool     true on success
-	 *
-	 * @since       2.0.0
-	 */
-	protected function _saveSubscriber($subscriber)
-	{
-
-		$_db   = JFactory::getDbo();
-		$query = $_db->getQuery(true);
-
-		// @ToDo: Complete method
-		$query->insert($_db->quoteName('#__bwpostman_subscribers'));
-		$query->columns(array(
-			$_db->quoteName(''),
-			$_db->quoteName('')
-		));
-		$query->values(
-			$_db->quote('') . ',' .
-			$_db->quote('')
-		);
-		$_db->setQuery($query);
-
-		try
-		{
-			$_db->execute();
-		}
-		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Method to save subscribed mailinglists
-	 *
-	 * @param   int   $subscriber_id     subscriber id
-	 *
-	 * @return bool     true on success
-	 *
-	 * @since       2.0.0
-	 */
-	protected function _saveSubscribersMailinglists($subscriber_id)
-	{
-		$mailinglist_id = $this->params->get('mailinglist_to_subscribe');
-
-		$_db   = JFactory::getDbo();
-		$query = $_db->getQuery(true);
-
-		$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->columns(array(
-			$_db->quoteName('subscriber_id'),
-			$_db->quoteName('mailinglist_id')
-		));
-		$query->values(
-			$_db->quote($subscriber_id) . ',' .
-			$_db->quote($mailinglist_id)
-		);
-		$_db->setQuery($query);
-
-		try
-		{
-			$_db->execute();
-		}
-		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Method to create user data array
-	 *
-	 * @param $user_mail
-	 * @param $user_id
-	 * @param $user_name
-	 * @param $mailformat
-	 *
-	 * @return array
-	 *
-	 * @since 2.0.0
-	 */
-	protected function _createSubscriberData($user_mail, $user_id, $user_name, $mailformat)
-	{
-		$params = JComponentHelper::getParams('com_bwpostman');
-		$date   = JFactory::getDate();
-		$time   = $date->toSql();
-		$jinput = JFactory::getApplication()->input;
-		$ip     = $jinput->server->get('REMOTE_ADDR', '', '');
-
-		$subscriber = array(
-			'id'                => 0,
-			'user_id'           => $user_id,
-			'name'              => $user_name,
-			'email'             => $user_mail,
-			'emailformat'       => $mailformat,
-			'activation'        => $this->_createActivation(),
-			'editlink'          => $this->_createEditlink(),
-			'status'            => 0,
-			'registration_date' => $time,
-			'registered_by'     => 0,
-			'registration_ip'   => $ip,
-			'confirmed_by'      => '-1',
-			'archived_by'       => '-1',
-		);
-
-		if ($params->get('firstname_field_obligation'))
-		{
-			$subscriber['first_name']   = ' ';
-		}
-
-		if ($params->get('special_field_obligation'))
-		{
-			$subscriber['special']   = ' ';
-		}
-
-		return $subscriber;
-	}
-
 }

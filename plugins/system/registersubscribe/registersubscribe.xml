@@ -94,8 +94,18 @@
 					<option value="1">JYES</option>
 				</field>
 			</fieldset>
-			<fieldset name="mailinglists">
-
+			<fieldset name="mailinglists" addfieldpath="/components/com_bwpostman/models/fields">
+				<field
+						name="ml_available"
+						type="comml"
+						label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_ML_AVAILABLE_LABEL"
+						labelclass="control-label"
+						description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_ML_AVAILABLE_DESC"
+						multiple="true"
+						size="5"
+						default="0"
+						class="inputbox"
+				/>
 			</fieldset>
 
 		</fields>

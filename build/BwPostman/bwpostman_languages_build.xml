@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="BwPostman"  description="Build file for BwPostman language files" default="pack_languages">
+	<import file="./bwpostman_variables.xml"/>
+
+	<!-- ============================================  -->
+	<!-- Target: prepare                               -->
+	<!-- (Setting variables, delete target directory,  -->
+	<!--  create target directory)                     -->
+	<!-- ============================================  -->
+	<target name="prepare_languages" depends="set_variables">
+		<echo msg="Set variables…" />
+		<property name="module_1" value="mod_bwpostman" override="true" />
+		<property name="module_2" value="mod_bwpostman_overview" override="true" />
+		<property name="plugin_1" value="personalize" override="true" />
+
+		<echo msg="Source dirs…" />
+		<property name="source_admin_lang_dir" value="${source_base_dir}/administrator/language" override="true" />
+		<property name="source_site_lang_dir" value="${source_base_dir}/language" override="true" />
+		<property name="manifest_dir_de" value="${source_base_dir}/build/BwPostman/manifests" override="true" />
+		<property name="manifest_dir_en" value="${source_base_dir}/build/BwPostman/manifests" override="true" />
+
+		<echo msg="target dirs…" />
+		<property name="target_base_translations_dir" value="${target_base_dir}/translations" override="true" />
+		<property name="target_base_translations_dir_de" value="${target_base_translations_dir}/de-DE" override="true" />
+		<property name="target_base_translations_dir_en" value="${target_base_translations_dir}/en-GB" override="true" />
+
+		<echo msg="Deleting target directory… " />
+		<delete dir="${target_base_translations_dir}" includeemptydirs="true" failonerror="false" />
+
+		<echo msg="Creating target directories… " />
+		<mkdir dir="${target_base_translations_dir_de}/admin" />
+		<mkdir dir="${target_base_translations_dir_de}/site" />
+		<mkdir dir="${target_base_translations_dir_en}/admin" />
+		<mkdir dir="${target_base_translations_dir_en}/site" />
+	</target>
+
+	<!-- ============================================  -->
+	<!-- Target: build                                 -->
+	<!-- (copy files of component and modules to       -->
+	<!-- target directory, empty capimgdir, move       -->
+	<!-- manifest file, copy install file to base dir) -->
+	<!-- ============================================  -->
+	<target name="build_languages" depends="prepare_languages">
+		<echo msg="Copying files to build directory…" />
+
+		<echo msg="Copying component admin…" />
+		<copy todir="${target_base_translations_dir_de}/admin">
+			<fileset dir="${source_admin_lang_dir}/de-DE">
+				<include name="**/*${component}*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_translations_dir_en}/admin">
+			<fileset dir="${source_admin_lang_dir}/en-GB">
+				<include name="**/*${component}*.ini" />
+			</fileset>
+		</copy>
+
+		<echo msg="Copying component site…" />
+		<copy todir="${target_base_translations_dir_de}/site">
+			<fileset dir="${source_site_lang_dir}/de-DE">
+				<include name="**/*${component}*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_translations_dir_en}/site">
+			<fileset dir="${source_site_lang_dir}/en-GB">
+				<include name="**/*${component}*.ini" />
+			</fileset>
+		</copy>
+
+		<echo msg="Copying module 1…" />
+		<copy todir="${target_base_translations_dir_de}/site">
+			<fileset dir="${source_site_lang_dir}/de-DE">
+				<include name="**/*${module_1}*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_translations_dir_en}/site">
+			<fileset dir="${source_site_lang_dir}/en-GB">
+				<include name="**/*${module_1}*.ini" />
+			</fileset>
+		</copy>
+
+		<echo msg="Copying module 2…" />
+		<copy todir="${target_base_translations_dir_de}/site">
+			<fileset dir="${source_site_lang_dir}/de-DE">
+				<include name="**/*${module_2}*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_translations_dir_en}/site">
+			<fileset dir="${source_site_lang_dir}/en-GB">
+				<include name="**/*${module_2}*.ini" />
+			</fileset>
+		</copy>
+
+		<echo msg="Copying manifest files…" />
+		<copy file="${manifest_dir_de}/lang_bwpostman_de-DE.xml" tofile="${target_base_translations_dir_de}/lang_bwpostman_de-DE.xml" />
+		<copy file="${manifest_dir_en}/lang_bwpostman_en-GB.xml" tofile="${target_base_translations_dir_en}/lang_bwpostman_en-GB.xml" />
+
+		<echo msg="Chmod target dir…" />
+		<chmod file="${target_base_translations_dir}" mode="0777" />
+	</target>
+
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: pack                       -->
+	<!-- (Pack and upload component, modules and       -->
+	<!-- (overall package)                             -->
+	<!-- ============================================  -->
+	<target name="pack_languages" depends="build_languages">
+		<echo msg="Creating archive…" />
+
+		<echo msg="…de-DE…" />
+		<zip destfile="${target_base_translations_dir_de}/lang_${component}.${version}.de-DE.zip">
+			<fileset dir="${target_base_translations_dir_de}">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+
+		<echo msg="…en-GB…" />
+		<zip destfile="${target_base_translations_dir_en}/lang_${component}.${version}.en-GB.zip">
+			<fileset dir="${target_base_translations_dir_en}">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+
+		<echo msg="Files copied and compressed in build directory OK!" />
+
+
+
+		<echo msg="Upload Variable: ${upload}" />
+		<if>
+			<equals arg1="${upload}" arg2="1" trim="true" casesensitive="false" />
+			<then>
+				<echo msg="Upload to webserver…" />
+				<scp
+						username="${username}"
+						password="${password}"
+						host="${host}"
+						todir="${upload_dir}">
+					<fileset dir="${target_base_dir}">
+						<include name="*.zip"/>
+						<include name="*.pdf"/>
+					</fileset>
+				</scp>
+				<echo msg="Upload to webserver OK!" />
+			</then>
+		</if>
+	</target>
+</project>

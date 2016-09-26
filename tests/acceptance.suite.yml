@@ -43,6 +43,7 @@ env:
         modules:
           config:
             Webdriver:
-              browser:'firefox'
+              browser: firefox
+              port: 4446
     phantom:
       # nothing changed here

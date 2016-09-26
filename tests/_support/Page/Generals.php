@@ -33,6 +33,7 @@ class Generals
 
 	public static $control_panel        = "Control Panel";
 	public static $login_txt            = "Log in";
+//	public static $login_txt            = "Anmelden";
 	public static $nav_user_menu        = "html/body/nav/div/div/div/ul[3]/li/a";
 	public static $nav_user_menu_logout = "html/body/nav/div/div/div/ul[3]/li/ul/li[5]/a";
 	public static $logout_txt           = "Log out";
@@ -51,7 +52,7 @@ class Generals
 	protected $tester;
 
 	// backend users
-	public static $admin        = array('user' =>'AdminTester', 'password' =>'BwPostmanTest', 'author' => 'Super User');
+	public static $admin        = array('user' =>'AdminTester', 'password' =>'BwPostmanTest', 'author' => 'AdminTester');
 
 	/* ssh and database connection
 	 *
@@ -73,10 +74,6 @@ class Generals
 	public static $ssh_key_pub      = '/home/romana/.ssh/romana_rsa.pub';
 	public static $ssh_key_rsa      = '/home/romana/.ssh/romana_rsa';
 
-	public static $db_user          = 'AdminTester';
-	public static $db_pw            = 'BwPostmanTest';
-	public static $db_db            = 'dev';
-//	public static $db_db            = 'bwtest';
 	public static $db_data_path     = '/daten/vhosts/dev/joomla-cms/tests/_data/';
 	public static $db_data_start    = 'testdata_bwpostman_complete.sql';
 	public static $db_data_end      = 'testdata_bwpostman_reset.sql';

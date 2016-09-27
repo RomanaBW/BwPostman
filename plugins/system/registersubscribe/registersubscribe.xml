@@ -9,20 +9,22 @@
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_DESCRIPTION</description>
-
+<!--
 	<scriptfile>installscript.php</scriptfile>
-
+-->
 	<files>
 		<filename plugin="registersubscribe">registersubscribe.php</filename>
-		<filename >installscript.php</filename>
+<!--		<filename >installscript.php</filename>-->
 		<filename >index.html</filename>
+		<folder>form</folder>
+		<folder>helpers</folder>
 	</files>
 
 	<languages folder="language">
-		<language tag="de-DE">de-DE/de-DE.plg_bwpostman_registersubscribe.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_bwpostman_registersubscribe.sys.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_registersubscribe.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_registersubscribe.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_system_registersubscribe.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_system_registersubscribe.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_registersubscribe.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_registersubscribe.sys.ini</language>
 	</languages>
 
 	<config>
@@ -105,6 +107,7 @@
 						size="5"
 						default="0"
 						class="inputbox"
+				        required="true"
 				/>
 			</fieldset>
 

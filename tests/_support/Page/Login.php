@@ -1,6 +1,7 @@
 <?php
 namespace Page;
 
+
 /**
  * Class Login
  *
@@ -79,7 +80,7 @@ class Login
 //		}
 
 		// log in
-		$I->wantTo('log in as a backend user');
+//		$I->wantTo('log in as a backend user');
 		$I->amOnPage(self::$url);
 		$I->fillField(self::$usernameField, $user['user']);
 		$I->fillField(self::$passwordField, $user['password']);
@@ -103,11 +104,14 @@ class Login
 	 */
 	public function logoutFromBackend(\AcceptanceTester $I)
 	{
+		$loginArea     = sprintf(".//*/button[contains(., %s)]", Generals::$login_txt);
+
 		$I->click(Generals::$nav_user_menu);
 		$I->click(Generals::$nav_user_menu_logout);
 
 		$I->waitForElement(self::$form);
-		$I->see(Generals::$login_txt, self::$loginArea);
+//		$I->see(Generals::$login_txt, self::$loginArea);
+		$I->see(Generals::$login_txt, $loginArea);
 
 		return $this;
 	}

@@ -57,7 +57,7 @@ class TestSubscribersListsCest
 	 */
 	public function SortSubscribersByTableHeader(AcceptanceTester $I)
 	{
-		// @Todo: ensure UTF-8 characters are recognized
+		// @Todo: ensure UTF-8 characters are recognized; only testing problem
 		$I->wantTo("Sort subscribers by table header");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);

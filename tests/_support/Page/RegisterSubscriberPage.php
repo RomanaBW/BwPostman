@@ -1,0 +1,98 @@
+<?php
+namespace Page;
+
+/**
+ * Class RegisterSubscribePage
+ *
+ * @package Register Subscribe Plugin
+ * @copyright (C) 2016 Boldt Webservice <forum@boldt-webservice.de>
+ * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @since   2.0.0
+ */
+class RegisterSubscriberPage
+{
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 */
+
+	// used urls and links
+    public static $register_url         = '/index.php?option=com_users&view=registration';
+	public static $user_management_url  = 'administrator/index.php?option=com_users&view=users';
+	public static $user_activation_url  = '/index.php?option=com_users&task=registration.activate&token=';
+
+	//view identifier
+	public static $view_register        = ".//*[@id='member-registration']/fieldset[1]/legend";
+
+	// login field identifiers
+	public static $login_identifier_name            = ".//*[@id='jform_name']";
+	public static $login_identifier_username        = ".//*[@id='jform_username']";
+	public static $login_identifier_password1       = ".//*[@id='jform_password1']";
+	public static $login_identifier_password2       = ".//*[@id='jform_password2']";
+	public static $login_identifier_email1          = ".//*[@id='jform_email1']";
+	public static $login_identifier_email2          = ".//*[@id='jform_email2']";
+	public static $login_identifier_subscribe_no    = ".//*[@id='jform_registerSubscribe_registerSubscribe']/label[1]";
+	public static $login_identifier_subscribe_yes   = ".//*[@id='jform_registerSubscribe_registerSubscribe']/label[2]";
+	public static $login_identifier_format_text     = ".//*[@id='jform_registerSubscribe_registerSubscribe_selected_mailformat']/label[1]";
+	public static $login_identifier_format_html     = ".//*[@id='jform_registerSubscribe_registerSubscribe_selected_mailformat']/label[2]";
+	public static $login_identifier_register        = ".//*[@id='member-registration']/div/div/button";
+	public static $login_identifier_cancel          = ".//*[@id='member-registration']/div/div/a";
+
+	// success message identifiers
+	public static $success_heading_identifier   = ".//*[@id='system-message']/div/h4";
+	public static $success_message_identifier   = "div.alert-success > div > div.alert-message";
+
+	// login field values
+	public static $login_value_name         = "Sam Sample";
+	public static $login_value_username     = "Sam";
+	public static $login_value_password     = "!08Sam15";
+	public static $login_value_email        = "dummy-1@bwtest.nil";
+
+	public static $change_value_email       = "dummy-2@bwtest.nil";
+
+	public static $activation_completed_text    = "Your Account has been successfully activated. You can now log in using the username and password you chose during the registration.";
+	public static $activation_complete          = ".//*[@id='system-message']/div/div/div";
+
+
+	// backend
+	public static $user_filter_col_identifier   = ".//*[@id='userList']/tbody/*/td[2]";
+	public static $delete_button                = ".//*[@id='toolbar-delete']/button";
+
+	public static $subscribers_url                  = "/administrator/index.php?option=com_bwpostman&view=subscribers";
+	public static $tab_confirmed                    = ".//*[@id='bwpostman_subscribers_tabs']/dt[2]";
+	public static $tab_unconfirmed                  = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
+	public static $subscriber_format_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[6]";
+	public static $subscriber_userid_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[7]";
+	public static $subscriber_filter_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
+	public static $subscriber_edit_link             = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/tr/td[2]/a";
+
+	public static $available_mailinglists_label     = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/legend";
+//	public static $mailinglist1_checked             = ".//*[@id='jform_ml_intern_2']";
+	public static $mailinglist1_checked             = ".//*[@id='jform_ml_available_1']";
+//	public static $mailinglist1_checked             = ".//input[@name='jform[ml_unavailable][]]']/following::*/span[contains(text(),'01 Mailingliste 3 A')]";
+	public static $mailinglist2_checked             = ".//*[@id='jform_ml_available_4']";
+	public static $subscriber_details_close         = ".//*[@id='toolbar-cancel']/button";
+
+	//messages
+	public static $delete_confirm           = "Are you sure you want to delete? Confirming will permanently delete the selected item(s)!";
+	public static $delete_success           = "1 user successfully deleted.";
+	public static $register_success         = "Your account has been created and an activation link has been sent";
+
+	// error message identifier
+
+
+	// invalid fields
+}

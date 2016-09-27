@@ -134,7 +134,6 @@ abstract class RegisterSubscriberHelper {
 
 		$_db->setQuery($query);
 
-		// @ToDo: What is the result on 'not found'?
 		$subscriber  = $_db->loadAssoc();
 
 		return $subscriber;
@@ -148,7 +147,7 @@ abstract class RegisterSubscriberHelper {
 	 * @param string        $user_name
 	 * @param int           $mailformat
 	 *
-	 * @return array        $subscriber
+	 * @return object       $subscriber
 	 *
 	 * @since 2.0.0
 	 */
@@ -161,30 +160,30 @@ abstract class RegisterSubscriberHelper {
 		// @Todo: For version 2.0.0 of component replace $_SERVER['REMOTE_ADDR'] with the following
 		$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-		$subscriber = array(
-			'id'                => 0,
-			'user_id'           => $user_id,
-			'name'              => $user_name,
-			'email'             => $user_mail,
-			'emailformat'       => $mailformat,
-			'activation'        => self::createActivation(),
-			'editlink'          => self::createEditlink(),
-			'status'            => 0,
-			'registration_date' => $time,
-			'registered_by'     => 0,
-			'registration_ip'   => $remote_ip,
-			'confirmed_by'      => '-1',
-			'archived_by'       => '-1',
-		);
+		$subscriber = new stdClass();
+
+		$subscriber->id                = 0;
+		$subscriber->user_id           = $user_id;
+		$subscriber->name              = $user_name;
+		$subscriber->email             = $user_mail;
+		$subscriber->emailformat       = $mailformat;
+		$subscriber->activation        = self::createActivation();
+		$subscriber->editlink          = self::createEditlink();
+		$subscriber->status            = 0;
+		$subscriber->registration_date = $time;
+		$subscriber->registered_by     = 0;
+		$subscriber->registration_ip   = $remote_ip;
+		$subscriber->confirmed_by      = 0;
+		$subscriber->archived_by       = 0;
 
 		if ($params->get('firstname_field_obligation'))
 		{
-			$subscriber['first_name']   = ' ';
+			$subscriber->first_name   = ' ';
 		}
 
 		if ($params->get('special_field_obligation'))
 		{
-			$subscriber['special']   = ' ';
+			$subscriber->special   = ' ';
 		}
 
 		return $subscriber;
@@ -273,9 +272,9 @@ abstract class RegisterSubscriberHelper {
 	/**
 	 * Method to save subscriber data into table
 	 *
-	 * @param   array   $data     subscriber data
+	 * @param   object   $data              subscriber data
 	 *
-	 * @return bool               true on success
+	 * @return  int      $subscriber_id     id of saved subscriber
 	 *
 	 * @throws exception
 	 *
@@ -284,8 +283,9 @@ abstract class RegisterSubscriberHelper {
 	public static function saveSubscriber($data)
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used
+		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
 		$table  = JTable::getInstance('Subscribers', 'BwPostmanTable');
-		// Allow an exception to be thrown.
+
 		// Bind the data.
 		if (!$table->bind($data))
 		{
@@ -293,17 +293,21 @@ abstract class RegisterSubscriberHelper {
 		}
 
 		// Check the data.
-		if (!$table->check())
-		{
-			return false;
-		}
+//		if (!$table->check())
+//		{
+//			return false;
+//		}
+
 		// Store the data.
 		if (!$table->store())
 		{
+			// Allow an exception to be thrown.
 			throw  new Exception($table->getError());
 		}
+		//@ToDo: Get subscriber ID to return
+		$subscriber_id = self::getSubscriberIdByEmail($data->email);
 
-		return true;
+		return $subscriber_id;
 	}
 
 	/**
@@ -320,21 +324,50 @@ abstract class RegisterSubscriberHelper {
 	{
 		// @Todo: As from version 2.0.0 helper class of component may be used
 		$_db   = JFactory::getDbo();
-		$query = $_db->getQuery(true);
 
-		$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->columns(array(
-			$_db->quoteName('subscriber_id'),
-			$_db->quoteName('mailinglist_id')
-		));
-		$query->values(
-			$_db->quote($subscriber_id) . ',' .
-			$_db->quote($mailinglist_ids)
-		);
-		$_db->setQuery($query);
+		foreach ($mailinglist_ids as $mailinglist_id)
+		{
+			$query = $_db->getQuery(true);
 
-		$_db->execute();
+			$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
+			$query->columns(array(
+				$_db->quoteName('subscriber_id'),
+				$_db->quoteName('mailinglist_id')
+			));
+			$query->values(
+				$_db->quote($subscriber_id) . ',' .
+				$_db->quote($mailinglist_id)
+			);
+			$_db->setQuery($query);
+
+			$_db->execute();
+		}
 
 		return true;
+	}
+
+	/**
+	 * Method to get the subscriber id by email address
+	 *
+	 * @param   string  $email
+	 *
+	 * @return  int     $id
+	 *
+	 * @since       2.0.0
+	 */
+	protected static function getSubscriberIdByEmail($email)
+	{
+		$_db    = JFactory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName('#__bwpostman_subscribers'));
+		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($email));
+
+		$_db->setQuery($query);
+
+		$id = $_db->loadResult();
+
+		return  $id;
 	}
 }

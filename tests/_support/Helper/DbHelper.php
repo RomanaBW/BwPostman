@@ -74,8 +74,8 @@ class DbHelper extends Module
 		}
 
 		$query  = "SELECT $columns FROM $table_name $special";
-codecept_debug('Whole list query:');
-codecept_debug($query);
+//codecept_debug('Whole list query:');
+//codecept_debug($query);
 		$sth    = $driver->executeQuery($query, $criteria);
 
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -84,7 +84,7 @@ codecept_debug($query);
 	}
 
 	/**
-	 * DbHelper method to get editlink code of subscription
+	 * DbHelper method to get activation code of subscription
 	 *
 	 * @param   string      $subscriber_mail    mail address of subscriber
 	 * @param   array       $criteria           special criteria, i.e. WHERE
@@ -101,17 +101,44 @@ codecept_debug($query);
 		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
 		$query  = "SELECT `activation` FROM `$table_name` WHERE `email` = '$subscriber_mail';";
-codecept_debug('Query:');
-codecept_debug($query);
+
 		$sth    = $driver->executeQuery($query, $criteria);
 
 		$result = $sth->fetchColumn();
-codecept_debug("Activation-Code: $result");
+
 		return $result;
 	}
 
 	/**
-	 * DbHelper method to get activation code of subscription
+	 * DbHelper method to get activation code of user registration
+	 *
+	 * @param   string      $user_mail          mail address of subscriber
+	 * @param   array       $criteria           special criteria, i.e. WHERE
+	 * @param   array       $credentials        credentials of database
+	 *
+	 * @return  array
+	 *
+	 * @since   2.0.0
+	 */
+	public static function fetchJoomlaActivationCode($user_mail, $criteria = array(), array $credentials)
+	{
+		$table_name = Generals::$db_prefix . 'users';
+
+		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+
+		$query  = "SELECT `activation` FROM `$table_name` WHERE `email` = '$user_mail';";
+//codecept_debug('Query');
+//codecept_debug($query);
+
+		$sth    = $driver->executeQuery($query, $criteria);
+
+		$result = $sth->fetchColumn();
+
+		return $result;
+	}
+
+	/**
+	 * DbHelper method to get editlink code of subscription
 	 *
 	 * @param   string      $subscriber_mail    mail address of subscriber
 	 * @param   array       $criteria           special criteria, i.e. WHERE
@@ -155,17 +182,19 @@ codecept_debug("Activation-Code: $result");
 		if (strpos($extension, 'mod_') !== false)
 		{
 			$table_name = Generals::$db_prefix . 'modules';
-			$criteria[] = "WHERE `module` = '$extension'";
+//			$criteria[] = "WHERE `module` = '$extension'";
+			$where      = " WHERE `module` = '$extension'";
 			$n          = 26;
 		}
 		else
 		{
 			$table_name = Generals::$db_prefix . 'extensions';
-			$criteria[] = "WHERE `element` = '$extension'";
+//			$criteria[] = "WHERE `element` = '$extension'";
+			$where      = " WHERE `element` = '$extension'";
 			$n          = 0;
 		}
 
-		$query      = "SELECT `params` FROM $table_name";
+		$query      = "SELECT `params` FROM $table_name $where";
 		$sth        = $driver->executeQuery($query, $criteria);
 
 		$params     = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -177,7 +206,7 @@ codecept_debug("Activation-Code: $result");
 	/**
 	 * DbHelper method to set options of BwPostman extension from manifest
 	 *
-	 * @param   string      $extension          component, module name
+	 * @param   string      $extension          component, module, plugin name (element name)
 	 * @param   string      $options            option value to update
 	 * @param   array       $criteria           special criteria, i.e. WHERE
 	 * @param   array       $credentials        credentials of database
@@ -186,23 +215,23 @@ codecept_debug("Activation-Code: $result");
 	 */
 	public static function setManifestOptionsInDatabase($extension, $options, $criteria = array(), array $credentials)
 	{
-		// @ToDo: ATTENTION: This method may cause damage to whole column in table at database
 		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
-		if (substr_compare($extension, 'mod_', 0, 4))
+		if (strpos($extension, 'mod_') !== false)
 		{
 			$table_name = Generals::$db_prefix . 'modules';
-			$criteria[] = "WHERE `module` = '$extension'";
+//			$criteria[] = "WHERE `module` = '$extension'";
+			$where      = " WHERE `module` = '$extension'";
 		}
-		else
+	else
 		{
 			$table_name = Generals::$db_prefix . 'extensions';
-			$criteria[] = "WHERE `element` = '$extension'";
+//			$criteria[] = "WHERE `element` = '$extension'";
+			$where      = " WHERE `element` = '$extension'";
 		}
 
+		$query      = "UPDATE $table_name SET `params` = '$options' $where";
 
-codecept_debug('Arrived in DbHelper');
-		$query      = "UPDATE $table_name SET `params` = '$options'";
 		$driver->executeQuery($query, $criteria);
 	}
 
@@ -221,7 +250,7 @@ codecept_debug('Arrived in DbHelper');
 		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 		$table_name = Generals::$db_prefix . $table;
 
-		codecept_debug('Arrived in DbHelper');
+//codecept_debug('Arrived in DbHelper');
 		$query      = "UPDATE $table_name SET " . implode(', ', $values);
 		$driver->executeQuery($query, $criteria);
 	}
@@ -294,10 +323,11 @@ codecept_debug('Arrived in DbHelper');
 				$tables[] = $value;
 			}
 		}
+		$asset_table  = Generals::$db_prefix . 'assets';
+		$tables[]     = $asset_table;
 
-		$names_string   = implode(" ", $tables);
+		$names_string = implode(" ", $tables);
 
 		return $names_string;
 	}
-
 }

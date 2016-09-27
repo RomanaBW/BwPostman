@@ -309,8 +309,11 @@ class TestSubscribersDetailsCest
 			{
 				$I->click(SubEdit::$toolbar['Save']);
 
-				$I->seeInPopup(SubEdit::$popup_firstname);
-				$I->acceptPopup();
+				if ($options->firstname_field_obligation)
+				{
+					$I->seeInPopup(SubEdit::$popup_firstname);
+					$I->acceptPopup();
+				}
 			}
 			$I->fillField(SubEdit::$firstname, SubEdit::$field_firstname);
 		}
@@ -323,8 +326,11 @@ class TestSubscribersDetailsCest
 			{
 				$I->click(SubEdit::$toolbar['Save']);
 
-				$I->seeInPopup(SubEdit::$popup_name);
-				$I->acceptPopup();
+				if ($options->name_field_obligation)
+				{
+					$I->seeInPopup(SubEdit::$popup_name);
+					$I->acceptPopup();
+				}
 			}
 			$I->fillField(SubEdit::$name, SubEdit::$field_name);
 		}
@@ -335,25 +341,22 @@ class TestSubscribersDetailsCest
 			if ($options->firstname_field_obligation)
 			{
 				$I->fillField(SubEdit::$special, "");
-				$I->seeInPopup(sprintf(SubEdit::$popup_special, $options->special_label));
-				$I->acceptPopup();
+				if ($options->special_field_obligation)
+				{
+					$I->seeInPopup(sprintf(SubEdit::$popup_special, $options->special_label));
+					$I->acceptPopup();
+				}
 			}
 			$I->fillField(SubEdit::$special, SubEdit::$field_special);
 		}
 
 		// omit email address
-		if ($options->show_name_field || $options->name_field_obligation)
-		{
-			$I->fillField(SubEdit::$email, '');
-			if ($options->name_field_obligation)
-			{
-				$I->click(SubEdit::$toolbar['Save & Close']);
+		$I->fillField(SubEdit::$email, '');
+		$I->click(SubEdit::$toolbar['Save & Close']);
 
-				$I->seeInPopup(SubEdit::$popup_email);
-				$I->acceptPopup();
-			}
-			$I->fillField(SubEdit::$email, SubEdit::$field_email);
-		}
+		$I->seeInPopup(SubEdit::$popup_email);
+		$I->acceptPopup();
+		$I->fillField(SubEdit::$email, SubEdit::$field_email);
 
 		if ($options->show_emailformat)
 		{

@@ -45,7 +45,8 @@ class TemplateEditPage
 	public static $field_thumbnail         = 'images/powered_by.png';
 
 	public static $thumb_select_button     = './/*[@id=\'adminForm\']/fieldset/div/div[1]/div[1]/dd[1]/fieldset[1]/div/ul/li[3]/div/div/a[1]';
-	public static $thumb_select            = "html/body/ul/li[6]/a";
+//	public static $thumb_select            = "html/body/ul/li[6]/a";
+	public static $thumb_select            = "html/body/ul/li/a[contains(@href,'powered_by.png')]";
 	public static $thumb_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
 	public static $thumb_media_url_field   = ".//*[@id='f_url']";
 	public static $thumb_url               = "/images/powered_by.png";
@@ -72,7 +73,7 @@ class TemplateEditPage
 	public static $text_style       = ".//*[@id='jform_tpl_html']";
 
 	//buttons
-	public static $button_editor_toggle     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/div/div[2]/div/a";
+	public static $button_editor_toggle     = ".//*[@id='wf_editor_jform_tpl_html_toggle']";
 	public static $button_refresh_preview   = ".//*[@id='email_preview']/p/button";
 	public static $button_first_name        = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[1]";
 	public static $button_last_name         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[2]";

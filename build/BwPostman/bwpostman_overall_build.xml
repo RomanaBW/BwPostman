@@ -13,6 +13,7 @@
 		<property name="module_1" value="mod_bwpostman" override="true" />
 		<property name="module_2" value="mod_bwpostman_overview" override="true" />
 		<property name="plugin_1" value="personalize" override="true" />
+		<property name="plugin_2" value="registersubscribe" override="true" />
 
 		<echo msg="target dirs…" />
 		<property name="target_base_module_1_dir" value="${target_base_dir}/${module_1}" override="true" />
@@ -44,6 +45,7 @@
 		<copy file="${target_base_module_1_dir}/${module_1}.${version}.zip" tofile="${target_base_dir}/${module_1}.${version}.zip" />
 		<copy file="${target_base_module_2_dir}/${module_2}.${version}.zip" tofile="${target_base_dir}/${module_2}.${version}.zip" />
 		<copy file="${target_base_dir}/plugins/${plugin_1}/plg_bwpostman_${plugin_1}.${version}.zip" tofile="${target_base_dir}/plg_bwpostman_${plugin_1}.${version}.zip" />
+		<copy file="${target_base_dir}/plugins/${plugin_2}/plg_bwpostman_${plugin_2}.${version}.zip" tofile="${target_base_dir}/plg_bwpostman_${plugin_2}.${version}.zip" />
 
 		<echo msg="Chmod target dir…" />
 		<chmod file="${target_base_dir}" mode="0777" />
@@ -80,6 +82,7 @@
 		<move file="${target_base_dir}/${module_1}.${version}.zip" tofile="${target_base_dir}/packages/${module_1}.zip" />
 		<move file="${target_base_dir}/${module_2}.${version}.zip" tofile="${target_base_dir}/packages/${module_2}.zip" />
 		<move file="${target_base_dir}/plg_bwpostman_${plugin_1}.${version}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_1}.zip" />
+		<move file="${target_base_dir}/plg_bwpostman_${plugin_2}.${version}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_2}.zip" />
 		<copy file="${manifest_dir}/pkg_bwpostman.xml" tofile="${target_base_dir}/pkg_bwpostman.xml" />
 
 		<echo msg="Copy Zip files…" />
@@ -113,6 +116,7 @@
 		<delete file="${target_base_dir}/packages/${module_1}.zip" failonerror="false" />
 		<delete file="${target_base_dir}/packages/${module_2}.zip" failonerror="false" />
 		<delete file="${target_base_dir}/packages/plg_bwpostman_${plugin_1}.zip" failonerror="false" />
+		<delete file="${target_base_dir}/packages/plg_bwpostman_${plugin_2}.zip" failonerror="false" />
 	</target>
 
 	<!-- ============================================  -->

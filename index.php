@@ -1,0 +1,1 @@
+/home/romana/Desktop/vhosts/dev/joomla-cms/index.php

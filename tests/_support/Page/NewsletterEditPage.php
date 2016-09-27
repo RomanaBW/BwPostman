@@ -86,7 +86,7 @@ class NewsletterEditPage
 	public static $attachment_id                = "jform_attachment";
 
 	public static $attachment_select_button     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/a[1]";
-	public static $attachment_select            = "html/body/ul/li[5]";
+	public static $attachment_select            = "html/body/ul/li/a[contains(@href,'joomla_black.png')]";
 	public static $attachment_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
 	public static $attachment_media_url_field   = ".//*[@id='f_url']";
 	public static $attachment_url               = "images/joomla_black.png";
@@ -98,8 +98,8 @@ class NewsletterEditPage
 	public static $today_up             = "html/body/div[6]/table/thead/tr[2]/td[3]/div";
 	public static $today_down           = "html/body/div[7]/table/thead/tr[2]/td[3]/div";
 
-	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label[2]";
-	public static $template_text    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label[4]";
+	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label/div/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
+	public static $template_text    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label/div/span[contains(text(),'Standard TEXT Template 3')]";
 
 	public static $msg_required_sender_name     = "Field required: Sender's name";
 	public static $msg_required_sender_email    = "Field required: Sender's email";

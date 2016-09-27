@@ -129,9 +129,9 @@ class NewsletterManagerPage
 	// Filter authors
 	public static $authors_col                  = ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[6]";
 	public static $filter_authors_list          = ".//*[@id='filter_authors_chzn']/a";
-	public static $filter_author_1              = ".//*[@id='filter_authors_chzn']/div/ul/li[2]";
-	public static $filter_author_2              = ".//*[@id='filter_authors_chzn']/div/ul/li[3]";
-	public static $filter_author_3              = ".//*[@id='filter_authors_chzn']/div/ul/li[4]";
+	public static $filter_author_1              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BE User 1')]";
+	public static $filter_author_2              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'Romana')]";
+	public static $filter_author_3              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'Super User')]";
 
 	public static $filter_author_1_txt          = 'BE User 1';
 	public static $filter_author_2_txt          = 'Romana';

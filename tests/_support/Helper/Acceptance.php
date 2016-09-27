@@ -34,7 +34,9 @@ class Acceptance extends Codeception\Module
 	 */
 	public function _getQueryBase()
 	{
-		return "mysql -u " . Generals::$db_user . " -p" . Generals::$db_pw . " " . Generals::$db_db . " < " . Generals::$db_data_path;
+		$credentials    = $this->_getDbCredentials();
+
+		return "mysql -u " . $credentials['user'] . " -p" . $credentials['password'] . " " . $credentials['database'] . " < " . Generals::$db_data_path;
 	}
 
 	/**
@@ -46,20 +48,21 @@ class Acceptance extends Codeception\Module
 	{
 		$credentials    = $this->_getDbCredentials();
 
-		$command    = "mysqldump -u " . Generals::$db_user . " -p" . Generals::$db_pw;
+		$command    = "mysqldump -u " . $credentials['user'] . " -p" . $credentials['password'];
 		$options    = "  --skip-add-drop-table --single-transaction ";
-		$database   = Generals::$db_db;
 		$special    = " | sed -r 's/CREATE TABLE (`[^`]+`)/TRUNCATE TABLE \\1;\\nCREATE TABLE IF NOT EXISTS \\1/g'";
 		$target     = " > " . Generals::$db_data_path;
 
 		$tables     = DbHelper::getTableNames($credentials);
 
-		$query   = $command . $options . $database . " " . $tables . $special . $target;
+		$query   = $command . $options . $credentials['database'] . " " . $tables . $special . $target;
 
 		return $query;
 	}
 	/**
 	 * Method to fill database with test data before tests are processed
+	 *
+	 * @param   \AcceptanceTester $I
 	 *
 	 * @since   2.0.0
 	 */
@@ -463,6 +466,11 @@ class Acceptance extends Codeception\Module
 		$credentials['user']     = $_db->_getConfig('user');
 		$credentials['password'] = $_db->_getConfig('password');
 
+		$dsn_array  = explode(';', $credentials['dsn']);
+		$db_name    = explode('=', $dsn_array[1]);
+
+		$credentials['database'] = $db_name[1];
+
 		return $credentials;
 	}
 
@@ -481,6 +489,25 @@ class Acceptance extends Codeception\Module
 		$credentials = self::_getDbCredentials();
 
 		$result = DbHelper::fetchActivationCode($subscriber_mail, $criteria = array(), $credentials);
+
+		return $result;
+	}
+
+	/**
+	 * Method to get joomla activation code from database
+	 *
+	 * @param   string $user_mail mail address of user
+	 *
+	 * @return  string
+	 *
+	 * @since   2.0.0
+	 */
+
+	public function getJoomlaActivationCode($user_mail)
+	{
+		$credentials = self::_getDbCredentials();
+
+		$result = DbHelper::fetchJoomlaActivationCode($user_mail, $criteria = array(), $credentials);
 
 		return $result;
 	}
@@ -1027,7 +1054,7 @@ class Acceptance extends Codeception\Module
 	}
 
 	/**
-	 * Method to set options of specified extension
+	 * Method to set a single option of specified extension
 	 *
 	 * @param   string      $extension      the extension to set the option for
 	 * @param   string      $option         the option to update
@@ -1037,10 +1064,9 @@ class Acceptance extends Codeception\Module
 	 */
 	public function setManifestOption($extension = 'com_bwpostman', $option, $value)
 	{
-		// @ToDo: ATTENTION: This method may cause damage to whole column in table at database
 		$credentials    = $this->_getDbCredentials();
 		$criteria       = array();
-		$options        = Generals::$com_options;
+		$options        = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
 
 		$options->$option   = $value;
 

@@ -49,7 +49,6 @@ class RegisterSubscriberPage
 	public static $login_identifier_format_text     = ".//*[@id='jform_registerSubscribe_registerSubscribe_selected_mailformat']/label[1]";
 	public static $login_identifier_format_html     = ".//*[@id='jform_registerSubscribe_registerSubscribe_selected_mailformat']/label[2]";
 	public static $login_identifier_register        = ".//*[@id='member-registration']/div/div/button";
-	public static $login_identifier_cancel          = ".//*[@id='member-registration']/div/div/a";
 
 	// login field values
 	public static $login_value_name         = "Sam Sample";
@@ -72,8 +71,8 @@ class RegisterSubscriberPage
 	public static $plugin_page                      = "/administrator/index.php?option=com_plugins";
 
 	// com_users related
-	public static $user_filter_col_identifier       = ".//*[@id='userList']/tbody/*/td[2]";
 	public static $user_edit_identifier             = ".//*[@id='userList']/tbody/*/td[2]/div[1]/a";
+	public static $toolbar_apply_button             = ".//*[@id='toolbar-apply']/button";
 	public static $toolbar_save_button              = ".//*[@id='toolbar-save']/button";
 	public static $toolbar_delete_button            = ".//*[@id='toolbar-delete']/button";
 
@@ -82,12 +81,10 @@ class RegisterSubscriberPage
 	public static $tab_unconfirmed                  = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
 	public static $subscriber_email_col_identifier  = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
 	public static $subscriber_format_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[6]";
-	public static $subscriber_userid_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[7]";
 	public static $subscriber_filter_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
 	public static $subscriber_edit_link             = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]/a";
 
 	// mailinglist check
-	public static $available_mailinglists_label     = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/legend";
 	public static $mailinglist1_checked             = ".//*[@id='jform_ml_available_1']";
 	public static $mailinglist2_checked             = ".//*[@id='jform_ml_available_4']";
 	public static $mailinglist_fieldset_identifier  = "//*[@id='adminForm']/div[1]/div[1]/fieldset/div[1]/div/fieldset/legend/span[2]";
@@ -106,9 +103,27 @@ class RegisterSubscriberPage
 	// com_plugin related
 	public static $view_plugin                      = "Plugins";
 	public static $plugin_name                      = "BwPostman Plugin RegisterSubscribe";
-	public static $search_plugin_group_list         = ".//*[@id='filter_folder_chzn']/a";
-	public static $search_group_value               = ".//*[@id='filter_folder_chzn']/div/ul/li[text()='system']";
 	public static $icon_published_identifier        = ".//*[@id='pluginList']/tbody/tr/td[3]/a/span";
+	public static $plugin_edit_identifier           = ".//*[@id='pluginList']/tbody/tr/td[4]/a";
+
+	// plugin edit tab options
+	public static $plugin_tab_options               = ".//*[@id='myTabTabs']/li[2]/a";
+	public static $plugin_message_identifier        = ".//*[@id='jform_params_register_message_option']";
+	public static $plugin_show_format_yes           = ".//*[@id='jform_params_show_format_selection_option']/label[2]";
+	public static $plugin_show_format_no            = ".//*[@id='jform_params_show_format_selection_option']/label[1]";
+	public static $plugin_format_html               = ".//*[@id='jform_params_predefined_mailformat_option']/label[2]";
+	public static $plugin_format_text               = ".//*[@id='jform_params_predefined_mailformat_option']/label[1]";
+	public static $plugin_auto_update_yes           = ".//*[@id='jform_params_auto_update_email_option']/label[2]";
+	public static $plugin_auto_update_no            = ".//*[@id='jform_params_auto_update_email_option']/label[1]";
+	public static $plugin_auto_delete_yes           = ".//*[@id='jform_params_register_subscribe_option']/label[2]";
+	public static $plugin_auto_delete_no            = ".//*[@id='jform_params_register_subscribe_option']/label[1]";
+
+	public static $plugin_message_old               = 'Test text for newsletter message text';
+	public static $plugin_message_new               = 'New Newsletter message text';
+
+	// plugin edit tab mailinglists
+	public static $plugin_tab_mailinglists          = ".//*[@id='myTabTabs']/li[3]/a";
+	public static $plugin_checkbox_mailinglist      = ".//*[@id='mb%s']";
 
 	//messages
 	public static $delete_confirm           = "Are you sure you want to delete? Confirming will permanently delete the selected item(s)!";
@@ -117,4 +132,5 @@ class RegisterSubscriberPage
 
 	public static $plugin_disabled_success  = 'Plugin successfully disabled';
 	public static $plugin_enabled_success   = 'Plugin successfully enabled';
+	public static $plugin_saved_success     = 'Plugin successfully saved';
 }

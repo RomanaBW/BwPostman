@@ -418,7 +418,7 @@ class RegisterSubscribeCest
 			$identifier = $this->getTabDependentIdentifier(RegPage::$subscriber_edit_link);
 			$this->gotoSubscribersListTab($I);
 			$this->filterForSubscriber($I);
-$I->wait(5);
+
 			$I->dontSee(RegPage::$login_value_name, $identifier);
 
 			$this->deleteJoomlaUser($I);
@@ -615,8 +615,7 @@ $I->wait(5);
 	}
 
 	/**
-	 * Test method to register user with subscription selected no
-	 * You see Joomla user but no subscriber
+	 * Test method to check for deactivated plugin
 	 *
 	 * @param   AcceptanceTester $I
 	 *
@@ -638,7 +637,6 @@ $I->wait(5);
 
 		$this->disablePlugin($I);
 
-		// @ ToDo: check frontend
 		$admin = $I->haveFriend('Admin');
 		$admin->does(function (AcceptanceTester $I)
 		{
@@ -656,7 +654,316 @@ $I->wait(5);
 		LoginPage::logoutFromBackend($I);
 	}
 
-		/**
+	/**
+	 * Test method to option message
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function RegisterSubscribeOptionsMessage(AcceptanceTester $I)
+	{
+		$I->wantTo("change newsletter message and change back");
+		$I->expectTo('see changed messages as tooltip at Joomla registration form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
+
+		$I->fillField(RegPage::$plugin_message_identifier, RegPage::$plugin_message_new);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->see(RegPage::$plugin_message_new, RegPage::$plugin_message_identifier);
+
+		// look at FE
+		$user = $I->haveFriend('User');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->selectRegistrationPage($I);
+
+			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_registerSubscribe_registerSubscribe-lbl']", 'data-content');
+			$I->assertEquals(RegPage::$plugin_message_new, $message_text);
+		}
+		);
+
+		$I->fillField(RegPage::$plugin_message_identifier, RegPage::$plugin_message_old);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->see(RegPage::$plugin_message_old, RegPage::$plugin_message_identifier);
+
+		// look at FE
+		$user = $I->haveFriend('User');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->selectRegistrationPage($I);
+
+			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_registerSubscribe_registerSubscribe-lbl']", 'data-content');
+			$I->assertEquals(RegPage::$plugin_message_old, $message_text);
+		}
+		);
+
+		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
+	 * Test method to option show newsletter format
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function RegisterSubscribeOptionsSwitchShowFormat(AcceptanceTester $I)
+	{
+		$I->wantTo("switch option 'newsletter show format' from yes to no and back");
+		$I->expectTo('see, see not, see format selection at Joomla registration form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
+
+		// switch to no
+		$I->clickAndWait(RegPage::$plugin_show_format_no, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_show_format_no, ['class' => Generals::$button_red]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("0", $options->show_format_selection_option);
+
+		// look at FE
+		$user = $I->haveFriend('User');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->selectRegistrationPage($I);
+
+			$I->dontSeeElement(RegPage::$login_identifier_format_html);
+			$I->dontSeeElement(RegPage::$login_identifier_format_text);
+		}
+		);
+
+		// switch to yes
+		$I->clickAndWait(RegPage::$plugin_show_format_yes, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_show_format_yes, ['class' => Generals::$button_green]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("1", $options->show_format_selection_option);
+
+		// look at FE
+		$user = $I->haveFriend('User');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->selectRegistrationPage($I);
+
+			$I->seeElement(RegPage::$login_identifier_format_text);
+			$I->seeElement(RegPage::$login_identifier_format_html);
+		}
+		);
+
+		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
+	 * Test method to option predefined newsletter format
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function RegisterSubscribePredefinedFormat(AcceptanceTester $I)
+	{
+		$I->wantTo("switch option 'newsletter format' from yes to no and back");
+		$I->expectTo('see Text, see HTML preselected at Joomla registration form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
+
+		// switch to Text
+		$I->clickAndWait(RegPage::$plugin_format_text, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_format_text, ['class' => Generals::$button_red]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("0", $options->predefined_mailformat_option);
+
+		// look at FE
+		$user = $I->haveFriend('User');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->selectRegistrationPage($I);
+
+			$I->seeElement(RegPage::$login_identifier_format_text, ['class' => Generals::$button_red]);
+			$I->dontSeeElement(RegPage::$login_identifier_format_html, ['class' => Generals::$button_green]);
+		}
+		);
+
+		// switch to yes
+		$I->clickAndWait(RegPage::$plugin_format_html, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_format_html, ['class' => Generals::$button_green]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("1", $options->predefined_mailformat_option);
+
+		// look at FE
+		$user = $I->haveFriend('User');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->selectRegistrationPage($I);
+
+			$I->dontSeeElement(RegPage::$login_identifier_format_text, ['class' => Generals::$button_red]);
+			$I->seeElement(RegPage::$login_identifier_format_html, ['class' => Generals::$button_green]);
+		}
+		);
+
+		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
+	 * Test method to option auto update
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function RegisterSubscribeOptionsAutoUpdate(AcceptanceTester $I)
+	{
+		$I->wantTo("switch option 'auto update email' from yes to no and back");
+		$I->expectTo('see No, see Yes at field auto update of plugin options form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
+
+		// switch to Text
+		$I->clickAndWait(RegPage::$plugin_auto_update_no, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_auto_update_no, ['class' => Generals::$button_red]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("0", $options->auto_update_email_option);
+
+		// switch to yes
+		$I->clickAndWait(RegPage::$plugin_auto_update_yes, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_auto_update_yes, ['class' => Generals::$button_green]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("1", $options->auto_update_email_option);
+
+		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
+	 * Test method to option auto delete
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function RegisterSubscribeOptionsAutoDelete(AcceptanceTester $I)
+	{
+		$I->wantTo("switch option 'auto delete' from yes to no and back");
+		$I->expectTo('see No, see Yes at auto delete of plugin options form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
+
+		// switch to Text
+		$I->clickAndWait(RegPage::$plugin_auto_delete_no, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_auto_delete_no, ['class' => Generals::$button_red]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("0", $options->auto_delete_option);
+
+		// switch to yes
+		$I->clickAndWait(RegPage::$plugin_auto_delete_yes, 1);
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeElement(RegPage::$plugin_auto_delete_yes, ['class' => Generals::$button_green]);
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("1", $options->auto_delete_option);
+
+		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
+	 * Test method to option message
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function RegisterSubscribeOptionsMailinglists(AcceptanceTester $I)
+	{
+		$I->wantTo("add additional mailinglist to options");
+		$I->expectTo('see further selected mailinglist at plugin options form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(RegPage::$plugin_tab_mailinglists, 1);
+
+		// click checkbox for further mailinglist
+		$I->checkOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("1", $options->ml_available[0]);
+		$I->assertEquals("4", $options->ml_available[1]);
+
+		// deselect further mailinglist
+		$I->uncheckOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
+		$I->see(RegPage::$plugin_saved_success);
+		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+
+		// getManifestOption
+		$options = $I->getManifestOptions('registersubscribe');
+		$I->assertEquals("4", $options->ml_available[0]);
+
+		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
 	 * @param   AcceptanceTester    $I
 	 *
 	 *
@@ -1037,7 +1344,7 @@ $I->wait(5);
 	{
 		$I->amOnPage(RegPage::$plugin_page);
 		$I->wait(1);
-		$I->see('Plugins', Generals::$pageTitle);
+		$I->see(RegPage::$view_plugin, Generals::$pageTitle);
 	}
 
 	/**
@@ -1086,6 +1393,24 @@ $I->wait(5);
 			$I->clickAndWait(RegPage::$icon_published_identifier, 2);
 			$I->see(RegPage::$plugin_enabled_success, Generals::$alert_success);
 		}
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since version
+	 */
+	protected function editPluginOptions(AcceptanceTester $I)
+	{
+		$this->tester = $I;
+		LoginPage::logIntoBackend(Generals::$admin);
+
+		$this->selectPluginPage($I);
+
+		$this->filterForPlugin($I);
+
+		$I->clickAndWait(RegPage::$plugin_edit_identifier, 1);
 	}
 
 }

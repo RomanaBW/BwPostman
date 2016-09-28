@@ -104,7 +104,7 @@ class Login
 	 */
 	public function logoutFromBackend(\AcceptanceTester $I)
 	{
-		$loginArea     = sprintf(".//*/button[contains(., %s)]", Generals::$login_txt);
+		$loginArea     = sprintf(".//*/button[contains(., '%s')]", Generals::$login_txt);
 
 		$I->click(Generals::$nav_user_menu);
 		$I->click(Generals::$nav_user_menu_logout);

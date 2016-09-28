@@ -984,6 +984,7 @@ class RegisterSubscribeCest
 		$I->setManifestOption('registersubscribe', 'predefined_mailformat_option', '1');
 		$I->setManifestOption('registersubscribe', 'auto_update_email_option', '1');
 		$I->setManifestOption('registersubscribe', 'auto_delete_option', '1');
+		$I->setManifestOption('registersubscribe', 'ml_available', array("4"));
 	}
 
 	/**

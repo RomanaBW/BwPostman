@@ -193,6 +193,15 @@ class PlgSystemRegisterSubscribe extends JPlugin
 			return false;
 		}
 
+		// Add CSS for the radio fields
+		$doc = JFactory::getDocument();
+
+		$css = "fieldset.registerradio {line-height:1em;}
+                fieldset.registerradio input {margin:0 !important;vertical-align:middle !important;}
+                fieldset.registerradio label {vertical-align:middle !important;margin-right:15px;}
+                ";
+		$doc->addStyleDeclaration($css);
+
 		$form->setFieldAttribute('registerSubscribe_selected_mailformat', 'default', (int)$this->params->get('predefined_mailformat_option'), 'registerSubscribe');
 
 		if (!$this->params->get('show_format_selection_option'))
@@ -361,6 +370,11 @@ foreach ($data as $key => $value)
 		try
 		{
 			$mailinglist_ids    = $this->params->get('ml_available');
+
+			if ((count($mailinglist_ids) == 1) && ($mailinglist_ids[0] == 0))
+			{
+				unset($mailinglist_ids[0]);
+			}
 
 			if (empty($mailinglist_ids))
 			{

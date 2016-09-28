@@ -183,8 +183,8 @@ class Acceptance extends Codeception\Module
 	 */
 	public function GetListLength(\AcceptanceTester $I)
 	{
-		$rcount   = count($I->GetTableRows($I));
-		return $rcount;
+		$row_count   = count($I->GetTableRows($I));
+		return $row_count;
 	}
 
 	/**

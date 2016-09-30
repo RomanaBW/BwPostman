@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension group="system" method="upgrade" type="plugin" version="3.4">
-	<name>PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE</name>
+	<name>PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER</name>
 	<version>2.0.0</version>
 	<creationDate>October 2016</creationDate>
 	<author>Boldt Webservice</author>
@@ -8,12 +8,12 @@
 	<authorUrl>http://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
-	<description>PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_DESCRIPTION</description>
+	<description>PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DESCRIPTION</description>
 <!--
 	<scriptfile>installscript.php</scriptfile>
 -->
 	<files>
-		<filename plugin="registersubscribe">registersubscribe.php</filename>
+		<filename plugin="bwpm_user2subscriber">bwpm_user2subscriber.php</filename>
 <!--		<filename >installscript.php</filename>-->
 		<filename >index.html</filename>
 		<folder>form</folder>
@@ -21,10 +21,10 @@
 	</files>
 
 	<languages folder="language">
-		<language tag="de-DE">de-DE/de-DE.plg_system_registersubscribe.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_system_registersubscribe.sys.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_system_registersubscribe.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_system_registersubscribe.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_system_bwpm_user2subscriber.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_system_bwpm_user2subscriber.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_bwpm_user2subscriber.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini</language>
 	</languages>
 
 	<config>
@@ -34,9 +34,9 @@
 						name="register_message_option"
 						type="textarea"
 						id="register_message_option"
-						description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_MESSAGE_DESC"
+						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_MESSAGE_DESC"
 						filter="string"
-						label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_MESSAGE_LABEL"
+						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_MESSAGE_LABEL"
 						cols="50"
 						rows="10"
 						default=""
@@ -47,8 +47,8 @@
 						id="show_format_selection_option"
 						type="radio"
 						class="btn-group btn-group-yesno"
-						label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_SHOW_FORMAT_SELECTION_LABEL"
-						description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_SHOW_FORMAT_SELECTION_DESC"
+						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_SHOW_FORMAT_SELECTION_LABEL"
+						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_SHOW_FORMAT_SELECTION_DESC"
 						default="1"
 				>
 				<option value="0">JNO</option>
@@ -60,8 +60,8 @@
 						id="predefined_mailformat_option"
 						type="radio"
 						class="btn-group btn-group-yesno"
-						label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_MAILFORMAT_LABEL"
-						description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_MAILFORMAT_DESC"
+						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_MAILFORMAT_LABEL"
+						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_MAILFORMAT_DESC"
 						default="1"
 				>
 					<option value="0">PLG_BWPOSTMAN_TEXT</option>
@@ -75,8 +75,8 @@
 						id="auto_update_email_option"
 						type="radio"
 						class="btn-group btn-group-yesno"
-						label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_AUTO_UPDATE_EMAIL_LABEL"
-						description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_AUTO_UPDATE_EMAIL_DESC"
+						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_AUTO_UPDATE_EMAIL_LABEL"
+						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_AUTO_UPDATE_EMAIL_DESC"
 						default="1"
 				>
 					<option value="0">JNO</option>
@@ -88,8 +88,8 @@
 						id="register_subscribe_option"
 						type="radio"
 						class="btn-group btn-group-yesno"
-						label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_AUTO_DELETE_LABEL"
-						description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_AUTO_DELETE_DESC"
+						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_AUTO_DELETE_LABEL"
+						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_AUTO_DELETE_DESC"
 						default="1"
 				>
 					<option value="0">JNO</option>
@@ -100,9 +100,9 @@
 				<field
 						name="ml_available"
 						type="comml"
-						label="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_ML_AVAILABLE_LABEL"
+						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ML_AVAILABLE_LABEL"
 						labelclass="control-label"
-						description="PLG_BWPOSTMAN_PLUGIN_REGISTERSUBSCRIBE_OPTION_ML_AVAILABLE_DESC"
+						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ML_AVAILABLE_DESC"
 						multiple="true"
 						size="5"
 						default="0"
@@ -115,7 +115,7 @@
 	</config>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/plg_bwpostman_registersubscribe_update.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/plg_bwpostman_bwpm_user2subscriber_update.xml</server>
 	</updateservers>
 
 </extension>

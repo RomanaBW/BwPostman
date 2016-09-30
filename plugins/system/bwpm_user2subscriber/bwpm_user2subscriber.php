@@ -30,7 +30,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
 
-require_once (JPATH_PLUGINS . '/system/registersubscribe/helpers/registersubscribehelper.php');
+require_once (JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
@@ -40,7 +40,7 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
  *
  * @since  2.0.0
  */
-class PlgSystemRegisterSubscribe extends JPlugin
+class PlgSystemBWPM_User2Subscriber extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation
@@ -202,16 +202,16 @@ class PlgSystemRegisterSubscribe extends JPlugin
                 ";
 		$doc->addStyleDeclaration($css);
 
-		$form->setFieldAttribute('registerSubscribe_selected_mailformat', 'default', (int)$this->params->get('predefined_mailformat_option'), 'registerSubscribe');
+		$form->setFieldAttribute('bwpm_user2subscriber_selected_mailformat', 'default', (int)$this->params->get('predefined_mailformat_option'), 'bwpm_user2subscriber');
 
 		if (!$this->params->get('show_format_selection_option'))
 		{
-			$form->setFieldAttribute('registerSubscribe_selected_mailformat', 'type', 'hidden', 'registerSubscribe');
+			$form->setFieldAttribute('bwpm_user2subscriber_selected_mailformat', 'type', 'hidden', 'bwpm_user2subscriber');
 		}
 
 		if ($this->params->get('register_message_option') != '')
 		{
-			$form->setFieldAttribute('registerSubscribe', 'description', $this->params->get('register_message_option'), 'registerSubscribe');
+			$form->setFieldAttribute('bwpm_user2subscriber', 'description', $this->params->get('register_message_option'), 'bwpm_user2subscriber');
 		}
 
 		return true;
@@ -242,8 +242,8 @@ class PlgSystemRegisterSubscribe extends JPlugin
 		if ($activation != '')
 		{
 			$session = JFactory::getSession();
-			$session->set('plg_registersubscribe.userid', $user_id);
-			$session->set('plg_registersubscribe.activation', $activation);
+			$session->set('plg_bwpm_user2subscriber.userid', $user_id);
+			$session->set('plg_bwpm_user2subscriber.activation', $activation);
 		}
 		return true;
 	}
@@ -286,9 +286,9 @@ foreach ($data as $key => $value)
 		$user_mail              = ArrayHelper::getValue($data, 'email', '', 'string');
 		$user_id                = ArrayHelper::getValue($data, 'id', 0, 'int');
 		$user_name              = ArrayHelper::getValue($data, 'name', '', 'string');
-		$register_subscribe     = ArrayHelper::getValue($data, 'registerSubscribe', '', 'array');
-		$mailformat             = ArrayHelper::getValue($register_subscribe, 'registerSubscribe_selected_mailformat', 1, 'int');
-		$subscription_wanted    = ArrayHelper::getValue($register_subscribe, 'registerSubscribe', 1, 'int');
+		$register_subscribe     = ArrayHelper::getValue($data, 'bwpm_user2subscriber', '', 'array');
+		$mailformat             = ArrayHelper::getValue($register_subscribe, 'bwpm_user2subscriber_selected_mailformat', 1, 'int');
+		$subscription_wanted    = ArrayHelper::getValue($register_subscribe, 'bwpm_user2subscriber', 1, 'int');
 
 		if ($isNew)
 		{
@@ -318,7 +318,7 @@ foreach ($data as $key => $value)
 		}
 
 		$session        = JFactory::getSession();
-		$activation     = $session->get('plg_registersubscribe.activation');
+		$activation     = $session->get('plg_bwpm_user2subscriber.activation');
 		$task           = JFactory::getApplication()->input->get->get('task', '', 'string');
 		$token          = JFactory::getApplication()->input->get->get('token', '', 'string');
 

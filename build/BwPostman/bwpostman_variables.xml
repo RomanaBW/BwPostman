@@ -12,7 +12,7 @@
 		<!-- ============================================  -->
 		<!-- Set ssh data                                  -->
 		<!-- ============================================  -->
-		<property name="upload" value="0" override="true" />
+		<property name="upload" value="1" override="true" />
 
 		<property name="host" value="ssh.strato.de" override="true" />
 		<property name="username" value="www.boldt-webservice.de" override="true" />

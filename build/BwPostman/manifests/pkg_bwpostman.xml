@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="3.2" method="upgrade">
 	<name>BwPostman Complete Package</name>
-	<creationDate>September 2016</creationDate>
+	<creationDate>October 2016</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<url>http://www.boldt-webservice.de</url>
@@ -23,7 +23,7 @@
 		<file type="module" id="mod_bwpostman" client="site">mod_bwpostman.zip</file>
 		<file type="module" id="mod_bwpostman_overview" client="site">mod_bwpostman_overview.zip</file>
 		<file type="plugin" id="personalize" group="bwpostman" client="site">plg_bwpostman_personalize.zip</file>
-		<file type="plugin" id="registersubscribe" group="system" client="site">plg_bwpostman_registersubscribe.zip</file>
+		<file type="plugin" id="bwpm_user2subscriber" group="system" client="site">plg_bwpostman_bwpm_user2subscriber.zip</file>
 
 	</files>
 </extension>

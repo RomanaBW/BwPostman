@@ -5,11 +5,11 @@
 	<import file="./bwpostman_module_subscription_build.xml"/>
 	<import file="./bwpostman_module_overview_build.xml"/>
 	<import file="./bwpostman_plugin_personalize_build.xml"/>
-	<import file="./bwpostman_plugin_registersubscribe_build.xml"/>
+	<import file="./bwpostman_plugin_bwpm_user2subscriber_build.xml"/>
 	<import file="./bwpostman_languages_build.xml"/>
 	<import file="./bwpostman_overall_build.xml"/>
 
-	<target name="build" depends="pack_component, pack_subscription, pack_overview, pack_personalize, pack_registersubscribe, pack_languages, upload" description="Do a full build"/>
+	<target name="build" depends="pack_component, pack_subscription, pack_overview, pack_personalize, pack_bwpm_user2subscriber, pack_languages, upload" description="Do a full build"/>
 	<!--
 		<target name="build" depends="pack_component, pack_subscription, pack_overview, pack_personalize, pack_overall" description="Do a full build"/>
 -->

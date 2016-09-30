@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="bwpm_user2subscriber">
+		<fieldset name="bwpm_user2subscriber" >
+			<field
+				name="bwpm_user2subscriber"
+				id="bwpm_user2subscriber"
+				type="radio"
+				class="btn-group btn-group-yesno"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_CHECKBOX_LABEL"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_CHECKBOX_DESC"
+			    default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+					name="bwpm_user2subscriber_selected_mailformat"
+					id="bwpm_user2subscriber_selected_mailformat"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_LABEL"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_DESC"
+					default="1"
+			>
+				<option value="0">PLG_BWPOSTMAN_TEXT</option>
+				<option value="1">PLG_BWPOSTMAN_HTML</option>
+			</field>
+
+			<field name="spacer2_4" type="spacer" hr="true" />
+
+		</fieldset>
+	</fields>
+</form>

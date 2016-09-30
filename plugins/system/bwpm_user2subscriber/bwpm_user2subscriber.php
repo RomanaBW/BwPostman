@@ -1,13 +1,13 @@
 <?php
 /**
- * BwPostman RegisterSubscribe Plugin
+ * BwPostman User2Subscriber Plugin
  *
  * Plugin to automated subscription at Joomla registration
  *
- * BwPostman RegisterSubscribe Plugin main file for BwPostman.
+ * BwPostman User2Subscriber Plugin main file for BwPostman.
  *
  * @version 2.0.0 bwpmprs
- * @package			BwPostman RegisterSubscribe Plugin
+ * @package			BwPostman User2Subscriber Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
@@ -36,7 +36,7 @@ require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 /**
- * Class RegisterSubscribe
+ * Class User2Subscriber
  *
  * @since  2.0.0
  */

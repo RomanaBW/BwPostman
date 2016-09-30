@@ -1,11 +1,11 @@
 <?php
 /**
- * BwPostman RegisterSubscribe Plugin
+ * BwPostman User2Subscriber Plugin
  *
  * BwPostman helper class for plugin.
  *
  * @version 2.0.0 bwpmprs
- * @package BwPostman RegisterSubscribe Plugin
+ * @package BwPostman User2Subscriber Plugin
  * @author Romana Boldt
  * @copyright (C) 2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html

@@ -1,11 +1,11 @@
 <?php
 use Page\Generals as Generals;
 use Page\Login as LoginPage;
-use Page\RegisterSubscriberPage as RegPage;
+use Page\User2SubscriberPage as RegPage;
 
 
 /**
- * Class RegisterSubscribeCest
+ * Class User2SubscriberCest
  *
  * This class contains all methods to test subscription while registration to Joomla at front end
  *
@@ -28,7 +28,7 @@ use Page\RegisterSubscriberPage as RegPage;
  *
  * @since   2.0.0
  */
-class RegisterSubscribeCest
+class User2SubscriberCest
 {
 	/**
 	 * @var object  $tester AcceptanceTester
@@ -104,7 +104,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithoutSubscription(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithoutSubscription(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and not subscribe to BwPostman");
 		$I->expectTo('see unconfirmed Joomla user but no subscriber');
@@ -135,7 +135,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithoutActivation(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithoutActivation(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman without activation");
 		$I->expectTo('see unconfirmed Joomla user and unconfirmed subscriber with HTML format');
@@ -165,7 +165,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithActivation(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithActivation(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman with activation");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format');
@@ -197,7 +197,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithTextFormat(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithTextFormat(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman with text format");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with Text format');
@@ -233,7 +233,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithoutFormatSelectionHTML(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithoutFormatSelectionHTML(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman with predefined format HTML");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format');
@@ -241,7 +241,7 @@ class RegisterSubscribeCest
 		$this->initializeTestValues($I);
 
 		//set other option settings
-		$I->setManifestOption('registersubscribe', 'show_format_selection_option', '0');
+		$I->setManifestOption('bwpm_user2subscriber', 'show_format_selection_option', '0');
 
 		$this->selectRegistrationPage($I);
 
@@ -268,7 +268,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithoutFormatSelectionText(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithoutFormatSelectionText(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman with predefined format text");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with Text format');
@@ -277,8 +277,8 @@ class RegisterSubscribeCest
 
 		//set other option settings
 		$this->format   = 'Text';
-		$I->setManifestOption('registersubscribe', 'show_format_selection_option', '0');
-		$I->setManifestOption('registersubscribe', 'predefined_mailformat_option', '0');
+		$I->setManifestOption('bwpm_user2subscriber', 'show_format_selection_option', '0');
+		$I->setManifestOption('bwpm_user2subscriber', 'predefined_mailformat_option', '0');
 
 		$this->selectRegistrationPage($I);
 
@@ -306,7 +306,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithAnotherMailinglist(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithAnotherMailinglist(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman to another mailinglist");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format and another mailinglist');
@@ -314,7 +314,7 @@ class RegisterSubscribeCest
 		$this->initializeTestValues($I);
 
 		//set other option settings
-		$I->setManifestOption('registersubscribe', 'ml_available', array("6"));
+		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("6"));
 
 		$this->selectRegistrationPage($I);
 
@@ -343,7 +343,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithTwoMailinglists(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithTwoMailinglists(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman to two mailinglists");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format and two mailinglists');
@@ -351,7 +351,7 @@ class RegisterSubscribeCest
 		$this->initializeTestValues($I);
 
 		//set other option settings
-		$I->setManifestOption('registersubscribe', 'ml_available', array("4", "6"));
+		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("4", "6"));
 
 		$this->selectRegistrationPage($I);
 
@@ -380,7 +380,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithoutMailinglists(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithoutMailinglists(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman to zero mailinglists");
 		$I->expectTo('see confirmed Joomla user and no subscriber');
@@ -388,7 +388,7 @@ class RegisterSubscribeCest
 		$this->initializeTestValues($I);
 
 		//set other option settings
-		$I->setManifestOption('registersubscribe', 'ml_available', array("0"));
+		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("0"));
 
 		$this->selectRegistrationPage($I);
 
@@ -440,7 +440,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithMailChangeYes(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithMailChangeYes(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman, change mail address with auto update");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format, see changed mail address for user and subscriber');
@@ -475,7 +475,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithoutActivationWithMailChangeYes(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithoutActivationWithMailChangeYes(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman without activation, then change mail address");
 		$I->expectTo('see unconfirmed Joomla user and unconfirmed subscriber with HTML format, see changed mail address for user and subscriber');
@@ -508,7 +508,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithMailChangeNo(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithMailChangeNo(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman, change mail address without auto update");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format, see changed mail address for user but not subscriber');
@@ -517,7 +517,7 @@ class RegisterSubscribeCest
 
 		//set other option settings
 		$this->auto_update  = false;
-		$I->setManifestOption('registersubscribe', 'auto_update_email_option', '0');
+		$I->setManifestOption('bwpm_user2subscriber', 'auto_update_email_option', '0');
 
 		$this->selectRegistrationPage($I);
 
@@ -548,7 +548,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeFunctionWithDeleteNo(AcceptanceTester $I)
+	public function User2SubscriberFunctionWithDeleteNo(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman, delete account and not delete subscription");
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format, delete user, but see subscriber without joomla user id, then subscribe anew and see new user ID');
@@ -557,7 +557,7 @@ class RegisterSubscribeCest
 
 		//set other option settings
 		$this->auto_delete  = false;
-		$I->setManifestOption('registersubscribe', 'auto_delete_option', '0');
+		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '0');
 
 		$this->selectRegistrationPage($I);
 
@@ -598,7 +598,7 @@ class RegisterSubscribeCest
 
 		//reset option settings
 		$this->auto_delete  = true;
-		$I->setManifestOption('registersubscribe', 'auto_delete_option', '1');
+		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '1');
 
 		// register anew
 		$this->selectRegistrationPage($I);
@@ -623,9 +623,9 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeOptionsPluginDeactivated(AcceptanceTester $I)
+	public function User2SubscriberOptionsPluginDeactivated(AcceptanceTester $I)
 	{
-		$I->wantTo("Deactivate Plugin RegisterSubscribe");
+		$I->wantTo("Deactivate Plugin User2Subscriber");
 		$I->expectTo('not see plugin fields at Joomla registration form');
 
 		$this->tester   = $I;
@@ -663,7 +663,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeOptionsMessage(AcceptanceTester $I)
+	public function User2SubscriberOptionsMessage(AcceptanceTester $I)
 	{
 		$I->wantTo("change newsletter message and change back");
 		$I->expectTo('see changed messages as tooltip at Joomla registration form');
@@ -682,7 +682,7 @@ class RegisterSubscribeCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_registerSubscribe_registerSubscribe-lbl']", 'data-content');
+			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
 			$I->assertEquals(RegPage::$plugin_message_new, $message_text);
 		}
 		);
@@ -698,7 +698,7 @@ class RegisterSubscribeCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_registerSubscribe_registerSubscribe-lbl']", 'data-content');
+			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
 			$I->assertEquals(RegPage::$plugin_message_old, $message_text);
 		}
 		);
@@ -717,7 +717,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeOptionsSwitchShowFormat(AcceptanceTester $I)
+	public function User2SubscriberOptionsSwitchShowFormat(AcceptanceTester $I)
 	{
 		$I->wantTo("switch option 'newsletter show format' from yes to no and back");
 		$I->expectTo('see, see not, see format selection at Joomla registration form');
@@ -732,7 +732,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_show_format_no, ['class' => Generals::$button_red]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("0", $options->show_format_selection_option);
 
 		// look at FE
@@ -753,7 +753,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_show_format_yes, ['class' => Generals::$button_green]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("1", $options->show_format_selection_option);
 
 		// look at FE
@@ -781,7 +781,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribePredefinedFormat(AcceptanceTester $I)
+	public function User2SubscriberPredefinedFormat(AcceptanceTester $I)
 	{
 		$I->wantTo("switch option 'newsletter format' from yes to no and back");
 		$I->expectTo('see Text, see HTML preselected at Joomla registration form');
@@ -796,7 +796,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_format_text, ['class' => Generals::$button_red]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("0", $options->predefined_mailformat_option);
 
 		// look at FE
@@ -817,7 +817,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_format_html, ['class' => Generals::$button_green]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("1", $options->predefined_mailformat_option);
 
 		// look at FE
@@ -845,7 +845,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeOptionsAutoUpdate(AcceptanceTester $I)
+	public function User2SubscriberOptionsAutoUpdate(AcceptanceTester $I)
 	{
 		$I->wantTo("switch option 'auto update email' from yes to no and back");
 		$I->expectTo('see No, see Yes at field auto update of plugin options form');
@@ -860,7 +860,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_auto_update_no, ['class' => Generals::$button_red]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("0", $options->auto_update_email_option);
 
 		// switch to yes
@@ -870,7 +870,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_auto_update_yes, ['class' => Generals::$button_green]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("1", $options->auto_update_email_option);
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
@@ -887,7 +887,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeOptionsAutoDelete(AcceptanceTester $I)
+	public function User2SubscriberOptionsAutoDelete(AcceptanceTester $I)
 	{
 		$I->wantTo("switch option 'auto delete' from yes to no and back");
 		$I->expectTo('see No, see Yes at auto delete of plugin options form');
@@ -902,7 +902,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_auto_delete_no, ['class' => Generals::$button_red]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("0", $options->auto_delete_option);
 
 		// switch to yes
@@ -912,7 +912,7 @@ class RegisterSubscribeCest
 		$I->seeElement(RegPage::$plugin_auto_delete_yes, ['class' => Generals::$button_green]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("1", $options->auto_delete_option);
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
@@ -929,7 +929,7 @@ class RegisterSubscribeCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function RegisterSubscribeOptionsMailinglists(AcceptanceTester $I)
+	public function User2SubscriberOptionsMailinglists(AcceptanceTester $I)
 	{
 		$I->wantTo("add additional mailinglist to options");
 		$I->expectTo('see further selected mailinglist at plugin options form');
@@ -944,7 +944,7 @@ class RegisterSubscribeCest
 		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("1", $options->ml_available[0]);
 		$I->assertEquals("4", $options->ml_available[1]);
 
@@ -955,7 +955,7 @@ class RegisterSubscribeCest
 		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 
 		// getManifestOption
-		$options = $I->getManifestOptions('registersubscribe');
+		$options = $I->getManifestOptions('bwpm_user2subscriber');
 		$I->assertEquals("4", $options->ml_available[0]);
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
@@ -980,11 +980,11 @@ class RegisterSubscribeCest
 		$this->auto_delete              = true;
 
 		//reset option settings
-		$I->setManifestOption('registersubscribe', 'show_format_selection_option', '1');
-		$I->setManifestOption('registersubscribe', 'predefined_mailformat_option', '1');
-		$I->setManifestOption('registersubscribe', 'auto_update_email_option', '1');
-		$I->setManifestOption('registersubscribe', 'auto_delete_option', '1');
-		$I->setManifestOption('registersubscribe', 'ml_available', array("4"));
+		$I->setManifestOption('bwpm_user2subscriber', 'show_format_selection_option', '1');
+		$I->setManifestOption('bwpm_user2subscriber', 'predefined_mailformat_option', '1');
+		$I->setManifestOption('bwpm_user2subscriber', 'auto_update_email_option', '1');
+		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '1');
+		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("4"));
 	}
 
 	/**

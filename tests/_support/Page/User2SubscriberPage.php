@@ -23,7 +23,7 @@ namespace Page;
  *
  * @since   2.0.0
  */
-class RegisterSubscriberPage
+class User2SubscriberPage
 {
 	/*
 	 * Declare UI map for this page here. CSS or XPath allowed.
@@ -44,10 +44,10 @@ class RegisterSubscriberPage
 	public static $login_identifier_password2       = ".//*[@id='jform_password2']";
 	public static $login_identifier_email1          = ".//*[@id='jform_email1']";
 	public static $login_identifier_email2          = ".//*[@id='jform_email2']";
-	public static $login_identifier_subscribe_no    = ".//*[@id='jform_registerSubscribe_registerSubscribe']/label[1]";
-	public static $login_identifier_subscribe_yes   = ".//*[@id='jform_registerSubscribe_registerSubscribe']/label[2]";
-	public static $login_identifier_format_text     = ".//*[@id='jform_registerSubscribe_registerSubscribe_selected_mailformat']/label[1]";
-	public static $login_identifier_format_html     = ".//*[@id='jform_registerSubscribe_registerSubscribe_selected_mailformat']/label[2]";
+	public static $login_identifier_subscribe_no    = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[1]";
+	public static $login_identifier_subscribe_yes   = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[2]";
+	public static $login_identifier_format_text     = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber_selected_mailformat']/label[1]";
+	public static $login_identifier_format_html     = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber_selected_mailformat']/label[2]";
 	public static $login_identifier_register        = ".//*[@id='member-registration']/div/div/button";
 
 	// login field values
@@ -102,7 +102,7 @@ class RegisterSubscriberPage
 
 	// com_plugin related
 	public static $view_plugin                      = "Plugins";
-	public static $plugin_name                      = "BwPostman Plugin RegisterSubscribe";
+	public static $plugin_name                      = "BwPostman Plugin User2Subscriber";
 	public static $icon_published_identifier        = ".//*[@id='pluginList']/tbody/tr/td[3]/a/span";
 	public static $plugin_edit_identifier           = ".//*[@id='pluginList']/tbody/tr/td[4]/a";
 

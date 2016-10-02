@@ -32,7 +32,7 @@ defined ('_JEXEC') or die ('Restricted access');
  *
  * @since 2.0.0
  */
-abstract class RegisterSubscriberHelper {
+abstract class BWPM_User2SubscriberHelper {
 	/**
 	 * Method to check if user has a subscription
 	 *
@@ -144,14 +144,14 @@ abstract class RegisterSubscriberHelper {
 	 *
 	 * @param string        $user_mail
 	 * @param int           $user_id
-	 * @param string        $user_name
-	 * @param int           $mailformat
+	 * @param array         $subscriber_data
+	 * @param array         $mailinglist_ids
 	 *
 	 * @return object       $subscriber
 	 *
 	 * @since 2.0.0
 	 */
-	public static function createSubscriberData($user_mail, $user_id, $user_name, $mailformat)
+	public static function createSubscriberData($user_mail, $user_id, $subscriber_data, $mailinglist_ids)
 	{
 		$params = JComponentHelper::getParams('com_bwpostman');
 		$date   = JFactory::getDate();
@@ -160,13 +160,26 @@ abstract class RegisterSubscriberHelper {
 		// @Todo: For version 2.0.0 of component replace $_SERVER['REMOTE_ADDR'] with the following
 		$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-		$subscriber = new stdClass();
+		foreach ($subscriber_data as $key => $value) {
+			if (strpos($key, 'bwp-') === 0) {
+				$captcha = $key;
+				break;
+			}
+		}
+
+//		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
+
+			$subscriber = new stdClass();
 
 		$subscriber->id                = 0;
 		$subscriber->user_id           = $user_id;
-		$subscriber->name              = $user_name;
+		$subscriber->gender            = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'gender', '', 'string');
+		$subscriber->name              = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'name', '', 'string');
+		$subscriber->firstname         = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'firstname', '', 'string');
+		$subscriber->special           = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'special', '', 'string');
 		$subscriber->email             = $user_mail;
-		$subscriber->emailformat       = $mailformat;
+		$subscriber->emailformat       = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'emailformat', 1, 'int');
+		$subscriber->mailinglists      = $mailinglist_ids;
 		$subscriber->activation        = self::createActivation();
 		$subscriber->editlink          = self::createEditlink();
 		$subscriber->status            = 0;
@@ -175,16 +188,8 @@ abstract class RegisterSubscriberHelper {
 		$subscriber->registration_ip   = $remote_ip;
 		$subscriber->confirmed_by      = 0;
 		$subscriber->archived_by       = 0;
-
-		if ($params->get('firstname_field_obligation'))
-		{
-			$subscriber->first_name   = ' ';
-		}
-
-		if ($params->get('special_field_obligation'))
-		{
-			$subscriber->special   = ' ';
-		}
+		$subscriber->{$captcha}        = '1';
+		$subscriber->agreecheck        = '1';
 
 		return $subscriber;
 	}
@@ -293,10 +298,17 @@ abstract class RegisterSubscriberHelper {
 		}
 
 		// Check the data.
-//		if (!$table->check())
-//		{
-//			return false;
-//		}
+		/* @ToDo: spam check as yet implemented is evil to implement in registration form of Joomla.
+		 * Better solution would be a plugin for spam check to outsource spam check from table check.
+		 */
+		/*
+		$check_data = \Joomla\Utilities\ArrayHelper::fromObject($data);
+		JFactory::getApplication()->setUserState('com_bwpostman.subscriber.register.data', $check_data);
+		if (!$table->check())
+		{
+			return false;
+		}
+		*/
 
 		// Store the data.
 		if (!$table->store())
@@ -304,7 +316,7 @@ abstract class RegisterSubscriberHelper {
 			// Allow an exception to be thrown.
 			throw  new Exception($table->getError());
 		}
-		//@ToDo: Get subscriber ID to return
+
 		$subscriber_id = self::getSubscriberIdByEmail($data->email);
 
 		return $subscriber_id;

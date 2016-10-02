@@ -42,32 +42,6 @@
 						default=""
 				/>
 
-				<field
-						name="show_format_selection_option"
-						id="show_format_selection_option"
-						type="radio"
-						class="btn-group btn-group-yesno"
-						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_SHOW_FORMAT_SELECTION_LABEL"
-						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_SHOW_FORMAT_SELECTION_DESC"
-						default="1"
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-				</field>
-
-				<field
-						name="predefined_mailformat_option"
-						id="predefined_mailformat_option"
-						type="radio"
-						class="btn-group btn-group-yesno"
-						label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_MAILFORMAT_LABEL"
-						description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_MAILFORMAT_DESC"
-						default="1"
-				>
-					<option value="0">PLG_BWPOSTMAN_TEXT</option>
-					<option value="1">PLG_BWPOSTMAN_HTML</option>
-				</field>
-
 				<field name="spacer2_4" type="spacer" hr="true" />
 
 				<field

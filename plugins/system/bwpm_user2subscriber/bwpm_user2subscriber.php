@@ -30,6 +30,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
 
+require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once (JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
@@ -81,7 +82,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	protected $componentVersion = 0;
 
 	/**
-	 * PlgSystemRegisterSubscribe constructor.
+	 * PlgSystemBWPM_User2Subscriber constructor.
 	 *
 	 * @param object $subject
 	 * @param array  $config
@@ -92,8 +93,19 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
+		JFormHelper::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/fields');
+		JFormHelper::addFieldPath(__DIR__ . '/form/fields');
+
 		$this->setComponentStatus();
 		$this->setComponentVersion();
+
+		$lang   = JFactory::getLanguage();
+
+		//Load first english file of component
+		$lang->load('com_bwpostman',JPATH_SITE,'en_GB',true);
+
+		//load specific language
+		$lang->load('com_bwpostman',JPATH_SITE,null,true);
 	}
 
 	/**
@@ -196,23 +208,91 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		// Add CSS for the radio fields
 		$doc = JFactory::getDocument();
 
-		$css = "fieldset.registerradio {line-height:1em;}
-                fieldset.registerradio input {margin:0 !important;vertical-align:middle !important;}
-                fieldset.registerradio label {vertical-align:middle !important;margin-right:15px;}
-                ";
+		$css = "
+				.registerradio.radio.btn-group input[type=\"radio\"] {display: none;}
+				.registerradio .btn {-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background-color: #f5f5f5;background-image: linear-gradient(to bottom, #fff, #e6e6e6);background-repeat: repeat-x;border-color: #bbb #bbb #a2a2a2;border-image: none;border-radius: 4px;border-style: solid;border-width: 1px;box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);color: #333;cursor: pointer;display: inline-block;font-size: 13px;line-height: 18px;margin-bottom: 0;padding: 4px 12px;text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);vertical-align: middle;}
+				.registerradio .btn:hover, .registerradio .btn:focus, .registerradio .btn:active, .registerradio .btn.active, .registerradio .btn.disabled, .registerradio .btn[disabled] {background-color: #e6e6e6;color: #333;}
+				.registerradio .btn.active, .registerradio .btn:active {background-image: none;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);outline: 0 none;}
+				.registerradio .btn-primary.active, .registerradio .btn-warning.active, .registerradio .btn-danger.active, .registerradio .btn-success.active, .registerradio .btn-info.active, .registerradio .btn-inverse.active {color: rgba(255, 255, 255, 0.75);}
+				.registerradio .btn-success {background-color: #409740;background-image: linear-gradient(to bottom, #46a546, #378137);background-repeat: repeat-x;border-color: #378137 #378137 #204b20;color: #fff;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);}
+				.registerradio .btn-success:hover, .registerradio .btn-success:focus, .registerradio .btn-success:active, .registerradio .btn-success.active, .registerradio .btn-success.disabled, .registerradio .btn-success[disabled] {background-color: #378137;color: #fff;}
+				.registerradio .btn-danger:hover, .registerradio .btn-danger:focus, .registerradio .btn-danger:active, .registerradio .btn-danger.active, .registerradio .btn-danger.disabled, .registerradio .btn-danger[disabled] {background-color: #942a25;color: #fff;}
+				.registerradio.btn-group > .btn {border-radius: 0;position: relative;}
+				.registerradio.btn-group > .btn, .registerradio.btn-group > .dropdown-menu, .registerradio.btn-group > .popover {font-size: 13px;}
+				.registerradio.btn-group > .btn:last-child, .registerradio.btn-group > .dropdown-toggle {border-bottom-right-radius: 4px;border-top-right-radius: 4px;}
+				.registerradio.btn-group > .btn:hover, .registerradio.btn-group > .btn:focus, .registerradio.btn-group > .btn:active, .registerradio.btn-group > .btn.active {z-index: 2;}
+				.registerradio.radio.btn-group > label:first-of-type {border-bottom-left-radius: 4px !important;border-top-left-radius: 4px !important;margin-left: 0;}
+				.registerradio .btn-primary.active, .registerradio .btn-warning.active, .registerradio .btn-danger.active, .registerradio .btn-success.active, .registerradio .btn-info.active, .registerradio .btn-inverse.active {color: rgba(255, 255, 255, 0.95);}
+				.registerradio.btn-group.btn-group-yesno > .btn {min-width: 84px;padding: 2px 12px;}
+				";
 		$doc->addStyleDeclaration($css);
 
-		$form->setFieldAttribute('bwpm_user2subscriber_selected_mailformat', 'default', (int)$this->params->get('predefined_mailformat_option'), 'bwpm_user2subscriber');
+		$com_params = JComponentHelper::getParams('com_bwpostman');
 
-		if (!$this->params->get('show_format_selection_option'))
+		if (!$com_params->get('show_gender'))
 		{
-			$form->setFieldAttribute('bwpm_user2subscriber_selected_mailformat', 'type', 'hidden', 'bwpm_user2subscriber');
+			$form->removeField('gender', 'bwpm_user2subscriber');
 		}
 
-		if ($this->params->get('register_message_option') != '')
+		if ($com_params->get('name_field_obligation'))
 		{
-			$form->setFieldAttribute('bwpm_user2subscriber', 'description', $this->params->get('register_message_option'), 'bwpm_user2subscriber');
+			$com_params->set('show_name_field', '1');
+			$form->setFieldAttribute('name', 'required', 'true', 'bwpm_user2subscriber');
 		}
+
+		if (!$com_params->get('show_name_field'))
+		{
+			$form->removeField('name', 'bwpm_user2subscriber');
+		}
+
+		if ($com_params->get('firstname_field_obligation'))
+		{
+			$com_params->set('show_firstname_field', '1');
+			$form->setFieldAttribute('firstname', 'required', 'true', 'bwpm_user2subscriber');
+		}
+
+		if (!$com_params->get('show_firstname_field'))
+		{
+			$form->removeField('firstname', 'bwpm_user2subscriber');
+		}
+
+		if ($com_params->get('special_field_obligation'))
+		{
+			$com_params->set('show_special', '1');
+			$form->setFieldAttribute('special', 'required', 'true', 'bwpm_user2subscriber');
+		}
+
+		if (!$com_params->get('show_special'))
+		{
+			$form->removeField('special', 'bwpm_user2subscriber');
+		}
+		else
+		{
+			$special_label  = $com_params->get('special_label');
+			$special_desc   = $com_params->get('special_desc');
+
+			if ($special_label != '')
+			{
+				$form->setFieldAttribute('special', 'label', JText::_($special_label), 'bwpm_user2subscriber');
+			}
+
+			if ($special_desc != '')
+			{
+				$form->setFieldAttribute('special', 'description', JText::_($special_desc), 'bwpm_user2subscriber');
+			}
+		}
+
+		if ($com_params->get('show_emailformat'))
+		{
+			$form->setFieldAttribute('emailformat', 'required', 'true', 'bwpm_user2subscriber');
+			$form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
+		}
+		else
+		{
+			$form->removeField('emailformat', 'bwpm_user2subscriber');
+		}
+
+		$form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . BwPostmanHelper::getCaptcha(1), 'bwpm_user2subscriber');
 
 		return true;
 	}
@@ -264,7 +344,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 /*
 
-$log_options = array('test' => 'testtext', 'text_file' => 'bwpostman/BwPmRegisterSubscriber.log');
+$log_options = array('test' => 'testtext', 'text_file' => 'bwpostman/BWPM_User2Subscriber.log');
 $logger      = new BwLogger($log_options);
 foreach ($data as $key => $value)
 {
@@ -282,13 +362,10 @@ foreach ($data as $key => $value)
 		}
 
 		// Get and sanitize data
-		$register_subscribe     = array();
 		$user_mail              = ArrayHelper::getValue($data, 'email', '', 'string');
 		$user_id                = ArrayHelper::getValue($data, 'id', 0, 'int');
-		$user_name              = ArrayHelper::getValue($data, 'name', '', 'string');
-		$register_subscribe     = ArrayHelper::getValue($data, 'bwpm_user2subscriber', '', 'array');
-		$mailformat             = ArrayHelper::getValue($register_subscribe, 'bwpm_user2subscriber_selected_mailformat', 1, 'int');
-		$subscription_wanted    = ArrayHelper::getValue($register_subscribe, 'bwpm_user2subscriber', 1, 'int');
+		$subscriber_data        = ArrayHelper::getValue($data, 'bwpm_user2subscriber', array(), 'array');
+		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 1, 'int');
 
 		if ($isNew)
 		{
@@ -299,9 +376,9 @@ foreach ($data as $key => $value)
 
 			try
 			{
-				if (RegisterSubscriberHelper::hasSubscription($user_mail))
+				if (BWPM_User2SubscriberHelper::hasSubscription($user_mail))
 				{
-					$update_userid_result = RegisterSubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
+					$update_userid_result = BWPM_User2SubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
 
 					return $update_userid_result;
 				}
@@ -312,7 +389,7 @@ foreach ($data as $key => $value)
 				return false;
 			}
 
-			$create_result = $this->subscribeToBwPostman($user_mail, $user_id, $user_name, $mailformat);
+			$create_result = $this->subscribeToBwPostman($user_mail, $user_id, $subscriber_data);
 
 			return $create_result;
 		}
@@ -333,7 +410,7 @@ foreach ($data as $key => $value)
 		{
 			try
 			{
-				$subscriber = RegisterSubscriberHelper::getSubscriptionData($user_id);
+				$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 
 				if (is_array($subscriber) && ($subscriber['email']) != $user_mail)
 				{
@@ -356,16 +433,15 @@ foreach ($data as $key => $value)
 	/**
 	 * Method to Subscribe to BwPostman while Joomla registration
 	 *
-	 * @param   string  $user_mail      User mail address
-	 * @param   int     $user_id        Joomla User ID
-	 * @param   string  $user_name      Joomla User name
-	 * @param   int     $mailformat     selected mail format
+	 * @param   string  $user_mail          User mail address
+	 * @param   int     $user_id            Joomla User ID
+	 * @param   array   $subscriber_data    subscriber date submitted by form
 	 *
 	 * @return  bool        True on success
 	 *
 	 * @since  2.0.0
 	 */
-	protected function subscribeToBwPostman($user_mail, $user_id, $user_name, $mailformat)
+	protected function subscribeToBwPostman($user_mail, $user_id, $subscriber_data)
 	{
 		try
 		{
@@ -381,15 +457,15 @@ foreach ($data as $key => $value)
 				return false;
 			}
 
-			$subscriber     = RegisterSubscriberHelper::createSubscriberData($user_mail, $user_id, $user_name, $mailformat);
+			$subscriber     = BWPM_User2SubscriberHelper::createSubscriberData($user_mail, $user_id, $subscriber_data, $mailinglist_ids);
 
-			$subscriber_id  = RegisterSubscriberHelper::saveSubscriber($subscriber);
+			$subscriber_id  = BWPM_User2SubscriberHelper::saveSubscriber($subscriber);
 			if (!$subscriber_id)
 			{
 				return false;
 			}
 
-			$ml_save_result     = RegisterSubscriberHelper::saveSubscribersMailinglists($subscriber_id, $mailinglist_ids);
+			$ml_save_result     = BWPM_User2SubscriberHelper::saveSubscribersMailinglists($subscriber_id, $mailinglist_ids);
 
 			if (!$ml_save_result)
 			{
@@ -453,7 +529,7 @@ foreach ($data as $key => $value)
 
 			if ($send_mail && $res)
 			{
-				$subscriber = RegisterSubscriberHelper::getSubscriptionData($user_id);
+				$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 				$model      = JModelLegacy::getInstance('Register', 'BwPostmanModel');
 				$model->sendActivationNotification($subscriber['id']);
 			}
@@ -542,7 +618,7 @@ foreach ($data as $key => $value)
 	{
 		try
 		{
-			$subscriber = RegisterSubscriberHelper::getSubscriptionData($user_id);
+			$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 
 			$res                        = false;
 			$res_delete_mailinglists    = false;
@@ -585,7 +661,7 @@ foreach ($data as $key => $value)
 	{
 		try
 		{
-			$subscriber = RegisterSubscriberHelper::getSubscriptionData($user_id);
+			$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 
 			$res_update_subscriber      = false;
 

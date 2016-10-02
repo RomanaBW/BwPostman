@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 	<fields name="bwpm_user2subscriber">
-		<fieldset name="bwpm_user2subscriber" >
+		<fieldset
+			name="bwpm_user2subscriber"
+			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_LABEL"
+			>
+			<field
+					name="bwpm_user2subscriber_message"
+					id="bwpm_user2subscriber_message"
+					type="bwpspacer"
+					class="bwpspacer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
 			<field
 				name="bwpm_user2subscriber"
 				id="bwpm_user2subscriber"
 				type="radio"
-				class="btn-group btn-group-yesno"
+				class="registerradio btn-group btn-group-yesno"
 				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_CHECKBOX_LABEL"
 				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_CHECKBOX_DESC"
 			    default="0"
@@ -15,16 +27,73 @@
 				<option value="1">JYES</option>
 			</field>
 			<field
-					name="bwpm_user2subscriber_selected_mailformat"
-					id="bwpm_user2subscriber_selected_mailformat"
-					type="radio"
-					class="btn-group btn-group-yesno"
-					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_LABEL"
-					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_DESC"
-					default="1"
+				name="gender"
+				type="radio"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_LABEL"
+				labelclass="control-label"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC"
+				required="false"
+				class="registerradio btn-group btn-group-yesno"
 			>
-				<option value="0">PLG_BWPOSTMAN_TEXT</option>
-				<option value="1">PLG_BWPOSTMAN_HTML</option>
+				<option value="1">
+					PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_FEMALE</option>
+				<option value="0">
+					PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MALE</option>
+			</field>
+
+			<field
+				name="name"
+				type="text"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
+				labelclass="control-label"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_DESC"
+				class="inputbox"
+				size="30"
+				required="false"
+			/>
+
+			<field
+				name="firstname"
+				type="text"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_LABEL"
+				labelclass="control-label"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_DESC"
+				class="inputbox"
+				required="false"
+				size="30"
+			/>
+
+			<field
+				name="special"
+				type="text"
+				label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
+				class="inputbox"
+				required="false"
+				size="30"
+			/>
+
+			<field
+				name="emailformat"
+				type="radio"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_LABEL"
+				labelclass="control-label"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_DESC"
+				class="registerradio btn-group btn-group-yesno"
+				filter="intval"
+				default="1"
+			>
+				<option value="0">
+					PLG_BWPOSTMAN_TEXT</option>
+				<option value="1">
+					PLG_BWPOSTMAN_HTML</option>
+			</field>
+			<field
+				name="bw_captcha"
+				type="hidden"
+			    default="1"
+			>
 			</field>
 
 			<field name="spacer2_4" type="spacer" hr="true" />

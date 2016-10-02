@@ -31,21 +31,21 @@ defined ('_JEXEC') or die ('Restricted access');
 // Component development:
 //
 // Newsletter sending 1=on, 0=off
-if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
+//if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
 
 
 // Component name amd database prefix
-if (!defined ('BWPOSTMAN_COMPONENT_NAME')) define ('BWPOSTMAN_COMPONENT_NAME', basename (dirname (__FILE__)));
-if (!defined ('BWPOSTMAN_NAME')) define ('BWPOSTMAN_NAME', substr (BWPOSTMAN_COMPONENT_NAME, 4));
+//if (!defined ('BWPOSTMAN_COMPONENT_NAME')) define ('BWPOSTMAN_COMPONENT_NAME', basename (dirname (__FILE__)));
+//if (!defined ('BWPOSTMAN_NAME')) define ('BWPOSTMAN_NAME', substr (BWPOSTMAN_COMPONENT_NAME, 4));
 
 // Component location
-if (!defined ('BWPOSTMAN_COMPONENT_LOCATION')) define ('BWPOSTMAN_COMPONENT_LOCATION', basename (dirname (dirname (__FILE__))));
+//if (!defined ('BWPOSTMAN_COMPONENT_LOCATION')) define ('BWPOSTMAN_COMPONENT_LOCATION', basename (dirname (dirname (__FILE__))));
 
 // Component paths
-if (!defined ('BWPOSTMAN_PATH_COMPONENT_RELATIVE')) define ('BWPOSTMAN_PATH_COMPONENT_RELATIVE', BWPOSTMAN_COMPONENT_LOCATION . '/' . BWPOSTMAN_COMPONENT_NAME);
-if (!defined ('BWPOSTMAN_PATH_SITE')) define ('BWPOSTMAN_PATH_SITE', JPATH_ROOT .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
-if (!defined ('BWPOSTMAN_PATH_ADMIN')) define ('BWPOSTMAN_PATH_ADMIN', JPATH_ADMINISTRATOR .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
-if (!defined ('BWPOSTMAN_PATH_MEDIA')) define ('BWPOSTMAN_PATH_MEDIA', JPATH_ROOT .'/media/' . BWPOSTMAN_NAME);
+//if (!defined ('BWPOSTMAN_PATH_COMPONENT_RELATIVE')) define ('BWPOSTMAN_PATH_COMPONENT_RELATIVE', BWPOSTMAN_COMPONENT_LOCATION . '/' . BWPOSTMAN_COMPONENT_NAME);
+//if (!defined ('BWPOSTMAN_PATH_SITE')) define ('BWPOSTMAN_PATH_SITE', JPATH_ROOT .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
+//if (!defined ('BWPOSTMAN_PATH_ADMIN')) define ('BWPOSTMAN_PATH_ADMIN', JPATH_ADMINISTRATOR .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
+//if (!defined ('BWPOSTMAN_PATH_MEDIA')) define ('BWPOSTMAN_PATH_MEDIA', JPATH_ROOT .'/media/' . BWPOSTMAN_NAME);
 
 /**
  * Class BwPostmanHelper

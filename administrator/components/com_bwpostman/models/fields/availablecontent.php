@@ -156,6 +156,8 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$selected_content	= '';
 		$categories         = array();
 		$rows_list_uncat    = array();
+		$params = JComponentHelper::getParams('com_bwpostman');
+		$exc_cats = $params->get('excluded_categories');
 
 		if ($app->getUserState('com_bwpostman.edit.newsletter.data')) {
 			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
@@ -170,6 +172,9 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' AS ' . $_db->quoteName('parent'));
 		$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('c'));
 		$query->where($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' > ' . $_db->quote('0'));
+		// params - get only not excluded categories
+		if ($exc_cats) $query->where('(' . $_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN (' .implode(',', $exc_cats) . ') AND ' . $_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' NOT IN (' .implode(',', $exc_cats) . '))');
+
 		$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') .' ASC');
 
 		$_db->setQuery($query);

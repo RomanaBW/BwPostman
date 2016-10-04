@@ -139,7 +139,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					{
 						if ($model->publish($id, 1) === true)
 						{
-							echo "<br /><br /><span style='color: #00ff00;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1') . "</span>";
+							echo "<br /><br /><span style='color: #008000;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1') . "</span>";
 						}
 						else
 						{

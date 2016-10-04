@@ -227,6 +227,56 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 				";
 		$doc->addStyleDeclaration($css);
 
+		$js= "
+			jQuery(document).ready(function()
+			{
+				// Turn radios into btn-group
+				jQuery('.radio.btn-group label').addClass('btn');
+				jQuery('.btn-group label:not(.active)').click(function()
+				{
+					var label = jQuery(this);
+					var input = jQuery('#' + label.attr('for'));
+					
+					if (!input.prop('checked')) 
+					{
+						label.closest('.btn-group').find('label').removeClass('active btn-success btn-danger btn-primary');
+						
+						if (input.val() == '') 
+						{
+						    label.addClass('active btn-primary');
+						} 
+						else if (input.val() == 0) 
+						{
+						    label.addClass('active btn-danger');
+						} 
+						else 
+						{
+							label.addClass('active btn-success');
+						}
+						input.prop('checked', true);
+					}
+				});
+				
+				jQuery('.btn-group input[checked=checked]').each(function()
+				{
+					if (jQuery(this).val() == '') 
+					{
+						jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-primary');
+					} 
+					else if (jQuery(this).val() == 0) 
+					{
+						jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-danger');
+					} 
+					else 
+					{
+						jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-success');
+					}
+				});
+				})
+			";
+
+		$doc->addScriptDeclaration($js);
+
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
 		if (!$com_params->get('show_gender'))
@@ -289,7 +339,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 		else
 		{
-			$form->removeField('emailformat', 'bwpm_user2subscriber');
+			$form->setFieldAttribute('emailformat', 'type', 'hidden', 'bwpm_user2subscriber');
+			$form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
 		}
 
 		$form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . BwPostmanHelper::getCaptcha(1), 'bwpm_user2subscriber');

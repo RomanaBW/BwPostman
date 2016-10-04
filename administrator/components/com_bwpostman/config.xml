@@ -34,6 +34,17 @@
 
 		<field name="spacer1_2" type="spacer" hr="true" />
 
+		<field name="excluded_categories"
+			type="category"
+			extension="com_content"
+			multiple="true"
+			default=""
+			label="COM_BWPOSTMAN_EXCLUDED_CATEGORIES"
+			description="COM_BWPOSTMAN_EXCLUDED_CATEGORIES_NOTE"
+		/>
+
+		<field name="spacer1_3" type="spacer" hr="true" />
+
 		<field name="default_mails_per_pageload"
 			type="text"
 			size="6"
@@ -62,7 +73,7 @@
 			<option value="1000">BW_SECONDS</option>
 		</field>
 
-		<field name="spacer1_3" type="spacer" hr="true" />
+		<field name="spacer1_4" type="spacer" hr="true" />
 
 		<field name="show_boldt_link"
 			type="radio"

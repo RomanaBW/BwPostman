@@ -200,6 +200,7 @@ class Generals
 		'Default'           => ".//*[@id='toolbar-default']/button",
 		'Check-In'          => ".//*[@id='toolbar-checkin']/button",
 		'Install-Template'  => ".//*[@id='toolbar-custom']/a",
+		'Options'           => ".//*[@id='toolbar-options']/button",
 	);
 
 	/**

@@ -114,9 +114,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_no, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -138,15 +138,15 @@ class User2SubscriberCest
 	public function User2SubscriberFunctionWithoutActivation(AcceptanceTester $I)
 	{
 		$I->wantTo("Register at Joomla and subscribe to BwPostman without activation");
-		$I->expectTo('see unconfirmed Joomla user and unconfirmed subscriber with HTML format');
+		$I->expectTo('see error messages, see unconfirmed Joomla user and unconfirmed subscriber with HTML format');
 
 		$this->initializeTestValues($I);
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormExtended($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -174,9 +174,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -209,10 +209,10 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
-		$I->clickAndWait(RegPage::$login_identifier_format_text, 1);
+		$I->clickAndWait(RegPage::$subs_identifier_format_text, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -241,13 +241,13 @@ class User2SubscriberCest
 		$this->initializeTestValues($I);
 
 		//set other option settings
-		$I->setManifestOption('bwpm_user2subscriber', 'show_format_selection_option', '0');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '0');
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -277,14 +277,14 @@ class User2SubscriberCest
 
 		//set other option settings
 		$this->format   = 'Text';
-		$I->setManifestOption('bwpm_user2subscriber', 'show_format_selection_option', '0');
-		$I->setManifestOption('bwpm_user2subscriber', 'predefined_mailformat_option', '0');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '0');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '0');
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -318,9 +318,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -355,9 +355,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -392,9 +392,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -449,9 +449,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -484,9 +484,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -521,9 +521,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -561,9 +561,9 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -603,9 +603,9 @@ class User2SubscriberCest
 		// register anew
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$I->clickAndWait(RegPage::$login_identifier_subscribe_yes, 1);
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -642,10 +642,10 @@ class User2SubscriberCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$I->dontSee(RegPage::$login_identifier_subscribe_yes);
-			$I->dontSee(RegPage::$login_identifier_subscribe_no);
-			$I->dontSee(RegPage::$login_identifier_format_html);
-			$I->dontSee(RegPage::$login_identifier_format_text);
+			$I->dontSee(RegPage::$subs_identifier_subscribe_yes);
+			$I->dontSee(RegPage::$subs_identifier_subscribe_no);
+			$I->dontSee(RegPage::$subs_identifier_format_html);
+			$I->dontSee(RegPage::$subs_identifier_format_text);
 		}
 		);
 
@@ -682,8 +682,10 @@ class User2SubscriberCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
-			$I->assertEquals(RegPage::$plugin_message_new, $message_text);
+			$I->see(RegPage::$plugin_message_new, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
+
+//			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
+//			$I->assertEquals(RegPage::$plugin_message_new, $message_text);
 		}
 		);
 
@@ -698,8 +700,10 @@ class User2SubscriberCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
-			$I->assertEquals(RegPage::$plugin_message_old, $message_text);
+			$I->see(RegPage::$plugin_message_old, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
+
+//			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
+//			$I->assertEquals(RegPage::$plugin_message_old, $message_text);
 		}
 		);
 
@@ -722,18 +726,20 @@ class User2SubscriberCest
 		$I->wantTo("switch option 'newsletter show format' from yes to no and back");
 		$I->expectTo('see, see not, see format selection at Joomla registration form');
 
-		$this->editPluginOptions($I);
-		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
+		$this->editComponentOptions($I);
 
 		// switch to no
-		$I->clickAndWait(RegPage::$plugin_show_format_no, 1);
+		$I->clickAndWait(".//*[@id='configTabs']/li[2]/a", 1);
+		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
+		$I->clickAndWait(".//*[@id='jform_show_emailformat']/label[1]", 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_show_format_no, ['class' => Generals::$button_red]);
+		$I->see("Configuration successfully saved.");
+		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
+		$I->seeElement(".//*[@id='jform_show_emailformat']/label[1]", ['class' => Generals::$button_red]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("0", $options->show_format_selection_option);
+		$com_options = $I->getManifestOptions('com_bwpostman');
+		$I->assertEquals("0", $com_options->show_emailformat);
 
 		// look at FE
 		$user = $I->haveFriend('User');
@@ -741,20 +747,21 @@ class User2SubscriberCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$I->dontSeeElement(RegPage::$login_identifier_format_html);
-			$I->dontSeeElement(RegPage::$login_identifier_format_text);
+			$I->dontSeeElement(RegPage::$subs_identifier_format_html);
+			$I->dontSeeElement(RegPage::$subs_identifier_format_text);
 		}
 		);
 
 		// switch to yes
-		$I->clickAndWait(RegPage::$plugin_show_format_yes, 1);
+		$I->clickAndWait(".//*[@id='jform_show_emailformat']/label[2]", 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_show_format_yes, ['class' => Generals::$button_green]);
+		$I->see("Configuration successfully saved.");
+		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
+		$I->seeElement(".//*[@id='jform_show_emailformat']/label[2]", ['class' => Generals::$button_green]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("1", $options->show_format_selection_option);
+		$com_options = $I->getManifestOptions('com_bwpostman');
+		$I->assertEquals("1", $com_options->show_emailformat);
 
 		// look at FE
 		$user = $I->haveFriend('User');
@@ -762,8 +769,8 @@ class User2SubscriberCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$I->seeElement(RegPage::$login_identifier_format_text);
-			$I->seeElement(RegPage::$login_identifier_format_html);
+			$I->seeElement(RegPage::$subs_identifier_format_text);
+			$I->seeElement(RegPage::$subs_identifier_format_html);
 		}
 		);
 
@@ -786,18 +793,20 @@ class User2SubscriberCest
 		$I->wantTo("switch option 'newsletter format' from yes to no and back");
 		$I->expectTo('see Text, see HTML preselected at Joomla registration form');
 
-		$this->editPluginOptions($I);
-		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
+		$this->editComponentOptions($I);
 
 		// switch to Text
-		$I->clickAndWait(RegPage::$plugin_format_text, 1);
+		$I->clickAndWait(".//*[@id='configTabs']/li[2]/a", 1);
+		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
+		$I->clickAndWait(".//*[@id='jform_default_emailformat']/label[1]", 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_format_text, ['class' => Generals::$button_red]);
+		$I->see("Configuration successfully saved.");
+		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
+		$I->seeElement(".//*[@id='jform_default_emailformat']/label[1]", ['class' => Generals::$button_red]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("0", $options->predefined_mailformat_option);
+		$com_options = $I->getManifestOptions('com_bwpostman');
+		$I->assertEquals("0", $com_options->default_emailformat);
 
 		// look at FE
 		$user = $I->haveFriend('User');
@@ -805,20 +814,22 @@ class User2SubscriberCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$I->seeElement(RegPage::$login_identifier_format_text, ['class' => Generals::$button_red]);
-			$I->dontSeeElement(RegPage::$login_identifier_format_html, ['class' => Generals::$button_green]);
+			$I->seeElement(RegPage::$subs_identifier_format_text, ['class' => Generals::$button_red]);
+			$I->dontSeeElement(RegPage::$subs_identifier_format_html, ['class' => Generals::$button_green]);
 		}
 		);
 
 		// switch to yes
-		$I->clickAndWait(RegPage::$plugin_format_html, 1);
+		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
+		$I->clickAndWait(".//*[@id='jform_default_emailformat']/label[2]", 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_format_html, ['class' => Generals::$button_green]);
+		$I->see("Configuration successfully saved.");
+		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
+		$I->seeElement(".//*[@id='jform_default_emailformat']/label[2]", ['class' => Generals::$button_green]);
 
 		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("1", $options->predefined_mailformat_option);
+		$com_options = $I->getManifestOptions('com_bwpostman');
+		$I->assertEquals("1", $com_options->default_emailformat);
 
 		// look at FE
 		$user = $I->haveFriend('User');
@@ -826,8 +837,8 @@ class User2SubscriberCest
 		{
 			$this->selectRegistrationPage($I);
 
-			$I->dontSeeElement(RegPage::$login_identifier_format_text, ['class' => Generals::$button_red]);
-			$I->seeElement(RegPage::$login_identifier_format_html, ['class' => Generals::$button_green]);
+			$I->dontSeeElement(RegPage::$subs_identifier_format_text, ['class' => Generals::$button_red]);
+			$I->seeElement(RegPage::$subs_identifier_format_html, ['class' => Generals::$button_green]);
 		}
 		);
 
@@ -980,8 +991,8 @@ class User2SubscriberCest
 		$this->auto_delete              = true;
 
 		//reset option settings
-		$I->setManifestOption('bwpm_user2subscriber', 'show_format_selection_option', '1');
-		$I->setManifestOption('bwpm_user2subscriber', 'predefined_mailformat_option', '1');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
 		$I->setManifestOption('bwpm_user2subscriber', 'auto_update_email_option', '1');
 		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '1');
 		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("4"));
@@ -1007,7 +1018,7 @@ class User2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function fillJoomlaRegisterForm(AcceptanceTester $I)
+	protected function fillJoomlaPartAtRegisterForm(AcceptanceTester $I)
 	{
 		$I->fillField(RegPage::$login_identifier_name, RegPage::$login_value_name);
 		$I->fillField(RegPage::$login_identifier_username, RegPage::$login_value_username);
@@ -1024,6 +1035,83 @@ class User2SubscriberCest
 			LoginPage::logoutFromBackend($I);
 		}
 		);
+	}
+
+	/**
+	 * Method to fill all required BwPostman fields on Joomla registration form
+	 * This method fills in the end all fields, but meanwhile all required fields are omitted, one by one,
+	 * to check if the related messages appears
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function fillBwPostmanPartAtRegisterFormExtended(AcceptanceTester $I)
+	{
+		$com_options    = $I->getManifestOptions('com_bwpostman');
+
+		$I->clickAndWait(RegPage::$subs_identifier_subscribe_yes, 1);
+
+		// omit BwPostman fields
+		$I->clickAndWait(RegPage::$login_identifier_register, 1);
+		$I->scrollTo(Generals::$alert_error, 0, -100);
+		$I->see(RegPage::$error_message_name);
+		$I->see(RegPage::$error_message_firstname);
+		$I->see(sprintf(RegPage::$error_message_special, $com_options->special_label));
+
+		if ($com_options->show_gender)
+		{
+			$I->clickAndWait(RegPage::$subs_identifier_male, 1);
+		}
+
+		if ($com_options->show_name_field || $com_options->name_field_obligation)
+		{
+			$I->fillField(RegPage::$subs_identifier_name, RegPage::$subs_value_name);
+		}
+
+		if ($com_options->show_firstname_field || $com_options->firstname_field_obligation)
+		{
+			$I->fillField(RegPage::$subs_identifier_firstname, RegPage::$subs_value_firstname);
+		}
+
+		if ($com_options->show_special || $com_options->special_field_obligation)
+		{
+			$I->fillField(RegPage::$subs_identifier_special, RegPage::$subs_value_special);
+		}
+	}
+
+	/**
+	 * Method to fill all required BwPostman fields on Joomla registration form
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function fillBwPostmanPartAtRegisterFormSimple(AcceptanceTester $I)
+	{
+		$com_options    = $I->getManifestOptions('com_bwpostman');
+
+		$I->clickAndWait(RegPage::$subs_identifier_subscribe_yes, 1);
+
+		if ($com_options->show_gender)
+		{
+			$I->clickAndWait(RegPage::$subs_identifier_male, 1);
+		}
+
+		if ($com_options->show_name_field || $com_options->name_field_obligation)
+		{
+			$I->fillField(RegPage::$subs_identifier_name, RegPage::$subs_value_name);
+		}
+
+		if ($com_options->show_firstname_field || $com_options->firstname_field_obligation)
+		{
+			$I->fillField(RegPage::$subs_identifier_firstname, RegPage::$subs_value_firstname);
+		}
+
+		if ($com_options->show_special || $com_options->special_field_obligation)
+		{
+			$I->fillField(RegPage::$subs_identifier_special, RegPage::$subs_value_special);
+		}
 	}
 
 	/**
@@ -1074,16 +1162,43 @@ class User2SubscriberCest
 		$this->gotoSubscribersListTab($I);
 		$this->filterForSubscriber($I);
 
-		$format_col = $this->getTabDependentIdentifier(RegPage::$subscriber_format_col_identifier);
-		$identifier = $this->getTabDependentIdentifier(RegPage::$subscriber_edit_link);
+		$format_col             = $this->getTabDependentIdentifier(RegPage::$subscriber_format_col_identifier);
+		$name_identifier        = $this->getTabDependentIdentifier(RegPage::$subslist_identifier_name);
+		$firstname_identifier   = $this->getTabDependentIdentifier(RegPage::$subslist_identifier_firstname);
+		$gender_identifier      = $this->getTabDependentIdentifier(RegPage::$subslist_identifier_gender);
+		$edit_identifier        = $this->getTabDependentIdentifier(RegPage::$subscriber_edit_link);
 
 		if ($this->subscription_selected || ($this->auto_delete !== true))
 		{
-			$I->see(RegPage::$login_value_name, $identifier);
-			$I->canSee($this->format, $format_col);
+			$I->see(RegPage::$subs_value_name, $name_identifier);
+			$I->see($this->format, $format_col);
+
+			$com_options    = $I->getManifestOptions('com_bwpostman');
+
+			if ($com_options->show_gender)
+			{
+				$I->canSee('male', $gender_identifier);
+			}
+
+			if ($com_options->show_name_field || $com_options->name_field_obligation)
+			{
+				$I->see(RegPage::$subs_value_name, $name_identifier);
+			}
+
+			if ($com_options->show_firstname_field || $com_options->firstname_field_obligation)
+			{
+				$I->see(RegPage::$subs_value_firstname, $firstname_identifier);
+			}
+
 
 			// look in details for selected mailinglists
-			$I->clickAndWait($identifier, 1);
+			$I->clickAndWait($edit_identifier, 1);
+
+			if ($com_options->show_special || $com_options->special_field_obligation)
+			{
+				$I->seeInField(RegPage::$subslist_identifier_special, RegPage::$subs_value_special);
+			}
+
 			$I->scrollTo(RegPage::$mailinglist_fieldset_identifier, 0, -100);
 
 			foreach ($this->mls_to_subscribe as $ml)
@@ -1094,7 +1209,7 @@ class User2SubscriberCest
 		}
 		else
 		{
-			$I->dontSee(RegPage::$login_value_name, $identifier);
+			$I->dontSee(RegPage::$login_value_name, $name_identifier);
 		}
 	}
 
@@ -1128,7 +1243,7 @@ class User2SubscriberCest
 	 */
 	protected function filterForSubscriber(AcceptanceTester $I)
 	{
-		$I->fillField(Generals::$search_field, RegPage::$login_value_name);
+		$I->fillField(Generals::$search_field, RegPage::$subs_value_name);
 		$I->clickAndWait(RegPage::$search_tool_button, 1);
 		$I->clickSelectList(RegPage::$search_for_list, RegPage::$search_for_value);
 		$I->clickAndWait(Generals::$search_button, 1);
@@ -1412,6 +1527,35 @@ class User2SubscriberCest
 		$this->filterForPlugin($I);
 
 		$I->clickAndWait(RegPage::$plugin_edit_identifier, 1);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since version
+	 */
+	protected function editComponentOptions(AcceptanceTester $I)
+	{
+		$this->tester = $I;
+		LoginPage::logIntoBackend(Generals::$admin);
+
+		$this->selectComponentPage($I);
+
+		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	protected function selectComponentPage(AcceptanceTester $I)
+	{
+		$I->amOnPage(Generals::$url);
+		$I->wait(1);
+		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
 }

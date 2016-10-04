@@ -44,10 +44,6 @@ class User2SubscriberPage
 	public static $login_identifier_password2       = ".//*[@id='jform_password2']";
 	public static $login_identifier_email1          = ".//*[@id='jform_email1']";
 	public static $login_identifier_email2          = ".//*[@id='jform_email2']";
-	public static $login_identifier_subscribe_no    = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[1]";
-	public static $login_identifier_subscribe_yes   = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[2]";
-	public static $login_identifier_format_text     = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber_selected_mailformat']/label[1]";
-	public static $login_identifier_format_html     = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber_selected_mailformat']/label[2]";
 	public static $login_identifier_register        = ".//*[@id='member-registration']/div/div/button";
 
 	// login field values
@@ -58,12 +54,32 @@ class User2SubscriberPage
 
 	public static $change_value_email       = "dummy-2@bwtest.nil";
 
+	// subscriber field identifiers
+	public static $subs_identifier_subscribe_no     = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[1]";
+	public static $subs_identifier_subscribe_yes    = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[2]";
+	public static $subs_identifier_female           = ".//*[@id='jform_bwpm_user2subscriber_gender']/label[1]";
+	public static $subs_identifier_male             = ".//*[@id='jform_bwpm_user2subscriber_gender']/label[2]";
+	public static $subs_identifier_name             = ".//*[@id='jform_bwpm_user2subscriber_name']";
+	public static $subs_identifier_firstname        = ".//*[@id='jform_bwpm_user2subscriber_firstname']";
+	public static $subs_identifier_special          = ".//*[@id='jform_bwpm_user2subscriber_special']";
+	public static $subs_identifier_format_text      = ".//*[@id='jform_bwpm_user2subscriber_emailformat']/label[1]";
+	public static $subs_identifier_format_html      = ".//*[@id='jform_bwpm_user2subscriber_emailformat']/label[2]";
+
+	// subscriber field values
+	public static $subs_value_name         = "Sample";
+	public static $subs_value_firstname    = "Sam";
+	public static $subs_value_special      = "0815";
+
 	// success message identifiers
 	public static $success_heading_identifier   = ".//*[@id='system-message']/div/h4";
 	public static $success_message_identifier   = "div.alert-success > div > div.alert-message";
 	public static $activation_completed_text    = "Your Account has been successfully activated. You can now log in using the username and password you chose during the registration.";
 	public static $activation_complete          = ".//*[@id='system-message']/div/div/div";
 
+	// error message identifiers
+	public static $error_message_name               = "Invalid field:  Last Name";
+	public static $error_message_firstname          = "Invalid field:  First Name";
+	public static $error_message_special            = "Invalid field:  %s";
 
 	// backend stuff
 	public static $user_management_url              = 'administrator/index.php?option=com_users&view=users';
@@ -83,6 +99,11 @@ class User2SubscriberPage
 	public static $subscriber_format_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[6]";
 	public static $subscriber_filter_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
 	public static $subscriber_edit_link             = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]/a";
+
+	public static $subslist_identifier_name         = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
+	public static $subslist_identifier_firstname    = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[3]";
+	public static $subslist_identifier_gender       = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[4]";
+	public static $subslist_identifier_special      = ".//*[@id='jform_special']";
 
 	// mailinglist check
 	public static $mailinglist1_checked             = ".//*[@id='jform_ml_available_1']";

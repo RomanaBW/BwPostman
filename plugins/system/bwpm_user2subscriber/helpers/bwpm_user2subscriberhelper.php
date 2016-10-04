@@ -4,7 +4,7 @@
  *
  * BwPostman helper class for plugin.
  *
- * @version 2.0.0 bwpmprs
+ * @version 2.0.0 bwpmpus
  * @package BwPostman User2Subscriber Plugin
  * @author Romana Boldt
  * @copyright (C) 2016 Boldt Webservice <forum@boldt-webservice.de>

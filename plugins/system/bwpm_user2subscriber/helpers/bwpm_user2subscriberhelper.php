@@ -167,7 +167,7 @@ abstract class BWPM_User2SubscriberHelper {
 			}
 		}
 
-//		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
+		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
 
 			$subscriber = new stdClass();
 

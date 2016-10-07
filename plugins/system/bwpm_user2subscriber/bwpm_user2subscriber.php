@@ -70,7 +70,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected $componentEnabled = false;
+	protected $BwPostmanComponentEnabled = false;
 
 	/**
 	 * Property to hold component version
@@ -79,7 +79,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected $componentVersion = 0;
+	protected $BwPostmanComponentVersion = 0;
 
 	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
@@ -96,16 +96,22 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		JFormHelper::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/fields');
 		JFormHelper::addFieldPath(__DIR__ . '/form/fields');
 
-		$this->setComponentStatus();
-		$this->setComponentVersion();
+		$this->setBwPostmanComponentStatus();
+		$this->setBwPostmanComponentVersion();
 
 		$lang   = JFactory::getLanguage();
 
 		//Load first english file of component
 		$lang->load('com_bwpostman',JPATH_SITE,'en_GB',true);
 
-		//load specific language
+		//load specific language of component
 		$lang->load('com_bwpostman',JPATH_SITE,null,true);
+
+		//Load specified other language files in english
+		$lang->load('plg_vmuserfield_bwpm_buyer2subscriber', JPATH_ADMINISTRATOR, 'en_GB',true);
+
+		// and other language
+		$lang->load('plg_vmuserfield_bwpm_buyer2subscriber', JPATH_ADMINISTRATOR, null, true);
 	}
 
 	/**
@@ -115,7 +121,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since 2.0.0
 	 */
-	protected function setComponentStatus()
+	protected function setBwPostmanComponentStatus()
 	{
 		$_db        = JFactory::getDbo();
 		$query      = $_db->getQuery(true);
@@ -129,12 +135,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		try
 		{
 			$enabled                = $_db->loadResult();
-			$this->componentEnabled = $enabled;
+			$this->BwPostmanComponentEnabled = $enabled;
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
-			$this->componentEnabled = false;
+			$this->BwPostmanComponentEnabled = false;
 		}
 	}
 
@@ -145,7 +151,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since 2.0.0
 	 */
-	protected function setComponentVersion()
+	protected function setBwPostmanComponentVersion()
 	{
 		$_db        = JFactory::getDbo();
 		$query      = $_db->getQuery(true);
@@ -158,12 +164,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		try
 		{
 			$manifest               = json_decode($_db->loadResult(), true);
-			$this->componentVersion = $manifest['version'];
+			$this->BwPostmanComponentVersion = $manifest['version'];
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
-			$this->componentVersion = 0;
+			$this->BwPostmanComponentVersion = 0;
 		}
 	}
 	/**
@@ -178,15 +184,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
-		if (!$this->componentEnabled)
+		if (!$this->BwPostmanComponentEnabled)
 		{
 			return false;
 		}
 
-		if (!($form instanceof JForm))
+		if (version_compare($this->BwPostmanComponentVersion, '1.3.2', 'lt'))
 		{
-			$this->_subject->setError('JERROR_NOT_A_FORM');
-
 			return false;
 		}
 
@@ -343,6 +347,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
 		}
 
+		$form->setValue('mailinglists', 'bwpm_user2subscriber', json_encode($this->params->get('ml_available', array())));
+
 		$form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . BwPostmanHelper::getCaptcha(1), 'bwpm_user2subscriber');
 
 		return true;
@@ -361,7 +367,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onUserBeforeSave($oldUser, $isNew, $newUser)
 	{
-		if (!$this->componentEnabled)
+		if (!$this->BwPostmanComponentEnabled)
+		{
+			return false;
+		}
+
+		if (version_compare($this->BwPostmanComponentVersion, '1.3.2', 'lt'))
 		{
 			return false;
 		}
@@ -402,7 +413,12 @@ foreach ($data as $key => $value)
 	$logger->addEntry(new JLogEntry(sprintf('Data Key: %s, value = %s ', $key, $value)));
 }
 */
-		if (!$this->componentEnabled)
+		if (!$this->BwPostmanComponentEnabled)
+		{
+			return false;
+		}
+
+		if (version_compare($this->BwPostmanComponentVersion, '1.3.2', 'lt'))
 		{
 			return false;
 		}
@@ -412,11 +428,21 @@ foreach ($data as $key => $value)
 			return false;
 		}
 
+		$session = JFactory::getSession();
+
+		$subscription_data  = $session->get('plg_bwpm_buyer2subscriber.subscription_data', array());
+		$session->clear('plg_bwpm_buyer2subscriber');
+
+		if (is_array($subscription_data) && count($subscription_data) > 0)
+		{
+			$data['bwpm_user2subscriber']   = $subscription_data;
+		}
+
 		// Get and sanitize data
 		$user_mail              = ArrayHelper::getValue($data, 'email', '', 'string');
 		$user_id                = ArrayHelper::getValue($data, 'id', 0, 'int');
 		$subscriber_data        = ArrayHelper::getValue($data, 'bwpm_user2subscriber', array(), 'array');
-		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 1, 'int');
+		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 0, 'int');
 
 		if ($isNew)
 		{
@@ -445,10 +471,10 @@ foreach ($data as $key => $value)
 			return $create_result;
 		}
 
-		$session        = JFactory::getSession();
 		$activation     = $session->get('plg_bwpm_user2subscriber.activation');
 		$task           = JFactory::getApplication()->input->get->get('task', '', 'string');
 		$token          = JFactory::getApplication()->input->get->get('token', '', 'string');
+		$session->clear('plg_bwpm_user2subscriber');
 
 		if ($task == 'registration.activate' && $token == $activation)
 		{
@@ -496,7 +522,7 @@ foreach ($data as $key => $value)
 	{
 		try
 		{
-			$mailinglist_ids    = $this->params->get('ml_available');
+			$mailinglist_ids    = json_decode($subscriber_data['mailinglists']);
 
 			if ((count($mailinglist_ids) == 1) && ($mailinglist_ids[0] == 0))
 			{
@@ -524,11 +550,6 @@ foreach ($data as $key => $value)
 			}
 		}
 		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
-			return false;
-		}
-		catch (BwException $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			return false;
@@ -632,7 +653,7 @@ foreach ($data as $key => $value)
 	 */
 	public function onUserAfterDelete($data, $success, $msg)
 	{
-		if (!$this->componentEnabled)
+		if (!$this->BwPostmanComponentEnabled)
 		{
 			return false;
 		}

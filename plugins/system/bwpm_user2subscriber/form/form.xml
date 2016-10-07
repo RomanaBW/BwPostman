@@ -19,8 +19,8 @@
 				id="bwpm_user2subscriber"
 				type="radio"
 				class="registerradio btn-group btn-group-yesno"
-				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_CHECKBOX_LABEL"
-				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_CHECKBOX_DESC"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_LABEL"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_DESC"
 			    default="0"
 			>
 				<option value="0">JNO</option>
@@ -88,6 +88,11 @@
 					PLG_BWPOSTMAN_TEXT</option>
 				<option value="1">
 					PLG_BWPOSTMAN_HTML</option>
+			</field>
+			<field
+					name="mailinglists"
+					type="hidden"
+			>
 			</field>
 			<field
 				name="bw_captcha"

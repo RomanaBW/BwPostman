@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="BwPostman RegisterSubscribe"  description="Build file for BwPostman Plugin RegisterSubscribe" default="pack_bwpm_user2subscriber">
+<project name="BwPostman User2Subscriber"  description="Build file for BwPostman Plugin User2Subscriber" default="pack_bwpm_user2subscriber">
 	<import file="./bwpostman_variables.xml"/>
 
 	<!-- ============================================  -->
@@ -8,7 +8,7 @@
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="prepare_RegisterSubscribe" depends="set_variables">
+	<target name="prepare_User2Subscriber" depends="set_variables">
 		<echo msg="Set variables…" />
 		<property name="plugin" value="bwpm_user2subscriber" override="true" />
 
@@ -32,7 +32,7 @@
 	<!-- target directory, empty capimgdir, move       -->
 	<!-- manifest file, copy install file to base dir) -->
 	<!-- ============================================  -->
-	<target name="build_RegisterSubscribe" depends="prepare_RegisterSubscribe">
+	<target name="build_User2Subscriber" depends="prepare_User2Subscriber">
 		<echo msg="Copying files to build directory…" />
 
 		<echo msg="Copying plugin…" />
@@ -61,7 +61,7 @@
 	<!-- (Pack and upload component, modules and       -->
 	<!-- (overall package)                             -->
 	<!-- ============================================  -->
-	<target name="pack_bwpm_user2subscriber" depends="build_RegisterSubscribe">
+	<target name="pack_bwpm_user2subscriber" depends="build_User2Subscriber">
 		<echo msg="Fetch licence…" />
 		<copy file="${licence_source}" tofile="${target_base_plugin_dir}/files/${licence_file}"></copy>
 

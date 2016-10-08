@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="BwPostman Buyer2Subscriber"  description="Build file for BwPostman Plugin Buyer2Subscriber" default="pack_bwpm_buyer2subscriber">
+	<import file="./bwpostman_variables.xml"/>
+
+	<!-- ============================================  -->
+	<!-- Target: prepare                               -->
+	<!-- (Setting variables, delete target directory,  -->
+	<!--  create target directory)                     -->
+	<!-- ============================================  -->
+	<target name="prepare_Buyer2Subscriber" depends="set_variables">
+		<echo msg="Set variables…" />
+		<property name="plugin" value="bwpm_buyer2subscriber" override="true" />
+
+		<echo msg="Dev dirs…" />
+		<property name="dev_base_dir" value="/vhosts/dev3vm" override="true" />
+		<property name="dev_plugin_dir" value="${dev_base_dir}/plugins/vmuserfield/${plugin}" override="true" />
+		<property name="dev_admin_lang_dir" value="${dev_base_dir}/administrator/language" override="true" />
+
+		<echo msg="Source dirs…" />
+		<property name="source_plugin_dir" value="${source_base_dir}/plugins/vmuserfield/${plugin}" override="true" />
+
+		<echo msg="target dirs…" />
+		<property name="target_base_plugin_dir" value="/Support/Software/Joomla/${extension}/${version}/plugins/${plugin}/" override="true" />
+
+		<echo msg="Deleting target directories… " />
+		<delete dir="${target_base_plugin_dir}" includeemptydirs="true" failonerror="false" />
+
+		<echo msg="Creating target directories… " />
+		<mkdir dir="${target_base_plugin_dir}/files/language/de-DE" />
+		<mkdir dir="${target_base_plugin_dir}/files/language/en-GB" />
+	</target>
+
+	<!-- ============================================  -->
+	<!-- Target: get_Buyer2Subscriber                  -->
+	<!-- (copy files of plugin from dev3VM to Dev      -->
+	<!-- base directory                                -->
+	<!-- ============================================  -->
+	<target name="get_Buyer2Subscriber" depends="prepare_Buyer2Subscriber">
+		<echo msg="Copying files from Dev3VM to Dev…" />
+
+		<echo msg="Get plugin files…" />
+		<copy todir="${source_plugin_dir}">
+			<fileset dir="${dev_plugin_dir}">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<echo msg="Get plugin language files en…" />
+		<copy todir="${source_admin_lang_dir}/en-GB">
+			<fileset dir="${dev_admin_lang_dir}/en-GB">
+				<include name="**/*vmuserfield_${plugin}*.ini" />
+			</fileset>
+		</copy>
+
+		<echo msg="Get plugin language files de…" />
+		<copy todir="${source_admin_lang_dir}/de-DE">
+			<fileset dir="${dev_admin_lang_dir}/de-DE">
+				<include name="**/*vmuserfield_${plugin}*.ini" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<!-- ============================================  -->
+	<!-- Target: build_Buyer2Subscriber                -->
+	<!-- (copy files of plugin to target directory)    -->
+	<!-- ============================================  -->
+	<target name="build_Buyer2Subscriber" depends="get_Buyer2Subscriber">
+		<echo msg="Copying files to build directory…" />
+
+		<echo msg="Copying plugin…" />
+		<copy todir="${target_base_plugin_dir}/files">
+			<fileset dir="${source_plugin_dir}">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_plugin_dir}/files/language/de-DE">
+			<fileset dir="${source_admin_lang_dir}/de-DE">
+				<include name="**/*vmuserfield_${plugin}*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_plugin_dir}/files/language/en-GB">
+			<fileset dir="${source_admin_lang_dir}/en-GB">
+				<include name="**/*vmuserfield_${plugin}*.ini" />
+			</fileset>
+		</copy>
+
+		<echo msg="Chmod target dir…" />
+		<chmod file="${target_base_plugin_dir}" mode="0777" />
+	</target>
+
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: pack                       -->
+	<!-- (Pack and upload component, modules and       -->
+	<!-- (overall package)                             -->
+	<!-- ============================================  -->
+	<target name="pack_bwpm_buyer2subscriber" depends="build_Buyer2Subscriber">
+		<echo msg="Fetch licence…" />
+		<copy file="${licence_source}" tofile="${target_base_plugin_dir}/files/${licence_file}"></copy>
+
+		<echo msg="Creating archive…" />
+		<zip destfile="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip">
+			<fileset dir="${target_base_plugin_dir}/files">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+
+		<echo msg="Files copied and compressed in build directory OK!" />
+
+		<echo msg="Upload Variable: ${upload}" />
+		<echo msg="Upload Dir: ${upload_dir}" />
+		<echo msg="Target Base Dir: ${target_base_dir}" />
+		<echo msg="Target Base Plugin Dir: ${target_base_plugin_dir}" />
+		<if>
+			<equals arg1="${upload}" arg2="1" trim="true" casesensitive="false" />
+			<then>
+				<echo msg="Upload to webserver…" />
+				<scp
+						username="${username}"
+						password="${password}"
+						host="${host}"
+						todir="${upload_dir}">
+					<fileset dir="${target_base_dir}">
+						<include name="*.zip"/>
+						<include name="*.pdf"/>
+					</fileset>
+				</scp>
+				<echo msg="Upload to webserver OK!" />
+			</then>
+		</if>
+		<move file="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip" tofile="${target_base_plugin_dir}/plg_bwpostman_${plugin}.${version}.zip" />
+	</target>
+</project>

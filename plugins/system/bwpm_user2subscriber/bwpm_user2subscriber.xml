@@ -14,8 +14,9 @@
 
 	<files>
 		<filename plugin="bwpm_user2subscriber">bwpm_user2subscriber.php</filename>
---		<filename >install.bwpm_user2subscriber.php</filename>
+		<filename >install.bwpm_user2subscriber.php</filename>
 		<filename >index.html</filename>
+		<folder>assets</folder>
 		<folder>form</folder>
 		<folder>helpers</folder>
 	</files>

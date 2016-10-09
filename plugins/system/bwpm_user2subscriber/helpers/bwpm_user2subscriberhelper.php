@@ -121,7 +121,7 @@ abstract class BWPM_User2SubscriberHelper {
 	{
 		if ($user_id == 0)
 		{
-			return true;
+			return false;
 		}
 
 		$_db	= JFactory::getDbo();
@@ -136,7 +136,11 @@ abstract class BWPM_User2SubscriberHelper {
 
 		$subscriber  = $_db->loadAssoc();
 
-		return $subscriber;
+		if (is_array($subscriber))
+		{
+			return $subscriber;
+		}
+		return false;
 	}
 
 	/**
@@ -153,23 +157,15 @@ abstract class BWPM_User2SubscriberHelper {
 	 */
 	public static function createSubscriberData($user_mail, $user_id, $subscriber_data, $mailinglist_ids)
 	{
-		$params = JComponentHelper::getParams('com_bwpostman');
 		$date   = JFactory::getDate();
 		$time   = $date->toSql();
 
 		// @Todo: For version 2.0.0 of component replace $_SERVER['REMOTE_ADDR'] with the following
 		$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-		foreach ($subscriber_data as $key => $value) {
-			if (strpos($key, 'bwp-') === 0) {
-				$captcha = $key;
-				break;
-			}
-		}
-
 		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
 
-			$subscriber = new stdClass();
+		$subscriber = new stdClass();
 
 		$subscriber->id                = 0;
 		$subscriber->user_id           = $user_id;
@@ -203,7 +199,7 @@ abstract class BWPM_User2SubscriberHelper {
 	 */
 	public static  function createActivation()
 	{
-		// @ToDo: When this method has moved to helper class, this one here is redundant
+		// @ToDo: When this method has moved to helper class of component, this one here is redundant
 		$_db                = JFactory::getDbo();
 		$query              = $_db->getQuery(true);
 		$current_activation = null;
@@ -243,7 +239,7 @@ abstract class BWPM_User2SubscriberHelper {
 	 */
 	public static function createEditlink()
 	{
-		// @ToDo: When this method has moved to helper class, this one here is redundant
+		// @ToDo: When this method has moved to helper class of component, this one here is redundant
 		$_db                = JFactory::getDbo();
 		$query              = $_db->getQuery(true);
 		$current_editlink   = null;
@@ -287,7 +283,7 @@ abstract class BWPM_User2SubscriberHelper {
 	 */
 	public static function saveSubscriber($data)
 	{
-		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used
+		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
 		$table  = JTable::getInstance('Subscribers', 'BwPostmanTable');
 
@@ -300,6 +296,7 @@ abstract class BWPM_User2SubscriberHelper {
 		// Check the data.
 		/* @ToDo: spam check as yet implemented is evil to implement in registration form of Joomla.
 		 * Better solution would be a plugin for spam check to outsource spam check from table check.
+		 * That would also open the possibility to use other spam check methods/plugins
 		 */
 		/*
 		$check_data = \Joomla\Utilities\ArrayHelper::fromObject($data);

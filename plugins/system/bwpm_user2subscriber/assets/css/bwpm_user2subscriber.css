@@ -1,0 +1,42 @@
+/**
+ * BwPostman User2Subscriber Plugin
+ *
+ * Plugin to automated subscription at Joomla registration
+ *
+ * BwPostman User2Subscriber Plugin css file for BwPostman.
+ *
+ * @version 2.0.0 bwpmpus
+ * @package			BwPostman User2Subscriber Plugin
+ * @author			Romana Boldt
+ * @copyright		(C) 2016 Boldt Webservice <forum@boldt-webservice.de>
+ * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.registerradio.radio.btn-group input[type="radio"] {display: none;}
+.registerradio .btn {-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background-color: #f5f5f5;background-image: linear-gradient(to bottom, #fff, #e6e6e6);background-repeat: repeat-x;border-color: #bbb #bbb #a2a2a2;border-image: none;border-radius: 4px;border-style: solid;border-width: 1px;box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);color: #333;cursor: pointer;display: inline-block;font-size: 13px;line-height: 18px;margin-bottom: 0;padding: 4px 12px;text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);vertical-align: middle;}
+.registerradio .btn:hover, .registerradio .btn:focus, .registerradio .btn:active, .registerradio .btn.active, .registerradio .btn.disabled, .registerradio .btn[disabled] {background-color: #e6e6e6;color: #333;}
+.registerradio .btn.active, .registerradio .btn:active {background-image: none;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);outline: 0 none;}
+.registerradio .btn-primary.active, .registerradio .btn-warning.active, .registerradio .btn-danger.active, .registerradio .btn-success.active, .registerradio .btn-info.active, .registerradio .btn-inverse.active {color: rgba(255, 255, 255, 0.75);}
+.registerradio .btn-success {background-color: #409740;background-image: linear-gradient(to bottom, #46a546, #378137);background-repeat: repeat-x;border-color: #378137 #378137 #204b20;color: #fff;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);}
+.registerradio .btn-success:hover, .registerradio .btn-success:focus, .registerradio .btn-success:active, .registerradio .btn-success.active, .registerradio .btn-success.disabled, .registerradio .btn-success[disabled] {background-color: #378137;color: #fff;}
+.registerradio .btn-danger:hover, .registerradio .btn-danger:focus, .registerradio .btn-danger:active, .registerradio .btn-danger.active, .registerradio .btn-danger.disabled, .registerradio .btn-danger[disabled] {background-color: #942a25;color: #fff;}
+.registerradio.btn-group > .btn {border-radius: 0;position: relative;}
+.registerradio.btn-group > .btn, .registerradio.btn-group > .dropdown-menu, .registerradio.btn-group > .popover {font-size: 13px;}
+.registerradio.btn-group > .btn:last-child, .registerradio.btn-group > .dropdown-toggle {border-bottom-right-radius: 4px;border-top-right-radius: 4px;}
+.registerradio.btn-group > .btn:hover, .registerradio.btn-group > .btn:focus, .registerradio.btn-group > .btn:active, .registerradio.btn-group > .btn.active {z-index: 2;}
+.registerradio.radio.btn-group > label:first-of-type {border-bottom-left-radius: 4px !important;border-top-left-radius: 4px !important;margin-left: 0;}
+.registerradio .btn-primary.active, .registerradio .btn-warning.active, .registerradio .btn-danger.active, .registerradio .btn-success.active, .registerradio .btn-info.active, .registerradio .btn-inverse.active {color: rgba(255, 255, 255, 0.95);}
+.registerradio.btn-group.btn-group-yesno > .btn {min-width: 84px;padding: 2px 12px;}

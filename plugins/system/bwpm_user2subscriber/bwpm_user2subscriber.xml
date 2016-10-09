@@ -9,12 +9,12 @@
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DESCRIPTION</description>
-<!--
-	<scriptfile>installscript.php</scriptfile>
--->
+
+	<scriptfile>install.bwpm_user2subscriber.php</scriptfile>
+
 	<files>
 		<filename plugin="bwpm_user2subscriber">bwpm_user2subscriber.php</filename>
-<!--		<filename >installscript.php</filename>-->
+--		<filename >install.bwpm_user2subscriber.php</filename>
 		<filename >index.html</filename>
 		<folder>form</folder>
 		<folder>helpers</folder>

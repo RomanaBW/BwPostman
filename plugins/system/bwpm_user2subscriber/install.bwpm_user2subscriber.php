@@ -61,6 +61,7 @@ class plgVmUserfieldBwPm_User2SubscriberInstallerScript
 
 			if (version_compare($BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 			{
+				JFactory::getApplication()->enqueueMessage(sprintf('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version), 'error');
 				return false;
 			}
 		}

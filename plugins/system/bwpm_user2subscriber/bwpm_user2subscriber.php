@@ -44,6 +44,13 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 class PlgSystemBWPM_User2Subscriber extends JPlugin
 {
 	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	protected $min_bwpostman_version    = '1.3.2';
+
+	/**
 	 * Load the language file on instantiation
 	 *
 	 * @var    boolean
@@ -79,7 +86,25 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected $BwPostmanComponentVersion = 0;
+	protected $BwPostmanComponentVersion = '0.0.0';
+
+	/**
+	 * Property to hold form
+	 *
+	 * @var    object
+	 *
+	 * @since  2.0.0
+	 */
+	protected $form;
+
+	/**
+	 * Property to hold subscriber data stored at component
+	 *
+	 * @var    array
+	 *
+	 * @since  2.0.0
+	 */
+	protected $stored_subscriber_data = array();
 
 	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
@@ -98,20 +123,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
-
-		$lang   = JFactory::getLanguage();
-
-		//Load first english file of component
-		$lang->load('com_bwpostman',JPATH_SITE,'en_GB',true);
-
-		//load specific language of component
-		$lang->load('com_bwpostman',JPATH_SITE,null,true);
-
-		//Load specified other language files in english
-		$lang->load('plg_vmuserfield_bwpm_buyer2subscriber', JPATH_ADMINISTRATOR, 'en_GB',true);
-
-		// and other language
-		$lang->load('plg_vmuserfield_bwpm_buyer2subscriber', JPATH_ADMINISTRATOR, null, true);
+		$this->loadLanguageFiles();
 	}
 
 	/**
@@ -169,9 +181,32 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
-			$this->BwPostmanComponentVersion = 0;
+			$this->BwPostmanComponentVersion = '0.0.0';
 		}
 	}
+
+	/**
+	 * Method to load further language files
+	 *
+	 * @since 2.0.0
+	 */
+	protected function loadLanguageFiles()
+	{
+		$lang = JFactory::getLanguage();
+
+		//Load first english file of component
+		$lang->load('com_bwpostman', JPATH_SITE, 'en_GB', true);
+
+		//load specific language of component
+		$lang->load('com_bwpostman', JPATH_SITE, null, true);
+
+		//Load specified other language files in english
+		$lang->load('plg_vmuserfield_bwpm_buyer2subscriber', JPATH_ADMINISTRATOR, 'en_GB', true);
+
+		// and other language
+		$lang->load('plg_vmuserfield_bwpm_buyer2subscriber', JPATH_ADMINISTRATOR, null, true);
+	}
+
 	/**
 	 * Event method onContentPrepareForm
 	 *
@@ -184,12 +219,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
-		if (!$this->BwPostmanComponentEnabled)
-		{
-			return false;
-		}
-
-		if (version_compare($this->BwPostmanComponentVersion, '1.3.2', 'lt'))
+		if (!$this->prerequisitesFulfilled())
 		{
 			return false;
 		}
@@ -202,9 +232,9 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		JForm::addFormPath(__DIR__ . '/form');
-		$form->loadFile('form', false);
+		$this->form->loadFile('form', false);
 
-		if (!($form instanceof JForm))
+		if (!($this->form instanceof JForm))
 		{
 			return false;
 		}
@@ -212,146 +242,177 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		// Add CSS for the radio fields
 		$doc = JFactory::getDocument();
 
-		$css = "
-				.registerradio.radio.btn-group input[type=\"radio\"] {display: none;}
-				.registerradio .btn {-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;background-color: #f5f5f5;background-image: linear-gradient(to bottom, #fff, #e6e6e6);background-repeat: repeat-x;border-color: #bbb #bbb #a2a2a2;border-image: none;border-radius: 4px;border-style: solid;border-width: 1px;box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);color: #333;cursor: pointer;display: inline-block;font-size: 13px;line-height: 18px;margin-bottom: 0;padding: 4px 12px;text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);vertical-align: middle;}
-				.registerradio .btn:hover, .registerradio .btn:focus, .registerradio .btn:active, .registerradio .btn.active, .registerradio .btn.disabled, .registerradio .btn[disabled] {background-color: #e6e6e6;color: #333;}
-				.registerradio .btn.active, .registerradio .btn:active {background-image: none;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);outline: 0 none;}
-				.registerradio .btn-primary.active, .registerradio .btn-warning.active, .registerradio .btn-danger.active, .registerradio .btn-success.active, .registerradio .btn-info.active, .registerradio .btn-inverse.active {color: rgba(255, 255, 255, 0.75);}
-				.registerradio .btn-success {background-color: #409740;background-image: linear-gradient(to bottom, #46a546, #378137);background-repeat: repeat-x;border-color: #378137 #378137 #204b20;color: #fff;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);}
-				.registerradio .btn-success:hover, .registerradio .btn-success:focus, .registerradio .btn-success:active, .registerradio .btn-success.active, .registerradio .btn-success.disabled, .registerradio .btn-success[disabled] {background-color: #378137;color: #fff;}
-				.registerradio .btn-danger:hover, .registerradio .btn-danger:focus, .registerradio .btn-danger:active, .registerradio .btn-danger.active, .registerradio .btn-danger.disabled, .registerradio .btn-danger[disabled] {background-color: #942a25;color: #fff;}
-				.registerradio.btn-group > .btn {border-radius: 0;position: relative;}
-				.registerradio.btn-group > .btn, .registerradio.btn-group > .dropdown-menu, .registerradio.btn-group > .popover {font-size: 13px;}
-				.registerradio.btn-group > .btn:last-child, .registerradio.btn-group > .dropdown-toggle {border-bottom-right-radius: 4px;border-top-right-radius: 4px;}
-				.registerradio.btn-group > .btn:hover, .registerradio.btn-group > .btn:focus, .registerradio.btn-group > .btn:active, .registerradio.btn-group > .btn.active {z-index: 2;}
-				.registerradio.radio.btn-group > label:first-of-type {border-bottom-left-radius: 4px !important;border-top-left-radius: 4px !important;margin-left: 0;}
-				.registerradio .btn-primary.active, .registerradio .btn-warning.active, .registerradio .btn-danger.active, .registerradio .btn-success.active, .registerradio .btn-info.active, .registerradio .btn-inverse.active {color: rgba(255, 255, 255, 0.95);}
-				.registerradio.btn-group.btn-group-yesno > .btn {min-width: 84px;padding: 2px 12px;}
-				";
-		$doc->addStyleDeclaration($css);
+		$css_file   = __DIR__ . '/assets/css/bwpm_user2subscriber.css';
+		$doc->addStyleSheet($css_file);
 
-		$js= "
-			jQuery(document).ready(function()
-			{
-				// Turn radios into btn-group
-				jQuery('.radio.btn-group label').addClass('btn');
-				jQuery('.btn-group label:not(.active)').click(function()
-				{
-					var label = jQuery(this);
-					var input = jQuery('#' + label.attr('for'));
-					
-					if (!input.prop('checked')) 
-					{
-						label.closest('.btn-group').find('label').removeClass('active btn-success btn-danger btn-primary');
-						
-						if (input.val() == '') 
-						{
-						    label.addClass('active btn-primary');
-						} 
-						else if (input.val() == 0) 
-						{
-						    label.addClass('active btn-danger');
-						} 
-						else 
-						{
-							label.addClass('active btn-success');
-						}
-						input.prop('checked', true);
-					}
-				});
-				
-				jQuery('.btn-group input[checked=checked]').each(function()
-				{
-					if (jQuery(this).val() == '') 
-					{
-						jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-primary');
-					} 
-					else if (jQuery(this).val() == 0) 
-					{
-						jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-danger');
-					} 
-					else 
-					{
-						jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-success');
-					}
-				});
-				})
-			";
+		$js_file= __DIR__ . '/assets/js/bwpm_user2subscriber.js';
 
-		$doc->addScriptDeclaration($js);
+		$doc->addScriptDeclaration($js_file);
 
+		$this->processGenderField();
+		$this->processLastnameField();
+		$this->processFirstnameField();
+		$this->processAdditionalField();
+		$this->processNewsletterFormatField();
+		$this->processSelectedMailinglists();
+		$this->processCaptchaField();
+
+		return true;
+	}
+
+	/**
+	 * Method to check if prerequisites are fulfilled
+	 *
+	 * @return  bool
+	 *
+	 * @since   2.0.0
+	 */
+	protected function prerequisitesFulfilled()
+	{
+		if (!$this->BwPostmanComponentEnabled)
+		{
+			return false;
+		}
+
+		if (version_compare($this->BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Method to prepare input field gender
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processGenderField()
+	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
 		if (!$com_params->get('show_gender'))
 		{
-			$form->removeField('gender', 'bwpm_user2subscriber');
+			$this->form->removeField('gender', 'bwpm_user2subscriber');
 		}
+	}
+
+	/**
+	 * Method to prepare input field last name
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processLastnameField()
+	{
+		$com_params = JComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('name_field_obligation'))
 		{
 			$com_params->set('show_name_field', '1');
-			$form->setFieldAttribute('name', 'required', 'true', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('name', 'required', 'true', 'bwpm_user2subscriber');
 		}
 
 		if (!$com_params->get('show_name_field'))
 		{
-			$form->removeField('name', 'bwpm_user2subscriber');
+			$this->form->removeField('name', 'bwpm_user2subscriber');
 		}
+	}
+
+	/**
+	 * Method to prepare input field first name
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processFirstnameField()
+	{
+		$com_params = JComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('firstname_field_obligation'))
 		{
 			$com_params->set('show_firstname_field', '1');
-			$form->setFieldAttribute('firstname', 'required', 'true', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('firstname', 'required', 'true', 'bwpm_user2subscriber');
 		}
 
 		if (!$com_params->get('show_firstname_field'))
 		{
-			$form->removeField('firstname', 'bwpm_user2subscriber');
+			$this->form->removeField('firstname', 'bwpm_user2subscriber');
 		}
+	}
+
+	/**
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processAdditionalField()
+	{
+		$com_params = JComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('special_field_obligation'))
 		{
 			$com_params->set('show_special', '1');
-			$form->setFieldAttribute('special', 'required', 'true', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('special', 'required', 'true', 'bwpm_user2subscriber');
 		}
 
 		if (!$com_params->get('show_special'))
 		{
-			$form->removeField('special', 'bwpm_user2subscriber');
+			$this->form->removeField('special', 'bwpm_user2subscriber');
 		}
 		else
 		{
-			$special_label  = $com_params->get('special_label');
-			$special_desc   = $com_params->get('special_desc');
+			$special_label = $com_params->get('special_label');
+			$special_desc  = $com_params->get('special_desc');
 
 			if ($special_label != '')
 			{
-				$form->setFieldAttribute('special', 'label', JText::_($special_label), 'bwpm_user2subscriber');
+				$this->form->setFieldAttribute('special', 'label', JText::_($special_label), 'bwpm_user2subscriber');
 			}
 
 			if ($special_desc != '')
 			{
-				$form->setFieldAttribute('special', 'description', JText::_($special_desc), 'bwpm_user2subscriber');
+				$this->form->setFieldAttribute('special', 'description', JText::_($special_desc), 'bwpm_user2subscriber');
 			}
 		}
+	}
+
+	/**
+	 * Method to prepare input field additional
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processNewsletterFormatField()
+	{
+		$com_params = JComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('show_emailformat'))
 		{
-			$form->setFieldAttribute('emailformat', 'required', 'true', 'bwpm_user2subscriber');
-			$form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('emailformat', 'required', 'true', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
 		}
 		else
 		{
-			$form->setFieldAttribute('emailformat', 'type', 'hidden', 'bwpm_user2subscriber');
-			$form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('emailformat', 'type', 'hidden', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
 		}
+	}
 
-		$form->setValue('mailinglists', 'bwpm_user2subscriber', json_encode($this->params->get('ml_available', array())));
+	/**
+	 * Method to prepare input field mailinglists
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processSelectedMailinglists()
+	{
+		$this->form->setValue('mailinglists', 'bwpm_user2subscriber', json_encode($this->params->get('ml_available', array())));
+	}
 
-		$form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . BwPostmanHelper::getCaptcha(1), 'bwpm_user2subscriber');
-
-		return true;
+	/**
+	 * Method to prepare input field captcha
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processCaptchaField()
+	{
+		$this->form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . BwPostmanHelper::getCaptcha(1), 'bwpm_user2subscriber');
 	}
 
 	/**
@@ -367,12 +428,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onUserBeforeSave($oldUser, $isNew, $newUser)
 	{
-		if (!$this->BwPostmanComponentEnabled)
-		{
-			return false;
-		}
-
-		if (version_compare($this->BwPostmanComponentVersion, '1.3.2', 'lt'))
+		if (!$this->prerequisitesFulfilled())
 		{
 			return false;
 		}
@@ -404,21 +460,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
-/*
-
-$log_options = array('test' => 'testtext', 'text_file' => 'bwpostman/BWPM_User2Subscriber.log');
-$logger      = new BwLogger($log_options);
-foreach ($data as $key => $value)
-{
-	$logger->addEntry(new JLogEntry(sprintf('Data Key: %s, value = %s ', $key, $value)));
-}
-*/
-		if (!$this->BwPostmanComponentEnabled)
-		{
-			return false;
-		}
-
-		if (version_compare($this->BwPostmanComponentVersion, '1.3.2', 'lt'))
+		if (!$this->prerequisitesFulfilled())
 		{
 			return false;
 		}
@@ -442,39 +484,20 @@ foreach ($data as $key => $value)
 		$user_mail              = ArrayHelper::getValue($data, 'email', '', 'string');
 		$user_id                = ArrayHelper::getValue($data, 'id', 0, 'int');
 		$subscriber_data        = ArrayHelper::getValue($data, 'bwpm_user2subscriber', array(), 'array');
-		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 0, 'int');
 
 		if ($isNew)
 		{
-			if (!$subscription_wanted)
-			{
-				return false;
-			}
+			$newUser_result = $this->processNewUser($user_mail, $user_id, $subscriber_data);
 
-			try
-			{
-				if (BWPM_User2SubscriberHelper::hasSubscription($user_mail))
-				{
-					$update_userid_result = BWPM_User2SubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
-
-					return $update_userid_result;
-				}
-			}
-			catch (Exception $e)
-			{
-				$this->_subject->setError($e->getMessage());
-				return false;
-			}
-
-			$create_result = $this->subscribeToBwPostman($user_mail, $user_id, $subscriber_data);
-
-			return $create_result;
+			return $newUser_result;
 		}
 
 		$activation     = $session->get('plg_bwpm_user2subscriber.activation');
 		$task           = JFactory::getApplication()->input->get->get('task', '', 'string');
 		$token          = JFactory::getApplication()->input->get->get('token', '', 'string');
 		$session->clear('plg_bwpm_user2subscriber');
+
+		$this->stored_subscriber_data = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 
 		if ($task == 'registration.activate' && $token == $activation)
 		{
@@ -485,26 +508,51 @@ foreach ($data as $key => $value)
 
 		if ($this->params->get('auto_update_email_option'))
 		{
-			try
-			{
-				$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
+			$email_update_result  = $this->updateMailaddress($user_mail);
 
-				if (is_array($subscriber) && ($subscriber['email']) != $user_mail)
-				{
-					$subscriber['email'] = $user_mail;
-					$update_email_result = $this->updateEmailOfSubscription($subscriber);
-
-					return $update_email_result;
-				}
-			}
-			catch (Exception $e)
-			{
-				$this->_subject->setError($e->getMessage());
-				return false;
-			}
+			return $email_update_result;
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param string    $user_mail
+	 * @param int       $user_id
+	 * @param array     $subscriber_data
+	 *
+	 * @return bool
+	 *
+	 * @since 2.0.0
+	 */
+	protected function processNewUser($user_mail, $user_id, $subscriber_data)
+	{
+		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 0, 'int');
+
+		if (!$subscription_wanted)
+		{
+			return false;
+		}
+
+		try
+		{
+			if (BWPM_User2SubscriberHelper::hasSubscription($user_mail))
+			{
+				$update_userid_result = BWPM_User2SubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
+
+				return $update_userid_result;
+			}
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+
+			return false;
+		}
+
+		$create_result = $this->subscribeToBwPostman($user_mail, $user_id, $subscriber_data);
+
+		return $create_result;
 	}
 
 	/**
@@ -569,13 +617,12 @@ foreach ($data as $key => $value)
 	 */
 	protected function activateSubscription($user_id)
 	{
-		// Is it a valid user to activate?
 		if ($user_id == 0)
 		{
 			return false;
 		}
 
-		$activation_ip	= $_SERVER['REMOTE_ADDR'];
+		$activation_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
@@ -601,9 +648,8 @@ foreach ($data as $key => $value)
 
 			if ($send_mail && $res)
 			{
-				$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
-				$model      = JModelLegacy::getInstance('Register', 'BwPostmanModel');
-				$model->sendActivationNotification($subscriber['id']);
+				$model  = JModelLegacy::getInstance('Register', 'BwPostmanModel');
+				$model->sendActivationNotification($this->stored_subscriber_data['id']);
 			}
 		}
 		catch (Exception $e)
@@ -616,22 +662,49 @@ foreach ($data as $key => $value)
 	}
 
 	/**
-	 * Method to update email of subscription, if email of Joomla account changes
+	 * @param $user_mail
 	 *
-	 * @param   array  $subscriber  Subscriber ID and mail address
+	 * @return bool
+	 *
+	 * @since 2.0.0
+	 */
+	protected function updateMailaddress($user_mail)
+	{
+		$update_email_result    = false;
+
+		try
+		{
+			if (is_array($this->stored_subscriber_data) && ($this->stored_subscriber_data['email'] != $user_mail))
+			{
+				$this->stored_subscriber_data['email'] = $user_mail;
+
+				$update_email_result = $this->updateEmailOfSubscription();
+			}
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			return false;
+		}
+
+		return $update_email_result;
+	}
+
+	/**
+	 * Method to update email of subscription, if email of Joomla account changes
 	 *
 	 * @return  bool        True on success
 	 *
 	 * @since  2.0.0
 	 */
-	protected function updateEmailOfSubscription($subscriber)
+	protected function updateEmailOfSubscription()
 	{
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
-		$query->set($_db->quoteName('email') . " = " . $_db->quote($subscriber['email']));
-		$query->where($_db->quoteName('id') . ' = ' . $_db->quote($subscriber['id']));
+		$query->set($_db->quoteName('email') . " = " . $_db->quote($this->stored_subscriber_data['email']));
+		$query->where($_db->quoteName('id') . ' = ' . $_db->quote($this->stored_subscriber_data['id']));
 
 		$_db->setQuery($query);
 
@@ -665,9 +738,11 @@ foreach ($data as $key => $value)
 
 		$user_id    = ArrayHelper::getValue($data, 'id', 0, 'int');
 
+		$this->stored_subscriber_data = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
+
 		if ($this->params->get('auto_delete_option'))
 		{
-			$delete_result = $this->deleteSubscription($user_id);
+			$delete_result = $this->deleteSubscription();
 		}
 		else
 		{
@@ -680,31 +755,27 @@ foreach ($data as $key => $value)
 	/**
 	 * Method to delete subscription, if Joomla account is deleted
 	 *
-	 * @param   int  $user_id  User ID
-	 *
 	 * @return  bool        True on success
 	 *
 	 * @since  2.0.0
 	 */
-	protected function deleteSubscription($user_id)
+	protected function deleteSubscription()
 	{
 		try
 		{
-			$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
-
 			$res                        = false;
 			$res_delete_mailinglists    = false;
 			$res_delete_subscriber      = false;
 
-			if (!is_array($subscriber))
+			if (!is_array($this->stored_subscriber_data))
 			{
 				return true;
 			}
 
-			if ($subscriber['id'] != 0)
+			if ($this->stored_subscriber_data['id'] != 0)
 			{
-				$res_delete_subscriber      = $this->deleteSubscriber($subscriber['id']);
-				$res_delete_mailinglists    = $this->deleteSubscribedMailinglists($subscriber['id']);
+				$res_delete_subscriber      = $this->deleteSubscriber();
+				$res_delete_mailinglists    = $this->deleteSubscribedMailinglists();
 			}
 		}
 		catch (Exception $e)
@@ -716,6 +787,64 @@ foreach ($data as $key => $value)
 		if ($res_delete_mailinglists && $res_delete_subscriber)
 		{
 			$res    = true;
+		}
+		return $res;
+	}
+
+	/**
+	 * Method to delete subscriber from subscribers table
+	 *
+	 * @return  bool                    true on success
+	 *
+	 * @since  2.0.0
+	 */
+	protected function deleteSubscriber()
+	{
+		try
+		{
+			$_db	= JFactory::getDbo();
+			$query	= $_db->getQuery(true);
+
+			$query->delete($_db->quoteName('#__bwpostman_subscribers'));
+			$query->where($_db->quoteName('id') . ' =  ' . $_db->quote($this->stored_subscriber_data['id']));
+
+			$_db->setQuery($query);
+
+			$res  = $_db->execute();
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			return false;
+		}
+		return $res;
+	}
+
+	/**
+	 * Method to delete subscriber entries from subscribers mailinglists table
+	 *
+	 * @return  bool        true on success
+	 *
+	 * @since  2.0.0
+	 */
+	protected function deleteSubscribedMailinglists()
+	{
+		try
+		{
+			$_db	= JFactory::getDbo();
+			$query	= $_db->getQuery(true);
+
+			$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
+			$query->where($_db->quoteName('subscriber_id') . ' =  ' . $_db->quote($this->stored_subscriber_data['id']));
+
+			$_db->setQuery($query);
+
+			$res  = $_db->execute();
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			return false;
 		}
 		return $res;
 	}
@@ -733,16 +862,14 @@ foreach ($data as $key => $value)
 	{
 		try
 		{
-			$subscriber = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
-
 			$res_update_subscriber      = false;
 
-			if (!is_array($subscriber))
+			if (!is_array($this->stored_subscriber_data))
 			{
 				return true;
 			}
 
-			if ($subscriber['id'] != 0)
+			if ($this->stored_subscriber_data['id'] != 0)
 			{
 				$_db	= JFactory::getDbo();
 				$query	= $_db->getQuery(true);
@@ -763,67 +890,5 @@ foreach ($data as $key => $value)
 		}
 
 		return $res_update_subscriber;
-	}
-
-	/**
-	 * Method to delete subscriber from subscribers table
-	 *
-	 * @param   int  $subscriber_id     Subscriber ID
-	 *
-	 * @return  bool                    true on success
-	 *
-	 * @since  2.0.0
-	 */
-	protected function deleteSubscriber($subscriber_id)
-	{
-		try
-		{
-			$_db	= JFactory::getDbo();
-			$query	= $_db->getQuery(true);
-
-			$query->delete($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('id') . ' =  ' . $_db->quote($subscriber_id));
-
-			$_db->setQuery($query);
-
-			$res  = $_db->execute();
-		}
-		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
-			return false;
-		}
-		return $res;
-	}
-
-	/**
-	 * Method to delete subscriber entries from subscribers mailinglists table
-	 *
-	 * @param   int  $subscriber_id     Subscriber ID
-	 *
-	 * @return  bool                    true on success
-	 *
-	 * @since  2.0.0
-	 */
-	protected function deleteSubscribedMailinglists($subscriber_id)
-	{
-		try
-		{
-			$_db	= JFactory::getDbo();
-			$query	= $_db->getQuery(true);
-
-			$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->where($_db->quoteName('subscriber_id') . ' =  ' . $_db->quote($subscriber_id));
-
-			$_db->setQuery($query);
-
-			$res  = $_db->execute();
-		}
-		catch (Exception $e)
-		{
-			$this->_subject->setError($e->getMessage());
-			return false;
-		}
-		return $res;
 	}
 }

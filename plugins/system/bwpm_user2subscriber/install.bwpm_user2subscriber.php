@@ -98,33 +98,5 @@ class plgSystemBwPm_User2SubscriberInstallerScript
 		}
 		return $version;
 	}
-
-	/**
-     * Called on installation
-     *
-     * @param   JAdapterInstance  $adapter  The object responsible for running this script
-     *
-     * @return  boolean  True on success
-     *
-     * @since   2.0.0
-     */
-    public function install(JAdapterInstance $adapter)
-    {
-        // enabling plugin
-        $_db    = JFactory::getDbo();
-	    $query  = $_db->getQuery(true);
-
-	    $query->update($_db->quoteName('#__extensions'));
-	    $query->set($_db->quoteName('enabled') . " = " . $_db->quote(1));
-	    $query->where($_db->quoteName('type') . ' = ' . $_db->quote('plugin'));
-	    $query->where($_db->quoteName('element') . ' = ' . $_db->quote('bwpm_user2subscriber'));
-	    $query->where($_db->quoteName('folder') . ' = ' . $_db->quote('system'));
-
-	    $_db->setQuery($query);
-
-        $_db->execute();
-
-        return true;
-    }
 }
 

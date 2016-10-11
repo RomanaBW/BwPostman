@@ -233,7 +233,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return true;
 		}
 
-		JForm::addFormPath(__DIR__ . '/form');
+		JForm::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
 		$form->loadFile('form', false);
 
 		if (!($this->form instanceof JForm))
@@ -244,12 +244,14 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		// Add CSS for the radio fields
 		$doc = JFactory::getDocument();
 
-		$css_file   = __DIR__ . '/assets/css/bwpm_user2subscriber.css';
+		$css_file   = JUri::base( true ) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
 		$doc->addStyleSheet($css_file);
 
-		$js_file= __DIR__ . '/assets/js/bwpm_user2subscriber.js';
+		// makes sure that jQuery is loaded first
+		JHtml::_('jquery.framework');
+		$js_file= JUri::base( true ) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
 
-		$doc->addScriptDeclaration($js_file);
+		$doc->addScript($js_file);
 
 		$this->processGenderField();
 		$this->processLastnameField();

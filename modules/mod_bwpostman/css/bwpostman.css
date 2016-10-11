@@ -43,6 +43,10 @@
 	background-position:	-144px 0;
 }
 
+#mod_bwpostman .input-append {
+	font-size: 0;
+}
+
 #mod_bwpostman .input-append input, #mod_bwpostman .input input {
 	-webkit-border-radius:	4px 0 0 4px;
 	-moz-border-radius:		4px 0 0 4px;
@@ -367,6 +371,7 @@ div#bwp_mod_form_listsfield {
 
 #mod_bwpostman fieldset.btn-group {
 	padding: 0;
+	border: 0;
 }
 
 #mod_bwpostman .btn-group >.btn {

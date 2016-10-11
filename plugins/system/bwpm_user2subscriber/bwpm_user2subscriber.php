@@ -119,7 +119,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		parent::__construct($subject, $config);
 
 		JFormHelper::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/fields');
-		JFormHelper::addFieldPath(__DIR__ . '/form/fields');
+		JFormHelper::addFieldPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields');
 
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
@@ -224,6 +224,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
+		$this->form = $form;
+
 		$context = $form->getName();
 
 		if (!in_array($context, $this->allowedContext))
@@ -232,7 +234,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		JForm::addFormPath(__DIR__ . '/form');
-		$this->form->loadFile('form', false);
+		$form->loadFile('form', false);
 
 		if (!($this->form instanceof JForm))
 		{
@@ -434,14 +436,15 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		// Sanitize data
-		$activation     = ArrayHelper::getValue($oldUser, 'activation', '', 'string');
+		$old_activation = ArrayHelper::getValue($oldUser, 'activation', '', 'string');
+		$new_activation = ArrayHelper::getValue($newUser, 'activation', '', 'string');
 		$user_id        = ArrayHelper::getValue($oldUser, 'id', 0, 'int');
 
-		if ($activation != '')
+		if ($old_activation != '' && ($old_activation != $new_activation))
 		{
 			$session = JFactory::getSession();
 			$session->set('plg_bwpm_user2subscriber.userid', $user_id);
-			$session->set('plg_bwpm_user2subscriber.activation', $activation);
+			$session->set('plg_bwpm_user2subscriber.activation', $old_activation);
 		}
 		return true;
 	}
@@ -499,7 +502,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$this->stored_subscriber_data = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 
-		if ($task == 'registration.activate' && $token == $activation)
+		if (($task == 'registration.activate' && $token == $activation) || (JFactory::getApplication()->isAdmin() && $activation != ''))
 		{
 			$activate_result    = $this->activateSubscription($user_id);
 
@@ -888,6 +891,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			return false;
 		}
+		JFactory::getUser();
 
 		return $res_update_subscriber;
 	}

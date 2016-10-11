@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since   2.0.0
  */
-class plgVmUserfieldBwPm_User2SubscriberInstallerScript
+class plgSystemBwPm_User2SubscriberInstallerScript
 {
 	/**
 	 * @var string

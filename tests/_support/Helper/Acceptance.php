@@ -84,6 +84,7 @@ class Acceptance extends Codeception\Module
 		// get component options
 		$options    = $this->getManifestOptions('com_bwpostman');
 		Generals::setComponentOptions($options);
+
 	}
 
 	/**
@@ -101,6 +102,7 @@ class Acceptance extends Codeception\Module
 
 		// restore dev tables
 		ssh2_exec($connection, $query_base . Generals::$db_data_end);
+
 	}
 
 	/**

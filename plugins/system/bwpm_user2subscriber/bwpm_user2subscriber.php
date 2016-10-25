@@ -32,7 +32,7 @@ jimport('joomla.plugin.plugin');
 
 require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once (JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
-require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+//require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 

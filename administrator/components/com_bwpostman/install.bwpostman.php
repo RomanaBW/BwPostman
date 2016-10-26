@@ -276,7 +276,7 @@ class Com_BwPostmanInstallerScript
 			$this->_setDefaultParams();
 
 			// create sample user groups and access levels
-			$this->_createSampleUsergroups();
+//			$this->_createSampleUsergroups();
 		}
 
 		// check if sample templates exits

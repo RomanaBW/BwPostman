@@ -4,7 +4,7 @@ use Page\Generals as Generals;
 use Page\InstallationPage as InstallPage;
 
 /**
-* Class TestInstallationCest
+* Class TestDeinstallationCest
 *
 * This class contains all methods to test installation, update and deinstallation of BwPostman
  *
@@ -26,7 +26,7 @@ use Page\InstallationPage as InstallPage;
  *
  * @since   2.0.0
 */
-class TestInstallationCest
+class TestDeinstallationCest
 {
 	/**
 	 * Test method to login into backend
@@ -43,7 +43,7 @@ class TestInstallationCest
 	}
 
 	/**
-	 * Test method to install BwPostman
+	 * Test method to uninstall BwPostman
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -55,20 +55,22 @@ class TestInstallationCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function installation(AcceptanceTester $I)
+	public function uninstall(AcceptanceTester $I)
 	{
-		$I->wantTo("Install BwPostman");
-		$I->expectTo("see success message and component in menu");
-		$I->amOnPage(InstallPage::$install_url);
+		$I->wantTo("uninstall BwPostman");
+		$I->expectTo("see success message and component not in menu");
+		$I->amOnPage(InstallPage::$uninstall_url);
 		$I->waitForElement(Generals::$pageTitle);
-		$I->see(InstallPage::$headingInstall);
+		$I->see(InstallPage::$headingManage);
 
-		$I->attachFile(InstallPage::$installField, "com_bwpostman.zip");
-		$I->clickAndWait(InstallPage::$installButton, 5);
+		$I->fillField(Generals::$search_field, Generals::$extension);
+		$I->click(Generals::$search_button);
+		$I->click(Generals::$first_list_entry);
+		$I->click(InstallPage::$delete_button);
+		$I->acceptPopup();
 
 		$I->waitForElement(Generals::$alert_success);
-		$I->see(InstallPage::$installSuccessMsg, Generals::$alert_success);
-		$I->dontSee("Error", Generals::$alert_heading);
+		$I->see(InstallPage::$uninstallSuccessMsg, Generals::$alert_success);
 	}
 
 	/**

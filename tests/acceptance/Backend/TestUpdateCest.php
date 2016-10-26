@@ -4,7 +4,7 @@ use Page\Generals as Generals;
 use Page\InstallationPage as InstallPage;
 
 /**
-* Class TestInstallationCest
+* Class TestUpdateCest
 *
 * This class contains all methods to test installation, update and deinstallation of BwPostman
  *
@@ -26,7 +26,7 @@ use Page\InstallationPage as InstallPage;
  *
  * @since   2.0.0
 */
-class TestInstallationCest
+class TestUpdateCest
 {
 	/**
 	 * Test method to login into backend
@@ -43,7 +43,7 @@ class TestInstallationCest
 	}
 
 	/**
-	 * Test method to install BwPostman
+	 * Test method to update BwPostman
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -55,9 +55,9 @@ class TestInstallationCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function installation(AcceptanceTester $I)
+	public function update(AcceptanceTester $I)
 	{
-		$I->wantTo("Install BwPostman");
+		$I->wantTo("update BwPostman");
 		$I->expectTo("see success message and component in menu");
 		$I->amOnPage(InstallPage::$install_url);
 		$I->waitForElement(Generals::$pageTitle);

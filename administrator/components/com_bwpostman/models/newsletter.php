@@ -28,6 +28,7 @@
 defined ('_JEXEC') or die ('Restricted access');
 
 require_once (JPATH_SITE.'/components/com_content/helpers/route.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
@@ -2652,6 +2653,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Get a JMail instance
 		$mailer		= JFactory::getMailer();
+		$mailer->SMTPDebug = true;
 		$sender		= array();
 
 		$sender[0]	= $tblSendMailContent->from_email;
@@ -2670,8 +2672,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$mailer->isHtml(true);
 		}
 
+		// Newsletter sending 1=on, 0=off
+		if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
+		$log_options = array('test' => 'testtext');
+		$logger      = new BwLogger($log_options);
+
 		if (BWPOSTMAN_NL_SENDING)
 			$res = $mailer->Send();
+			$logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res)));
 
 		if ($res === true)
 		{
@@ -2681,6 +2689,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 			else
 			{
+				$app->enqueueMessage(sprintf('Error while sending: %s'), $res);
 				// Sendmail was successful, flag "sent" in table TcContent has to be set
 				$tblSendMailContent->setSent($tblSendMailContent->id);
 				// and test-entries may be deleted
@@ -2691,6 +2700,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		else
 		{
+			$app->enqueueMessage(sprintf('Error while sending: $s'), $res);
 			// Sendmail was not successful, we need to add the recipient to the queue again.
 			if ($fromComponent)
 			{

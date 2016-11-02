@@ -33,7 +33,6 @@ class Generals
 
 	public static $control_panel        = "Control Panel";
 	public static $login_txt            = "Log in";
-//	public static $login_txt            = "Anmelden";
 	public static $nav_user_menu        = "html/body/nav/div/div/div/ul[3]/li/a";
 	public static $nav_user_menu_logout = "html/body/nav/div/div/div/ul[3]/li/ul/li[5]/a";
 	public static $logout_txt           = "Log out";
@@ -201,6 +200,8 @@ class Generals
 		'Check-In'          => ".//*[@id='toolbar-checkin']/button",
 		'Install-Template'  => ".//*[@id='toolbar-custom']/a",
 		'Options'           => ".//*[@id='toolbar-options']/button",
+		'Save'              => ".//*[@id='toolbar-apply']/button",
+		'Save & Close'      => ".//*[@id='toolbar-save']/button",
 	);
 
 	/**

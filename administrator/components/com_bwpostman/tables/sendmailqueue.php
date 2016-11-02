@@ -145,7 +145,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			}
 			else
 			{
-//				throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+				throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 			}
 
 			// Cast properties
@@ -180,7 +180,7 @@ class BwPostmanTableSendmailqueue extends JTable
 
 	 * @param   int     $trial  Only pop entries with < trial
 	 *
-	 * @return 	boolean     false if no entry was found
+	 * @return 	int --> 0 if nothing was selected
 	 *
 	 * @since       0.9.1
 	 */

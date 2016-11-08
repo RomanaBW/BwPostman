@@ -12,7 +12,8 @@ settings:
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
-
+coverage:
+    enabled: true
 modules:
     config:
         Codeception\Extension\RemoteDebug:

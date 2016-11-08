@@ -4,7 +4,7 @@ use Page\SubscriberviewPage as SubsView;
 
 
 /**
- * Class SubscribeCest
+ * Class SubscribeComponentCest
  *
  * This class contains all methods to test subscription at front end
  *
@@ -28,12 +28,14 @@ use Page\SubscriberviewPage as SubsView;
  *
  * @since   2.0.0
  */
-class SubscribeCest
+class SubscribeComponentCest
 {
 	/**
 	 * Test method to subscribe by component in front end, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester         $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -56,6 +58,8 @@ class SubscribeCest
 	 * Test method to subscribe by component in front end twice, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -83,6 +87,8 @@ class SubscribeCest
 	 * Test method to subscribe by component in front end twice, get activation code anew, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -114,6 +120,8 @@ class SubscribeCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -142,31 +150,11 @@ class SubscribeCest
 	}
 
 	/**
-	 * Test method to subscribe by module in front end, activate and unsubscribe
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function SubscribeModuleSimpleActivateAndUnsubscribe(AcceptanceTester $I)
-	{
-		$I->wantTo("Subscribe to mailinglist by module");
-		$I->expectTo('get confirmation mail');
-		$this->_subscribeByModule($I);
-		$I->waitForElement(SubsView::$registration_complete);
-		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
-
-		$this->_activate($I, SubsView::$mail_fill_1);
-
-		$this->_unsubscribe($I, SubsView::$activated_edit_Link);
-	}
-
-	/**
 	 * Test method to verify messages for missing input values by component
 	 *
 	 * @param   AcceptanceTester                $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -233,114 +221,11 @@ class SubscribeCest
 	}
 
 	/**
-	 * Test method to get edit page by click at module in front end
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function EditSubscriptionByModule(AcceptanceTester $I)
-	{
-		$I->wantTo("Edit subscription by module");
-		$I->expectTo('see get edit link page');
-		$I->amOnPage(SubsView::$register_url);
-		$I->click(SubsView::$mod_button_edit);
-		$I->waitForElement(SubsView::$mail);
-		$I->see(SubsView::$edit_get_text);
-	}
-
-	/**
-	 * Test method to verify messages for missing input values by module
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function SubscribeMissingValuesModule(AcceptanceTester $I)
-	{
-		//Chromium fails to remember entered values, so some fillField are practically superfluous, but Chromium needs them
-		$options    = $I->getManifestOptions('mod_bwpostman');
-
-		$I->wantTo("Test messages for missing input values by module");
-		$I->expectTo('see error popup');
-				$I->amOnPage(SubsView::$register_url);
-		$I->seeElement(SubsView::$view_register);
-
-		// omit mail address
-		$I->click(SubsView::$mod_button_register);
-		$I->seeInPopup(SubsView::$popup_valid_mailaddress);
-		$I->acceptPopup();
-
-		$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-
-		//omit mailinglist selection
-		$I->clickAndWait(SubsView::$mod_button_register, 1);
-		$I->seeInPopup(SubsView::$popup_select_newsletter);
-		$I->acceptPopup();
-		$I->wait(1);
-
-		$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-		$I->checkOption(SubsView::$mod_ml1);
-		$I->checkOption(SubsView::$mod_disclaimer);
-
-		// omit first name
-		if ($options->show_firstname_field || $options->firstname_field_obligation)
-		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeElement(Generals::$alert_error);
-			$I->see(SubsView::$invalid_field_firstname_mod);
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
-			$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-			$I->checkOption(SubsView::$mod_ml1);
-			$I->checkOption(SubsView::$mod_disclaimer);
-		}
-
-		// omit last name
-		if ($options->show_name_field || $options->name_field_obligation)
-		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeElement(Generals::$alert_error);
-			$I->see(SubsView::$invalid_field_name_mod);
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
-			$I->fillField(SubsView::$mod_name, SubsView::$lastname_fill);
-			$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-			$I->checkOption(SubsView::$mod_ml1);
-			$I->checkOption(SubsView::$mod_disclaimer);
-		}
-
-		// omit additional field
-		if ($options->show_special || $options->special_field_obligation)
-		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeElement(Generals::$alert_error);
-			$I->see(sprintf(SubsView::$invalid_field_special_mod, $options->special_label));
-			$I->fillField(SubsView::$mod_special, SubsView::$special_fill);
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
-			$I->fillField(SubsView::$mod_name, SubsView::$lastname_fill);
-			$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-			$I->checkOption(SubsView::$mod_ml1);
-		}
-
-		// omit disclaimer
-		if ($options->disclaimer)
-		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeInPopup(SubsView::$popup_accept_disclaimer);
-			$I->acceptPopup();
-			$I->checkOption(SubsView::$mod_disclaimer);
-		}
-
-
-	}
-
-	/**
 	 * Test method to subscribe by component in front end, activate, make changes and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -442,6 +327,8 @@ class SubscribeCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -463,6 +350,8 @@ class SubscribeCest
 	 * Test method to get error message for wrong unsubscribe links
 	 *
 	 * @param   AcceptanceTester                $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -492,6 +381,8 @@ class SubscribeCest
 	 * Test method to subscribe to newsletter in front end by component
 	 *
 	 * @param \AcceptanceTester             $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -540,65 +431,13 @@ class SubscribeCest
 	}
 
 	/**
-	 * Test method to subscribe to newsletter in front end by module
-	 *
-	 * @param \AcceptanceTester             $I
-	 *
-	 * @since   2.0.0
-	 */
-	private function _subscribeByModule(\AcceptanceTester $I)
-	{
-		$options    = $I->getManifestOptions('mod_bwpostman');
-
-		$I->amOnPage(SubsView::$register_url);
-		$I->seeElement(SubsView::$view_module);
-
-		if ($options->show_gender)
-		{
-			$I->click(SubsView::$gender_female);
-		}
-
-		if ($options->show_firstname_field || $options->firstname_field_obligation)
-		{
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
-		}
-
-		if ($options->show_name_field || $options->name_field_obligation)
-		{
-			$I->fillField(SubsView::$mod_name, SubsView::$lastname_fill);
-		}
-
-		$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-
-		if ($options->show_emailformat)
-		{
-			$I->clickAndWait(SubsView::$format_text, 1);
-		}
-
-		if ($options->show_special || $options->special_field_obligation)
-		{
-			$I->fillField(SubsView::$mod_special, SubsView::$special_fill);
-		}
-
-		$I->checkOption(SubsView::$mod_ml2);
-		$I->scrollTo(SubsView::$mod_button_register);
-
-		if ($options->disclaimer)
-		{
-			$I->checkOption(SubsView::$mod_disclaimer);
-		}
-
-		$I->click(SubsView::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete);
-		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
-	}
-
-	/**
 	 * Test method to activate newsletter subscription
 	 *
 	 * @param \AcceptanceTester             $I
 	 * @param string                        $mailaddress
 	 * @param bool                          $good
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -618,6 +457,8 @@ class SubscribeCest
 	 * @param \AcceptanceTester             $I
 	 *
 	 * @return string                       $editlink_code
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -640,6 +481,8 @@ class SubscribeCest
 	 *
 	 * @param \AcceptanceTester             $I
 	 * @param string                        $button
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

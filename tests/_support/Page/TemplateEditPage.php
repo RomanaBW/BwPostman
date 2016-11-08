@@ -84,6 +84,7 @@ class TemplateEditPage
 	public static $button_impressum         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[7]";
 
 	public static $success_save       = 'Template saved successfully!';
+//	public static $success_save       = 'Item successfully saved.';
 	public static $error_save         = 'Save failed with the following error:';
 
 	public static $popup_title        = 'You have to enter a title for the template.';

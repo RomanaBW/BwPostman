@@ -95,6 +95,9 @@
 				<echo msg="Upload to webserver OK!" />
 			</then>
 		</if>
+
+		<copy file="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip" tofile="/vms/dockers/tests/BwPostman/tests/_data/plg_bwpostman_${plugin}.zip" />
+		<copy file="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip" tofile="/vhosts/webservice3/download/BwPostman/plg_bwpostman_${plugin}.${version}.zip" />
 		<move file="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip" tofile="${target_base_plugin_dir}/plg_bwpostman_${plugin}.${version}.zip" />
 	</target>
 </project>

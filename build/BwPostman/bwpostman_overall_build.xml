@@ -143,6 +143,8 @@
 						<include name="*.pdf"/>
 					</fileset>
 				</scp>
+
+				<copy file="${target_base_dir}/pkg_bwpostman.${version}.zip" tofile="/vms/dockers/tests/BwPostman/tests/_data/pkg_bwpostman.zip" />
 				<move file="${target_base_dir}/pkg_bwpostman.${version}.zip" tofile="${target_base_dir}/packages/pkg_bwpostman.${version}.zip" />
 				<echo msg="Upload to webserver OK!" />
 			</then>

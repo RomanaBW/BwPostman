@@ -141,6 +141,7 @@
 			</then>
 		</if>
 
+		<copy file="${target_base_dir}/${component}.${version}.zip" tofile="/vms/dockers/tests/BwPostman/tests/_data/${component}.zip" />
 		<copy file="${target_base_dir}/${component}.${version}.zip" tofile="/vhosts/webservice3/download/BwPostman/${component}.${version}.zip" />
 		<move file="${target_base_dir}/${component}.${version}.zip" tofile="${target_base_component_dir}/${component}.${version}.zip" />
 	</target>

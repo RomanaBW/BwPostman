@@ -27,7 +27,7 @@ class InstallationPage
 {
     // include url of current page
     public static $install_url          = "/administrator/index.php?option=com_installer";
-	public static $uninstall_url        = "/administrator/index.php?option=com_installer&view=manage";
+    public static $uninstall_url        = "/administrator/index.php?option=com_installer&view=manage";
 
     /*
      * Declare UI map for this page here. CSS or XPath allowed.
@@ -46,4 +46,5 @@ class InstallationPage
 	public static $installSuccessMsg    = "Installation of the component was successful.";
 	public static $uninstallSuccessMsg  = "Thank you for using BwPostman. BwPostman is now removed from your system.";
 
+	public static $optionsSuccessMsg    = "Configuration successfully saved.";
 }

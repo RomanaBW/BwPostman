@@ -32,6 +32,8 @@ class TestCampaignsListsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -49,6 +51,8 @@ class TestCampaignsListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -75,6 +79,8 @@ class TestCampaignsListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -100,6 +106,8 @@ class TestCampaignsListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -124,6 +132,8 @@ class TestCampaignsListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -145,6 +155,8 @@ class TestCampaignsListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -164,6 +176,8 @@ class TestCampaignsListsCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *

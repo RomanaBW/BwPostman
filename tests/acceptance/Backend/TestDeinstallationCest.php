@@ -33,6 +33,8 @@ class TestDeinstallationCest
 	 *
 	 * @param   \Page\Login     $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -50,6 +52,8 @@ class TestDeinstallationCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -78,6 +82,8 @@ class TestDeinstallationCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *

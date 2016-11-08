@@ -37,6 +37,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -55,6 +57,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -68,7 +72,7 @@ class TestTemplatesDetailsCest
 
 		$this->_fillFormExtendedHtml($I);
 
-		$I->click(TplEdit::$toolbar['Back']);
+		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -81,6 +85,8 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -98,7 +104,7 @@ class TestTemplatesDetailsCest
 		$this->_fillFormSimpleHtml($I);
 
 		// check if save and close is successful
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
@@ -117,6 +123,8 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -147,6 +155,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -159,7 +169,7 @@ class TestTemplatesDetailsCest
 
 		$this->_fillFormSimpleHtml($I);
 
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
@@ -177,6 +187,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -189,7 +201,7 @@ class TestTemplatesDetailsCest
 
 		$this->_fillFormSimpleHtml($I);
 
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header);
 		$I->see("Message", Generals::$alert_header);
@@ -199,7 +211,7 @@ class TestTemplatesDetailsCest
 
 		$this->_fillFormSimpleHtml($I);
 
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
@@ -219,6 +231,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -232,7 +246,7 @@ class TestTemplatesDetailsCest
 
 		$this->_fillFormExtendedText($I);
 
-		$I->click(TplEdit::$toolbar['Back']);
+		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
 //		$I->seeInPopup('Any changes will not be saved. Close without saving?');
 //		$I->acceptPopup();
 //		$I->executeJS("window.confirm = function(msg){return true;};");
@@ -251,6 +265,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -267,7 +283,7 @@ class TestTemplatesDetailsCest
 		$this->_fillFormSimpleText($I);
 
 		// check if save and close is successful
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
@@ -288,6 +304,8 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -318,6 +336,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -330,7 +350,7 @@ class TestTemplatesDetailsCest
 
 		$this->_fillFormSimpleText($I);
 
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
@@ -348,6 +368,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -358,14 +380,14 @@ class TestTemplatesDetailsCest
 		$I->amOnPage(TplManage::$url);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 		$this->_fillFormSimpleText($I);
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template', Generals::$pageTitle);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 		$this->_fillFormSimpleText($I);
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->click(TplEdit::$toolbar['Cancel']);
@@ -381,6 +403,8 @@ class TestTemplatesDetailsCest
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -394,6 +418,8 @@ class TestTemplatesDetailsCest
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester    $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -409,6 +435,8 @@ class TestTemplatesDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -430,6 +458,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
+	 *
 	 * @since   2.0.0
 	 */
 	private function _fillFormExtendedHtml(AcceptanceTester $I)
@@ -447,6 +477,8 @@ class TestTemplatesDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -466,6 +498,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
+	 *
 	 * @since   2.0.0
 	 */
 	private function _fillFormExtendedText(AcceptanceTester $I)
@@ -484,6 +518,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
+	 *
 	 * @since   2.0.0
 	 */
 	private function _fillRequired(AcceptanceTester $I)
@@ -496,6 +532,8 @@ class TestTemplatesDetailsCest
 	 * Method to select thumbnail for template
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -518,19 +556,20 @@ class TestTemplatesDetailsCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	private function _fillRequiredExtended(AcceptanceTester $I)
 	{
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->seeInPopup(TplEdit::$popup_description);
 		$I->acceptPopup();
 
 		$I->fillField(TplEdit::$title, "");
 		$I->fillField(TplEdit::$description, TplEdit::$field_description);
-		$I->click(TplEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->seeInPopup(TplEdit::$popup_title);
 		$I->acceptPopup();
 
@@ -540,8 +579,9 @@ class TestTemplatesDetailsCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	private function _selectRadiosExtended(AcceptanceTester $I)
 	{
@@ -588,8 +628,9 @@ class TestTemplatesDetailsCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	private function _fillHtmlContent(AcceptanceTester $I)
 	{
@@ -601,14 +642,15 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
-		$I->click(TplEdit::$toolbar['Save']);
+		$I->clickAndWait(TplEdit::$toolbar['Save'], 1);
 	}
 
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	private function _fillCssContent(AcceptanceTester $I)
 	{
@@ -621,8 +663,9 @@ class TestTemplatesDetailsCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	private function _fillTextContent(AcceptanceTester $I)
 	{

@@ -33,6 +33,8 @@ class TestNewslettersListsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -50,6 +52,8 @@ class TestNewslettersListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -76,6 +80,8 @@ class TestNewslettersListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -100,6 +106,8 @@ class TestNewslettersListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -144,6 +152,8 @@ class TestNewslettersListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -178,6 +188,8 @@ class TestNewslettersListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -203,6 +215,8 @@ class TestNewslettersListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -224,6 +238,8 @@ class TestNewslettersListsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -243,6 +259,8 @@ class TestNewslettersListsCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *

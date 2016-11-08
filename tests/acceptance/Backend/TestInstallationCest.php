@@ -1,6 +1,7 @@
 <?php
 use Step\Acceptance\Installation as InstallationTester;
 use Page\Generals as Generals;
+use Page\MainviewPage as MainView;
 use Page\InstallationPage as InstallPage;
 
 /**
@@ -33,6 +34,8 @@ class TestInstallationCest
 	 *
 	 * @param   \Page\Login     $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -51,6 +54,8 @@ class TestInstallationCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -64,6 +69,7 @@ class TestInstallationCest
 		$I->see(InstallPage::$headingInstall);
 
 		$I->attachFile(InstallPage::$installField, "com_bwpostman.zip");
+                $I->MakeScreenshot('after_fill_file');
 		$I->clickAndWait(InstallPage::$installButton, 5);
 
 		$I->waitForElement(Generals::$alert_success);
@@ -72,10 +78,45 @@ class TestInstallationCest
 	}
 
 	/**
+	 * Test method to save options once of BwPostman
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @group   component
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function saveOptions(AcceptanceTester $I)
+	{
+		$I->wantTo("Install BwPostman");
+		$I->expectTo("see success message and component in menu");
+		$I->amOnPage(MainView::$url);
+		
+		$I->see(Generals::$extension, Generals::$pageTitle);
+		
+		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		
+		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+
+                $I->see("Message", Generals::$alert_header);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_success);
+//		$I->see(InstallPage::$optionsSuccessMsg, Generals::$alert_msg);
+        }
+	
+	
+	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *

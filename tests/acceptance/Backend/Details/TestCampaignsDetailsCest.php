@@ -38,6 +38,8 @@ class TestCampaignsDetailsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -56,6 +58,8 @@ class TestCampaignsDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -70,7 +74,7 @@ class TestCampaignsDetailsCest
 
 		$this->_fillFormSimple($I);
 
-		$I->click(CamEdit::$toolbar['Back']);
+		$I->clickAndWait(CamEdit::$toolbar['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -83,6 +87,8 @@ class TestCampaignsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -115,6 +121,8 @@ class TestCampaignsDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -139,6 +147,8 @@ class TestCampaignsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -169,6 +179,8 @@ class TestCampaignsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -208,6 +220,8 @@ class TestCampaignsDetailsCest
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -224,6 +238,8 @@ class TestCampaignsDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @group   component
+	 *
 	 * @since   2.0.0
 	 */
 	public function _failed (AcceptanceTester $I)
@@ -237,6 +253,8 @@ class TestCampaignsDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -269,6 +287,8 @@ class TestCampaignsDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

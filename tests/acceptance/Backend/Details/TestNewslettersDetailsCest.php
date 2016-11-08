@@ -36,6 +36,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param   \Page\Login                 $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -53,6 +55,8 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -80,6 +84,8 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -111,6 +117,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -136,6 +144,8 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -168,6 +178,8 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -233,6 +245,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -274,6 +288,8 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -342,6 +358,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * depends SendNewsletterToTestrecipients
 	 *
 	 * @return  void
@@ -369,7 +387,7 @@ class TestNewslettersDetailsCest
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
 		$I->see(NlEdit::$success_send);
 		$I->switchToIFrame();
-		$I->wait(15);
+		$I->wait(25);
 
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
@@ -385,6 +403,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -413,6 +433,8 @@ class TestNewslettersDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @return string   $content_title  title of content
 	 *
@@ -454,6 +476,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
+	 *
 	 * @return string   $content_title  title of content
 	 *
 	 * @since   2.0.0
@@ -494,6 +518,8 @@ class TestNewslettersDetailsCest
 	 * This method also checks removing content
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -592,6 +618,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
+	 *
 	 * @since   2.0.0
 	 */
 	private function _selectAttachment(AcceptanceTester $I)
@@ -611,6 +639,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
+	 *
 	 * @since   2.0.0
 	 */
 	private function _checkSuccess(AcceptanceTester $I)
@@ -628,6 +658,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   component
+	 *
 	 * @since   2.0.0
 	 */
 	private function _selectRecipients(AcceptanceTester $I)
@@ -642,6 +674,8 @@ class TestNewslettersDetailsCest
 	 * Method to fill published and unpublished fields
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

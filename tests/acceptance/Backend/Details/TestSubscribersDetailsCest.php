@@ -36,6 +36,8 @@ class TestSubscribersDetailsCest
 	 *
 	 * @param   \Page\Login                 $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -54,6 +56,8 @@ class TestSubscribersDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -68,7 +72,7 @@ class TestSubscribersDetailsCest
 
 		$this->_fillFormExtended($I);
 
-		$I->click(SubEdit::$toolbar['Back']);
+		$I->clickAndWait(SubEdit::$toolbar['Back'], 1);
 		$I->waitForElement(Generals::$pageTitle);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -81,6 +85,8 @@ class TestSubscribersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -114,6 +120,8 @@ class TestSubscribersDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -140,6 +148,8 @@ class TestSubscribersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -172,6 +182,8 @@ class TestSubscribersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -213,6 +225,8 @@ class TestSubscribersDetailsCest
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -227,6 +241,8 @@ class TestSubscribersDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -240,6 +256,8 @@ class TestSubscribersDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -288,6 +306,8 @@ class TestSubscribersDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

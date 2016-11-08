@@ -35,6 +35,8 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -53,6 +55,8 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -68,7 +72,7 @@ class TestMailinglistsDetailsCest
 
 		$this->_fillFormSimple($I);
 
-		$I->click(MlEdit::$toolbar['Back']);
+		$I->clickAndWait(MlEdit::$toolbar['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -81,6 +85,8 @@ class TestMailinglistsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -113,6 +119,8 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -125,7 +133,7 @@ class TestMailinglistsDetailsCest
 
 		$this->_fillFormSimple($I);
 
-        $I->click(MlEdit::$toolbar['Cancel']);
+        $I->clickAndWait(MlEdit::$toolbar['Cancel'], 1);
         $I->see("Mailinglists", Generals::$pageTitle);
 	}
 
@@ -137,6 +145,8 @@ class TestMailinglistsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -167,6 +177,8 @@ class TestMailinglistsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -206,6 +218,8 @@ class TestMailinglistsDetailsCest
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -219,6 +233,8 @@ class TestMailinglistsDetailsCest
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester    $I
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -235,6 +251,8 @@ class TestMailinglistsDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -274,6 +292,8 @@ class TestMailinglistsDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

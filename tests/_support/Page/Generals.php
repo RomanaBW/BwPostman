@@ -51,7 +51,7 @@ class Generals
 	protected $tester;
 
 	// backend users
-	public static $admin        = array('user' =>'AdminTester', 'password' =>'BwPostmanTest', 'author' => 'AdminTester');
+	public static $admin        = array('user' =>'AdminTester', 'password' =>'!0815#', 'author' => 'AdminTester');
 
 	/* ssh and database connection
 	 *

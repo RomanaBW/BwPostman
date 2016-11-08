@@ -33,6 +33,8 @@ class TestMaintenanceCest
 	 *
 	 * @param   \Page\Login     $loginPage
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -50,6 +52,8 @@ class TestMaintenanceCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -71,7 +75,7 @@ class TestMaintenanceCest
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 5);
 
 		$I->assertTrue(file_exists($path . $filename));
-		$I->assertTrue(unlink($path . $filename));
+//		$I->assertTrue(unlink($path . $filename));
 	}
 
 	/**
@@ -82,6 +86,8 @@ class TestMaintenanceCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -119,6 +125,8 @@ class TestMaintenanceCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -155,7 +163,7 @@ class TestMaintenanceCest
 		$I->waitForElement(MaintenancePage::$step11Field);
 		$I->waitForElement(MaintenancePage::$step11SuccessClass);
 		$I->see(MaintenancePage::$step11SuccessMsg, MaintenancePage::$step11SuccessClass);
-		$I->click(MaintenancePage::$checkBackButton);
+		$I->clickAndWait(MaintenancePage::$checkBackButton, 2);
 	}
 
 	/**
@@ -166,6 +174,8 @@ class TestMaintenanceCest
 	 * @before  _login
 	 *
 	 * after   _logout
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -195,6 +205,8 @@ class TestMaintenanceCest
 	 *
 	 * @after   _logout
 	 *
+	 * @group   component
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -220,6 +232,8 @@ class TestMaintenanceCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
+	 *
+	 * @group   component
 	 *
 	 * @return  void
 	 *

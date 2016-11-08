@@ -147,15 +147,15 @@ class SubscriberManagerPage
 	public static $search_clear_val     = 'Abbott';
 
 	public static $filter_subs_result   = array(
-											'c.abbott@mail.xyz',
-											'c.breidenbach@mail.xyz',
-											'a.daum@mail.xyz',
-											'erwin.haeberle@mail.xyz',
-											'i.lueck@mail.xyz',
-											's.otte@mail.xyz',
-											'nils.rhodes@mail.xyz',
-											'l.wunderlich@mail.xyz',
-											'lili.zech@mail.xyz'
+											'c.abbott@tester-net.nil',
+											'c.breidenbach@tester-net.nil',
+											'a.daum@tester-net.nil',
+											'erwin.haeberle@tester-net.nil',
+											'i.lueck@tester-net.nil',
+											's.otte@tester-net.nil',
+											'nils.rhodes@tester-net.nil',
+											'l.wunderlich@tester-net.nil',
+											'lili.zech@tester-net.nil'
 										);
 
 	public static $p1_val1              = "Abbott";
@@ -170,7 +170,7 @@ class SubscriberManagerPage
 
 	public static $p3_val1              = "Auer";
 	public static $p3_field1            = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]";
-	public static $p3_val3              = "Barrenbrügge";
+	public static $p3_val3              = "Barrenbruegge";
 	public static $p3_field3            = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]";
 
 	public static $p_prev_val1          = "Willis";

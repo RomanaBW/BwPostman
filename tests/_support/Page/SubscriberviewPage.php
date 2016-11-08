@@ -85,8 +85,8 @@ class SubscriberviewPage
 	public static $firstname_fill   = "Sam";
 	public static $lastname_fill    = "Sample";
 	public static $special_fill     = "0815";
-	public static $mail_fill_1      = "dummy-1@bwtest.nil";
-	public static $mail_fill_2      = "dummy-2@bwtest.nil";
+	public static $mail_fill_1      = "dummy-1@tester-net.nil";
+	public static $mail_fill_2      = "dummy-2@tester-net.nil";
 
 	// button identifier
 	public static $button_register          = ".//*[@id='bwp_com_form']/p[2]/button";

@@ -100,6 +100,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -131,6 +133,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -160,6 +164,8 @@ class User2SubscriberCest
 	 * You see Joomla confirmed user and confirmed subscriber with HTML format
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -192,6 +198,8 @@ class User2SubscriberCest
 	 * You see Joomla confirmed user and confirmed subscriber with Text format
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -229,6 +237,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -263,6 +273,8 @@ class User2SubscriberCest
 	 * You see Joomla confirmed user and confirmed subscriber with Text format
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -302,6 +314,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -339,6 +353,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -375,6 +391,8 @@ class User2SubscriberCest
 	 * You see Joomla confirmed user and confirmed subscriber with HTML format and two mailinglists
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -436,6 +454,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -471,6 +491,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -503,6 +525,8 @@ class User2SubscriberCest
 	 * You see Joomla confirmed user and confirmed subscriber, see changed mail address for user but not for subscriber
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -543,6 +567,8 @@ class User2SubscriberCest
 	 * Joomla user ID, register anew, see subscriber with new Joomla user ID
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -619,6 +645,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -658,6 +686,8 @@ class User2SubscriberCest
 	 * Test method to option message
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -716,6 +746,8 @@ class User2SubscriberCest
 	 * Test method to option show newsletter format
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -783,6 +815,8 @@ class User2SubscriberCest
 	 * Test method to option predefined newsletter format
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -852,6 +886,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -893,6 +929,8 @@ class User2SubscriberCest
 	 * Test method to option auto delete
 	 *
 	 * @param   AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  void
 	 *
@@ -936,6 +974,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -952,7 +992,7 @@ class User2SubscriberCest
 		$I->checkOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
 		$I->see(RegPage::$plugin_saved_success);
-		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 5));
 
 		// getManifestOption
 		$options = $I->getManifestOptions('bwpm_user2subscriber');
@@ -963,7 +1003,7 @@ class User2SubscriberCest
 		$I->uncheckOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
 		$I->see(RegPage::$plugin_saved_success);
-		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 5));
 
 		// getManifestOption
 		$options = $I->getManifestOptions('bwpm_user2subscriber');
@@ -977,6 +1017,7 @@ class User2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1001,6 +1042,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1015,6 +1057,8 @@ class User2SubscriberCest
 	 * Method to fill all required Joomla fields on Joomla registration form
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1043,6 +1087,8 @@ class User2SubscriberCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1085,6 +1131,8 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @since 2.0.0
 	 */
 	protected function fillBwPostmanPartAtRegisterFormSimple(AcceptanceTester $I)
@@ -1117,6 +1165,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1131,6 +1180,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1154,6 +1204,8 @@ class User2SubscriberCest
 	 * Method to check if subscription was successful
 	 *
 	 * @param   AcceptanceTester    $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1200,6 +1252,7 @@ class User2SubscriberCest
 			}
 
 			$I->scrollTo(RegPage::$mailinglist_fieldset_identifier, 0, -100);
+			$I->wait(1);
 
 			foreach ($this->mls_to_subscribe as $ml)
 			{
@@ -1216,6 +1269,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1238,6 +1292,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1253,6 +1308,8 @@ class User2SubscriberCest
 	 * Method to delete Joomla user account
 	 *
 	 * @param   AcceptanceTester    $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1281,6 +1338,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1293,6 +1351,8 @@ class User2SubscriberCest
 
 	/**
 	 * @param AcceptanceTester $I
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return  bool    true on success
 	 *
@@ -1324,6 +1384,8 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
+	 *
 	 * @since 2.0.0
 	 */
 	protected function checkForSubscriptionDeletion(AcceptanceTester $I)
@@ -1343,6 +1405,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1378,6 +1441,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1395,6 +1459,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1421,6 +1486,8 @@ class User2SubscriberCest
 	 * @param \AcceptanceTester $I
 	 * @param string            $mailaddress
 	 *
+	 * @group   plugin_user
+	 *
 	 * @since   2.0.0
 	 */
 	private function _activate(\AcceptanceTester $I, $mailaddress)
@@ -1432,6 +1499,8 @@ class User2SubscriberCest
 
 	/**
 	 * @param   string  $raw_identifier
+	 *
+	 * @group   plugin_user
 	 *
 	 * @return string
 	 *
@@ -1453,6 +1522,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1466,6 +1536,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1480,6 +1551,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1497,6 +1569,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */
@@ -1514,8 +1587,9 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	protected function editPluginOptions(AcceptanceTester $I)
 	{
@@ -1532,8 +1606,9 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	protected function editComponentOptions(AcceptanceTester $I)
 	{
@@ -1548,6 +1623,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @group   plugin_user
 	 *
 	 * @since 2.0.0
 	 */

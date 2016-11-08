@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="BwPostman"  description="Copy tests to test dir" default="copy_tests">
+	<import file="./bwpostman_variables.xml"/>
+
+	<!-- ============================================  -->
+	<!-- Target: prepare                               -->
+	<!-- (Setting variables, delete target directory,  -->
+	<!--  create target directory)                     -->
+	<!-- ============================================  -->
+	<target name="set_dirs" depends="set_variables">
+		<echo msg="Source dir…" />
+		<property name="source_test_dir" value="${source_base_dir}/tests" override="true" />
+
+		<echo msg="target dir…" />
+		<property name="target_test_dir" value="/vms/dockers/tests/BwPostman/tests/" override="true" />
+	</target>
+
+	<!-- ============================================  -->
+	<!-- Target: build                                 -->
+	<!-- (copy files of component and modules to       -->
+	<!-- target directory, empty capimgdir, move       -->
+	<!-- manifest file, copy install file to base dir) -->
+	<!-- ============================================  -->
+	<target name="copy_tests" depends="set_dirs">
+
+		<echo msg="Copying support files…" />
+		<copy todir="${target_test_dir}/_support">
+			<fileset dir="${source_test_dir}/_support">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<echo msg="Copying acceptance tests…" />
+		<copy todir="${target_test_dir}/acceptance">
+			<fileset dir="${source_test_dir}/acceptance">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<echo msg="Copying functional tests…" />
+		<copy todir="${target_test_dir}/functional">
+			<fileset dir="${source_test_dir}/functional">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<echo msg="Copying unit tests…" />
+		<copy todir="${target_test_dir}/unit">
+			<fileset dir="${source_test_dir}/unit">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+</project>

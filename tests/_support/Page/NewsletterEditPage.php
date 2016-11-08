@@ -108,8 +108,8 @@ class NewsletterEditPage
 	public static $msg_no_recipients            = "No recipients selected!";
 
 	public static $field_from_name    = "Sam";
-	public static $field_from_email   = "sam.sample@test.nil";
-	public static $field_reply_email  = "sample@test.nil";
+	public static $field_from_email   = "sam.sample@tester-net.nil";
+	public static $field_reply_email  = "sample@tester-net.nil";
 	public static $field_subject      = "1. Simple Single Test Newsletter";
 	public static $field_description  = 'Description for the test newsletter';
 	public static $field_attachment   = 'images/joomla_black.png';

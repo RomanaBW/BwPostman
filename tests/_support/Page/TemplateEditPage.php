@@ -131,9 +131,9 @@ class TemplateEditPage
 	 */
 	public function __construct()
 	{
-		self::$css_style_content    = $this->_getFileContent('/vhosts/dev/joomla-cms/tests/_data/html-newsletter.css');
-		self::$html_style_content   = $this->_getFileContent('/vhosts/dev/joomla-cms/tests/_data/html-newsletter.txt');
-		self::$text_style_content   = $this->_getFileContent('/vhosts/dev/joomla-cms/tests/_data/text-newsletter.txt');
+		self::$css_style_content    = $this->_getFileContent('/vms/dockers/tests/BwPostman/tests/_data/html-newsletter.css');
+		self::$html_style_content   = $this->_getFileContent('/vms/dockers/tests/BwPostman/tests/_data/html-newsletter.txt');
+		self::$text_style_content   = $this->_getFileContent('/vms/dockers/tests/BwPostman/tests/_data/text-newsletter.txt');
 	}
 
 	/**

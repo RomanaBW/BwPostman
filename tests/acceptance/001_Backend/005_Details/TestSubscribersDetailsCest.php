@@ -37,6 +37,7 @@ class TestSubscribersDetailsCest
 	 * @param   \Page\Login                 $loginPage
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -57,6 +58,7 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -87,6 +89,7 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -121,6 +124,7 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -150,6 +154,7 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -184,6 +189,7 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *

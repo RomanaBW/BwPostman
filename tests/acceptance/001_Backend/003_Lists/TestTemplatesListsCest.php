@@ -53,6 +53,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -76,6 +77,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -99,6 +101,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -126,6 +129,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -153,6 +157,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -176,6 +181,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -210,6 +216,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -236,6 +243,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -259,6 +267,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -284,6 +293,7 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *

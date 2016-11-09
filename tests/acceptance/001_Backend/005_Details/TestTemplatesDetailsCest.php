@@ -58,6 +58,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -87,6 +88,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -125,6 +127,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -156,6 +159,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -188,6 +192,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -232,6 +237,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -266,6 +272,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -306,6 +313,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -337,6 +345,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -369,6 +378,7 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *

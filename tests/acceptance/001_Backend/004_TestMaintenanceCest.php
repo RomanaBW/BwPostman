@@ -54,6 +54,7 @@ class TestMaintenanceCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *
@@ -88,6 +89,7 @@ class TestMaintenanceCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *
@@ -126,6 +128,7 @@ class TestMaintenanceCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *
@@ -176,6 +179,7 @@ class TestMaintenanceCest
 	 * after   _logout
 	 *
 	 * @group   component
+	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *
@@ -206,6 +210,7 @@ class TestMaintenanceCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *

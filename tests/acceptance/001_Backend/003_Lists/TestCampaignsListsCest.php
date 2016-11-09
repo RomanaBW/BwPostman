@@ -33,6 +33,7 @@ class TestCampaignsListsCest
 	 * @param   \Page\Login         $loginPage
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -53,6 +54,7 @@ class TestCampaignsListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -80,6 +82,7 @@ class TestCampaignsListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -107,6 +110,7 @@ class TestCampaignsListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -133,6 +137,7 @@ class TestCampaignsListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -156,6 +161,7 @@ class TestCampaignsListsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *

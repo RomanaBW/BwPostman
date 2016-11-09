@@ -1,14 +1,17 @@
 <?php
 use Page\Generals as Generals;
-use Page\MailinglistEditPage as MlEdit;
-use Page\MailinglistManagerPage as MlManage;
+use Page\CampaignEditPage as CamEdit;
+use Page\CampaignManagerPage as CamManage;
 use Page\MainviewPage as MainView;
 
+// @ToDo: Check for required fields by server (JS switched off)
+// @ToDo: Assign newsletters to campaign, perhaps send some of the newsletters, check for appearance in campaign details,
+// clear out with and without newsletters
 
 /**
- * Class TestMailinglistsDetailsCest
+ * Class TestCampaignsDetailsCest
  *
- * This class contains all methods to test manipulation of a single mailing list at back end
+ * This class contains all methods to test manipulation of a single campaign at back end
 
  * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
@@ -28,7 +31,7 @@ use Page\MainviewPage as MainView;
  *
  * @since   2.0.0
  */
-class TestMailinglistsDetailsCest
+class TestCampaignsDetailsCest
 {
 	/**
 	 * Test method to login into backend
@@ -36,6 +39,7 @@ class TestMailinglistsDetailsCest
 	 * @param   \Page\Login         $loginPage
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -47,7 +51,7 @@ class TestMailinglistsDetailsCest
 	}
 
 	/**
-	 * Test method to create a single mailing list from main view and cancel creation
+	 * Test method to create a single campaign from main view and cancel creation
 	 *
 	 * @param   AcceptanceTester            $I
 	 *
@@ -56,29 +60,29 @@ class TestMailinglistsDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneMailinglistCancelMainView(AcceptanceTester $I)
+	public function CreateOneCampaignCancelMainView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one mailinglist and cancel from main view");
+		$I->wantTo("Create one campaign and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->wait(5);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
-		$I->click(MainView::$addMailinglistButton);
+		$I->click(MainView::$addCampaingButton);
 
 		$this->_fillFormSimple($I);
 
-		$I->clickAndWait(MlEdit::$toolbar['Back'], 1);
+		$I->clickAndWait(CamEdit::$toolbar['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
 	/**
-	 * Test method to create a single mailing list from main view, save it and go back to main view
+	 * Test method to create a single campaign from main view, save it and go back to main view
 	 *
 	 * @param   AcceptanceTester            $I
 	 *
@@ -87,31 +91,32 @@ class TestMailinglistsDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneMailinglistCompleteMainView(AcceptanceTester $I)
+	public function CreateOneCampaignCompleteMainView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one mailinglist complete from main view");
+		$I->wantTo("Create one campaign complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
-		$I->see('BwPostman', Generals::$pageTitle);
-		$I->click(MainView::$addMailinglistButton);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+		$I->click(MainView::$addCampaingButton);
 
 		$this->_fillFormExtended($I);
+		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
-		$I->HelperArcDelItems($I, new MlManage(), new MlEdit());
-		$I->see('Mailinglists', Generals::$pageTitle);
+		$I->HelperArcDelItems($I, new CamManage(), new CamEdit());
+		$I->see('Campaigns', Generals::$pageTitle);
 	}
 
 	/**
-	 * Test method to create a single mailing list from list view and cancel creation
+	 * Test method to create a single campaign from list view and cancel creation
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -120,57 +125,26 @@ class TestMailinglistsDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneMailinglistCancelListView(AcceptanceTester $I)
+	public function CreateOneCampaignCancelListView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one mailinglist cancel list view");
-		$I->amOnPage(MlManage::$url);
-		$I->click(Generals::$toolbar['New']);
-
-		$this->_fillFormSimple($I);
-
-        $I->clickAndWait(MlEdit::$toolbar['Cancel'], 1);
-        $I->see("Mailinglists", Generals::$pageTitle);
-	}
-
-	/**
-	 * Test method to create a single mailing list from list view, save it and go back to list view
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @group   component
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function CreateOneMailinglistListView(AcceptanceTester $I)
-	{
-		$I->wantTo("Create one mailinglist list view");
-		$I->amOnPage(MlManage::$url);
+		$I->wantTo("Create one campaign cancel list view");
+		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
 		$this->_fillFormExtended($I);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_header);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
-
-		$I->HelperArcDelItems($I, new MlManage(), new MlEdit());
-		$I->see('Mailinglists', Generals::$pageTitle);
+		$I->click(CamEdit::$toolbar['Cancel']);
+        $I->see("Campaigns", Generals::$pageTitle);
 	}
 
 	/**
-	 * Test method to create same single mailing list twice from main view
+	 * Test method to create a single campaign from list view, save it and go back to list view
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -179,37 +153,71 @@ class TestMailinglistsDetailsCest
 	 * @after   _logout
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateMailinglistTwiceListView(AcceptanceTester $I)
+	public function CreateOneCampaignListView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create mailinglist twice list view");
-		$I->amOnPage(MlManage::$url);
+		$I->wantTo("Create one campaign list view");
+		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
 		$this->_fillFormSimple($I);
+		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_header);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
-		$I->see('Mailinglists', Generals::$pageTitle);
+		$I->see(CamEdit::$success_save, Generals::$alert_success);
+		$I->see(CamEdit::$field_title, CamEdit::$title_col);
 
+		$I->HelperArcDelItems($I, new CamManage(), new CamEdit());
+		$I->see('Campaigns', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create same single campaign twice from main view
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @group   component
+	 * @group   005_be_details
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateCampaignTwiceListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create campaign twice list view");
+		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
 		$this->_fillFormSimple($I);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		$I->click(CamEdit::$toolbar['Save & Close']);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(CamEdit::$success_save, Generals::$alert_success);
+
+		$I->see('Campaigns', Generals::$pageTitle);
+		$I->click(Generals::$toolbar['New']);
+
+		$this->_fillFormSimple($I);
+		$I->click(CamEdit::$toolbar['Save & Close']);
+
 		$I->see("Error", Generals::$alert_header);
-		$I->see(MlEdit::$error_save, Generals::$alert_error);
-		$I->click(MlEdit::$toolbar['Cancel']);
-		$I->see("Mailinglists", Generals::$pageTitle);
+		$I->see(CamEdit::$error_save, Generals::$alert_error);
+		$I->click(CamEdit::$toolbar['Cancel']);
+		$I->see("Campaigns", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new MlManage(), new MlEdit());
-		$I->see('Mailinglists', Generals::$pageTitle);
+		$I->HelperArcDelItems($I, new CamManage(), new CamEdit());
+		$I->see('Campaigns', Generals::$pageTitle);
 	}
 
 	/**
@@ -219,6 +227,7 @@ class TestMailinglistsDetailsCest
 	 * @param   \Page\Login         $loginPage
 	 *
 	 * @group   component
+	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -234,9 +243,9 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
-	 * @group   component
-	 *
 	 * @return  void
+	 *
+	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -258,33 +267,26 @@ class TestMailinglistsDetailsCest
 	 */
 	private function _fillFormExtended(AcceptanceTester $I)
 	{
-		// fill title, omit description
-		$I->fillField(MlEdit::$title, MlEdit::$field_title);
-		$I->clickAndWait(MlEdit::$toolbar['Save & Close'], 1);
+		// fill title, omit recipients
+		$I->fillField(CamEdit::$title, CamEdit::$field_title);
+		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		// check for description filled
-		$I->seeInPopup(MlEdit::$popup_description);
+		// check for recipients selected
+		$I->seeInPopup(CamEdit::$popup_no_recipients);
 		$I->acceptPopup();
 
-		// fill description, omit title
-		$I->fillField(MlEdit::$title, "");
-		$I->fillField(MlEdit::$description, MlEdit::$field_description);
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		// fill recipients, omit title
+		$I->click(sprintf(Generals::$mls_accessible, 2));
+		$I->fillField(CamEdit::$title, "");
+		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		// check for title filled
-		$I->seeInPopup(MlEdit::$popup_title);
-		$I->acceptPopup();
+		// check for title
+		$I->see("Warning", Generals::$alert_header);
+		$I->see(CamEdit::$warning_no_title, Generals::$alert);
 
-		// fill title
-		$I->fillField(MlEdit::$title, MlEdit::$field_title);
-
-		// select access
-		$I->clickSelectList(MlEdit::$access_list, MlEdit::$access_registered);
-		$I->see("Registered", MlEdit::$access_list_text);
-
-		//select status
-		$I->clickSelectList(MlEdit::$published_list, MlEdit::$published_published);
-		$I->see("published", MlEdit::$published_list_text);
+		// fill title and description
+		$I->fillField(CamEdit::$title, CamEdit::$field_title);
+		$I->fillField(CamEdit::$description, CamEdit::$field_description);
 	}
 
 	/**
@@ -299,8 +301,8 @@ class TestMailinglistsDetailsCest
 	 */
 	private function _fillFormSimple(AcceptanceTester $I)
 	{
-		$I->fillField(MlEdit::$title, MlEdit::$field_title);
-		$I->fillField(MlEdit::$description, MlEdit::$field_description);
+		$I->fillField(CamEdit::$title, CamEdit::$field_title);
+		$I->fillField(CamEdit::$description, CamEdit::$field_description);
+		$I->click(sprintf(Generals::$mls_accessible, 2));
 	}
-
 }

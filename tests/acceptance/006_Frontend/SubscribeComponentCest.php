@@ -36,6 +36,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester         $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -60,6 +61,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -89,6 +91,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -121,6 +124,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -155,6 +159,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -226,6 +231,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -300,6 +306,9 @@ class SubscribeComponentCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
+	 * @group   component
+	 * @group   006_fe_subscription
+	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -328,6 +337,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -352,6 +362,7 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -383,6 +394,7 @@ class SubscribeComponentCest
 	 * @param \AcceptanceTester             $I
 	 *
 	 * @group   component
+	 * @group   006_fe_subscription
 	 *
 	 * @since   2.0.0
 	 */

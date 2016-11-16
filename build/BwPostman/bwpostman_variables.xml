@@ -46,5 +46,8 @@
 		<echo msg="test dirs…" />
 		<property name="test_base_dir" value="/vhosts/dev/joomla-cms/tests/_data/" override="true" />
 
+		<echo msg="test base dir…" />
+		<property name="test_container_dir" value="/vms/dockers/global_data/tests/BwPostman" override="true" />
+
 	</target>
 </project>

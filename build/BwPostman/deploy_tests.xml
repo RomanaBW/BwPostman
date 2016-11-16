@@ -13,7 +13,13 @@
 		<property name="source_test_dir" value="${source_base_dir}/tests" override="true" />
 
 		<echo msg="target dir…" />
-		<property name="target_test_dir" value="/vms/dockers/tests/BwPostman/tests/" override="true" />
+		<property name="target_test_dir" value="/vms/dockers/global_data/tests/BwPostman/tests/" override="true" />
+
+		<echo msg="Deleting target directory… " />
+		<delete dir="${target_test_dir}/acceptance" includeemptydirs="true" failonerror="false" />
+		<delete dir="${target_test_dir}/functional" includeemptydirs="true" failonerror="false" />
+		<delete dir="${target_test_dir}/unit" includeemptydirs="true" failonerror="false" />
+
 	</target>
 
 	<!-- ============================================  -->

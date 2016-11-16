@@ -93,7 +93,7 @@
 			</then>
 		</if>
 
-		<copy file="${target_base_dir}/${module}.${version}.zip" tofile="/vms/dockers/tests/BwPostman/tests/_data/${module}.zip" />
+		<copy file="${target_base_dir}/${module}.${version}.zip" tofile="${test_container_dir}/tests/_data/${module}.zip" />
 		<copy file="${target_base_dir}/${module}.${version}.zip" tofile="/vhosts/webservice3/download/BwPostman/${module}.${version}.zip" />
 		<move file="${target_base_dir}/${module}.${version}.zip" tofile="${target_base_module_dir}/${module}.${version}.zip" />
 	</target>

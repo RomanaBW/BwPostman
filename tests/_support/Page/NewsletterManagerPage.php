@@ -129,12 +129,12 @@ class NewsletterManagerPage
 	// Filter authors
 	public static $authors_col                  = ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[6]";
 	public static $filter_authors_list          = ".//*[@id='filter_authors_chzn']/a";
-	public static $filter_author_1              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BE User 1')]";
-	public static $filter_author_2              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BE User 3')]";
+	public static $filter_author_1              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BwPostmanAdmin')]";
+	public static $filter_author_2              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BwPostmanEditor')]";
 	public static $filter_author_3              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'AdminTester')]";
 
-	public static $filter_author_1_txt          = 'BE User 1';
-	public static $filter_author_2_txt          = 'BE User 3';
+	public static $filter_author_1_txt          = 'BwPostmanAdmin';
+	public static $filter_author_2_txt          = 'BwPostmanEditor';
 	public static $filter_author_3_txt          = 'AdminTester';
 
 	// Filter campaign

@@ -16,14 +16,14 @@ modules:
 #                url: http://www.dev.nil
 #                url: http://www.bwtest.nil
                 url: http://www.test.nil
-#                url: http://localhost:8000
-                window_size: 1920x1080
+#                url: http://172.18.0.5
+                window_size: 1440x900
 #                browser: phantomjs
 #                port: 4447
                 browser: chrome
                 port: 4445
 #                browser: firefox
-#                port: 4446
+#                port: 4444
                 connection_timeout: 60
                 restart: false
 
@@ -33,9 +33,9 @@ modules:
             dsn: 'mysql:host=universe.bet2.nil;dbname=test'
             user: 'AdminTester'
             password: 'BwPostmanTest'
-#            dsn: 'mysql:host=mysqldb;dbname=joomlatest'
-#            user: 'tester'
-#            password: 'barbamama'
+#            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
+#            user: 'root'
+#            password: 'barbapapa'
             dump: 'tests/_data/dump.sql'
             populate: false
             cleanup: false

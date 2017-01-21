@@ -68,7 +68,7 @@ class Acceptance extends Codeception\Module
 	 */
 	public function _beforeSuite($I)
 	{
-		$query_base     = self::_getQueryBase();
+/*		$query_base     = self::_getQueryBase();
 		$backup_query   = self::_getBackupQuery();
 
 		// connect to server
@@ -84,7 +84,7 @@ class Acceptance extends Codeception\Module
 		// get component options
 		$options    = $this->getManifestOptions('com_bwpostman');
 		Generals::setComponentOptions($options);
-
+*/
 	}
 
 	/**
@@ -94,7 +94,7 @@ class Acceptance extends Codeception\Module
 	 */
 	public function _afterSuite()
 	{
-		$query_base = self::_getQueryBase();
+/*		$query_base = self::_getQueryBase();
 
 		// connect to server
 		$connection = ssh2_connect(Generals::$ssh_server, Generals::$ssh_port, Generals::$ssh_options);
@@ -102,7 +102,7 @@ class Acceptance extends Codeception\Module
 
 		// restore dev tables
 		ssh2_exec($connection, $query_base . Generals::$db_data_end);
-
+*/
 	}
 
 	/**
@@ -616,7 +616,7 @@ class Acceptance extends Codeception\Module
 
 				if ($manner == 'header')
 				{
-					$I->click(sprintf(Generals::$table_headcol_link_location, $i));
+					$I->clickAndWait(sprintf(Generals::$table_headcol_link_location, $i), 3);
 				}
 				else
 				{

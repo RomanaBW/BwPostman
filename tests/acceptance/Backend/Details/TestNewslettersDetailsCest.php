@@ -607,10 +607,10 @@ class TestNewslettersDetailsCest
 		// add content
 		$I->scrollTo(NlEdit::$legend_content);
 		// …by button
-		$I->click(sprintf(NlEdit::$available_content, 5));
+		$I->click(sprintf(NlEdit::$available_content, 3));
 		$I->click(NlEdit::$add_content);
 		// … by double click
-		$I->doubleClick(sprintf(NlEdit::$available_content, 4));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
 		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
 
 		// remove content
@@ -690,9 +690,15 @@ class TestNewslettersDetailsCest
 	 */
 	private function _fillPublishedDate(AcceptanceTester $I)
 	{
-		$I->clickAndWait(NlEdit::$publish_up_button, 1);
-		$I->clickAndWait(NlEdit::$today_up, 1);
-		$I->clickAndWait(NlEdit::$publish_down_button, 1);
-		$I->clickAndWait(NlEdit::$today_down, 1);
+		$now_up     = new DateTime('+10 minutes', new DateTimeZone('Europe/Berlin'));
+		$now_down   = new DateTime('+11 minutes', new DateTimeZone('Europe/Berlin'));
+		
+		$I->fillField(NlEdit::$publish_up, $now_up->format('Y-m-j H:i'));
+		$I->fillField(NlEdit::$publish_down, $now_down->format('Y-m-j H:i'));
+
+//		$I->clickAndWait(NlEdit::$publish_up_button, 1);
+//		$I->clickAndWait(NlEdit::$today_up, 1);
+//		$I->clickAndWait(NlEdit::$publish_down_button, 1);
+//		$I->clickAndWait(NlEdit::$today_down, 1);
 	}
 }

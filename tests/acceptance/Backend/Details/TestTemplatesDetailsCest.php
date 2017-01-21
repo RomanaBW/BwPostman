@@ -106,12 +106,13 @@ class TestTemplatesDetailsCest
 		$this->_fillFormSimpleHtml($I);
 
 		// check if save and close is successful
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 3);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		// check if preview is visible at template list
-		$I->seeElement(sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url));
+		$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
+		$I->seeElement($thumb);
 
 		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
 		$I->see('Template', Generals::$pageTitle);
@@ -221,6 +222,10 @@ class TestTemplatesDetailsCest
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->click(TplEdit::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
+
 		$I->see("Template", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
@@ -401,6 +406,7 @@ class TestTemplatesDetailsCest
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->click(TplEdit::$toolbar['Cancel']);
+
 		$I->see("Template", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());

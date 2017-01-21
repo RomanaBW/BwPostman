@@ -70,10 +70,10 @@ class TestMaintenanceCest
 		$I->waitForElement(Generals::$pageTitle);
 		$I->see(MaintenancePage::$heading);
 
-		$path       = '/home/romana/Downloads/';
+		$path       = '/root/Downloads/';
 		$filename   = 'BwPostman_' . str_replace('.', '_', Generals::$versionToTest) . '_Tables_' . date("Y-m-d_H-i")  . '.xml';
 
-		$I->clickAndWait(MaintenancePage::$saveTablesButton, 5);
+		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
 		$I->assertTrue(file_exists($path . $filename));
 //		$I->assertTrue(unlink($path . $filename));

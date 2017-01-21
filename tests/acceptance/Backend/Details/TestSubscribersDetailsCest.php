@@ -105,7 +105,7 @@ class TestSubscribersDetailsCest
 
 		$this->_fillFormSimple($I);
 
-		$I->click(SubEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
@@ -140,7 +140,7 @@ class TestSubscribersDetailsCest
 
 		$this->_fillFormExtended($I);
 
-        $I->click(SubEdit::$toolbar['Cancel']);
+        $I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
         $I->see("Subscribers", Generals::$pageTitle);
 	}
 
@@ -169,7 +169,7 @@ class TestSubscribersDetailsCest
 
 		$this->_fillFormSimple($I);
 
-		$I->click(SubEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header);
 		$I->see("Message", Generals::$alert_header);
@@ -214,7 +214,7 @@ class TestSubscribersDetailsCest
 
 		$this->_fillFormSimple($I);
 
-		$I->click(SubEdit::$toolbar['Save & Close']);
+		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(SubEdit::$error_save, Generals::$alert_error);
 

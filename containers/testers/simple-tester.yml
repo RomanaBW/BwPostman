@@ -10,7 +10,8 @@ services:
             - "/vms/dockers/containers/testers/os-data:/data"
             - "/vhosts/dev/joomla-cms:/tests"
         environment:
-            - TEST_CAT=single
+#            - TEST_CAT=single
+            - TEST_CAT=all
         entrypoint: /data/simple_tester_start.sh
         working_dir: /tests
         networks:

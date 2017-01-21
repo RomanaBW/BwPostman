@@ -73,7 +73,8 @@ class TemplateEditPage
 	public static $text_style       = ".//*[@id='jform_tpl_html']";
 
 	//buttons
-	public static $button_editor_toggle     = ".//*[@id='wf_editor_jform_tpl_html_toggle']";
+//	public static $button_editor_toggle     = ".//*[@id='wf_editor_jform_tpl_html_toggle']";
+	public static $button_editor_toggle     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/div/div[1]/ul/li[2]/a";
 	public static $button_refresh_preview   = ".//*[@id='email_preview']/p/button";
 	public static $button_first_name        = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[1]";
 	public static $button_last_name         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[2]";
@@ -89,6 +90,8 @@ class TemplateEditPage
 
 	public static $popup_title        = 'You have to enter a title for the template.';
 	public static $popup_description  = 'You have to enter a description for the template.';
+
+	public static $popup_changes_not_saved  = 'Any changes will not be saved. Close without saving?';
 
 	public static $archive_button       = ".//*[@id='toolbar-archive']/button";
 	public static $archive_tab          = ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[5]/button";
@@ -131,9 +134,11 @@ class TemplateEditPage
 	 */
 	public function __construct()
 	{
-		self::$css_style_content    = $this->_getFileContent('/vms/dockers/tests/BwPostman/tests/_data/html-newsletter.css');
-		self::$html_style_content   = $this->_getFileContent('/vms/dockers/tests/BwPostman/tests/_data/html-newsletter.txt');
-		self::$text_style_content   = $this->_getFileContent('/vms/dockers/tests/BwPostman/tests/_data/text-newsletter.txt');
+                $base_dir   = '/vms/dockers/global_data/tests';
+                $data_dir   = $base_dir . '/BwPostman/tests/_data/';
+		self::$css_style_content    = $this->_getFileContent($data_dir . 'html-newsletter.css');
+		self::$html_style_content   = $this->_getFileContent($data_dir . 'html-newsletter.txt');
+		self::$text_style_content   = $this->_getFileContent($data_dir . 'text-newsletter.txt');
 	}
 
 	/**

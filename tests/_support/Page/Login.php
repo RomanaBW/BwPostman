@@ -84,7 +84,7 @@ class Login
 		$I->amOnPage(self::$url);
 		$I->fillField(self::$usernameField, $user['user']);
 		$I->fillField(self::$passwordField, $user['password']);
-		$I->click(self::$loginButton);
+		$I->clickAndWait(self::$loginButton, 1);
 		$I->see(Generals::$control_panel, Generals::$pageTitle);
 
 		// saving snapshot

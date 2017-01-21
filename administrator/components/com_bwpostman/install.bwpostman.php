@@ -1432,7 +1432,7 @@ H2	{
 		//detect missing component rules
 		foreach ($default_rules as $key => $value)
 		{
-			if (!array_key_exists($key, $current_rules))
+			if (is_array($current_rules) && !array_key_exists($key, $current_rules))
 			{
 				$current_rules[$key] = $value;
 			}

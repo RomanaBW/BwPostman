@@ -301,9 +301,9 @@ fi
 if [ ${TEST_CAT} == maintenance_single ]
 then
 # single tests for maintenance
-#codecept run acceptance Backend/TestMaintenanceCest::saveTables --xml report_maintenance_save_tables.xml --html report_maintenance_save_tables.html
-#codecept run acceptance Backend/TestMaintenanceCest::checkTables --xml report_maintenancecheck_tables.xml --html report_maintenance_check_tables.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTables --xml report_maintenance_restore_tables.xml --html report_maintenance_restore_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::saveTables --xml report_maintenance_save_tables.xml --html report_maintenance_save_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::checkTables --xml report_maintenancecheck_tables.xml --html report_maintenance_check_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTables --xml report_maintenance_restore_tables.xml --html report_maintenance_restore_tables.html
 codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings --xml report_maintenance_basic_settings.xml --html report_maintenance_basic_settings.html
 #codecept run acceptance Backend/TestMaintenanceCest::testForumLink --xml report_maintenance_forum_link.xml --html report_maintenance_forum_link.html
 fi

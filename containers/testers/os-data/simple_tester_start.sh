@@ -1,7 +1,6 @@
 #!/bin/bash
 echo 'Test-Cat:' $TEST_CAT
-VIDEO_NAME=/tests/tests/_output/videos/bwpostman_com_${TEST_CAT}.mp4
-echo 'Video-Name: '$VIDEO_NAME
+echo 'Video-Name: ' /tests/tests/_output/videos/bwpostman_com_${TEST_CAT}.mp4
 
 # start x-server and webdriver for chromium
 Xvfb :45 -ac -screen 0 1440x900x24 &
@@ -12,7 +11,7 @@ sleep 1
 
 # start video recording
 echo 'start recording'
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -video_size 1440x900 -i :45.0 -vcodec libx264 -r 12 /tests/tests/_output/videos/bwpostman_com_${TEST_CAT}.mp4 2>/tests/tests/_output/videos/ffmpeg.log"
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size 1440x900 -i :45.0 -vcodec libx264 -r 12 /tests/tests/_output/videos/bwpostman_com_${TEST_CAT}.mp4 2>/tests/tests/_output/videos/ffmpeg.log"
 
 
 
@@ -302,9 +301,9 @@ fi
 if [ ${TEST_CAT} == maintenance_single ]
 then
 # single tests for maintenance
-codecept run acceptance Backend/TestMaintenanceCest::saveTables --xml report_maintenance_save_tables.xml --html report_maintenance_save_tables.html
-codecept run acceptance Backend/TestMaintenanceCest::checkTables --xml report_maintenancecheck_tables.xml --html report_maintenance_check_tables.html
-codecept run acceptance Backend/TestMaintenanceCest::restoreTables --xml report_maintenance_restore_tables.xml --html report_maintenance_restore_tables.html
+#codecept run acceptance Backend/TestMaintenanceCest::saveTables --xml report_maintenance_save_tables.xml --html report_maintenance_save_tables.html
+#codecept run acceptance Backend/TestMaintenanceCest::checkTables --xml report_maintenancecheck_tables.xml --html report_maintenance_check_tables.html
+#codecept run acceptance Backend/TestMaintenanceCest::restoreTables --xml report_maintenance_restore_tables.xml --html report_maintenance_restore_tables.html
 codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings --xml report_maintenance_basic_settings.xml --html report_maintenance_basic_settings.html
 #codecept run acceptance Backend/TestMaintenanceCest::testForumLink --xml report_maintenance_forum_link.xml --html report_maintenance_forum_link.html
 fi

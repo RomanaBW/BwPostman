@@ -1049,7 +1049,7 @@ class User2SubscriberCest
 	protected function selectRegistrationPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(RegPage::$register_url);
-		$I->wait(7);
+		$I->wait(2);
 		$I->seeElement(RegPage::$view_register);
 	}
 

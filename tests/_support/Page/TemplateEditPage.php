@@ -136,6 +136,7 @@ class TemplateEditPage
 	{
                 $base_dir   = '/vms/dockers/global_data/tests';
                 $data_dir   = $base_dir . '/BwPostman/tests/_data/';
+                $data_dir   = 'tests/_data/';
 		self::$css_style_content    = $this->_getFileContent($data_dir . 'html-newsletter.css');
 		self::$html_style_content   = $this->_getFileContent($data_dir . 'html-newsletter.txt');
 		self::$text_style_content   = $this->_getFileContent($data_dir . 'text-newsletter.txt');

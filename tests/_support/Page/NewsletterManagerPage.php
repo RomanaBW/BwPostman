@@ -37,7 +37,7 @@ class NewsletterManagerPage
 	 */
     public static $url      = '/administrator/index.php?option=com_bwpostman&view=newsletters';
 	public static $section  = 'newsletter';
-	public static $wait_db  = 3;
+	public static $wait_db  = 1;
 
     /*
      * Declare UI map for this page here. CSS or XPath allowed.

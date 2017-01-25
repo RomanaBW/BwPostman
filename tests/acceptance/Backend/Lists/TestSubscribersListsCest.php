@@ -66,7 +66,7 @@ class TestSubscribersListsCest
 		$I->wantTo("Sort subscribers by table header");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
-		$I->wait(3);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', SubsManage::$query_criteria);
@@ -96,7 +96,7 @@ class TestSubscribersListsCest
 		$I->wantTo("Sort subscribers by select list");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
-		$I->wait(3);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', SubsManage::$query_criteria);

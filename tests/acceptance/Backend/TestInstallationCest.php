@@ -95,7 +95,7 @@ class TestInstallationCest
 	 */
 	public function saveOptions(AcceptanceTester $I)
 	{
-		$I->wantTo("Install BwPostman");
+		$I->wantTo("Save Options BwPostman");
 		$I->expectTo("see success message and component in menu");
 		$I->amOnPage(MainView::$url);
 

@@ -689,7 +689,7 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$tpl_tab2);
 		$I->fillField(TplEdit::$text_style, TplEdit::$text_style_content);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
-		$I->clickAndWait(TplEdit::$button_refresh_preview, 5);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
 		$I->click(TplEdit::$toolbar['Save']);
 	}
 

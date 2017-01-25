@@ -111,7 +111,7 @@ class TestTemplatesListsCest
 	{
 		$I->wantTo("Sort templates by table header");
 		$I->amOnPage(TplManage::$url);
-		$I->wait(5);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', TplManage::$query_criteria);
@@ -139,7 +139,7 @@ class TestTemplatesListsCest
 	{
 		$I->wantTo("Sort templates by select list");
 		$I->amOnPage(TplManage::$url);
-		$I->wait(5);
+		$I->wait(1);
 
 		// loop over sorting criterion     .//*[@id='list_fullordering_chzn']/div/ul/li[4]
 		$columns    = implode(', ', TplManage::$query_criteria);
@@ -191,7 +191,7 @@ class TestTemplatesListsCest
 	{
 		$I->wantTo("Filter templates by email format");
 		$I->amOnPage(TplManage::$url);
-		$I->wait(5);
+		$I->wait(1);
 
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);

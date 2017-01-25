@@ -65,7 +65,7 @@ class TestNewslettersListsCest
 		$I->wantTo("Sort newsletters by table header");
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
-		$I->wait(3);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);
@@ -93,7 +93,7 @@ class TestNewslettersListsCest
 		$I->wantTo("Sort newsletters by select list");
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
-		$I->wait(3);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);

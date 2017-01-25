@@ -170,6 +170,38 @@ class TestMaintenanceCest
 	}
 
 	/**
+	 * Test method to check button basic settings
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @group   component
+	 * @group   004_maintenance
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function testBasicSettings(AcceptanceTester $I)
+	{
+		$I->wantTo("test basic settings button");
+		$I->expectTo("see configuration page");
+		$I->amOnPage(MainView::$url);
+		$I->click(MainView::$maintenanceButton);
+
+		$I->waitForElement(Generals::$pageTitle);
+		$I->see(MaintenancePage::$heading);
+
+		$I->clickAndWait(MaintenancePage::$settingsButton, 2);
+		$I->see(MaintenancePage::$headingSettings);
+
+		$I->click(MaintenancePage::$cancelSettingsButton);
+	}
+
+	/**
 	 * Test method to check forum link
 	 *
 	 * @param   AcceptanceTester                $I
@@ -198,38 +230,6 @@ class TestMaintenanceCest
 		$I->click(MaintenancePage::$forumButton);
 		$I->switchToWindow("new");
 		$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
-	}
-
-	/**
-	 * Test method to check button basic settings
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   004_maintenance
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function testBasicSettings(AcceptanceTester $I)
-	{
-		$I->wantTo("test basic settings button");
-		$I->expectTo("see configuration page");
-		$I->amOnPage(MainView::$url);
-		$I->click(MainView::$maintenanceButton);
-
-		$I->waitForElement(Generals::$pageTitle);
-		$I->see(MaintenancePage::$heading);
-
-		$I->click(MaintenancePage::$settingsButton);
-		$I->see(MaintenancePage::$headingSettings);
-
-		$I->click(MaintenancePage::$cancelSettingsButton);
 	}
 
 	/**

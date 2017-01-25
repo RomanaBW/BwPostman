@@ -133,7 +133,6 @@ class TestSubscribersDetailsCest
 	public function CreateOneSubscriberCancelListView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Subscriber cancel list view");
-//		$I->wait(SubManage::$wait_db);
 		$I->amOnPage(SubManage::$url);
 
 		$I->click(Generals::$toolbar['New']);

@@ -174,7 +174,7 @@ class TestMaintenanceCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
-	 * before  _login
+	 * @before  _login
 	 *
 	 * @after   _logout
 	 *

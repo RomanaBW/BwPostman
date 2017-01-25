@@ -37,7 +37,7 @@ class SubscriberManagerPage
 	 */
     public static $url      = '/administrator/index.php?option=com_bwpostman&view=subscribers';
 	public static $section  = 'subscriber';
-	public static $wait_db  = 10;
+	public static $wait_db  = 1;
 
     /*
      * Declare UI map for this page here. CSS or XPath allowed.

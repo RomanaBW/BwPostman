@@ -3,15 +3,14 @@ version: '2'
 services:
     tester:
         container_name: "tester"
-        image: romana/chromium-tester-neu
+        image: romana/chromium-tester-neu_v2
         hostname: tester
         domainname: tester-net.nil
         volumes:
             - "/vms/dockers/containers/testers/os-data:/data"
             - "/vhosts/dev/joomla-cms:/tests"
         environment:
-#            - TEST_CAT=single
-            - TEST_CAT=all
+            - TEST_CAT=${TEST_CAT}
         entrypoint: /data/simple_tester_start.sh
         working_dir: /tests
         networks:

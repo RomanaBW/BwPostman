@@ -64,7 +64,7 @@ class TestCampaignsListsCest
 	{
 		$I->wantTo("Sort campaigns by table header");
 		$I->amOnPage(CamManage::$url);
-		$I->wait(2);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', CamManage::$query_criteria);
@@ -92,7 +92,7 @@ class TestCampaignsListsCest
 	{
 		$I->wantTo("Sort campaigns by select list");
 		$I->amOnPage(CamManage::$url);
-		$I->wait(5);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', CamManage::$query_criteria);

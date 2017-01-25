@@ -114,7 +114,7 @@ class TestMailinglistsListsCest
 	{
 		$I->wantTo("Sort mailinglists by table header");
 		$I->amOnPage(MlManage::$url);
-		$I->wait(5);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', MlManage::$query_criteria);
@@ -142,7 +142,7 @@ class TestMailinglistsListsCest
 	{
 		$I->wantTo("Sort mailinglists by select list");
 		$I->amOnPage(MlManage::$url);
-		$I->wait(5);
+		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', MlManage::$query_criteria);

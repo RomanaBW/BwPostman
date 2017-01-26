@@ -396,7 +396,7 @@ class TestNewslettersDetailsCest
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
 		$I->see(NlEdit::$success_send);
 		$I->switchToIFrame();
-		$I->wait(25);
+		$I->wait(20);
 
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
@@ -692,13 +692,8 @@ class TestNewslettersDetailsCest
 	{
 		$now_up     = new DateTime('+10 minutes', new DateTimeZone('Europe/Berlin'));
 		$now_down   = new DateTime('+11 minutes', new DateTimeZone('Europe/Berlin'));
-		
+
 		$I->fillField(NlEdit::$publish_up, $now_up->format('Y-m-j H:i'));
 		$I->fillField(NlEdit::$publish_down, $now_down->format('Y-m-j H:i'));
-
-//		$I->clickAndWait(NlEdit::$publish_up_button, 1);
-//		$I->clickAndWait(NlEdit::$today_up, 1);
-//		$I->clickAndWait(NlEdit::$publish_down_button, 1);
-//		$I->clickAndWait(NlEdit::$today_down, 1);
 	}
 }

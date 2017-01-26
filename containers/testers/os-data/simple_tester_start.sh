@@ -7,7 +7,13 @@ Xvfb :45 -ac -screen 0 1440x900x24 &
 export DISPLAY=:45
 
 java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver /opt/selenium/selenium-server-standalone-3.0.1.jar -port 4445 >/dev/null 2>/dev/null &
-sleep 1
+# Loop until selenium server is available
+printf 'Waiting Selenium Server to load\n'
+until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do
+    printf '.'
+    sleep 1
+done
+printf '\n'
 
 # start video recording
 echo 'start recording'

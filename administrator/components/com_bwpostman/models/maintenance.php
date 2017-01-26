@@ -333,7 +333,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$buffer[] = "\t\t\t</component_assets>";
 
 		// process user groups
-		$groups = $this->getByAssetUsedUsergroups();
+		$groups = $this->getUsergroupsUsedInAssets();
 
 		$buffer[] = "\t\t\t" . '<component_usergroups>';
 		if (is_array($groups))
@@ -364,7 +364,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 */
-	private function getByAssetUsedUsergroups()
+	private function getUsergroupsUsedInAssets()
 	{
 		$_db        = JFactory::getDbo();
 		$query      = $_db->getQuery(true);

@@ -83,7 +83,7 @@ class TestMaintenanceRestoreCest
 		$I->wait(20);
 		$I->waitForElement(MaintenancePage::$step4Field);
 		$I->waitForElement(MaintenancePage::$step5Field);
-		$I->wait(15);
+		$I->wait(20);
 		$I->waitForElement(MaintenancePage::$step6Field);
 		$I->waitForElement(MaintenancePage::$step7Field);
 		$I->waitForElement(MaintenancePage::$step8Field);

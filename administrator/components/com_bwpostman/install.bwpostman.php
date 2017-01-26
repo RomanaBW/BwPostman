@@ -276,7 +276,8 @@ class Com_BwPostmanInstallerScript
 			$this->_setDefaultParams();
 
 			// create sample user groups and access levels
-			$this->_createSampleUsergroups();
+			//@ToDo: deactivated for testing, activate for release
+//			$this->_createSampleUsergroups();
 		}
 
 		// check if sample templates exits
@@ -367,7 +368,9 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
-		$this->_deleteSampleUsergroups();
+
+		//@ToDo: deactivated for testing, activate for release
+//		$this->_deleteSampleUsergroups();
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed

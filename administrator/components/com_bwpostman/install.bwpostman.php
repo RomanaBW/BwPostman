@@ -276,7 +276,7 @@ class Com_BwPostmanInstallerScript
 			$this->_setDefaultParams();
 
 			// create sample user groups and access levels
-//			$this->_createSampleUsergroups();
+			$this->_createSampleUsergroups();
 		}
 
 		// check if sample templates exits
@@ -1392,23 +1392,23 @@ H2	{
 	{
 		$default_rules	=	array(
 								"core.admin" => array('7' => 1),
-								"core.archive" => array('7' => 1, '6' => 1),
-								"core.create" => array('7' => 1, '6' => 1),
-								"core.delete" => array('7' => 1, '6' => 1),
-								"core.edit" => array('7' => 1, '6' => 1),
-								"core.edit.own" => array('7' => 1, '6' => 1),
-								"core.edit.state" => array('7' => 1, '6' => 1),
 								"core.manage" => array('7' => 1, '6' => 1),
-								"core.restore" => array('7' => 1, '6' => 1),
-								"core.send" =>array('7' => 1, '6' => 1),
-								"bwpm.view.archive" => array('7' => 1, '6' => 1),
-								"bwpm.view.campaigns" => array('7' => 1, '6' => 1),
-								"bwpm.view.maintenance" => array('7' => 1, '6' => 1),
-								"bwpm.view.manage" => array('7' => 1, '6' => 1),
-								"bwpm.view.mailinglists" => array('7' => 1, '6' => 1),
+								"bwpm.create" => array('7' => 1, '6' => 1),
+								"bwpm.edit" => array('7' => 1, '6' => 1),
+								"bwpm.edit.own" => array('7' => 1, '6' => 1),
+								"bwpm.edit.state" => array('7' => 1, '6' => 1),
+								"bwpm.archive" => array('7' => 1, '6' => 1),
+								"bwpm.restore" => array('7' => 1, '6' => 1),
+								"bwpm.delete" => array('7' => 1, '6' => 1),
+								"bwpm.send" =>array('7' => 1, '6' => 1),
 								"bwpm.view.newsletters" => array('7' => 1, '6' => 1),
 								"bwpm.view.subscribers" => array('7' => 1, '6' => 1),
-								"bwpm.view.templates" => array('7' => 1, '6' => 1)
+								"bwpm.view.campaigns" => array('7' => 1, '6' => 1),
+								"bwpm.view.mailinglists" => array('7' => 1, '6' => 1),
+								"bwpm.view.templates" => array('7' => 1, '6' => 1),
+								"bwpm.view.archive" => array('7' => 1, '6' => 1),
+								"bwpm.view.manage" => array('7' => 1, '6' => 1),
+								"bwpm.view.maintenance" => array('7' => 1, '6' => 1),
 							);
 		// get stored component rules
 		$current_rules  = array();

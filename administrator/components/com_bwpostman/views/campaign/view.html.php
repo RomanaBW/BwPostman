@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,6 +102,12 @@ class BwPostmanViewCampaign extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$document	= JFactory::getDocument();
+
+		if (!BwPostmanHelper::canView('campaign'))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_CAMS')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
 
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
@@ -205,7 +211,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		JToolbarHelper::spacer();
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
-		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'https://www.boldt-webservice.de/en/forum-en/bwpostman.html');
 		JToolbarHelper::spacer();
 	}
 }

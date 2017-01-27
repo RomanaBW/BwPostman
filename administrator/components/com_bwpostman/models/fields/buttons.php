@@ -30,7 +30,6 @@ defined ('_JEXEC') or die ('Restricted access');
 /**
  * Renders a newsletter element
  *
- * @version 1.0.8 bwpm
  * @package BwPostman-Admin
  *
  * @since       1.0.8

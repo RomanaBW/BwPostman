@@ -4,7 +4,7 @@
  *
  * BwTimeControl automailing sendmail content table for backend.
  *
- * @version 1.2.0 bwplgtc
+ * @version 2.0.0 bwplgtc
  * @package BwPostman BwTimeControl Plugin
  * @author Romana Boldt
  * @copyright (C) 2014-2017 Boldt Webservice <forum@boldt-webservice.de>

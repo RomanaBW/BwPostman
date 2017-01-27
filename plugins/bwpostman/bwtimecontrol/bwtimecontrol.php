@@ -4,7 +4,7 @@
  *
  * BwPostman TimeControl Plugin main file for BwPostman.
  *
- * @version 1.2.0 bwplgtc
+ * @version 2.0.0 bwplgtc
  * @package BwPostman TimeControl Plugin
  * @author Romana Boldt
  * @copyright (C) 2014-2017 Boldt Webservice <forum@boldt-webservice.de>

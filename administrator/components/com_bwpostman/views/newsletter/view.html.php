@@ -268,7 +268,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		}
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
-		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'https://www.boldt-webservice.de/en/forum-en/bwpostman.html');
+		$link   = BwPostmanHTMLHelper::getForumLink();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);
+
 		JToolbarHelper::spacer();
 	}
 }

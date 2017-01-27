@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,47 +148,45 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('newsletters'))
+		if (!BwPostmanHelper::canView('newsletter'))
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_NLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
-		else
-		{
-			$jinput		= JFactory::getApplication()->input;
-			$uri		= JUri::getInstance();
 
-			//check for queue entries
-			$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+		$jinput		= JFactory::getApplication()->input;
+		$uri		= JUri::getInstance();
 
-			$app->setUserState('com_bwpostman.edit.newsletter.referrer', 'newsletters');
-			// The query always contains the tab which we are in, but this might be confusing
-			// That's why we will set the query only to controller = newsletters
-			$uri_query	= 'option=com_bwpostman&view=newsletters';
-			$uri->setQuery($uri_query);
+		//check for queue entries
+		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-			// Get data from the model
-			$this->state			= $this->get('State');
-			$this->items			= $this->get('Items');
-			$this->filterForm		= $this->get('FilterForm');
-			$this->activeFilters	= $this->get('ActiveFilters');
-			$this->pagination		= $this->get('Pagination');
-			$this->total 			= $this->get('total');
-			$this->count_queue		= $this->get('CountQueue');
-			$this->context			= 'com_bwpostman.newsletters';
+		$app->setUserState('com_bwpostman.edit.newsletter.referrer', 'newsletters');
+		// The query always contains the tab which we are in, but this might be confusing
+		// That's why we will set the query only to controller = newsletters
+		$uri_query	= 'option=com_bwpostman&view=newsletters';
+		$uri->setQuery($uri_query);
 
-			$this->addToolbar();
+		// Get data from the model
+		$this->state			= $this->get('State');
+		$this->items			= $this->get('Items');
+		$this->filterForm		= $this->get('FilterForm');
+		$this->activeFilters	= $this->get('ActiveFilters');
+		$this->pagination		= $this->get('Pagination');
+		$this->total 			= $this->get('total');
+		$this->count_queue		= $this->get('CountQueue');
+		$this->context			= 'com_bwpostman.newsletters';
 
-			BwPostmanHelper::addSubmenu('newsletters');
+		$this->addToolbar();
 
-			$this->sidebar = JHtmlSidebar::render();
+		BwPostmanHelper::addSubmenu('newsletters');
 
-			// Show the layout depending on the tab
-			$tpl = $jinput->get('tab', 'unsent');
+		$this->sidebar = JHtmlSidebar::render();
 
-			// Call parent display
-			parent::display($tpl);
-		}
+		// Show the layout depending on the tab
+		$tpl = $jinput->get('tab', 'unsent');
+
+		// Call parent display
+		parent::display($tpl);
 	}
 
 	/**
@@ -275,7 +273,9 @@ class BwPostmanViewNewsletters extends JViewLegacy
 				}
 				break;
 		}
-		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		$link   = BwPostmanHTMLHelper::getForumLink();
+
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);
 		JToolbarHelper::spacer();
 	}
 }

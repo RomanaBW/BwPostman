@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,14 @@ class BwPostmanViewArchive extends JViewLegacy
 	 */
 	public function display ($tpl = Null)
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$app	= JFactory::getApplication();
+		$jinput	= $app->input;
+
+		if (!BwPostmanHelper::canView('archive'))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_ARC')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
 
 		$layout	= $jinput->get('layout');
 		$model	= $this->getModel('archive');

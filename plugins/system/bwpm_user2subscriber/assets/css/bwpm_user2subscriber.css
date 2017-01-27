@@ -8,7 +8,7 @@
  * @version 2.0.0 bwpmpus
  * @package			BwPostman User2Subscriber Plugin
  * @author			Romana Boldt
- * @copyright		(C) 2016 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright		(C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support http://www.boldt-webservice.de/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

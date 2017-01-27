@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -306,5 +306,28 @@ abstract class BwPostmanHTMLHelper {
 		$import_mailinglists	= str_replace('>-', ' disabled="disabled">-', $import_mailinglists);
 
 		return $import_mailinglists;
+	}
+
+	/**
+	 *
+	 * @return string
+	 *
+	 * @since 2.0.0
+	 */
+	static function getForumLink()
+	{
+		$lang = JFactory::getLanguage();
+
+		$lang_ver		= substr($lang->getTag(), 0, 2);
+		if ($lang_ver != 'de')
+		{
+			$link	= "https://www.boldt-webservice.de/en/forum-en/bwpostman.html";
+		}
+		else
+		{
+			$link	= "https://www.boldt-webservice.de/de/forum/bwpostman.html";
+		}
+
+		return $link;
 	}
 }

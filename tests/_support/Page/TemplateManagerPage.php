@@ -7,8 +7,8 @@ namespace Page;
  * Class TemplateManagerPage
  *
  * @package Page
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

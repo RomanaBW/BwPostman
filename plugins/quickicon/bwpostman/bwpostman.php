@@ -7,8 +7,8 @@
  * @version			9.1.3.0 bwpm
  * @package			BwPostman-Admin
  * @author			Romana Boldt
- * @copyright		(C) 2012-2015 Boldt Webservice <forum@boldt-webservice.de>
- * @support			http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright		(C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support			https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license			GNU/GPL v3, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ class plgQuickiconBwPostman extends JPlugin {
         if ($app->isSite() || JComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
             return;
         }
-		
+
 		parent::__construct ( $subject, $config );
 
 		$this->loadLanguage('plg_quickicon_bwpostman.sys');
@@ -55,9 +55,9 @@ class plgQuickiconBwPostman extends JPlugin {
 			return;
 		}
 		BwPostmanHelper::loadLanguage('com_bwpostman.sys', 'admin');
-		
-		if (BwPostmanHelper::installed() 
-//			&& BwPostmanHelper::getConfig()->version_check 
+
+		if (BwPostmanHelper::installed()
+//			&& BwPostmanHelper::getConfig()->version_check
 //			&& JFactory::getUser()->authorise('core.manage', 'com_installer')
 			) {
 			$db = JFactory::getDbo();

@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,11 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$app 	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
 
+		if (!BwPostmanHelper::canView('newsletter'))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
 
 		// Get the params
 		$params			= JComponentHelper::getParams('com_bwpostman');

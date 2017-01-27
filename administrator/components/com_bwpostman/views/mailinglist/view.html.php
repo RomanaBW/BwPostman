@@ -29,6 +29,7 @@ defined ('_JEXEC') or die ('Restricted access');
 
 // Require helper class
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');

@@ -31,7 +31,8 @@ defined ('_JEXEC') or die ('Restricted access');
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman Campaigns View

@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,113 +139,111 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
-		else
+
+		$jinput		= JFactory::getApplication()->input;
+		$model		= $this->getModel();
+		$layout		= $jinput->getCmd('layout', '');
+
+		//check for queue entries
+		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+
+		$this->template	= $app->getTemplate();
+
+		// Get document object, set document title and add css
+		$document = JFactory::getDocument();
+		$document->setTitle(JText::_('COM_BWPOSTMAN'));
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
+		// Set toolbar title
+		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
+
+		// Set toolbar items for the page
+		if ($layout == 'restoreTables')
 		{
-			$jinput		= JFactory::getApplication()->input;
-			$model		= $this->getModel();
-			$layout		= $jinput->getCmd('layout', '');
-
-			//check for queue entries
-			$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
-
-			$this->template	= $app->getTemplate();
-
-			// Get document object, set document title and add css
-			$document = JFactory::getDocument();
-			$document->setTitle(JText::_('COM_BWPOSTMAN'));
-			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-
-			// Set toolbar title
-			JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
-
-			// Set toolbar items for the page
-			if ($layout == 'restoreTables')
-			{
-				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= JToolbar::getInstance('toolbar');
-				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
-				$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::spacer();
-				JToolbarHelper::divider();
-				JToolbarHelper::spacer();
-			}
-
-				if ($layout == 'doRestore')
-				{
-				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= JToolbar::getInstance('toolbar');
-				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
-				$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::spacer();
-				JToolbarHelper::divider();
-				JToolbarHelper::spacer();
-			}
-
-			if ($layout == 'checkTables')
-			{
-				JFactory::getApplication()->input->set('hidemainmenu', true);
-				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= JToolbar::getInstance('toolbar');
-				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
-				$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::spacer();
-				JToolbarHelper::divider();
-				JToolbarHelper::spacer();
-			}
-
-			if ($layout == 'updateCheckSave')
-			{
-				$alt 	= "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
-				$bar	= JToolbar::getInstance('toolbar');
-				$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
-				$backlink 	= 'javascript:window.close()';
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::spacer();
-				JToolbarHelper::divider();
-				JToolbarHelper::spacer();
-				$style	= '.layout-updateCheckSave .navbar {display:none;}'
-						. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
-						. 'body {padding-top:0;}';
-				$document->addStyleDeclaration( $style );
-				$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
-			}
-
-			if (BwPostmanHelper::canAdmin())
-				JToolbarHelper::preferences('com_bwpostman', '500', '900');
+			$alt 	= "COM_BWPOSTMAN_BACK";
+			$bar	= JToolbar::getInstance('toolbar');
+			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
+			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
-			JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
-			JToolbarHelper::spacer();
-
-			BwPostmanHelper::addSubmenu('maintenance');
-
-			switch ($layout)
-			{
-				case 'updateCheckSave':
-					break;
-				case 'checkTables':
-					break;
-				case 'saveTables':
-					$this->check_res	= $model->saveTables(false);
-					break;
-				case 'restoreTables':
-					break;
-				case 'doRestore':
-					break;
-				default:
-			}
-
-			if (empty($layout)) $this->sidebar = JHtmlSidebar::render();
-
-			parent::display($tpl);
 		}
+
+			if ($layout == 'doRestore')
+			{
+			$alt 	= "COM_BWPOSTMAN_BACK";
+			$bar	= JToolbar::getInstance('toolbar');
+			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
+			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
+		}
+
+		if ($layout == 'checkTables')
+		{
+			JFactory::getApplication()->input->set('hidemainmenu', true);
+			$alt 	= "COM_BWPOSTMAN_BACK";
+			$bar	= JToolbar::getInstance('toolbar');
+			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
+			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
+		}
+
+		if ($layout == 'updateCheckSave')
+		{
+			$alt 	= "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
+			$bar	= JToolbar::getInstance('toolbar');
+			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
+			$backlink 	= 'javascript:window.close()';
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+			JToolbarHelper::spacer();
+			JToolbarHelper::divider();
+			JToolbarHelper::spacer();
+			$style	= '.layout-updateCheckSave .navbar {display:none;}'
+					. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
+					. 'body {padding-top:0;}';
+			$document->addStyleDeclaration( $style );
+			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
+		}
+
+		if (BwPostmanHelper::canAdmin())
+			JToolbarHelper::preferences('com_bwpostman', '500', '900');
+		JToolbarHelper::spacer();
+		JToolbarHelper::divider();
+		JToolbarHelper::spacer();
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'https://www.boldt-webservice.de/en/forum-en/bwpostman.html');
+		JToolbarHelper::spacer();
+
+		BwPostmanHelper::addSubmenu('maintenance');
+
+		switch ($layout)
+		{
+			case 'updateCheckSave':
+				break;
+			case 'checkTables':
+				break;
+			case 'saveTables':
+				$this->check_res	= $model->saveTables(false);
+				break;
+			case 'restoreTables':
+				break;
+			case 'doRestore':
+				break;
+			default:
+		}
+
+		if (empty($layout)) $this->sidebar = JHtmlSidebar::render();
+
+		parent::display($tpl);
 	}
 }

@@ -43,7 +43,7 @@ class InstallationPage
 
 	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
 
-	public static $installSuccessMsg    = "Installation of the component was successful.";
+	public static $installSuccessMsg    = "Installation of the package was successful.";
 	public static $uninstallSuccessMsg  = "Thank you for using BwPostman. BwPostman is now removed from your system.";
 
 	public static $optionsSuccessMsg    = "Configuration successfully saved.";

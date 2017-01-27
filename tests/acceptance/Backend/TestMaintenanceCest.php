@@ -217,7 +217,7 @@ class TestMaintenanceCest
 	 *
 	 * @since   2.0.0
 	 */
-/*	public function testForumLink(AcceptanceTester $I)
+	public function testForumLink(AcceptanceTester $I)
 	{
 		$I->wantTo("test forum link");
 		$I->expectTo("see new page with forum of BwPostman");
@@ -231,7 +231,7 @@ class TestMaintenanceCest
 		$I->switchToWindow("new");
 		$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
 	}
-*/
+
 	/**
 	 * Test method to logout from backend
 	 *

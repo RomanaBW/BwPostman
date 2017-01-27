@@ -70,7 +70,8 @@ class TestDeinstallationCest
 
 		$I->fillField(Generals::$search_field, Generals::$extension);
 		$I->click(Generals::$search_button);
-		$I->click(Generals::$first_list_entry);
+//		$I->click(Generals::$first_list_entry);
+		$I->checkOption(Generals::$check_all_button);
 		$I->click(InstallPage::$delete_button);
 		$I->acceptPopup();
 

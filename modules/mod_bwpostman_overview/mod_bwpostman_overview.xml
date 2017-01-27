@@ -4,7 +4,7 @@
 	<creationDate>April 2016</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
-	<authorUrl>http://www.boldt-webservice.de</authorUrl>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<version>2.0.0</version>
@@ -195,6 +195,6 @@
 		</fields>
 	</config>
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/mod_bwpostman_overview_update.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/mod_bwpostman_overview_update.xml</server>
 	</updateservers>
 </extension>

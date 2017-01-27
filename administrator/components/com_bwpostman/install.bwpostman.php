@@ -1060,9 +1060,9 @@ class Com_BwPostmanInstallerScript
 		}
 		else
 		{
-			$forum	= "http://www.boldt-webservice.de/de/forum/bwpostman.html";
+			$forum	= "https://www.boldt-webservice.de/de/forum/bwpostman.html";
 		}
-		$manual	= "http://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
+		$manual	= "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
 
 		if ($update)
 		{
@@ -1089,7 +1089,7 @@ class Com_BwPostmanInstallerScript
 <link rel="stylesheet" href="components/com_bwpostman/assets/css/install.css" type="text/css" />
 
 <div id="com_bwp_install_header">
-	<a href="http://www.boldt-webservice.de" target="_blank">
+	<a href="https://www.boldt-webservice.de" target="_blank">
 		<img border="0" align="center" src="components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
 	</a>
 </div>
@@ -1197,7 +1197,7 @@ class Com_BwPostmanInstallerScript
 	<div class="clr"></div>
 
 	<div class="com_bwp_install_footer">
-		<p class="small"><?php echo JText::_('&copy; 2012-'); echo date (" Y")?> by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
+		<p class="small"><?php echo JText::_('&copy; 2012-'); echo date (" Y")?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
 	</div>
 </div>
 

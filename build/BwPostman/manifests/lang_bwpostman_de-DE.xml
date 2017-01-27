@@ -5,7 +5,7 @@
 	<creationDate>April 2016</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
-	<authorUrl>http://www.boldt-webservice.de</authorUrl>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>This component is released under the GNU/GPLv3 License or later</license>
 	<version>2.0.0</version>
@@ -30,7 +30,7 @@
 	</fileset>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Language Updates de-DE">http://www.boldt-webservice.de/lang_bwpostman_update_de-DE.xml</server>
+		<server type="extension" priority="1" name="BwPostman Language Updates de-DE">https://www.boldt-webservice.de/lang_bwpostman_update_de-DE.xml</server>
 	</updateservers>
 
 </extension>

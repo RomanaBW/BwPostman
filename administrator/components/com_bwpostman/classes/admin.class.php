@@ -63,6 +63,6 @@ class BwPostmanAdmin {
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return 'BwPostman version ' . $manifest['version'] . ' by <a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
+		return 'BwPostman version ' . $manifest['version'] . ' by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 	}
 }

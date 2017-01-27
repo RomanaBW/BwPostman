@@ -52,16 +52,9 @@ $lang->load('com_bwpostman',JPATH_ADMINISTRATOR,null,true);
 $show_update	= false;
 $show_right		= false;
 $lang_ver		= substr($lang->getTag(), 0, 2);
-if ($lang_ver != 'de')
-{
-	$lang_ver = 'en';
-	$forum	= "https://www.boldt-webservice.de/en/forum-en/bwpostman.html";
-}
-else
-{
-	$forum	= "http://www.boldt-webservice.de/de/forum/bwpostman.html";
-}
-$manual	= "http://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
+$forum	        = BwPostmanHTMLHelper::getForumLink();
+
+$manual	= "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
 
 if ($update)
 {
@@ -86,7 +79,7 @@ if ($show_update || $string_special != '')
 ?>
 
 <div id="com_bwp_install_header">
-	<a href="http://www.boldt-webservice.de" target="_blank">
+	<a href="https://www.boldt-webservice.de" target="_blank">
 		<img src="components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
 	</a>
 </div>

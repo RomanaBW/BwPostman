@@ -6,7 +6,7 @@
 	<creationDate>March 2015</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
-	<authorUrl>http://www.boldt-webservice.de</authorUrl>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_BWPOSTMAN_BWTIMECONTROL_DESC</description>
@@ -26,7 +26,7 @@
 		<folder>sql</folder>
 		<folder>tables</folder>
 	</files>
-	
+
 	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">sql/install.sql</file>
@@ -38,7 +38,7 @@
 			<file charset="utf8" driver="mysql">sql/uninstall.sql</file>
 		</sql>
 	</uninstall>
- 
+
    <update>
         <schemas>
             <schemapath type="mysql">sql/updates/mysql</schemapath>
@@ -46,7 +46,7 @@
     </update>
 
 	<scriptfile>install.bwtimecontrol.php</scriptfile>
-	
+
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_bwtimecontrol.sys.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_bwtimecontrol.ini</language>
@@ -55,8 +55,8 @@
 	</languages>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/plg_bwtimecontrol_update2.xml</server>
-	</updateservers>	
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/plg_bwtimecontrol_update2.xml</server>
+	</updateservers>
 
 	<config>
 		<fields name="params">
@@ -85,5 +85,5 @@
 			</fieldset>
 		</fields>
 	</config>
-	
+
 </extension>

@@ -46,7 +46,7 @@ class BwPostman {
 
 		JPluginHelper::importPlugin('bwpostman','copyright');
 
-		$copyright = '<span>BwPostman by </span><a href="http://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
+		$copyright = '<span>BwPostman by </span><a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 
 		$arguments = array(&$copyright);
 

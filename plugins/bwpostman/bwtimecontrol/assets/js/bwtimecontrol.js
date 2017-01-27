@@ -264,7 +264,7 @@ function checkLicenceCode(domain, licencecode){
 	}
 
     // Zieladresse festlegen
-//	var server_url	= 'http://www.boldt-webservice.de/index.php?option=com_bwkeygen&amp;controller=licence&amp;task=checkLicence';
+//	var server_url	= 'https://www.boldt-webservice.de/index.php?option=com_bwkeygen&amp;controller=licence&amp;task=checkLicence';
 	var server_url	= 'http://www.dev3.nil/index.php?option=com_bwkeygen&amp;controller=licence&amp;task=checkLicence';
 
     // Übergabe-Parameter setzen

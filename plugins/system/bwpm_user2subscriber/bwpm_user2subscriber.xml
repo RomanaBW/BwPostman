@@ -5,7 +5,7 @@
 	<creationDate>October 2016</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
-	<authorUrl>http://www.boldt-webservice.de</authorUrl>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DESCRIPTION</description>
@@ -90,7 +90,7 @@
 	</config>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">http://www.boldt-webservice.de/plg_bwpostman_bwpm_user2subscriber_update.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/plg_bwpostman_bwpm_user2subscriber_update.xml</server>
 	</updateservers>
 
 </extension>

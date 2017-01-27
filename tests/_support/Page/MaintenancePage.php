@@ -27,7 +27,7 @@ class MaintenancePage
 {
     // include url of current page
     public static $url          = "/administrator/index.php?option=com_bwpostman&view=maintenance";
-	public static $forum_url    = "http://www.boldt-webservice.de/de/forum/bwpostman.html";
+	public static $forum_url    = "https://www.boldt-webservice.de/de/forum/bwpostman.html";
 
     /*
      * Declare UI map for this page here. CSS or XPath allowed.

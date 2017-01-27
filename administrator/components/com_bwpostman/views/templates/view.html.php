@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Karl Klostermann
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,30 +121,28 @@ class BwPostmanViewTemplates extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('templates'))
+		if (!BwPostmanHelper::canView('template'))
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
-		else
-		{
-			// Get data from the model
-			$this->state			= $this->get('State');
-			$this->items			= $this->get('Items');
-			$this->filterForm		= $this->get('FilterForm');
-			$this->activeFilters	= $this->get('ActiveFilters');
-			$this->pagination		= $this->get('Pagination');
-			$this->total			= $this->get('total');
 
-			$this->addToolbar();
+		// Get data from the model
+		$this->state			= $this->get('State');
+		$this->items			= $this->get('Items');
+		$this->filterForm		= $this->get('FilterForm');
+		$this->activeFilters	= $this->get('ActiveFilters');
+		$this->pagination		= $this->get('Pagination');
+		$this->total			= $this->get('total');
 
-			BwPostmanHelper::addSubmenu('templates');
+		$this->addToolbar();
 
-			$this->sidebar = JHtmlSidebar::render();
+		BwPostmanHelper::addSubmenu('templates');
 
-			// Call parent display
-			parent::display($tpl);
-		}
+		$this->sidebar = JHtmlSidebar::render();
+
+		// Call parent display
+		parent::display($tpl);
 	}
 
 
@@ -223,7 +221,10 @@ class BwPostmanViewTemplates extends JViewLegacy
 					$bar->appendButton( 'Custom', $html );
 				}
 		}
-		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		$link   = BwPostmanHTMLHelper::getForumLink();
+
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);
+
 		JToolbarHelper::spacer();
 	}
 }

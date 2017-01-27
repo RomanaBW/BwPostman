@@ -873,11 +873,12 @@ class Com_BwPostmanInstallerScript
 			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
 			// delete main user group of BwPostman (all other user groups of BwPostman will be deleted automatically by Joomla)
-			if (!$groupModel->delete($bwpostman_main_group))
+			// @ToDo: Commented out for testing purpose, activate for real build
+/*			if (!$groupModel->delete($bwpostman_main_group))
 			{
 				throw new BwException(JText::_('COM_BWPOSTMAN_DEINSTALLATION_ERROR_REMOVE_USERGROUPS'));
 			}
-			return true;
+*/			return true;
 		}
 		catch (RuntimeException $e)
 		{

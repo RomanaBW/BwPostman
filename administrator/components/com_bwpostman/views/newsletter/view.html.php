@@ -7,8 +7,8 @@
  * @version 2.0.0 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2016 Boldt Webservice <forum@boldt-webservice.de>
- * @support http://www.boldt-webservice.de/forum/bwpostman.html
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,18 +140,24 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$dispatcher = JEventDispatcher::getInstance();
 		$app		= JFactory::getApplication();
 
+		if (!BwPostmanHelper::canView('newsletter'))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_NLS')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
+
 		//check for queue entries
-		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+		$this->queueEntries = BwPostmanHelper::checkQueueEntries();
 
 		// Get input data
-		$jinput		= $app->input;
-		$referrer	= $jinput->get->get('referrer', '', 'string');
+		$jinput   = $app->input;
+		$referrer = $jinput->get->get('referrer', '', 'string');
 
-		$this->form			= $this->get('Form');
-		$this->item			= $this->get('Item');
-		$this->state		= $this->get('State');
-		$this->template		= $app->getTemplate();
-		$this->params		= JComponentHelper::getParams('com_bwpostman');
+		$this->form     = $this->get('Form');
+		$this->item     = $this->get('Item');
+		$this->state    = $this->get('State');
+		$this->template = $app->getTemplate();
+		$this->params   = JComponentHelper::getParams('com_bwpostman');
 
 		$dispatcher->trigger('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
 
@@ -169,20 +175,20 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// flag for selected content before editing
 		if (is_array($this->item->selected_content))
 		{
-			$this->selected_content_old	= implode(',', $this->item->selected_content);
+			$this->selected_content_old = implode(',', $this->item->selected_content);
 		}
 		elseif (isset($this->item->selected_content))
 		{
-			$this->selected_content_old	= $this->item->selected_content;
+			$this->selected_content_old = $this->item->selected_content;
 		}
 		else
 		{
-			$this->selected_content_old	= '';
+			$this->selected_content_old = '';
 		}
 
 		// flags for template ids before editing
-		$this->template_id_old		= $this->item->template_id_old;
-		$this->text_template_id_old	= $this->item->text_template_id_old;
+		$this->template_id_old      = $this->item->template_id_old;
+		$this->text_template_id_old = $this->item->text_template_id_old;
 
 		$this->addToolbar();
 
@@ -262,7 +268,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		}
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
-		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'http://www.boldt-webservice.de/forum/bwpostman.html');
+		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, 'https://www.boldt-webservice.de/en/forum-en/bwpostman.html');
 		JToolbarHelper::spacer();
 	}
 }

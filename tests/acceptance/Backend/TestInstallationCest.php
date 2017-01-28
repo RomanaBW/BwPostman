@@ -70,7 +70,7 @@ class TestInstallationCest
 		$I->see(InstallPage::$headingInstall);
 
 		$I->attachFile(InstallPage::$installField, "pkg_bwpostman.zip");
-		$I->clickAndWait(InstallPage::$installButton, 10);
+		$I->clickAndWait(InstallPage::$installButton, 15);
 
 		$I->waitForElement(Generals::$alert_success);
 		$I->see(InstallPage::$installSuccessMsg, Generals::$alert_success);

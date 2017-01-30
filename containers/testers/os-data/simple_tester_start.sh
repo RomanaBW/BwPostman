@@ -331,4 +331,4 @@ echo 'stop recording'
 sleep 1
 tmux send-keys -t BwPostmanRecording1 q
 sleep 3
-chmod 0777 /tests/tests/_output/bwpostman_com.mp4
+chmod 0777 /tests/tests/_output/videos/bwpostman_com.mp4

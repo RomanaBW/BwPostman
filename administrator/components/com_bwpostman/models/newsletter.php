@@ -1506,65 +1506,116 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		switch ($layout)
 		{
 			case 'edit_basic':
-					$form_data['html_version']			= $state_data->html_version;
-					$form_data['text_version']			= $state_data->text_version;
+					if(is_object($state_data) && property_exists($state_data, 'html_version'))
+					{
+						$form_data['html_version']	= $state_data->html_version;
+					}
+					if(is_object($state_data) && property_exists($state_data, 'text_version'))
+					{
+						$form_data['text_version']	= $state_data->text_version;
+					}
 				break;
 			case 'edit_html':
-					$form_data['attachment']			= $state_data->attachment;
-					$form_data['text_version']			= $state_data->text_version;
-					$form_data['campaign_id']			= $state_data->campaign_id;
-					$form_data['usergroups']			= $state_data->usergroups;
-					$form_data['template_id']			= $state_data->template_id;
-					$form_data['text_template_id']		= $state_data->text_template_id;
-					if (property_exists($state_data, 'ml_available')) $form_data['ml_available']		= $state_data->ml_available;
-					if (property_exists($state_data, 'ml_unavailable')) $form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					if (property_exists($state_data, 'ml_intern')) $form_data['ml_intern']		    	= $state_data->ml_intern;
+					$form_data['attachment']		= $state_data->attachment;
+					$form_data['text_version']		= $state_data->text_version;
+					$form_data['campaign_id']		= $state_data->campaign_id;
+					$form_data['usergroups']		= $state_data->usergroups;
+					$form_data['template_id']		= $state_data->template_id;
+					$form_data['text_template_id']	= $state_data->text_template_id;
+					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+					{
+						$form_data['ml_available']	    = $state_data->ml_available;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+					{
+						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+					{
+						$form_data['ml_intern']			= $state_data->ml_intern;
+					}
 				break;
 			case 'edit_text':
-					$form_data['attachment']			= $state_data->attachment;
-					$form_data['html_version']			= $state_data->html_version;
-					$form_data['campaign_id']			= $state_data->campaign_id;
-					$form_data['usergroups']			= $state_data->usergroups;
-					$form_data['template_id']			= $state_data->template_id;
-					$form_data['text_template_id']		= $state_data->text_template_id;
-					if (property_exists($state_data, 'ml_available')) $form_data['ml_available']		= $state_data->ml_available;
-					if (property_exists($state_data, 'ml_unavailable')) $form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					if (property_exists($state_data, 'ml_intern')) $form_data['ml_intern']	    		= $state_data->ml_intern;
+					$form_data['attachment']		= $state_data->attachment;
+					$form_data['html_version']		= $state_data->html_version;
+					$form_data['campaign_id']		= $state_data->campaign_id;
+					$form_data['usergroups']		= $state_data->usergroups;
+					$form_data['template_id']		= $state_data->template_id;
+					$form_data['text_template_id']	= $state_data->text_template_id;
+					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+					{
+						$form_data['ml_available']		= $state_data->ml_available;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+					{
+						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+					{
+						$form_data['ml_intern']			= $state_data->ml_intern;
+					}
 				break;
 			case 'edit_preview':
-					$form_data['attachment']			= $state_data->attachment;
-					$form_data['html_version']			= $state_data->html_version;
-					$form_data['text_version']			= $state_data->text_version;
-					$form_data['campaign_id']			= $state_data->campaign_id;
-					$form_data['usergroups']			= $state_data->usergroups;
-					$form_data['template_id']			= $state_data->template_id;
-					$form_data['text_template_id']		= $state_data->text_template_id;
-					if (property_exists($state_data, 'ml_available')) $form_data['ml_available']		= $state_data->ml_available;
-					if (property_exists($state_data, 'ml_unavailable')) $form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					if (property_exists($state_data, 'ml_intern')) $form_data['ml_intern']		    	= $state_data->ml_intern;
+					$form_data['attachment']		= $state_data->attachment;
+					$form_data['html_version']		= $state_data->html_version;
+					$form_data['text_version']		= $state_data->text_version;
+					$form_data['campaign_id']		= $state_data->campaign_id;
+					$form_data['usergroups']		= $state_data->usergroups;
+					$form_data['template_id']		= $state_data->template_id;
+					$form_data['text_template_id']	= $state_data->text_template_id;
+					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+					{
+						$form_data['ml_available']		= $state_data->ml_available;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+					{
+						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+					{
+						$form_data['ml_intern']			= $state_data->ml_intern;
+					}
 				break;
 			case 'edit_send':
-					$form_data['attachment']			= $state_data->attachment;
-					$form_data['html_version']			= $state_data->html_version;
-					$form_data['text_version']			= $state_data->text_version;
-					$form_data['campaign_id']			= $state_data->campaign_id;
-					$form_data['usergroups']			= $state_data->usergroups;
-					$form_data['template_id']			= $state_data->template_id;
-					$form_data['text_template_id']		= $state_data->text_template_id;
-					if (property_exists($state_data, 'ml_available')) $form_data['ml_available']		= $state_data->ml_available;
-					if (property_exists($state_data, 'ml_unavailable')) $form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					if (property_exists($state_data, 'ml_intern')) $form_data['ml_intern']		    	= $state_data->ml_intern;
+					$form_data['attachment']		= $state_data->attachment;
+					$form_data['html_version']		= $state_data->html_version;
+					$form_data['text_version']		= $state_data->text_version;
+					$form_data['campaign_id']		= $state_data->campaign_id;
+					$form_data['usergroups']		= $state_data->usergroups;
+					$form_data['template_id']		= $state_data->template_id;
+					$form_data['text_template_id']	= $state_data->text_template_id;
+					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+					{
+						$form_data['ml_available']		= $state_data->ml_available;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+					{
+						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+					{
+						$form_data['ml_intern']			= $state_data->ml_intern;
+					}
 				break;
 			default:
-					$form_data['html_version']			= $state_data->html_version;
-					$form_data['text_version']			= $state_data->text_version;
-					$form_data['campaign_id']			= $state_data->campaign_id;
-					$form_data['usergroups']			= $state_data->usergroups;
-					$form_data['template_id']			= $state_data->template_id;
-					$form_data['text_template_id']		= $state_data->text_template_id;
-					if (property_exists($state_data, 'ml_available')) $form_data['ml_available']		= $state_data->ml_available;
-					if (property_exists($state_data, 'ml_unavailable')) $form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					if (property_exists($state_data, 'ml_intern')) $form_data['ml_intern']		    	= $state_data->ml_intern;
+					$form_data['html_version']		= $state_data->html_version;
+					$form_data['text_version']		= $state_data->text_version;
+					$form_data['campaign_id']		= $state_data->campaign_id;
+					$form_data['usergroups']		= $state_data->usergroups;
+					$form_data['template_id']		= $state_data->template_id;
+					$form_data['text_template_id']	= $state_data->text_template_id;
+					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+					{
+						$form_data['ml_available']		= $state_data->ml_available;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+					{
+						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					}
+					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+					{
+						$form_data['ml_intern']			= $state_data->ml_intern;
+					}
 				break;
 		}
 

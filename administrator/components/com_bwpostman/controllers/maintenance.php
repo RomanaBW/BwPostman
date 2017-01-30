@@ -299,7 +299,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			}
 			else
 			{ // Everything is fine
-				if (false === JFile::upload($src, $dest))
+				if (JFile::upload($src, $dest) === false)
 				{
 					$msg	= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
 					$link	= JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
@@ -307,6 +307,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				}
 				else
 				{
+					// @ToDo: delete uploaded file after use
 					$app->setUserState('com_bwpostman.maintenance.dest', $dest);
 
 					$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=doRestore', false);

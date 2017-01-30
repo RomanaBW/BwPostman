@@ -86,10 +86,10 @@ class NewsletterEditPage
 	public static $attachment_id                = "jform_attachment";
 
 	public static $attachment_select_button     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/a[1]";
-	public static $attachment_select            = "html/body/ul/li/a[contains(@href,'joomla_black.gif')]";
+	public static $attachment_select            = "html/body/ul/li/a[contains(@href,'joomla_black.png')]";
 	public static $attachment_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
 	public static $attachment_media_url_field   = ".//*[@id='f_url']";
-	public static $attachment_url               = "images/joomla_black.gif";
+	public static $attachment_url               = "images/joomla_black.png";
 
 	public static $publish_up           = ".//*[@id='jform_publish_up']";
 	public static $publish_up_button    = ".//*[@id='jform_publish_up_img']";
@@ -113,7 +113,7 @@ class NewsletterEditPage
 	public static $field_reply_email  = "sample@tester-net.nil";
 	public static $field_subject      = "1. Simple Single Test Newsletter";
 	public static $field_description  = 'Description for the test newsletter';
-	public static $field_attachment   = 'images/joomla_black.gif';
+	public static $field_attachment   = 'images/joomla_black.png';
 	public static $field_campaign     = '';
 	public static $field_publish_up   = '';
 	public static $field_publish_down = '';

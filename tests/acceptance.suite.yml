@@ -14,9 +14,9 @@ modules:
     config:
         WebDriver:
 #                url: http://www.dev.nil
-                url: http://www.bwtest.nil
+#                url: http://www.bwtest.nil
 #                url: http://www.test.nil
-#                url: http://172.18.0.5
+                url: http://172.18.0.5
                 window_size: 1440x900
 #                browser: phantomjs
 #                port: 4447
@@ -29,13 +29,13 @@ modules:
 
         Db:
 #            dsn: 'mysql:host=universe.bet2.nil;dbname=dev'
-            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
+#            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
 #            dsn: 'mysql:host=universe.bet2.nil;dbname=test'
-            user: 'AdminTester'
-            password: 'BwPostmanTest'
-#            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
-#            user: 'root'
-#            password: 'barbapapa'
+#            user: 'AdminTester'
+#            password: 'BwPostmanTest'
+            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
+            user: 'root'
+            password: 'barbapapa'
             dump: 'tests/_data/dump.sql'
             populate: false
             cleanup: false

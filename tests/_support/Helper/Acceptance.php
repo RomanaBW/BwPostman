@@ -965,7 +965,7 @@ class Acceptance extends Codeception\Module
 		}
 
 		// see message archived
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
 		if ($count == 1)
 		{
@@ -1009,7 +1009,7 @@ class Acceptance extends Codeception\Module
 		}
 
 		// see message deleted
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
 		if ($count == 1)
 		{
@@ -1022,7 +1022,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee($EditData::$field_title);
 
 		// return to campaigns
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->amOnPage($ManageData::$url);
 		$I->see($ManageData::$section, Generals::$pageTitle);
 	}
@@ -1090,8 +1090,6 @@ class Acceptance extends Codeception\Module
 	 * @param   array       $data               array of key-value pairs to update
 	 * @param   array       $where_condition
 	 *
-	 * @return integer $id
-	 *
 	 * @since   2.0.0.
 	 */
 	public function updateInDatabase($table, array $data, $where_condition)
@@ -1111,6 +1109,29 @@ class Acceptance extends Codeception\Module
 		}
 
 		DbHelper::updateTable($table, $values, $criteria, $credentials);
+	}
+
+	/**
+	 * Updates an SQL record into a database. This record will **not** be reset after the test.
+	 *
+	 * ``` php
+	 * <?php
+	 * $I->updateInDatabase('users', array('email' => 'miles@davis.com'), array('name' => 'miles'));
+	 * ?>
+	 * ```
+	 *
+	 * @param   string      $table              the name of table to update
+	 * @param   int         $value              value to set autoincrement to
+	 *
+	 * @since   2.0.0.
+	 */
+	public function resetAutoIncrement($table, $value)
+	{
+		$credentials    = $this->_getDbCredentials();
+		$criteria       = array();
+		$values         = array();
+
+		DbHelper::resetAutoIncrement($table, $value, $criteria, $credentials);
 	}
 
 	/**

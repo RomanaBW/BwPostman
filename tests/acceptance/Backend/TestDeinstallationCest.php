@@ -65,7 +65,7 @@ class TestDeinstallationCest
 		$I->wantTo("uninstall BwPostman");
 		$I->expectTo("see success message and component not in menu");
 		$I->amOnPage(InstallPage::$uninstall_url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingManage);
 
 		$I->fillField(Generals::$search_field, Generals::$extension);
@@ -74,8 +74,11 @@ class TestDeinstallationCest
 		$I->click(InstallPage::$delete_button);
 		$I->acceptPopup();
 
-		$I->waitForElement(Generals::$alert_success);
+		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see(InstallPage::$uninstallSuccessMsg, Generals::$alert_success);
+
+		// @ToDo: reset auto increment at usergroups
+		$I->resetAutoIncrement('usergroups', 14);
 	}
 
 	/**

@@ -98,7 +98,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(MainView::$addHtmlTemplateButton);
@@ -175,7 +175,7 @@ class TestTemplatesDetailsCest
 		$this->_fillFormSimpleHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
@@ -209,7 +209,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template', Generals::$pageTitle);
@@ -287,7 +287,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(MainView::$addTextTemplateButton);
@@ -365,7 +365,7 @@ class TestTemplatesDetailsCest
 		$this->_fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
@@ -396,7 +396,7 @@ class TestTemplatesDetailsCest
 		$I->click(Generals::$toolbar['Add Text-Template']);
 		$this->_fillFormSimpleText($I);
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template', Generals::$pageTitle);

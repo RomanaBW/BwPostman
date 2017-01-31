@@ -60,13 +60,13 @@ class TestUpdateCest
 		$I->wantTo("update BwPostman");
 		$I->expectTo("see success message and component in menu");
 		$I->amOnPage(InstallPage::$install_url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingInstall);
 
 		$I->attachFile(InstallPage::$installField, "pkg_bwpostman.zip");
 		$I->clickAndWait(InstallPage::$installButton, 5);
 
-		$I->waitForElement(Generals::$alert_success);
+		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see(InstallPage::$installSuccessMsg, Generals::$alert_success);
 		$I->dontSee("Error", Generals::$alert_heading);
 	}

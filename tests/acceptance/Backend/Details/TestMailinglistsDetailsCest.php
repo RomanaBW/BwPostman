@@ -98,7 +98,7 @@ class TestMailinglistsDetailsCest
 	{
 		$I->wantTo("Create one mailinglist complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see('BwPostman', Generals::$pageTitle);
 		$I->click(MainView::$addMailinglistButton);
 
@@ -165,7 +165,7 @@ class TestMailinglistsDetailsCest
 		$this->_fillFormExtended($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_msg);
 
@@ -198,7 +198,7 @@ class TestMailinglistsDetailsCest
 		$this->_fillFormSimple($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_msg);
 		$I->see('Mailinglists', Generals::$pageTitle);

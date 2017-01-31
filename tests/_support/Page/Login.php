@@ -109,7 +109,7 @@ class Login
 		$I->click(Generals::$nav_user_menu);
 		$I->click(Generals::$nav_user_menu_logout);
 
-		$I->waitForElement(self::$form);
+		$I->waitForElement(self::$form, 30);
 //		$I->see(Generals::$login_txt, self::$loginArea);
 		$I->see(Generals::$login_txt, $loginArea);
 

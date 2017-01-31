@@ -68,7 +68,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Create one Newsletter and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addNewsletterButton);
 
@@ -98,7 +98,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Create one Newsletter, archive and delete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addNewsletterButton);
 
@@ -167,7 +167,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$this->_checkSuccess($I);
 
 		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
@@ -398,6 +398,7 @@ class TestNewslettersDetailsCest
 		$I->switchToIFrame();
 		$I->wait(20);
 
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -548,6 +549,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
+		$I->waitForElement(Generals::$alert_warn_txt, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_msg);
 
@@ -558,6 +560,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$from_email, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
+		$I->waitForElement(Generals::$alert_warn_txt, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_sender_email, Generals::$alert_msg);
 
@@ -569,6 +572,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$reply_email, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
+		$I->waitForElement(Generals::$alert_warn_txt, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_replyto_email, Generals::$alert_msg);
 
@@ -581,6 +585,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$subject, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
+		$I->waitForElement(Generals::$alert_warn_txt, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_subject, Generals::$alert_msg);
 

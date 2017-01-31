@@ -68,14 +68,14 @@ class TestSubscribersDetailsCest
 	{
 		$I->wantTo("Create one Subscriber and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
 		$this->_fillFormExtended($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Back'], 1);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
@@ -99,7 +99,7 @@ class TestSubscribersDetailsCest
 	{
 		$I->wantTo("Create one Subscriber, archive and delete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
@@ -170,7 +170,7 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
@@ -204,7 +204,7 @@ class TestSubscribersDetailsCest
 		$this->_fillFormSimple($I);
 
 		$I->click(SubEdit::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_header);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 		$I->see('Subscribers', Generals::$pageTitle);

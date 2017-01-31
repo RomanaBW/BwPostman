@@ -46,7 +46,7 @@ class SubscribeModuleCest
 		$I->wantTo("Subscribe to mailinglist by module");
 		$I->expectTo('get confirmation mail');
 		$this->_subscribeByModule($I);
-		$I->waitForElement(SubsView::$registration_complete);
+		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->_activate($I, SubsView::$mail_fill_1);
@@ -71,7 +71,7 @@ class SubscribeModuleCest
 		$I->expectTo('see get edit link page');
 		$I->amOnPage(SubsView::$register_url);
 		$I->click(SubsView::$mod_button_edit);
-		$I->waitForElement(SubsView::$mail);
+		$I->waitForElement(SubsView::$mail, 30);
 		$I->see(SubsView::$edit_get_text);
 	}
 
@@ -213,7 +213,7 @@ class SubscribeModuleCest
 		}
 
 		$I->click(SubsView::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete);
+		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 	}
 
@@ -251,7 +251,7 @@ class SubscribeModuleCest
 	private function _unsubscribe(\AcceptanceTester $I, $button)
 	{
 		$I->click($button);
-		$I->waitForElement(SubsView::$view_edit);
+		$I->waitForElement(SubsView::$view_edit, 30);
 		$I->seeElement(SubsView::$view_edit);
 		$I->checkOption(SubsView::$button_unsubscribe);
 		$I->click(SubsView::$button_submitleave);

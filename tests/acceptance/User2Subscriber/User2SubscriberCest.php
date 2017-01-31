@@ -1329,7 +1329,7 @@ class User2SubscriberCest
 			$I->acceptPopup();
 
 			// see message deleted
-			$I->waitForElement(Generals::$alert_header);
+			$I->waitForElement(Generals::$alert_header, 30);
 			$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
 			$I->see(RegPage::$delete_success, Generals::$alert_success);
 		}

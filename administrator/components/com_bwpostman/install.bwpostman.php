@@ -273,8 +273,7 @@ class Com_BwPostmanInstallerScript
 			$this->_setDefaultParams();
 
 			// create sample user groups and access levels
-			//@ToDo: deactivated for testing, activate for release
-//			$this->_createSampleUsergroups();
+			$this->_createSampleUsergroups();
 		}
 
 		// check if sample templates exits
@@ -366,8 +365,7 @@ class Com_BwPostmanInstallerScript
 	public function uninstall()
 	{
 
-		//@ToDo: deactivated for testing, activate for release
-//		$this->_deleteSampleUsergroups();
+		$this->_deleteSampleUsergroups();
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
@@ -873,12 +871,11 @@ class Com_BwPostmanInstallerScript
 			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
 			// delete main user group of BwPostman (all other user groups of BwPostman will be deleted automatically by Joomla)
-			// @ToDo: Commented out for testing purpose, activate for real build
-/*			if (!$groupModel->delete($bwpostman_main_group))
+			if (!$groupModel->delete($bwpostman_main_group))
 			{
 				throw new BwException(JText::_('COM_BWPOSTMAN_DEINSTALLATION_ERROR_REMOVE_USERGROUPS'));
 			}
-*/			return true;
+			return true;
 		}
 		catch (RuntimeException $e)
 		{

@@ -256,6 +256,26 @@ class DbHelper extends Module
 	}
 
 	/**
+	 * DbHelper method to update values in given table
+	 *
+	 * @param   string      $table              the name of the table to update without any prefix
+	 * @param   array       $value              array of key = 'value' data to update
+	 * @param   array       $criteria           special criteria, i.e. WHERE
+	 * @param   array       $credentials        credentials of database
+	 *
+	 * @since   2.0.0
+	 */
+	public static function resetAutoIncrement($table, $value, array $criteria, array $credentials)
+	{
+		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$table_name = Generals::$db_prefix . $table;
+
+//codecept_debug('Arrived in DbHelper');
+		$query      = "ALTER TABLE `$table_name` AUTO_INCREMENT = " . $value;
+		$driver->executeQuery($query, $criteria);
+	}
+
+	/**
 	 * DbHelper Method to get ID of an extension
 	 *
 	 * @param   string      $extension          component, module name

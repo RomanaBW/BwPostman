@@ -1650,8 +1650,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if ($sel_content != $form_data['selected_content'] || $old_template != $form_data['template_id'])
 				{
 					$tpl = self::getTemplate($form_data['template_id']);
-					$form_data['intro_headline']	= $tpl->intro['intro_headline'];
-					$form_data['intro_text']		= $tpl->intro['intro_text'];
+					if (is_object($tpl) && property_exists($tpl, 'intro_headline'))
+					{
+						$form_data['intro_headline']	= $tpl->intro['intro_headline'];
+					}
+					if (is_object($tpl) && property_exists($tpl, 'intro_text'))
+					{
+						$form_data['intro_text']		= $tpl->intro['intro_text'];
+					}
 				}
 				if ($sel_content != $form_data['selected_content'] || $old_text_template != $form_data['text_template_id'])
 				{

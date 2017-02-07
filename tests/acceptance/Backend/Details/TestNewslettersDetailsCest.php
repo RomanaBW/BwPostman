@@ -377,7 +377,7 @@ class TestNewslettersDetailsCest
 		// change to tab 5
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 		$I->click(NlEdit::$tab5);
-		$I->click(NlEdit::$button_send_test);
+		$I->clickAndWait(NlEdit::$button_send_test, 1);
 
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
@@ -423,7 +423,7 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(NlEdit::$tab5_legend1);
-		$I->click(NlEdit::$button_send);
+		$I->clickAndWait(NlEdit::$button_send, 1);
 
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();

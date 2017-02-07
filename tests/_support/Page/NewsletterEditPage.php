@@ -70,8 +70,9 @@ class NewsletterEditPage
 	public static $button_send_publish  = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/table/tbody/tr[5]/td[2]/input[2]";
 	public static $button_send_test     = ".//*[@id='adminForm']/div[3]/fieldset[2]/div/table/tbody/tr[2]/td[2]/input";
 	public static $success_send         = 'The newsletters are sent';
+	public static $success_send_ready   = 'All newsletters in the queue';
 
-	public static $mark_to_send         = ".//*[@id='cb1']";
+	public static $mark_to_send         = ".//*[@id='cb0']";
 	public static $duplicate_prefix     = "Copy of '";
 
 	public static $from_name            = ".//*[@id='jform_from_name']";
@@ -97,7 +98,7 @@ class NewsletterEditPage
 	public static $publish_down_button  = ".//*[@id='jform_publish_down_img']";
 //	public static $today_up             = "html/body/div[10]/table/thead/tr[2]/td[3]/div";
 	public static $today_up             = ".//*[@class='calendar']/table/thead/tr[2]/td[3]/div[contains(text(), 'Today')]";
-        public static $today_down           = "html/body/div[11]/table/thead/tr[2]/td[3]/div";
+    public static $today_down           = "html/body/div[11]/table/thead/tr[2]/td[3]/div";
 
 	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label/div/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
 	public static $template_text    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label/div/span[contains(text(),'Standard TEXT Template 3')]";

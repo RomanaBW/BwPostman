@@ -62,9 +62,6 @@ class Generals
 	 *
 	 * Therefore I use straight console commands to initialize an reset the database.
 	 *
-	 *
-	 *
-	 *
 	*/
 	public static $ssh_server       = 'universe';
 	public static $ssh_port         = 22;
@@ -353,8 +350,6 @@ class Generals
 	 * Method to get all options of component from manifest
 	 *
 	 * @param       object      $options
-	 *
-	 * @return     array
 	 *
 	 * @since  2.0.0
 	 */

@@ -31,10 +31,13 @@ tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -
 
 # Installation
 codecept run acceptance Backend/TestInstallationCest::installation --xml report_installation_installation.xml --html report_installation_installation.html
-codecept run acceptance Backend/TestInstallationCest::saveOptions --xml report_installation_save_options.xml --html report_installation_save_options.html
+codecept run acceptance Backend/TestOptionsCest::saveDefaults --xml report_option_save_defaults.xml --html report_option_save_defaults.html
 
 # data restore
 codecept run acceptance Backend/TestMaintenanceRestoreCest --xml report_restore.xml --html report_restore.html
+
+# set permissions
+codecept run acceptance Backend/TestOptionsCest::setPermissions --xml report_option_set_permissions.xml --html report_option_set_permissions.html
 
 
 # run specific tests
@@ -221,8 +224,9 @@ codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNew
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCancelListView --xml report_newsletters_cancel_list.xml --html report_newsletters_cancel_list.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterListView --xml report_newsletters_complete_list.xml --html report_newsletters_complete_list.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateNewsletterTwiceListView --xml report_newsletters_twice_list.xml --html report_newsletters_twice_list.html
+codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CopyNewsletter --xml report_newsletters_copy.xml --html report_newsletters_copy.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToTestrecipients --xml report_newsletters_send_test.xml --html report_newsletters_send_test.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendCopyOfNewsletterToRealRecipients --xml report_newsletters_send_real.xml --html report_newsletters_send_real.html
+codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealRecipients --xml report_newsletters_send_real.xml --html report_newsletters_send_real.html
 fi
 
 ###

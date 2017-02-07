@@ -251,9 +251,6 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -288,7 +285,7 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Test method to create send newsletter to test recipients
+	 * Test method to copy a newsletter
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -296,8 +293,39 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function CopyNewsletter(AcceptanceTester $I)
+	{
+		$I->wantTo("Copy a newsletter");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+		$this->_fillFormSimple($I);
+
+		$I->click(NlEdit::$toolbar['Save & Close']);
+		$this->_checkSuccess($I);
+		$I->see('Newsletters', Generals::$pageTitle);
+
+		$I->click(Generals::$first_list_entry);
+		$I->clickAndWait(Generals::$toolbar['Duplicate'], 1);
+		$I->waitForText(NlEdit::$duplicate_prefix . NlEdit::$field_subject . "'", 30);
+		$I->see(NlEdit::$duplicate_prefix . NlEdit::$field_subject . "'");
+
+		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create send newsletter to test recipients
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
 	 *
 	 * @return  void
 	 *
@@ -320,12 +348,15 @@ class TestNewslettersDetailsCest
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 		$I->clickAndWait(NlEdit::$tab2, 3);
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
-		$I->wait(1);
+		$I->waitForElement(NlEdit::$tab2_editor);
+		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$tab2_editor);
 		$I->switchToIFrame();
 
 		// change to tab 3
 		$I->clickAndWait(NlEdit::$tab3, 3);
+		$I->waitForElement(NlEdit::$tab3_editor);
+		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$tab3_editor);
 
 
@@ -334,9 +365,12 @@ class TestNewslettersDetailsCest
 		$I->scrollTo(NlEdit::$tab4_preview_html);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(NlEdit::$tab4_preview_html_divider, 0, 20); // scroll to divider before article
+		$I->waitForElement(NlEdit::$preview_html);
+		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$preview_html);
 		$I->switchToIFrame();
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
+		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$preview_text);
 		$I->switchToIFrame();
 
@@ -350,11 +384,15 @@ class TestNewslettersDetailsCest
 
 		$I->wait(2);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
+		$I->waitForText(NlEdit::$success_send, 300);
 		$I->see(NlEdit::$success_send);
 		$I->switchToIFrame();
 		$I->wait(5);
 
 		$I->see("Newsletters", Generals::$pageTitle);
+
+		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
 	/**
@@ -366,23 +404,21 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
-	 * depends SendNewsletterToTestrecipients
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendCopyOfNewsletterToRealRecipients(AcceptanceTester $I)
+	public function SendNewsletterToRealRecipients(AcceptanceTester $I)
 	{
-		$I->wantTo("Send a copy of a newsletter to real recipients");
+		$I->wantTo("Send a newsletter to real recipients");
 		$I->amOnPage(NlManage::$url);
 
-		$I->click(Generals::$first_list_entry);
-		$I->clickAndWait(Generals::$toolbar['Duplicate'], 1);
-		$I->see(NlEdit::$duplicate_prefix . NlEdit::$field_subject . "'");
+		$I->click(Generals::$toolbar['New']);
+		$this->_fillFormSimple($I);
+
+		$I->click(NlEdit::$toolbar['Save & Close']);
+		$this->_checkSuccess($I);
+		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(NlEdit::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
@@ -392,18 +428,16 @@ class TestNewslettersDetailsCest
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$I->wait(5);
+		$I->wait(2);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
-		$I->see(NlEdit::$success_send);
+		$I->waitForText(NlEdit::$success_send_ready, 300);
+		$I->see(NlEdit::$success_send_ready);
 		$I->switchToIFrame();
-		$I->wait(20);
+		$I->wait(8);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see("Newsletters", Generals::$pageTitle);
-		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
-		$I->see('Newsletters', Generals::$pageTitle);
-
 		$I->clickAndWait(NlManage::$tab2, 1);
+
 		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
@@ -549,7 +583,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
-		$I->waitForElement(Generals::$alert_warn_txt, 30);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_msg);
 
@@ -560,7 +594,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$from_email, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
-		$I->waitForElement(Generals::$alert_warn_txt, 30);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_sender_email, Generals::$alert_msg);
 
@@ -572,7 +606,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$reply_email, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
-		$I->waitForElement(Generals::$alert_warn_txt, 30);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_replyto_email, Generals::$alert_msg);
 
@@ -585,7 +619,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$subject, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(NlEdit::$toolbar['Save']);
-		$I->waitForElement(Generals::$alert_warn_txt, 30);
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_subject, Generals::$alert_msg);
 
@@ -659,6 +693,7 @@ class TestNewslettersDetailsCest
 	 */
 	private function _checkSuccess(AcceptanceTester $I)
 	{
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
 

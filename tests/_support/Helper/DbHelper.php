@@ -47,7 +47,7 @@ class DbHelper extends Module
 	 */
 	public static function grabFromDatabaseWithLimit($table_name, $columns, $archive, $status, $order_col, $order_dir, $limit, $criteria = [], array $credentials)
 	{
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 		$special    = 'WHERE `a`.`archive_flag` = ' . $archive;
 
 		if (strpos($table_name, 'newsletters') !== false)
@@ -98,7 +98,7 @@ class DbHelper extends Module
 	{
 		$table_name = Generals::$db_prefix . 'bwpostman_subscribers';
 
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 
 		$query  = "SELECT `activation` FROM `$table_name` WHERE `email` = '$subscriber_mail';";
 
@@ -124,7 +124,7 @@ class DbHelper extends Module
 	{
 		$table_name = Generals::$db_prefix . 'users';
 
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 
 		$query  = "SELECT `activation` FROM `$table_name` WHERE `email` = '$user_mail';";
 //codecept_debug('Query');
@@ -152,7 +152,7 @@ class DbHelper extends Module
 	{
 		$table_name = Generals::$db_prefix . 'bwpostman_subscribers';
 
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 
 		$query  = "SELECT `editlink` FROM `$table_name` WHERE `email` = '$subscriber_mail';";
 //		codecept_debug('Query:');
@@ -177,7 +177,7 @@ class DbHelper extends Module
 	 */
 	public static function grabManifestOptionsFromDatabase($extension, $criteria = array(), array $credentials)
 	{
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 
 		if (strpos($extension, 'mod_') !== false)
 		{
@@ -215,7 +215,7 @@ class DbHelper extends Module
 	 */
 	public static function setManifestOptionsInDatabase($extension, $options, $criteria = array(), array $credentials)
 	{
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 
 		if (strpos($extension, 'mod_') !== false)
 		{
@@ -247,7 +247,7 @@ class DbHelper extends Module
 	 */
 	public static function updateTable($table, $values, $criteria, array $credentials)
 	{
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 		$table_name = Generals::$db_prefix . $table;
 
 //codecept_debug('Arrived in DbHelper');
@@ -267,7 +267,7 @@ class DbHelper extends Module
 	 */
 	public static function resetAutoIncrement($table, $value, array $criteria, array $credentials)
 	{
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 		$table_name = Generals::$db_prefix . $table;
 
 //codecept_debug('Arrived in DbHelper');
@@ -288,7 +288,7 @@ class DbHelper extends Module
 	public static function getExtensionIdFromDatabase($extension, array $credentials)
 	{
 		$criteria   = array();
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 
 		$table_name = Generals::$db_prefix . 'extensions';
 
@@ -331,7 +331,7 @@ class DbHelper extends Module
 */
 		$query      = "SHOW TABLES LIKE '%bwpostman%'";
 		$criteria   = array();
-		$driver     = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+		$driver = self::getDbDriver($credentials);
 
 		$sth        = $driver->executeQuery($query, $criteria);
 		$result     = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -349,5 +349,71 @@ class DbHelper extends Module
 		$names_string = implode(" ", $tables);
 
 		return $names_string;
+	}
+
+	/**
+	 * DbHelper Method to get group ID by name
+	 *
+	 * @param   string      $usergroup          name of usergroup
+	 * @param   array       $criteria           special criteria, i.e. WHERE
+	 * @param   array       $credentials        credentials of database
+	 *
+	 * @return  int         $group_id
+	 *
+	 * @since   2.0.0
+	 */
+	public static function getGroupIdByName($usergroup, array $criteria, array $credentials)
+	{
+		$driver     = self::getDbDriver($credentials);
+
+		$table_name = Generals::$db_prefix . 'usergroups';
+		$query      = "SELECT `id` FROM $table_name WHERE `title` = '$usergroup'";
+		$sth        = $driver->executeQuery($query, $criteria);
+
+		$result         = $sth->fetch(\PDO::FETCH_ASSOC);
+
+		return $result['id'];
+
+	}
+
+	/**
+	 * DbHelper Method to get rule names by component asset
+	 *
+	 * @param   string      $extension          name of extension to get rule names for
+	 * @param   array       $criteria           special criteria, i.e. WHERE
+	 * @param   array       $credentials        credentials of database
+	 *
+	 * @return  int         $group_id
+	 *
+	 * @since   2.0.0
+	 */
+	public static function getRuleNamesByComponentAsset($extension, array $criteria, array $credentials)
+	{
+		$driver     = self::getDbDriver($credentials);
+
+		$table_name = Generals::$db_prefix . 'assets';
+		$query      = "SELECT `rules` FROM $table_name WHERE `name` = '$extension'";
+		$sth        = $driver->executeQuery($query, $criteria);
+
+		$result     = $sth->fetch(\PDO::FETCH_ASSOC);
+
+		$return_value   = str_replace('\\\\\\', '', $result['rules']);
+
+		return $return_value;
+
+	}
+
+	/**
+	 * @param array $credentials
+	 *
+	 * @return Db
+	 *
+	 * @since version
+	 */
+	private static function getDbDriver(array $credentials)
+	{
+		$driver = new Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+
+		return $driver;
 	}
 }

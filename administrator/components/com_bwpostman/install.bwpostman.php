@@ -860,9 +860,12 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// delete actual user from BwPostman user groups
-			foreach ($member_ids as $item)
+			if (is_array($member_ids) || is_object($member_ids))
 			{
-				JUserHelper::removeUserFromGroup($user_id, $item);
+				foreach ($member_ids as $item)
+				{
+					JUserHelper::removeUserFromGroup($user_id, $item);
+				}
 			}
 			JAccess::clearStatics();
 
@@ -1399,11 +1402,11 @@ H2	{
 								"bwpm.restore" => array('7' => 1, '6' => 1),
 								"bwpm.delete" => array('7' => 1, '6' => 1),
 								"bwpm.send" =>array('7' => 1, '6' => 1),
-								"bwpm.view.newsletters" => array('7' => 1, '6' => 1),
-								"bwpm.view.subscribers" => array('7' => 1, '6' => 1),
-								"bwpm.view.campaigns" => array('7' => 1, '6' => 1),
-								"bwpm.view.mailinglists" => array('7' => 1, '6' => 1),
-								"bwpm.view.templates" => array('7' => 1, '6' => 1),
+								"bwpm.view.newsletter" => array('7' => 1, '6' => 1),
+								"bwpm.view.subscriber" => array('7' => 1, '6' => 1),
+								"bwpm.view.campaign" => array('7' => 1, '6' => 1),
+								"bwpm.view.mailinglist" => array('7' => 1, '6' => 1),
+								"bwpm.view.template" => array('7' => 1, '6' => 1),
 								"bwpm.view.archive" => array('7' => 1, '6' => 1),
 								"bwpm.view.manage" => array('7' => 1, '6' => 1),
 								"bwpm.view.maintenance" => array('7' => 1, '6' => 1),

@@ -66,9 +66,9 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	public function _beforeSuite($I)
+/*	public function _beforeSuite($I)
 	{
-/*		$query_base     = self::_getQueryBase();
+		$query_base     = self::_getQueryBase();
 		$backup_query   = self::_getBackupQuery();
 
 		// connect to server
@@ -84,17 +84,17 @@ class Acceptance extends Codeception\Module
 		// get component options
 		$options    = $this->getManifestOptions('com_bwpostman');
 		Generals::setComponentOptions($options);
-*/
 	}
+*/
 
 	/**
 	 * Method to truncate database after tests are done
 	 *
 	 * @since   2.0.0
 	 */
-	public function _afterSuite()
+/*	public function _afterSuite()
 	{
-/*		$query_base = self::_getQueryBase();
+		$query_base = self::_getQueryBase();
 
 		// connect to server
 		$connection = ssh2_connect(Generals::$ssh_server, Generals::$ssh_port, Generals::$ssh_options);
@@ -102,8 +102,8 @@ class Acceptance extends Codeception\Module
 
 		// restore dev tables
 		ssh2_exec($connection, $query_base . Generals::$db_data_end);
-*/
 	}
+*/
 
 	/**
 	 * Method to change browser
@@ -937,7 +937,7 @@ class Acceptance extends Codeception\Module
 
 		// select items to archive
 		$I->fillField(Generals::$search_field, $EditData::$field_title);
-		$I->clickAndWait(Generals::$filterbar_button,1);
+		$I->clickAndWait(Generals::$filterbar_button,3);
 		$I->clickSelectList( Generals::$search_list, $EditData::$archive_identifier);
 		$I->clickAndWait(Generals::$search_button,1);
 		$I->see($EditData::$field_title, $EditData::$archive_title_col);
@@ -1186,5 +1186,59 @@ class Acceptance extends Codeception\Module
 		$I->see($last_val, $last_val_field);
 	}
 
+	/**
+	 * Test method to get group ID by name
+	 *
+	 * @param   string      $groupname
+	 *
+	 * @return  int
+	 *
+	 * @since   2.0.0
+	 */
+	public function getGroupIdByName($groupname)
+	{
+		$credentials    = $this->_getDbCredentials();
+		$criteria       = array();
+
+		$group_id = (int) DbHelper::getGroupIdByName($groupname, $criteria, $credentials);
+
+		return $group_id;
+	}
+
+	/**
+	 * Test method to get rule names by component asset
+	 *
+	 * @param   string      $extension
+	 *
+	 * @return  array
+	 *
+	 * @since   2.0.0
+	 */
+	public function getRuleNamesByComponentAsset($extension)
+	{
+		$credentials    = $this->_getDbCredentials();
+		$criteria       = array();
+
+		$rules_string = DbHelper::getRuleNamesByComponentAsset($extension, $criteria, $credentials);
+
+		$rules_raw  = json_decode($rules_string);
+
+		$rules  = array();
+		foreach ($rules_raw as $rule_name => $value)
+		{
+			if ($rule_name != 'bwpm.admin')
+			$rules[]   = $rule_name;
+		}
+
+		// @ToDo: resolve this workaround
+		//reorder core rules
+		if (($rules[0] == 'core.manage') && ($rules[1] == 'core.admin'))
+		{
+			$rules[0] = 'core.admin';
+			$rules[1] = 'core.manage';
+		}
+
+		return $rules;
+	}
 }
 

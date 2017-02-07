@@ -376,7 +376,7 @@ class TestNewslettersDetailsCest
 
 		// change to tab 5
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
-		$I->click(NlEdit::$tab5);
+		$I->clickAndWait(NlEdit::$tab5, 1);
 		$I->clickAndWait(NlEdit::$button_send_test, 1);
 
 		$I->seeInPopup(NlEdit::$popup_send_confirm);

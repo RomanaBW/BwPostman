@@ -166,7 +166,7 @@ class TemplateManagerPage
 
 	public static $p_last_val1          = "Z2 Boldt Webservice";
 	public static $p_last_field1        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p_last_val_last      = "Z2 Presselin Test";
+	public static $p_last_val_last      = "Z2 Template for Test 01";
 	public static $p_last_field_last    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[2]";
 
 	public static $archive_confirm    = 'Do you wish to archive the selected template(s)?';

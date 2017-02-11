@@ -397,7 +397,7 @@ class DbHelper extends Module
 
 		$result     = $sth->fetch(\PDO::FETCH_ASSOC);
 
-		$return_value   = str_replace('\\\\\\', '', $result['rules']);
+		$return_value   = str_replace("\\", "", $result['rules']);
 
 		return $return_value;
 

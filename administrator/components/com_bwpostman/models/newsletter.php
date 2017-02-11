@@ -2304,7 +2304,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	boolean	$send_to_unconfirmed    Status --> 0 = do not send to unconfirmed, 1 = sent also to unconfirmed
 	 * @param	int		$cam_id                 campaign id
 	 *
-	 * @return 	boolean False if there occured an error
+	 * @return 	boolean False if there occurred an error
 	 *
 	 * @since
 	 */
@@ -2549,6 +2549,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');
 
+		$log_options        = array('test' => 'testtext');
+		$logger             = new BwLogger($log_options);
+
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher = JEventDispatcher::getInstance();
 
@@ -2695,6 +2698,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if(JPluginHelper::isEnabled('bwpostman', 'personalize')
 			&& !$dispatcher->trigger('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
 		{
+			$error_msg_plugin   = JText::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
+			$app->enqueueMessage($error_msg_plugin, 'error');
+			$logger->addEntry(new JLogEntry($error_msg_plugin));
+
 			$tblSendMailQueue->push($tblSendMailQueue->content_id, $tblSendMailQueue->mode, $tblSendMailQueue->recipient, $tblSendMailQueue->name, $tblSendMailQueue->firstname, $tblSendMailQueue->subscriber_id, $tblSendMailQueue->trial + 1);
 			return -1;
 		}
@@ -2731,12 +2738,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Newsletter sending 1=on, 0=off
 		if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
-		$log_options = array('test' => 'testtext');
-		$logger      = new BwLogger($log_options);
 
 		if (BWPOSTMAN_NL_SENDING)
+		{
 			$res = $mailer->Send();
+			// @ToDo: $res may be boolean of JException object!
 			$logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res)));
+		}
 
 		if ($res === true)
 		{

@@ -129,7 +129,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			// write file header
-			$file_data   = array('');
+			$file_data   = array();
 			$file_data[] = $this->buildXmlHeader();
 
 			if (fwrite($handle, implode("\n", $file_data)) === false)

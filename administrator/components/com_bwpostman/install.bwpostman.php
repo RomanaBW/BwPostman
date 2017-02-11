@@ -842,21 +842,25 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get group ids of BwPostman user groups, where actual user is member
-			$member_ids = '';
-			$query	    = $_db->getQuery(true);
-			$query->select($_db->quoteName('group_id'));
-			$query->from($_db->quoteName('#__user_usergroup_map'));
-			$query->where($_db->quoteName('user_id') . ' = ' . (int) $user_id);
-			$query->where($_db->quoteName('group_id') . ' IN (' . implode(',', $bwpostman_groups) . ')');
-			$_db->setQuery($query);
+			if (is_array($bwpostman_groups))
+			{
+				$member_ids = '';
+				$query	    = $_db->getQuery(true);
+				$query->select($_db->quoteName('group_id'));
+				$query->from($_db->quoteName('#__user_usergroup_map'));
+				$query->where($_db->quoteName('user_id') . ' = ' . (int) $user_id);
+				$query->where($_db->quoteName('group_id') . ' IN (' . implode(',', $bwpostman_groups) . ')');
 
-			try
-			{
-				$member_ids  = $_db->loadColumn();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				$_db->setQuery($query);
+
+				try
+				{
+					$member_ids  = $_db->loadColumn();
+				}
+				catch (RuntimeException $e)
+				{
+					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				}
 			}
 
 			// delete actual user from BwPostman user groups

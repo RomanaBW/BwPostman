@@ -105,23 +105,25 @@ class TemplateManagerPage
 		'title'         => 'a.title'
 	);
 
-	public static $publish_button       = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[6]/a";
-	public static $unpublish_button     = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[6]/a";
-	public static $publish_result       = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[6]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_result     = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[6]/a/span[contains(@class, 'icon-unpublish')]";
+	// publish by icon
+	public static $publish_button       = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a";
+	public static $unpublish_button     = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a";
+	public static $publish_result       = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]";
+	public static $unpublish_result     = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]";
 
-	public static $publish_button2      = ".//*[@id='cb1']";
-	public static $unpublish_button2    = ".//*[@id='cb2']";
-	public static $publish_result2      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[6]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_result2    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[6]/a/span[contains(@class, 'icon-unpublish')]";
+	// publish by toolbar
+	public static $publish_button2      = ".//*[@id='cb0']";
+	public static $unpublish_button2    = ".//*[@id='cb3']";
+	public static $publish_result2      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]";
+	public static $unpublish_result2    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]";
 
-	public static $default_button1      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[5]/a";
-	public static $default_result1      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[5]/a/span[contains(@class, 'icon-featured')]";
-	public static $no_default_result1   = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $default_button1      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a";
+	public static $default_result1      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $no_default_result1   = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
-	public static $default_button2      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a";
-	public static $default_result2      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
-	public static $no_default_result2   = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $default_button2      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[5]/a";
+	public static $default_result2      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $no_default_result2   = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	// Filter mail format
 	public static $format_list          = ".//*[@id='filter_tpl_id_chzn']/a";
@@ -146,22 +148,22 @@ class TemplateManagerPage
 
 	public static $p1_val1              = "Boldt Webservice";
 	public static $p1_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p1_val_last          = "Standard Creme";
+	public static $p1_val_last          = "Standard Deep Blue";
 	public static $p1_field_last        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
 
-	public static $p2_val1              = "Standard Deep Blue";
+	public static $p2_val1              = "Standard Soft Blue";
 	public static $p2_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p2_val_last          = "Standard TEXT Template 3";
+	public static $p2_val_last          = "Template for Test 01";
 	public static $p2_field_last        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
 
-	public static $p_prev_val1          = "Z Standard Deep Blue";
+	public static $p_prev_val1          = "Z Standard Soft Blue";
 	public static $p_prev_field1        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p_prev_val_last      = "Z Standard TEXT Template 3";
+	public static $p_prev_val_last      = "Z Template for Test 01";
 	public static $p_prev_field_last    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
 
 	public static $p3_val1              = "Z Boldt Webservice";
 	public static $p3_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p3_val3              = "Z Standard Creme";
+	public static $p3_val3              = "Z Standard Deep Blue";
 	public static $p3_field3            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
 
 	public static $p_last_val1          = "Z2 Boldt Webservice";

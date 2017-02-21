@@ -19,7 +19,11 @@ modules:
 
 #                url: http://www.devtest.nil
 
+# For Containers
                 url: http://172.18.0.5
+
+# For VMs
+#                url: http://www.ci-tests.nil
 
                 window_size: 1440x900
 #                browser: phantomjs
@@ -40,12 +44,16 @@ modules:
 #            user: 'root'
 #            password: 'Susi'
 
+# For Containers
             dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
-            user: 'root'
-            password: 'barbapapa'
 
-#            user: 'tester'
-#            password: 'barbamama'
+# For VMs
+#            dsn: 'mysql:host=cisuse.tester-net.nil;dbname=joomlatest'
+#            user: 'root'
+#            password: 'barbapapa'
+
+            user: 'tester'
+            password: 'barbamama'
 
 #           dump: 'tests/_data/dump.sql'
             populate: false

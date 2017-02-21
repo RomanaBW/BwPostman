@@ -3,7 +3,7 @@ version: '2'
 services:
     tester:
         container_name: "tester"
-        image: romana/chromium-tester-neu_v2
+        image: romana/os-chromium-tester
         hostname: tester
         domainname: tester-net.nil
         volumes:

@@ -415,6 +415,11 @@ class TestNewslettersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 		$this->_fillFormSimple($I);
+		$I->wait(2);
+
+		// change to tab 2
+//		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+//		$I->clickAndWait(NlEdit::$tab2, 3);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 		$this->_checkSuccess($I);

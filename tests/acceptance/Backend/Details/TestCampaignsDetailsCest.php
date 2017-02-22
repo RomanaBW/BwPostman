@@ -73,6 +73,7 @@ class TestCampaignsDetailsCest
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addCampaingButton);
+		$I->waitForText('Campaign details', 30);
 
 		$this->_fillFormSimple($I);
 
@@ -104,10 +105,12 @@ class TestCampaignsDetailsCest
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addCampaingButton);
+		$I->waitForText('Campaign details', 30);
 
 		$this->_fillFormExtended($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
+		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
@@ -281,6 +284,7 @@ class TestCampaignsDetailsCest
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		// check for title
+		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Warning", Generals::$alert_header);
 		$I->see(CamEdit::$warning_no_title, Generals::$alert);
 

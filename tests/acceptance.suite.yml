@@ -17,6 +17,7 @@ modules:
 #                url: http://www.bwtest.nil
 #                url: http://www.test.nil
 
+# For manual testing
 #                url: http://www.devtest.nil
 
 # For Containers
@@ -40,6 +41,7 @@ modules:
 #            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
 #            dsn: 'mysql:host=universe.bet2.nil;dbname=test'
 #
+# For manual testing
 #            dsn: 'mysql:host=universe.bet2.nil;dbname=devtest'
 #            user: 'root'
 #            password: 'Susi'
@@ -52,6 +54,7 @@ modules:
 #            user: 'root'
 #            password: 'barbapapa'
 
+# For Containers and VMs
             user: 'tester'
             password: 'barbamama'
 

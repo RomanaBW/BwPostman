@@ -842,9 +842,9 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get group ids of BwPostman user groups, where actual user is member
-			if (is_array($bwpostman_groups))
+			$member_ids = '';
+			if (is_array($bwpostman_groups) && !empty($bwpostman_groups))
 			{
-				$member_ids = '';
 				$query	    = $_db->getQuery(true);
 				$query->select($_db->quoteName('group_id'));
 				$query->from($_db->quoteName('#__user_usergroup_map'));

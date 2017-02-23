@@ -983,7 +983,8 @@ class Acceptance extends Codeception\Module
 
 		// select items to delete
 		$I->fillField(Generals::$search_field, $EditData::$field_title);
-		$I->clickAndWait(Generals::$filterbar_button,1);
+		$I->clickAndWait(Generals::$filterbar_button, 2);
+//		$I->waitForElement(Generals::$search_list, 30);
 		$I->clickSelectList( Generals::$search_list, $EditData::$delete_identifier);
 		$I->clickAndWait(Generals::$search_button,1);
 		$I->see($EditData::$field_title);

@@ -71,6 +71,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addHtmlTemplateButton);
+		$I->waitForElement(TplEdit::$tpl_tab1, 30);
 
 		$this->_fillFormExtendedHtml($I);
 
@@ -475,7 +476,7 @@ class TestTemplatesDetailsCest
 	 */
 	private function _fillFormSimpleHtml(AcceptanceTester $I)
 	{
-		$this->_fillRequired($I);
+		$this->_fillRequired($I, 'HTML');
 
 		$this->_selectThumbnail($I);
 
@@ -497,7 +498,7 @@ class TestTemplatesDetailsCest
 	 */
 	private function _fillFormExtendedHtml(AcceptanceTester $I)
 	{
-		$this->_fillRequiredExtended($I);
+		$this->_fillRequiredExtended($I, 'HTML');
 
 		// select thumbnail
 		$this->_selectThumbnail($I);
@@ -517,7 +518,7 @@ class TestTemplatesDetailsCest
 	 */
 	private function _fillFormSimpleText(AcceptanceTester $I)
 	{
-		$this->_fillRequired($I);
+		$this->_fillRequired($I, 'Text');
 
 		$this->_selectThumbnail($I);
 
@@ -529,7 +530,7 @@ class TestTemplatesDetailsCest
 	 * This method fills in the end all required fields, but meanwhile all required fields are omitted, one by one,
 	 * to check if the related messages appears
 	 *
-	 * @param AcceptanceTester $I
+	 * @param AcceptanceTester  $I
 	 *
 	 * @group   component
 	 *
@@ -537,7 +538,7 @@ class TestTemplatesDetailsCest
 	 */
 	private function _fillFormExtendedText(AcceptanceTester $I)
 	{
-		$this->_fillRequiredExtended($I);
+		$this->_fillRequiredExtended($I, 'Text');
 
 		// select thumbnail
 		$this->_selectThumbnail($I);
@@ -549,16 +550,17 @@ class TestTemplatesDetailsCest
 	 * Method to fill required fields
 	 * Usable for both, HTML and Text
 	 *
-	 * @param AcceptanceTester $I
+	 * @param AcceptanceTester  $I
+	 * @param string            $type
 	 *
 	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
-	private function _fillRequired(AcceptanceTester $I)
+	private function _fillRequired(AcceptanceTester $I, $type)
 	{
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
-		$I->fillField(TplEdit::$description, TplEdit::$field_description);
+		$I->fillField(TplEdit::$description, sprintf(TplEdit::$field_description, $type));
 	}
 
 	/**
@@ -574,11 +576,17 @@ class TestTemplatesDetailsCest
 	{
 
 		$I->clickAndWait(TplEdit::$thumb_select_button, 1);
+
 		$I->switchToIFrame(Generals::$media_frame);
+		$I->waitForElement("#imageframe", 30);
+
 		$I->switchToIFrame(Generals::$image_frame);
 		$I->clickAndWait(TplEdit::$thumb_select, 1);
+
 		$I->switchToIFrame();
+		$I->wait(1);
 		$I->switchToIFrame(Generals::$media_frame);
+		$I->wait(1);
 		$I->clickAndWait(TplEdit::$thumb_insert, 1);
 		$I->switchToIFrame();
 
@@ -587,13 +595,14 @@ class TestTemplatesDetailsCest
 	}
 
 	/**
-	 * @param AcceptanceTester $I
+	 * @param AcceptanceTester  $I
+	 * @param string            $type
 	 *
 	 * @group   component
 	 *
 	 * @since 2.0.0
 	 */
-	private function _fillRequiredExtended(AcceptanceTester $I)
+	private function _fillRequiredExtended(AcceptanceTester $I, $type)
 	{
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
@@ -601,7 +610,7 @@ class TestTemplatesDetailsCest
 		$I->acceptPopup();
 
 		$I->fillField(TplEdit::$title, "");
-		$I->fillField(TplEdit::$description, TplEdit::$field_description);
+		$I->fillField(TplEdit::$description, sprintf(TplEdit::$field_description, $type));
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->seeInPopup(TplEdit::$popup_title);
 		$I->acceptPopup();

@@ -12,7 +12,6 @@ display=':45'
 /usr/bin/Xvfb ${display} -ac -screen 0 ${screen_size}x16 &
 export DISPLAY=${display}
 
-#java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver /opt/selenium/selenium-server-standalone-3.0.1.jar -port 4445 >/dev/null 2>/dev/null &
 java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver /opt/selenium/selenium-server-standalone-3.0.1.jar -port 4445 >/dev/null 2>/dev/null &
 
 # Loop until selenium server is available
@@ -30,8 +29,6 @@ tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -
 
 ## start x-server and webdriver for firefox
 ## But firefox does not work error free in container, webdriver may be erroneous
-#Xvfb :44 -ac -screen 0 1920x1080x24 &
-#export DISPLAY=:44
 
 #java -jar -Dwebdriver.gecko.driver=/opt/geckodriver/geckodriver-0.11.1 /opt/selenium/selenium-server-standalone-3.0.1.jar -port 4444 >/dev/null 2>/dev/null &
 
@@ -44,7 +41,7 @@ codecept run acceptance Backend/TestOptionsCest::saveDefaults ${DEBUG} --xml xml
 codecept run acceptance Backend/TestMaintenanceRestoreCest ${DEBUG} --xml xmlreports/report_restore.xml --html htmlreports/report_restore.html
 
 # set permissions
-#codecept run acceptance Backend/TestOptionsCest::setPermissions ${DEBUG} --xml xmlreports/report_option_set_permissions.xml --html htmlreports/report_option_set_permissions.html
+codecept run acceptance Backend/TestOptionsCest::setPermissions ${DEBUG} --xml xmlreports/report_option_set_permissions.xml --html htmlreports/report_option_set_permissions.html
 
 
 # run specific tests

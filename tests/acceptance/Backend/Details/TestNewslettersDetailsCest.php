@@ -513,6 +513,7 @@ class TestNewslettersDetailsCest
 		// add content
 		$I->scrollTo(NlEdit::$legend_content);
 		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
+		$I->wait(2);
 		$content_title = $I->grabTextFrom(sprintf(NlEdit::$selected_content, 1));
 		$I->see($content_title, NlEdit::$selected_content_list);
 

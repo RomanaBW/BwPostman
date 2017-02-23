@@ -1,9 +1,9 @@
 {
     "require": {
-        "phpunit/phpunit": "5.*.*",
+        "phpunit/phpunit": "5.*",
         "phpunit/dbunit": ">=2.0",
         "phpunit/php-invoker": ">=1.1",
-        "codeception/codeception": "2.2.9",
+        "codeception/codeception": "2.2.8",
         "symfony/dependency-injection": ">=3.1",
         "symfony/http-kernel": ">=3.1",
         "symfony/process": ">=2.8",

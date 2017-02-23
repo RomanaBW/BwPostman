@@ -63,8 +63,8 @@ class TemplateEditPage
 	public static $access       = '#jform_access';
 	public static $published    = '#jform_published';
 
-	public static $field_title        = '001 Test HTML-Template';
-	public static $field_description  = 'A pretty description for this HTML template would be nice.';
+	public static $field_title        = '001 Test Template';
+	public static $field_description  = 'A pretty description for this %s template would be nice.';
 
 	public static $msg_cancel         = 'Any changes will not be saved. Close without saving?';
 

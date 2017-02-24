@@ -1465,7 +1465,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return 	array $content  associative array of content data
+	 * @return 	string $content  associative array of content data
 	 *
 	 * @since
 	 */
@@ -1474,7 +1474,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$jinput	= JFactory::getApplication()->input;
 
 		$nl_content			= $jinput->get('selected_content');
-		$nl_subject			= $jinput->get('subject');
+//		$nl_subject			= $jinput->get('subject');
 		$template_id		= $jinput->get('template_id');
 		$text_template_id	= $jinput->get('text_template_id');
 		$renderer			= new contentRenderer();
@@ -1639,7 +1639,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if ($add_content == '-1'  && (count($nl_content) == 0))
 					$nl_content =  (array) "-1";
 
-				// only render new content, if selection from article list has changed
+				// only render new content, if selection from article list or template has changed
 				$renderer	= new contentRenderer();
 				$content	= $renderer->getContent($nl_content, $form_data['template_id'], $form_data['text_template_id']);
 
@@ -1650,11 +1650,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if ($sel_content != $form_data['selected_content'] || $old_template != $form_data['template_id'])
 				{
 					$tpl = self::getTemplate($form_data['template_id']);
-					if (is_object($tpl) && property_exists($tpl, 'intro_headline'))
+					if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
 					{
 						$form_data['intro_headline']	= $tpl->intro['intro_headline'];
 					}
-					if (is_object($tpl) && property_exists($tpl, 'intro_text'))
+
+					if (is_object($tpl) && key_exists('intro_text', $tpl->intro))
 					{
 						$form_data['intro_text']		= $tpl->intro['intro_text'];
 					}
@@ -1662,8 +1663,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if ($sel_content != $form_data['selected_content'] || $old_text_template != $form_data['text_template_id'])
 				{
 					$tpl = self::getTemplate($form_data['text_template_id']);
-					$form_data['intro_text_headline']	= $tpl->intro['intro_headline'];
-					$form_data['intro_text_text']		= $tpl->intro['intro_text'];
+					if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
+					{
+						$form_data['intro_text_headline'] = $tpl->intro['intro_headline'];
+					}
+
+					if (is_object($tpl) && key_exists('intro_text', $tpl->intro))
+					{
+						$form_data['intro_text_text'] = $tpl->intro['intro_text'];
+					}
 				}
 				$form_data['template_id_old']		= $form_data['template_id'];
 				$form_data['text_template_id_old']	= $form_data['text_template_id'];
@@ -2153,9 +2161,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 
 	/**
-	 * Wenn ein Newsletter versendet werden soll, dann wird er als eine Art
-	 * Archiv- und Verlaufsfunktion komplett mit Inhalt, Subject & Co. in
-	 * die Tabelle sendMailContent eingefuegt
+	 * If a newsletter shall be sent, then it will inserted at table sendMailContent
+	 * as a manner of archive and process method completely with content,
+	 * subject & Co. in
 	 *
 	 * @access	private
 	 *
@@ -2199,11 +2207,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Initialize the sendmailContent
 		$tblSendmailContent = $this->getTable('sendmailcontent', 'BwPostmanTable');
-/*		if ($content_id > 0)
-		{
-			$id = $content_id;
-		}
-*/
+
 		// Copy the data from newsletters to sendmailContent
 		$tblSendmailContent->nl_id 			= $newsletters_data->id;
 		$tblSendmailContent->from_name 		= $newsletters_data->from_name;
@@ -2226,11 +2230,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (!$this->_addTplTags($newsletters_data->html_version, $newsletters_data->template_id))
 			return false;
 
-		// Replace the intro
+		// Replace the intro at HTML part of the newsletter
+		$replace_html_intro_head  = '';
 		if (!empty($newsletters_data->intro_headline))
-			$newsletters_data->html_version	= str_replace('[%intro_headline%]', $newsletters_data->intro_headline, $newsletters_data->html_version);
+		{
+			$replace_html_intro_head  = $newsletters_data->intro_headline;
+		}
+		$newsletters_data->html_version	= str_replace('[%intro_headline%]', $replace_html_intro_head, $newsletters_data->html_version);
+
+		$replace_html_intro_text  = '';
 		if (!empty($newsletters_data->intro_text))
-			$newsletters_data->html_version		= str_replace('[%intro_text%]', nl2br($newsletters_data->intro_text, true), $newsletters_data->html_version);
+		{
+			$replace_html_intro_text   = nl2br($newsletters_data->intro_text, true);
+		}
+		$newsletters_data->html_version		= str_replace('[%intro_text%]', $replace_html_intro_text, $newsletters_data->html_version);
 
 		if (!$this->_replaceTplLinks($newsletters_data->html_version))
 			return false;
@@ -2250,11 +2263,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// add template data
 		if (!$this->_addTextTpl($newsletters_data->text_version, $newsletters_data->text_template_id)) return false;
 
-		// Replace the intro
+		// Replace the intro at text part of the newsletter
+		$replace_text_intro_head  = '';
 		if (!empty($newsletters_data->intro_text_headline))
-			$newsletters_data->text_version	= str_replace('[%intro_headline%]', $newsletters_data->intro_text_headline, $newsletters_data->text_version);
+		{
+			$replace_text_intro_head    = $newsletters_data->intro_text_headline;
+		}
+		$newsletters_data->text_version	= str_replace('[%intro_headline%]', $replace_text_intro_head, $newsletters_data->text_version);
+
+		$replace_text_intro_text  = '';
 		if (!empty($newsletters_data->intro_text_text))
-			$newsletters_data->text_version		= str_replace('[%intro_text%]', $newsletters_data->intro_text_text, $newsletters_data->text_version);
+		{
+			$replace_text_intro_text    = $newsletters_data->intro_text_text;
+		}
+		$newsletters_data->text_version	= str_replace('[%intro_text%]', $replace_text_intro_text, $newsletters_data->text_version);
 
 		if (!$this->_replaceTextTplLinks($newsletters_data->text_version))
 			return false;

@@ -101,7 +101,7 @@ class TestOptionsCest
 		// get rule names
 		$rules  = $I->getRuleNamesByComponentAsset('com_bwpostman');
 
-		foreach(OptionsPage::$bwpm_groups as $groupname => $actions)
+		foreach(OptionsPage::$bwpm_groups['permissions'] as $groupname => $actions)
 		{
 			// get ID of usergroup
 			$group_id   = $I->getGroupIdByName($groupname);

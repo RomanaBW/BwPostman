@@ -159,13 +159,6 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			if (empty($pk)) $pk	= (int) $cid;
 
 			$item	= parent::getItem($pk);
-
-			// check permission
-			if (!BwPostmanHelper::canEdit('mailinglist', $item))
-			{
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
-				return false;
-			}
 		}
 		else
 		{

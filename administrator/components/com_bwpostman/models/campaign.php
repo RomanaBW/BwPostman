@@ -179,16 +179,6 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			$item	= parent::getItem($pk);
 
-			// check permission
-			if (!BwPostmanHelper::canEdit('campaign', $item))
-			{
-				if ($task === 'edit')
-				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
-				}
-				return false;
-			}
-
 			//get associated mailinglists
 			$query	= $_db->getQuery(true);
 			$query->select($_db->quoteName('mailinglist_id'));

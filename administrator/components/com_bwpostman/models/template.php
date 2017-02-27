@@ -165,14 +165,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$pk	= (int) $cid;
 
 			$item	= parent::getItem($pk);
-
-			// check permission
-			if (!BwPostmanHelper::canEdit('template', $item))
-			{
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
-				return false;
-			}
 		}
+
 		// if $data from table templates check()
 		else if ($data)
 		{

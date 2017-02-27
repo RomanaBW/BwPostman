@@ -179,14 +179,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$properties = $table->getProperties(1);
 				$item       = ArrayHelper::toObject($properties, 'JObject');
 
-				// check permission
-				if (!BwPostmanHelper::canEdit('newsletter', $item))
-				{
-					// @ToDo: throw exception
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
-					return false;
-				}
-
 				if (property_exists($item, 'params'))
 				{
 					$registry = new JRegistry;

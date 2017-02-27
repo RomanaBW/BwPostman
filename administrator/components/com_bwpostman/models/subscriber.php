@@ -164,13 +164,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 			$item	= parent::getItem($pk);
 
-			// check permission
-			if (!BwPostmanHelper::canEdit('subscriber', $item))
-			{
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
-				return false;
-			}
-
 			$_db	= $this->_db;
 			$query	= $_db->getQuery(true);
 

@@ -399,12 +399,12 @@ abstract class BwPostmanHelper
 		{
 			$res = true;
 		}
-
+/*
 		if (!$res)
 		{
 //			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ADMIN_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -423,12 +423,12 @@ abstract class BwPostmanHelper
 		{
 			$res = true;
 		}
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_MANAGE_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -450,12 +450,12 @@ abstract class BwPostmanHelper
 		{
 			$res = true;
 		}
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_MANAGE_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -483,10 +483,6 @@ abstract class BwPostmanHelper
 		{
 			$res = true;
 		}
-		if (!$res)
-		{
-//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_VIEW_NO_PERMISSION'), 'error');
-		}
 
 		return $res;
 	}
@@ -506,12 +502,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission($view, $action, array(0));
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_CREATE_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -580,11 +576,6 @@ abstract class BwPostmanHelper
 			}
 		}
 
-		if (!$res)
-		{
-//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
-		}
-
 		return $res;
 	}
 
@@ -604,12 +595,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission($view, $action, array($recordId));
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -628,12 +619,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission('newsletter', $action, array($recordId));
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_SENDING_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -650,12 +641,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission('newsletter', $action, array());
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_QUEUE_CLEAR_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -672,12 +663,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission('newsletter', $action, array());
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_QUEUE_RESET_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -694,12 +685,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission('newsletter', $action, array());
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_QUEUE_CONTINUE_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -720,12 +711,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission($view, $action, $recordIds);
-
+/*
 		if (!$res)
 		{
 //			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
 		}
-
+*/
 		return $res;
 	}
 
@@ -746,11 +737,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission($view, $action, $recordIds);
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_DELETE_NO_PERMISSION'), 'error');
 		}
+*/
 		return $res;
 	}
 
@@ -771,11 +763,12 @@ abstract class BwPostmanHelper
 
 		// Check permission
 		$res      = self::_checkActionPermission($view, $action, $recordIds);
-
+/*
 		if (!$res)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_RESTORE_NO_PERMISSION'), 'error');
 		}
+*/
 		return $res;
 	}
 

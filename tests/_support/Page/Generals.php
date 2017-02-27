@@ -56,7 +56,7 @@ class Generals
 	/* ssh and database connection
 	 *
 	 * These tests are designed to run on a remote machine by a local machine,
-	 * i.e. a local test machine runs the test on the remote server ( may be in
+	 * i.e. a local test machine runs the test on the remote server (may be in
 	 * the same local network). For this there is used a ssh connection to initialize
 	 * the database, because Codeceptions database skills are very modest and slow.
 	 *

@@ -198,7 +198,11 @@ class BwPostmanViewMailinglist extends JViewLegacy
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
 		}
 
-		$backlink 	= $_SERVER['HTTP_REFERER'];
+		$backlink   = '';
+		if (key_exists('HTTP_REFERER', $_SERVER))
+		{
+			$backlink 	= $_SERVER['HTTP_REFERER'];
+		}
 		$siteURL 	= $uri->base();
 
 		// If we came from the cover page we will show a back-button

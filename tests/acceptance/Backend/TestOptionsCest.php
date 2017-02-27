@@ -101,10 +101,11 @@ class TestOptionsCest
 		// get rule names
 		$rules  = $I->getRuleNamesByComponentAsset('com_bwpostman');
 
-		foreach(OptionsPage::$bwpm_groups['permissions'] as $groupname => $actions)
+		foreach(OptionsPage::$bwpm_groups as $groupname => $values)
 		{
 			// get ID of usergroup
 			$group_id   = $I->getGroupIdByName($groupname);
+			$actions    = $values['permissions'];
 
 			// select usergroup
 			$slider = sprintf(OptionsPage::$perm_slider, $group_id);

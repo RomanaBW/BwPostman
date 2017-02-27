@@ -606,10 +606,10 @@ class OptionsPage
 										);
 
 	// buttons
-	public static $button_allowed               = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Allowed')]";
-	public static $button_not_allowed           = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Not Allowed')]";
-	public static $button_inherited_allowed     = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Allowed (Inherited)')]";
-	public static $button_inherited_not_allowed = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Not Allowed (Locked)')]";
+	public static $label_allowed               = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Allowed')]";
+	public static $label_not_allowed           = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Not Allowed')]";
+	public static $label_inherited_allowed     = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Allowed (Inherited)')]";
+	public static $label_inherited_not_allowed = ".//*table/tbody/tr[%s]/td[3]/span[contains(text(), 'Not Allowed (Locked)')]";
 
 	public static $bwpm_group_permissions = array(  'BwPostmanAdmin'
 	                                        => array(

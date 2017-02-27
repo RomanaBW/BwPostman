@@ -72,7 +72,7 @@ class TestCampaignsDetailsCest
 		$I->amOnPage(MainView::$url);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
-		$I->click(MainView::$addCampaingButton);
+		$I->click(MainView::$addCampaignButton);
 		$I->waitForText('Campaign details', 30);
 
 		$this->_fillFormSimple($I);
@@ -104,7 +104,7 @@ class TestCampaignsDetailsCest
 		$I->amOnPage(MainView::$url);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
-		$I->click(MainView::$addCampaingButton);
+		$I->click(MainView::$addCampaignButton);
 		$I->waitForText('Campaign details', 30);
 
 		$this->_fillFormExtended($I);

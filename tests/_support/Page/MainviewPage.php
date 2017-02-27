@@ -40,7 +40,7 @@ class MainviewPage
 	public static $addSubscriberButton      = './/*[@id=\'cpanel\']/div[4]/div/a';
 	public static $addTestRecipientButton   = './/*[@id=\'cpanel\']/div[5]/div/a';
 	public static $campaignsButton          = './/*[@id=\'cpanel\']/div[6]/div/a';
-	public static $addCampaingButton        = './/*[@id=\'cpanel\']/div[7]/div/a';
+	public static $addCampaignButton        = './/*[@id=\'cpanel\']/div[7]/div/a';
 	public static $mailinglistsButton       = './/*[@id=\'cpanel\']/div[8]/div/a';
 	public static $addMailinglistButton     = './/*[@id=\'cpanel\']/div[9]/div/a';
 	public static $templatesButton          = './/*[@id=\'cpanel\']/div[10]/div/a';

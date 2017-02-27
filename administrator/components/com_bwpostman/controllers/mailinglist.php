@@ -175,10 +175,11 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		}
 		else
 		{
-			$allowed    = $this->allowEdit(array($recordId));
+			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
 		if (!$allowed)
 		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
@@ -250,7 +251,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 					. $this->getRedirectToListAppend(), false
 				)
 			);
-			return false;
+			return;
 		}
 
 		$n = count ($cid);

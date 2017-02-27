@@ -180,7 +180,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		}
 		else
 		{
-			$allowed    = $this->allowEdit(array($recordId));
+			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
 		if (!$allowed)
 		{

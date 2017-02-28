@@ -157,7 +157,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$layout	= $jinput->getCmd('layout', '');
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_BWPOSTMAN_TPL'));
+		$document->setTitle(JText::_('COM_BWPOSTMAN_TPLS'));
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		switch ($layout)
@@ -184,7 +184,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 				break;
 			default:
 				// Set toolbar title
-				JToolbarHelper::title (JText::_('COM_BWPOSTMAN_TPL'), 'picture');
+				JToolbarHelper::title (JText::_('COM_BWPOSTMAN_TPLS'), 'picture');
 
 				// Set toolbar items for the page
 				if (BwPostmanHelper::canAdd('template'))		JToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);

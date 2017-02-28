@@ -132,7 +132,7 @@ class OptionsPage
 	                                        'BwPostmanSectionAdmin'
 	                                        => array (
 		                                        'permissions'=> array(
-			                                        'core.admin' => 'Inherited',
+			                                        'core.admin' => 'Denied',
 			                                        'core.manage' => 'Inherited',
 			                                        'bwpm.create' => 'Inherited',
 			                                        'bwpm.edit' => 'Inherited',

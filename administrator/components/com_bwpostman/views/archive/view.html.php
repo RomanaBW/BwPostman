@@ -295,7 +295,7 @@ class BwPostmanViewArchive extends JViewLegacy
 		}
 
 		// check for some allowed layout
-		$all_layouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'campaign');
+		$all_layouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'template');
 		foreach ($all_layouts as $item)
 		{
 			$allowed    = BwPostmanHelper::canView($item);

@@ -64,7 +64,7 @@ class TestTemplatesListsCest
 		$I->wantTo("Publish/Unpublish Templates by icon");
 		$I->amOnPage(TplManage::$url);
 
-		$I->publishByIcon($I, new TplManage(), 'template');
+		$I->publishByIcon($I, TplManage::$publish_by_icon, 'template');
 	}
 
 	/**
@@ -88,7 +88,7 @@ class TestTemplatesListsCest
 		$I->wantTo("Publish/Unpublish Templates by toolbar buttons");
 		$I->amOnPage(TplManage::$url);
 
-		$I->publishByToolbar($I, new TplManage(), 'template');
+		$I->publishByToolbar($I, TplManage::$publish_by_toolbar, 'template');
 	}
 
 	/**

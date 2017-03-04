@@ -106,16 +106,20 @@ class TemplateManagerPage
 	);
 
 	// publish by icon
-	public static $publish_button       = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a";
-	public static $unpublish_button     = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a";
-	public static $publish_result       = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_result     = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]";
+	public static $publish_by_icon   = array(
+		'publish_button'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a",
+		'publish_result'    =>  "//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a",
+		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+	);
 
 	// publish by toolbar
-	public static $publish_button2      = ".//*[@id='cb0']";
-	public static $unpublish_button2    = ".//*[@id='cb3']";
-	public static $publish_result2      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_result2    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]";
+	public static $publish_by_toolbar   = array(
+		'publish_button'    =>  ".//*[@id='cb0']",
+		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  =>  ".//*[@id='cb3']",
+		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+	);
 
 	public static $default_button1      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a";
 	public static $default_result1      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";

@@ -109,15 +109,19 @@ class MailinglistManagerPage
 		'title'       => 'a.title'
 	);
 
-	public static $publish_button = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a";
-	public static $unpublish_button = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[4]/a";
-	public static $publish_result = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_result = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[4]/a/span[contains(@class, 'icon-unpublish')]";
+	public static $publish_by_icon   = array(
+		'publish_button'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a",
+		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[4]/a",
+		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+	);
 
-	public static $publish_button2 = ".//*[@id='cb5']";
-	public static $unpublish_button2 = ".//*[@id='cb6']";
-	public static $publish_result2 = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_result2 = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[7]/td[4]/a/span[contains(@class, 'icon-unpublish')]";
+	public static $publish_by_toolbar   = array(
+		'publish_button'    =>  ".//*[@id='cb5']",
+		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  =>  ".//*[@id='cb6']",
+		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[7]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+	);
 
 	// enter default 'search by' as last array element
 	public static $search_by = array(

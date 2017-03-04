@@ -66,7 +66,7 @@ class TestMailinglistsListsCest
 		$I->wantTo("Publish/Unpublish Mailinglists by icon");
 		$I->amOnPage(MlManage::$url);
 
-		$I->publishByIcon($I, new MlManage(), 'mailing list');
+		$I->publishByIcon($I, MlManage::$publish_by_icon, 'mailing list');
 	}
 
 	/**
@@ -91,7 +91,7 @@ class TestMailinglistsListsCest
 		$I->wantTo("Publish/Unpublish Mailinglists by toolbar buttons");
 		$I->amOnPage(MlManage::$url);
 
-		$I->publishByToolbar($I, new MlManage(), 'mailing list');
+		$I->publishByToolbar($I, MlManage::$publish_by_toolbar, 'mailing list');
 	}
 
 	/**

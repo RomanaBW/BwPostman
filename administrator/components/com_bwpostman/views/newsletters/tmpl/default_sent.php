@@ -187,7 +187,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 									</td>
 									<td nowrap="nowrap">
 										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', BwPostmanHelper::canCheckin('newsletter', $item->checked_out), 'ub'); ?>
-										<?php if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', $item)) : ?>
+										<?php if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', $item->id)) : ?>
 											<p><a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&layout=edit_publish&task=newsletter.edit&id='. $item->id);?>">
 												<?php echo $this->escape($item->subject); ?></a></p>
 										<?php else : ?>

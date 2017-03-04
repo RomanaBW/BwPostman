@@ -2437,7 +2437,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->set($_db->quoteName('title') . " = " . $_db->quote('BwPostman Component'));
 			if (isset($com_assets[0]['rules']))
 			{
-				$query->set($_db->quoteName('rules') . " = " . $_db->quote($_db->escape($com_assets[0]['rules'])));
+				$query->set($_db->quoteName('rules') . " = " . $_db->quote($com_assets[0]['rules']));
 			}
 			$query->where($_db->quoteName('lft') . ' = ' . $base_asset['lft']);
 

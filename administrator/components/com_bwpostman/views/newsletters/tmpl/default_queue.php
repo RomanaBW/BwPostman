@@ -89,7 +89,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ((count($this->count_queue) > 0) && BwPostmanHelper::canSend()) { ?>
+					<?php if ((count($this->count_queue) > 0) && BwPostmanHelper::canSend(0)) { ?>
 						<li class="open">
 							<button onclick="return changeTab('queue');" class="buttonAsLink_open">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>

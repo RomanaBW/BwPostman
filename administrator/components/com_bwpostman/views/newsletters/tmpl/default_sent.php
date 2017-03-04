@@ -142,7 +142,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ($this->queueEntries && BwPostmanHelper::canSend()) { ?>
+					<?php if ($this->queueEntries && BwPostmanHelper::canSend(0)) { ?>
 						<li class="closed">
 							<button onclick="return changeTab('queue');" class="buttonAsLink">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>

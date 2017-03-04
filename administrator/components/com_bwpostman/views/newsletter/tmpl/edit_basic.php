@@ -175,11 +175,13 @@ Joomla.submitbutton = function (pressbutton)
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
-				<li class="closed">
-					<button onclick="return changeTab('edit_send');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
-					</button>
-				</li>
+				<?php if (BwPostmanHelper::canSend((int)$this->item->id)) { ?>
+					<li class="closed">
+						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
+							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
+						</button>
+					</li>
+				<?php } ?>
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>

@@ -142,11 +142,13 @@ Joomla.submitbutton = function (pressbutton)
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
-				<li class="open">
-					<button onclick="return changeTab('edit_send');" class="buttonAsLink_open">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
-					</button>
-				</li>
+				<?php if (BwPostmanHelper::canSend((int)$this->item->id)) { ?>
+					<li class="open">
+						<button onclick="return changeTab('edit_send');" class="buttonAsLink_open">
+							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
+						</button>
+					</li>
+				<?php } ?>
 			</ul>
 		</div>
 		<div class="clr clearfix"></div>
@@ -185,7 +187,7 @@ Joomla.submitbutton = function (pressbutton)
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<?php if (BwPostmanHelper::canSend()) : ?>
+								<?php if (BwPostmanHelper::canSend((int) $this->item->id)) : ?>
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmail');"
 										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_BUTTON'); ?>" />
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmailandpublish');"
@@ -213,7 +215,7 @@ Joomla.submitbutton = function (pressbutton)
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<?php if (BwPostmanHelper::canSend()) : ?>
+								<?php if (BwPostmanHelper::canSend((int) $this->item->id)) : ?>
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendtestmail');"
 										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDTESTMAIL_BUTTON'); ?>" />
 								<?php endif; ?>

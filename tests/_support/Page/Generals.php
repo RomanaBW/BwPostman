@@ -43,6 +43,8 @@ class Generals
 	public static $media_frame              = "mediaFrame";
 	public static $image_frame              = "imageframe";
 
+	public static $back_button  = ".//*[@id='toolbar-back']/button";
+
 	/**
 	 * @var object  $tester AcceptanceTester
 	 *
@@ -165,14 +167,14 @@ class Generals
 	 * @since  2.0.0
 	 */
 	public static $submenu = array (
-		'BwPostman'     => ".//*[@id='submenu']/li[1]/a",
-		'Newsletters'   => ".//*[@id='submenu']/li[2]/a",
-		'Subscribers'   => ".//*[@id='submenu']/li[3]/a",
-		'Campaigns'     => ".//*[@id='submenu']/li[4]/a",
-		'Mailinglists'  => ".//*[@id='submenu']/li[5]/a",
-		'Templates'     => ".//*[@id='submenu']/li[6]/a",
-		'Archive'       => ".//*[@id='submenu']/li[7]/a",
-		'Maintenance'   => ".//*[@id='submenu']/li[8]/a",
+		'BwPostman'     => ".//*[@id='submenu']/li/a[contains(text(), 'BwPostman')]",
+		'Newsletters'   => ".//*[@id='submenu']/li/a[contains(text(), 'Newsletters')]",
+		'Subscribers'   => ".//*[@id='submenu']/li/a[contains(text(), 'Subscribers')]",
+		'Campaigns'     => ".//*[@id='submenu']/li/a[contains(text(), 'Campaigns')]",
+		'Mailinglists'  => ".//*[@id='submenu']/li/a[contains(text(), 'Mailinglists')]",
+		'Templates'     => ".//*[@id='submenu']/li/a[contains(text(), 'Templates')]",
+		'Archive'       => ".//*[@id='submenu']/li/a[contains(text(), 'Archive')]",
+		'Maintenance'   => ".//*[@id='submenu']/li/a[contains(text(), 'Maintenance')]",
 	);
 
 	/**
@@ -199,6 +201,7 @@ class Generals
 		'Options'           => ".//*[@id='toolbar-options']/button",
 		'Save'              => ".//*[@id='toolbar-apply']/button",
 		'Save & Close'      => ".//*[@id='toolbar-save']/button",
+		'Cancel'            => ".//*[@id='toolbar-cancel']/button",
 	);
 
 	/**

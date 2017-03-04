@@ -108,7 +108,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		if ($task == 'continue_sending')
 		{
 			// Access check
-			if (!BwPostmanHelper::canSend())
+			if (!BwPostmanHelper::canSend($nl_id))
 			{
 				return false;
 			}

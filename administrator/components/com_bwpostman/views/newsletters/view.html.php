@@ -239,7 +239,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			case "queue":
 				$bar= JToolbar::getInstance('toolbar');
 				$alt = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
-				if (BwPostmanHelper::canSend('newsletter', 0))
+				if (BwPostmanHelper::canSend(0))
 				{
 					JToolbarHelper::custom('newsletters.resetSendAttempts', 'unpublish.png', 'unpublish_f2.png', 'COM_BWPOSTMAN_NL_RESET_TRIAL', false);
 					$bar->appendButton('Popup', 'envelope', $alt, 'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', 600, 600);
@@ -254,7 +254,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
 
-				if (BwPostmanHelper::canSend('newsletter'))
+				if (BwPostmanHelper::canSend(0))
 				{
 					JToolbarHelper::custom('newsletter.sendOut', 'envelope', 'send_f2.png', 'COM_BWPOSTMAN_NL_SEND', true);
 					JToolbarHelper::divider();

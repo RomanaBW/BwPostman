@@ -1,9 +1,6 @@
 <?php
 namespace Page;
 
-//use Codeception\Module\WebDriver;
-//use Codeception\PHPUnit\Constraint\Page;
-
 /**
  * Class NewsletterManagerPage
  *

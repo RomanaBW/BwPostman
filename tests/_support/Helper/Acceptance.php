@@ -144,20 +144,24 @@ class Acceptance extends Codeception\Module
 	 * Helper method get table rows in list view
 	 *
 	 * @param   \AcceptanceTester $I
+	 * @param   boolean           $remove_thead
 	 *
 	 * @return  array   $rows
 	 *
 	 * @since   2.0.0
 	 */
-	public function GetTableRows(\AcceptanceTester $I)
+	public function GetTableRows(\AcceptanceTester $I, $remove_thead = true)
 	{
 		// get all table rows
 		$rows  = $I->grabMultiple('tr');
 
-		// remove table header if exists
-		if (self::elementExists($I, 'thead'))
+		if ($remove_thead)
 		{
-			array_shift($rows);
+			// remove table header if exists
+			if (self::elementExists($I, 'thead'))
+			{
+				array_shift($rows);
+			}
 		}
 
 		// remove table footer if exists
@@ -185,7 +189,7 @@ class Acceptance extends Codeception\Module
 	 */
 	public function GetListLength(\AcceptanceTester $I)
 	{
-		$row_count   = count($I->GetTableRows($I));
+		$row_count   = count($I->GetTableRows($I, true));
 		return $row_count;
 	}
 
@@ -629,7 +633,7 @@ class Acceptance extends Codeception\Module
 				$I->see($ManageData::$sort_criteria_select[$key] . ' ' . $order, Generals::$select_list_selected_location);
 
 				// loop over column values
-				$row_values_actual = self::GetTableRows($I);
+				$row_values_actual = self::GetTableRows($I, true);
 
 				for ($k = 0; $k < $list_length; $k++)
 				{
@@ -710,45 +714,69 @@ class Acceptance extends Codeception\Module
 	 * Helper method to publish by icon
 	 *
 	 * @param \AcceptanceTester $I
-	 * @param object            $ManageData
+	 * @param array             $publish_by_icon
 	 * @param string            $item
+	 * @param string            $extra_click
 	 *
 	 * @since   2.0.0
 	 */
-	public function publishByIcon(\AcceptanceTester $I, $ManageData, $item)
+	public function publishByIcon(\AcceptanceTester $I, $publish_by_icon, $item, $extra_click = '')
 	{
 		// switch status by icon
-		$I->clickAndWait($ManageData::$publish_button, 2);
+		$I->clickAndWait($publish_by_icon['publish_button'], 2);
 		$I->see("One " . $item . " published!");
-		$I->seeElement($ManageData::$publish_result);
 
-		$I->clickAndWait($ManageData::$unpublish_button,1);
+		if ($item   == 'newsletter')
+		{
+			$I->clickAndWait($extra_click, 2);
+		}
+
+		$I->seeElement($publish_by_icon['publish_result']);
+
+		$I->clickAndWait($publish_by_icon['unpublish_button'],1);
 		$I->see("One " . $item . " unpublished!");
-		$I->seeElement($ManageData::$unpublish_result);
+		if ($item   == 'newsletter')
+		{
+			$I->clickAndWait($extra_click, 2);
+		}
+		$I->seeElement($publish_by_icon['unpublish_result']);
 	}
 
 	/**
 	 * Helper method to publish by toolbar
 	 *
 	 * @param \AcceptanceTester $I
-	 * @param object            $ManageData
+	 * @param array             $publish_by_toolbar
 	 * @param string            $item
+	 * @param string            $extra_click
 	 *
 	 * @since   2.0.0
 	 */
-	public function publishByToolbar(\AcceptanceTester $I, $ManageData, $item)
+	public function publishByToolbar(\AcceptanceTester $I, $publish_by_toolbar, $item, $extra_click = '')
 	{
 		// switch status by toolbar
 		$I->wait(2);
-		$I->click($ManageData::$publish_button2);
+		$I->click($publish_by_toolbar['publish_button']);
 		$I->clickAndWait(Generals::$toolbar['Publish'], 1);
 		$I->see("One " . $item . " published!");
-		$I->seeElement($ManageData::$publish_result2);
 
-		$I->click($ManageData::$unpublish_button2);
+		if ($item   == 'newsletter')
+		{
+			$I->clickAndWait($extra_click, 2);
+		}
+
+		$I->seeElement($publish_by_toolbar['publish_result']);
+
+		$I->click($publish_by_toolbar['unpublish_button']);
 		$I->clickAndWait(Generals::$toolbar['Unpublish'], 1);
 		$I->see("One " . $item . " unpublished!");
-		$I->seeElement($ManageData::$unpublish_result2);
+
+		if ($item   == 'newsletter')
+		{
+			$I->clickAndWait($extra_click, 2);
+		}
+
+		$I->seeElement($publish_by_toolbar['unpublish_result']);
 	}
 
 	/**
@@ -764,7 +792,7 @@ class Acceptance extends Codeception\Module
 	{
 		if (isset($ManageData::$p1_val1))
 		{
-			$I->assertEquals($listlenght, count(self::GetTableRows($I)));
+			$I->assertEquals($listlenght, count(self::GetTableRows($I, true)));
 			$this->_browsePages($I, $ManageData::$p1_val1, $ManageData::$p1_field1, $ManageData::$p1_val_last, $ManageData::$p1_field_last);
 		}
 
@@ -808,19 +836,19 @@ class Acceptance extends Codeception\Module
 	 */
 	public function checkListlimit(\AcceptanceTester $I)
 	{
-		$I->assertEquals(20, count($I->GetTableRows($I)));
+		$I->assertEquals(20, count($I->GetTableRows($I, true)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5);
-		$I->assertEquals(5, count($I->GetTableRows($I)));
+		$I->assertEquals(5, count($I->GetTableRows($I, true)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_15);
-		$I->assertEquals(15, count($I->GetTableRows($I)));
+		$I->assertEquals(15, count($I->GetTableRows($I, true)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_20);
-		$I->assertEquals(20, count($I->GetTableRows($I)));
+		$I->assertEquals(20, count($I->GetTableRows($I, true)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
-		$I->assertEquals(10, count($I->GetTableRows($I)));
+		$I->assertEquals(10, count($I->GetTableRows($I, true)));
 	}
 
 	/**
@@ -1177,7 +1205,7 @@ class Acceptance extends Codeception\Module
 	 * @param string            $last_val_field     identifier for last list entry
 	 *
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	private function _browsePages(\AcceptanceTester $I, $top_val, $top_val_field, $last_val, $last_val_field)
 	{

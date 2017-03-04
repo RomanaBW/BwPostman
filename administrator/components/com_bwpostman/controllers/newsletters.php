@@ -181,21 +181,25 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 */
 	function publish()
 	{
+		$jinput	= JFactory::getApplication()->input;
+
 		// Check for request forgeries
 		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
 
+		// Get the selected newsletters(s)
+		$cid = $jinput->get('cid', array(0), 'post');
+		ArrayHelper::toInteger($cid);
+
 		// Access check
-		if (!BwPostmanHelper::canEditState('newsletter'))
+		if (!BwPostmanHelper::canEditState('newsletter', $cid))
 		{
 			return false;
 		}
 
-		$jinput	= JFactory::getApplication()->input;
-
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'sent');
 
-		// From which view do we come ?
+		// From which view do we come?
 		$view = $jinput->get('view', 'newsletters');
 
 		parent::publish();

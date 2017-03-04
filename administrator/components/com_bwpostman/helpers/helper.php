@@ -240,9 +240,9 @@ abstract class BwPostmanHelper
 		// Check record specific permission
 		foreach ($recordIds as $recordId)
 		{
-			if ((int) $recordId == 0)
+			if ((int) $recordId === 0) // new record
 			{
-				$res = true;
+				$res = false;
 			}
 			elseif ($user->authorise('bwpm.' . $view . '.' . $action, 'com_bwpostman.' . $view . (int) $recordId))
 			{
@@ -1189,7 +1189,7 @@ abstract class BwPostmanHelper
 			$model  = JModelLegacy::getInstance(ucfirst($view), 'BwPostmanModel');
 			$record = $model->getItem($recordId);
 
-			if (empty($record))
+			if (empty($record) || !property_exists($record, 'created_by'))
 			{
 				//@ ToDo: Specify error message, insert in language files
 //				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_SUITABLE_RECORD'), 'error');

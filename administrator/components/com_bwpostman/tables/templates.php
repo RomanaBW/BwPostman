@@ -193,7 +193,7 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @since       1.1.0
 	 */
-	var $access = null;
+	var $access = 1;
 
 	/**
 	 * @var int Published

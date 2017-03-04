@@ -136,7 +136,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $access = 0;
+	var $access = 1;
 
 	/**
 	 * @var datetime Registration date

@@ -72,7 +72,7 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $access = 0;
+	var $access = 1;
 
 	/**
 	 * @var datetime creation date of the campaign

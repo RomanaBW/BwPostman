@@ -200,7 +200,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 		}
-		if (BwPostmanHelper::canEditState('campaign'))
+		if (BwPostmanHelper::canEditState('campaign', 0))
 		{
 			JToolbarHelper::checkin('campaigns.checkin');
 			JToolbarHelper::divider();

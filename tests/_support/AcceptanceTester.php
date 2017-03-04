@@ -164,7 +164,7 @@ class AcceptanceTester extends \Codeception\Actor
 
 	public function assertTableSearchResult($search_value, $expected_nbr)
 	{
-		$row_values_actual = $this->GetTableRows($this);
+		$row_values_actual = $this->GetTableRows($this, true);
 		$res_nbr           = count($row_values_actual);
 		$this->assertEquals($expected_nbr, $res_nbr);
 		// assert that all rows contain search value
@@ -184,7 +184,7 @@ class AcceptanceTester extends \Codeception\Actor
 
 	public function assertFilterResult($filter_values)
 	{
-		$row_values_actual = $this->GetTableRows($this);
+		$row_values_actual = $this->GetTableRows($this, true);
 		$res_nbr           = count($row_values_actual);
 		$this->assertEquals(count($filter_values), $res_nbr);
 		// assert that all rows contain filtered values
@@ -192,6 +192,89 @@ class AcceptanceTester extends \Codeception\Actor
 		{
 			$this->assertContains($filter_values[$i], $row_values_actual[$i]);
 		}
+	}
+
+	/**
+	 * Method to get the number of a table row for a specific search value at a given column
+	 *
+	 * @param string            $search_value
+	 * @param string            $search_column
+	 *
+	 * @return int              $id
+	 *
+	 * @since   2.0.0
+	 */
+
+	public function getTableRowIdByColumn($search_value, $search_column)
+	{
+		$id             = 0;
+		$row_values     = $this->GetTableRows($this, false);
+
+		for ($i = 1; $i < count($row_values); $i++)
+		{
+			$found_value    = strpos($row_values[$i], $search_value);
+
+			if ($found_value !== false)
+			{
+				$id = $i;
+				break;
+			}
+		}
+		return $id;
+	}
+
+	/**
+	 * Method to
+	 *
+	 * @param string            $search_value
+	 * @param string            $search_column
+	 *
+	 * @return boolean
+	 *
+	 * @since   2.0.0
+	 */
+
+	public function findPageWithItemAndScrollToItem($search_value, $search_column)
+	{
+		$found      = false;
+		$count      = 1;
+		$last_page  = 1;
+
+		while (!$found)
+		{
+			$table_search_result  = $this->getTableRowIdByColumn($search_value, $search_column);
+
+			if ($table_search_result > 0)
+			{
+				$position   = sprintf(".//*[@id='j-main-container']/*/table/tbody/tr[%s]", $table_search_result);
+				$this->scrollTo($position, 0, -100);
+				$found  = true;
+			}
+			else
+			{
+				if ($count == 1)
+				{
+					$this->scrollTo(Generals::$pagination_bar);
+					$this->click(Generals::$last_page);
+
+					$last_page  = $this->grabTextFrom(".//*/ul[contains(@class, 'pagination')]/li[contains(@class, 'active hidden-phone')]/a");
+
+					$this->scrollTo(Generals::$pagination_bar);
+					$this->click(Generals::$first_page);
+				}
+				$this->scrollTo(Generals::$pagination_bar);
+				$this->click(Generals::$next_page);
+
+				$this->waitForElement(Generals::$pageTitle, 30);
+				$count++;
+				if ($count > $last_page)
+				{
+					$found = true;
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**

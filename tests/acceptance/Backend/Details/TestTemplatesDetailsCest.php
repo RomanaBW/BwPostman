@@ -117,7 +117,7 @@ class TestTemplatesDetailsCest
 		$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
 		$I->seeElement($thumb);
 
-		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -184,7 +184,7 @@ class TestTemplatesDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -235,7 +235,7 @@ class TestTemplatesDetailsCest
 
 		$I->see("Template", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -310,7 +310,7 @@ class TestTemplatesDetailsCest
 
 		$I->see("Template", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -378,7 +378,7 @@ class TestTemplatesDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -427,7 +427,7 @@ class TestTemplatesDetailsCest
 
 		$I->see("Template", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new TplManage(), new TplEdit());
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 		$I->see('Template', Generals::$pageTitle);
 	}
 

@@ -49,19 +49,22 @@ class CampaignEditPage
 
 	public static $title_col            = ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]";
 
-	public static $archive_button       = ".//*[@id='toolbar-popup-archive']/button";
-	public static $archive_tab          = ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[3]/button";
-	public static $archive_identifier   = ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]";
-	public static $archive_title_col    = ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]";
-	public static $archive_success_msg  = 'The selected campaign has been archived.';
-	public static $archive_success2_msg = 'The selected campaigns have been archived.';
+	public static $arc_del_array     = array(
+		'field_title'          => "001 new campaign for tests",
+		'archive_button'       => ".//*[@id='toolbar-popup-archive']/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[3]/button",
+		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_success_msg'  => 'The selected campaign has been archived.',
+		'archive_success2_msg' => 'The selected campaigns have been archived.',
 
-	public static $delete_button        = ".//*[@id='toolbar-popup-delete']/button";
-	public static $delete_identifier    = ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]";
-	public static $delete_title_col     = ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]";
-	public static $success_remove       = 'The selected campaign has been removed.';
-	public static $success_remove2      = 'The selected campaigns have been removed.';
-
+		'delete_button'        => ".//*[@id='toolbar-popup-delete']/button",
+		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
+		'success_remove'       => 'The selected campaign has been removed.',
+		'success_remove2'      => 'The selected campaigns have been removed.',
+	);
 
 	/**
 	 * Array of toolbar id values for this page

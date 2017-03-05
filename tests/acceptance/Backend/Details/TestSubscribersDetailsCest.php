@@ -109,7 +109,7 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, new SubManage(), new SubEdit());
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
 		$I->see('Subscribers', Generals::$pageTitle);
 
 	}
@@ -174,7 +174,7 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, new SubManage(), new SubEdit());
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
@@ -220,7 +220,7 @@ class TestSubscribersDetailsCest
 		$I->click(SubEdit::$toolbar['Cancel']);
 		$I->see("Subscribers", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new SubManage(), new SubEdit());
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 

@@ -59,19 +59,22 @@ class SubscriberEditPage
 
 	public static $field_title          = "sam.sample@test.nil";
 
-	public static $archive_button       = ".//*[@id='toolbar-archive']/button";
-	public static $archive_tab          = ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[2]/button";
-	public static $archive_identifier   = ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]";
-	public static $archive_title_col    = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[5]";
-	public static $archive_success_msg  = 'The selected subscriber has been archived.';
-	public static $archive_success2_msg = 'The selected subscribers have been archived.';
+	public static $arc_del_array     = array(
+		'field_title'          => "sam.sample@test.nil",
+		'archive_button'       => ".//*[@id='toolbar-archive']/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[2]/button",
+		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
+		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[5]",
+		'archive_success_msg'  => 'The selected subscriber has been archived.',
+		'archive_success2_msg' => 'The selected subscribers have been archived.',
 
-	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
-	public static $delete_identifier    = ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]";
-	public static $delete_title_col    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[4]";
-	public static $remove_confirm       = 'Do you wish to remove the selected subscriber(s)/test-recipient(s)?';
-	public static $success_remove       = 'The selected subscriber/test-recipient has been removed.';
-	public static $success_remove2      = 'The selected subscribers/test-recipients have been removed.';
+		'delete_button'        => ".//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
+		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[4]",
+		'remove_confirm'       => 'Do you wish to remove the selected subscriber(s)/test-recipient(s)?',
+		'success_remove'       => 'The selected subscriber/test-recipient has been removed.',
+		'success_remove2'      => 'The selected subscribers/test-recipients have been removed.',
+	);
 
 	/**
 	 * Array of toolbar id values for this page

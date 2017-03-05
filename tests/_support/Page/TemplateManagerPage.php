@@ -45,49 +45,35 @@ class TemplateManagerPage
 
 	/**
 	 * Array of sorting criteria values for this page
-	 * This array meets table headings
 	 *
 	 * @var array
 	 *
 	 * @since 2.0.0
 	 */
-	public static $sort_criteria = array(
-		'tpl_id'        => 'tpl_id',
-		'published'     => 'published',
-		'description'   => 'Description',
-		'id'            => 'ID',
-		'title'         => 'Title'
-	);
+	public static $sort_data_array  = array(
+		'sort_criteria' => array(
+			'tpl_id'        => 'tpl_id',
+			'published'     => 'published',
+			'description'   => 'Description',
+			'id'            => 'ID',
+			'title'         => 'Title'
+		),
 
-	/**
-	 * Array of sorting criteria values for this page
-	 * This array select list values
-	 *
-	 * @var array
-	 *
-	 * @since 2.0.0
-	 */
-	public static $sort_criteria_select = array(
-		'tpl_id'        => 'Mail format',
-		'published'     => 'Status',
-		'description'   => 'Description',
-		'id'            => 'ID',
-		'title'         => 'Title'
-	);
+		'sort_criteria_select' => array(
+			'tpl_id'        => 'Mail format',
+			'published'     => 'Status',
+			'description'   => 'Description',
+			'id'            => 'ID',
+			'title'         => 'Title'
+		),
 
-	/**
-	 * Array of criteria to sort
-	 *
-	 * @var array
-	 *
-	 * @since 2.0.0
-	 */
-	public static $select_criteria = array(
-		'tpl_id'        => 'a.tpl_id',
-		'published'     => 'a.published',
-		'description'   => 'a.description',
-		'id'            => 'a.id',
-		'title'         => 'a.title'
+		'select_criteria' => array(
+			'tpl_id'        => 'a.tpl_id',
+			'published'     => 'a.published',
+			'description'   => 'a.description',
+			'id'            => 'a.id',
+			'title'         => 'a.title'
+		),
 	);
 
 	/**
@@ -138,45 +124,53 @@ class TemplateManagerPage
 	public static $format_text_text     = 'Text';
 	public static $format_text_html     = 'HTML';
 
-	// enter default 'search by' as last array element
-	public static $search_by            = array(
-											".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-											".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-											".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-											);
+	public static $search_data_array  = array(
+		// enter default 'search by' as last array element
+		'search_by'            => array(
+												".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
+												".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
+												".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+												),
 
-	public static $search_val           = array("Sample for an own", "Blue");
-	// array of arrays: outer array per search value, inner arrays per 'search by'
-	public static $search_res           = array(array(2, 2, 0), array(0, 4, 4));
+		'search_val'           => array("Sample for an own", "Blue"),
+		// array of arrays: outer array per search value, inner arrays per 'search by'
+		'search_res'           => array(array(2, 2, 0), array(0, 4, 4)),
+	);
 	public static $search_clear_val     = ' Boldt Webservice';
 
-	public static $p1_val1              = "Boldt Webservice";
-	public static $p1_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p1_val_last          = "Standard Deep Blue";
-	public static $p1_field_last        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+	public static $pagination_data_array  = array(
+		'p1_val1'              => "Boldt Webservice",
+		'p1_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p1_val_last'          => "Standard Deep Blue",
+		'p1_field_last'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p2_val1              = "Standard Soft Blue";
-	public static $p2_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p2_val_last          = "Template for Test 01";
-	public static $p2_field_last        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+		'p2_val1'              => "Standard Soft Blue",
+		'p2_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p2_val_last'          => "Template for Test 01",
+		'p2_field_last'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p_prev_val1          = "Z Standard Soft Blue";
-	public static $p_prev_field1        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p_prev_val_last      = "Z Template for Test 01";
-	public static $p_prev_field_last    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+		'p_prev_val1'          => "Z Standard Soft Blue",
+		'p_prev_field1'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_prev_val_last'      => "Z Template for Test 01",
+		'p_prev_field_last'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p3_val1              = "Z Boldt Webservice";
-	public static $p3_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p3_val3              = "Z Standard Deep Blue";
-	public static $p3_field3            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+		'p3_val1'              => "Z Boldt Webservice",
+		'p3_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p3_val3'              => "Z Standard Deep Blue",
+		'p3_field3'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p_last_val1          = "Z2 Boldt Webservice";
-	public static $p_last_field1        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p_last_val_last      = "Z2 Template for Test 01";
-	public static $p_last_field_last    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[2]";
+		'p_last_val1'          => "Z2 Boldt Webservice",
+		'p_last_field1'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_last_val_last'      => "Z2 Template for Test 01",
+		'p_last_field_last'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[2]/td[2]",
+	);
 
 	public static $archive_confirm    = 'Do you wish to archive the selected template(s)?';
 	public static $remove_confirm     = 'Do you wish to remove the selected template(s)?';
 	public static $success_remove     = 'The selected template has been removed.';
 
+	public static $arc_del_array    = array(
+		'section'   => 'template',
+		'url'   => '/administrator/index.php?option=com_bwpostman&view=templates',
+	);
 }

@@ -108,7 +108,7 @@ class TestMailinglistsDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, new MlManage(), new MlEdit());
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
 		$I->see('Mailinglists', Generals::$pageTitle);
 	}
 
@@ -169,7 +169,7 @@ class TestMailinglistsDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, new MlManage(), new MlEdit());
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
 		$I->see('Mailinglists', Generals::$pageTitle);
 	}
 
@@ -213,7 +213,7 @@ class TestMailinglistsDetailsCest
 		$I->click(MlEdit::$toolbar['Cancel']);
 		$I->see("Mailinglists", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new MlManage(), new MlEdit());
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
 		$I->see('Mailinglists', Generals::$pageTitle);
 	}
 

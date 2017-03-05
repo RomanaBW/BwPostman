@@ -540,9 +540,9 @@ class Acceptance extends Codeception\Module
 	 * Helper method to loop over filters
 	 *
 	 * @param \AcceptanceTester     $I              tester object
-	 * @param object                $ManageData     manage data (per section)
+	 * @param array                 $sort_data_array    manage data (per section)
 	 * @param string                $manner         header or select list
-	 * @param array                 $columns        columns for query
+	 * @param string                $columns        columns for query
 	 * @param string                $table          table of section
 	 * @param integer               $archive        archived items or not?
 	 * @param string                $status         published or not? Leave empty, if status not given in table
@@ -550,7 +550,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	public function loopFilterList(\AcceptanceTester $I, $ManageData, $manner, $columns, $table, $archive, $status, $loop_counts  = 0)
+	public function loopFilterList(\AcceptanceTester $I, $sort_data_array, $manner, $columns, $table, $archive, $status, $loop_counts  = 0)
 	{
 		// Get list length
 		$list_length = $I->GetListLength($I);
@@ -565,7 +565,7 @@ class Acceptance extends Codeception\Module
 		{
 			$i = 3;
 		}
-		foreach ($ManageData::$sort_criteria as $key => $criterion)
+		foreach ($sort_data_array['sort_criteria'] as $key => $criterion)
 		{
 			foreach (Generals::$sort_orders as $order)
 			{
@@ -590,7 +590,7 @@ class Acceptance extends Codeception\Module
 					$arrow    = 'down';
 				}
 
-				$row_values_raw = $I->GetListData($table, $columns, $archive, $status, $ManageData::$select_criteria[$key], $db_order, $list_length);
+				$row_values_raw = $I->GetListData($table, $columns, $archive, $status, $sort_data_array['select_criteria'][$key], $db_order, $list_length);
 				if ($key == 'access')
 				{
 					$row_values = self::_SubstituteAccess($row_values_raw);
@@ -624,13 +624,13 @@ class Acceptance extends Codeception\Module
 				}
 				else
 				{
-					$I->clickSelectList(Generals::$ordering_list, Generals::$ordering_value . $ManageData::$sort_criteria_select[$key] . " " . $order . "']");
+					$I->clickSelectList(Generals::$ordering_list, Generals::$ordering_value . $sort_data_array['sort_criteria_select'][$key] . " " . $order . "']");
 
 				}
 				$I->expectTo('see arrow ' . $arrow . ' at ' . $criterion);
 				$I->seeElement(sprintf(Generals::$table_headcol_arrow_location, $i), array('class' => Generals::$sort_arrows[$arrow]));
-				$I->expectTo('see text ' . $ManageData::$sort_criteria_select[$key] . ' ' . $order);
-				$I->see($ManageData::$sort_criteria_select[$key] . ' ' . $order, Generals::$select_list_selected_location);
+				$I->expectTo('see text ' . $sort_data_array['sort_criteria_select'][$key] . ' ' . $order);
+				$I->see($sort_data_array['sort_criteria_select'][$key] . ' ' . $order, Generals::$select_list_selected_location);
 
 				// loop over column values
 				$row_values_actual = self::GetTableRows($I, true);
@@ -783,47 +783,47 @@ class Acceptance extends Codeception\Module
 	 * Helper method to check pagination
 	 *
 	 * @param \AcceptanceTester $I
-	 * @param object            $ManageData
+	 * @param array             $pagination_data_array
 	 * @param int               $listlenght
 	 *
 	 * @since   2.0.0
 	 */
-	public function checkPagination(\AcceptanceTester $I, $ManageData, $listlenght)
+	public function checkPagination(\AcceptanceTester $I, $pagination_data_array, $listlenght)
 	{
-		if (isset($ManageData::$p1_val1))
+		if (isset($pagination_data_array['p1_val1']))
 		{
 			$I->assertEquals($listlenght, count(self::GetTableRows($I, true)));
-			$this->_browsePages($I, $ManageData::$p1_val1, $ManageData::$p1_field1, $ManageData::$p1_val_last, $ManageData::$p1_field_last);
+			$this->_browsePages($I, $pagination_data_array['p1_val1'], $pagination_data_array['p1_field1'], $pagination_data_array['p1_val_last'], $pagination_data_array['p1_field_last']);
 		}
 
-		if (isset($ManageData::$p2_val1))
+		if (isset($pagination_data_array['p2_val1']))
 		{
 			$I->clickAndWait(Generals::$next_page,1);
-			$this->_browsePages($I, $ManageData::$p2_val1, $ManageData::$p2_field1, $ManageData::$p2_val_last, $ManageData::$p2_field_last);
+			$this->_browsePages($I, $pagination_data_array['p2_val1'], $pagination_data_array['p2_field1'], $pagination_data_array['p2_val_last'], $pagination_data_array['p2_field_last']);
 		}
 
-		if (isset($ManageData::$p_last_val1))
+		if (isset($pagination_data_array['p_last_val1']))
 		{
 			$I->clickAndWait(Generals::$last_page,1);
-			$this->_browsePages($I, $ManageData::$p_last_val1, $ManageData::$p_last_field1, $ManageData::$p_last_val_last, $ManageData::$p_last_field_last);
+			$this->_browsePages($I, $pagination_data_array['p_last_val1'], $pagination_data_array['p_last_field1'], $pagination_data_array['p_last_val_last'], $pagination_data_array['p_last_field_last']);
 		}
 
-		if (isset($ManageData::$p_prev_val1))
+		if (isset($pagination_data_array['p_prev_val1']))
 		{
 			$I->clickAndWait(Generals::$prev_page,1);
-			$this->_browsePages($I, $ManageData::$p_prev_val1, $ManageData::$p_prev_field1, $ManageData::$p_prev_val_last, $ManageData::$p_prev_field_last);
+			$this->_browsePages($I, $pagination_data_array['p_prev_val1'], $pagination_data_array['p_prev_field1'], $pagination_data_array['p_prev_val_last'], $pagination_data_array['p_prev_field_last']);
 		}
 
-		if (isset($ManageData::$p1_val1))
+		if (isset($pagination_data_array['p1_val1']))
 		{
 			$I->clickAndWait(Generals::$first_page, 1);
-			$this->_browsePages($I, $ManageData::$p1_val1, $ManageData::$p1_field1, $ManageData::$p1_val_last, $ManageData::$p1_field_last);
+			$this->_browsePages($I, $pagination_data_array['p1_val1'], $pagination_data_array['p1_field1'], $pagination_data_array['p1_val_last'], $pagination_data_array['p1_field_last']);
 		}
 
-		if (isset($ManageData::$p3_val1))
+		if (isset($pagination_data_array['p3_val1']))
 		{
 			$I->clickAndWait(Generals::$page_3, 1);
-			$this->_browsePages($I, $ManageData::$p3_val1, $ManageData::$p3_field1, $ManageData::$p3_val3, $ManageData::$p3_field3);
+			$this->_browsePages($I, $pagination_data_array['p3_val1'], $pagination_data_array['p3_field1'], $pagination_data_array['p3_val3'], $pagination_data_array['p3_field3']);
 		}
 	}
 
@@ -907,35 +907,35 @@ class Acceptance extends Codeception\Module
 	 * Helper method to check filter by access
 	 *
 	 * @param \AcceptanceTester $I
-	 * @param object            $ManageData
+	 * @param array             $search_data_array
 	 * @param bool              $exact
 	 *
 	 * @since   2.0.0
 	 */
-	public function searchLoop(\AcceptanceTester $I, $ManageData, $exact = true)
+	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true)
 	{
 		// loop search value
-		for ($j = 0; $j < count($ManageData::$search_val); $j++)
+		for ($j = 0; $j < count($search_data_array['search_val']); $j++)
 		{
 			// loop search by
-			$I->fillField(Generals::$search_field, $ManageData::$search_val[$j]);
-			for ($i = 0; $i < count($ManageData::$search_by); $i++)
+			$I->fillField(Generals::$search_field, $search_data_array['search_val'][$j]);
+			for ($i = 0; $i < count($search_data_array['search_by']); $i++)
 			{
 				// Get filter bar
 				$I->clickAndWait(Generals::$filterbar_button,1);
 
 				// open 'search by' list, select 'search by' value
-				$I->clickSelectList( Generals::$search_list, $ManageData::$search_by[$i]);
+				$I->clickSelectList( Generals::$search_list, $search_data_array['search_by'][$i]);
 				// click search button
 				$I->clickAndWait(Generals::$search_button,2);
 				// check result
-				if ((int) $ManageData::$search_res[$j][$i] == 0)
+				if ((int) $search_data_array['search_res'][$j][$i] == 0)
 				{
 					$I->see(Generals::$null_msg, Generals::$null_row);
 				}
 				elseif ($exact)
 				{
-					$I->assertTableSearchResult($ManageData::$search_val[$j], (int) $ManageData::$search_res[$j][$i]);
+					$I->assertTableSearchResult($search_data_array['search_val'][$j], (int) $search_data_array['search_res'][$j][$i]);
 				}
 			}
 		}
@@ -945,8 +945,8 @@ class Acceptance extends Codeception\Module
 	 * Helper method archive and delete items, specified by EditData
 	 *
 	 * @param   \AcceptanceTester               $I
-	 * @param   object                          $ManageData
-	 * @param   object                          $EditData
+	 * @param   array                           $manage_data
+	 * @param   array                           $edit_data
 	 *
 	 * @before  _login
 	 *
@@ -958,37 +958,37 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	public function HelperArcDelItems(\AcceptanceTester $I, $ManageData, $EditData)
+	public function HelperArcDelItems(\AcceptanceTester $I, $manage_data, $edit_data)
 	{
 		// ensure we are on the section list page
-		$I->see($ManageData::$section, Generals::$pageTitle);
+		$I->see($manage_data['section'], Generals::$pageTitle);
 
 		// select items to archive
-		$I->fillField(Generals::$search_field, $EditData::$field_title);
+		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button,3);
-		$I->clickSelectList( Generals::$search_list, $EditData::$archive_identifier);
+		$I->clickSelectList( Generals::$search_list, $edit_data['archive_identifier']);
 		$I->clickAndWait(Generals::$search_button,1);
-		$I->see($EditData::$field_title, $EditData::$archive_title_col);
+		$I->see($edit_data['field_title'], $edit_data['archive_title_col']);
 
 		//count items
 		$count  = $I->GetListLength($I);
 
 		// archive items
 		$I->checkOption(Generals::$check_all_button);
-		$I->clickAndWait($EditData::$archive_button, 1);
+		$I->clickAndWait($edit_data['archive_button'], 1);
 
-		if ($ManageData::$section == 'template')
+		if ($manage_data['section'] == 'template')
 		{
 			// process confirmation popup
-			$I->seeInPopup($EditData::$archive_confirm);
+			$I->seeInPopup($edit_data['archive_confirm']);
 			$I->acceptPopup();
 		}
-		elseif ($ManageData::$section == 'campaigns')
+		elseif ($manage_data['section'] == 'campaigns')
 		{
 			// process newsletter popup
-			$I->switchToIFrame($ManageData::$popup_archive_iframe);
-			$I->see($ManageData::$popup_archive_newsletters);
-			$I->clickAndWait($ManageData::$popup_button_no, 1);
+			$I->switchToIFrame($manage_data['popup_archive_iframe']);
+			$I->see($manage_data['popup_archive_newsletters']);
+			$I->clickAndWait($manage_data['popup_button_no'], 1);
 			$I->switchToIFrame();
 		}
 
@@ -997,43 +997,43 @@ class Acceptance extends Codeception\Module
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
 		if ($count == 1)
 		{
-			$I->see($EditData::$archive_success_msg, Generals::$alert_success);
+			$I->see($edit_data['archive_success_msg'], Generals::$alert_success);
 		}
 		else
 		{
-			$I->see($EditData::$archive_success2_msg, Generals::$alert_success);
+			$I->see($edit_data['archive_success2_msg'], Generals::$alert_success);
 		}
 
 		// switch to archive
 		$I->amOnPage(Generals::$archive_url);
 		$I->see(Generals::$archive_txt, Generals::$pageTitle);
-		$I->click($EditData::$archive_tab);
+		$I->click($edit_data['archive_tab']);
 
 		// select items to delete
-		$I->fillField(Generals::$search_field, $EditData::$field_title);
+		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
 //		$I->waitForElement(Generals::$search_list, 30);
-		$I->clickSelectList( Generals::$search_list, $EditData::$delete_identifier);
+		$I->clickSelectList( Generals::$search_list, $edit_data['delete_identifier']);
 		$I->clickAndWait(Generals::$search_button,1);
-		$I->see($EditData::$field_title);
+		$I->see($edit_data['field_title']);
 
 		//count items
 		$count  = $I->GetListLength($I);
 
 		$I->checkOption(Generals::$check_all_button);
-		$I->clickAndWait($EditData::$delete_button, 1);
+		$I->clickAndWait($edit_data['delete_button'], 1);
 
-		if ($ManageData::$section == 'campaigns')
+		if ($manage_data['section'] == 'campaigns')
 		{
-			$I->switchToIFrame($ManageData::$popup_delete_iframe);
-			$I->see($ManageData::$popup_delete_newsletters);
-			$I->clickAndWait($ManageData::$popup_button_no, 1);
+			$I->switchToIFrame($manage_data['popup_delete_iframe']);
+			$I->see($manage_data['popup_delete_newsletters']);
+			$I->clickAndWait($manage_data['popup_button_no'], 1);
 			$I->switchToIFrame();
 		}
 		else
 		{
 			// process confirmation popup
-			$I->seeInPopup($EditData::$remove_confirm);
+			$I->seeInPopup($edit_data['remove_confirm']);
 			$I->acceptPopup();
 		}
 
@@ -1042,18 +1042,18 @@ class Acceptance extends Codeception\Module
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
 		if ($count == 1)
 		{
-			$I->see($EditData::$success_remove, Generals::$archive_alert_success);
+			$I->see($edit_data['success_remove'], Generals::$archive_alert_success);
 		}
 		else
 		{
-			$I->see($EditData::$success_remove2, Generals::$archive_alert_success);
+			$I->see($edit_data['success_remove2'], Generals::$archive_alert_success);
 		}
-		$I->dontSee($EditData::$field_title);
+		$I->dontSee($edit_data['field_title']);
 
-		// return to campaigns
+		// return to section
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->amOnPage($ManageData::$url);
-		$I->see($ManageData::$section, Generals::$pageTitle);
+		$I->amOnPage($manage_data['url']);
+		$I->see($manage_data['section'], Generals::$pageTitle);
 	}
 
 	/**
@@ -1158,7 +1158,6 @@ class Acceptance extends Codeception\Module
 	{
 		$credentials    = $this->_getDbCredentials();
 		$criteria       = array();
-		$values         = array();
 
 		DbHelper::resetAutoIncrement($table, $value, $criteria, $credentials);
 	}

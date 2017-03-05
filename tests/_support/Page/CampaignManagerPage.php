@@ -45,46 +45,30 @@ class CampaignManagerPage
 
 	/**
 	 * Array of sorting criteria values for this page
-	 * This array meets table headings
 	 *
 	 * @var array
 	 *
 	 * @since 2.0.0
 	 */
-	public static $sort_criteria = array(
-		'description'   => 'Campaign description',
-		'newsletters'   => '# newsletters',
-		'id'            => 'ID',
-		'title'         => 'Campaign title'
-	);
-
-	/**
-	 * Array of sorting criteria values for this page
-	 * This array select list values
-	 *
-	 * @var array
-	 *
-	 * @since 2.0.0
-	 */
-	public static $sort_criteria_select = array(
-		'description'   => 'Description',
-		'newsletters'   => '# Newsletters',
-		'id'            => 'ID',
-		'title'         => 'Title'
-	);
-
-	/**
-	 * Array of criteria to sort
-	 *
-	 * @var array
-	 *
-	 * @since 2.0.0
-	 */
-	public static $select_criteria = array(
-		'description'   => 'a.description',
-		'newsletters'   => 'newsletters',
-		'id'            => 'a.id',
-		'title'         => 'a.title'
+	public static $sort_data_array  = array(
+		'sort_criteria' => array(
+			'description'   => 'Campaign description',
+			'newsletters'   => '# newsletters',
+			'id'            => 'ID',
+			'title'         => 'Campaign title'
+		),
+		'sort_criteria_select' => array(
+			'description'   => 'Description',
+			'newsletters'   => '# Newsletters',
+			'id'            => 'ID',
+			'title'         => 'Title'
+		),
+		'select_criteria' => array(
+			'description'   => 'a.description',
+			'newsletters'   => 'newsletters',
+			'id'            => 'a.id',
+			'title'         => 'a.title'
+		),
 	);
 
 	/**
@@ -102,48 +86,55 @@ class CampaignManagerPage
 	);
 
 	// enter default 'search by' as last array element
-	public static $search_by            = array(
+	public static $search_data_array  = array(
+		'search_by'            => array(
 											".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
 											".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
 											".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-											);
-
-	public static $search_val           = array("Test", "12 A Test");
+											),
+	'search_val'           => array("Test", "12 A Test"),
 	// array of arrays: outer array per search value, inner arrays per 'search by'
-	public static $search_res           = array(array(6, 8, 4), array(1, 1, 0));
+	'search_res'           => array(array(6, 8, 4), array(1, 1, 0)),
+	);
+
 	public static $search_clear_val     = '01 Kampagne 2 A';
 
-	public static $p1_val1              = "01 Kampagne 2 A";
-	public static $p1_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p1_val_last          = "01 Kampagne 4 A";
-	public static $p1_field_last        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+	public static $pagination_data_array  = array(
+		'p1_val1'              => "01 Kampagne 2 A",
+		'p1_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p1_val_last'          => "01 Kampagne 4 A",
+		'p1_field_last'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p2_val1              = "01 Kampagne 4 B";
-	public static $p2_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p2_val_last          = "02 Kampagne 8 A";
-	public static $p2_field_last        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+		'p2_val1'              => "01 Kampagne 4 B",
+		'p2_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p2_val_last'          => "02 Kampagne 8 A",
+		'p2_field_last'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p_prev_val1          = "04 Kampagne 12 A";
-	public static $p_prev_field1        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p_prev_val_last      = "05 Kampagne 19 A Test";
-	public static $p_prev_field_last    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+		'p_prev_val1'          => "04 Kampagne 12 A",
+		'p_prev_field1'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_prev_val_last'      => "05 Kampagne 19 A Test",
+		'p_prev_field_last'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p3_val1              = "02 Kampagne 8 B";
-	public static $p3_field1            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p3_val3              = "03 Kampagne 10 B";
-	public static $p3_field3            = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]";
+		'p3_val1'              => "02 Kampagne 8 B",
+		'p3_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p3_val3'              => "03 Kampagne 10 B",
+		'p3_field3'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
 
-	public static $p_last_val1          = "05 Kampagne 19 B Test";
-	public static $p_last_field1        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]";
-	public static $p_last_val_last      = "05 Kampagne 20 B Test";
-	public static $p_last_field_last    = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[2]";
+		'p_last_val1'          => "05 Kampagne 19 B Test",
+		'p_last_field1'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_last_val_last'      => "05 Kampagne 20 B Test",
+		'p_last_field_last'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[2]",
+	);
 
-	public static $popup_archive_iframe         = 'Archive';
-	public static $popup_archive_newsletters    = 'Do you wish to archive the newsletters which are attached to the campaign, too?';
-	public static $popup_button_yes             = "html/body/form/fieldset/table/tbody/tr[2]/td/input[1]";
-	public static $popup_button_no              = "html/body/form/fieldset/table/tbody/tr[2]/td/input[2]";
+	public static $arc_del_array    = array(
+		'section'                   => 'campaigns',
+		'url'                       => '/administrator/index.php?option=com_bwpostman&view=campaigns',
+		'popup_archive_iframe'      => 'Archive',
+		'popup_archive_newsletters' => 'Do you wish to archive the newsletters which are attached to the campaign, too?',
+		'popup_button_yes'          => "html/body/form/fieldset/table/tbody/tr[2]/td/input[1]",
+		'popup_button_no'           => "html/body/form/fieldset/table/tbody/tr[2]/td/input[2]",
+		'popup_delete_iframe'       => 'Delete',
+		'popup_delete_newsletters'  => 'Do you wish to remove the according newsletters, too?',
 
-	public static $popup_delete_iframe         = 'Delete';
-	public static $popup_delete_newsletters    = 'Do you wish to remove the according newsletters, too?';
-
+	);
 }

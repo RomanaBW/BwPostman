@@ -69,7 +69,7 @@ class TestNewslettersListsCest
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);
-		$I->loopFilterList($I, new NlManage(), 'header', $columns, 'newsletters AS `a`', 0, '', 9);
+		$I->loopFilterList($I, NlManage::$sort_data_array, 'header', $columns, 'newsletters AS `a`', 0, '', 9);
 	}
 
 	/**
@@ -97,7 +97,7 @@ class TestNewslettersListsCest
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);
-		$I->loopFilterList($I, new NlManage(), '', $columns, 'newsletters AS `a`', 0, '', 9);
+		$I->loopFilterList($I, NlManage::$sort_data_array, '', $columns, 'newsletters AS `a`', 0, '', 9);
 	}
 
 	/**
@@ -205,7 +205,7 @@ class TestNewslettersListsCest
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 
-		$I->searchLoop($I, new NlManage(), false);
+		$I->searchLoop($I, NlManage::$search_data_array, false);
 
 		$I->click(Generals::$clear_button);
 		$I->see(NlManage::$search_clear_val);
@@ -258,7 +258,7 @@ class TestNewslettersListsCest
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
 
-		$I->checkPagination($I, new NlManage(), 10);
+		$I->checkPagination($I, NlManage::$pagination_data_array, 10);
 	}
 
 	/**

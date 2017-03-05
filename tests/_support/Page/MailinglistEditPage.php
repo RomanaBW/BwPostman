@@ -59,19 +59,22 @@ class MailinglistEditPage
 	public static $popup_title        = 'You have to enter a title for the mailinglist.';
 	public static $popup_description  = 'You have to enter a description for the mailinglist.';
 
-	public static $archive_button       = ".//*[@id='toolbar-archive']/button";
-	public static $archive_tab          = ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[4]/button";
-	public static $archive_identifier   = ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]";
-	public static $archive_title_col    = ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]";
-	public static $archive_success_msg  = 'The selected mailing list has been archived.';
-	public static $archive_success2_msg = 'The selected mailing lists have been archived.';
+	public static $arc_del_array     = array(
+		'field_title'          => "001 General mailing list",
+		'archive_button'       => ".//*[@id='toolbar-archive']/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[4]/button",
+		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_success_msg'  => 'The selected mailing list has been archived.',
+		'archive_success2_msg' => 'The selected mailing lists have been archived.',
 
-	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
-	public static $delete_identifier    = ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]";
-	public static $delete_title_col     = ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]";
-	public static $remove_confirm       = 'Do you wish to remove the selected mailinglist(s)?';
-	public static $success_remove       = 'The selected mailinglist has been removed.';
-	public static $success_remove2      = 'The selected mailinglists have been removed.';
+		'delete_button'        => ".//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'remove_confirm'       => 'Do you wish to remove the selected mailinglist(s)?',
+		'success_remove'       => 'The selected mailinglist has been removed.',
+		'success_remove2'      => 'The selected mailinglists have been removed.',
+	);
 
 	/**
 	 * Array of toolbar id values for this page

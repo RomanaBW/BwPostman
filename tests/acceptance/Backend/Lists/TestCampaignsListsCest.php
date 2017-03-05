@@ -69,7 +69,7 @@ class TestCampaignsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', CamManage::$query_criteria);
 		$columns    = str_replace('newsletters', $I->getQueryNumberOfNewsletters(), $columns);
-		$I->loopFilterList($I, new CamManage(), 'header', $columns, 'campaigns AS `a`', 0, '', 6);
+		$I->loopFilterList($I, CamManage::$sort_data_array, 'header', $columns, 'campaigns AS `a`', 0, '', 6);
 	}
 
 	/**
@@ -97,7 +97,7 @@ class TestCampaignsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', CamManage::$query_criteria);
 		$columns    = str_replace('newsletters', $I->getQueryNumberOfNewsletters(), $columns);
-		$I->loopFilterList($I, new CamManage(), '', $columns, 'campaigns AS `a`', 0, '', 6);
+		$I->loopFilterList($I, CamManage::$sort_data_array, '', $columns, 'campaigns AS `a`', 0, '', 6);
 	}
 
 	/**
@@ -121,7 +121,7 @@ class TestCampaignsListsCest
 		$I->wantTo("Search Campaigns");
 		$I->amOnPage(CamManage::$url);
 
-		$I->searchLoop($I, new CamManage(), true);
+		$I->searchLoop($I, CamManage::$search_data_array, true);
 
 		$I->click(Generals::$clear_button);
 		$I->see(CamManage::$search_clear_val);
@@ -174,7 +174,7 @@ class TestCampaignsListsCest
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5);
 
-		$I->checkPagination($I, new CamManage(), 5);
+		$I->checkPagination($I, CamManage::$pagination_data_array, 5);
 	}
 
 	/**

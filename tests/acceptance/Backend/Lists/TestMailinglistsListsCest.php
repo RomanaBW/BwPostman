@@ -119,7 +119,7 @@ class TestMailinglistsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', MlManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, new MlManage(), 'header', $columns, 'mailinglists AS `a`', 0, '', 8);
+		$I->loopFilterList($I, MlManage::$sort_data_array, 'header', $columns, 'mailinglists AS `a`', 0, '', 8);
 	}
 
 	/**
@@ -147,7 +147,7 @@ class TestMailinglistsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', MlManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, new MlManage(), '', $columns, 'mailinglists AS `a`', 0, '', 8);
+		$I->loopFilterList($I, MlManage::$sort_data_array, '', $columns, 'mailinglists AS `a`', 0, '', 8);
 	}
 
 	/**
@@ -219,7 +219,7 @@ class TestMailinglistsListsCest
 		$I->wantTo("Search Mailinglists");
 		$I->amOnPage(MlManage::$url);
 
-		$I->searchLoop($I, new MlManage(), true);
+		$I->searchLoop($I, MlManage::$search_data_array, true);
 
 		$I->click(Generals::$clear_button);
 		$I->see(MlManage::$search_clear_val);
@@ -272,7 +272,7 @@ class TestMailinglistsListsCest
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
 
-		$I->checkPagination($I, new MlManage(), 10);
+		$I->checkPagination($I, MlManage::$pagination_data_array, 10);
 	}
 
 	/**

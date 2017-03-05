@@ -116,7 +116,7 @@ class TestTemplatesListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', TplManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, new TplManage(), 'header', $columns, 'templates AS `a`', 0, '', 9);
+		$I->loopFilterList($I, TplManage::$sort_data_array, 'header', $columns, 'templates AS `a`', 0, '', 9);
 	}
 
 	/**
@@ -144,7 +144,7 @@ class TestTemplatesListsCest
 		// loop over sorting criterion     .//*[@id='list_fullordering_chzn']/div/ul/li[4]
 		$columns    = implode(', ', TplManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, new TplManage(), '', $columns, 'templates AS `a`', 0, '', 9);
+		$I->loopFilterList($I, TplManage::$sort_data_array, '', $columns, 'templates AS `a`', 0, '', 9);
 	}
 
 	/**
@@ -227,7 +227,7 @@ class TestTemplatesListsCest
 		$I->wantTo("Search Templates");
 		$I->amOnPage(TplManage::$url);
 
-		$I->searchLoop($I, new TplManage(), true);
+		$I->searchLoop($I, TplManage::$search_data_array, true);
 
 		$I->click(Generals::$clear_button);
 		$I->see(TplManage::$search_clear_val);
@@ -280,7 +280,7 @@ class TestTemplatesListsCest
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5);
 
-		$I->checkPagination($I, new TplManage(), 5);
+		$I->checkPagination($I, TplManage::$pagination_data_array, 5);
 	}
 
 	/**

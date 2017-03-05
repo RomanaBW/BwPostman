@@ -114,7 +114,7 @@ class TestCampaignsDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
-		$I->HelperArcDelItems($I, new CamManage(), new CamEdit());
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
 		$I->see('Campaigns', Generals::$pageTitle);
 	}
 
@@ -175,7 +175,7 @@ class TestCampaignsDetailsCest
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->see(CamEdit::$field_title, CamEdit::$title_col);
 
-		$I->HelperArcDelItems($I, new CamManage(), new CamEdit());
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
 		$I->see('Campaigns', Generals::$pageTitle);
 	}
 
@@ -219,7 +219,7 @@ class TestCampaignsDetailsCest
 		$I->click(CamEdit::$toolbar['Cancel']);
 		$I->see("Campaigns", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new CamManage(), new CamEdit());
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
 		$I->see('Campaigns', Generals::$pageTitle);
 	}
 

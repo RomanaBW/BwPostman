@@ -71,7 +71,7 @@ class TestSubscribersListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', SubsManage::$query_criteria);
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-		$I->loopFilterList($I, new SubsManage(), 'header', $columns, 'subscribers AS `a`', 0, '1', 10);
+		$I->loopFilterList($I, SubsManage::$sort_data_array, 'header', $columns, 'subscribers AS `a`', 0, '1', 10);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class TestSubscribersListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', SubsManage::$query_criteria);
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-		$I->loopFilterList($I, new SubsManage(), '', $columns, 'subscribers AS `a`', 0, '1', 10);
+		$I->loopFilterList($I, SubsManage::$sort_data_array, '', $columns, 'subscribers AS `a`', 0, '1', 10);
 	}
 
 	/**
@@ -192,7 +192,7 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
-		$I->searchLoop($I, new SubsManage(), true);
+		$I->searchLoop($I, SubsManage::$search_data_array, true);
 
 		$I->click(Generals::$clear_button);
 		$I->see(SubsManage::$search_clear_val);
@@ -245,7 +245,7 @@ class TestSubscribersListsCest
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
 
-		$I->checkPagination($I, new SubsManage(), 10);
+		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
 	}
 
 	/**

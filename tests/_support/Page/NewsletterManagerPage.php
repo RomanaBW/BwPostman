@@ -33,7 +33,7 @@ class NewsletterManagerPage
 	 * @since   2.0.0
 	 */
     public static $url      = '/administrator/index.php?option=com_bwpostman&view=newsletters';
-	public static $section  = 'newsletter';
+//	public static $section  = 'newsletter';
 	public static $wait_db  = 1;
 
     /*
@@ -45,57 +45,44 @@ class NewsletterManagerPage
 	public static $tab1             = ".//*[@id='j-main-container']/div[2]/ul/li[1]/button";
 	public static $tab2             = ".//*[@id='j-main-container']/div[2]/ul/li[2]/button";
 	public static $tab3             = ".//*[@id='j-main-container']/div[2]/ul/li[3]/button";
-	/**
-	 * Array of sorting criteria values for this page
-	 * This array meets table headings
-	 *
-	 * @var array
-	 *
-	 * @since 2.0.0
-	 */
-	public static $sort_criteria = array(
-		'attachment'    => 'Attachment',
-		'subject'       => 'Subject',
-		'description'   => 'Description',
-		'modified_time' => 'Last modification date',
-		'authors'       => 'Author',
-		'campaign_id'   => 'Campaign',
-		'id'            => 'ID',
-	);
 
 	/**
 	 * Array of sorting criteria values for this page
-	 * This array select list values
 	 *
 	 * @var array
 	 *
 	 * @since 2.0.0
 	 */
-	public static $sort_criteria_select = array(
-		'attachment'    => 'Attachment',
-		'subject'       => 'Subject',
-		'description'   => 'Description',
-		'modified_time' => 'Last modified',
-		'authors'       => 'Author',
-		'campaign_id'   => 'Campaign',
-		'id'            => 'ID',
-	);
+	public static $sort_data_array  = array(
+		'sort_criteria' => array(
+			'attachment'    => 'Attachment',
+			'subject'       => 'Subject',
+			'description'   => 'Description',
+			'modified_time' => 'Last modification date',
+			'authors'       => 'Author',
+			'campaign_id'   => 'Campaign',
+			'id'            => 'ID',
+		),
 
-	/**
-	 * Array of criteria to sort
-	 *
-	 * @var array
-	 *
-	 * @since 2.0.0
-	 */
-	public static $select_criteria = array(
-		'attachment'    => 'a.attachment',
-		'subject'       => 'a.subject',
-		'description'   => 'a.description',
-		'modified_time' => 'a.modified_time',
-		'authors'       => 'authors',
-		'campaign_id'   => 'campaign_id',
-		'id'            => 'a.id',
+		'sort_criteria_select' => array(
+			'attachment'    => 'Attachment',
+			'subject'       => 'Subject',
+			'description'   => 'Description',
+			'modified_time' => 'Last modified',
+			'authors'       => 'Author',
+			'campaign_id'   => 'Campaign',
+			'id'            => 'ID',
+		),
+
+		'select_criteria' => array(
+			'attachment'    => 'a.attachment',
+			'subject'       => 'a.subject',
+			'description'   => 'a.description',
+			'modified_time' => 'a.modified_time',
+			'authors'       => 'authors',
+			'campaign_id'   => 'campaign_id',
+			'id'            => 'a.id',
+		),
 	);
 
 	/**
@@ -112,16 +99,6 @@ class NewsletterManagerPage
 		'modified_time' => 'a.modified_time',
 		'id'            => 'a.id',
 	);
-
-	// enter default 'search by' as last array element
-	public static $search_by            = array(
-		".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-		".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-		".//*[@id='filter_search_filter_chzn']/div/ul/li[4]",
-		".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-		".//*[@id='filter_search_filter_chzn']/div/ul/li[6]",
-		);
 
 	// Filter authors
 	public static $authors_col                  = ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[6]";
@@ -140,9 +117,21 @@ class NewsletterManagerPage
 	public static $filter_campaign_without       = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[text()='- Without campaign -']";
 	public static $filter_campaign_cam           = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[3]";
 
-	public static $search_val           = array("Test Newsletter single 1", "15", "About your home page");
-	// array of arrays: outer array per search value, inner arrays results per 'search by'
-	public static $search_res           = array(array(11, 0, 11, 0, 0, 0), array(2, 2, 2, 0, 0, 0), array(0, 0, 0, 5, 5, 5));
+	public static $search_data_array  = array(
+		// enter default 'search by' as last array element
+		'search_by'            => array(
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[4]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[6]",
+		),
+		'search_val'           => array("Test Newsletter single 1", "15", "About your home page"),
+		// array of arrays: outer array per search value, inner arrays results per 'search by'
+		'search_res'           => array(array(11, 0, 11, 0, 0, 0), array(2, 2, 2, 0, 0, 0), array(0, 0, 0, 5, 5, 5)),
+	);
+
 	public static $search_clear_val     = 'Newsletter for testing 1';
 
 	public static $filter_cam_result   = array(
@@ -174,29 +163,35 @@ class NewsletterManagerPage
 											'Newsletter for testing 4',
 										);
 
-	public static $p1_val1              = "Newsletter for testing 1";
-	public static $p1_field1            = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
-	public static $p1_val_last          = "Newsletter for testing 18";
-	public static $p1_field_last        = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]";
+	public static $pagination_data_array  = array(
+		'pp1_val1'              => "Newsletter for testing 1",
+		'pp1_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'pp1_val_last'          => "Newsletter for testing 18",
+		'pp1_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
 
-	public static $p2_val1              = "Newsletter for testing 19";
-	public static $p2_field1            = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
-	public static $p2_val_last          = "Newsletter for testing 4";
-	public static $p2_field_last        = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]";
+		'pp2_val1'              => "Newsletter for testing 19",
+		'pp2_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'pp2_val_last'          => "Newsletter for testing 4",
+		'pp2_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
 
-	public static $p3_val1              = "Newsletter for testing 5";
-	public static $p3_field1            = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
-	public static $p3_val3              = "Test Newsletter single 1";
-	public static $p3_field3            = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]";
+		'pp3_val1'              => "Newsletter for testing 5",
+		'pp3_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'pp3_val3'              => "Test Newsletter single 1",
+		'pp3_field3'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
 
-	public static $p_prev_val1          = "Test Newsletter single 20";
-	public static $p_prev_field1        = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
-	public static $p_prev_val_last      = "Test Newsletter single 6";
-	public static $p_prev_field_last    = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]";
+		'pp_prev_val1'          => "Test Newsletter single 20",
+		'pp_prev_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'pp_prev_val_last'      => "Test Newsletter single 6",
+		'pp_prev_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
 
-	public static $p_last_val1          = "Test Newsletter single 7";
-	public static $p_last_field1        = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
-	public static $p_last_val_last      = "Test Newsletter single 9";
-	public static $p_last_field_last    = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[3]/td[3]";
+		'pp_last_val1'          => "Test Newsletter single 7",
+		'pp_last_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'pp_last_val_last'      => "Test Newsletter single 9",
+		'pp_last_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[3]/td[3]",
+	);
 
+	public static $arc_del_array    = array(
+		'section'   => 'newsletter',
+		'url'   => '/administrator/index.php?option=com_bwpostman&view=newsletters',
+	);
 }

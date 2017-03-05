@@ -1,6 +1,9 @@
 <?php
 namespace Page;
 
+use Page\NewsletterManagerPage as NlManage;
+use Page\Generals as Generals;
+
 /**
  * Class NewsletterEditPage
  *
@@ -141,19 +144,22 @@ class NewsletterEditPage
 
 	public static $field_title          = "1. Simple Single Test Newsletter";
 
-	public static $archive_button       = ".//*[@id='toolbar-archive']/button";
-	public static $archive_tab          = ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[1]/button";
-	public static $archive_identifier   = ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]";
-	public static $archive_title_col    = ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[3]";
-	public static $archive_success_msg  = 'The selected newsletter has been archived.';
-	public static $archive_success2_msg = 'The selected newsletters have been archived.';
+	public static $arc_del_array     = array(
+		'field_title'          => "1. Simple Single Test Newsletter",
+		'archive_button'       => ".//*[@id='toolbar-archive']/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[1]/button",
+		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'archive_title_col'    => ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[3]",
+		'archive_success_msg'  => 'The selected newsletter has been archived.',
+		'archive_success2_msg' => 'The selected newsletters have been archived.',
 
-	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
-	public static $delete_identifier    = ".//*[@id='filter_search_filter_chzn']/div/ul/li[2]";
-	public static $delete_title_col     = ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[3]";
-	public static $remove_confirm       = 'Do you wish to remove the selected newsletter(s)?';
-	public static $success_remove       = 'The selected newsletter has been removed.';
-	public static $success_remove2      = 'The selected newsletters have been removed.';
+		'delete_button'        => ".//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
+		'delete_title_col'     => ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[3]",
+		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
+		'success_remove'       => 'The selected newsletter has been removed.',
+		'success_remove2'      => 'The selected newsletters have been removed.',
+	);
 
 	/**
 	 * Array of toolbar id values for this page
@@ -179,4 +185,153 @@ class NewsletterEditPage
 	public static $selected_content         = ".//*[@id='jform_selected_content']/option[%s]";
 	public static $add_content              = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[1]";
 	public static $remove_content           = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[2]";
+
+	/**
+	 * Test method to copy a newsletter
+	 *
+	 * @param   \AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function CopyNewsletter(\AcceptanceTester $I)
+	{
+		$I->wantTo("Copy a newsletter");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+		self::fillFormSimple($I);
+
+		$I->click(self::$toolbar['Save & Close']);
+		self::checkSuccess($I);
+		$I->see('Newsletters', Generals::$pageTitle);
+
+		$I->click(Generals::$first_list_entry);
+		$I->clickAndWait(Generals::$toolbar['Duplicate'], 1);
+		$I->waitForText(self::$duplicate_prefix . self::$field_subject . "'", 30);
+		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, self::$arc_del_array);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
+	 * Method to check success for filling form
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @group   component
+	 *
+	 * @since   2.0.0
+	 */
+	public static function checkSuccess(\AcceptanceTester $I)
+	{
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(self::$success_saved, Generals::$alert_msg);
+
+		$I->see(self::$field_subject, self::$success_inList_subject);
+		$I->see(self::$field_description, self::$success_inList_desc);
+		$I->see(Generals::$admin['author'], self::$success_inList_author);
+	}
+
+	/**
+	 * Method to fill form without campaign ( that is: selecting other recipients) without check of required fields
+	 * This method simply fills all fields, required or not
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @group   component
+	 *
+	 * @return string   $content_title  title of content
+	 *
+	 * @since   2.0.0
+	 */
+	public static function fillFormSimple(\AcceptanceTester $I)
+	{
+		$I->fillField(self::$from_name, self::$field_from_name);
+		$I->fillField(self::$from_email, self::$field_from_email);
+		$I->fillField(self::$reply_email, self::$field_reply_email);
+		$I->fillField(self::$subject, self::$field_subject);
+		$I->fillField(self::$description, self::$field_description);
+
+		//select attachment
+		self::selectAttachment($I);
+
+		// fill publish and unpublish
+		self::fillPublishedDate($I);
+
+		$I->scrollTo(self::$legend_templates);
+		$I->click(self::$template_html);
+		$I->click(self::$template_text);
+//		$I->wait(15);
+
+		self::selectRecipients($I);
+
+		// add content
+		$I->scrollTo(self::$legend_content);
+		$I->doubleClick(sprintf(self::$available_content, 2));
+		$I->wait(2);
+		$content_title = $I->grabTextFrom(sprintf(self::$selected_content, 1));
+		$I->see($content_title, self::$selected_content_list);
+
+		return $content_title;
+	}
+
+	/**
+	 * Method to select attachment for newsletter
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @group   component
+	 *
+	 * @since   2.0.0
+	 */
+	public static function selectAttachment(\AcceptanceTester $I)
+	{
+		$I->clickAndWait(self::$attachment_select_button, 1);
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->switchToIFrame(Generals::$image_frame);
+		$I->clickAndWait(self::$attachment_select, 1);
+		$I->switchToIFrame();
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->clickAndWait(self::$attachment_insert, 1);
+		$I->switchToIFrame();
+	}
+
+	/**
+	 * Method to select recipients for newsletter
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @group   component
+	 *
+	 * @since   2.0.0
+	 */
+	public static function selectRecipients(\AcceptanceTester $I)
+	{
+		$I->scrollTo(self::$legend_recipients);
+		$I->click(sprintf(Generals::$mls_accessible, 2));
+//		$I->click(sprintf(Generals::$mls_nonaccessible, 3));
+//		$I->click(sprintf(Generals::$mls_internal, 4));
+	}
+
+	/**
+	 * Method to fill published and unpublished fields
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @group   component
+	 *
+	 * @since   2.0.0
+	 */
+	public static function fillPublishedDate(\AcceptanceTester $I)
+	{
+		$now_up     = new \DateTime('+10 minutes', new \DateTimeZone('Europe/Berlin'));
+		$now_down   = new \DateTime('+11 minutes', new \DateTimeZone('Europe/Berlin'));
+
+		$I->fillField(self::$publish_up, $now_up->format('Y-m-j H:i'));
+		$I->fillField(self::$publish_down, $now_down->format('Y-m-j H:i'));
+	}
 }

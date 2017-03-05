@@ -1,8 +1,12 @@
 <?php
+namespace Backend\Details;
+
+
 use Page\Generals as Generals;
 use Page\NewsletterEditPage as NlEdit;
 use Page\NewsletterManagerPage as NlManage;
 use Page\MainviewPage as MainView;
+use Page\Login as LoginPage;
 
 // @ToDo: Check "entered" values for publish_up/_down, set usable values (diff between both values) and check result in FE
 
@@ -34,7 +38,7 @@ class TestNewslettersDetailsCest
 	/**
 	 * Test method to login into backend
 	 *
-	 * @param   \Page\Login                 $loginPage
+	 * @param   LoginPage                 $loginPage
 	 *
 	 * @group   component
 	 * @group   005_be_details
@@ -43,7 +47,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function _login(\Page\Login $loginPage)
+	public function _login(LoginPage $loginPage)
 	{
 		$loginPage->logIntoBackend(Generals::$admin);
 	}
@@ -51,7 +55,7 @@ class TestNewslettersDetailsCest
 	/**
 	 * Test method to create a single newsletter from main view and cancel creation
 	 *
-	 * @param   AcceptanceTester            $I
+	 * @param   \AcceptanceTester            $I
 	 *
 	 * @before  _login
 	 *
@@ -64,7 +68,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneNewsletterCancelMainView(AcceptanceTester $I)
+	public function CreateOneNewsletterCancelMainView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter and cancel from main view");
 		$I->amOnPage(MainView::$url);
@@ -72,7 +76,7 @@ class TestNewslettersDetailsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addNewsletterButton);
 
-		$this->_fillFormSimple($I);
+		NlEdit::fillFormSimple($I);
  		$I->clickAndWait(NlEdit::$toolbar['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
@@ -81,7 +85,7 @@ class TestNewslettersDetailsCest
 	/**
 	 * Test method to create a single newsletter from main view, save it and go back to main view
 	 *
-	 * @param   AcceptanceTester            $I
+	 * @param   \AcceptanceTester            $I
 	 *
 	 * @before  _login
 	 *
@@ -94,7 +98,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneNewsletterCompleteMainView(AcceptanceTester $I)
+	public function CreateOneNewsletterCompleteMainView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter, archive and delete from main view");
 		$I->amOnPage(MainView::$url);
@@ -105,16 +109,16 @@ class TestNewslettersDetailsCest
 		$this->_fillFormSimpleWithCampaign($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		$this->_checkSuccess($I);
+		NlEdit::checkSuccess($I);
 
-		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
 	/**
 	 * Test method to create a single Newsletter from list view and cancel creation
 	 *
-	 * @param   AcceptanceTester                $I
+	 * @param   \AcceptanceTester                $I
 	 *
 	 * @before  _login
 	 *
@@ -127,7 +131,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneNewsletterCancelListView(AcceptanceTester $I)
+	public function CreateOneNewsletterCancelListView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter cancel list view");
 		$I->amOnPage(NlManage::$url);
@@ -143,7 +147,7 @@ class TestNewslettersDetailsCest
 	/**
 	 * Test method to create a single Newsletter from list view, save it and go back to list view
 	 *
-	 * @param   AcceptanceTester                $I
+	 * @param   \AcceptanceTester                $I
 	 *
 	 * @before  _login
 	 *
@@ -156,21 +160,21 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneNewsletterListView(AcceptanceTester $I)
+	public function CreateOneNewsletterListView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter list view");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$this->_checkSuccess($I);
+		NlEdit::checkSuccess($I);
 
-		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
@@ -178,7 +182,7 @@ class TestNewslettersDetailsCest
 	 * Test method to create multiple newsletters from list view
 	 * this is only to create automated some test data!!!!!
 	 *
-	 * @param   AcceptanceTester                $I
+	 * @param   \AcceptanceTester                $I
 	 *
 	 * @before  _login
 	 *
@@ -191,7 +195,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-/*	public function CreateMultipleNewslettersListView(AcceptanceTester $I)
+/*	public function CreateMultipleNewslettersListView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create multiple Newsletters from list view");
 		$I->amOnPage(NlManage::$url);
@@ -245,7 +249,7 @@ class TestNewslettersDetailsCest
 	/**
 	 * Test method to create same single Newsletter twice from main view
 	 *
-	 * @param   AcceptanceTester                $I
+	 * @param   \AcceptanceTester                $I
 	 *
 	 * @before  _login
 	 *
@@ -255,39 +259,39 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateNewsletterTwiceListView(AcceptanceTester $I)
+	public function CreateNewsletterTwiceListView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create Newsletter twice list view");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		$this->_checkSuccess($I);
+		NlEdit::checkSuccess($I);
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		$this->_checkSuccess($I);
+		NlEdit::checkSuccess($I);
 
 		$I->see(Generals::$alert_warn_txt, Generals::$alert_header);
 		$I->see(sprintf(NlEdit::$warn_save, NlEdit::$field_subject), Generals::$alert);
 
 		$I->see("Newsletters", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
 	/**
 	 * Test method to copy a newsletter
 	 *
-	 * @param   AcceptanceTester                $I
+	 * @param   \AcceptanceTester                $I
 	 *
 	 * @before  _login
 	 *
@@ -297,16 +301,17 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CopyNewsletter(AcceptanceTester $I)
+	public function CopyNewsletter(\AcceptanceTester $I)
 	{
-		$I->wantTo("Copy a newsletter");
+		NlEdit::copyNewsletter($I);
+/*		$I->wantTo("Copy a newsletter");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
-		$this->_fillFormSimple($I);
+		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		$this->_checkSuccess($I);
+		NlEdit::checkSuccess($I);
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(Generals::$first_list_entry);
@@ -314,14 +319,14 @@ class TestNewslettersDetailsCest
 		$I->waitForText(NlEdit::$duplicate_prefix . NlEdit::$field_subject . "'", 30);
 		$I->see(NlEdit::$duplicate_prefix . NlEdit::$field_subject . "'");
 
-		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
 		$I->see('Newsletters', Generals::$pageTitle);
-	}
+*/	}
 
 	/**
 	 * Test method to create send newsletter to test recipients
 	 *
-	 * @param   AcceptanceTester                $I
+	 * @param   \AcceptanceTester                $I
 	 *
 	 * @before  _login
 	 *
@@ -331,14 +336,14 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendNewsletterToTestrecipients(AcceptanceTester $I)
+	public function SendNewsletterToTestrecipients(\AcceptanceTester $I)
 	{
 		$I->wantTo("Send newsletter to test recipients");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		$content_title = $this->_fillFormSimple($I);
+		$content_title = NlEdit::fillFormSimple($I);
 		$I->wait(2);
 
 		$start  = strpos($content_title, "=") + 2;
@@ -391,14 +396,14 @@ class TestNewslettersDetailsCest
 
 		$I->see("Newsletters", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
 	/**
 	 * Test method to create copy newsletter and send to real recipients
 	 *
-	 * @param   AcceptanceTester                $I
+	 * @param   \AcceptanceTester                $I
 	 *
 	 * @before  _login
 	 *
@@ -408,13 +413,13 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendNewsletterToRealRecipients(AcceptanceTester $I)
+	public function SendNewsletterToRealRecipients(\AcceptanceTester $I)
 	{
 		$I->wantTo("Send a newsletter to real recipients");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
-		$this->_fillFormSimple($I);
+		NlEdit::fillFormSimple($I);
 		$I->wait(2);
 
 		// change to tab 2
@@ -422,7 +427,7 @@ class TestNewslettersDetailsCest
 //		$I->clickAndWait(NlEdit::$tab2, 3);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		$this->_checkSuccess($I);
+		NlEdit::checkSuccess($I);
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(NlEdit::$mark_to_send);
@@ -443,15 +448,15 @@ class TestNewslettersDetailsCest
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->clickAndWait(NlManage::$tab2, 1);
 
-		$I->HelperArcDelItems($I, new NlManage(), new NlEdit());
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
 		/**
 	 * Test method to logout from backend
 	 *
-	 * @param   AcceptanceTester    $I
-	 * @param   \Page\Login         $loginPage
+	 * @param   \AcceptanceTester    $I
+	 * @param   LoginPage            $loginPage
 	 *
 	 * @group   component
 	 *
@@ -459,7 +464,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
+	public function _logout(\AcceptanceTester $I, LoginPage $loginPage)
 	{
 		$loginPage->logoutFromBackend($I);
 	}
@@ -467,72 +472,29 @@ class TestNewslettersDetailsCest
 	/**
 	 * Test method to logout from backend
 	 *
-	 * @param   AcceptanceTester    $I
+	 * @param   \AcceptanceTester    $I
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function _failed (AcceptanceTester $I){
+	public function _failed (\AcceptanceTester $I){
 
-	}
-
-	/**
-	 * Method to fill form without campaign ( that is: selecting other recipients) without check of required fields
-	 * This method simply fills all fields, required or not
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
-	 *
-	 * @return string   $content_title  title of content
-	 *
-	 * @since   2.0.0
-	 */
-	private function _fillFormSimple(AcceptanceTester $I)
-	{
-		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
-		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
-		$I->fillField(NlEdit::$reply_email, NlEdit::$field_reply_email);
-		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
-		$I->fillField(NlEdit::$description, NlEdit::$field_description);
-
-		//select attachment
-		$this->_selectAttachment($I);
-
-		// fill publish and unpublish
-		$this->_fillPublishedDate($I);
-
-		$I->scrollTo(NlEdit::$legend_templates);
-		$I->click(NlEdit::$template_html);
-		$I->click(NlEdit::$template_text);
-//		$I->wait(15);
-
-		$this->_selectRecipients($I);
-
-		// add content
-		$I->scrollTo(NlEdit::$legend_content);
-		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
-		$I->wait(2);
-		$content_title = $I->grabTextFrom(sprintf(NlEdit::$selected_content, 1));
-		$I->see($content_title, NlEdit::$selected_content_list);
-
-		return $content_title;
 	}
 
 	/**
 	 * Method to fill form with campaign (no other recipients to select) without check of required fields
 	 * This method simply fills all fields, required or not
 	 *
-	 * @param AcceptanceTester $I
+	 * @param \AcceptanceTester $I
 	 *
 	 * @group   component
 	 *
-	 * @return string   $content_title  title of content
+	 * @return void
 	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormSimpleWithCampaign(AcceptanceTester $I)
+	private function _fillFormSimpleWithCampaign(\AcceptanceTester $I)
 	{
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
@@ -545,10 +507,10 @@ class TestNewslettersDetailsCest
 		$I->dontSeeElement(NlEdit::$legend_recipients);
 
 		//select attachment
-		$this->_selectAttachment($I);
+		NlEdit::selectAttachment($I);
 
 		// fill publish and unpublish
-		$this->_fillPublishedDate($I);
+		NlEdit::fillPublishedDate($I);
 
 		$I->scrollTo(NlEdit::$legend_templates);
 		$I->click(NlEdit::$template_html);
@@ -567,13 +529,13 @@ class TestNewslettersDetailsCest
 	 * to check if the related messages appears
 	 * This method also checks removing content
 	 *
-	 * @param AcceptanceTester $I
+	 * @param \AcceptanceTester $I
 	 *
 	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormExtended(AcceptanceTester $I)
+	private function _fillFormExtended(\AcceptanceTester $I)
 	{
 		// omit recipients
 		$I->click(NlEdit::$toolbar['Save']);
@@ -581,7 +543,7 @@ class TestNewslettersDetailsCest
 		$I->acceptPopup();
 
 		// always select recipients, without that other warnings don't appear
-		$this->_selectRecipients($I);
+		NlEdit::selectRecipients($I);
 
 		// omit from_name
 		$I->scrollTo(NlEdit::$legend_general);
@@ -594,7 +556,7 @@ class TestNewslettersDetailsCest
 		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_msg);
 
 		// omit from_email
-		$this->_selectRecipients($I);
+		NlEdit::selectRecipients($I);
 		$I->scrollTo(NlEdit::$legend_general);
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, '');
@@ -605,7 +567,7 @@ class TestNewslettersDetailsCest
 		$I->see(NlEdit::$msg_required_sender_email, Generals::$alert_msg);
 
 		// omit reply_email
-		$this->_selectRecipients($I);
+		NlEdit::selectRecipients($I);
 		$I->scrollTo(NlEdit::$legend_general);
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_reply_email);
@@ -617,7 +579,7 @@ class TestNewslettersDetailsCest
 		$I->see(NlEdit::$msg_required_replyto_email, Generals::$alert_msg);
 
 		// omit subject
-		$this->_selectRecipients($I);
+		NlEdit::selectRecipients($I);
 		$I->scrollTo(NlEdit::$legend_general);
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
@@ -629,7 +591,7 @@ class TestNewslettersDetailsCest
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_subject, Generals::$alert_msg);
 
-		$this->_selectRecipients($I);
+		NlEdit::selectRecipients($I);
 		$I->scrollTo(NlEdit::$legend_general);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
 		$I->fillField(NlEdit::$reply_email, NlEdit::$field_reply_email);
@@ -638,10 +600,10 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$description, 1);
 
 		//select attachment
-		$this->_selectAttachment($I);
+		NlEdit::selectAttachment($I);
 
 		// fill publish and unpublish
-		$this->_fillPublishedDate($I);
+		NlEdit::fillPublishedDate($I);
 
 		$I->scrollTo(NlEdit::$legend_templates);
 		$I->wait(1);
@@ -668,36 +630,17 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Method to select attachment for newsletter
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
-	 *
-	 * @since   2.0.0
-	 */
-	private function _selectAttachment(AcceptanceTester $I)
-	{
-		$I->clickAndWait(NlEdit::$attachment_select_button, 1);
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->switchToIFrame(Generals::$image_frame);
-		$I->clickAndWait(NlEdit::$attachment_select, 1);
-		$I->switchToIFrame();
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->clickAndWait(NlEdit::$attachment_insert, 1);
-		$I->switchToIFrame();
-	}
-
-	/**
 	 * Method to check success for filling form
 	 *
-	 * @param AcceptanceTester $I
+	 * @param \AcceptanceTester $I
 	 *
 	 * @group   component
 	 *
+	 * @return void
+	 *
 	 * @since   2.0.0
 	 */
-	private function _checkSuccess(AcceptanceTester $I)
+/*	private function _checkSuccess(\AcceptanceTester $I)
 	{
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
@@ -707,39 +650,5 @@ class TestNewslettersDetailsCest
 		$I->see(NlEdit::$field_description, NlEdit::$success_inList_desc);
 		$I->see(Generals::$admin['author'], NlEdit::$success_inList_author);
 	}
-
-	/**
-	 * Method to select recipients for newsletter
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
-	 *
-	 * @since   2.0.0
-	 */
-	private function _selectRecipients(AcceptanceTester $I)
-	{
-		$I->scrollTo(NlEdit::$legend_recipients);
-		$I->click(sprintf(Generals::$mls_accessible, 2));
-//		$I->click(sprintf(Generals::$mls_nonaccessible, 3));
-//		$I->click(sprintf(Generals::$mls_internal, 4));
-	}
-
-	/**
-	 * Method to fill published and unpublished fields
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
-	 *
-	 * @since   2.0.0
-	 */
-	private function _fillPublishedDate(AcceptanceTester $I)
-	{
-		$now_up     = new DateTime('+10 minutes', new DateTimeZone('Europe/Berlin'));
-		$now_down   = new DateTime('+11 minutes', new DateTimeZone('Europe/Berlin'));
-
-		$I->fillField(NlEdit::$publish_up, $now_up->format('Y-m-j H:i'));
-		$I->fillField(NlEdit::$publish_down, $now_down->format('Y-m-j H:i'));
-	}
+*/
 }

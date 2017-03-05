@@ -74,7 +74,6 @@ class OptionsPage
 	public static $perm_slider_BwPostmanEditor               = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanEditor')]";
 
 	public static $perm_slider_BwPostmanManager              = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanManager')]";
-	public static $perm_slider_BwPostmanSectionAdmin         = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanSectionAdmin')]";
 
 	public static $perm_slider_BwPostmanCampaignAdmin        = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanCampaignAdmin')]";
 	public static $perm_slider_BwPostmanCampaignPublisher    = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanCampaignPublisher')]";
@@ -128,31 +127,6 @@ class OptionsPage
 												),
 												'parent'    => 'Manager',
 											),
-
-	                                        'BwPostmanSectionAdmin'
-	                                        => array (
-		                                        'permissions'=> array(
-			                                        'core.admin' => 'Denied',
-			                                        'core.manage' => 'Inherited',
-			                                        'bwpm.create' => 'Inherited',
-			                                        'bwpm.edit' => 'Inherited',
-			                                        'bwpm.edit.own' => 'Inherited',
-			                                        'bwpm.edit.state' => 'Inherited',
-			                                        'bwpm.archive' => 'Inherited',
-			                                        'bwpm.restore' => 'Inherited',
-			                                        'bwpm.delete' => 'Inherited',
-			                                        'bwpm.send' => 'Inherited',
-			                                        'bwpm.view.newsletter' => 'Inherited',
-			                                        'bwpm.view.subscriber' => 'Inherited',
-			                                        'bwpm.view.campaign' => 'Inherited',
-			                                        'bwpm.view.mailinglist' => 'Inherited',
-			                                        'bwpm.view.template' => 'Inherited',
-			                                        'bwpm.view.archive' => 'Inherited',
-			                                        'bwpm.view.manage' => 'Denied',
-			                                        'bwpm.view.maintenance' => 'Denied',
-		                                        ),
-		                                        'parent'    => 'BwPostmanAdmin',
-	                                        ),
 
 	                                        'BwPostmanManager'
 	                                        => array (
@@ -632,27 +606,6 @@ class OptionsPage
 												'bwpm.view.manage' => 'Allowed',
 												'bwpm.view.maintenance' => 'Allowed',
 											),
-	                                        'BwPostmanSectionAdmin'
-	                                        => array(
-		                                        'core.admin' => 'Allowed (Inherited)',
-		                                        'core.manage' => 'Allowed (Inherited)',
-		                                        'bwpm.create' => 'Allowed (Inherited)',
-		                                        'bwpm.edit' => 'Allowed (Inherited)',
-		                                        'bwpm.edit.own' => 'Allowed (Inherited)',
-		                                        'bwpm.edit.state' => 'Allowed (Inherited)',
-		                                        'bwpm.archive' => 'Allowed (Inherited)',
-		                                        'bwpm.restore' => 'Allowed (Inherited)',
-		                                        'bwpm.delete' => 'Allowed (Inherited)',
-		                                        'bwpm.send' => 'Allowed (Inherited)',
-		                                        'bwpm.view.newsletter' => 'Allowed (Inherited)',
-		                                        'bwpm.view.subscriber' => 'Allowed (Inherited)',
-		                                        'bwpm.view.campaign' => 'Allowed (Inherited)',
-		                                        'bwpm.view.mailinglist' => 'Allowed (Inherited)',
-		                                        'bwpm.view.template' => 'Allowed (Inherited)',
-		                                        'bwpm.view.archive' => 'Allowed (Inherited)',
-		                                        'bwpm.view.manage' => 'Not Allowed',
-		                                        'bwpm.view.maintenance' => 'Not Allowed',
-	                                        ),
 	                                        'BwPostmanManager'
 	                                        => array(
 		                                        'core.admin' => 'Not Allowed',

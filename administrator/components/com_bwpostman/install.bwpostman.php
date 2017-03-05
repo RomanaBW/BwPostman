@@ -759,11 +759,11 @@ class Com_BwPostmanInstallerScript
 			$admin_groupId = $this->_getGroupId('BwPostmanAdmin');
 
 			// Create user group BwPostmanSectionAdmin
-			if (!$groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanSectionAdmin')))
+/*			if (!$groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanSectionAdmin')))
 			{
 				throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
 			}
-
+*/
 			// Create BwPostman user groups section-wise
 			foreach ($this->all_bwpm_groups as $groups)
 			{

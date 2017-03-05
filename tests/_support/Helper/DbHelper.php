@@ -259,7 +259,7 @@ class DbHelper extends Module
 	 * DbHelper method to update values in given table
 	 *
 	 * @param   string      $table              the name of the table to update without any prefix
-	 * @param   array       $value              array of key = 'value' data to update
+	 * @param   int         $value              value to set to
 	 * @param   array       $criteria           special criteria, i.e. WHERE
 	 * @param   array       $credentials        credentials of database
 	 *

@@ -37,8 +37,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -56,9 +54,6 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -89,9 +84,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -117,7 +109,7 @@ class TestTemplatesDetailsCest
 		$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
 		$I->seeElement($thumb);
 
-		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -129,9 +121,6 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -163,9 +152,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -184,7 +170,7 @@ class TestTemplatesDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -196,9 +182,6 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -235,7 +218,7 @@ class TestTemplatesDetailsCest
 
 		$I->see("Template", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -247,9 +230,6 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -281,9 +261,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -310,7 +287,7 @@ class TestTemplatesDetailsCest
 
 		$I->see("Template", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -322,9 +299,6 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -356,9 +330,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -378,7 +349,47 @@ class TestTemplatesDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single Text template from list view, save it and go back to list view
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneTextTemplateListViewRestore(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Text template list view");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->click(Generals::$toolbar['Add Text-Template']);
+
+		$this->_fillFormSimpleText($I);
+
+		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+
+		$I->HelperArchiveItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+
+		$I->switchToArchive($I, TplEdit::$arc_del_array['archive_tab']);
+
+		$I->HelperRestoreItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+
+		$I->amOnPage(TplManage::$url);
+
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -390,9 +401,6 @@ class TestTemplatesDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -427,7 +435,7 @@ class TestTemplatesDetailsCest
 
 		$I->see("Template", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -436,8 +444,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -453,8 +459,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -469,8 +473,6 @@ class TestTemplatesDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -492,8 +494,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
-	 * @group   component
-	 *
 	 * @since   2.0.0
 	 */
 	private function _fillFormExtendedHtml(AcceptanceTester $I)
@@ -512,8 +512,6 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
-	 * @group   component
-	 *
 	 * @since   2.0.0
 	 */
 	private function _fillFormSimpleText(AcceptanceTester $I)
@@ -531,8 +529,6 @@ class TestTemplatesDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester  $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -553,8 +549,6 @@ class TestTemplatesDetailsCest
 	 * @param AcceptanceTester  $I
 	 * @param string            $type
 	 *
-	 * @group   component
-	 *
 	 * @since   2.0.0
 	 */
 	private function _fillRequired(AcceptanceTester $I, $type)
@@ -567,8 +561,6 @@ class TestTemplatesDetailsCest
 	 * Method to select thumbnail for template
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -598,8 +590,6 @@ class TestTemplatesDetailsCest
 	 * @param AcceptanceTester  $I
 	 * @param string            $type
 	 *
-	 * @group   component
-	 *
 	 * @since 2.0.0
 	 */
 	private function _fillRequiredExtended(AcceptanceTester $I, $type)
@@ -620,8 +610,6 @@ class TestTemplatesDetailsCest
 
 	/**
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since 2.0.0
 	 */
@@ -670,8 +658,6 @@ class TestTemplatesDetailsCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @group   component
-	 *
 	 * @since 2.0.0
 	 */
 	private function _fillHtmlContent(AcceptanceTester $I)
@@ -690,8 +676,6 @@ class TestTemplatesDetailsCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @group   component
-	 *
 	 * @since 2.0.0
 	 */
 	private function _fillCssContent(AcceptanceTester $I)
@@ -704,8 +688,6 @@ class TestTemplatesDetailsCest
 
 	/**
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since 2.0.0
 	 */

@@ -36,9 +36,6 @@ class TestSubscribersDetailsCest
 	 *
 	 * @param   \Page\Login                 $loginPage
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -56,9 +53,6 @@ class TestSubscribersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -88,9 +82,6 @@ class TestSubscribersDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -109,7 +100,7 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
 
 	}
@@ -122,9 +113,6 @@ class TestSubscribersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -152,9 +140,6 @@ class TestSubscribersDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -174,7 +159,47 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
+		$I->see('Subscribers', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single Subscriber from list view, save it and go back to list view
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneSubscriberListViewRestore(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Subscriber list view");
+		$I->amOnPage(SubManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		$this->_fillFormSimple($I);
+
+		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
+
+		$I->HelperArchiveItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
+
+		$I->switchToArchive($I, SubEdit::$arc_del_array['archive_tab']);
+
+		$I->HelperRestoreItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
+
+		$I->amOnPage(SubManage::$url);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
@@ -186,9 +211,6 @@ class TestSubscribersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -220,7 +242,7 @@ class TestSubscribersDetailsCest
 		$I->click(SubEdit::$toolbar['Cancel']);
 		$I->see("Subscribers", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
@@ -229,8 +251,6 @@ class TestSubscribersDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -246,8 +266,6 @@ class TestSubscribersDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -261,8 +279,6 @@ class TestSubscribersDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -311,8 +327,6 @@ class TestSubscribersDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

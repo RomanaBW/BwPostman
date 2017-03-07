@@ -38,9 +38,6 @@ class TestCampaignsDetailsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -58,9 +55,6 @@ class TestCampaignsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -91,9 +85,6 @@ class TestCampaignsDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -114,7 +105,7 @@ class TestCampaignsDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
-		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
 		$I->see('Campaigns', Generals::$pageTitle);
 	}
 
@@ -126,9 +117,6 @@ class TestCampaignsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -155,9 +143,6 @@ class TestCampaignsDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -175,7 +160,45 @@ class TestCampaignsDetailsCest
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->see(CamEdit::$field_title, CamEdit::$title_col);
 
-		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
+		$I->see('Campaigns', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single campaign from list view, save it and go back to list view
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneCampaignListViewRestore(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one campaign, archive, restore, archive and delete");
+		$I->amOnPage(CamManage::$url);
+		$I->click(Generals::$toolbar['New']);
+
+		$this->_fillFormSimple($I);
+		$I->click(CamEdit::$toolbar['Save & Close']);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(CamEdit::$success_save, Generals::$alert_success);
+		$I->see(CamEdit::$field_title, CamEdit::$title_col);
+
+		$I->HelperArchiveItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
+
+		$I->switchToArchive($I, CamEdit::$arc_del_array['archive_tab']);
+
+		$I->HelperRestoreItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
+
+		$I->amOnPage(CamManage::$url);
+
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
 		$I->see('Campaigns', Generals::$pageTitle);
 	}
 
@@ -187,9 +210,6 @@ class TestCampaignsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -219,7 +239,7 @@ class TestCampaignsDetailsCest
 		$I->click(CamEdit::$toolbar['Cancel']);
 		$I->see("Campaigns", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
 		$I->see('Campaigns', Generals::$pageTitle);
 	}
 
@@ -228,9 +248,6 @@ class TestCampaignsDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -248,8 +265,6 @@ class TestCampaignsDetailsCest
 	 *
 	 * @return  void
 	 *
-	 * @group   component
-	 *
 	 * @since   2.0.0
 	 */
 	public function _failed (AcceptanceTester $I)
@@ -263,8 +278,6 @@ class TestCampaignsDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -298,8 +311,6 @@ class TestCampaignsDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

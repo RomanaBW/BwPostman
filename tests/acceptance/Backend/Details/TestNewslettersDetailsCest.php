@@ -40,9 +40,6 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param   LoginPage                 $loginPage
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -60,9 +57,6 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -91,9 +85,6 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -109,9 +100,9 @@ class TestNewslettersDetailsCest
 		$this->_fillFormSimpleWithCampaign($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I);
+		NlEdit::checkSuccess($I, 'AdminTester');
 
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
@@ -123,9 +114,6 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -153,9 +141,6 @@ class TestNewslettersDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -172,9 +157,48 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		NlEdit::checkSuccess($I);
+		NlEdit::checkSuccess($I, 'AdminTester');
 
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single Newsletter from list view, save it and go back to list view
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneNewsletterListViewRestore(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Newsletter list view");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		NlEdit::fillFormSimple($I);
+
+		$I->click(NlEdit::$toolbar['Save & Close']);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		NlEdit::checkSuccess($I, 'AdminTester');
+
+		$I->HelperArchiveItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
+
+		$I->switchToArchive($I, NlEdit::$arc_del_array['archive_tab']);
+
+		$I->HelperRestoreItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
+
+		$I->amOnPage(NlManage::$url);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
@@ -187,9 +211,6 @@ class TestNewslettersDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -269,7 +290,7 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I);
+		NlEdit::checkSuccess($I, 'AdminTester');
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);
@@ -277,14 +298,14 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I);
+		NlEdit::checkSuccess($I, 'AdminTester');
 
 		$I->see(Generals::$alert_warn_txt, Generals::$alert_header);
 		$I->see(sprintf(NlEdit::$warn_save, NlEdit::$field_subject), Generals::$alert);
 
 		$I->see("Newsletters", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
@@ -303,25 +324,8 @@ class TestNewslettersDetailsCest
 	 */
 	public function CopyNewsletter(\AcceptanceTester $I)
 	{
-		NlEdit::copyNewsletter($I);
-/*		$I->wantTo("Copy a newsletter");
-		$I->amOnPage(NlManage::$url);
-
-		$I->click(Generals::$toolbar['New']);
-		NlEdit::fillFormSimple($I);
-
-		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I);
-		$I->see('Newsletters', Generals::$pageTitle);
-
-		$I->click(Generals::$first_list_entry);
-		$I->clickAndWait(Generals::$toolbar['Duplicate'], 1);
-		$I->waitForText(NlEdit::$duplicate_prefix . NlEdit::$field_subject . "'", 30);
-		$I->see(NlEdit::$duplicate_prefix . NlEdit::$field_subject . "'");
-
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
-		$I->see('Newsletters', Generals::$pageTitle);
-*/	}
+		NlEdit::copyNewsletter($I, Generals::$admin['author']);
+	}
 
 	/**
 	 * Test method to create send newsletter to test recipients
@@ -396,7 +400,7 @@ class TestNewslettersDetailsCest
 
 		$I->see("Newsletters", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
@@ -427,7 +431,7 @@ class TestNewslettersDetailsCest
 //		$I->clickAndWait(NlEdit::$tab2, 3);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I);
+		NlEdit::checkSuccess($I, 'AdminTester');
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(NlEdit::$mark_to_send);
@@ -448,7 +452,7 @@ class TestNewslettersDetailsCest
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->clickAndWait(NlManage::$tab2, 1);
 
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
@@ -457,8 +461,6 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param   \AcceptanceTester    $I
 	 * @param   LoginPage            $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -487,8 +489,6 @@ class TestNewslettersDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param \AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @return void
 	 *
@@ -531,7 +531,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @param \AcceptanceTester $I
 	 *
-	 * @group   component
+	 * @return void
 	 *
 	 * @since   2.0.0
 	 */
@@ -628,27 +628,4 @@ class TestNewslettersDetailsCest
 		$I->doubleClick(sprintf(NlEdit::$selected_content, 1));
 		$I->wait(1);
 	}
-
-	/**
-	 * Method to check success for filling form
-	 *
-	 * @param \AcceptanceTester $I
-	 *
-	 * @group   component
-	 *
-	 * @return void
-	 *
-	 * @since   2.0.0
-	 */
-/*	private function _checkSuccess(\AcceptanceTester $I)
-	{
-		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
-
-		$I->see(NlEdit::$field_subject, NlEdit::$success_inList_subject);
-		$I->see(NlEdit::$field_description, NlEdit::$success_inList_desc);
-		$I->see(Generals::$admin['author'], NlEdit::$success_inList_author);
-	}
-*/
 }

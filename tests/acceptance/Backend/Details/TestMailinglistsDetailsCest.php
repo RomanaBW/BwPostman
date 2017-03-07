@@ -35,8 +35,6 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -54,9 +52,6 @@ class TestMailinglistsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -87,9 +82,6 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -108,7 +100,7 @@ class TestMailinglistsDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
 	}
 
@@ -120,9 +112,6 @@ class TestMailinglistsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -149,9 +138,6 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   005_be_details
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -169,7 +155,45 @@ class TestMailinglistsDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
+		$I->see('Mailinglists', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single mailing list from list view, save it and go back to list view
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneMailinglistListViewRestore(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one mailinglist, archive, restore, archive and delete");
+		$I->amOnPage(MlManage::$url);
+		$I->click(Generals::$toolbar['New']);
+
+		$this->_fillFormSimple($I);
+		$I->click(MlEdit::$toolbar['Save & Close']);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+
+		$I->HelperArchiveItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
+
+		$I->switchToArchive($I, MlEdit::$arc_del_array['archive_tab']);
+
+		$I->HelperRestoreItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
+
+		$I->amOnPage(MlManage::$url);
+
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
 	}
 
@@ -181,9 +205,6 @@ class TestMailinglistsDetailsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -213,7 +234,7 @@ class TestMailinglistsDetailsCest
 		$I->click(MlEdit::$toolbar['Cancel']);
 		$I->see("Mailinglists", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
 	}
 
@@ -222,9 +243,6 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 * @param   \Page\Login         $loginPage
-	 *
-	 * @group   component
-	 * @group   005_be_details
 	 *
 	 * @return  void
 	 *
@@ -239,8 +257,6 @@ class TestMailinglistsDetailsCest
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester    $I
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -257,8 +273,6 @@ class TestMailinglistsDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -298,8 +312,6 @@ class TestMailinglistsDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

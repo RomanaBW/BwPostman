@@ -202,7 +202,9 @@ class Generals
 		'Save'              => ".//*[@id='toolbar-apply']/button",
 		'Save & Close'      => ".//*[@id='toolbar-save']/button",
 		'Cancel'            => ".//*[@id='toolbar-cancel']/button",
-	);
+		'Delete'            => ".//*[@id='toolbar-delete']/button",
+		'Restore'           => ".//*[@id='toolbar-unarchive']/button",
+);
 
 	/**
 	 * Array of arrows to sort

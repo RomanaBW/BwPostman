@@ -135,6 +135,7 @@ class CampaignManagerPage
 		'popup_button_no'           => "html/body/form/fieldset/table/tbody/tr[2]/td/input[2]",
 		'popup_delete_iframe'       => 'Delete',
 		'popup_delete_newsletters'  => 'Do you wish to remove the according newsletters, too?',
-
+		'popup_restore_iframe'      => 'unarchive',
+		'popup_restore_newsletters' => 'Do you wish to restore the according newsletters, too?',
 	);
 }

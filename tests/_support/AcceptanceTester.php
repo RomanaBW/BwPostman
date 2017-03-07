@@ -198,14 +198,13 @@ class AcceptanceTester extends \Codeception\Actor
 	 * Method to get the number of a table row for a specific search value at a given column
 	 *
 	 * @param string            $search_value
-	 * @param string            $search_column
 	 *
 	 * @return int              $id
 	 *
 	 * @since   2.0.0
 	 */
 
-	public function getTableRowIdByColumn($search_value, $search_column)
+	public function getTableRowIdBySearchValue($search_value)
 	{
 		$id             = 0;
 		$row_values     = $this->GetTableRows($this, false);
@@ -227,14 +226,13 @@ class AcceptanceTester extends \Codeception\Actor
 	 * Method to
 	 *
 	 * @param string            $search_value
-	 * @param string            $search_column
 	 *
 	 * @return boolean
 	 *
 	 * @since   2.0.0
 	 */
 
-	public function findPageWithItemAndScrollToItem($search_value, $search_column)
+	public function findPageWithItemAndScrollToItem($search_value)
 	{
 		$found      = false;
 		$count      = 1;
@@ -242,7 +240,7 @@ class AcceptanceTester extends \Codeception\Actor
 
 		while (!$found)
 		{
-			$table_search_result  = $this->getTableRowIdByColumn($search_value, $search_column);
+			$table_search_result  = $this->getTableRowIdBySearchValue($search_value);
 
 			if ($table_search_result > 0)
 			{

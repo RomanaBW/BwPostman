@@ -35,8 +35,6 @@ class SubscribeModuleCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
-	 * @group   module_subscription
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -59,8 +57,6 @@ class SubscribeModuleCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
-	 * @group   module_subscription
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -79,8 +75,6 @@ class SubscribeModuleCest
 	 * Test method to verify messages for missing input values by module
 	 *
 	 * @param   AcceptanceTester                $I
-	 *
-	 * @group   module_subscription
 	 *
 	 * @return  void
 	 *
@@ -166,8 +160,6 @@ class SubscribeModuleCest
 	 *
 	 * @param \AcceptanceTester             $I
 	 *
-	 * @group   module_subscription
-	 *
 	 * @since   2.0.0
 	 */
 	private function _subscribeByModule(\AcceptanceTester $I)
@@ -224,8 +216,6 @@ class SubscribeModuleCest
 	 * @param string                        $mailaddress
 	 * @param bool                          $good
 	 *
-	 * @group   module_subscription
-	 *
 	 * @since   2.0.0
 	 */
 	private function _activate(\AcceptanceTester $I, $mailaddress, $good = true)
@@ -243,8 +233,6 @@ class SubscribeModuleCest
 	 *
 	 * @param \AcceptanceTester             $I
 	 * @param string                        $button
-	 *
-	 * @group   module_subscription
 	 *
 	 * @since   2.0.0
 	 */

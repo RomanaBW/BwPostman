@@ -61,8 +61,7 @@ class SubscriberEditPage
 
 	public static $arc_del_array     = array(
 		'field_title'          => "sam.sample@test.nil",
-		'archive_button'       => ".//*[@id='toolbar-archive']/button",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[2]/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[5]",
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
@@ -74,6 +73,8 @@ class SubscriberEditPage
 		'remove_confirm'       => 'Do you wish to remove the selected subscriber(s)/test-recipient(s)?',
 		'success_remove'       => 'The selected subscriber/test-recipient has been removed.',
 		'success_remove2'      => 'The selected subscribers/test-recipients have been removed.',
+		'success_restore'       => 'The selected subscriber/test-recipient has been restored.',
+		'success_restore2'      => 'The selected subscribers/test-recipients have been restored.',
 	);
 
 	/**

@@ -61,8 +61,7 @@ class MailinglistEditPage
 
 	public static $arc_del_array     = array(
 		'field_title'          => "001 General mailing list",
-		'archive_button'       => ".//*[@id='toolbar-archive']/button",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[4]/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived mailinglists')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected mailing list has been archived.',
@@ -74,6 +73,8 @@ class MailinglistEditPage
 		'remove_confirm'       => 'Do you wish to remove the selected mailinglist(s)?',
 		'success_remove'       => 'The selected mailinglist has been removed.',
 		'success_remove2'      => 'The selected mailinglists have been removed.',
+		'success_restore'       => 'The selected mailinglist has been restored.',
+		'success_restore2'      => 'The selected mailinglists have been restored.',
 	);
 
 	/**

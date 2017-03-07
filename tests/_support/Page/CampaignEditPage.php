@@ -52,7 +52,7 @@ class CampaignEditPage
 	public static $arc_del_array     = array(
 		'field_title'          => "001 new campaign for tests",
 		'archive_button'       => ".//*[@id='toolbar-popup-archive']/button",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[3]/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived campaigns')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected campaign has been archived.',
@@ -64,6 +64,10 @@ class CampaignEditPage
 		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
 		'success_remove'       => 'The selected campaign has been removed.',
 		'success_remove2'      => 'The selected campaigns have been removed.',
+		'restore_button'       => ".//*[@id='toolbar-popup-unarchive']/button",
+		'restore_confirm'       => 'Do you wish to restore the selected newsletter(s)?',
+		'success_restore'       => 'The selected campaign has been restored.',
+		'success_restore2'      => 'The selected campaigns have been restored.',
 	);
 
 	/**

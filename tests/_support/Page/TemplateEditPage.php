@@ -95,8 +95,7 @@ class TemplateEditPage
 
 	public static $arc_del_array     = array(
 		'field_title'          => "001 Test Template",
-		'archive_button'       => ".//*[@id='toolbar-archive']/button",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[5]/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
 		'archive_confirm'      => 'Do you wish to archive the selected template(s)?',
@@ -109,6 +108,8 @@ class TemplateEditPage
 		'remove_confirm'       => 'Do you wish to remove the selected template(s)?',
 		'success_remove'       => 'The selected template has been removed.',
 		'success_remove2'      => 'The selected templates have been removed.',
+		'success_restore'       => 'The selected template has been restored.',
+		'success_restore2'      => 'The selected templates have been restored.',
 	);
 
 	/**

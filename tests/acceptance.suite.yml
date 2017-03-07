@@ -18,10 +18,10 @@ modules:
 #                url: http://www.test.nil
 
 # For manual testing
-#                url: http://www.devtest.nil
+                url: http://www.devtest.nil
 
 # For Containers
-                url: http://172.18.0.5
+#                url: http://172.18.0.5
 
 # For VMs
 #                url: http://www.ci-tests.nil
@@ -42,12 +42,12 @@ modules:
 #            dsn: 'mysql:host=universe.bet2.nil;dbname=test'
 #
 # For manual testing
-#            dsn: 'mysql:host=universe.bet2.nil;dbname=devtest'
-#            user: 'root'
-#            password: 'Susi'
+            dsn: 'mysql:host=universe.bet2.nil;dbname=devtest'
+            user: 'root'
+            password: 'Susi'
 
 # For Containers
-            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
+#            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
 
 # For VMs
 #            dsn: 'mysql:host=cisuse.tester-net.nil;dbname=joomlatest'
@@ -55,8 +55,8 @@ modules:
 #            password: 'barbapapa'
 
 # For Containers and VMs
-            user: 'tester'
-            password: 'barbamama'
+#            user: 'tester'
+#            password: 'barbamama'
 
 #           dump: 'tests/_data/dump.sql'
             populate: false

@@ -33,8 +33,6 @@ class MenuEntriesCest
 	 *
 	 * @param   \Page\Login     $loginPage
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -52,8 +50,6 @@ class MenuEntriesCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -91,8 +87,6 @@ class MenuEntriesCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -128,8 +122,6 @@ class MenuEntriesCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -174,8 +166,6 @@ class MenuEntriesCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -208,8 +198,6 @@ class MenuEntriesCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   string                  $item   the item to delete
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *
@@ -252,8 +240,6 @@ class MenuEntriesCest
 	 * @param string            $title
 	 * @param string            $type
 	 * @param string            $link
-	 *
-	 * @group   component
 	 *
 	 * @since 2.0.0
 	 */
@@ -302,8 +288,6 @@ class MenuEntriesCest
 	 * @param string            $control_msg
 	 * @param string            $control_identifier
 	 *
-	 * @group   component
-	 *
 	 * @since 2.0.0
 	 */
 	private function _checkMenuEntryInFE(AcceptanceTester $I, $title, $entry, $control_msg, $control_identifier)
@@ -321,8 +305,6 @@ class MenuEntriesCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *

@@ -32,8 +32,6 @@ class TestInstallationCest
 	 *
 	 * @param   \Page\Login     $loginPage
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -51,9 +49,6 @@ class TestInstallationCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   001_installation
 	 *
 	 * @return  void
 	 *
@@ -80,8 +75,6 @@ class TestInstallationCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *

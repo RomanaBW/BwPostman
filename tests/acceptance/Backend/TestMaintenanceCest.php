@@ -33,8 +33,6 @@ class TestMaintenanceCest
 	 *
 	 * @param   \Page\Login     $loginPage
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -52,9 +50,6 @@ class TestMaintenanceCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *
@@ -87,9 +82,6 @@ class TestMaintenanceCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *
@@ -126,9 +118,6 @@ class TestMaintenanceCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   004_maintenance
 	 *
 	 * @return  void
 	 *
@@ -178,9 +167,6 @@ class TestMaintenanceCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   004_maintenance
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -210,9 +196,6 @@ class TestMaintenanceCest
 	 *
 	 * after   _logout
 	 *
-	 * @group   component
-	 * @group   004_maintenance
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -237,8 +220,6 @@ class TestMaintenanceCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *

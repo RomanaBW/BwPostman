@@ -32,8 +32,6 @@ class TestTemplatesListsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -51,9 +49,6 @@ class TestTemplatesListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -76,9 +71,6 @@ class TestTemplatesListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -99,9 +91,6 @@ class TestTemplatesListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -128,9 +117,6 @@ class TestTemplatesListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -156,9 +142,6 @@ class TestTemplatesListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -179,9 +162,6 @@ class TestTemplatesListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -215,9 +195,6 @@ class TestTemplatesListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -242,9 +219,6 @@ class TestTemplatesListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -265,9 +239,6 @@ class TestTemplatesListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -292,9 +263,6 @@ class TestTemplatesListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -318,8 +286,6 @@ class TestTemplatesListsCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *

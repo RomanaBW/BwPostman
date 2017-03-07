@@ -32,9 +32,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @param   \Page\Login         $loginPage
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -52,9 +49,6 @@ class TestMailinglistsListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -78,9 +72,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -102,9 +93,6 @@ class TestMailinglistsListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -131,9 +119,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -159,9 +144,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -183,9 +165,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -206,9 +185,6 @@ class TestMailinglistsListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -234,9 +210,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -258,9 +231,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -280,8 +250,6 @@ class TestMailinglistsListsCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *

@@ -35,8 +35,6 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @group   component
-	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -52,9 +50,6 @@ class TestSubscribersListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -83,9 +78,6 @@ class TestSubscribersListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -112,9 +104,6 @@ class TestSubscribersListsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   003_be_lists
 	 *
 	 * @return  void
 	 *
@@ -149,9 +138,6 @@ class TestSubscribersListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -179,9 +165,6 @@ class TestSubscribersListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -207,9 +190,6 @@ class TestSubscribersListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -231,9 +211,6 @@ class TestSubscribersListsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @group   component
-	 * @group   003_be_lists
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -253,8 +230,6 @@ class TestSubscribersListsCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *

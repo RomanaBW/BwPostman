@@ -35,9 +35,6 @@ class SubscribeComponentCest
 	 *
 	 * @param   AcceptanceTester         $I
 	 *
-	 * @group   component
-	 * @group   006_fe_subscription
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -59,9 +56,6 @@ class SubscribeComponentCest
 	 * Test method to subscribe by component in front end twice, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
-	 *
-	 * @group   component
-	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -89,9 +83,6 @@ class SubscribeComponentCest
 	 * Test method to subscribe by component in front end twice, get activation code anew, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
-	 *
-	 * @group   component
-	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -122,9 +113,6 @@ class SubscribeComponentCest
 	 * Test method to subscribe by component in front end, activate, subscribe a second time, get edit link and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
-	 *
-	 * @group   component
-	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -157,9 +145,6 @@ class SubscribeComponentCest
 	 * Test method to verify messages for missing input values by component
 	 *
 	 * @param   AcceptanceTester                $I
-	 *
-	 * @group   component
-	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -229,9 +214,6 @@ class SubscribeComponentCest
 	 * Test method to subscribe by component in front end, activate, make changes and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
-	 *
-	 * @group   component
-	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -306,9 +288,6 @@ class SubscribeComponentCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
-	 * @group   component
-	 * @group   006_fe_subscription
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -336,9 +315,6 @@ class SubscribeComponentCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
-	 * @group   component
-	 * @group   006_fe_subscription
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -360,9 +336,6 @@ class SubscribeComponentCest
 	 * Test method to get error message for wrong unsubscribe links
 	 *
 	 * @param   AcceptanceTester                $I
-	 *
-	 * @group   component
-	 * @group   006_fe_subscription
 	 *
 	 * @return  void
 	 *
@@ -392,9 +365,6 @@ class SubscribeComponentCest
 	 * Test method to subscribe to newsletter in front end by component
 	 *
 	 * @param \AcceptanceTester             $I
-	 *
-	 * @group   component
-	 * @group   006_fe_subscription
 	 *
 	 * @since   2.0.0
 	 */
@@ -449,8 +419,6 @@ class SubscribeComponentCest
 	 * @param string                        $mailaddress
 	 * @param bool                          $good
 	 *
-	 * @group   component
-	 *
 	 * @since   2.0.0
 	 */
 	private function _activate(\AcceptanceTester $I, $mailaddress, $good = true)
@@ -469,8 +437,6 @@ class SubscribeComponentCest
 	 * @param \AcceptanceTester             $I
 	 *
 	 * @return string                       $editlink_code
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */
@@ -493,8 +459,6 @@ class SubscribeComponentCest
 	 *
 	 * @param \AcceptanceTester             $I
 	 * @param string                        $button
-	 *
-	 * @group   component
 	 *
 	 * @since   2.0.0
 	 */

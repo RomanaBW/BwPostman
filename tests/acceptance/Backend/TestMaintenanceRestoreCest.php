@@ -33,8 +33,6 @@ class TestMaintenanceRestoreCest
 	 *
 	 * @param   \Page\Login     $loginPage
 	 *
-	 * @group   component
-	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
@@ -52,9 +50,6 @@ class TestMaintenanceRestoreCest
 	 * @before  _login
 	 *
 	 * @after   _logout
-	 *
-	 * @group   component
-	 * @group   002_restore
 	 *
 	 * @return  void
 	 *
@@ -100,8 +95,6 @@ class TestMaintenanceRestoreCest
 	 *
 	 * @param   AcceptanceTester        $I
 	 * @param   \Page\Login             $loginPage
-	 *
-	 * @group   component
 	 *
 	 * @return  void
 	 *

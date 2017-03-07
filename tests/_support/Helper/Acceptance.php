@@ -2,6 +2,7 @@
 namespace Helper;
 use Codeception;
 use Page\Generals;
+use Page\AccessPage as AccessPage;
 
 /**
  * here you can define custom actions
@@ -947,35 +948,59 @@ class Acceptance extends Codeception\Module
 	 * @param   \AcceptanceTester               $I
 	 * @param   array                           $manage_data
 	 * @param   array                           $edit_data
-	 *
-	 * @before  _login
-	 *
-	 * @depends CreateOneMailinglistCompleteMainView
-	 *
-	 * @after   _logout
+	 * @param   boolean                         $delete_allowed
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function HelperArcDelItems(\AcceptanceTester $I, $manage_data, $edit_data)
+	public function HelperArcDelItems(\AcceptanceTester $I, $manage_data, $edit_data, $delete_allowed)
+	{
+		$this->HelperArchiveItems($I, $manage_data, $edit_data);
+
+		$this->switchToArchive($I, $edit_data['archive_tab']);
+
+		if ($delete_allowed)
+		{
+			$this->HelperDeleteItems($I, $manage_data, $edit_data);
+		}
+
+		$this->switchToSection($I, $manage_data);
+	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param                   $manage_data
+	 * @param                   $edit_data
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	public function HelperArchiveItems(\AcceptanceTester $I, $manage_data, $edit_data)
 	{
 		// ensure we are on the section list page
 		$I->see($manage_data['section'], Generals::$pageTitle);
 
 		// select items to archive
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
-		$I->clickAndWait(Generals::$filterbar_button,3);
-		$I->clickSelectList( Generals::$search_list, $edit_data['archive_identifier']);
-		$I->clickAndWait(Generals::$search_button,1);
+		$I->clickAndWait(Generals::$filterbar_button, 3);
+		$I->clickSelectList(Generals::$search_list, $edit_data['archive_identifier']);
+		$I->clickAndWait(Generals::$search_button, 1);
 		$I->see($edit_data['field_title'], $edit_data['archive_title_col']);
 
 		//count items
-		$count  = $I->GetListLength($I);
+		$count = $I->GetListLength($I);
 
 		// archive items
+		$archive_button = Generals::$toolbar['Archive'];
+		if ($manage_data['section'] == 'campaigns')
+		{
+			$archive_button = $edit_data['archive_button'];
+		}
+
 		$I->checkOption(Generals::$check_all_button);
-		$I->clickAndWait($edit_data['archive_button'], 1);
+		$I->clickAndWait($archive_button, 1);
 
 		if ($manage_data['section'] == 'template')
 		{
@@ -1003,22 +1028,27 @@ class Acceptance extends Codeception\Module
 		{
 			$I->see($edit_data['archive_success2_msg'], Generals::$alert_success);
 		}
+	}
 
-		// switch to archive
-		$I->amOnPage(Generals::$archive_url);
-		$I->see(Generals::$archive_txt, Generals::$pageTitle);
-		$I->click($edit_data['archive_tab']);
-
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param                   $manage_data
+	 * @param                   $edit_data
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	public function HelperDeleteItems(\AcceptanceTester $I, $manage_data, $edit_data)
+	{
 		// select items to delete
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
-//		$I->waitForElement(Generals::$search_list, 30);
-		$I->clickSelectList( Generals::$search_list, $edit_data['delete_identifier']);
-		$I->clickAndWait(Generals::$search_button,1);
+		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier']);
+		$I->clickAndWait(Generals::$search_button, 1);
 		$I->see($edit_data['field_title']);
 
 		//count items
-		$count  = $I->GetListLength($I);
+		$count = $I->GetListLength($I);
 
 		$I->checkOption(Generals::$check_all_button);
 		$I->clickAndWait($edit_data['delete_button'], 1);
@@ -1049,9 +1079,94 @@ class Acceptance extends Codeception\Module
 			$I->see($edit_data['success_remove2'], Generals::$archive_alert_success);
 		}
 		$I->dontSee($edit_data['field_title']);
+	}
 
-		// return to section
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param                   $manage_data
+	 * @param                   $edit_data
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	public function HelperRestoreItems(\AcceptanceTester $I, $manage_data, $edit_data)
+	{
+		// select items to restore
+		$I->fillField(Generals::$search_field, $edit_data['field_title']);
+		$I->clickAndWait(Generals::$filterbar_button, 2);
+		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier']);
+		$I->clickAndWait(Generals::$search_button, 1);
+		$I->see($edit_data['field_title']);
+
+		//count items
+		$count = $I->GetListLength($I);
+
+		$I->checkOption(Generals::$check_all_button);
+
+		$restore_button = Generals::$toolbar['Restore'];
+
+		if ($manage_data['section'] == 'campaigns')
+		{
+			$restore_button = $edit_data['restore_button'];
+		}
+		$I->clickAndWait($restore_button, 1);
+
+		if ($manage_data['section'] == 'campaigns')
+		{
+			$I->switchToIFrame($manage_data['popup_restore_iframe']);
+			$I->see($manage_data['popup_restore_newsletters']);
+			$I->clickAndWait($manage_data['popup_button_no'], 1);
+			$I->switchToIFrame();
+		}
+		else
+		{
+			// process confirmation popup
+//			$I->seeInPopup($edit_data['restore_confirm']);
+//			$I->acceptPopup();
+		}
+
+		// see message restored
 		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
+		if ($count == 1)
+		{
+			$I->see($edit_data['success_restore'], Generals::$archive_alert_success);
+		}
+		else
+		{
+			$I->see($edit_data['success_restore2'], Generals::$archive_alert_success);
+		}
+		$I->dontSee($edit_data['field_title']);
+	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param string            $archive_tab
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	public function switchToArchive(\AcceptanceTester $I, $archive_tab)
+	{
+		$I->amOnPage(Generals::$archive_url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see('Archive', Generals::$pageTitle);
+
+		$I->see(Generals::$archive_txt, Generals::$pageTitle);
+		$I->click($archive_tab);
+	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param                   $manage_data
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	public function switchToSection(\AcceptanceTester $I, $manage_data)
+	{
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see('Archive');
 		$I->amOnPage($manage_data['url']);
 		$I->see($manage_data['section'], Generals::$pageTitle);
 	}

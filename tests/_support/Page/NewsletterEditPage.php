@@ -146,8 +146,7 @@ class NewsletterEditPage
 
 	public static $arc_del_array     = array(
 		'field_title'          => "1. Simple Single Test Newsletter",
-		'archive_button'       => ".//*[@id='toolbar-archive']/button",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li[1]/button",
+		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[3]",
 		'archive_success_msg'  => 'The selected newsletter has been archived.',
@@ -159,6 +158,8 @@ class NewsletterEditPage
 		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
 		'success_remove'       => 'The selected newsletter has been removed.',
 		'success_remove2'      => 'The selected newsletters have been removed.',
+		'success_restore'       => 'The selected newsletter has been restored.',
+		'success_restore2'      => 'The selected newsletters have been restored.',
 	);
 
 	/**
@@ -190,12 +191,13 @@ class NewsletterEditPage
 	 * Test method to copy a newsletter
 	 *
 	 * @param   \AcceptanceTester $I
+	 * @param   string            $username
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public static function CopyNewsletter(\AcceptanceTester $I)
+	public static function CopyNewsletter(\AcceptanceTester $I, $username)
 	{
 		$I->wantTo("Copy a newsletter");
 		$I->amOnPage(NlManage::$url);
@@ -204,7 +206,7 @@ class NewsletterEditPage
 		self::fillFormSimple($I);
 
 		$I->click(self::$toolbar['Save & Close']);
-		self::checkSuccess($I);
+		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(Generals::$first_list_entry);
@@ -212,20 +214,33 @@ class NewsletterEditPage
 		$I->waitForText(self::$duplicate_prefix . self::$field_subject . "'", 30);
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
 
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, self::$arc_del_array);
-		$I->see('Newsletters', Generals::$pageTitle);
+		$archive_allowed    = true;
+		$delete_allowed     = true;
+
+		if ($username != 'AdminTester')
+		{
+			$archive_allowed = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['archive'];
+			$delete_allowed  = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['delete'];
+		}
+
+		if ($archive_allowed)
+		{
+			$I->HelperArcDelItems($I, NlManage::$arc_del_array, self::$arc_del_array, $delete_allowed);
+			$I->see('Newsletters', Generals::$pageTitle);
+		}
 	}
 
 	/**
 	 * Method to check success for filling form
 	 *
 	 * @param \AcceptanceTester $I
+	 * @param string            $username
 	 *
-	 * @group   component
+	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public static function checkSuccess(\AcceptanceTester $I)
+	public static function checkSuccess(\AcceptanceTester $I, $username)
 	{
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
@@ -233,7 +248,7 @@ class NewsletterEditPage
 
 		$I->see(self::$field_subject, self::$success_inList_subject);
 		$I->see(self::$field_description, self::$success_inList_desc);
-		$I->see(Generals::$admin['author'], self::$success_inList_author);
+		$I->see($username, self::$success_inList_author);
 	}
 
 	/**
@@ -241,8 +256,6 @@ class NewsletterEditPage
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param \AcceptanceTester $I
-	 *
-	 * @group   component
 	 *
 	 * @return string   $content_title  title of content
 	 *
@@ -265,7 +278,6 @@ class NewsletterEditPage
 		$I->scrollTo(self::$legend_templates);
 		$I->click(self::$template_html);
 		$I->click(self::$template_text);
-//		$I->wait(15);
 
 		self::selectRecipients($I);
 
@@ -284,7 +296,7 @@ class NewsletterEditPage
 	 *
 	 * @param \AcceptanceTester $I
 	 *
-	 * @group   component
+	 * @return void
 	 *
 	 * @since   2.0.0
 	 */
@@ -305,7 +317,7 @@ class NewsletterEditPage
 	 *
 	 * @param \AcceptanceTester $I
 	 *
-	 * @group   component
+	 * @return void
 	 *
 	 * @since   2.0.0
 	 */
@@ -322,7 +334,7 @@ class NewsletterEditPage
 	 *
 	 * @param \AcceptanceTester $I
 	 *
-	 * @group   component
+	 * @return void
 	 *
 	 * @since   2.0.0
 	 */

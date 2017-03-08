@@ -250,8 +250,8 @@
 				class="list_ordering"
 				>
 				<option value="">JGLOBAL_SORT_BY</option>
-				<option value="c.subject ASC">COM_BWPOSTMAN_NL_SUBJECT_ASC</option>
-				<option value="c.subject DESC">COM_BWPOSTMAN_NL_SUBJECT_DESC</option>
+				<option value="sc.subject ASC">COM_BWPOSTMAN_NL_SUBJECT_ASC</option>
+				<option value="sc.subject DESC">COM_BWPOSTMAN_NL_SUBJECT_DESC</option>
 				<option value="n.description ASC">COM_BWPOSTMAN_NL_DESCRIPTION_ASC</option>
 				<option value="n.description DESC">COM_BWPOSTMAN_NL_DESCRIPTION_DESC</option>
 				<option value="authors ASC">COM_BWPOSTMAN_NL_AUTHOR_ASC</option>

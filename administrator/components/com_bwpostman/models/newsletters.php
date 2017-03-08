@@ -67,7 +67,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'attachment', 'a.attachment',
-				'subject', 'a.subject', 'c.subject',
+				'subject', 'a.subject', 'sc.subject',
 				'description', 'a.description',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
@@ -254,15 +254,16 @@ class BwPostmanModelNewsletters extends JModelList
 				break;
 
 			case ("queue"):
-					$this->_query->select('DISTINCT(' . $this->_db->quoteName('c.nl_id') . ')');
-					$this->_query->select($this->_db->quoteName('c.subject') . ' AS subject');
+					$this->_query->select('DISTINCT(' . $this->_db->quoteName('sc.nl_id') . ')');
+					$this->_query->select($this->_db->quoteName('sc.subject') . ' AS subject');
 					$this->_query->select($this->_db->quoteName('q.id'));
 					$this->_query->select($this->_db->quoteName('q.recipient'));
 					$this->_query->select($this->_db->quoteName('q.trial'));
 					$this->_query->select($this->_db->quoteName('n.description'));
 					$this->_query->select($this->_db->quoteName('ua.name') . ' AS authors');
+					$this->_query->select($this->_db->quoteName('c.title') . ' AS ' . $this->_db->quoteName('campaign_id'));
 
-					$this->_query->from($this->_db->quoteName('#__bwpostman_sendmailcontent', 'c'));
+					$this->_query->from($this->_db->quoteName('#__bwpostman_sendmailcontent', 'sc'));
 				break;
 		}
 		$this->_getQueryJoins($tab);
@@ -302,9 +303,10 @@ dump (str_replace('#__','jos_',$this->_query), 'Query ');
 		}
 		elseif ($tab == 'queue')
 		{
-			$this->_query->rightJoin($this->_db->quoteName('#__bwpostman_sendmailqueue', 'q') . ' ON ' . $this->_db->quoteName('q.content_id') . ' = ' . $this->_db->quoteName('c.id'));
-			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_newsletters', 'n') . ' ON ' . $this->_db->quoteName('n.id') . ' = ' . $this->_db->quoteName('c.nl_id'));
+			$this->_query->rightJoin($this->_db->quoteName('#__bwpostman_sendmailqueue', 'q') . ' ON ' . $this->_db->quoteName('q.content_id') . ' = ' . $this->_db->quoteName('sc.id'));
+			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_newsletters', 'n') . ' ON ' . $this->_db->quoteName('n.id') . ' = ' . $this->_db->quoteName('sc.nl_id'));
 			$this->_query->leftJoin($this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('n.created_by'));
+			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_campaigns', 'c') . ' ON ' . $this->_db->quoteName('c.id') . ' = ' . $this->_db->quoteName('n.campaign_id'));
 		}
 	}
 
@@ -324,8 +326,8 @@ dump (str_replace('#__','jos_',$this->_query), 'Query ');
 		$this->_getFilterByAccessLevelFilter();
 		$this->_getFilterByViewLevel();
 		$this->_getFilterByComponentPermissions();
-		$this->_getFilterByCampaign();
-		$this->_getFilterByAuthor();
+		$this->_getFilterByCampaign($tab);
+		$this->_getFilterByAuthor($tab);
 		$this->_getFilterBySearchword($tab);
 
 		if ($tab == 'sent' || $tab == 'unsent')
@@ -361,12 +363,16 @@ dump (str_replace('#__','jos_',$this->_query), 'Query ');
 			{
 				$orderCol = 'a.modified_time';
 			}
+			if ($orderCol == 'sc.subject')
+			{
+				$orderCol = 'a.subject';
+			}
 		}
 		elseif ($tab == 'queue')
 		{
 			if ($orderCol == 'a.subject')
 			{
-				$orderCol = 'c.subject';
+				$orderCol = 'sc.subject';
 			}
 		}
 		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
@@ -434,16 +440,26 @@ dump (str_replace('#__','jos_',$this->_query), 'Query ');
 	 *
 	 * @access 	private
 	 *
+	 * @param   string  $tab
+	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByCampaign()
+	private function _getFilterByCampaign($tab)
 	{
 		$campaign = $this->getState('filter.campaign_id');
+
 		if ($campaign)
 		{
-			$this->_query->where('a.campaign_id = ' . (int) $campaign);
+			if ($tab == 'queue')
+			{
+				$this->_query->where('n.campaign_id = ' . (int) $campaign);
+			}
+			else
+			{
+				$this->_query->where('a.campaign_id = ' . (int) $campaign);
+			}
 		}
 	}
 
@@ -452,16 +468,25 @@ dump (str_replace('#__','jos_',$this->_query), 'Query ');
 	 *
 	 * @access 	private
 	 *
+	 * @param   string  $tab
+	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByAuthor()
+	private function _getFilterByAuthor($tab)
 	{
 		$authors = $this->getState('filter.authors');
 		if ($authors)
 		{
-			$this->_query->where('a.created_by = ' . (int) $authors);
+			if ($tab == 'queue')
+			{
+				$this->_query->where('n.created_by = ' . (int) $authors);
+			}
+			else
+			{
+				$this->_query->where('a.created_by = ' . (int) $authors);
+			}
 		}
 	}
 
@@ -488,13 +513,34 @@ dump (str_replace('#__','jos_',$this->_query), 'Query ');
 			switch ($filtersearch)
 			{
 				case 'subject':
-					$this->_query->where($this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search));
+					if($tab == 'queue')
+					{
+					$this->_query->where($this->_db->quoteName('c.subject') . ' LIKE ' . $this->_db->quote($search));
+					}
+					else
+					{
+						$this->_query->where($this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search));
+					}
 					break;
 				case 'description':
-					$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search));
+					if($tab == 'queue')
+					{
+						$this->_query->where($this->_db->quoteName('n.description') . ' LIKE ' . $this->_db->quote($search));
+					}
+					else
+					{
+						$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search));
+					}
 					break;
 				case 'subject_description':
-					$this->_query->where('(' . $this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search). ' OR ' . $this->_db->quoteName('a.description') .' LIKE ' . $this->_db->quote($search, false) . ')');
+					if($tab == 'queue')
+					{
+						$this->_query->where('(' . $this->_db->quoteName('c.subject') . ' LIKE ' . $this->_db->quote($search) . ' OR ' . $this->_db->quoteName('n.description') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+					}
+					else
+					{
+						$this->_query->where('(' . $this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search) . ' OR ' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+					}
 					break;
 				case 'html_text_version':
 					if ($tab == 'unsent' || $tab == 'sent')

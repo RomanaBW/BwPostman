@@ -271,7 +271,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->_getQueryOrder($tab);
 
 		$this->_db->setQuery($this->_query);
-dump (str_replace('#__','jos_',$this->_query), 'Query ');
+
 		return $this->_query;
 	}
 

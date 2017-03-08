@@ -67,7 +67,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'attachment', 'a.attachment',
-				'subject', 'a.subject',
+				'subject', 'a.subject', 'c.subject',
 				'description', 'a.description',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
@@ -85,6 +85,10 @@ class BwPostmanModelNewsletters extends JModelList
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'ordering', 'a.ordering',
+				'n.description',
+				'q.recipient',
+				'q.trial',
+				'q.id',
 			);
 		}
 		parent::__construct($config);
@@ -266,7 +270,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->_getQueryOrder($tab);
 
 		$this->_db->setQuery($this->_query);
-
+dump (str_replace('#__','jos_',$this->_query), 'Query ');
 		return $this->_query;
 	}
 
@@ -347,22 +351,25 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	private function _getQueryOrder($tab)
 	{
+		$orderCol  = $this->state->get('list.ordering', 'a.subject');
+		$orderDirn = $this->state->get('list.direction', 'asc');
+
 		if ($tab == 'sent' || $tab == 'unsent')
 		{
-			$orderCol  = $this->state->get('list.ordering', 'a.subject');
-			$orderDirn = $this->state->get('list.direction', 'asc');
-
 			//sqlsrv change
 			if ($orderCol == 'modified_time')
 			{
 				$orderCol = 'a.modified_time';
 			}
-			$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
 		}
 		elseif ($tab == 'queue')
 		{
-			$this->_query->order($this->_db->quoteName('q')  . '.' . $this->_db->quoteName('id'));
+			if ($orderCol == 'a.subject')
+			{
+				$orderCol = 'c.subject';
+			}
 		}
+		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
 	}
 
 	/**

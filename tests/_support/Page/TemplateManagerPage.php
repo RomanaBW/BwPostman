@@ -173,4 +173,37 @@ class TemplateManagerPage
 		'section'   => 'template',
 		'url'   => '/administrator/index.php?option=com_bwpostman&view=templates',
 	);
+
+	/**
+	 * Test method to check pagination of templates
+	 *
+	 * @param   \AcceptanceTester   $I
+	 * @param   boolean             $permission
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function SetDefaultTemplates(\AcceptanceTester $I, $permission)
+	{
+		$I->click(self::$default_button1);
+		if ($permission)
+		{
+			$I->seeElement(self::$default_result1);
+			$I->dontSeeElement(self::$no_default_result1);
+
+			$I->click(self::$default_button2);
+			$I->seeElement(self::$default_result2);
+			$I->dontSeeElement(self::$no_default_result2);
+		}
+		else
+		{
+			$I->dontSeeElement(self::$default_result1);
+			$I->seeElement(self::$no_default_result1);
+
+			$I->click(self::$default_button2);
+			$I->dontSeeElement(self::$default_result2);
+			$I->seeElement(self::$no_default_result2);
+		}
+	}
 }

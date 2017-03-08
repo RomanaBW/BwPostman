@@ -272,13 +272,7 @@ class TestTemplatesListsCest
 		$I->wantTo("Switch default template");
 		$I->amOnPage(TplManage::$url);
 
-		$I->click(TplManage::$default_button1);
-		$I->seeElement(TplManage::$default_result1);
-		$I->dontSeeElement(TplManage::$no_default_result1);
-
-		$I->click(TplManage::$default_button2);
-		$I->seeElement(TplManage::$default_result2);
-		$I->dontSeeElement(TplManage::$no_default_result2);
+		TplManage::SetDefaultTemplates($I, true);
 	}
 
 		/**

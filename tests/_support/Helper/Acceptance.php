@@ -1091,6 +1091,8 @@ class Acceptance extends Codeception\Module
 	 */
 	public function HelperRestoreItems(\AcceptanceTester $I, $manage_data, $edit_data)
 	{
+		$I->switchToArchive($I, $edit_data['archive_tab']);
+
 		// select items to restore
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
@@ -1118,12 +1120,6 @@ class Acceptance extends Codeception\Module
 			$I->clickAndWait($manage_data['popup_button_no'], 1);
 			$I->switchToIFrame();
 		}
-		else
-		{
-			// process confirmation popup
-//			$I->seeInPopup($edit_data['restore_confirm']);
-//			$I->acceptPopup();
-		}
 
 		// see message restored
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -1137,6 +1133,8 @@ class Acceptance extends Codeception\Module
 			$I->see($edit_data['success_restore2'], Generals::$archive_alert_success);
 		}
 		$I->dontSee($edit_data['field_title']);
+
+		$I->switchToSection($I, $manage_data);
 	}
 
 	/**
@@ -1165,8 +1163,6 @@ class Acceptance extends Codeception\Module
 	 */
 	public function switchToSection(\AcceptanceTester $I, $manage_data)
 	{
-		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see('Archive');
 		$I->amOnPage($manage_data['url']);
 		$I->see($manage_data['section'], Generals::$pageTitle);
 	}

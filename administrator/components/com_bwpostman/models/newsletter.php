@@ -69,6 +69,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	var $_data = null;
 
+	var $_demo_mode         = 0;
+	var $_dummy_sender      = '';
+	var $_dummy_recipient   = '';
+	var $_arise_queue       = 0;
+
 	/**
 	 * Constructor
 	 * Determines the newsletter ID
@@ -2569,6 +2574,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher = JEventDispatcher::getInstance();
 
+		$this->_processTestMode();
+
 		$res				= false;
 		$_db				= $this->_db;
 		$query				= $_db->getQuery(true);
@@ -2589,13 +2596,24 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Get first entry from sendmailqueue
 		// Nothing has been returned, so the queue should be empty
 		if (!$tblSendMailQueue->pop())
+		{
 			return 0;
+		}
 
 		// rewrite some property names
 		if (property_exists($tblSendMailQueue, 'tc_content_id'))
+		{
 			$tblSendMailQueue->content_id	= $tblSendMailQueue->tc_content_id;
+		}
 		if (property_exists($tblSendMailQueue, 'email'))
+		{
 			$tblSendMailQueue->recipient	= $tblSendMailQueue->email;
+
+			if ($this->_demo_mode)
+			{
+				$tblSendMailQueue->recipient   = $this->_dummy_recipient;
+			}
+		}
 
 		$app->setUserState('com_bwpostman.newsletter.send.mode', $tblSendMailQueue->mode);
 
@@ -2685,9 +2703,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$fullname = '';
 		if ($tblSendMailQueue->firstname != '')
+		{
 			$fullname = $tblSendMailQueue->firstname . ' ';
+		}
 		if ($tblSendMailQueue->name != '')
+		{
 			$fullname .= $tblSendMailQueue->name;
+		}
 		$fullname = trim($fullname);
 
 		// Replace the dummies
@@ -2737,13 +2759,22 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$sender[0]	= $tblSendMailContent->from_email;
 		$sender[1]	= $tblSendMailContent->from_name;
 
+		if ($this->_demo_mode)
+		{
+			$sender[0]	                        = $this->_dummy_sender;
+			$tblSendMailContent->reply_email	= $this->_dummy_sender;
+		}
+
 		$mailer->setSender($sender);
 		$mailer->addReplyTo($tblSendMailContent->reply_email,$tblSendMailContent->reply_name);
 		$mailer->addRecipient($tblSendMailQueue->recipient);
 		$mailer->setSubject($tblSendMailContent->subject);
 		$mailer->setBody($body);
+
 		if ($tblSendMailContent->attachment)
+		{
 			$mailer->addAttachment($tblSendMailContent->attachment);
+		}
 
 		if ($tblSendMailQueue->mode == 1)
 		{
@@ -2753,7 +2784,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Newsletter sending 1=on, 0=off
 		if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
 
-		if (BWPOSTMAN_NL_SENDING)
+		if (!$this->_arise_queue)
 		{
 			$res = $mailer->Send();
 			// @ToDo: $res may be boolean of JException object!
@@ -2790,6 +2821,27 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return -1;
 		}
 		return 1;
+	}
+
+	/**
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	private function _processTestMode()
+	{
+		$test_plugin = JPluginHelper::getPlugin('system', 'bwtests');
+
+		if ($test_plugin)
+		{
+			$params             = json_decode($test_plugin->params);
+
+			$this->_demo_mode        = $params->demo_mode_option;
+			$this->_dummy_sender     = $params->sender_address_option;
+			$this->_dummy_recipient  = $params->recipient_address_option;
+			$this->_arise_queue      = $params->arise_queue_option;
+		}
 	}
 }
 

@@ -87,6 +87,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$jinput	= JFactory::getApplication()->input;
 		$array	= $jinput->get('cid',  0, '');
 		$this->setId((int)$array[0]);
+
+		$this->_processTestMode();
 	}
 
 	/**
@@ -2573,8 +2575,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher = JEventDispatcher::getInstance();
-
-		$this->_processTestMode();
 
 		$res				= false;
 		$_db				= $this->_db;

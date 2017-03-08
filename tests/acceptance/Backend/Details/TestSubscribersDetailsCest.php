@@ -94,7 +94,7 @@ class TestSubscribersDetailsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
-		$this->_fillFormSimple($I);
+		SubEdit::_fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 		$I->see("Message", Generals::$alert_header);
@@ -151,7 +151,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		SubEdit::_fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
@@ -183,7 +183,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		SubEdit::_fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
@@ -223,7 +223,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		SubEdit::_fillFormSimple($I);
 
 		$I->click(SubEdit::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -233,7 +233,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		SubEdit::_fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 		$I->see("Error", Generals::$alert_header);
@@ -272,53 +272,6 @@ class TestSubscribersDetailsCest
 	 */
 	public function _failed (AcceptanceTester $I){
 
-	}
-
-	/**
-	 * Method to fill form without check of required fields
-	 * This method simply fills all fields, required or not
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @since   2.0.0
-	 */
-	private function _fillFormSimple(AcceptanceTester $I)
-	{
-		$options    = $I->getManifestOptions('com_bwpostman');
-
-		if ($options->show_gender)
-		{
-			$I->clickAndWait(SubEdit::$gender, 1);
-			$I->clickAndWait(SubEdit::$male, 1);
-		}
-
-		if ($options->show_firstname_field || $options->firstname_field_obligation)
-		{
-			$I->fillField(SubEdit::$firstname, SubEdit::$field_firstname);
-		}
-
-		if ($options->show_name_field || $options->name_field_obligation)
-		{
-			$I->fillField(SubEdit::$name, SubEdit::$field_name);
-		}
-
-		$I->fillField(SubEdit::$email, SubEdit::$field_email);
-
-		if ($options->show_emailformat)
-		{
-			$I->clickAndWait(SubEdit::$mailformat, 1);
-			$I->clickAndWait(SubManage::$format_text, 1);
-		}
-
-		if ($options->show_special || $options->special_field_obligation)
-		{
-			$I->fillField(SubEdit::$special, SubEdit::$field_special);
-		}
-		$I->clickAndWait(SubEdit::$confirm, 1);
-		$I->clickAndWait(SubEdit::$confirmed, 1);
-		$I->click(sprintf(SubEdit::$mls_accessible, 2));
-		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
-		$I->click(sprintf(SubEdit::$mls_internal, 4));
 	}
 
 	/**

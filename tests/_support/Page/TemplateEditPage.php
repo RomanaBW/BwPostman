@@ -1,6 +1,8 @@
 <?php
 namespace Page;
 
+use Page\TemplateManagerPage as TplManage;
+
 /**
  * Class TemplateEditPage
  *
@@ -139,7 +141,7 @@ class TemplateEditPage
 	public function __construct()
 	{
                 $base_dir   = '/vms/dockers/global_data/tests';
-                $data_dir   = $base_dir . '/BwPostman/tests/_data/';
+//                $data_dir   = $base_dir . '/BwPostman/tests/_data/';
                 $data_dir   = 'tests/_data/';
 		self::$css_style_content    = $this->_getFileContent($data_dir . 'html-newsletter.css');
 		self::$html_style_content   = $this->_getFileContent($data_dir . 'html-newsletter.txt');
@@ -165,5 +167,103 @@ class TemplateEditPage
 			$content .= trim($content_tmp[$i]) . "\n";
 		}
 		return  $content;
+	}
+
+	/**
+	 * Test method to create single Template without cleanup for testing restore permission
+	 *
+	 * @param   \AcceptanceTester   $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _CreateTemplateWithoutCleanup(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create Text template");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+
+		$I->click(Generals::$toolbar['Add Text-Template']);
+
+		self::_fillFormSimpleText($I);
+
+		$I->clickAndWait(self::$toolbar['Save & Close'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(self::$success_save, Generals::$alert_msg);
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
+	 * Method to fill form for text template with check of required fields
+	 * This method simply fills all fields, required or not
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _fillFormSimpleText(\AcceptanceTester $I)
+	{
+		self::_fillRequired($I, 'Text');
+
+		self::_selectThumbnail($I);
+
+		self::_fillTextContent($I);
+	}
+	/**
+	 * Method to fill required fields
+	 * Usable for both, HTML and Text
+	 *
+	 * @param \AcceptanceTester  $I
+	 * @param string            $type
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _fillRequired(\AcceptanceTester $I, $type)
+	{
+		$I->fillField(self::$title, self::$field_title);
+		$I->fillField(self::$description, sprintf(self::$field_description, $type));
+	}
+
+	/**
+	 * Method to select thumbnail for template
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _selectThumbnail(\AcceptanceTester $I)
+	{
+
+		$I->clickAndWait(self::$thumb_select_button, 1);
+
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->waitForElement("#imageframe", 30);
+
+		$I->switchToIFrame(Generals::$image_frame);
+		$I->clickAndWait(self::$thumb_select, 1);
+
+		$I->switchToIFrame();
+		$I->wait(1);
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->wait(1);
+		$I->clickAndWait(self::$thumb_insert, 1);
+		$I->switchToIFrame();
+	}
+
+
+	/**
+	 * @param \AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	public static function _fillTextContent(\AcceptanceTester $I)
+	{
+		$I->click(self::$tpl_tab2);
+		$I->fillField(self::$text_style, self::$text_style_content);
+		$I->scrollTo(self::$button_refresh_preview, 0, -100);
+		$I->clickAndWait(self::$button_refresh_preview, 2);
 	}
 }

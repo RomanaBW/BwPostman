@@ -100,7 +100,7 @@ class TestNewslettersDetailsCest
 		$this->_fillFormSimpleWithCampaign($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I, 'AdminTester');
+		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -157,7 +157,7 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		NlEdit::checkSuccess($I, 'AdminTester');
+		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -188,7 +188,7 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		NlEdit::checkSuccess($I, 'AdminTester');
+		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->HelperArchiveItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
 
@@ -290,7 +290,7 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I, 'AdminTester');
+		NlEdit::checkSuccess($I, Generals::$admin['author']);
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);
@@ -298,7 +298,7 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I, 'AdminTester');
+		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->see(Generals::$alert_warn_txt, Generals::$alert_header);
 		$I->see(sprintf(NlEdit::$warn_save, NlEdit::$field_subject), Generals::$alert);
@@ -420,20 +420,12 @@ class TestNewslettersDetailsCest
 	public function SendNewsletterToRealRecipients(\AcceptanceTester $I)
 	{
 		$I->wantTo("Send a newsletter to real recipients");
-		$I->amOnPage(NlManage::$url);
 
-		$I->click(Generals::$toolbar['New']);
-		NlEdit::fillFormSimple($I);
-		$I->wait(2);
+		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		// change to tab 2
-//		$I->scrollTo(Generals::$sys_message_container, 0, -100);
-//		$I->clickAndWait(NlEdit::$tab2, 3);
+		NlEdit::SendNewsletterToRealRecipients($I, Generals::$admin['author']);
 
-		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I, 'AdminTester');
-		$I->see('Newsletters', Generals::$pageTitle);
-
+/*
 		$I->click(NlEdit::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(NlEdit::$tab5_legend1);
@@ -451,7 +443,7 @@ class TestNewslettersDetailsCest
 
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->clickAndWait(NlManage::$tab2, 1);
-
+*/
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}

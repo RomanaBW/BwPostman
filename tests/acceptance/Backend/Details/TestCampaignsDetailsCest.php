@@ -69,7 +69,7 @@ class TestCampaignsDetailsCest
 		$I->click(MainView::$addCampaignButton);
 		$I->waitForText('Campaign details', 30);
 
-		$this->_fillFormSimple($I);
+		CamEdit::_fillFormSimple($I);
 
 		$I->clickAndWait(CamEdit::$toolbar['Back'], 1);
 
@@ -153,7 +153,7 @@ class TestCampaignsDetailsCest
 		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		CamEdit::_fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		$I->see("Message", Generals::$alert_header);
@@ -183,7 +183,7 @@ class TestCampaignsDetailsCest
 		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		CamEdit::_fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		$I->see("Message", Generals::$alert_header);
@@ -221,7 +221,7 @@ class TestCampaignsDetailsCest
 		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		CamEdit::_fillFormSimple($I);
 
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
@@ -231,7 +231,7 @@ class TestCampaignsDetailsCest
 		$I->see('Campaigns', Generals::$pageTitle);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		CamEdit::_fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		$I->see("Error", Generals::$alert_header);
@@ -304,20 +304,5 @@ class TestCampaignsDetailsCest
 		// fill title and description
 		$I->fillField(CamEdit::$title, CamEdit::$field_title);
 		$I->fillField(CamEdit::$description, CamEdit::$field_description);
-	}
-
-	/**
-	 * Method to fill form without check of required fields
-	 * This method simply fills all fields, required or not
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @since   2.0.0
-	 */
-	private function _fillFormSimple(AcceptanceTester $I)
-	{
-		$I->fillField(CamEdit::$title, CamEdit::$field_title);
-		$I->fillField(CamEdit::$description, CamEdit::$field_description);
-		$I->click(sprintf(Generals::$mls_accessible, 2));
 	}
 }

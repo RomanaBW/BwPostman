@@ -274,7 +274,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(MainView::$addTextTemplateButton);
 
-		$this->_fillFormSimpleText($I);
+		TplEdit::_fillFormSimpleText($I);
 
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
@@ -341,7 +341,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		$this->_fillFormSimpleText($I);
+		TplEdit::_fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -373,7 +373,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		$this->_fillFormSimpleText($I);
+		TplEdit::_fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -414,7 +414,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		$this->_fillFormSimpleText($I);
+		TplEdit::_fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -425,7 +425,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		$this->_fillFormSimpleText($I);
+		TplEdit::_fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -478,9 +478,9 @@ class TestTemplatesDetailsCest
 	 */
 	private function _fillFormSimpleHtml(AcceptanceTester $I)
 	{
-		$this->_fillRequired($I, 'HTML');
+		TplEdit::_fillRequired($I, 'HTML');
 
-		$this->_selectThumbnail($I);
+		TplEdit::_selectThumbnail($I);
 
 		$this->_fillHtmlContent($I);
 
@@ -501,26 +501,9 @@ class TestTemplatesDetailsCest
 		$this->_fillRequiredExtended($I, 'HTML');
 
 		// select thumbnail
-		$this->_selectThumbnail($I);
+		TplEdit::_selectThumbnail($I);
 
 		$this->_selectRadiosExtended($I);
-	}
-
-	/**
-	 * Method to fill form for text template with check of required fields
-	 * This method simply fills all fields, required or not
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @since   2.0.0
-	 */
-	private function _fillFormSimpleText(AcceptanceTester $I)
-	{
-		$this->_fillRequired($I, 'Text');
-
-		$this->_selectThumbnail($I);
-
-		$this->_fillTextContent($I);
 	}
 
 	/**
@@ -537,53 +520,9 @@ class TestTemplatesDetailsCest
 		$this->_fillRequiredExtended($I, 'Text');
 
 		// select thumbnail
-		$this->_selectThumbnail($I);
+		TplEdit::_selectThumbnail($I);
 
 		$this->_selectRadiosExtended($I);
-	}
-
-	/**
-	 * Method to fill required fields
-	 * Usable for both, HTML and Text
-	 *
-	 * @param AcceptanceTester  $I
-	 * @param string            $type
-	 *
-	 * @since   2.0.0
-	 */
-	private function _fillRequired(AcceptanceTester $I, $type)
-	{
-		$I->fillField(TplEdit::$title, TplEdit::$field_title);
-		$I->fillField(TplEdit::$description, sprintf(TplEdit::$field_description, $type));
-	}
-
-	/**
-	 * Method to select thumbnail for template
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @since   2.0.0
-	 */
-	private function _selectThumbnail(AcceptanceTester $I)
-	{
-
-		$I->clickAndWait(TplEdit::$thumb_select_button, 1);
-
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElement("#imageframe", 30);
-
-		$I->switchToIFrame(Generals::$image_frame);
-		$I->clickAndWait(TplEdit::$thumb_select, 1);
-
-		$I->switchToIFrame();
-		$I->wait(1);
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->wait(1);
-		$I->clickAndWait(TplEdit::$thumb_insert, 1);
-		$I->switchToIFrame();
-
-		// Workaround
-//		$I->fillReadonlyInput(TplEdit::$thumbnail_id, TplEdit::$thumbnail, TplEdit::$field_thumbnail);
 	}
 
 	/**
@@ -685,19 +624,4 @@ class TestTemplatesDetailsCest
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 	}
-
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @since 2.0.0
-	 */
-	private function _fillTextContent(AcceptanceTester $I)
-	{
-		$I->click(TplEdit::$tpl_tab2);
-		$I->fillField(TplEdit::$text_style, TplEdit::$text_style_content);
-		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
-		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
-//		$I->click(TplEdit::$toolbar['Save']);
-	}
-
 }

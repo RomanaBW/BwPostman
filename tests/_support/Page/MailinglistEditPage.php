@@ -1,6 +1,8 @@
 <?php
 namespace Page;
 
+use Page\MailinglistManagerPage as MlManage;
+
 /**
  * Class MailinglistEditPage
  *
@@ -92,4 +94,41 @@ class MailinglistEditPage
 		'Help'          => ".//*[@id='toolbar-help']/button",
 	);
 
+	/**
+	 * Method to fill form without check of required fields
+	 * This method simply fills all fields, required or not
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _fillFormSimple(\AcceptanceTester $I)
+	{
+		$I->fillField(self::$title, self::$field_title);
+		$I->fillField(self::$description, self::$field_description);
+	}
+
+	/**
+	 * Test method to create single Mailinglist without cleanup for testing restore permission
+	 *
+	 * @param   \AcceptanceTester   $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _CreateMailinglistWithoutCleanup(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create mailinglist without cleanup");
+		$I->amOnPage(MlManage::$url);
+		$I->click(Generals::$toolbar['New']);
+
+		self::_fillFormSimple($I);
+
+		$I->click(self::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(self::$success_save, Generals::$alert_msg);
+		$I->see('Mailinglists', Generals::$pageTitle);
+	}
 }

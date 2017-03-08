@@ -66,7 +66,7 @@ class TestMailinglistsDetailsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addMailinglistButton);
 
-		$this->_fillFormSimple($I);
+		MlEdit::_fillFormSimple($I);
 
 		$I->clickAndWait(MlEdit::$toolbar['Back'], 1);
 
@@ -123,7 +123,7 @@ class TestMailinglistsDetailsCest
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		MlEdit::_fillFormSimple($I);
 
         $I->clickAndWait(MlEdit::$toolbar['Cancel'], 1);
         $I->see("Mailinglists", Generals::$pageTitle);
@@ -178,7 +178,7 @@ class TestMailinglistsDetailsCest
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		MlEdit::_fillFormSimple($I);
 		$I->click(MlEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -216,7 +216,7 @@ class TestMailinglistsDetailsCest
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		MlEdit::_fillFormSimple($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -226,7 +226,7 @@ class TestMailinglistsDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormSimple($I);
+		MlEdit::_fillFormSimple($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->see("Error", Generals::$alert_header);
@@ -306,19 +306,4 @@ class TestMailinglistsDetailsCest
 		$I->clickSelectList(MlEdit::$published_list, MlEdit::$published_published);
 		$I->see("published", MlEdit::$published_list_text);
 	}
-
-	/**
-	 * Method to fill form without check of required fields
-	 * This method simply fills all fields, required or not
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @since   2.0.0
-	 */
-	private function _fillFormSimple(AcceptanceTester $I)
-	{
-		$I->fillField(MlEdit::$title, MlEdit::$field_title);
-		$I->fillField(MlEdit::$description, MlEdit::$field_description);
-	}
-
 }

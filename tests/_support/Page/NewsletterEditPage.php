@@ -217,10 +217,10 @@ class NewsletterEditPage
 		$archive_allowed    = true;
 		$delete_allowed     = true;
 
-		if ($username != 'AdminTester')
+		if ($username != Generals::$admin['author'])
 		{
-			$archive_allowed = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['archive'];
-			$delete_allowed  = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['delete'];
+			$archive_allowed = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['Archive'];
+			$delete_allowed  = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['Delete'];
 		}
 
 		if ($archive_allowed)
@@ -345,5 +345,64 @@ class NewsletterEditPage
 
 		$I->fillField(self::$publish_up, $now_up->format('Y-m-j H:i'));
 		$I->fillField(self::$publish_down, $now_down->format('Y-m-j H:i'));
+	}
+
+	/**
+	 * Test method to create single Newsletter without cleanup for testing restore permission
+	 *
+	 * @param   \AcceptanceTester   $I
+	 * @param   string              $username
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username)
+	{
+		$I->wantTo("Create Newsletter without cleanup");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		self::fillFormSimple($I);
+
+		$I->click(self::$toolbar['Save & Close']);
+		self::checkSuccess($I, $username);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create copy newsletter and send to real recipients
+	 *
+	 * @param   \AcceptanceTester   $I
+	 * @param   string              $username
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $username)
+	{
+		$I->click(self::$mark_to_send);
+		$I->click(Generals::$toolbar['Send']);
+		$I->see(self::$tab5_legend1);
+		$I->clickAndWait(self::$button_send, 1);
+
+		$I->seeInPopup(self::$popup_send_confirm);
+		$I->acceptPopup();
+
+		$I->wait(2);
+		$I->switchToIFrame(self::$tab5_send_iframe);
+		$I->waitForText(self::$success_send_ready, 300);
+		$I->see(self::$success_send_ready);
+		$I->switchToIFrame();
+		$I->wait(8);
+
+		$I->see("Newsletters", Generals::$pageTitle);
+		$I->clickAndWait(NlManage::$tab2, 1);
 	}
 }

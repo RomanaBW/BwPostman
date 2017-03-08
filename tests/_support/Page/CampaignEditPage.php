@@ -1,6 +1,8 @@
 <?php
 namespace Page;
 
+use Page\CampaignManagerPage as CamManage;
+
 /**
  * Class CampaignEditPage
  *
@@ -85,4 +87,43 @@ class CampaignEditPage
 		'Help'          => ".//*[@id='toolbar-help']/button",
 	);
 
+	/**
+	 * Test method to create single Campaign without cleanup for testing restore permission
+	 *
+	 * @param   \AcceptanceTester   $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _CreateCampaignWithoutCleanup(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create campaign without cleanup");
+		$I->amOnPage(CamManage::$url);
+		$I->click(Generals::$toolbar['New']);
+
+		self::_fillFormSimple($I);
+
+		$I->click(self::$toolbar['Save & Close']);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(self::$success_save, Generals::$alert_success);
+
+		$I->see('Campaigns', Generals::$pageTitle);
+	}
+
+	/**
+	 * Method to fill form without check of required fields
+	 * This method simply fills all fields, required or not
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @since   2.0.0
+	 */
+	public static function _fillFormSimple(\AcceptanceTester $I)
+	{
+		$I->fillField(self::$title, self::$field_title);
+		$I->fillField(self::$description, self::$field_description);
+		$I->click(sprintf(Generals::$mls_accessible, 2));
+	}
 }

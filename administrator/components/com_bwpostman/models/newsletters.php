@@ -252,8 +252,10 @@ class BwPostmanModelNewsletters extends JModelList
 			case ("queue"):
 					$this->_query->select('DISTINCT(' . $this->_db->quoteName('c.nl_id') . ')');
 					$this->_query->select($this->_db->quoteName('c.subject') . ' AS subject');
-					$this->_query->select($this->_db->quoteName('q.*'));
-					$this->_query->select($this->_db->quoteName('a.description'));
+					$this->_query->select($this->_db->quoteName('q.id'));
+					$this->_query->select($this->_db->quoteName('q.recipient'));
+					$this->_query->select($this->_db->quoteName('q.trial'));
+					$this->_query->select($this->_db->quoteName('n.description'));
 					$this->_query->select($this->_db->quoteName('ua.name') . ' AS authors');
 
 					$this->_query->from($this->_db->quoteName('#__bwpostman_sendmailcontent', 'c'));
@@ -297,7 +299,7 @@ class BwPostmanModelNewsletters extends JModelList
 		elseif ($tab == 'queue')
 		{
 			$this->_query->rightJoin($this->_db->quoteName('#__bwpostman_sendmailqueue', 'q') . ' ON ' . $this->_db->quoteName('q.content_id') . ' = ' . $this->_db->quoteName('c.id'));
-			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_newsletters', 'a') . ' ON ' . $this->_db->quoteName('a.id') . ' = ' . $this->_db->quoteName('c.nl_id'));
+			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_newsletters', 'n') . ' ON ' . $this->_db->quoteName('n.id') . ' = ' . $this->_db->quoteName('c.nl_id'));
 			$this->_query->leftJoin($this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('n.created_by'));
 		}
 	}

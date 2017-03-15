@@ -228,6 +228,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		if ($layout == 'edit_publish')
 		{
 			JToolbarHelper::save('newsletter.publish_save');
+			JToolbarHelper::apply('newsletter.publish_apply');
 			JToolbarHelper::cancel('newsletter.cancel');
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
 		}

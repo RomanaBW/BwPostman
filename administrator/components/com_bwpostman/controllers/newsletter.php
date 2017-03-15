@@ -70,6 +70,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$this->registerTask('sendmail', 'sendmail');
 		$this->registerTask('sendmailandpublish', 'sendmail');
 		$this->registerTask('sendtestmail', 'sendmail');
+		$this->registerTask('publish_apply', 'save');
 		$this->registerTask('publish_save', 'save');
 		$this->registerTask('changeTab', 'changeTab');
 	}
@@ -376,7 +377,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$context	= "$this->option.edit.$this->context";
 		$task		= $this->getTask();
 
-		if (($task == 'save') || ($task == 'apply') || ($task == 'save2copy') || ($task == 'publish_save'))
+		if (($task == 'save') || ($task == 'apply') || ($task == 'save2copy') || ($task == 'publish_save') || ($task == 'publish_apply'))
 		{
 			$this->changeTab();
 		}
@@ -550,6 +551,22 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					);
 				break;
 
+			case 'publish_apply':
+					// Set the record data in the session.
+					$recordId = $model->getState($this->context . '.id');
+					$this->holdEditId($context, $recordId);
+					$app->setUserState($context . '.data', null);
+					$model->checkout($recordId);
+
+					// Redirect back to the edit screen.
+					$this->setRedirect(
+						JRoute::_(
+							'index.php?option=' . $this->option . '&view=' . $this->view_item
+							. $this->getRedirectToItemAppend($recordId, $urlVar), false
+						)
+					);
+				break;
+
 			default:
 					// Clear the record id and data from the session.
 					$this->releaseEditId($context, $recordId);
@@ -602,6 +619,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					. '&layout=' . $tab . '&id=' . $recordId, false
 				)
 			);
+		}
+		elseif($this->getTask() == 'publish_save')
+		{
+			$app->setUserState('bwpostman.newsletters.tab', 'sent');
+			$this->input->set('tab', 'sent');
 		}
 	}
 
@@ -934,17 +956,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
-		$tmpl	= $this->input->get('tmpl');
 		$layout	= $this->input->get('layout', 'edit_basic', 'string');
 
 		$append	= '';
 
 		// Setup redirect info.
-		if ($tmpl)
-		{
-			$append .= '&tmpl=' . $tmpl;
-		}
-
 		if ($layout)
 		{
 			if ($layout == 'default') $layout	= 'edit_basic';

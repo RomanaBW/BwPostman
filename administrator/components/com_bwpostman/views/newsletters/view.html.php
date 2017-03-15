@@ -211,6 +211,10 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		switch ($tab)
 		{ // The layout-variable tells us which tab we are in
 			case "sent":
+				if (BwPostmanHelper::canEdit('newsletter'))
+				{
+					JToolbarHelper::editList('newsletter.edit');
+				}
 				if (BwPostmanHelper::canEditState('newsletter', 0))
 				{
 					JToolbarHelper::publishList('newsletters.publish');

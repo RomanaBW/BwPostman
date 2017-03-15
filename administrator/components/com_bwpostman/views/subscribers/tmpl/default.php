@@ -57,18 +57,18 @@ switch ($tab)
 $tab_cookie	= false;
 
 $tab_options = array(
-		'onActive' => 'function(title, description)
-		{
+	'onActive' => 'function(title, description)
+	{
         description.setStyle("display", "block");
         title.addClass("open").removeClass("closed");
     }',
-		'onBackground' => 'function(title, description)
-		{
+	'onBackground' => 'function(title, description)
+	{
         description.setStyle("display", "none");
         title.addClass("closed").removeClass("open");
     }',
-		'startOffset' => $tab_offset,  // 0 starts on the first tab, 1 starts the second, etc...
-		'useCookie' => $tab_cookie, // note the quotes around true, since it must be a string. But if you put false there, you must not use quotes otherwise JHtmlTabs will handle it as true
+	'startOffset' => $tab_offset,  // 0 starts on the first tab, 1 starts the second, etc...
+	'useCookie' => $tab_cookie, // note the quotes around true, since it must be a string. But if you put false there, you must not use quotes otherwise JHtmlTabs will handle it as true
 );
 ?>
 

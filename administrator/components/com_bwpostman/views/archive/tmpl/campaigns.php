@@ -83,7 +83,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 			?>
 
 				<div class="row-fluid">
-					<table class="adminlist table table-striped">
+					<table id="main-table" class="adminlist table table-striped">
 						<tbody>
 							<tr>
 								<td valign="top" width="90%">

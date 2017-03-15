@@ -51,6 +51,12 @@ Joomla.submitbutton = function (pressbutton)
 		form.task.setAttribute('value','newsletter.publish_save');
 		submitform(pressbutton);
 	}
+
+	if (pressbutton == 'newsletter.publish_apply')
+	{
+		form.task.setAttribute('value','newsletter.publish_apply');
+		submitform(pressbutton);
+	}
 };
 /* ]]> */
 </script>

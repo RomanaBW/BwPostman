@@ -280,7 +280,9 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 		<?php
-			$this->form->setValue('ip', '', $_SERVER['REMOTE_ADDR']);
+			$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+
+			$this->form->setValue('ip', '', $remote_ip);
 			echo $this->form->getInput('ip');
 		?>
 

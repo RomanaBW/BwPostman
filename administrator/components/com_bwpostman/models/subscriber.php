@@ -1047,12 +1047,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$values[$db_fields[$i]] = 0;
 		}
 
+		$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+
 		// Add and initialize additional fields, depending of confirm-box value
 		$values["id"]					= 0;
 		$values["user_id"]				= 0;
 		$values["registration_date"]	= $time;
 		$values["registered_by"]		= $user->get('id');
-		$values["registration_ip"]		= $_SERVER['REMOTE_ADDR'];
+		$values["registration_ip"]		= $remote_ip;
 		$values["confirmation_date"]	= 0;
 		$values["confirmation_ip"]		= 0;
 		$values["confirmed_by"]			= -1;
@@ -1243,11 +1245,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		}
 
 		// We may set confirmation data if the confirm-box is checked and the import value does not stand against
+		$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+
 		if ($confirm && $values['status'] != '0')
 		{
 			$values["confirmation_date"]	= $time;
 			$values["confirmed_by"]			= $user->get('id');
-			$values["confirmation_ip"]		= $_SERVER['REMOTE_ADDR'];
+			$values["confirmation_ip"]		= $remote_ip;
 		}
 
 		try

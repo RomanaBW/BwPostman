@@ -281,7 +281,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		// Do we have an activation string?
 		$activation		= $jinput->getAlnum('subscriber', '');
 		$activation		= JFactory::getDbo()->escape($activation);
-		$activation_ip	= $_SERVER['REMOTE_ADDR'];
+		$activation_ip	= JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 		$params 		= JComponentHelper::getParams('com_bwpostman');
 		$send_mail		= $params->get('activation_to_webmaster');
 

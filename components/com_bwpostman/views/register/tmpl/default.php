@@ -35,6 +35,8 @@ JHtml::_('behavior.formvalidator');
 JHtml::_('jquery.ui', array('core'));
 
 require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
+
+$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>
 
 <script type="text/javascript">
@@ -252,7 +254,7 @@ function checkRegisterForm() {
 			<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
 			<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
 			<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
-			<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+			<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
 			<?php echo JHtml::_('form.token'); ?>
 			</form>
 

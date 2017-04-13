@@ -34,6 +34,8 @@ JHtml::_('behavior.formvalidator');
 require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
 
 $n	= count($mailinglists);
+
+$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>
 
 <?php
@@ -349,7 +351,7 @@ function checkModRegisterForm() {
 
 			<?php // TODO: Has subscriber->id to be here or may this remain empty? ?>
 			<!-- <input type="hidden" name="id" value="<?php echo isset($subscriber->id); ?>" /> -->
-			<input type="hidden" name="registration_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+			<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
 			<input type="hidden" name="module_title" value="<?php echo $module_title; ?>" />
 			<input type="hidden" name="name_field_obligation_mod" id="name_field_obligation_mod" value="<?php echo $paramsComponent->get('name_field_obligation'); ?>" />
 			<input type="hidden" name="firstname_field_obligation_mod" id="firstname_field_obligation_mod" value="<?php echo $paramsComponent->get('firstname_field_obligation'); ?>" />

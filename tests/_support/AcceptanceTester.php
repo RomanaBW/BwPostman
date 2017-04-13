@@ -280,18 +280,19 @@ class AcceptanceTester extends \Codeception\Actor
 	 *
 	 * @param string            $select_list
 	 * @param string            $select_value
+	 * @param string            $select_list_id
 	 *
 	 * @since   2.0.0
 	 */
 
-	public function clickSelectList($select_list, $select_value)
+	public function clickSelectList($select_list, $select_value, $select_list_id)
 	{
 		// open select list
 		$this->click($select_list);
-		$this->wait(1);
+		$this->waitForElementVisible(sprintf(Generals::$select_list_open, $select_list_id));
+
 		// click wanted value
 		$this->click($select_value);
-		$this->wait(1);
 	}
 
 	/**

@@ -59,7 +59,7 @@ class TestDeinstallationCest
 	{
 		$I->wantTo("uninstall BwPostman");
 		$I->expectTo("see success message and component not in menu");
-		$I->amOnPage(InstallPage::$uninstall_url);
+		$I->amOnPage(InstallPage::$extension_manage_url);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingManage);
 

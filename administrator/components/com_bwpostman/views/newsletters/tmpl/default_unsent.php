@@ -140,7 +140,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<div class="clr clearfix"></div>
 
 			<div class="row-fluid current">
-				<table class="adminlist table table-striped">
+				<table id="main-table" class="adminlist table table-striped">
 					<thead>
 						<tr>
 							<th width="30" nowrap="nowrap" align="center"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>

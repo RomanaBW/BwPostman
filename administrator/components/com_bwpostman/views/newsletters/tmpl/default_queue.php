@@ -101,7 +101,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<div class="clr clearfix"></div>
 
 			<div class="row-fluid current">
-				<table class="adminlist table table-striped">
+				<table id="main-table" class="adminlist table table-striped">
 					<thead>
 						<tr>
 							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?></th>

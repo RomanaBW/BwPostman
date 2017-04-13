@@ -40,19 +40,27 @@ class DbHelper extends Module
 	 * @param   integer     $limit          number of values to get from database
 	 * @param   array       $criteria       special criteria, i.e. WHERE
 	 * @param   array       $credentials    credentials of database
+	 * @param   int         $tab            tab of view, not always needed
 	 *
 	 * @return  array
 	 *
 	 * @since   2.0.0
 	 */
-	public static function grabFromDatabaseWithLimit($table_name, $columns, $archive, $status, $order_col, $order_dir, $limit, $criteria = [], array $credentials)
+	public static function grabFromDatabaseWithLimit($table_name, $columns, $archive, $status, $order_col, $order_dir, $limit, $criteria = array(), array $credentials, $tab = 1)
 	{
 		$driver = self::getDbDriver($credentials);
 		$special    = 'WHERE `a`.`archive_flag` = ' . $archive;
 
 		if (strpos($table_name, 'newsletters') !== false)
 		{
-			$special    .= " AND `mailing_date` = '0000-00-00 00:00:00'";
+			if ($tab == 1)
+			{
+				$special    .= " AND `mailing_date` = '" . Generals::$null_date . "'";
+			}
+			elseif ($tab == 2)
+			{
+				$special    .= " AND `mailing_date` != '" . Generals::$null_date . "'";
+			}
 		}
 
 		if (strpos($table_name, 'templates') !== false)
@@ -196,7 +204,7 @@ class DbHelper extends Module
 
 		$query      = "SELECT `params` FROM $table_name $where";
 		$sth        = $driver->executeQuery($query, $criteria);
-
+//codecept_debug($query);
 		$params     = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		$options    = json_decode($params[$n]['params']);
 

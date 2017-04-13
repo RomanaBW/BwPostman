@@ -38,7 +38,7 @@ abstract class BWPM_User2SubscriberHelper {
 	 *
 	 * @param   string  $user_mail
 	 *
-	 * @return  bool                true if subscription present
+	 * @return  mixed   $subscriber_id|false   subscription data or false
 	 *
 	 * @since  2.0.0
 	 */
@@ -52,22 +52,51 @@ abstract class BWPM_User2SubscriberHelper {
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 
-		$query->select($_db->quoteName('email'));
+		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($user_mail));
 
 		$_db->setQuery($query);
 
-		$result  = $_db->loadResult();
+		$subscriber_id  = $_db->loadResult();
 
-		if ($result)
-		{
-			return true;
-		}
-		else
+		return $subscriber_id;
+	}
+
+	/**
+	 * Method to check if user has a subscription
+	 *
+	 * @param   string  $user_mail
+	 *
+	 * @return  bool    subscriber is to activate or not
+	 *
+	 * @since  2.0.0
+	 */
+	public static function isToActivate($user_mail)
+	{
+		if ($user_mail == '')
 		{
 			return false;
 		}
+
+		$_db	= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->select($_db->quoteName('status'));
+		$query->select($_db->quoteName('activation'));
+		$query->from($_db->quoteName('#__bwpostman_subscribers'));
+		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($user_mail));
+
+		$_db->setQuery($query);
+
+		$result  = $_db->loadAssoc();
+
+		if (!$result['status'] && $result['activation'] =! '')
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -106,6 +135,78 @@ abstract class BWPM_User2SubscriberHelper {
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Method to update subscribed mailinglists in table
+	 *
+	 * @param   int     $subscriber_id
+	 * @param   array   $new_mailinglists
+	 *
+	 * @return  bool    true if subscription present and update okay
+	 *
+	 * @since  2.0.0
+	 */
+	public static function updateSubscribedMailinglists($subscriber_id, $new_mailinglists)
+	{
+		$subscribed_mailinglists    = self::getSubscribedMailinglists($subscriber_id);
+
+		if ((count($new_mailinglists) == 1) && ($new_mailinglists[0] == 0))
+		{
+			unset($new_mailinglists[0]);
+		}
+
+		if (empty($new_mailinglists))
+		{
+			return false;
+		}
+
+		$mailinglists_to_add    = array();
+
+		foreach ($new_mailinglists as $new_id)
+		{
+			$found  = array_search($new_id, $subscribed_mailinglists);
+
+			if (!$found)
+			{
+				$mailinglists_to_add[]  = $new_id;
+			}
+		}
+
+		if (count($mailinglists_to_add))
+		{
+			$save_mailinglists_result   = self::saveSubscribersMailinglists($subscriber_id, $mailinglists_to_add);
+
+			return $save_mailinglists_result;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to get subscribed mailinglists
+	 *
+	 * @param   int     $subscriber_id
+	 *
+	 * @return  array   $subscribed_mailinglists
+	 *
+	 * @since       2.0.0
+	 */
+	public static function getSubscribedMailinglists($subscriber_id)
+	{
+		// @Todo: As from version 2.0.0 helper class of component may be used
+		$_db = JFactory::getDbo();
+		$query  = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('mailinglist_id'));
+		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($_db->quoteName('subscriber_id') . ' = ' . $_db->quote($subscriber_id));
+
+		$_db->setQuery($query);
+
+		$subscribed_mailinglists = $_db->loadColumn();
+
+		return  $subscribed_mailinglists;
 	}
 
 	/**
@@ -197,7 +298,7 @@ abstract class BWPM_User2SubscriberHelper {
 	 *
 	 * @since       2.0.0
 	 */
-	public static  function createActivation()
+	public static function createActivation()
 	{
 		// @ToDo: When this method has moved to helper class of component, this one here is redundant
 		$_db                = JFactory::getDbo();

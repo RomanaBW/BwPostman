@@ -7,69 +7,78 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - \Helper\Acceptance
-        - WebDriver
-        - Db
-        - Asserts
+      - \Helper\Acceptance
+      - WebDriver
+      - Db
+      - Asserts
+
+# Default configuration is for simple joomla containers (BwPostman component, modules, 'normal' plugins)
     config:
-        WebDriver:
-#                url: http://www.dev.nil
-#                url: http://www.bwtest.nil
-#                url: http://www.test.nil
+      WebDriver:
+        url: http://172.18.0.5
 
-# For manual testing
-                url: http://www.devtest.nil
+        window_size: 1440x900
+        browser: chrome
+        port: 4445
+        connection_timeout: 60
+        restart: false
+#        browser: phantomjs
+#        port: 4447
+#        browser: firefox
+#        port: 4444
 
-# For Containers
-#                url: http://172.18.0.5
+      Db:
+        dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
+        user: 'tester'
+        password: 'barbamama'
 
-# For VMs
-#                url: http://www.ci-tests.nil
-
-                window_size: 1440x900
-#                browser: phantomjs
-#                port: 4447
-                browser: chrome
-                port: 4445
-#                browser: firefox
-#                port: 4444
-                connection_timeout: 60
-                restart: false
-
-        Db:
-#            dsn: 'mysql:host=universe.bet2.nil;dbname=dev'
-#            dsn: 'mysql:host=universe.bet2.nil;dbname=bwtest'
-#            dsn: 'mysql:host=universe.bet2.nil;dbname=test'
-#
-# For manual testing
-            dsn: 'mysql:host=universe.bet2.nil;dbname=devtest'
-            user: 'root'
-            password: 'Susi'
-
-# For Containers
-#            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
-
-# For VMs
-#            dsn: 'mysql:host=cisuse.tester-net.nil;dbname=joomlatest'
-#            user: 'root'
-#            password: 'barbapapa'
-
-# For Containers and VMs
-#            user: 'tester'
-#            password: 'barbamama'
-
-#           dump: 'tests/_data/dump.sql'
-            populate: false
-            cleanup: false
-            reconnect: true
+        populate: false
+        cleanup: false
+        reconnect: true
 
 
 env:
-    firefox:
-        modules:
-          config:
-            Webdriver:
-              browser: firefox
-              port: 4446
-    phantom:
+# This configuration is for manual testing (needed for creating tests)
+  manual:
+    modules:
+      config:
+        WebDriver:
+          url: http://www.devtest.nil
+
+        Db:
+          dsn: 'mysql:host=universe.bet2.nil;dbname=devtest'
+          user: 'root'
+          password: 'Susi'
+
+# This configuration is for joomla containers also containing virtuemart(plugin BwPostman_Buyer2Subscriber)
+  shop:
+    modules:
+      config:
+        WebDriver:
+          url: http://172.18.0.15
+
+        Db:
+          dsn: 'mysql:host=172.18.0.14;dbname=joomlatest'
+
+# This configuration is for testing in a virtual machine
+  vm:
+    modules:
+      config:
+        WebDriver:
+          url: http://www.ci-tests.nil
+
+        Db:
+          dsn: 'mysql:host=cisuse.tester-net.nil;dbname=joomlatest'
+          user: 'tester'
+          password: 'barbamama'
+
+
+
+#    firefox:
+#        modules:
+#          config:
+#            Webdriver:
+#              browser: firefox
+#              port: 4446
+#    phantom:
       # nothing changed here

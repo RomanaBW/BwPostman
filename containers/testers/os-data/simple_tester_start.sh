@@ -40,8 +40,11 @@ codecept run acceptance Backend/TestOptionsCest::saveDefaults ${DEBUG} --xml xml
 # data restore
 codecept run acceptance Backend/TestMaintenanceRestoreCest ${DEBUG} --xml xmlreports/report_restore.xml --html htmlreports/report_restore.html
 
+if [ ${TEST_CAT} == all ]
+then
 # set permissions
 codecept run acceptance Backend/TestOptionsCest::setPermissions ${DEBUG} --xml xmlreports/report_option_set_permissions.xml --html htmlreports/report_option_set_permissions.html
+fi
 
 
 # run specific tests
@@ -117,6 +120,15 @@ codecept run acceptance Backend/Lists/TestNewslettersListsCest::FilterNewsletter
 codecept run acceptance Backend/Lists/TestNewslettersListsCest::SearchNewsletters  ${DEBUG} --xml xmlreports/report_newsletters_seearch.xml --html htmlreports/report_newsletters_seearch.html
 codecept run acceptance Backend/Lists/TestNewslettersListsCest::ListlimitNewsletters  ${DEBUG} --xml xmlreports/report_newsletters_listlimit.xml --html htmlreports/report_newsletters_listlimit.html
 codecept run acceptance Backend/Lists/TestNewslettersListsCest::PaginationNewsletters  ${DEBUG} --xml xmlreports/report_newsletters_pagination.xml --html htmlreports/report_newsletters_pagination.html
+
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::SortSentNewslettersByTableHeader  ${DEBUG} --xml xmlreports/report_newsletters_sort_sent_by_tableheader.xml --html htmlreports/report_newsletters_sort_sent_by_tableheader.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::SortSentNewslettersBySelectList  ${DEBUG} --xml xmlreports/report_newsletters_report_newsletters_sort_sent_by_selectlist.xml --html htmlreports/report_newsletters_sort_sent_by_selectlist.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::FilterSentNewslettersByAuthor  ${DEBUG} --xml xmlreports/report_newsletters_filter_sent_by_author.xml --html htmlreports/report_newsletters_filter_sent_by_author.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::FilterSentNewslettersByCampaign  ${DEBUG} --xml xmlreports/report_newsletters_filter_sent_by_campaign.xml --html htmlreports/report_newsletters_filter_sent_by_campaign.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::FilterSentNewslettersByStatus  ${DEBUG} --xml xmlreports/report_newsletters_filter_sent_by_statos.xml --html htmlreports/report_newsletters_filter_sent_by_status.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::SearchSentNewsletters  ${DEBUG} --xml xmlreports/report_newsletters_sent_search.xml --html htmlreports/report_newsletters_sent_search.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::ListlimitSentNewsletters  ${DEBUG} --xml xmlreports/report_newsletters_sent_listlimit.xml --html htmlreports/report_newsletters_sent_listlimit.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::PaginationSentNewsletters  ${DEBUG} --xml xmlreports/report_newsletters_sent_pagination.xml --html htmlreports/report_newsletters_sent_pagination.html
 fi
 
 ###
@@ -186,7 +198,8 @@ then
 codecept run acceptance Backend/Details/TestCampaignsDetailsCest::CreateOneCampaignCancelMainView ${DEBUG} --xml xmlreports/report_campaigns_cancel_main.xml --html htmlreports/report_campaigns_cancel_main.html
 codecept run acceptance Backend/Details/TestCampaignsDetailsCest::CreateOneCampaignCompleteMainView ${DEBUG} --xml xmlreports/report_campaigns_complete_main.xml --html htmlreports/report_campaigns_complete_main.html
 codecept run acceptance Backend/Details/TestCampaignsDetailsCest::CreateOneCampaignCancelListView ${DEBUG} --xml xmlreports/report_campaigns_cancel_list.xml --html htmlreports/report_campaigns_cancel_list.html
-codecept run acceptance Backend/Details/TestCampaignsDetailsCest::CreateOneCampaignListView ${DEBUG} --xml xmlreports/report_campaigns_complete_list.xml --html htmlreports/report_campaigns_complete_list.html
+codecept run acceptance Backend/Details/TestCampaignsDetailsCest::CreateOneCampaignCompleteListView ${DEBUG} --xml xmlreports/report_campaigns_complete_list.xml --html htmlreports/report_campaigns_complete_list.html
+codecept run acceptance Backend/Details/TestCampaignsDetailsCest::CreateOneCampaignListViewRestore ${DEBUG} --xml xmlreports/report_campaigns_restore_list.xml --html htmlreports/report_campaigns_restore_list.html
 codecept run acceptance Backend/Details/TestCampaignsDetailsCest::CreateCampaignTwiceListView  ${DEBUG} --xml xmlreports/report_campaigns_twice_list.xml --html htmlreports/report_campaigns_twice_list.html
 fi
 
@@ -206,7 +219,8 @@ then
 codecept run acceptance Backend/Details/TestMailinglistsDetailsCest::CreateOneMailinglistCancelMainView ${DEBUG} --xml xmlreports/report_mailinglists_cancel_main.xml --html htmlreports/report_mailinglists_cancel_main.html
 codecept run acceptance Backend/Details/TestMailinglistsDetailsCest::CreateOneMailinglistCompleteMainView ${DEBUG} --xml xmlreports/report_mailinglists_complete_main.xml --html htmlreports/report_mailinglists_complete_main.html
 codecept run acceptance Backend/Details/TestMailinglistsDetailsCest::CreateOneMailinglistCancelListView ${DEBUG} --xml xmlreports/report_mailinglists_cancel_list.xml --html htmlreports/report_mailinglists_cancel_list.html
-codecept run acceptance Backend/Details/TestMailinglistsDetailsCest::CreateOneMailinglistListView ${DEBUG} --xml xmlreports/report_mailinglists_complete_list.xml --html htmlreports/report_mailinglists_complete_list.html
+codecept run acceptance Backend/Details/TestMailinglistsDetailsCest::CreateOneMailinglistCompleteListView ${DEBUG} --xml xmlreports/report_mailinglists_complete_list.xml --html htmlreports/report_mailinglists_complete_list.html
+codecept run acceptance Backend/Details/TestMailinglistsDetailsCest::CreateOneMailinglistListViewRestore ${DEBUG} --xml xmlreports/report_mailinglists_restore_list.xml --html htmlreports/report_mailinglists_restore_list.html
 codecept run acceptance Backend/Details/TestMailinglistsDetailsCest::CreateMailinglistTwiceListView ${DEBUG} --xml xmlreports/report_mailinglists_twice_list.xml --html htmlreports/report_mailinglists_twice_list.html
 fi
 
@@ -226,11 +240,13 @@ then
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCancelMainView ${DEBUG} --xml xmlreports/report_newsletters_cancel_main.xml --html htmlreports/report_newsletters_cancel_main.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteMainView ${DEBUG} --xml xmlreports/report_newsletters_complete_main.xml --html htmlreports/report_newsletters_complete_main.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCancelListView ${DEBUG} --xml xmlreports/report_newsletters_cancel_list.xml --html htmlreports/report_newsletters_cancel_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterListView ${DEBUG} --xml xmlreports/report_newsletters_complete_list.xml --html htmlreports/report_newsletters_complete_list.html
+codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteListView ${DEBUG} --xml xmlreports/report_newsletters_complete_list.xml --html htmlreports/report_newsletters_complete_list.html
+codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterListViewRestore ${DEBUG} --xml xmlreports/report_newsletters_restore_list.xml --html htmlreports/report_newsletters_restore_list.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateNewsletterTwiceListView ${DEBUG} --xml xmlreports/report_newsletters_twice_list.xml --html htmlreports/report_newsletters_twice_list.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CopyNewsletter ${DEBUG} --xml xmlreports/report_newsletters_copy.xml --html htmlreports/report_newsletters_copy.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToTestrecipients ${DEBUG} --xml xmlreports/report_newsletters_send_test.xml --html htmlreports/report_newsletters_send_test.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealRecipients ${DEBUG} --xml xmlreports/report_newsletters_send_real.xml --html htmlreports/report_newsletters_send_real.html
+codecept run acceptance Backend/Details/TestNewslettersDetailsCest::EditSentNewsletter ${DEBUG} --xml xmlreports/report_newsletters_edit_sent.xml --html htmlreports/report_newsletters_edit_sent.html
 fi
 
 ###
@@ -249,7 +265,8 @@ then
 codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelMainView ${DEBUG} --xml xmlreports/report_subscribers_cancel_main.xml --html htmlreports/report_subscribers_cancel_main.html
 codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteMainView ${DEBUG} --xml xmlreports/report_subscribers_complete_main.xml --html htmlreports/report_subscribers_complete_main.html
 codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelListView ${DEBUG} --xml xmlreports/report_subscribers_cancel_list.xml --html htmlreports/report_subscribers_cancel_list.html
-codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberListView ${DEBUG} --xml xmlreports/report_subscribers_complete_list.xml --html htmlreports/report_subscribers_complete_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteListView ${DEBUG} --xml xmlreports/report_subscribers_complete_list.xml --html htmlreports/report_subscribers_complete_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberListViewRestore ${DEBUG} --xml xmlreports/report_subscribers_restore_list.xml --html htmlreports/report_subscribers_restore_list.html
 codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateSubscriberTwiceListView ${DEBUG} --xml xmlreports/report_subscribers_twice_list.xml --html htmlreports/report_subscribers_twice_list.html
 fi
 
@@ -274,7 +291,8 @@ codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateHtmlTemp
 codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCancelMainView ${DEBUG} --xml xmlreports/report_templates_text_cancel_main.xml --html htmlreports/report_templates_text_cancel_main.html
 codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCompleteMainView ${DEBUG} --xml xmlreports/report_templates_text_complete_main.xml --html htmlreports/report_templates_text_complete_main.html
 codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCancelListView ${DEBUG} --xml xmlreports/report_templates_text_cancel_list.xml --html htmlreports/report_templates_text_cancel_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateListView ${DEBUG} --xml xmlreports/report_templates_text_complete_list.xml --html htmlreports/report_templates_text_complete_list.html
+codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCompleteListView ${DEBUG} --xml xmlreports/report_templates_text_complete_list.xml --html htmlreports/report_templates_text_complete_list.html
+codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateRestoreListView ${DEBUG} --xml xmlreports/report_templates_text_restore_list.xml --html htmlreports/report_templates_text_restore_list.html
 codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateTextTemplateTwiceListView ${DEBUG} --xml xmlreports/report_templates_text_twice_list.xml --html htmlreports/report_templates_text_twice_list.html
 fi
 
@@ -322,6 +340,47 @@ codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings ${DEBUG} 
 codecept run acceptance Backend/TestMaintenanceCest::testForumLink ${DEBUG} --xml xmlreports/report_maintenance_forum_link.xml --html htmlreports/report_maintenance_forum_link.html
 fi
 
+###############################
+# test plugin User2Subscriber #
+###############################
+
+if [ ${TEST_CAT} == user2subscriber_all ]
+then
+# all tests for plugin user2subscriber
+#codecept run acceptance Backend/TestInstallationCest::activateUser2Subscriber ${DEBUG} --xml xmlreports/report_installation_activate_u2s.xml --html htmlreports/report_installation_activate_u2s.html
+codecept run acceptance User2Subscriber/User2SubscriberCest ${DEBUG} --xml xmlreports/report_user2Subscriber.xml --html htmlreports/report_user2Subscriber.html
+fi
+
+if [ ${TEST_CAT} == user2subscriber_single ]
+then
+# single tests for plugin user2subscriber
+codecept run acceptance User2Subscriber/User2SubscriberCest::activateUser2Subscriber ${DEBUG} --xml xmlreports/report_user2Subscriber_activate.xml --html htmlreports/report_user2Subscriber_activate.html
+
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutSubscription ${DEBUG} --xml xmlreports/report_u2s_no_subscription.xml --html htmlreports/report_u2s_subscription.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationExtended ${DEBUG} --xml xmlreports/report_u2s_no_activation_ext.xml --html htmlreports/report_u2s_no_activation_ext.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithActivationByFrontend ${DEBUG} --xml xmlreports/report_u2s_activation_FE.xml --html htmlreports/report_u2s_activation_FE.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithExistingSubscriptionSameList ${DEBUG} --xml xmlreports/report_u2s_subs_same_list.xml --html htmlreports/report_u2s_subs_same_list.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithExistingSubscriptionDifferentList ${DEBUG} --xml xmlreports/report_u2s_subs_diff_list.xml --html htmlreports/report_u2s_subs_diff_list.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithActivationByBackend ${DEBUG} --xml xmlreports/report_u2s_activation_BE.xml --html htmlreports/report_u2s_activation_BE.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithTextFormat ${DEBUG} --xml xmlreports/report_u2s_text_format.xml --html htmlreports/report_u2s_text_format.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutFormatSelectionHTML ${DEBUG} --xml xmlreports/report_u2s_no_format_select_html.xml --html htmlreports/report_u2s_no_format_select_html.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutFormatSelectionText ${DEBUG} --xml xmlreports/report_u2s_no_format_select_text.xml --html htmlreports/report_u2s_no_format_select_text.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithAnotherMailinglist ${DEBUG} --xml xmlreports/report_u2s_another_mailinglist.xml --html htmlreports/report_u2s_another_mailinglist.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithTwoMailinglists ${DEBUG} --xml xmlreports/report_u2s_two_mailinglists.xml --html htmlreports/report_u2s_two_mailinglists.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutMailinglists ${DEBUG} --xml xmlreports/report_u2s_no_mailinglists.xml --html htmlreports/report_u2s_no_mailinglists.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeYes ${DEBUG} --xml xmlreports/report_u2s_with_mail_change.xml --html htmlreports/report_u2s_with_mail_change.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationWithMailChangeYes ${DEBUG} --xml xmlreports/report_u2s_.xml --html htmlreports/report_u2s_.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeNo ${DEBUG} --xml xmlreports/report_u2s_no_activation_mail_change.xml --html htmlreports/report_u2s_no_activation_mail_change.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithDeleteNo ${DEBUG} --xml xmlreports/report_u2s_delete_no.xml --html htmlreports/report_u2s_delete_no.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsPluginDeactivated ${DEBUG} --xml xmlreports/report_u2s_plugin_deactivated.xml --html htmlreports/report_u2s_plugin_deactivated.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMessage ${DEBUG} --xml xmlreports/report_u2s_options_message.xml --html htmlreports/report_u2s_options_message.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsSwitchShowFormat ${DEBUG} --xml xmlreports/report_u2s_switch_show_format.xml --html htmlreports/report_u2s_switch_show_format.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberPredefinedFormat ${DEBUG} --xml xmlreports/report_u2s_predefined_format.xml --html htmlreports/report_u2s_predefined_format.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoUpdate ${DEBUG} --xml xmlreports/report_u2s_auto_update.xml --html htmlreports/report_u2s_auto_update.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoDelete ${DEBUG} --xml xmlreports/report_u2s_auto_delete.xml --html htmlreports/report_u2s_auto_delete.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMailinglists ${DEBUG} --xml xmlreports/report_u2s_options_mailinglists.xml --html htmlreports/report_u2s_options_mailinglists.html
+fi
+
 if [ ${TEST_CAT} == all ]
 then
 # run all tests
@@ -329,6 +388,7 @@ codecept run acceptance Backend/Lists ${DEBUG} --xml xmlreports/report_lists.xml
 codecept run acceptance Backend/Details ${DEBUG} --xml xmlreports/report_details.xml --html htmlreports/report_details.html
 codecept run acceptance Frontend ${DEBUG} --xml xmlreports/report_frontend.xml --html htmlreports/report_frontend.html
 codecept run acceptance Backend/TestMaintenanceCest ${DEBUG} --xml xmlreports/report_maintenance.xml --html htmlreports/report_maintenance.html
+codecept run acceptance User2Subscriber ${DEBUG} --xml xmlreports/report_user2Subscriber.xml --html htmlreports/report_user2Subscriber.html
 fi
 
 # Deinstallation

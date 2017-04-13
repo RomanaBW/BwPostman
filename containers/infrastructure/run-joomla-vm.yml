@@ -1,0 +1,65 @@
+version: '3'
+
+networks:
+    tester-net-vm.nil:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.8/29
+
+services:
+    mysqldbvm:
+        container_name: mysqldbvm
+        image: romana/mysql
+        hostname: mysqlserver-vm
+        domainname: tester-net-vm.nil
+#        restart: always
+        networks:
+            tester-net-vm.nil:
+                ipv4_address: 172.18.0.11
+        expose:
+            - "3306"
+        ports:
+            - "3307:3306"
+        volumes:
+            - "/vms/dockers/containers/infrastructure/mysqldb/data/logs:/var/log/mysql/"
+            - "/vms/dockers/global_data/test_data/j365vm/tables:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: barbapapa
+            MYSQL_DATABASE: joomlatest
+            MYSQL_USER: tester
+            MYSQL_PASSWORD: barbamama
+
+    postfixvm:
+        container_name: "mail.tester-net-vm.nil"
+        image: romana/os-postfix
+        hostname: mail-vm
+        domainname: tester-net-vm.nil
+        expose:
+            - "25"
+        volumes:
+            - "/vms/dockers/containers/infrastructure/os_base/os_data:/outerworld"
+        networks:
+            tester-net-vm.nil:
+                ipv4_address: 172.18.0.10
+
+    webservervm:
+        container_name: webservervm
+        image: romana/apache_v2
+        hostname: webserver-vm
+        domainname: tester-net-vm.nil
+        depends_on:
+            - "mysqldbvm"
+        networks:
+            tester-net-vm.nil:
+                ipv4_address: 172.18.0.12
+        expose:
+            - "80"
+        links:
+            - mysqldbvm:mysqldbvm
+        ports:
+            - "8001:80"
+        volumes:
+            - "/vms/dockers/containers/infrastructure/apache/data/logs:/var/log/apache2/"
+            - "/vms/dockers/global_data/test_data/j365vm/files:/var/www/html"

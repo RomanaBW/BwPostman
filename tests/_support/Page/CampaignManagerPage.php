@@ -53,7 +53,7 @@ class CampaignManagerPage
 	public static $sort_data_array  = array(
 		'sort_criteria' => array(
 			'description'   => 'Campaign description',
-			'newsletters'   => '# newsletters',
+			'newsletters'   => '# Newsletters',
 			'id'            => 'ID',
 			'title'         => 'Campaign title'
 		),

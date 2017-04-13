@@ -36,6 +36,7 @@ class User2SubscriberPage
 
 	//view identifier
 	public static $view_register        = ".//*[@id='member-registration']/fieldset[1]/legend";
+	public static $view_register_subs   = ".//*[@id='member-registration']/fieldset[2]/legend";
 
 	// login field identifiers
 	public static $login_identifier_name            = ".//*[@id='jform_name']";
@@ -46,13 +47,21 @@ class User2SubscriberPage
 	public static $login_identifier_email2          = ".//*[@id='jform_email2']";
 	public static $login_identifier_register        = ".//*[@id='member-registration']/div/div/button";
 
-	// login field values
+	// login field values user 1
 	public static $login_value_name         = "Sam Sample";
 	public static $login_value_username     = "Sam";
 	public static $login_value_password     = "!08Sam15";
-	public static $login_value_email        = "dummy-1@bwtest.nil";
+	public static $login_value_email        = "dummy-1@tester-net.nil";
 
-	public static $change_value_email       = "dummy-2@bwtest.nil";
+	public static $change_value_email       = "dummy-2@tester-net.nil";
+
+	// login field values user 2
+	public static $login_value2_name         = "Chiara Abbott";
+	public static $login_value2_username     = "Chiara";
+	public static $login_value2_password     = "!08Sam15";
+	public static $login_value2_email        = "c.abbott@tester-net.nil";
+
+	public static $search_field     = "";
 
 	// subscriber field identifiers
 	public static $subs_identifier_subscribe_no     = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[1]";
@@ -66,13 +75,22 @@ class User2SubscriberPage
 	public static $subs_identifier_format_html      = ".//*[@id='jform_bwpm_user2subscriber_emailformat']/label[2]";
 
 	// subscriber field values
+	public static $subs_null_value         = "NO_NAME_AVAILABLE";
+
 	public static $subs_value_name         = "Sample";
 	public static $subs_value_firstname    = "Sam";
 	public static $subs_value_special      = "0815";
 
+	public static $subs_value_name2        = "Sedlmeier";
+	public static $subs_value_firstname2   = "Andre";
+	public static $subs_value_special2     = "0816";
+
+	public static $subs_value2_name        = "Abbott";
+	public static $subs_value2_firstname   = "Chiara";
+
 	// success message identifiers
 	public static $success_heading_identifier   = ".//*[@id='system-message']/div/h4";
-	public static $success_message_identifier   = "div.alert-success > div > div.alert-message";
+	public static $success_message_identifier   = ".//*[@id='system-message']/div/div/div";
 	public static $activation_completed_text    = "Your Account has been successfully activated. You can now log in using the username and password you chose during the registration.";
 	public static $activation_complete          = ".//*[@id='system-message']/div/div/div";
 
@@ -97,6 +115,8 @@ class User2SubscriberPage
 	public static $tab_unconfirmed                  = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
 	public static $subscriber_email_col_identifier  = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
 	public static $subscriber_format_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[6]";
+	public static $subscriber_email_col_ident_no_gender  = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[4]";
+	public static $subscriber_format_col_ident_no_gender = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
 	public static $subscriber_filter_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
 	public static $subscriber_edit_link             = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]/a";
 
@@ -113,8 +133,9 @@ class User2SubscriberPage
 
 	// search subscriber
 	public static $search_tool_button               = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[2]/button";
+	public static $search_for_list_id               = "filter_search_filter_chzn";
 	public static $search_for_list                  = ".//*[@id='filter_search_filter_chzn']";
-	public static $search_for_value                 = ".//*[@id='filter_search_filter_chzn']/div/ul/li[contains(text(), 'Name')]";
+	public static $search_for_value                 = ".//*[@id='filter_search_filter_chzn']/div/ul/li[contains(text(), '%s')]";
 
 	// check for selected options
 	public static $user_id_identifier               = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr/td[7]";
@@ -149,9 +170,12 @@ class User2SubscriberPage
 	//messages
 	public static $delete_confirm           = "Are you sure you want to delete? Confirming will permanently delete the selected item(s)!";
 	public static $delete_success           = "1 user successfully deleted.";
-	public static $register_success         = "Your account has been created and an activation link has been sent";
+	public static $register_success         = "Your account has been created and a";
 
 	public static $plugin_disabled_success  = 'Plugin successfully disabled';
 	public static $plugin_enabled_success   = 'Plugin successfully enabled';
 	public static $plugin_saved_success     = 'Plugin successfully saved';
+
+	public static $username_used            = 'The username you entered is not available. Please pick another username.';
+	public static $mailaddress_used         = 'The email address you entered is already in use or invalid. Please enter another email address.';
 }

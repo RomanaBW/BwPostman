@@ -38,6 +38,7 @@ class MailinglistEditPage
 	public static $description  = '#jform_description';
 
 	public static $access               = '#jform_access';
+	public static $access_list_id       = "jform_access_chzn";
 	public static $access_list          = ".//*[@id='jform_access_chzn']/a";
 	public static $access_list_text     = ".//*[@id='jform_access_chzn']/a/span";
 	public static $access_public        = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Public']";
@@ -47,6 +48,7 @@ class MailinglistEditPage
 	public static $access_super         = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Super Users']";
 
 	public static $published                = '#jform_published';
+	public static $published_list_id        = "jform_published_chzn";
 	public static $published_list           = ".//*[@id='jform_published_chzn']/a";
 	public static $published_list_text      = ".//*[@id='jform_published_chzn']/a/span";
 	public static $published_unpublished    = ".//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";

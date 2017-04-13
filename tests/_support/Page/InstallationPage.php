@@ -27,7 +27,8 @@ class InstallationPage
 {
     // include url of current page
     public static $install_url          = "/administrator/index.php?option=com_installer";
-    public static $uninstall_url        = "/administrator/index.php?option=com_installer&view=manage";
+    public static $extension_manage_url = "/administrator/index.php?option=com_installer&view=manage";
+	public static $plugin_manage_url    = "/administrator/index.php?option=com_plugins&view=plugins";
 
     /*
      * Declare UI map for this page here. CSS or XPath allowed.
@@ -38,13 +39,33 @@ class InstallationPage
     public static $installField      = ".//*[@id='install_package']";
 	public static $installButton     = ".//*[@id='installbutton_package']";
 
+	public static $installFileComponent = "pkg_bwpostman.zip";
+	public static $installFileU2S       = "plg_bwpostman_bwpm_user2subscriber.zip";
+	public static $installFileB2S       = "plg_bwpostman_bwpm_buyer2subscriber.zip";
+
 	public static $headingInstall       = "Extensions: Install";
 	public static $headingManage        = "Extensions: Manage";
+	public static $headingPlugins       = "Plugins";
+
+	public static $pluginSavedSuccess   = "Plugin successfully saved.";
 
 	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
 
 	public static $installSuccessMsg    = "Installation of the package was successful.";
 	public static $uninstallSuccessMsg  = "Thank you for using BwPostman. BwPostman is now removed from your system.";
 
+	public static $installU2SSuccessMsg    = "Installation of the plugin was successful.";
+
+	public static $installB2SSuccessMsg    = "Installation of the plugin was successful.";
+	public static $installB2SErrorComMsg   = "BwPostman Plugin Buyer2Subscriber requires an installed BwPostman ";
+	public static $installB2SErrorU2SMsg   = "BwPostman Plugin Buyer2Subscriber requires an installed BwPostman Plugin User2Subscriber!";
+	public static $installB2SErrorVmMsg    = "BwPostman Plugin Buyer2Subscriber requires an installed BwPostman Plugin User2Subscriber!";
+
 	public static $optionsSuccessMsg    = "Configuration successfully saved.";
+
+	public static $enableSuccessMsg       = "1 extension successfully enabled.";
+	public static $pluginEnableSuccessMsg = "Plugin successfully enabled.";
+
+	public static $icon_published       = ".//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'icon-publish')]";
+
 }

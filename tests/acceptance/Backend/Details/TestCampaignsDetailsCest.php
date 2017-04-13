@@ -147,7 +147,7 @@ class TestCampaignsDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneCampaignListView(AcceptanceTester $I)
+	public function CreateOneCampaignCompleteListView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one campaign list view");
 		$I->amOnPage(CamManage::$url);

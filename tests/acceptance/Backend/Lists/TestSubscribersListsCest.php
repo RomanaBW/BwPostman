@@ -62,11 +62,25 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		$sort_array     = $this->_prepareSortArray($I);
+		$loop_counts    = 10;
+
+		$options    = $I->getManifestOptions('com_bwpostman');
+
+		if (!$options->show_gender)
+		{
+			$loop_counts    = 9;
+		}
+
 
 		// loop over sorting criterion
 		$columns    = implode(', ', SubsManage::$query_criteria);
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-		$I->loopFilterList($I, SubsManage::$sort_data_array, 'header', $columns, 'subscribers AS `a`', 0, '1', 10);
+		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
+
+		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -90,10 +104,20 @@ class TestSubscribersListsCest
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
+		$sort_array = $this->_prepareSortArray($I);
+		$loop_counts    = 10;
+
+		$options    = $I->getManifestOptions('com_bwpostman');
+
+		if (!$options->show_gender)
+		{
+			$loop_counts    = 9;
+		}
+
 		// loop over sorting criterion
 		$columns    = implode(', ', SubsManage::$query_criteria);
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-		$I->loopFilterList($I, SubsManage::$sort_data_array, '', $columns, 'subscribers AS `a`', 0, '1', 10);
+		$I->loopFilterList($I, $sort_array, '', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
 	}
 
 	/**
@@ -118,14 +142,14 @@ class TestSubscribersListsCest
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);
 		// select published
-		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_text);
-
-		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
-
-		// select unpublished
-		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_html);
+		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_text, SubsManage::$format_list_id);
 
 		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
+
+		// select unpublished
+		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_html, SubsManage::$format_list_id);
+
+		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 
 	}
 
@@ -151,7 +175,7 @@ class TestSubscribersListsCest
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);
 		// select 04 Mailingliste 14 A
-		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select);
+		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result);
 	}
@@ -220,7 +244,7 @@ class TestSubscribersListsCest
 		$I->wantTo("test pagination at subscribers");
 		$I->amOnPage(SubsManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 
 		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
 	}
@@ -240,4 +264,25 @@ class TestSubscribersListsCest
 		$loginPage->logoutFromBackend($I);
 	}
 
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 * @return array
+	 *
+	 * @since version
+	 */
+	private function _prepareSortArray(AcceptanceTester $I)
+	{
+		$options    = $I->getManifestOptions('com_bwpostman');
+		$sort_array = SubsManage::$sort_data_array;
+
+		if (!$options->show_gender)
+		{
+			unset($sort_array['sort_criteria']['gender']);
+			unset($sort_array['sort_criteria_select']['gender']);
+			unset($sort_array['select_criteria']['gender']);
+		}
+
+		return $sort_array;
+	}
 }

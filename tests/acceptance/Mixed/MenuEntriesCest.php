@@ -206,7 +206,7 @@ class MenuEntriesCest
 	private function _deleteMenuItem(AcceptanceTester $I, $item)
 	{
 		// reduce view to main menu
-		$I->clickSelectList(MEManage::$main_menu_select, MEManage::$main_menu_select_mainmenu);
+		$I->clickSelectList(MEManage::$main_menu_select, MEManage::$main_menu_select_mainmenu, MEManage::$main_menu_select_id);
 
 		// filter for item to remove
 		$I->fillField(Generals::$search_field, $item);
@@ -220,7 +220,7 @@ class MenuEntriesCest
 
 		// switch to trash
 		$I->clickAndWait(MEManage::$filterbar_button, 1);
-		$I->clickSelectList(MEManage::$filter_status, MEManage::$filter_status_trashed);
+		$I->clickSelectList(MEManage::$filter_status, MEManage::$filter_status_trashed, MEManage::$filter_status_id);
 
 		// remove item from trash
 		$I->clickAndWait(Generals::$check_all_button, 1);

@@ -122,6 +122,10 @@ class NewsletterEditPage
 	public static $field_publish_up   = '';
 	public static $field_publish_down = '';
 
+	public static $field_edit_publish_up    = '2017-03-14 17:00:00';
+	public static $field_edit_publish_down  = '2017-03-25 17:00:00';
+	public static $field_edit_description   = 'Changed description for the test newsletter';
+
 	public static $legend_general       = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/legend";
 	public static $legend_templates     = ".//*[@id='adminForm']/div[3]/fieldset[1]/legend";
 	public static $legend_recipients    = ".//*[@id='recipients']/div/div[1]/div/fieldset/legend";
@@ -144,17 +148,24 @@ class NewsletterEditPage
 
 	public static $field_title          = "1. Simple Single Test Newsletter";
 
+	public static $published                = '#jform_published';
+	public static $published_list_id        = "jform_published_chzn";
+	public static $published_list           = ".//*[@id='jform_published_chzn']/a";
+	public static $published_list_text      = ".//*[@id='jform_published_chzn']/a/span";
+	public static $published_unpublished    = ".//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";
+	public static $published_published      = ".//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
+
 	public static $arc_del_array     = array(
 		'field_title'          => "1. Simple Single Test Newsletter",
 		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[3]",
+		'archive_title_col'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
 		'archive_success_msg'  => 'The selected newsletter has been archived.',
 		'archive_success2_msg' => 'The selected newsletters have been archived.',
 
 		'delete_button'        => ".//*[@id='toolbar-delete']/button",
 		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-		'delete_title_col'     => ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[3]",
+		'delete_title_col'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
 		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
 		'success_remove'       => 'The selected newsletter has been removed.',
 		'success_remove2'      => 'The selected newsletters have been removed.',
@@ -186,6 +197,10 @@ class NewsletterEditPage
 	public static $selected_content         = ".//*[@id='jform_selected_content']/option[%s]";
 	public static $add_content              = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[1]";
 	public static $remove_content           = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[2]";
+
+	public static $field_sent_description  = 'Description for the test newsletter';
+	public static $field_sent_publish_up   = '';
+	public static $field_sent_publish_down = '';
 
 	/**
 	 * Test method to copy a newsletter

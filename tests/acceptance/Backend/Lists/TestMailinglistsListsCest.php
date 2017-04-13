@@ -107,7 +107,7 @@ class TestMailinglistsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', MlManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, MlManage::$sort_data_array, 'header', $columns, 'mailinglists AS `a`', 0, '', 8);
+		$I->loopFilterList($I, MlManage::$sort_data_array, 'header', $columns, 'mailinglists AS `a`', 0, '', 8, 1);
 	}
 
 	/**
@@ -132,7 +132,7 @@ class TestMailinglistsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', MlManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, MlManage::$sort_data_array, '', $columns, 'mailinglists AS `a`', 0, '', 8);
+		$I->loopFilterList($I, MlManage::$sort_data_array, '', $columns, 'mailinglists AS `a`', 0, '', 8, 1);
 	}
 
 	/**
@@ -240,7 +240,7 @@ class TestMailinglistsListsCest
 		$I->wantTo("test pagination at mailinglists");
 		$I->amOnPage(MlManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 
 		$I->checkPagination($I, MlManage::$pagination_data_array, 10);
 	}

@@ -121,6 +121,7 @@ class SubscriberManagerPage
 	public static $search_clear_val     = 'Abbott';
 
 	// Filter mail format
+	public static $format_list_id       = "filter_emailformat_chzn";
 	public static $format_list          = ".//*[@id='filter_emailformat_chzn']/a";
 	public static $format_none          = ".//*[@id='filter_emailformat_chzn']/div/ul/li[text()='Select email format']";
 	public static $format_text          = ".//*/li[text()='Text']";
@@ -130,6 +131,7 @@ class SubscriberManagerPage
 	public static $format_text_html     = 'HTML';
 
 	// Filter mailinglist
+	public static $ml_list_id       = "filter_mailinglist_chzn";
 	public static $ml_list          = ".//*[@id='filter_mailinglist_chzn']/a";
 	public static $ml_select        = ".//*/li[text()='04 Mailingliste 14 A']";
 

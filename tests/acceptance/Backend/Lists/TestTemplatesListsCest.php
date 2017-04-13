@@ -105,7 +105,7 @@ class TestTemplatesListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', TplManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, TplManage::$sort_data_array, 'header', $columns, 'templates AS `a`', 0, '', 9);
+		$I->loopFilterList($I, TplManage::$sort_data_array, 'header', $columns, 'templates AS `a`', 0, '', 9, 1);
 	}
 
 	/**
@@ -130,7 +130,7 @@ class TestTemplatesListsCest
 		// loop over sorting criterion     .//*[@id='list_fullordering_chzn']/div/ul/li[4]
 		$columns    = implode(', ', TplManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
-		$I->loopFilterList($I, TplManage::$sort_data_array, '', $columns, 'templates AS `a`', 0, '', 9);
+		$I->loopFilterList($I, TplManage::$sort_data_array, '', $columns, 'templates AS `a`', 0, '', 9, 1);
 	}
 
 	/**
@@ -176,12 +176,12 @@ class TestTemplatesListsCest
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);
 		// select published
-		$I->clickSelectList(TplManage::$format_list, TplManage::$format_text);
+		$I->clickSelectList(TplManage::$format_list, TplManage::$format_text, TplManage::$format_list_id);
 
 		$I->dontSee(TplManage::$format_text_text, TplManage::$format_text_column);
 
 		// select unpublished
-		$I->clickSelectList(TplManage::$format_list, TplManage::$format_html);
+		$I->clickSelectList(TplManage::$format_list, TplManage::$format_html, TplManage::$format_list_id);
 
 		$I->dontSee(TplManage::$format_text_html, TplManage::$format_text_column);
 	}
@@ -249,7 +249,7 @@ class TestTemplatesListsCest
 		$I->wantTo("test pagination at templates");
 		$I->amOnPage(TplManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5, Generals::$limit_list_id);
 
 		$I->checkPagination($I, TplManage::$pagination_data_array, 5);
 	}

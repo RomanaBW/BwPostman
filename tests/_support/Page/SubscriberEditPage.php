@@ -64,7 +64,7 @@ class SubscriberEditPage
 		'field_title'          => "sam.sample@test.nil",
 		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[5]",
+		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[%s]",
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
 		'archive_success2_msg' => 'The selected subscribers have been archived.',
 

@@ -100,7 +100,9 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
+		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
 
 	}
@@ -144,7 +146,7 @@ class TestSubscribersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneSubscriberListView(AcceptanceTester $I)
+	public function CreateOneSubscriberCompleteListView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Subscriber list view");
 		$I->amOnPage(SubManage::$url);
@@ -159,7 +161,9 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
+		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
@@ -191,7 +195,9 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$I->HelperArchiveItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array);
+		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+
+		$I->HelperArchiveItems($I, SubManage::$arc_del_array, $edit_arc_del_array);
 
 		$I->switchToArchive($I, SubEdit::$arc_del_array['archive_tab']);
 
@@ -199,7 +205,7 @@ class TestSubscribersDetailsCest
 
 		$I->amOnPage(SubManage::$url);
 
-		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
@@ -242,7 +248,9 @@ class TestSubscribersDetailsCest
 		$I->click(SubEdit::$toolbar['Cancel']);
 		$I->see("Subscribers", Generals::$pageTitle);
 
-		$I->HelperArcDelItems($I, SubManage::$arc_del_array, SubEdit::$arc_del_array, true);
+		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
@@ -299,7 +307,7 @@ class TestSubscribersDetailsCest
 			$I->fillField(SubEdit::$name, SubEdit::$field_name);
 			if ($options->firstname_field_obligation)
 			{
-				$I->click(SubEdit::$toolbar['Save']);
+				$I->clickAndWait(SubEdit::$toolbar['Save'], 1);
 
 				if ($options->firstname_field_obligation)
 				{
@@ -360,5 +368,27 @@ class TestSubscribersDetailsCest
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
 		$I->click(sprintf(SubEdit::$mls_internal, 4));
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 * @return array
+	 *
+	 * @since version
+	 */
+	private function _prepareDeleteArray(AcceptanceTester $I)
+	{
+		$edit_arc_del_array                      = SubEdit::$arc_del_array;
+		$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 4);
+
+		$options = $I->getManifestOptions('com_bwpostman');
+
+		if ($options->show_gender)
+		{
+			$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 5);
+		}
+
+		return $edit_arc_del_array;
 	}
 }

@@ -77,6 +77,7 @@ class Generals
 	public static $db_data_end      = 'testdata_bwpostman_reset.sql';
 
 	public static $extension            = "BwPostman";
+	public static $plugin_u2s           = "BwPostman Plugin User2Subscriber";
 	public static $first_list_entry     = ".//*[@id='cb0']";
 
 	/*
@@ -177,6 +178,8 @@ class Generals
 		'Maintenance'   => ".//*[@id='submenu']/li/a[contains(text(), 'Maintenance')]",
 	);
 
+	public static $submenu_toggle_button  = ".//*[@id='j-toggle-sidebar-icon']";
+
 	/**
 	 * Array of toolbar id values for list page
 	 *
@@ -204,6 +207,7 @@ class Generals
 		'Cancel'            => ".//*[@id='toolbar-cancel']/button",
 		'Delete'            => ".//*[@id='toolbar-delete']/button",
 		'Restore'           => ".//*[@id='toolbar-unarchive']/button",
+		'Enable'            => ".//*[@id='toolbar-publish']/button",
 );
 
 	/**
@@ -225,7 +229,8 @@ class Generals
 	 *
 	 * @since   2.0.0
 	 */
-	public static $select_list_selected_location = ".//*[@id='list_fullordering_chzn']/a/span";
+	public static $select_list_selected_location = ".//*[@id='%s']/a/span";
+	public static $select_list_open              = ".//*[@id='%s']/div";
 
 	/**
 	 * Location of table column
@@ -234,17 +239,19 @@ class Generals
 	 *
 	 * @since   2.0.0
 	 */
-	public static $table_headcol_link_location = ".//*/table/thead/tr/th[%s]/a";
+	public static $table_headcol_link_location = ".//*[@id='main-table']/thead/tr/th/a[@data-name = '%s']";
 
 	/**
-	 * Location of table column arrow
+	 * Location of main table and arrow column
 	 *
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
+	public static $main_table                   = ".//*[@id='main-table']";
 	public static $table_headcol_arrow_location = ".//*/table/thead/tr/th[%s]/a/span";
 
+	public static $search_list_id       = "filter_search_filter_chzn";
 	public static $search_field         = ".//*[@id='filter_search']";
 	public static $search_list          = ".//*[@id='filter_search_filter_chzn']/a";
 	public static $search_button        = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[1]/button";
@@ -252,11 +259,13 @@ class Generals
 
 	// Filter bar
 	public static $filterbar_button     = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[2]/button";
+	public static $filter_bar_open      = ".//*[@id='j-main-container']/div[1]/div[2]";
 	public static $clear_button         = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[3]/button";
 	public static $null_row             = ".//*/table/tbody/tr/td";
 	public static $null_msg             = "There are no data available";
 
 	// Filter status
+	public static $status_list_id       = "filter_published_chzn";
 	public static $status_list          = ".//*[@id='filter_published_chzn']/a";
 	public static $status_none          = ".//*[@id='filter_published_chzn']/div/ul/li[text()='- Select Status -']";
 	public static $status_unpublished   = ".//*[@id='filter_published_chzn']/div/ul/li[text()='unpublished']";
@@ -265,15 +274,16 @@ class Generals
 	public static $icon_published       = ".//*[@id='j-main-container']/*/span[contains(@class, 'icon-publish')]";
 
 	// filter identifiers
-	public static $publish_row          = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_row        = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
-	public static $attachment_row       = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
+	public static $publish_row          = ".//*[@id='j-main-container']/div/table/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
+	public static $unpublish_row        = ".//*[@id='j-main-container']/div/table/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
+	public static $attachment_row       = ".//*[@id='j-main-container']/div/table/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
 	public static $null_date            = '0000-00-00 00:00:00';
 	public static $table_header         = ".//*/thead";
 	public static $pagination_bar       = '.pagination.pagination-toolbar';
 
 		// Filter access
 	public static $access_column        = ".//*/td[5]";
+	public static $access_list_id       = "filter_access_chzn";
 	public static $access_list          = ".//*[@id='filter_access_chzn']/a";
 	public static $access_none          = ".//*[@id='filter_access_chzn']/div/ul/li[text()='- Select Access -']";
 	public static $access_public        = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Public']";
@@ -285,8 +295,10 @@ class Generals
 	// list ordering
 	public static $ordering_list        = ".//*[@id='list_fullordering_chzn']/a";
 	public static $ordering_value       = ".//*[@id='list_fullordering_chzn']/div/ul/li[text()='";
+	public static $ordering_id          = "list_fullordering_chzn";
 
 	// list limit
+	public static $limit_list_id        = "list_limit_chzn";
 	public static $limit_list           = ".//*[@id='list_limit_chzn']/a";
 	public static $limit_5              = ".//*[@id='list_limit_chzn']/div/ul/li[text()='5']";
 	public static $limit_10             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='10']";
@@ -364,4 +376,20 @@ class Generals
 		self::$com_options = $options;
 	}
 
+	/**
+	 * @param \AcceptanceTester $I
+	 *
+	 *
+	 * @since version
+	 */
+	public static function dontSeeAnyWarning(\AcceptanceTester $I)
+	{
+		$I->waitForElement(Generals::$alert_header, 30);
+
+		$I->dontSee(Generals::$alert_warn_txt, Generals::$alert);
+		$I->dontSee(Generals::$alert_error_txt, Generals::$alert);
+
+		$I->dontSeeElement(Generals::$alert_warn);
+		$I->dontSeeElement(Generals::$alert_error);
+	}
 }

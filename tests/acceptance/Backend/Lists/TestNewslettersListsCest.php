@@ -57,14 +57,14 @@ class TestNewslettersListsCest
 	 */
 	public function SortNewslettersByTableHeader(AcceptanceTester $I)
 	{
-		$I->wantTo("Sort newsletters by table header");
+		$I->wantTo("Sort unsent newsletters by table header");
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);
-		$I->loopFilterList($I, NlManage::$sort_data_array, 'header', $columns, 'newsletters AS `a`', 0, '', 9);
+		$I->loopFilterList($I, NlManage::$sort_data_array, 'header', $columns, 'newsletters AS `a`', 0, '', 9, 1);
 	}
 
 	/**
@@ -82,14 +82,14 @@ class TestNewslettersListsCest
 	 */
 	public function SortNewslettersBySelectList(AcceptanceTester $I)
 	{
-		$I->wantTo("Sort newsletters by select list");
+		$I->wantTo("Sort unsent newsletters by select list");
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);
-		$I->loopFilterList($I, NlManage::$sort_data_array, '', $columns, 'newsletters AS `a`', 0, '', 9);
+		$I->loopFilterList($I, NlManage::$sort_data_array, '', $columns, 'newsletters AS `a`', 0, '', 9, 1);
 	}
 
 	/**
@@ -107,28 +107,29 @@ class TestNewslettersListsCest
 	 */
 	public function FilterNewslettersByAuthor(AcceptanceTester $I)
 	{
-		$I->wantTo("Filter newsletters by author");
+		$I->wantTo("Filter unsent newsletters by author");
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 
 		// Get filter bar
-		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(NlManage::$filter_authors_list);
 		// select author 1
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_1);
+		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_1, NlManage::$filter_authors_list_id);
 
 		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 2
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_2);
+		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_2, NlManage::$filter_authors_list_id);
 
 		$I->see(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 3
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_3);
+		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_3, NlManage::$filter_authors_list_id);
 
 		$I->see(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
@@ -150,21 +151,22 @@ class TestNewslettersListsCest
 	 */
 	public function FilterNewslettersByCampaign(AcceptanceTester $I)
 	{
-		$I->wantTo("Filter newsletters by campaign");
+		$I->wantTo("Filter unsent newsletters by campaign");
 		$I->amOnPage(NlManage::$url);
 		$I->wait(NlManage::$wait_db);
 
 		// Filter single campaign
 		// Get filter bar
-		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(NlManage::$filter_campaign_list);
 		// select campaign
-		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_cam);
+		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_cam, NlManage::$filter_campaign_list_id);
 
 		$I->assertFilterResult(NlManage::$filter_cam_result);
 
 		// Filter without campaign
 		// select campaign
-		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_without);
+		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_without, NlManage::$filter_campaign_list_id);
 
 		$I->assertFilterResult(NlManage::$filter_nocam_result);
 	}
@@ -184,7 +186,7 @@ class TestNewslettersListsCest
 	 */
 	public function SearchNewsletters(AcceptanceTester $I)
 	{
-		$I->wantTo("Search Newsletters");
+		$I->wantTo("Search unsent Newsletters");
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 
@@ -209,7 +211,7 @@ class TestNewslettersListsCest
 	 */
 	public function ListlimitNewsletters(AcceptanceTester $I)
 	{
-		$I->wantTo("test list limit at newsletters");
+		$I->wantTo("test list limit at unsent newsletters");
 		$I->amOnPage(NlManage::$url);
 
 		$I->checkListlimit($I);
@@ -230,12 +232,312 @@ class TestNewslettersListsCest
 	 */
 	public function PaginationNewsletters(AcceptanceTester $I)
 	{
-		$I->wantTo("test pagination at newsletters");
+		$I->wantTo("test pagination at unsent newsletters");
 		$I->amOnPage(NlManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 
 		$I->checkPagination($I, NlManage::$pagination_data_array, 10);
+	}
+
+	/**
+	 * Test method sorting newsletters by click to column in table header
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function SortSentNewslettersByTableHeader(AcceptanceTester $I)
+	{
+		$I->wantTo("Sort sent newsletters by table header");
+		$I->amOnPage(NlManage::$url);
+		$I->wait(1);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		// loop over sorting criterion
+		$columns    = implode(', ', NlManage::$sent_query_criteria);
+		$I->loopFilterList($I, NlManage::$sent_sort_data_array, 'header', $columns, 'newsletters AS `a`', 0, '', 11, 2);
+
+		$I->click(Generals::$submenu_toggle_button);
+	}
+
+	/**
+	 * Test method sorting sent newsletters by selection at select list
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function SortSentNewslettersBySelectList(AcceptanceTester $I)
+	{
+		$I->wantTo("Sort unsent newsletters by select list");
+		NlManage::$wait_db;
+		$I->amOnPage(NlManage::$url);
+		$I->wait(1);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		// loop over sorting criterion
+		$columns    = implode(', ', NlManage::$sent_query_criteria);
+		$I->loopFilterList($I, NlManage::$sent_sort_data_array, '', $columns, 'newsletters AS `a`', 0, '', 11, 2);
+
+		$I->click(Generals::$submenu_toggle_button);
+	}
+
+	/**
+	 * Test method to filter sent newsletters by author
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function FilterSentNewslettersByAuthor(AcceptanceTester $I)
+	{
+		$I->wantTo("Filter sent newsletters by author");
+		$I->amOnPage(NlManage::$url);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		// Get filter bar
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(NlManage::$filter_authors_list);
+		// select author 1
+		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_1, NlManage::$filter_authors_list_id);
+		$I->wait(1);
+
+		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
+
+		// select author 2
+		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_2, NlManage::$filter_authors_list_id);
+		$I->wait(1);
+
+		$I->see(NlManage::$filter_author_2_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
+
+		// select author 3
+		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_3, NlManage::$filter_authors_list_id);
+		$I->wait(1);
+
+		$I->see(NlManage::$filter_author_3_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
+
+		$I->click(Generals::$submenu_toggle_button);
+	}
+
+	/**
+	 * Test method to filter newsletters by campaign
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function FilterSentNewslettersByCampaign(AcceptanceTester $I)
+	{
+		$I->wantTo("Filter sent newsletters by campaign");
+		$I->amOnPage(NlManage::$url);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		// Filter single campaign
+		// Get filter bar
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(NlManage::$filter_campaign_list);
+		// select campaign
+		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_cam, NlManage::$filter_campaign_list_id);
+
+		$I->assertFilterResult(NlManage::$filter_sent_cam_result);
+
+		// Filter without campaign
+		// select campaign
+		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_without, NlManage::$filter_campaign_list_id);
+
+		$I->see(Generals::$null_msg, Generals::$null_row);
+
+		$I->click(Generals::$submenu_toggle_button);
+	}
+
+	/**
+	 * Test method to filter newsletters by campaign
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+/*	public function FilterSentNewslettersByMailinglist(AcceptanceTester $I)
+	{
+		$I->wantTo("Filter sent newsletters by mailinglist");
+		$I->amOnPage(NlManage::$url);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		// Get filter bar
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(NlManage::$filter_mailinglist_list);
+		// select mailinglist 1
+		$I->clickSelectList(NlManage::$filter_mailinglist_list, NlManage::$filter_mailinglist_1, NlManage::$filter_mailinglist_list_id);
+
+		$I->see(NlManage::$filter_mailinglist_1_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_mailinglist_2_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_mailinglist_3_txt, NlManage::$authors_col);
+
+		// select mailinglist 2
+		$I->clickSelectList(NlManage::$filter_mailinglist_list, NlManage::$filter_mailinglist_2, NlManage::$filter_mailinglist_list_id);
+
+		$I->see(NlManage::$filter_mailinglist_2_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_mailinglist_1_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_mailinglist_3_txt, NlManage::$authors_col);
+
+		// select mailinglist 3
+		$I->clickSelectList(NlManage::$filter_mailinglist_list, NlManage::$filter_mailinglist_3, NlManage::$filter_mailinglist_list_id);
+
+		$I->see(NlManage::$filter_mailinglist_3_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_mailinglist_1_txt, NlManage::$authors_col);
+		$I->dontSee(NlManage::$filter_mailinglist_2_txt, NlManage::$authors_col);
+
+		$I->click(Generals::$submenu_toggle_button);
+	}
+*/
+	/**
+	 * Test method to filter sent newsletters by status
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function FilterSentNewslettersByStatus(AcceptanceTester $I)
+	{
+		$I->wantTo("Filter sent newsletters by status");
+		$I->amOnPage(NlManage::$url);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		$I->filterByStatus($I);
+
+		$I->click(Generals::$submenu_toggle_button);
+	}
+
+	/**
+	 * Test method to search newsletters
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function SearchSentNewsletters(AcceptanceTester $I)
+	{
+		$I->wantTo("Search sent Newsletters");
+		NlManage::$wait_db;
+		$I->amOnPage(NlManage::$url);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		$I->searchLoop($I, NlManage::$search_sent_data_array, false);
+
+		$I->click(Generals::$clear_button);
+		$I->see(NlManage::$search_sent_clear_val);
+
+//		$I->click(Generals::$submenu_toggle_button);
+	}
+
+	/**
+	 * Test method to check list limit of newsletters
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function ListlimitSentNewsletters(AcceptanceTester $I)
+	{
+		$I->wantTo("test list limit at sent newsletters");
+		$I->amOnPage(NlManage::$url);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		$I->checkListlimit($I);
+
+		$I->click(Generals::$submenu_toggle_button);
+	}
+
+	/**
+	 * Test method to check pagination of newsletters
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function PaginationSentNewsletters(AcceptanceTester $I)
+	{
+		$I->wantTo("test pagination at sent newsletters");
+		$I->amOnPage(NlManage::$url);
+		$I->clickAndWait(NlManage::$tab2, 1);
+		$I->click(Generals::$submenu_toggle_button);
+
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+
+		$I->checkPagination($I, NlManage::$pagination_sent_data_array, 10);
+
+		$I->scrollTo(Generals::$pageTitle);
+
+		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -252,5 +554,4 @@ class TestNewslettersListsCest
 	{
 		$loginPage->logoutFromBackend($I);
 	}
-
 }

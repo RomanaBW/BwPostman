@@ -54,7 +54,7 @@ class MailinglistManagerPage
 		'sort_criteria' => array(
 			'description' => 'Description',
 			'published'   => 'published',
-			'access'      => 'Access level',
+			'access'      => 'Access Level',
 			'subscribers' => '# subscribers',
 			'id'          => 'ID',
 			'title'       => 'Title'

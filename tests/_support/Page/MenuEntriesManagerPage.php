@@ -34,6 +34,7 @@ class MenuEntriesManagerPage
 	public static $main_menu_txt    = "Menus: Items (Main Menu)";
 
 	// menu select list
+	public static $main_menu_select_id          = ".menutype_chzn";
 	public static $main_menu_select             = ".//*[@id='menutype_chzn']/a";
 	public static $main_menu_select_mainmenu    = ".//*[@id='menutype_chzn']/div/ul/li[text()='Main Menu']";
 
@@ -41,6 +42,7 @@ class MenuEntriesManagerPage
 	public static $filter_search_button     = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[2]/button";
 	public static $filterbar_button         = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[3]/button";
 	public static $clear_button             = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[4]/button";
+	public static $filter_status_id         = "filter_published_chzn";
 	public static $filter_status            = ".//*[@id='filter_published_chzn']/a";
 	public static $filter_status_trashed    = ".//*[@id='filter_published_chzn']/div/ul/li[text()='Trashed']";
 

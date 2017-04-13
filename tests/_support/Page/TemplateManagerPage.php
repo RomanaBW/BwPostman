@@ -52,7 +52,7 @@ class TemplateManagerPage
 	 */
 	public static $sort_data_array  = array(
 		'sort_criteria' => array(
-			'tpl_id'        => 'tpl_id',
+			'tpl_id'        => 'Format',
 			'published'     => 'published',
 			'description'   => 'Description',
 			'id'            => 'ID',
@@ -116,6 +116,7 @@ class TemplateManagerPage
 	public static $no_default_result2   = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	// Filter mail format
+	public static $format_list_id       = "filter_tpl_id_chzn";
 	public static $format_list          = ".//*[@id='filter_tpl_id_chzn']/a";
 	public static $format_none          = ".//*[@id='filter_tpl_id_chzn']/div/ul/li[text()='Select email format']";
 	public static $format_text          = ".//*/li[text()='Text']";

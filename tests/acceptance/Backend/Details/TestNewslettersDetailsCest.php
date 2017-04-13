@@ -123,8 +123,9 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Create one Newsletter cancel list view");
 		$I->amOnPage(NlManage::$url);
-
+$I->wait(3);
 		$I->click(Generals::$toolbar['New']);
+		$I->wait(3);
 
 		$this->_fillFormExtended($I);
 
@@ -145,7 +146,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneNewsletterListView(\AcceptanceTester $I)
+	public function CreateOneNewsletterCompleteListView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter list view");
 		$I->amOnPage(NlManage::$url);
@@ -425,30 +426,107 @@ class TestNewslettersDetailsCest
 
 		NlEdit::SendNewsletterToRealRecipients($I, Generals::$admin['author']);
 
-/*
-		$I->click(NlEdit::$mark_to_send);
-		$I->click(Generals::$toolbar['Send']);
-		$I->see(NlEdit::$tab5_legend1);
-		$I->clickAndWait(NlEdit::$button_send, 1);
-
-		$I->seeInPopup(NlEdit::$popup_send_confirm);
-		$I->acceptPopup();
-
-		$I->wait(2);
-		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
-		$I->waitForText(NlEdit::$success_send_ready, 300);
-		$I->see(NlEdit::$success_send_ready);
-		$I->switchToIFrame();
-		$I->wait(8);
-
-		$I->see("Newsletters", Generals::$pageTitle);
-		$I->clickAndWait(NlManage::$tab2, 1);
-*/
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
-		/**
+	/**
+	 * Test method to create copy newsletter and send to real recipients
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function EditSentNewsletter(\AcceptanceTester $I)
+	{
+		$I->wantTo("edit published, publish up and down and change description of a sent newsletter");
+
+		$I->amOnPage(NlManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->clickAndWait(NlManage::$tab2, 1);
+
+		$I->click(NlManage::$first_list_entry_tab2);
+		$I->click(Generals::$toolbar['Edit']);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see('Newsletter Publishing Details', Generals::$pageTitle);
+
+		// make changes
+		$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_published, NlEdit::$published_list_id);
+		$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
+		$I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
+		$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
+
+		$I->click(Generals::$toolbar['Save']);
+		Generals::dontSeeAnyWarning($I);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+
+		// check changes
+		$I->see("published", NlEdit::$published_list_text);
+
+		$publish_up = $I->grabValueFrom(NlEdit::$publish_up);
+		$I->assertEquals(NlEdit::$field_edit_publish_up, $publish_up);
+
+		$publish_down = $I->grabValueFrom(NlEdit::$publish_down);
+		$I->assertEquals(NlEdit::$field_edit_publish_down, $publish_down);
+
+		$I->see(NlEdit::$field_edit_description, NlEdit::$description);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->see('Newsletters', Generals::$pageTitle);
+		$I->clickAndWait(NlManage::$tab2, 1);
+
+		// check changes in list
+		$I->seeElement(NlManage::$publish_by_icon['publish_result']);
+		$I->see(NlEdit::$field_edit_publish_up, NlManage::$sent_column_publish_up);
+		$I->see(NlEdit::$field_edit_publish_down, NlManage::$sent_column_publish_down);
+		$I->see(NlEdit::$field_edit_description, NlManage::$sent_column_description);
+
+		// revert changes
+		$I->click(NlManage::$first_list_link);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see('Newsletter Publishing Details', Generals::$pageTitle);
+/*
+		$I->waitForElement(".//*[@id='jform_template_id']", 30);
+		$I->waitForElement(".//*[@id='jform_text_template_id']", 30);
+
+$tpl_id     = $I->grabValueFrom(".//*[@id='jform_template_id']");
+$tpl_text_id     = $I->grabValueFrom(".//*[@id='jform_text_template_id']");
+codecept_debug('TPL-ID 3: ' . $tpl_id);
+codecept_debug('Text-TPL-ID 3: ' . $tpl_text_id);
+*/
+		// make changes
+		$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
+		$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
+		$I->fillField(NlEdit::$publish_down, NlEdit::$field_publish_down);
+		$I->fillField(NlEdit::$description, NlEdit::$field_description);
+
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		Generals::dontSeeAnyWarning($I);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->see('Newsletters', Generals::$pageTitle);
+
+		$I->clickAndWait(NlManage::$tab2, 1);
+
+		// check changes in list
+		$I->seeElement(NlManage::$publish_by_icon['unpublish_result']);
+		$I->see(NlEdit::$field_publish_up, NlManage::$sent_column_publish_up);
+		$I->see(NlEdit::$field_publish_down, NlManage::$sent_column_publish_down);
+		$I->see(NlEdit::$field_description, NlManage::$sent_column_description);
+	}
+
+	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   \AcceptanceTester    $I

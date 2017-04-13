@@ -142,7 +142,7 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneMailinglistListView(AcceptanceTester $I)
+	public function CreateOneMailinglistCompleteListView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one mailinglist list view");
 		$I->amOnPage(MlManage::$url);
@@ -232,6 +232,7 @@ class TestMailinglistsDetailsCest
 		$I->see("Error", Generals::$alert_header);
 		$I->see(MlEdit::$error_save, Generals::$alert_error);
 		$I->click(MlEdit::$toolbar['Cancel']);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see("Mailinglists", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
@@ -299,11 +300,11 @@ class TestMailinglistsDetailsCest
 		$I->fillField(MlEdit::$title, MlEdit::$field_title);
 
 		// select access
-		$I->clickSelectList(MlEdit::$access_list, MlEdit::$access_registered);
+		$I->clickSelectList(MlEdit::$access_list, MlEdit::$access_registered, MlEdit::$access_list_id);
 		$I->see("Registered", MlEdit::$access_list_text);
 
 		//select status
-		$I->clickSelectList(MlEdit::$published_list, MlEdit::$published_published);
+		$I->clickSelectList(MlEdit::$published_list, MlEdit::$published_published, MlEdit::$published_list_id);
 		$I->see("published", MlEdit::$published_list_text);
 	}
 }

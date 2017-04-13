@@ -106,7 +106,8 @@ class TestOptionsCest
 			$slider = sprintf(OptionsPage::$perm_slider, $group_id);
 			$I->scrollTo($slider, 0, -100);
 
-			$I->clickAndWait($slider, 1);
+			$I->click($slider);
+			$I->waitForElement($slider, 30);
 
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)
@@ -114,7 +115,11 @@ class TestOptionsCest
 				$identifier = ".//*[@id='jform_rules_" . $rules[$i] . '_' . $group_id . "']";
 				$value      = $actions[$rules[$i]];
 
+				$I->scrollTo($identifier, 0, -150);
+				$I->waitForElementVisible($identifier, 30);
+
 				$I->selectOption($identifier, $value);
+				$I->wait(1);
 			}
 
 			// apply

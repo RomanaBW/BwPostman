@@ -334,7 +334,7 @@ class TestTemplatesDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneTextTemplateListView(AcceptanceTester $I)
+	public function CreateOneTextTemplateCompleteListView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Text template list view");
 		$I->amOnPage(TplManage::$url);

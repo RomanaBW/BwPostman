@@ -63,7 +63,7 @@ class TestCampaignsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', CamManage::$query_criteria);
 		$columns    = str_replace('newsletters', $I->getQueryNumberOfNewsletters(), $columns);
-		$I->loopFilterList($I, CamManage::$sort_data_array, 'header', $columns, 'campaigns AS `a`', 0, '', 6);
+		$I->loopFilterList($I, CamManage::$sort_data_array, 'header', $columns, 'campaigns AS `a`', 0, '', 6, 1);
 	}
 
 	/**
@@ -88,7 +88,7 @@ class TestCampaignsListsCest
 		// loop over sorting criterion
 		$columns    = implode(', ', CamManage::$query_criteria);
 		$columns    = str_replace('newsletters', $I->getQueryNumberOfNewsletters(), $columns);
-		$I->loopFilterList($I, CamManage::$sort_data_array, '', $columns, 'campaigns AS `a`', 0, '', 6);
+		$I->loopFilterList($I, CamManage::$sort_data_array, '', $columns, 'campaigns AS `a`', 0, '', 6, 1);
 	}
 
 	/**
@@ -154,7 +154,7 @@ class TestCampaignsListsCest
 		$I->wantTo("test pagination at campaigns");
 		$I->amOnPage(CamManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5, Generals::$limit_list_id);
 
 		$I->checkPagination($I, CamManage::$pagination_data_array, 5);
 	}

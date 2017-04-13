@@ -20,11 +20,10 @@ modules:
             sessionName: PHPSTORM
 
         Db:
-            dsn: 'mysql:host=universe.bet2.nil;dbname=dev'
-            user: 'AdminTester'
-            password: 'BwPostmanTest'
-            dump: '/daten/vhosts/dev/joomla-cms/tests/_data/testdata_bwpostman_complete.sql'
-            populate: true
+            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
+            user: 'root'
+            password: 'barbapapa'
+#            dump: '/daten/vhosts/dev/joomla-cms/tests/_data/testdata_bwpostman_complete.sql'
+            populate: false
             cleanup: false
-            reconnect: true
 

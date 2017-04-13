@@ -205,12 +205,13 @@ class Acceptance extends Codeception\Module
 	 * @param   string  $order_dir  order direction
 	 * @param   integer $limit      number of values to get from database
 	 * @param   array   $criteria   special criteria, i.e. WHERE
+	 * @param   int         $tab            tab of view, not always needed
 	 *
 	 * @return  array
 	 *
 	 * @since   2.0.0
 	 */
-	public function GetListData($table_name = 'mailinglists', $columns = '*', $archive = 0, $status = '', $order_col = '', $order_dir = 'ASC', $limit = 20, $criteria = array())
+	public function GetListData($table_name = 'mailinglists', $columns = '*', $archive = 0, $status = '', $order_col = '', $order_dir = 'ASC', $limit = 20, $criteria = array(), $tab = 1)
 	{
 		$credentials    = $this->_getDbCredentials();
 		$join           = '';
@@ -234,7 +235,7 @@ class Acceptance extends Codeception\Module
 		$table_name  = Generals::$db_prefix . 'bwpostman_' . $table_name;
 		$table_name .= $join;
 
-		$result = DbHelper::grabFromDatabaseWithLimit($table_name, $columns, $archive, $status, $order_col, $order_dir, $limit, $criteria, $credentials);
+		$result = DbHelper::grabFromDatabaseWithLimit($table_name, $columns, $archive, $status, $order_col, $order_dir, $limit, $criteria, $credentials, $tab);
 		return $result;
 	}
 
@@ -259,6 +260,39 @@ class Acceptance extends Codeception\Module
 				if ($key == 'access')
 				{
 					$value = $usergroups[$value];
+				}
+				$dataset[$key] = $value;
+			}
+			$result[] = $dataset;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Helper method substitute zero date
+	 *
+	 * @param   array $data list of table entries
+	 *
+	 * @return  array
+	 *
+	 * @since   2.0.0
+	 */
+	private function _SubstituteNullDate($data = array())
+	{
+		$result     = array();
+
+		foreach ($data as $item)
+		{
+			$dataset = array();
+			foreach ($item as $key => $value)
+			{
+				if ($key == 'publish_up' || $key == 'publish_down')
+				{
+					if ($value == Generals::$null_date)
+					{
+						$value  = '-';
+					}
 				}
 				$dataset[$key] = $value;
 			}
@@ -548,10 +582,11 @@ class Acceptance extends Codeception\Module
 	 * @param integer               $archive        archived items or not?
 	 * @param string                $status         published or not? Leave empty, if status not given in table
 	 * @param integer               $loop_counts    how many sort criteria are given?
+	 * @param int                   $tab            tab of view, not always needed
 	 *
 	 * @since   2.0.0
 	 */
-	public function loopFilterList(\AcceptanceTester $I, $sort_data_array, $manner, $columns, $table, $archive, $status, $loop_counts  = 0)
+	public function loopFilterList(\AcceptanceTester $I, $sort_data_array, $manner, $columns, $table, $archive, $status, $loop_counts  = 0, $tab = 1)
 	{
 		// Get list length
 		$list_length = $I->GetListLength($I);
@@ -573,6 +608,11 @@ class Acceptance extends Codeception\Module
 				if ($order == 'ascending')
 				{
 					$i++;
+					if ($key == 'publish_down')
+					{
+						$i--;
+					}
+
 					if ((strpos($table, 'templates') !== false) && ($i == 5))
 					{
 						$i = 6;
@@ -591,7 +631,7 @@ class Acceptance extends Codeception\Module
 					$arrow    = 'down';
 				}
 
-				$row_values_raw = $I->GetListData($table, $columns, $archive, $status, $sort_data_array['select_criteria'][$key], $db_order, $list_length);
+				$row_values_raw = $I->GetListData($table, $columns, $archive, $status, $sort_data_array['select_criteria'][$key], $db_order, $list_length, array(), $tab);
 				if ($key == 'access')
 				{
 					$row_values = self::_SubstituteAccess($row_values_raw);
@@ -608,6 +648,10 @@ class Acceptance extends Codeception\Module
 				{
 					$row_values = self::SubstituteTemplateFormat($row_values_raw);
 				}
+				elseif ($key == 'publish_up' || $key == 'publish_down')
+				{
+					$row_values = self::_SubstituteNullDate($row_values_raw);
+				}
 				else
 				{
 					$row_values = $row_values_raw;
@@ -621,17 +665,18 @@ class Acceptance extends Codeception\Module
 
 				if ($manner == 'header')
 				{
-					$I->clickAndWait(sprintf(Generals::$table_headcol_link_location, $i), 3);
+					$I->click(sprintf(Generals::$table_headcol_link_location, $criterion));
+					$I->waitForElement(sprintf(Generals::$table_headcol_link_location, $criterion), 30);
 				}
 				else
 				{
-					$I->clickSelectList(Generals::$ordering_list, Generals::$ordering_value . $sort_data_array['sort_criteria_select'][$key] . " " . $order . "']");
-
+					$I->clickSelectList(Generals::$ordering_list, Generals::$ordering_value . $sort_data_array['sort_criteria_select'][$key] . " " . $order . "']", Generals::$ordering_id);
 				}
 				$I->expectTo('see arrow ' . $arrow . ' at ' . $criterion);
+				$I->waitForElement(sprintf(Generals::$table_headcol_arrow_location, $i), 30);
 				$I->seeElement(sprintf(Generals::$table_headcol_arrow_location, $i), array('class' => Generals::$sort_arrows[$arrow]));
 				$I->expectTo('see text ' . $sort_data_array['sort_criteria_select'][$key] . ' ' . $order);
-				$I->see($sort_data_array['sort_criteria_select'][$key] . ' ' . $order, Generals::$select_list_selected_location);
+				$I->see($sort_data_array['sort_criteria_select'][$key] . ' ' . $order, sprintf(Generals::$select_list_selected_location, Generals::$ordering_id));
 
 				// loop over column values
 				$row_values_actual = self::GetTableRows($I, true);
@@ -649,6 +694,10 @@ class Acceptance extends Codeception\Module
 								{
 									$col = 6;
 								}
+							if (strpos($table, 'newsletter') !== false && $tab == 2)
+							{
+								$col = 8;
+							}
 								if ($needle == '1')
 								{
 									$I->seeElement(sprintf(Generals::$publish_row, ($k + 1), $col));
@@ -699,14 +748,17 @@ class Acceptance extends Codeception\Module
 	public function filterByStatus(\AcceptanceTester $I)
 	{
 		// Get filter bar
-		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(Generals::$filter_bar_open);
+		$I->wait(1);
 		// select published
-		$I->clickSelectList(Generals::$status_list, Generals::$status_published);
+		$I->clickSelectList(Generals::$status_list, Generals::$status_published, Generals::$status_list_id);
 
 		$I->dontSeeElement(Generals::$icon_unpublished);
+		$I->wait(1);
 
 		// select unpublished
-		$I->clickSelectList(Generals::$status_list, Generals::$status_unpublished);
+		$I->clickSelectList(Generals::$status_list, Generals::$status_unpublished, Generals::$status_list_id);
 
 		$I->dontSeeElement(Generals::$icon_published);
 	}
@@ -839,16 +891,16 @@ class Acceptance extends Codeception\Module
 	{
 		$I->assertEquals(20, count($I->GetTableRows($I, true)));
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5, Generals::$limit_list_id);
 		$I->assertEquals(5, count($I->GetTableRows($I, true)));
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_15);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_15, Generals::$limit_list_id);
 		$I->assertEquals(15, count($I->GetTableRows($I, true)));
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_20);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_20, Generals::$limit_list_id);
 		$I->assertEquals(20, count($I->GetTableRows($I, true)));
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10);
+		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 		$I->assertEquals(10, count($I->GetTableRows($I, true)));
 	}
 
@@ -864,7 +916,7 @@ class Acceptance extends Codeception\Module
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);
 		// select public
-		$I->clickSelectList(Generals::$access_list, Generals::$access_public);
+		$I->clickSelectList(Generals::$access_list, Generals::$access_public, Generals::$access_list_id);
 
 		$I->dontSee("Guest", Generals::$access_column);
 		$I->dontSee("Registered", Generals::$access_column);
@@ -872,7 +924,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select guest
-		$I->clickSelectList(Generals::$access_list, Generals::$access_guest);
+		$I->clickSelectList(Generals::$access_list, Generals::$access_guest, Generals::$access_list_id);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Registered", Generals::$access_column);
@@ -880,7 +932,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select registered
-		$I->clickSelectList(Generals::$access_list, Generals::$access_registered);
+		$I->clickSelectList(Generals::$access_list, Generals::$access_registered, Generals::$access_list_id);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -888,7 +940,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select special
-		$I->clickSelectList(Generals::$access_list, Generals::$access_special);
+		$I->clickSelectList(Generals::$access_list, Generals::$access_special, Generals::$access_list_id);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -896,7 +948,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select super users
-		$I->clickSelectList(Generals::$access_list, Generals::$access_super);
+		$I->clickSelectList(Generals::$access_list, Generals::$access_super, Generals::$access_list_id);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -923,12 +975,15 @@ class Acceptance extends Codeception\Module
 			for ($i = 0; $i < count($search_data_array['search_by']); $i++)
 			{
 				// Get filter bar
-				$I->clickAndWait(Generals::$filterbar_button,1);
+				$I->click(Generals::$filterbar_button);
+				$I->waitForElementVisible(Generals::$filter_bar_open);
+				$I->wait(1);
 
 				// open 'search by' list, select 'search by' value
-				$I->clickSelectList( Generals::$search_list, $search_data_array['search_by'][$i]);
+				$I->clickSelectList( Generals::$search_list, $search_data_array['search_by'][$i], Generals::$search_list_id);
 				// click search button
-				$I->clickAndWait(Generals::$search_button,2);
+				$I->click(Generals::$search_button);
+				$I->waitForElement(Generals::$main_table);
 				// check result
 				if ((int) $search_data_array['search_res'][$j][$i] == 0)
 				{
@@ -981,11 +1036,14 @@ class Acceptance extends Codeception\Module
 	{
 		// ensure we are on the section list page
 		$I->see($manage_data['section'], Generals::$pageTitle);
-
 		// select items to archive
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
-		$I->clickAndWait(Generals::$filterbar_button, 3);
-		$I->clickSelectList(Generals::$search_list, $edit_data['archive_identifier']);
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(Generals::$filter_bar_open);
+		$I->wait(1);
+
+		$I->clickSelectList(Generals::$search_list, $edit_data['archive_identifier'], Generals::$search_list_id);
+
 		$I->clickAndWait(Generals::$search_button, 1);
 		$I->see($edit_data['field_title'], $edit_data['archive_title_col']);
 
@@ -1043,7 +1101,7 @@ class Acceptance extends Codeception\Module
 		// select items to delete
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
-		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier']);
+		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier'], Generals::$search_list_id);
 		$I->clickAndWait(Generals::$search_button, 1);
 		$I->see($edit_data['field_title']);
 
@@ -1096,7 +1154,7 @@ class Acceptance extends Codeception\Module
 		// select items to restore
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
-		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier']);
+		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier'], Generals::$search_list_id);
 		$I->clickAndWait(Generals::$search_button, 1);
 		$I->see($edit_data['field_title']);
 
@@ -1191,7 +1249,7 @@ class Acceptance extends Codeception\Module
 				$options = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
 			}
 		}
-
+//codecept_debug($options);
 		return $options;
 	}
 
@@ -1327,7 +1385,7 @@ class Acceptance extends Codeception\Module
 
 	/**
 	 * Test method to get group ID by name
-	 *
+	 *^
 	 * @param   string      $groupname
 	 *
 	 * @return  int

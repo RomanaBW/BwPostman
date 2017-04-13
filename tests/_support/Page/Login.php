@@ -72,23 +72,12 @@ class Login
 	public function logIntoBackend($user)
 	{
 		$I = $this->tester;
-//		$I = $this;
-
-		// if snapshot exists - skipping login
-//		if ($I->loadSessionSnapshot('login')) {
-//			return;
-//		}
-
-		// log in
-//		$I->wantTo('log in as a backend user');
 		$I->amOnPage(self::$url);
 		$I->fillField(self::$usernameField, $user['user']);
 		$I->fillField(self::$passwordField, $user['password']);
-		$I->clickAndWait(self::$loginButton, 1);
+		$I->click(self::$loginButton);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$control_panel, Generals::$pageTitle);
-
-		// saving snapshot
-//		$I->saveSessionSnapshot('login');
 
 		return $this;
 	}
@@ -110,7 +99,6 @@ class Login
 		$I->click(Generals::$nav_user_menu_logout);
 
 		$I->waitForElement(self::$form, 30);
-//		$I->see(Generals::$login_txt, self::$loginArea);
 		$I->see(Generals::$login_txt, $loginArea);
 
 		return $this;

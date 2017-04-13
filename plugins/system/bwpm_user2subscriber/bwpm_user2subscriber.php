@@ -224,8 +224,6 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		$this->form = $form;
-
 		$context = $form->getName();
 
 		if (!in_array($context, $this->allowedContext))
@@ -233,8 +231,17 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return true;
 		}
 
+		$data_helper = (array)$data;
+
+		if (!empty($data_helper))
+		{
+			return true;
+		}
+
+		$this->form = $form;
+
 		JForm::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
-		$form->loadFile('form', false);
+		$this->form->loadFile('form', false);
 
 		if (!($this->form instanceof JForm))
 		{
@@ -260,6 +267,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$this->processNewsletterFormatField();
 		$this->processSelectedMailinglists();
 		$this->processCaptchaField();
+
+		$form   = $this->form;
 
 		return true;
 	}
@@ -312,7 +321,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($com_params->get('name_field_obligation'))
 		{
 			$com_params->set('show_name_field', '1');
-			$this->form->setFieldAttribute('name', 'required', 'true', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('name', 'required', 'required', 'bwpm_user2subscriber');
 		}
 
 		if (!$com_params->get('show_name_field'))
@@ -333,7 +342,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($com_params->get('firstname_field_obligation'))
 		{
 			$com_params->set('show_firstname_field', '1');
-			$this->form->setFieldAttribute('firstname', 'required', 'true', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('firstname', 'required', 'required', 'bwpm_user2subscriber');
 		}
 
 		if (!$com_params->get('show_firstname_field'))
@@ -354,7 +363,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($com_params->get('special_field_obligation'))
 		{
 			$com_params->set('show_special', '1');
-			$this->form->setFieldAttribute('special', 'required', 'true', 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('special', 'required', 'required', 'bwpm_user2subscriber');
 		}
 
 		if (!$com_params->get('show_special'))
@@ -477,6 +486,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$session = JFactory::getSession();
 
+		$session->set('plg_bwpm_user2subscriber.form_prepared', false);
+
 		$subscription_data  = $session->get('plg_bwpm_buyer2subscriber.subscription_data', array());
 		$session->clear('plg_bwpm_buyer2subscriber');
 
@@ -503,12 +514,25 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$session->clear('plg_bwpm_user2subscriber');
 
 		$this->stored_subscriber_data = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
+		$subscriber_id                = BWPM_User2SubscriberHelper::hasSubscription($user_mail);
+		$subscriber_is_to_activate    = BWPM_User2SubscriberHelper::isToActivate($user_mail);
 
 		if (($task == 'registration.activate' && $token == $activation) || (JFactory::getApplication()->isAdmin() && $activation != ''))
 		{
-			$activate_result    = $this->activateSubscription($user_id);
+			if ($subscriber_is_to_activate)
+			{
+				$activate_result = $this->activateSubscription($user_id);
 
-			return $activate_result;
+				return $activate_result;
+			}
+		}
+
+		if (!$subscriber_is_to_activate)
+		{
+			$new_mailinglists           = $this->params->get('ml_available', array());
+			$updateMailinglists_result  = BWPM_User2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
+
+			return $updateMailinglists_result;
 		}
 
 		if ($this->params->get('auto_update_email_option'))

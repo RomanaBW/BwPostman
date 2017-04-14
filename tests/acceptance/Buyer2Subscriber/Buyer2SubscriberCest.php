@@ -1419,7 +1419,8 @@ class Buyer2SubscriberCest
 	 */
 	protected function registerAndCheckMessage(AcceptanceTester $I)
 	{
-		$I->clickAndWait(RegPage::$login_identifier_register, 1);
+		$I->click(RegPage::$login_identifier_register);
+		$I->waitForElement(RegPage::$success_heading_identifier, 30);
 
 		$I->see(Generals::$alert_msg_txt, RegPage::$success_heading_identifier);
 		$I->see(RegPage::$register_success, RegPage::$success_message_identifier);

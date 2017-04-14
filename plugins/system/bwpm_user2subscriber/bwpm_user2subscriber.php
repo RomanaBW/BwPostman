@@ -731,7 +731,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$query->set($_db->quoteName('confirmation_date') . ' = ' . $_db->quote($time, false));
 		$query->set($_db->quoteName('confirmed_by') . ' = ' . 0);
 		$query->set($_db->quoteName('confirmation_ip') . ' = ' . $_db->quote($activation_ip));
-		$query->where($_db->quoteName('email') . ' = ' . (string) $user_mail);
+		$query->where($_db->quoteName('email') . ' = "' . (string) $user_mail . '"');
 
 		$_db->setQuery($query);
 		try
@@ -1032,13 +1032,14 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$confirm             = (int)$jinput->get('confirm', 0);
 		$subscription_data   = $session->get('plg_bwpm_buyer2subscriber.subscription_data', array());
+		$session->clear('plg_bwpm_buyer2subscriber.subscription_data');
 
 		if (count($subscription_data))
 		{
 			if ($confirm)
 			{
-				echo 'Gut';
-
+				$this->processNewUser($subscription_data['email'], 0, $subscription_data);
+				$this->activateSubscription($subscription_data['email']);
 			}
 		}
 	}

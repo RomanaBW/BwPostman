@@ -32,7 +32,7 @@ jimport('joomla.plugin.plugin');
 
 require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once (JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
-//require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
@@ -96,6 +96,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @since  2.0.0
 	 */
 	protected $form;
+	protected $app;
 
 	/**
 	 * Property to hold subscriber data stored at component
@@ -105,6 +106,10 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @since  2.0.0
 	 */
 	protected $stored_subscriber_data = array();
+
+	private $logger;
+	private $log_cat  = 'Plg_U2S';
+	private $debug    = false;
 
 	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
@@ -120,6 +125,10 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		JFormHelper::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/fields');
 		JFormHelper::addFieldPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields');
+
+		$log_options    = array();
+		$this->logger   = new BwLogger($log_options);
+		$this->debug    = $this->params->get('debug_option');
 
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
@@ -148,11 +157,17 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			$enabled                = $_db->loadResult();
 			$this->BwPostmanComponentEnabled = $enabled;
+
+			if ($this->debug)
+			{
+				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), JLog::DEBUG, $this->log_cat));
+			}
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
+			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
 		}
 	}
 
@@ -177,11 +192,17 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			$manifest               = json_decode($_db->loadResult(), true);
 			$this->BwPostmanComponentVersion = $manifest['version'];
+
+			if ($this->debug)
+			{
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']), JLog::DEBUG, $this->log_cat));
+			}
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentVersion = '0.0.0';
+			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
 		}
 	}
 
@@ -219,12 +240,22 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('onContentPrepareForm reached', JLog::DEBUG, $this->log_cat));
+		}
+
 		if (!$this->prerequisitesFulfilled())
 		{
 			return false;
 		}
 
 		$context = $form->getName();
+
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry(sprintf('Context is: %s', $context), JLog::DEBUG, $this->log_cat));
+		}
 
 		if (!in_array($context, $this->allowedContext))
 		{
@@ -245,6 +276,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if (!($this->form instanceof JForm))
 		{
+			if ($this->debug)
+			{
+				$this->logger->addEntry(new JLogEntry('Form is not an instance of JForm', JLog::DEBUG, $this->log_cat));
+			}
+
 			return false;
 		}
 
@@ -289,6 +325,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if (version_compare($this->BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 		{
+			if ($this->debug)
+			{
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), JLog::ERROR, $this->log_cat));
+			}
+
 			return false;
 		}
 		return true;
@@ -441,6 +482,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onUserBeforeSave($oldUser, $isNew, $newUser)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('onUserBeforeSave reached', JLog::DEBUG, $this->log_cat));
+		}
+
 		if (!$this->prerequisitesFulfilled())
 		{
 			return false;
@@ -474,6 +520,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('onUserAfterSave reached', JLog::DEBUG, $this->log_cat));
+		}
+
 		if (!$this->prerequisitesFulfilled())
 		{
 			return false;
@@ -556,6 +607,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processNewUser($user_mail, $user_id, $subscriber_data)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('process new user', JLog::DEBUG, $this->log_cat));
+		}
+
 		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 0, 'int');
 
 		if (!$subscription_wanted)
@@ -597,6 +653,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function subscribeToBwPostman($user_mail, $user_id, $subscriber_data)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('subscribe to BwPostman', JLog::DEBUG, $this->log_cat));
+		}
+
 		try
 		{
 			$mailinglist_ids    = json_decode($subscriber_data['mailinglists']);
@@ -646,6 +707,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function activateSubscription($user_id)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('activate subscription', JLog::DEBUG, $this->log_cat));
+		}
+
 		if ($user_id == 0)
 		{
 			return false;
@@ -699,6 +765,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function updateMailaddress($user_mail)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('update mail address', JLog::DEBUG, $this->log_cat));
+		}
+
 		$update_email_result    = false;
 
 		try
@@ -755,6 +826,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onUserAfterDelete($data, $success, $msg)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('onUserAfterDelete reached', JLog::DEBUG, $this->log_cat));
+		}
+
 		if (!$this->BwPostmanComponentEnabled)
 		{
 			return false;
@@ -790,6 +866,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function deleteSubscription()
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('delete subscription', JLog::DEBUG, $this->log_cat));
+		}
+
 		try
 		{
 			$res                        = false;
@@ -829,6 +910,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function deleteSubscriber()
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('delete subscriber', JLog::DEBUG, $this->log_cat));
+		}
+
 		try
 		{
 			$_db	= JFactory::getDbo();
@@ -858,6 +944,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function deleteSubscribedMailinglists()
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('delete mailinglists', JLog::DEBUG, $this->log_cat));
+		}
+
 		try
 		{
 			$_db	= JFactory::getDbo();
@@ -889,6 +980,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function removeUseridFromSubscription($user_id)
 	{
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('remove UserID from subscription', JLog::DEBUG, $this->log_cat));
+		}
+
 		try
 		{
 			$res_update_subscriber      = false;
@@ -921,4 +1017,30 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		return $res_update_subscriber;
 	}
+
+	/**
+	 * Event method onAfterRender
+	 *
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function onAfterRender()
+	{
+		$session = JFactory::getSession();
+		$jinput  = $this->app->input;
+
+		$confirm             = (int)$jinput->get('confirm', 0);
+		$subscription_data   = $session->get('plg_bwpm_buyer2subscriber.subscription_data', array());
+
+		if (count($subscription_data))
+		{
+			if ($confirm)
+			{
+				echo 'Gut';
+
+			}
+		}
+	}
 }
+

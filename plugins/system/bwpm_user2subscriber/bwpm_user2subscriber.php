@@ -572,7 +572,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			if ($subscriber_is_to_activate)
 			{
-				$activate_result = $this->activateSubscription($user_id);
+				$activate_result = $this->activateSubscription($user_mail);
 
 				return $activate_result;
 			}
@@ -697,22 +697,22 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	}
 
 	/**
-	 * Method to activate subscription when Joomla account is confirmed
+	 * Method to activate subscription when Joomla account is confirmed or order in VM is confirmed
 	 *
-	 * @param   int   $user_id       Joomla User ID
+	 * @param   string   $user_mail       mail address of new subscriber
 	 *
 	 * @return  bool        True on success
 	 *
 	 * @since  2.0.0
 	 */
-	protected function activateSubscription($user_id)
+	protected function activateSubscription($user_mail)
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('activate subscription', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('activate subscription reached', JLog::DEBUG, $this->log_cat));
 		}
 
-		if ($user_id == 0)
+		if ($user_mail == '')
 		{
 			return false;
 		}
@@ -731,7 +731,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$query->set($_db->quoteName('confirmation_date') . ' = ' . $_db->quote($time, false));
 		$query->set($_db->quoteName('confirmed_by') . ' = ' . 0);
 		$query->set($_db->quoteName('confirmation_ip') . ' = ' . $_db->quote($activation_ip));
-		$query->where($_db->quoteName('user_id') . ' = ' . (int) $user_id);
+		$query->where($_db->quoteName('email') . ' = ' . (string) $user_mail);
 
 		$_db->setQuery($query);
 		try

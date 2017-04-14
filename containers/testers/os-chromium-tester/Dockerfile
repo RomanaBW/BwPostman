@@ -1,5 +1,5 @@
 
-FROM romana/os-tester-acceptance_228_5714
+FROM romana/os-tester-acceptance_227_5719
 
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 

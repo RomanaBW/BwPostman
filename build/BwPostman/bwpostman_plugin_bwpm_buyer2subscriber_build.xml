@@ -13,7 +13,7 @@
 		<property name="plugin" value="bwpm_buyer2subscriber" override="true" />
 
 		<echo msg="Dev dirs…" />
-		<property name="dev_base_dir" value="/vhosts/dev3vm" override="true" />
+		<property name="dev_base_dir" value="/vhosts/dev/joomla-cms" override="true" />
 		<property name="dev_plugin_dir" value="${dev_base_dir}/plugins/vmuserfield/${plugin}" override="true" />
 		<property name="dev_admin_lang_dir" value="${dev_base_dir}/administrator/language" override="true" />
 

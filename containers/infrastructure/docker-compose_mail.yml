@@ -13,7 +13,6 @@ services:
         networks:
             test.nil:
                 ipv4_address: 172.18.0.2
-#                aliases: mail.test.nil
 
 networks:
     test.nil:

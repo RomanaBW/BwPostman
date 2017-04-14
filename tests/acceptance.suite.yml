@@ -12,14 +12,15 @@ modules:
       - Db
       - Asserts
 
-# Default configuration is for simple joomla containers (BwPostman component, modules, 'normal' plugins)
+# Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
     config:
       WebDriver:
-        url: http://172.18.0.5
+        url: http://172.18.0.4
 
         window_size: 1440x900
         browser: chrome
         port: 4445
+
         connection_timeout: 60
         restart: false
 #        browser: phantomjs
@@ -28,7 +29,7 @@ modules:
 #        port: 4444
 
       Db:
-        dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
+        dsn: 'mysql:host=172.18.0.3;dbname=joomlatest'
         user: 'tester'
         password: 'barbamama'
 
@@ -55,10 +56,10 @@ env:
     modules:
       config:
         WebDriver:
-          url: http://172.18.0.15
+          url: http://172.18.0.12
 
         Db:
-          dsn: 'mysql:host=172.18.0.14;dbname=joomlatest'
+          dsn: 'mysql:host=172.18.0.11;dbname=joomlatest'
 
 # This configuration is for testing in a virtual machine
   vm:

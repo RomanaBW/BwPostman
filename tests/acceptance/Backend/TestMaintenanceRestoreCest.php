@@ -72,22 +72,24 @@ class TestMaintenanceRestoreCest
 		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
 		$I->dontSeeElement(Generals::$alert_error);
 
-		$I->waitForElement(MaintenancePage::$step1Field, 30);
-		$I->waitForElement(MaintenancePage::$step2Field, 30);
-		$I->waitForElement(MaintenancePage::$step3Field, 30);
-		$I->wait(20);
-		$I->waitForElement(MaintenancePage::$step4Field, 30);
-		$I->waitForElement(MaintenancePage::$step5Field, 30);
-		$I->wait(20);
-		$I->waitForElement(MaintenancePage::$step6Field, 30);
-		$I->waitForElement(MaintenancePage::$step7Field, 30);
-		$I->waitForElement(MaintenancePage::$step8Field, 30);
-		$I->waitForElement(MaintenancePage::$step9Field, 30);
-		$I->waitForElement(MaintenancePage::$step10Field, 30);
-		$I->waitForElement(MaintenancePage::$step11Field, 30);
-		$I->waitForElement(MaintenancePage::$step11SuccessClass, 30);
+		$I->waitForElementVisible(MaintenancePage::$step1Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step2Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step3Field, 30);
+//		$I->wait(20);
+		$I->waitForElementVisible(MaintenancePage::$step4Field, 90);
+		$I->waitForElementVisible(MaintenancePage::$step5Field, 30);
+//		$I->wait(20);
+		$I->waitForElementVisible(MaintenancePage::$step6Field, 120);
+		$I->waitForElementVisible(MaintenancePage::$step7Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step8Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step9Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step10Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step11Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step11SuccessClass, 30);
 		$I->see(MaintenancePage::$step11SuccessMsg, MaintenancePage::$step11SuccessClass);
-		$I->clickAndWait(MaintenancePage::$checkBackButton, 2);
+		$I->click(MaintenancePage::$checkBackButton);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(MaintenancePage::$heading, Generals::$pageTitle);
 	}
 
 	/**

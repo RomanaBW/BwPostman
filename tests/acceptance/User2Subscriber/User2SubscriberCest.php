@@ -605,7 +605,7 @@ class User2SubscriberCest
 
 		$this->mls_to_subscribe = array("0");
 
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin10');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
@@ -629,6 +629,7 @@ class User2SubscriberCest
 			LoginPage::logoutFromBackend($I);
 		}
 		);
+		$admin->leave();
 
 		$this->initializeTestValues($I);
 	}
@@ -773,7 +774,7 @@ class User2SubscriberCest
 		$this->_activate($I, RegPage::$login_value_email);
 
 		// Delete account
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin2');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
@@ -800,6 +801,7 @@ class User2SubscriberCest
 			return null;
 		}
 		);
+		$admin->leave();
 
 		//reset option settings
 		$this->auto_delete  = true;
@@ -808,7 +810,7 @@ class User2SubscriberCest
 		// register anew
 		$this->selectRegistrationPage($I);
 
-		$this->fillJoomlaPartAtRegisterForm($I);
+		$this->fillJoomlaPartAtRegisterForm($I, 100);
 
 		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
@@ -842,7 +844,7 @@ class User2SubscriberCest
 
 		$this->disablePlugin($I);
 
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin3');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			$this->selectRegistrationPage($I);
@@ -1230,10 +1232,11 @@ class User2SubscriberCest
 	 * Method to fill all required Joomla fields on Joomla registration form
 	 *
 	 * @param AcceptanceTester $I
+	 * @param int              $run
 	 *
 	 * @since 2.0.0
 	 */
-	protected function fillJoomlaPartAtRegisterForm(AcceptanceTester $I)
+	protected function fillJoomlaPartAtRegisterForm(AcceptanceTester $I, $run   = 1)
 	{
 		$I->scrollTo(".//*[@id='member-registration']");
 
@@ -1255,7 +1258,7 @@ class User2SubscriberCest
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
 		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
 
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin' . $run);
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
@@ -1263,7 +1266,7 @@ class User2SubscriberCest
 			LoginPage::logoutFromBackend($I);
 		}
 		);
-//		$admin->leave();
+		$admin->leave();
 	}
 
 	/**
@@ -1368,7 +1371,9 @@ class User2SubscriberCest
 	 */
 	protected function registerAndCheckMessage(AcceptanceTester $I)
 	{
-		$I->clickAndWait(RegPage::$login_identifier_register, 1);
+		$I->click(RegPage::$login_identifier_register);
+
+		$I->waitForElementVisible(RegPage::$success_heading_identifier, 30);
 
 		$I->see(Generals::$alert_msg_txt, RegPage::$success_heading_identifier);
 		$I->see(RegPage::$register_success, RegPage::$success_message_identifier);
@@ -1381,7 +1386,7 @@ class User2SubscriberCest
 	 */
 	protected function checkBackendSuccessSimple(AcceptanceTester $I)
 	{
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin5');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
@@ -1393,6 +1398,7 @@ class User2SubscriberCest
 			LoginPage::logoutFromBackend($I);
 		}
 		);
+		$admin->leave();
 	}
 
 	/**
@@ -1678,7 +1684,7 @@ class User2SubscriberCest
 	 */
 	protected function checkBackendSuccessWithMailChange(AcceptanceTester $I)
 	{
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin6');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
@@ -1776,7 +1782,7 @@ class User2SubscriberCest
 	 */
 	private function _activateByBackend(\AcceptanceTester $I)
 	{
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin7');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
@@ -1802,6 +1808,7 @@ class User2SubscriberCest
 			LoginPage::logoutFromBackend($I);
 		}
 		);
+		$admin->leave();
 
 		$this->activated    = true;
 	}
@@ -1816,7 +1823,7 @@ class User2SubscriberCest
 	private function _deselectNewMailinglist(\AcceptanceTester $I)
 	{
 		// @ToDo: Complete this method
-		$admin = $I->haveFriend('Admin');
+		$admin = $I->haveFriend('Admin8');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
@@ -1844,6 +1851,7 @@ class User2SubscriberCest
 			LoginPage::logoutFromBackend($I);
 		}
 		);
+		$admin->leave();
 	}
 
 	/**

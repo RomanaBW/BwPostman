@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension group="vmuserfield" method="upgrade" type="plugin" version="3.4">
+    <name>PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER</name>
+    <version>2.0.0</version>
+    <creationDate>October 2016</creationDate>
+    <author>Boldt Webservice</author>
+    <authorEmail>forum@boldt-webservice.de</authorEmail>
+    <authorUrl>https://www.boldt-webservice.de</authorUrl>
+    <copyright>www.boldt-webservice.de</copyright>
+    <license>GNU/GPLv3 or later</license>
+    <description>PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_DESCRIPTION</description>
+
+    <files>
+        <filename plugin="bwpm_buyer2subscriber">bwpm_buyer2subscriber.php</filename>
+        <filename>install.bwpm_buyer2subscriber.php</filename>
+        <filename>index.html</filename>
+        <folder>language</folder>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.ini</language>
+        <language tag="de-DE">de-DE/de-DE.plg_vmuserfield_bwpm_buyer2subscriber.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini</language>
+        <language tag="de-DE">de-DE/de-DE.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini</language>
+    </languages>
+    <scriptfile>install.bwpm_buyer2subscriber.php</scriptfile>
+
+    <config>
+        <fields name="params">
+            <fieldset name="option">
+                <field
+                        name="bw_register_message_option"
+                        type="textarea"
+                        id="bw_register_message_option"
+                        description="PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_OPTION_MESSAGE_DESC"
+                        filter="string"
+                        label="PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_OPTION_MESSAGE_LABEL"
+                        cols="50"
+                        rows="10"
+                        default=""
+                />
+
+                <field name="spacer3_4" type="spacer" hr="true" />
+
+                <field
+                        name="debug_option"
+                        id="debug_option"
+                        type="radio"
+                        class="btn-group btn-group-yesno"
+                        label="PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_OPTION_DEBUG_LABEL"
+                        description="PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_OPTION_DEBUG_DESC"
+                        default="0"
+                >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="mailinglists" addfieldpath="/components/com_bwpostman/models/fields">
+                <field
+                        name="ml_available"
+                        type="comml"
+                        label="PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_OPTION_ML_AVAILABLE_LABEL"
+                        labelclass="control-label"
+                        description="PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_OPTION_ML_AVAILABLE_DESC"
+                        multiple="true"
+                        size="5"
+                        default="0"
+                        class="inputbox"
+                        required="true"
+                />
+            </fieldset>
+
+        </fields>
+    </config>
+
+    <updateservers>
+		<server type="extension" name="VM Customers to BwPostman Subscription Updates">https://www.boldt-webservice.de/plg_bwpostman_bwpm_buyer2subscriber_update.xml</server>
+	</updateservers>
+
+</extension>

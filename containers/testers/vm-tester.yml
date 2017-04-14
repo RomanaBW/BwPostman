@@ -1,9 +1,9 @@
-version: '2'
+version: '3'
 
 services:
     tester-vm:
         container_name: "tester-vm"
-        image: romana/os-chromium-tester_228_5714
+        image: romana/os-chromium-tester_227_5719
         hostname: tester-vm
         domainname: tester-net-vm.nil
         volumes:
@@ -15,9 +15,9 @@ services:
         working_dir: /tests
         networks:
             tester-net-vm.nil:
-                ipv4_address: 172.18.0.20
+                ipv4_address: 172.18.0.14
 
 networks:
     tester-net-vm.nil:
         external:
-            name: infrastructure_tester-net-net.nil
+            name: ${PROJECT_JTESTS}_tester-net-net.nil

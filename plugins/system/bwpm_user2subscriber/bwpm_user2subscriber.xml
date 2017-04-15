@@ -98,7 +98,6 @@
 						size="5"
 						default="0"
 						class="inputbox"
-				        required="true"
 				/>
 			</fieldset>
 

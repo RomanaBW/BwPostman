@@ -262,6 +262,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return true;
 		}
 
+		$mailinglists   = $this->params->get('ml_available', array());
+
+		if (!count($mailinglists))
+		{
+			return true;
+		}
+
 		$data_helper = (array)$data;
 
 		if (!empty($data_helper))
@@ -621,11 +628,21 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		try
 		{
-			if (BWPM_User2SubscriberHelper::hasSubscription($user_mail))
-			{
-				$update_userid_result = BWPM_User2SubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
+			$subscriber_id  = BWPM_User2SubscriberHelper::hasSubscription($user_mail);
 
-				return $update_userid_result;
+			if ($subscriber_id)
+			{
+				$update_userid_result   = false;
+
+				if ($user_id)
+				{
+					$update_userid_result = BWPM_User2SubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
+				}
+
+				$new_mailinglists       = json_decode($subscriber_data['mailinglists']);
+				$update_mailinglists    = BWPM_User2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
+
+				return ($update_mailinglists && $update_userid_result);
 			}
 		}
 		catch (Exception $e)

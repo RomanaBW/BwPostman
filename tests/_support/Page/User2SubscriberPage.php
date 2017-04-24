@@ -101,7 +101,6 @@ class User2SubscriberPage
 
 	// backend stuff
 	public static $user_management_url              = 'administrator/index.php?option=com_users&view=users';
-	public static $subscribers_url                  = "/administrator/index.php?option=com_bwpostman&view=subscribers";
 	public static $plugin_page                      = "/administrator/index.php?option=com_plugins";
 
 	// com_users related
@@ -111,8 +110,6 @@ class User2SubscriberPage
 	public static $toolbar_delete_button            = ".//*[@id='toolbar-delete']/button";
 
 	// com_bwpostman related
-	public static $tab_confirmed                    = ".//*[@id='bwpostman_subscribers_tabs']/dt[2]";
-	public static $tab_unconfirmed                  = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
 	public static $subscriber_email_col_identifier  = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
 	public static $subscriber_format_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[6]";
 	public static $subscriber_email_col_ident_no_gender  = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[4]";
@@ -130,12 +127,6 @@ class User2SubscriberPage
 	public static $mailinglist2_checked             = ".//*[@id='jform_ml_available_4']";
 	public static $mailinglist_fieldset_identifier  = "//*[@id='adminForm']/div[1]/div[1]/fieldset/div[1]/div/fieldset/legend/span[2]";
 	public static $subscriber_details_close         = ".//*[@id='toolbar-cancel']/button";
-
-	// search subscriber
-	public static $search_tool_button               = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[2]/button";
-	public static $search_for_list_id               = "filter_search_filter_chzn";
-	public static $search_for_list                  = ".//*[@id='filter_search_filter_chzn']";
-	public static $search_for_value                 = ".//*[@id='filter_search_filter_chzn']/div/ul/li[contains(text(), '%s')]";
 
 	// check for selected options
 	public static $user_id_identifier               = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr/td[7]";
@@ -178,4 +169,29 @@ class User2SubscriberPage
 
 	public static $username_used            = 'The username you entered is not available. Please pick another username.';
 	public static $mailaddress_used         = 'The email address you entered is already in use or invalid. Please enter another email address.';
+
+	/**
+	 * @param \AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	public static function selectPluginPage(\AcceptanceTester $I)
+	{
+		$I->amOnPage(self::$plugin_page);
+		$I->wait(1);
+		$I->see(self::$view_plugin, Generals::$pageTitle);
+	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param string           $plugin_name
+	 *
+	 * @since 2.0.0
+	 */
+	public static function filterForPlugin(\AcceptanceTester $I, $plugin_name)
+	{
+		$I->fillField(Generals::$search_field, $plugin_name);
+		$I->clickAndWait(Generals::$search_button, 1);
+	}
+
 }

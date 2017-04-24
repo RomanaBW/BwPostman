@@ -33,8 +33,8 @@ class Generals
 
 	public static $control_panel        = "Control Panel";
 	public static $login_txt            = "Log in";
-	public static $nav_user_menu        = "html/body/nav/div/div/div/ul[3]/li/a";
-	public static $nav_user_menu_logout = "html/body/nav/div/div/div/ul[3]/li/ul/li[5]/a";
+	public static $nav_user_menu        = ".//*[contains(@class, 'nav-user')]/li/a";
+	public static $nav_user_menu_logout = ".//*[contains(@class, 'nav-user')]/li/ul/li[5]/a";
 	public static $logout_txt           = "Log out";
 
 	public static $com_options;

@@ -1,6 +1,8 @@
 <?php
 namespace Page;
 
+use Page\MainviewPage as MainView;
+
 /**
  * Class MaintenancePage
  *
@@ -64,4 +66,53 @@ class MaintenancePage
 	public static $step11SuccessClass   = ".//*[@id='step11'][contains(@class, 'alert-success')]";
 	public static $step5SuccessMsg      = "Check asset-id's and user-id's..";
 	public static $step11SuccessMsg     = "Check: Check asset ids and user ids...";
+
+	/**
+	 * Test method to restore tables
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function restoreTables(\AcceptanceTester $I)
+	{
+		$I->wantTo("Restore tables");
+		$I->expectTo("see 'Result check okay'");
+		$I->amOnPage(MainView::$url);
+		$I->click(MainView::$maintenanceButton);
+
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(MaintenancePage::$heading);
+
+		$I->click(MaintenancePage::$restoreTablesButton);
+		$I->waitForElement(MaintenancePage::$headingRestoreFile, 30);
+
+		$I->attachFile(".//*[@id='restorefile']", "BwPostman_2_0_0_Tables.xml");
+		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
+		$I->dontSeeElement(Generals::$alert_error);
+
+		$I->waitForElementVisible(MaintenancePage::$step1Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step2Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step3Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step4Field, 90);
+		$I->waitForElementVisible(MaintenancePage::$step5Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step6Field, 120);
+		$I->waitForElementVisible(MaintenancePage::$step7Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step8Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step9Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step10Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step11Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step11SuccessClass, 30);
+		$I->see(MaintenancePage::$step11SuccessMsg, MaintenancePage::$step11SuccessClass);
+		$I->click(MaintenancePage::$checkBackButton);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(MaintenancePage::$heading, Generals::$pageTitle);
+	}
+
 }

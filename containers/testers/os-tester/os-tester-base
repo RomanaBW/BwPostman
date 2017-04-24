@@ -15,6 +15,7 @@ RUN zypper --non-interactive in curl \
                                 glibc-locale \
                                 java-1_8_0-openjdk \
                                 make \
+                                mariadb-client \
                                 mc \
                                 tar \
                                 tmux \

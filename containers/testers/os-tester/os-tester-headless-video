@@ -4,7 +4,7 @@
 # Provides romana/os-tester-headless-video, perhaps later with version number
 ####################################################################
 
-FROM romana/os-tester-base
+FROM romana/os-tester-base_v2
 
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 

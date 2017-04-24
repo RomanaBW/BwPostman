@@ -4,7 +4,7 @@
 # Provides romana/os-tester-php, perhaps later with version number
 ####################################################################
 
-FROM romana/os-tester-headless-video
+FROM romana/os-tester-headless-video_v2
 
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 

@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd
 
 RUN chmod -R 0777 /var/log/apache2
+COPY data/config/apache2 /etc/apache2/
 
 RUN echo "ServerName localhost" >> /etc/apache2/sites-enabled/000-default.conf
 

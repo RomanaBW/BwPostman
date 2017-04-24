@@ -45,6 +45,14 @@ class SubscriberManagerPage
      * public static $formSubmitButton = "#mainForm input[type=submit]";
      */
 
+	public static $tab_confirmed                    = ".//*[@id='bwpostman_subscribers_tabs']/dt[2]";
+	public static $tab_unconfirmed                  = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
+
+	// search subscriber
+	public static $search_for_list_id               = "filter_search_filter_chzn";
+	public static $search_for_list                  = ".//*[@id='filter_search_filter_chzn']";
+	public static $search_for_value                 = ".//*[@id='filter_search_filter_chzn']/div/ul/li[contains(text(), '%s')]";
+
 	/**
 	 * Array of sorting criteria values for this page
 	 *
@@ -178,4 +186,42 @@ class SubscriberManagerPage
 		'section'   => 'subscriber',
 		'url'   => '/administrator/index.php?option=com_bwpostman&view=subscribers',
 	);
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param boolean           $activated
+	 *
+	 * @since 2.0.0
+	 */
+	public static function gotoSubscribersListTab(\AcceptanceTester $I, $activated)
+	{
+		if ($activated)
+		{
+			$tab = self::$tab_confirmed;
+		}
+		else
+		{
+			$tab = self::$tab_unconfirmed;
+		}
+
+		$I->amOnPage(self::$url);
+		$I->see('Subscribers', Generals::$pageTitle);
+		$I->clickAndWait($tab, 1);
+	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param string            $search_value
+	 * @param string            $search_for_value
+	 *
+	 * @since 2.0.0
+	 */
+	public static function filterForSubscriber(\AcceptanceTester $I, $search_value, $search_for_value)
+	{
+		$I->fillField(Generals::$search_field, $search_value);
+		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->clickSelectList(Generals::$search_list, $search_for_value, self::$search_for_list_id);
+		$I->clickAndWait(Generals::$search_button, 1);
+	}
+
 }

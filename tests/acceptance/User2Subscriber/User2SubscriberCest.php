@@ -2,6 +2,7 @@
 use Page\Generals as Generals;
 use Page\Login as LoginPage;
 use Page\User2SubscriberPage as RegPage;
+use Page\SubscriberManagerPage as SubsManagePage;
 use Page\InstallationPage as InstallPage;
 
 
@@ -94,6 +95,9 @@ class User2SubscriberCest
 	 */
 	private $subscriber_mail_new = '';
 
+	private $current_mail_address = '';
+
+	private $subscription_only      = false;
 	private $name_obligation        = true;
 	private $firstname_obligation   = true;
 	private $special_obligation     = true;
@@ -130,22 +134,19 @@ class User2SubscriberCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function activateUser2Subscriber(AcceptanceTester $I)
+	public function setupUser2Subscriber(AcceptanceTester $I)
 	{
-		$I->wantTo("activate plugin user2subscriber");
+		$I->wantTo("activate plugin user2subscriber and setup default options");
 		$I->expectTo("see success message and green arrow in extensions list");
+
+		$I->setExtensionStatus('bwpm_user2subscriber', 1);
+
 		$I->amOnPage(InstallPage::$plugin_manage_url);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingPlugins);
 
 		$I->fillField(Generals::$search_field, Generals::$plugin_u2s);
 		$I->click(Generals::$search_button);
-		$I->checkOption(Generals::$check_all_button);
-		$I->click(Generals::$toolbar['Enable']);
-
-		$I->waitForElement(Generals::$alert_success, 30);
-		$I->see(InstallPage::$pluginEnableSuccessMsg, Generals::$alert_success);
-		$I->seeElement(InstallPage::$icon_published);
 
 		$I->click(".//*[@id='pluginList']/tbody/tr/td[4]/a");
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -188,13 +189,38 @@ class User2SubscriberCest
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$this->fillBwPostmanPartAtRegisterFormSimple($I);
+		$this->registerAndCheckMessage($I);
+
+		$this->checkBackendSuccessSimple($I);
+	}
+
+	/**
+	 * Test method to register user with subscription selected first yes but then no
+	 * You see Joomla user but no subscriber
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function User2SubscriberFunctionSwitchSubscriptionWithoutSubscription(AcceptanceTester $I)
+	{
+		$I->wantTo("Register at Joomla, switch subscription to yes and back to no and not subscribe to BwPostman");
+		$I->expectTo('see unconfirmed Joomla user but no subscriber');
+
+		$this->initializeTestValues($I);
+		$this->subscription_selected    = false;
+
+		$this->selectRegistrationPage($I);
+
+		$this->switchSubscriptionYesAndNo($I);
+
+		$this->fillJoomlaPartAtRegisterForm($I);
 
 		$this->registerAndCheckMessage($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -225,8 +251,6 @@ class User2SubscriberCest
 		$this->registerAndCheckMessage($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -245,9 +269,10 @@ class User2SubscriberCest
 		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format');
 
 		$this->initializeTestValues($I);
-		$this->name_obligation          = false;
-		$this->firstname_obligation     = false;
-		$this->special_obligation       = false;
+		$this->name_obligation       = false;
+		$this->firstname_obligation  = false;
+		$this->special_obligation    = false;
+		$this->subscription_only     = true;
 		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
@@ -260,11 +285,9 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -286,6 +309,8 @@ class User2SubscriberCest
 		$this->firstname_obligation     = false;
 		$this->special_obligation       = false;
 		$this->visitor                  = 2;
+		$this->auto_delete              = false;
+		$this->current_mail_address     = RegPage::$login_value2_email;
 		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
@@ -294,7 +319,6 @@ class User2SubscriberCest
 		//set other option settings
 		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("17"));
 		$this->mls_to_subscribe = array(".//*[@id='jform_ml_available_7']");
-		$this->auto_delete = false;
 
 		$this->selectRegistrationPage($I);
 
@@ -304,11 +328,9 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value2_email);
+		$this->_activate($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -330,11 +352,12 @@ class User2SubscriberCest
 		$this->firstname_obligation     = false;
 		$this->special_obligation       = false;
 		$this->visitor                  = 2;
+		$this->auto_delete              = false;
+		$this->current_mail_address     = RegPage::$login_value2_email;
 		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
 		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '0');
-		$this->auto_delete = false;
 
 		$this->selectRegistrationPage($I);
 
@@ -344,13 +367,11 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value2_email);
+		$this->_activate($I);
 
 		$this->checkBackendSuccessSimple($I);
 
 		$this->_deselectNewMailinglist($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -372,7 +393,7 @@ class User2SubscriberCest
 		$this->name_obligation          = false;
 		$this->firstname_obligation     = false;
 		$this->special_obligation       = false;
-		$this->visitor                  = 2;
+		$this->visitor                  = 1;
 		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
@@ -386,8 +407,6 @@ class User2SubscriberCest
 		$this->registerAndCheckMessage($I);
 
 		$this->_activateByBackend($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -419,11 +438,9 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -454,11 +471,9 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -491,11 +506,9 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 
 	}
 
@@ -527,13 +540,11 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->mls_to_subscribe = array(RegPage::$mailinglist2_checked);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -564,13 +575,11 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->mls_to_subscribe = array(RegPage::$mailinglist1_checked, RegPage::$mailinglist2_checked);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -595,13 +604,15 @@ class User2SubscriberCest
 
 		$this->selectRegistrationPage($I);
 
+		$this->_dontSeePluginInputFields($I);
+
 		$this->fillJoomlaPartAtRegisterForm($I);
 
 		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->mls_to_subscribe = array("0");
 
@@ -612,14 +623,14 @@ class User2SubscriberCest
 
 			$this->activated = false;
 			$identifier = $this->getTabDependentIdentifier(RegPage::$subscriber_edit_link);
-			$this->gotoSubscribersListTab($I);
+			SubsManagePage::gotoSubscribersListTab($I, $this->activated);
 			$this->filterForSubscriber($I);
 
 			$I->dontSee(RegPage::$login_value_name, $identifier);
 
 			$this->activated = true;
 			$identifier = $this->getTabDependentIdentifier(RegPage::$subscriber_edit_link);
-			$this->gotoSubscribersListTab($I);
+			SubsManagePage::gotoSubscribersListTab($I, $this->activated);
 			$this->filterForSubscriber($I);
 
 			$I->dontSee(RegPage::$login_value_name, $identifier);
@@ -630,8 +641,6 @@ class User2SubscriberCest
 		}
 		);
 		$admin->leave();
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -659,14 +668,13 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->subscriber_mail_old   = RegPage::$login_value_email;
 		$this->subscriber_mail_new   = RegPage::$change_value_email;
+		$this->current_mail_address  = $this->subscriber_mail_old;
 
 		$this->checkBackendSuccessWithMailChange($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -696,10 +704,9 @@ class User2SubscriberCest
 
 		$this->subscriber_mail_old   = RegPage::$login_value_email;
 		$this->subscriber_mail_new   = RegPage::$change_value_email;
+		$this->current_mail_address  = $this->subscriber_mail_old;
 
 		$this->checkBackendSuccessWithMailChange($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -731,14 +738,13 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		$this->subscriber_mail_old   = RegPage::$login_value_email;
 		$this->subscriber_mail_new   = RegPage::$change_value_email;
+		$this->current_mail_address  = $this->subscriber_mail_old;
 
 		$this->checkBackendSuccessWithMailChange($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -771,7 +777,7 @@ class User2SubscriberCest
 
 		$this->registerAndCheckMessage($I);
 
-		$this->_activate($I, RegPage::$login_value_email);
+		$this->_activate($I);
 
 		// Delete account
 		$admin = $I->haveFriend('Admin2');
@@ -779,10 +785,10 @@ class User2SubscriberCest
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
 
-			$this->deleteJoomlaUser($I);
+			$this->deleteJoomlaUserByDb($I);
 
 			$this->checkForSubscriptionSuccess($I);
-			$this->deleteJoomlaUser($I);
+			$this->deleteJoomlaUserByDb($I);
 
 			// assert subscription is there without Joomla user ID
 			try
@@ -817,8 +823,6 @@ class User2SubscriberCest
 		$this->registerAndCheckMessage($I);
 
 		$this->checkBackendSuccessSimple($I);
-
-		$this->initializeTestValues($I);
 	}
 
 	/**
@@ -835,30 +839,13 @@ class User2SubscriberCest
 		$I->wantTo("Deactivate Plugin User2Subscriber");
 		$I->expectTo('not see plugin fields at Joomla registration form');
 
-		$this->tester   = $I;
-		LoginPage::logIntoBackend(Generals::$admin);
+		$I->setExtensionStatus('bwpm_user2subscriber', 0);
 
-		$this->selectPluginPage($I);
+		$this->selectRegistrationPage($I);
 
-		$this->filterForPlugin($I);
+		$this->_dontSeePluginInputFields($I);
 
-		$this->disablePlugin($I);
-
-		$admin = $I->haveFriend('Admin3');
-		$admin->does(function (AcceptanceTester $I)
-		{
-			$this->selectRegistrationPage($I);
-
-			$I->dontSee(RegPage::$subs_identifier_subscribe_yes);
-			$I->dontSee(RegPage::$subs_identifier_subscribe_no);
-			$I->dontSee(RegPage::$subs_identifier_format_html);
-			$I->dontSee(RegPage::$subs_identifier_format_text);
-		}
-		);
-
-		$this->enablePlugin($I);
-
-		LoginPage::logoutFromBackend($I);
+		$I->setExtensionStatus('bwpm_user2subscriber', 1);
 	}
 
 	/**
@@ -890,11 +877,9 @@ class User2SubscriberCest
 			$this->selectRegistrationPage($I);
 
 			$I->see(RegPage::$plugin_message_new, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
-
-//			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
-//			$I->assertEquals(RegPage::$plugin_message_new, $message_text);
 		}
 		);
+		$user->leave();
 
 		$I->fillField(RegPage::$plugin_message_identifier, RegPage::$plugin_message_old);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
@@ -902,17 +887,15 @@ class User2SubscriberCest
 		$I->see(RegPage::$plugin_message_old, RegPage::$plugin_message_identifier);
 
 		// look at FE
-		$user = $I->haveFriend('User');
+		$user = $I->haveFriend('User3');
 		$user->does(function (AcceptanceTester $I)
 		{
 			$this->selectRegistrationPage($I);
 
 			$I->see(RegPage::$plugin_message_old, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
-
-//			$message_text   = $I->grabAttributeFrom(".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber-lbl']", 'data-content');
-//			$I->assertEquals(RegPage::$plugin_message_old, $message_text);
 		}
 		);
+		$user->leave();
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
@@ -949,7 +932,7 @@ class User2SubscriberCest
 		$I->assertEquals("0", $com_options->show_emailformat);
 
 		// look at FE
-		$user = $I->haveFriend('User');
+		$user = $I->haveFriend('User4');
 		$user->does(function (AcceptanceTester $I)
 		{
 			$this->selectRegistrationPage($I);
@@ -959,6 +942,7 @@ class User2SubscriberCest
 			$I->dontSeeElement(RegPage::$subs_identifier_format_text);
 		}
 		);
+		$user->leave();
 
 		// switch to yes
 		$I->clickAndWait(".//*[@id='jform_show_emailformat']/label[2]", 1);
@@ -972,7 +956,7 @@ class User2SubscriberCest
 		$I->assertEquals("1", $com_options->show_emailformat);
 
 		// look at FE
-		$user = $I->haveFriend('User');
+		$user = $I->haveFriend('User5');
 		$user->does(function (AcceptanceTester $I)
 		{
 			$this->selectRegistrationPage($I);
@@ -981,6 +965,7 @@ class User2SubscriberCest
 			$I->seeElement(RegPage::$subs_identifier_format_html);
 		}
 		);
+		$user->leave();
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
@@ -1017,7 +1002,7 @@ class User2SubscriberCest
 		$I->assertEquals("0", $com_options->default_emailformat);
 
 		// look at FE
-		$user = $I->haveFriend('User');
+		$user = $I->haveFriend('User6');
 		$user->does(function (AcceptanceTester $I)
 		{
 			$this->selectRegistrationPage($I);
@@ -1027,6 +1012,7 @@ class User2SubscriberCest
 			$I->dontSeeElement(RegPage::$subs_identifier_format_html, ['class' => Generals::$button_green]);
 		}
 		);
+		$user->leave();
 
 		// switch to yes
 		$I->scrollTo(".//*[@id='jform_show_emailformat-lbl']", 0, -100);
@@ -1041,7 +1027,7 @@ class User2SubscriberCest
 		$I->assertEquals("1", $com_options->default_emailformat);
 
 		// look at FE
-		$user = $I->haveFriend('User');
+		$user = $I->haveFriend('User7');
 		$user->does(function (AcceptanceTester $I)
 		{
 			$this->selectRegistrationPage($I);
@@ -1050,6 +1036,7 @@ class User2SubscriberCest
 			$I->seeElement(RegPage::$subs_identifier_format_html, ['class' => Generals::$button_green]);
 		}
 		);
+		$user->leave();
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
@@ -1190,19 +1177,21 @@ class User2SubscriberCest
 	 */
 	protected function initializeTestValues($I)
 	{
-		$this->tester                   = $I;
-		$this->activated                = false;
-		$this->subscription_selected    = true;
-		$this->mls_to_subscribe         = array(RegPage::$mailinglist1_checked);
-		$this->format                   = 'HTML';
-		$this->auto_update              = true;
-		$this->auto_delete              = true;
-		$this->name_obligation          = true;
-		$this->firstname_obligation     = true;
-		$this->special_obligation       = true;
-		$this->show_gender              = false;
-		$this->check_gender             = false;
-		$this->visitor                  = 1;
+		$this->tester                = $I;
+		$this->activated             = false;
+		$this->subscription_selected = true;
+		$this->subscription_only     = false;
+		$this->mls_to_subscribe      = array(RegPage::$mailinglist1_checked);
+		$this->current_mail_address  = RegPage::$login_value_email;
+		$this->format                = 'HTML';
+		$this->auto_update           = true;
+		$this->auto_delete           = true;
+		$this->name_obligation       = true;
+		$this->firstname_obligation  = true;
+		$this->special_obligation    = true;
+		$this->show_gender           = false;
+		$this->check_gender          = false;
+		$this->visitor               = 1;
 
 		//reset option settings
 		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
@@ -1224,11 +1213,27 @@ class User2SubscriberCest
 	protected function selectRegistrationPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(RegPage::$register_url);
-		$I->wait(2);
+		$I->waitForElementVisible(RegPage::$view_register);
 		$I->seeElement(RegPage::$view_register);
 	}
 
 	/**
+	 * Method to fill all required Joomla fields on Joomla registration form
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function switchSubscriptionYesAndNo(AcceptanceTester $I)
+	{
+		$I->scrollTo(".//*[@id='member-registration']");
+		$I->click(RegPage::$subs_identifier_subscribe_yes);
+		$I->waitForElementVisible(RegPage::$subs_identifier_name);
+		$I->click(RegPage::$subs_identifier_subscribe_no);
+		$I->waitForElementNotVisible(RegPage::$subs_identifier_name);
+	}
+
+		/**
 	 * Method to fill all required Joomla fields on Joomla registration form
 	 *
 	 * @param AcceptanceTester $I
@@ -1258,11 +1263,12 @@ class User2SubscriberCest
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
 		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
 
+		// ensure all is cleaned up
 		$admin = $I->haveFriend('Admin' . $run);
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
-			$this->deleteJoomlaUser($I);
+			$this->deleteJoomlaUserByDb($I);
 			LoginPage::logoutFromBackend($I);
 		}
 		);
@@ -1392,7 +1398,7 @@ class User2SubscriberCest
 			LoginPage::logIntoBackend(Generals::$admin);
 
 			$this->checkForSubscriptionSuccess($I);
-			$this->deleteJoomlaUser($I);
+			$this->deleteJoomlaUserByDb($I);
 			$this->checkForSubscriptionDeletion($I);
 
 			LoginPage::logoutFromBackend($I);
@@ -1410,140 +1416,95 @@ class User2SubscriberCest
 	 */
 	protected function checkForSubscriptionSuccess(AcceptanceTester $I)
 	{
-		$this->gotoSubscribersListTab($I);
-		$this->filterForSubscriber($I);
-
-		$com_options = $I->getManifestOptions('com_bwpostman');
-		$format_col  = $this->getTabDependentIdentifier(RegPage::$subscriber_format_col_identifier);
-
-		if (!$com_options->show_gender)
-		{
-			$format_col             = $this->getTabDependentIdentifier(RegPage::$subscriber_format_col_ident_no_gender);
-		}
-
-		$name_identifier        = $this->getTabDependentIdentifier(RegPage::$subslist_identifier_name);
-		$firstname_identifier   = $this->getTabDependentIdentifier(RegPage::$subslist_identifier_firstname);
-		$gender_identifier      = $this->getTabDependentIdentifier(RegPage::$subslist_identifier_gender);
-		$edit_identifier        = $this->getTabDependentIdentifier(RegPage::$subscriber_edit_link);
-
 		if ($this->subscription_selected || ($this->auto_delete !== true))
 		{
-			if ($this->name_obligation)
+			$result      = array();
+
+			$result['email']    = $this->current_mail_address;
+
+			if ($this->subscription_only)
 			{
-				$I->see(RegPage::$subs_value_name, $name_identifier);
+				$result['name'] = '';
+				$result['firstname'] = '';
 			}
 			else
 			{
-				if ($this->visitor == 1)
+				if ($this->visitor != 2)
 				{
-					$I->see(RegPage::$subs_null_value, $name_identifier);
-				}
-				elseif ($this->visitor == 2)
-				{
-					$I->see(RegPage::$subs_value2_name, $name_identifier);
-				}
-			}
-
-			if ($this->visitor != 2)
-			{
-				$I->see($this->format, $format_col);
-			}
-
-			$com_options    = $I->getManifestOptions('com_bwpostman');
-
-			if ($com_options->show_gender && $this->check_gender)
-			{
-
-				$I->canSee($this->gender_selected, $gender_identifier);
-			}
-
-			if ($com_options->show_name_field || $com_options->name_field_obligation)
-			{
-				if ($this->name_obligation)
-				{
-					$I->see(RegPage::$subs_value_name, $name_identifier);
-				}
-				else
-				{
-					if ($this->visitor == 1)
+					$format = 1;
+					if ($this->format == "Text")
 					{
-						$I->see(RegPage::$subs_null_value, $name_identifier);
+						$format = 0;
 					}
-					elseif ($this->visitor == 2)
+					$result['emailformat'] = $format;
+				}
+
+				$com_options = $I->getManifestOptions('com_bwpostman');
+
+				if ($com_options->show_gender && $this->check_gender)
+				{
+					$gender = 0;
+					if ($this->gender_selected == "female")
 					{
-						$I->see(RegPage::$subs_value2_name, $name_identifier);
+						$gender = 1;
+					}
+
+					$result['gender'] = $gender;
+				}
+
+				if ($com_options->show_name_field || $com_options->name_field_obligation)
+				{
+					$result['name'] = RegPage::$subs_value_name;
+
+					if ($this->visitor == 2)
+					{
+						$result['name'] = RegPage::$subs_value2_name;
 					}
 				}
-			}
 
-			if ($com_options->show_firstname_field || $com_options->firstname_field_obligation)
-			{
-				if ($this->firstname_obligation)
+				if ($com_options->show_firstname_field || $com_options->firstname_field_obligation)
 				{
-					$I->see(RegPage::$subs_value_firstname, $firstname_identifier);
-				}
-				else
-				{
-					if ($this->visitor == 1)
+					$result['firstname'] = RegPage::$subs_value_firstname;
+
+					if ($this->visitor == 2)
 					{
-						$I->see('', $firstname_identifier);
+						$result['firstname'] = RegPage::$subs_value2_firstname;
 					}
-					elseif ($this->visitor == 2)
+				}
+
+				if ($com_options->show_special || $com_options->special_field_obligation)
+				{
+					if ($this->special_obligation)
 					{
-						$I->see(RegPage::$subs_value2_firstname, $firstname_identifier);
+						$result['special'] = RegPage::$subs_value_special;
+					}
+					else
+					{
+						$result['special'] = '';
 					}
 				}
 			}
-
-			// look in details for selected mailinglists
-			$I->clickAndWait($edit_identifier, 1);
-
-			if ($com_options->show_special || $com_options->special_field_obligation)
-			{
-				if ($this->special_obligation)
-				{
-					$I->seeInField(RegPage::$subslist_identifier_special, RegPage::$subs_value_special);
-				}
-				else
-				{
-					$I->seeInField('', RegPage::$subs_value_special);
-				}
-			}
-
-			$I->scrollTo(RegPage::$mailinglist_fieldset_identifier, 0, -100);
-			$I->wait(1);
-
-			foreach ($this->mls_to_subscribe as $ml)
-			{
-				$I->seeCheckboxIsChecked($ml);
-			}
-			$I->clickAndWait(RegPage::$subscriber_details_close, 1);
+			$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $result);
 		}
 		else
 		{
-			$I->dontSee(RegPage::$login_value_name, $name_identifier);
+			$I->dontSeeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', array('email' => RegPage::$login_value_email));
 		}
 	}
 
 	/**
 	 * @param AcceptanceTester $I
+	 * @param array $mls_to_subscribe
 	 *
 	 * @since 2.0.0
 	 */
-	protected function gotoSubscribersListTab(AcceptanceTester $I)
+	protected function checkSelectedMailinglists($I, $mls_to_subscribe)
 	{
-		if ($this->activated)
+		$subs__id   = $I->grabFromDatabase(Generals::$db_prefix . 'bwpostman_subscribers', 'id', array('email' => RegPage::$login_value_email));
+		foreach ($mls_to_subscribe as $mls)
 		{
-			$tab = RegPage::$tab_confirmed;
+			$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers_mailinglists', array('subscriber_id' => $subs__id, 'mailinglist_id' => $mls));
 		}
-		else
-		{
-			$tab = RegPage::$tab_unconfirmed;
-		}
-
-		$I->amOnPage(RegPage::$subscribers_url);
-		$I->see('Subscribers', Generals::$pageTitle);
-		$I->clickAndWait($tab, 1);
 	}
 
 	/**
@@ -1555,30 +1516,59 @@ class User2SubscriberCest
 	{
 		if ($this->name_obligation)
 		{
-			$search_value     = RegPage::$subs_value_name;
+			$search_value   = RegPage::$subs_value_name;
+			$search_field   = 'Name';
 
 			if ($this->visitor == 2)
 			{
 				$search_value   = RegPage::$subs_value2_name;
 			}
 
-			$search_for_value = sprintf(RegPage::$search_for_value, 'Name');
 		}
 		else
 		{
 			$search_value     = RegPage::$login_value_email;
+			$search_field   = 'Email';
 
 			if ($this->visitor == 2)
 			{
 				$search_value   = RegPage::$login_value2_email;
 			}
-
-			$search_for_value = sprintf(RegPage::$search_for_value, 'Email');
 		}
-		$I->fillField(Generals::$search_field, $search_value);
-		$I->clickAndWait(RegPage::$search_tool_button, 1);
-		$I->clickSelectList(RegPage::$search_for_list, $search_for_value, RegPage::$search_for_list_id);
-		$I->clickAndWait(Generals::$search_button, 1);
+
+		$search_for_value = sprintf(SubsManagePage::$search_for_value, $search_field);
+		SubsManagePage::filterForSubscriber($I, $search_value, $search_for_value);
+	}
+
+	/**
+	 * Method to delete Joomla user account
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function deleteJoomlaUserByDb(AcceptanceTester $I)
+	{
+
+		$user_id = $I->grabFromDatabase(Generals::$db_prefix . 'users', 'id', array('email' => $this->current_mail_address));
+		$subs_id = $I->grabFromDatabase(Generals::$db_prefix . 'bwpostman_subscribers', 'id', array('email' => $this->current_mail_address));
+
+		if ($user_id)
+		{
+			$where_user      = ' WHERE `id` = ' . $user_id;
+			$where_usergroup = ' WHERE `user_id` = ' . $user_id;
+			$I->deleteRecordFromDatabase('users', $where_user);
+			$I->deleteRecordFromDatabase('user_usergroup_map', $where_usergroup);
+		}
+
+		if ($subs_id && $this->auto_delete)
+		{
+			$where_subscriber     = ' WHERE `id` = ' . $subs_id;
+			$where_subscriber_map = ' WHERE `subscriber_id` = ' . $subs_id;
+
+			$I->deleteRecordFromDatabase('bwpostman_subscribers', $where_subscriber);
+			$I->deleteRecordFromDatabase('bwpostman_subscribers_mailinglists', $where_subscriber_map);
+		}
 	}
 
 	/**
@@ -1618,7 +1608,7 @@ class User2SubscriberCest
 	protected function gotoUserManagement(AcceptanceTester $I)
 	{
 		$I->amOnPage(RegPage::$user_management_url);
-		$I->wait(1);
+		$I->waitForElementVisible(Generals::$pageTitle);
 		$I->see('Users', Generals::$pageTitle);
 	}
 
@@ -1665,15 +1655,9 @@ class User2SubscriberCest
 	 */
 	protected function checkForSubscriptionDeletion(AcceptanceTester $I)
 	{
-		// look in subscribers list for name
-		$this->gotoSubscribersListTab($I);
-		$this->filterForSubscriber($I);
-
-		$identifier = $this->getTabDependentIdentifier(RegPage::$subscriber_filter_col_identifier);
-
 		if ($this->auto_delete)
 		{
-			$I->dontSee(RegPage::$login_value_name, $identifier);
+			$I->dontSeeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', array('email' => $this->current_mail_address));
 		}
 	}
 
@@ -1697,18 +1681,20 @@ class User2SubscriberCest
 			if ($user_found)
 			{
 				$this->changeMailAddressOfAccount($I);
+				$this->current_mail_address  = $this->subscriber_mail_new;
 
 				$this->checkMailChangeOfSubscription($I);
 
 				// delete user
 				$this->gotoUserManagement($I);
-				$this->deleteJoomlaUser($I);
+				$this->deleteJoomlaUserByDb($I);
 				$this->checkForSubscriptionDeletion($I);
 			}
 
 			LoginPage::logoutFromBackend($I);
 		}
 		);
+		$admin->leave();
 	}
 
 	/**
@@ -1734,40 +1720,31 @@ class User2SubscriberCest
 	 */
 	protected function checkMailChangeOfSubscription(AcceptanceTester $I)
 	{
-		$this->gotoSubscribersListTab($I);
-		$this->filterForSubscriber($I);
+		$search_values  = array();
 
-		$com_options = $I->getManifestOptions('com_bwpostman');
-		$email_identifier   = RegPage::$subscriber_email_col_identifier;
-		if (!$com_options->show_gender)
-		{
-			$email_identifier   = RegPage::$subscriber_email_col_ident_no_gender;
-			$this->check_gender = false;
-		}
-		$identifier = $this->getTabDependentIdentifier($email_identifier);
+		$search_values['name']      = RegPage::$subs_value_name;
+		$search_values['status']    = $this->activated;
+		$search_values['email']     = $this->current_mail_address;
 
 		if ($this->auto_update)
 		{
-			$I->see($this->subscriber_mail_new, $identifier);
-			$I->dontSee($this->subscriber_mail_old, $identifier);
+			$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $search_values);
 		}
 		else
 		{
-			$I->see($this->subscriber_mail_old, $identifier);
-			$I->dontSee($this->subscriber_mail_new, $identifier);
+			$I->dontSeeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $search_values);
 		}
 	}
 	/**
 	 * Test method to activate Joomla registration by user himself
 	 *
 	 * @param \AcceptanceTester $I
-	 * @param string            $mailaddress
 	 *
 	 * @since   2.0.0
 	 */
-	private function _activate(\AcceptanceTester $I, $mailaddress)
+	private function _activate(\AcceptanceTester $I)
 	{
-		$activation_code = $I->getJoomlaActivationCode($mailaddress);
+		$activation_code = $I->getJoomlaActivationCode($this->current_mail_address);
 		$I->amOnPage(RegPage::$user_activation_url . $activation_code);
 		$this->activated    = true;
 	}
@@ -1801,7 +1778,7 @@ class User2SubscriberCest
 
 				// delete user
 				$this->gotoUserManagement($I);
-				$this->deleteJoomlaUser($I);
+				$this->deleteJoomlaUserByDb($I);
 				$this->checkForSubscriptionDeletion($I);
 			}
 
@@ -1814,7 +1791,7 @@ class User2SubscriberCest
 	}
 
 	/**
-	 * Test method to activate Joomla registration by backend
+	 * Test method to deselect newly optioned mailinglist at subscription
 	 *
 	 * @param \AcceptanceTester $I
 	 *
@@ -1822,13 +1799,12 @@ class User2SubscriberCest
 	 */
 	private function _deselectNewMailinglist(\AcceptanceTester $I)
 	{
-		// @ToDo: Complete this method
 		$admin = $I->haveFriend('Admin8');
 		$admin->does(function (AcceptanceTester $I)
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
 
-			$this->gotoSubscribersListTab($I);
+			SubsManagePage::gotoSubscribersListTab($I, $this->activated);
 			$this->filterForSubscriber($I);
 
 			// look in details for selected mailinglists
@@ -1836,7 +1812,6 @@ class User2SubscriberCest
 			$I->clickAndWait($edit_identifier, 1);
 
 			$I->scrollTo(RegPage::$mailinglist_fieldset_identifier, 0, -100);
-			$I->wait(1);
 
 			foreach ($this->mls_to_subscribe as $ml)
 			{
@@ -1879,71 +1854,14 @@ class User2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function selectPluginPage(AcceptanceTester $I)
-	{
-		$I->amOnPage(RegPage::$plugin_page);
-		$I->wait(1);
-		$I->see(RegPage::$view_plugin, Generals::$pageTitle);
-	}
-
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @since 2.0.0
-	 */
-	protected function filterForPlugin(AcceptanceTester $I)
-	{
-		$I->fillField(Generals::$search_field, RegPage::$plugin_name);
-		$I->clickAndWait(RegPage::$search_tool_button, 1);
-//		$I->clickSelectList(RegPage::$search_for_list, RegPage::$search_for_value, RegPage::$search_for_list_id);
-		$I->clickAndWait(Generals::$search_button, 1);
-	}
-
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @since 2.0.0
-	 */
-	protected function disablePlugin(AcceptanceTester $I)
-	{
-		$published_icon_class = $I->grabAttributeFrom(RegPage::$icon_published_identifier, 'class');
-
-		if ($published_icon_class == 'icon-publish')
-		{
-			$I->clickAndWait(RegPage::$icon_published_identifier, 2);
-			$I->see(RegPage::$plugin_disabled_success, Generals::$alert_success);
-		}
-	}
-
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @since 2.0.0
-	 */
-	protected function enablePlugin(AcceptanceTester $I)
-	{
-		$published_icon_class = $I->grabAttributeFrom(RegPage::$icon_published_identifier, 'class');
-
-		if ($published_icon_class == 'icon-unpublish')
-		{
-			$I->clickAndWait(RegPage::$icon_published_identifier, 2);
-			$I->see(RegPage::$plugin_enabled_success, Generals::$alert_success);
-		}
-	}
-
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @since 2.0.0
-	 */
 	protected function editPluginOptions(AcceptanceTester $I)
 	{
 		$this->tester = $I;
 		LoginPage::logIntoBackend(Generals::$admin);
 
-		$this->selectPluginPage($I);
+		RegPage::selectPluginPage($I);
 
-		$this->filterForPlugin($I);
+		RegPage::filterForPlugin($I, RegPage::$plugin_name);
 
 		$I->clickAndWait(RegPage::$plugin_edit_identifier, 1);
 	}
@@ -1971,7 +1889,7 @@ class User2SubscriberCest
 	protected function selectComponentPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(Generals::$url);
-		$I->wait(1);
+		$I->waitForElementVisible(Generals::$pageTitle);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
@@ -1988,6 +1906,20 @@ class User2SubscriberCest
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{
 		$loginPage->logoutFromBackend($I);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since version
+	 */
+	private function _dontSeePluginInputFields(AcceptanceTester $I)
+	{
+		$I->dontSee(RegPage::$subs_identifier_subscribe_yes);
+		$I->dontSee(RegPage::$subs_identifier_subscribe_no);
+		$I->dontSee(RegPage::$subs_identifier_format_html);
+		$I->dontSee(RegPage::$subs_identifier_format_text);
 	}
 }
 

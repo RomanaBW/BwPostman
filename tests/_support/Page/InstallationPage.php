@@ -51,6 +51,8 @@ class InstallationPage
 
 	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
 
+	public static $search_no_match      = "There are no extensions installed matching your query.";
+
 	public static $installSuccessMsg    = "Installation of the package was successful.";
 	public static $uninstallSuccessMsg  = "Thank you for using BwPostman. BwPostman is now removed from your system.";
 
@@ -67,5 +69,35 @@ class InstallationPage
 	public static $pluginEnableSuccessMsg = "Plugin successfully enabled.";
 
 	public static $icon_published       = ".//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'icon-publish')]";
+
+	/**
+	 * Test method to install BwPostman
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function installation(\AcceptanceTester $I)
+	{
+		$I->wantTo("Install BwPostman");
+		$I->expectTo("see success message and component in menu");
+		$I->amOnPage(self::$install_url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(self::$headingInstall);
+
+		$I->attachFile(self::$installField, self::$installFileComponent);
+		$I->click(self::$installButton);
+		$I->waitForElement(Generals::$sys_message_container, 120);
+
+		$I->waitForElement(Generals::$alert_success, 30);
+		$I->see(self::$installSuccessMsg, Generals::$alert_success);
+		$I->dontSee("Error", Generals::$alert_heading);
+	}
 
 }

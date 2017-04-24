@@ -56,19 +56,7 @@ class TestInstallationCest
 	 */
 	public function installation(AcceptanceTester $I)
 	{
-		$I->wantTo("Install BwPostman");
-		$I->expectTo("see success message and component in menu");
-		$I->amOnPage(InstallPage::$install_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(InstallPage::$headingInstall);
-
-		$I->attachFile(InstallPage::$installField, InstallPage::$installFileComponent);
-		$I->click(InstallPage::$installButton);
-		$I->waitForElement(Generals::$sys_message_container, 120);
-
-		$I->waitForElement(Generals::$alert_success, 30);
-		$I->see(InstallPage::$installSuccessMsg, Generals::$alert_success);
-		$I->dontSee("Error", Generals::$alert_heading);
+		InstallPage::installation($I);
 	}
 
 	/**

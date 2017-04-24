@@ -27,12 +27,6 @@ echo 'start recording'
 tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size ${screen_size} -i ${display}.0 -vcodec libx264 -r 12 /tests/tests/_output/videos/bwpostman_com_${TEST_CAT}.mp4 2>/tests/tests/_output/videos/ffmpeg.log"
 
 
-## start x-server and webdriver for firefox
-## But firefox does not work error free in container, webdriver may be erroneous
-
-#java -jar -Dwebdriver.gecko.driver=/opt/geckodriver/geckodriver-0.11.1 /opt/selenium/selenium-server-standalone-3.0.1.jar -port 4444 >/dev/null 2>/dev/null &
-
-
 # Installation
 codecept run acceptance Backend/TestInstallationCest::installation ${DEBUG} --xml xmlreports/report_installation_installation.xml --html htmlreports/report_installation_installation.html
 codecept run acceptance Backend/TestOptionsCest::saveDefaults ${DEBUG} --xml xmlreports/report_option_save_defaults.xml --html htmlreports/report_option_save_defaults.html
@@ -347,38 +341,38 @@ fi
 if [ ${TEST_CAT} == user2subscriber_all ]
 then
 # all tests for plugin user2subscriber
-#codecept run acceptance Backend/TestInstallationCest::activateUser2Subscriber ${DEBUG} --xml xmlreports/report_installation_activate_u2s.xml --html htmlreports/report_installation_activate_u2s.html
+#codecept run acceptance Backend/TestInstallationCest::setupUser2Subscriber ${DEBUG} --xml xmlreports/report_installation_activate_u2s.xml --html htmlreports/report_installation_activate_u2s.html
 codecept run acceptance User2Subscriber/User2SubscriberCest ${DEBUG} --xml xmlreports/report_user2Subscriber.xml --html htmlreports/report_user2Subscriber.html
 fi
 
 if [ ${TEST_CAT} == user2subscriber_single ]
 then
 # single tests for plugin user2subscriber
-codecept run acceptance User2Subscriber/User2SubscriberCest::activateUser2Subscriber ${DEBUG} --xml xmlreports/report_user2Subscriber_activate.xml --html htmlreports/report_user2Subscriber_activate.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::setupUser2Subscriber ${DEBUG} --xml xmlreports/report_user2Subscriber_activate.xml --html htmlreports/report_user2Subscriber_activate.html
 
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutSubscription ${DEBUG} --xml xmlreports/report_u2s_no_subscription.xml --html htmlreports/report_u2s_subscription.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationExtended ${DEBUG} --xml xmlreports/report_u2s_no_activation_ext.xml --html htmlreports/report_u2s_no_activation_ext.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutSubscription ${DEBUG} --xml xmlreports/report_u2s_no_subscription.xml --html htmlreports/report_u2s_subscription.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationExtended ${DEBUG} --xml xmlreports/report_u2s_no_activation_ext.xml --html htmlreports/report_u2s_no_activation_ext.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithActivationByFrontend ${DEBUG} --xml xmlreports/report_u2s_activation_FE.xml --html htmlreports/report_u2s_activation_FE.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithExistingSubscriptionSameList ${DEBUG} --xml xmlreports/report_u2s_subs_same_list.xml --html htmlreports/report_u2s_subs_same_list.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithExistingSubscriptionDifferentList ${DEBUG} --xml xmlreports/report_u2s_subs_diff_list.xml --html htmlreports/report_u2s_subs_diff_list.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithActivationByBackend ${DEBUG} --xml xmlreports/report_u2s_activation_BE.xml --html htmlreports/report_u2s_activation_BE.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithTextFormat ${DEBUG} --xml xmlreports/report_u2s_text_format.xml --html htmlreports/report_u2s_text_format.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutFormatSelectionHTML ${DEBUG} --xml xmlreports/report_u2s_no_format_select_html.xml --html htmlreports/report_u2s_no_format_select_html.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutFormatSelectionText ${DEBUG} --xml xmlreports/report_u2s_no_format_select_text.xml --html htmlreports/report_u2s_no_format_select_text.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithAnotherMailinglist ${DEBUG} --xml xmlreports/report_u2s_another_mailinglist.xml --html htmlreports/report_u2s_another_mailinglist.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithTwoMailinglists ${DEBUG} --xml xmlreports/report_u2s_two_mailinglists.xml --html htmlreports/report_u2s_two_mailinglists.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutMailinglists ${DEBUG} --xml xmlreports/report_u2s_no_mailinglists.xml --html htmlreports/report_u2s_no_mailinglists.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeYes ${DEBUG} --xml xmlreports/report_u2s_with_mail_change.xml --html htmlreports/report_u2s_with_mail_change.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationWithMailChangeYes ${DEBUG} --xml xmlreports/report_u2s_.xml --html htmlreports/report_u2s_.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeNo ${DEBUG} --xml xmlreports/report_u2s_no_activation_mail_change.xml --html htmlreports/report_u2s_no_activation_mail_change.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithDeleteNo ${DEBUG} --xml xmlreports/report_u2s_delete_no.xml --html htmlreports/report_u2s_delete_no.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsPluginDeactivated ${DEBUG} --xml xmlreports/report_u2s_plugin_deactivated.xml --html htmlreports/report_u2s_plugin_deactivated.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMessage ${DEBUG} --xml xmlreports/report_u2s_options_message.xml --html htmlreports/report_u2s_options_message.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsSwitchShowFormat ${DEBUG} --xml xmlreports/report_u2s_switch_show_format.xml --html htmlreports/report_u2s_switch_show_format.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberPredefinedFormat ${DEBUG} --xml xmlreports/report_u2s_predefined_format.xml --html htmlreports/report_u2s_predefined_format.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoUpdate ${DEBUG} --xml xmlreports/report_u2s_auto_update.xml --html htmlreports/report_u2s_auto_update.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoDelete ${DEBUG} --xml xmlreports/report_u2s_auto_delete.xml --html htmlreports/report_u2s_auto_delete.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMailinglists ${DEBUG} --xml xmlreports/report_u2s_options_mailinglists.xml --html htmlreports/report_u2s_options_mailinglists.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithExistingSubscriptionSameList ${DEBUG} --xml xmlreports/report_u2s_subs_same_list.xml --html htmlreports/report_u2s_subs_same_list.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithExistingSubscriptionDifferentList ${DEBUG} --xml xmlreports/report_u2s_subs_diff_list.xml --html htmlreports/report_u2s_subs_diff_list.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithActivationByBackend ${DEBUG} --xml xmlreports/report_u2s_activation_BE.xml --html htmlreports/report_u2s_activation_BE.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithTextFormat ${DEBUG} --xml xmlreports/report_u2s_text_format.xml --html htmlreports/report_u2s_text_format.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutFormatSelectionHTML ${DEBUG} --xml xmlreports/report_u2s_no_format_select_html.xml --html htmlreports/report_u2s_no_format_select_html.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutFormatSelectionText ${DEBUG} --xml xmlreports/report_u2s_no_format_select_text.xml --html htmlreports/report_u2s_no_format_select_text.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithAnotherMailinglist ${DEBUG} --xml xmlreports/report_u2s_another_mailinglist.xml --html htmlreports/report_u2s_another_mailinglist.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithTwoMailinglists ${DEBUG} --xml xmlreports/report_u2s_two_mailinglists.xml --html htmlreports/report_u2s_two_mailinglists.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutMailinglists ${DEBUG} --xml xmlreports/report_u2s_no_mailinglists.xml --html htmlreports/report_u2s_no_mailinglists.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeYes ${DEBUG} --xml xmlreports/report_u2s_with_mail_change.xml --html htmlreports/report_u2s_with_mail_change.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationWithMailChangeYes ${DEBUG} --xml xmlreports/report_u2s_.xml --html htmlreports/report_u2s_.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeNo ${DEBUG} --xml xmlreports/report_u2s_no_activation_mail_change.xml --html htmlreports/report_u2s_no_activation_mail_change.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithDeleteNo ${DEBUG} --xml xmlreports/report_u2s_delete_no.xml --html htmlreports/report_u2s_delete_no.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsPluginDeactivated ${DEBUG} --xml xmlreports/report_u2s_plugin_deactivated.xml --html htmlreports/report_u2s_plugin_deactivated.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMessage ${DEBUG} --xml xmlreports/report_u2s_options_message.xml --html htmlreports/report_u2s_options_message.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsSwitchShowFormat ${DEBUG} --xml xmlreports/report_u2s_switch_show_format.xml --html htmlreports/report_u2s_switch_show_format.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberPredefinedFormat ${DEBUG} --xml xmlreports/report_u2s_predefined_format.xml --html htmlreports/report_u2s_predefined_format.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoUpdate ${DEBUG} --xml xmlreports/report_u2s_auto_update.xml --html htmlreports/report_u2s_auto_update.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoDelete ${DEBUG} --xml xmlreports/report_u2s_auto_delete.xml --html htmlreports/report_u2s_auto_delete.html
+#codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMailinglists ${DEBUG} --xml xmlreports/report_u2s_options_mailinglists.xml --html htmlreports/report_u2s_options_mailinglists.html
 fi
 
 if [ ${TEST_CAT} == all ]

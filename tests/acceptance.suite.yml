@@ -51,6 +51,17 @@ env:
           user: 'root'
           password: 'Susi'
 
+# This configuration is for joomla containers also containing installed BwPostman
+  bwpm:
+    modules:
+      config:
+        WebDriver:
+          url: http://172.18.0.20
+
+        Db:
+          dsn: 'mysql:host=172.18.0.19;dbname=joomlatest'
+          user: 'testerbwpm'
+
 # This configuration is for joomla containers also containing virtuemart(plugin BwPostman_Buyer2Subscriber)
   shop:
     modules:
@@ -60,6 +71,7 @@ env:
 
         Db:
           dsn: 'mysql:host=172.18.0.11;dbname=joomlatest'
+          user: 'testervm'
 
 # This configuration is for testing in a virtual machine
   vm:

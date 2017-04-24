@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+    tester-bwpm:
+        container_name: "bwpm-tester"
+        image: romana/os-chromium-tester_227_5719
+        hostname: tester-bwpm
+        domainname: tester-net-bwpm.nil
+        volumes:
+            - "/vms/dockers/containers/testers/os-data:/data"
+            - "/vhosts/dev/joomla-cms:/tests"
+        environment:
+            - TEST_CAT=${TEST_CAT}
+            - TEST_PROJECT=${TEST_PROJECT}
+            - TEST_ENV=${TEST_ENV}
+            - DEBUG=${DEBUG}
+        entrypoint: /data/bwpm_tester_start.sh
+        working_dir: /tests
+        networks:
+            tester-net-bwpm.nil:
+                ipv4_address: 172.18.0.22
+
+networks:
+    tester-net-bwpm.nil:
+        external:
+            name: ${PROJECT_BWPM_FUNCTESTS}_tester-net-bwpm.nil

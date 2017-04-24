@@ -1,6 +1,8 @@
 <?php
 namespace Page;
 
+use Page\MainviewPage as MainView;
+
 /**
  * Class MaintenancePage
  *
@@ -991,4 +993,34 @@ class OptionsPage
 	 * Messages
 	 */
 	public static $optionsSuccessMsg    = "Configuration successfully saved.";
+
+	/**
+	 * Test method to save defaults once of BwPostman
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public static function saveDefaults(\AcceptanceTester $I)
+	{
+		$I->wantTo("Save Default Options BwPostman");
+		$I->expectTo("see success message and component in menu");
+		$I->amOnPage(MainView::$url);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+
+		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+
+		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_success);
+	}
+
 }

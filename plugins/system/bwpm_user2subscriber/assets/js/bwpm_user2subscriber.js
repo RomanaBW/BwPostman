@@ -5,7 +5,7 @@
  *
  * BwPostman User2Subscriber Plugin javascript file for BwPostman.
  *
- * @version 2.0.0 bwpmpus
+ * @version 2.0.0 bwpmpu2s
  * @package			BwPostman User2Subscriber Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>
@@ -27,6 +27,86 @@
 
 jQuery(document).ready(function()
 {
+	var toggle_fields   = '.bwpm-u2s-fields-toggle';
+
+	// Hide plugin fields while subscription is not selected
+	jQuery(toggle_fields).parent().parent().hide();
+
+	(function( jQuery )
+	{
+		jQuery.fn.toggleRequired = function(field_identifier, status)
+		{
+			var label = jQuery(field_identifier + '-lbl');
+			var label_span = jQuery(label).parent().find('span');
+
+			if (status === 1)
+			{
+				jQuery(field_identifier).attr('required', 'required');
+				jQuery(field_identifier).addClass('required');
+				jQuery(label_span).appendTo(label);
+				jQuery(label_span).addClass('star');
+				jQuery(label_span).removeClass('optional');
+				jQuery(label_span).html(' *');
+			}
+			if (status === 0)
+			{
+				jQuery(field_identifier).removeAttr('required');
+				jQuery(field_identifier).removeClass('required');
+				jQuery(label_span).appendTo(label.parent());
+				jQuery(label_span).addClass('optional');
+				jQuery(label_span).removeClass('star');
+				jQuery(label_span).html('(optional)');
+			}
+		}
+	})( jQuery );
+
+	// switch fields on (subscription yes) and off (subscription no)
+	jQuery('#jform_bwpm_user2subscriber_bwpm_user2subscriber1').click(function () {
+
+		var field_required    = [
+			'#jform_bwpm_user2subscriber_name_required',
+			'#jform_bwpm_user2subscriber_firstname_required',
+			'#jform_bwpm_user2subscriber_additional_required'
+		];
+		var field_identifier    = [
+			'#jform_bwpm_user2subscriber_name',
+			'#jform_bwpm_user2subscriber_firstname',
+			'#jform_bwpm_user2subscriber_special'
+		];
+		var len = field_required.length;
+
+		jQuery('.bwpm-u2s-fields-toggle').parent().parent().show();
+
+		for(i = 0; i < len; i++) {
+			if (jQuery(field_required[i]).val() === '1') {
+				jQuery().toggleRequired(field_identifier[i], 1);
+			}
+		}
+	});
+
+	jQuery('#jform_bwpm_user2subscriber_bwpm_user2subscriber0').click(function()
+	{
+		var field_required    = [
+			'#jform_bwpm_user2subscriber_name_required',
+			'#jform_bwpm_user2subscriber_firstname_required',
+			'#jform_bwpm_user2subscriber_additional_required'
+		];
+		var field_identifier    = [
+			'#jform_bwpm_user2subscriber_name',
+			'#jform_bwpm_user2subscriber_firstname',
+			'#jform_bwpm_user2subscriber_special'
+		];
+		var len = field_required.length;
+
+		jQuery('.bwpm-u2s-fields-toggle').parent().parent().hide();
+
+		for(i = 0; i < len; i++) {
+			if (jQuery(field_required[i]).val() === '1') {
+				jQuery().toggleRequired(field_identifier[i], 0);
+			}
+		}
+	});
+
 	// Turn radios into btn-group
 	jQuery('.radio.btn-group label').addClass('btn');
 	jQuery('.btn-group label:not(.active)').click(function()
@@ -38,11 +118,11 @@ jQuery(document).ready(function()
 		{
 			label.closest('.btn-group').find('label').removeClass('active btn-success btn-danger btn-primary');
 
-			if (input.val() == '')
+			if (input.val() === '')
 			{
 				label.addClass('active btn-primary');
 			}
-			else if (input.val() == 0)
+			else if (input.val() === 0)
 			{
 				label.addClass('active btn-danger');
 			}
@@ -56,11 +136,11 @@ jQuery(document).ready(function()
 
 	jQuery('.btn-group input[checked=checked]').each(function()
 	{
-		if (jQuery(this).val() == '')
+		if (jQuery(this).val() === '')
 		{
 			jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-primary');
 		}
-		else if (jQuery(this).val() == 0)
+		else if (jQuery(this).val() === 0)
 		{
 			jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-danger');
 		}
@@ -69,4 +149,4 @@ jQuery(document).ready(function()
 			jQuery('label[for=' + jQuery(this).attr('id') + ']').addClass('active btn-success');
 		}
 	});
-})
+});

@@ -6,7 +6,7 @@
  *
  * BwPostman User2Subscriber Plugin main file for BwPostman.
  *
- * @version 2.0.0 bwpmpus
+ * @version 2.0.0 bwpmpu2s
  * @package			BwPostman User2Subscriber Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>
@@ -369,7 +369,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($com_params->get('name_field_obligation'))
 		{
 			$com_params->set('show_name_field', '1');
-			$this->form->setFieldAttribute('name', 'required', 'required', 'bwpm_user2subscriber');
+			$this->form->setValue('name_required', 'bwpm_user2subscriber', 1);
 		}
 
 		if (!$com_params->get('show_name_field'))
@@ -390,7 +390,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($com_params->get('firstname_field_obligation'))
 		{
 			$com_params->set('show_firstname_field', '1');
-			$this->form->setFieldAttribute('firstname', 'required', 'required', 'bwpm_user2subscriber');
+			$this->form->setValue('firstname_required', 'bwpm_user2subscriber', 1);
 		}
 
 		if (!$com_params->get('show_firstname_field'))
@@ -411,7 +411,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($com_params->get('special_field_obligation'))
 		{
 			$com_params->set('show_special', '1');
-			$this->form->setFieldAttribute('special', 'required', 'required', 'bwpm_user2subscriber');
+			$this->form->setValue('additional', 'bwpm_user2subscriber', 1);
 		}
 
 		if (!$com_params->get('show_special'))

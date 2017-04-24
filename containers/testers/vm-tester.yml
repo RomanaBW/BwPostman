@@ -2,7 +2,7 @@ version: '3'
 
 services:
     tester-vm:
-        container_name: "tester-vm"
+        container_name: "vm-tester"
         image: romana/os-chromium-tester_227_5719
         hostname: tester-vm
         domainname: tester-net-vm.nil
@@ -20,4 +20,4 @@ services:
 networks:
     tester-net-vm.nil:
         external:
-            name: ${PROJECT_JTESTS}_tester-net-net.nil
+            name: ${PROJECT_BWPM_VMTESTS}_tester-net-vm.nil

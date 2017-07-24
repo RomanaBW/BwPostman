@@ -32,6 +32,13 @@ jQuery(document).ready(function()
 	// Hide plugin fields while subscription is not selected
 	jQuery(toggle_fields).parent().parent().hide();
 
+	var show_format = jQuery('#jform_bwpm_user2subscriber_emailformat_show').val();
+
+	if (show_format === '0')
+	{
+		jQuery('#jform_bwpm_user2subscriber_emailformat0').parent().parent().parent().hide();
+	}
+
 	(function( jQuery )
 	{
 		jQuery.fn.toggleRequired = function(field_identifier, status)
@@ -76,6 +83,13 @@ jQuery(document).ready(function()
 		var len = field_required.length;
 
 		jQuery('.bwpm-u2s-fields-toggle').parent().parent().show();
+
+		var show_format = jQuery('#jform_bwpm_user2subscriber_emailformat_show').val();
+
+		if (show_format === '0')
+		{
+			jQuery('#jform_bwpm_user2subscriber_emailformat0').parent().parent().parent().hide();
+		}
 
 		for(i = 0; i < len; i++) {
 			if (jQuery(field_required[i]).val() === '1') {

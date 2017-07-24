@@ -264,15 +264,31 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$mailinglists   = $this->params->get('ml_available', array());
 
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry(sprintf('Count mailinglists is: %s', count($mailinglists)), JLog::DEBUG, $this->log_cat));
+		}
+
 		if (!count($mailinglists))
 		{
 			return true;
 		}
 
-		$data_helper = (array)$data;
+		$data_helper = $data;
+		$data_helper = (array)$data_helper;
+		if (isset($data_helper['language']))
+		{
+			unset($data_helper['language']);
+		}
+
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry(sprintf('Array is empty: %s', !empty($data_helper)), JLog::DEBUG, $this->log_cat));
+		}
 
 		if (!empty($data_helper))
 		{
+			$this->logger->addEntry(new JLogEntry('Array is not okay'), JLog::DEBUG, $this->log_cat);
 			return true;
 		}
 
@@ -290,8 +306,9 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			return false;
 		}
+		$this->logger->addEntry(new JLogEntry('Form is instance'), JLog::DEBUG, $this->log_cat);
 
-		// Add CSS for the radio fields
+		// Add CSS and JS for the radio fields
 		$doc = JFactory::getDocument();
 
 		$css_file   = JUri::base( true ) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
@@ -302,6 +319,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$js_file= JUri::base( true ) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
 
 		$doc->addScript($js_file);
+		$this->logger->addEntry(new JLogEntry('Script and CSS added'), JLog::DEBUG, $this->log_cat);
 
 		$this->processGenderField();
 		$this->processLastnameField();
@@ -411,7 +429,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($com_params->get('special_field_obligation'))
 		{
 			$com_params->set('show_special', '1');
-			$this->form->setValue('additional', 'bwpm_user2subscriber', 1);
+			$this->form->setValue('additional_required', 'bwpm_user2subscriber', 1);
 		}
 
 		if (!$com_params->get('show_special'))
@@ -444,15 +462,15 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
+		$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
+
 		if ($com_params->get('show_emailformat'))
 		{
 			$this->form->setFieldAttribute('emailformat', 'required', 'true', 'bwpm_user2subscriber');
-			$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
 		}
 		else
 		{
-			$this->form->setFieldAttribute('emailformat', 'type', 'hidden', 'bwpm_user2subscriber');
-			$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), 'bwpm_user2subscriber');
+			$this->form->setFieldAttribute('emailformat_show', 'default', $com_params->get('show_emailformat'), 'bwpm_user2subscriber');
 		}
 	}
 
@@ -639,6 +657,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 					$update_userid_result = BWPM_User2SubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
 				}
 
+				$update_subscriberdata_result = BWPM_User2SubscriberHelper::updateSubscriberData($subscriber_id, $subscriber_data);
+
 				$new_mailinglists       = json_decode($subscriber_data['mailinglists']);
 				$update_mailinglists    = BWPM_User2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
 
@@ -735,6 +755,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		$activation_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+		$subscriber_id  = BWPM_User2SubscriberHelper::getSubscriberIdByEmail($user_mail);
 
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
@@ -758,7 +779,9 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$params    = JComponentHelper::getParams('com_bwpostman');
 			$send_mail = $params->get('activation_to_webmaster');
 
-			if ($send_mail && $res)
+			// @ToDo: How could I get here with no object $this->stored_subscriber_data
+//			if ($send_mail && $res))
+			if ($send_mail && $res && $subscriber_id)
 			{
 				$model  = JModelLegacy::getInstance('Register', 'BwPostmanModel');
 				$model->sendActivationNotification($this->stored_subscriber_data['id']);
@@ -1055,8 +1078,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			if ($confirm)
 			{
-				$this->processNewUser($subscription_data['email'], 0, $subscription_data);
-				$this->activateSubscription($subscription_data['email']);
+				$subscription_success   = $this->processNewUser($subscription_data['email'], 0, $subscription_data);
+
+				if ($subscription_success)
+				{
+					$this->activateSubscription($subscription_data['email']);
+				}
 			}
 		}
 	}

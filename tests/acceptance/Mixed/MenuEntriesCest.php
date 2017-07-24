@@ -249,6 +249,9 @@ class MenuEntriesCest
 
 		$I->fillField(MEManage::$menu_entry_title, $title);
 /*
+ *      // attach a name so that we can switch to the iframe later
+		$I->executeJS('jQuery(".iframe").attr("name", "blah")');
+		$I->switchToIFrame("blah");
 		// This does not work because iframe is not named and has no ID
 		$I->clickAndWait(MEManage::$menu_entry_type, 3);
 

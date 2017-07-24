@@ -93,7 +93,16 @@ class MaintenancePage
 		$I->click(MaintenancePage::$restoreTablesButton);
 		$I->waitForElement(MaintenancePage::$headingRestoreFile, 30);
 
-		$I->attachFile(".//*[@id='restorefile']", "BwPostman_2_0_0_Tables.xml");
+		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
+		if ($bwpm_version == '132')
+		{
+			$I->attachFile(".//*[@id='restorefile']", "BwPostman_1_3_2_Tables.xml");
+		}
+		else
+		{
+			$I->attachFile(".//*[@id='restorefile']", "BwPostman_2_0_0_Tables.xml");
+		}
+
 		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
 		$I->dontSeeElement(Generals::$alert_error);
 

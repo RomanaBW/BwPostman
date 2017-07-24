@@ -38,6 +38,8 @@ class User2SubscriberPage
 	public static $view_register        = ".//*[@id='member-registration']/fieldset[1]/legend";
 	public static $view_register_subs   = ".//*[@id='member-registration']/fieldset[2]/legend";
 
+	public static $button_red   = 'btn active btn-success btn-danger'; // needed for chromium
+
 	// login field identifiers
 	public static $login_identifier_name            = ".//*[@id='jform_name']";
 	public static $login_identifier_username        = ".//*[@id='jform_username']";
@@ -132,6 +134,10 @@ class User2SubscriberPage
 	public static $user_id_identifier               = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr/td[7]";
 	public static $email_identifier                 = ".//*[@id='userList']/tbody/tr[1]/td[7]";
 	public static $mail_field_identifier            = ".//*[@id='jform_email']";
+	public static $mailformat_identifier            = ".//*[@id='jform_show_emailformat-lbl']";
+	public static $mailformat_button_identifier     = ".//*[@id='jform_default_emailformat']/label[%s]";
+	public static $format_show_identifier           = ".//*[@id='jform_show_emailformat-lbl']";
+	public static $format_show_button_identifier    = ".//*[@id='jform_show_emailformat']/label[%s]";
 
 	// com_plugin related
 	public static $view_plugin                      = "Plugins";
@@ -140,6 +146,7 @@ class User2SubscriberPage
 	public static $plugin_edit_identifier           = ".//*[@id='pluginList']/tbody/tr/td[4]/a";
 
 	// plugin edit tab options
+	// @ToDo: make more flexible
 	public static $plugin_tab_options               = ".//*[@id='myTabTabs']/li[2]/a";
 	public static $plugin_message_identifier        = ".//*[@id='jform_params_register_message_option']";
 	public static $plugin_show_format_yes           = ".//*[@id='jform_params_show_format_selection_option']/label[2]";
@@ -152,9 +159,10 @@ class User2SubscriberPage
 	public static $plugin_auto_delete_no            = ".//*[@id='jform_params_register_subscribe_option']/label[1]";
 
 	public static $plugin_message_old               = 'Test text for newsletter message text';
-	public static $plugin_message_new               = 'New Newsletter message text';
+	public static $plugin_message_new               = 'New newsletter message text';
 
 	// plugin edit tab mailinglists
+	// @ToDo: make more flexible
 	public static $plugin_tab_mailinglists          = ".//*[@id='myTabTabs']/li[3]/a";
 	public static $plugin_checkbox_mailinglist      = ".//*[@id='mb%s']";
 
@@ -162,6 +170,7 @@ class User2SubscriberPage
 	public static $delete_confirm           = "Are you sure you want to delete? Confirming will permanently delete the selected item(s)!";
 	public static $delete_success           = "1 user successfully deleted.";
 	public static $register_success         = "Your account has been created and a";
+	public static $config_save_success      = "Configuration successfully saved.";
 
 	public static $plugin_disabled_success  = 'Plugin successfully disabled';
 	public static $plugin_enabled_success   = 'Plugin successfully enabled';
@@ -169,6 +178,9 @@ class User2SubscriberPage
 
 	public static $username_used            = 'The username you entered is not available. Please pick another username.';
 	public static $mailaddress_used         = 'The email address you entered is already in use or invalid. Please enter another email address.';
+
+	public static $bwpm_subs_table      = "bwpostman_subscribers";
+	public static $bwpm_subs_mls_table  = "bwpostman_subscribers_mailinglists";
 
 	/**
 	 * @param \AcceptanceTester $I
@@ -192,6 +204,23 @@ class User2SubscriberPage
 	{
 		$I->fillField(Generals::$search_field, $plugin_name);
 		$I->clickAndWait(Generals::$search_button, 1);
+	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param array $mls_to_subscribe
+	 *
+	 * @since 2.0.0
+	 */
+	public static function checkSelectedMailinglists(\AcceptanceTester $I, $mls_to_subscribe)
+	{
+		$table_subs = Generals::$db_prefix . self::$bwpm_subs_table;
+		$table_mls  = Generals::$db_prefix . self::$bwpm_subs_mls_table;
+		$subs_id   = $I->grabFromDatabase($table_subs, 'id', array('email' => self::$login_value_email));
+		foreach ($mls_to_subscribe as $mls)
+		{
+			$I->seeInDatabase($table_mls, array('subscriber_id' => $subs_id, 'mailinglist_id' => $mls));
+		}
 	}
 
 }

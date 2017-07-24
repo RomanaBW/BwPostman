@@ -24,7 +24,7 @@ services:
             - "3306:3306"
         volumes:
             - "/vms/dockers/containers/infrastructure/mysqldb/data/logs:/var/log/mysql/"
-            - "/vms/dockers/global_data/test_data/j365/tables:/var/lib/mysql"
+            - "/vms/dockers/global_data/test_data/j370_bwpm132_flex/tables:/var/lib/mysql"
         environment:
             MYSQL_ROOT_PASSWORD: barbapapa
             MYSQL_DATABASE: joomlatest
@@ -46,7 +46,9 @@ services:
 
     webserver:
         container_name: webserver
-        image: romana/apache_v2
+#        image: romana/apache_v2
+#        image: romana/apache_70_v1
+        image: romana/apache_71_v1
         hostname: webserver
         domainname: tester-net.nil
         depends_on:
@@ -62,4 +64,6 @@ services:
             - "8000:80"
         volumes:
             - "/vms/dockers/containers/infrastructure/apache/data/logs:/var/log/apache2/"
-            - "/vms/dockers/global_data/test_data/j365/files:/var/www/html"
+            - "/vms/dockers/global_data/test_data/j370_bwpm132_flex/files:/var/www/html"
+        environment:
+            JOOMLA_VERSION: 370

@@ -312,9 +312,9 @@ class Generals
 	public static $prev_page            = ".//*/a/span[contains(@class, 'icon-previous')]";
 	public static $next_page            = ".//*/a/span[contains(@class, 'icon-next')]";
 	public static $last_page            = ".//*/a/span[contains(@class, 'icon-last')]";
-	public static $page_1               = ".//*/a[text()='1']";
-	public static $page_2               = ".//*/a[text()='2']";
-	public static $page_3               = ".//*/a[text()='3']";
+	public static $page_1               = ".//*/div/ul/li/a[contains(text(), '1')]";
+	public static $page_2               = ".//*/div/ul/li/a[contains(text(), '2')]";
+	public static $page_3               = ".//*/div/ul/li/a[contains(text(), '3')]";
 
 
 	// buttons

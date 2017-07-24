@@ -1,6 +1,9 @@
 #!/bin/bash
-#DEBUG='--debug'
-DEBUG=''
+DEBUG='--debug'
+#DEBUG=''
+
+export BWPM_VERSION=132
+export JOOMLA_VERSION=370
 
 echo 'Test-Cat:' $TEST_CAT
 echo 'Video-Name: ' /tests/tests/_output/videos/bwpostman_com_${TEST_CAT}.mp4
@@ -26,9 +29,11 @@ printf '\n'
 echo 'start recording'
 tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size ${screen_size} -i ${display}.0 -vcodec libx264 -r 12 /tests/tests/_output/videos/bwpostman_com_${TEST_CAT}.mp4 2>/tests/tests/_output/videos/ffmpeg.log"
 
-
 # Installation
-codecept run acceptance Backend/TestInstallationCest::installation ${DEBUG} --xml xmlreports/report_installation_installation.xml --html htmlreports/report_installation_installation.html
+if [ ${JOOMLA_VERSION} != 370 ]
+then
+codecept run acceptance Backed/TestInstallationCest::installation ${DEBUG} --xml xmlreports/report_installation_installation.xml --html htmlreports/report_installation_installation.html
+fi
 codecept run acceptance Backend/TestOptionsCest::saveDefaults ${DEBUG} --xml xmlreports/report_option_save_defaults.xml --html htmlreports/report_option_save_defaults.html
 
 # data restore
@@ -304,14 +309,14 @@ if [ ${TEST_CAT} == frontend_single ]
 then
 # single tests for frontend
 codecept run acceptance Frontend/SubscribeComponentCest::SubscribeSimpleActivateAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_activate_and_unsubscribe.xml --html htmlreports/report_frontend_activate_and_unsubscribe.html
-codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_activate_twice_and_unscubscribe.xml --html htmlreports/report_frontend_activate_twice_and_unscubscribe.html
-codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateGetActivationAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_get_code_and_unsubscribe.xml --html htmlreports/report_frontend_get_code_and_unsubscribe.html
-codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateSubscribeGetEditlinkAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_get_editlink_and_unsubscribe.xml --html htmlreports/report_frontend_get_editlink_and_unsubscribe.html
-codecept run acceptance Frontend/SubscribeComponentCest::SubscribeMissingValuesComponent ${DEBUG} --xml xmlreports/report_frontend_missing_values.xml --html htmlreports/report_frontend_missing_values.html
-codecept run acceptance Frontend/SubscribeComponentCest::SubscribeSimpleActivateChangeAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_activate_change_and_unsubscribe.xml --html htmlreports/report_frontend_activate_change_and_unsubscribe.html
-codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateUnsubscribeAndActivate ${DEBUG} --xml xmlreports/report_frontend_activate_unsubscribe_activate.xml --html htmlreports/report_frontend_activate_unsubscribe_activate.html
-codecept run acceptance Frontend/SubscribeComponentCest::GetEditlinkWrongAddress ${DEBUG} --xml xmlreports/report_frontend_get_editlink_wrong_address.xml --html htmlreports/report_frontend_get_editlink_wrong_address.html
-codecept run acceptance Frontend/SubscribeComponentCest::WrongUnsubscribeLinks ${DEBUG} --xml xmlreports/report_frontend_wrong_unsubscribe_link.xml --html htmlreports/report_frontend_wrong_unsubscribe_link.html
+#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_activate_twice_and_unsubscribe.xml --html htmlreports/report_frontend_activate_twice_and_unscubscribe.html
+#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateGetActivationAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_get_code_and_unsubscribe.xml --html htmlreports/report_frontend_get_code_and_unsubscribe.html
+#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateSubscribeGetEditlinkAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_get_editlink_and_unsubscribe.xml --html htmlreports/report_frontend_get_editlink_and_unsubscribe.html
+#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeMissingValuesComponent ${DEBUG} --xml xmlreports/report_frontend_missing_values.xml --html htmlreports/report_frontend_missing_values.html
+#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeSimpleActivateChangeAndUnsubscribe ${DEBUG} --xml xmlreports/report_frontend_activate_change_and_unsubscribe.xml --html htmlreports/report_frontend_activate_change_and_unsubscribe.html
+#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateUnsubscribeAndActivate ${DEBUG} --xml xmlreports/report_frontend_activate_unsubscribe_activate.xml --html htmlreports/report_frontend_activate_unsubscribe_activate.html
+#codecept run acceptance Frontend/SubscribeComponentCest::GetEditlinkWrongAddress ${DEBUG} --xml xmlreports/report_frontend_get_editlink_wrong_address.xml --html htmlreports/report_frontend_get_editlink_wrong_address.html
+#codecept run acceptance Frontend/SubscribeComponentCest::WrongUnsubscribeLinks ${DEBUG} --xml xmlreports/report_frontend_wrong_unsubscribe_link.xml --html htmlreports/report_frontend_wrong_unsubscribe_link.html
 fi
 
 ####################
@@ -386,7 +391,7 @@ codecept run acceptance User2Subscriber ${DEBUG} --xml xmlreports/report_user2Su
 fi
 
 # Deinstallation
-codecept run acceptance Backend/TestDeinstallationCest ${DEBUG} --xml xmlreports/report_deinstallation.xml --html htmlreports/report_deinstallation.html
+#codecept run acceptance Backend/TestDeinstallationCest ${DEBUG} --xml xmlreports/report_deinstallation.xml --html htmlreports/report_deinstallation.html
 
 # stop video recording
 echo 'stop recording'

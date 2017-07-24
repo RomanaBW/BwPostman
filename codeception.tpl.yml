@@ -1,7 +1,7 @@
 actor: Tester
 paths:
     tests: tests
-    log: tests/_output/j365vm_flex
+    log: tests/_output/@BW_TEST_PROJECT@
     data: tests/_data
     support: tests/_support
 #    envs: tests/_envs

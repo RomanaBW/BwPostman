@@ -7,9 +7,8 @@
 class_name: AcceptanceTester
 
 paths:
-    log: tests/_output/j365vm_flex
+    log: tests/_output/@BW_TEST_PROJECT@
     data: tests/_data
-#    envs: tests/_envs
 
 modules:
     enabled:
@@ -21,7 +20,7 @@ modules:
 # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
     config:
       WebDriver:
-        url: http://172.18.0.4
+        url: http://@BW_TEST_URL@
 
         window_size: 1440x900
         browser: chrome
@@ -29,15 +28,16 @@ modules:
 
         connection_timeout: 60
         restart: false
+
 #        browser: phantomjs
 #        port: 4447
 #        browser: firefox
 #        port: 4444
 
       Db:
-        dsn: 'mysql:host=172.18.0.3;dbname=joomlatest'
-        user: 'tester'
-        password: 'barbamama'
+        dsn: 'mysql:host=@BW_TEST_DB_HOST@;dbname=@BW_TEST_DB_NAME@'
+        user: '@BW_TEST_DB_USER@'
+        password: '@BW_TEST_DB_PW@'
 
         populate: false
         cleanup: false
@@ -58,15 +58,15 @@ env:
           password: 'Susi'
 
 # This configuration is for joomla containers also containing installed BwPostman
-  j365vm_flex:
+  BW_TEST_PROJECT:
     modules:
       config:
         WebDriver:
-          url: http://172.18.0.28
+          url: http://172.18.0.20
 
         Db:
-          dsn: 'mysql:host=172.18.0.27;dbname=joomlatest'
-          user: 'testervmflex'
+          dsn: 'mysql:host=172.18.0.19;dbname=joomlatest'
+          user: 'tester'
 
 # This configuration is for joomla containers also containing installed BwPostman, vm and plugins
   shopflex:

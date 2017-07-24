@@ -152,7 +152,8 @@ class SubscribeComponentCest
 	 */
 	public function SubscribeMissingValuesComponent(AcceptanceTester $I)
 	{
-		$options    = $I->getManifestOptions('com_bwpostman');
+		$options        = $I->getManifestOptions('com_bwpostman');
+		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
 
 		$I->wantTo("Test messages for missing input values by component");
 		$I->expectTo('see error messages');
@@ -162,14 +163,28 @@ class SubscribeComponentCest
 		// omit mail address
 		$I->click(SubsView::$button_register);
 		$I->seeElement(Generals::$alert_error);
-		$I->see(SubsView::$invalid_field_mailaddress);
+		if ($bwpm_version == '132')
+		{
+			$I->see(SubsView::$invalid_field_mailaddress_132);
+		}
+		else
+		{
+			$I->see(SubsView::$invalid_field_mailaddress);
+		}
 
 		// omit first name
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
 		{
 			$I->click(SubsView::$button_register);
 			$I->seeElement(Generals::$alert_error);
-			$I->see(SubsView::$invalid_field_firstname);
+			if ($bwpm_version == '132')
+			{
+				$I->see(SubsView::$invalid_field_firstname_132);
+			}
+			else
+			{
+				$I->see(SubsView::$invalid_field_firstname);
+			}
 			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
 		}
 
@@ -178,7 +193,14 @@ class SubscribeComponentCest
 		{
 			$I->click(SubsView::$button_register);
 			$I->seeElement(Generals::$alert_error);
-			$I->see(SubsView::$invalid_field_name);
+			if ($bwpm_version == '132')
+			{
+				$I->see(SubsView::$invalid_field_name_132);
+			}
+			else
+			{
+				$I->see(SubsView::$invalid_field_name);
+			}
 			$I->fillField(SubsView::$name, SubsView::$lastname_fill);
 		}
 
@@ -186,8 +208,16 @@ class SubscribeComponentCest
 
 		//omit mailinglist selection
 		$I->clickAndWait(SubsView::$button_register, 1);
-		$I->seeInPopup(SubsView::$popup_select_newsletter);
-		$I->acceptPopup();
+
+		if ($bwpm_version == '132')
+		{
+			$I->see(SubsView::$invalid_select_newsletter_132);
+		}
+		else
+		{
+			$I->seeInPopup(SubsView::$popup_select_newsletter);
+			$I->acceptPopup();
+		}
 
 		$I->checkOption(SubsView::$ml1);
 
@@ -274,8 +304,11 @@ class SubscribeComponentCest
 
 		$I->fillField(SubsView::$mail, SubsView::$mail_fill_2);
 		$I->click(SubsView::$button_submit);
-		$I->waitForElement(SubsView::$register_success, 30);
-		$I->see(SubsView::$msg_saved_changes);
+		if (getenv('BWPM_VERSION') != '132')
+		{
+			$I->waitForElement(SubsView::$register_success, 30);
+			$I->see(SubsView::$msg_saved_changes);
+		}
 
 		$this->_activate($I, SubsView::$mail_fill_2);
 		$I->click(SubsView::$button_edit);
@@ -327,7 +360,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$register_edit_url);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_2);
 		$I->click(SubsView::$send_edit_link);
-		$I->waitForElement(SubsView::$err_get_editlink, 30);
+			$I->waitForElement(SubsView::$err_get_editlink, 30);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_no_subscription);
 	}
@@ -345,20 +378,29 @@ class SubscribeComponentCest
 	{
 		$I->wantTo('Unsubscribe with faulty edit link');
 		$I->expectTo('see message wrong edit link');
+
 		$I->amOnPage(SubsView::$unsubscribe_link_faulty);
-		$I->waitForElement(SubsView::$err_get_editlink, 30);
-		$I->wait(2);
-		$I->see(SubsView::$msg_err_occurred);
-		$I->see(SubsView::$msg_err_wrong_editlink);
 
-		$I->amOnPage(SubsView::$unsubscribe_link_empty);
-		$I->waitForElement(SubsView::$err_get_editlink, 30);
-		$I->see(SubsView::$msg_err_occurred);
-		$I->see(SubsView::$msg_err_wrong_editlink);
+		if (getenv('BWPM_VERSION') == 132)
+		{
+			$I->seeElement(SubsView::$firstname);
+		}
+		else
+		{
+			$I->waitForElement(SubsView::$err_get_editlink, 30);
+			$I->wait(2);
+			$I->see(SubsView::$msg_err_occurred);
+			$I->see(SubsView::$msg_err_wrong_editlink);
 
-		$I->amOnPage(SubsView::$unsubscribe_link_missing);
-		$I->waitForElement(SubsView::$mail, 30);
-		$I->see(SubsView::$edit_get_text);
+			$I->amOnPage(SubsView::$unsubscribe_link_empty);
+			$I->waitForElement(SubsView::$err_get_editlink, 30);
+			$I->see(SubsView::$msg_err_occurred);
+			$I->see(SubsView::$msg_err_wrong_editlink);
+
+			$I->amOnPage(SubsView::$unsubscribe_link_missing);
+			$I->waitForElement(SubsView::$mail, 30);
+			$I->see(SubsView::$edit_get_text);
+		}
 	}
 
 	/**

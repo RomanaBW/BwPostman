@@ -81,7 +81,7 @@
 				labelclass="control-label bwpm-u2s-fields-toggle"
 				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_DESC"
 				class="registerradio btn-group btn-group-yesno bwpm-u2s-fields-toggle"
-				filter="intval"
+				required="true"
 				default="1"
 			>
 				<option value="0">
@@ -116,6 +116,12 @@
 					name="additional_required"
 					type="hidden"
 					default="0"
+			>
+			</field>
+			<field
+					name="emailformat_show"
+					type="hidden"
+					default="1"
 			>
 			</field>
 

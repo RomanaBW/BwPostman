@@ -320,23 +320,7 @@ class DbHelper extends Module
 	public static function getTableNames(array $credentials)
 	{
 		$tables   = array();
-/*
-		$tables_t     = array();
-		$tables_t[]   = "jos_bwpostman_campaigns";
-		$tables_t[]   = "jos_bwpostman_campaigns_mailinglists";
-		$tables_t[]   = "jos_bwpostman_mailinglists";
-		$tables_t[]   = "jos_bwpostman_newsletters";
-		$tables_t[]   = "jos_bwpostman_newsletters_mailinglists";
-		$tables_t[]   = "jos_bwpostman_sendmailcontent";
-		$tables_t[]   = "jos_bwpostman_sendmailqueue";
-		$tables_t[]   = "jos_bwpostman_subscribers";
-		$tables_t[]   = "jos_bwpostman_subscribers_mailinglists";
-		$tables_t[]   = "jos_bwpostman_tc_campaign";
-		$tables_t[]   = "jos_bwpostman_tc_sendmailcontent";
-		$tables_t[]   = "jos_bwpostman_tc_sendmailqueue";
-		$tables_t[]   = "jos_bwpostman_templates";
-		$tables_t[]   = "jos_bwpostman_templates_tpl";
-*/
+
 		$query      = "SHOW TABLES LIKE '%bwpostman%'";
 		$criteria   = array();
 		$driver = self::getDbDriver($credentials);

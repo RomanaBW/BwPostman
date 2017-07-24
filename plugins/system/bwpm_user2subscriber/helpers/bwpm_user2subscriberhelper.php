@@ -138,6 +138,69 @@ abstract class BWPM_User2SubscriberHelper {
 	}
 
 	/**
+	 * Method to update user ID in table subscribers
+	 *
+	 * @param   int     $subscriber_id
+	 * @param   array   $subscriber_data
+	 *
+	 * @return  bool                true if subscription present and update okay
+	 *
+	 * @since  2.0.0
+	 */
+	public static function updateSubscriberData($subscriber_id, $subscriber_data)
+	{
+		if ($subscriber_id == 0)
+		{
+			return false;
+		}
+
+		$_db	= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->update($_db->quoteName('#__bwpostman_subscribers'));
+
+		if ($subscriber_data['name'] != '')
+		{
+			$query->set($_db->quoteName('name') . " = " . $_db->quote($subscriber_data['name']));
+		}
+
+		if ($subscriber_data['firstname'] != '')
+		{
+			$query->set($_db->quoteName('firstname') . " = " . $_db->quote($subscriber_data['firstname']));
+		}
+
+		if ($subscriber_data['special'] != '')
+		{
+			$query->set($_db->quoteName('special') . " = " . $_db->quote($subscriber_data['special']));
+		}
+
+		if ($subscriber_data['gender'] != '')
+		{
+			$query->set($_db->quoteName('gender') . " = " . $_db->quote($subscriber_data['gender']));
+		}
+
+		if ($subscriber_data['mailformat'] != '')
+		{
+			$query->set($_db->quoteName('mailformat') . " = " . $_db->quote($subscriber_data['mailformat']));
+		}
+
+		$query->where($_db->quoteName('id') . ' = ' . $_db->quote($subscriber_id));
+
+		$_db->setQuery($query);
+
+		$result  = $_db->execute();
+
+		if ($result)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
 	 * Method to update subscribed mailinglists in table
 	 *
 	 * @param   int     $subscriber_id
@@ -465,7 +528,7 @@ abstract class BWPM_User2SubscriberHelper {
 	 *
 	 * @since       2.0.0
 	 */
-	protected static function getSubscriberIdByEmail($email)
+	public static function getSubscriberIdByEmail($email)
 	{
 		$_db    = JFactory::getDbo();
 		$query = $_db->getQuery(true);

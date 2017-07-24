@@ -107,6 +107,8 @@ class SubscriberEditPage
 	public static $mls_nonaccessible    = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[2]/div/fieldset/div/p[%s]/label";
 	public static $mls_internal         = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/div/p[%s]/label";
 
+	public static $mls_internal_label   = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/legend";
+
 	/**
 	 * Test method to create single Subscriber without cleanup for testing restore permission
 	 *
@@ -176,6 +178,7 @@ class SubscriberEditPage
 		$I->clickAndWait(self::$confirmed, 1);
 		$I->click(sprintf(self::$mls_accessible, 2));
 		$I->click(sprintf(self::$mls_nonaccessible, 3));
+		$I->scrollTo(self::$mls_internal_label, 0, -100);
 		$I->click(sprintf(self::$mls_internal, 4));
 	}
 }

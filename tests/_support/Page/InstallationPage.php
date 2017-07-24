@@ -38,10 +38,13 @@ class InstallationPage
 
     public static $installField      = ".//*[@id='install_package']";
 	public static $installButton     = ".//*[@id='installbutton_package']";
+	public static $installButton37   = ".//*[@id='select-file-button']";
 
 	public static $installFileComponent = "pkg_bwpostman.zip";
 	public static $installFileU2S       = "plg_bwpostman_bwpm_user2subscriber.zip";
 	public static $installFileB2S       = "plg_bwpostman_bwpm_buyer2subscriber.zip";
+
+	public static $installFileComponent_132 = "com_bwpostman.1.3.2.zip";
 
 	public static $headingInstall       = "Extensions: Install";
 	public static $headingManage        = "Extensions: Manage";
@@ -91,8 +94,30 @@ class InstallationPage
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(self::$headingInstall);
 
-		$I->attachFile(self::$installField, self::$installFileComponent);
-		$I->click(self::$installButton);
+		$install_file   = self::$installFileComponent;
+
+		if (getenv('BW_TEST_BWPM_VERSION') == 132)
+		{
+			$install_file   = self::$installFileComponent_132;
+		}
+codecept_debug('JS-String:' . (string)"jQuery('input[type=file]#install_package').val('$install_file');");
+		if ((int)getenv('BW_TEST_JOOMLA_VERSION') < 370)
+		{
+			// until Joomla 3.6.5
+			$I->attachFile(self::$installField, $install_file);
+			$I->click(self::$installButton);
+		}
+		else
+		{
+			// Since Joomla 3.7.0
+			// @ToDo: Use ULR oder folder upload
+//			$I->executeJS('jQuery("#legacy-uploader").css("display", "visible !important");');
+			$I->executeJS("jQuery('input[type=file]#install_package').val('$install_file');");
+//			$I->fillField(".//*[@id='install_package']", $install_file);
+//			$I->executeJS('jQuery("#legacy-uploader").css("display", "none");');
+
+		}
+
 		$I->waitForElement(Generals::$sys_message_container, 120);
 
 		$I->waitForElement(Generals::$alert_success, 30);

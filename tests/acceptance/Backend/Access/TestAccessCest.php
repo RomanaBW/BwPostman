@@ -293,7 +293,7 @@ class TestAccessCest
 	}
 
 	/**
-	 * Test method to check for allowed/forbidden of add links at main view of BwPostman
+	 * Test method to check for allowed/forbidden of "add" links at main view of BwPostman
 	 *
 	 * @param   \AcceptanceTester            $I
 	 *
@@ -346,7 +346,8 @@ class TestAccessCest
 	}
 
 	/**
-	 * Test method to check for allowed/forbidden of a single list view by button of BwPostman
+	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
+     * loop over all list views
 	 *
 	 * @param   \AcceptanceTester            $I
 	 *
@@ -361,17 +362,21 @@ class TestAccessCest
 
 		$loginPage = new LoginPage($I);
 
+		// Loop over all users
 		for ($i = 0; $i < count(AccessPage::$all_users); $i++)
 		{
 			// @ToDo: Consider, that some webmaster may set user permissions e.g. to send newsletter but not to create or edit one
+            // Simplify user variable
 			$user   = AccessPage::$all_users[$i];
 
+			// @ToDo: This is a workaround to first create the tests. In real life this break must be removed!
 			if ($user['user'] != 'BwPostmanAdmin')
 			{
 				break;
 			}
 			$this->_login($loginPage, $user);
 
+			// Loop over main view list buttons
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
 				$list_permission_array  = '_main_list_permissions';
@@ -412,32 +417,34 @@ codecept_debug('Allowed: ' . $allowed);
 
 							$this->_sendNewsletter($I, $user, $item_permission_array);
 
-							// set publish/unpublish date
-							// handle queue
+							// @ToDo: set publish/unpublish date
+							// @ToDo: handle queue
 						}
 						elseif ($button == 'Subscribers')
 						{
-							// import subscribers
-							// export subscribers
-							// batch
+							// @ToDo: import subscribers
+							// @ToDo: export subscribers
+							// @ToDo: batch
 						}
 						elseif ($button == 'Templates')
 						{
 							$this->_setDefaultTemplate($I, $user, $item_permission_array);
 
-							// import template
+							// @ToDo: import template
 						}
 					}
 					else
 					{
-						// restore
-						// delete
+						// @ToDo: restore
+						// @ToDo: delete
 					}
 				}
 				else
 				{
-					// don't see button
+					// @ToDo: don't see button
 				}
+
+                // @ToDo: This is a workaround to first create the tests. In real life this break must be removed!
 				if ($button == 'Newsletters')
 				{
 					break;

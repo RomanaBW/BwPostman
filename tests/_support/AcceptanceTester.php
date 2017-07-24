@@ -289,7 +289,7 @@ class AcceptanceTester extends \Codeception\Actor
 	{
 		// open select list
 		$this->click($select_list);
-		$this->waitForElementVisible(sprintf(Generals::$select_list_open, $select_list_id));
+		$this->waitForElementVisible(sprintf(Generals::$select_list_open, $select_list_id), 30);
 
 		// click wanted value
 		$this->click($select_value);

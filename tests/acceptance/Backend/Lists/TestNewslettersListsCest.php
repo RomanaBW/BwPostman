@@ -263,7 +263,12 @@ class TestNewslettersListsCest
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$sent_query_criteria);
-		$I->loopFilterList($I, NlManage::$sent_sort_data_array, 'header', $columns, 'newsletters AS `a`', 0, '', 11, 2);
+
+		$sort_data      = $this->_prepareSortData(NlManage::$sent_sort_data_array);
+		$loop_counts    = count($sort_data['select_criteria']) + 1;
+
+
+		$I->loopFilterList($I, $sort_data, 'header', $columns, 'newsletters AS `a`', 0, '', $loop_counts, 2);
 
 		$I->click(Generals::$submenu_toggle_button);
 	}
@@ -283,7 +288,7 @@ class TestNewslettersListsCest
 	 */
 	public function SortSentNewslettersBySelectList(AcceptanceTester $I)
 	{
-		$I->wantTo("Sort unsent newsletters by select list");
+		$I->wantTo("Sort sent newsletters by select list");
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
@@ -292,7 +297,11 @@ class TestNewslettersListsCest
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$sent_query_criteria);
-		$I->loopFilterList($I, NlManage::$sent_sort_data_array, '', $columns, 'newsletters AS `a`', 0, '', 11, 2);
+
+		$sort_data      = $this->_prepareSortData(NlManage::$sent_sort_data_array);
+		$loop_counts    = count($sort_data['select_criteria']) + 1;
+
+			$I->loopFilterList($I, $sort_data, '', $columns, 'newsletters AS `a`', 0, '', $loop_counts, 2);
 
 		$I->click(Generals::$submenu_toggle_button);
 	}
@@ -553,5 +562,28 @@ class TestNewslettersListsCest
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{
 		$loginPage->logoutFromBackend($I);
+	}
+
+	/**
+	 * @param $sort_data
+	 *
+	 * @return array $sort_data
+	 *
+	 * @since 2.0.0
+	 */
+	private function _prepareSortData($sort_data)
+	{
+		$bwpm_version = getenv('BW_TEST_BWPM_VERSION');
+
+/*		if ($bwpm_version == 132)
+		{
+			unset($sort_data['sort_criteria']['publish_up']);
+			unset($sort_data['sort_criteria']['publish_down']);
+			unset($sort_data['sort_criteria_select']['publish_up']);
+			unset($sort_data['sort_criteria_select']['publish_down']);
+			unset($sort_data['select_criteria']['publish_up']);
+			unset($sort_data['select_criteria']['publish_down']);
+		}
+*/		return $sort_data;
 	}
 }

@@ -650,6 +650,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		$subject 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
 
+		// @ToDo: language override dont work!!!!!!
 		if (is_null($itemid))
 		{
 			$body 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG', $name, $siteURL, $siteURL."index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");

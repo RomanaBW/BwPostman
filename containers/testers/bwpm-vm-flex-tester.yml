@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+    tester-vm-flex:
+        container_name: "tester-vm-flex"
+        image: romana/os-chromium-tester_227_5719
+        hostname: tester-vm-flex
+        domainname: tester-net-vm-flex.nil
+        volumes:
+            - "/vms/dockers/containers/testers/os-data:/data"
+            - "/vhosts/dev/joomla-cms:/tests"
+        environment:
+            - BW_TEST_CAT=${BW_TEST_CAT}
+            - TEST_PROJECT=${TEST_PROJECT}
+            - BW_TEST_PROJECT=${BW_TEST_PROJECT}
+            - TEST_ENV=${TEST_ENV}
+            - DEBUG=${DEBUG}
+        entrypoint: /data/vm_flex_tester_start.sh
+        working_dir: /tests
+        networks:
+            tester-net-vm-flex.nil:
+                ipv4_address: 172.18.0.30
+
+networks:
+    tester-net-vm-flex.nil:
+        external:
+            name: ${TEST_PROJECT}_tester-net-vm-flex.nil

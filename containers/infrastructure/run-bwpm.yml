@@ -14,7 +14,6 @@ services:
         image: romana/mysql
         hostname: mysqlserver-bwpm
         domainname: tester-net-bwpm.nil
-#        restart: always
         networks:
             tester-net-bwpm.nil:
                 ipv4_address: 172.18.0.19
@@ -23,8 +22,8 @@ services:
         ports:
             - "3308:3306"
         volumes:
-            - "/vms/dockers/containers/infrastructure/mysqldb/data/logs:/var/log/mysql/"
-            - "/vms/dockers/global_data/test_data/j365_bwpm/tables:/var/lib/mysql"
+            - ${BW_TEST_CONTAINER_DIR}/infrastructure/mysqldb/data/logs:/var/log/mysql/
+            - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/tables:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: barbapapa
             MYSQL_DATABASE: joomlatest
@@ -39,14 +38,14 @@ services:
         expose:
             - "25"
         volumes:
-            - "/vms/dockers/containers/infrastructure/os_base/os_data:/outerworld"
+            - ${BW_TEST_CONTAINER_DIR}/infrastructure/os_base/os_data:/outerworld
         networks:
             tester-net-bwpm.nil:
                 ipv4_address: 172.18.0.18
 
     webserverbwpm:
         container_name: webserverbwpm
-        image: romana/apache_v2
+        image: romana/apache_${BW_TEST_PHP_VERSION}
         hostname: webserver-bwpm
         domainname: tester-net-bwpm.nil
         depends_on:
@@ -61,5 +60,5 @@ services:
         ports:
             - "8002:80"
         volumes:
-            - "/vms/dockers/containers/infrastructure/apache/data/logs:/var/log/apache2/"
-            - "/vms/dockers/global_data/test_data/j365_bwpm/files:/var/www/html"
+            - ${BW_TEST_CONTAINER_DIR}/infrastructure/apache/data/logs:/var/log/apache2/
+            - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/files:/var/www/html

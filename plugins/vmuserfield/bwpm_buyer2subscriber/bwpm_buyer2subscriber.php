@@ -9,7 +9,7 @@
  * @version 2.0.0 bwpmpbs
  * @package			BwPostman Buyer2Subscriber Plugin
  * @author			Romana Boldt
- * @copyright		(C) 2016 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright		(C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/forum/bwpostman.html
  * @license			GNU/GPL v3, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -130,6 +130,7 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	private $log_cat  = 'Plg_B2S';
 	private $debug    = false;
 
+	private $_count_userfields  = 0;
 	/**
 	 * plgVmCustomBwPm_Buyer2Subscriber constructor.
 	 *
@@ -305,7 +306,7 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function getPluginUserfieldIds($userFields)
 	{
-		$field_names    = array('bw_newsletter_message', 'bw_newsletter_subscription', 'bw_newsletter_format', 'bw_gender', 'bw_newsletter_additional', 'last_name', 'first_name');
+		$field_names    = array('bw_newsletter_message', 'bw_newsletter_subscription', 'bw_newsletter_format', 'bw_gender', 'bw_newsletter_additional', 'bw_newsletter_additional_required', 'last_name', 'first_name');
 		$field_ids      = array();
 
 		for ($i = 0; $i < count($userFields); $i++)
@@ -317,6 +318,14 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		}
 
 		$this->BwPostman_field_ids  = $field_ids;
+	}
+
+	function plgVmOnSelfCallFE ($type, $name, &$render) {
+		// Add CSS
+		$doc = JFactory::getDocument();
+
+		$css_file   = JUri::base( true ) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/css/bwpm_buyer2subscriber.css';
+		$doc->addStyleSheet($css_file);
 	}
 
 	/**
@@ -346,6 +355,16 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 			return false;
 		}
 
+		// Add JS for additional fields
+		$doc = JFactory::getDocument();
+
+		// makes sure that jQuery is loaded first
+		JHtml::_('jquery.framework');
+		$js_file= JUri::base( true ) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/js/bwpm_buyer2subscriber.js';
+
+		$doc->addScript($js_file);
+
+		$this->_count_userfields    = count($userFields);
 		$this->getPluginUserfieldIds($userFields);
 		$this->setBwUserfieldTypes($userFields);
 
@@ -463,9 +482,19 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function processGenderField(&$userFields)
 	{
+		$new_field              = new stdClass();
+		$new_field->name        = 'bw_newsletter_show_gender';
+		$new_field->title       = 'bw_newsletter_show_gender';
+		$new_field->type        = 'hidden';
+		$new_field->required    = 0;
+		$new_field->published   = 1;
+		$new_field->hidden      = 1;
+		$new_field->default     = 0;
+
 		if (JComponentHelper::getParams('com_bwpostman')->get('show_gender'))
 		{
 			$userFields[$this->BwPostman_field_ids['bw_gender']]->description = JText::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC');
+			$new_field->default = 1;
 		}
 		else
 		{
@@ -473,6 +502,7 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			$this->unset_array[]    = $this->BwPostman_field_ids['bw_gender'];
 		}
+		$userFields[]   = $new_field;
 	}
 
 	/**
@@ -526,18 +556,38 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function processAdditionalField(&$userFields)
 	{
+		$new_required   = new stdClass();
+		$new_show       = new stdClass();
 		$com_params = JComponentHelper::getParams('com_bwpostman');
+
+		$new_required->name        = 'bw_newsletter_additional_required';
+		$new_required->title       = 'bw_newsletter_additional_required';
+		$new_required->type        = 'hidden';
+		$new_required->required    = 0;
+		$new_required->published   = 1;
+		$new_required->hidden      = 1;
+		$new_required->default     = 0;
+
+		$new_show->name        = 'bw_newsletter_additional_show';
+		$new_show->title       = 'bw_newsletter_additional_show';
+		$new_show->type        = 'hidden';
+		$new_show->required    = 0;
+		$new_show->published   = 1;
+		$new_show->hidden      = 1;
+		$new_show->default     = 0;
 
 		if ($com_params->get('special_field_obligation'))
 		{
 			$com_params->set('show_special', '1');
 			$userFields[$this->BwPostman_field_ids['bw_newsletter_additional']]->required = 1;
+			$new_required->default  = 1;
+			$new_show->default      = 1;
 		}
-
-		if ($com_params->get('show_special'))
+		elseif ($com_params->get('show_special'))
 		{
 			$special_label = $com_params->get('special_label');
 			$special_desc  = $com_params->get('special_desc');
+			$new_show->default      = 1;
 
 			if ($special_label == '')
 			{
@@ -557,6 +607,8 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			$this->unset_array[]    = $this->BwPostman_field_ids['bw_newsletter_additional'];
 		}
+		$userFields[]   = $new_required;
+		$userFields[]   = $new_show;
 	}
 
 	/**
@@ -566,6 +618,16 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function processNewsletterFormatField(&$userFields)
 	{
+		$new_field              = new stdClass();
+		$new_field->name        = 'bw_newsletter_show_format';
+		$new_field->title       = 'bw_newsletter_show_format';
+		$new_field->type        = 'hidden';
+		$new_field->required    = 0;
+		$new_field->published   = 1;
+		$new_field->hidden      = 1;
+		$new_field->default     = 1;
+		$new_field->data        = 'yes';
+
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
 		$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->value       = $com_params->get('default_emailformat');
@@ -573,7 +635,9 @@ class plgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		if (!$com_params->get('show_emailformat'))
 		{
 			$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->type = 'hidden';
+			$new_field->default     = 0;
 		}
+		$userFields[]   = $new_field;
 	}
 
 	/**

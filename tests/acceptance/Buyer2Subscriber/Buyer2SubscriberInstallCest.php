@@ -1,0 +1,430 @@
+<?php
+use Page\Generals as Generals;
+use Page\Login as LoginPage;
+use Page\Buyer2SubscriberPage as BuyerPage;
+use Page\MaintenancePage as Restore;
+use Page\OptionsPage as Options;
+use Page\User2SubscriberPage as UserPage;
+use Page\InstallationPage as InstallPage;
+
+
+/**
+ * Class Buyer2SubscriberInstallCest
+ *
+ * This class contains all methods to test installation and modify options of this plugin
+ *
+ * @package Buyer Subscribe Plugin
+ * @subpackage Installation and Plugin Options
+ * @copyright (C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @since   2.0.0
+ */
+class Buyer2SubscriberInstallCest
+{
+	/**
+	 * @var object  $tester AcceptanceTester
+	 *
+	 * @since   2.0.0
+	 */
+	public $tester;
+
+	/**
+	 * Test method to login into backend
+	 *
+	 * @param   \Page\Login     $loginPage
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function _login(\Page\Login $loginPage)
+	{
+		$loginPage->logIntoBackend(Generals::$admin);
+	}
+
+	/**
+	 * Test method to install plugin without installed component
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function installWithoutInstalledComponent(AcceptanceTester $I)
+	{
+		$I->wantTo("Install plugin without installed component");
+		$I->expectTo("see error message and no installed plugin Buyer2Subscriber");
+
+		$this->_installPlugin($I);
+
+		$I->waitForElement(Generals::$alert_error, 30);
+		$I->see(InstallPage::$installB2SErrorComMsg, Generals::$alert_error);
+		$I->dontSee("Success", Generals::$alert_heading);
+
+		UserPage::selectPluginPage($I);
+
+		UserPage::filterForPlugin($I, BuyerPage::$plugin_name);
+
+		$I->see(BuyerPage::$plugin_not_installed);
+	}
+
+	/**
+	 * Test method to install plugin with installed component
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function installWithPrerequisites(AcceptanceTester $I)
+	{
+		$I->wantTo("Install plugin after installing package");
+		$I->expectTo("see success message and installed plugin");
+
+		InstallPage::installation($I);
+
+		$this->_installPlugin($I);
+
+		$I->waitForElement(Generals::$alert_success, 30);
+		$I->see(InstallPage::$installB2SSuccessMsg, Generals::$alert_success);
+		$I->dontSee("Error", Generals::$alert_heading);
+
+		UserPage::selectPluginPage($I);
+
+		UserPage::filterForPlugin($I, BuyerPage::$plugin_name);
+
+		$I->see(BuyerPage::$plugin_name);
+
+		$this->_checkForPluginFieldsAtVM($I);
+
+		Options::saveDefaults($I);
+
+		Restore::restoreTables($I);
+	}
+
+	/**
+	 * Test method to activate plugin an initialize options
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function activateBuyer2SubscriberAndInitializeOptions(AcceptanceTester $I)
+	{
+		// @ToDo: Joomla stuff, make method shorter. Some parts of this may be useful for options tests
+		// @ToDo: Split into activation and initializing options of plugin
+		$I->wantTo("activate plugin Buyer2Subscriber");
+		$I->expectTo("see success message and green arrow in extensions list");
+
+		UserPage::selectPluginPage($I);
+
+		UserPage::filterForPlugin($I, BuyerPage::$plugin_name);
+
+		$I->see(BuyerPage::$plugin_name);
+
+		$I->checkOption(Generals::$check_all_button);
+		$I->click(Generals::$toolbar['Enable']);
+
+		$I->waitForElement(Generals::$alert_success, 30);
+		$I->see(InstallPage::$pluginEnableSuccessMsg, Generals::$alert_success);
+		$I->seeElement(InstallPage::$icon_published);
+
+		$I->click(".//*[@id='pluginList']/tbody/tr/td[4]/a");
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(InstallPage::$headingPlugins . ": " . BuyerPage::$plugin_name);
+
+		// set mailinglist
+		$I->click(".//*[@id='myTabTabs']/li[4]/a");
+		$I->waitForElement(".//*[@id='jform_params_ml_available']/div", 30);
+
+		$checked    = $I->grabAttributeFrom(".//*[@id='mb9']", "checked");
+		if (!$checked)
+		{
+			$I->click(".//*[@id='mb9']");
+		}
+
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_success, 30);
+		$I->see(InstallPage::$pluginSavedSuccess, Generals::$alert_success);
+	}
+
+	/**
+	 * Test method to option message
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function Buyer2SubscriberOptionsMessage(AcceptanceTester $I)
+	{
+		$I->wantTo("change newsletter message and change back");
+		$I->expectTo('see changed messages at top of address edit form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(BuyerPage::$plugin_tab_options, 1);
+
+		$this->_switchPluginMessage($I, UserPage::$plugin_message_new);
+
+		// look at FE
+		$user = $I->haveFriend('User1');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->_gotoAddressEditPage($I);
+
+			$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
+		}
+		);
+		$user->leave();
+
+		$this->_switchPluginMessage($I, UserPage::$plugin_message_old);
+
+		// look at FE
+		$user = $I->haveFriend('User2');
+		$user->does(function (AcceptanceTester $I)
+		{
+			$this->_gotoAddressEditPage($I);
+
+			$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
+		}
+		);
+		$user->leave();
+
+		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 * @param string           $message
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	private function _switchPluginMessage(AcceptanceTester $I, $message)
+	{
+		$I->fillField(BuyerPage::$plugin_message_identifier, $message);
+		$I->clickAndWait(Generals::$toolbar['save'], 1);
+		$I->see(UserPage::$plugin_saved_success);
+		$I->see($message, BuyerPage::$plugin_message_identifier);
+	}
+
+	/**
+	 * Test method to option mailinglists
+	 *
+	 * @param   AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function Buyer2SubscriberOptionsMailinglists(AcceptanceTester $I)
+	{
+		$I->wantTo("add additional mailinglist to options");
+		$I->expectTo('see further selected mailinglist at plugin options form');
+
+		$this->editPluginOptions($I);
+		$I->clickAndWait(BuyerPage::$plugin_tab_mailinglists, 1);
+
+		// click checkbox for further mailinglist
+		$I->checkOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
+		$I->clickAndWait(Generals::$toolbar['save'], 1);
+		$I->see(UserPage::$plugin_saved_success);
+		$I->seeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 6));
+
+		// getManifestOption
+		$options = $I->getManifestOptions('bwpm_buyer2subscriber');
+		$I->assertEquals("1", $options->ml_available[0]);
+		$I->assertEquals("4", $options->ml_available[1]);
+
+		// deselect further mailinglist
+		$I->uncheckOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
+		$I->clickAndWait(Generals::$toolbar['save'], 1);
+		$I->see(UserPage::$plugin_saved_success);
+		$I->dontSeeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 5));
+
+		// getManifestOption
+		$options = $I->getManifestOptions('bwpm_buyer2subscriber');
+		$I->assertEquals("4", $options->ml_available[0]);
+
+		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+
+		LoginPage::logoutFromBackend($I);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	private function _checkForPluginFieldsAtVM(AcceptanceTester $I)
+	{
+		$this->_gotoVMUserfieldsPage($I);
+
+		$I->fillField(BuyerPage::$filter_field, BuyerPage::$filter_search_value);
+		$I->click(BuyerPage::$filter_go_button);
+
+		$I->see(BuyerPage::$shopper_field_message, BuyerPage::$shopper_field_title);
+		$I->see(BuyerPage::$shopper_field_subscription, BuyerPage::$shopper_field_title);
+		$I->see(BuyerPage::$shopper_field_format, BuyerPage::$shopper_field_title);
+		$I->see(BuyerPage::$shopper_field_gender, BuyerPage::$shopper_field_title);
+		$I->see(BuyerPage::$shopper_field_special, BuyerPage::$shopper_field_title);
+
+		$I->canSeeNumberOfElements(BuyerPage::$shopper_field_published, 5);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	private function _gotoVMUserfieldsPage(AcceptanceTester $I)
+	{
+		$I->amOnPage(BuyerPage::$link_to_shopper_fields);
+		$I->waitForElement(BuyerPage::$userfield_page_identifier, 30);
+		$I->see(BuyerPage::$product_page_header_text);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	private function _gotoAddressEditPage(AcceptanceTester $I)
+	{
+		$I->click(BuyerPage::$button_enter_address);
+		$I->waitForElement(BuyerPage::$header_account_details);
+		$I->see(BuyerPage::$header_account_details_text);
+	}
+
+	/**
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function _checkForPluginFieldsNotVisible($I)
+	{
+		$I->dontSeeElement(BuyerPage::$message_identifier);
+		$I->dontSeeElement(BuyerPage::$subscription_identifier);
+		$I->dontSeeElement(BuyerPage::$format_identifier);
+		$I->dontSeeElement(BuyerPage::$additional_identifier);
+		$I->dontSeeElement(BuyerPage::$gender_identifier);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function editPluginOptions(AcceptanceTester $I)
+	{
+		$this->tester = $I;
+		LoginPage::logIntoBackend(Generals::$admin);
+
+		$this->selectPluginPage($I);
+
+		$this->filterForPlugin($I);
+
+		$I->clickAndWait(UserPage::$plugin_edit_identifier, 1);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function selectPluginPage(AcceptanceTester $I)
+	{
+		$I->amOnPage(UserPage::$plugin_page);
+		$I->wait(1);
+		$I->see(UserPage::$view_plugin, Generals::$pageTitle);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 * @since 2.0.0
+	 */
+	protected function filterForPlugin(AcceptanceTester $I)
+	{
+		$I->fillField(Generals::$search_field, BuyerPage::$plugin_name);
+		$I->clickAndWait(Generals::$search_button, 1);
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	private function _installPlugin(AcceptanceTester $I)
+	{
+		$I->amOnPage(InstallPage::$install_url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(InstallPage::$headingInstall);
+
+		$I->attachFile(InstallPage::$installField, InstallPage::$installFileB2S);
+		$I->click(InstallPage::$installButton);
+		$I->waitForElement(Generals::$sys_message_container, 30);
+	}
+
+	/**
+	 * Test method to logout from backend
+	 *
+	 * @param   AcceptanceTester        $I
+	 * @param   \Page\Login             $loginPage
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
+	{
+		$loginPage->logoutFromBackend($I);
+	}
+}
+

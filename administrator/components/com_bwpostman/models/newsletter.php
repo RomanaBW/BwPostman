@@ -2331,6 +2331,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	private function _addSendMailQueue(&$ret_msg, $content_id, $recipients, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
+		// @ToDo: Send also to unconfirmed does not work!!!!!!
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 

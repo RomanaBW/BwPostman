@@ -151,4 +151,8 @@ class SubscriberviewPage
 	public static $popup_enter_special              = 'Please enter a value into the %s field!';
 	public static $popup_accept_disclaimer          = 'You have to accept the Disclaimer for finishing up your registration.';
 
+	public static $invalid_field_name_132           = 'Please enter a name!';
+	public static $invalid_field_firstname_132      = 'Please enter a first name!';
+	public static $invalid_field_mailaddress_132    = 'Please enter an email address!';
+	public static $invalid_select_newsletter_132    = 'You have to select one newsletter.';
 }

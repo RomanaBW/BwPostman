@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension group="bwpostman" method="upgrade" type="plugin" version="3.4">
+	<name>PLG_BW_PLUGIN_TESTS</name>
+	<version>2.0.0</version>
+	<creationDate>March 2017</creationDate>
+	<author>Boldt Webservice</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>GNU/GPLv3 or later</license>
+	<description>PLG_BW_PLUGIN_TESTS_DESCRIPTION</description>
+
+	<scriptfile>installscript.php</scriptfile>
+
+	<files>
+		<filename plugin="bwtests">bwtests.php</filename>
+		<filename >installscript.php</filename>
+		<filename >index.html</filename>
+	</files>
+
+	<languages folder="language">
+		<language tag="de-DE">de-DE/de-DE.plg_bwtests.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_bwtests.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_bwtests.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_bwtests.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="option">
+				<field
+						name="demo_mode_option"
+						id="demo_mode_option"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						label="PLG_BW_PLUGIN_TESTS_OPTION_DEMO_MODE_LABEL"
+						description="PLG_BW_PLUGIN_TESTS_OPTION_DEMO_MODE_DESC"
+						default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+						name="sender_address_option"
+						type="text"
+						id="sender_address_option"
+						description="PLG_BW_PLUGIN_TEST_OPTION_SENDER_ADDRESS_DESC"
+						label="PLG_BW_PLUGIN_TEST_OPTION_SENDER_ADDRESS_LABEL"
+						size="50"
+						default="dummy1@tester-net.nil"
+				/>
+				<field
+						name="recipient_address_option"
+						type="text"
+						id="recipient_address_option"
+						description="PLG_BW_PLUGIN_TEST_OPTION_RECIPIENT_ADDRESS_DESC"
+						label="PLG_BW_PLUGIN_TEST_OPTION_RECIPIENT_ADDRESS_LABEL"
+						size="50"
+						default="dummy2@tester-net.nil"
+				/>
+
+				<field name="spacer2_4" type="spacer" hr="true" />
+
+				<field
+						name="arise_queue_option"
+						id="arise_queue_option"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						label="PLG_BW_PLUGIN_TESTS_OPTION_ARISE_QUEUE_LABEL"
+						description="PLG_BW_PLUGIN_TESTS_OPTION_ARISE_QUEUE_DESC"
+						default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

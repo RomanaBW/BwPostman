@@ -57,21 +57,23 @@ class TestMaintenanceCest
 	 */
 	public function saveTables(AcceptanceTester $I)
 	{
-		$I->wantTo("Save tables");
-		$I->expectTo("see file in download directory");
-		$I->amOnPage(MainView::$url);
-		$I->click(MainView::$maintenanceButton);
+		if (getenv('BW_TEST_BWPM_VERSION') != '132')
+		{
+			$I->wantTo("Save tables");
+			$I->expectTo("see file in download directory");
+			$I->amOnPage(MainView::$url);
+			$I->click(MainView::$maintenanceButton);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(MaintenancePage::$heading);
+			$I->waitForElement(Generals::$pageTitle, 30);
+			$I->see(MaintenancePage::$heading);
 
-		$path       = '/root/Downloads/';
-		$filename   = 'BwPostman_' . str_replace('.', '_', Generals::$versionToTest) . '_Tables_' . date("Y-m-d_H-i")  . '.xml';
+			$path     = '/root/Downloads/';
+			$filename = 'BwPostman_' . str_replace('.', '_', Generals::$versionToTest) . '_Tables_' . date("Y-m-d_H-i") . '.xml';
 
-		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
+			$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
-		$I->assertTrue(file_exists($path . $filename));
-//		$I->assertTrue(unlink($path . $filename));
+			$I->assertTrue(file_exists($path . $filename));
+		}
 	}
 
 	/**
@@ -125,37 +127,7 @@ class TestMaintenanceCest
 	 */
 	public function restoreTables(AcceptanceTester $I)
 	{
-		$I->wantTo("Restore tables");
-		$I->expectTo("see 'Result check okay'");
-		$I->amOnPage(MainView::$url);
-		$I->click(MainView::$maintenanceButton);
-
-		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(MaintenancePage::$heading);
-
-		$I->click(MaintenancePage::$restoreTablesButton);
-		$I->waitForElement(MaintenancePage::$headingRestoreFile, 30);
-
-		$I->attachFile(".//*[@id='restorefile']", "BwPostman_2_0_0_Tables.xml");
-		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
-		$I->dontSeeElement(Generals::$alert_error);
-
-		$I->waitForElement(MaintenancePage::$step1Field, 30);
-		$I->waitForElement(MaintenancePage::$step2Field, 30);
-		$I->waitForElement(MaintenancePage::$step3Field, 30);
-		$I->wait(20);
-		$I->waitForElement(MaintenancePage::$step4Field, 30);
-		$I->waitForElement(MaintenancePage::$step5Field, 30);
-		$I->wait(15);
-		$I->waitForElement(MaintenancePage::$step6Field, 30);
-		$I->waitForElement(MaintenancePage::$step7Field, 30);
-		$I->waitForElement(MaintenancePage::$step8Field, 30);
-		$I->waitForElement(MaintenancePage::$step9Field, 30);
-		$I->waitForElement(MaintenancePage::$step10Field, 30);
-		$I->waitForElement(MaintenancePage::$step11Field, 30);
-		$I->waitForElement(MaintenancePage::$step11SuccessClass, 30);
-		$I->see(MaintenancePage::$step11SuccessMsg, MaintenancePage::$step11SuccessClass);
-		$I->clickAndWait(MaintenancePage::$checkBackButton, 2);
+		MaintenancePage::restoreTables($I);
 	}
 
 	/**
@@ -202,17 +174,20 @@ class TestMaintenanceCest
 	 */
 	public function testForumLink(AcceptanceTester $I)
 	{
-		$I->wantTo("test forum link");
-		$I->expectTo("see new page with forum of BwPostman");
-		$I->amOnPage(MainView::$url);
-		$I->click(MainView::$maintenanceButton);
+		if (getenv('BW_TEST_BWPM_VERSION') != '132')
+		{
+			$I->wantTo("test forum link");
+			$I->expectTo("see new page with forum of BwPostman");
+			$I->amOnPage(MainView::$url);
+			$I->click(MainView::$maintenanceButton);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(MaintenancePage::$heading);
+			$I->waitForElement(Generals::$pageTitle, 30);
+			$I->see(MaintenancePage::$heading);
 
-		$I->click(MaintenancePage::$forumButton);
-		$I->switchToWindow("new");
-		$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
+			$I->click(MaintenancePage::$forumButton);
+			$I->switchToWindow("new");
+			$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
+		}
 	}
 
 	/**

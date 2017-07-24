@@ -61,52 +61,6 @@ class Acceptance extends Codeception\Module
 		return $query;
 	}
 	/**
-	 * Method to fill database with test data before tests are processed
-	 *
-	 * @param   \AcceptanceTester $I
-	 *
-	 * @since   2.0.0
-	 */
-/*	public function _beforeSuite($I)
-	{
-		$query_base     = self::_getQueryBase();
-		$backup_query   = self::_getBackupQuery();
-
-		// connect to server
-		$connection = ssh2_connect(Generals::$ssh_server, Generals::$ssh_port, Generals::$ssh_options);
-		ssh2_auth_pubkey_file($connection, Generals::$ssh_user, Generals::$ssh_key_pub, Generals::$ssh_key_rsa);
-
-		// backup dev tables
-		ssh2_exec($connection, $backup_query . Generals::$db_data_end);
-
-		// inject test data
-		ssh2_exec($connection, $query_base . Generals::$db_data_start);
-
-		// get component options
-		$options    = $this->getManifestOptions('com_bwpostman');
-		Generals::setComponentOptions($options);
-	}
-*/
-
-	/**
-	 * Method to truncate database after tests are done
-	 *
-	 * @since   2.0.0
-	 */
-/*	public function _afterSuite()
-	{
-		$query_base = self::_getQueryBase();
-
-		// connect to server
-		$connection = ssh2_connect(Generals::$ssh_server, Generals::$ssh_port, Generals::$ssh_options);
-		ssh2_auth_pubkey_file($connection, Generals::$ssh_user, Generals::$ssh_key_pub, Generals::$ssh_key_rsa);
-
-		// restore dev tables
-		ssh2_exec($connection, $query_base . Generals::$db_data_end);
-	}
-*/
-
-	/**
 	 * Method to change browser
 	 *
 	 * @param $browser
@@ -1436,6 +1390,71 @@ class Acceptance extends Codeception\Module
 		}
 
 		return $rules;
+	}
+
+	/**
+	 * Method to set status of an extension
+	 *
+	 * @param string    $extension
+	 * @param string    $status
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function setExtensionStatus($extension, $status)
+	{
+		$credentials = $this->_getDbCredentials();
+		$criteria    = array();
+		$driver      = new Codeception\Lib\Driver\Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+
+		$query = 'UPDATE `' . Generals::$db_prefix . 'extensions`' . ' SET `enabled` = ' . $status . " WHERE `element` = '" . $extension . "'";
+codecept_debug('Query set extension status: ' . $query);
+		$sth = $driver->executeQuery($query, $criteria);
+//		$res = $sth->fetch(\PDO::FETCH_NUM);;
+	}
+
+	/**
+	 * Method to set delete records in specified table
+	 *
+	 * @param string    $table
+	 * @param array     $condition
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function deleteRecordFromDatabase($table, $condition)
+	{
+		$credentials = $this->_getDbCredentials();
+		$criteria    = array();
+		$driver      = new Codeception\Lib\Driver\Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+
+		if (is_array($condition))
+		{
+			$nbr_values  = count($condition);
+			$i           = 1;
+			$where_clause  = " WHERE ";
+			foreach ($condition as $key => $value)
+			{
+				$where_clause   .= "`$key` = '$value'";
+				if ($i < $nbr_values)
+				{
+					$where_clause .= " AND ";
+					$i++;
+				}
+			}
+		}
+		else
+		{
+			$where_clause   = $condition;
+		}
+
+//		$query      = "UPDATE $table_name SET `params` = '$options' $where";
+		$query      = "DELETE FROM " . Generals::$db_prefix . $table . $where_clause;
+codecept_debug($query);
+		$sth = $driver->executeQuery($query, $criteria);
+		$res = $sth->rowCount();
 	}
 }
 

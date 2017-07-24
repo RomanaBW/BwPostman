@@ -367,6 +367,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(SubEdit::$confirmed, 1);
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
+		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
 		$I->click(sprintf(SubEdit::$mls_internal, 4));
 	}
 

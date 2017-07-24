@@ -42,7 +42,7 @@
 		<echo msg="Copying files to build directory…" />
 
 		<echo msg="Fetch licence…" />
-		<copy file="${licence_source}" tofile="${target_base_component_dir}/files/${licence_file}"></copy>
+		<copy file="${licence_source}" tofile="${target_base_component_dir}/files/${licence_file}" />
 
 		<echo msg="Copying component admin…" />
 		<copy todir="${target_base_component_dir}/files/admin">

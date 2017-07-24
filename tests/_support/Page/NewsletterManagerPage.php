@@ -248,7 +248,7 @@ class NewsletterManagerPage
 
 		'p2_val1'              => "Test Newsletter 11.4.2015 18:28:23",
 		'p2_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
-		'p2_val_last'          => "Test Newsletter 12.4.2015 10:32:6",
+		'p2_val_last'          => "Test Newsletter 12.4.2015 1:30:13",
 		'p2_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
 
 		'p3_val1'              => "Test Newsletter 12.4.2015 2:1:47",

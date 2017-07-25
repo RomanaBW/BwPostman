@@ -259,7 +259,7 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$sent_query_criteria);
@@ -293,7 +293,7 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$sent_query_criteria);
@@ -324,7 +324,7 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by author");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
@@ -374,7 +374,7 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by campaign");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// Filter single campaign
 		// Get filter bar
@@ -391,7 +391,7 @@ class TestNewslettersListsCest
 
 		$I->see(Generals::$null_msg, Generals::$null_row);
 
-		$I->click(Generals::$submenu_toggle_button);
+        $I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -412,7 +412,7 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by mailinglist");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
@@ -459,7 +459,7 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by status");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->filterByStatus($I);
 
@@ -485,7 +485,7 @@ class TestNewslettersListsCest
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->searchLoop($I, NlManage::$search_sent_data_array, false);
 
@@ -513,7 +513,7 @@ class TestNewslettersListsCest
 		$I->wantTo("test list limit at sent newsletters");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->checkListlimit($I);
 
@@ -538,7 +538,7 @@ class TestNewslettersListsCest
 		$I->wantTo("test pagination at sent newsletters");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->click(Generals::$submenu_toggle_button);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 

@@ -172,7 +172,10 @@ Joomla.submitbutton = function (pressbutton)
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
-							<td><label class="checkbox"><input type="checkbox" id="send_to_unconfirmed" name="send_to_unconfirmed" />&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_TO_UNCONFIRMED');?></label></td>
+							<td>
+								<label class="checkbox"></label>
+								<input type="checkbox" id="send_to_unconfirmed" name="send_to_unconfirmed" />&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_TO_UNCONFIRMED');?>
+							</td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -209,7 +212,6 @@ Joomla.submitbutton = function (pressbutton)
 								<br /><br />
 								<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_TO_TESTRECIPIENTS_NOTE'); ?>
 								<br /><br />
-								<input type="hidden" id="send_to_unconfirmed" name="send_to_unconfirmed" value="0" />
 							</td>
 						</tr>
 						<tr>

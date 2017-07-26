@@ -78,7 +78,8 @@ class NewsletterEditPage
     public static $success_send_number  = '0  of  %s  newsletters need to be sent.';
 
     public static $nbr_only_confirmed   = 128;
-    public static $nbr_also_unconfirmed = 211;
+    public static $nbr_unconfirmed      = 83;
+    public static $nbr_usergroup        = 4;
 
 	public static $mark_to_send         = ".//*[@id='cb0']";
 	public static $duplicate_prefix     = "Copy of '";
@@ -406,6 +407,7 @@ class NewsletterEditPage
 	 *
 	 * @param   \AcceptanceTester   $I
 	 * @param   boolean             $sentToUnconfirmed
+     * @param   boolean             $toUsergroup
 	 *
 	 * @before  _login
 	 *
@@ -415,7 +417,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false)
+	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false)
 	{
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
@@ -432,8 +434,14 @@ class NewsletterEditPage
         if ($sentToUnconfirmed)
         {
             $I->click(self::$checkbox_unconfirmed);
-            $nbrToSend = self::$nbr_also_unconfirmed;
+            $nbrToSend += self::$nbr_unconfirmed;
         }
+
+        if ($toUsergroup)
+        {
+            $nbrToSend = self::$nbr_usergroup;
+        }
+
 		$I->clickAndWait(self::$button_send, 1);
 
 		$I->seeInPopup(self::$popup_send_confirm);

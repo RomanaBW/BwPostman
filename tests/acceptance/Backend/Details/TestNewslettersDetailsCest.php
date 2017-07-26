@@ -424,7 +424,7 @@ $I->wait(3);
 
 		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, Generals::$admin['author']);
+		NlEdit::SendNewsletterToRealRecipients($I);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -449,7 +449,7 @@ $I->wait(3);
 
         NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
-        NlEdit::SendNewsletterToRealRecipients($I, Generals::$admin['author']);
+        NlEdit::SendNewsletterToRealRecipients($I, false, true);
 
         $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
         $I->see('Newsletters', Generals::$pageTitle);
@@ -474,7 +474,7 @@ $I->wait(3);
 
         NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-        NlEdit::SendNewsletterToRealRecipients($I, Generals::$admin['author'], true);
+        NlEdit::SendNewsletterToRealRecipients($I, true);
 
         $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
         $I->see('Newsletters', Generals::$pageTitle);

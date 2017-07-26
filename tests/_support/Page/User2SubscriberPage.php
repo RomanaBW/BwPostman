@@ -168,13 +168,13 @@ class User2SubscriberPage
 
 	//messages
 	public static $delete_confirm           = "Are you sure you want to delete? Confirming will permanently delete the selected item(s)!";
-	public static $delete_success           = "1 user successfully deleted.";
+	public static $delete_success           = "1 user deleted.";
 	public static $register_success         = "Your account has been created and a";
-	public static $config_save_success      = "Configuration successfully saved.";
+	public static $config_save_success      = "Configuration saved.";
 
 	public static $plugin_disabled_success  = 'Plugin successfully disabled';
 	public static $plugin_enabled_success   = 'Plugin successfully enabled';
-	public static $plugin_saved_success     = 'Plugin successfully saved';
+	public static $plugin_saved_success     = 'Plugin saved';
 
 	public static $username_used            = 'The username you entered is not available. Please pick another username.';
 	public static $mailaddress_used         = 'The email address you entered is already in use or invalid. Please enter another email address.';

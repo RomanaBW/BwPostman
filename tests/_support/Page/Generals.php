@@ -333,6 +333,7 @@ class Generals
 	public static $mls_accessible       = ".//*[@id='jform_ml_available_%s']";
 	public static $mls_nonaccessible    = ".//*[@id='jform_ml_unavailable_%s']";
 	public static $mls_internal         = ".//*[@id='jform_ml_intern_%s']";
+	public static $mls_usergroup        = ".//*[@id='1group_2']";
 
 
 	/**

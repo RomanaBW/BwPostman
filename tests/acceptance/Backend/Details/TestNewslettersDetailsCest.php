@@ -148,7 +148,7 @@ $I->wait(3);
 	 */
 	public function CreateOneNewsletterCompleteListView(\AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Newsletter list view");
+		$I->wantTo("Create one Newsletter, archive and delete list view");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
@@ -179,7 +179,7 @@ $I->wait(3);
 	 */
 	public function CreateOneNewsletterListViewRestore(\AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Newsletter list view");
+		$I->wantTo("Create one Newsletter list view, archive and restore");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
@@ -188,7 +188,6 @@ $I->wait(3);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->HelperArchiveItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array);
@@ -460,11 +459,16 @@ $I->wait(3);
 
 			// make changes
 			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_published, NlEdit::$published_list_id);
-			$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
-			$I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
-			$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
 
-			$I->click(Generals::$toolbar['Save']);
+			$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
+			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+
+            $I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
+            $I->pressKey(NlEdit::$publish_down, \WebDriverKeys::TAB);
+
+            $I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
+
+            $I->click(Generals::$toolbar['Save']);
 			Generals::dontSeeAnyWarning($I);
 
 			$I->see("Message", Generals::$alert_header);
@@ -496,19 +500,16 @@ $I->wait(3);
 			$I->click(NlManage::$first_list_link);
 			$I->waitForElement(Generals::$pageTitle, 30);
 			$I->see('Newsletter Publishing Details', Generals::$pageTitle);
-			/*
-					$I->waitForElement(".//*[@id='jform_template_id']", 30);
-					$I->waitForElement(".//*[@id='jform_text_template_id']", 30);
 
-			$tpl_id     = $I->grabValueFrom(".//*[@id='jform_template_id']");
-			$tpl_text_id     = $I->grabValueFrom(".//*[@id='jform_text_template_id']");
-			codecept_debug('TPL-ID 3: ' . $tpl_id);
-			codecept_debug('Text-TPL-ID 3: ' . $tpl_text_id);
-			*/
 			// make changes
 			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
+
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
+            $I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+
 			$I->fillField(NlEdit::$publish_down, NlEdit::$field_publish_down);
+            $I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+
 			$I->fillField(NlEdit::$description, NlEdit::$field_description);
 
 			$I->click(Generals::$toolbar['Save & Close']);

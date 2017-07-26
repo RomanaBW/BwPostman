@@ -50,7 +50,7 @@ class InstallationPage
 	public static $headingManage        = "Extensions: Manage";
 	public static $headingPlugins       = "Plugins";
 
-	public static $pluginSavedSuccess   = "Plugin successfully saved.";
+	public static $pluginSavedSuccess   = "Plugin saved.";
 
 	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
 

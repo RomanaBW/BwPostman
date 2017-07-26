@@ -148,7 +148,7 @@ class TestSubscribersDetailsCest
 	 */
 	public function CreateOneSubscriberCompleteListView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Subscriber list view");
+		$I->wantTo("Create one Subscriber complete list view");
 		$I->amOnPage(SubManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
@@ -182,7 +182,7 @@ class TestSubscribersDetailsCest
 	 */
 	public function CreateOneSubscriberListViewRestore(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Subscriber list view");
+		$I->wantTo("Create one Subscriber list view, archive and restore");
 		$I->amOnPage(SubManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
@@ -338,12 +338,14 @@ class TestSubscribersDetailsCest
 		// omit additional field
 		if ($options->show_special || $options->special_field_obligation)
 		{
-			if ($options->firstname_field_obligation)
+			if ($options->special_field_obligation)
 			{
 				$I->fillField(SubEdit::$special, "");
 				if ($options->special_field_obligation)
 				{
-					$I->seeInPopup(sprintf(SubEdit::$popup_special, $options->special_label));
+                    $I->click(SubEdit::$toolbar['Save']);
+
+                    $I->seeInPopup(sprintf(SubEdit::$popup_special, $options->special_label));
 					$I->acceptPopup();
 				}
 			}

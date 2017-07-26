@@ -267,6 +267,7 @@ $I->wait(3);
 	}
 	}
 */
+
 	/**
 	 * Test method to create same single Newsletter twice from main view
 	 *
@@ -429,7 +430,57 @@ $I->wait(3);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
-	/**
+    /**
+     * Test method to create copy newsletter and send to a real usergroup
+     *
+     * @param   \AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function SendNewsletterToRealUsergroup(\AcceptanceTester $I)
+    {
+        $I->wantTo("Send a newsletter to a real user group");
+
+        NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
+
+        NlEdit::SendNewsletterToRealRecipients($I, Generals::$admin['author']);
+
+        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+        $I->see('Newsletters', Generals::$pageTitle);
+    }
+
+    /**
+     * Test method to create copy newsletter and send to a real usergroup
+     *
+     * @param   \AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function SendNewsletterToUnconfirmed(\AcceptanceTester $I)
+    {
+        $I->wantTo("Send a newsletter also to a unconfirmed recipients");
+
+        NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+
+        NlEdit::SendNewsletterToRealRecipients($I, Generals::$admin['author'], true);
+
+        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+        $I->see('Newsletters', Generals::$pageTitle);
+    }
+
+    /**
 	 * Test method to create copy newsletter and send to real recipients
 	 *
 	 * @param   \AcceptanceTester                $I

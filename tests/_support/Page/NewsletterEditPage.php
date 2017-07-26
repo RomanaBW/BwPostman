@@ -69,11 +69,16 @@ class NewsletterEditPage
 	public static $tab5_legend2      = "Send test newsletters";
 	public static $tab5_send_iframe  = "sendFrame";
 
+	public static $checkbox_unconfirmed = ".//*[@id='send_to_unconfirmed']";
 	public static $button_send          = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/table/tbody/tr[5]/td[2]/input[1]";
 	public static $button_send_publish  = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/table/tbody/tr[5]/td[2]/input[2]";
 	public static $button_send_test     = ".//*[@id='adminForm']/div[3]/fieldset[2]/div/table/tbody/tr[2]/td[2]/input";
 	public static $success_send         = 'The newsletters are sent';
 	public static $success_send_ready   = 'All newsletters in the queue';
+    public static $success_send_number  = '0  of  %s  newsletters need to be sent.';
+
+    public static $nbr_only_confirmed   = 128;
+    public static $nbr_also_unconfirmed = 211;
 
 	public static $mark_to_send         = ".//*[@id='cb0']";
 	public static $duplicate_prefix     = "Copy of '";
@@ -271,12 +276,13 @@ class NewsletterEditPage
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param \AcceptanceTester $I
+     * @param boolean           $toUsergroup
 	 *
 	 * @return string   $content_title  title of content
 	 *
 	 * @since   2.0.0
 	 */
-	public static function fillFormSimple(\AcceptanceTester $I)
+	public static function fillFormSimple(\AcceptanceTester $I, $toUsergroup = false)
 	{
 		$I->fillField(self::$from_name, self::$field_from_name);
 		$I->fillField(self::$from_email, self::$field_from_email);
@@ -294,7 +300,7 @@ class NewsletterEditPage
 		$I->click(self::$template_html);
 		$I->click(self::$template_text);
 
-		self::selectRecipients($I);
+		self::selectRecipients($I, $toUsergroup);
 
 		// add content
 		$I->scrollTo(self::$legend_content);
@@ -331,15 +337,23 @@ class NewsletterEditPage
 	 * Method to select recipients for newsletter
 	 *
 	 * @param \AcceptanceTester $I
+     * @param boolean           $toUsergroup
 	 *
 	 * @return void
 	 *
 	 * @since   2.0.0
 	 */
-	public static function selectRecipients(\AcceptanceTester $I)
+	public static function selectRecipients(\AcceptanceTester $I, $toUsergroup = false)
 	{
 		$I->scrollTo(self::$legend_recipients);
-		$I->click(sprintf(Generals::$mls_accessible, 2));
+		if (!$toUsergroup)
+        {
+            $I->click(sprintf(Generals::$mls_accessible, 2));
+        }
+        else
+        {
+            $I->click(Generals::$mls_usergroup);
+        }
 //		$I->click(sprintf(Generals::$mls_nonaccessible, 3));
 //		$I->click(sprintf(Generals::$mls_internal, 4));
 	}
@@ -367,19 +381,20 @@ class NewsletterEditPage
 	 *
 	 * @param   \AcceptanceTester   $I
 	 * @param   string              $username
+     * @param   boolean             $toUsergroup
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public static function _CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username)
+	public static function _CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username, $toUsergroup = false)
 	{
 		$I->wantTo("Create Newsletter without cleanup");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		self::fillFormSimple($I);
+		self::fillFormSimple($I, $toUsergroup);
 
 		$I->click(self::$toolbar['Save & Close']);
 		self::checkSuccess($I, $username);
@@ -390,7 +405,7 @@ class NewsletterEditPage
 	 * Test method to create copy newsletter and send to real recipients
 	 *
 	 * @param   \AcceptanceTester   $I
-	 * @param   string              $username
+	 * @param   boolean             $sentToUnconfirmed
 	 *
 	 * @before  _login
 	 *
@@ -400,11 +415,25 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $username)
+	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false)
 	{
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(self::$tab5_legend1);
+
+		$I->click(self::$tab2);
+        $I->click(self::$tab3);
+        $I->click(self::$toolbar['Save']);
+
+        $I->click(self::$tab5);
+
+        $nbrToSend  = self::$nbr_only_confirmed;
+
+        if ($sentToUnconfirmed)
+        {
+            $I->click(self::$checkbox_unconfirmed);
+//            $nbrToSend = self::$nbr_also_unconfirmed;
+        }
 		$I->clickAndWait(self::$button_send, 1);
 
 		$I->seeInPopup(self::$popup_send_confirm);
@@ -414,6 +443,9 @@ class NewsletterEditPage
 		$I->switchToIFrame(self::$tab5_send_iframe);
 		$I->waitForText(self::$success_send_ready, 300);
 		$I->see(self::$success_send_ready);
+
+		$I->see(sprintf(self::$success_send_number, $nbrToSend));
+
 		$I->switchToIFrame();
 		$I->wait(8);
 

@@ -204,6 +204,8 @@ codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateNewsle
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CopyNewsletter ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_copy.xml --html htmlreports/report_newsletters_copy.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToTestrecipients ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_send_test.xml --html htmlreports/report_newsletters_send_test.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealRecipients ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_send_real.xml --html htmlreports/report_newsletters_send_real.html
+codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealUsergroup ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_send_usergroup.xml --html htmlreports/report_newsletters_send_usergroup.html
+codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToUnconfirmed ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_send_unconfirmed.xml --html htmlreports/report_newsletters_send_unconfirmed.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::EditSentNewsletter ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_edit_sent.xml --html htmlreports/report_newsletters_edit_sent.html
 fi
 

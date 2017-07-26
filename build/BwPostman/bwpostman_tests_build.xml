@@ -23,6 +23,7 @@
 	<property name="debug" value=" ${BW_TEST_DEBUG}" override="true" />
 	<property name="test_cat" value="${BW_TEST_CAT}" override="true" />
 	<property name="php_version" value="${BW_TEST_PHP_VERSION}" override="true" />
+	<property name="failed" value="false" override="true" />
 
 	<target name="create_project_name"
 	        description="Creates the project name from given environment variables and export it">
@@ -108,10 +109,10 @@
 	<target name="set_rebase" depends="prepare_codecept_variables"
 	        description="set rebase, needed while testing failed, testing installation/update or manual desire">
 
-		<available property="failed" file="${test_dir}/_output/${project_name}/failed" />
+		<available file="${test_dir}/_output/${project_name}/failed" property="failed" value="true"/>
 		<echo message="Failed: ${failed}" />
 		<if>
-			<istrue value="${failed}" />
+			<equals arg1="${failed}" arg2="1"/>
 			<then>
 				<echo message="Failed in 1. IF: ${failed}" />
 				<property name="rebase" value="true" override="true" />
@@ -120,7 +121,7 @@
 		<echo message="Rebase nach Fehlerdatei: ${rebase}" />
 
 		<if>
-			<istrue value="${bwpm_install}" />
+			<equals arg1="${bwpm_install}" arg2="1"/>
 			<then>
 				<property name="rebase" value="true" override="true" />
 			</then>
@@ -136,7 +137,7 @@
 	<target name="do_rebase" depends="start_infrastructure"
 	        description="sync dev files and rebase database if needed or delete all BwPostman related stuff">
 		<if>
-			<isfalse value="${bwpm_install}" />
+			<equals arg1="${bwpm_install}" arg2=""/>
 				<then>
 					<filesync
 							rsyncPath="/usr/bin/rsync"
@@ -211,7 +212,7 @@
 
 		<echo message="Rebase vor Do Rebase: ${rebase}" />
 		<if>
-			<istrue value="${rebase}" />
+			<equals arg1="${rebase}" arg2="1"/>
 			<then>
 				<echo message="Do Rebase erkannt: ${rebase}" />
 				<exec command="mysql -u ${BW_TEST_DB_USER} -p${BW_TEST_DB_PW} -h ${BW_TEST_DB_HOST} ${BW_TEST_DB_NAME} &lt; ${web_dir}/${project_name}/backups/${project_name}.sql" passthru="true" />

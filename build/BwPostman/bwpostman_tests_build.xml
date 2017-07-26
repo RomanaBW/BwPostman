@@ -210,7 +210,6 @@
 			</else>
 		</if>
 
-		<echo message="Rebase vor Do Rebase: ${rebase}" />
 		<if>
 			<equals arg1="${rebase}" arg2="1"/>
 			<then>

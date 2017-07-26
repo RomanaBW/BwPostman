@@ -432,7 +432,7 @@ class NewsletterEditPage
         if ($sentToUnconfirmed)
         {
             $I->click(self::$checkbox_unconfirmed);
-//            $nbrToSend = self::$nbr_also_unconfirmed;
+            $nbrToSend = self::$nbr_also_unconfirmed;
         }
 		$I->clickAndWait(self::$button_send, 1);
 

@@ -474,7 +474,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   string $subscriber_mail mail address of subscriber
 	 *
-	 * @return  string
+	 * @return  array
 	 *
 	 * @since   2.0.0
 	 */
@@ -493,7 +493,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   string $user_mail mail address of user
 	 *
-	 * @return  string
+	 * @return  array
 	 *
 	 * @since   2.0.0
 	 */
@@ -512,7 +512,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   string $subscriber_mail mail address of subscriber
 	 *
-	 * @return  string
+	 * @return  array
 	 *
 	 * @since   2.0.0
 	 */

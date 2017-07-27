@@ -360,8 +360,12 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		{
 			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
+
+        $app		= JFactory::getApplication();
+
 		if (!$allowed)
 		{
+            $app->setUserState('com_bwpostman.edit.newsletter.data', null);
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
@@ -371,7 +375,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			return false;
 		}
 
-		$app		= JFactory::getApplication();
 		$lang		= JFactory::getLanguage();
 		$checkin	= property_exists($table, 'checked_out');
 		$context	= "$this->option.edit.$this->context";

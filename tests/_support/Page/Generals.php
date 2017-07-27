@@ -208,6 +208,9 @@ class Generals
 		'Delete'            => ".//*[@id='toolbar-delete']/button",
 		'Restore'           => ".//*[@id='toolbar-unarchive']/button",
 		'Enable'            => ".//*[@id='toolbar-publish']/button",
+        'Import'            => ".//*[@id='toolbar-download']/button",
+        'Export'            => ".//*[@id='toolbar-upload']/button",
+        'Batch'             => ".//*[@id='toolbar-batch']/button",
 );
 
 	/**

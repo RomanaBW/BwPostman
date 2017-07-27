@@ -101,6 +101,8 @@ class Login
 		$I->waitForElement(self::$form, 30);
 		$I->see(Generals::$login_txt, $loginArea);
 
+		$I->truncateSession();
+
 		return $this;
 	}
 }

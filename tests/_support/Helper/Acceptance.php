@@ -1266,12 +1266,6 @@ class Acceptance extends Codeception\Module
 	/**
 	 * Updates an SQL record into a database. This record will **not** be reset after the test.
 	 *
-	 * ``` php
-	 * <?php
-	 * $I->updateInDatabase('users', array('email' => 'miles@davis.com'), array('name' => 'miles'));
-	 * ?>
-	 * ```
-	 *
 	 * @param   string      $table              the name of table to update
 	 * @param   int         $value              value to set autoincrement to
 	 *
@@ -1285,7 +1279,20 @@ class Acceptance extends Codeception\Module
 		DbHelper::resetAutoIncrement($table, $value, $criteria, $credentials);
 	}
 
-	/**
+    /**
+     * Truncate table session. This record will **not** be reset after the test.
+     *
+     *
+     * @since   2.0.0.
+     */
+    public function truncateSession()
+    {
+        $credentials    = $this->_getDbCredentials();
+
+        DbHelper::truncateSession($credentials);
+    }
+
+    /**
 	 * Method to get ID of an extension
 	 *
 	 * @param   string      $extension      the extension to set the option for

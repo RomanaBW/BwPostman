@@ -283,7 +283,25 @@ class DbHelper extends Module
 		$driver->executeQuery($query, $criteria);
 	}
 
-	/**
+    /**
+     * DbHelper method to truncate session table
+     *
+     * @param   array       $credentials        credentials of database
+     *
+     * @since   2.0.0
+     */
+    public static function truncateSession(array $credentials)
+    {
+        $criteria   = array();
+        $driver     = self::getDbDriver($credentials);
+        $table_name = Generals::$db_prefix . 'session';
+
+//codecept_debug('Arrived in DbHelper');
+        $query      = "TRUNCATE TABLE " . $table_name;
+        $driver->executeQuery($query, $criteria);
+    }
+
+    /**
 	 * DbHelper Method to get ID of an extension
 	 *
 	 * @param   string      $extension          component, module name

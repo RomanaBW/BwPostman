@@ -1,6 +1,7 @@
 <?php
 use Page\Generals as Generals;
 use Page\SubscriberManagerPage as SubsManage;
+use Page\SubscriberEditPage as SubsEdit;
 
 
 /**
@@ -58,7 +59,7 @@ class TestSubscribersListsCest
 	public function SortSubscribersByTableHeader(AcceptanceTester $I)
 	{
 		// @Todo: ensure UTF-8 characters are recognized; only testing problem
-		$I->wantTo("Sort subscribers by table header");
+		$I->wantTo("Sort confirmed subscribers by table header");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
@@ -99,7 +100,7 @@ class TestSubscribersListsCest
 	public function SortSubscribersBySelectList(AcceptanceTester $I)
 	{
 		// @Todo: ensure UTF-8 characters are recognized
-		$I->wantTo("Sort subscribers by select list");
+		$I->wantTo("Sort confirmed subscribers by select list");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
@@ -135,7 +136,7 @@ class TestSubscribersListsCest
 	 */
 	public function FilterSubscribersByMailformat(AcceptanceTester $I)
 	{
-		$I->wantTo("Filter subscribers by email format");
+		$I->wantTo("Filter confirmed subscribers by email format");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
@@ -168,7 +169,7 @@ class TestSubscribersListsCest
 	 */
 	public function FilterSubscribersByMailinglist(AcceptanceTester $I)
 	{
-		$I->wantTo("Filter subscribers by mailing list");
+		$I->wantTo("Filter confirmed subscribers by mailing list");
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(SubsManage::$wait_db);
 
@@ -195,7 +196,7 @@ class TestSubscribersListsCest
 	 */
 	public function SearchSubscribers(AcceptanceTester $I)
 	{
-		$I->wantTo("Search Subscribers");
+		$I->wantTo("Search confirmed Subscribers");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
@@ -220,7 +221,7 @@ class TestSubscribersListsCest
 	 */
 	public function ListlimitSubscribers(AcceptanceTester $I)
 	{
-		$I->wantTo("test list limit at subscribers");
+		$I->wantTo("test list limit at confirmed subscribers");
 		$I->amOnPage(SubsManage::$url);
 
 		$I->checkListlimit($I);
@@ -241,7 +242,7 @@ class TestSubscribersListsCest
 	 */
 	public function PaginationSubscribers(AcceptanceTester $I)
 	{
-		$I->wantTo("test pagination at subscribers");
+		$I->wantTo("test pagination at confirmed subscribers");
 		$I->amOnPage(SubsManage::$url);
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
@@ -249,7 +250,628 @@ class TestSubscribersListsCest
 		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
 	}
 
-	/**
+    /**
+     * Test method sorting subscribers by click to column in table header
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function SortUnconfirmedSubscribersByTableHeader(AcceptanceTester $I)
+    {
+        // @Todo: ensure UTF-8 characters are recognized; only testing problem
+        $I->wantTo("Sort unconfirmed subscribers by table header");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+
+        $I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
+        $I->click(Generals::$submenu_toggle_button);
+
+        $sort_array     = $this->_prepareSortArray($I);
+        $loop_counts    = 10;
+
+        $options    = $I->getManifestOptions('com_bwpostman');
+
+        if (!$options->show_gender)
+        {
+            $loop_counts    = 9;
+        }
+
+
+        // loop over sorting criterion
+        $columns    = implode(', ', SubsManage::$query_criteria);
+        $columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+        $I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
+
+        $I->click(Generals::$submenu_toggle_button);
+    }
+
+    /**
+     * Test method to import subscribers by CSV file
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function ImportSubscribersByCSV(AcceptanceTester $I)
+    {
+        $I->wantTo("import subscribers by CSV file");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+
+        $I->click(Generals::$toolbar['Import']);
+        $I->dontSeeElement(SubsManage::$import_search_button);
+
+        $I->click(SubsManage::$import_csv_button);
+        $I->seeElement(SubsManage::$import_search_button);
+        $I->attachFile(SubsManage::$import_search_button, SubsManage::$import_csv_file);
+
+        $I->click(SubsManage::$import_csv_caption);
+
+        $I->click(SubsManage::$import_button_further);
+
+        $I->see(SubsManage::$import_csv_file);
+        $I->see('Yes');
+
+        $I->scrollTo(SubsManage::$import_legend_step_2);
+        $I->see(SubsManage::$import_csv_field_0);
+        $I->see(SubsManage::$import_csv_field_1);
+        $I->see(SubsManage::$import_csv_field_2);
+        $I->see(SubsManage::$import_csv_field_3);
+        $I->see(SubsManage::$import_csv_field_4);
+
+        $I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
+        $I->click(SubsManage::$import_mls_target);
+
+        $I->scrollTo(SubsManage::$import_legend_format, 0, -100);
+        $I->click(SubsManage::$import_cb_confirm_subs);
+
+        $I->click(SubsManage::$import_button_import);
+
+        $I->waitForElement(Generals::$alert_success, 60);
+        $I->see(SubsManage::$import_msg_success, Generals::$alert_success);
+
+        $I->click(Generals::$toolbar['Cancel']);
+
+        $this->cleanupImportedSubscribers($I, SubsManage::$import_csv_subscribers);
+    }
+
+    /**
+     * Test method to import subscribers by XML file
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function ImportSubscribersByXML(AcceptanceTester $I)
+    {
+        $I->wantTo("import subscribers by XML file");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+
+        $I->click(Generals::$toolbar['Import']);
+        $I->dontSeeElement(SubsManage::$import_search_button);
+
+        $I->click(SubsManage::$import_xml_button);
+        $I->seeElement(SubsManage::$import_search_button);
+        $I->attachFile(SubsManage::$import_search_button, SubsManage::$import_xml_file);
+
+        $I->click(SubsManage::$import_button_further);
+
+        $I->see(SubsManage::$import_xml_file);
+
+        $I->scrollTo(SubsManage::$import_legend_step_2);
+        $I->see(SubsManage::$import_xml_field_0);
+        $I->see(SubsManage::$import_xml_field_1);
+        $I->see(SubsManage::$import_xml_field_2);
+        $I->see(SubsManage::$import_xml_field_3);
+        $I->see(SubsManage::$import_xml_field_4);
+
+        $I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
+        $I->click(SubsManage::$import_mls_target);
+
+        $I->scrollTo(SubsManage::$import_legend_format, 0, -100);
+        $I->click(SubsManage::$import_cb_confirm_subs);
+
+        $I->click(SubsManage::$import_button_import);
+
+        $I->waitForElement(Generals::$alert_success, 60);
+        $I->see(SubsManage::$import_msg_success, Generals::$alert_success);
+
+        $I->click(Generals::$toolbar['Cancel']);
+        $this->cleanupImportedSubscribers($I, SubsManage::$import_xml_subscribers);
+    }
+
+    /**
+     * Test method to export subscribers to CSV file
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function ExportSubscribersToCSV(AcceptanceTester $I)
+    {
+        $I->wantTo("export subscribers to CSV file");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+
+        $I->click(Generals::$toolbar['Export']);
+        $I->dontSeeElement(SubsManage::$import_search_button);
+
+        $I->click(SubsManage::$import_csv_button);
+        $I->seeElement(SubsManage::$export_csv_confirmed);
+
+        $I->click(SubsManage::$export_csv_confirmed);
+        $I->click(SubsManage::$export_csv_unarchived);
+
+        $I->scrollTo(SubsManage::$export_legend_fields);
+
+        $path     = '/root/Downloads/';
+        $filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+
+        $I->clickAndWait(SubsManage::$export_button_export, 10);
+
+        $I->assertTrue(file_exists($path . $filename));
+
+        $I->click(Generals::$toolbar['Cancel']);
+    }
+
+    /**
+     * Test method to export subscribers to XML file
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function ExportSubscribersToXML(AcceptanceTester $I)
+    {
+        $I->wantTo("export subscribers to XML file");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+
+        $I->click(Generals::$toolbar['Export']);
+        $I->dontSeeElement(SubsManage::$import_search_button);
+
+        $I->click(SubsManage::$import_xml_button);
+        $I->seeElement(SubsManage::$export_csv_confirmed);
+
+        $I->click(SubsManage::$export_csv_confirmed);
+        $I->click(SubsManage::$export_csv_unarchived);
+
+        $I->scrollTo(SubsManage::$export_legend_fields);
+
+        $path     = '/root/Downloads/';
+        $filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
+
+        $I->clickAndWait(SubsManage::$export_button_export, 10);
+
+        $I->assertTrue(file_exists($path . $filename));
+
+        $I->click(Generals::$toolbar['Cancel']);
+    }
+
+
+
+
+
+
+    // @ToDo: Next tests with Chromium switches unpredictably to first tab, so correct check is not possible
+    // Would be better if I switch to tabs like at newsletters?
+
+    /**
+     * Test method sorting subscribers by selection at select list
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function SortUnconfirmedSubscribersBySelectList(AcceptanceTester $I)
+    {
+        // @Todo: ensure UTF-8 characters are recognized
+        $I->wantTo("Sort unconfirmed subscribers by select list");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+
+        $I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
+        $I->click(Generals::$submenu_toggle_button);
+
+        $sort_array = $this->_prepareSortArray($I);
+        $loop_counts    = 10;
+
+        $options    = $I->getManifestOptions('com_bwpostman');
+
+        if (!$options->show_gender)
+        {
+            $loop_counts    = 9;
+        }
+
+        // loop over sorting criterion
+        $columns    = implode(', ', SubsManage::$query_criteria);
+        $columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+        $I->loopFilterList($I, $sort_array, '', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
+    }
+*/
+    /**
+     * Test method to filter subscribers by status
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function FilterUnconfirmedSubscribersByMailformat(AcceptanceTester $I)
+    {
+        $I->wantTo("Filter unconfirmed subscribers by email format");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+
+        // Get filter bar
+        $I->clickAndWait(Generals::$filterbar_button, 1);
+        // select published
+        $I->clickSelectList(SubsManage::$format_list, SubsManage::$format_text, SubsManage::$format_list_id);
+
+        $I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
+
+        // select unpublished
+        $I->clickSelectList(SubsManage::$format_list, SubsManage::$format_html, SubsManage::$format_list_id);
+
+        $I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
+
+    }
+*/
+    /**
+     * Test method to filter subscribers by access
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function FilterUnconfirmedSubscribersByMailinglist(AcceptanceTester $I)
+    {
+        $I->wantTo("Filter unconfirmed subscribers by mailing list");
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(SubsManage::$wait_db);
+
+        // Get filter bar
+        $I->clickAndWait(Generals::$filterbar_button, 1);
+        // select 04 Mailingliste 14 A
+        $I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
+
+        $I->assertFilterResult(SubsManage::$filter_subs_result);
+    }
+*/
+    /**
+     * Test method to search subscribers
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function SearchUnconfirmedSubscribers(AcceptanceTester $I)
+    {
+        $I->wantTo("Search unconfirmed Subscribers");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+
+        $I->searchLoop($I, SubsManage::$search_data_array, true);
+
+        $I->click(Generals::$clear_button);
+        $I->see(SubsManage::$search_clear_val);
+    }
+*/
+    /**
+     * Test method to check list limit of subscribers
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function ListlimitUnconfirmedSubscribers(AcceptanceTester $I)
+    {
+        $I->wantTo("test list limit at unconfirmed subscribers");
+        $I->amOnPage(SubsManage::$url);
+
+        $I->checkListlimit($I);
+    }
+*/
+    /**
+     * Test method to check pagination of subscribers
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function PaginationUnconfirmedSubscribers(AcceptanceTester $I)
+    {
+        $I->wantTo("test pagination at unconfirmed subscribers");
+        $I->amOnPage(SubsManage::$url);
+
+        $I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+
+        $I->checkPagination($I, SubsManage::$pagination_data_array, 10);
+    }
+*/
+    /**
+     * Test method sorting subscribers by click to column in table header
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function SortTestRecipientsByTableHeader(AcceptanceTester $I)
+    {
+        // @Todo: ensure UTF-8 characters are recognized; only testing problem
+        $I->wantTo("Sort test recipients by table header");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+        $I->click(Generals::$submenu_toggle_button);
+
+        $sort_array     = $this->_prepareSortArray($I);
+        $loop_counts    = 10;
+
+        $options    = $I->getManifestOptions('com_bwpostman');
+
+        if (!$options->show_gender)
+        {
+            $loop_counts    = 9;
+        }
+
+
+        // loop over sorting criterion
+        $columns    = implode(', ', SubsManage::$query_criteria);
+        $columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+        $I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
+
+        $I->click(Generals::$submenu_toggle_button);
+    }
+*/
+    /**
+     * Test method sorting subscribers by selection at select list
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function SortTestRecipientsBySelectList(AcceptanceTester $I)
+    {
+        // @Todo: ensure UTF-8 characters are recognized
+        $I->wantTo("Sort test recipients by select list");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(1);
+
+        $sort_array = $this->_prepareSortArray($I);
+        $loop_counts    = 10;
+
+        $options    = $I->getManifestOptions('com_bwpostman');
+
+        if (!$options->show_gender)
+        {
+            $loop_counts    = 9;
+        }
+
+        // loop over sorting criterion
+        $columns    = implode(', ', SubsManage::$query_criteria);
+        $columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+        $I->loopFilterList($I, $sort_array, '', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
+    }
+*/
+    /**
+     * Test method to filter subscribers by status
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function FilterTestRecipientsByMailformat(AcceptanceTester $I)
+    {
+        $I->wantTo("Filter test recipients by email format");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+
+        // Get filter bar
+        $I->clickAndWait(Generals::$filterbar_button, 1);
+        // select published
+        $I->clickSelectList(SubsManage::$format_list, SubsManage::$format_text, SubsManage::$format_list_id);
+
+        $I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
+
+        // select unpublished
+        $I->clickSelectList(SubsManage::$format_list, SubsManage::$format_html, SubsManage::$format_list_id);
+
+        $I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
+
+    }
+*/
+    /**
+     * Test method to filter subscribers by access
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function FilterTestRecipientsByMailinglist(AcceptanceTester $I)
+    {
+        $I->wantTo("Filter test recipients by mailing list");
+        $I->amOnPage(SubsManage::$url);
+        $I->wait(SubsManage::$wait_db);
+
+        // Get filter bar
+        $I->clickAndWait(Generals::$filterbar_button, 1);
+        // select 04 Mailingliste 14 A
+        $I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
+
+        $I->assertFilterResult(SubsManage::$filter_subs_result);
+    }
+*/
+    /**
+     * Test method to search subscribers
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function SearchTestRecipients(AcceptanceTester $I)
+    {
+        $I->wantTo("Search test recipients");
+        SubsManage::$wait_db;
+        $I->amOnPage(SubsManage::$url);
+
+        $I->searchLoop($I, SubsManage::$search_data_array, true);
+
+        $I->click(Generals::$clear_button);
+        $I->see(SubsManage::$search_clear_val);
+    }
+*/
+    /**
+     * Test method to check list limit of subscribers
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function ListlimitTestRecipients(AcceptanceTester $I)
+    {
+        $I->wantTo("test list limit at test recipients");
+        $I->amOnPage(SubsManage::$url);
+
+        $I->checkListlimit($I);
+    }
+*/
+    /**
+     * Test method to check pagination of subscribers
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+/*    public function PaginationTestRecipients(AcceptanceTester $I)
+    {
+        $I->wantTo("test pagination at test recipients");
+        $I->amOnPage(SubsManage::$url);
+
+        $I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+
+        $I->checkPagination($I, SubsManage::$pagination_data_array, 10);
+    }
+*/
+    /**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I
@@ -269,7 +891,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return array
 	 *
-	 * @since version
+	 * @since 2.0.0
 	 */
 	private function _prepareSortArray(AcceptanceTester $I)
 	{
@@ -285,4 +907,58 @@ class TestSubscribersListsCest
 
 		return $sort_array;
 	}
+
+    /**
+     * @param AcceptanceTester $I
+     * @param array            $subscribers
+     *
+     * @return void
+     *
+     * @since 2.0.0
+     */
+    private function cleanupImportedSubscribers(AcceptanceTester $I, $subscribers)
+    {
+        // @ToDo: Check for mailinglist of imported subscribers
+        // Check for imported subscribers
+        foreach ($subscribers as $subscriber)
+        {
+            $search_data_array = array(
+                'search_by'  => array(
+                    ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
+                ),
+                'search_val' => array($subscriber['email']),
+                // array of arrays: outer array per search value, inner arrays per 'search by'
+                'search_res' => array(array(1), array(1)),
+            );
+
+            $I->click(SubsManage::$tab_confirmed);
+
+            if ($subscriber['status'] == '0')
+            {
+                $I->click(SubsManage::$tab_unconfirmed);
+            }
+
+            $I->searchLoop($I, $search_data_array, true);
+
+            $table_identifier = ".//*[@id='main-table']/tbody/tr[1]/td";
+            $I->see($subscriber['name'], $table_identifier . '[2]');
+            $I->see($subscriber['firstname'], $table_identifier . '[3]');
+            $I->see($subscriber['email'], $table_identifier . '[4]');
+
+            $format = 'HTML';
+
+            if ($subscriber['emailformat'] == '0')
+            {
+                $format = 'Text';
+            }
+            $I->see($format, $table_identifier . '[5]');
+
+            // Delete imported subscribers
+            $edit_arc_del_array                = SubsEdit::prepareDeleteArray($I);
+            $edit_arc_del_array['field_title'] = $subscriber['email'];
+
+            $I->HelperArcDelItems($I, SubsManage::$arc_del_array, $edit_arc_del_array, true);
+            $I->see('Subscribers', Generals::$pageTitle);
+        }
+    }
 }

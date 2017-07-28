@@ -226,6 +226,82 @@ class SubscriberManagerPage
     public static $import_xml_field_3   = "Field_3 (emailformat)";
     public static $import_xml_field_4   = "Field_4 (status)";
 
+    public static $import_csv_subscribers   = array(
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Max',
+            'email' => 'test1@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Moritz',
+            'email' => 'test2@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Brunhilde',
+            'email' => 'test3@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Adelgunde',
+            'email' => 'test4@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Erika',
+            'email' => 'test5@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Eugen',
+            'email' => 'test6@test-domain.nul',
+            'emailformat' => '0',
+            'status' => '1',
+        ),
+    );
+
+    public static $import_xml_subscribers   = array(
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Maximilian',
+            'email' => 'test7@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Emil',
+            'email' => 'test8@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Hanni',
+            'email' => 'test9@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+        array(
+            'name' => 'Muster',
+            'firstname' => 'Nanni',
+            'email' => 'test10@test-domain.nul',
+            'emailformat' => '1',
+            'status' => '1',
+        ),
+    );
+
     public static $import_mls_target    = ".//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/div/fieldset/div/p[2]/label";
 
     public static $import_msg_success   = "The import has successfully been completed.";

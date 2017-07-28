@@ -181,4 +181,26 @@ class SubscriberEditPage
 		$I->scrollTo(self::$mls_internal_label, 0, -100);
 		$I->click(sprintf(self::$mls_internal, 4));
 	}
+
+    /**
+     * @param \AcceptanceTester $I
+     *
+     * @return array
+     *
+     * @since version
+     */
+    public static function prepareDeleteArray(\AcceptanceTester $I)
+    {
+        $edit_arc_del_array                      = self::$arc_del_array;
+        $edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 4);
+
+        $options = $I->getManifestOptions('com_bwpostman');
+
+        if ($options->show_gender)
+        {
+            $edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 5);
+        }
+
+        return $edit_arc_del_array;
+    }
 }

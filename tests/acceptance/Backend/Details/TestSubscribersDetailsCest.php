@@ -100,7 +100,7 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
 		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
@@ -161,7 +161,7 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
 		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
@@ -195,7 +195,7 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 
-		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
 		$I->HelperArchiveItems($I, SubManage::$arc_del_array, $edit_arc_del_array);
 
@@ -248,7 +248,7 @@ class TestSubscribersDetailsCest
 		$I->click(SubEdit::$toolbar['Cancel']);
 		$I->see("Subscribers", Generals::$pageTitle);
 
-		$edit_arc_del_array = $this->_prepareDeleteArray($I);
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
 		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
@@ -371,27 +371,5 @@ class TestSubscribersDetailsCest
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
 		$I->click(sprintf(SubEdit::$mls_internal, 4));
-	}
-
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @return array
-	 *
-	 * @since version
-	 */
-	private function _prepareDeleteArray(AcceptanceTester $I)
-	{
-		$edit_arc_del_array                      = SubEdit::$arc_del_array;
-		$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 4);
-
-		$options = $I->getManifestOptions('com_bwpostman');
-
-		if ($options->show_gender)
-		{
-			$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 5);
-		}
-
-		return $edit_arc_del_array;
 	}
 }

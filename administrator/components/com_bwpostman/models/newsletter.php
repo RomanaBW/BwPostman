@@ -2832,7 +2832,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	private function _processTestMode()
 	{
-		$test_plugin = JPluginHelper::getPlugin('system', 'bwtests');
+		$test_plugin = JPluginHelper::getPlugin('system', 'bwtestmode');
 
 		if ($test_plugin)
 		{

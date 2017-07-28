@@ -139,7 +139,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</tbody>
 				</table>
 			</div>
-			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+			<div class="pagination"><?php echo $this->queuePagination->getListFooter(); ?></div>
 			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 			<input type="hidden" name="task" value="" />

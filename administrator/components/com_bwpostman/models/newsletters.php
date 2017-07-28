@@ -693,4 +693,31 @@ class BwPostmanModelNewsletters extends JModelList
 
 		$this->_query->where('a.mailing_date' . $tab_int . "'0000-00-00 00:00:00'");
 	}
+
+    /**
+     * Method to get a JPagination object for the data set.
+     *
+     * @return  JPagination  A JPagination object for the data set.
+     *
+     * @since   1.6
+     */
+    public function getQueuePagination()
+    {
+        // Get a storage key.
+        $store = $this->getStoreId('getPaginationQueue');
+
+        // Try to load the data from internal storage.
+        if (isset($this->cache[$store]))
+        {
+            return $this->cache[$store];
+        }
+
+        $limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
+
+        // Create the pagination object and add the object to the internal cache.
+        $this->cache[$store] = new JPagination($this->getCountQueue(), $this->getStart(), $limit);
+
+        return $this->cache[$store];
+    }
+
 }

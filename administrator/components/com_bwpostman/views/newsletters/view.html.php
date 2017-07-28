@@ -63,7 +63,16 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 */
 	protected $pagination;
 
-	/**
+    /**
+     * property to hold pagination object for queue
+     *
+     * @var object  $pagination
+     *
+     * @since       0.9.1
+     */
+    protected $queuePagination;
+
+    /**
 	 * property to hold state
 	 *
 	 * @var array|object  $state
@@ -172,6 +181,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->filterForm		= $this->get('FilterForm');
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->pagination		= $this->get('Pagination');
+        $this->queuePagination	= $this->get('QueuePagination');
 		$this->total 			= $this->get('total');
 		$this->count_queue		= $this->get('CountQueue');
 		$this->context			= 'com_bwpostman.newsletters';

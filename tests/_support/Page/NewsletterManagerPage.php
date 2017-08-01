@@ -341,4 +341,38 @@ class NewsletterManagerPage
 	public static $sent_column_publish_up   = ".//*[@id='main-table']/tbody/tr[1]/td[9]/p[1]";
 	public static $sent_column_publish_down = ".//*[@id='main-table']/tbody/tr[1]/td[9]/p[2]";
 	public static $sent_column_description  = ".//*[@id='main-table']/tbody/tr[1]/td[4]";
+
+	public static $queue_warning_msg    = "An error occurred while sending the newsletters, please go Newsletters → Queue and revise the entries!";
+	public static $queue_cleared_msg    = "The queue has been cleared.";
+
+	public static $queue_sending_trials_col = ".//*[@id='main-table']/tbody/tr/td[5]";
+	public static $queue_list_id            = ".//*[@id='main-table']/thead/tr/th[6]/a";
+
+    public static $pagination_queue_data_array  = array(
+        'p1_val1'              => "r.barth@tester-net.nil",
+        'p1_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p1_val_last'          => "heidi.brockhaus@tester-net.nil",
+        'p1_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+
+        'p2_val1'              => "juri.ehrenberg@tester-net.nil",
+        'p2_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p2_val_last'          => "h.burkhardt@tester-net.nil",
+        'p2_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+
+        'p3_val1'              => "lilian.holloway@tester-net.nil",
+        'p3_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p3_val3'              => " ian.wolters@tester-net.nil",
+        'p3_field3'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+
+        'p_prev_val1'          => "finn.kaczmarek@tester-net.nil",
+        'p_prev_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p_prev_val_last'      => "n.hammond@tester-net.nil",
+        'p_prev_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+
+        'p_last_val1'          => "maya.eich@tester-net.nil",
+        'p_last_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p_last_val_last'      => "info@boldt-coaching.de",
+        'p_last_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[8]/td[4]",
+    );
+
 }

@@ -1,6 +1,7 @@
 <?php
 use Page\Generals as Generals;
 use Page\NewsletterManagerPage as NlManage;
+use Page\NewsletterEditPage as NlEdit;
 
 
 /**
@@ -549,6 +550,132 @@ class TestNewslettersListsCest
 		$I->click(Generals::$submenu_toggle_button);
 	}
 
+    /**
+     * Test method to check reset sending trials in queue and send anew
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function ResetSendingTrialsAndSendAnewQueue(AcceptanceTester $I)
+    {
+        $I->wantTo("reset sending trials at queue");
+        $I->amOnPage(NlManage::$url);
+
+        $this->buildQueue($I);
+
+        $I->clickAndWait(NlManage::$tab3, 1);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
+
+        $trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
+        $I->assertNotEquals(0, intval($trial_value));
+
+        $I->clickAndWait(Generals::$toolbar['Reset sending trials'], 1);
+
+        $trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
+        $I->assertEquals(0, intval($trial_value));
+
+        $I->setExtensionStatus('bwtestmode', 0);
+        $I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
+
+        $I->clickAndWait(Generals::$toolbar['Continue sending'], 1);
+
+//        $I->switchToIFrame('iframe');
+//        $I->waitForText(NlEdit::$success_send_ready, 300);
+//        $I->see(NlEdit::$success_send_ready);
+
+//        $I->see(sprintf(NlEdit::$success_send_number, NlEdit::$nbr_only_confirmed));
+
+//        $I->switchToIFrame();
+        $I->wait(80);
+
+        $I->see("Newsletters", Generals::$pageTitle);
+        $I->clickAndWait(NlManage::$tab2, 1);
+
+        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+    }
+
+        /**
+     * Test method to check list limit of newsletters
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function ListlimitQueue(AcceptanceTester $I)
+    {
+        $I->wantTo("test list limit at queue");
+        $I->amOnPage(NlManage::$url);
+
+        $this->buildQueue($I);
+
+        $I->clickAndWait(NlManage::$tab3, 1);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
+
+        $I->checkListlimit($I);
+
+        $I->click(Generals::$submenu_toggle_button);
+
+        $this->cleanupQueue($I);
+
+        $I->see("Newsletters", Generals::$pageTitle);
+        $I->clickAndWait(NlManage::$tab2, 1);
+
+        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+    }
+
+    /**
+     * Test method to check pagination of newsletters
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function PaginationQueue(AcceptanceTester $I)
+    {
+        $I->wantTo("test pagination at queue");
+        $I->amOnPage(NlManage::$url);
+
+        $this->buildQueue($I);
+
+        $I->clickAndWait(NlManage::$tab3, 1);
+        $I->clickAndWait(Generals::$submenu_toggle_button, 1);
+
+        $I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+        $I->clickAndWait(NlManage::$queue_list_id, 1);
+
+        $I->checkPagination($I, NlManage::$pagination_queue_data_array, 10);
+
+        $I->scrollTo(Generals::$pageTitle);
+
+        $I->click(Generals::$submenu_toggle_button);
+
+        $this->cleanupQueue($I);
+
+        $I->see("Newsletters", Generals::$pageTitle);
+        $I->clickAndWait(NlManage::$tab2, 1);
+
+        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+    }
+
 	/**
 	 * Test method to logout from backend
 	 *
@@ -586,4 +713,44 @@ class TestNewslettersListsCest
 		}
 */		return $sort_data;
 	}
+
+    /**
+     * Method to surely build a queue of newsletters not sent
+     *
+     * @param   AcceptanceTester        $I
+
+     * @return void
+     *
+     * @since 2.0.0
+     */
+    private function buildQueue(AcceptanceTester $I)
+    {
+        $I->setExtensionStatus('bwtestmode', 1);
+        $I->setManifestOption('bwtestmode', 'arise_queue_option', '1');
+
+        // create newsletter and send (without success)
+        NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['user']);
+        NlEdit::SendNewsletterToRealRecipients($I, false, false, true);
+
+        $I->see(NlManage::$queue_warning_msg);
+    }
+
+    /**
+     * Method to surely build a queue of newsletters not sent
+     *
+     * @param   AcceptanceTester        $I
+
+     * @return void
+     *
+     * @since 2.0.0
+     */
+    private function cleanupQueue(AcceptanceTester $I)
+    {
+        $I->setExtensionStatus('bwtestmode', 0);
+        $I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
+
+        $I->clickAndWait(Generals::$toolbar['Clear queue'], 1);
+
+        $I->see(NlManage::$queue_cleared_msg);
+    }
 }

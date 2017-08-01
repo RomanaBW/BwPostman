@@ -75,7 +75,7 @@ class NewsletterEditPage
 	public static $button_send_test     = ".//*[@id='adminForm']/div[3]/fieldset[2]/div/table/tbody/tr[2]/td[2]/input";
 	public static $success_send         = 'The newsletters are sent';
 	public static $success_send_ready   = 'All newsletters in the queue';
-    public static $success_send_number  = '0  of  %s  newsletters need to be sent.';
+    public static $success_send_number  = '%s  of  %s  newsletters need to be sent.';
 
     public static $nbr_only_confirmed   = 128;
     public static $nbr_unconfirmed      = 83;
@@ -408,6 +408,7 @@ class NewsletterEditPage
 	 * @param   \AcceptanceTester   $I
 	 * @param   boolean             $sentToUnconfirmed
      * @param   boolean             $toUsergroup
+     * @param   boolean             $buildQueue
 	 *
 	 * @before  _login
 	 *
@@ -417,7 +418,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false)
+	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false)
 	{
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
@@ -442,7 +443,13 @@ class NewsletterEditPage
             $nbrToSend = self::$nbr_usergroup;
         }
 
-		$I->clickAndWait(self::$button_send, 1);
+        $remainsToSend  = '0';
+        if ($buildQueue)
+        {
+            $remainsToSend = $nbrToSend;
+        }
+
+        $I->clickAndWait(self::$button_send, 1);
 
 		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();
@@ -452,7 +459,7 @@ class NewsletterEditPage
 		$I->waitForText(self::$success_send_ready, 300);
 		$I->see(self::$success_send_ready);
 
-		$I->see(sprintf(self::$success_send_number, $nbrToSend));
+		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
 
 		$I->switchToIFrame();
 		$I->wait(8);

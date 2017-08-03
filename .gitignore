@@ -14,3 +14,4 @@
 #!/tests/test_data/bwpm-env.tpl.properties
 #/tests/acceptance.suite.yml
 #/containers/
+#/.idea

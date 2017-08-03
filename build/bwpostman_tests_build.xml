@@ -9,7 +9,7 @@
 	<property name="base_dir" value="/vhosts/dev/joomla-cms" override="true" />
 	<property name="test_dir" value="${base_dir}/tests" override="true" />
 
-	<property name="src_dir" value="/home/romana/PhpstormProjects/BwPostman" override="true" />
+	<property name="src_dir" value="/home/romana/PhpstormProjects/BwPostman/src" override="true" />
 
 	<property name="container_base" value="/vms/dockers" override="true" />
 	<property name="container_dir" value="${container_base}/containers" override="true" />

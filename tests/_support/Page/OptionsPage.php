@@ -266,7 +266,7 @@ class OptionsPage
 			                                        'bwpm.edit.state' => 'Denied',
 			                                        'bwpm.archive' => 'Inherited',
 			                                        'bwpm.restore' => 'Inherited',
-			                                        'bwpm.delete' => '',
+			                                        'bwpm.delete' => 'Inherited',
 			                                        'bwpm.send' => 'Inherited',
 			                                        'bwpm.view.newsletter' => 'Inherited',
 			                                        'bwpm.view.subscriber' => 'Inherited',

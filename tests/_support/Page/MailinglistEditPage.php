@@ -65,15 +65,15 @@ class MailinglistEditPage
 
 	public static $arc_del_array     = array(
 		'field_title'          => "001 General mailing list",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived mailinglists')]",
+		'archive_tab'          => ".//.//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived mailinglists')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_title_col'    => ".//*[@id='main-table']/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected mailing list has been archived.',
 		'archive_success2_msg' => 'The selected mailing lists have been archived.',
 
 		'delete_button'        => ".//*[@id='toolbar-delete']/button",
 		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'delete_title_col'     => ".//*[@id='main-table']/tbody/*/td[2]",
 		'remove_confirm'       => 'Do you wish to remove the selected mailinglist(s)?',
 		'success_remove'       => 'The selected mailinglist has been removed.',
 		'success_remove2'      => 'The selected mailinglists have been removed.',

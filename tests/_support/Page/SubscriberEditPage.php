@@ -62,7 +62,7 @@ class SubscriberEditPage
 
 	public static $arc_del_array     = array(
 		'field_title'          => "sam.sample@test.nil",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
+		'archive_tab'          => ".//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[%s]",
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
@@ -70,7 +70,7 @@ class SubscriberEditPage
 
 		'delete_button'        => ".//*[@id='toolbar-delete']/button",
 		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[4]",
+		'delete_title_col'     => ".//*[@id='main-table']/tbody/tr/td/div/table/tbody/*/td[4]",
 		'remove_confirm'       => 'Do you wish to remove the selected subscriber(s)/test-recipient(s)?',
 		'success_remove'       => 'The selected subscriber/test-recipient has been removed.',
 		'success_remove2'      => 'The selected subscribers/test-recipients have been removed.',
@@ -174,8 +174,10 @@ class SubscriberEditPage
 		{
 			$I->fillField(self::$special, self::$field_special);
 		}
-		$I->clickAndWait(self::$confirm, 1);
-		$I->clickAndWait(self::$confirmed, 1);
+
+        $I->clickAndWait(self::$confirm, 1);
+        $I->clickAndWait(self::$confirmed, 1);
+
 		$I->click(sprintf(self::$mls_accessible, 2));
 		$I->click(sprintf(self::$mls_nonaccessible, 3));
 		$I->scrollTo(self::$mls_internal_label, 0, -100);

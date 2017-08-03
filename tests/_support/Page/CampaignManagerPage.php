@@ -101,29 +101,29 @@ class CampaignManagerPage
 
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "01 Kampagne 2 A",
-		'p1_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p1_val_last'          => "01 Kampagne 4 A",
-		'p1_field_last'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
+		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p2_val1'              => "01 Kampagne 4 B",
-		'p2_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p2_val_last'          => "02 Kampagne 8 A",
-		'p2_field_last'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
+		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p_prev_val1'          => "04 Kampagne 12 A",
-		'p_prev_field1'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_prev_val_last'      => "05 Kampagne 19 A Test",
-		'p_prev_field_last'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
+		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p3_val1'              => "02 Kampagne 8 B",
-		'p3_field1'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p3_val3'              => "03 Kampagne 10 B",
-		'p3_field3'            => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[5]/td[2]",
+		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p_last_val1'          => "05 Kampagne 19 B Test",
-		'p_last_field1'        => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_last_val_last'      => "05 Kampagne 20 B Test",
-		'p_last_field_last'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[2]",
+		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[3]/td[2]",
 	);
 
 	public static $arc_del_array    = array(

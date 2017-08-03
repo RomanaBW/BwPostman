@@ -107,7 +107,7 @@ class NewsletterManagerPage
 	);
 
 	// Filter authors
-	public static $authors_col                  = ".//*[@id='j-main-container']/div[4]/table/tbody/*/td[6]";
+	public static $authors_col                  = ".//*[@id='main-table']/tbody/*/td[6]";
 	public static $filter_authors_list_id       = "filter_authors_chzn";
 	public static $filter_authors_list          = ".//*[@id='filter_authors_chzn']/a";
 	public static $filter_author_1              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BwPostmanAdmin')]";
@@ -215,61 +215,61 @@ class NewsletterManagerPage
 
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "Newsletter for testing 1",
-		'p1_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p1_val_last'          => "Newsletter for testing 18",
-		'p1_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p2_val1'              => "Newsletter for testing 19",
-		'p2_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p2_val_last'          => "Newsletter for testing 4",
-		'p2_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p3_val1'              => "Newsletter for testing 5",
-		'p3_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p3_val3'              => "Test Newsletter single 1",
-		'p3_field3'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p_prev_val1'          => "Test Newsletter single 20",
-		'p_prev_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p_prev_val_last'      => "Test Newsletter single 6",
-		'p_prev_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p_last_val1'          => "Test Newsletter single 7",
-		'p_last_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p_last_val_last'      => "Test Newsletter single 9",
-		'p_last_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[3]/td[3]",
+		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[3]/td[3]",
 	);
 
 	public static $pagination_sent_data_array  = array(
 		'p1_val1'              => "Kopie von 'Kopie von 'Template Gedicht 1''",
-		'p1_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p1_val_last'          => "Test Newsletter 11.4.2015 13:26:59",
-		'p1_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p2_val1'              => "Test Newsletter 11.4.2015 18:28:23",
-		'p2_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p2_val_last'          => "Test Newsletter 12.4.2015 10:32:6",
-		'p2_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p3_val1'              => "Test Newsletter 12.4.2015 2:1:47",
-		'p3_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p3_val3'              => " Test Newsletter 9.4.2015 22:52:14",
-		'p3_field3'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p_prev_val1'          => "Test Newsletter 12.4.2015 2:1:47",
-		'p_prev_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p_prev_val_last'      => "Test Newsletter 9.4.2015 22:52:14",
-		'p_prev_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[3]",
+		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
 		'p_last_val1'          => "Test Newsletter 9.4.2015 23:5:25",
-		'p_last_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p_last_val_last'      => "Test Newsletter 9.4.2015 23:5:25",
-		'p_last_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 	);
 
 	public static $arc_del_array    = array(
 		'section'   => 'newsletter',
-		'url'   => '/administrator/index.php?option=com_bwpostman&view=newsletters',
+		'url'   => "/administrator/index.php?option=com_bwpostman&view=newsletters",
 	);
 
 	/**
@@ -350,29 +350,29 @@ class NewsletterManagerPage
 
     public static $pagination_queue_data_array  = array(
         'p1_val1'              => "r.barth@tester-net.nil",
-        'p1_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
         'p1_val_last'          => "heidi.brockhaus@tester-net.nil",
-        'p1_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+        'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
         'p2_val1'              => "juri.ehrenberg@tester-net.nil",
-        'p2_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
         'p2_val_last'          => "h.burkhardt@tester-net.nil",
-        'p2_field_last'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+        'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
         'p3_val1'              => "lilian.holloway@tester-net.nil",
-        'p3_field1'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
         'p3_val3'              => " ian.wolters@tester-net.nil",
-        'p3_field3'            => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+        'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
         'p_prev_val1'          => "finn.kaczmarek@tester-net.nil",
-        'p_prev_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
         'p_prev_val_last'      => "n.hammond@tester-net.nil",
-        'p_prev_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[10]/td[4]",
+        'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
         'p_last_val1'          => "maya.eich@tester-net.nil",
-        'p_last_field1'        => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]",
+        'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
         'p_last_val_last'      => "info@boldt-coaching.de",
-        'p_last_field_last'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[8]/td[4]",
+        'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[4]",
     );
 
 }

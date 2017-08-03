@@ -280,9 +280,9 @@ class Generals
 	public static $icon_published       = ".//*[@id='j-main-container']/*/span[contains(@class, 'icon-publish')]";
 
 	// filter identifiers
-	public static $publish_row          = ".//*[@id='j-main-container']/div/table/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
-	public static $unpublish_row        = ".//*[@id='j-main-container']/div/table/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
-	public static $attachment_row       = ".//*[@id='j-main-container']/div/table/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
+	public static $publish_row          = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
+	public static $unpublish_row        = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
+	public static $attachment_row       = ".//*[@id='main-table']/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
 	public static $null_date            = '0000-00-00 00:00:00';
 	public static $table_header         = ".//*/thead";
 	public static $pagination_bar       = '.pagination.pagination-toolbar';
@@ -322,8 +322,10 @@ class Generals
 	public static $page_2               = ".//*/div/ul/li/a[contains(text(), '2')]";
 	public static $page_3               = ".//*/div/ul/li/a[contains(text(), '3')]";
 
+    public static $last_page_identifier = ".//*/ul[contains(@class, 'pagination-list')]/li[contains(@class, 'active')]/span";
 
-	// buttons
+
+    // buttons
 	public static $button_red   = 'btn active btn-danger';
 	public static $button_green = 'btn active btn-success';
 	public static $button_grey  = 'btn';

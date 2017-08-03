@@ -1,1 +1,0 @@
-/daten/FIRMA/Webservice/Joomla-Programmierung/BwPostman/PDF_aktuell/READ_ME_FIRST.txt

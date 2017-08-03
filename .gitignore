@@ -79,12 +79,10 @@ Desktop.ini
 /tests/test_data/j370_bwpm200/bwpm-env.properties
 /tests/test_data/j370_bwpm200_vm321/bwpm-env.properties
 /tests/test_data/j370_vm321/bwpm-env.properties
-!/build/
 /plugins/vendor/
 /libraries/
 /backup/
 /containers/lab/
-/test.php
 /tests/_data/mod_bwpostman.zip
 /tests/tests/README.md
 /plugins/composer.json

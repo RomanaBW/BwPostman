@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="component" version="3.0" method="upgrade">
+	<name>COM_BWPOSTMAN</name>
+	<creationDate>April 2016</creationDate>
+	<author>Boldt Webservice</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>This component is released under the GNU/GPLv3 License or later</license>
+	<version>2.0.0</version>
+	<description></description>
+
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/uninstall.sql</file>
+		</sql>
+	</uninstall>
+
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>bwpostman.php</filename>
+		<filename>router.php</filename>
+		<folder>assets</folder>
+		<folder>classes</folder>
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>layouts</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+
+	<languages folder="site/language">
+		<language tag="en-GB">en-GB/en-GB.com_bwpostman.ini</language>
+		<language tag="de-DE">de-DE/de-DE.com_bwpostman.ini</language>
+	</languages>
+
+	<media destination="bw_postman" folder="media">
+		<filename>index.html</filename>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
+
+	<administration>
+
+		<menu img="../administrator/components/com_bwpostman/assets/images/logo-bwpostman.png">COM_BWPOSTMAN_MENU_MAIN_ENTRY</menu>
+		<submenu>
+			<!--
+				Note that all & must be escaped to &amp; for the file to be valid
+				XML and be parsed by the installer
+			-->
+			<menu link="option=com_bwpostman&amp;view=newsletters" view="newsletters" img="../administrator/components/com_bwpostman/assets/images/icon-16-newsletters.png"
+				alt="BwPostman/Newsletters">COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS</menu>
+			<menu link="option=com_bwpostman&amp;view=subscribers" view="subscribers" img="../administrator/components/com_bwpostman/assets/images/icon-16-subscribers.png"
+				alt="BwPostman/Subscribers">COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS</menu>
+			<menu link="option=com_bwpostman&amp;view=campaigns" view="campaigns" img="../administrator/components/com_bwpostman/assets/images/icon-16-campaigns.png"
+				alt="BwPostman/Campaigns">COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS</menu>
+			<menu link="option=com_bwpostman&amp;view=mailinglists" view="mailinglists" img="../administrator/components/com_bwpostman/assets/images/icon-16-mailinglists.png"
+				alt="BwPostman/Mailinglists">COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS</menu>
+			<menu link="option=com_bwpostman&amp;view=templates" view="templates" img="../administrator/components/com_bwpostman/assets/images/icon-16-templates.png"
+				alt="BwPostman/Mailinglists">COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS</menu>
+			<menu link="option=com_bwpostman&amp;view=archive&amp;layout=newsletters" view="archive" img="../administrator/components/com_bwpostman/assets/images/icon-16-archive.png"
+				alt="BwPostman/Archive">COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC</menu>
+			<menu link="option=com_bwpostman&amp;view=maintenance" view="maintenance" img="../administrator/components/com_bwpostman/assets/images/icon-16-maintenance.png"
+				alt="BwPostman/Maintenance">COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE</menu>
+		</submenu>
+
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>bwpostman.php</filename>
+			<filename>install.bwpostman.php</filename>
+			<filename>CHANGELOG.txt</filename>
+			<filename>controller.php</filename>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+			<filename>LICENSE.txt</filename>
+			<filename>import_demo.csv</filename>
+			<filename>import_demo.xml</filename>
+			<folder>assets</folder>
+			<folder>classes</folder>
+			<folder>controllers</folder>
+			<folder>elements</folder>
+			<folder>helpers</folder>
+			<folder>layouts</folder>
+			<folder>libraries</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/en-GB.com_bwpostman.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_bwpostman.sys.ini</language>
+			<language tag="de-DE">de-DE/de-DE.com_bwpostman.ini</language>
+			<language tag="de-DE">de-DE/de-DE.com_bwpostman.sys.ini</language>
+		</languages>
+
+	</administration>
+
+	<scriptfile>install.bwpostman.php</scriptfile>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/com_bwpostman_update.xml</server>
+<!--		<server type="extension" priority="1" name="BwPostman Updates">http://www.webservice3.nil/update-servers/com_bwpostman_update_local.xml</server>-->
+	</updateservers>
+
+</extension>

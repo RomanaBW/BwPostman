@@ -101,3 +101,4 @@ Desktop.ini
 /tests/unit/
 /tests/system/
 /vendor/
+/codeception.yml

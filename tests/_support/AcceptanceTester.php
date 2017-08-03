@@ -236,30 +236,20 @@ class AcceptanceTester extends \Codeception\Actor
 	{
 		$found      = false;
 		$count      = 1;
-		$last_page  = 1;
+        $last_page  = $this->_getLastPageNumber();
 
-		while (!$found)
+        while (!$found)
 		{
 			$table_search_result  = $this->getTableRowIdBySearchValue($search_value);
 
 			if ($table_search_result > 0)
 			{
-				$position   = sprintf(".//*[@id='j-main-container']/*/table/tbody/tr[%s]", $table_search_result);
+				$position   = sprintf(".//*[@id='main-table']/tbody/tr[%s]", $table_search_result);
 				$this->scrollTo($position, 0, -100);
 				$found  = true;
 			}
 			else
 			{
-				if ($count == 1)
-				{
-					$this->scrollTo(Generals::$pagination_bar);
-					$this->click(Generals::$last_page);
-
-					$last_page  = $this->grabTextFrom(".//*/ul[contains(@class, 'pagination')]/li[contains(@class, 'active hidden-phone')]/a");
-
-					$this->scrollTo(Generals::$pagination_bar);
-					$this->click(Generals::$first_page);
-				}
 				$this->scrollTo(Generals::$pagination_bar);
 				$this->click(Generals::$next_page);
 
@@ -310,5 +300,23 @@ class AcceptanceTester extends \Codeception\Actor
 		$this->wait($time);
 	}
 
+    /**
+     *
+     * @return int|mixed
+     *
+     * @since 2.0.0
+     */
+    private function _getLastPageNumber()
+    {
+        $this->scrollTo(Generals::$pagination_bar);
+        $this->click(Generals::$last_page);
+
+        $last_page = $this->grabTextFrom(Generals::$last_page_identifier);
+
+        $this->scrollTo(Generals::$pagination_bar);
+        $this->click(Generals::$first_page);
+
+        return $last_page;
+    }
 
 }

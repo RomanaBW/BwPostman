@@ -638,7 +638,7 @@ class User2SubscriberCest
 
 			$this->deleteJoomlaUser($I);
 
-			LoginPage::logoutFromBackend($I);
+			LoginPage::logoutFromBackend($I, false);
 		}
 		);
 		$admin->leave();
@@ -798,12 +798,12 @@ class User2SubscriberCest
 			}
 			catch (\Codeception\Exception\ElementNotFound $e)
 			{
-				LoginPage::logoutFromBackend($I);
+				LoginPage::logoutFromBackend($I, false);
 				return false;
 			}
 			$I->assertEmpty($user_id);
 
-			LoginPage::logoutFromBackend($I);
+			LoginPage::logoutFromBackend($I, false);
 
 			return null;
 		}
@@ -900,7 +900,7 @@ class User2SubscriberCest
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
-		LoginPage::logoutFromBackend($I);
+		LoginPage::logoutFromBackend($I, false);
 	}
 
 	/**
@@ -964,7 +964,7 @@ class User2SubscriberCest
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
-		LoginPage::logoutFromBackend($I);
+		LoginPage::logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1035,7 +1035,7 @@ class User2SubscriberCest
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
-		LoginPage::logoutFromBackend($I);
+		LoginPage::logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1077,7 +1077,7 @@ class User2SubscriberCest
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
-		LoginPage::logoutFromBackend($I);
+		LoginPage::logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1119,7 +1119,7 @@ class User2SubscriberCest
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
-		LoginPage::logoutFromBackend($I);
+		LoginPage::logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1162,7 +1162,7 @@ class User2SubscriberCest
 
 		$I->clickAndWait(RegPage::$toolbar_save_button, 1);
 
-		LoginPage::logoutFromBackend($I);
+		LoginPage::logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1289,7 +1289,7 @@ class User2SubscriberCest
 		{
 			LoginPage::logIntoBackend(Generals::$admin);
 			$this->deleteJoomlaUserByDb($I);
-			LoginPage::logoutFromBackend($I);
+			LoginPage::logoutFromBackend($I, false);
 		}
 		);
 		$admin->leave();
@@ -1422,7 +1422,7 @@ class User2SubscriberCest
 			$this->deleteJoomlaUserByDb($I);
 			$this->checkForSubscriptionDeletion($I);
 
-			LoginPage::logoutFromBackend($I);
+			LoginPage::logoutFromBackend($I, false);
 		}
 		);
 		$admin->leave();
@@ -1695,7 +1695,7 @@ class User2SubscriberCest
 				$this->checkForSubscriptionDeletion($I);
 			}
 
-			LoginPage::logoutFromBackend($I);
+			LoginPage::logoutFromBackend($I, false);
 		}
 		);
 		$admin->leave();
@@ -1786,7 +1786,7 @@ class User2SubscriberCest
 				$this->checkForSubscriptionDeletion($I);
 			}
 
-			LoginPage::logoutFromBackend($I);
+			LoginPage::logoutFromBackend($I, false);
 		}
 		);
 		$admin->leave();
@@ -1827,7 +1827,7 @@ class User2SubscriberCest
 			}
 			$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-			LoginPage::logoutFromBackend($I);
+			LoginPage::logoutFromBackend($I, false);
 		}
 		);
 		$admin->leave();
@@ -1909,7 +1909,7 @@ class User2SubscriberCest
 	 */
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{
-		$loginPage->logoutFromBackend($I);
+		$loginPage->logoutFromBackend($I, false);
 	}
 
 	/**

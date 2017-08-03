@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    tester-vm:
+        container_name: "vm-tester"
+        image: romana/os-chromium-tester_227_5719
+        hostname: tester-vm
+        domainname: tester-net-vm.nil
+        volumes:
+            - "/vms/dockers/containers/testers/os-data:/data"
+            - "/vhosts/dev/joomla-cms:/tests"
+        environment:
+            - TEST_CAT=${TEST_CAT}
+        entrypoint: /data/vm_tester_start.sh
+        working_dir: /tests
+        networks:
+            tester-net-vm.nil:
+                ipv4_address: 172.18.0.14
+
+networks:
+    tester-net-vm.nil:
+        external:
+            name: ${PROJECT_BWPM_VMTESTS}_tester-net-vm.nil

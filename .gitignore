@@ -104,3 +104,4 @@ Desktop.ini
 /codeception.yml
 /tests/_data/sav/
 /tests/test_data/
+!/tests/test_data/bwpm-env.tpl.properties

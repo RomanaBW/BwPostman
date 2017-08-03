@@ -87,6 +87,10 @@ codecept run acceptance Backend/Lists/TestNewslettersListsCest::FilterSentNewsle
 codecept run acceptance Backend/Lists/TestNewslettersListsCest::SearchSentNewsletters  ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_sent_search.xml --html htmlreports/report_newsletters_sent_search.html
 codecept run acceptance Backend/Lists/TestNewslettersListsCest::ListlimitSentNewsletters  ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_sent_listlimit.xml --html htmlreports/report_newsletters_sent_listlimit.html
 codecept run acceptance Backend/Lists/TestNewslettersListsCest::PaginationSentNewsletters  ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_sent_pagination.xml --html htmlreports/report_newsletters_sent_pagination.html
+
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue  ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_queue_send_anew.xml --html htmlreports/report_newsletters_queue_send_anew.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::ListlimitQueue  ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_queue_listlimit.xml --html htmlreports/report_newsletters_queue_listlimit.html
+codecept run acceptance Backend/Lists/TestNewslettersListsCest::PaginationQueue  ${BW_TEST_DEBUG} --xml xmlreports/report_newsletters_queue_pagination.xml --html htmlreports/report_newsletters_queue_pagination.html
 fi
 
 ###
@@ -352,6 +356,14 @@ codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberPred
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoUpdate ${BW_TEST_DEBUG} --xml xmlreports/report_u2s_auto_update.xml --html htmlreports/report_u2s_auto_update.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoDelete ${BW_TEST_DEBUG} --xml xmlreports/report_u2s_auto_delete.xml --html htmlreports/report_u2s_auto_delete.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMailinglists ${BW_TEST_DEBUG} --xml xmlreports/report_u2s_options_mailinglists.xml --html htmlreports/report_u2s_options_mailinglists.html
+fi
+
+if [ "${BW_TEST_CAT}" == acceptance_single ]
+then
+# single tests for frontend
+#codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForListViewButtonsFromMainView ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_main_buttons_list.xml --html htmlreports/report_acceptance_main_buttons_list.html
+#codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_main_buttons_add.xml --html htmlreports/report_acceptance_main_buttons_add.html
+codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtons ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_list_action_buttons.xml --html htmlreports/report_list_action_buttons.html
 fi
 
 if [ "${BW_TEST_CAT}" == all ]

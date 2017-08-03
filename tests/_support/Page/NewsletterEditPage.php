@@ -163,7 +163,7 @@ class NewsletterEditPage
 
 	public static $arc_del_array     = array(
 		'field_title'          => "1. Simple Single Test Newsletter",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
+		'archive_tab'          => ".//.//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
 		'archive_success_msg'  => 'The selected newsletter has been archived.',
@@ -456,7 +456,7 @@ class NewsletterEditPage
 
 		$I->wait(2);
 		$I->switchToIFrame(self::$tab5_send_iframe);
-		$I->waitForText(self::$success_send_ready, 300);
+		$I->waitForText(self::$success_send_ready, 400);
 		$I->see(self::$success_send_ready);
 
 		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));

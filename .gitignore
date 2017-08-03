@@ -103,3 +103,8 @@ Desktop.ini
 /tests/unit/
 /tests/system/
 /vendor/
+/build/BwAttachments/
+/build/BwStats/
+/build/BwTemplate/
+/build/logs/
+/build/mod_cookiesaccept_build.xml

@@ -82,12 +82,11 @@ class DbHelper extends Module
 		}
 
 		$query  = "SELECT $columns FROM $table_name $special";
-//codecept_debug('Whole list query:');
-//codecept_debug($query);
+
 		$sth    = $driver->executeQuery($query, $criteria);
 
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-//codecept_debug($result);
+
 		return $result;
 	}
 
@@ -135,8 +134,6 @@ class DbHelper extends Module
 		$driver = self::getDbDriver($credentials);
 
 		$query  = "SELECT `activation` FROM `$table_name` WHERE `email` = '$user_mail';";
-//codecept_debug('Query');
-//codecept_debug($query);
 
 		$sth    = $driver->executeQuery($query, $criteria);
 
@@ -163,12 +160,10 @@ class DbHelper extends Module
 		$driver = self::getDbDriver($credentials);
 
 		$query  = "SELECT `editlink` FROM `$table_name` WHERE `email` = '$subscriber_mail';";
-//		codecept_debug('Query:');
-//		codecept_debug($query);
+
 		$sth    = $driver->executeQuery($query, $criteria);
 
 		$result = $sth->fetchColumn();
-//		codecept_debug($result);
 		return $result;
 	}
 
@@ -190,21 +185,19 @@ class DbHelper extends Module
 		if (strpos($extension, 'mod_') !== false)
 		{
 			$table_name = Generals::$db_prefix . 'modules';
-//			$criteria[] = "WHERE `module` = '$extension'";
 			$where      = " WHERE `module` = '$extension'";
 			$n          = 26;
 		}
 		else
 		{
 			$table_name = Generals::$db_prefix . 'extensions';
-//			$criteria[] = "WHERE `element` = '$extension'";
 			$where      = " WHERE `element` = '$extension'";
 			$n          = 0;
 		}
 
 		$query      = "SELECT `params` FROM $table_name $where";
 		$sth        = $driver->executeQuery($query, $criteria);
-//codecept_debug($query);
+
 		$params     = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		$options    = json_decode($params[$n]['params']);
 
@@ -258,7 +251,6 @@ class DbHelper extends Module
 		$driver = self::getDbDriver($credentials);
 		$table_name = Generals::$db_prefix . $table;
 
-//codecept_debug('Arrived in DbHelper');
 		$query      = "UPDATE $table_name SET " . implode(', ', $values);
 		$driver->executeQuery($query, $criteria);
 	}
@@ -278,7 +270,6 @@ class DbHelper extends Module
 		$driver = self::getDbDriver($credentials);
 		$table_name = Generals::$db_prefix . $table;
 
-//codecept_debug('Arrived in DbHelper');
 		$query      = "ALTER TABLE `$table_name` AUTO_INCREMENT = " . $value;
 		$driver->executeQuery($query, $criteria);
 	}
@@ -296,7 +287,6 @@ class DbHelper extends Module
         $driver     = self::getDbDriver($credentials);
         $table_name = Generals::$db_prefix . 'session';
 
-//codecept_debug('Arrived in DbHelper');
         $query      = "TRUNCATE TABLE " . $table_name;
         $driver->executeQuery($query, $criteria);
     }

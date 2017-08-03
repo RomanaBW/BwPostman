@@ -86,12 +86,12 @@ class Login
 	 * Method to logout from backend
 	 *
 	 * @param \AcceptanceTester $I
-
+     * @param $truncateSession
 	 * @return  object  $this
 	 *
 	 * @since   2.0.0
 	 */
-	public function logoutFromBackend(\AcceptanceTester $I)
+	public function logoutFromBackend(\AcceptanceTester $I, $truncateSession = true)
 	{
 		$loginArea     = sprintf(".//*/button[contains(., '%s')]", Generals::$login_txt);
 
@@ -101,7 +101,10 @@ class Login
 		$I->waitForElement(self::$form, 30);
 		$I->see(Generals::$login_txt, $loginArea);
 
-		$I->truncateSession();
+		if ($truncateSession)
+        {
+            $I->truncateSession();
+        }
 
 		return $this;
 	}

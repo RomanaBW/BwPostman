@@ -13,3 +13,4 @@
 /tests/test_data/
 !/tests/test_data/bwpm-env.tpl.properties
 /tests/acceptance.suite.yml
+/containers/

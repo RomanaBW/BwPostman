@@ -348,11 +348,11 @@ class Buyer2SubscriberCest
 
 		$this->_doOrderUntilAddressEditPage($I);
 		$this->_fillAddressAndSubmitOrder($I);
-codecept_debug('TP 1');
+
 		$this->_checkForOrderReceived($I);
-codecept_debug('TP 2');
+
 		$this->_checkForSubscriptionProcessed($I);
-codecept_debug('TP 3');
+
 		$this->_cleanup($I);
 	}
 

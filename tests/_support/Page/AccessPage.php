@@ -129,7 +129,7 @@ class AccessPage
 	public static $list_view_no_permission      = "No permission for view %s.";
 
 	public static $checkbox_identifier  = ".//*[@id='cb%s']";
-	public static $checkout_icon        = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-checkedout')]";
+	public static $checkout_icon        = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-checkedout')]";
 
 
 	// set permission variables
@@ -551,33 +551,60 @@ class AccessPage
 						'Delete'            => true,
 						'SendNewsletter'    => true,
 					),
-				'own'   =>
-					array(
-						'itemid'        => 1,
-						'check content' => "Template Gedicht 1",
-					),
-				'other'   =>
-					array(
-						'itemid'        => 169,
-						'check content' => "Newsletter for testing 18",
-					),
-				'check column'  => "Subject",
-				'check locator' => ".//*[@id='jform_subject']",
-				'check link'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr/td/a[contains(text(), '%s')]",
+                'own'   =>
+                    array(
+                        'itemid'        => 1,
+                        'check content' => "Template Gedicht 1",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 169,
+                        'check content' => "Newsletter for testing 18",
+                    ),
+                'check column'  => "Subject",
+                'check locator' => ".//*[@id='jform_subject']",
+				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
-						'publish_button'    =>  ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a",
-						'publish_result'    =>  ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
-						'unpublish_button'  =>  ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a",
-						'unpublish_result'  =>  ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+						'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+						'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+						'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+						'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
 					),
 				'publish_by_toolbar'   => array(
 						'publish_button'    =>  ".//*[@id='ub0']",
-						'publish_result'    =>  ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+						'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
 						'unpublish_button'  =>  ".//*[@id='ub0']",
-						'unpublish_result'  =>  ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+						'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
 					),
 			),
-		'Subscribers'       => true,
+		'Subscribers'       =>
+            array(
+            'permissions'       =>
+					array(
+						'Create'            => true,
+						'Edit'              => true,
+						'EditOwn'           => true,
+						'ModifyState'       => true,
+						'ModifyStateOwn'    => true,
+						'Archive'           => true,
+						'Restore'           => true,
+						'Delete'            => true,
+					),
+            'own'   =>
+                array(
+                    'itemid'        => 2,
+                    'check content' => "Rebmann",
+                ),
+            'other'   =>
+                array(
+                    'itemid'        => 22,
+                    'check content' => "Schenk",
+                ),
+            'check column'  => "Last name",
+            'check locator' => ".//*[@id='jform_name']",
+			'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+			),
+
 		'Campaigns'         => true,
 		'Mailinglists'      => true,
 		'Templates'         => true,
@@ -587,17 +614,17 @@ class AccessPage
 	);
 // publish mailinglists
 	public static $publish_by_icon   = array(
-		'publish_button'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a",
-		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[4]/a",
-		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    =>  ".//.//*[@id='main-table']/tbody/tr[3]/td[4]/a",
+		'publish_result'    =>  ".//.//*[@id='main-table']/tbody/tr[3]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  =>  ".//.//*[@id='main-table']/tbody/tr[4]/td[4]/a",
+		'unpublish_result'  =>  ".//.//*[@id='main-table']/tbody/tr[4]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	public static $publish_by_toolbar   = array(
 		'publish_button'    =>  ".//*[@id='cb5']",
-		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'publish_result'    =>  ".//.//*[@id='main-table']/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  =>  ".//*[@id='cb6']",
-		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[7]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+		'unpublish_result'  =>  ".//.//*[@id='main-table']/tbody/tr[7]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 

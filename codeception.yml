@@ -1,7 +1,7 @@
 actor: Tester
 paths:
     tests: tests
-    log: tests/_output/j365vm_flex
+    log: tests/_output/j374_bwpm200
     data: tests/_data
     support: tests/_support
 #    envs: tests/_envs
@@ -20,10 +20,6 @@ modules:
             sessionName: PHPSTORM
 
         Db:
-            dsn: 'mysql:host=172.18.0.4;dbname=joomlatest'
-            user: 'root'
-            password: 'barbapapa'
-#            dump: '/daten/vhosts/dev/joomla-cms/tests/_data/testdata_bwpostman_complete.sql'
             populate: false
             cleanup: false
 

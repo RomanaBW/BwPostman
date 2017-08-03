@@ -39,7 +39,6 @@ phpdoc-*
 # Languages #
 administrator/manifests/packages/*
 !administrator/manifests/packages/pkg_en-GB.xml
-!administrator/language/overrides/index.html
 !language/overrides/index.html
 
 # OSX #
@@ -55,269 +54,52 @@ Desktop.ini
 # Only apply this rule to the main repository's gitignore files
 !/.gitignore
 !/build/.gitignore
-!/tests/unit/suites/libraries/joomla/archive/.gitignore
-!/tests/unit/tmp/.gitignore
 
 # Extra files installed by Composer not needed in the CMS environment
 # This should only ignore files like unit testing or READMEs, production
 # code must remain to ensure all libraries properly function
 /libraries/vendor/ircmaxell/password-compat/test
 /libraries/vendor/ircmaxell/password-compat/.travis.yml
-/libraries/vendor/ircmaxell/password-compat/composer.json
 /libraries/vendor/ircmaxell/password-compat/phpunit.xml.dist
 /libraries/vendor/ircmaxell/password-compat/README.md
-/libraries/vendor/ircmaxell/password-compat/version-test.php
 /libraries/vendor/joomla/*/.github
-/libraries/vendor/joomla/*/.gitignore
-/libraries/vendor/joomla/*/.gitmodules
-/libraries/vendor/joomla/*/docs
-/libraries/vendor/joomla/*/Tests
 /libraries/vendor/joomla/*/vendor
-/libraries/vendor/joomla/*/.travis.yml
-/libraries/vendor/joomla/*/CONTRIBUTING.md
-/libraries/vendor/joomla/*/composer.json
-/libraries/vendor/joomla/*/phpunit.xml.dist
-/libraries/vendor/joomla/*/README.md
 /libraries/vendor/joomla/session/Joomla/Session/.github
-/libraries/vendor/joomla/session/Joomla/Session/_Tests
 /libraries/vendor/joomla/session/Joomla/Session/build
-/libraries/vendor/joomla/session/Joomla/Session/Tests
-/libraries/vendor/joomla/session/Joomla/Session/CONTRIBUTING.md
-/libraries/vendor/joomla/session/Joomla/Session/composer.json
-/libraries/vendor/joomla/session/Joomla/Session/phpunit.xml.dist
-/libraries/vendor/joomla/session/Joomla/Session/README.md
-/libraries/vendor/leafo/lessphp/docs
-/libraries/vendor/leafo/lessphp/tests
-/libraries/vendor/leafo/lessphp/.gitignore
-/libraries/vendor/leafo/lessphp/.travis.yml
-/libraries/vendor/leafo/lessphp/composer.json
-/libraries/vendor/leafo/lessphp/Makefile
-/libraries/vendor/leafo/lessphp/package.sh
-/libraries/vendor/leafo/lessphp/README.md
 /libraries/vendor/paragonie/random_compat/.gitignore
 /libraries/vendor/paragonie/random_compat/.scrutinizer.yml
 /libraries/vendor/paragonie/random_compat/.travis.yml
-/libraries/vendor/paragonie/random_compat/dist
-/libraries/vendor/paragonie/random_compat/other
-/libraries/vendor/paragonie/random_compat/CHANGELOG.md
-/libraries/vendor/paragonie/random_compat/ERRATA.md
 /libraries/vendor/paragonie/random_compat/RATIONALE.md
-/libraries/vendor/paragonie/random_compat/README.md
-/libraries/vendor/paragonie/random_compat/SECURITY.md
 /libraries/vendor/paragonie/random_compat/build-phar.sh
-/libraries/vendor/paragonie/random_compat/composer.json
 /libraries/vendor/paragonie/random_compat/psalm-autoload.php
 /libraries/vendor/paragonie/random_compat/psalm.xml
 /libraries/vendor/paragonie/random_compat/tests
-/libraries/vendor/phpmailer/phpmailer/docs
-/libraries/vendor/phpmailer/phpmailer/examples
-/libraries/vendor/phpmailer/phpmailer/language
-/libraries/vendor/phpmailer/phpmailer/test
-/libraries/vendor/phpmailer/phpmailer/.gitignore
-/libraries/vendor/phpmailer/phpmailer/.scrutinizer.yml
-/libraries/vendor/phpmailer/phpmailer/.travis.yml
-/libraries/vendor/phpmailer/phpmailer/changelog.md
-/libraries/vendor/phpmailer/phpmailer/composer.json
-/libraries/vendor/phpmailer/phpmailer/README.md
-/libraries/vendor/phpmailer/phpmailer/travis.phpunit.xml.dist
-/libraries/vendor/phpmailer/phpmailer/extras/README.md
-/libraries/vendor/phpmailer/phpmailer/get_oauth_token.php
-/libraries/vendor/psr/log/Psr/Log/Test
-/libraries/vendor/psr/log/.gitignore
-/libraries/vendor/psr/log/composer.json
-/libraries/vendor/psr/log/README.md
-/libraries/vendor/symfony/polyfill-php55/composer.json
-/libraries/vendor/symfony/polyfill-php55/README.md
-/libraries/vendor/symfony/polyfill-php56/composer.json
-/libraries/vendor/symfony/polyfill-php56/README.md
-/libraries/vendor/symfony/polyfill-util/composer.json
-/libraries/vendor/symfony/polyfill-util/README.md
-/libraries/vendor/symfony/polyfill-util/TestListener.php
-/libraries/vendor/symfony/yaml/Tests
-/libraries/vendor/symfony/yaml/.gitignore
-/libraries/vendor/symfony/yaml/CHANGELOG.md
-/libraries/vendor/symfony/yaml/composer.json
-/libraries/vendor/symfony/yaml/phpunit.xml.dist
-/libraries/vendor/symfony/yaml/README.md
-/libraries/vendor/simplepie/simplepie/demo
-/libraries/vendor/simplepie/simplepie/tests
-/libraries/vendor/simplepie/simplepie/README.markdown
-/libraries/vendor/simplepie/simplepie/phpunit.xml.dist
-/libraries/vendor/simplepie/simplepie/.gitignore
-/libraries/vendor/simplepie/simplepie/.travis.yml
-/libraries/vendor/simplepie/simplepie/compatibility_test
-/libraries/vendor/simplepie/simplepie/build
-/libraries/vendor/simplepie/simplepie/idn/ReadMe.txt
-/libraries/vendor/simplepie/simplepie/composer.json
+
 /tests/test_data/j370/bwpm-env.properties
 /tests/test_data/j370_bwpm200/bwpm-env.properties
 /tests/test_data/j370_bwpm200_vm321/bwpm-env.properties
 /tests/test_data/j370_vm321/bwpm-env.properties
 !/build/
-Würde administrator/language/de-DE/de-DE.plg_vmuserfield_bwpm_buyer2subscriber.ini löschen
-Würde administrator/language/de-DE/de-DE.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini löschen
-Würde administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.ini löschen
-Würde administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini löschen
-Würde backup/ löschen
-Würde containers/infrastructure/apache/data/scripts/ löschen
-Würde containers/infrastructure/mysqldb/data/ löschen
-Würde containers/infrastructure/os_postfix/data/logs/ löschen
-Würde containers/lab/ löschen
-Würde containers/testers/os-data/sync_to_bwpm.sh löschen
-Würde joomla-tests/ löschen
-Würde Repository libraries/vendor/joomla-browser/codeception überspringen
-Würde libraries/vendor/ircmaxell löschen
-Würde libraries/vendor/squizlabs löschen
-Würde libraries/vendor/phpspec löschen
-Würde libraries/vendor/pear löschen
-Würde libraries/vendor/leafo löschen
-Würde libraries/vendor/phpmailer löschen
-Würde libraries/vendor/composer löschen
-Würde libraries/vendor/sebastian löschen
-Würde libraries/vendor/paragonie löschen
-Würde libraries/vendor/phpunit löschen
-Würde libraries/vendor/joomla löschen
-Würde libraries/vendor/autoload.php löschen
-Würde libraries/vendor/friendsofphp löschen
-Würde libraries/vendor/symfony löschen
-Würde libraries/vendor/doctrine löschen
-Würde libraries/vendor/simplepie löschen
-Würde libraries/vendor/phpdocumentor löschen
-Würde libraries/vendor/psr löschen
-Würde libraries/vendor/bin löschen
-Würde plugins/attachments/ löschen
-Würde plugins/composer.json löschen
-Würde plugins/composer.lock löschen
-Würde plugins/search/ löschen
-Würde plugins/system/bwtests/ löschen
-Würde plugins/vendor/ löschen
-Würde tests/CHANGELOG löschen
-Würde tests/README.md löschen
-Würde tests/_data/BwPostman_2_0_0_Tables_gross.xml löschen
-Würde tests/_data/BwPostman_2_0_0_Tables_klein.xml löschen
-Würde tests/_data/BwPostman_2_0_0_Tables_not_adjusted.xml löschen
-Würde tests/_data/jos_extensions.sql löschen
-Würde tests/_data/mod_bwpostman.zip löschen
-Würde tests/_data/mod_bwpostman_overview.zip löschen
-Würde tests/_data/pkg_bwpostman.zip löschen
-Würde tests/_data/plg_bwpostman_bwpm_buyer2subscriber.zip löschen
-Würde tests/_data/plg_bwpostman_bwpm_user2subscriber.zip löschen
-Würde tests/_data/plg_bwpostman_personalize.zip löschen
-Würde tests/_data/sav/ löschen
-Würde tests/_data/testdata_bwpostman_complete_without_tc.sql löschen
-Würde tests/_data/testdata_bwpostman_reset_org.sql löschen
-Würde tests/_envs/ löschen
-Würde tests/_output/ löschen
-Würde tests/codeception/ löschen
-Würde tests/index.php löschen
-Würde tests/javascript/ löschen
-Würde tests/system/ löschen
-Würde tests/test_data/j365/ löschen
-Würde tests/test_data/j365_bwpm200/ löschen
-Würde tests/test_data/j365_bwpm200_vm321/ löschen
-Würde tests/test_data/j365_vm321/ löschen
-Würde tests/test_data/j370_bwpm132/ löschen
-Würde tests/test_data/j370_bwpm200/ löschen
-Würde tests/test_data/j370_bwpm200_vm321/ löschen
-Würde tests/test_data/j370_vm321/ löschen
-Würde tests/tests/ löschen
-Würde tests/unit/README.md löschen
-Würde tests/unit/bootstrap.php löschen
-Würde tests/unit/core/ löschen
-Würde tests/unit/schema/ löschen
-Würde tests/unit/stubs/ löschen
-Würde tests/unit/suites/ löschen
-Würde tests/unit/tmp/ löschen
-Würde update-servers/com_bwpostman_update.xml löschen
-Würde update-servers/com_bwpostman_update_local.xml löschen
-Würde update-servers/jed_bwpostman.xml löschen
-Würde update-servers/lang_bwpostman_update_ja-JP.xml löschen
-Würde update-servers/mod_bw_spec_cat_update.xml löschen
-Würde update-servers/mod_bwpostman_overview_update.xml löschen
-Würde update-servers/mod_bwpostman_update.xml löschen
-Würde update-servers/plg_bwpostman_personalize_update.xml löschen
-Würde vendor/autoload.php löschen
-Würde vendor/behat/ löschen
-Würde vendor/bin/ löschen
-Würde Repository vendor/codeception/base/ überspringen
-Würde vendor/codeception/c3/ l
-öschen
-Würde vendor/codeception/codeception/.gitattributes löschen
-Würde vendor/codeception/codeception/.gitignore löschen
-Würde vendor/codeception/codeception/.travis.yml löschen
-Würde vendor/codeception/codeception/CHANGELOG.md löschen
-Würde vendor/codeception/codeception/CONTRIBUTING.md löschen
-Würde vendor/codeception/codeception/Dockerfile löschen
-Würde vendor/codeception/codeception/LICENSE löschen
-Würde vendor/codeception/codeception/RoboFile.php löschen
-Würde vendor/codeception/codeception/appveyor.yml löschen
-Würde vendor/codeception/codeception/autoload.php löschen
-Würde vendor/codeception/codeception/codecept löschen
-Würde vendor/codeception/codeception/codecept.bat löschen
-Würde vendor/codeception/codeception/codeception.yml löschen
-Würde vendor/codeception/codeception/composer.json löschen
-Würde vendor/codeception/codeception/docs/ löschen
-Würde vendor/codeception/codeception/ext/Logger.php löschen
-Würde vendor/codeception/codeception/ext/README.md löschen
-Würde vendor/codeception/codeception/ext/Recorder.php löschen
-Würde vendor/codeception/codeception/ext/RunFailed.php löschen
-Würde vendor/codeception/codeception/ext/SimpleOutput.php löschen
-Würde vendor/codeception/codeception/nitpick.json löschen
-Würde vendor/codeception/codeception/package/ löschen
-Würde vendor/codeception/codeception/readme.md löschen
-Würde vendor/codeception/codeception/ruleset.xml löschen
-Würde vendor/codeception/codeception/shim.php löschen
-Würde vendor/codeception/codeception/src/ löschen
-Würde vendor/codeception/codeception/tests/ löschen
-Würde Repository vendor/codeception/notifier/ überspringen
-Würde Repository vendor/codeception/phpbuiltinserver/ überspringen
-Würde vendor/codeception/remote-debug/ löschen
-Würde vendor/codeception/verify/ löschen
-Würde vendor/composer/ löschen
-Würde vendor/composer_json_loc.txt löschen
-Würde vendor/doctrine/ löschen
-Würde vendor/facebook/ löschen
-Würde vendor/guzzlehttp/ löschen
-Würde vendor/hamcrest/ löschen
-Würde Repository vendor/mockery/mockery überspringen
-Würde vendor/namshi/ löschen
-Würde vendor/phpdocumentor/ löschen
-Würde vendor/phpspec/ löschen
-Würde vendor/phpunit/ löschen
-Würde vendor/psr/ löschen
-Würde vendor/sebastian/ löschen
-Würde vendor/symfony/ löschen
-Würde vendor/webmozart/ löschen
-Würde plugins/vmuserfield/bwpm_buyer2subscriber/assets/ löschen
-Würde Repository vendor/codeception/notifier überspringen
-Würde Repository vendor/codeception/phpbuiltinserver überspringen
-Würde Repository vendor/codeception/base überspringen
-Würde vendor/codeception/verify löschen
-Würde vendor/codeception/c3 löschen
-Würde vendor/codeception/codeception löschen
-Würde vendor/codeception/remote-debug löschen
-Würde vendor/phpspec löschen
-Würde vendor/facebook löschen
-Würde vendor/webmozart löschen
-Würde vendor/composer löschen
-Würde vendor/guzzlehttp löschen
-Würde vendor/sebastian löschen
-Würde vendor/phpunit löschen
-Würde vendor/symfony löschen
-Würde vendor/namshi löschen
-Würde vendor/doctrine löschen
-Würde vendor/phpdocumentor löschen
-Würde vendor/psr löschen
-Würde vendor/hamcrest löschen
-Würde vendor/behat löschen
-Würde vendor/bin löschen
-!/tests/test_data/j370/bwpm-env.properties
-Würde tests/test_data/j370/ löschen
-Würde test.php löschen
-Wür
-de vendor/codeception/verify löschen
 /plugins/vendor/
-Würde Repository vendor/mockery/mockery überspringe
-n
-Würde Repository vendor/codec
-eption/notifier überspringen
+/libraries/
+/backup/
+/containers/lab/
+/test.php
+/tests/_data/mod_bwpostman.zip
+/tests/tests/README.md
+/plugins/composer.json
+/plugins/composer.lock
+/tests/_data/mod_bwpostman_overview.zip
+/tests/_data/pkg_bwpostman.zip
+/tests/_data/plg_bwpostman_bwpm_buyer2subscriber.zip
+/tests/_data/plg_bwpostman_personalize.zip
+/tests/_data/plg_bwpostman_bwpm_user2subscriber.zip
+/tests/_output/
+/tests/codeception/
+/tests/javascript/
+/tests/index.php
+/tests/CHANGELOG
+/tests/README.md
+/tests/unit/
+/tests/system/
+/vendor/

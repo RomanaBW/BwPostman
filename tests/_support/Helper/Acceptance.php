@@ -1416,9 +1416,8 @@ class Acceptance extends Codeception\Module
 		$driver      = new Codeception\Lib\Driver\Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
 		$query = 'UPDATE `' . Generals::$db_prefix . 'extensions`' . ' SET `enabled` = ' . $status . " WHERE `element` = '" . $extension . "'";
-codecept_debug('Query set extension status: ' . $query);
+
 		$sth = $driver->executeQuery($query, $criteria);
-//		$res = $sth->fetch(\PDO::FETCH_NUM);;
 	}
 
 	/**
@@ -1459,7 +1458,7 @@ codecept_debug('Query set extension status: ' . $query);
 
 //		$query      = "UPDATE $table_name SET `params` = '$options' $where";
 		$query      = "DELETE FROM " . Generals::$db_prefix . $table . $where_clause;
-codecept_debug($query);
+
 		$sth = $driver->executeQuery($query, $criteria);
 		$res = $sth->rowCount();
 	}

@@ -103,3 +103,4 @@ Desktop.ini
 /vendor/
 /codeception.yml
 /tests/_data/sav/
+/tests/test_data/

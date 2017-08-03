@@ -379,6 +379,12 @@ class TestAccessCest
 			// Loop over main view list buttons
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
+                // @ToDo: This is a workaround to first create the tests. In real life this break must be removed!
+                if ($button != 'Subscribers')
+                {
+                    continue;
+                }
+
 				$list_permission_array  = '_main_list_permissions';
 				$allowed                = $this->_getAllowedByUser($user, $button, $list_permission_array);
 codecept_debug('User: ' . $user['user']);
@@ -407,6 +413,7 @@ codecept_debug('Allowed: ' . $allowed);
 						$this->_changeStateItem($I, $button, $item_permission_array); //own item
 
 						$this->_checkinOwnItem($I, $button, $link, $item_permission_array);
+						// @ToDo: Use other user to lock. Question: How to determine other user?
 //						$this->_checkinOtherItem($I, $i, $button, $link);
 
 						$this->_restoreArchivedItem($I, $button, $user, $item_permission_array); // own item
@@ -620,7 +627,7 @@ codecept_debug('Allowed: ' . $allowed);
 			if ($button == 'Newsletters')
 			{
 				$I->click(NewsletterManagerPage::$tab2);// switch to tab sent newsletters first
-				$I->waitForElement(".//*[@id='j-main-container']/div[4]/table/thead/tr/th[5]/a", 20);
+				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
 			}
 			$I->publishByIcon($I, $permission_array[$button]['publish_by_icon'], strtolower(substr($button, 0, -1)), NewsletterManagerPage::$tab2);
 			$I->publishByToolbar($I, $permission_array[$button]['publish_by_toolbar'], strtolower(substr($button, 0, -1)), NewsletterManagerPage::$tab2);
@@ -628,7 +635,7 @@ codecept_debug('Allowed: ' . $allowed);
 			if ($button == 'Newsletters')
 			{
 				$I->click(NewsletterManagerPage::$tab1);// switch to tab unsent newsletters to finish
-				$I->waitForElement(".//*[@id='j-main-container']/div[4]/table/thead/tr/th[5]/a", 20);
+				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
 			}
 		}
 	}
@@ -705,8 +712,12 @@ codecept_debug('Allowed: ' . $allowed);
 //				\TestSubscribersDetailsCest::_createSubscriberWithoutCleanup($I);
 				break;
 			case 'Subscribers':
-				SubscriberEditPage::_CreateSubscriberWithoutCleanup($I);
-				break;
+                $this->_switchLoggedInUser($I, $user);
+
+                SubscriberEditPage::_CreateSubscriberWithoutCleanup($I);
+                $edit_data = SubscriberEditPage::prepareDeleteArray($I);
+
+                break;
 			case 'Campaigns':
 				CampaignEditPage::_createCampaignWithoutCleanup($I);
 				break;
@@ -768,7 +779,7 @@ codecept_debug('Allowed: ' . $allowed);
 		// by icon
 		$I->seeElement($lock_icon);
 		$I->click($lock_icon);
-		$this->_checkCheckinResult($I, $check_content, $lock_icon);
+		$this->_checkCheckinResult($I, $check_content, $lock_icon, $button);
 
 		$this->_openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
 
@@ -779,7 +790,7 @@ codecept_debug('Allowed: ' . $allowed);
 		$checkbox       = $this->_getCheckbox($I, $check_content);
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Check-In']);
-		$this->_checkCheckinResult($I, $check_content, $lock_icon);
+		$this->_checkCheckinResult($I, $check_content, $lock_icon, $button);
 	}
 
 	/**
@@ -819,15 +830,27 @@ codecept_debug('Allowed: ' . $allowed);
 	 * @param \AcceptanceTester $I
 	 * @param $check_content
 	 * @param $lock_icon
+     * @param $button
 	 *
 	 * @return void
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon)
+	private function _checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button)
 	{
-		$I->scrollTo(Generals::$sys_message_container, 0, 100);
-		$I->see(AccessPage::$checkin_success_text, Generals::$alert_success);
+        $replace_txt    = array('Subscribers' => 'One recipient');
+
+        $I->scrollTo(Generals::$sys_message_container, 0, 100);
+
+		$success_text   = AccessPage::$checkin_success_text;
+
+		if ($button != 'Newsletters')
+        {
+            $replace_txt['Subscribers']    = 'recipient';
+            $success_text   = str_replace('1 item', $replace_txt[$button], $success_text);
+        }
+
+		$I->see($success_text, Generals::$alert_success);
 
 		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
 
@@ -892,7 +915,7 @@ codecept_debug('Allowed: ' . $allowed);
 
 			if ($current_user['name'] == 'BwPostmanAdmin')
 			{
-				$this->_checkCheckinResult($I, $check_content, $lock_icon);
+				$this->_checkCheckinResult($I, $check_content, $lock_icon, $button);
 			}
 			else
 			{
@@ -940,7 +963,7 @@ codecept_debug('Allowed: ' . $allowed);
 		$loginPage = new LoginPage($I);
 
 		// logout current user
-		$this->_logout($I, $loginPage);
+		$this->_logout($I, $loginPage, false);
 
 		// login as other user
 		$this->_login($loginPage, $user_to_login);
@@ -1050,16 +1073,17 @@ codecept_debug('Allowed: ' . $allowed);
 	/**
 	 * Test method to logout from backend
 	 *
-	 * @param   \AcceptanceTester        $I
+	 * @param   \AcceptanceTester     $I
 	 * @param   LoginPage             $loginPage
+     * @param   boolean               $truncateSession
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function _logout(\AcceptanceTester $I, LoginPage $loginPage)
+	public function _logout(\AcceptanceTester $I, LoginPage $loginPage, $truncateSession = false)
 	{
-		$loginPage->logoutFromBackend($I);
+		$loginPage->logoutFromBackend($I, $truncateSession);
 	}
 
 	/**
@@ -1145,9 +1169,13 @@ codecept_debug('Allowed: ' . $allowed);
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
 		$I->seeElement(Generals::$toolbar['Send']);
-		NewsletterEditPage::SendNewsletterToRealRecipients($I, $user['username']);
+		NewsletterEditPage::SendNewsletterToRealRecipients($I, $user['user']);
 
 		$this->_switchLoggedInUser($I, Generals::$admin);
+
+		$I->amOnPage(NewsletterManagerPage::$url);
+		$I->clickAndWait(NewsletterManagerPage::$tab2, 1);
+
 		$I->HelperArcDelItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array, true);
 		$this->_switchLoggedInUser($I, $user);
 	}

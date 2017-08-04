@@ -51,17 +51,17 @@ if ($this->queueEntries)
 						<td>
 							<div id="cpanel" class="cpanel_j3">
 								<?php
-								$option = $jinput->getCmd('option', 'com_bwpostman');
-								$link = 'index.php?option='.$option.'&view=maintenance&layout=checkTables';
-								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), '', '');
+                                if (BwPostmanHelper::canAdmin()) {
+									$option = $jinput->getCmd('option', 'com_bwpostman');
+									$link = 'index.php?option='.$option.'&view=maintenance&layout=checkTables';
+									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablecheck.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"), '', '');
 
-								$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.saveTables';
-								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES"), 0, 0);
+									$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.saveTables';
+									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES"), 0, 0);
 
-								$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.restoreTables';
-								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablerestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES"), 0, 0);
+									$link = 'index.php?option='.$option.'&view=maintenance&task=maintenance.restoreTables';
+									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-tablerestore.png', JText::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES"), 0, 0);
 
-								if (BwPostmanHelper::canAdmin()) {
 									$link	= 'index.php?option=com_config&amp;view=component&amp;component='.$option.'&amp;path=';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', JText::_("COM_BWPOSTMAN_SETTINGS"), '', '');
 								}

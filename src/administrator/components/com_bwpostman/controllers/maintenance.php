@@ -157,14 +157,13 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
 		{
+            JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
 		}
 
 		$jinput		= JFactory::getApplication()->input;
-		$user		= JFactory::getUser();
-		$app		= JFactory::getApplication();
 		$document	= JFactory::getDocument();
 
 		$jinput->set('view', 'subscriber');
@@ -190,6 +189,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
 		{
+            JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
@@ -212,6 +212,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
 		{
+            JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;

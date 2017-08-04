@@ -308,13 +308,20 @@ class AcceptanceTester extends \Codeception\Actor
      */
     private function _getLastPageNumber()
     {
-        $this->scrollTo(Generals::$pagination_bar);
-        $this->click(Generals::$last_page);
-
-        $last_page = $this->grabTextFrom(Generals::$last_page_identifier);
+        $last_page = 1;
 
         $this->scrollTo(Generals::$pagination_bar);
-        $this->click(Generals::$first_page);
+
+        $pagination_accessible   = count($this->grabMultiple(Generals::$last_page));
+
+        if ($pagination_accessible > 0)
+        {
+            $this->click(Generals::$last_page);
+            $last_page = $this->grabTextFrom(Generals::$last_page_identifier);
+
+            $this->scrollTo(Generals::$pagination_bar);
+            $this->click(Generals::$first_page);
+        }
 
         return $last_page;
     }

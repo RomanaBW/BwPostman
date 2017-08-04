@@ -171,8 +171,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			JToolbarHelper::spacer();
 		}
 
-			if ($layout == 'doRestore')
-			{
+		if ($layout == 'doRestore')
+		{
 			$alt 	= "COM_BWPOSTMAN_BACK";
 			$bar	= JToolbar::getInstance('toolbar');
 			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
@@ -217,7 +217,9 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		}
 
 		if (BwPostmanHelper::canAdmin())
-			JToolbarHelper::preferences('com_bwpostman', '500', '900');
+        {
+            JToolbarHelper::preferences('com_bwpostman', '500', '900');
+        }
 		JToolbarHelper::spacer();
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();

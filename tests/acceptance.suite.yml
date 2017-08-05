@@ -1,0 +1,114 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+
+paths:
+    log: tests/_output/j365vm_flex
+    data: tests/_data
+#    envs: tests/_envs
+
+modules:
+    enabled:
+      - \Helper\Acceptance
+      - WebDriver
+      - Db
+      - Asserts
+
+# Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
+    config:
+      WebDriver:
+        url: http://172.18.0.4
+
+        window_size: 1440x900
+        browser: chrome
+        port: 4445
+
+        connection_timeout: 60
+        restart: false
+#        browser: phantomjs
+#        port: 4447
+#        browser: firefox
+#        port: 4444
+
+      Db:
+        dsn: 'mysql:host=172.18.0.3;dbname=joomlatest'
+        user: 'tester'
+        password: 'barbamama'
+
+        populate: false
+        cleanup: false
+        reconnect: true
+
+
+env:
+# This configuration is for manual testing (needed for creating tests)
+  manual:
+    modules:
+      config:
+        WebDriver:
+          url: http://www.devtest.nil
+
+        Db:
+          dsn: 'mysql:host=universe.bet2.nil;dbname=devtest'
+          user: 'root'
+          password: 'Susi'
+
+# This configuration is for joomla containers also containing installed BwPostman
+  j365vm_flex:
+    modules:
+      config:
+        WebDriver:
+          url: http://172.18.0.28
+
+        Db:
+          dsn: 'mysql:host=172.18.0.27;dbname=joomlatest'
+          user: 'testervmflex'
+
+# This configuration is for joomla containers also containing installed BwPostman, vm and plugins
+  shopflex:
+    modules:
+      config:
+        WebDriver:
+          url: http://172.18.0.28
+
+        Db:
+          dsn: 'mysql:host=172.18.0.27;dbname=joomlatest'
+          user: 'testervmflex'
+
+# This configuration is for joomla containers also containing virtuemart(plugin BwPostman_Buyer2Subscriber)
+  shop:
+    modules:
+      config:
+        WebDriver:
+          url: http://172.18.0.12
+
+        Db:
+          dsn: 'mysql:host=172.18.0.11;dbname=joomlatest'
+          user: 'testervm'
+
+# This configuration is for testing in a virtual machine
+  vm:
+    modules:
+      config:
+        WebDriver:
+          url: http://www.ci-tests.nil
+
+        Db:
+          dsn: 'mysql:host=cisuse.tester-net.nil;dbname=joomlatest'
+          user: 'tester'
+          password: 'barbamama'
+
+
+
+#    firefox:
+#        modules:
+#          config:
+#            Webdriver:
+#              browser: firefox
+#              port: 4446
+#    phantom:
+      # nothing changed here

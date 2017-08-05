@@ -250,16 +250,15 @@ class AcceptanceTester extends \Codeception\Actor
 			}
 			else
 			{
+                if ($count >= $last_page)
+                {
+                    return false;
+                }
 				$this->scrollTo(Generals::$pagination_bar);
 				$this->click(Generals::$next_page);
 
 				$this->waitForElement(Generals::$pageTitle, 30);
 				$count++;
-				if ($count > $last_page)
-				{
-					$found = true;
-					return false;
-				}
 			}
 		}
 		return true;

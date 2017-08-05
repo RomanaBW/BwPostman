@@ -577,41 +577,154 @@ class AccessPage
 						'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
 					),
 			),
+
 		'Subscribers'       =>
             array(
-            'permissions'       =>
-					array(
-						'Create'            => true,
-						'Edit'              => true,
-						'EditOwn'           => true,
-						'ModifyState'       => true,
-						'ModifyStateOwn'    => true,
-						'Archive'           => true,
-						'Restore'           => true,
-						'Delete'            => true,
-					),
-            'own'   =>
-                array(
-                    'itemid'        => 2,
-                    'check content' => "Rebmann",
-                ),
-            'other'   =>
-                array(
-                    'itemid'        => 22,
-                    'check content' => "Schenk",
-                ),
-            'check column'  => "Last name",
-            'check locator' => ".//*[@id='jform_name']",
-			'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
-			),
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 2,
+                        'check content' => "Rebmann",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 22,
+                        'check content' => "Schenk",
+                    ),
+                'check column'  => "Last name",
+                'check locator' => ".//*[@id='jform_name']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
 
-		'Campaigns'         => true,
-		'Mailinglists'      => true,
-		'Templates'         => true,
-		'Archive'           => true,
-		'Basic settings'    => true,
-		'Maintenance'       => true,
-	);
+		'Campaigns'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 1,
+                        'check content' => "01 Kampagne 2 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 19,
+                        'check content' => "04 Kampagne 12 A",
+                    ),
+                'check column'  => "Campaign title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Mailinglists'      =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 17,
+                        'check content' => "05 Mailingliste 18 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 3,
+                        'check content' => "01 Mailingliste 4 A",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Templates'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 7,
+                        'check content' => "Standard Deep Blue",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 8,
+                        'check content' => "Standard Soft Blue",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb3']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb3']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+
+        'Maintenance'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Admin' => true,
+                    ),
+            ),
+    );
+
 // publish mailinglists
 	public static $publish_by_icon   = array(
 		'publish_button'    =>  ".//.//*[@id='main-table']/tbody/tr[3]/td[4]/a",
@@ -916,7 +1029,7 @@ class AccessPage
 	);
 
 	// Messages
-	public static $checkin_success_text = "1 item successfully checked in";
+	public static $checkin_success_text = "One %s successfully checked in";
 	public static $checkin_error_text   = "Check-in failed with the following error: The user checking in does not match the user who checked out the item.";
 
 }

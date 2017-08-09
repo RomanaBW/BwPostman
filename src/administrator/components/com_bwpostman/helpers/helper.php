@@ -559,20 +559,27 @@ abstract class BwPostmanHelper
 		// Fallback on edit own.
 		if (!$res)
 		{
-			// First get owner id
-			$ownerId = self::_getOwnerId($view, $recordId, $createdBy);
-
 			// Then test if the permission is available.
 			if ($user->authorise('bwpm.edit.own', 'com_bwpostman')
 				|| $user->authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view)
 				|| $user->authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId)
 			)
 			{
-				// Now test the owner is the user. If the owner matches 'me' then allow access.
-				if ($ownerId == $userId)
-				{
-					$res = true;
-				}
+			    // Check for general 'edit own' permission, used for displaying button
+			    if (!$recordId)
+                {
+                    $res = true;
+                }
+                else
+                {
+                    $ownerId = self::_getOwnerId($view, $recordId, $createdBy);
+
+                    // Now test the owner is the user. If the owner matches 'me' then allow access.
+                    if ($ownerId == $userId)
+                    {
+                        $res = true;
+                    }
+                }
 			}
 		}
 

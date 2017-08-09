@@ -267,7 +267,7 @@ abstract class BwPostmanHelper
 	 * @param    int    $length    length of list array
 	 * @param    array  $selectval selected values
 	 *
-	 * @return    string                selectlist
+	 * @return    array                selectlist
 	 *
 	 * @since
 	 */
@@ -540,6 +540,10 @@ abstract class BwPostmanHelper
 			{
 				$createdBy = (int) $data->created_by;
 			}
+            if (property_exists($data, 'registered_by'))
+            {
+                $createdBy = (int) $data->registered_by;
+            }
 		}
 		elseif (is_array($data))
 		{
@@ -551,11 +555,14 @@ abstract class BwPostmanHelper
 			{
 				$createdBy = (int) $data['created_by'];
 			}
+            if (key_exists('registered_by', $data))
+            {
+                $createdBy = (int) $data['registered_by'];
+            }
 		}
 
 		// Check permission
 		$res      = self::_checkActionPermission($view, $action, array($recordId));
-
 		// Fallback on edit own.
 		if (!$res)
 		{
@@ -573,7 +580,6 @@ abstract class BwPostmanHelper
                 else
                 {
                     $ownerId = self::_getOwnerId($view, $recordId, $createdBy);
-
                     // Now test the owner is the user. If the owner matches 'me' then allow access.
                     if ($ownerId == $userId)
                     {
@@ -1186,9 +1192,16 @@ abstract class BwPostmanHelper
 	 */
 	private static function _getOwnerId($view, $recordId, $createdBy)
 	{
-		$ownerId = isset($createdBy) ? $createdBy : 0;
+		$ownerId = $createdBy;
 
-		if (empty($ownerId))
+		$createdPropertyName    = 'created_by';
+
+		if ($view == 'subscriber')
+        {
+            $createdPropertyName    = 'registered_by';
+        }
+
+		if (!$ownerId)
 		{
 			// Need to do a lookup from the model.
 			// get the model for user groups
@@ -1196,14 +1209,14 @@ abstract class BwPostmanHelper
 			$model  = JModelLegacy::getInstance(ucfirst($view), 'BwPostmanModel');
 			$record = $model->getItem($recordId);
 
-			if (empty($record) || !property_exists($record, 'created_by'))
+			if (!is_object($record) || !property_exists($record, $createdPropertyName))
 			{
 				//@ ToDo: Specify error message, insert in language files
 //				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_SUITABLE_RECORD'), 'error');
 
 				return false;
 			}
-			$ownerId = $record->created_by;
+			$ownerId = $record->{$createdPropertyName};
 		}
 
 		return $ownerId;

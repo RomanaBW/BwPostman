@@ -435,28 +435,35 @@ abstract class BwPostmanHelper
 	/**
 	 * Method to check if you can check in an item
 	 *
-	 * @param     int   $checkedOut     user id, who checked out this item
+     * @param    string    $view            The view to test.
+     * @param    int       $recordId        The record to test.
+	 * @param    int       $checkedOut      user id, who checked out this item
 	 *
 	 * @return    boolean
 	 * @since    1.2.0
 	 */
-	public static function canCheckin($checkedOut = 0)
+	public static function canCheckin($view, $recordId, $checkedOut = 0)
 	{
-		$user   = JFactory::getUser();
-		$userId = $user->get('id');
-		$res    = false;
+		$user    = JFactory::getUser();
+		$userId  = $user->get('id');
+		$allowed = false;
 
 		if (self::canManage() || $checkedOut == $userId || $checkedOut == 0)
 		{
-			$res = true;
+            $allowed = true;
 		}
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_MANAGE_NO_PERMISSION'), 'error');
-		}
-*/
-		return $res;
+
+        if (!$allowed)
+        {
+            $allowed = BwPostmanHelper::canEditState($view, $recordId);
+        }
+
+        if (!$allowed)
+        {
+            $allowed = BwPostmanHelper::canEdit($view, array($recordId));
+        }
+
+        return $allowed;
 	}
 
 	/**
@@ -617,7 +624,7 @@ abstract class BwPostmanHelper
 		return $res;
 	}
 
-	/**
+    /**
 	 * Method to check if you can send a newsletter.
 	 *
 	 * @param    int     $recordId   The record to test.

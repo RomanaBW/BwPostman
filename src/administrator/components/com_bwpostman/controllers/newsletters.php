@@ -215,6 +215,41 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		return true;
 	}
 
+    /**
+     * Override method to checkin an existing record, based on Joomla method.
+     * We need an override, because we want to handle this a bit different than Joomla at this point
+     *
+     * @return	boolean		True if access level check and checkout passes, false otherwise.
+     *
+     * @since	1.0.1
+     */
+    public function checkin()
+    {
+        // Check for request forgeries.
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        $ids = JFactory::getApplication()->input->post->get('cid', array(), 'array');
+        $res = true;
+
+        foreach ($ids as $item)
+        {
+            $allowed = BwPostmanHelper::canCheckin('newsletter', $item);
+
+            // Access check.
+            if ($allowed)
+            {
+                $res = parent::checkin();
+            }
+            else
+            {
+                JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+                $this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=newsletters', false));
+                return false;
+            }
+        }
+        return $res;
+    }
+
 	/**
 	 * Method to set the tab state while changing tabs, used for building the appropriate toolbar
 	 *

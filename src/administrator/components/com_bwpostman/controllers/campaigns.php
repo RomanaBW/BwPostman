@@ -150,20 +150,6 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	}
 
 	/**
-	 * Method to check if you can archive records
-	 *
-	 * @param	integer 	$recordId		item to check permission for
-	 *
-	 * @return	boolean
-	 *
-	 * @since	2.0.0
-	 */
-	protected function allowCheckin($recordId = 0)
-	{
-		return BwPostmanHelper::canEditState('campaign', $recordId);
-	}
-
-	/**
 	 * Override method to checkin an existing record, based on Joomla method.
 	 * We need an override, because we want to handle this a bit different than Joomla at this point
 	 *
@@ -181,7 +167,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 
 		foreach ($ids as $item)
 		{
-			$allowed = $this->allowCheckin($item);
+			$allowed = BwPostmanHelper::canCheckin('campaign', $item);
 
 			// Access check.
 			if ($allowed)

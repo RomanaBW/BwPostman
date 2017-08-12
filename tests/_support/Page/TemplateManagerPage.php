@@ -94,26 +94,26 @@ class TemplateManagerPage
 	// publish by icon
 	public static $publish_by_icon   = array(
 		'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
-		'publish_result'    =>  "//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[6]/a",
-		'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+		'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	// publish by toolbar
 	public static $publish_by_toolbar   = array(
-		'publish_button'    =>  ".//*[@id='cb0']",
-		'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'publish_button'    =>  ".//*[@id='cb3']",
+		'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  =>  ".//*[@id='cb3']",
 		'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
-	public static $default_button1      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a";
-	public static $default_result1      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
-	public static $no_default_result1   = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $default_button1      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a";
+	public static $default_result1      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $no_default_result1   = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
-	public static $default_button2      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a";
-	public static $default_result2      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
-	public static $no_default_result2   = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $default_button2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a";
+	public static $default_result2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $no_default_result2   = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	// Filter mail format
 	public static $format_list_id       = "filter_tpl_id_chzn";
@@ -199,12 +199,9 @@ class TemplateManagerPage
 		}
 		else
 		{
+		    $I->dontSeeElement(Generals::$toolbar['Default']);
 			$I->dontSeeElement(self::$default_result1);
 			$I->seeElement(self::$no_default_result1);
-
-			$I->click(self::$default_button2);
-			$I->dontSeeElement(self::$default_result2);
-			$I->seeElement(self::$no_default_result2);
 		}
 	}
 }

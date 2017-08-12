@@ -251,50 +251,6 @@ class TestSubscribersListsCest
 	}
 
     /**
-     * Test method sorting subscribers by click to column in table header
-     *
-     * @param   AcceptanceTester                $I
-     *
-     * @before  _login
-     *
-     * @after   _logout
-     *
-     * @return  void
-     *
-     * @since   2.0.0
-     */
-    public function SortUnconfirmedSubscribersByTableHeader(AcceptanceTester $I)
-    {
-        // @Todo: ensure UTF-8 characters are recognized; only testing problem
-        $I->wantTo("Sort unconfirmed subscribers by table header");
-        SubsManage::$wait_db;
-        $I->amOnPage(SubsManage::$url);
-        $I->wait(1);
-
-        $I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
-
-        $I->click(Generals::$submenu_toggle_button);
-
-        $sort_array     = $this->_prepareSortArray($I);
-        $loop_counts    = 10;
-
-        $options    = $I->getManifestOptions('com_bwpostman');
-
-        if (!$options->show_gender)
-        {
-            $loop_counts    = 9;
-        }
-
-
-        // loop over sorting criterion
-        $columns    = implode(', ', SubsManage::$query_criteria);
-        $columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-        $I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
-
-        $I->click(Generals::$submenu_toggle_button);
-    }
-
-    /**
      * Test method to import subscribers by CSV file
      *
      * @param   AcceptanceTester                $I
@@ -490,6 +446,50 @@ class TestSubscribersListsCest
 
 
 
+    /**
+     * Test method sorting subscribers by click to column in table header
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    /*    public function SortUnconfirmedSubscribersByTableHeader(AcceptanceTester $I)
+        {
+            // @Todo: ensure UTF-8 characters are recognized; only testing problem
+            $I->wantTo("Sort unconfirmed subscribers by table header");
+            SubsManage::$wait_db;
+            $I->amOnPage(SubsManage::$url);
+            $I->wait(1);
+
+            $I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
+            $I->click(Generals::$submenu_toggle_button);
+
+            $sort_array     = $this->_prepareSortArray($I);
+            $loop_counts    = 10;
+
+            $options    = $I->getManifestOptions('com_bwpostman');
+
+            if (!$options->show_gender)
+            {
+                $loop_counts    = 9;
+            }
+
+
+            // loop over sorting criterion
+            $columns    = implode(', ', SubsManage::$query_criteria);
+            $columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+            $I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
+
+            $I->click(Generals::$submenu_toggle_button);
+        }
+    */
 
     // @ToDo: Next tests with Chromium switches unpredictably to first tab, so correct check is not possible
     // Would be better if I switch to tabs like at newsletters?

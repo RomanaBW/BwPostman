@@ -310,6 +310,9 @@ class Generals
 	public static $button_green = 'btn active btn-success';
 	public static $button_grey  = 'btn';
 
+	// General error messages
+    public static $msg_edit_no_permission   = "No permission to edit this item!";
+
 	/**
 	 * Variables for selecting mailinglists
 	 * Hint: Use with sprintf <nbr> for wanted row

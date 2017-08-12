@@ -372,10 +372,10 @@ class TestAccessCest
 
 			// @ToDo: This is a workaround to debug tests. Comment out users which are not wanted
             $wanted_users = array(
-                'BwPostmanAdmin',
+//                'BwPostmanAdmin',
 //                'BwPostmanManager',
-//                'BwPostmanPublisher',
-//                'BwPostmanEditor',
+                'BwPostmanPublisher',
+                'BwPostmanEditor',
 //                'BwPostmanCampaignAdmin',
 //                'BwPostmanCampaignPublisher',
 //                'BwPostmanCampaignEditor',
@@ -389,8 +389,8 @@ class TestAccessCest
 //                'BwPostmanSubscriberPublisher',
 //                'BwPostmanSubscriberEditor',
 //                'BwPostmanTemplateAdmin',
+//                'BwPostmanTemplatePublisher',
 //                'BwPostmanTemplateEditor',
-//                'BwPostmanAdmin',
             );
 
             if (!in_array($user['user'], $wanted_users))
@@ -402,7 +402,7 @@ class TestAccessCest
 			// Loop over main view list buttons
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
-                // @ToDo: This is a workaround to debug tests. Comment out tests which are wanted
+                // @ToDo: This is a workaround to debug tests. Comment tests which are not wanted
                 $unwanted_section    = array(
 //                    'Newsletters',
 //                    'Subscribers',
@@ -472,7 +472,7 @@ codecept_debug('Allowed: ' . $allowed);
 						}
 						elseif ($button == 'Templates')
 						{
-							$this->_setDefaultTemplate($I, $user, $item_permission_array);
+							$this->_setDefaultTemplate($I, $item_permission_array);
 
 							// @ToDo: import template
 						}
@@ -611,10 +611,18 @@ codecept_debug('Allowed: ' . $allowed);
 		$I->assertEquals(true, $item_found);
 
 		// by link
-		$I->click(sprintf($check_link, $check_content));
-		$I->waitForElement(Generals::$pageTitle, 30);
+        if ($allowed)
+        {
+            $I->seeLink($check_content);
+            $I->click(sprintf($check_link, $check_content));
+            $I->waitForElement(Generals::$pageTitle, 30);
 
-		$this->_checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
+            $this->_checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
+        }
+        else
+        {
+            $I->dontSeeLink($check_content);
+        }
 
 		// find page and row for desired item
 		$item_found  = $I->findPageWithItemAndScrollToItem($check_content);
@@ -627,7 +635,14 @@ codecept_debug('Allowed: ' . $allowed);
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Edit']);
 
-		$this->_checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
+		if ($allowed)
+        {
+            $this->_checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
+        }
+        else
+        {
+            $I->see($button, Generals::$pageTitle);
+        }
 	}
 
 	/**
@@ -688,6 +703,8 @@ codecept_debug('Allowed: ' . $allowed);
 	private function _changeStateItem($I, $button, $permission_array)
 	{
 		$has_state_to_change    = array('Newsletters', 'Mailinglists', 'Templates');
+		$allowed                = $permission_array[$button]['permissions']['ModifyState'];
+		$extraClick             = '';
 
 		if (in_array($button, $has_state_to_change))
 		{
@@ -695,6 +712,7 @@ codecept_debug('Allowed: ' . $allowed);
 			{
 				$I->click(NewsletterManagerPage::$tab2);// switch to tab sent newsletters first
 				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
+				$extraClick = NewsletterManagerPage::$tab2;
 			}
 
 			$item_text  = strtolower(substr($button, 0, -1));
@@ -704,8 +722,8 @@ codecept_debug('Allowed: ' . $allowed);
                 $item_text = 'mailing list';
             }
 
-			$I->publishByIcon($I, $permission_array[$button]['publish_by_icon'], $item_text, NewsletterManagerPage::$tab2);
-			$I->publishByToolbar($I, $permission_array[$button]['publish_by_toolbar'], $item_text, NewsletterManagerPage::$tab2);
+			$I->publishByIcon($I, $permission_array[$button]['publish_by_icon'], $item_text, $extraClick, $allowed);
+			$I->publishByToolbar($I, $permission_array[$button]['publish_by_toolbar'], $item_text, $extraClick, $allowed);
 
 			if ($button == 'Newsletters')
 			{
@@ -717,9 +735,9 @@ codecept_debug('Allowed: ' . $allowed);
 
 	/**
 	 * @param \AcceptanceTester  $I
-	 * @param string            $button
-	 * @param array             $user
-	 * @param string            $permission_array
+	 * @param string             $button
+	 * @param array              $user
+	 * @param array              $permission_array
 	 *
 	 * @return void
 	 *
@@ -765,9 +783,9 @@ codecept_debug('Allowed: ' . $allowed);
 
     /**
      * @param \AcceptanceTester  $I
-     * @param string            $button
-     * @param array             $user
-     * @param string            $permission_array
+     * @param string             $button
+     * @param array              $user
+     * @param array              $permission_array
      *
      * @return void
      *
@@ -797,9 +815,9 @@ codecept_debug('Allowed: ' . $allowed);
 
     /**
 	 * @param \AcceptanceTester  $I
-	 * @param string            $button
-	 * @param string            $link
-	 * @param string            $permission_array
+	 * @param string             $button
+	 * @param string             $link
+	 * @param array              $permission_array
 	 *
 	 * @return void
 	 *
@@ -1129,8 +1147,8 @@ codecept_debug('Allowed: ' . $allowed);
 
 	/**
 	 * @param \AcceptanceTester $I
-	 * @param string            $user
-	 * @param string            $item_permission_array
+	 * @param array             $user
+	 * @param array             $item_permission_array
 	 *
 	 * @return void
 	 *
@@ -1157,6 +1175,7 @@ codecept_debug('Allowed: ' . $allowed);
 			$I->dontSeeElement(Generals::$toolbar['Archive']);
 
 			$this->_switchLoggedInUser($I, Generals::$admin);
+            $I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
 			$I->HelperArcDelItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array, $delete_allowed);
 
@@ -1183,8 +1202,8 @@ codecept_debug('Allowed: ' . $allowed);
 
 	/**
 	 * @param \AcceptanceTester $I
-	 * @param string            $user
-	 * @param string            $item_permission_array
+	 * @param array             $user
+	 * @param array             $item_permission_array
 	 *
 	 * @return void
 	 *
@@ -1223,21 +1242,31 @@ codecept_debug('Allowed: ' . $allowed);
 
 	/**
 	 * @param \AcceptanceTester $I
-	 * @param string            $user
-	 * @param string            $item_permission_array
+	 * @param array            $item_permission_array
 	 *
 	 * @return void
 	 *
 	 * @since 2.0.0
 	 */
-	private function _setDefaultTemplate(\AcceptanceTester $I, $user, $item_permission_array)
+	private function _setDefaultTemplate(\AcceptanceTester $I, $item_permission_array)
 	{
 		$I->wantTo("check setting default template by permissions");
 
-		$I->clickAndWait(Generals::$clear_button, 1);
+        $set_default_allowed = $item_permission_array['Templates']['permissions']['ModifyState'];
 
-		$set_default_allowed    = $item_permission_array['Templates']['permissions']['ModifyState'];
+        $I->scrollTo(Generals::$sys_message_container, 0, -100);
+        $I->clickAndWait(Generals::$clear_button, 1);
 
+        $I->scrollTo(Generals::$pagination_bar);
+
+        $linkToFirstPage    = count($I->grabMultiple(Generals::$first_page));
+
+        if ($linkToFirstPage === 1)
+        {
+            $I->click(Generals::$first_page);
+        }
+
+        $I->scrollTo(Generals::$sys_message_container, 0, -100);
 		TemplateManagerPage::setDefaultTemplates($I, $set_default_allowed);
 	}
 

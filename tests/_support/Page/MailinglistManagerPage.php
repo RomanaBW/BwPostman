@@ -96,10 +96,10 @@ class MailinglistManagerPage
 	);
 
 	public static $publish_by_icon   = array(
-		'publish_button'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a",
-		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a",
-		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[3]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
+		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
+		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	public static $publish_by_toolbar   = array(

@@ -724,13 +724,20 @@ class Acceptance extends Codeception\Module
 	 * @param array             $publish_by_icon
 	 * @param string            $item
 	 * @param string            $extra_click
+     * @param boolean           $allowed
 	 *
 	 * @since   2.0.0
 	 */
-	public function publishByIcon(\AcceptanceTester $I, $publish_by_icon, $item, $extra_click = '')
+	public function publishByIcon(\AcceptanceTester $I, $publish_by_icon, $item, $extra_click = '', $allowed = true)
 	{
 		// switch status by icon
 		$I->clickAndWait($publish_by_icon['publish_button'], 2);
+
+		if (!$allowed)
+        {
+            $I->dontSee("One " . $item . " published!");
+            return;
+        }
 		$I->see("One " . $item . " published!");
 
 		if ($item   == 'newsletter')
@@ -756,15 +763,24 @@ class Acceptance extends Codeception\Module
 	 * @param array             $publish_by_toolbar
 	 * @param string            $item
 	 * @param string            $extra_click
+     * @param boolean           $allowed
 	 *
 	 * @since   2.0.0
 	 */
-	public function publishByToolbar(\AcceptanceTester $I, $publish_by_toolbar, $item, $extra_click = '')
+	public function publishByToolbar(\AcceptanceTester $I, $publish_by_toolbar, $item, $extra_click = '', $allowed = true)
 	{
 		// switch status by toolbar
 		$I->wait(2);
+        if (!$allowed)
+        {
+            $I->dontSeeElement(Generals::$toolbar['Publish']);
+            $I->dontSeeElement(Generals::$toolbar['Unpublish']);
+            return;
+        }
+
 		$I->click($publish_by_toolbar['publish_button']);
 		$I->clickAndWait(Generals::$toolbar['Publish'], 1);
+
 		$I->see("One " . $item . " published!");
 
 		if ($item   == 'newsletter')

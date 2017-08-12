@@ -593,13 +593,13 @@ class AccessPage
                     ),
                 'own'   =>
                     array(
-                        'itemid'        => 2,
-                        'check content' => "Rebmann",
+                        'itemid'        => 19,
+                        'check content' => "Barton",
                     ),
                 'other'   =>
                     array(
-                        'itemid'        => 22,
-                        'check content' => "Schenk",
+                        'itemid'        => 1148,
+                        'check content' => "Andres",
                     ),
                 'check column'  => "Last name",
                 'check locator' => ".//*[@id='jform_name']",
@@ -723,6 +723,1164 @@ class AccessPage
                         'Admin' => true,
                     ),
             ),
+    );
+
+    public static $BwPostmanManager_item_permissions = array(
+        'Newsletters'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                        'SendNewsletter'    => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 122,
+                        'check content' => "Test Newsletter single 4",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 169,
+                        'check content' => "Newsletter for testing 18",
+                    ),
+                'check column'  => "Subject",
+                'check locator' => ".//*[@id='jform_subject']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='ub0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='ub0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Subscribers'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 62,
+                        'check content' => "Bernd",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1148,
+                        'check content' => "Andres",
+                    ),
+                'check column'  => "Last name",
+                'check locator' => ".//*[@id='jform_name']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Campaigns'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 2,
+                        'check content' => "01 Kampagne 3 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 19,
+                        'check content' => "04 Kampagne 12 A",
+                    ),
+                'check column'  => "Campaign title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Mailinglists'      =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 14,
+                        'check content' => "04 Mailingliste 15 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 3,
+                        'check content' => "01 Mailingliste 4 A",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Templates'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 17,
+                        'check content' => "Z Standard Basic",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 2,
+                        'check content' => "Standard Soft Blue",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb3']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb3']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+
+        'Maintenance'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Admin' => false,
+                    ),
+            ),
+    );
+
+    public static $BwPostmanPublisher_item_permissions = array(
+        'Newsletters'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                        'SendNewsletter'    => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 3,
+                        'check content' => "Template Gedicht 3",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 169,
+                        'check content' => "Newsletter for testing 18",
+                    ),
+                'check column'  => "Subject",
+                'check locator' => ".//*[@id='jform_subject']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='ub0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='ub0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Subscribers'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 1148,
+                        'check content' => "Andres",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 62,
+                        'check content' => "Bernd",
+                    ),
+                'check column'  => "Last name",
+                'check locator' => ".//*[@id='jform_name']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Campaigns'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 20,
+                        'check content' => "04 Kampagne 12 B",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 18,
+                        'check content' => "03 Kampagne 10 B",
+                    ),
+                'check column'  => "Campaign title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Mailinglists'      =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 3,
+                        'check content' => "01 Mailingliste 4 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 14,
+                        'check content' => "04 Mailingliste 15 A",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Templates'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 1,
+                        'check content' => "Standard Deep Blue",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 3,
+                        'check content' => "Standard Creme",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb3']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb3']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+
+        'Maintenance'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Admin' => false,
+                    ),
+            ),
+    );
+
+    public static $BwPostmanEditor_item_permissions = array(
+        'Newsletters'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                        'SendNewsletter'    => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 120,
+                        'check content' => "Test Newsletter single 2",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 169,
+                        'check content' => "Newsletter for testing 18",
+                    ),
+                'check column'  => "Subject",
+                'check locator' => ".//*[@id='jform_subject']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='ub0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='ub0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Subscribers'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 1093,
+                        'check content' => "Borst",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1148,
+                        'check content' => "Andres",
+                    ),
+                'check column'  => "Last name",
+                'check locator' => ".//*[@id='jform_name']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Campaigns'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 43,
+                        'check content' => "05 Kampagne 18 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 18,
+                        'check content' => "03 Kampagne 10 B",
+                    ),
+                'check column'  => "Campaign title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Mailinglists'      =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 6,
+                        'check content' => "02 Mailingliste 7 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 14,
+                        'check content' => "04 Mailingliste 15 A",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Templates'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 3,
+                        'check content' => "Standard Creme",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 17,
+                        'check content' => "Z Standard Basic",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb3']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb3']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+
+        'Maintenance'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Admin' => false,
+                    ),
+            ),
+    );
+
+    public static $BwPostmanCampaignAdmin_item_permissions = array(
+        'Campaigns'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 45,
+                        'check content' => "05 Kampagne 19 A Test",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 18,
+                        'check content' => "03 Kampagne 10 B",
+                    ),
+                'check column'  => "Campaign title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanCampaignPublisher_item_permissions = array(
+        'Campaigns'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 47,
+                        'check content' => "05 Kampagne 20 A Test",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 18,
+                        'check content' => "03 Kampagne 10 B",
+                    ),
+                'check column'  => "Campaign title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanCampaignEditor_item_permissions = array(
+        'Campaigns'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 18,
+                        'check content' => "03 Kampagne 10 B",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 47,
+                        'check content' => "05 Kampagne 20 A Test",
+                    ),
+                'check column'  => "Campaign title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanMailinglistAdmin_item_permissions = array(
+        'Mailinglists'      =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 8,
+                        'check content' => "02 Mailingliste 9 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 14,
+                        'check content' => "04 Mailingliste 15 A",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanMailinglistPublisher_item_permissions = array(
+        'Mailinglists'      =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 9,
+                        'check content' => "03 Mailingliste 10 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 14,
+                        'check content' => "04 Mailingliste 15 A",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanMailinglistEditor_item_permissions = array(
+        'Mailinglists'      =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 11,
+                        'check content' => "03 Mailingliste 12 A",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 14,
+                        'check content' => "04 Mailingliste 15 A",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanNewsletterAdmin_item_permissions = array(
+        'Newsletters'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                        'SendNewsletter'    => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 124,
+                        'check content' => "Test Newsletter single 6",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 169,
+                        'check content' => "Newsletter for testing 18",
+                    ),
+                'check column'  => "Subject",
+                'check locator' => ".//*[@id='jform_subject']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='ub0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='ub0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanNewsletterPublisher_item_permissions = array(
+        'Newsletters'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                        'SendNewsletter'    => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 127,
+                        'check content' => "Test Newsletter single 9",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 169,
+                        'check content' => "Newsletter for testing 18",
+                    ),
+                'check column'  => "Subject",
+                'check locator' => ".//*[@id='jform_subject']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='ub0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='ub0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanNewsletterEditor_item_permissions = array(
+        'Newsletters'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                        'SendNewsletter'    => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 129,
+                        'check content' => "Test Newsletter single 11",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 169,
+                        'check content' => "Newsletter for testing 18",
+                    ),
+                'check column'  => "Subject",
+                'check locator' => ".//*[@id='jform_subject']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='ub0']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='ub0']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanSubscriberAdmin_item_permissions = array(
+        'Subscribers'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 1794,
+                        'check content' => "Cramer",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1148,
+                        'check content' => "Andres",
+                    ),
+                'check column'  => "Last name",
+                'check locator' => ".//*[@id='jform_name']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanSubscriberPublisher_item_permissions = array(
+        'Subscribers'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 2310,
+                        'check content' => "Albers",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1148,
+                        'check content' => "Andres",
+                    ),
+                'check column'  => "Last name",
+                'check locator' => ".//*[@id='jform_name']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanSubscriberEditor_item_permissions = array(
+        'Subscribers'       =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 777,
+                        'check content' => "Acar",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1148,
+                        'check content' => "Andres",
+                    ),
+                'check column'  => "Last name",
+                'check locator' => ".//*[@id='jform_name']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanTemplateAdmin_item_permissions = array(
+        'Templates'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => true,
+                        'Restore'           => true,
+                        'Delete'            => true,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 20,
+                        'check content' => "Z Standard Soft Blue",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1,
+                        'check content' => "Standard Deep Blue",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb3']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb3']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanTemplatePublisher_item_permissions = array(
+        'Templates'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => true,
+                        'EditOwn'           => true,
+                        'ModifyState'       => true,
+                        'ModifyStateOwn'    => true,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 25,
+                        'check content' => "Z2 Template for Test 01",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1,
+                        'check content' => "Standard Deep Blue",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb3']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb3']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
+    );
+
+    public static $BwPostmanTemplateEditor_item_permissions = array(
+        'Templates'         =>
+            array(
+                'permissions'       =>
+                    array(
+                        'Create'            => true,
+                        'Edit'              => false,
+                        'EditOwn'           => true,
+                        'ModifyState'       => false,
+                        'ModifyStateOwn'    => false,
+                        'Archive'           => false,
+                        'Restore'           => false,
+                        'Delete'            => false,
+                    ),
+                'own'   =>
+                    array(
+                        'itemid'        => 21,
+                        'check content' => "Z Standard TEXT Template 1",
+                    ),
+                'other'   =>
+                    array(
+                        'itemid'        => 1,
+                        'check content' => "Standard Deep Blue",
+                    ),
+                'check column'  => "Title",
+                'check locator' => ".//*[@id='jform_title']",
+                'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+                'publish_by_icon'   => array(
+                    'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+                'publish_by_toolbar'   => array(
+                    'publish_button'    =>  ".//*[@id='cb3']",
+                    'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+                    'unpublish_button'  =>  ".//*[@id='cb3']",
+                    'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+                ),
+            ),
+
+        'Archive'           => true,
     );
 
 // publish mailinglists

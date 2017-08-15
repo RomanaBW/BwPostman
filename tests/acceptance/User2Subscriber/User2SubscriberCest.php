@@ -9,7 +9,7 @@ use Codeception\Extension\BwRunFailed;
 /**
  * Class User2SubscriberCest
  *
- * This class contains all methods to test subscription while registration to Joomla at front end
+ * This class contains all methods to test subscription while registration to Joomla! at front end
  *
  * @package Register Subscribe Plugin
  * @copyright (C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>

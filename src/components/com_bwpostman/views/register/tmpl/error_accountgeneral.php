@@ -96,7 +96,10 @@ defined ('_JEXEC') or die ('Restricted access');
 			$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email, $link) . '</p>';
 		}
 		echo $msg;
-		?>
-		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
+
+        if ($this->params->get('show_boldt_link') === '1')
+        { ?>
+		<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+		<?php } ?>
 	</div>
 </div>

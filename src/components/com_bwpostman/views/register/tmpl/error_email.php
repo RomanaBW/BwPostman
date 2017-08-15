@@ -59,7 +59,10 @@ defined ('_JEXEC') or die ('Restricted access');
 
 		$msg1 = '<p class="contact-admin">' . JText::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
 		echo JHtml::_('content.prepare', $msg1);
-		?>
-		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
+
+        if ($this->params->get('show_boldt_link') === '1')
+        { ?>
+			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+        <?php } ?>
 	</div>
 </div>

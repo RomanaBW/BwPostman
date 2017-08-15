@@ -86,6 +86,10 @@ defined ('_JEXEC') or die ('Restricted access');
 	</div>
 	<?php } ?>
 		<p class="back_link btn"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo JText::_('JPREV'); ?></a></p>
-		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
+
+		<?php if ($this->params->get('show_boldt_link') === '1')
+		{ ?>
+		<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+        <?php } ?>
 	</div>
 </div>

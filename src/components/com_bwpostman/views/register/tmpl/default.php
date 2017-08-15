@@ -264,8 +264,11 @@ function checkRegisterForm() {
 		{
 			echo JText::_('COM_BWPOSTMAN_MESSAGE_NO_AVAILIBLE_MAILINGLIST');
 		}
-		?>
-		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
+
+        if ($this->params->get('show_boldt_link') === '1')
+        { ?>
+			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+        <?php } ?>
 	</div>
 </div>
 
@@ -282,7 +285,7 @@ jQuery(document).ready(function()
 		if (!input.prop('checked'))
 		{
 			label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-			if (input.val() == '')
+			if (input.val() === '')
 			{
 				label.addClass('active btn-primary');
 			}

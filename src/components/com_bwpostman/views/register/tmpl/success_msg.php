@@ -76,9 +76,11 @@ defined ('_JEXEC') or die ('Restricted access');
 				if (property_exists($this->success, 'success_msg'))
 					echo '<div class="success-message">' . JText::_($this->success->success_msg) . '</div>';
 			}
-			?>
 
-			<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
+            if ($this->params->get('show_boldt_link') === '1')
+            { ?>
+				<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+            <?php } ?>
 		</div>
 	</div>
 </div>

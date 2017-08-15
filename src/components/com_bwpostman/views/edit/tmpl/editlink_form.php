@@ -57,6 +57,9 @@ defined ('_JEXEC') or die ('Restricted access');
 			<?php echo JHtml::_('form.token'); ?>
 		</form>
 
-		<p class="bwpm_copyright"<?php if ($this->params->get('show_boldt_link') != 1) echo ' style="display:none;"'; ?>><?php echo BwPostman::footer(); ?></p>
+        <?php if ($this->params->get('show_boldt_link') === '1')
+        { ?>
+			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+        <?php } ?>
 	</div>
 </div>

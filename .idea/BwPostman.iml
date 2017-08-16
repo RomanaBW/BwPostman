@@ -5,13 +5,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/administrator" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/components" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/images" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/joomla-tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/language" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/media" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/modules" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/plugins" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/Projekte" />
       <excludeFolder url="file://$MODULE_DIR$/administrator/language/overrides" />

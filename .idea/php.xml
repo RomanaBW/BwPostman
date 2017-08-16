@@ -7,8 +7,8 @@
   </component>
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="/usr/share/php5/PEAR" />
       <path value="/vhosts/dev/joomla-cms" />
+      <path value="/usr/share/php5/PEAR" />
       <path value="/vhosts/bwtest" />
     </include_path>
   </component>

@@ -39,8 +39,10 @@
 	<!-- ============================================  -->
 	<target name="build_overall" depends="prepare_overall">
 		<echo msg="Fetch docs and licence…" />
+		<copy file="${licence_source}" tofile="${target_base_component_dir}/${licence_file}" />
 		<copy todir="${target_base_dir}">
-			<fileset dir="/Support/Software/Joomla/${extension}/docs" expandsymboliclinks="true">
+			<fileset dir="${home_dir}/docs" expandsymboliclinks="true">
+				<include name="*.pdf" />
 			</fileset>
 		</copy>
 

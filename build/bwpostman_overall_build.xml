@@ -16,6 +16,9 @@
 		<property name="plugin_2" value="bwpm_user2subscriber" override="true" />
 		<property name="plugin_3" value="bwpm_buyer2subscriber" override="true" />
 
+		<property name="upload_dir" value="/webservice3/download/bwpostman" override="true" />
+		<property name="upload_lang_dir" value="/webservice3/download/translations" override="true" />
+
 		<echo msg="target dirs…" />
 		<property name="target_base_module_1_dir" value="${target_base_dir}/${module_1}" override="true" />
 		<property name="target_base_module_2_dir" value="${target_base_dir}/${module_2}" override="true" />

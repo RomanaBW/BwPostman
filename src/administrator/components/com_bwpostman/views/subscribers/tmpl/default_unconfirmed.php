@@ -104,14 +104,20 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</td>
 					<td><?php echo $item->firstname; ?></td>
 					<?php if($this->params->get('show_gender')) { ?>
-						<td><?php if ($item->gender)
-							{
-								echo JText::_('COM_BWPOSTMAN_FEMALE');
-							}
-							elseif ($item->gender == '0')
-							{
-								echo JText::_('COM_BWPOSTMAN_MALE');
-							} ?>
+						<td>
+                            <?php if ($item->gender === '1')
+                            {
+                                echo JText::_('COM_BWPOSTMAN_FEMALE');
+                            }
+							elseif ($item->gender === '0')
+                            {
+                                echo JText::_('COM_BWPOSTMAN_MALE');
+                            }
+							else
+                            {
+                                echo JText::_('COM_BWPOSTMAN_NO_GENDER');
+                            }
+                            ?>
 						</td>
 					<?php } ?>
 					<td><?php echo $item->email; ?></td>

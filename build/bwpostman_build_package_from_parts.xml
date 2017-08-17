@@ -14,7 +14,6 @@
 		<property name="module_2" value="mod_bwpostman_overview" override="true" />
 		<property name="plugin_1" value="personalize" override="true" />
 		<property name="plugin_2" value="bwpm_user2subscriber" override="true" />
-		<property name="plugin_3" value="bwpm_buyer2subscriber" override="true" />
 
 		<echo msg="target dirs…" />
 		<property name="target_base_module_1_dir" value="${target_base_dir}/${module_1}" override="true" />
@@ -62,7 +61,6 @@
 		<copy file="${target_base_dir}/${module_2}.zip" tofile="${target_base_dir}/packages/${module_2}.zip" />
 		<copy file="${target_base_dir}/plg_bwpostman_${plugin_1}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_1}.zip" />
 		<copy file="${target_base_dir}/plg_bwpostman_${plugin_2}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_2}.zip" />
-		<copy file="${target_base_dir}/plg_bwpostman_${plugin_3}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_3}.zip" />
 		<copy file="${manifest_dir}/pkg_bwpostman.xml" tofile="${target_base_dir}/pkg_bwpostman.xml" />
 
 		<echo msg="Copy Zip files…" />
@@ -97,7 +95,6 @@
 		<delete file="${target_base_dir}/packages/${module_2}.zip" failonerror="false" />
 		<delete file="${target_base_dir}/packages/plg_bwpostman_${plugin_1}.zip" failonerror="false" />
 		<delete file="${target_base_dir}/packages/plg_bwpostman_${plugin_2}.zip" failonerror="false" />
-		<delete file="${target_base_dir}/packages/plg_bwpostman_${plugin_3}.zip" failonerror="false" />
 	</target>
 
 	<!-- ============================================  -->

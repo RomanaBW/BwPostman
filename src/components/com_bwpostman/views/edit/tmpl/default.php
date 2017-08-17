@@ -128,7 +128,7 @@ JHtml::_('behavior.formvalidator');
 		<div class="alert alert-warning">
 			<h4 class="alert-heading"><?php echo JText::_('WARNING'); ?></h4>
 			<div>
-				<p><?php echo JText::_('COM_BWPOSTMAN_JAVAWARNING'); ?></p>
+				<p><?php echo JText::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
 			</div>
 		</div>
 	</div>

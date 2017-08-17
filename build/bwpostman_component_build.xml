@@ -8,28 +8,17 @@
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="prepare_component" depends="set_variables">
+	<target name="prepare_component" depends="set_general_variables">
 		<echo msg="Set variables…" />
 
 		<echo msg="Source dirs…" />
-		<property name="source_admin_dir" value="${source_base_dir}/administrator/components/${component}" override="true" />
-
-		<property name="source_site_dir" value="${source_base_dir}/components/${component}" override="true" />
-
-		<property name="source_media_dir" value="${source_base_dir}/media/bw_postman" override="true" />
 
 		<echo msg="target dirs…" />
 		<property name="target_base_component_dir" value="${target_base_dir}/${component}" override="true" />
 
 		<echo msg="Deleting target directories… " />
-		<delete dir="/Support/Software/Joomla/${extension}/${version}/${component}" includeemptydirs="true" failonerror="false" />
-
-		<echo msg="Creating target directories… " />
-		<mkdir dir="${target_base_component_dir}/files/admin/language/de-DE" />
-		<mkdir dir="${target_base_component_dir}/files/admin/language/en-GB" />
-		<mkdir dir="${target_base_component_dir}/files/media" />
-		<mkdir dir="${target_base_component_dir}/files/site/language/de-DE" />
-		<mkdir dir="${target_base_component_dir}/files/site/language/en-GB" />
+		<delete dir="${target_base_component_dir}" includeemptydirs="true" failonerror="false" />
+		<delete file="${target_base_dir}/${component}.zip" />
 	</target>
 
 	<!-- ============================================  -->
@@ -42,66 +31,66 @@
 		<echo msg="Copying files to build directory…" />
 
 		<echo msg="Fetch licence…" />
-		<copy file="${licence_source}" tofile="${target_base_component_dir}/files/${licence_file}" />
+		<copy file="${licence_source}" tofile="${target_base_component_dir}/admin/${licence_file}" />
 
 		<echo msg="Copying component admin…" />
-		<copy todir="${target_base_component_dir}/files/admin">
+		<copy todir="${target_base_component_dir}/admin">
 			<fileset dir="${source_admin_dir}">
 				<include name="**" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_component_dir}/files/admin/language/de-DE">
+		<copy todir="${target_base_component_dir}/admin/language/de-DE">
 			<fileset dir="${source_admin_lang_dir}/de-DE">
 				<include name="**/*${component}*.ini" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_component_dir}/files/admin/language/en-GB">
+		<copy todir="${target_base_component_dir}/admin/language/en-GB">
 			<fileset dir="${source_admin_lang_dir}/en-GB">
 				<include name="**/*${component}*.ini" />
 			</fileset>
 		</copy>
 
 		<echo msg="Copying component site…" />
-		<copy todir="${target_base_component_dir}/files/site">
-			<fileset dir="${source_site_dir}">
+		<copy todir="${target_base_component_dir}/site">
+			<fileset dir="${source_site_com_dir}">
 				<include name="**" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_component_dir}/files/site/language/de-DE">
+		<copy todir="${target_base_component_dir}/site/language/de-DE">
 			<fileset dir="${source_site_lang_dir}/de-DE">
 				<include name="**/*${component}*.ini" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_component_dir}/files/site/language/en-GB">
+		<copy todir="${target_base_component_dir}/site/language/en-GB">
 			<fileset dir="${source_site_lang_dir}/en-GB">
 				<include name="**/*${component}*.ini" />
 			</fileset>
 		</copy>
 
 		<echo msg="Copying media…" />
-		<copy todir="${target_base_component_dir}/files/media">
+		<copy todir="${target_base_component_dir}/media">
 			<fileset dir="${source_media_dir}">
 				<include name="**" />
 			</fileset>
 		</copy>
 
 		<echo msg="Copying install script…" />
-		<copy file="${target_base_component_dir}/files/admin/install.bwpostman.php" tofile="${target_base_component_dir}/files/install.bwpostman.php" />
+		<copy file="${target_base_component_dir}/admin/install.bwpostman.php" tofile="${target_base_component_dir}/install.bwpostman.php" />
 
 		<echo msg="Moving manifest file…" />
-		<move file="${target_base_component_dir}/files/admin/bwpostman.xml" tofile="${target_base_component_dir}/files/bwpostman.xml" />
+		<move file="${target_base_component_dir}/admin/bwpostman.xml" tofile="${target_base_component_dir}/bwpostman.xml" />
 
 		<echo msg="Delete capimgdir…" />
 		<delete>
-			<fileset dir="${target_base_component_dir}/files/site/assets/capimgdir">
+			<fileset dir="${target_base_component_dir}/site/assets/capimgdir">
 				<exclude name="index.html" />
 			</fileset>
 		</delete>
 
 		<echo msg="Switch SQL install files…" />
-		<delete file="${target_base_component_dir}/files/admin/sql/install.sql" failonerror="false" />
-		<copy file="${target_base_component_dir}/files/admin/sql/install-utf8.sql" tofile="${target_base_component_dir}/files/admin/sql/install.sql"  />
-		<delete file="${target_base_component_dir}/files/admin/sql/install-utf8.sql" failonerror="false" />
+		<delete file="${target_base_component_dir}/admin/sql/install.sql" failonerror="false" />
+		<copy file="${target_base_component_dir}/admin/sql/install-utf8.sql" tofile="${target_base_component_dir}/admin/sql/install.sql"  />
+		<delete file="${target_base_component_dir}/admin/sql/install-utf8.sql" failonerror="false" />
 
 		<echo msg="Chmod target dir…" />
 		<chmod file="${target_base_dir}" mode="0777" />
@@ -114,8 +103,8 @@
 	<target name="pack_component" depends="build_component">
 		<echo msg="Creating archive for component" />
 
-		<zip destfile="${target_base_dir}/${component}.${version}.zip">
-			<fileset dir="${target_base_component_dir}/files">
+		<zip destfile="${target_base_dir}/${component}.zip">
+			<fileset dir="${target_base_component_dir}">
 				<include name="**/**" />
 			</fileset>
 		</zip>
@@ -141,8 +130,7 @@
 			</then>
 		</if>
 
-		<copy file="${target_base_dir}/${component}.${version}.zip" tofile="${test_container_dir}/tests/_data/${component}.zip" />
-		<copy file="${target_base_dir}/${component}.${version}.zip" tofile="/vhosts/webservice3/download/BwPostman/${component}.${version}.zip" />
-		<move file="${target_base_dir}/${component}.${version}.zip" tofile="${target_base_component_dir}/${component}.${version}.zip" />
+		<copy file="${target_base_dir}/${component}.zip" tofile="${test_container_dir}/tests/_data/${component}.zip" />
+		<copy file="${target_base_dir}/${component}.zip" tofile="/vhosts/webservice3/download/BwPostman/${component}.${version}.zip" />
 	</target>
 </project>

@@ -8,7 +8,7 @@
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="prepare_languages" depends="set_variables">
+	<target name="prepare_languages" depends="set_general_variables">
 		<echo msg="Set variables…" />
 		<property name="module_1" value="mod_bwpostman" override="true" />
 		<property name="module_2" value="mod_bwpostman_overview" override="true" />
@@ -17,8 +17,8 @@
 		<echo msg="Source dirs…" />
 		<property name="source_admin_lang_dir" value="${source_base_dir}/administrator/language" override="true" />
 		<property name="source_site_lang_dir" value="${source_base_dir}/language" override="true" />
-		<property name="manifest_dir_de" value="${source_base_dir}/build/BwPostman/manifests" override="true" />
-		<property name="manifest_dir_en" value="${source_base_dir}/build/BwPostman/manifests" override="true" />
+		<property name="manifest_dir_de" value="${home_dir}/build/manifests" override="true" />
+		<property name="manifest_dir_en" value="${home_dir}/build/manifests" override="true" />
 
 		<echo msg="target dirs…" />
 		<property name="target_base_translations_dir" value="${target_base_dir}/translations" override="true" />
@@ -27,12 +27,6 @@
 
 		<echo msg="Deleting target directory… " />
 		<delete dir="${target_base_translations_dir}" includeemptydirs="true" failonerror="false" />
-
-		<echo msg="Creating target directories… " />
-		<mkdir dir="${target_base_translations_dir_de}/admin" />
-		<mkdir dir="${target_base_translations_dir_de}/site" />
-		<mkdir dir="${target_base_translations_dir_en}/admin" />
-		<mkdir dir="${target_base_translations_dir_en}/site" />
 	</target>
 
 	<!-- ============================================  -->

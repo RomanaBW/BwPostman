@@ -4,11 +4,11 @@
 	<import file="./bwpostman_variables.xml"/>
 
 	<!-- ============================================  -->
-	<!-- Target: prepare_overall                       -->
+	<!-- Target: set_package_variables                 -->
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="prepare_overall" depends="set_variables">
+	<target name="set_package_variables" depends="set_general_variables">
 		<echo msg="Set variables…" />
 		<property name="module_1" value="mod_bwpostman" override="true" />
 		<property name="module_2" value="mod_bwpostman_overview" override="true" />
@@ -16,14 +16,11 @@
 		<property name="plugin_2" value="bwpm_user2subscriber" override="true" />
 		<property name="plugin_3" value="bwpm_buyer2subscriber" override="true" />
 
-		<property name="upload_dir" value="/webservice3/download/bwpostman" override="true" />
-		<property name="upload_lang_dir" value="/webservice3/download/translations" override="true" />
-
 		<echo msg="target dirs…" />
 		<property name="target_base_module_1_dir" value="${target_base_dir}/${module_1}" override="true" />
 		<property name="target_base_module_2_dir" value="${target_base_dir}/${module_2}" override="true" />
 		<property name="target_base_plugin_1_dir" value="${target_base_dir}/plugins/${plugin_1}" override="true" />
-		<property name="manifest_dir" value="/${source_base_dir}/build/BwPostman/manifests" override="true" />
+		<property name="manifest_dir" value="/${home_dir}/build/manifests" override="true" />
 
 		<echo msg="Deleting package directory… " />
 		<delete dir="${target_base_dir}/packages" includeemptydirs="true" failonerror="false" />
@@ -33,11 +30,11 @@
 	</target>
 
 	<!-- ============================================  -->
-	<!-- Target: build_overall                         -->
+	<!-- Target: prepare_package_files                 -->
 	<!-- (copy files to target base directory, fetch   -->
 	<!-- documentation files)                          -->
 	<!-- ============================================  -->
-	<target name="build_overall" depends="prepare_overall">
+	<target name="prepare_package_files" depends="set_package_variables">
 		<echo msg="Fetch docs and licence…" />
 		<copy file="${licence_source}" tofile="${target_base_component_dir}/${licence_file}" />
 		<copy todir="${target_base_dir}">
@@ -47,50 +44,25 @@
 		</copy>
 
 		<echo msg="Copy Zip files…" />
-		<copy file="${target_base_component_dir}/${component}.${version}.zip" tofile="${target_base_dir}/${component}.${version}.zip" />
-		<copy file="${target_base_module_1_dir}/${module_1}.${version}.zip" tofile="${target_base_dir}/${module_1}.${version}.zip" />
-		<copy file="${target_base_module_2_dir}/${module_2}.${version}.zip" tofile="${target_base_dir}/${module_2}.${version}.zip" />
-		<copy file="${target_base_dir}/plugins/${plugin_1}/plg_bwpostman_${plugin_1}.${version}.zip" tofile="${target_base_dir}/plg_bwpostman_${plugin_1}.${version}.zip" />
-		<copy file="${target_base_dir}/plugins/${plugin_2}/plg_bwpostman_${plugin_2}.${version}.zip" tofile="${target_base_dir}/plg_bwpostman_${plugin_2}.${version}.zip" />
-		<copy file="${target_base_dir}/plugins/${plugin_3}/plg_bwpostman_${plugin_3}.${version}.zip" tofile="${target_base_dir}/plg_bwpostman_${plugin_3}.${version}.zip" />
-
 		<echo msg="Chmod target dir…" />
 		<chmod file="${target_base_dir}" mode="0777" />
 	</target>
 
 	<!-- ============================================  -->
-	<!-- Target: pack_overall                          -->
-	<!-- (Pack and upload component, modules and       -->
-	<!-- (overall package)                             -->
-	<!-- ============================================  -->
-	<target name="pack_overall" depends="build_overall">
-		<echo msg="Creating archive for overall package" />
-
-		<delete file="${target_base_dir}/${extension}.${version}.UNZIP_FIRST.zip" />
-		<zip destfile="${target_base_dir}/${extension}.${version}.UNZIP_FIRST.zip">
-			<fileset dir="${target_base_dir}">
-				<include name="*.*" />
-			</fileset>
-		</zip>
-
-		<echo msg="Files for overall package copied and compressed in build directory OK!" />
-	</target>
-
-	<!-- ============================================  -->
-	<!-- Target: build_package                         -->
+	<!-- Target: move_single_packages                  -->
 	<!-- (copy files to target base directory, fetch   -->
 	<!-- documentation files)                          -->
 	<!-- ============================================  -->
-	<target name="build_package" depends="pack_overall">
+	<target name="move_single_packages" depends="prepare_package_files">
 		<echo msg="Fetch docs and licence…" />
 
 		<echo msg="Copy Zip files…" />
-		<move file="${target_base_dir}/${component}.${version}.zip" tofile="${target_base_dir}/packages/${component}.zip" />
-		<move file="${target_base_dir}/${module_1}.${version}.zip" tofile="${target_base_dir}/packages/${module_1}.zip" />
-		<move file="${target_base_dir}/${module_2}.${version}.zip" tofile="${target_base_dir}/packages/${module_2}.zip" />
-		<move file="${target_base_dir}/plg_bwpostman_${plugin_1}.${version}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_1}.zip" />
-		<move file="${target_base_dir}/plg_bwpostman_${plugin_2}.${version}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_2}.zip" />
-		<move file="${target_base_dir}/plg_bwpostman_${plugin_3}.${version}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_3}.zip" />
+		<copy file="${target_base_dir}/${component}.zip" tofile="${target_base_dir}/packages/${component}.zip" />
+		<copy file="${target_base_dir}/${module_1}.zip" tofile="${target_base_dir}/packages/${module_1}.zip" />
+		<copy file="${target_base_dir}/${module_2}.zip" tofile="${target_base_dir}/packages/${module_2}.zip" />
+		<copy file="${target_base_dir}/plg_bwpostman_${plugin_1}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_1}.zip" />
+		<copy file="${target_base_dir}/plg_bwpostman_${plugin_2}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_2}.zip" />
+		<copy file="${target_base_dir}/plg_bwpostman_${plugin_3}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_3}.zip" />
 		<copy file="${manifest_dir}/pkg_bwpostman.xml" tofile="${target_base_dir}/pkg_bwpostman.xml" />
 
 		<echo msg="Copy Zip files…" />
@@ -105,12 +77,12 @@
 	<!-- (Pack and upload component, modules and       -->
 	<!-- (overall package)                             -->
 	<!-- ============================================  -->
-	<target name="pack_package" depends="build_package">
+	<target name="pack_package" depends="move_single_packages">
 		<echo msg="Creating archive for overall package" />
 <!--
-		<delete file="${target_base_dir}/pkg_bwpostman.${version}.zip" />
+		<delete file="${target_base_dir}/pkg_bwpostman.zip" />
 -->
-		<zip destfile="${target_base_dir}/pkg_bwpostman.${version}.zip">
+		<zip destfile="${target_base_dir}/pkg_bwpostman.zip">
 			<fileset dir="${target_base_dir}">
 				<include name="packages/**" />
 				<include name="pkg_bwpostman.xml" />
@@ -152,7 +124,6 @@
 				<echo msg="Upload to webserver OK!" />
 			</then>
 		</if>
-		<copy file="${target_base_dir}/pkg_bwpostman.${version}.zip" tofile="${test_container_dir}/tests/_data/pkg_bwpostman.zip" />
-		<move file="${target_base_dir}/pkg_bwpostman.${version}.zip" tofile="${target_base_dir}/packages/pkg_bwpostman.${version}.zip" />
+		<copy file="${target_base_dir}/pkg_bwpostman.zip" tofile="${test_container_dir}/tests/_data/pkg_bwpostman.zip" />
 	</target>
 </project>

@@ -8,7 +8,7 @@
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="prepare_personalize" depends="set_variables">
+	<target name="prepare_personalize" depends="set_general_variables">
 		<echo msg="Set variables…" />
 		<property name="plugin" value="personalize" override="true" />
 
@@ -16,14 +16,11 @@
 		<property name="source_plugin_dir" value="${source_base_dir}/plugins/bwpostman/${plugin}" override="true" />
 
 		<echo msg="target dirs…" />
-		<property name="target_base_plugin_dir" value="/Support/Software/Joomla/${extension}/${version}/plugins/${plugin}/" override="true" />
+		<property name="target_base_plugin_dir" value="${target_base_dir}/plg_${plugin}/" override="true" />
 
 		<echo msg="Deleting target directories… " />
 		<delete dir="${target_base_plugin_dir}" includeemptydirs="true" failonerror="false" />
-
-		<echo msg="Creating target directories… " />
-		<mkdir dir="${target_base_plugin_dir}/files/language/de-DE" />
-		<mkdir dir="${target_base_plugin_dir}/files/language/en-GB" />
+		<delete file="${target_base_dir}/plg_bwpostman_${plugin}.zip" />
 	</target>
 
 	<!-- ============================================  -->
@@ -36,21 +33,24 @@
 		<echo msg="Copying files to build directory…" />
 
 		<echo msg="Copying plugin…" />
-		<copy todir="${target_base_plugin_dir}/files">
+		<copy todir="${target_base_plugin_dir}">
 			<fileset dir="${source_plugin_dir}">
 				<include name="**" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_plugin_dir}/files/language/de-DE">
+		<copy todir="${target_base_plugin_dir}/language/de-DE">
 			<fileset dir="${source_admin_lang_dir}/de-DE">
 				<include name="**/*bwpostman_${plugin}*.ini" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_plugin_dir}/files/language/en-GB">
+		<copy todir="${target_base_plugin_dir}/language/en-GB">
 			<fileset dir="${source_admin_lang_dir}/en-GB">
 				<include name="**/*bwpostman_${plugin}*.ini" />
 			</fileset>
 		</copy>
+
+		<echo msg="Fetch licence…" />
+		<copy file="${licence_source}" tofile="${target_base_plugin_dir}/${licence_file}" />
 
 		<echo msg="Chmod target dir…" />
 		<chmod file="${target_base_plugin_dir}" mode="0777" />
@@ -62,12 +62,9 @@
 	<!-- (overall package)                             -->
 	<!-- ============================================  -->
 	<target name="pack_personalize" depends="build_personalize">
-		<echo msg="Fetch licence…" />
-		<copy file="${licence_source}" tofile="${target_base_plugin_dir}/files/${licence_file}"></copy>
-
 		<echo msg="Creating archive…" />
-		<zip destfile="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip">
-			<fileset dir="${target_base_plugin_dir}/files">
+		<zip destfile="${target_base_dir}/plg_bwpostman_${plugin}.zip">
+			<fileset dir="${target_base_plugin_dir}">
 				<include name="**/**" />
 			</fileset>
 		</zip>
@@ -95,7 +92,6 @@
 				<echo msg="Upload to webserver OK!" />
 			</then>
 		</if>
-		<copy file="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip" tofile="${test_container_dir}/tests/_data/plg_bwpostman_${plugin}.zip" />
-		<move file="${target_base_dir}/plg_bwpostman_${plugin}.${version}.zip" tofile="${target_base_plugin_dir}/plg_bwpostman_${plugin}.${version}.zip" />
+		<copy file="${target_base_dir}/plg_bwpostman_${plugin}.zip" tofile="${test_container_dir}/tests/_data/plg_bwpostman_${plugin}.zip" />
 	</target>
 </project>

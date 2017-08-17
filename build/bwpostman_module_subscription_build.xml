@@ -8,7 +8,7 @@
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="prepare_subscription" depends="set_variables">
+	<target name="prepare_subscription" depends="set_general_variables">
 		<echo msg="Set variables…" />
 		<property name="module" value="mod_bwpostman" override="true" />
 
@@ -19,11 +19,8 @@
 		<property name="target_base_module_dir" value="${target_base_dir}/${module}" override="true" />
 
 		<echo msg="Deleting target directories… " />
-		<delete dir="/Support/Software/Joomla/${extension}/${version}/${module}" includeemptydirs="true" failonerror="false" />
-
-		<echo msg="Create target directories… " />
-		<mkdir dir="${target_base_module_dir}/files/site/language/de-DE" />
-		<mkdir dir="${target_base_module_dir}/files/site/language/en-GB" />
+		<delete dir="${target_base_module_dir}" includeemptydirs="true" failonerror="false" />
+		<delete file="${target_base_dir}/${module}.zip" />
 	</target>
 
 	<!-- ============================================  -->
@@ -36,20 +33,20 @@
 		<echo msg="Copying files to build directory…" />
 
 		<echo msg="Fetch licence…" />
-		<copy file="${licence_source}" tofile="${target_base_module_dir}/files/${licence_file}"></copy>
+		<copy file="${licence_source}" tofile="${target_base_module_dir}/site/${licence_file}" />
 
 		<echo msg="Copying ${module}…" />
-		<copy todir="${target_base_module_dir}/files/site">
+		<copy todir="${target_base_module_dir}/site">
 			<fileset dir="${source_module_dir}">
 				<include name="**" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_module_dir}/files/site/language/de-DE">
+		<copy todir="${target_base_module_dir}/site/language/de-DE">
 			<fileset dir="${source_site_lang_dir}/de-DE">
 				<include name="**/*${module}*.ini" />
 			</fileset>
 		</copy>
-		<copy todir="${target_base_module_dir}/files/site/language/en-GB">
+		<copy todir="${target_base_module_dir}/site/language/en-GB">
 			<fileset dir="${source_site_lang_dir}/en-GB">
 				<include name="**/*${module}*.ini" />
 			</fileset>
@@ -66,8 +63,8 @@
 	<target name="pack_subscription" depends="build_subscription">
 		<echo msg="Creating archive for module subscription" />
 
-		<zip destfile="${target_base_dir}/${module}.${version}.zip">
-			<fileset dir="${target_base_module_dir}/files">
+		<zip destfile="${target_base_dir}/${module}.zip">
+			<fileset dir="${target_base_module_dir}">
 				<include name="**/**" />
 			</fileset>
 		</zip>
@@ -93,8 +90,7 @@
 			</then>
 		</if>
 
-		<copy file="${target_base_dir}/${module}.${version}.zip" tofile="${test_container_dir}/tests/_data/${module}.zip" />
-		<copy file="${target_base_dir}/${module}.${version}.zip" tofile="/vhosts/webservice3/download/BwPostman/${module}.${version}.zip" />
-		<move file="${target_base_dir}/${module}.${version}.zip" tofile="${target_base_module_dir}/${module}.${version}.zip" />
+		<copy file="${target_base_dir}/${module}.zip" tofile="${test_container_dir}/tests/_data/${module}.zip" />
+		<copy file="${target_base_dir}/${module}.zip" tofile="/vhosts/webservice3/download/BwPostman/${module}.${version}.zip" />
 	</target>
 </project>

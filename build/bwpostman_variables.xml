@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="BwPostman Variables"  description="Variables for the build files for BwPostman" default="set_variables">
+<project name="BwPostman Variables"  description="Variables for the build files for BwPostman" default="set_general_variables">
 	<import file="/repositories/BwCommons/buildscripts/transfer_variables.xml"/>
 
 	<!-- ============================================  -->
@@ -8,42 +8,52 @@
 	<!-- (Setting variables, delete target directory,  -->
 	<!--  create target directory)                     -->
 	<!-- ============================================  -->
-	<target name="set_variables">
-		<echo msg="Set general variables…" />
-
-		<!-- ============================================  -->
-		<!-- Set ssh data                                  -->
-		<!-- ============================================  -->
-		<property name="upload" value="0" override="true" />
-
-
+	<target name="set_general_variables" depends="set_transfer_variables">
 		<!-- ============================================  -->
 		<!-- Set version                                   -->
 		<!-- ============================================  -->
+		<echo msg="Set general variables…" />
+
+		<property name="BwPostman_repo_dir" value="${repo_base_dir}/BwPostman" override="true" />
+		<property name="lib_repo_dir" value="${repo_base_dir}/BwLib" override="true" />
+
+		<property name="upload" value="0" override="true" />
+
 		<property name="version" value="2.0.0" override="true" />
+		<property name="lib_version" value="0.9.1" override="true" />
+
+		<property name="home_dir" value="/home/romana/PhpstormProjects/BwPostman" override="true" />
 
 		<property name="extension" value="BwPostman" override="true" />
 		<property name="component" value="com_bwpostman" override="true" />
 
-		<property name="licence_source" value="/Support/Software/Joomla/${extension}/docs/gnu_gpl_v3.txt" override="true" />
-		<property name="licence_file" value="gnu_gpl_v3.txt" override="true" />
-
 		<echo msg="Source dirs…" />
-		<property name="source_base_dir" value="/vhosts/dev/joomla-cms" override="true" />
+		<property name="source_base_dir" value="${home_dir}/src" override="true" />
 
+		<property name="source_admin_dir" value="${source_base_dir}/administrator/components/${component}" override="true" />
 		<property name="source_admin_lang_dir" value="${source_base_dir}/administrator/language" override="true" />
 
+		<property name="source_site_com_dir" value="${source_base_dir}/components/${component}" override="true" />
+		<property name="source_site_mod_dir" value="${source_base_dir}/modules" override="true" />
+		<property name="source_site_plg_dir" value="${source_base_dir}/plugins" override="true" />
 		<property name="source_site_lang_dir" value="${source_base_dir}/language" override="true" />
 
+		<property name="source_media_dir" value="${source_base_dir}/media/bw_postman" override="true" />
+
 		<echo msg="target dirs…" />
-		<property name="target_base_dir" value="/Support/Software/Joomla/${extension}/${version}" override="true" />
+		<property name="target_base_dir" value="${BwPostman_repo_dir}/packages/workingOn" override="true" />
 		<property name="target_base_component_dir" value="${target_base_dir}/${component}" override="true" />
+		<property name="target_base_module_dir" value="${target_base_dir}/modules" override="true" />
+		<property name="target_base_plugin_dir" value="${target_base_dir}/plugins" override="true" />
+		<property name="target_base_library_dir" value="${target_base_dir}/libraries" override="true" />
 
 		<echo msg="test dirs…" />
-		<property name="test_base_dir" value="/vhosts/dev/joomla-cms/tests/_data/" override="true" />
+		<property name="test_base_dir" value="${home_dir}/tests/" override="true" />
 
 		<echo msg="test base dir…" />
-		<property name="test_container_dir" value="/vms/dockers/global_data/tests/BwPostman" override="true" />
+		<property name="test_container_dir" value="${BwPostman_repo_dir}/tests" override="true" />
 
+		<property name="upload_dir" value="/webservice3/download/bwpostman" override="true" />
+		<property name="upload_lang_dir" value="/webservice3/download/translations" override="true" />
 	</target>
 </project>

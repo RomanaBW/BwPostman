@@ -31,6 +31,9 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
 
+// Depends on jQuery UI
+JHtml::_('jquery.ui', array('core'));
+
 require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
 
 $n	= count($mailinglists);
@@ -47,8 +50,8 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 
 <script type="text/javascript">
 /* <![CDATA[ */
-function checkModRegisterForm() {
-
+function checkModRegisterForm()
+{
 	var form = document.bwp_mod_form;
 	var errStr = "";
 	var arrCB = document.getElementsByName("mailinglists[]");
@@ -57,76 +60,107 @@ function checkModRegisterForm() {
 
 	// Validate input fields
 	// firstname
-	if (document.bwp_com_form.a_firstname) {
-		if ((document.getElementById("a_firstname").value == "") && (document.getElementById("firstname_field_obligation_mod").value == 1)) {
+	if (document.bwp_mod_form.a_firstname)
+	{
+		if ((!document.getElementById("a_firstname").value) && (document.getElementById("firstname_field_obligation_mod").value === '1'))
+		{
 			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_FIRSTNAME', true); ?>\n";
 		}
 	}
+
 	// name
-	if (document.bwp_com_form.a_name) {
-		if ((document.getElementById("a_name").value == "") && (document.getElementById("name_field_obligation_mod").value == 1)) {
+	if (document.bwp_mod_form.a_name)
+	{
+		if ((!document.getElementById("a_name").value) && (document.getElementById("name_field_obligation_mod").value === '1'))
+		{
 			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_NAME', true); ?>\n";
 		}
 	}
+
 	// additional field
-	if (document.bwp_com_form.a_special) {
-		if ((document.getElementById("a_special").value == "") && (document.getElementById("special_field_obligation_mod").value == 1)) {
-			errStr += "<?php echo JText::_('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', true); ?>\n";
+	if (document.bwp_mod_form.a_special)
+	{
+		if ((!document.getElementById("a_special").value) && (document.getElementById("special_field_obligation_mod").value === '1'))
+		{
+			errStr += "<?php echo JText::sprintf('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($paramsComponent->get('special_label'))); ?>\n";
 		}
 	}
+
 	// email
 	var email = document.getElementById("a_email").value;
-	if (email == ""){
+
+	if (email === "")
+	{
 		errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_EMAIL', true); ?>\n";
-	} else {
+	}
+	else
+	{
 	var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-		if (!filter.test(email)) {
+		if (!filter.test(email))
+		{
 			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_EMAIL_INVALID', true); ?>\n";
 			email.focus;
 		}
 	}
 	// mailinglist
 
-	if (n > 1) {
-		for (i = 0; i < n; i++) {
-			if (arrCB[i].checked == true) {
+	if (n > 1)
+	{
+		for (i = 0; i < n; i++)
+		{
+			if (arrCB[i].checked === true)
+			{
 				check++;
 			}
 		}
 	}
-	else {
+	else
+	{
 		check++;
 	}
 
-	if (check == 0) {
+	if (check === 0)
+	{
 		errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_NL_CHECK'); ?>\n";
 	}
+
 	// disclaimer
-	if (document.bwp_mod_form.agreecheck_mod) {
-		if (document.bwp_mod_form.agreecheck_mod.checked == false) {
+	if (document.bwp_mod_form.agreecheck_mod)
+	{
+		if (document.bwp_mod_form.agreecheck_mod.checked === false)
+		{
 			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_DISCLAIMER_CHECK'); ?>\n";
 		}
 	}
+
 	// captcha
-	if (document.bwp_mod_form.stringCaptcha) {
-		if (document.bwp_mod_form.stringCaptcha.value == '') {
+	if (document.bwp_mod_form.stringCaptcha)
+	{
+		if (document.bwp_mod_form.stringCaptcha.value === '')
+		{
 			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
 		}
 	}
+
 	// question
-	if (document.bwp_mod_form.stringQuestion) {
-		if (document.bwp_mod_form.stringQuestion.value == '') {
+	if (document.bwp_mod_form.stringQuestion)
+	{
+		if (document.bwp_mod_form.stringQuestion.value === '')
+		{
 			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
 		}
 	}
-	if ( errStr !== "" ) {
+
+	if ( errStr !== "" )
+	{
 		alert( errStr );
 		return false;
-	} else {
+	}
+	else
+	{
 		form.submit();
 	}
 }
-
 /* ]]> */
 </script>
 
@@ -135,7 +169,7 @@ function checkModRegisterForm() {
 		<div class="alert alert-warning">
 			<h4 class="alert-heading"><?php echo JText::_('WARNING'); ?></h4>
 			<div>
-				<p><?php echo JText::_('MOD_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+				<p><?php echo JText::_('MOD_BWPOSTMAN_JAVAWARNING'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -152,7 +186,7 @@ function checkModRegisterForm() {
 		{
 		// Show registration form only if a mailinglist is selectable?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=register.save'); ?>" method="post" id="bwp_mod_form" name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=register'); ?>" method="post" id="bwp_mod_form" name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
 
 			<?php // Spamcheck 1 - Input-field: class="user_hightlight" style="position: absolute; top: -5000px;" ?>
 				<p class="user_hightlight">
@@ -380,13 +414,19 @@ function checkModRegisterForm() {
 			var label = jQuery(this);
 			var input = jQuery('#' + label.attr('for'));
 
-			if (!input.prop('checked')) {
+			if (!input.prop('checked'))
+			{
 				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if (input.val() == '') {
+				if (input.val() === '')
+				{
 					label.addClass('active btn-primary');
-				} else if (input.val() == 0) {
+				}
+				else if (input.val() === 0)
+				{
 					label.addClass('active btn-danger');
-				} else {
+				}
+				else
+				{
 					label.addClass('active btn-success');
 				}
 				input.prop('checked', true);
@@ -394,11 +434,16 @@ function checkModRegisterForm() {
 		});
 		jQuery(".btn-group input[checked=checked]").each(function()
 		{
-			if (jQuery(this).val() == '') {
+			if (jQuery(this).val() === '')
+			{
 				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
-			} else if (jQuery(this).val() == 0) {
+			}
+			else if (jQuery(this).val() === 0)
+			{
 				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
-			} else {
+			}
+			else
+			{
 				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
 			}
 		});

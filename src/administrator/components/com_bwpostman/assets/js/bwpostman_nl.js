@@ -1,10 +1,8 @@
 //Method to check and compare the selected content from the database and the selected content from the form
 function checkSelectedContent(selected_content_new, selected_content_old, content_exists, template_id, text_template_id, template_id_old, text_template_id_old, text_confirm_content, text_confirm_template, text_confirm_text_template) {
-//alert('Template ID Text: ' + text_template_id.value);
-//alert('Template Old ID Text: ' + text_template_id_old.value);
 	// Get the selected content from the database and split the string into an array but only if there is not the content ''
 	var selected_content_oldArray = [];
-	if (selected_content_old.value != '') {
+	if (selected_content_old.value !== '') {
 		selected_content_oldArray = selected_content_old.value.split(",");
 	}
 
@@ -20,31 +18,31 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
     // Get template_id
     var template_ids = template_id;
     var length = template_ids.length;
-      for (var i = 0; i < length; i++)
+      for (i = 0; i < length; i++)
       {
         if (template_ids[i].checked) {
-          var template_id = template_ids[i].value;
+          template_id = template_ids[i].value;
         }
       }
 
     // Get text_template_id
     var text_template_ids = text_template_id;
-    var length = text_template_ids.length;
-      for (var i = 0; i < length; i++)
+    length = text_template_ids.length;
+      for (i = 0; i < length; i++)
       {
         if (text_template_ids[i].checked) {
-          var text_template_id = text_template_ids[i].value;
+          text_template_id = text_template_ids[i].value;
         }
       }
 
 	// Check the selected content from the database and the selected content from the form only if there is already a html- or text-version of the newsletter
-	if (content_exists.value == 1) {
+	if (content_exists.value === 1) {
 
 		// Check the number of entries and compare them
-		if (selected_content_newArray.length != selected_content_oldArray.length) { // The lengths of the arrays are not equal
-			confirmAddContent = confirm(text_confirm_content);
-			if (confirmAddContent == true) {
-				if (selected_content_new.options.length == 0) {
+		if (selected_content_newArray.length !== selected_content_oldArray.length) { // The lengths of the arrays are not equal
+			var confirmAddContent = confirm(text_confirm_content);
+			if (confirmAddContent === true) {
+				if (selected_content_new.options.length === 0) {
 					// content changed but no content selected
 					document.adminForm.add_content.value = -1;
 				}
@@ -61,10 +59,10 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 		else { // The lengths of the arrays are equal
 
 			// Method to check if template_id changed
-			if (template_id != template_id_old.value) { // The values are not equal
-				confirmTemplateId = confirm(text_confirm_template);
-				if (confirmTemplateId == true) {
-					if (selected_content_new.options.length == 0) {
+			if (template_id !== template_id_old.value) { // The values are not equal
+				var confirmTemplateId = confirm(text_confirm_template);
+				if (confirmTemplateId === true) {
+					if (selected_content_new.options.length === 0) {
 						// template changed but no content selected
 						document.adminForm.add_content.value = -1;
 					}
@@ -79,10 +77,10 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 				}
 			}
 			// Method to check if text_template_id changed
-			if (text_template_id != text_template_id_old.value) { // The values are not equal
-				confirmTexttemplateId = confirm(text_confirm_text_template);
-				if (confirmTexttemplateId == true) {
-					if (selected_content_new.options.length == 0) {
+			if (text_template_id !== text_template_id_old.value) { // The values are not equal
+				var confirmTexttemplateId = confirm(text_confirm_text_template);
+				if (confirmTexttemplateId === true) {
+					if (selected_content_new.options.length === 0) {
 						// template changed but no content selected
 						document.adminForm.add_content.value = -1;
 					}
@@ -100,9 +98,9 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 			// Compare the entries of the arrays
 			for (var j=0; j<selected_content_newArray.length; j++) {
 
-				if (selected_content_newArray[j] != selected_content_oldArray[j]) { // The values are not equal
+				if (selected_content_newArray[j] !== selected_content_oldArray[j]) { // The values are not equal
 					confirmAddContent = confirm(text_confirm_content);
-					if (confirmAddContent == true) {
+					if (confirmAddContent === true) {
 						document.adminForm.add_content.value = 1;
 						return true;
 					}
@@ -113,7 +111,7 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 				}
 			}
 			// The values of both arrays are equal, so we doesn't have to do anything
-			if (selected_content_new.options.length == 0) {
+			if (selected_content_new.options.length === 0) {
 				// content exists but no content selected
 				document.adminForm.add_content.value = -1;
 			}
@@ -133,33 +131,33 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 
 function checkSelectedRecipients (ml_available, ml_unavailable, ml_intern, usergroups, message) { // Method to check if some recipients are selected
 
-	count_selected = 0;
+	var count_selected = 0;
 
 	for (var i=0; i<ml_available.length; i++) {
-		if (ml_available[i].checked == true) {
+		if (ml_available[i].checked === true) {
 			count_selected++;
 		}
 	}
 
-	for (var i=0; i<ml_unavailable.length; i++) {
-		if (ml_unavailable[i].checked == true) {
+	for (i=0; i<ml_unavailable.length; i++) {
+		if (ml_unavailable[i].checked === true) {
 			count_selected++;
 		}
 	}
 
-	for (var i=0; i<ml_intern.length; i++) {
-		if (ml_intern[i].checked == true) {
+	for (i=0; i<ml_intern.length; i++) {
+		if (ml_intern[i].checked === true) {
 			count_selected++;
 		}
 	}
 
-	for (var i=0; i<usergroups.length; i++) {
-		if (usergroups[i].checked == true) {
+	for (i=0; i<usergroups.length; i++) {
+		if (usergroups[i].checked === true) {
 			count_selected++;
 		}
 	}
 
-	if (count_selected == 0) {
+	if (count_selected === 0) {
 		alert (message);
 		return false;
 	}
@@ -169,23 +167,23 @@ function checkSelectedRecipients (ml_available, ml_unavailable, ml_intern, userg
 
 function addContentTag(type, field){
 
-	var form = document.adminForm;
 	var tempval=eval("document.adminForm."+field+'_'+type);
 	var tempfield=eval("document.adminForm."+field);
+	var text = '';
 
-  	if(tempval.options[tempval.selectedIndex].value != 0) {
-    	if(type == 'content') {
-    		var text = '[CONTENT id="' + tempval.options[tempval.selectedIndex].value + '"]';
+  	if(tempval.options[tempval.selectedIndex].value !== 0) {
+    	if(type === 'content') {
+    		text = '[CONTENT id="' + tempval.options[tempval.selectedIndex].value + '"]';
     	}
-    	if(type == 'bookmark') {
-    		var text = '[BOOKMARK id="' + tempval.options[tempval.selectedIndex].value
+    	if(type === 'bookmark') {
+    		text = '[BOOKMARK id="' + tempval.options[tempval.selectedIndex].value
     					+ '" title="' + tempval.options[tempval.selectedIndex].text + '"]';
     	}
 
-    	if(field == "html_message") {
+    	if(field === "html_message") {
     		tinyMCE.execCommand('mceInsertContent', false, text);
     	}
-    	if(field == 'message' || field == 'pdf_message' || field == 'nl_content'  ) {
+    	if(field === 'message' || field === 'pdf_message' || field === 'nl_content'  ) {
     		insertAtCursor(tempfield, text);
     	}
   	}
@@ -194,7 +192,7 @@ function addContentTag(type, field){
 function addAttachmentTag(){
   var form = document.adminForm;
   var tempval=eval("document.adminForm.nl_attachments");
-  if(form.nl_attachments.options[form.nl_attachments.selectedIndex].value != 0) {
+  if(form.nl_attachments.options[form.nl_attachments.selectedIndex].value !== 0) {
    var text = '[ATTACHMENT filename="' + form.nl_attachments.options[form.nl_attachments.selectedIndex].value + '"]';
     alert('text');
     insertAtCursor(form.nl_content, text);
@@ -204,16 +202,16 @@ function addAttachmentTag(){
 
 
 function insertAtCursor(Field, myValue) {
-	myField = document.getElementById(Field);
+	var myField = document.getElementById(Field);
 
   //IE support
   if (document.selection) {
     myField.focus();
-    sel = document.selection.createRange();
+    var sel = document.selection.createRange();
     sel.text = myValue;
   }
   //MOZILLA/NETSCAPE support
-  else if (myField.selectionStart || myField.selectionStart == '0') {
+  else if (myField.selectionStart || myField.selectionStart === '0') {
     var startPos = myField.selectionStart;
     var endPos = myField.selectionEnd;
     myField.value = myField.value.substring(0, startPos)
@@ -245,11 +243,11 @@ function InsertAtCaret(myValue) {
 		if (document.selection) {
 			//For browsers like Internet Explorer
 			this.focus();
-			sel = document.selection.createRange();
+			var sel = document.selection.createRange();
 			sel.text = myValue;
 			this.focus();
 		}
-		else if (this.selectionStart || this.selectionStart == '0') {
+		else if (this.selectionStart || this.selectionStart === '0') {
 			//For browsers like Firefox and Webkit based
 			var startPos = this.selectionStart;
 			var endPos = this.selectionEnd;
@@ -264,7 +262,6 @@ function InsertAtCaret(myValue) {
 			this.value += myValue;
 			this.focus();
 		}
-		return;
 	})
 }
 
@@ -280,19 +277,19 @@ function deselectAll(element) { // Method to deselect all selected options
 
 function checkSelectedOption (selectbox) { // Method to check if "All subscribers" is selected --> if yes, deselect all other options
 
-	count_selected = 0;
+	var count_selected = 0;
 	for (var i=0; i<selectbox.options.length; i++) {
 		var o = selectbox.options[i];
-		if (o.selected == true) {
+		if (o.selected === true) {
 			count_selected++;
 		}
 	}
 
-	if ((selectbox.value == -1) && (count_selected > 1)) {
+	if ((selectbox.value === -1) && (count_selected > 1)) {
 		alert ("<?php echo JText::_('BWP_NL_ALL_SELECTED' , true); ?>");
-		for (var i=0; i<selectbox.options.length; i++) {
-			var o = selectbox.options[i];
-			if (o.value != -1) {
+		for (i=0; i<selectbox.options.length; i++) {
+			o = selectbox.options[i];
+			if (o.value !== -1) {
 				o.selected = false;
 			}
 		}
@@ -313,8 +310,8 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 	}
 
 	// Delete them from original
-	for (var i=(from.options.length-1); i>=0; i--) {
-		var o = from.options[i];
+	for (i=(from.options.length-1); i>=0; i--) {
+		o = from.options[i];
 		if (o.selected) {
 		  from.options[i] = null;
 		}

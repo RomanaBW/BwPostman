@@ -229,10 +229,10 @@ class BwPostmanModelRegister extends JModelAdmin
 
 		$app	= JFactory::getApplication();
 
-		// Create the editlink and check if the sting doesn't exist twice or more
+		// Create the editlink and check if the string doesn't exist twice or more
 		$data['editlink'] = $this->_createEditlink();
 
-		// Create the activation and check if the sting doesn't exist twice or more
+		// Create the activation and check if the string doesn't exist twice or more
 		$data['activation'] = $this->_createActivation();
 		$app->setUserState('com_bwpostman.subscriber.activation', $data['activation']);
 
@@ -575,7 +575,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	}
 
 	/**
-	 * Method to create the activation and check if the sting does not exist twice or more
+	 * Method to create the activation and check if the string does not exist twice or more
 	 *
 	 * @return string   $activation
 	 *
@@ -623,7 +623,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	}
 
 	/**
-	 * Method to create the editlink and check if the sting does not exist twice or more
+	 * Method to create the editlink and check if the string does not exist twice or more
 	 *
 	 * @return string   $editlink
 	 *

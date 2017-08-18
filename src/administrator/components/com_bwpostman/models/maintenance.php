@@ -2726,11 +2726,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$_db->setQuery($query);
 			$default_asset = $_db->loadAssoc();
-//echo dump ($default_asset, 'Default Asset Table ' . $table);
 			$default_asset['parent_id'] = $default_asset['id'];
 			$default_asset['id']        = 0;
 			$default_asset['level']     = (int) $default_asset['level'] + 1;
-//			$default_asset['rules']     = $default_asset['rules'];
 
 			return $default_asset;
 

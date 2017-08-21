@@ -6,16 +6,18 @@ This is a changelog for the Joomla!3.3.6 component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 2.0.0 released (20-Sept-2016)----
+--- version 2.0.0 released (20-Sept-2017)----
 - new:
     - Additional field "Custom CSS" at standard templates added
     - Buttons for enhanced personalization inserted at editing templates and newsletters
 
 - bugfix:
+    - link to Boldt Webservice now totally removed when selected not to show
+    - Typos corrected at language files
     - Table check at attribute NULL corrected
-    - Typo in english language file corrected
     - Form check by javascript corrected
     - Saving gender without entry (=gender unknown) now possible
+    - Change back to no gender now possible
     - Table campaigns_mailinglists was not deleted at uninstall
 
 

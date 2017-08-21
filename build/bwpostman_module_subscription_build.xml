@@ -51,6 +51,16 @@
 				<include name="**/*${module}*.ini" />
 			</fileset>
 		</copy>
+		<copy todir="${target_base_module_dir}/site/language/es-ES">
+			<fileset dir="${source_site_lang_dir}/es-ES">
+				<include name="**/*${module}*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_module_dir}/site/language/ja-JP">
+			<fileset dir="${source_site_lang_dir}/ja-JP">
+				<include name="**/*${module}*.ini" />
+			</fileset>
+		</copy>
 
 		<echo msg="Chmod target dir…" />
 		<chmod file="${target_base_dir}" mode="0777" />

@@ -61,7 +61,7 @@
 		<copy file="${target_base_dir}/${module_2}.zip" tofile="${target_base_dir}/packages/${module_2}.zip" />
 		<copy file="${target_base_dir}/plg_bwpostman_${plugin_1}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_1}.zip" />
 		<copy file="${target_base_dir}/plg_bwpostman_${plugin_2}.zip" tofile="${target_base_dir}/packages/plg_bwpostman_${plugin_2}.zip" />
-		<copy file="${manifest_dir}/pkg_bwpostman.xml" tofile="${target_base_dir}/pkg_bwpostman.xml" />
+		<copy file="${manifest_dir}/pkg_bwpostman.xml" tofile="${target_base_dir}/packages/pkg_bwpostman.xml" />
 
 		<echo msg="Copy Zip files…" />
 		<copy file="${target_base_dir}/packages/${component}.zip" tofile="${test_base_dir}/${component}.zip" />

@@ -7,18 +7,8 @@ The changelog may not be exhaustive but nearly complete.
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 2.0.0 released (20-Sept-2017)----
-- new:
-    -
-
-- bugfix:
-    - Check for module specific params corrected
-    - Form check by javascript corrected
-
-- improvement:
-    - Email check enhanced to meet new TLDs
-    - CSS styles for radio buttons modified
-
+Version 2.0.0 and above:
+See changelog of package
 
 --- version 1.3.2 released (14-Apr-2016)----
 - bugfix:

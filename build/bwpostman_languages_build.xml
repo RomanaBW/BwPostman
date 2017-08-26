@@ -10,20 +10,18 @@
 	<!-- ============================================  -->
 	<target name="prepare_languages" depends="set_general_variables">
 		<echo msg="Set variables…" />
-		<property name="module_1" value="mod_bwpostman" override="true" />
-		<property name="module_2" value="mod_bwpostman_overview" override="true" />
-		<property name="plugin_1" value="personalize" override="true" />
 
 		<echo msg="Source dirs…" />
 		<property name="source_admin_lang_dir" value="${source_base_dir}/administrator/language" override="true" />
 		<property name="source_site_lang_dir" value="${source_base_dir}/language" override="true" />
-		<property name="manifest_dir_de" value="${home_dir}/build/manifests" override="true" />
-		<property name="manifest_dir_en" value="${home_dir}/build/manifests" override="true" />
+		<property name="manifest_dir" value="${home_dir}/build/manifests" override="true" />
 
 		<echo msg="target dirs…" />
 		<property name="target_base_translations_dir" value="${target_base_dir}/translations" override="true" />
 		<property name="target_base_translations_dir_de" value="${target_base_translations_dir}/de-DE" override="true" />
 		<property name="target_base_translations_dir_en" value="${target_base_translations_dir}/en-GB" override="true" />
+		<property name="target_base_translations_dir_es" value="${target_base_translations_dir}/es-ES" override="true" />
+		<property name="target_base_translations_dir_ja" value="${target_base_translations_dir}/ja-JP" override="true" />
 
 		<echo msg="Deleting target directory… " />
 		<delete dir="${target_base_translations_dir}" includeemptydirs="true" failonerror="false" />
@@ -38,69 +36,59 @@
 	<target name="build_languages" depends="prepare_languages">
 		<echo msg="Copying files to build directory…" />
 
-		<echo msg="Copying component admin…" />
+		<echo msg="Copying admin files…" />
 		<copy todir="${target_base_translations_dir_de}/admin">
 			<fileset dir="${source_admin_lang_dir}/de-DE">
-				<include name="**/*${component}*.ini" />
+				<exclude name="**/*bwpostman_bwtimecontrol*.ini" />
+				<exclude name="**/*bwpostman_demo*.ini" />
+				<exclude name="**/*bwtests*.ini" />
 			</fileset>
 		</copy>
 		<copy todir="${target_base_translations_dir_en}/admin">
 			<fileset dir="${source_admin_lang_dir}/en-GB">
-				<include name="**/*${component}*.ini" />
+				<exclude name="**/*bwpostman_bwtimecontrol*.ini" />
+				<exclude name="**/*bwpostman_demo*.ini" />
+				<exclude name="**/*bwtests*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_translations_dir_es}/admin">
+			<fileset dir="${source_admin_lang_dir}/es-ES">
+				<exclude name="**/*bwpostman_bwtimecontrol*.ini" />
+				<exclude name="**/*bwpostman_demo*.ini" />
+				<exclude name="**/*bwtests*.ini" />
+			</fileset>
+		</copy>
+		<copy todir="${target_base_translations_dir_ja}/admin">
+			<fileset dir="${source_admin_lang_dir}/ja-JP">
+				<exclude name="**/*bwpostman_bwtimecontrol*.ini" />
+				<exclude name="**/*bwpostman_demo*.ini" />
+				<exclude name="**/*bwtests*.ini" />
 			</fileset>
 		</copy>
 
-		<echo msg="Copying component site…" />
+		<echo msg="Copying site files…" />
 		<copy todir="${target_base_translations_dir_de}/site">
 			<fileset dir="${source_site_lang_dir}/de-DE">
-				<include name="**/*${component}*.ini" />
 			</fileset>
 		</copy>
 		<copy todir="${target_base_translations_dir_en}/site">
 			<fileset dir="${source_site_lang_dir}/en-GB">
-				<include name="**/*${component}*.ini" />
 			</fileset>
 		</copy>
-
-		<echo msg="Copying module 1…" />
-		<copy todir="${target_base_translations_dir_de}/site">
-			<fileset dir="${source_site_lang_dir}/de-DE">
-				<include name="**/*${module_1}*.ini" />
+		<copy todir="${target_base_translations_dir_es}/site">
+			<fileset dir="${source_site_lang_dir}/es-ES">
 			</fileset>
 		</copy>
-		<copy todir="${target_base_translations_dir_en}/site">
-			<fileset dir="${source_site_lang_dir}/en-GB">
-				<include name="**/*${module_1}*.ini" />
-			</fileset>
-		</copy>
-
-		<echo msg="Copying module 2…" />
-		<copy todir="${target_base_translations_dir_de}/site">
-			<fileset dir="${source_site_lang_dir}/de-DE">
-				<include name="**/*${module_2}*.ini" />
-			</fileset>
-		</copy>
-		<copy todir="${target_base_translations_dir_en}/site">
-			<fileset dir="${source_site_lang_dir}/en-GB">
-				<include name="**/*${module_2}*.ini" />
-			</fileset>
-		</copy>
-
-		<echo msg="Copying plugin personalize…" />
-		<copy todir="${target_base_translations_dir_de}/admin">
-			<fileset dir="${source_admin_lang_dir}/de-DE">
-				<include name="**/*bwpostman_personalize*.ini" />
-			</fileset>
-		</copy>
-		<copy todir="${target_base_translations_dir_en}/admin">
-			<fileset dir="${source_admin_lang_dir}/en-GB">
-				<include name="**/*bwpostman_personalize*.ini" />
+		<copy todir="${target_base_translations_dir_ja}/site">
+			<fileset dir="${source_site_lang_dir}/ja-JP">
 			</fileset>
 		</copy>
 
 		<echo msg="Copying manifest files…" />
-		<copy file="${manifest_dir_de}/lang_bwpostman_de-DE.xml" tofile="${target_base_translations_dir_de}/lang_bwpostman_de-DE.xml" />
-		<copy file="${manifest_dir_en}/lang_bwpostman_en-GB.xml" tofile="${target_base_translations_dir_en}/lang_bwpostman_en-GB.xml" />
+		<copy file="${manifest_dir}/lang_bwpostman_de-DE.xml" tofile="${target_base_translations_dir_de}/lang_bwpostman_de-DE.xml" />
+		<copy file="${manifest_dir}/lang_bwpostman_en-GB.xml" tofile="${target_base_translations_dir_en}/lang_bwpostman_en-GB.xml" />
+		<copy file="${manifest_dir}/lang_bwpostman_es-ES.xml" tofile="${target_base_translations_dir_es}/lang_bwpostman_es-ES.xml" />
+		<copy file="${manifest_dir}/lang_bwpostman_ja-JP.xml" tofile="${target_base_translations_dir_ja}/lang_bwpostman_jp-JP.xml" />
 
 		<echo msg="Chmod target dir…" />
 		<chmod file="${target_base_translations_dir}" mode="0777" />
@@ -115,22 +103,34 @@
 		<echo msg="Creating archive…" />
 
 		<echo msg="…de-DE…" />
-		<zip destfile="${target_base_translations_dir_de}/lang_${extension}.${version}.de-DE.zip">
+		<zip destfile="${target_base_translations_dir}/lang_${extension}.${version}.de-DE.zip">
 			<fileset dir="${target_base_translations_dir_de}">
 				<include name="**/**" />
 			</fileset>
 		</zip>
 
 		<echo msg="…en-GB…" />
-		<zip destfile="${target_base_translations_dir_en}/lang_${extension}.${version}.en-GB.zip">
+		<zip destfile="${target_base_translations_dir}/lang_${extension}.${version}.en-GB.zip">
 			<fileset dir="${target_base_translations_dir_en}">
 				<include name="**/**" />
 			</fileset>
 		</zip>
 
+		<echo msg="…es-ES…" />
+		<zip destfile="${target_base_translations_dir}/lang_${extension}.${version}.es-ES.zip">
+			<fileset dir="${target_base_translations_dir_es}">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+
+		<echo msg="…ja-JP…" />
+		<zip destfile="${target_base_translations_dir}/lang_${extension}.${version}.ja-JP.zip">
+			<fileset dir="${target_base_translations_dir_ja}">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+
 		<echo msg="Files copied and compressed in build directory OK!" />
-
-
 
 		<echo msg="Upload Variable: ${upload}" />
 		<if>
@@ -141,26 +141,10 @@
 						username="${username}"
 						password="${password}"
 						host="${host}"
-						todir="${upload_dir}">
-					<fileset dir="${target_base_dir}">
-						<include name="*.zip"/>
-						<include name="*.pdf"/>
-					</fileset>
-				</scp>
-
-				<scp
-						username="${username}"
-						password="${password}"
-						host="${host}"
-						todir="${upload_lang_dir}"
-						file="${target_base_translations_dir_en}/lang_${extension}.${version}.en-GB.zip">
-				</scp>
-				<scp
-						username="${username}"
-						password="${password}"
-						host="${host}"
-						todir="${upload_lang_dir}"
-						file="${target_base_translations_dir_de}/lang_${extension}.${version}.de-DE.zip">
+						todir="${upload_lang_dir}">
+				<fileset dir="${target_base_translations_dir}">
+					<include name="*.zip"/>
+				</fileset>
 				</scp>
 				<echo msg="Upload to webserver OK!" />
 			</then>

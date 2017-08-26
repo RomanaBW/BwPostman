@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- @ToDo: Update WIKI entry -->
 
-<project name="BuildBwPostmanTestEnvAndRun" description="Build test environment for BwPostman and run tests" default="stop_infrastructure">
+<project name="BuildBwPostmanTestEnvAndRunTests" description="Build test environment for BwPostman and run tests" default="stop_infrastructure">
 
 	<property name="os-user" value="romana" override="true" />
 	<property name="os-group" value="users" override="true" />
@@ -23,6 +23,8 @@
 	<property name="debug" value=" ${BW_TEST_DEBUG}" override="true" />
 	<property name="test_cat" value="${BW_TEST_CAT}" override="true" />
 	<property name="php_version" value="${BW_TEST_PHP_VERSION}" override="true" />
+	<property name="infrastructure_config" value="run-joomla.yml" override="true" />
+	<property name="test_runner" value="bwpm_install_test_runner.sh" override="true" />
 	<property name="failed" value="false" override="true" />
 
 	<target name="create_project_name"
@@ -33,6 +35,8 @@
 			<isfalse value="${bwpm_install}" />
 			<then>
 				<php expression="${project_name}_bwpm${bwpm_version}" returnProperty="project_name" />
+				<property name="infrastructure_config" value="run-bwpm.yml" override="true" />
+				<property name="test_runner" value="bwpm_test_runner.sh" override="true" />
 			</then>
 		</if>
 
@@ -104,6 +108,7 @@
 		<php expression="putenv('BW_TEST_DB_USER=${BW_TEST_DB_USER}');" />
 		<php expression="putenv('BW_TEST_DB_PW=${BW_TEST_DB_PW}');" />
 		<php expression="putenv('BW_TEST_VM_VERSION=${BW_TEST_VM_VERSION}');" />
+		<php expression="putenv('BW_TEST_RUNNER=${test_runner}');" />
 	</target>
 
 	<target name="set_rebase" depends="prepare_codecept_variables"
@@ -129,8 +134,8 @@
 		<echo message="Rebase nach Install: ${rebase}" />
 	</target>
 
-	<target name="start_infrastructure" depends="set_rebase"
-	        description="start test infrastructure">
+	<target name="start_infrastructure" depends="set_rebase" description="start test infrastructure">
+		<echo message="Start infrastructure with: docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d"/>
 		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d" passthru="true" />
 	</target>
 
@@ -249,13 +254,12 @@
 		<exec command="docker-compose -f ${container_dir}/testers/bwpm-tester.yml up" passthru="true" />
 	</target>
 
-	<target name="remove_test_container" depends="start_test_container"
+	<target name="remove_test_container" depends="remove_test_container"
 	        description="remove test container">
 		<exec command="docker rm bwpm-tester" passthru="true" checkreturn="true"/>
 	</target>
 
-	<target name="stop_infrastructure" depends="remove_test_container"
-	        description="start test infrastructure">
+	<target name="stop_infrastructure" depends="remove_test_container" description="stop test infrastructure">
 <!--		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} down" passthru="true" />-->
 	</target>
 

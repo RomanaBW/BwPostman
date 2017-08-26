@@ -130,7 +130,7 @@
 		</zip>
 
 		<echo msg="File copied and compressed in build directory OK!" />
-
+<!--
 		<echo msg="Upload Variable: ${upload}" />
 		<if>
 			<equals arg1="${upload}" arg2="1" trim="true" casesensitive="false" />
@@ -149,7 +149,7 @@
 				<echo msg="Upload to webserver OK!" />
 			</then>
 		</if>
-
+-->
 		<copy file="${target_base_dir}/${component}.zip" tofile="${test_container_dir}/tests/_data/${component}.zip" />
 		<copy file="${target_base_dir}/${component}.zip" tofile="/vhosts/webservice3/download/BwPostman/${component}.${version}.zip" />
 	</target>

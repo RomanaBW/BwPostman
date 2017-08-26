@@ -70,11 +70,8 @@
 		</zip>
 
 		<echo msg="Files copied and compressed in build directory OK!" />
-
+<!--
 		<echo msg="Upload Variable: ${upload}" />
-		<echo msg="Upload Dir: ${upload_dir}" />
-		<echo msg="Target Base Dir: ${target_base_dir}" />
-		<echo msg="Target Base Plugin Dir: ${target_base_plugin_dir}" />
 		<if>
 			<equals arg1="${upload}" arg2="1" trim="true" casesensitive="false" />
 			<then>
@@ -92,7 +89,7 @@
 				<echo msg="Upload to webserver OK!" />
 			</then>
 		</if>
-
+-->
 		<copy file="${target_base_dir}/plg_bwpostman_${plugin}.zip" tofile="${test_container_dir}/tests/_data/plg_bwpostman_${plugin}.zip" />
 		<copy file="${target_base_dir}/plg_bwpostman_${plugin}.zip" tofile="/vhosts/webservice3/download/BwPostman/plg_bwpostman_${plugin}.${version}.zip" />
 	</target>

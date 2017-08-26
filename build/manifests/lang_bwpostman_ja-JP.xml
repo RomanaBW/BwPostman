@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="file" version="3.0" method="upgrade">
+	<name>BwPostman Japanese Language Pack</name>
+	<creationDate>August 2017</creationDate>
+	<author>Boldt Webservice and Diego Mora</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>This component is released under the GNU/GPLv3 License or later</license>
+	<version>2.0.0</version>
+	<description></description>
+
+	<fileset>
+		<files folder="site" target="language">
+			<filename>ja-JP.com_bwpostman.ini</filename>
+			<filename>ja-JP.mod_bwpostman.ini</filename>
+			<filename>ja-JP.mod_bwpostman.sys.ini</filename>
+			<filename>ja-JP.mod_bwpostman_overview.ini</filename>
+			<filename>ja-JP.mod_bwpostman_overview.sys.ini</filename>
+		</files>
+
+		<files folder="admin" target="administrator/language">
+			<filename>ja-JP.com_bwpostman.ini</filename>
+			<filename>ja-JP.com_bwpostman.sys.ini</filename>
+			<filename>ja-JP.plg_bwpostman_personalize.ini</filename>
+			<filename>ja-JP.plg_bwpostman_personalize.sys.ini</filename>
+			<filename>ja-JP.plg_system_bwpm_user2subscriber.ini</filename>
+			<filename>ja-JP.plg_system_bwpm_user2subscriber.sys.ini</filename>
+		</files>
+	</fileset>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Language Updates ja-JP">https://www.boldt-webservice.de/lang_bwpostman_update_ja-JP.xml</server>
+	</updateservers>
+
+</extension>

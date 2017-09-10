@@ -1,0 +1,13 @@
+Loading repository data...
+Reading installed packages...
+
+The following package is going to be upgraded:
+  chromium
+
+1 package to upgrade.
+Overall download size: 50.0 MiB. Already cached: 0 B. After the operation, additional 6.3 KiB will be used.
+Continue? [y/n/? shows all options] (y): y
+Retrieving package chromium-54.0.2840.90-85.1.x86_64 (1/1),  50.0 MiB (191.8 MiB unpacked)
+Retrieving: chromium-54.0.2840.90-85.1.x86_64.rpm [............................................done (1.2 MiB/s)]
+Checking for file conflicts: [.....done]
+(1/1) Installing: chromium-54.0.2840.90-85.1.x86_64 [.....................done]

@@ -1,0 +1,27 @@
+####################################################################
+# Dockerfile to build base tools container images
+# Based on OpenSuse
+# Provides romana/os-tester-base, perhaps later with version number
+####################################################################
+
+FROM opensuse:42.3
+
+MAINTAINER Romana Boldt <info@boldt-webservice.de>
+
+RUN zypper --non-interactive in curl \
+                                gcc \
+                                git \
+                                glibc-i18ndata \
+                                glibc-locale \
+                                java-1_8_0-openjdk \
+                                make \
+                                mariadb-client \
+                                mc \
+                                tar \
+                                tmux \
+                                unzip \
+                                wget \
+                                zlib-devel
+
+# keep packages on newest state
+RUN zypper --non-interactive up

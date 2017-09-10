@@ -1,0 +1,64 @@
+version: '3'
+
+networks:
+    tester-net-bwpm.nil:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.16/29
+
+services:
+    mysqldbbwpm:
+        container_name: mysqldbbwpm
+        image: romana/mysql
+        hostname: mysqlserver-bwpm
+        domainname: tester-net-bwpm.nil
+        networks:
+            tester-net-bwpm.nil:
+                ipv4_address: 172.18.0.19
+        expose:
+            - "3306"
+        ports:
+            - "3308:3306"
+        volumes:
+            - ${BW_TEST_CONTAINER_DIR}/infrastructure/mysqldb/data/logs:/var/log/mysql/
+            - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/tables:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: barbapapa
+            MYSQL_DATABASE: joomlatest
+            MYSQL_USER: tester
+            MYSQL_PASSWORD: barbamama
+
+    postfixbwpm:
+        container_name: "mail.tester-net-bwpm.nil"
+        image: romana/os-postfix
+        hostname: mail-bwpm
+        domainname: tester-net-bwpm.nil
+        expose:
+            - "25"
+        volumes:
+            - ${BW_TEST_CONTAINER_DIR}/infrastructure/os_base/os_data:/outerworld
+        networks:
+            tester-net-bwpm.nil:
+                ipv4_address: 172.18.0.18
+
+    webserverbwpm:
+        container_name: webserverbwpm
+        image: romana/apache_${BW_TEST_PHP_VERSION}
+        hostname: webserver-bwpm
+        domainname: tester-net-bwpm.nil
+        depends_on:
+            - "mysqldbbwpm"
+        networks:
+            tester-net-bwpm.nil:
+                ipv4_address: 172.18.0.20
+        expose:
+            - "80"
+        links:
+            - mysqldbbwpm:mysqldbbwpm
+        ports:
+            - "8002:80"
+        volumes:
+            - ${BW_TEST_CONTAINER_DIR}/infrastructure/apache/data/logs:/var/log/apache2/
+            - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/files:/var/www/html

@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+    postfix:
+        container_name: "mail.test.nil"
+        build: ./os_postfix
+        hostname: mail
+        domainname: test.nil
+        expose:
+            - "25"
+        volumes:
+            - "/vms/dockers/infrasrtucture/os_base/os_data:/outerworld"
+        networks:
+            test.nil:
+                ipv4_address: 172.18.0.2
+
+networks:
+    test.nil:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.0/24
+                  gateway: 172.18.0.1
+

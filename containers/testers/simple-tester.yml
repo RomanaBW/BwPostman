@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    tester:
+        container_name: "tester"
+        image: romana/os-chromium-tester_227_5719
+        hostname: tester
+        domainname: tester-net.nil
+        volumes:
+            - "/vms/dockers/containers/testers/os-data:/data"
+            - "/vhosts/dev/joomla-cms:/tests"
+        environment:
+            - TEST_CAT=${TEST_CAT}
+        entrypoint: /data/simple_tester_start.sh
+        working_dir: /tests
+        networks:
+            tester-net.nil:
+                ipv4_address: 172.18.0.6
+
+networks:
+    tester-net.nil:
+        external:
+            name: ${PROJECT_JTESTS}_tester-net.nil

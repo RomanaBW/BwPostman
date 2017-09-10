@@ -17,7 +17,7 @@
 		<property name="BwPostman_repo_dir" value="${repo_base_dir}/BwPostman" override="true" />
 		<property name="lib_repo_dir" value="${repo_base_dir}/BwLib" override="true" />
 
-		<property name="upload" value="0" override="true" />
+		<property name="upload" value="1" override="true" />
 
 		<property name="version" value="2.0.0" override="true" />
 		<property name="lib_version" value="0.9.1" override="true" />

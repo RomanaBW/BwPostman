@@ -1,0 +1,61 @@
+version: '3'
+
+#networks:
+#   default:
+#     external:
+#       name: infrastructure_tester-net.nil
+
+networks:
+    tester-net.nil:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.0/24
+
+services:
+    mailer:
+        container_name: mailer_${PROJECT_NAME}
+        image: romana/os-postfix
+        restart: always
+        expose:
+            - "25"
+        volumes:
+            - "/vms/dockers/containers/infrastructure/os_base/os_data:/outerworld"
+        networks:
+            tester-net.nil:
+
+    mysqldb:
+        environment:
+            MYSQL_ROOT_PASSWORD: barbapapa
+            MYSQL_DATABASE: joomlatest
+            MYSQL_USER: tester
+            MYSQL_PASSWORD: barbamama
+        container_name: mysqldb_${PROJECT_NAME}
+        image: romana/mysql
+        expose:
+            - "3306"
+        ports:
+            - "3306:3306"
+        volumes:
+            - "/vms/dockers/containers/infrastructure/mysqldb/data/logs:/var/log/mysql/"
+            - "/vms/dockers/global_data/test_data/${PROJECT_WEB_PATH}/tables:/var/lib/mysql"
+        networks:
+            tester-net.nil:
+
+    webserver:
+        container_name: webserver_${PROJECT_NAME}
+        image: romana/apache_${PROJECT_PHP_VERSION}
+        depends_on:
+            - "mysqldb"
+        expose:
+            - "80"
+        links:
+            - mysqldb:mysqldb
+        ports:
+            - "8000:80"
+        volumes:
+            - "/vms/dockers/containers/infrastructure/apache/data/logs:/var/log/apache2/"
+            - "/vms/dockers/global_data/test_data/${PROJECT_WEB_PATH}/files:/var/www/html"
+        networks:
+            tester-net.nil:

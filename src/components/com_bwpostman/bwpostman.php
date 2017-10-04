@@ -37,13 +37,17 @@ JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 require_once (JPATH_COMPONENT.'/controller.php');
 
 // Require specific controller
-$jinput	= JFactory::getApplication()->input;
+$jinput = JFactory::getApplication()->input;
 $view   = $jinput->get('view', '');
-if($view) {
-	$path = JPATH_COMPONENT.'/controllers/'.$view.'.php';
-	if (file_exists($path)) {
-		require_once $path;
-	}
+
+if ($view)
+{
+    $path = JPATH_COMPONENT.'/controllers/'.$view.'.php';
+
+    if (file_exists($path))
+    {
+        include_once $path;
+    }
 }
 
 // Create the controller

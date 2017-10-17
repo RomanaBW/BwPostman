@@ -159,9 +159,14 @@ class Com_BwPostmanInstallerScript
 
 	public function preflight($type, JAdapterInstance $parent)
 	{
-		$app 		= JFactory::getApplication ();
+		$app 		= JFactory::getApplication();
 		$session	= JFactory::getSession();
 		$jversion	= new JVersion();
+
+		if (function_exists('set_time_limit'))
+		{
+			set_time_limit(0);
+		}
 
 		$this->parentInstaller	= $parent->getParent();
 		// Get component manifest file version

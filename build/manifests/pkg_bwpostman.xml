@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="3.2" method="upgrade">
 	<name>BwPostman Complete Package</name>
-	<creationDate>August 2017</creationDate>
+	<creationDate>October 2017</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<url>https://www.boldt-webservice.de</url>

@@ -3,7 +3,7 @@
 <extension version="2.5" type="plugin" group="quickicon" method="upgrade">
 	<name>plg_quickicon_bwpostman</name>
 	<version>1.1.0</version>
-	<creationDate>August 2017</creationDate>
+	<creationDate>October 2017</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>bwpostman@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>

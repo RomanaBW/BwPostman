@@ -2,7 +2,7 @@
 <extension group="vmuserfield" method="upgrade" type="plugin" version="3.4">
     <name>PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER</name>
     <version>2.0.0</version>
-    <creationDate>August 2017</creationDate>
+    <creationDate>October 2017</creationDate>
     <author>Boldt Webservice</author>
     <authorEmail>forum@boldt-webservice.de</authorEmail>
     <authorUrl>https://www.boldt-webservice.de</authorUrl>

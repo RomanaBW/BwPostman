@@ -71,7 +71,7 @@ class TestNewslettersDetailsCest
 		$I->click(MainView::$addNewsletterButton);
 
 		NlEdit::fillFormSimple($I);
- 		$I->clickAndWait(NlEdit::$toolbar['Back'], 1);
+		$I->clickAndWait(NlEdit::$toolbar['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -129,8 +129,8 @@ $I->wait(3);
 
 		$this->_fillFormExtended($I);
 
-        $I->click(NlEdit::$toolbar['Cancel']);
-        $I->see("Newsletters", Generals::$pageTitle);
+		$I->click(NlEdit::$toolbar['Cancel']);
+		$I->see("Newsletters", Generals::$pageTitle);
 	}
 
 	/**
@@ -430,57 +430,57 @@ $I->wait(3);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 
-    /**
-     * Test method to create copy newsletter and send to a real usergroup
-     *
-     * @param   \AcceptanceTester                $I
-     *
-     * @before  _login
-     *
-     * @after   _logout
-     *
-     * @return  void
-     *
-     * @since   2.0.0
-     */
-    public function SendNewsletterToRealUsergroup(\AcceptanceTester $I)
-    {
-        $I->wantTo("Send a newsletter to a real user group");
+	/**
+	 * Test method to create copy newsletter and send to a real usergroup
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function SendNewsletterToRealUsergroup(\AcceptanceTester $I)
+	{
+		$I->wantTo("Send a newsletter to a real user group");
 
-        NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
+		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
-        NlEdit::SendNewsletterToRealRecipients($I, false, true);
+		NlEdit::SendNewsletterToRealRecipients($I, false, true);
 
-        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
-        $I->see('Newsletters', Generals::$pageTitle);
-    }
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
 
-    /**
-     * Test method to create copy newsletter and send to a real usergroup
-     *
-     * @param   \AcceptanceTester                $I
-     *
-     * @before  _login
-     *
-     * @after   _logout
-     *
-     * @return  void
-     *
-     * @since   2.0.0
-     */
-    public function SendNewsletterToUnconfirmed(\AcceptanceTester $I)
-    {
-        $I->wantTo("Send a newsletter also to a unconfirmed recipients");
+	/**
+	 * Test method to create copy newsletter and send to a real usergroup
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function SendNewsletterToUnconfirmed(\AcceptanceTester $I)
+	{
+		$I->wantTo("Send a newsletter also to a unconfirmed recipients");
 
-        NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-        NlEdit::SendNewsletterToRealRecipients($I, true);
+		NlEdit::SendNewsletterToRealRecipients($I, true);
 
-        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
-        $I->see('Newsletters', Generals::$pageTitle);
-    }
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
 
-    /**
+	/**
 	 * Test method to create copy newsletter and send to real recipients
 	 *
 	 * @param   \AcceptanceTester                $I
@@ -514,12 +514,12 @@ $I->wait(3);
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
 			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
 
-            $I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
-            $I->pressKey(NlEdit::$publish_down, \WebDriverKeys::TAB);
+			$I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
+			$I->pressKey(NlEdit::$publish_down, \WebDriverKeys::TAB);
 
-            $I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
+			$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
 
-            $I->click(Generals::$toolbar['Save']);
+			$I->click(Generals::$toolbar['Save']);
 			Generals::dontSeeAnyWarning($I);
 
 			$I->see("Message", Generals::$alert_header);
@@ -556,10 +556,10 @@ $I->wait(3);
 			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
 
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
-            $I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$publish_down, NlEdit::$field_publish_down);
-            $I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$description, NlEdit::$field_description);
 

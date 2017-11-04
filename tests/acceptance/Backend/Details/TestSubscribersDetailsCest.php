@@ -94,7 +94,7 @@ class TestSubscribersDetailsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
-		SubEdit::_fillFormSimple($I);
+		SubEdit::fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 		$I->see("Message", Generals::$alert_header);
@@ -129,8 +129,8 @@ class TestSubscribersDetailsCest
 
 		$this->_fillFormExtended($I);
 
-        $I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
-        $I->see("Subscribers", Generals::$pageTitle);
+		$I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
+		$I->see("Subscribers", Generals::$pageTitle);
 	}
 
 	/**
@@ -153,7 +153,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		SubEdit::_fillFormSimple($I);
+		SubEdit::fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
@@ -187,7 +187,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		SubEdit::_fillFormSimple($I);
+		SubEdit::fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
@@ -229,7 +229,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		SubEdit::_fillFormSimple($I);
+		SubEdit::fillFormSimple($I);
 
 		$I->click(SubEdit::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -239,7 +239,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		SubEdit::_fillFormSimple($I);
+		SubEdit::fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 		$I->see("Error", Generals::$alert_header);
@@ -343,9 +343,9 @@ class TestSubscribersDetailsCest
 				$I->fillField(SubEdit::$special, "");
 				if ($options->special_field_obligation)
 				{
-                    $I->click(SubEdit::$toolbar['Save']);
+					$I->click(SubEdit::$toolbar['Save']);
 
-                    $I->seeInPopup(sprintf(SubEdit::$popup_special, $options->special_label));
+					$I->seeInPopup(sprintf(SubEdit::$popup_special, $options->special_label));
 					$I->acceptPopup();
 				}
 			}

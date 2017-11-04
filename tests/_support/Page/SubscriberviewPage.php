@@ -25,8 +25,8 @@ namespace Page;
  */
 class SubscriberviewPage
 {
-    // used urls and links
-    public static $register_url         = '/index.php?option=com_bwpostman&view=register';
+	// used urls and links
+	public static $register_url         = '/index.php?option=com_bwpostman&view=register';
 	public static $edit_url             = '/index.php?option=com_bwpostman&view=edit';
 	public static $register_edit_url    = ".//*[@id='bwp_com_form']/div[1]/p[1]/a";
 
@@ -34,9 +34,9 @@ class SubscriberviewPage
 	public static $unsubscribe_link_empty   = "/index.php?option=com_bwpostman&view=edit&editlink=";
 	public static $unsubscribe_link_missing = "/index.php?option=com_bwpostman&view=edit";
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     */
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 */
 
 	//view identifier
 	public static $view_register        = ".//*[@id='bwp_com_register']";

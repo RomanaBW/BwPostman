@@ -1,7 +1,6 @@
 <?php
 namespace Page;
 
-
 /**
  * Class Login
  *
@@ -28,17 +27,49 @@ namespace Page;
  */
 class Login
 {
-    // include url of current page
-    public static $url = '/administrator/index.php';
+	/**
+	 * @var string  $url
+	 *
+	 * @since       2.0.0
+	 */
+	public static $url = '/administrator/index.php';
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     */
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 */
+	/**
+	 * @var string  $usernameField
+	 *
+	 * @since       2.0.0
+	 */
 
 	public static $usernameField = 'username';
+	/**
+	 * @var string  $passwordField
+	 *
+	 * @since       2.0.0
+	 */
 	public static $passwordField = 'passwd';
+
+	/**
+	 * @var string  $loginButton
+	 *
+	 * @since       2.0.0
+	 */
 	public static $loginButton   = 'button';
+
+	/**
+	 * @var string  $form
+	 *
+	 * @since       2.0.0
+	 */
 	public static $form          = ".//*[@id='form-login']";
+
+	/**
+	 * @var string  $loginArea
+	 *
+	 * @since       2.0.0
+	 */
 	public static $loginArea     = ".//*/button[contains(., 'Log in')]";
 
 	/**
@@ -64,14 +95,19 @@ class Login
 	 * Helper method to login into backend and go to component BwPostman
 	 *
 	 * @param   array              $user           array of user name and password
+	 * @param	\AcceptanceTester 			   $I
 	 *
-	 * @return	object  $this
+	 * @return	void
 	 *
 	 * @since  2.0.0
 	 */
-	public function logIntoBackend($user)
+	public function logIntoBackend($user, \AcceptanceTester $I = null)
 	{
-		$I = $this->tester;
+		if (is_null($I))
+		{
+			$I = $this->tester;
+		}
+
 		$I->amOnPage(self::$url);
 		$I->fillField(self::$usernameField, $user['user']);
 		$I->fillField(self::$passwordField, $user['password']);
@@ -79,15 +115,15 @@ class Login
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$control_panel, Generals::$pageTitle);
 
-		return $this;
+		return;
 	}
 
 	/**
 	 * Method to logout from backend
 	 *
 	 * @param \AcceptanceTester $I
-     * @param $truncateSession
-	 * @return  object  $this
+	 * @param $truncateSession
+	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
@@ -102,10 +138,10 @@ class Login
 		$I->see(Generals::$login_txt, $loginArea);
 
 		if ($truncateSession)
-        {
-            $I->truncateSession();
-        }
+		{
+			$I->truncateSession();
+		}
 
-		return $this;
+		return;
 	}
 }

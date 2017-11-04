@@ -254,7 +254,7 @@
 		<exec command="docker-compose -f ${container_dir}/testers/bwpm-tester.yml up" passthru="true" />
 	</target>
 
-	<target name="remove_test_container" depends="remove_test_container"
+	<target name="remove_test_container" depends="start_test_container"
 	        description="remove test container">
 		<exec command="docker rm bwpm-tester" passthru="true" checkreturn="true"/>
 	</target>

@@ -157,7 +157,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
 		{
-            JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
@@ -189,7 +189,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
 		{
-            JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
@@ -212,7 +212,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
 		{
-            JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
@@ -235,7 +235,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function doRestore()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
@@ -273,12 +276,15 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			switch ($file['error'])
 			{
 				case '1':
-				case '2': $msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_SIZE');
-				break;
-				case '3': $msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_PART');
-				break;
-				case '4': $msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_FILE');
-				break;
+				case '2':
+					$msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_SIZE');
+					break;
+				case '3':
+					$msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_PART');
+					break;
+				case '4':
+					$msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_FILE');
+					break;
 			}
 
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);

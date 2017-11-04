@@ -27,8 +27,8 @@ namespace Page;
  */
 class Generals
 {
-    // include url of current page
-    public static $url          = '/administrator/index.php?option=com_bwpostman';
+	// include url of current page
+	public static $url          = '/administrator/index.php?option=com_bwpostman';
 	public static $archive_url  = '/administrator/index.php?option=com_bwpostman&view=archive&layout=newsletters';
 
 	public static $control_panel        = "Control Panel";
@@ -61,10 +61,10 @@ class Generals
 	public static $first_list_entry     = ".//*[@id='cb0']";
 
 	/*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
-     */
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 * public static $usernameField = '#username';
+	 * public static $formSubmitButton = "#mainForm input[type=submit]";
+	 */
 
 	public static $pageTitle        = 'h1.page-title';
 	public static $alert_header     = 'h4.alert-heading';
@@ -188,13 +188,13 @@ class Generals
 		'Delete'               => ".//*[@id='toolbar-delete']/button",
 		'Restore'              => ".//*[@id='toolbar-unarchive']/button",
 		'Enable'               => ".//*[@id='toolbar-publish']/button",
-        'Import'               => ".//*[@id='toolbar-download']/button",
-        'Export'               => ".//*[@id='toolbar-upload']/button",
-        'Batch'                => ".//*[@id='toolbar-batch']/button",
-        'Reset sending trials' => ".//*[@id='toolbar-unpublish']/button",
-        'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",
-        'Clear queue'          => ".//*[@id='toolbar-delete']/button",
-    );
+		'Import'               => ".//*[@id='toolbar-download']/button",
+		'Export'               => ".//*[@id='toolbar-upload']/button",
+		'Batch'                => ".//*[@id='toolbar-batch']/button",
+		'Reset sending trials' => ".//*[@id='toolbar-unpublish']/button",
+		'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",
+		'Clear queue'          => ".//*[@id='toolbar-delete']/button",
+	);
 
 	/**
 	 * Array of arrows to sort
@@ -302,16 +302,16 @@ class Generals
 	public static $page_2               = ".//*/div/ul/li/a[contains(text(), '2')]";
 	public static $page_3               = ".//*/div/ul/li/a[contains(text(), '3')]";
 
-    public static $last_page_identifier = ".//*/ul[contains(@class, 'pagination-list')]/li[contains(@class, 'active')]/span";
+	public static $last_page_identifier = ".//*/ul[contains(@class, 'pagination-list')]/li[contains(@class, 'active')]/span";
 
 
-    // buttons
+	// buttons
 	public static $button_red   = 'btn active btn-danger';
 	public static $button_green = 'btn active btn-success';
 	public static $button_grey  = 'btn';
 
 	// General error messages
-    public static $msg_edit_no_permission   = "No permission to edit this item!";
+	public static $msg_edit_no_permission   = "No permission to edit this item!";
 
 	/**
 	 * Variables for selecting mailinglists
@@ -328,20 +328,20 @@ class Generals
 
 
 	/**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: Page\Edit::route('/123-post');
-     *
-     * @param   string  $param  page to route to
-     *
-     * @return  string  new url
+	 * Basic route example for your current URL
+	 * You can append any additional parameter to URL
+	 * and use it in tests like: Page\Edit::route('/123-post');
+	 *
+	 * @param   string  $param  page to route to
+	 *
+	 * @return  string  new url
 	 *
 	 * @since   2.0.0
-     */
-    public static function route($param)
-    {
-        return static::$url.$param;
-    }
+	 */
+	public static function route($param)
+	{
+		return static::$url . $param;
+	}
 
 	/**
 	 * Method to get install file name
@@ -362,9 +362,8 @@ class Generals
 	 *
 	 * @since  2.0.0
 	 */
-	public static function setComponentOptions ($options)
+	public static function setComponentOptions($options)
 	{
-//		$Helper = new Helper();
 		self::$com_options = $options;
 	}
 

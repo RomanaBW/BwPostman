@@ -22,9 +22,12 @@ modules:
       WebDriver:
         url: http://@BW_TEST_URL@
 
-        window_size: 1440x900
         browser: chrome
         port: 4445
+        capabilities:
+            chromeOptions:
+                args: ["--no-sandbox", "--window-size=1440,900"]
+
 
         connection_timeout: 60
         restart: false

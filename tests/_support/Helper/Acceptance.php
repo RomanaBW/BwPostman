@@ -1228,7 +1228,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   string      $extension      the extension to set the option for
 	 * @param   string      $option         the option to update
-	 * @param   string      $value          the new value for this option
+	 * @param   mixed       $value          the new value for this option
 	 *
 	 * @since   2.0.0
 	 */
@@ -1440,7 +1440,7 @@ class Acceptance extends Codeception\Module
 	 * Method to set delete records in specified table
 	 *
 	 * @param string    $table
-	 * @param array     $condition
+	 * @param mixed     $condition
 	 *
 	 * @return  void
 	 *

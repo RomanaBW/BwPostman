@@ -135,6 +135,7 @@ class NewsletterEditPage
 	public static $legend_general       = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/legend";
 	public static $legend_templates     = ".//*[@id='adminForm']/div[3]/fieldset[1]/legend";
 	public static $legend_recipients    = ".//*[@id='recipients']/div/div[1]/div/fieldset/legend";
+	public static $usergroup_recipients = ".//*[@id='recipients']/div/div[2]/div/fieldset/div[24]/div/label";
 	public static $legend_content       = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/legend";
 
 	public static $required_from_name   = "Field required: Sender's name";
@@ -346,13 +347,14 @@ class NewsletterEditPage
 	 */
 	public static function selectRecipients(\AcceptanceTester $I, $toUsergroup = false)
 	{
-		$I->scrollTo(self::$legend_recipients);
 		if (!$toUsergroup)
         {
+			$I->scrollTo(self::$legend_recipients);
             $I->click(sprintf(Generals::$mls_accessible, 2));
         }
         else
         {
+			$I->scrollTo(self::$usergroup_recipients, 0, -100);
             $I->click(Generals::$mls_usergroup);
         }
 //		$I->click(sprintf(Generals::$mls_nonaccessible, 3));

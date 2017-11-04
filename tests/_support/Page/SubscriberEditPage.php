@@ -26,15 +26,16 @@ use Page\SubscriberManagerPage as SubManage;
  */
 class SubscriberEditPage
 {
-    // include url of current page
-    public static $url = 'administrator/index.php?option=com_bwpostman&view=subscriber&layout=edit';
+	// include url of current page
+	public static $url = 'administrator/index.php?option=com_bwpostman&view=subscriber&layout=edit';
 
-    /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     *
-     * @since   2.0.0
-     */
+	/**
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 *
+	 * @since   2.0.0
+	 */
 
+	public static $edit_form	= ".//*[@id='adminForm']/div[1]/fieldset/legend";
 	public static $firstname    = ".//*[@id='jform_firstname']";
 	public static $name         = ".//*[@id='jform_name']";
 	public static $email        = ".//*[@id='jform_email']";
@@ -118,14 +119,14 @@ class SubscriberEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function _CreateSubscriberWithoutCleanup(\AcceptanceTester $I)
+	public static function CreateSubscriberWithoutCleanup(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create Subscriber without cleanup");
 		$I->amOnPage(SubManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		self::_fillFormSimple($I);
+		self::fillFormSimple($I);
 
 		$I->click(self::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -142,7 +143,7 @@ class SubscriberEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function _fillFormSimple(\AcceptanceTester $I)
+	public static function fillFormSimple(\AcceptanceTester $I)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
@@ -175,34 +176,35 @@ class SubscriberEditPage
 			$I->fillField(self::$special, self::$field_special);
 		}
 
-        $I->clickAndWait(self::$confirm, 1);
-        $I->clickAndWait(self::$confirmed, 1);
+		$I->clickAndWait(self::$confirm, 1);
+		$I->clickAndWait(self::$confirmed, 1);
 
 		$I->click(sprintf(self::$mls_accessible, 2));
 		$I->click(sprintf(self::$mls_nonaccessible, 3));
 		$I->scrollTo(self::$mls_internal_label, 0, -100);
 		$I->click(sprintf(self::$mls_internal, 4));
+		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 	}
 
-    /**
-     * @param \AcceptanceTester $I
-     *
-     * @return array
-     *
-     * @since version
-     */
-    public static function prepareDeleteArray(\AcceptanceTester $I)
-    {
-        $edit_arc_del_array                      = self::$arc_del_array;
-        $edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 4);
+	/**
+	 * @param \AcceptanceTester $I
+	 *
+	 * @return array
+	 *
+	 * @since version
+	 */
+	public static function prepareDeleteArray(\AcceptanceTester $I)
+	{
+		$edit_arc_del_array                      = self::$arc_del_array;
+		$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 4);
 
-        $options = $I->getManifestOptions('com_bwpostman');
+		$options = $I->getManifestOptions('com_bwpostman');
 
-        if ($options->show_gender)
-        {
-            $edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 5);
-        }
+		if ($options->show_gender)
+		{
+			$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 5);
+		}
 
-        return $edit_arc_del_array;
-    }
+		return $edit_arc_del_array;
+	}
 }

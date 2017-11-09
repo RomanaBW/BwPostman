@@ -33,6 +33,6 @@ Do you want to improve BwPostman?
 
 Copyright:
 ---------------------
-* Copyright (C) 2013 - 2015 Boldt Webservice <forum@boldt-webservice.de>. All rights reserved.
+* Copyright (C) 2013 - 2017 Boldt Webservice <forum@boldt-webservice.de>. All rights reserved.
 * Distributed under the GNU General Public License version 3 or later
 * See [Licenses details](http://www.boldt-webservice.de/en/forum-en/bwpostman-manual/73-bwpostman-manual-appendix-licence.html)

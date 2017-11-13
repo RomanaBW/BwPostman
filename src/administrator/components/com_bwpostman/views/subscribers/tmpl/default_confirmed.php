@@ -36,6 +36,8 @@ $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+
+$colNum = 8;
 ?>
 
 <table id="main-table" class="adminlist table table-striped">
@@ -75,7 +77,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php endif; ?>
 					</td>
 					<td><?php echo $item->firstname; ?></td>
-					<?php if($this->params->get('show_gender')) { ?>
+					<?php if($this->params->get('show_gender')) {
+						$colNum = 9;
+						?>
 						<td>
 							<?php if ($item->gender === '1')
 							{
@@ -104,7 +108,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		{
     	// if no data ?>
 			<tr class="row1">
-				<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+				<td colspan="<?php echo $colNum; ?>"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 			</tr><?php
 		}
 	?>

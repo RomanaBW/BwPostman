@@ -119,7 +119,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 												<th width="200"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?></th>
 												<th width="150"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?></th>
 												<th><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?></th>
-												<th width="100"><?php echo JHtml::_('searchtools.sort',  'State', 'a.status', $listDirn, $listOrder); ?></th>
+												<th width="100"><?php echo JHtml::_('searchtools.sort',  'JSTATUS', 'a.status', $listDirn, $listOrder); ?></th>
 												<th width="100"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?></th>
 												<th width="100"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?></th>
 												<th width="120"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>

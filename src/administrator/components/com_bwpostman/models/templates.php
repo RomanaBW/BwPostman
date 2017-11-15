@@ -387,7 +387,7 @@ class BwPostmanModelTemplates extends JModelList
 		{
 			if ($format == '1')
 			{
-				$this->_query->where($this->_db->quoteName('a.tpl_id') , ' < 998');
+				$this->_query->where($this->_db->quoteName('a.tpl_id') . ' < 998');
 			}
 			if ($format == '2')
 			{

@@ -269,7 +269,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								<tr>
 									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM') . ': '; ?></td>
 									<td>
-										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_html_templates']; ?></a></b>
 									</td>
 								</tr>
 							<?php }
@@ -278,7 +278,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								<tr>
 									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM') . ': '; ?></td>
 									<td>
-										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_ml']; ?></a></b>
+										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_text_templates']; ?></a></b>
 									</td>
 								</tr>
 							<?php } ?>

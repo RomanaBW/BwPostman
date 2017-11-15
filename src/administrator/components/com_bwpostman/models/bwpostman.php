@@ -329,7 +329,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$_db->setQuery($query);
 		try
 		{
-			$_general['arc_html_templates'] = $_db->loadResult();
+			$_archive['arc_html_templates'] = $_db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -346,7 +346,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$_db->setQuery($query);
 		try
 		{
-			$_general['arc_text_templates'] = $_db->loadResult();
+			$_archive['arc_text_templates'] = $_db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{

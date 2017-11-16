@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL and Helper object class
 jimport('joomla.application.component.model');
@@ -35,7 +35,7 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 // Require some classes
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman maintenance page model
@@ -48,6 +48,21 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException
  */
 class BwPostmanModelMaintenance extends JModelLegacy
 {
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	protected $tableNames = array();
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	protected $assetTargetTables  = array('campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
+
 	/**
 	 * Constructor
 	 *
@@ -97,34 +112,45 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path) . '</p>';
+					echo '<p class="bw_tablecheck_error">'
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path)
+						. '</p>';
 
 					return false;
 				}
 				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path));
 			}
+
 			$handle = fopen($file_name, 'wb');
 			if ($handle === false)
 			{
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path) . '</p>';
+					echo '<p class="bw_tablecheck_error">'
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path)
+						. '</p>';
 
 					return false;
 				}
+
 				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path));
 			}
 
 			// get all names of installed BwPostman tables
 			$tableNames = $this->getTableNamesFromDB();
+			$this->tableNames = $tableNames;
+
 			if ($tableNames === null)
 			{
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path) . '</p>';
+					echo '<p class="bw_tablecheck_error">'
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path)
+						. '</p>';
 
 					return false;
 				}
+
 				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES'));
 			}
 
@@ -136,10 +162,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER', $path) . '</p>';
+					echo '<p class="bw_tablecheck_error">'
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER', $path)
+						. '</p>';
 
 					return false;
 				}
+
 				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER'));
 			}
 
@@ -157,19 +186,25 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					{
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name) . '</p>';
+							echo '<p class="bw_tablecheck_error">'
+								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name)
+								. '</p>';
 
 							return false;
 						}
+
 						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name));
 					}
 					else
 					{
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName) . '</p>';
+							echo '<p class="bw_tablecheck_ok">'
+								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName)
+								. '</p>';
 						}
 					}
+
 					$file_data = array();
 
 					$res = $this->buildXmlData($tableName, $handle);        // write table data
@@ -177,12 +212,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					{
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name) . '</p>';
+							echo '<p class="bw_tablecheck_error">'
+								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name)
+								. '</p>';
 
 							return false;
 						}
+
 						break;
 					}
+
 					$file_data   = array();
 					$file_data[] = $this->buildXmlAssets($tableName);                // write data assets
 					$file_data[] = "\t\t</tables>\n";                                // set XML tables section
@@ -190,12 +229,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					{
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $file_name) . '</p>';
+							echo '<p class="bw_tablecheck_error">'
+								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $file_name)
+								. '</p>';
 
 							return false;
 						}
+
 						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $file_name));
 					}
+
 					$file_data = array();
 				}
 			}
@@ -207,19 +250,25 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $file_name) . '</p>';
+					echo '<p class="bw_tablecheck_ok">'
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $file_name)
+						. '</p>';
 				}
 			}
 			else
 			{
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name) . '</p>';
+					echo '<p class="bw_tablecheck_error">'
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name)
+						. '</p>';
 
 					return false;
 				}
+
 				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name));
 			}
+
 			fclose($handle);
 		}
 		catch (BwException $e)
@@ -318,18 +367,36 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		// write component asset
-		$buffer[] = "\t\t\t" . '<component_assets>';
-		$buffer[] = "\t\t\t\t" . '<dataset>';
-		if (is_array($data))
+		// Get assets of sections
+		foreach ($this->tableNames as $table)
 		{
-			foreach ($data[0] as $key => $value)
+			$table_name_raw = $this->getRawTableName($table);
+
+			if (in_array($table_name_raw, $this->assetTargetTables))
 			{
-				$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
-				$buffer[]      = "\t\t\t\t\t<" . $key . ">" . $insert_string . "</" . $key . ">";
+				$assetData = $this->getTableAssetData($table_name_raw, '');
+
+				$data[] = $assetData[0];
 			}
 		}
-		$buffer[] = "\t\t\t\t" . '</dataset>';
+
+		// write component asset
+		// @ToDo: Get assets of sections (Assets without ID)
+		$buffer[] = "\t\t\t" . '<component_assets>';
+
+		foreach ($data as $datum)
+		{
+			$buffer[] = "\t\t\t\t" . '<dataset>';
+			if (is_array($datum))
+			{
+				foreach ($datum as $key => $value)
+				{
+					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
+					$buffer[]      = "\t\t\t\t\t<" . $key . ">" . $insert_string . "</" . $key . ">";
+				}
+			}
+			$buffer[] = "\t\t\t\t" . '</dataset>';
+		}
 		$buffer[] = "\t\t\t</component_assets>";
 
 		// process user groups
@@ -521,7 +588,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (false === $fh = fopen($filename, 'r'))
 			{ // File cannot be opened
-				echo '<p class="bw_tablecheck_error">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OPEN_INSTALL_FILE_ERROR', $filename) . '</p>';
+				echo '<p class="bw_tablecheck_error">'
+					. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OPEN_INSTALL_FILE_ERROR', $filename)
+					. '</p>';
 				return false;
 			}
 			else
@@ -1165,7 +1234,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		$_db            = JFactory::getDbo();
 		// set tables that has column asset_id
-		$tablesToCheck = array('#__bwpostman_campaigns', '#__bwpostman_mailinglists', '#__bwpostman_newsletters', '#__bwpostman_subscribers', '#__bwpostman_templates');
+		$tablesToCheck = array(
+			'#__bwpostman_campaigns',
+			'#__bwpostman_mailinglists',
+			'#__bwpostman_newsletters',
+			'#__bwpostman_subscribers',
+			'#__bwpostman_templates'
+		);
 		$asset_loop     = 0;
 
 
@@ -1407,7 +1482,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @param   string $tableName name of table to build structure for
 	 *
-	 * @return    array    An array of XML lines (strings).
+	 * @return    string    An couple of XML lines (strings).
 	 *
 	 * @since    1.0.1
 	 */
@@ -1574,37 +1649,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function buildXmlAssets($tableName)
 	{
-		$target_tables  = array('campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
-		$start          = strpos($tableName, '_', 3);
-		$table_name_raw = '';
-		if ($start !== false)
+		$table_name_raw = $this->getRawTableName($tableName);
+
+		if (in_array($table_name_raw, $this->assetTargetTables))
 		{
-			$table_name_raw = substr($tableName, $start + 1);
-		}
-		if (in_array($table_name_raw, $target_tables))
-		{
-			$asset_name = '%com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1) . '%';
 			$buffer     = array();
-			$data       = array();
 
-			$_db   = JFactory::getDbo();
-			$query = $_db->getQuery(true);
-
-			// Get the assets for this table from database
-			$query->select('*');
-			$query->from($_db->quoteName('#__assets'));
-			$query->where($_db->quoteName('name') . ' LIKE ' . $_db->quote($asset_name));
-
-			$_db->setQuery($query);
-
-			try
-			{
-				$data = $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			$data = $this->getTableAssetData($table_name_raw);
 
 			$buffer[] = "\t\t\t" . '<table_assets table="' . $tableName . '">';
 			if (is_array($data))
@@ -2148,12 +2199,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			if (property_exists($xml->database->Generals, 'component_assets'))
 			{
-				if (property_exists($xml->database->Generals->component_assets, 'dataset'))
+				$comAssetsXml = get_object_vars($xml->database->Generals->component_assets);
+				if (count($comAssetsXml))
 				{
-					$com_assets[] = get_object_vars($xml->database->Generals->component_assets->dataset);
+					foreach ($comAssetsXml['dataset'] as $item)
+					{
+						$com_assets[] = get_object_vars($item);
+					}
 				}
 			}
 		}
+
 		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
 		// Get backed up user groups
@@ -2397,6 +2453,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * repairs lft and rgt values in asset table, updates component asset
 	 *
+	 * @param $onlyHeal boolean
+	 *
 	 * @throws  BwException
 	 *
 	 * @since    1.3.0
@@ -2410,7 +2468,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query      = $_db->getQuery(true);
 
 			// first get lft from main asset com_bwpostman
-			$base_asset = $this->_getBaseAsset();
+			$base_asset = $this->_getBaseAsset('component', true);
 			$gap        = $base_asset['rgt'] - $base_asset['lft'] - 1;
 
 			// second set rgt values from all assets above lft of BwPostman
@@ -2456,7 +2514,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS') . '</p><br />';
 				$base_asset['rgt'] = $base_asset['lft'] + 1;
 			}
-			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
+			// @ToDo: Is there any place where I can cleanup state? This one is really bad, it cleans to early
+//			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
 		}
 		catch (RuntimeException $e)
 		{
@@ -2468,6 +2527,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Method to get the base asset of BwPostman
 	 *
 	 * @param   string  $table
+	 * @param   boolean $onlyHeal
 	 *
 	 * @return array    $base_asset     base asset of BwPostman
 	 *
@@ -2475,41 +2535,76 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 */
-	protected function _getBaseAsset($table = 'component')
+	protected function _getBaseAsset($table = 'component', $onlyHeal = false)
 	{
 		try
 		{
-			$_db   = JFactory::getDbo();
-			$query = $_db->getQuery(true);
+			$stateAssetsRaw = '';
 
-			$query->select('*');
-			$query->from($_db->quoteName('#__assets'));
-
-			switch ($table)
+			if (!$onlyHeal)
 			{
-				case '#__bwpostman_campaigns':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.campaign'));
-					break;
-				case '#__bwpostman_mailinglists':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.mailinglist'));
-					break;
-				case '#__bwpostman_newsletters':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.newsletter'));
-					break;
-				case '#__bwpostman_subscribers':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.subscriber'));
-					break;
-				case '#__bwpostman_templates':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.template'));
-					break;
-				case 'component':
-				default:
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman'));
-					break;
+				$stateAssetsRaw = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', '');
 			}
 
-			$_db->setQuery($query);
-			$base_asset = $_db->loadAssoc();
+			if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
+			{
+				$stateAssetsAssoc = array();
+
+				foreach ($stateAssetsRaw as $asset)
+				{
+					$tableName = 'component';
+
+					if (key_exists('title', $asset))
+					{
+						$tableName = strtolower(substr($asset['title'], strrpos($asset['title'], ' ') + 1));
+					}
+					$stateAssetsAssoc[$tableName] = $asset;
+				}
+
+				$shortTableName = $table;
+
+				if ($table != 'component')
+				{
+					$shortTableName = substr($table, strrpos($table, '_') + 1);
+				}
+
+				$base_asset = $stateAssetsAssoc[$shortTableName];
+			}
+			else
+			{
+				$_db   = JFactory::getDbo();
+				$query = $_db->getQuery(true);
+
+				$query->select('*');
+				$query->from($_db->quoteName('#__assets'));
+
+				switch ($table)
+				{
+					case '#__bwpostman_campaigns':
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.campaign'));
+						break;
+					case '#__bwpostman_mailinglists':
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.mailinglist'));
+						break;
+					case '#__bwpostman_newsletters':
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.newsletter'));
+						break;
+					case '#__bwpostman_subscribers':
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.subscriber'));
+						break;
+					case '#__bwpostman_templates':
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.template'));
+						break;
+					case 'component':
+					default:
+						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman'));
+						break;
+				}
+
+				$_db->setQuery($query);
+
+				$base_asset = $_db->loadAssoc();
+			}
 
 			return $base_asset;
 
@@ -2535,7 +2630,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		try
 		{
-			$com_asset   = $this->_getBaseAsset('component');
+			$com_asset   = $this->_getBaseAsset($table);
 			$_db   = JFactory::getDbo();
 			$query = $_db->getQuery(true);
 
@@ -2566,6 +2661,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$asset_name  = 'com_bwpostman.campaign';
 						$asset_title = 'BwPostman Campaigns';
 						$asset_rules = '{"bwpm.campaign.edit":{"6":1,"4":1},"bwpm.campaign.edit.state":{"6":1,"5":1},"bwpm.campaign.edit.own":{"6":1,"3":1},"bwpm.campaign.archive":[],"bwpm.campaign.restore":[],"bwpm.campaign.delete":{"6":1}}';
+
 					break;
 				case '#__bwpostman_mailinglists':
 						$asset_name  = 'com_bwpostman.mailinglist';
@@ -2593,6 +2689,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$asset_title = 'BwPostman Component';
 						$asset_rules = $com_asset['rules'];
 					break;
+			}
+
+			if (key_exists('rules', $com_asset))
+			{
+				$asset_rules = $com_asset['rules'];
 			}
 
 			$query->columns(array(
@@ -3222,5 +3323,65 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$tables[]   = $prefix . 'assets';
 
 		return $tables;
+	}
+
+	/**
+	 * @param $table_name_raw
+	 * @param $dot
+	 *
+	 * @return mixed
+	 *
+	 * @since 2.0.0
+	 */
+	private function getTableAssetData($table_name_raw, $dot = '.')
+	{
+		$endString = $dot;
+
+		if ($dot == '.')
+		{
+			$endString .= '%';
+		}
+
+		$asset_name = '%com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1) . $endString;
+
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
+
+		// Get the assets for this table from database
+		$query->select('*');
+		$query->from($_db->quoteName('#__assets'));
+		$query->where($_db->quoteName('name') . ' LIKE ' . $_db->quote($asset_name));
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$data = $_db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $data;
+	}
+
+	/**
+	 * @param $tableName
+	 *
+	 * @return bool|string
+	 *
+	 * @since 2.0.0
+	 */
+	private function getRawTableName($tableName)
+	{
+		$start          = strrpos($tableName, '_');
+		$table_name_raw = '';
+		if ($start !== false)
+		{
+			$table_name_raw = substr($tableName, $start + 1);
+		}
+
+		return $table_name_raw;
 	}
 }

@@ -225,7 +225,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step1':
 					try
 					{
-						if(BWPOSTMAN_LOG_MEM) $mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
+						if(BWPOSTMAN_LOG_MEM) {
+							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
+						}
+
 						// parse table data
 						$table_names = $model->parseTablesData($file);
 
@@ -239,7 +242,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$session->set('trestore_tablenames', $table_names);
 						$step = "2";
 
-						if(BWPOSTMAN_LOG_MEM) $logger->addEntry(new JLogEntry(sprintf('Speicherverbrauch in Schritt 3: %01.3f MB', (memory_get_usage(true) / (1024.0 * 1024.0) - $mem0))));
+						if(BWPOSTMAN_LOG_MEM) {
+							$logger->addEntry(new JLogEntry(sprintf('Speicherverbrauch in Schritt 3: %01.3f MB',
+								(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0))));
+						}
 					}
 					catch (BwException $e)
 					{
@@ -373,6 +379,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					break;
 
 				case 'step7':
+					JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
 					// get needed tables from installation file
 					$this->_getNeededTables($session);
 					$step = "8";

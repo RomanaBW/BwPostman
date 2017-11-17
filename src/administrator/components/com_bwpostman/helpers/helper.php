@@ -141,7 +141,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canAdmin())
+		if (self::canView('maintenance'))
 		{
 			JHtmlSidebar::addEntry
 			(

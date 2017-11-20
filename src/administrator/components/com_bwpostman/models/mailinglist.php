@@ -186,6 +186,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		{
 			return false;
 		}
+
 		$jinput = JFactory::getApplication()->input;
 
 		// The front end calls this model and uses a_id to avoid id clashes so we need to check for that first.

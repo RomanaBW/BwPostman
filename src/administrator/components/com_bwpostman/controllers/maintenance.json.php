@@ -638,6 +638,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			echo '<p class="bw_tablecheck_warn">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN') . '</p>';
 			$alertClass = 'warning';
 		}
+
 		echo '<br />';
 		// check user IDs in subscriber Table
 		echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_USER_IDS') . '</h4>';

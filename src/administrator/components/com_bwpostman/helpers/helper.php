@@ -74,8 +74,7 @@ abstract class BwPostmanHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		JHtmlSidebar::addEntry
-		(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY'),
 			'index.php?option=com_bwpostman',
 			$vName == 'bwpostman'
@@ -83,8 +82,7 @@ abstract class BwPostmanHelper
 
 		if (self::canView('newsletter'))
 		{
-			JHtmlSidebar::addEntry
-			(
+			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
 				'index.php?option=com_bwpostman&view=newsletters',
 				$vName == 'newsletters'
@@ -93,8 +91,7 @@ abstract class BwPostmanHelper
 
 		if (self::canView('subscriber'))
 		{
-			JHtmlSidebar::addEntry
-			(
+			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
 				'index.php?option=com_bwpostman&view=subscribers',
 				$vName == 'subscribers'
@@ -103,8 +100,7 @@ abstract class BwPostmanHelper
 
 		if (self::canView('campaign'))
 		{
-			JHtmlSidebar::addEntry
-			(
+			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
 				'index.php?option=com_bwpostman&view=campaigns',
 				$vName == 'campaigns'
@@ -113,8 +109,7 @@ abstract class BwPostmanHelper
 
 		if (self::canView('mailinglist'))
 		{
-			JHtmlSidebar::addEntry
-			(
+			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
 				'index.php?option=com_bwpostman&view=mailinglists',
 				$vName == 'mailinglists'
@@ -123,8 +118,7 @@ abstract class BwPostmanHelper
 
 		if (self::canView('template'))
 		{
-			JHtmlSidebar::addEntry
-			(
+			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
 				'index.php?option=com_bwpostman&view=templates',
 				$vName == 'templates'
@@ -133,8 +127,7 @@ abstract class BwPostmanHelper
 
 		if (self::canView('archive'))
 		{
-			JHtmlSidebar::addEntry
-			(
+			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
 				'index.php?option=com_bwpostman&view=archive&layout=newsletters',
 				$vName == 'archive'
@@ -143,8 +136,7 @@ abstract class BwPostmanHelper
 
 		if (self::canView('maintenance'))
 		{
-			JHtmlSidebar::addEntry
-			(
+			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
 				'index.php?option=com_bwpostman&view=maintenance',
 				$vName == 'maintenance'
@@ -194,7 +186,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	static public function replaceLinks(&$text)
+	public static function replaceLinks(&$text)
 	{
 		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
 		$text       = preg_replace($search_str, ' ${1}="' . JUri::root() . '${2}"', $text);

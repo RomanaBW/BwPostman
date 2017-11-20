@@ -150,12 +150,11 @@
 			type="hidden"
 		/>
 
- 		<field
+		<field
 			name="rules"
 			type="rules"
 			label=""
 			translate_label="false"
-			class="inputbox"
 			filter="rules"
 			component="com_bwpostman"
 			section="mailinglist">

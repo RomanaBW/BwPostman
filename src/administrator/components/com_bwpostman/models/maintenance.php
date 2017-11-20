@@ -1249,9 +1249,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			$base_asset     = $this->_getBaseAsset($table);
 			if (!is_array($base_asset) || !key_exists('rules', $base_asset))
+
 			{
 				$base_asset = $this->_insertBaseAsset($table);
 			}
+
 			$curr_asset_id  = $base_asset['rgt'];
 			$items          = array();
 
@@ -1332,6 +1334,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$count = 0;
 						ini_set('max_execution_time', ini_get('max_execution_time'));
 					}
+
 					$values = array();
 
 					// collect data sets until loop max
@@ -1363,7 +1366,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 				} // end foreach table assets
 
-				// import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set, but in empty tables there is nothing to update)
+				/*
+				 * Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update,
+				 * if ID is set, but in empty tables there is nothing to update)
+				 */
 				$s     = 0;
 				$count = 0;
 
@@ -1397,6 +1403,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							$count = 0;
 							ini_set('max_execution_time', ini_get('max_execution_time'));
 						}
+
 						$values = array();
 
 						// collect data sets until loop max
@@ -1404,6 +1411,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						{
 							$values[] = $_db->quote($v);
 						}
+
 						$dataset[] = '(' . implode(',', $values) . ')';
 						$s++;
 
@@ -1419,10 +1427,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						}
 					} // end foreach table items
 				} // endif data sets exists
+			}
 
-			}
 			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $table) . '</p>';
-			}
+		}
+
 		return true;
 	}
 
@@ -2181,12 +2190,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$generals   = array();
 		if (property_exists($xml->database->Generals, 'BwPostmanVersion'))
 		{
-			$generals['BwPostmanVersion'] = (string)$xml->database->Generals->BwPostmanVersion;
+			$generals['BwPostmanVersion'] = (string) $xml->database->Generals->BwPostmanVersion;
 		}
+
 		if (property_exists($xml->database->Generals, 'SaveDate'))
 		{
-			$generals['SaveDate'] = (string)$xml->database->Generals->SaveDate;
+			$generals['SaveDate'] = (string) $xml->database->Generals->SaveDate;
 		}
+
 		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.generals', $generals);
 
 		// Get component asset
@@ -2225,8 +2236,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 			}
 		}
-		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
 
+		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
 
 		// Get all tables from the xml file converted to arrays recursively, results in an array/list of table-arrays
 		echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_DATA') . '</h4>';
@@ -2235,6 +2246,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			$x_tables[] = $table;
 		}
+
 		unset($xml);
 		unset($table);
 
@@ -2255,6 +2267,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			$adjust_prefix = true;
 		}
+
 		unset($sample_table);
 		unset($sample_query);
 
@@ -2264,6 +2277,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			$table_names[] = (string) $table->table_structure->table_name->name;
 		}
+
 		unset($table);
 
 		// get buffer file
@@ -2514,8 +2528,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS') . '</p><br />';
 				$base_asset['rgt'] = $base_asset['lft'] + 1;
 			}
-			// @ToDo: Is there any place where I can cleanup state? This one is really bad, it cleans to early
-//			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
 		}
 		catch (RuntimeException $e)
 		{
@@ -2874,55 +2886,76 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	protected function _writeLoopAssets($dataset, $s, $base_asset, &$asset_transform)
 	{
+		$log_options = array('test' => 'testtext');
+		$logger      = new BwLogger($log_options);
+
 		try
 		{
 			$_db            = JFactory::getDbo();
-			$asset_colnames = array_keys($_db->getTableColumns('#__assets'));
 
+			$asset_colnames = array_keys($_db->getTableColumns('#__assets'));
 
 			$insert_data = implode(',', $dataset);
 			$insert_data = substr($insert_data, 1, (strlen($insert_data) - 2));
-			$query       = $_db->getQuery(true);
 
-			$query->insert($_db->quoteName('#__assets'));
-			$query->columns($asset_colnames);
-			$query->values($insert_data);
-			$_db->setQuery($query);
-			if (!$_db->execute())
-			{
-				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR'));
-			}
-			// calculate inserted ids
-			$last_id  = $_db->insertid();
-			$num_rows = count($dataset);
-			for ($i = 0; $i < $num_rows; $i++)
-			{
-				$asset_transform[$s - ($num_rows - $i)]['new'] = $last_id + $i;
-			}
+			$insertDataArray = explode(',', $insert_data);
 
-			// set rgt values from all assets since rgt of table asset
-			$query = $_db->getQuery(true);
-			$query->update($_db->quoteName('#__assets'));
-			$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " + " . ($num_rows * 2) . ") ");
-			$query->where($_db->quoteName('rgt') . ' >= ' . $base_asset['rgt']);
-			$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
+			$assetName      = str_replace("'", "", $insertDataArray[5]);
+
+			$query     = $_db->getQuery(true);
+
+			$query->select($_db->quoteName('id'));
+			$query->from($_db->quoteName('#__assets'));
+			$query->where($_db->quoteName('name') . ' = ' . $_db->Quote($assetName));
 
 			$_db->setQuery($query);
-			$set_asset_right = $_db->execute();
 
-			// now set lft values from all assets above lft of BwPostman
-			$query = $_db->getQuery(true);
-			$query->update($_db->quoteName('#__assets'));
-			$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " + " . ($num_rows * 2) . ")");
-			$query->where($_db->quoteName('lft') . ' > ' . $base_asset['rgt']);
-			$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
+			$assetId = $_db->loadResult();
 
-			$_db->setQuery($query);
-			$set_asset_left = $_db->execute();
-
-			if (!$set_asset_left || !$set_asset_right)
+			if ($assetId !== null)
 			{
-				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR'));
+				$query       = $_db->getQuery(true);
+				$query->insert($_db->quoteName('#__assets'));
+				$query->columns($asset_colnames);
+				$query->values($insert_data);
+				$_db->setQuery($query);
+				$logger->addEntry(new JLogEntry('Write Loop Assets Query 1: ' . (string) $query));
+				if (!$_db->execute())
+				{
+					throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR'));
+				}
+				// calculate inserted ids
+				$last_id  = $_db->insertid();
+				$num_rows = count($dataset);
+				for ($i = 0; $i < $num_rows; $i++)
+				{
+					$asset_transform[$s - ($num_rows - $i)]['new'] = $last_id + $i;
+				}
+
+				// set rgt values from all assets since rgt of table asset
+				$query = $_db->getQuery(true);
+				$query->update($_db->quoteName('#__assets'));
+				$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " + " . ($num_rows * 2) . ") ");
+				$query->where($_db->quoteName('rgt') . ' >= ' . $base_asset['rgt']);
+				$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
+
+				$_db->setQuery($query);
+				$set_asset_right = $_db->execute();
+
+				// now set lft values from all assets above lft of BwPostman
+				$query = $_db->getQuery(true);
+				$query->update($_db->quoteName('#__assets'));
+				$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " + " . ($num_rows * 2) . ")");
+				$query->where($_db->quoteName('lft') . ' > ' . $base_asset['rgt']);
+				$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
+
+				$_db->setQuery($query);
+				$set_asset_left = $_db->execute();
+
+				if (!$set_asset_left || !$set_asset_right)
+				{
+					throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR'));
+				}
 			}
 
 		}

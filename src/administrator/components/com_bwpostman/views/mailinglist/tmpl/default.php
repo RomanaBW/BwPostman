@@ -71,14 +71,15 @@ JHtml::_('formbehavior.chosen', 'select');
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
  		}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
 				<legend><?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id); ?></legend>
 				<div class="well well-small">
 					<div class="width-60 fltlft span8 control-group">
 						<ul class="adminformlist unstyled">
-							<?php if (isset($this->item->err_code)) if (($this->item->err_code == 201) || ($this->item->err_code == 203)) // echo "class=\"invalid\""; ?>
+							<?php if (isset($this->item->err_code)) if (($this->item->err_code == 201) || ($this->item->err_code == 203)) ?>
 							<li>
 								<?php echo $this->form->getLabel('title'); ?>
 								<div class="controls"><?php echo $this->form->getInput('title'); ?></div>
@@ -149,12 +150,12 @@ JHtml::_('formbehavior.chosen', 'select');
 				<div class="fltlft">
 					<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 					<?php echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES'), 'access-rules'); ?>
-					<div class="well well-small">
+				<div class="well well-small">
 						<fieldset class="panelform">
 							<?php echo $this->form->getLabel('rules'); ?>
-							<?php echo $this->form->getInput('rules'); ?>
+							<?php echo $this->form->getInput('rules');  ?>
 						</fieldset>
-					</div>
+				</div>
 					<?php echo JHtml::_('sliders.end'); ?>
 				</div>
 			<?php endif ?>

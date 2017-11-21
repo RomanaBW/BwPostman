@@ -238,40 +238,9 @@ class BwPostmanTableMailinglists extends JTable
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
-		// Initialise variables.
-		$assetId = null;
-		$result  = 0;
-
-		// Build the query to get the asset id for the component.
-		$query = $this->_db->getQuery(true);
-		$query->select($this->_db->quoteName('id'));
-		$query->from($this->_db->quoteName('#__assets'));
-		$query->where($this->_db->quoteName('name') . " LIKE 'com_bwpostman'");
-
-		// Get the asset id from the database.
-		$this->_db->setQuery($query);
-		try
-		{
-			$result = $this->_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-		if ($result)
-		{
-			$assetId = (int) $result;
-		}
-
-		// Return the asset id.
-		if ($assetId)
-		{
-			return $assetId;
-		}
-		else
-		{
-			return parent::_getAssetParentId($table, $id);
-		}
+		$asset = JTable::getInstance('Asset');
+		$asset->loadByName('com_bwpostman');
+		return $asset->id;
 	}
 
 	/**

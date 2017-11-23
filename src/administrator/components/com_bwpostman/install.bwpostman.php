@@ -77,29 +77,36 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since       2.0.0
 	 */
-	private $all_bwpm_groups    = array('bwpm_usergroups'           => array('BwPostmanManager', 'BwPostmanPublisher', 'BwPostmanEditor'),
+	private $all_bwpm_groups    = array(
+									'bwpm_usergroups'           => array(
+										'BwPostmanManager',
+										'BwPostmanPublisher',
+										'BwPostmanEditor',
+									),
 									'mailinglist_usergroups'    => array(
 										'BwPostmanMailinglistAdmin',
 										'BwPostmanMailinglistPublisher',
-										'BwPostmanMailinglistEditor'
+										'BwPostmanMailinglistEditor',
 									),
 									'subscriber_usergroups'     => array(
 										'BwPostmanSubscriberAdmin',
 										'BwPostmanSubscriberPublisher',
-										'BwPostmanSubscriberEditor'
+										'BwPostmanSubscriberEditor',
 									),
 									'newsletter_usergroups'     => array(
 										'BwPostmanNewsletterAdmin',
 										'BwPostmanNewsletterPublisher',
-										'BwPostmanNewsletterEditor'
+										'BwPostmanNewsletterEditor',
 									),
 									'campaign_usergroups'       => array(
 										'BwPostmanCampaignAdmin',
-										'BwPostmanCampaignPublisher','BwPostmanCampaignEditor'
+										'BwPostmanCampaignPublisher',
+										'BwPostmanCampaignEditor',
 									),
 									'template_usergroups'       => array(
 										'BwPostmanTemplateAdmin',
-										'BwPostmanTemplatePublisher','BwPostmanTemplateEditor'
+										'BwPostmanTemplatePublisher',
+										'BwPostmanTemplateEditor',
 									),
 									);
 
@@ -303,7 +310,7 @@ class Com_BwPostmanInstallerScript
 		$m_params   = JComponentHelper::getParams('com_media');
 		$this->copyTemplateImagesToMedia($m_params);
 
-		// make new folder and copy template thumbnails to folder "images" if image_path is not "images"
+		// Make new folder and copy template thumbnails to folder "images" if image_path is not "images"
 		if ($m_params->get('image_path', 'images') != 'images')
 		{
 			$this->copyTemplateImagesToImages();
@@ -314,8 +321,29 @@ class Com_BwPostmanInstallerScript
 			// Set BwPostman default settings in the extensions table at install
 			$this->setDefaultParams();
 
-			// create sample user groups and access levels
+			// Create sample user groups and access levels
 			$this->createSampleUsergroups();
+
+			/*
+			 * Create base assets
+			 *
+			 */
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
+
+			// Insert component asset
+			// $maintenanceModel::insertBaseAsset();
+
+			// Insert section assets
+			$tableNames = $maintenanceModel::getTableNamesFromDB();
+			foreach ($tableNames as $table)
+			{
+				$hasAsset = $maintenanceModel::checkForAsset($table);
+				if ($hasAsset)
+				{
+					$maintenanceModel::insertBaseAsset($table);
+				}
+			}
 		}
 
 		// check if sample templates exits
@@ -416,8 +444,9 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
-
 		$this->deleteSampleUsergroups();
+
+//		$this->deleteAssets();
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
@@ -967,6 +996,24 @@ class Com_BwPostmanInstallerScript
 			echo $e->getMessage();
 			return false;
 		}
+	}
+
+	/**
+	 * Method to delete sample user groups and access levels
+	 *
+	 * @return boolean  true on success
+	 *
+	 * @since   2.0.0
+	 */
+	private function deleteAssets()
+	{
+		$assetTable = JTable::getInstance('Asset');
+
+		$componentAssetId = $assetTable->loadByName('com_bwpostman.campaign');
+dump($componentAssetId, 'ComponentAsset ID CAM');
+		$componentAssetId = $assetTable->loadByName('com_bwpostman.mailinglist');
+dump($componentAssetId, 'ComponentAsset ID ML');
+		// $assetTable->delete($componentAssetId);
 	}
 
 	/**

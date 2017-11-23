@@ -44,112 +44,112 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
 	 * @var int asset_id
 	 *
 	 * @since       1.0.1
 	 */
-	var $asset_id = null;
+	public $asset_id = null;
 
 	/**
 	 * @var string Mailinglist title
 	 *
 	 * @since       0.9.1
 	 */
-	var $title = null;
+	public $title = null;
 
 	/**
 	 * @var string Mailinglist description
 	 *
 	 * @since       0.9.1
 	 */
-	var $description = null;
+	public $description = null;
 
 	/**
 	 * @var int campaign ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $campaign_id = 0;
+	public $campaign_id = 0;
 
 	/**
 	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
 	 *
 	 * @since       0.9.1
 	 */
-	var $access = 1;
+	public $access = 1;
 
 	/**
 	 * @var int Published
 	 *
 	 * @since       0.9.1
 	 */
-	var $published = 0;
+	public $published = 0;
 
 	/**
 	 * @var datetime creation date of the mailinglist
 	 *
 	 * @since       0.9.1
 	 */
-	var $created_date = '0000-00-00 00:00:00';
+	public $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $created_by = 0;
+	public $created_by = 0;
 
 	/**
 	 * @var datetime last modification date of the mailinglist
 	 *
 	 * @since       0.9.1
 	 */
-	var $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $modified_by = 0;
+	public $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
 	 * @since       0.9.1
 	 */
-	var $checked_out = 0;
+	public $checked_out = 0;
 
 	/**
 	 * @var datetime Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
-	var $checked_out_time = 0;
+	public $checked_out_time = 0;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       0.9.1
 	 */
-	var $archive_flag = 0;
+	public $archive_flag = 0;
 
 	/**
 	 * @var datetime Archive-date
 	 *
 	 * @since       0.9.1
 	 */
-	var $archive_date = null;
+	public $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       0.9.1
 	 */
-	var $archived_by = 0;
+	public $archived_by = 0;
 
 	/**
 	 * Constructor
@@ -343,10 +343,13 @@ class BwPostmanTableMailinglists extends JTable
 			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_ML_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
 			return false;
 		}
-		if ($fault) {
+
+		if ($fault)
+		{
 			$app->setUserState('com_bwpostman.edit.mailinglist.data', $this);
 			return false;
 		}
+
 		return true;
 	}
 
@@ -376,6 +379,7 @@ class BwPostmanTableMailinglists extends JTable
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
 		}
+
 		$res	= parent::store($updateNulls);
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
 

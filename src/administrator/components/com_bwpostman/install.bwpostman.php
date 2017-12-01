@@ -79,7 +79,6 @@ class Com_BwPostmanInstallerScript
 	 */
 	private $all_bwpm_groups    = array(
 									'bwpm_usergroups'           => array(
-										'BwPostmanManager',
 										'BwPostmanPublisher',
 										'BwPostmanEditor',
 									),
@@ -109,45 +108,6 @@ class Com_BwPostmanInstallerScript
 										'BwPostmanTemplateEditor',
 									),
 									);
-
-
-	/**
-	 * Constructor
-	 *
-	 * @since       2.0.0
-	 */
-	public function __constructor()
-	{
-		$this->reference_table  = 'bwpostman_mailinglists';
-		$this->conversion_file  = '/components/com_bwpostman/sql/utf8mb4conversion/utf8mb4-conversion-01.sql';
-		$this->all_bwpm_groups  = array('bwpm_usergroups'           => array('BwPostmanManager', 'BwPostmanPublisher', 'BwPostmanEditor'),
-										'mailinglist_usergroups'    => array(
-											'BwPostmanMailinglistAdmin',
-											'BwPostmanMailinglistPublisher',
-											'BwPostmanMailinglistEditor'
-										),
-										'subscriber_usergroups'     => array(
-											'BwPostmanSubscriberAdmin',
-											'BwPostmanSubscriberPublisher',
-											'BwPostmanSubscriberEditor'
-										),
-										'newsletter_usergroups'     => array(
-											'BwPostmanNewsletterAdmin',
-											'BwPostmanNewsletterPublisher',
-											'BwPostmanNewsletterEditor'
-										),
-										'campaign_usergroups'       => array(
-											'BwPostmanCampaignAdmin',
-											'BwPostmanCampaignPublisher',
-											'BwPostmanCampaignEditor'
-										),
-										'template_usergroups'       => array(
-											'BwPostmanTemplateAdmin',
-											'BwPostmanTemplatePublisher',
-											'BwPostmanTemplateEditor'
-										),
-								);
-	}
 
 	/**
 	 * Executes additional installation processes
@@ -331,19 +291,7 @@ class Com_BwPostmanInstallerScript
 			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
 			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
 
-			// Insert component asset
-			// $maintenanceModel::insertBaseAsset();
-
-			// Insert section assets
-			$tableNames = $maintenanceModel::getTableNamesFromDB();
-			foreach ($tableNames as $table)
-			{
-				$hasAsset = $maintenanceModel::checkForAsset($table);
-				if ($hasAsset)
-				{
-					$maintenanceModel::insertBaseAsset($table);
-				}
-			}
+			$maintenanceModel->createBaseAssets();
 		}
 
 		// check if sample templates exits
@@ -863,10 +811,19 @@ class Com_BwPostmanInstallerScript
 
 			$admin_groupId = $this->getGroupId('BwPostmanAdmin');
 
+			// Create user group BwPostmanManager
+			if (!$ret = $groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager')))
+			{
+				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret));
+			}
+
+			$manager_groupId = $this->getGroupId('BwPostmanManager');
+
 			// Create BwPostman user groups section-wise
 			foreach ($this->all_bwpm_groups as $groups)
 			{
-				$parent_id  = $admin_groupId;
+				$parent_id  = $manager_groupId;
 				foreach ($groups as $item)
 				{
 					if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))

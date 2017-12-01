@@ -346,6 +346,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					{
 						// get stored $base_asset and $curr_asset_id from session
 						$table_names   = $session->get('trestore_tablenames', '');
+						array_unshift($table_names, 'component');
 						$i             = $session->get('trestore_i', 0);
 						if(BWPOSTMAN_LOG_MEM) $mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
@@ -548,14 +549,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 	protected function _getInstalledTableNames($session)
 	{
-		$model	                = $this->getModel('maintenance');
-		$installedTableNames	= $model->getTableNamesFromDB();
-		if (!is_array($installedTableNames))
+		$model				= $this->getModel('maintenance');
+		$tableNamesArray	= $model->getTableNamesFromDB();
+		if (!is_array($tableNamesArray))
 		{
 			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_INSTALLED_ERROR') . '</p>';
 			$alertClass = 'error';
 			$ready = "1";
 		}
+
+		foreach ($tableNamesArray as $tableName)
+		{
+			$installedTableNames[] = $tableName['tableNameGeneric'];
+		}
+
 		// store $installedTableNames in session
 		$session->set('tcheck_inTaNa', $installedTableNames);
 	}
@@ -576,11 +583,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$genericTableNames   = array();
 
 		echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_TABLE_GENERALS') . '</h4>';
-		// convert to generic table names
-		foreach ($installedTableNames as $table)
-		{
-			$genericTableNames[]	= $model->getGenericTableName($table);
-		}
+
 		// check table names
 		if (!$model->checkTableNames($neededTables, $genericTableNames, 'check'))
 		{

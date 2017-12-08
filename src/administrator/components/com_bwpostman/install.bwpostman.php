@@ -262,6 +262,8 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @return  boolean  True on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.6.3
 	 */
 
@@ -387,6 +389,8 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.6.3
 	 */
 
@@ -394,7 +398,6 @@ class Com_BwPostmanInstallerScript
 	{
 		$this->deleteSampleUsergroups();
 
-//		$this->deleteAssets();
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
@@ -425,6 +428,8 @@ class Com_BwPostmanInstallerScript
 	 * @param   string  $name
 	 *
 	 * @return  mixed  $manifest
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.6.3
 	 */
@@ -457,6 +462,8 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @return  boolean  True on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	private function correctCamId()
@@ -485,6 +492,8 @@ class Com_BwPostmanInstallerScript
 	 * Fill cross table campaigns mailinglists with values from all newsletters of the specific campaign
 	 *
 	 * @return  boolean  True on success
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -568,6 +577,8 @@ class Com_BwPostmanInstallerScript
 	 * But 0 is in Joomla the value for new dataset, so in version 1.0.1 of BwPostman this will be adjusted (incremented)
 	 *
 	 * @return	void
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -732,6 +743,8 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	private function checkSampleTemplates()
@@ -787,7 +800,6 @@ class Com_BwPostmanInstallerScript
 	 * @return boolean  true on success
 	 *
 	 * @throws Exception
-	 * @throws BwException
 	 *
 	 * @since   2.0.0
 	 */
@@ -837,11 +849,6 @@ class Com_BwPostmanInstallerScript
 
 			return true;
 		}
-		catch (BwException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
-		}
 		catch (RuntimeException $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
@@ -853,6 +860,8 @@ class Com_BwPostmanInstallerScript
 	 * Method to delete sample user groups and access levels
 	 *
 	 * @return boolean  true on success
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -956,29 +965,13 @@ class Com_BwPostmanInstallerScript
 	}
 
 	/**
-	 * Method to delete sample user groups and access levels
-	 *
-	 * @return boolean  true on success
-	 *
-	 * @since   2.0.0
-	 */
-	private function deleteAssets()
-	{
-		$assetTable = JTable::getInstance('Asset');
-
-		$componentAssetId = $assetTable->loadByName('com_bwpostman.campaign');
-dump($componentAssetId, 'ComponentAsset ID CAM');
-		$componentAssetId = $assetTable->loadByName('com_bwpostman.mailinglist');
-dump($componentAssetId, 'ComponentAsset ID ML');
-		// $assetTable->delete($componentAssetId);
-	}
-
-	/**
 	 * Gets the group Id of the selected group name
 	 *
 	 * @param   string  $name  The name of the group
 	 *
 	 * @return  int  the ID of the group
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -1012,6 +1005,8 @@ dump($componentAssetId, 'ComponentAsset ID ML');
 	 * Method to remove multiple entries in table extensions. Needed because joomla update may show updates for these unnecessary entries
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1062,6 +1057,8 @@ dump($componentAssetId, 'ComponentAsset ID ML');
 	 * @param array     $param_array
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -1173,13 +1170,15 @@ dump($componentAssetId, 'ComponentAsset ID ML');
 		{
 			$show_right	= true;
 		}
+
+		$asset_path = 'components/com_bwpostman/assets';
 		?>
 
-<link rel="stylesheet" href="<?php JRoute::_('components/com_bwpostman/assets/css/install.css'); ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo JRoute::_($asset_path . '/css/install.css'); ?>" type="text/css" />
 
 <div id="com_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img border="0" align="center" src="<?php JRoute::_('components/com_bwpostman/assets/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+		<img border="0" align="center" src="<?php echo JRoute::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>

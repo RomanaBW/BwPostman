@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 //
 // Component development:
@@ -206,7 +206,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since version
 	 */
-	private static function _checkActionPermission($view, $action, $recordIds = array())
+	private static function checkActionPermission($view, $action, $recordIds = array())
 	{
 		$user = JFactory::getUser();
 		$res  = false;
@@ -263,7 +263,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	public function getDateList($date = 'minute', $length = 10, $selectval)
+	public function getDateList($selectval, $date = 'minute', $length = 10)
 	{
 		$options    = array();
 		$selectlist = array();
@@ -317,8 +317,10 @@ abstract class BwPostmanHelper
 				{
 					$select_html .= ' selected="selected"';
 				}
+
 				$select_html .= '>' . $value2 . '</option>';
 			}
+
 			$select_html .= '</select>';
 			$selectlist[] = $select_html;
 		}
@@ -391,12 +393,7 @@ abstract class BwPostmanHelper
 		{
 			$res = true;
 		}
-/*
-		if (!$res)
-		{
-//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ADMIN_NO_PERMISSION'), 'error');
-		}
-*/
+
 		return $res;
 	}
 
@@ -415,20 +412,15 @@ abstract class BwPostmanHelper
 		{
 			$res = true;
 		}
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_MANAGE_NO_PERMISSION'), 'error');
-		}
-*/
+
 		return $res;
 	}
 
 	/**
 	 * Method to check if you can check in an item
 	 *
-     * @param    string    $view            The view to test.
-     * @param    int       $recordId        The record to test.
+	 * @param    string    $view            The view to test.
+	 * @param    int       $recordId        The record to test.
 	 * @param    int       $checkedOut      user id, who checked out this item
 	 *
 	 * @return    boolean
@@ -442,20 +434,20 @@ abstract class BwPostmanHelper
 
 		if (self::canManage() || $checkedOut == $userId || $checkedOut == 0)
 		{
-            $allowed = true;
+			$allowed = true;
 		}
 
-        if (!$allowed)
-        {
-            $allowed = BwPostmanHelper::canEditState($view, $recordId);
-        }
+		if (!$allowed)
+		{
+			$allowed = self::canEditState($view, $recordId);
+		}
 
-        if (!$allowed)
-        {
-            $allowed = BwPostmanHelper::canEdit($view, array($recordId));
-        }
+		if (!$allowed)
+		{
+			$allowed = self::canEdit($view, array($recordId));
+		}
 
-        return $allowed;
+		return $allowed;
 	}
 
 	/**
@@ -500,13 +492,8 @@ abstract class BwPostmanHelper
 		$action = 'create';
 
 		// Check permission
-		$res      = self::_checkActionPermission($view, $action, array(0));
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_CREATE_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission($view, $action, array(0));
+
 		return $res;
 	}
 
@@ -535,14 +522,16 @@ abstract class BwPostmanHelper
 			{
 				$recordId = (int) $data->id;
 			}
+
 			if (property_exists($data, 'created_by'))
 			{
 				$createdBy = (int) $data->created_by;
 			}
-            if (property_exists($data, 'registered_by'))
-            {
-                $createdBy = (int) $data->registered_by;
-            }
+
+			if (property_exists($data, 'registered_by'))
+			{
+				$createdBy = (int) $data->registered_by;
+			}
 		}
 		elseif (is_array($data))
 		{
@@ -550,18 +539,20 @@ abstract class BwPostmanHelper
 			{
 				$recordId = (int) $data['id'];
 			}
+
 			if (key_exists('created_by', $data))
 			{
 				$createdBy = (int) $data['created_by'];
 			}
-            if (key_exists('registered_by', $data))
-            {
-                $createdBy = (int) $data['registered_by'];
-            }
+
+			if (key_exists('registered_by', $data))
+			{
+				$createdBy = (int) $data['registered_by'];
+			}
 		}
 
 		// Check permission
-		$res      = self::_checkActionPermission($view, $action, array($recordId));
+		$res      = self::checkActionPermission($view, $action, array($recordId));
 		// Fallback on edit own.
 		if (!$res)
 		{
@@ -571,20 +562,20 @@ abstract class BwPostmanHelper
 				|| $user->authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId)
 			)
 			{
-			    // Check for general 'edit own' permission, used for displaying button
-			    if (!$recordId)
-                {
-                    $res = true;
-                }
-                else
-                {
-                    $ownerId = self::_getOwnerId($view, $recordId, $createdBy);
-                    // Now test the owner is the user. If the owner matches 'me' then allow access.
-                    if ($ownerId == $userId)
-                    {
-                        $res = true;
-                    }
-                }
+				// Check for general 'edit own' permission, used for displaying button
+				if (!$recordId)
+				{
+					$res = true;
+				}
+				else
+				{
+					$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+					// Now test the owner is the user. If the owner matches 'me' then allow access.
+					if ($ownerId == $userId)
+					{
+						$res = true;
+					}
+				}
 			}
 		}
 
@@ -606,17 +597,12 @@ abstract class BwPostmanHelper
 		$action = 'edit.state';
 
 		// Check permission
-		$res      = self::_checkActionPermission($view, $action, array($recordId));
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission($view, $action, array($recordId));
+
 		return $res;
 	}
 
-    /**
+	/**
 	 * Method to check if you can send a newsletter.
 	 *
 	 * @param    int     $recordId   The record to test.
@@ -630,13 +616,8 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::_checkActionPermission('newsletter', $action, array($recordId));
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_SENDING_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission('newsletter', $action, array($recordId));
+
 		return $res;
 	}
 
@@ -652,13 +633,8 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::_checkActionPermission('newsletter', $action, array());
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_QUEUE_CLEAR_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission('newsletter', $action, array());
+
 		return $res;
 	}
 
@@ -674,13 +650,8 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::_checkActionPermission('newsletter', $action, array());
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_QUEUE_RESET_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission('newsletter', $action, array());
+
 		return $res;
 	}
 
@@ -696,13 +667,8 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::_checkActionPermission('newsletter', $action, array());
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_QUEUE_CONTINUE_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission('newsletter', $action, array());
+
 		return $res;
 	}
 
@@ -722,13 +688,8 @@ abstract class BwPostmanHelper
 		$action   = 'archive';
 
 		// Check permission
-		$res      = self::_checkActionPermission($view, $action, $recordIds);
-/*
-		if (!$res)
-		{
-//			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission($view, $action, $recordIds);
+
 		return $res;
 	}
 
@@ -748,13 +709,8 @@ abstract class BwPostmanHelper
 		$action   = 'delete';
 
 		// Check permission
-		$res      = self::_checkActionPermission($view, $action, $recordIds);
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_DELETE_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission($view, $action, $recordIds);
+
 		return $res;
 	}
 
@@ -774,13 +730,8 @@ abstract class BwPostmanHelper
 		$action   = 'restore';
 
 		// Check permission
-		$res      = self::_checkActionPermission($view, $action, $recordIds);
-/*
-		if (!$res)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_RESTORE_NO_PERMISSION'), 'error');
-		}
-*/
+		$res      = self::checkActionPermission($view, $action, $recordIds);
+
 		return $res;
 	}
 
@@ -788,6 +739,8 @@ abstract class BwPostmanHelper
 	 * Method to check if there are published mailinglists, If not, display warning message
 	 *
 	 * @return    bool  true if warning should be displayed
+	 *
+	 * @throws Exception
 	 *
 	 * @since    0.9.8
 	 */
@@ -819,6 +772,7 @@ abstract class BwPostmanHelper
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_WARNING_NO_PUBLISHED_MAILINGLIST'), 'warning');
 			return true;
 		}
+
 		unset($ml_published);
 		return false;
 	}
@@ -830,7 +784,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since    1.0.3
 	 */
-	static public function checkQueueEntries()
+	public static function checkQueueEntries()
 	{
 		$_db   = JFactory::getDbo();
 		$query = $_db->getQuery(true);
@@ -867,6 +821,7 @@ abstract class BwPostmanHelper
 		{
 			$no_spam = (date("dmy", time())) * $zahl;
 		}
+
 		if ($mode == 2)
 		{
 			if (date('H', time()) == '00')
@@ -908,7 +863,7 @@ abstract class BwPostmanHelper
 	 * @since
 	 */
 
-	static public function showCaptcha()
+	public static function showCaptcha()
 	{
 		/**
 		 * Method to generate captcha
@@ -1032,6 +987,7 @@ abstract class BwPostmanHelper
 			{
 				continue;
 			}
+
 			if (is_dir($dir . $file))
 			{
 				continue;
@@ -1052,6 +1008,7 @@ abstract class BwPostmanHelper
 					{
 						$captchaTrue = true;
 					}
+
 					if (preg_match("=^$codeCaptcha=i", $file))
 					{
 						if ($file != 'index.html')
@@ -1090,7 +1047,6 @@ abstract class BwPostmanHelper
 	public static function loadLanguage($file = 'com_bwpostman', $client = 'site')
 	{
 		static $loaded = array();
-//		BWPOSTMAN_PROFILER ? BwPostmanProfiler::instance()->start('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
 
 		if ($client == 'site')
 		{
@@ -1103,6 +1059,7 @@ abstract class BwPostmanHelper
 			$lookup1 = JPATH_ADMINISTRATOR;
 			$lookup2 = BWPOSTMAN_PATH_ADMIN;
 		}
+
 		if (empty($loaded["{$client}/{$file}"]))
 		{
 			$lang    = JFactory::getLanguage();
@@ -1112,13 +1069,13 @@ abstract class BwPostmanHelper
 				$lang->load($file, $lookup2, 'en-GB', true, false);
 				$english = true;
 			}
+
 			$loaded[$file] = $lang->load($file, $lookup1, null, $english, false)
 				|| $lang->load($file, $lookup2, null, $english, false)
 				|| $lang->load($file, $lookup1, $lang->getDefault(), $english, false)
 				|| $lang->load($file, $lookup2, $lang->getDefault(), $english, false);
 		}
 
-//		BWPOSTMAN_PROFILER ? BwPostmanProfiler::instance()->stop('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
 		return $loaded[$file];
 	}
 
@@ -1189,16 +1146,16 @@ abstract class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	private static function _getOwnerId($view, $recordId, $createdBy)
+	private static function getOwnerId($view, $recordId, $createdBy)
 	{
 		$ownerId = $createdBy;
 
 		$createdPropertyName    = 'created_by';
 
 		if ($view == 'subscriber')
-        {
-            $createdPropertyName    = 'registered_by';
-        }
+		{
+			$createdPropertyName    = 'registered_by';
+		}
 
 		if (!$ownerId)
 		{
@@ -1210,11 +1167,9 @@ abstract class BwPostmanHelper
 
 			if (!is_object($record) || !property_exists($record, $createdPropertyName))
 			{
-				//@ ToDo: Specify error message, insert in language files
-//				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_SUITABLE_RECORD'), 'error');
-
 				return false;
 			}
+
 			$ownerId = $record->{$createdPropertyName};
 		}
 
@@ -1238,9 +1193,9 @@ abstract class BwPostmanHelper
 			return 'all';
 		}
 
-		$asset_records = self::_getSectionAssetNames($view);
-		$item_records  = self::_extractIdFromAssetName($asset_records);
-		$allowed_items = self::_checkRecordsForPermission($view, $item_records);
+		$asset_records = self::getSectionAssetNames($view);
+		$item_records  = self::extractIdFromAssetName($asset_records);
+		$allowed_items = self::checkRecordsForPermission($view, $item_records);
 
 		$general_permission = array_search(0, $allowed_items);
 		if ($general_permission !== false)
@@ -1251,7 +1206,7 @@ abstract class BwPostmanHelper
 		// check for mailinglist specific permissions
 		if ($view != 'mailinglist')
 		{
-			$mailinglist_items = self::_getMailinglistSpecificRecords($view);
+			$mailinglist_items = self::getMailinglistSpecificRecords($view);
 
 			// merge values
 			// @ToDo: Is merge correct? Or do I have to intersect?
@@ -1277,7 +1232,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since   2.0.0
 	 */
-	private static function _getSectionAssetNames($view)
+	private static function getSectionAssetNames($view)
 	{
 		$asset_records  = array();
 		$_db            = JFactory::getDbo();
@@ -1317,7 +1272,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since   2.0.0
 	 */
-	private static function _extractIdFromAssetName($asset_records)
+	private static function extractIdFromAssetName($asset_records)
 	{
 		$items = array();
 
@@ -1333,6 +1288,7 @@ abstract class BwPostmanHelper
 			{
 				$item['id'] = 0;
 			}
+
 			$items[]    = $item;
 		}
 
@@ -1350,13 +1306,13 @@ abstract class BwPostmanHelper
 	 *
 	 * @since   2.0.0
 	 */
-	private static function _checkRecordsForPermission($view, $items)
+	private static function checkRecordsForPermission($view, $items)
 	{
 		$allowed_ids = array();
 
 		foreach ($items as $item)
 		{
-			$allowed = BwPostmanHelper::canEdit($view, $item);
+			$allowed = self::canEdit($view, $item);
 			if ($allowed)
 			{
 				$allowed_ids[] = $item['id'];
@@ -1382,15 +1338,15 @@ abstract class BwPostmanHelper
 	 *
 	 * @since   2.0.0
 	 */
-	private static function _getMailinglistSpecificRecords($view)
+	private static function getMailinglistSpecificRecords($view)
 	{
 		$allowed_ids    = array();
 		$result         = array();
 
 		// Get the mailinglists the user may handle
-		$asset_records          = self::_getSectionAssetNames('mailinglist');
-		$item_records           = self::_extractIdFromAssetName($asset_records);
-		$allowed_mailinglists   = self::_checkRecordsForPermission('mailinglist', $item_records);
+		$asset_records          = self::getSectionAssetNames('mailinglist');
+		$item_records           = self::extractIdFromAssetName($asset_records);
+		$allowed_mailinglists   = self::checkRecordsForPermission('mailinglist', $item_records);
 
 		$general_permission = array_search(0, $allowed_mailinglists);
 		if ($general_permission !== false)
@@ -1416,11 +1372,12 @@ abstract class BwPostmanHelper
 				break;
 			case 'template':
 				// @ToDo: Remove comments, when this cross table is implemented
-//					$table  = '#__bwpostman_template_mailinglists';
-//					$field  = 'template_id';
+				//	$table  = '#__bwpostman_template_mailinglists';
+				//	$field  = 'template_id';
 				break;
 			default:
 		}
+
 		if ($table != '' && $field != '')
 		{
 			try
@@ -1430,7 +1387,7 @@ abstract class BwPostmanHelper
 
 				$query->select($_db->quoteName($field));
 				$query->from($_db->quoteName($table));
-				$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode (',', $allowed_mailinglists) . ')');
+				$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $allowed_mailinglists) . ')');
 
 				$_db->setQuery($query);
 
@@ -1444,8 +1401,9 @@ abstract class BwPostmanHelper
 
 		foreach ($result as $item)
 		{
-			$allowed_ids[]    = (int)$item[$field];
+			$allowed_ids[]    = (int) $item[$field];
 		}
+
 		return $allowed_ids;
 	}
 }

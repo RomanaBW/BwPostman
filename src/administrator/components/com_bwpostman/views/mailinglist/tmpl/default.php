@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('behavior.tooltip');
@@ -66,26 +66,35 @@ JHtml::_('formbehavior.chosen', 'select');
 
 <div id="bwp_editform">
 	<?php
-		if ($this->queueEntries)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
- 		}
+	if ($this->queueEntries)
+	{
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<div class="tab-wrapper-bwp">
+			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+			<?php echo JHtml::_(
+				'bootstrap.addTab',
+				'myTab',
+				'details',
+				empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id)
+			); ?>
 			<fieldset class="adminform">
-				<legend><?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id); ?></legend>
+				<legend>
+					<?php
+					echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id);
+					?>
+				</legend>
 				<div class="well well-small">
 					<div class="width-60 fltlft span8 control-group">
 						<ul class="adminformlist unstyled">
-							<?php if (isset($this->item->err_code)) if (($this->item->err_code == 201) || ($this->item->err_code == 203)) ?>
 							<li>
 								<?php echo $this->form->getLabel('title'); ?>
 								<div class="controls"><?php echo $this->form->getInput('title'); ?></div>
 							</li>
 
-							<?php if (isset($this->item->err_code)) if ($this->item->err_code == 202) // echo "class=\"invalid\""; ?>
 							<li>
 								<?php echo $this->form->getLabel('description'); ?>
 								<div class="controls"><?php echo $this->form->getInput('description'); ?></div>
@@ -135,31 +144,30 @@ JHtml::_('formbehavior.chosen', 'select');
 					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
 			</fieldset>
-
-			<input type="hidden" name="task" value="" />
-			<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-
-			<?php echo $this->form->getInput('id'); ?>
-			<?php echo $this->form->getInput('asset_id'); ?>
-			<?php echo $this->form->getInput('checked_out'); ?>
-			<?php echo $this->form->getInput('archive_flag'); ?>
-			<?php echo $this->form->getInput('archive_time'); ?>
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 			<?php if (BwPostmanHelper::canAdmin()): ?>
-				<div class="fltlft">
-					<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-					<?php echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES'), 'access-rules'); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
 				<div class="well well-small">
-						<fieldset class="panelform">
-							<?php echo $this->form->getLabel('rules'); ?>
-							<?php echo $this->form->getInput('rules');  ?>
+						<fieldset class="adminform">
+							<?php echo $this->form->getInput('rules'); ?>
 						</fieldset>
 				</div>
-					<?php echo JHtml::_('sliders.end'); ?>
-				</div>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endif ?>
 			<div class="clearfix"></div>
+			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		</div>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+
+		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+
+		<?php echo $this->form->getInput('id'); ?>
+		<?php echo $this->form->getInput('asset_id'); ?>
+		<?php echo $this->form->getInput('checked_out'); ?>
+		<?php echo $this->form->getInput('archive_flag'); ?>
+		<?php echo $this->form->getInput('archive_time'); ?>
+		<?php echo JHtml::_('form.token'); ?>
+
 	</form>

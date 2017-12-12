@@ -50,7 +50,7 @@ div.top_line {
 }
 
 #com_bwp_install_outer {
-	margin: 0 -5px -5px -5px;
+	margin: 0 -5px 15px -5px;
 	padding: 1em 2em;
 	background: url(../images/verlauf_gelb_2.png) repeat;
 }

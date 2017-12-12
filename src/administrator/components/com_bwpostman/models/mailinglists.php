@@ -245,7 +245,7 @@ class BwPostmanModelMailinglists extends JModelList
 		$sub_query2->where($this->_db->quoteName('d.archive_flag') . ' = 0');
 
 		$sub_query->select('COUNT(' . $this->_db->quoteName('b.subscriber_id') . ') AS ' . $this->_db->quoteName('subscribers'));
-		$sub_query->from($this->_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS ' . 'b');
+		$sub_query->from($this->_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS b');
 		$sub_query->where($this->_db->quoteName('b.mailinglist_id') . ' = ' . $this->_db->quoteName('a.id'));
 		$sub_query->where($this->_db->quoteName('b.subscriber_id') . ' IN (' . $sub_query2 . ')) AS subscribers');
 
@@ -272,7 +272,7 @@ class BwPostmanModelMailinglists extends JModelList
 		$this->_query->join('LEFT', $this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access'));
 
 		// Join over the users for the author.
-		$this->_query->select($this->_db->quoteName('ua.name') , ' AS author_name');
+		$this->_query->select($this->_db->quoteName('ua.name'), ' AS author_name');
 		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by'));
 	}
 
@@ -293,7 +293,6 @@ class BwPostmanModelMailinglists extends JModelList
 		$this->_getFilterByPublishedState();
 		$this->_getFilterByArchiveState();
 		$this->_getFilterBySearchword();
-
 	}
 
 	/**
@@ -352,7 +351,7 @@ class BwPostmanModelMailinglists extends JModelList
 		if (!$user->authorise('core.admin'))
 		{
 			$groups	= implode(',', $user->getAuthorisedViewLevels());
-			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
+			$this->_query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
 		}
 	}
 
@@ -371,7 +370,7 @@ class BwPostmanModelMailinglists extends JModelList
 
 		if ($allowed_ids != 'all')
 		{
-			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+			$this->_query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
 

@@ -366,10 +366,10 @@
 		/>
 	</fieldset>
 
-	<fieldset name="rules">
+	<fieldset name="rules" addfieldpath="/administrator/components/com_bwpostman/models/fields">
 		<field
 			name="rules"
-			type="rules"
+			type="bwrules"
 			label=""
 			translate_label="false"
 			class="inputbox"

@@ -283,7 +283,7 @@
 
   		<field
 			name="rules"
-			type="rules"
+			type="bwrules"
 			label=""
 			translate_label="false"
 			class="inputbox"

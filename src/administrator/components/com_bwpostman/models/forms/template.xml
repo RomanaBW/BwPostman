@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset label="COM_BWPOSTMAN_TPL_BASICS_LABEL">
+	<fieldset label="COM_BWPOSTMAN_TPL_BASICS_LABEL" addfieldpath="/administrator/components/com_bwpostman/models/fields">
 		<field
 			name="id"
 			type="hidden"
@@ -55,6 +55,16 @@
 			filter="unset"
 		/>
 
+		<field
+				name="rules"
+				type="bwrules"
+				label=""
+				translate_label="false"
+				class="inputbox"
+				filter="rules"
+				component="com_bwpostman"
+				section="template">
+		</field>
 	</fieldset>
 
 	<fields name="basics">

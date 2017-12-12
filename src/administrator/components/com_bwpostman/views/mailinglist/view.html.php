@@ -138,7 +138,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$this->addToolbar();
 
 		// Call parent display
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

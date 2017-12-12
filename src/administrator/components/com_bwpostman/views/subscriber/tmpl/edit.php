@@ -261,7 +261,8 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 					</fieldset>
 				</div>
 			<?php  endif ?>
-			<?php if (BwPostmanHelper::canAdmin()): ?>
+			<?php
+/*			if (BwPostmanHelper::canAdmin()): ?>
 				<div class="fltlft">
 					<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
@@ -273,7 +274,8 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 						</div>
 					<?php echo JHtml::_('sliders.end'); ?>
 				</div>
-			<?php endif ?>
+			<?php endif
+*/			?>
 		</div>
 		<div class="clr"></div>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

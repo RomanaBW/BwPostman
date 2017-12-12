@@ -367,9 +367,9 @@ Joomla.submitbutton = function (pressbutton)
 			</fieldset>
 			<fieldset class="adminform">
 				<?php
-				if (BwPostmanHelper::canAdmin()): ?>
+/*				if (BwPostmanHelper::canAdmin()): ?>
 					<div class="fltlft">
-						<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+						<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 						<?php echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'), 'access-rules'); ?>
 						<div class="well well-small">
 							<fieldset class="panelform">
@@ -379,7 +379,8 @@ Joomla.submitbutton = function (pressbutton)
 						</div>
 						<?php echo JHtml::_('sliders.end'); ?>
 					</div>
-				<?php endif; ?>
+				<?php endif;
+*/				?>
 
 			</fieldset>
 			<div class="clr clearfix"></div>

@@ -146,7 +146,8 @@ JHtml::_('formbehavior.chosen', 'select');
 			</fieldset>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-			<?php if (BwPostmanHelper::canAdmin()): ?>
+			<?php
+/*			if (BwPostmanHelper::canAdmin()): ?>
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
 				<div class="well well-small">
 						<fieldset class="adminform">
@@ -154,7 +155,8 @@ JHtml::_('formbehavior.chosen', 'select');
 						</fieldset>
 				</div>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
-			<?php endif ?>
+			<?php endif
+*/			?>
 			<div class="clearfix"></div>
 			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		</div>

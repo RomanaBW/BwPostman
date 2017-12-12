@@ -268,7 +268,6 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 						<?php echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_SUBS_FIELDSET_RULES'), 'access-rules'); ?>
 						<div class="well well-small">
 							<fieldset class="panelform">
-								<?php echo $this->form->getLabel('rules'); ?>
 								<?php echo $this->form->getInput('rules'); ?>
 							</fieldset>
 						</div>

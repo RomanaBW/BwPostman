@@ -404,12 +404,12 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					try
 					{
 						// get stored $base_asset and $curr_asset_id from session
-						$table_names   = $session->get('trestore_tablenames', '');
-//						array_unshift($table_names, 'component');
-						$i             = $session->get('trestore_i', 0);
+						$table_names = $session->get('trestore_tablenames', '');
+						$i           = $session->get('trestore_i', 0);
 
 						if ($i == 0)
 						{
+							echo '<h4>' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CREATE_ANEW_TABLE', $table_names[$i]) . '</h4>';
 							$model->anewBwPostmanTables($table_names);
 						}
 

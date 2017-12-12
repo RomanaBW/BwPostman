@@ -33,7 +33,6 @@ defined ('_JEXEC') or die ('Restricted access');
 	<div class="well well-small">
 		<div class="fltlft">
 			<fieldset class="panelform">
-				<?php echo $this->form->getLabel('rules'); ?>
 				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>
 		</div>

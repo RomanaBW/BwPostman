@@ -33,9 +33,9 @@ jimport('joomla.application.component.model');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require some classes
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/exceptions/BwException.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman maintenance page model
@@ -50,6 +50,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 {
 
 	/**
+	 * Array to hold table names of tables used by BwPostman.
+	 * Needed, because multiple shapes of names are necessary.
+	 * Also needed, because we might hold names of tables used with plugins
+	 *
 	 * @var array
 	 *
 	 * @since 2.0.0
@@ -57,6 +61,42 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected $tableNames = array();
 
 	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	protected $componentRules = array();
+
+	/**
+	 * Array to hold rules of component and sections
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	protected $sectionRules = array();
+
+	/**
+	 * Array to hold names of columns of asset table
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	protected $assetColnames = array();
+
+	/**
+	 * Array to hold used groups with title and id
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	protected $usedGroups = array();
+
+	/**
+	 * Deprecated
+	 *
 	 * @var array
 	 *
 	 * @since 2.0.0
@@ -71,7 +111,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	public function __construct()
 	{
 		parent::__construct();
-
 	}
 
 	/**
@@ -85,12 +124,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return  mixed
 	 *
-	 * @throws  BwException on errors
-	 *
 	 * @since       1.0.1
 	 */
 	public function saveTables($update = false)
 	{
+		// @ToDo: Use simpleXml correctly
 		// Access check.
 		if (!BwPostmanHelper::canAdmin())
 		{
@@ -138,10 +176,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			// get all names of installed BwPostman tables
-			$tableNames = $this->getTableNamesFromDB();
-			$this->tableNames = $tableNames;
+			$this->getTableNamesFromDB();
 
-			if ($tableNames === null)
+			if ($this->tableNames === null)
 			{
 				if ($update)
 				{
@@ -173,13 +210,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER'));
 			}
 
-			foreach ($tableNames as $table)
+			foreach ($this->tableNames as $table)
 			{
 				// do not save the table "bwpostman_templates_tpl"
-				if (strpos($table, 'templates_tpl') === false)
+				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
 				{
 					$file_data = array();
-					$tableName = $this->getGenericTableName($table);
+					$tableName = $table['tableNameGeneric'];
 
 					$file_data[] = "\t\t<tables>";                                // set XML tables section
 					$file_data[] = $this->buildXmlStructure($tableName);            // get table description
@@ -280,6 +317,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			return false;
 		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+			JFile::delete($file_name);
+			fclose($handle);
+
+			return false;
+		}
 
 		if ($update)
 		{
@@ -292,13 +337,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get a list of names of all installed tables of BwPostman form database
+	 * Method to get a list of names of all installed tables of BwPostman form database in the form
+	 * <prefix>tablename. Also sets a list as property of all BwPostman tables with different variations of name
 	 *
-	 * @return    array $tableNames    list of names of all installed table names of BwPostman
+	 * @return    array
+	 *
+	 * @throws Exception
 	 *
 	 * @since    1.0.1
 	 */
-	public static function getTableNamesFromDB()
+	public function getTableNamesFromDB()
 	{
 		$_db        = JFactory::getDbo();
 		$tableNames = array();
@@ -320,7 +368,24 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return $tableNames;
+		$tableArray = array();
+
+		foreach ($tableNames as $tableName)
+		{
+			if (strpos($tableName, '_tmp') === false)
+			{
+				$table['tableNameDb'] 		= $tableName;
+				$table['tableNameGeneric']	= self::getGenericTableName($tableName);
+				$table['tableNameRaw']		= $this->getRawTableName($table['tableNameGeneric']);
+				$table['tableNameUC']		= ucfirst(substr($table['tableNameRaw'], 0, -1));
+
+				$tableArray[] = $table;
+			}
+		}
+
+		$this->tableNames = $tableArray;
+
+		return $tableArray;
 	}
 
 	/**
@@ -328,10 +393,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return    string    An XML string
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
 	protected function buildXmlHeader()
 	{
+		// @ToDo: Use simpleXml correctly
 		// Get version of BwPostman
 		$version = $this->getBwPostmanVersion();
 
@@ -371,18 +439,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// Get assets of sections
 		foreach ($this->tableNames as $table)
 		{
-			$table_name_raw = $this->getRawTableName($table);
+			$hasAsset 	= $this->checkForAsset($table['tableNameGeneric']);
 
-			if (in_array($table_name_raw, $this->assetTargetTables))
+			if ($hasAsset)
 			{
-				$assetData = $this->getTableAssetData($table_name_raw, '');
+				$assetData = $this->getTableAssetData($table['tableNameRaw'], '');
 
 				$data[] = $assetData[0];
 			}
 		}
 
 		// write component asset
-		// @ToDo: Get assets of sections (Assets without ID)
 		$buffer[] = "\t\t\t" . '<component_assets>';
 
 		foreach ($data as $datum)
@@ -433,6 +500,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Get all usergroups used by assets of BwPostman
 	 *
 	 * @return    array            id and name of user groups
+	 *
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
@@ -809,14 +878,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Get the generic name of the table, converting the database prefix to the wildcard string. Based on Joomla JDatabaseExporter
 	 *
-	 * @param    string $table The name of the table.
+	 * @param    string    $table   The name of the table.
 	 *
-	 * @return    string            The name of the table with the database prefix replaced with #__.
+	 * @return   string             The name of the table with the database prefix replaced with #__.
 	 *
 	 * @since    1.0.1
 	 */
 
-	public function getGenericTableName($table)
+	public static function getGenericTableName($table)
 	{
 		$_db = JFactory::getDbo();
 
@@ -838,10 +907,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return    boolean        true if all is ok
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
 	public function checkTableNames($neededTables, $genericTableNames, $mode = 'check')
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		if (!is_array($neededTables) && !is_array($genericTableNames))
 		{
 			return false;
@@ -1136,10 +1208,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return    boolean        true if all is ok
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
 	public function checkTableColumns($checkTable)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		if (!is_object($checkTable))
 		{
 			return 0;
@@ -1361,206 +1436,38 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @return    bool
 	 *
 	 * @since    1.0.1
+	 *
+	 * @throws Exception
+	 * @throws BwException
 	 */
 	public function checkAssetId()
 	{
-		$_db            = JFactory::getDbo();
-		// set tables that has column asset_id
-		$tablesToCheck = array(
-			'#__bwpostman_campaigns',
-			'#__bwpostman_mailinglists',
-			'#__bwpostman_newsletters',
-			'#__bwpostman_subscribers',
-			'#__bwpostman_templates'
-		);
-		$asset_loop     = 0;
+		// Set tables that has column asset_id
+		// @ToDo: Check if exceptions are handled correctly
+		$this->getTableNamesFromDB();
 
-		// get items without real asset id (=0)
-		foreach ($tablesToCheck as $table)
+		foreach ($this->tableNames as $table)
 		{
-			$base_asset     = $this->getBaseAsset($table);
-			if (!is_array($base_asset) || !key_exists('rules', $base_asset))
+			// Shortcut
+			$tableNameGeneric	= $table['tableNameGeneric'];
+			$hasAsset 			= $this->checkForAsset($tableNameGeneric);
 
+			if ($hasAsset)
 			{
-				$base_asset = $this->insertBaseAsset($table);
-			}
+				// Get items without real asset id (=0)
+				$itemsWithoutAsset = $this->getItemsWithoutAssetId($tableNameGeneric);
 
-			$curr_asset_id  = $base_asset['rgt'];
-			$items          = array();
-
-			$query  = $_db->getQuery(true);
-			$query->select('*');
-			$query->from($_db->quoteName($table));
-			$query->where($_db->quoteName('asset_id') . ' = ' . (int) 0);
-
-			$_db->setQuery($query);
-			try
-			{
-				$items = $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			// if there are items without asset id, get table object…
-			if (is_array($items))
-			{
-				// get raw table name, table object and asset name
-				$table_name_raw = $this->BwpmTableName($table);
-				$tableObject    = JTable::getInstance($table_name_raw, 'BwPostmanTable');
-
-				if (property_exists($tableObject, 'asset_id'))
+				if (is_array($itemsWithoutAsset))
 				{
-					$asset_name = $base_asset['name'];
-				}
-				else
-				{
-					$asset_name = '';
+					$mapOldAssetIdsToNew = $this->insertAssets($itemsWithoutAsset, $table);
+
+					$this->insertItems($itemsWithoutAsset, $table['tableNameGeneric'], $mapOldAssetIdsToNew);
 				}
 
-				// get title for asset
-				switch ($table)
-				{
-					case '#__bwpostman_campaigns':
-					case '#__bwpostman_mailinglists':
-					case '#__bwpostman_templates':
-					default:
-							$title   = 'title';
-						break;
-					case '#__bwpostman_newsletters':
-							$title   = 'subject';
-						break;
-					case '#__bwpostman_subscribers':
-							$title   = 'name';
-						break;
-				}
-
-				// set some loop values (block size, …)
-				$default_asset   = $this->getDefaultAsset($table);
-				$data_loop_max   = $this->getDataLoopMax($table);
-				$max_count       = ini_get('max_execution_time');
-				$data_max        = count($items);
-				$asset_max       = $data_max;
-				$asset_loop_max  = 1000;
-				$asset_transform = array();
-
-				//Asset Inserting
-				$s      = 0;
-				$count  = 0;
-
-				// if there are data sets
-				if ($asset_max)
-				{
-					$asset_loop = 0;
-				}
-
-				// … insert data sets…
-				foreach ($items as $item)
-				{
-					$asset_loop++;
-
-					if ($count++ == $max_count)
-					{
-						$count = 0;
-						ini_set('max_execution_time', ini_get('max_execution_time'));
-					}
-
-					$values = array();
-
-					// collect data sets until loop max
-					$curr_asset                 = $default_asset;
-					$curr_asset['lft']          = $curr_asset_id++;
-					$curr_asset['rgt']          = $curr_asset_id++;
-					$curr_asset['name']         = $asset_name . '.' . $_db->escape($item['id']);
-					$curr_asset['title']        = $_db->escape($item[$title]);
-
-					foreach($curr_asset as $k => $v)
-					{
-						$values[$k] = $_db->quote($v);
-					}
-
-					$asset_transform[$s]['id'] = $item['id'];
-
-					$dataset[] = '(' . implode(',', $values) . ')';
-					$s++;
-
-					// if asset loop max is reached or last data set, insert into table
-					if (($asset_loop == $asset_loop_max) || ($s == $asset_max))
-					{
-						// write collected assets to table
-						$this->writeLoopAssets($dataset, $s, $base_asset, $asset_transform);
-
-						//reset loop values
-						$asset_loop = 0;
-						$dataset    = array();
-					}
-				} // end foreach table assets
-
-				/*
-				 * Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update,
-				 * if ID is set, but in empty tables there is nothing to update)
-				 */
-				$s     = 0;
-				$count = 0;
-
-				// if there are data sets
-				if ($data_max)
-				{
-					$dataset   = array();
-					$data_loop = 0;
-
-					// … insert data sets…
-					foreach ($items as $item)
-					{
-						$data_loop++;
-
-						// update asset_id
-						if ($asset_name != '')
-						{
-							for ($i = 0; $i < count($asset_transform); $i++)
-							{
-								$new_id = array_search($item['id'], $asset_transform[$i]);
-								if ($new_id !== false)
-								{
-									$item['asset_id'] = (int) $asset_transform[$i]['new'];
-									break;
-								}
-							}
-						}
-
-						if ($count++ == $max_count)
-						{
-							$count = 0;
-							ini_set('max_execution_time', ini_get('max_execution_time'));
-						}
-
-						$values = array();
-
-						// collect data sets until loop max
-						foreach ($item as $k => $v)
-						{
-							$values[] = $_db->quote($v);
-						}
-
-						$dataset[] = '(' . implode(',', $values) . ')';
-						$s++;
-
-						// if data loop max is reached or last data set, insert into table
-						if (($data_loop == $data_loop_max) || ($s == $data_max))
-						{
-							// write collected data sets to table
-							$this->writeLoopDatasets($dataset, $table);
-
-							// reset loop values
-							$data_loop = 0;
-							$dataset   = array();
-						}
-					} // end foreach table items
-				} // endif data sets exists
+				echo '<p class="bw_tablecheck_ok">' .
+					JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $tableNameGeneric) .
+					'</p>';
 			}
-
-			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $table) . '</p>';
 		}
 
 		return true;
@@ -1572,10 +1479,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return    bool
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
 	public function checkUserIds()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$_db   = JFactory::getDbo();
 		$query = $_db->getQuery(true);
 
@@ -1625,10 +1535,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return    string    An couple of XML lines (strings).
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
 	private function buildXmlStructure($tableName)
 	{
+		// @ToDo: Check if exceptions are handled correctly
+		// @ToDo: Use simpleXml correctly
 		$_db    = JFactory::getDbo();
 		$buffer = array();
 		$fields = array();
@@ -1710,12 +1624,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return   bool        True on success
 	 *
-	 * @throws  BwException if writing file is not possible
+	 * @throws BwException if writing file is not possible
+	 * @throws Exception
 	 *
 	 * @since    1.0.1
 	 */
 	private function buildXmlData($tableName, $handle)
 	{
+		// @ToDo: Check if exceptions are handled correctly
+		// @ToDo: Use simpleXml correctly
 		// Import JFolder and JFileObject class
 		jimport('joomla.filesystem.file');
 
@@ -1795,12 +1712,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return    string    XML lines
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
 	private function buildXmlAssets($tableName)
 	{
+		// @ToDo: Check if exceptions are handled correctly
+		// @ToDo: Use simpleXml correctly
 		$table_name_raw = $this->getRawTableName($tableName);
 
+		// @ToDo: use checkForAsset($table)
 		if (in_array($table_name_raw, $this->assetTargetTables))
 		{
 			$buffer     = array();
@@ -1843,6 +1765,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function buildXmlFooter()
 	{
+		// @ToDo: Use simpleXml correctly
 		$buffer = array();
 
 		$buffer[] = "\t</database>";
@@ -1854,10 +1777,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to output general information
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.3.0
 	 */
 	public function outputGeneralInformation()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		// Output general information
 		$generals   = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.generals', null);
 
@@ -1883,12 +1809,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * stores the result array in state
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	public function processAssetUserGroups($table_names)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			// process user groups, if they exists in backup
@@ -1901,7 +1829,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (count($usergroups))
 			{
-				$new_groups = $this->getActualUserGroups($usergroups);
+				$new_groups = $this->getCurrentUserGroups($usergroups);
 
 				if (is_array($new_groups))
 				{
@@ -1938,82 +1866,69 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to the rewrite tables
+	 * Method to the delete existing tables,create them anew, update component asset (rules) and initialize table assets
 	 *
-	 * @param   string $table name of table to rewrite
+	 * @param   array $tables array of generic table names read from backup file
 	 *
 	 * @return    void
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
+	 *
+	 * @since    2.0.0
+	 */
+	public function anewBwPostmanTables($tables)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		// @ToDo: Check for process of plugin tables
+		$tmp_file	= JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$fp			= fopen($tmp_file, 'r');
+		$tablesQueries	= unserialize(fread($fp, filesize($tmp_file)));
+
+		// delete tables and create it anew
+		foreach ($tables as $table)
+		{
+			$this->deleteBwPostmanTable($table);
+			$this->createBwPostmanTableAnew($table, $tablesQueries);
+		}
+
+		// Update component asset and initialize section assets
+		$this->createBaseAssets(true);
+	}
+
+	/**
+	 * Method to the rewrite tables
+	 *
+	 * @param   string $table     generic name of table to rewrite
+	 *
+	 * @return    void
+	 *
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	public function reWriteTables($table)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$tmp_file	= JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$fp			= fopen($tmp_file, 'r');
 		try
 		{
 			$tables             = unserialize(fread($fp, filesize($tmp_file)));
-			$_db                = JFactory::getDbo();
 			$asset_loop         = 0;
 			$curr_asset_id      = 0;
 			$asset_transform    = array();
-			$base_asset         = array();
+			$base_asset         = $this->getBaseAsset($this->getRawTableName($table));
 
-			// delete table
-			$drop_table = $_db->dropTable($table);
-			if (!$drop_table)
-			{
-				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table));
-			}
-			else
-			{
-				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_SUCCESS', $table) . '</p>';
-			}
+			$this->assetColnames = array_keys(JFactory::getDbo()->getTableColumns('#__assets'));
 
-			// create this table anew
-			$query = str_replace("\n", '', $tables[$table]['queries']);
-			$_db->setQuery($query);
-			$create_table = $_db->execute();
-			if (!$create_table)
-			{
-				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table));
-			}
-			else
-			{
-				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_SUCCESS', $table) . '</p>';
-			}
-
-			// get raw table name, table object and asset name
-			// @ToDo: process plugin tables
-			$table_name_raw = $this->BwpmTableName($table);
-			$tableObject    = JTable::getInstance($table_name_raw, 'BwPostmanTable');
-			$asset_name     = '';
-
-			// set asset name
-			// next if (surrounding tables without assets) is a workaround for plugin table
-			if (is_object($tableObject))
-			{
-				if (property_exists($tableObject, 'asset_id'))
-				{
-					// write table asset
-					$base_asset = $this->insertBaseAsset($table);
-					if (!is_array($base_asset))
-					{
-						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR', $table));
-					}
-
-					$curr_asset_id = $base_asset['lft'] + 1;
-
-					$asset_name = $base_asset['name'];
-				}
-			}
+			$asset_name     = $base_asset['name'];
 
 			// set some loop values (block size, …)
-			$data_loop_max  = $this->getDataLoopMax($table);
-			$max_count      = ini_get('max_execution_time');
-			$data_max       = 0;
+			$data_loop_max = $this->getDataLoopMax($table);
+			$max_count     = ini_get('max_execution_time');
+			$data_max      = 0;
 			if (key_exists('table_data', $tables[$table]))
 			{
 				$data_max = count($tables[$table]['table_data']);
@@ -2043,7 +1958,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				{
 					if ($tables[$table]['table_assets'][0]['name'] === $asset_name)
 					{ // update base asset
-						$update_asset   = array_shift($tables[$table]['table_assets']);
+						$update_asset = array_shift($tables[$table]['table_assets']);
 						$this->updateBaseAsset($update_asset);
 					}
 					else
@@ -2058,34 +1973,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 								ini_set('max_execution_time', ini_get('max_execution_time'));
 							}
 
-							$values = array();
-
 							// collect data sets until loop max
-							foreach ($asset as $k => $v)
-							{
-								// rewrite parent_id, lft and rgt
-								switch ($k)
-								{
-									case 'id':
-										$asset_transform[$s]['old'] = $v;
-										$values['id']               = 0;
-										break;
-									case 'parent_id':
-										$values['parent_id'] = $base_asset['id'];
-										break;
-									case 'lft':
-										$values['lft'] = $curr_asset_id++;
-										break;
-									case 'rgt':
-										$values['rgt'] = $curr_asset_id++;
-										break;
-									default:
-										$values[$k] = $_db->quote($v);
-										break;
-								}
-							}
+							$dataset[] = $this->prepareAssetValues($asset, $asset_transform, $s, $base_asset, $curr_asset_id);
 
-							$dataset[] = '(' . implode(',', $values) . ')';
 							$s++;
 
 							// if asset loop max is reached or last data set, insert into table
@@ -2124,19 +2014,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					// update asset_id
 					if ($asset_name != '')
 					{
-						$asset_found    = false;
+						$asset_found = false;
 						for ($i = 0; $i < count($asset_transform); $i++)
 						{
 							$new_id = array_search($item['asset_id'], $asset_transform[$i]);
 							if ($new_id !== false)
 							{
-								$item['asset_id'] = $asset_transform[$i]['new'];
-								$asset_found    = true;
+								$item['asset_id'] = $asset_transform[$i]['newAssetId'];
+								$asset_found      = true;
 								break;
 							}
 						}
 
-						if(!$asset_found) {
+						if (!$asset_found)
+						{
 							$item['asset_id'] = 0;
 						}
 					}
@@ -2147,13 +2038,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						ini_set('max_execution_time', ini_get('max_execution_time'));
 					}
 
-					$values = array();
-
 					// collect data sets until loop max
-					foreach ($item as $k => $v)
-					{
-						$values[] = $_db->quote($v);
-					}
+					$values = $this->dbQuoteArray($item);
 
 					$dataset[] = '(' . implode(',', $values) . ')';
 					$s++;
@@ -2170,6 +2056,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 				} // end foreach table items
 			} // endif data sets exists
+
 			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table) . '</p><br />';
 
 			if ($table == '#__bwpostman_subscribers')
@@ -2184,7 +2071,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			*/
 
-			if ($table_name_raw == 'templates')
+			if ($table == '#__bwpostman_templates')
 			{
 				fclose($fp);
 				unlink($tmp_file);
@@ -2207,6 +2094,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Method to get the version of BwPostman
 	 *
 	 * @return    string    version
+	 *
+	 * @throws Exception
 	 *
 	 * @since    1.0.8
 	 */
@@ -2261,9 +2150,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @return    void
 	 *
 	 * @since    1.3.0 here, before in install script since 1.0.1
+	 *
+	 * @throws Exception
 	 */
 	public static function adjustMLAccess()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$_db   = JFactory::getDbo();
 		$query = $_db->getQuery(true);
 
@@ -2289,14 +2181,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @param   string  $file
 	 *
-	 * @return  array   $table_names      array of table names
+	 * @return  array   $table_names      array of generic table names
 	 *
 	 * @throws  BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	public function parseTablesData($file)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$log_options = array('test' => 'testtext');
 		$logger      = new BwLogger($log_options);
 
@@ -2643,6 +2537,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	public function deleteSubAssets()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			$_db = JFactory::getDbo();
@@ -2676,24 +2571,30 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Method to heal assets table
 	 *
 	 * repairs lft and rgt values in asset table, updates component asset
+	 * closes gap caused by deleting sub assets of BwPostman
 	 *
 	 * @throws  BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	public function healAssetsTable()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
+			// com_assets are from state = from input file!
 			$com_assets = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
 			$_db        = JFactory::getDbo();
 			$query      = $_db->getQuery(true);
 
-			// first get lft from main asset com_bwpostman
+			// first get lft from main asset com_bwpostman, This is the one already existing in table
 			$base_asset = $this->getBaseAsset('component', true);
+
+			// Calculate complete gap caused by BwPostman. Subtract 1 to provide space for right value of BwPostman
 			$gap        = $base_asset['rgt'] - $base_asset['lft'] - 1;
 
-			// second set rgt values from all assets above lft of BwPostman
+			// second shift down rgt values by gap for all assets above lft of BwPostman
 			$query->update($_db->quoteName('#__assets'));
 			$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " - " . $gap . ") ");
 			$query->where($_db->quoteName('lft') . ' >= ' . $base_asset['lft']);
@@ -2701,7 +2602,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$_db->setQuery($query);
 			$set_asset_right = $_db->execute();
 
-			// now set lft values from all assets above lft of BwPostman
+			// now shift down lft values by gap for all assets above lft of BwPostman
 			$query      = $_db->getQuery(true);
 			$query->update($_db->quoteName('#__assets'));
 			$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " - " . $gap . ") ");
@@ -2745,7 +2646,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get the base asset of BwPostman
+	 * Method to get the base asset of BwPostman. If state exists, catch values from state, else use asset table
 	 *
 	 * @param   string  $table
 	 * @param   boolean $onlyHeal
@@ -2753,79 +2654,29 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @return array    $base_asset     base asset of BwPostman
 	 *
 	 * @throws  BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	protected function getBaseAsset($table = 'component', $onlyHeal = false)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			$stateAssetsRaw = '';
 
-			if (!$onlyHeal)
+			if (!$onlyHeal && $table != 'component')
 			{
 				$stateAssetsRaw = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', '');
 			}
 
 			if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
 			{
-				$stateAssetsAssoc = array();
-
-				foreach ($stateAssetsRaw as $asset)
-				{
-					$tableName = 'component';
-
-					if (key_exists('title', $asset))
-					{
-						$tableName = strtolower(substr($asset['title'], strrpos($asset['title'], ' ') + 1));
-					}
-
-					$stateAssetsAssoc[$tableName] = $asset;
-				}
-
-				$shortTableName = $table;
-
-				if ($table != 'component')
-				{
-					$shortTableName = substr($table, strrpos($table, '_') + 1);
-				}
-
-				$base_asset = $stateAssetsAssoc[$shortTableName];
+				$base_asset = $this->extractBaseAssetFromState(array('tableNameUC' => $table), $stateAssetsRaw);
 			}
 			else
 			{
-				$_db   = JFactory::getDbo();
-				$query = $_db->getQuery(true);
-
-				$query->select('*');
-				$query->from($_db->quoteName('#__assets'));
-
-				switch ($table)
-				{
-					case '#__bwpostman_campaigns':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.campaign'));
-						break;
-					case '#__bwpostman_mailinglists':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.mailinglist'));
-						break;
-					case '#__bwpostman_newsletters':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.newsletter'));
-						break;
-					case '#__bwpostman_subscribers':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.subscriber'));
-						break;
-					case '#__bwpostman_templates':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.template'));
-						break;
-					case 'component':
-					default:
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman'));
-						break;
-				}
-
-				$_db->setQuery($query);
-
-				$base_asset = $_db->loadAssoc();
+				$base_asset = $this->getBaseAssetFromTable($table);
 			}
 
 			return $base_asset;
@@ -2837,181 +2688,80 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to write the table asset
+	 * Method to write a new asset at the table asset. Shifts left and right value at existing assets and inserts the new asset.
 	 *
-	 * @param   string  $table
+	 * @param   array    $table
+	 * @param   boolean  $showMessage
 	 *
-	 * @return array    $base_asset     base asset of BwPostman
+	 * @return mixed    $base_asset     base asset of BwPostman
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
-	protected function insertBaseAsset($table = 'component')
+	public function insertBaseAsset($table, $showMessage = true)
 	{
-		// @ToDo: Get IDs of needed usergroups
-
-		// @ToDo: Prepare asset rules
-
-
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
-			$com_asset   = $this->getBaseAsset($table);
-			$_db   = JFactory::getDbo();
-			$query = $_db->getQuery(true);
+			// Get asset rules
+			$asset      = $this->getBaseAssetRules($table);
+			$com_asset	= $this->getBaseAsset('component');
 
-			// first shift rgt values by 2 from all assets since rgt of BwPostman
-			$query->update($_db->quoteName('#__assets'));
-			$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " + 2 ) ");
-			$query->where($_db->quoteName('rgt') . ' >= ' . $com_asset['rgt']);
+			// Provide space for new asset and insert it
+			$move_asset_right = $this->shiftRightAssets($com_asset);
+			$move_asset_left  = $this->shiftLeftAssets($com_asset);
 
-			$_db->setQuery($query);
-			$move_asset_right = $_db->execute();
-
-			// now shift lft values by 2 from all assets above lft of BwPostman
-			$query = $_db->getQuery(true);
-			$query->update($_db->quoteName('#__assets'));
-			$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " + 2 ) ");
-			$query->where($_db->quoteName('lft') . ' > ' . $com_asset['rgt']);
-
-			$_db->setQuery($query);
-			$move_asset_left = $_db->execute();
-
-			// finally insert new table asset
-			$query = $_db->getQuery(true);
-			$query->insert($_db->quoteName('#__assets'));
-
-			switch ($table)
+			if ($table == 'component')
 			{
-				case '#__bwpostman_campaigns':
-					$asset_name  = 'com_bwpostman.campaign';
-					$asset_title = 'BwPostman Campaigns';
-					$asset_rules = '{';
-					$asset_rules .= '"bwpm.campaign.edit":{"6":1,"4":1},';
-					$asset_rules .= '"bwpm.campaign.edit.state":{"6":1,"5":1},';
-					$asset_rules .= '"bwpm.campaign.edit.own":{"6":1,"3":1},';
-					$asset_rules .= '"bwpm.campaign.archive":[],';
-					$asset_rules .= '"bwpm.campaign.restore":[],';
-					$asset_rules .= '"bwpm.campaign.delete":{"6":1}';
-					$asset_rules .= '}';
-
-					break;
-				case '#__bwpostman_mailinglists':
-					$asset_name  = 'com_bwpostman.mailinglist';
-					$asset_title = 'BwPostman Mailinglists';
-					$asset_rules = '{';
-					$asset_rules .= '"bwpm.mailinglist.edit":{"6":1,"4":1},';
-					$asset_rules .= '"bwpm.mailinglist.edit.state":{"6":1,"5":1},';
-					$asset_rules .= '"bwpm.mailinglist.edit.own":{"6":1,"3":1},';
-					$asset_rules .= '"bwpm.mailinglist.archive":[],';
-					$asset_rules .= '"bwpm.mailinglist.restore":[],';
-					$asset_rules .= '"bwpm.mailinglist.delete":{"6":1}';
-					$asset_rules .= '}';
-					break;
-				case '#__bwpostman_newsletters':
-					$asset_name  = 'com_bwpostman.newsletter';
-					$asset_title = 'BwPostman Newsletters';
-					$asset_rules = '{';
-					$asset_rules .= '"bwpm.newsletter.edit":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.newsletter.edit.state":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.newsletter.edit.own":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.newsletter.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.newsletter.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.newsletter.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.newsletter.delete":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}';
-					$asset_rules .= '}';
-					break;
-				case '#__bwpostman_subscribers':
-					$asset_name  = 'com_bwpostman.subscriber';
-					$asset_title = 'BwPostman Subscribers';
-					$asset_rules = '{';
-					$asset_rules .= '"bwpm.subscriber.edit":{"6":1,"4":1},';
-					$asset_rules .= '"bwpm.subscriber.edit.state":{"6":1,"5":1},';
-					$asset_rules .= '"bwpm.subscriber.edit.own":{"6":1,"3":1},';
-					$asset_rules .= '"bwpm.subscriber.archive":[],';
-					$asset_rules .= '"bwpm.subscriber.restore":[],';
-					$asset_rules .= '"bwpm.subscriber.delete":{"6":1}';
-					$asset_rules .= '}';
-					break;
-				case '#__bwpostman_templates':
-					$asset_name  = 'com_bwpostman.template';
-					$asset_title = 'BwPostman Templates';
-					$asset_rules = '{';
-					$asset_rules .= '"bwpm.template.edit":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":1,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.template.edit.state":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":1,"8":0},';
-					$asset_rules .= '"bwpm.template.edit.own":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":1,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.template.send":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.template.archive":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.template.restore":{"1":0,"9":0,"6":0,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0},';
-					$asset_rules .= '"bwpm.template.delete":{"1":0,"9":0,"6":1,"7":0,"2":0,"3":0,"4":0,"5":0,"8":0}';
-					$asset_rules .= '}';
-					break;
-				case 'component':
-				default:
-						$asset_name  = 'com_bwpostman';
-						$asset_title = 'BwPostman Component';
-						$asset_rules = $com_asset['rules'];
-					break;
+				$rules = $com_asset['rules'];
+				$writeAsset = $this->updateComponentRules($rules);
+			}
+			else
+			{
+				$writeAsset = $this->insertAssetToTable($com_asset, $asset);
 			}
 
-			if (key_exists('rules', $com_asset))
-			{
-				$asset_rules = $com_asset['rules'];
-			}
+			// Get Base Asset
+			$base_asset = $this->getAssetFromTableByName($asset['name']);
 
-			$query->columns(
-				array(
-				$_db->quoteName('id'),
-				$_db->quoteName('parent_id'),
-				$_db->quoteName('lft'),
-				$_db->quoteName('rgt'),
-				$_db->quoteName('level'),
-				$_db->quoteName('name'),
-				$_db->quoteName('title'),
-				$_db->quoteName('rules')
-				)
-			);
-			$query->values(
-				$_db->quote(0) . ',' .
-				$_db->quote($com_asset['id']) . ',' .
-				$_db->quote((int) $com_asset['rgt']) . ',' .
-				$_db->quote((int) $com_asset['rgt'] + 1) . ',' .
-				$_db->quote((int) $com_asset['level'] + 1) . ',' .
-				$_db->quote($asset_name) . ',' .
-				$_db->quote($asset_title) . ',' .
-				$_db->quote($asset_rules)
-			);
-			$_db->setQuery($query);
-			$insert_asset   = $_db->execute();
-
-			$query->select('*');
-			$query->from($_db->quoteName('#__assets'));
-			$query->where($_db->quoteName('name') . ' = ' . $_db->quote($asset_name));
-
-			$_db->setQuery($query);
-
-			$base_asset = $_db->loadAssoc();
-
-			if (!$move_asset_left || !$move_asset_right || !$insert_asset)
+			if (!$move_asset_left || !$move_asset_right || !$writeAsset)
 			{
 				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR'));
 			}
 			else
 			{
-				echo '<p class="bw_tablecheck_ok">' .
-					JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $table) .
-					'</p><br />';
+				if ($showMessage)
+				{
+					$writeTableName = $table;
+					if (is_array($table))
+					{
+						$writeTableName = $table['tableNameUC'];
+					}
+
+					echo '<p class="bw_tablecheck_ok">' .
+						JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName) .
+						'</p><br />';
+				}
+
 				return $base_asset;
 			}
 		}
 		catch (RuntimeException $e)
 		{
-			throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $table));
+			$tableName = $table;
+			if (is_array($table))
+			{
+				$tableName = $table['tableNameUC'];
+			}
+
+			throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $tableName));
 		}
 	}
 
 	/**
-	 * Method to write the table asset
+	 * Method to update an existing asset at the table asset
 	 *
 	 * @param   array  $asset
 	 *
@@ -3021,6 +2771,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	protected function updateBaseAsset($asset = array())
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			if (empty($asset))
@@ -3050,99 +2801,42 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get the default asset of table or BwPostman
+	 * Method to get the current default asset of table or BwPostman, based on section asset (parent)
 	 *
-	 * @param   string  $table
+	 * @param   array  $sectionAsset
 	 *
 	 * @return  array   $default_asset  default asset of table or BwPostman
 	 *
-	 * @throws  BwException
-	 *
 	 * @since    1.3.0
 	 */
-	protected function getDefaultAsset($table = 'component')
+	protected function getDefaultAsset($sectionAsset)
 	{
-		try
-		{
-			$_db = JFactory::getDbo();
-			$query = $_db->getQuery(true);
+		$default_asset = $sectionAsset;
 
-			$query->select('*');
-			$query->from($_db->quoteName('#__assets'));
+		$default_asset['parent_id'] = $sectionAsset['id'];
+		$default_asset['id']        = 0;
+		$default_asset['lft']       = $sectionAsset['rgt'];
+		$default_asset['rgt']       = $default_asset['lft'] + 1;
+		$default_asset['level']     = (int) $sectionAsset['level'] + 1;
 
-			switch ($table)
-			{
-				case '#__bwpostman_campaigns':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.campaign'));
-					break;
-				case '#__bwpostman_mailinglists':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.mailinglist'));
-					break;
-				case '#__bwpostman_newsletters':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.newsletter'));
-					break;
-				case '#__bwpostman_subscribers':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.subscriber'));
-					break;
-				case '#__bwpostman_templates':
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman.template'));
-					break;
-				case 'component':
-				default:
-						$query->where($_db->quoteName('name') . ' = ' . $_db->quote('com_bwpostman'));
-					break;
-			}
-
-			$_db->setQuery($query);
-			$default_asset = $_db->loadAssoc();
-			$default_asset['parent_id'] = $default_asset['id'];
-			$default_asset['id']        = 0;
-			$default_asset['level']     = (int) $default_asset['level'] + 1;
-
-			return $default_asset;
-		}
-		catch (RuntimeException $e)
-		{
-			throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_DATABASE_ERROR'));
-		}
+		return $default_asset;
 	}
 
-	/*
-		"core.admin":               {"7":1},
-		"core.archive":             {"7":1,"6":1},
-		"core.create":              {"7":1,"6":1},
-		"core.delete":              {"7":1,"6":1},
-		"core.edit":                {"7":1,"6":1},
-		"core.edit.own":            {"7":1,"6":1},
-		"core.edit.state":          {"7":1,"6":1},
-		"core.manage":              {"7":1,"6":1},
-		"core.restore":             {"7":1,"6":1},
-		"core.send":                {"7":1,"6":1},
-		"bwpm.view.archive":        {"7":1,"6":1},
-		"bwpm.view.campaigns":      {"7":1,"6":1},
-		"bwpm.view.maintenance":    {"7":1,"6":1},
-		"bwpm.view.manage":         {"7":1,"6":1},
-		"bwpm.view.mailinglists":   {"7":1,"6":1},
-		"bwpm.view.newsletters":    {"7":1,"6":1},
-		"bwpm.view.subscribers":    {"7":1,"6":1},
-		"bwpm.view.templates":      {"7":1,"6":1}
-	*/
-
-
 	/**
-	 * Method to write the assets collected by loop
+	 * Method to write the collected assets by loop. Also shifts left and right values by number of inserted assets.
 	 *
 	 * @param   array   $dataset            array of data sets to write
-	 * @param   int     $s                  actual value of general control variable
+	 * @param   int     $assetLoopCounter                  actual value of general control variable
 	 * @param   array   $base_asset         base asset values
-	 * @param   array   $asset_transform    transformation array of asset ids old vs. new
+	 * @param   array   $mapOldAssetIdsToNew    transformation array of asset ids old vs. new
 	 *
 	 * @throws  BwException
 	 *
 	 * @since    1.3.0
 	 */
-	protected function writeLoopAssets($dataset, $s, $base_asset, &$asset_transform)
+	protected function writeLoopAssets($dataset, $assetLoopCounter, $base_asset, &$mapOldAssetIdsToNew)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$log_options = array('test' => 'testtext');
 		$logger      = new BwLogger($log_options);
 
@@ -3150,70 +2844,52 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			$_db            = JFactory::getDbo();
 
-			$asset_colnames = array_keys($_db->getTableColumns('#__assets'));
-
+			// Prepare insert data (convert to string, remove last bracket)
 			$insert_data = implode(',', $dataset);
 			$insert_data = substr($insert_data, 1, (strlen($insert_data) - 2));
 
-			$insertDataArray = explode(',', $insert_data);
+			$query = $_db->getQuery(true);
+			$query->insert($_db->quoteName('#__assets'));
+			$query->columns($this->assetColnames);
+			$query->values($insert_data);
+			$_db->setQuery($query);
+			$logger->addEntry(new JLogEntry('Write Loop Assets Query 1: ' . (string) $query));
+			if (!$_db->execute())
+			{
+				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR'));
+			}
 
-			$assetName      = str_replace("'", "", $insertDataArray[5]);
+			// calculate number of inserted ids
+			$last_id  = $_db->insertid();
+			$num_rows = count($dataset);
+			for ($i = 0; $i < $num_rows; $i++)
+			{
+				$mapOldAssetIdsToNew[$assetLoopCounter - ($num_rows - $i)]['newAssetId'] = $last_id + $i;
+			}
 
-			$query     = $_db->getQuery(true);
-
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__assets'));
-			$query->where($_db->quoteName('name') . ' = ' . $_db->Quote($assetName));
+			// shift rgt values from all assets since rgt of table asset
+			$query = $_db->getQuery(true);
+			$query->update($_db->quoteName('#__assets'));
+			$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " + " . ($num_rows * 2) . ") ");
+			$query->where($_db->quoteName('rgt') . ' >= ' . $base_asset['rgt']);
+			$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
 
 			$_db->setQuery($query);
+			$set_asset_right = $_db->execute();
 
-			$assetId = $_db->loadResult();
+			// now shift lft values from all assets above lft of BwPostman
+			$query = $_db->getQuery(true);
+			$query->update($_db->quoteName('#__assets'));
+			$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " + " . ($num_rows * 2) . ")");
+			$query->where($_db->quoteName('lft') . ' > ' . $base_asset['rgt']);
+			$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
 
-			if ($assetId !== null)
+			$_db->setQuery($query);
+			$set_asset_left = $_db->execute();
+
+			if (!$set_asset_left || !$set_asset_right)
 			{
-				$query       = $_db->getQuery(true);
-				$query->insert($_db->quoteName('#__assets'));
-				$query->columns($asset_colnames);
-				$query->values($insert_data);
-				$_db->setQuery($query);
-				$logger->addEntry(new JLogEntry('Write Loop Assets Query 1: ' . (string) $query));
-				if (!$_db->execute())
-				{
-					throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR'));
-				}
-
-				// calculate inserted ids
-				$last_id  = $_db->insertid();
-				$num_rows = count($dataset);
-				for ($i = 0; $i < $num_rows; $i++)
-				{
-					$asset_transform[$s - ($num_rows - $i)]['new'] = $last_id + $i;
-				}
-
-				// set rgt values from all assets since rgt of table asset
-				$query = $_db->getQuery(true);
-				$query->update($_db->quoteName('#__assets'));
-				$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " + " . ($num_rows * 2) . ") ");
-				$query->where($_db->quoteName('rgt') . ' >= ' . $base_asset['rgt']);
-				$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
-
-				$_db->setQuery($query);
-				$set_asset_right = $_db->execute();
-
-				// now set lft values from all assets above lft of BwPostman
-				$query = $_db->getQuery(true);
-				$query->update($_db->quoteName('#__assets'));
-				$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " + " . ($num_rows * 2) . ")");
-				$query->where($_db->quoteName('lft') . ' > ' . $base_asset['rgt']);
-				$query->where($_db->quoteName('name') . ' NOT LIKE ' . $_db->quote('%' . $base_asset['name'] . '.%'));
-
-				$_db->setQuery($query);
-				$set_asset_left = $_db->execute();
-
-				if (!$set_asset_left || !$set_asset_right)
-				{
-					throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR'));
-				}
+				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR'));
 			}
 		}
 		catch (RuntimeException $e)
@@ -3223,7 +2899,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to write the assets collected by loop
+	 * Method to write the collected datasets by loop
 	 *
 	 * @param   array   $dataset            array of data sets to write
 	 * @param   string  $table              table name to write in
@@ -3234,6 +2910,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	protected function writeLoopDatasets($dataset, $table)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			$_db    = JFactory::getDbo();
@@ -3259,7 +2936,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get the maximum value for loop
+	 * Method to get the maximum value for item loop, depending on processed table
 	 *
 	 * @param   string  $table      table name to get value
 	 *
@@ -3298,12 +2975,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return  mixed   array $group    array of old_id and new_id or false if no group id has changed
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
-	private function getActualUserGroups($usergroups)
+	private function getCurrentUserGroups($usergroups)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$_db    = JFactory::getDbo();
 		$groups = array();
 
@@ -3384,7 +3063,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to rewrite user groups in the assets
+	 * Method to rewrite user groups in the assets. Needed, if backup file processed contains other usergroups than currently installed ones.
 	 *
 	 * @param   string $table  component or table name of the assets are to rewrite
 	 * @param   array  $assets array of the table assets
@@ -3392,12 +3071,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return  void
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	private function rewriteAssetUserGroups($table, &$assets, $groups)
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$tables  = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tables');
 		$old_ids = array();
 		foreach ($groups as $group)
@@ -3435,7 +3116,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						{
 							if ($table == 'component')
 							{
-								$assets[0] = json_encode($rules);
+								$assets[$i]['rules'] = json_encode($rules);
 							}
 							else
 							{
@@ -3456,14 +3137,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to create copies of affected tables
+	 * Method to create tmp copies of affected tables. This is a very fast method to use as restore point. If error occurred,
+	 * only delete current tables and rename tmp names to the original ones. If all went well, delete tmp tables.
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	public function createRestorePoint()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			$_db    = JFactory::getDbo();
@@ -3471,20 +3155,22 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			foreach ($tables as $table)
 			{
+				$tableNameGeneric = $table['tableNameGeneric'];
+
 				// delete eventually remaining temporary tables
-				$query = 'DROP TABLE IF EXISTS ' . $_db->quoteName($table . '_tmp');
+				$query = 'DROP TABLE IF EXISTS ' . $_db->quoteName($tableNameGeneric . '_tmp');
 
 				$_db->setQuery($query);
 				$_db->execute();
 
 				// copy affected tables to temporary tables, structure part
-				$query = 'CREATE TABLE ' . $_db->quoteName($table . '_tmp') . ' LIKE ' . $_db->quoteName($table);
+				$query = 'CREATE TABLE ' . $_db->quoteName($tableNameGeneric . '_tmp') . ' LIKE ' . $_db->quoteName($tableNameGeneric);
 
 				$_db->setQuery($query);
 				$_db->execute();
 
 				// copy affected tables to temporary tables, data set part
-				$query = 'INSERT INTO ' . $_db->quoteName($table . '_tmp') . ' SELECT * FROM ' . $_db->quoteName($table);
+				$query = 'INSERT INTO ' . $_db->quoteName($tableNameGeneric . '_tmp') . ' SELECT * FROM ' . $_db->quoteName($tableNameGeneric);
 
 				$_db->setQuery($query);
 				$_db->execute();
@@ -3497,14 +3183,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to restore copies of affected tables
+	 * Method to restore tmp copies of affected tables. This is a very fast method to use as restore point. If error occurred,
+	 * only delete current tables and rename tmp names to the original ones. If all went well, delete tmp tables.
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	public function restoreRestorePoint()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			$_db    = JFactory::getDbo();
@@ -3513,13 +3202,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			foreach ($tables as $table)
 			{
 				// delete newly created tables
-				$query = ('DROP TABLE IF EXISTS ' . $_db->quoteName($table));
+				$query = ('DROP TABLE IF EXISTS ' . $_db->quoteName($table['tableNameGeneric']));
 
 				$_db->setQuery($query);
 				$_db->execute();
 
 				// delete newly created tables
-				$query = ('RENAME TABLE ' . $_db->quoteName($table . '_tmp') . ' TO ' . $_db->quoteName($table));
+				$query = ('RENAME TABLE ' . $_db->quoteName($table["tableNameGeneric"] . '_tmp') . ' TO ' . $_db->quoteName($table["tableNameGeneric"]));
 
 				$_db->setQuery($query);
 				$_db->execute();
@@ -3537,14 +3226,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to delete copies of affected tables
+	 * Method to delete tmp copies of affected tables. This is a very fast method to use as restore point. If error occurred,
+	 * only delete current tables and rename tmp names to the original ones. If all went well, delete tmp tables.
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	protected function deleteRestorePoint()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		try
 		{
 			$_db    = JFactory::getDbo();
@@ -3552,7 +3244,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			foreach ($tables as $table)
 			{
-				$query = ('DROP TABLE IF EXISTS ' . $_db->quoteName($table . '_tmp'));
+				$query = ('DROP TABLE IF EXISTS ' . $_db->quoteName($table['tableNameGeneric'] . '_tmp'));
 
 				$_db->setQuery($query);
 				$_db->execute();
@@ -3565,50 +3257,58 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get the affected tables for restore point, but without temporary tables
+	 * Method to get the affected tables for restore point, but without temporary tables. Affected tables are not only all
+	 * tables with bwpostman in their name, but also assets and usergroups
 	 *
 	 * @return  array   $tableNames     array of affected tables
 	 *
-	 * @throws  BwException
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
 	protected function getAffectedTables()
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		// get db prefix
 		$prefix = JFactory::getDbo()->getPrefix();
 
 		// get all names of installed BwPostman tables
-		$tableNames = $this->getTableNamesFromDB();
+		$this->getTableNamesFromDB();
 
-		if(!is_array($tableNames)) {
+		if(!is_array($this->tableNames)) {
 			throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_AFFECTED_TABLES_ERROR'));
 		}
 
 		$tables = array();
-		foreach ($tableNames as $table)
+		foreach ($this->tableNames as $table)
 		{
-			if(!strpos($table, '_tmp')) {
+			if(!strpos($table['tableNameGeneric'], '_tmp')) {
 				$tables[]   = $table;
 			}
 		}
 
-		$tables[]   = $prefix . 'usergroups';
-		$tables[]   = $prefix . 'assets';
+		$tables[]['tableNameGeneric']   = $prefix . 'usergroups';
+		$tables[]['tableNameGeneric']   = $prefix . 'assets';
 
 		return $tables;
 	}
 
 	/**
-	 * @param $table_name_raw
-	 * @param $dot
+	 * Method to get the asset of a specific table, called base asset
+	 *
+	 * @param string   $table_name_raw  for which table we want to get the base asset
+	 * @param string   $dot             if dot is present, we search for a specific table, else component is meant
 	 *
 	 * @return mixed
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
 	private function getTableAssetData($table_name_raw, $dot = '.')
 	{
+		// @ToDo: Check if exceptions are handled correctly
 		$endString	= $dot;
 		$data		= array();
 
@@ -3617,6 +3317,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$endString .= '%';
 		}
 
+		// raw table name are plural, assets are singular
 		$asset_name = '%com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1) . $endString;
 
 		$_db   = JFactory::getDbo();
@@ -3642,7 +3343,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get the the table name with bwpostman prefix
+	 * Method to get the table name with bwpostman prefix
 	 *
 	 * @param   string  $table      table name to get value
 	 *
@@ -3652,7 +3353,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 */
-	protected function BwpmTableName($table)
+	protected function getBwpmTableName($table)
 	{
 		$start = strpos($table, '_', 3);
 
@@ -3666,21 +3367,1620 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * @param $tableName
+	 * @param string $tableName table name in format #__bwpostman_… (generic table name)
 	 *
-	 * @return bool|string
+	 * @return string $tableNameRaw without leading and concluding part
 	 *
 	 * @since 2.0.0
 	 */
 	private function getRawTableName($tableName)
 	{
-		$start = strrpos($tableName, '_');
-		$table_name_raw = '';
-		if ($start !== false)
+		return str_replace('#__bwpostman_', '', $tableName);
+	}
+
+	/**
+	 * Method to get all installed BwPostman usergroups by a specific table/section
+	 *
+	 * @param string $table in format UC first
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	private function getBwPostmanUsergroups($table)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db = JFactory::getDbo();
+
+		$searchValues = array("'BwPostmanAdmin'", "'BwPostmanManager'", "'BwPostmanPublisher'", "'BwPostmanEditor'");
+
+		if($table != 'component')
 		{
-			$table_name_raw = substr($tableName, $start + 1);
+			$suffixes     = array("Admin", "Publisher", "Editor");
+
+			foreach ($suffixes as $suffix)
+			{
+				$value  = 'BwPostman';
+				$value .= $table;
+				$value .= $suffix;
+				$value  = $_db->quote($value);
+
+				$searchValues[] = $value;
+			}
 		}
 
-		return $table_name_raw;
+		$query = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('title'));
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName('#__usergroups'));
+		$query->where($_db->quoteName('title') . ' IN (' . implode(',', $searchValues) . ')');
+
+		$_db->setQuery($query);
+
+		$bwpmUserGroups = $_db->loadAssocList('title');
+
+		return $bwpmUserGroups;
+	}
+
+	/**
+	 * Method
+	 *
+	 * @param array $table
+	 *
+	 * @return array
+	 *
+	 * @throws BwException
+	 * @throws Exception
+	 *
+	 * @since 2.0.0
+	 */
+	private function getBaseAssetRules($table)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		// @ToDo: Method name is misleading! Not only rules are returned, the whole asset is returned.
+		$stateAssetsRaw = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
+
+		if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
+		{
+			$asset = $this->extractBaseAssetFromState($table, $stateAssetsRaw);
+			if ($asset !== false)
+			{
+				return $asset;
+			}
+		}
+
+		$com_asset = $this->getBaseAsset('component');
+
+		$rules = $this->sectionRules;
+
+		switch ($table['tableNameUC'])
+		{
+			case 'Campaign':
+				$asset['name']  = 'com_bwpostman.campaign';
+				$asset['title'] = 'BwPostman Campaigns';
+				$asset['rules'] = new JAccessRules($rules);
+				break;
+
+			case 'Mailinglist':
+				$asset['name']  = 'com_bwpostman.mailinglist';
+				$asset['title'] = 'BwPostman Mailinglists';
+				$asset['rules'] = new JAccessRules($rules);
+				break;
+
+			case 'Newsletter':
+				$asset['name']  = 'com_bwpostman.newsletter';
+				$asset['title'] = 'BwPostman Newsletters';
+				$asset['rules'] = new JAccessRules($rules);
+				break;
+
+			case 'Subscriber':
+				$asset['name']  = 'com_bwpostman.subscriber';
+				$asset['title'] = 'BwPostman Subscribers';
+				$asset['rules'] = new JAccessRules($rules);
+				break;
+
+			case 'Template':
+				$asset['name']  = 'com_bwpostman.template';
+				$asset['title'] = 'BwPostman Templates';
+				$asset['rules'] = new JAccessRules($rules);
+				break;
+
+			case 'component':
+			default:
+				$asset['name']  = 'com_bwpostman';
+				$asset['title'] = 'BwPostman Component';
+				$asset['rules'] = $com_asset['rules'];
+				break;
+		}
+
+		return $asset;
+	}
+
+	/**
+	 * @param string $table as generic table name
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.0.0
+	 */
+	public static function checkForAsset($table)
+	{
+		$hasAsset   = false;
+
+		$_db = JFactory::getDbo();
+
+		$columns = $_db->getTableColumns($table);
+
+		if (array_key_exists('asset_id', $columns))
+		{
+			$hasAsset = true;
+		}
+
+		return $hasAsset;
+	}
+
+	/**
+	 * Method to preset rule values for all predefined bwpostman usergroups for a specific table/section
+	 *
+	 * @param array $table
+	 *
+	 * @return array $mergedRules
+	 *
+	 * @since 2.0.0
+	 */
+	private function presetSectionRules($table)
+	{
+		$tableName		= substr($table['tableNameRaw'], 0, -1) . '.';
+		$tableNameUC	= $table['tableNameUC'];
+		$bwpmUserGroups	= $this->getBwPostmanUsergroups($tableNameUC);
+
+		$sectionPublisher = 'BwPostman' . $tableNameUC . 'Publisher';
+		$sectionEditor    = 'BwPostman' . $tableNameUC . 'Editor';
+
+		// If there is no real table, component entries will be overridden. This makes it possible to assign rules in one run
+		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+		{
+			$rules['bwpm.' . $tableName . 'create'] = array(
+				$bwpmUserGroups['BwPostmanAdmin']['id']     => true,
+			);
+		}
+
+		$tmpRule = array();
+		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
+		}
+
+		if (key_exists('BwPostmanEditor', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanEditor']['id']] = false;
+		}
+
+		if (key_exists($sectionEditor, $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups[$sectionEditor]['id']] = false;
+		}
+
+		$rules['bwpm.' . $tableName . 'edit'] = $tmpRule;
+
+		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+		{
+			$rules['bwpm.' . $tableName . 'edit.own'] = array(
+				$bwpmUserGroups['BwPostmanAdmin']['id']     => true,
+			);
+		}
+
+		$tmpRule = array();
+		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
+		}
+
+		if (key_exists('BwPostmanEditor', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanEditor']['id']] = false;
+		}
+
+		if (key_exists($sectionEditor, $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups[$sectionEditor]['id']] = false;
+		}
+
+		$rules['bwpm.' . $tableName . 'edit.state'] = $tmpRule;
+
+		$tmpRule = array();
+		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
+		}
+
+		if (key_exists('BwPostmanPublisher', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanPublisher']['id']] = false;
+		}
+
+		if (key_exists($sectionPublisher, $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups[$sectionPublisher]['id']] = false;
+		}
+
+		$rules['bwpm.' . $tableName . 'archive'] = $tmpRule;
+
+		$tmpRule = array();
+		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
+		}
+
+		if (key_exists('BwPostmanPublisher', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanPublisher']['id']] = false;
+		}
+
+		if (key_exists($sectionPublisher, $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups[$sectionPublisher]['id']] = false;
+		}
+
+		$rules['bwpm.' . $tableName . 'restore'] = $tmpRule;
+
+		$tmpRule = array();
+		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
+		}
+
+		if (key_exists('BwPostmanPublisher', $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups['BwPostmanPublisher']['id']] = false;
+		}
+
+		if (key_exists($sectionPublisher, $bwpmUserGroups))
+		{
+			$tmpRule[$bwpmUserGroups[$sectionPublisher]['id']] = false;
+		}
+
+		$rules['bwpm.' . $tableName . 'delete'] = $tmpRule;
+
+		if ($tableNameUC == '_Newsletter')
+		{
+			if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
+			{
+				$rules['bwpm.newsletter.send'] = array(
+					$bwpmUserGroups['BwPostmanAdmin'] => true,
+				);
+			}
+		}
+
+		// Merge specific rules with predefined (basic) rules
+		$mergedRules = array();
+		$keys = array_keys($this->sectionRules);
+
+		foreach ($keys as $key)
+		{
+			// If predefined rule exists at specific rules, then merge
+			if (key_exists($key, $rules))
+			{
+				$mergedRules[$key] = array_replace($this->sectionRules[$key], $rules[$key]);
+			}
+			// Else take predefined rule
+			else
+			{
+				$mergedRules[$key] = $this->sectionRules[$key];
+			}
+		}
+
+		return $mergedRules;
+	}
+
+	/**
+	 * Method to initialize assets for component and sections with predefined basic rules at installation
+	 *
+	 * @param boolean $updateComponent
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.0.0
+	 */
+	public function createBaseAssets($updateComponent = false)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$this->getTableNamesFromDB();
+
+		// Get rules
+		if (!$updateComponent)
+		{
+			$this->initializeComponentAssets();
+			$rulesJson = $this->componentRules;
+		}
+		else
+		{
+			// @ToDo: get component rules from state
+			$componentAsset	= $this->getBaseAssetRules(array('tableNameUC' => 'component'));
+			$rulesJson		= $componentAsset['rules'];
+		}
+
+		$rules = new JAccessRules($rulesJson);
+
+		$this->updateComponentRules($rules);
+		$this->initializeSectionAssets();
+
+		foreach ($this->tableNames as $table)
+		{
+			$hasAsset = $this->checkForAsset($table['tableNameGeneric']);
+			if ($hasAsset)
+			{
+				$this->presetSectionRules($table);
+				$this->insertBaseAsset($table, false);
+			}
+		}
+	}
+
+	/**
+	 * Method to update component rules
+	 *
+	 * @param JAccessRules $rules
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.0.0
+	 */
+	private function updateComponentRules($rules)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$db	= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->update($db->quoteName('#__assets'));
+		$query->set($db->quoteName('rules') . " = " . $db->quote($rules));
+		$query->where($db->quoteName('name') . ' = ' . $db->Quote('com_bwpostman'));
+
+		$db->setQuery($query);
+		$writeAsset = $db->execute();
+
+		return $writeAsset;
+	}
+
+	/**
+	 * Method to initialize asset for component
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	private function initializeComponentAssets()
+	{
+		$rules	= array();
+
+		// Get all BwPostman usergroups
+		$bwpmUserGroups = $this->getAllBwpmUserGroups();
+		$joomlaGroups	= $this->getJoomlaGroups();
+		$usedGroups		= array_merge($bwpmUserGroups, $joomlaGroups);
+
+		$rules['core.admin'] = array(
+			$usedGroups['Administrator']['id']    => true,
+			$usedGroups['BwPostmanAdmin']['id']   => true,
+			$usedGroups['BwPostmanManager']['id'] => false,
+		);
+
+		$rules['core.login.admin'] = array(
+			$usedGroups['Administrator']['id']  => true,
+			$usedGroups['BwPostmanAdmin']['id'] => true,
+		);
+
+		$rules['core.manage'] = array(
+			$usedGroups['Administrator']['id'] => true,
+			$usedGroups['Manager']['id']       => true,
+		);
+
+		$rules['bwpm.create'] = array(
+			$usedGroups['Administrator']['id'] => true,
+			$usedGroups['Manager']['id']       => true,
+		);
+
+		$rules['bwpm.delete'] = array(
+			$usedGroups['Administrator']['id']                 => true,
+			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanPublisher']['id']            => false,
+			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
+			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
+			$usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
+			$usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
+			$usedGroups['BwPostmanTemplatePublisher']['id']    => false,
+		);
+
+		$rules['bwpm.edit'] = array(
+			$usedGroups['Administrator']['id']              => true,
+			$usedGroups['Manager']['id']                    => true,
+			$usedGroups['BwPostmanEditor']['id']            => false,
+			$usedGroups['BwPostmanCampaignEditor']['id']    => false,
+			$usedGroups['BwPostmanMailinglistEditor']['id'] => false,
+			$usedGroups['BwPostmanNewsletterEditor']['id']  => false,
+			$usedGroups['BwPostmanSubscriberEditor']['id']  => false,
+			$usedGroups['BwPostmanTemplateEditor']['id']    => false,
+		);
+
+		$rules['bwpm.edit.own'] = array(
+			$usedGroups['Administrator']['id']          => true,
+			$usedGroups['Manager']['id']                => true,
+		);
+
+		$rules['bwpm.edit.state'] = array(
+			$usedGroups['Administrator']['id']              => true,
+			$usedGroups['Manager']['id']                    => true,
+			$usedGroups['BwPostmanEditor']['id']            => false,
+			$usedGroups['BwPostmanCampaignEditor']['id']    => false,
+			$usedGroups['BwPostmanMailinglistEditor']['id'] => false,
+			$usedGroups['BwPostmanNewsletterEditor']['id']  => false,
+			$usedGroups['BwPostmanSubscriberEditor']['id']  => false,
+			$usedGroups['BwPostmanTemplateEditor']['id']    => false,
+		);
+
+		$rules['bwpm.archive'] = array(
+			$usedGroups['Administrator']['id']                 => true,
+			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanPublisher']['id']            => false,
+			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
+			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
+			$usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
+			$usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
+			$usedGroups['BwPostmanTemplatePublisher']['id']    => false,
+		);
+
+		$rules['bwpm.restore'] = array(
+			$usedGroups['Administrator']['id']                 => true,
+			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanPublisher']['id']            => false,
+			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
+			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
+			$usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
+			$usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
+			$usedGroups['BwPostmanTemplatePublisher']['id']    => false,
+		);
+
+		$rules['bwpm.send'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.view.archive'] = array(
+			$usedGroups['Administrator']['id']                 => true,
+			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanPublisher']['id']            => false,
+			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
+			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
+			$usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
+			$usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
+			$usedGroups['BwPostmanTemplatePublisher']['id']    => false,
+		);
+
+		$rules['bwpm.view.maintenance'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanPublisher']['id']        => false,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.view.manage'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanPublisher']['id']        => false,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.view.campaign'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.view.mailinglist'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.view.newsletter'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.view.subscriber'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.view.template'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+		);
+
+		$this->componentRules = $rules;
+	}
+
+	/**
+	 * Method to initialize assets for all sections/tables over all possible usergroups
+	 * To prevent warnings at restore, usergroups are reduced to them that are installed
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	private function initializeSectionAssets()
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		// Set all actions possible in and with sections
+		$actions = array('create', 'edit', 'edit.own', 'edit.state', 'archive', 'restore', 'delete', 'newsletter.send');
+
+		$rules = $this->componentRules;
+
+		// Get all actions of usergroups which might have to do with BwPostman and which exists at this installation
+		$reducedGroupsActions = $this->getReducedSampleRightsArray();
+
+		foreach ($this->tableNames as $table)
+		{
+			$hasAsset = $this->checkForAsset($table['tableNameGeneric']);
+			if ($hasAsset)
+			{
+				$singularTableName = substr($table['tableNameRaw'], 0, -1);
+
+				foreach ($actions as $action)
+				{
+					$rules['bwpm.' . $singularTableName . '.' . $action] = $reducedGroupsActions[$action];
+				}
+			}
+		}
+
+		$reducedRules = $this->reduceRightsForInstalledGroups($rules);
+
+		$this->sectionRules = $reducedRules;
+	}
+
+	/**
+	 * Method to get all predefined (sample) rules, reduced to installed usergroups
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	private function getReducedSampleRightsArray()
+	{
+		$bwpmUserGroups = $this->getAllBwpmUserGroups();
+		$joomlaGroups	= $this->getJoomlaGroups();
+		$usedGroups		= array_merge($bwpmUserGroups, $joomlaGroups);
+
+		$allRightsForInstalledGroups = array();
+
+		// First: Set rules for all sample BwPostman and basic Joomla! usergroups
+		$actions['create'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => true,
+			'BwPostmanEditor'           => true,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => false,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		$actions['edit'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => true,
+			'BwPostmanEditor'           => false,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => false,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		$actions['edit.own'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => true,
+			'BwPostmanEditor'           => true,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => false,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		$actions['edit.state'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => true,
+			'BwPostmanEditor'           => false,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => false,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		$actions['archive'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => false,
+			'BwPostmanEditor'           => false,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => false,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		$actions['restore'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => false,
+			'BwPostmanEditor'           => false,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => false,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		$actions['delete'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => false,
+			'BwPostmanEditor'           => false,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => false,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		$actions['newsletter.send'] = array(
+			'Administrator'             => true,
+			'Manager'                   => true,
+			'Publisher'                 => true,
+			'Editor'                    => true,
+			'BwPostmanAdmin'            => true,
+			'BwPostmanManager'          => true,
+			'BwPostmanPublisher'        => true,
+			'BwPostmanEditor'           => true,
+			'BwPostmanCampaignAdmin'    => false,
+			'BwPostmanMailinglistAdmin' => false,
+			'BwPostmanNewsletterAdmin'  => true,
+			'BwPostmanSubscriberAdmin'  => false,
+			'BwPostmanTemplateAdmin'    => false,
+		);
+
+		// Second:; Check if usergroups are installed. If so, take the rule in return array
+		// @ToDo: Also remove child groups, if noting changed related to parent
+		foreach ($actions as $action => $groupRules)
+		{
+			if (key_exists('Administrator', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['Administrator']['title']] = $groupRules['Administrator'];
+			}
+
+			if (key_exists('Manager', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['Manager']['title']] = $groupRules['Manager'];
+			}
+
+			if (key_exists('Publisher', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['Publisher']['title']] = $groupRules['Publisher'];
+			}
+
+			if (key_exists('Editor', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['Editor']['title']] = $groupRules['Editor'];
+			}
+
+			if (key_exists('BwPostmanAdmin', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanAdmin']['title']] = $groupRules['BwPostmanAdmin'];
+			}
+
+			if (key_exists('BwPostmanManager', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanManager']['title']] = $groupRules['BwPostmanManager'];
+			}
+
+			if (key_exists('BwPostmanPublisher', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanPublisher']['title']] = $groupRules['BwPostmanPublisher'];
+			}
+
+			if (key_exists('BwPostmanEditor', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanEditor']['title']] = $groupRules['BwPostmanEditor'];
+			}
+
+			if (key_exists('BwPostmanCampaignAdmin', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanCampaignAdmin']['title']] = $groupRules['BwPostmanCampaignAdmin'];
+			}
+
+			if (key_exists('BwPostmanMailinglistAdmin', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanMailinglistAdmin']['title']] = $groupRules['BwPostmanMailinglistAdmin'];
+			}
+
+			if (key_exists('BwPostmanNewsletterAdmin', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanNewsletterAdmin']['title']] = $groupRules['BwPostmanNewsletterAdmin'];
+			}
+
+			if (key_exists('BwPostmanSubscriberAdmin', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanSubscriberAdmin']['title']] = $groupRules['BwPostmanSubscriberAdmin'];
+			}
+
+			if (key_exists('BwPostmanTemplateAdmin', $usedGroups))
+			{
+				$allRightsForInstalledGroups[$action][$usedGroups['BwPostmanTemplateAdmin']['title']] = $groupRules['BwPostmanTemplateAdmin'];
+			}
+		}
+
+		$this->usedGroups = $usedGroups;
+		return $allRightsForInstalledGroups;
+	}
+
+	/**
+	 * Method to compare rules with that of parent to reduce redundant entries
+	 *
+	 * @param array $actionRules
+	 *
+	 * @return array $reducedRules
+	 *
+	 * @since 2.0.0
+	 */
+	private function reduceRightsForInstalledGroups($actionRules)
+	{
+		$groups = $this->usedGroups;
+
+		$reducedRules = array();
+
+		foreach ($actionRules as $action => $groupRules)
+		{
+			$reducedRule = array();
+			for ($i = 0; $i < count($groupRules); $i++)
+			{
+				if (key_exists('Administrator', $groupRules))
+				{
+					$reducedRule[$groups['Administrator']['id']] = $groupRules['Administrator'];
+				}
+
+				if (key_exists('Manager', $groupRules)
+					&& key_exists('Administrator', $groupRules)
+					&& $groupRules['Manager'] != $groupRules['Administrator'])
+				{
+					$reducedRule[$groups['Manager']['id']] = $groupRules['Manager'];
+				}
+
+				if (key_exists('Publisher', $groupRules)
+					&& key_exists('Manager', $groupRules)
+					&& $groupRules['Publisher'] != $groupRules['Manager'])
+				{
+					$reducedRule[$groups['Publisher']['id']] = $groupRules['Publisher'];
+				}
+
+				if (key_exists('Editor', $groupRules)
+					&& key_exists('Publisher', $groupRules)
+					&& $groupRules['Editor'] != $groupRules['Manager'])
+				{
+					$reducedRule[$groups['Editor']['id']] = $groupRules['Editor'];
+				}
+
+				if (key_exists('BwPostmanAdmin', $groupRules)
+					&& key_exists('Manager', $groupRules)
+					&& $groupRules['BwPostmanAdmin'] != $groupRules['Manager'])
+				{
+					$reducedRule[$groups['BwPostmanAdmin']['id']] = $groupRules['BwPostmanAdmin'];
+				}
+
+				if (key_exists('BwPostmanPublisher', $groupRules)
+					&& key_exists('BwPostmanAdmin', $groupRules)
+					&& $groupRules['BwPostmanPublisher'] != $groupRules['BwPostmanAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanPublisher']['id']] = $groupRules['BwPostmanPublisher'];
+				}
+
+				if (key_exists('BwPostmanEditor', $groupRules)
+					&& key_exists('BwPostmanPublisher', $groupRules)
+					&& $groupRules['BwPostmanEditor'] != $groupRules['BwPostmanPublisher'])
+				{
+					$reducedRule[$groups['BwPostmanEditor']['id']] = $groupRules['BwPostmanEditor'];
+				}
+
+				if (key_exists('BwPostmanCampaignAdmin', $groupRules)
+					&& key_exists('BwPostmanAdmin', $groupRules)
+					&& $groupRules['BwPostmanCampaignAdmin'] != $groupRules['BwPostmanAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanCampaignAdmin']['id']] = $groupRules['BwPostmanCampaignAdmin'];
+				}
+
+				if (key_exists('BwPostmanCampaignPublisher', $groupRules)
+					&& key_exists('BwPostmanCampaignAdmin', $groupRules)
+					&& $groupRules['BwPostmanCampaignPublisher'] != $groupRules['BwPostmanCampaignAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanCampaignPublisher']['id']] = $groupRules['BwPostmanCampaignPublisher'];
+				}
+
+				if (key_exists('BwPostmanCampaignEditor', $groupRules)
+					&& key_exists('BwPostmanCampaignPublisher', $groupRules)
+					&& $groupRules['BwPostmanCampaignEditor'] != $groupRules['BwPostmanCampaignPublisher'])
+				{
+					$reducedRule[$groups['BwPostmanCampaignEditor']['id']] = $groupRules['BwPostmanCampaignEditor'];
+				}
+
+				if (key_exists('BwPostmanMailinglistAdmin', $groupRules)
+					&& key_exists('BwPostmanAdmin', $groupRules)
+					&& $groupRules['BwPostmanMailinglistAdmin'] != $groupRules['BwPostmanAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanMailinglistAdmin']['id']] = $groupRules['BwPostmanMailinglistAdmin'];
+				}
+
+				if (key_exists('BwPostmanMailinglistPublisher', $groupRules)
+					&& key_exists('BwPostmanMailinglistAdmin', $groupRules)
+					&& $groupRules['BwPostmanMailinglistPublisher'] != $groupRules['BwPostmanMailinglistAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanMailinglistPublisher']['id']] = $groupRules['BwPostmanMailinglistPublisher'];
+				}
+
+				if (key_exists('BwPostmanMailinglistEditor', $groupRules)
+					&& key_exists('BwPostmanMailinglistPublisher', $groupRules)
+					&& $groupRules['BwPostmanMailinglistEditor'] != $groupRules['BwPostmanMailinglistPublisher'])
+				{
+					$reducedRule[$groups['BwPostmanMailinglistEditor']['id']] = $groupRules['BwPostmanMailinglistEditor'];
+				}
+
+				if (key_exists('BwPostmanNewsletterAdmin', $groupRules)
+					&& key_exists('BwPostmanAdmin', $groupRules)
+					&& $groupRules['BwPostmanNewsletterAdmin'] != $groupRules['BwPostmanAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanNewsletterAdmin']['id']] = $groupRules['BwPostmanNewsletterAdmin'];
+				}
+
+				if (key_exists('BwPostmanNewsletterPublisher', $groupRules)
+					&& key_exists('BwPostmanNewsletterAdmin', $groupRules)
+					&& $groupRules['BwPostmanNewsletterPublisher'] != $groupRules['BwPostmanNewsletterAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanNewsletterPublisher']['id']] = $groupRules['BwPostmanNewsletterPublisher'];
+				}
+
+				if (key_exists('BwPostmanNewsletterEditor', $groupRules)
+					&& key_exists('BwPostmanNewsletterPublisher', $groupRules)
+					&& $groupRules['BwPostmanNewsletterEditor'] != $groupRules['BwPostmanNewsletterPublisher'])
+				{
+					$reducedRule[$groups['BwPostmanNewsletterEditor']['id']] = $groupRules['BwPostmanNewsletterEditor'];
+				}
+
+				if (key_exists('BwPostmanSubscriberAdmin', $groupRules)
+					&& key_exists('BwPostmanAdmin', $groupRules)
+					&& $groupRules['BwPostmanSubscriberAdmin'] != $groupRules['BwPostmanAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanSubscriberAdmin']['id']] = $groupRules['BwPostmanSubscriberAdmin'];
+				}
+
+				if (key_exists('BwPostmanSubscriberPublisher', $groupRules)
+					&& key_exists('BwPostmanSubscriberAdmin', $groupRules)
+					&& $groupRules['BwPostmanSubscriberPublisher'] != $groupRules['BwPostmanSubscriberAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanSubscriberPublisher']['id']] = $groupRules['BwPostmanSubscriberPublisher'];
+				}
+
+				if (key_exists('BwPostmanSubscriberEditor', $groupRules)
+					&& key_exists('BwPostmanSubscriberPublisher', $groupRules)
+					&& $groupRules['BwPostmanSubscriberEditor'] != $groupRules['BwPostmanSubscriberPublisher'])
+				{
+					$reducedRule[$groups['BwPostmanSubscriberEditor']['id']] = $groupRules['BwPostmanSubscriberEditor'];
+				}
+
+				if (key_exists('BwPostmanTemplateAdmin', $groupRules)
+					&& key_exists('BwPostmanAdmin', $groupRules)
+					&& $groupRules['BwPostmanTemplateAdmin'] != $groupRules['BwPostmanAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanTemplateAdmin']['id']] = $groupRules['BwPostmanTemplateAdmin'];
+				}
+
+				if (key_exists('BwPostmanTemplatePublisher', $groupRules)
+					&& key_exists('BwPostmanTemplateAdmin', $groupRules)
+					&& $groupRules['BwPostmanTemplatePublisher'] != $groupRules['BwPostmanTemplateAdmin'])
+				{
+					$reducedRule[$groups['BwPostmanTemplatePublisher']['id']] = $groupRules['BwPostmanTemplatePublisher'];
+				}
+
+				if (key_exists('BwPostmanTemplateEditor', $groupRules)
+					&& key_exists('BwPostmanTemplatePublisher', $groupRules)
+					&& $groupRules['BwPostmanTemplateEditor'] != $groupRules['BwPostmanTemplatePublisher'])
+				{
+					$reducedRule[$groups['BwPostmanTemplateEditor']['id']] = $groupRules['BwPostmanTemplateEditor'];
+				}
+			}
+
+			$reducedRules[$action] = $reducedRule;
+		}
+
+		return $reducedRules;
+	}
+
+	/**
+	 * Method to provide space for new asset by shifting right value by 2 since parent asset
+	 * Shift is 2 to provide space for new left and right value
+	 *
+	 * @param $com_asset
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.0.0
+	 */
+	private function shiftRightAssets($com_asset)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->update($_db->quoteName('#__assets'));
+		$query->set($_db->quoteName('rgt') . " = (" . $_db->quoteName('rgt') . " + 2 ) ");
+		$query->where($_db->quoteName('rgt') . ' >= ' . $com_asset['rgt']);
+
+		$_db->setQuery($query);
+		$move_asset_right = $_db->execute();
+
+		return $move_asset_right;
+	}
+
+	/**
+	 * Method to provide space for new asset by shifting left value by 2 above parent asset
+	 * Shift is 2 to provide space for new left and right value
+	 *
+	 * @param $com_asset
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.0.0
+	 */
+	private function shiftLeftAssets($com_asset)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->update($_db->quoteName('#__assets'));
+		$query->set($_db->quoteName('lft') . " = (" . $_db->quoteName('lft') . " + 2 ) ");
+		$query->where($_db->quoteName('lft') . ' > ' . $com_asset['rgt']);
+
+		$_db->setQuery($query);
+		$move_asset_left = $_db->execute();
+
+		return $move_asset_left;
+	}
+
+	/**
+	 * Method to insert new asset at space provided by shiftRightAsset() and shiftLeftAsset()
+	 *
+	 * @param $com_asset
+	 * @param $asset
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.0.0
+	 */
+	private function insertAssetToTable($com_asset, $asset)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->insert($_db->quoteName('#__assets'));
+
+		$query->columns(
+			array(
+				$_db->quoteName('id'),
+				$_db->quoteName('parent_id'),
+				$_db->quoteName('lft'),
+				$_db->quoteName('rgt'),
+				$_db->quoteName('level'),
+				$_db->quoteName('name'),
+				$_db->quoteName('title'),
+				$_db->quoteName('rules')
+			)
+		);
+		$query->values(
+			$_db->quote(0) . ',' .
+			$_db->quote($com_asset['id']) . ',' .
+			$_db->quote((int) $com_asset['rgt']) . ',' .
+			$_db->quote((int) $com_asset['rgt'] + 1) . ',' .
+			$_db->quote((int) $com_asset['level'] + 1) . ',' .
+			$_db->quote($asset['name']) . ',' .
+			$_db->quote($asset['title']) . ',' .
+			$_db->quote($asset['rules'])
+		);
+		$_db->setQuery($query);
+		$insert_asset = $_db->execute();
+
+		return $insert_asset;
+	}
+
+	/**
+	 * Get complete asset from asset table by asset name
+	 *
+	 * @param $assetName
+	 *
+	 * @return mixed
+	 *
+	 * @since 2.0.0
+	 */
+	private function getAssetFromTableByName($assetName)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->select('*');
+		$query->from($_db->quoteName('#__assets'));
+		$query->where($_db->quoteName('name') . ' = ' . $_db->quote($assetName));
+
+		$_db->setQuery($query);
+
+		$base_asset = $_db->loadAssoc();
+
+		return $base_asset;
+	}
+
+	/**
+	 * Extracts base asset from provided array. Used for getting asset from state array.
+	 *
+	 * @param array $table
+	 * @param $stateAssetsRaw
+	 *
+	 * @return mixed array|boolean
+	 *
+	 * @since 2.0.0
+	 */
+	protected function extractBaseAssetFromState($table, $stateAssetsRaw)
+	{
+		$assetName = 'com_bwpostman';
+
+		if ($table['tableNameUC'] != 'component')
+		{
+			$assetName .= '.' . strtolower($table['tableNameUC']);
+		}
+
+		foreach ($stateAssetsRaw as $asset)
+		{
+			if (key_exists('name', $asset) && $asset['name'] == $assetName)
+			{
+				return $asset;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Method to get section asset from table by provided raw table name. Also usable for component asset
+	 *
+	 * @param $table
+	 *
+	 * @return mixed array|boolean
+	 *
+	 * @since 2.0.0
+	 */
+	protected function getBaseAssetFromTable($table)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$searchValue = 'com_bwpostman';
+
+		if ($table != 'component')
+		{
+			$searchValue .= '.' . substr($table, 0, -1);
+		}
+
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->select('*');
+		$query->from($_db->quoteName('#__assets'));
+		$query->where($_db->quoteName('name') . ' = ' . $_db->quote($searchValue));
+		$_db->setQuery($query);
+
+		$base_asset = $_db->loadAssoc();
+
+		return $base_asset;
+	}
+
+	/**
+	 * Method to get asset title for a specific table (hard coded)
+	 *
+	 * @param $table
+	 *
+	 * @return string
+	 *
+	 * @since 2,0.0
+	 */
+	protected function getAssetTitle($table)
+	{
+		$switchValue = $table;
+
+		if (is_array($table))
+		{
+			$switchValue = $table['tableNameGeneric'];
+		}
+
+		switch ($switchValue)
+		{
+			case '#__bwpostman_campaigns':
+			case '#__bwpostman_mailinglists':
+			case '#__bwpostman_templates':
+			default:
+				$title = 'title';
+				break;
+			case '#__bwpostman_newsletters':
+				$title = 'subject';
+				break;
+			case '#__bwpostman_subscribers':
+				$title = 'name';
+				break;
+		}
+
+		return $title;
+	}
+
+	/**
+	 * Method to get all BwPostman usergroups, which are used at sections with assets
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	private function getAllBwpmUserGroups()
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$bwpmUserGroups = array();
+
+		foreach ($this->tableNames as $table)
+		{
+			$hasAsset = $this->checkForAsset($table['tableNameGeneric']);
+			if ($hasAsset)
+			{
+				$bwpmUserGroups = array_merge($this->getBwPostmanUsergroups($table['tableNameUC']), $bwpmUserGroups);
+			}
+		}
+
+		return $bwpmUserGroups;
+	}
+
+	/**
+	 * Method to get all Joomla! usergroups that might be used at BwPostman
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	private function getJoomlaGroups()
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$searchValues = array("'Administrator'", "'Manager'", "'Publisher'", "'Editor'");
+
+		$db	= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('title'));
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__usergroups'));
+		$query->where($db->quoteName('title') . ' IN (' . implode(',', $searchValues) . ')');
+
+		$db->setQuery($query);
+
+		$joomlaGroups = $db->loadAssocList('title');
+
+		return $joomlaGroups;
+	}
+
+	/**
+	 * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
+	 * but not present at asset table.
+	 *
+	 * @param $tableNameGeneric
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 *
+	 * @throws Exception
+	 */
+	private function getItemsWithoutAssetId($tableNameGeneric)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$items = array();
+
+		$query = $_db->getQuery(true);
+		$query->select('*');
+		$query->from($_db->quoteName($tableNameGeneric));
+		$query->where($_db->quoteName('asset_id') . ' = ' . (int) 0);
+
+		$_db->setQuery($query);
+		try
+		{
+			$items = $_db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Method to prepare collected values (array) to a string used by insert query for multiple inserts
+	 *
+	 * @param array $default_asset   asset that holds current preset for new asset
+	 * @param $item
+	 * @param $title
+	 *
+	 * @return string
+	 *
+	 * @since 2.0.0
+	 */
+	private function writeInsertStringFromCurrentItem(&$default_asset, $item, $title)
+	{
+		$db	= JFactory::getDbo();
+
+		$curr_asset          = $default_asset;
+		$curr_asset['lft']   = $default_asset['lft'];
+		$curr_asset['rgt']   = $default_asset['rgt'];
+		$curr_asset['name']  = $default_asset['name'] . '.' . $item['id'];
+		$curr_asset['title'] = $db->escape($item[$title]);
+
+		$default_asset['lft'] += 2;
+		$default_asset['rgt'] += 2;
+
+		$dataset = '(';
+
+		foreach ($this->assetColnames as $colName)
+		{
+			$dataset .= "'" . $curr_asset[$colName] . "',";
+		}
+
+		 $dataset = substr($dataset, 0, -1) . ')';
+
+		return $dataset;
+	}
+
+	/**
+	 * Method to quote the values of an array for use as strings with database
+	 *
+	 * @param $arrayData
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	private function dbQuoteArray($arrayData)
+	{
+		$db = JFactory::getDbo();
+
+		$values = array();
+
+		foreach ($arrayData as $k => $v)
+		{
+			$values[$k] = $db->quote($v);
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Method to loop over given items without assets, prepare the insert query sting and write the query.
+	 * To prevent memory overflow or runtime exceptions, there is a (conservatively hard coded) max value for one insert task.
+	 * Also there is a mapping created to hold the newly created asset ids to update items. Remember: asset_id was 0 at item,
+	 * now there is an asset_id which the item should know about
+	 *
+	 * @param $itemsWithoutAsset
+	 * @param $table
+	 *
+	 * @return array
+	 *
+	 * @throws BwException
+	 * @throws Exception
+	 *
+	 * @since 2.0.0
+	 */
+	private function insertAssets($itemsWithoutAsset, $table)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$sectionAsset = $this->getBaseAsset($table['tableNameRaw'], true);
+		if (!is_array($sectionAsset) || !key_exists('rules', $sectionAsset))
+
+		{
+			$sectionAsset = $this->insertBaseAsset($table);
+		}
+
+		$default_asset	= $this->getDefaultAsset($sectionAsset);
+		$title			= $this->getAssetTitle($table['tableNameGeneric']);
+
+		$assetLoopCounter	= 0;
+		$asset_loop			= 0;
+		$asset_loop_max		= 1000;
+		$asset_max			= count($itemsWithoutAsset);
+
+		$mapOldAssetIdsToNew = array();
+
+		$this->assetColnames = array_keys(JFactory::getDbo()->getTableColumns('#__assets'));
+
+		// Collect assets data sets
+		foreach ($itemsWithoutAsset as $item)
+		{
+			$asset_loop++;
+
+			$mapOldAssetIdsToNew[$assetLoopCounter]['ItemId'] = $item['id'];
+
+			$dataset[] = $this->writeInsertStringFromCurrentItem($default_asset, $item, $title);
+
+			$assetLoopCounter++;
+
+			// if asset loop max is reached or last data set, insert into table
+			if (($asset_loop == $asset_loop_max) || ($assetLoopCounter == $asset_max))
+			{
+				// write collected assets to table
+				$this->writeLoopAssets($dataset, $assetLoopCounter, $sectionAsset, $mapOldAssetIdsToNew);
+
+				//reset loop values
+				$asset_loop = 0;
+				$dataset    = array();
+			}
+		}
+
+		return $mapOldAssetIdsToNew;
+	}
+
+	/**
+	 * Method to write items with newly created asset_ids
+	 * This method could be used for newly created items (e.g. at installation) as well as while restoring tables
+	 *
+	 * @param $itemsWithoutAsset
+	 * @param $tableNameGeneric
+	 * @param $mapOldAssetIdsToNew
+	 *
+	 * @since 2.0.0
+	 *
+	 * @throws BwException
+	 */
+	private function insertItems($itemsWithoutAsset, $tableNameGeneric, $mapOldAssetIdsToNew)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		/*
+		 * Import item data (can't use table bind/store, because we have IDs and Joomla sets mode to update,
+		 * if ID is set, but in empty tables there is nothing to update)
+		 */
+		$max_count			= ini_get('max_execution_time');
+		$assetLoopCounter	= 0;
+		$count				= 0;
+		$data_loop_max		= $this->getDataLoopMax($tableNameGeneric);
+		$data_max			= count($itemsWithoutAsset);
+
+		if ($count++ == $data_max)
+		{
+			$count = 0;
+			ini_set('max_execution_time', ini_get('max_execution_time'));
+		}
+
+		// If there are data sets
+		if ($data_max)
+		{
+			$dataset   = array();
+			$data_loop = 0;
+
+			// … insert data sets…
+			foreach ($itemsWithoutAsset as $item)
+			{
+				$data_loop++;
+
+				// update asset_id
+				for ($i = 0; $i < count($mapOldAssetIdsToNew); $i++)
+				{
+					$itemIdentified = array_search($item['id'], $mapOldAssetIdsToNew[$i]);
+					if ($itemIdentified !== false)
+					{
+						$item['asset_id'] = (int) $mapOldAssetIdsToNew[$i]['newAssetId'];
+						break;
+					}
+				}
+
+				if ($count++ == $max_count)
+				{
+					$count = 0;
+					ini_set('max_execution_time', ini_get('max_execution_time'));
+				}
+
+				// collect data sets until loop max
+				$values = $this->dbQuoteArray($item);
+
+				$dataset[] = '(' . implode(',', $values) . ')';
+				$assetLoopCounter++;
+
+				// if data loop max is reached or last data set, insert into table
+				if (($data_loop == $data_loop_max) || ($assetLoopCounter == $data_max))
+				{
+					// write collected data sets to table
+					$this->writeLoopDatasets($dataset, $tableNameGeneric);
+
+					// reset loop values
+					$data_loop = 0;
+					$dataset   = array();
+				}
+			} // end foreach table items
+		} // endif data sets exists
+	}
+
+	/**
+	 * Method to delete a specific BwPostman table
+	 * @param $table
+	 *
+	 * @since 2.0.0
+	 *
+	 * @throws BwException
+	 */
+	protected function deleteBwPostmanTable($table)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$db	= JFactory::getDbo();
+
+		$drop_table = $db->dropTable($table);
+		if (!$drop_table)
+		{
+			throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table));
+		}
+		else
+		{
+			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_SUCCESS', $table) . '</p>';
+		}
+	}
+
+	/**
+	 * Method to create a specific BwPostman table anew.
+	 * Used while restoring tables from backup. The create query comes from backup file, because we have to meet
+	 * BwPostman/table version appropriate to saved tables. After restoring a check of tables is automatically done by
+	 * BwPostman to ensure tables now meet installed BwPostman version.
+	 *
+	 * @param string   $table           table to create
+	 * @param array    $tablesQueries   query used for creation
+	 *
+	 * @since 2.0.0
+	 *
+	 * @throws BwException
+	 * @throws Exception
+	 */
+	protected function createBwPostmanTableAnew($table, $tablesQueries)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		if ($table != 'component')
+		{
+			$db	= JFactory::getDbo();
+
+			$query = str_replace("\n", '', $tablesQueries[$table]['queries']);
+			$db->setQuery($query);
+			$create_table = $db->execute();
+			if (!$create_table)
+			{
+				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table));
+			}
+			else
+			{
+				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_SUCCESS', $table) . '</p>';
+			}
+		}
+	}
+
+	/**
+	 * Method to prepare asset dataset for write to asset table
+	 *
+	 * @param array     $asset             asset to prepare
+	 * @param array     $asset_transform   array to hold map for item id, old asset id and newly created asset id
+	 *                                     item id is already written, old asset id is entered here
+	 * @param integer   $s                 control counter
+	 * @param array     $base_asset        base asset to get parent id
+	 * @param integer   $curr_asset_id     variable to memorize current values for rgt and lft
+	 *
+	 * @return string
+	 *
+	 * @since 2.0.0
+	 */
+	protected function prepareAssetValues($asset, &$asset_transform, $s, $base_asset, &$curr_asset_id)
+	{
+		// @ToDo: $current_asset_id is misleading. This variable holds current value for lft and rgt!
+		$db		= JFactory::getDbo();
+		$values = array();
+
+		foreach ($asset as $k => $v)
+		{
+			// rewrite parent_id, lft and rgt
+			switch ($k)
+			{
+				case 'id':
+					$asset_transform[$s]['old'] = $v;
+					$values['id']               = 0;
+					break;
+				case 'parent_id':
+					$values['parent_id'] = $base_asset['id'];
+					break;
+				case 'lft':
+					$values['lft'] = $curr_asset_id++;
+					break;
+				case 'rgt':
+					$values['rgt'] = $curr_asset_id++;
+					break;
+				default:
+					$values[$k] = $db->quote($v);
+					break;
+			}
+		}
+
+		$dataset = '(' . implode(',', $values) . ')';
+
+		return $dataset;
 	}
 }

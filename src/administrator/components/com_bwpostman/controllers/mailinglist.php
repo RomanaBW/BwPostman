@@ -63,7 +63,6 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-
 	}
 
 	/**
@@ -177,13 +176,15 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		{
 			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
+
 		if (!$allowed)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -199,7 +200,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -213,7 +215,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -248,24 +251,25 @@ class BwPostmanControllerMailinglist extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return;
 		}
 
-		$n = count ($cid);
+		$n = count($cid);
 
 		$model = $this->getModel('mailinglist');
 		if(!$model->archive($cid, 1))
 		{
 			if ($n > 1)
 			{
-				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_MLS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_MLS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 			}
 			else
 			{
-				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ML_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_ML_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 			}
 		}
 		else
@@ -278,6 +282,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 			{
 				$msg = JText::_('COM_BWPOSTMAN_ML_ARCHIVED');
 			}
+
 			$link = JRoute::_('index.php?option=com_bwpostman&view=mailinglists', false);
 
 			$this->setRedirect($link, $msg);

@@ -55,11 +55,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Newsletter id
 	 *
-	 * @var int
+	 * @var integer
 	 *
 	 * @since       0.9.1
 	 */
-	var $_id = null;
+	private $id = null;
 
 	/**
 	 * Newsletter data
@@ -68,12 +68,43 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since       0.9.1
 	 */
-	var $_data = null;
+	private $data = null;
 
-	var $_demo_mode         = 0;
-	var $_dummy_sender      = '';
-	var $_dummy_recipient   = '';
-	var $_arise_queue       = 0;
+	/**
+	 * Demo mode
+	 *
+	 * @var integer
+	 *
+	 * @since
+	 */
+	private $demo_mode         = 0;
+
+	/**
+	 * Dummy sender
+	 *
+	 * @var string
+	 *
+	 * @since
+	 */
+	private $dummy_sender      = '';
+
+	/**
+	 * Dummy recipient
+	 *
+	 * @var string
+	 *
+	 * @since
+	 */
+	private $dummy_recipient   = '';
+
+	/**
+	 * Arise queue
+	 *
+	 * @var integer
+	 *
+	 * @since
+	 */
+	private $arise_queue       = 0;
 
 	/**
 	 * Constructor
@@ -121,8 +152,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function setId($id)
 	{
-		$this->_id		= $id;
-		$this->_data	= null;
+		$this->id   = $id;
+		$this->data = null;
 	}
 
 	/**
@@ -1571,7 +1602,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @access	public
 	 *
-	 * @return 	string $content  associative array of content data
+	 * @return 	array $content  associative array of content data
 	 *
 	 * @throws Exception
 	 *
@@ -1773,7 +1804,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				if ($add_content == '-1'  && (count($nl_content) == 0))
 				{
-					$nl_content =  (array) "-1";
+					$nl_content = (array) "-1";
 				}
 
 				// only render new content, if selection from article list or template has changed
@@ -2059,7 +2090,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_templates_assets'));
+		$query->from($_db->quoteName('#__bwpostman_templates_tags'));
 		$query->where($_db->quoteName('templates_table_id') . ' = ' . (int) $template_id);
 		$_db->setQuery($query);
 		try
@@ -2923,9 +2954,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$tblSendMailQueue->recipient	= $tblSendMailQueue->email;
 
-			if ($this->_demo_mode)
+			if ($this->demo_mode)
 			{
-				$tblSendMailQueue->recipient   = $this->_dummy_recipient;
+				$tblSendMailQueue->recipient   = $this->dummy_recipient;
 			}
 		}
 
@@ -3110,10 +3141,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$sender[0]	= $tblSendMailContent->from_email;
 		$sender[1]	= $tblSendMailContent->from_name;
 
-		if ($this->_demo_mode)
+		if ($this->demo_mode)
 		{
-			$sender[0]	                        = $this->_dummy_sender;
-			$tblSendMailContent->reply_email	= $this->_dummy_sender;
+			$sender[0]	                        = $this->dummy_sender;
+			$tblSendMailContent->reply_email	= $this->dummy_sender;
 		}
 
 		$mailer->setSender($sender);
@@ -3138,7 +3169,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			define('BWPOSTMAN_NL_SENDING', 1);
 		}
 
-		if (!$this->_arise_queue)
+		if (!$this->arise_queue)
 		{
 			$res = $mailer->Send();
 			// @ToDo: $res may be boolean of JException object!
@@ -3202,10 +3233,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$params             = json_decode($test_plugin->params);
 
-			$this->_demo_mode        = $params->demo_mode_option;
-			$this->_dummy_sender     = $params->sender_address_option;
-			$this->_dummy_recipient  = $params->recipient_address_option;
-			$this->_arise_queue      = $params->arise_queue_option;
+			$this->demo_mode       = $params->demo_mode_option;
+			$this->dummy_sender    = $params->sender_address_option;
+			$this->dummy_recipient = $params->recipient_address_option;
+			$this->arise_queue     = $params->arise_queue_option;
 		}
 	}
 }
@@ -3281,7 +3312,7 @@ class contentRenderer
 	 * @param int		$template_id
 	 * @param string	$text_template_id
 	 *
-	 * @return string	content
+	 * @return array	content
 	 *
 	 * @throws Exception
 	 *

@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * #__bwpostman_sendmailcontent table handler
@@ -44,84 +44,91 @@ class BwPostmanTableSendmailcontent extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
 	 * @var int Primary Key --> 0 = Text, 1 = HTML
 	 *
 	 * @since       0.9.1
 	 */
-	var $mode = null;
+	public $mode = null;
 
 	/**
 	 * @var int Newsletter-ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $nl_id = null;
+	public $nl_id = null;
 
 	/**
 	 * @var string Sender name
 	 *
 	 * @since       0.9.1
 	 */
-	var $from_name = null;
+	public $from_name = null;
 
 	/**
 	 * @var string Sender email
 	 *
 	 * @since       0.9.1
 	 */
-	var $from_email = null;
+	public $from_email = null;
 
 	/**
 	 * @var string Subject
 	 *
 	 * @since       0.9.1
 	 */
-	var $subject = null;
+	public $subject = null;
 
 	/**
 	 * @var String Email-body
 	 *
 	 * @since       0.9.1
 	 */
-	var $body = null;
+	public $body = null;
 
 	/**
 	 * @var string CC email
 	 *
 	 * @since       0.9.1
 	 */
-	var $cc_email = null;
+	public $cc_email = null;
 
 	/**
 	 * @var string BCC email
 	 *
 	 * @since       0.9.1
 	 */
-	var $bcc_email = null;
+	public $bcc_email = null;
 
 	/**
 	 * @var string Attachment
 	 *
 	 * @since       0.9.1
 	 */
-	var $attachment = null;
+	public $attachment = null;
 
 	/**
 	 * @var string Reply-to email
 	 *
 	 * @since       0.9.1
 	 */
-	var $reply_email = null;
+	public $reply_email = null;
 
 	/**
 	 * @var string Reply-to name
 	 *
 	 * @since       0.9.1
 	 */
-	var $reply_name = null;
+	public $reply_name = null;
+
+	/**
+	 * @var int substitute links --> 0 = no, 1 = yes
+	 *
+	 * @since       2.0.0
+	 */
+	public $substitute_links = null;
 
 	/**
 	 * Constructor
@@ -203,6 +210,8 @@ class BwPostmanTableSendmailcontent extends JTable
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function store($updateNulls = false)
@@ -226,8 +235,11 @@ class BwPostmanTableSendmailcontent extends JTable
 			{
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
+
 			if ($res)
+			{
 				$this->$k = $res;
+			}
 		}
 
 		if ($this->$k)
@@ -239,9 +251,10 @@ class BwPostmanTableSendmailcontent extends JTable
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage(get_class($this).'::store failed - ' . $e->getMessage());
+				JFactory::getApplication()->enqueueMessage(get_class($this) . '::store failed - ' . $e->getMessage());
 			}
 		}
+
 		return true;
 	}
 
@@ -255,12 +268,17 @@ class BwPostmanTableSendmailcontent extends JTable
 	 *
 	 * @return mixed
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function load($keys = null, $reset = true)
 	{
 		if (!$keys)
+		{
 			return 0;
+		}
+
 		// If (empty($mode)) return 0;
 		$app	= JFactory::getApplication();
 		$mode	= $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
@@ -283,8 +301,9 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(),'error');
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return $this->bind($result);
 	}
 }

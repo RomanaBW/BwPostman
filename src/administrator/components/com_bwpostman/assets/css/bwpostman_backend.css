@@ -892,4 +892,17 @@ td.bwptable label.radiobtn {
 	display:			inline-block;
 }
 
-
+.textarea {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	line-height: 18px;
+	color: #555;
+	-moz-appearance: textfield-multiline;
+	-webkit-appearance: textarea;
+	border: 1px solid #ccc;
+	height: 71px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 4px 6px;
+	resize: both;
+	width: 206px;
+}

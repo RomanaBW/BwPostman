@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -148,6 +148,19 @@ Joomla.submitbutton = function (pressbutton)
 		}
 	}
 };
+<?php if (isset($this->substitute) && $this->substitute === true): ?>
+window.onload = function()
+{
+	var substitute =  document.getElementsByName("jform[substitute_links]");
+	for (var i=0; i < substitute.length; i++) {
+		substitute[i].onclick = function()
+		{
+			document.getElementById("add_content").value = "1";
+			document.getElementById("template_id_old").value = "";
+		};
+	}
+}
+<?php endif; ?>
 /* ]]> */
 </script>
 
@@ -175,7 +188,7 @@ Joomla.submitbutton = function (pressbutton)
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
-				<?php if (BwPostmanHelper::canSend((int)$this->item->id)) { ?>
+				<?php if (BwPostmanHelper::canSend((int) $this->item->id)) { ?>
 					<li class="closed">
 						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
@@ -197,7 +210,7 @@ Joomla.submitbutton = function (pressbutton)
 									<?php if ($field->hidden): ?>
 										<?php echo $field->input; ?>
 									<?php else: ?>
-										<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+										<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 											<div class="controls"><?php echo $field->input; ?></div></li>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -205,7 +218,7 @@ Joomla.submitbutton = function (pressbutton)
 									<?php if ($field->hidden): ?>
 										<?php echo $field->input; ?>
 									<?php else: ?>
-										<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+										<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 											<div class="controls"><?php echo $field->input; ?></div></li>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -213,7 +226,7 @@ Joomla.submitbutton = function (pressbutton)
 									<?php if ($field->hidden): ?>
 										<?php echo $field->input; ?>
 									<?php else: ?>
-										<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+										<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 											<div class="controls"><?php echo $field->input; ?></div></li>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -226,10 +239,14 @@ Joomla.submitbutton = function (pressbutton)
 									<?php if ($field->hidden): ?>
 										<li><?php echo $field->input; ?></li>
 									<?php else: ?>
-										<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+										<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 											<div class="controls"><?php echo $field->input; ?></div></li>
 									<?php endif; ?>
 								<?php endforeach; ?>
+								<?php if (isset($this->substitute) && $this->substitute === true): ?>
+									<li><?php echo $this->form->getLabel('substitute_links') ?>
+										<div class="controls"><?php echo $this->form->getInput('substitute_links'); ?></div></li>
+								<?php endif; ?>
 							</ul>
 						</div>
 						<div class="clr clearfix"></div>
@@ -239,7 +256,9 @@ Joomla.submitbutton = function (pressbutton)
 			</div>
 			<fieldset class="adminform">
 				<legend>
-					<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>"><?php echo $image; ?></span>
+					<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>">
+						<?php echo $image; ?>
+					</span>
 					<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?></span>
 				</legend>
 				<div class="well">
@@ -271,8 +290,12 @@ Joomla.submitbutton = function (pressbutton)
 								<div class="well-white well-small">
 									<fieldset class="adminform">
 										<legend>
-											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>"><?php echo $image; ?></span>
-											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?></span>
+											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+												<?php echo $image; ?>
+											</span>
+											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+												<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
+											</span>
 										</legend>
 										<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
 											<?php if ($field->hidden): ?>
@@ -282,14 +305,28 @@ Joomla.submitbutton = function (pressbutton)
 													<div class="well well-small">
 														<fieldset class="adminform">
 															<legend>
-																<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>"><?php echo $image; ?></span>
-																<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">&nbsp;<?php echo $field->label; ?></span>
+																<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">
+																	<?php echo $image; ?>
+																</span>
+																<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">
+																	<?php echo $field->label; ?>
+																</span>
 															</legend>
 															<div class="row-fluid clearfix">
 																<?php
-																	$input_field	= trim($field->input);
-																	if (!empty($input_field)) echo $field->input;
-																	else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>';
+																$input_field	= trim($field->input);
+																if (!empty($input_field))
+																{
+																	echo $field->input;
+																}
+																else
+																{
+																	echo '<div class="width-50 fltlft span6">
+																				<label class="mailinglist_label noclear checkbox">' .
+																					JText::_('COM_BWPOSTMAN_NO_DATA') .
+																				'</label>
+																			</div>';
+																}
 																?>
 															</div>
 														</fieldset>
@@ -305,7 +342,9 @@ Joomla.submitbutton = function (pressbutton)
 								<div class="well-white well-small">
 									<fieldset class="adminform usergroups">
 										<legend>
-											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>"><?php echo $image; ?></span>
+											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+												<?php echo $image; ?>
+											</span>
 											<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 										</legend>
 										<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
@@ -323,7 +362,9 @@ Joomla.submitbutton = function (pressbutton)
 					<div class="well-small">
 						<fieldset class="adminform">
 							<legend>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
 								<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
 							</legend>
 							<div class="well well-small">
@@ -342,9 +383,11 @@ Joomla.submitbutton = function (pressbutton)
 
 								<div class="width-20 fltlft span3">
 									<input style="width: 50px;" type="button" name="left" class="btn-left" value="&lt;"
-										onclick="moveSelectedOptions(document.adminForm['jform_available_content'], document.adminForm['jform_selected_content'])" />
+										onclick="moveSelectedOptions(document.adminForm['jform_available_content'],
+										document.adminForm['jform_selected_content'])" />
 									<input style="width: 50px;" type="button" name="right" class="btn-right" value="&gt;"
-										onclick="moveSelectedOptions(document.adminForm['jform_selected_content'], document.adminForm['jform_available_content'])" />
+										onclick="moveSelectedOptions(document.adminForm['jform_selected_content'],
+										document.adminForm['jform_available_content'])" />
 								</div>
 
 								<div class="width-40 fltlft span4">
@@ -353,9 +396,9 @@ Joomla.submitbutton = function (pressbutton)
 											<?php if ($field->hidden): ?>
 												<li><?php echo $field->input; ?></li>
 											<?php else: ?>
-												<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+												<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 													<?php echo $field->input; ?></li>
-												<?php endif; ?>
+											<?php endif; ?>
 										<?php endforeach; ?>
 									</ul>
 								</div>
@@ -367,28 +410,22 @@ Joomla.submitbutton = function (pressbutton)
 			</fieldset>
 			<fieldset class="adminform">
 				<?php
-/*				if (BwPostmanHelper::canAdmin()): ?>
-					<div class="fltlft">
-						<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
-						<?php echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'), 'access-rules'); ?>
-						<div class="well well-small">
-							<fieldset class="panelform">
-								<?php echo $this->form->getLabel('rules'); ?>
-								<?php echo $this->form->getInput('rules'); ?>
-							</fieldset>
-						</div>
-						<?php echo JHtml::_('sliders.end'); ?>
-					</div>
-				<?php endif;
-*/				?>
+				?>
 
 			</fieldset>
 			<div class="clr clearfix"></div>
 		</div>
 
 		<?php
-			foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('text_version_hidden') as $field) echo $field->input;
+		foreach($this->form->getFieldset('html_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('text_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
 			?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
@@ -398,7 +435,7 @@ Joomla.submitbutton = function (pressbutton)
 		<input type="hidden" name="tab" value="edit_basic" /><!-- value can change if one clicks on another tab -->
 		<input type="hidden" id="template_id_old" name="template_id_old" value="<?php echo $this->template_id_old; ?>" />
 		<input type="hidden" id="text_template_id_old" name="text_template_id_old" value="<?php echo $this->text_template_id_old; ?>" />
-		<input type="hidden" name="add_content" value="" />
+		<input type="hidden" id="add_content" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
 		<?php echo JHtml::_('form.token'); ?>

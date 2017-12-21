@@ -25,14 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 
 /**
@@ -128,11 +128,27 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	public $text_template_id_old;
 
 	/**
+	 * @var string
+	 *
+	 * @since       2.0.0
+	 */
+	public $template;
+
+	/**
+	 * @var boolean
+	 *
+	 * @since       2.0.0
+	 */
+	public $substitute;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -150,6 +166,12 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		//check for queue entries
 		$this->queueEntries = BwPostmanHelper::checkQueueEntries();
+
+		JPluginHelper::importPlugin('bwpostman');
+		if (JPluginHelper::isEnabled('bwpostman', 'substitutelinks'))
+		{
+			$this->substitute = true;
+		}
 
 		// Get input data
 		$jinput   = $app->input;
@@ -198,11 +220,13 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$app->setUserState('com_bwpostman.edit.newsletter.changeTab', false);
 
 		// Call parent display
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
 	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -230,14 +254,14 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			JToolbarHelper::save('newsletter.publish_save');
 			JToolbarHelper::apply('newsletter.publish_apply');
 			JToolbarHelper::cancel('newsletter.cancel');
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 		}
 		else
 		{
 			// For new records, check the create permission.
 			if ($isNew && BwPostmanHelper::canAdd('newsletter'))
 			{
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 				JToolbarHelper::save('newsletter.save');
 				JToolbarHelper::apply('newsletter.apply');
 
@@ -264,11 +288,13 @@ class BwPostmanViewNewsletter extends JViewLegacy
 						JToolbarHelper::apply('newsletter.apply');
 					}
 				}
+
 				// Rename the cancel button for existing items
 				JToolbarHelper::cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 			}
 		}
+
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
 		$link   = BwPostmanHTMLHelper::getForumLink();

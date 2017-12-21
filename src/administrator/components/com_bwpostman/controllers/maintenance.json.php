@@ -186,6 +186,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 		}
 
+		if (function_exists('set_time_limit'))
+		{
+			set_time_limit(0);
+		}
+
 		$app     = JFactory::getApplication();
 		try
 		{

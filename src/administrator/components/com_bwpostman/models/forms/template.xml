@@ -348,6 +348,18 @@
 			/>
 			<field name="spacer2" type="spacer" class="divider" hr="true" />
 			<field
+					name="show_title"
+					type="radio"
+					class="btn-group btn-group-yesno inputbox"
+					default="1"
+					label="COM_BWPOSTMAN_TPL_SHOW_TITLE_LABEL"
+					labelclass="control-label"
+					description="COM_BWPOSTMAN_TPL_SHOW_TITLE_DESC"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
 				name="show_author"
 				type="radio"
 				class="btn-group btn-group-yesno inputbox"
@@ -865,6 +877,131 @@
 			rows="3"
 			cols="50"
 			filter="JComponentHelper::filterText"
+		/>
+		<field
+				name="templates_table_id"
+				type="hidden"
+		/>
+		<field
+				name="tpl_tags_head"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+				name="tpl_tags_head_advanced"
+				type="textarea"
+				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
+				class="inputbox"
+				rows="3"
+				cols="50"
+				filter="raw"
+		/>
+		<field
+				name="tpl_tags_body"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+				name="tpl_tags_body_advanced"
+				type="textarea"
+				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
+				class="inputbox"
+				rows="3"
+				cols="50"
+				filter="raw"
+		/>
+		<field
+				name="tpl_tags_article"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+				name="tpl_tags_article_advanced_b"
+				type="textarea"
+				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
+				class="inputbox"
+				rows="3"
+				cols="50"
+				filter="raw"
+		/>
+		<field
+				name="tpl_tags_article_advanced_e"
+				type="textarea"
+				class="inputbox"
+				rows="3"
+				cols="50"
+				filter="raw"
+		/>
+		<field
+				name="tpl_tags_readon"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+				name="tpl_tags_readon_advanced"
+				type="textarea"
+				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
+				class="inputbox"
+				rows="3"
+				cols="50"
+				filter="raw"
+		/>
+		<field
+				name="tpl_tags_legal"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="1"
+				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+				name="tpl_tags_legal_advanced_b"
+				type="textarea"
+				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
+				class="inputbox"
+				rows="3"
+				cols="50"
+				filter="raw"
+		/>
+		<field
+				name="tpl_tags_legal_advanced_e"
+				type="textarea"
+				class="inputbox"
+				rows="3"
+				cols="50"
+				filter="raw"
 		/>
 	</fieldset>
 </form>

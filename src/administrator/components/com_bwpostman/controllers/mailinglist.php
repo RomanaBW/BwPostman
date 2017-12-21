@@ -140,6 +140,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function edit($key = null, $urlVar = null)

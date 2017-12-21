@@ -25,11 +25,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -100,13 +101,62 @@ class BwPostmanViewTemplate extends JViewLegacy
 	public $request_url;
 
 	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public $headtag = '';
+
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public $bodytag = '';
+
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public $articletagbegin = '';
+
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public $articletagend = '';
+
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public $readontag = '';
+
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public $legaltagbegin = '';
+
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public $legaltagend = '';
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
-	 * @see     fetch()
+	 * @throws Exception
 	 *
 	 * @since   1.1.0
 	 */
@@ -139,18 +189,40 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$this->addToolbar();
 
 		// call user-made html template
-		if ($this->item->tpl_id == '0')  $tpl = 'html';
+		if ($this->item->tpl_id == '0')
+		{
+			$tpl = 'html';
+		}
+
 		// call user-made text template
-		if ($this->item->tpl_id == '998') $tpl = 'text';
+		if ($this->item->tpl_id == '998')
+		{
+			$tpl = 'text';
+		}
+
 		// call standard text template
-		if ($this->item->tpl_id > '999')  $tpl = 'text_std';
+		if ($this->item->tpl_id > '999')
+		{
+			$tpl = 'text_std';
+		}
+
+		// get standard tags
+		$this->headtag = BwPostmanTplHelper::getHeadTag();
+		$this->bodytag = BwPostmanTplHelper::getBodyTag();
+		$this->articletagbegin = BwPostmanTplHelper::getArticleTagBegin();
+		$this->articletagend = BwPostmanTplHelper::getArticleTagEnd();
+		$this->readontag = BwPostmanTplHelper::getReadonTag();
+		$this->legaltagbegin = BwPostmanTplHelper::getLegalTagBegin();
+		$this->legaltagend = BwPostmanTplHelper::getLegalTagEnd();
 
 		// Call parent display
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
 	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 */
@@ -188,7 +260,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 			JToolbarHelper::apply('template.apply');
 			JToolbarHelper::cancel('template.cancel');
 
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 		}
 		else
 		{
@@ -202,27 +274,34 @@ class BwPostmanViewTemplate extends JViewLegacy
 					JToolbarHelper::apply('template.apply');
 				}
 			}
+
 			// If checked out, we can still copy
 			if (BwPostmanHelper::canAdd('template'))
 			{
 				JToolbarHelper::save2copy('template.save2copy');
 			}
+
 			// Rename the cancel button for existing items
 			JToolbarHelper::cancel('template.cancel', 'JTOOLBAR_CLOSE');
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS').':  <strong>' . $this->item->title  . '  </strong><small>[ ' . JText::_('EDIT').' ]</small> ', 'edit');
+			JToolbarHelper::title(
+				JText::_('COM_BWPOSTMAN_TPL_DETAILS') . ':  <strong>' . $this->item->title .
+				'  </strong><small>[ ' . JText::_('EDIT') . ' ]</small> ',
+				'edit'
+			);
 		}
 
 		$backlink 	= $_SERVER['HTTP_REFERER'];
 		$siteURL 	= $uri->base();
 
 		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL.'index.php?option=com_bwpostman')
+		if ($backlink == $siteURL . 'index.php?option=com_bwpostman')
 		{
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 			JToolbarHelper::back();
 		}
+
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
 

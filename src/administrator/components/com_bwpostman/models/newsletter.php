@@ -25,10 +25,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_SITE.'/components/com_content/helpers/route.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
+require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
@@ -37,7 +37,8 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 use Joomla\Registry\Registry as JRegistry;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**
  * BwPostman newsletter model
@@ -78,6 +79,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Constructor
 	 * Determines the newsletter ID
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function __construct()
@@ -86,9 +89,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$jinput	= JFactory::getApplication()->input;
 		$array	= $jinput->get('cid',  0, '');
-		$this->setId((int)$array[0]);
+		$this->setId((int) $array[0]);
 
-		$this->_processTestMode();
+		$this->processTestMode();
 	}
 
 	/**
@@ -101,7 +104,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @return	object  JTable	A database object
 	 *
 	 * @since  1.0.1
-	*/
+	 */
 	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -144,6 +147,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param   integer  $pk  The id of the primary key.
 	 *
 	 * @return  mixed    Object on success, false on failure.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -210,6 +215,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 						$usergroups[] = -(int) $mailinglist;
 					}
 				}
+
 				$item->usergroups = $usergroups;
 
 				if ($pk == 0)
@@ -289,7 +295,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				// preset HTML-Template for old newsletters
 				if ($item->id == 0)
 				{
-					$item->template_id = $this->_getStandardTpl('html');
+					$item->template_id = $this->getStandardTpl('html');
 				}
 				elseif ($item->template_id == 0)
 				{
@@ -304,15 +310,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 					if (is_null($html_tpl))
 					{
-						$html_tpl = $this->_getStandardTpl('html');
+						$html_tpl = $this->getStandardTpl('html');
 					}
+
 					$item->template_id = $html_tpl;
 				}
 
 				// preset Text-Template for old newsletters
 				if ($item->id == 0)
 				{
-					$item->text_template_id = $this->_getStandardTpl('text');
+					$item->text_template_id = $this->getStandardTpl('text');
 				}
 				elseif ($item->text_template_id == 0)
 				{
@@ -327,10 +334,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 					if (is_null($text_tpl))
 					{
-						$text_tpl = $this->_getStandardTpl('text');
+						$text_tpl = $this->getStandardTpl('text');
 					}
+
 					$item->text_template_id = $text_tpl;
 				}
+
 				// preset Old Template IDs
 				if ($item->id == 0)
 				{
@@ -348,7 +357,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data', $item);
+
+		// if plugin "substitutelinks" is active and substitute_links == '1' -> setUserState
+		if (isset($item->substitute_links) && $item->substitute_links == '1')
+		{
+			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
+		}
 
 		return $item;
 	}
@@ -360,6 +376,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return	mixed	A JForm object on success, false on failure
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -376,8 +394,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			return false;
 		}
+
 		$jinput	= JFactory::getApplication()->input;
-		$id		=  $jinput->get('id', 0);
+		$id		= $jinput->get('id', 0);
 
 		// predefine some values
 		if (!$form->getValue('from_name')) {
@@ -416,8 +435,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Check for existing newsletter.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('bwpm.newsletter.edit.state', 'com_bwpostman.newsletter.'.(int) $id))
-				|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman')))
+		if ($id != 0 && (!$user->authorise('bwpm.newsletter.edit.state', 'com_bwpostman.newsletter.' . (int) $id))
+			|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman')))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('published', 'disabled', 'true');
@@ -426,6 +445,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			// The controller has already verified this is an newsletter you can edit.
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
+
 		// Check to show created data
 		$c_date	= $form->getValue('created_date');
 		if ($c_date == '0000-00-00 00:00:00')
@@ -454,14 +474,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$form->setFieldAttribute('published', 'type', 'hidden');
 		}
+
 		return $form;
 	}
 
 	/**
-	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return	mixed	The data for the form.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -474,6 +496,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$data = $this->getItem();
 		}
+
 		return $data;
 	}
 
@@ -484,9 +507,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	string	            ID of standard template
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.2.0
 	 */
-	private function _getStandardTpl($mode	= 'html')
+	private function getStandardTpl($mode	= 'html')
 	{
 		$tpl    = new stdClass();
 		$_db	= JFactory::getDbo();
@@ -504,12 +529,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				break;
 
 			case 'text':
-					$query->select($_db->quoteName('id')  . ' AS ' . $_db->quoteName('value'));
+					$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
 					$query->from($_db->quoteName('#__bwpostman_templates'));
 					$query->where($_db->quoteName('standard') . ' = ' . $_db->quote('1'));
 					$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->quote('997'));
 				break;
 		}
+
 		$_db->setQuery($query);
 		try
 		{
@@ -519,6 +545,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			JFactory::getApplication($e->getMessage(), 'error');
 		}
+
 		return $tpl;
 	}
 
@@ -529,9 +556,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	object Newsletter with formatted pieces
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	public function getSingleNewsletter ()
+	public function getSingleNewsletter()
 	{
 		$app	= JFactory::getApplication();
 		$item	= $app->getUserState('com_bwpostman.edit.newsletter.data');
@@ -544,19 +573,27 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				$data_tmp->$key	= $value;
 			}
+
 			$item = $data_tmp;
 		}
 
 		// if old newsletter, there are no template IDs, so lets set them to the old template
 		if ($item->template_id == '0')
+		{
 			$item->template_id		= -1;
+		}
+
 		if ($item->text_template_id == '0')
+		{
 			$item->text_template_id	= -2;
+		}
 
 		if ($item->id == 0 && !empty($item->selected_content) && empty($item->html_version) && empty($item->text_version))
 		{
 			if (!is_array($item->selected_content))
+			{
 				$item->selected_content = explode(',', $item->selected_content);
+			}
 
 			$renderer	= new contentRenderer();
 			$content	= $renderer->getContent((array) $item->selected_content, $item->template_id, $item->text_template_id);
@@ -565,46 +602,59 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// force two linebreak at the end of text
-		$item->text_version = rtrim($item->text_version)."\n\n";
+		$item->text_version = rtrim($item->text_version) . "\n\n";
 
 		// Replace the links to provide the correct preview
 		$item->html_formatted	= $item->html_version;
 		$item->text_formatted	= $item->text_version;
 
 		// add template data
-		$this->_addTplTags($item->html_formatted, $item->template_id);
-		$this->_addTextTpl($item->text_formatted, $item->text_template_id);
+		$this->addTplTags($item->html_formatted, $item->template_id);
+		$this->addTextTpl($item->text_formatted, $item->text_template_id);
 
 		// Replace the intro to provide the correct preview
 		if (!empty($item->intro_headline))
+		{
 			$item->html_formatted	= str_replace('[%intro_headline%]', $item->intro_headline, $item->html_formatted);
+		}
+
 		if (!empty($item->intro_text))
+		{
 			$item->html_formatted	= str_replace('[%intro_text%]', nl2br($item->intro_text, true), $item->html_formatted);
+		}
+
 		if (!empty($item->intro_text_headline))
+		{
 			$item->text_formatted	= str_replace('[%intro_headline%]', $item->intro_text_headline, $item->text_formatted);
+		}
+
 		if (!empty($item->intro_text_text))
+		{
 			$item->text_formatted	= str_replace('[%intro_text%]', $item->intro_text_text, $item->text_formatted);
+		}
 
 		// only for old html templates
 		if ($item->template_id < 1)
 		{
 			$item->html_formatted = $item->html_formatted . '[dummy]';
 		}
-		$this->_replaceTplLinks($item->html_formatted);
-		$this->_addHtmlTags($item->html_formatted, $item->template_id);
-		$this->_addHTMLFooter($item->html_formatted, $item->template_id);
+
+		$this->replaceTplLinks($item->html_formatted);
+		$this->addHtmlTags($item->html_formatted, $item->template_id);
+		$this->addHTMLFooter($item->html_formatted, $item->template_id);
 
 		// only for old text templates
 		if ($item->text_template_id < 1)
 		{
 			$item->text_formatted = $item->text_formatted . '[dummy]';
 		}
-		$this->_replaceTextTplLinks($item->text_formatted);
-		$this->_addTextFooter($item->text_formatted, $item->text_template_id);
+
+		$this->replaceTextTplLinks($item->text_formatted);
+		$this->addTextFooter($item->text_formatted, $item->text_template_id);
 
 		// Replace the links to provide the correct preview
-		$this->_replaceLinks($item->html_formatted);
-		$this->_replaceLinks($item->text_formatted);
+		$this->replaceLinks($item->html_formatted);
+		$this->replaceLinks($item->text_formatted);
 
 		return $item;
 	}
@@ -616,19 +666,23 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	array
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	public function getSelectedContent()
 	{
 		$_db	= $this->_db;
 
-		$selected_content = $this->_selectedContent();
+		$selected_content = $this->selectedContent();
 		$selected_content_void = array ();
 
 		if ($selected_content)
 		{
 			if (!is_array($selected_content))
-				$selected_content = explode(',',$selected_content);
+			{
+				$selected_content = explode(',', $selected_content);
+			}
 
 			$selected_content_items = array();
 
@@ -652,14 +706,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				try
 				{
-					$items= $_db->loadObjectList();
+					$items = $_db->loadObjectList();
 				}
 				catch (RuntimeException $e)
 				{
 					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 
-				if(sizeof($items) > 0)
+				if(count($items) > 0)
 				{
 					if ($items[0]->category_name == '')
 					{
@@ -671,8 +725,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					}
 				}
 			}
-			return $selected_content_items;
 
+			return $selected_content_items;
 		}
 		else
 		{
@@ -689,9 +743,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	int     $itemid     menu item ID
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	static public function getItemid($view)
+	public static function getItemid($view)
 	{
 		$itemid = '';
 		$_db	= JFactory::getDbo();
@@ -699,7 +755,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$query->select($_db->quoteName('id'));
 		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view='.$view));
+		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=' . $view));
 		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 
 		try
@@ -724,6 +780,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return $itemid;
 	}
 
@@ -736,9 +793,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	mixed	language string or 0
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.7
 	 */
-	static public function getArticleLanguage($id)
+	public static function getArticleLanguage($id)
 	{
 		if (JLanguageMultilang::isEnabled())
 		{
@@ -759,6 +818,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
+
 			return $result;
 		}
 		else
@@ -776,6 +836,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function save($data)
@@ -786,19 +848,37 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
 		if (isset($data['ml_available']))
+		{
 			foreach ($data['ml_available'] as $key => $value)
+			{
 				$data['mailinglists'][] 	= $value;
+			}
+		}
+
 		if (isset($data['ml_unavailable']))
+		{
 			foreach ($data['ml_unavailable'] as $key => $value)
+			{
 				$data['mailinglists'][] 	= $value;
+			}
+		}
+
 		if (isset($data['ml_intern']))
+		{
 			foreach ($data['ml_intern'] as $key => $value)
+			{
 				$data['mailinglists'][] 	= $value;
+			}
+		}
 
 		// merge usergroups into mailinglists, single array may not exist, therefore array_merge would not give a result
 		if (isset($data['usergroups']) && !empty($data['usergroups']))
+		{
 			foreach ($data['usergroups'] as $key => $value)
+			{
 				$data['mailinglists'][] = '-' . $value;
+			}
+		}
 
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
@@ -814,7 +894,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-	// Delete all entries of the newsletter from newsletters_mailinglists table
+		// Delete all entries of the newsletter from newsletters_mailinglists table
 		if ($data['id'])
 		{
 			$query->delete($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
@@ -854,13 +934,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$query	= $_db->getQuery(true);
 
 					$query->insert($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-					$query->columns(array(
-						$_db->quoteName('newsletter_id'),
-						$_db->quoteName('mailinglist_id')
-						));
+					$query->columns(
+						array(
+							$_db->quoteName('newsletter_id'),
+							$_db->quoteName('mailinglist_id')
+						)
+					);
 						$query->values(
-						(int) $data['id'] . ',' .
-						(int) $mailinglists_value
+							(int) $data['id'] . ',' .
+							(int) $mailinglists_value
 						);
 					$_db->setQuery($query);
 					try
@@ -874,6 +956,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 			}
 		}
+
 		$dispatcher->trigger('onBwPostmanAfterNewsletterModelSave', array(&$data));
 
 		return true;
@@ -889,6 +972,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -931,7 +1016,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$query->set($_db->quoteName('archive_flag') . " = " . (int) $archive);
 			$query->set($_db->quoteName('archive_date') . " = " . $_db->quote($time, false));
 			$query->set($_db->quoteName('archived_by') . " = " . (int) $uid);
-			$query->where($_db->quoteName('id') . ' IN (' .implode(',', $cid) . ')');
+			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
 			$_db->setQuery($query);
 			try
@@ -943,6 +1028,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+
 		$app->setUserState('com_bwpostman.edit.newsletter.data', $state_data);
 		return true;
 	}
@@ -954,6 +1040,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param 	array   $cid        Newsletter-IDs
 	 *
 	 * @return 	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -988,6 +1076,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
+
 				if (is_string($newsletters_data_copy->usergroups))
 				{
 					if ($newsletters_data_copy->usergroups == '')
@@ -1049,6 +1138,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					return false;
 				}
 			}
+
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPIED'), 'message');
 			return true;
 		}
@@ -1105,6 +1195,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -1114,6 +1205,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -1137,6 +1230,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return true;
 	}
 
@@ -1149,6 +1243,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	array	$err            errors
 	 *
 	 * @return	mixed
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -1231,6 +1327,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$err[$i]['err_code'] = 305;
 			$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
 		}
+
 		return $data;
 	}
 
@@ -1245,6 +1342,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	int		$cam_id                 campaign id
 	 *
 	 * @return 	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -1270,6 +1369,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
 				$query->where($_db->quoteName('newsletter_id') . ' = ' . (int) $nl_id);
 			}
+
 			$_db->setQuery($query);
 
 			$mailinglists = $_db->loadObjectList();
@@ -1294,6 +1394,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$check_subscribers = 1;
 				}
+
 				// All subscribers
 				if ($mailinglist_id == -1)
 				{
@@ -1406,6 +1507,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 					return false;
 				}
+
 				if (!$count_subscribers)
 				{
 					$ret_msg = JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_SUBSCRIBERS');
@@ -1418,6 +1520,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return true;
 	}
 
@@ -1427,6 +1530,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @access	public
 	 *
 	 * @return 	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -1456,6 +1561,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ($testrecipients) {
 			$result = true;
 		}
+
 		return $result;
 	}
 
@@ -1466,6 +1572,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	string $content  associative array of content data
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	public function composeNl()
@@ -1473,7 +1581,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$jinput	= JFactory::getApplication()->input;
 
 		$nl_content			= $jinput->get('selected_content');
-//		$nl_subject			= $jinput->get('subject');
 		$template_id		= $jinput->get('template_id');
 		$text_template_id	= $jinput->get('text_template_id');
 		$renderer			= new contentRenderer();
@@ -1486,6 +1593,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Method to fetch the content out of the selected content items
 	 *
 	 * @access	public
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -1505,128 +1614,146 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		switch ($layout)
 		{
 			case 'edit_basic':
-					if(is_object($state_data) && property_exists($state_data, 'html_version'))
-					{
-						$form_data['html_version']	= $state_data->html_version;
-					}
-					if(is_object($state_data) && property_exists($state_data, 'text_version'))
-					{
-						$form_data['text_version']	= $state_data->text_version;
-					}
+				if(is_object($state_data) && property_exists($state_data, 'html_version'))
+				{
+					$form_data['html_version']	= $state_data->html_version;
+				}
+
+				if(is_object($state_data) && property_exists($state_data, 'text_version'))
+				{
+					$form_data['text_version']	= $state_data->text_version;
+				}
 				break;
 			case 'edit_html':
-					$form_data['attachment']		= $state_data->attachment;
-					$form_data['text_version']		= $state_data->text_version;
-					$form_data['campaign_id']		= $state_data->campaign_id;
-					$form_data['usergroups']		= $state_data->usergroups;
-					$form_data['template_id']		= $state_data->template_id;
-					$form_data['text_template_id']	= $state_data->text_template_id;
-					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
-					{
-						$form_data['ml_available']	    = $state_data->ml_available;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
-					{
-						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
-					{
-						$form_data['ml_intern']			= $state_data->ml_intern;
-					}
+				$form_data['attachment']		= $state_data->attachment;
+				$form_data['text_version']		= $state_data->text_version;
+				$form_data['campaign_id']		= $state_data->campaign_id;
+				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['template_id']		= $state_data->template_id;
+				$form_data['text_template_id']	= $state_data->text_template_id;
+				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				{
+					$form_data['ml_available']	    = $state_data->ml_available;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				{
+					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				{
+					$form_data['ml_intern']			= $state_data->ml_intern;
+				}
 				break;
 			case 'edit_text':
-					$form_data['attachment']		= $state_data->attachment;
-					$form_data['html_version']		= $state_data->html_version;
-					$form_data['campaign_id']		= $state_data->campaign_id;
-					$form_data['usergroups']		= $state_data->usergroups;
-					$form_data['template_id']		= $state_data->template_id;
-					$form_data['text_template_id']	= $state_data->text_template_id;
-					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
-					{
-						$form_data['ml_available']		= $state_data->ml_available;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
-					{
-						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
-					{
-						$form_data['ml_intern']			= $state_data->ml_intern;
-					}
+				$form_data['attachment']		= $state_data->attachment;
+				$form_data['html_version']		= $state_data->html_version;
+				$form_data['campaign_id']		= $state_data->campaign_id;
+				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['template_id']		= $state_data->template_id;
+				$form_data['text_template_id']	= $state_data->text_template_id;
+				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				{
+					$form_data['ml_available']		= $state_data->ml_available;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				{
+					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				{
+					$form_data['ml_intern']			= $state_data->ml_intern;
+				}
 				break;
 			case 'edit_preview':
-					$form_data['attachment']		= $state_data->attachment;
-					$form_data['html_version']		= $state_data->html_version;
-					$form_data['text_version']		= $state_data->text_version;
-					$form_data['campaign_id']		= $state_data->campaign_id;
-					$form_data['usergroups']		= $state_data->usergroups;
-					$form_data['template_id']		= $state_data->template_id;
-					$form_data['text_template_id']	= $state_data->text_template_id;
-					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
-					{
-						$form_data['ml_available']		= $state_data->ml_available;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
-					{
-						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
-					{
-						$form_data['ml_intern']			= $state_data->ml_intern;
-					}
+				$form_data['attachment']		= $state_data->attachment;
+				$form_data['html_version']		= $state_data->html_version;
+				$form_data['text_version']		= $state_data->text_version;
+				$form_data['campaign_id']		= $state_data->campaign_id;
+				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['template_id']		= $state_data->template_id;
+				$form_data['text_template_id']	= $state_data->text_template_id;
+				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				{
+					$form_data['ml_available']		= $state_data->ml_available;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				{
+					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				{
+					$form_data['ml_intern']			= $state_data->ml_intern;
+				}
 				break;
 			case 'edit_send':
-					$form_data['attachment']		= $state_data->attachment;
-					$form_data['html_version']		= $state_data->html_version;
-					$form_data['text_version']		= $state_data->text_version;
-					$form_data['campaign_id']		= $state_data->campaign_id;
-					$form_data['usergroups']		= $state_data->usergroups;
-					$form_data['template_id']		= $state_data->template_id;
-					$form_data['text_template_id']	= $state_data->text_template_id;
-					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
-					{
-						$form_data['ml_available']		= $state_data->ml_available;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
-					{
-						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
-					{
-						$form_data['ml_intern']			= $state_data->ml_intern;
-					}
+				$form_data['attachment']		= $state_data->attachment;
+				$form_data['html_version']		= $state_data->html_version;
+				$form_data['text_version']		= $state_data->text_version;
+				$form_data['campaign_id']		= $state_data->campaign_id;
+				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['template_id']		= $state_data->template_id;
+				$form_data['text_template_id']	= $state_data->text_template_id;
+				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				{
+					$form_data['ml_available']		= $state_data->ml_available;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				{
+					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				{
+					$form_data['ml_intern']			= $state_data->ml_intern;
+				}
 				break;
 			default:
-					$form_data['html_version']		= $state_data->html_version;
-					$form_data['text_version']		= $state_data->text_version;
-					$form_data['campaign_id']		= $state_data->campaign_id;
-					$form_data['usergroups']		= $state_data->usergroups;
-					$form_data['template_id']		= $state_data->template_id;
-					$form_data['text_template_id']	= $state_data->text_template_id;
-					if (is_object($state_data) && property_exists($state_data, 'ml_available'))
-					{
-						$form_data['ml_available']		= $state_data->ml_available;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
-					{
-						$form_data['ml_unavailable']	= $state_data->ml_unavailable;
-					}
-					if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
-					{
-						$form_data['ml_intern']			= $state_data->ml_intern;
-					}
+				$form_data['html_version']		= $state_data->html_version;
+				$form_data['text_version']		= $state_data->text_version;
+				$form_data['campaign_id']		= $state_data->campaign_id;
+				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['template_id']		= $state_data->template_id;
+				$form_data['text_template_id']	= $state_data->text_template_id;
+				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				{
+					$form_data['ml_available']		= $state_data->ml_available;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				{
+					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				{
+					$form_data['ml_intern']			= $state_data->ml_intern;
+				}
 				break;
 		}
 
 		if (array_key_exists('selected_content', $form_data) !== true)
+		{
 			$form_data['selected_content'] = array();
+		}
+
 		if (array_key_exists('usergroups', $form_data) !== true)
+		{
 			$form_data['usergroups'] = array();
+		}
 
 		// serialize selected_content
 		$nl_content	= (array) $form_data['selected_content'];
 		if (is_array($form_data['selected_content']))
+		{
 			$form_data['selected_content']	= implode(',', $form_data['selected_content']);
+		}
 
 		// some content or template has changed?
 		if ($add_content)
@@ -1636,7 +1763,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				|| ($old_text_template != $form_data['text_template_id']))
 			{
 				if ($add_content == '-1'  && (count($nl_content) == 0))
+				{
 					$nl_content =  (array) "-1";
+				}
 
 				// only render new content, if selection from article list or template has changed
 				$renderer	= new contentRenderer();
@@ -1659,6 +1788,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 						$form_data['intro_text']		= $tpl->intro['intro_text'];
 					}
 				}
+
 				if ($sel_content != $form_data['selected_content'] || $old_text_template != $form_data['text_template_id'])
 				{
 					$tpl = self::getTemplate($form_data['text_template_id']);
@@ -1672,6 +1802,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 						$form_data['intro_text_text'] = $tpl->intro['intro_text'];
 					}
 				}
+
 				$form_data['template_id_old']		= $form_data['template_id'];
 				$form_data['text_template_id_old']	= $form_data['text_template_id'];
 			}
@@ -1708,6 +1839,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	boolean	                False if there occurred an error
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	public function sendNewsletter(&$ret_msg, $recipients, $nl_id, $unconfirmed, $cam_id)
@@ -1719,7 +1852,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Prepare the newsletter content
-		$id	= $this->_addSendMailContent($nl_id);
+		$id	= $this->addSendMailContent($nl_id);
 		if ($id	=== false)
 		{
 			$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_PREPARING');
@@ -1727,8 +1860,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Prepare the recipient queue
-		if (!$this->_addSendMailQueue($ret_msg, $id, $recipients, $nl_id, $unconfirmed, $cam_id))
+		if (!$this->addSendMailQueue($ret_msg, $id, $recipients, $nl_id, $unconfirmed, $cam_id))
+		{
 			return false;
+		}
 
 		// Update the newsletters table, to prevent repeated sending of the newsletter
 		if ($recipients == 'recipients')
@@ -1736,6 +1871,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$tblNewsletters = $this->getTable('newsletters', 'BwPostmanTable');
 			$tblNewsletters->markAsSent($nl_id);
 		}
+
 		return true;
 
 		// The actual sending of the newsletter is executed only in
@@ -1769,9 +1905,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	string
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	public function _selectedContent()
+	public function selectedContent()
 	{
 		$content_ids    = '';
 		$_db	        = $this->_db;
@@ -1808,10 +1946,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @since
 	 *
 	 */
-	static private function _replaceLinks(&$text)
+	private static function replaceLinks(&$text)
 	{
 		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto|#)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
-		$text = preg_replace($search_str,' ${1}="'.JUri::root().'${2}"',$text);
+		$text = preg_replace($search_str, ' ${1}="' . JUri::root() . '${2}"', $text);
 		return true;
 	}
 
@@ -1824,6 +1962,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	object
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.1.0
 	 */
 	public function getTemplate($template_id)
@@ -1832,7 +1972,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$params = JComponentHelper::getParams('com_bwpostman');
 
 		if (is_null($template_id))
+		{
 			$template_id = '1';
+		}
 
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
@@ -1886,6 +2028,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$tpl->article['show_author'] = $params->get('newsletter_show_author');
 			$tpl->article['show_readon'] = 1;
 		}
+
 		return $tpl;
 	}
 
@@ -1899,18 +2042,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.1.0
 	 */
-	private function _addTplTags (&$text, &$id)
+	private function addTplTags (&$text, &$id)
 	{
 		$tpl = self::getTemplate($id);
 
-		$newtext	= $tpl->tpl_html."\n";
+		$newtext	= $tpl->tpl_html . "\n";
 
 		$text		= str_replace('[%content%]', $text, $newtext);
 
 		return true;
-
 	}
 
 	/**
@@ -1924,7 +2068,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since	1.1.0
 	 */
-	private function _replaceTplLinks (&$text)
+	private function replaceTplLinks (&$text)
 	{
 
 		// replace edit and unsubscribe link
@@ -1946,49 +2090,56 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	private function _addHtmlTags (&$text, &$id)
+	private function addHtmlTags (&$text, &$id)
 	{
 		$params = JComponentHelper::getParams('com_bwpostman');
 		$tpl    = self::getTemplate($id);
 
-		$newtext = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'."\n";
-		$newtext .= '<html>'."\n";
-		$newtext .= ' <head>'."\n";
-		$newtext .= '   <title>Newsletter</title>'."\n";
-		$newtext .= '   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'."\n";
-		$newtext .= '   <meta name="robots" content="noindex,nofollow" />'."\n";
-		$newtext .= '   <meta property="og:title" content="HTML Newsletter" />'."\n";
-		$newtext .= '   <style type="text/css">'."\n";
-		$newtext .= '   '.$tpl->tpl_css."\n";
+		$newtext = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
+		$newtext .= '<html>' . "\n";
+		$newtext .= ' <head>' . "\n";
+		$newtext .= '   <title>Newsletter</title>' . "\n";
+		$newtext .= '   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . "\n";
+		$newtext .= '   <meta name="robots" content="noindex,nofollow" />' . "\n";
+		$newtext .= '   <meta property="og:title" content="HTML Newsletter" />' . "\n";
+		$newtext .= '   <style type="text/css">' . "\n";
+		$newtext .= '   ' . $tpl->tpl_css . "\n";
 			// only for old newsletters with template_id < 1
 		if ($id < 1 && $params->get('use_css_for_html_newsletter') == 1)
 		{
 			$params	= JComponentHelper::getParams('com_bwpostman');
 			$css	= $params->get('css_for_html_newsletter');
-			$newtext .= '   '.$css."\n";
+			$newtext .= '   ' . $css . "\n";
 		}
+
 		if (isset($tpl->basics['custom_css']))
 		{
-			$newtext .= $tpl->basics['custom_css']."\n";
+			$newtext .= $tpl->basics['custom_css'] . "\n";
 		}
-		$newtext .= '   </style>'."\n";
-		$newtext .= ' </head>'."\n";
+
+		$newtext .= '   </style>' . "\n";
+		$newtext .= ' </head>' . "\n";
 
 		if (isset($tpl->basics['paper_bg']))
 		{
-			$newtext .= ' <body bgcolor="'. $tpl->basics['paper_bg'] .'" emb-default-bgcolor="'. $tpl->basics['paper_bg'] .'" style="background-color:'. $tpl->basics['paper_bg'] .';color:'. $tpl->basics['legal_color'] .';">'."\n";
+			$newtext .= ' <body bgcolor="' . $tpl->basics['paper_bg'] .
+				'" emb-default-bgcolor="' . $tpl->basics['paper_bg'] . '" style="background-color:' . $tpl->basics['paper_bg'] .
+				';color:' . $tpl->basics['legal_color'] . ';">' . "\n";
 		}
 		else
 		{
-			$newtext .= ' <body bgcolor="#ffffff" emb-default-bgcolor="#ffffff">'."\n";
+			$newtext .= ' <body bgcolor="#ffffff" emb-default-bgcolor="#ffffff">' . "\n";
 		}
-		$newtext .= $text."\n";
-		$newtext .= ' </body>'."\n";
-		$newtext .= '</html>'."\n";
 
- 		$text =  $newtext;
+		$newtext .= $text . "\n";
+		$newtext .= ' </body>' . "\n";
+		$newtext .= '</html>' . "\n";
+
+		$text = $newtext;
 
 		return true;
 	}
@@ -2005,7 +2156,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	private function _addHTMLFooter(&$text, &$id)
+	private function addHTMLFooter(&$text, &$id)
 	{
 		$uri  				= JUri::getInstance();
 		$params 			= JComponentHelper::getParams('com_bwpostman');
@@ -2017,20 +2168,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			// replace [%impressum%]
 			$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $uri->root()) . $impressum;
 			$replace3  = '   <table id="legal" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%;"><tbody>';
-			$replace3 .= '     <tr>'."\n";
-			$replace3 .= '       <td  id="legal_td">'."\n";
-			$replace3 .= '         <table class="one-col legal" style="border-collapse: collapse;border-spacing: 0;"><tbody>'."\n";
-			$replace3 .= '          <tr>'."\n";
-			$replace3 .= '           <td class="legal_td">'."\n";
-			$replace3 .= $replace."<br /><br />\n";
-			$replace3 .= '           </td>'."\n";
-			$replace3 .= '          </tr>'."\n";
-			$replace3 .= '         </tbody></table>'."\n";
-			$replace3 .= '       </td>'."\n";
-			$replace3 .= '     </tr>'."\n";
-			$replace3 .= '   </tbody></table>'."\n";
+			$replace3 .= '     <tr>' . "\n";
+			$replace3 .= '       <td  id="legal_td">' . "\n";
+			$replace3 .= '         <table class="one-col legal" style="border-collapse: collapse;border-spacing: 0;"><tbody>' . "\n";
+			$replace3 .= '          <tr>' . "\n";
+			$replace3 .= '           <td class="legal_td">' . "\n";
+			$replace3 .= $replace . "<br /><br />\n";
+			$replace3 .= '           </td>' . "\n";
+			$replace3 .= '          </tr>' . "\n";
+			$replace3 .= '         </tbody></table>' . "\n";
+			$replace3 .= '       </td>' . "\n";
+			$replace3 .= '     </tr>' . "\n";
+			$replace3 .= '   </tbody></table>' . "\n";
 			$text = str_replace('[%impressum%]', $replace3, $text);
 		}
+
 		// only for old newsletters with template_id < 1
 		if ($id < 1)
 		{
@@ -2051,15 +2203,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.1.0
 	 */
-	private function _addTextTpl (&$text, &$id)
+	private function addTextTpl(&$text, &$id)
 	{
 		$tpl	= self::getTemplate($id);
 
 		$text	= str_replace('[%content%]', "\n" . $text, $tpl->tpl_html);
 
-	return true;
+		return true;
 	}
 
 	/**
@@ -2071,17 +2225,23 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.1.0
 	 */
-	private function _replaceTextTplLinks (&$text)
+	private function replaceTextTplLinks(&$text)
 	{
 		$uri  				= JUri::getInstance();
 		$itemid_edit		= $this->getItemid('edit');
 
 		// replace edit and unsubscribe link
-		$replace1	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid='. $itemid_edit . '&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
+		$replace1	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') .
+			" +\n  " . $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
+			'&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
 		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid='. $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
+		$replace2	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') .
+			" +\n  " . $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
+			'&amp;view=edit&amp;editlink=[EDITLINK]';
 		$text		= str_replace('[%edit_link%]', $replace2, $text);
 
 	return true;
@@ -2097,9 +2257,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	private function _addTextFooter (&$text, &$id)
+	private function addTextFooter (&$text, &$id)
 	{
 		$uri  				= JUri::getInstance();
 		$itemid_unsubscribe	= $this->getItemid('register');
@@ -2110,13 +2272,18 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (strpos($text, '[%impressum%]') !== false)
 		{
 			// replace [%impressum%]
-			$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $uri->root(), $uri->root(), $itemid_unsubscribe, $uri->root(), $itemid_edit) . $impressum;
+			$replace	= "\n\n" .
+				JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $uri->root(), $uri->root(), $itemid_unsubscribe, $uri->root(), $itemid_edit) .
+				$impressum;
 			$text		= str_replace('[%impressum%]', $replace, $text);
 		}
+
 		// only for old newsletters with template_id < 1
 		if ($id < 1)
 		{
-			$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $uri->root(), $uri->root(), $itemid_unsubscribe, $uri->root(), $itemid_edit) . $impressum;
+			$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
+				JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $uri->root(), $uri->root(), $itemid_unsubscribe, $uri->root(), $itemid_edit) .
+				$impressum;
 			$text		= str_replace("[dummy]", $replace, $text);
 		}
 
@@ -2132,9 +2299,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	int		content ID
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	private function _getSingleContentId($nl_id)
+	private function getSingleContentId($nl_id)
 	{
 		$app	= JFactory::getApplication();
 		$result = '';
@@ -2170,17 +2339,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	int|boolean 	                int content ID, if everything went fine, else boolean false
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	private function _addSendMailContent($nl_id)
+	private function addSendMailContent($nl_id)
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 
 		$newsletters_data   = new stdClass();
-
-		// Get the SendmailContent ID
-//		$content_id = $this->_getSingleContentId($nl_id);
 
 		if ($nl_id)
 		{
@@ -2225,9 +2393,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$newsletters_data->html_version = $newsletters_data->html_version . '[dummy]';
 		}
+
 		// add template data
-		if (!$this->_addTplTags($newsletters_data->html_version, $newsletters_data->template_id))
+		if (!$this->addTplTags($newsletters_data->html_version, $newsletters_data->template_id))
+		{
 			return false;
+		}
 
 		// Replace the intro at HTML part of the newsletter
 		$replace_html_intro_head  = '';
@@ -2235,6 +2406,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$replace_html_intro_head  = $newsletters_data->intro_headline;
 		}
+
 		$newsletters_data->html_version	= str_replace('[%intro_headline%]', $replace_html_intro_head, $newsletters_data->html_version);
 
 		$replace_html_intro_text  = '';
@@ -2242,16 +2414,28 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$replace_html_intro_text   = nl2br($newsletters_data->intro_text, true);
 		}
+
 		$newsletters_data->html_version		= str_replace('[%intro_text%]', $replace_html_intro_text, $newsletters_data->html_version);
 
-		if (!$this->_replaceTplLinks($newsletters_data->html_version))
+		if (!$this->replaceTplLinks($newsletters_data->html_version))
+		{
 			return false;
-		if (!$this->_addHtmlTags($newsletters_data->html_version, $newsletters_data->template_id))
+		}
+
+		if (!$this->addHtmlTags($newsletters_data->html_version, $newsletters_data->template_id))
+		{
 			return false;
-		if (!$this->_addHTMLFooter($newsletters_data->html_version, $newsletters_data->template_id))
+		}
+
+		if (!$this->addHTMLFooter($newsletters_data->html_version, $newsletters_data->template_id))
+		{
 			return false;
-		if (!$this->_replaceLinks($newsletters_data->html_version))
+		}
+
+		if (!$this->replaceLinks($newsletters_data->html_version))
+		{
 			return false;
+		}
 
 		// Preprocess text version of the newsletter
 		// only for old text templates
@@ -2259,8 +2443,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$newsletters_data->text_version = $newsletters_data->text_version . '[dummy]';
 		}
+
 		// add template data
-		if (!$this->_addTextTpl($newsletters_data->text_version, $newsletters_data->text_template_id)) return false;
+		if (!$this->addTextTpl($newsletters_data->text_version, $newsletters_data->text_template_id))
+		{
+			return false;
+		}
 
 		// Replace the intro at text part of the newsletter
 		$replace_text_intro_head  = '';
@@ -2268,6 +2456,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$replace_text_intro_head    = $newsletters_data->intro_text_headline;
 		}
+
 		$newsletters_data->text_version	= str_replace('[%intro_headline%]', $replace_text_intro_head, $newsletters_data->text_version);
 
 		$replace_text_intro_text  = '';
@@ -2275,14 +2464,23 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$replace_text_intro_text    = $newsletters_data->intro_text_text;
 		}
+
 		$newsletters_data->text_version	= str_replace('[%intro_text%]', $replace_text_intro_text, $newsletters_data->text_version);
 
-		if (!$this->_replaceTextTplLinks($newsletters_data->text_version))
+		if (!$this->replaceTextTplLinks($newsletters_data->text_version))
+		{
 			return false;
-		if (!$this->_addTextFooter($newsletters_data->text_version, $newsletters_data->text_template_id))
+		}
+
+		if (!$this->addTextFooter($newsletters_data->text_version, $newsletters_data->text_template_id))
+		{
 			return false;
-		if (!$this->_replaceLinks($newsletters_data->text_version))
+		}
+
+		if (!$this->replaceLinks($newsletters_data->text_version))
+		{
 			return false;
+		}
 
 		// We have to create two entries in the sendmailContent table. One entry for the text mail body and one for the html mail.
 		for ($mode = 0;$mode <= 1; $mode++)
@@ -2327,16 +2525,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean False if there occurred an error
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	private function _addSendMailQueue(&$ret_msg, $content_id, $recipients, $nl_id, $send_to_unconfirmed, $cam_id)
+	private function addSendMailQueue(&$ret_msg, $content_id, $recipients, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
 		// @ToDo: Send also to unconfirmed does not work!!!!!!
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 
 		if (!$content_id)
+		{
 			return false;
+		}
 
 		if (!$nl_id)
 		{
@@ -2390,7 +2592,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$mailinglist_id = $mailinglist->mailinglist_id;
 					// Mailinglists
 					if ($mailinglist_id > 0)
+					{
 						$send_subscribers = 1;
+					}
+
 					// All subscribers
 					if ($mailinglist_id == -1)
 					{
@@ -2399,7 +2604,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					else
 					{
 						// Usergroups
-						if ((int) $mailinglist_id < 0) $users[] = -(int) $mailinglist_id;
+						if ((int) $mailinglist_id < 0)
+						{
+							$users[] = -(int) $mailinglist_id;
+						}
 					}
 				}
 
@@ -2413,6 +2621,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					{
 						$status = '1,9';
 					}
+
 					if (!$tblSendmailQueue->pushAllSubscribers($content_id, $status))
 					{
 						$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
@@ -2440,28 +2649,39 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					{
 						$status = '1';
 					}
+
 					if (!$tblSendmailQueue->pushAllFromNlId($nl_id, $content_id, $status, $cam_id)){
 						$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 						return false;
 					}
 				}
-			break;
+				break;
 
 			case "testrecipients":
 				$tblSubscribers		= $this->getTable('subscribers', 'BwPostmanTable');
 				$testrecipients		= $tblSubscribers->loadTestrecipients();
 				$tblSendmailQueue	= $this->getTable('sendmailqueue', 'BwPostmanTable');
 
-				if(sizeof($testrecipients) > 0)
+				if(count($testrecipients) > 0)
 				{
 					foreach($testrecipients AS $testrecipient)
-						$tblSendmailQueue->push($content_id, $testrecipient->emailformat, $testrecipient->email, $testrecipient->name, $testrecipient->firstname, $testrecipient->id);
+					{
+						$tblSendmailQueue->push(
+							$content_id,
+							$testrecipient->emailformat,
+							$testrecipient->email,
+							$testrecipient->name,
+							$testrecipient->firstname,
+							$testrecipient->id
+						);
+					}
 				}
 				break;
 
 			default:
 				$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 		}
+
 		return true;
 	}
 
@@ -2472,6 +2692,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param   int     $count
 	 *
 	 * @return	bool|int	true if no entries or there are entries with number trials less than 2, otherwise false
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.0.3
 	 */
@@ -2496,7 +2718,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// returns only number of entries
 		if ($count != 0)
+		{
 			return $result;
+		}
 
 		// queue not empty
 		if ($result != 0)
@@ -2512,10 +2736,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
+
 			if ($result == 0) {
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -2525,6 +2751,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param int   $mailsPerStep     number mails to send
 	 *
 	 * @return int	0 -> queue is empty, 1 -> maximum reached
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -2542,6 +2770,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				return 0;
 				break;
 			}
+
 			$sendMailCounter++;
 			if ($sendMailCounter >= $mailsPerStep)
 			{     // Maximum is reached.
@@ -2549,6 +2778,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				break;
 			}
 		}
+
 		return 0;
 	}
 
@@ -2560,6 +2790,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	bool 	true if we came from component
 	 *
 	 * @return	int		(-1, if there was an error; 0, if no mail addresses left in the queue; 1, if one Mail was send).
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -2606,6 +2838,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$tblSendMailQueue->content_id	= $tblSendMailQueue->tc_content_id;
 		}
+
 		if (property_exists($tblSendMailQueue, 'email'))
 		{
 			$tblSendMailQueue->recipient	= $tblSendMailQueue->email;
@@ -2618,13 +2851,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$app->setUserState('com_bwpostman.newsletter.send.mode', $tblSendMailQueue->mode);
 
- 		// Get Data from sendmailcontent, set attachment path
+		// Get Data from sendmailcontent, set attachment path
 		// @ToDo, store data in this class to prevent from loading every time a mail will be sent
 		$app->setUserState('bwtimecontrol.mode', $tblSendMailQueue->mode);
 		$tblSendMailContent->load($tblSendMailQueue->content_id);
 
-		if ($tblSendMailContent->attachment) $tblSendMailContent->attachment = JPATH_SITE . '/' . $tblSendMailContent->attachment;
-		if (property_exists($tblSendMailContent, 'email')) $tblSendMailContent->content_id	= $tblSendMailContent->id;
+		if ($tblSendMailContent->attachment)
+		{
+			$tblSendMailContent->attachment = JPATH_SITE . '/' . $tblSendMailContent->attachment;
+		}
+
+		if (property_exists($tblSendMailContent, 'email'))
+		{
+			$tblSendMailContent->content_id	= $tblSendMailContent->id;
+		}
 
 		// check if subscriber is archived
 		if ($tblSendMailQueue->subscriber_id)
@@ -2644,6 +2884,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				$app->enqueueMessage($e->getMessage(), 'error');
 			}
+
 			$recipients_data = $_db->loadObject();
 
 			// if subscriber is archived, delete entry from queue
@@ -2652,7 +2893,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$query->clear();
 				$query->from($_db->quoteName($table_name));
 				$query->delete();
-				$query->where($_db->quoteName('subscriber_id') .' = ' . (int) $recipients_data->id);
+				$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $recipients_data->id);
 				$_db->setQuery((string) $query);
 
 				try
@@ -2663,6 +2904,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$app->enqueueMessage($e->getMessage(), 'error');
 				}
+
 				return 1;
 			}
 		} // end archived-check
@@ -2674,8 +2916,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{ // HTML newsletter
 			if ($tblSendMailQueue->subscriber_id)
 			{ // Add footer only if it is a subscriber
-				$this->_replaceTplLinks($body);
-				$this->_addHTMLFooter($body, $footerid);
+				$this->replaceTplLinks($body);
+				$this->addHTMLFooter($body, $footerid);
 			}
 			else
 			{
@@ -2689,8 +2931,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{ // Text newsletter
 			if ($tblSendMailQueue->subscriber_id)
 			{	// Add footer only if it is a subscriber
-				$this->_replaceTextTplLinks($body);
-				$this->_addTextFooter($body, $footerid);
+				$this->replaceTextTplLinks($body);
+				$this->addTextFooter($body, $footerid);
 			}
 			else
 			{
@@ -2700,17 +2942,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$body = str_replace("[dummy]", "", $body);
 			}
 		}
-		$this->_replaceLinks($body);
+
+		$this->replaceLinks($body);
 
 		$fullname = '';
 		if ($tblSendMailQueue->firstname != '')
 		{
 			$fullname = $tblSendMailQueue->firstname . ' ';
 		}
+
 		if ($tblSendMailQueue->name != '')
 		{
 			$fullname .= $tblSendMailQueue->name;
 		}
+
 		$fullname = trim($fullname);
 
 		// Replace the dummies
@@ -2739,7 +2984,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$app->enqueueMessage($error_msg_plugin, 'error');
 			$logger->addEntry(new JLogEntry($error_msg_plugin));
 
-			$tblSendMailQueue->push($tblSendMailQueue->content_id, $tblSendMailQueue->mode, $tblSendMailQueue->recipient, $tblSendMailQueue->name, $tblSendMailQueue->firstname, $tblSendMailQueue->subscriber_id, $tblSendMailQueue->trial + 1);
+			$tblSendMailQueue->push(
+				$tblSendMailQueue->content_id,
+				$tblSendMailQueue->mode,
+				$tblSendMailQueue->recipient,
+				$tblSendMailQueue->name,
+				$tblSendMailQueue->firstname,
+				$tblSendMailQueue->subscriber_id,
+				$tblSendMailQueue->trial + 1
+			);
 			return -1;
 		}
 
@@ -2747,7 +3000,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// show queue working only wanted if sending newsletters from component backend directly, not in time controlled sending
 		if ($fromComponent)
 		{
-			echo "\n<br>{$tblSendMailQueue->recipient} (".JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL').($tblSendMailQueue->trial + 1).") ... ";
+			echo "\n<br>{$tblSendMailQueue->recipient} (" .
+				JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
 			ob_flush();
 			flush();
 		}
@@ -2767,7 +3021,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		$mailer->setSender($sender);
-		$mailer->addReplyTo($tblSendMailContent->reply_email,$tblSendMailContent->reply_name);
+		$mailer->addReplyTo($tblSendMailContent->reply_email, $tblSendMailContent->reply_name);
 		$mailer->addRecipient($tblSendMailQueue->recipient);
 		$mailer->setSubject($tblSendMailContent->subject);
 		$mailer->setBody($body);
@@ -2783,7 +3037,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Newsletter sending 1=on, 0=off
-		if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
+		if (!defined('BWPOSTMAN_NL_SENDING'))
+		{
+			define('BWPOSTMAN_NL_SENDING', 1);
+		}
 
 		if (!$this->_arise_queue)
 		{
@@ -2804,7 +3061,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				// Sendmail was successful, flag "sent" in table TcContent has to be set
 				$tblSendMailContent->setSent($tblSendMailContent->id);
 				// and test-entries may be deleted
-				if ($recipients_data->status == 9) {
+				if ($recipients_data->status == 9)
+				{
 					// @todo delete entry in content-table?
 				}
 			}
@@ -2818,9 +3076,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				// show message only wanted if sending newsletters from component backend directly, not in time controlled sending
 				echo JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING');
 			}
-			$tblSendMailQueue->push($tblSendMailQueue->content_id, $tblSendMailQueue->mode, $tblSendMailQueue->recipient, $tblSendMailQueue->name, $tblSendMailQueue->firstname, $tblSendMailQueue->subscriber_id, $tblSendMailQueue->trial + 1);
+
+			$tblSendMailQueue->push(
+				$tblSendMailQueue->content_id,
+				$tblSendMailQueue->mode,
+				$tblSendMailQueue->recipient,
+				$tblSendMailQueue->name,
+				$tblSendMailQueue->firstname,
+				$tblSendMailQueue->subscriber_id,
+				$tblSendMailQueue->trial + 1
+			);
 			return -1;
 		}
+
 		return 1;
 	}
 
@@ -2830,7 +3098,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since 2.0.0
 	 */
-	private function _processTestMode()
+	private function processTestMode()
 	{
 		$test_plugin = JPluginHelper::getPlugin('system', 'bwtestmode');
 
@@ -2866,6 +3134,8 @@ class contentRenderer
 	 * @param   string  $row
 	 *
 	 * @return 	int     $itemid     menu item ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -2917,6 +3187,8 @@ class contentRenderer
 	 *
 	 * @return string	content
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function getContent($nl_content, $template_id, $text_template_id)
@@ -2930,7 +3202,9 @@ class contentRenderer
 		// only for old templates
 		if ($template_id < 1)
 		{
-			$content['html_version'] = '<div class="outer"><div class="header"><img class="logo" src="'.JRoute::_(JUri::root().$param->get('logo')).'" alt="" /></div><div class="content-outer"><div class="content"><div class="content-inner"><p class="nl-intro">&nbsp;</p>';
+			$content['html_version'] = '<div class="outer"><div class="header"><img class="logo" src="' .
+				JRoute::_(JUri::root() . $param->get('logo')) .
+				'" alt="" /></div><div class="content-outer"><div class="content"><div class="content-inner"><p class="nl-intro">&nbsp;</p>';
 		}
 		else
 		{
@@ -2953,7 +3227,9 @@ class contentRenderer
 				{
 					$content['html_version'] .= $this->replaceContentHtmlNew($content_id, $tpl);
 					if (($tpl->article['divider'] == 1) && ($content_id != end($nl_content)))
+					{
 						$content['html_version'] = $content['html_version'] . $tpl->tpl_divider;
+					}
 				}
 				else
 				{
@@ -2964,7 +3240,9 @@ class contentRenderer
 				{
 					$content['text_version'] .= $this->replaceContentTextNew($content_id, $text_tpl);
 					if (($text_tpl->article['divider'] == 1) && ($content_id != end($nl_content)))
+					{
 						$content['text_version'] = $content['text_version'] . $text_tpl->tpl_divider . "\n\n";
+					}
 				}
 				else
 				{
@@ -2980,7 +3258,6 @@ class contentRenderer
 		}
 
 		return $content;
-
 	}
 
 	/**
@@ -2989,6 +3266,8 @@ class contentRenderer
 	 * @param int   $id
 	 *
 	 * @return mixed
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -3009,11 +3288,37 @@ class contentRenderer
 		$query->select($_db->quoteName('s') . '.' . $_db->quoteName('published') . ' AS ' . $_db->quoteName('sec_pub'));
 		$query->select($_db->quoteName('cc') . '.' . $_db->quoteName('published') . ' AS ' . $_db->quoteName('cat_pub'));
 		$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('a'));
-		$query->join('LEFT', $_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc') . ' ON ' . $_db->quoteName('cc') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('catid'));
-		$query->join('LEFT', $_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('s') . ' ON ' . $_db->quoteName('s') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('cc') . '.' . $_db->quoteName('parent_id') . 'AND' . $_db->quoteName('s') . '.' . $_db->quoteName('extension') . ' = ' . $_db->quote('com_content'));
-		$query->join('LEFT', $_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u') . ' ON ' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('created_by'));
-		$query->join('LEFT', $_db->quoteName('#__content_rating') . ' AS ' . $_db->quoteName('v') . ' ON ' . $_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('v') . '.' . $_db->quoteName('content_id'));
-		$query->join('LEFT', $_db->quoteName('#__usergroups') . ' AS ' . $_db->quoteName('g') . ' ON ' . $_db->quoteName('a') . '.' . $_db->quoteName('access') . ' = ' . $_db->quoteName('g') . '.' . $_db->quoteName('id'));
+		$query->join(
+			'LEFT',
+			$_db->quoteName('#__categories') .
+			' AS ' . $_db->quoteName('cc') .
+			' ON ' . $_db->quoteName('cc') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('catid')
+		);
+		$query->join(
+			'LEFT',
+			$_db->quoteName('#__categories') .
+			' AS ' . $_db->quoteName('s') .
+			' ON ' . $_db->quoteName('s') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('cc') . '.' . $_db->quoteName('parent_id') .
+			' AND ' . $_db->quoteName('s') . '.' . $_db->quoteName('extension') . ' = ' . $_db->quote('com_content')
+		);
+		$query->join(
+			'LEFT',
+			$_db->quoteName('#__users') .
+			' AS ' . $_db->quoteName('u') .
+			' ON ' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('created_by')
+		);
+		$query->join(
+			'LEFT',
+			$_db->quoteName('#__content_rating') .
+			' AS ' . $_db->quoteName('v') .
+			' ON ' . $_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('v') . '.' . $_db->quoteName('content_id')
+		);
+		$query->join(
+			'LEFT',
+			$_db->quoteName('#__usergroups') .
+			' AS ' . $_db->quoteName('g') .
+			' ON ' . $_db->quoteName('a') . '.' . $_db->quoteName('access') . ' = ' . $_db->quoteName('g') . '.' . $_db->quoteName('id')
+		);
 		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . (int) $id);
 
 		$_db->setQuery($query);
@@ -3062,6 +3367,8 @@ class contentRenderer
 	 *
 	 * @return string
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function replaceContentHtml($id, $tpl)
@@ -3084,9 +3391,9 @@ class contentRenderer
 				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
 				$link		= JRoute::_(JUri::base());
 				if ($_Itemid)
+				{
 					$link .= $_Itemid;
-
-//				$app->triggerEvent('onPrepareContent', array(&$row, &$params, 0), true);
+				}
 
 				$intro_text = $row->text;
 
@@ -3103,11 +3410,15 @@ class contentRenderer
 
 				// Displays Created Date
 				if ($tpl->article['show_createdate'] != 0)
+				{
 					$html_content->CreateDate($row, $params);
+				}
 
 				// Displays Author Name
 				if ($tpl->article['show_author'] != 0)
+				{
 					$html_content->Author($row, $params);
+				}
 
 				// Displays Urls
 				$content .= ob_get_contents();
@@ -3121,7 +3432,7 @@ class contentRenderer
 				{
 					$content	.= '<div class="read_on">'
 								. '		<p>'
-								. '		<a href="'. str_replace('administrator/', '', $link) . '" class="readon">'
+								. '		<a href="' . str_replace('administrator/', '', $link) . '" class="readon">'
 								. JText::_('READ_MORE')
 								. '		</a><br/><br/>'
 								. '		</p>'
@@ -3131,6 +3442,7 @@ class contentRenderer
 				return stripslashes($content);
 			}
 		}
+
 		return JText::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
 	}
 
@@ -3141,6 +3453,8 @@ class contentRenderer
 	 * @param $tpl
 	 *
 	 * @return string
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.1.0
 	 */
@@ -3158,7 +3472,7 @@ class contentRenderer
 			if ($id == '-1')
 			{
 				$content	.= $tpl->tpl_article;
-				$content	= preg_replace( "/<table id=\"readon\".*?<\/table>/is", "", $content);
+				$content	= preg_replace("/<table id=\"readon\".*?<\/table>/is", "", $content);
 				$content	= str_replace('[%content_title%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_TITLE'), $content);
 				$content	= str_replace('[%content_text%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT'), $content);
 				return stripslashes($content);
@@ -3173,9 +3487,9 @@ class contentRenderer
 				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
 				$link		= JRoute::_(JUri::base());
 				if ($_Itemid)
+				{
 					$link .= $_Itemid;
-
-//				$app->triggerEvent('onPrepareContent', array(&$row, &$params, 0), true);
+				}
 
 				$intro_text = $row->text;
 
@@ -3198,14 +3512,20 @@ class contentRenderer
 						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
 						$content_text .= '&nbsp;&nbsp;&nbsp;&nbsp;</small></span>';
 					}
+
 					if ($tpl->article['show_author'] == 1)
 					{
 						$content_text .= '<span><small>';
-						$content_text .= JText::sprintf('COM_CONTENT_WRITTEN_BY', ($row->created_by_alias ? $row->created_by_alias : $row->created_by));
+						$content_text .= JText::sprintf(
+							'COM_CONTENT_WRITTEN_BY',
+							($row->created_by_alias ? $row->created_by_alias : $row->created_by)
+						);
 						$content_text .= '</small></span>';
 					}
+
 					$content_text .= '</p>';
 				}
+
 				$content_text	.= $intro_text;
 				$content  		= str_replace('[%content_text%]', $content_text, $content);
 				$content  		= str_replace('[%readon_href%]', $link, $content);
@@ -3214,6 +3534,7 @@ class contentRenderer
 				return stripslashes($content);
 			}
 		}
+
 		return JText::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
 	}
 
@@ -3224,6 +3545,8 @@ class contentRenderer
 	 * @param object    $text_tpl
 	 *
 	 * @return string
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.1.0
 	 */
@@ -3242,9 +3565,9 @@ class contentRenderer
 				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
 				$link		= JRoute::_(JUri::base());
 				if ($_Itemid)
+				{
 					$link .= $_Itemid;
-
-//				$app->triggerEvent('onPrepareContent', array(&$row, &$params, 0), true);
+				}
 
 				$intro_text = $row->text;
 				$intro_text = strip_tags($intro_text);
@@ -3259,7 +3582,7 @@ class contentRenderer
 				$link = str_replace('administrator/', '', $link);
 
 				$content		= $text_tpl->tpl_article;
-				$content		= str_replace('[%content_title%]', $row->title , $content);
+				$content		= str_replace('[%content_title%]', $row->title, $content);
 				$content_text	= "\n";
 				if (($text_tpl->article['show_createdate'] == 1) || ($text_tpl->article['show_author'] == 1))
 				{
@@ -3268,20 +3591,27 @@ class contentRenderer
 						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
 						$content_text .= '    ';
 					}
+
 					if ($text_tpl->article['show_author'] == 1)
 					{
-						$content_text .= JText::sprintf('COM_CONTENT_WRITTEN_BY', ($row->created_by_alias ? $row->created_by_alias : $row->created_by));
+						$content_text .= JText::sprintf(
+							'COM_CONTENT_WRITTEN_BY',
+							($row->created_by_alias ? $row->created_by_alias : $row->created_by)
+						);
 					}
+
 					$content_text .= "\n\n";
 				}
+
 				$content_text	.= $intro_text;
-				$content		= str_replace('[%content_text%]', $content_text."\n", $content);
-				$content		= str_replace('[%readon_href%]', $link."\n", $content);
+				$content		= str_replace('[%content_text%]', $content_text . "\n", $content);
+				$content		= str_replace('[%readon_href%]', $link . "\n", $content);
 				$content		= str_replace('[%readon_text%]', JText::_('READ_MORE'), $content);
 
 				return stripslashes($content);
 			}
 		}
+
 		return '';
 	}
 
@@ -3292,6 +3622,8 @@ class contentRenderer
 	 * @param object    $text_tpl
 	 *
 	 * @return string
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -3310,9 +3642,9 @@ class contentRenderer
 				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
 				$link		= JRoute::_(JUri::base());
 				if ($_Itemid)
+				{
 					$link .= $_Itemid;
-
-//				$app->triggerEvent('onPrepareContent', array(&$row, &$params, 0), true);
+				}
 
 				$intro_text = $row->text;
 				$intro_text = strip_tags($intro_text);
@@ -3334,20 +3666,30 @@ class contentRenderer
 						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
 						$content_text .= '    ';
 					}
+
 					if ($text_tpl->article['show_author'] == 1)
 					{
-						$content_text .= JText::sprintf('COM_CONTENT_WRITTEN_BY', ($row->created_by_alias ? $row->created_by_alias : $row->created_by));
+						$content_text .= JText::sprintf(
+							'COM_CONTENT_WRITTEN_BY',
+							($row->created_by_alias ? $row->created_by_alias : $row->created_by)
+						);
 					}
+
 					$content_text .= "\n\n";
 				}
+
 				$intro_text = $content_text . $intro_text;
 
 				$content .= "\n\n" . $intro_text . "\n\n";
-				if ($text_tpl->article['show_readon'] == 1) $content .= JText::_('READ_MORE') . ": \n". str_replace('administrator/', '', $link) . "\n\n";
+				if ($text_tpl->article['show_readon'] == 1)
+				{
+					$content .= JText::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
+				}
 
 				return stripslashes($content);
 			}
 		}
+
 		return '';
 	}
 
@@ -3360,8 +3702,8 @@ class contentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	private function unHTMLSpecialCharsAll($text) {
-
+	private function unHTMLSpecialCharsAll($text)
+	{
 		$text = $this->deHTMLEntities($text);
 
 		return $text;
@@ -3376,7 +3718,8 @@ class contentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	private function deHTMLEntities($text) {
+	private function deHTMLEntities($text)
+	{
 		$search = array(
 		"'&(quot|#34);'i",
 		"'&(amp|#38);'i",
@@ -3454,7 +3797,9 @@ class HTML_content
 					class="contentpagetitle<?php echo $params->get('pageclass_sfx'); ?>">
 								<?php echo $row->title;?></a></h2>
 								<?php
-							} else {
+			}
+			else
+			{
 								?>
 				<h2><?php echo $row->title;?></h2>
 				<?php
@@ -3492,7 +3837,11 @@ class HTML_content
 	public function Author(&$row)
 	{
 		?>
-		<span class="created_by"><small><?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY',($row->created_by_alias ? $row->created_by_alias : $row->created_by)); ?></small></span>
+		<span class="created_by">
+			<small>
+				<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', ($row->created_by_alias ? $row->created_by_alias : $row->created_by)); ?>
+			</small>
+		</span>
 		<?php
 	}
 
@@ -3516,7 +3865,9 @@ class HTML_content
 		}
 
 		?>
-		<span class="createdate"><small><?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date); ?>&nbsp;&nbsp;&nbsp;&nbsp;</small></span>
+		<span class="createdate">
+			<small><?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date); ?>&nbsp;&nbsp;&nbsp;&nbsp;</small>
+		</span>
 		<?php
 	}
 
@@ -3536,7 +3887,7 @@ class HTML_content
 		{
 			?>
 			<p class="row_url"><a
-				href="http://<?php echo $row->urls ; ?>" target="_blank"> <?php echo $row->urls; ?></a>
+				href="http://<?php echo $row->urls; ?>" target="_blank"> <?php echo $row->urls; ?></a>
 			</p>
 			<?php
 		}
@@ -3580,7 +3931,7 @@ class HTML_content
 	 *
 	 * @since       0.9.1
 	 */
-	public function ReadMore (&$row, &$params)
+	public function ReadMore(&$row, &$params)
 	{
 		if ($params->get('readmore'))
 		{

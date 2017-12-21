@@ -53,7 +53,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 			<div id="j-main-container">
 		<?php endif; ?>
 
-			<table>
+			<table width="100%">
 				<tr>
 					<td valign="top">
 					<table class="adminlist">

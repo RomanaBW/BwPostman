@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
@@ -83,15 +83,15 @@ $options = array(
 			{
 			// confirm if cancel or not
 				confirmCancel =confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
-	 			if (confirmCancel == false)
-			    {
-	 				return;
-	 			}
+				if (confirmCancel == false)
+				{
+					return;
+				}
 			}
 			writeStore("inputs", 0);
 			writeStore("jpanetabs_template_tabs", 0);
 			writeStore("jpanetabs_buttons", 0);
- 			 			submitform(pressbutton);
+						submitform(pressbutton);
 			return;
 		}
 
@@ -123,8 +123,21 @@ $options = array(
 			var elements = document.adminForm.elements;
 			for (var i=0; i<elements.length; i++)
 			{
-				if (elements[i].getAttribute('id') == 'jform_tpl_css') {var fieldValue = elements[i].value.length;} else if (elements[i].getAttribute('id') == 'jform_tpl_html') {} else {var fieldValue = elements[i].value;}
-				if (elements[i].getAttribute('checked') != false) {var fieldChecked = elements[i].getAttribute('checked');}
+				if (elements[i].getAttribute('id') == 'jform_tpl_css')
+				{
+					var fieldValue = elements[i].value.length;
+				}
+				else if (elements[i].getAttribute('id') == 'jform_tpl_html')
+				{
+				}
+				else
+					{
+					var fieldValue = elements[i].value;
+				}
+				if (elements[i].getAttribute('checked') != false)
+				{
+					var fieldChecked = elements[i].getAttribute('checked');
+				}
 				inputs += fieldValue + fieldChecked;
 			}
 			if (turn == 0)
@@ -188,12 +201,13 @@ $options = array(
 
 <div id="bwp_view_lists">
 	<?php
-		if ($this->queueEntries)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
-		}
+	if ($this->queueEntries)
+	{
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEMPLATE'); ?></legend>
 			<div class="well well-small">
@@ -228,7 +242,12 @@ $options = array(
 							<ul class="adminformlist unstyled">
 								<?php
 								foreach ($this->form->getFieldset('jarticle') as $field) :
-									$show = array("jform[article][show_author]", "jform[article][show_createdate]", "jform[article][show_readon]");
+									$show = array(
+										"jform[article][show_title]",
+										"jform[article][show_author]",
+										"jform[article][show_createdate]",
+										"jform[article][show_readon]"
+									);
 									if (in_array($field->name, $show)) : ?>
 										<li><?php echo $field->label; ?>
 											<div class="controls clearfix"><?php echo $field->input; ?></div>
@@ -241,7 +260,7 @@ $options = array(
 					</fieldset>
 					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_CSS_LABEL') , 'panel2');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_CSS_LABEL'), 'panel2');
 					?>
 					<fieldset class="panelform">
 						<ul class="adminformlist unstyled">
@@ -254,7 +273,7 @@ $options = array(
 						</ul>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HTML_LABEL') , 'panel3');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HTML_LABEL'), 'panel3');
 					?>
 					<fieldset class="panelform">
 						<ul class="adminformlist unstyled">
@@ -266,21 +285,54 @@ $options = array(
 										$link = JUri::base() . '#';
 										if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
 											$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
-											$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
+											$linktexts = array(
+												'PERS' => $button_text,
+												'[FIRSTNAME]',
+												'[LASTNAME]',
+												'[FULLNAME]',
+												'[%content%]',
+												'[%unsubscribe_link%]',
+												'[%edit_link%]',
+												'[%impressum%]'
+											);
 										}
-										else {
-										$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
+										else
+										{
+											$linktexts = array(
+												'[FIRSTNAME]',
+												'[LASTNAME]',
+												'[FULLNAME]',
+												'[%content%]',
+												'[%unsubscribe_link%]',
+												'[%edit_link%]',
+												'[%impressum%]'
+											);
 										}
+
 										foreach ($linktexts as $key => $linktext) {
-											echo "                    <a class=\"btn btn-small pull-left\" onclick=\"buttonClick('". $linktext ."','jform_tpl_html');return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
-											echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
+											echo "                    <a class=\"btn btn-small pull-left\"
+												onclick=\"buttonClick('" . $linktext . "','jform_tpl_html');
+												return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
+											echo '                     <p>&nbsp;' . JText::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
 										}
-										if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+
+										if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+										{
+											echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+										}
 										?>
 									</div>
 								<div class="clr clearfix"></div>
 							</li>
 						</ul>
+					</fieldset>
+					<?php
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TAGS_LABEL'), 'panel4');
+					?>
+					<fieldset class="panelform">
+						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_LABEL'); ?></legend>
+						<div><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_DESC'); ?></div>
+						<?php echo $this->loadTemplate('tpl_tags'); ?>
 					</fieldset>
 					<?php
 						echo JHtml::_('tabs.end');
@@ -289,8 +341,12 @@ $options = array(
 					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
 				<div id="email_preview" class="fltlft span7">
-					<p><button class="btn btn-large btn-block btn-primary" type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;</p>
-					<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>" height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
+					<p><button class="btn btn-large btn-block btn-primary" type="submit">
+						<?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;
+					</p>
+					<iframe id="myIframe" name="myIframeHtml"
+							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
+							height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>
@@ -304,6 +360,7 @@ $options = array(
 		<?php echo $this->form->getInput('checked_out'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
+		<?php echo $this->form->getInput('templates_table_id'); ?>
 		<?php echo JHtml::_('form.token'); ?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 	</form>

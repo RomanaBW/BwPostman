@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
@@ -142,9 +142,20 @@ $options = array(
 	{
 		var inputs = '';
 		var elements = document.adminForm.elements;
-		for (var i=0; i<elements.length; i++){
-			if (elements[i].getAttribute('id') != 'jform_tpl_html') {var fieldValue = elements[i].value;} else {var fieldValue = elements[i].value.length;}
-			if (elements[i].getAttribute('checked') != false) {var fieldChecked = elements[i].getAttribute('checked');}
+		for (var i=0; i<elements.length; i++)
+		{
+			if (elements[i].getAttribute('id') != 'jform_tpl_html')
+			{
+				var fieldValue = elements[i].value;
+			}
+			else
+			{
+				var fieldValue = elements[i].value.length;
+			}
+			if (elements[i].getAttribute('checked') != false)
+			{
+				var fieldChecked = elements[i].getAttribute('checked');
+			}
 			inputs += fieldValue + fieldChecked;
 		}
 		if (turn == 0)
@@ -209,12 +220,13 @@ $options = array(
 
 <div id="bwp_view_lists">
 	<?php
-		if ($this->queueEntries)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
-		}
+	if ($this->queueEntries)
+	{
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_TEMPLATE'); ?></legend>
 			<div class="well well-small">
@@ -248,43 +260,76 @@ $options = array(
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
-									foreach ($this->form->getFieldset('jarticle') as $field) :
-										$show = array("jform[article][show_author]", "jform[article][show_createdate]", "jform[article][show_readon]");
-										if (in_array($field->name, $show)) : ?>
-											<li><?php echo $field->label; ?>
-												<div class="controls clearfix"><?php echo $field->input; ?></div>
-											</li>
-											<?php
-										endif;
-									endforeach;
+								foreach ($this->form->getFieldset('jarticle') as $field) :
+									$show = array(
+										"jform[article][show_title]",
+										"jform[article][show_author]",
+										"jform[article][show_createdate]",
+										"jform[article][show_readon]"
+									);
+									if (in_array($field->name, $show)) : ?>
+										<li><?php echo $field->label; ?>
+											<div class="controls clearfix"><?php echo $field->input; ?></div>
+										</li>
+										<?php
+									endif;
+								endforeach;
 								?>
 							</ul>
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TEXT_LABEL') , 'panel2');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TEXT_LABEL'), 'panel2');
 					?>
 					<fieldset class="panelform">
 						<ul class="adminformlist unstyled">
 							<li>
 								<div><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_DESC'); ?></div>
 								<div class="well well-small">
-									<textarea id="jform_tpl_html" rows="20" cols="50" name="jform[tpl_html]" title="jform[tpl_html]" style="width: 95%;"><?php echo htmlspecialchars($this->item->tpl_html, ENT_COMPAT, 'UTF-8'); ?></textarea>
+									<textarea id="jform_tpl_html" rows="20" cols="50" name="jform[tpl_html]" title="jform[tpl_html]"
+											style="width: 95%;"><?php echo htmlspecialchars($this->item->tpl_html, ENT_COMPAT, 'UTF-8'); ?></textarea>
 									<div class="clr clearfix" style="margin-top: 10px;"></div>
 										<?php
-											$link = JUri::base() . '#';
-											if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
-												$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
-												$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
-											}
-											else {
-											$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]', '[%content%]', '[%unsubscribe_link%]', '[%edit_link%]', '[%impressum%]');
-											}
-											foreach ($linktexts as $key => $linktext) {
-												echo "                    <a class=\"btn btn-small pull-left\" onclick=\"buttonClick('jform_tpl_html', '" . $linktext . "');return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
-												echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
-											}
-											if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+										$link = JUri::base() . '#';
+										if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+										{
+											$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+											$linktexts = array(
+												'PERS' => $button_text,
+												'[FIRSTNAME]',
+												'[LASTNAME]',
+												'[FULLNAME]',
+												'[%content%]',
+												'[%unsubscribe_link%]',
+												'[%edit_link%]',
+												'[%impressum%]'
+											);
+										}
+										else
+										{
+											$linktexts = array(
+												'[FIRSTNAME]',
+												'[LASTNAME]',
+												'[FULLNAME]',
+												'[%content%]',
+												'[%unsubscribe_link%]',
+												'[%edit_link%]',
+												'[%impressum%]'
+											);
+										}
+
+										foreach ($linktexts as $key => $linktext)
+										{
+											echo "                    <a class=\"btn btn-small pull-left\" 
+											onclick=\"buttonClick('jform_tpl_html', '" . $linktext . "');
+											return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
+											echo '                     <p>&nbsp;' . JText::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
+										}
+
+										if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+										{
+											echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+										}
 										?>
 								</div>
 								<div class="clr clearfix"></div>
@@ -299,8 +344,13 @@ $options = array(
 					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
 				<div id="email_preview" class="fltlft span7">
-					<p><button class="btn btn-large btn-block btn-primary" type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;</p>
-					<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>" height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
+					<p>
+						<button class="btn btn-large btn-block btn-primary"
+								type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;
+					</p>
+					<iframe id="myIframe" name="myIframeHtml"
+							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
+							height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>

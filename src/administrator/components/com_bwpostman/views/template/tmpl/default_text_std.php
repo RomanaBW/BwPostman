@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
@@ -144,7 +144,10 @@ $options = array(
 		for (var i=0; i<elements.length; i++)
 		{
 			var fieldValue = elements[i].value;
-			if (elements[i].getAttribute('checked') != false) {var fieldChecked = elements[i].getAttribute('checked');}
+			if (elements[i].getAttribute('checked') != false)
+			{
+				var fieldChecked = elements[i].getAttribute('checked');
+			}
 			inputs += fieldValue + fieldChecked;
 		}
 		if (turn == 0)
@@ -208,11 +211,12 @@ $options = array(
 
 <div id="bwp_view_lists" class="well well-small">
 	<?php
-		if ($this->queueEntries) {
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
-		}
+	if ($this->queueEntries) {
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_TEMPLATE'); ?></legend>
 			<div class="well well-small">
@@ -242,7 +246,7 @@ $options = array(
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL') , 'panel2');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'), 'panel2');
 					?>
 					<fieldset class="panelform">
 						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'); ?></legend>
@@ -262,9 +266,9 @@ $options = array(
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_INTRO_LABEL') , 'panel3');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_INTRO_LABEL'), 'panel3');
 						echo $this->loadTemplate('intro');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL') , 'panel4');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'), 'panel4');
 					?>
 					<fieldset class="panelform">
 						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
@@ -272,7 +276,13 @@ $options = array(
 							<ul class="adminformlist unstyled">
 								<?php
 								foreach ($this->form->getFieldset('jarticle') as $field) :
-									$show = array("jform[article][divider]", "jform[article][show_author]", "jform[article][show_createdate]", "jform[article][show_readon]");
+									$show = array(
+										"jform[article][divider]",
+										"jform[article][show_title]",
+										"jform[article][show_author]",
+										"jform[article][show_createdate]",
+										"jform[article][show_readon]"
+									);
 									if (in_array($field->name, $show)) : ?>
 										<li><?php echo $field->label; ?>
 											<div class="controls clearfix"><?php echo $field->input; ?></div>
@@ -284,57 +294,67 @@ $options = array(
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL') , 'panel5');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'), 'panel5');
 					?>
 					<fieldset class="panelform">
 						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
-									foreach ($this->form->getFieldset('jfooter') as $field) :
-										$show = array("jform[footer][show_impressum]", "jform[footer][spacer3]", "jform[footer][show_address]", "jform[footer][address_text]", "jform[footer][button_headline]");
-										if (in_array($field->name, $show)) : ?>
-											<li><?php echo $field->label; ?>
-												<div class="controls"><?php echo $field->input; ?></div>
-											</li>
-											<?php
-										endif;
-									endforeach;
-									// begin footer buttons
-									$i = 1;
+								foreach ($this->form->getFieldset('jfooter') as $field) :
+									$show = array(
+											"jform[footer][show_impressum]",
+										"jform[footer][spacer3]",
+										"jform[footer][show_address]",
+										"jform[footer][address_text]",
+										"jform[footer][button_headline]"
+									);
+									if (in_array($field->name, $show)) : ?>
+										<li><?php echo $field->label; ?>
+											<div class="controls"><?php echo $field->input; ?></div>
+										</li>
+										<?php
+									endif;
+								endforeach;
+								// begin footer buttons
+								$i = 1;
 
-									echo '  <li><div class="clr clearfix"></div>';
-									echo JHtml::_('tabs.start', 'buttons', array('startOffset' => 0));
+								echo '  <li><div class="clr clearfix"></div>';
+								echo JHtml::_('tabs.start', 'buttons', array('startOffset' => 0));
 
-									while ($i <= 5) :
-										$fieldSets = $this->form->getFieldsets('button'.$i);
-										foreach ($fieldSets as $name => $fieldSet) :
-											echo JHtml::_('tabs.panel', JText::_($fieldSet->label) . ' ' . $i, 'bpanel'.$i);
-											?>
+								while ($i <= 5) :
+									$fieldSets = $this->form->getFieldsets('button' . $i);
+									foreach ($fieldSets as $name => $fieldSet) :
+										echo JHtml::_('tabs.panel', JText::_($fieldSet->label) . ' ' . $i, 'bpanel' . $i);
+										?>
 											<fieldset class="panelform">
 												<legend><?php echo $this->escape(JText::_($fieldSet->label)) . ' ' . $i; ?></legend>
 												<div class="well well-small">
 													<ul class="adminformlist unstyled">
 													<?php
-														foreach ($this->form->getFieldset($name) as $field) :
-															$show = array("jform[button$i][show_button]", "jform[button$i][button_text]", "jform[button$i][button_href]");
-															if (in_array($field->name, $show)) : ?>
-																<li><?php echo $field->label; ?>
-																	<div class="controls"><?php echo $field->input; ?></div>
-																</li>
-																<?php
-															endif;
-														endforeach; ?>
+													foreach ($this->form->getFieldset($name) as $field) :
+														$show = array(
+															"jform[button$i][show_button]",
+															"jform[button$i][button_text]",
+															"jform[button$i][button_href]"
+														);
+														if (in_array($field->name, $show)) : ?>
+															<li><?php echo $field->label; ?>
+																<div class="controls"><?php echo $field->input; ?></div>
+															</li>
+															<?php
+														endif;
+													endforeach; ?>
 													</ul>
 												</div>
 											</fieldset>
 											<?php
-										endforeach;
+									endforeach;
 
-										$i++;
-									endwhile;
-									echo JHtml::_('tabs.end');
-									echo '  </li>';
+									$i++;
+								endwhile;
+								echo JHtml::_('tabs.end');
+								echo '  </li>';
 								?>
 							</ul>
 						</div>
@@ -346,8 +366,13 @@ $options = array(
 					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
 				<div id="email_preview" class="fltlft span7">
-					<p><button class="btn btn-large btn-block btn-primary" type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;</p>
-					<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>" width="100%" style="border: 1px solid #c2c2c2; min-height:200px;"></iframe>
+					<p>
+						<button class="btn btn-large btn-block btn-primary"
+								type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;
+					</p>
+					<iframe id="myIframe" name="myIframeHtml"
+							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
+							width="100%" style="border: 1px solid #c2c2c2; min-height:200px;"></iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>

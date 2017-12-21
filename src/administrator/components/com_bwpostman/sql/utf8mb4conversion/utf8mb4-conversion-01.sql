@@ -95,6 +95,14 @@ ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `readon_tpl` TEXT NOT NUL
 ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `footer_tpl` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `button_tpl` TEXT NOT NULL;
 
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_head_advanced` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_body_advanced` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_article_advanced_b` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_article_advanced_e` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_readon_advanced` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_legal_advanced_b` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_legal_advanced_e` TEXT NOT NULL;
+
 --
 -- Step 2: Convert all tables to utf8mb4 character set with utf8mb4_unicode_ci collation
 -- Note: The database driver for mysql will change utf8mb4 to utf8 if utf8mb4 is not supported
@@ -110,6 +118,7 @@ ALTER TABLE `#__bwpostman_subscribers` CONVERT TO CHARACTER SET utf8mb4 COLLATE 
 ALTER TABLE `#__bwpostman_subscribers_mailinglists` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE `#__bwpostman_templates` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE `#__bwpostman_templates_tpl` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `#__bwpostman_templates_tags` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
 -- Step 3: Set default character set and collation for all tables
@@ -126,4 +135,4 @@ ALTER TABLE `#__bwpostman_subscribers` DEFAULT CHARACTER SET utf8mb4 COLLATE utf
 ALTER TABLE `#__bwpostman_subscribers_mailinglists` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE `#__bwpostman_templates` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE `#__bwpostman_templates_tpl` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
+ALTER TABLE `#__bwpostman_templates_tags` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

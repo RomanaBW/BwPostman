@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters` (
   `archive_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `archived_by` INT(11) NOT NULL DEFAULT '0',
   `hits` INT(11) NOT NULL DEFAULT '0',
+  `substitute_links` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -261,6 +262,30 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tpl` (
   `footer_tpl` TEXT NOT NULL DEFAULT '',
   `button_tpl` TEXT NOT NULL DEFAULT '',
   PRIMARY KEY  (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__bwpostman_templates_assets`
+--
+
+DROP TABLE IF EXISTS `#__bwpostman_templates_assets`;
+CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_assets` (
+  `templates_table_id` INT(11) NOT NULL,
+  `tpl_tags_head` TINYINT(1) NOT NULL,
+  `tpl_tags_head_advanced` TEXT NOT NULL DEFAULT '',
+  `tpl_tags_body` TINYINT(1) NOT NULL,
+  `tpl_tags_body_advanced` TEXT NOT NULL DEFAULT '',
+  `tpl_tags_article` TINYINT(1) NOT NULL,
+  `tpl_tags_article_advanced_b` TEXT NOT NULL DEFAULT '',
+  `tpl_tags_article_advanced_e` TEXT NOT NULL DEFAULT '',
+  `tpl_tags_readon` TINYINT(1) NOT NULL,
+  `tpl_tags_readon_advanced` TEXT NOT NULL DEFAULT '',
+  `tpl_tags_legal` TINYINT(1) NOT NULL,
+  `tpl_tags_legal_advanced_b` TEXT NOT NULL DEFAULT '',
+  `tpl_tags_legal_advanced_e` TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (`templates_table_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

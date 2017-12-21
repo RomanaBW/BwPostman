@@ -9,4 +9,5 @@ DROP TABLE IF EXISTS
 `#__bwpostman_subscribers`,
 `#__bwpostman_subscribers_mailinglists`,
 `#__bwpostman_templates`,
-`#__bwpostman_templates_tpl`;
+`#__bwpostman_templates_tpl`,
+`#__bwpostman_templates_tags`;

@@ -30,6 +30,7 @@ ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_headline` VARCH
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_text` TEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `html_version` LONGTEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `text_version` LONGTEXT NOT NULL DEFAULT '';
+ALTER TABLE `#__bwpostman_newsletters` ADD `substitute_links` TINYINT(1) NOT NULL DEFAULT '0';
 
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_name` VARCHAR(300) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_email` VARCHAR(240) NOT NULL DEFAULT '';
@@ -40,6 +41,7 @@ ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `bcc_email` VARCHAR(240
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `attachment` TEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_email` VARCHAR(240) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_name` VARCHAR(300) NOT NULL DEFAULT '';
+ALTER TABLE `#__bwpostman_sendmailcontent` ADD `substitute_links` TINYINT(1) NOT NULL DEFAULT '0';
 
 ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `recipient` VARCHAR(240) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `name` VARCHAR(300) NOT NULL DEFAULT '';
@@ -89,3 +91,26 @@ ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `button_tpl` TEXT NOT NUL
 UPDATE `#__bwpostman_templates` SET `tpl_html` = REPLACE(`tpl_html`,'<div class="shadow" style="','<div class="shadow" style="height: 2px; ');
 UPDATE `#__bwpostman_templates_tpl` SET `header_tpl` = REPLACE(`header_tpl`,'<div class=\\"shadow\\" style=\\"','<div class=\\"shadow\\" style=\\"height: 2px; ');
 UPDATE `#__bwpostman_templates_tpl` SET `footer_tpl` = REPLACE(`footer_tpl`,'<div class="shadow" style="','<div class="shadow" style="height: 2px; ');
+
+--
+-- Create Table structure for table `#__bwpostman_templates_tags`
+--
+
+CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tags` (
+	`templates_table_id` INT(11) NOT NULL,
+	`tpl_tags_head` TINYINT(1) NOT NULL,
+	`tpl_tags_head_advanced` TEXT NOT NULL DEFAULT '',
+	`tpl_tags_body` TINYINT(1) NOT NULL,
+	`tpl_tags_body_advanced` TEXT NOT NULL DEFAULT '',
+	`tpl_tags_article` TINYINT(1) NOT NULL,
+	`tpl_tags_article_advanced_b` TEXT NOT NULL DEFAULT '',
+	`tpl_tags_article_advanced_e` TEXT NOT NULL DEFAULT '',
+	`tpl_tags_readon` TINYINT(1) NOT NULL,
+	`tpl_tags_readon_advanced` TEXT NOT NULL DEFAULT '',
+	`tpl_tags_legal` TINYINT(1) NOT NULL,
+	`tpl_tags_legal_advanced_b` TEXT NOT NULL DEFAULT '',
+	`tpl_tags_legal_advanced_e` TEXT NOT NULL DEFAULT '',
+	PRIMARY KEY (`templates_table_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+

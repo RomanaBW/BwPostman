@@ -105,49 +105,49 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 *
 	 * @since       2.0.0
 	 */
-	public $headtag = '';
+	public $headTag = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $bodytag = '';
+	public $bodyTag = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $articletagbegin = '';
+	public $articleTagBegin = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $articletagend = '';
+	public $articleTagEnd = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $readontag = '';
+	public $readonTag = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $legaltagbegin = '';
+	public $legalTagBegin = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $legaltagend = '';
+	public $legalTagEnd = '';
 
 	/**
 	 * Execute and display a template script.
@@ -207,13 +207,13 @@ class BwPostmanViewTemplate extends JViewLegacy
 		}
 
 		// get standard tags
-		$this->headtag = BwPostmanTplHelper::getHeadTag();
-		$this->bodytag = BwPostmanTplHelper::getBodyTag();
-		$this->articletagbegin = BwPostmanTplHelper::getArticleTagBegin();
-		$this->articletagend = BwPostmanTplHelper::getArticleTagEnd();
-		$this->readontag = BwPostmanTplHelper::getReadonTag();
-		$this->legaltagbegin = BwPostmanTplHelper::getLegalTagBegin();
-		$this->legaltagend = BwPostmanTplHelper::getLegalTagEnd();
+		$this->headTag         = BwPostmanTplHelper::getHeadTag();
+		$this->bodyTag         = BwPostmanTplHelper::getBodyTag();
+		$this->articleTagBegin = BwPostmanTplHelper::getArticleTagBegin();
+		$this->articleTagEnd   = BwPostmanTplHelper::getArticleTagEnd();
+		$this->readonTag       = BwPostmanTplHelper::getReadonTag();
+		$this->legalTagBegin   = BwPostmanTplHelper::getLegalTagBegin();
+		$this->legalTagEnd     = BwPostmanTplHelper::getLegalTagEnd();
 
 		// Call parent display
 		return parent::display($tpl);

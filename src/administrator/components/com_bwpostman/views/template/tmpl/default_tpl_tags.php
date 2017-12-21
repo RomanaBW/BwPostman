@@ -39,7 +39,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 		</li>
 		<li>
 			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
-			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->headtag)); ?></div>
+			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->headTag)); ?></div>
 		</li>
 		<li>
 			<p><?php echo $this->form->getLabel('tpl_tags_head_advanced'); ?></p>
@@ -59,7 +59,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 		</li>
 		<li>
 			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
-			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->bodytag)); ?></div>
+			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->bodyTag)); ?></div>
 		</li>
 		<li>
 			<p><?php echo $this->form->getLabel('tpl_tags_body_advanced'); ?></p>
@@ -79,13 +79,13 @@ echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 		</li>
 		<li>
 			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
-			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articletagbegin)); ?></div>
+			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articleTagBegin)); ?></div>
 		</li>
 		<li>
 			<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
 		</li>
 		<li>
-			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articletagend)); ?></div>
+			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articleTagEnd)); ?></div>
 		</li>
 		<li>
 			<p><?php echo $this->form->getLabel('tpl_tags_article_advanced_b'); ?></p>
@@ -111,7 +111,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_READON_DESC');
 		</li>
 		<li>
 			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
-			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->readontag)); ?></div>
+			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->readonTag)); ?></div>
 		</li>
 		<li>
 			<p><?php echo $this->form->getLabel('tpl_tags_readon_advanced'); ?></p>
@@ -131,13 +131,13 @@ echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 		</li>
 		<li>
 			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
-			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legaltagbegin)); ?></div>
+			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legalTagBegin)); ?></div>
 		</li>
 		<li>
 			<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
 		</li>
 		<li>
-			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legaltagend)); ?></div>
+			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legalTagEnd)); ?></div>
 		</li>
 		<li>
 			<p><?php echo $this->form->getLabel('tpl_tags_legal_advanced_b'); ?></p>

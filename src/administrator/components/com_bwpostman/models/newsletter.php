@@ -1114,6 +1114,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$newsletters_data_copy->archive_flag 		= 0;
 				$newsletters_data_copy->archive_date 		= 0;
 				$newsletters_data_copy->hits 				= null;
+				$newsletters_data_copy->substitute_links	= null;
 
 				$subQuery	= $_db->getQuery(true);
 
@@ -1645,6 +1646,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
+
+				$form_data['substitute_links']	= $state_data->substitute_links;
 				break;
 			case 'edit_text':
 				$form_data['attachment']		= $state_data->attachment;
@@ -1667,6 +1670,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
+
+				$form_data['substitute_links']	= $state_data->substitute_links;
 				break;
 			case 'edit_preview':
 				$form_data['attachment']		= $state_data->attachment;
@@ -1690,6 +1695,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
+
+				$form_data['substitute_links']	= $state_data->substitute_links;
 				break;
 			case 'edit_send':
 				$form_data['attachment']		= $state_data->attachment;
@@ -1713,6 +1720,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
+
+				$form_data['substitute_links']	= $state_data->substitute_links;
 				break;
 			default:
 				$form_data['html_version']		= $state_data->html_version;
@@ -2033,6 +2042,39 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
+	 * Method to get the template assets which are used to compose a newsletter
+	 *
+	 * @access	public
+	 *
+	 * @param   int    $template_id     template id
+	 *
+	 * @return	object
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.0.0
+	 */
+	public function getTemplateAssets($template_id)
+	{
+		$_db	= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+		$query->select('*');
+		$query->from($_db->quoteName('#__bwpostman_templates_assets'));
+		$query->where($_db->quoteName('templates_table_id') . ' = ' . (int) $template_id);
+		$_db->setQuery($query);
+		try
+		{
+			$tpl_assets = $_db->loadAssoc();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $tpl_assets;
+	}
+
+	/**
 	 * Method to add the Template-Tags to the content
 	 *
 	 * @access	private
@@ -2046,13 +2088,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since	1.1.0
 	 */
-	private function addTplTags (&$text, &$id)
+	private function addTplTags(&$text, &$id)
 	{
 		$tpl = self::getTemplate($id);
 
 		$newtext	= $tpl->tpl_html . "\n";
 
-		$text		= str_replace('[%content%]', $text, $newtext);
+		// make sure that conditions be usable - some editors add space to conditions
+		$text		= str_replace('[%content%]', str_replace('<!-- [if', '<!--[if', $text), $newtext);
 
 		return true;
 	}
@@ -2068,7 +2111,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since	1.1.0
 	 */
-	private function replaceTplLinks (&$text)
+	private function replaceTplLinks(&$text)
 	{
 
 		// replace edit and unsubscribe link
@@ -2094,18 +2137,25 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	private function addHtmlTags (&$text, &$id)
+	private function addHtmlTags(&$text, &$id)
 	{
 		$params = JComponentHelper::getParams('com_bwpostman');
 		$tpl    = self::getTemplate($id);
 
-		$newtext = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
-		$newtext .= '<html>' . "\n";
-		$newtext .= ' <head>' . "\n";
-		$newtext .= '   <title>Newsletter</title>' . "\n";
-		$newtext .= '   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . "\n";
-		$newtext .= '   <meta name="robots" content="noindex,nofollow" />' . "\n";
-		$newtext .= '   <meta property="og:title" content="HTML Newsletter" />' . "\n";
+		// add template assets only for user-made templates
+		if ($tpl->tpl_id == '0')
+		{
+			$tpl_assets	= self::getTemplateAssets($id);
+			if (!empty($tpl_assets))
+			{
+				foreach ($tpl_assets as $key => $value)
+				{
+					$tpl->$key	= $value;
+				}
+			}
+		}
+
+		$newtext  = isset($tpl->tpl_tags_head) && $tpl->tpl_tags_head == 0 ? $tpl->tpl_tags_head_advanced : BwPostmanTplHelper::getHeadTag();
 		$newtext .= '   <style type="text/css">' . "\n";
 		$newtext .= '   ' . $tpl->tpl_css . "\n";
 			// only for old newsletters with template_id < 1
@@ -2132,7 +2182,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		else
 		{
-			$newtext .= ' <body bgcolor="#ffffff" emb-default-bgcolor="#ffffff">' . "\n";
+			$newtext .= isset($tpl->tpl_tags_body) && $tpl->tpl_tags_body == 0 ? $tpl->tpl_tags_body_advanced : BwPostmanTplHelper::getBodyTag();
 		}
 
 		$newtext .= $text . "\n";
@@ -2154,39 +2204,51 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	private function addHTMLFooter(&$text, &$id)
 	{
 		$uri  				= JUri::getInstance();
 		$params 			= JComponentHelper::getParams('com_bwpostman');
-		$impressum			= "<br /><br />" . $params->get('legal_information_text');
+		$impressum			= $params->get('legal_information_text');
 		$impressum			= nl2br($impressum, true);
+		$sitelink           = $uri->root();
+
+		// get template assets if exists
+		$tpl_assets	= self::getTemplateAssets($id);
 
 		if (strpos($text, '[%impressum%]') !== false)
 		{
-			// replace [%impressum%]
-			$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $uri->root()) . $impressum;
-			$replace3  = '   <table id="legal" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%;"><tbody>';
-			$replace3 .= '     <tr>' . "\n";
-			$replace3 .= '       <td  id="legal_td">' . "\n";
-			$replace3 .= '         <table class="one-col legal" style="border-collapse: collapse;border-spacing: 0;"><tbody>' . "\n";
-			$replace3 .= '          <tr>' . "\n";
-			$replace3 .= '           <td class="legal_td">' . "\n";
+			$unsubscribelink	= '';
+			$editlink			= '';
+
+			// Trigger Plugin "substitutelinks"
+			if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+			{
+				JPluginHelper::importPlugin('bwpostman');
+				$dispatcher = JEventDispatcher::getInstance();
+				$dispatcher->trigger('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+			}
+
+			$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . "<br /><br />" . $impressum;
+
+			$replace3  = isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
+				$tpl_assets['tpl_tags_legal_advanced_b'] :
+				BwPostmanTplHelper::getLegalTagBegin();
 			$replace3 .= $replace . "<br /><br />\n";
-			$replace3 .= '           </td>' . "\n";
-			$replace3 .= '          </tr>' . "\n";
-			$replace3 .= '         </tbody></table>' . "\n";
-			$replace3 .= '       </td>' . "\n";
-			$replace3 .= '     </tr>' . "\n";
-			$replace3 .= '   </tbody></table>' . "\n";
+			$replace3 .= isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
+				$tpl_assets['tpl_tags_legal_advanced_e'] :
+				BwPostmanTplHelper::getLegalTagEnd();
+
 			$text = str_replace('[%impressum%]', $replace3, $text);
 		}
 
 		// only for old newsletters with template_id < 1
 		if ($id < 1)
 		{
-			$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $uri->root()) . $impressum;
+			$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . $impressum;
 			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
 		}
 
@@ -2234,17 +2296,26 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$uri  				= JUri::getInstance();
 		$itemid_edit		= $this->getItemid('edit');
 
-		// replace edit and unsubscribe link
-		$replace1	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') .
-			" +\n  " . $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
+		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
 			'&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
+		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
+		$sitelink			= '';
+
+		// Trigger Plugin "substitutelinks"
+		if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+		{
+			JPluginHelper::importPlugin('bwpostman');
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+		}
+
+		// replace edit and unsubscribe link
+		$replace1	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $unsubscribelink;
 		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') .
-			" +\n  " . $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
-			'&amp;view=edit&amp;editlink=[EDITLINK]';
+		$replace2	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $editlink;
 		$text		= str_replace('[%edit_link%]', $replace2, $text);
 
-	return true;
+		return true;
 	}
 
 	/**
@@ -2261,20 +2332,29 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	private function addTextFooter (&$text, &$id)
+	private function addTextFooter(&$text, &$id)
 	{
 		$uri  				= JUri::getInstance();
-		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');
 		$params 			= JComponentHelper::getParams('com_bwpostman');
 		$impressum			= "\n\n" . $params->get('legal_information_text') . "\n\n";
 
+		$unsubscribelink	= '';
+		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
+		$sitelink			= $uri->root();
+
+		// Trigger Plugin "substitutelinks"
+		if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+		{
+			JPluginHelper::importPlugin('bwpostman');
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+		}
+
 		if (strpos($text, '[%impressum%]') !== false)
 		{
 			// replace [%impressum%]
-			$replace	= "\n\n" .
-				JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $uri->root(), $uri->root(), $itemid_unsubscribe, $uri->root(), $itemid_edit) .
-				$impressum;
+			$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			$text		= str_replace('[%impressum%]', $replace, $text);
 		}
 
@@ -2282,8 +2362,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ($id < 1)
 		{
 			$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
-				JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $uri->root(), $uri->root(), $itemid_unsubscribe, $uri->root(), $itemid_edit) .
-				$impressum;
+				JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			$text		= str_replace("[dummy]", $replace, $text);
 		}
 
@@ -2385,6 +2464,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$tblSendmailContent->bcc_email 		= null;
 		$tblSendmailContent->reply_email 	= $newsletters_data->reply_email;
 		$tblSendmailContent->reply_name	 	= $newsletters_data->from_name;
+		$tblSendmailContent->substitute_links 	= $newsletters_data->substitute_links;
 
 		// Preprocess html version of the newsletter
 
@@ -2968,11 +3048,27 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			if (property_exists($recipients_data, 'editlink'))
 			{
-				$body = str_replace("[UNSUBSCRIBE_HREF]", JText::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', $uri->root(), $itemid_unsubscribe), $body);
-				$body = str_replace("[EDIT_HREF]", JText::sprintf('COM_BWPOSTMAN_NL_EDIT_HREF', $uri->root(), $itemid_edit), $body);
-				$body = str_replace("[UNSUBSCRIBE_EMAIL]", $tblSendMailQueue->recipient, $body);
-				$body = str_replace("[UNSUBSCRIBE_CODE]", $recipients_data->editlink, $body);
-				$body = str_replace("[EDITLINK]", $recipients_data->editlink, $body);
+				// Trigger Plugin "substitutelinks"
+				if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1' || $tblSendMailContent->substitute_links == '1')
+				{
+					$dispatcher->trigger('onBwPostmanSubstituteBody', array(&$body, &$itemid_edit, &$itemid_unsubscribe));
+				}
+				else
+				{
+					$body = str_replace(
+						"[UNSUBSCRIBE_HREF]",
+						JText::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', $uri->root(), $itemid_unsubscribe),
+						$body
+					);
+					$body = str_replace(
+						"[EDIT_HREF]",
+						JText::sprintf('COM_BWPOSTMAN_NL_EDIT_HREF', $uri->root(), $itemid_edit),
+						$body
+					);
+					$body = str_replace("[UNSUBSCRIBE_EMAIL]", $tblSendMailQueue->recipient, $body);
+					$body = str_replace("[UNSUBSCRIBE_CODE]", $recipients_data->editlink, $body);
+					$body = str_replace("[EDITLINK]", $recipients_data->editlink, $body);
+				}
 			}
 		}
 
@@ -3199,6 +3295,19 @@ class contentRenderer
 		$tpl		= $model->getTemplate($template_id);
 		$text_tpl	= $model->getTemplate($text_template_id);
 
+		// add template assets only for user-made templates
+		if ($tpl->tpl_id == '0')
+		{
+			$tpl_assets	= $model->getTemplateAssets($template_id);
+			if (!empty($tpl_assets))
+			{
+				foreach ($tpl_assets as $key => $value)
+				{
+					$tpl->$key	= $value;
+				}
+			}
+		}
+
 		// only for old templates
 		if ($template_id < 1)
 		{
@@ -3236,7 +3345,7 @@ class contentRenderer
 					$content['html_version'] .= $this->replaceContentHtml($content_id, $tpl);
 				}
 
-				if ($text_tpl->tpl_id && $text_template_id > 0)
+				if ($text_tpl->tpl_id && $text_tpl->tpl_id > '999')
 				{
 					$content['text_version'] .= $this->replaceContentTextNew($content_id, $text_tpl);
 					if (($text_tpl->article['divider'] == 1) && ($content_id != end($nl_content)))
@@ -3399,45 +3508,73 @@ class contentRenderer
 
 				$html_content = new HTML_content();
 
-				ob_start();
-				// Displays Item Title
-				$html_content->Title($row, $params, $access);
-
-				$content .= ob_get_contents();
-				ob_end_clean();
-				// Displays Category
-				ob_start();
-
-				// Displays Created Date
-				if ($tpl->article['show_createdate'] != 0)
+				if ($tpl->article['show_title'] != 0)
 				{
-					$html_content->CreateDate($row, $params);
+					ob_start();
+					// Displays Item Title
+					$html_content->Title($row, $params, $access);
+
+					$content .= ob_get_contents();
+					ob_end_clean();
 				}
 
-				// Displays Author Name
-				if ($tpl->article['show_author'] != 0)
+				$content .= '<div class="intro_text">';
+				// Displays Category article info
+
+				ob_start();
+
+				if ($tpl->article['show_createdate'] != 0 || $tpl->article['show_author'] != 0)
 				{
-					$html_content->Author($row, $params);
+					$html_content->ArticleInfoBegin();
+					// Displays Created Date
+					if ($tpl->article['show_createdate'] != 0)
+					{
+						$html_content->CreateDate($row, $params);
+					}
+
+					// Displays Author Name
+					if ($tpl->article['show_author'] != 0)
+					{
+						$html_content->Author($row, $params);
+						$html_content->ArticleInfoEnd();
+					}
 				}
 
 				// Displays Urls
 				$content .= ob_get_contents();
 				ob_end_clean();
 
-				$content .= '<div class="intro_text">'
-				. $intro_text //(function_exists('ampReplace') ? ampReplace($intro_text) : $intro_text). '</td>'
-				. '</div>';
+				$content .= $intro_text //(function_exists('ampReplace') ? ampReplace($intro_text) : $intro_text). '</td>'
+					. '</div>';
+
 
 				if ($tpl->article['show_readon'] != 0)
 				{
-					$content	.= '<div class="read_on">'
-								. '		<p>'
-								. '		<a href="' . str_replace('administrator/', '', $link) . '" class="readon">'
-								. JText::_('READ_MORE')
-								. '		</a><br/><br/>'
-								. '		</p>'
-								. '	</div>';
+					$tag_readon	 = isset($tpl->tpl_tags_readon) && $tpl->tpl_tags_readon == 0 ?
+						$tpl->tpl_tags_readon_advanced :
+						BwPostmanTplHelper::getReadonTag();
+					$link        = str_replace('administrator/', '', $link);
+
+					// Trigger Plugin "substitutelinks"
+					if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+					{
+						JPluginHelper::importPlugin('bwpostman');
+						$dispatcher = JEventDispatcher::getInstance();
+						$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
+					}
+
+					$tag_readon	 = str_replace('[%readon_href%]', $link, $tag_readon);
+					$content	.= str_replace('[%readon_text%]', JText::_('READ_MORE'), $tag_readon);
 				}
+
+				// Set special article html if defined at the template
+				$tag_article_begin	= isset($tpl->tpl_tags_article) && $tpl->tpl_tags_article == 0 ?
+					$tpl->tpl_tags_article_advanced_b :
+					BwPostmanTplHelper::getArticleTagBegin();
+				$tag_article_end	= isset($tpl->tpl_tags_article) && $tpl->tpl_tags_article == 0 ?
+					$tpl->tpl_tags_article_advanced_e :
+					BwPostmanTplHelper::getArticleTagEnd();
+				$content 			= $tag_article_begin . $content . $tag_article_end;
 
 				return stripslashes($content);
 			}
@@ -3473,7 +3610,9 @@ class contentRenderer
 			{
 				$content	.= $tpl->tpl_article;
 				$content	= preg_replace("/<table id=\"readon\".*?<\/table>/is", "", $content);
-				$content	= str_replace('[%content_title%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_TITLE'), $content);
+				$content	= isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
+					str_replace('[%content_title%]', '', $content) :
+					str_replace('[%content_title%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_TITLE'), $content);
 				$content	= str_replace('[%content_text%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT'), $content);
 				return stripslashes($content);
 			}
@@ -3501,21 +3640,23 @@ class contentRenderer
 				$link = str_replace('administrator/', '', $link);
 
 				$content		.= $tpl->tpl_article;
-				$content		= str_replace('[%content_title%]', $row->title, $content);
+				$content		= isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
+					str_replace('[%content_title%]', '', $content) :
+					str_replace('[%content_title%]', $row->title, $content);
 				$content_text	= '';
 				if (($tpl->article['show_createdate'] == 1) || ($tpl->article['show_author'] == 1))
 				{
-					$content_text .= '<p>';
+					$content_text .= '<p class="article-data">';
 					if ($tpl->article['show_createdate'] == 1)
 					{
-						$content_text .= '<span><small>';
+						$content_text .= '<span class="createdate"><small>';
 						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
 						$content_text .= '&nbsp;&nbsp;&nbsp;&nbsp;</small></span>';
 					}
 
 					if ($tpl->article['show_author'] == 1)
 					{
-						$content_text .= '<span><small>';
+						$content_text .= '<span class="created_by"><small>';
 						$content_text .= JText::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
 							($row->created_by_alias ? $row->created_by_alias : $row->created_by)
@@ -3528,6 +3669,15 @@ class contentRenderer
 
 				$content_text	.= $intro_text;
 				$content  		= str_replace('[%content_text%]', $content_text, $content);
+
+				// Trigger Plugin "substitutelinks"
+				if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+				{
+					JPluginHelper::importPlugin('bwpostman');
+					$dispatcher = JEventDispatcher::getInstance();
+					$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
+				}
+
 				$content  		= str_replace('[%readon_href%]', $link, $content);
 				$content  		= str_replace('[%readon_text%]', JText::_('READ_MORE'), $content);
 
@@ -3582,7 +3732,9 @@ class contentRenderer
 				$link = str_replace('administrator/', '', $link);
 
 				$content		= $text_tpl->tpl_article;
-				$content		= str_replace('[%content_title%]', $row->title, $content);
+				$content		= isset($text_tpl->article['show_title']) && $text_tpl->article['show_title'] == 0 ?
+					str_replace('[%content_title%]', '', $content) :
+					str_replace('[%content_title%]', $row->title, $content);
 				$content_text	= "\n";
 				if (($text_tpl->article['show_createdate'] == 1) || ($text_tpl->article['show_author'] == 1))
 				{
@@ -3605,6 +3757,15 @@ class contentRenderer
 
 				$content_text	.= $intro_text;
 				$content		= str_replace('[%content_text%]', $content_text . "\n", $content);
+
+				// Trigger Plugin "substitutelinks"
+				if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+				{
+					JPluginHelper::importPlugin('bwpostman');
+					$dispatcher = JEventDispatcher::getInstance();
+					$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
+				}
+
 				$content		= str_replace('[%readon_href%]', $link . "\n", $content);
 				$content		= str_replace('[%readon_text%]', JText::_('READ_MORE'), $content);
 
@@ -3656,7 +3817,7 @@ class contentRenderer
 					$create_date = JHtml::_('date', $row->created);
 				}
 
-				$content = "\n" . $row->title;
+				$content = isset($text_tpl->article['show_title']) && $text_tpl->article['show_title'] == 0 ? "\n" : "\n" . $row->title;
 
 				$content_text = "";
 				if (($text_tpl->article['show_createdate'] == 1) || ($text_tpl->article['show_author'] == 1))
@@ -3683,6 +3844,14 @@ class contentRenderer
 				$content .= "\n\n" . $intro_text . "\n\n";
 				if ($text_tpl->article['show_readon'] == 1)
 				{
+					// Trigger Plugin "substitutelinks"
+					if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+					{
+						JPluginHelper::importPlugin('bwpostman');
+						$dispatcher = JEventDispatcher::getInstance();
+						$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
+					}
+
 					$content .= JText::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
 				}
 
@@ -3822,6 +3991,38 @@ class HTML_content
 		<span class="sc_category"><small> <?php
 		echo $row->category;
 		?></small></span>
+		<?php
+	}
+
+	/**
+	 * Writes p-tag for Author and CreateDate
+	 *
+	 * @param   object  $row
+	 *
+	 * @return  void
+	 *
+	 * @since       2.0.0
+	 */
+	public function ArticleInfoBegin()
+	{
+		?>
+		<p class="article-info">
+		<?php
+	}
+
+	/**
+	 * Writes p-tag for Author and CreateDate
+	 *
+	 * @param   object  $row
+	 *
+	 * @return  void
+	 *
+	 * @since       2.0.0
+	 */
+	public function ArticleInfoEnd()
+	{
+		?>
+		</p>
 		<?php
 	}
 

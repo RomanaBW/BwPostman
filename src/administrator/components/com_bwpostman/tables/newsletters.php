@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * #__bwpostman_newsletters table handler
@@ -44,238 +44,245 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
 	 * @var int asset_id
 	 *
 	 * @since       1.0.1
 	 */
-	var $asset_id = null;
+	public $asset_id = null;
 
 	/**
 	 * @var string Sender name
 	 *
 	 * @since       0.9.1
 	 */
-	var $from_name = null;
+	public $from_name = null;
 
 	/**
 	 * @var string Sender email
 	 *
 	 * @since       0.9.1
 	 */
-	var $from_email = null;
+	public $from_email = null;
 
 	/**
 	 * @var string Reply-to email
 	 *
 	 * @since       0.9.1
 	 */
-	var $reply_email = null;
+	public $reply_email = null;
 
 	/**
 	 * @var int Template-ID
 	 *
 	 * @since       1.1.0
 	 */
-	var $template_id = null;
+	public $template_id = null;
 
 	/**
 	 * @var int Text-Template-ID
 	 *
 	 * @since       1.1.0
 	 */
-	var $text_template_id = null;
+	public $text_template_id = null;
 
 	/**
 	 * @var int Campaign-ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $campaign_id = null;
+	public $campaign_id = null;
 
 	/**
 	 * @var string Usergroups
 	 *
 	 * @since       0.9.1
 	 */
-	var $usergroups = null;
+	public $usergroups = null;
 
 	/**
 	 * @var string Selected content
 	 *
 	 * @since       0.9.1
 	 */
-	var $selected_content = null;
+	public $selected_content = null;
 
 	/**
 	 * @var string Subject
 	 *
 	 * @since       0.9.1
 	 */
-	var $subject = null;
+	public $subject = null;
 
 	/**
 	 * @var string Newsletter description
 	 *
 	 * @since       0.9.1
 	 */
-	var $description = null;
+	public $description = null;
 
 	/**
 	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
 	 *
 	 * @since       0.9.1
 	 */
-	var $access = 1;
+	public $access = 1;
 
 	/**
 	 * @var string attachment
 	 *
 	 * @since       0.9.7
 	 */
-	var $attachment = null;
+	public $attachment = null;
 
 	/**
 	 * @var string HTML headline
 	 *
 	 * @since       1.1.0
 	 */
-	var $intro_headline = null;
+	public $intro_headline = null;
 
 	/**
 	 * @var string HTML intro text
 	 *
 	 * @since       1.1.0
 	 */
-	var $intro_text = null;
+	public $intro_text = null;
 
 	/**
 	 * @var string TEXT headline
 	 *
 	 * @since       1.1.0
 	 */
-	var $intro_text_headline = null;
+	public $intro_text_headline = null;
 
 	/**
 	 * @var string TEXT intro text
 	 *
 	 * @since       1.1.0
 	 */
-	var $intro_text_text = null;
+	public $intro_text_text = null;
 
 	/**
 	 * @var string HTML-version
 	 *
 	 * @since       0.9.1
 	 */
-	var $html_version = null;
+	public $html_version = null;
 
 	/**
 	 * @var string Text-version
 	 *
 	 * @since       0.9.1
 	 */
-	var $text_version = null;
+	public $text_version = null;
 
 	/**
 	 * @var datetime creation date of the newsletter
 	 *
 	 * @since       0.9.1
 	 */
-	var $created_date = '0000-00-00 00:00:00';
+	public $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Author
 	 *
 	 * @since       0.9.1
 	 */
-	var $created_by = 0;
+	public $created_by = 0;
 
 	/**
 	 * @var datetime last modification date of the newsletter
 	 *
 	 * @since       0.9.1
 	 */
-	var $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $modified_by = 0;
+	public $modified_by = 0;
 
 	/**
 	 * @var datetime Mailing date
 	 *
 	 * @since       0.9.1
 	 */
-	var $mailing_date = '0000-00-00 00:00:00';
+	public $mailing_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Published
 	 *
 	 * @since       0.9.1
 	 */
-	var $published = null;
+	public $published = null;
 
 	/**
 	 * @var datetime for publishing up a newsletter
 	 *
 	 * @since       1.2.0
 	 */
-	var $publish_up = '0000-00-00 00:00:00';
+	public $publish_up = '0000-00-00 00:00:00';
 
 	/**
 	 * @var datetime for publishing down a newsletter
 	 *
 	 * @since       1.2.0
 	 */
-	var $publish_down = '0000-00-00 00:00:00';
+	public $publish_down = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Checked-out Owner
 	 *
 	 * @since       0.9.1
 	 */
-	var $checked_out = 0;
+	public $checked_out = 0;
 
 	/**
 	 * @var datetime Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
-	var $checked_out_time = 0;
+	public $checked_out_time = 0;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       0.9.1
 	 */
-	var $archive_flag = 0;
+	public $archive_flag = 0;
 
 	/**
 	 * @var datetime Archive-date
 	 *
 	 * @since       0.9.1
 	 */
-	var $archive_date = 0;
+	public $archive_date = 0;
 
 	/**
 	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       0.9.1
 	 */
-	var $archived_by = 0;
+	public $archived_by = 0;
 
 	/**
 	 * @var int Number of views at the frontend
 	 *
 	 * @since       0.9.1
 	 */
-	var $hits = null;
+	public $hits = null;
+
+	/**
+	 * @var int substitute links --> 0 = no, 1 = yes
+	 *
+	 * @since       2.0.0
+	 */
+	public $substitute_links = null;
 
 	/**
 	 * Constructor
@@ -359,6 +366,8 @@ class BwPostmanTableNewsletters extends JTable
 	 * @param   integer  $id     The id (optional) of the content.
 	 *
 	 * @return  integer
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */

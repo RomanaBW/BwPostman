@@ -28,8 +28,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * #__bwpostman_templates_assets table handler
- * Table for storing the templates assets
+ * #__bwpostman_templates_tags table handler
+ * Table for storing the templates tags
  *
  * @package		BwPostman-Admin
  *
@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since       2.0.0
  */
-class BwPostmanTableTemplates_Assets extends JTable
+class BwPostmanTableTemplates_Tags extends JTable
 {
 	/**
 	 * @var int Primary Key Template-ID
@@ -139,7 +139,7 @@ class BwPostmanTableTemplates_Assets extends JTable
 	 */
 	public function __construct(& $db)
 	{
-		parent::__construct('#__bwpostman_templates_assets', 'templates_table_id', $db);
+		parent::__construct('#__bwpostman_templates_tags', 'templates_table_id', $db);
 	}
 
 	/**
@@ -166,7 +166,6 @@ class BwPostmanTableTemplates_Assets extends JTable
 
 		// *** prepare the template data ***
 		$item = $this;
-		dump($item);
 
 		return true;
 	}

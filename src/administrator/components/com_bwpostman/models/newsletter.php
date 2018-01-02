@@ -3690,7 +3690,7 @@ class contentRenderer
 						$content_text .= '<span class="created_by"><small>';
 						$content_text .= JText::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->created_by)
+							($row->created_by_alias ? $row->created_by_alias : $row->author)
 						);
 						$content_text .= '</small></span>';
 					}
@@ -3779,7 +3779,7 @@ class contentRenderer
 					{
 						$content_text .= JText::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->created_by)
+							($row->created_by_alias ? $row->created_by_alias : $row->author)
 						);
 					}
 
@@ -3863,7 +3863,7 @@ class contentRenderer
 					{
 						$content_text .= JText::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->created_by)
+							($row->created_by_alias ? $row->created_by_alias : $row->author)
 						);
 					}
 
@@ -4071,7 +4071,7 @@ class HTML_content
 		?>
 		<span class="created_by">
 			<small>
-				<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', ($row->created_by_alias ? $row->created_by_alias : $row->created_by)); ?>
+				<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', ($row->created_by_alias ? $row->created_by_alias : $row->author)); ?>
 			</small>
 		</span>
 		<?php

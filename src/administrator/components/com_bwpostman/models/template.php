@@ -547,7 +547,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			ArrayHelper::toInteger($pks);
 
 			$lists_table	= JTable::getInstance('templates', 'BwPostmanTable');
-			$assets_table	= JTable::getInstance('templates_assets', 'BwPostmanTable');
+			$tags_table		= JTable::getInstance('templates_tags', 'BwPostmanTable');
 
 			// Delete all entries from the templates-table
 			foreach ($pks as $id)
@@ -558,7 +558,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 					return false;
 				}
 
-				if (!$assets_table->delete($id))
+				if (!$tags_table->delete($id))
 				{
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPLS_NO_TPL_DELETED'), 'error');
 					return false;

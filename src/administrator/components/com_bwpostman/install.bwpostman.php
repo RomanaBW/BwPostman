@@ -296,7 +296,7 @@ class Com_BwPostmanInstallerScript
 			$maintenanceModel->createBaseAssets();
 		}
 
-		// check if sample templates exits
+		// check if sample templates exists
 		$this->checkSampleTemplates();
 
 		// update/complete component rules

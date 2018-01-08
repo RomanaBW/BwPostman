@@ -38,7 +38,7 @@ ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `subject` VARCHAR(1000) NOT
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `description` varchar(2000) NOT NULL;
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `attachment` VARCHAR(1000) NOT NULL;
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_headline` VARCHAR(1000) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text` TEXT NOT NULL DEFAULT '';
+ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_headline` VARCHAR(1000) NOT NULL;
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_text` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `html_version` LONGTEXT NOT NULL;

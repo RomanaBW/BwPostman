@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the modal behavior for the campaign preview
 JHtml::_('behavior.modal', 'a.popup');
@@ -63,73 +63,73 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								<?php
 								$option = $jinput->getCmd('option', 'com_bwpostman');
 								if (BwPostmanHelper::canView('newsletter')) {
-									$link = 'index.php?option='.$option.'&view=newsletters';
+									$link = 'index.php?option=' . $option . '&view=newsletters';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-newsletters.png', JText::_("COM_BWPOSTMAN_NLS"), 0, 0);
 
 									if (BwPostmanHelper::canAdd('newsletter')) {
-										$link = 'index.php?option='.$option.'&view=newsletter&task=add&layout=edit_basic';
+										$link = 'index.php?option=' . $option . '&view=newsletter&task=add&layout=edit_basic';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-newsletteradd.png', JText::_("COM_BWPOSTMAN_NL_ADD"), 0, 0);
 									}
 								}
 
 								if (BwPostmanHelper::canView('subscriber')) {
-									$link = 'index.php?option='.$option.'&view=subscribers';
+									$link = 'index.php?option=' . $option . '&view=subscribers';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-subscribers.png', JText::_("COM_BWPOSTMAN_SUB"), 0, 0);
 
 									if (BwPostmanHelper::canAdd('subscriber')) {
-										$link = 'index.php?option='.$option.'&view=subscriber&task=subscriber.add&layout=edit';
+										$link = 'index.php?option=' . $option . '&view=subscriber&task=subscriber.add&layout=edit';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-subscriberadd.png', JText::_("COM_BWPOSTMAN_SUB_ADD"), 0, 0);
 
-										$link = 'index.php?option='.$option.'&view=subscriber&task=subscriber.add_test&layout=edit';
+										$link = 'index.php?option=' . $option . '&view=subscriber&task=subscriber.add_test&layout=edit';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-testrecipientadd.png', JText::_("COM_BWPOSTMAN_TEST_ADD"), 0, 0);
 									}
 								}
 
 								if (BwPostmanHelper::canView('campaign')) {
-									$link = 'index.php?option='.$option.'&view=campaigns';
+									$link = 'index.php?option=' . $option . '&view=campaigns';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-campaigns.png', JText::_("COM_BWPOSTMAN_CAMS"), 0, 0);
 
 									if (BwPostmanHelper::canAdd('campaign')) {
-										$link = 'index.php?option='.$option.'&view=campaign&=add';
+										$link = 'index.php?option=' . $option . '&view=campaign&=add';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-campaignadd.png', JText::_("COM_BWPOSTMAN_CAM_ADD"), 0, 0);
 									}
 								}
 
 								if (BwPostmanHelper::canView('mailinglist')) {
-									$link = 'index.php?option='.$option.'&view=mailinglists';
+									$link = 'index.php?option=' . $option . '&view=mailinglists';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-mailinglists.png', JText::_("COM_BWPOSTMAN_MLS"), 0, 0);
 
 									if (BwPostmanHelper::canAdd('mailinglist')) {
-										$link = 'index.php?option='.$option.'&view=mailinglist&task=add';
+										$link = 'index.php?option=' . $option . '&view=mailinglist&task=add';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-mailinglistadd.png', JText::_("COM_BWPOSTMAN_ML_ADD"), 0, 0);
 									}
 								}
 
 								if (BwPostmanHelper::canView('template')) {
-									$link = 'index.php?option='.$option.'&view=templates';
+									$link = 'index.php?option=' . $option . '&view=templates';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-templates.png', JText::_("COM_BWPOSTMAN_TPLS"), 0, 0);
 
 									if (BwPostmanHelper::canAdd('template')) {
-										$link = 'index.php?option='.$option.'&view=template&task=addhtml';
+										$link = 'index.php?option=' . $option . '&view=template&task=addhtml';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-templateadd.png', JText::_("COM_BWPOSTMAN_TPL_ADDHTML"), 0, 0);
 
-										$link = 'index.php?option='.$option.'&view=template&task=addtext';
+										$link = 'index.php?option=' . $option . '&view=template&task=addtext';
 										BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-text_templateadd.png', JText::_("COM_BWPOSTMAN_TPL_ADDTEXT"), 0, 0);
 									}
 								}
 
 								if (BwPostmanHelper::canView('archive')) {
-									$link = 'index.php?option='.$option.'&view=archive&layout=newsletters';
+									$link = 'index.php?option=' . $option . '&view=archive&layout=newsletters';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-archive.png', JText::_("COM_BWPOSTMAN_ARC"), 0, 0);
 								}
 
 								if (BwPostmanHelper::canAdmin()) {
-									$link	= 'index.php?option=com_config&amp;view=component&amp;component='.$option.'&amp;path=';
+									$link	= 'index.php?option=com_config&amp;view=component&amp;component=' . $option . '&amp;path=';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', JText::_("COM_BWPOSTMAN_SETTINGS"), '', '');
 								}
 
 								if (BwPostmanHelper::canView('maintenance')) {
-									$link = 'index.php?option='.$option.'&view=maintenance';
+									$link = 'index.php?option=' . $option . '&view=maintenance';
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-maintenance.png', JText::_("COM_BWPOSTMAN_MAINTENANCE"), 0, 0);
 								}
 
@@ -150,67 +150,71 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('newsletter'))
 						{ ?>
 							<tr>
-								<td width="200"><?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT_NUM').': '; ?></td>
+								<td width="200"><?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT_NUM') . ': '; ?></td>
 								<td width="50">
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=sent'); ?>"><?php echo $this->general['nl_unsent']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_NL_SENT_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_NL_SENT_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=sent'); ?>"><?php echo $this->general['nl_sent']; ?></a></b>
 								</td>
 							</tr>
 						<?php
 						}
+
 						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('subscriber'))
 						{ ?>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_SUB_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_SUB_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=subscribers'); ?>"><?php echo $this->general['sub']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_TEST_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_TEST_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=subscribers'); ?>"><?php echo $this->general['test']; ?></a></b>
 								</td>
 							</tr>
 						<?php
 						}
+
 						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('campaign')) { ?>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_CAM_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_CAM_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=campaigns'); ?>"><?php echo $this->general['cam']; ?></a></b>
 								</td>
 							</tr>
 						<?php
 						}
+
 						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('mailinglist')) { ?>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_ML_PUBLIC_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_ML_PUBLIC_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"><?php echo $this->general['ml_published']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_ML_INTERNAL_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_ML_INTERNAL_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"><?php echo $this->general['ml_unpublished']; ?></a></b>
 								</td>
 							</tr>
 						<?php }
+
 						if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || BwPostmanHelper::canView('template')) { ?>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_TPL_HTML_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_TPL_HTML_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=templates'); ?>"><?php echo $this->general['html_templates']; ?></a></b>
 								</td>
 							</tr>
 							<tr>
-								<td><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_NUM').': '; ?></td>
+								<td><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_NUM') . ': '; ?></td>
 								<td>
 									<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=templates'); ?>"><?php echo $this->general['text_templates']; ?></a></b>
 								</td>
@@ -235,6 +239,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								</tr>
 								<?php
 							}
+
 							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('subscriber')))
 							{ ?>
 								<tr>
@@ -245,6 +250,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								</tr>
 								<?php
 							}
+
 							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('campaign')))
 							{ ?>
 								<tr>
@@ -255,6 +261,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 								</tr>
 								<?php
 							}
+
 							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('mailinglist')))
 							{ ?>
 								<tr>
@@ -264,6 +271,7 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									</td>
 								</tr>
 							<?php }
+
 							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('template')))
 							{ ?>
 								<tr>
@@ -273,11 +281,13 @@ JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAG
 									</td>
 								</tr>
 							<?php }
+
 							if (BwPostmanHelper::canAdmin() || BwPostmanHelper::canView('maintenance') || (BwPostmanHelper::canView('archive') && BwPostmanHelper::canView('template')))
 							{ ?>
 								<tr>
 									<td><?php echo JText::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM') . ': '; ?></td>
 									<td>
+
 										<b><a href="<?php JRoute::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>"><?php echo $this->archive['arc_text_templates']; ?></a></b>
 									</td>
 								</tr>

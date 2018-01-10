@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -118,7 +118,7 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title (JText::_('COM_BWPOSTMAN'), 'envelope');
+		JToolbarHelper::title(JText::_('COM_BWPOSTMAN'), 'envelope');
 
 		// Set toolbar items for the page
 		if (BwPostmanHelper::canAdmin())
@@ -128,6 +128,7 @@ class BwPostmanViewBwPostman extends JViewLegacy
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 		}
+
 		$link   = BwPostmanHTMLHelper::getForumLink();
 		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);
 

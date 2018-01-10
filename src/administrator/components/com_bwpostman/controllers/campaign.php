@@ -182,6 +182,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		}
 		if (!$allowed)
 		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list

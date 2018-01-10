@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php';
+
 //
 // Component development:
 //
@@ -470,7 +472,7 @@ abstract class BwPostmanHelper
 		}
 
 		// Next check view permission.
-		if ($user->authorise('bwpm.view.' . $view, 'com_bwpostman'))
+		if (self::authorise($user->id, 'bwpm.view.' . $view, 'com_bwpostman.' . $view))
 		{
 			$res = true;
 		}
@@ -540,7 +542,7 @@ abstract class BwPostmanHelper
 				$recordId = (int) $data['id'];
 			}
 
-			if (key_exists('created_by', $data))
+			if (key_exists('create', $data))
 			{
 				$createdBy = (int) $data['created_by'];
 			}
@@ -1405,5 +1407,21 @@ abstract class BwPostmanHelper
 		}
 
 		return $allowed_ids;
+	}
+
+	/**
+	 * Method to check User object authorisation against an access control
+	 * object and optionally an access extension object
+	 *
+	 * @param   string  $action     The name of the action to check for permission.
+	 * @param   string  $assetname  The name of the asset on which to perform the action.
+	 *
+	 * @return  boolean  True if authorised
+	 *
+	 * @since   11.1
+	 */
+	public static function authorise($userId, $action, $assetname = null)
+	{
+		return (bool) BwAccess::check($userId, $action, $assetname, false);
 	}
 }

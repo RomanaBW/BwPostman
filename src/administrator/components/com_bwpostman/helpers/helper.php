@@ -687,7 +687,7 @@ abstract class BwPostmanHelper
 	public static function canArchive($view = '', $recordIds = array())
 	{
 		// Initialise variables.
-		$action   = 'archive';
+		$action	= 'archive';
 
 		// Check permission
 		$res      = self::checkActionPermission($view, $action, $recordIds);

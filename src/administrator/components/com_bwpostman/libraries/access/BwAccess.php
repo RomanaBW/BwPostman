@@ -129,6 +129,14 @@ class BwAccess
 	protected static $rootAssetId = null;
 
 	/**
+	 * The root asset id.
+	 *
+	 * @var    integer
+	 * @since  3.7.0
+	 */
+	protected static $actionRule = array();
+
+	/**
 	 * Method for clearing static caches.
 	 *
 	 * @return  void
@@ -174,12 +182,141 @@ class BwAccess
 
 		if (!isset(self::$identities[$userId]))
 		{
-			// Get all groups against which the user is mapped.
-			self::$identities[$userId] = self::getGroupsByUser($userId);
-			array_unshift(self::$identities[$userId], $userId * -1);
+			// Get all groups against which the user is mapped. Other than Joomla I only need the direct groups.
+			self::$identities[$userId] = self::getGroupsByUser($userId, false);
 		}
 
-		return self::getAssetRules($assetKey, true, true, $preload)->allow($action, self::$identities[$userId]);
+		// Get the JRules object and set data
+		$rules				= self::getAssetRules($assetKey, true, true, $preload);
+		self::$actionRule	= $rules->getData()[$action]->getData();
+
+		/*
+		 * Workaround:
+		 * If identity for this action is not known, inherit it from the parents and set the value here.
+		 * This is due to the limit of 5120 characters of the table field for the rules. If I would set all rights
+		 * explicitly, that would need about 6000 Characters.
+		 */
+		self::inheritRules($userId);
+
+		// Check for permission
+		$allow = self::ruleAllow(self::$identities[$userId]);
+
+		return $allow;
+	}
+
+	/**
+	 * @param $userId
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	protected static function inheritRules($userId)
+	{
+		$parentIdentities = self::getParentIdentities(self::$identities[$userId]);
+
+		foreach (self::$identities[$userId] as $identity)
+		{
+			// Check if the identity is unknown.
+			if (!isset(self::$actionRule[$identity]))
+			{
+				// Loop over parent identities, backwards up to root, if needed
+				for ($i = 0; $i < count($parentIdentities[$identity]); $i++)
+				{
+					$parentId = $parentIdentities[$identity][$i]['parent_id'];
+					// Check if the parent identity is known
+					if (isset(self::$actionRule[$parentId]))
+					{
+						// if so, set rule to inherited value…
+						self::$actionRule[$identity] = (boolean) self::$actionRule[$parentId];
+
+						// …and break loop
+						$i = count($parentIdentities[$identity]);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get the parent identities for an identity.
+	 *
+	 * The identity is an integer where +ve represents a user group,
+	 * and -ve represents a user.
+	 *
+	 * @param   mixed   $identities  An integer representing the identity, or an array of identities
+	 *
+	 * @return  array   parent identities, oldest last
+	 *
+	 * @since   11.1
+	 */
+	public static function getParentIdentities($identities)
+	{
+		$parentIdentities = array();
+
+		foreach ($identities as $identity)
+		{
+			$db    = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('p.parent_id');
+			$query->from($db->quoteName('#__usergroups') . ' AS n, ' . $db->quoteName('#__usergroups') . ' AS p');
+			$query->where('n.lft BETWEEN p.lft AND p.rgt');
+			$query->where('n.id = ' . (int) $identity);
+			$query->order('p.lft DESC');
+
+			$db->setQuery($query);
+
+			$parentIdentities[$identity] = $db->loadAssocList();
+		}
+
+
+		return $parentIdentities;
+	}
+
+	/**
+	 * Checks that this action can be performed by an identity.
+	 *
+	 * The identity is an integer where +ve represents a user group,
+	 * and -ve represents a user.
+	 *
+	 * @param   mixed  $identities  An integer or array of integers representing the identities to check.
+	 *
+	 * @return  mixed  True if allowed, false for an explicit deny, null for an implicit deny.
+	 *
+	 * @since   11.1
+	 */
+	public static function ruleAllow($identities)
+	{
+		// Implicit deny by default.
+		$result = false;
+
+		// Check that the inputs are valid.
+		if (!empty($identities))
+		{
+			if (!is_array($identities))
+			{
+				$identities = array($identities);
+			}
+
+			foreach ($identities as $identity)
+			{
+				// Technically the identity just needs to be unique.
+				$identity = (int) $identity;
+
+				// Check if the identity is known.
+				if (isset(self::$actionRule[$identity]))
+				{
+					$result = (boolean) self::$actionRule[$identity];
+
+					// An explicit allow wins.
+					if ($result === true)
+					{
+						break;
+					}
+				}
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -517,7 +654,7 @@ class BwAccess
 	 * @param   boolean         $recursiveParentAsset  True to calculate the rule also based on inherited component/extension rules.
 	 * @param   boolean         $preload               Indicates whether preloading should be used.
 	 *
-	 * @return  Rules  Rules object for the asset.
+	 * @return  \Joomla\CMS\Access\Rules  Rules object for the asset.
 	 *
 	 * @since   11.1
 	 * @note    The non preloading code will be removed in 4.0. All asset rules should use asset preloading.
@@ -908,10 +1045,10 @@ class BwAccess
 				$secondDot = strpos($assetName, '.', $firstDot + 1);
 
 				if ($secondDot !== false)
-				{
+		{
 					$assetName = substr($assetName, 0, $secondDot);
 				}
-			}
+		}
 
 			$loaded[$assetKey] = $assetName;
 		}

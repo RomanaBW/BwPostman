@@ -3703,9 +3703,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$rulesJson		= $componentAsset['rules'];
 		}
 
-		$rules = new JAccessRules($rulesJson);
+			$rules 			= new JAccessRules($rulesJson);
 
-		$this->updateComponentRules($rules);
+			$this->updateComponentRules($rules);
 		$this->initializeSectionAssets();
 
 		foreach ($this->tableNames as $table)
@@ -3958,6 +3958,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				foreach ($actions as $action)
 				{
+					if ($action == 'newsletter.send' && $singularTableName != 'newsletter')
+					{
+						continue;
+					}
+
 					$rules['bwpm.' . $singularTableName . '.' . $action] = $reducedGroupsActions[$action];
 				}
 			}
@@ -3983,7 +3988,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$allRightsForInstalledGroups = array();
 
-		// First: Set rules for all sample BwPostman and basic Joomla! usergroups
+		// First: Set general rules for all sample BwPostman and basic Joomla! usergroups
 		$actions['create'] = array(
 			'Administrator'             => true,
 			'Manager'                   => true,

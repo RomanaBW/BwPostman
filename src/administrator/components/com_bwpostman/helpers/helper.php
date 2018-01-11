@@ -245,7 +245,7 @@ abstract class BwPostmanHelper
 			}
 		}
 
-		if ($user->authorise('bwpm.' . $view . '.' . $action, 'com_bwpostman.' . $view))
+		if (self::authorise($user->id, $authAction, $assetName, $strictView))
 		{
 			return true;
 		}
@@ -253,13 +253,13 @@ abstract class BwPostmanHelper
 		// Check record specific permission
 		foreach ($recordIds as $recordId)
 		{
-			if ((int) $recordId === 0) // new record
-			{
-				$res = false;
-			}
-			elseif ($user->authorise('bwpm.' . $view . '.' . $action, 'com_bwpostman.' . $view . (int) $recordId))
+			if ($user->authorise('bwpm.' . $view . '.' . $action, 'com_bwpostman.' . $view . (int) $recordId))
 			{
 				$res = true;
+			}
+			elseif ((int) $recordId === 0) // new record
+			{
+				$res = false;
 			}
 			else
 			{

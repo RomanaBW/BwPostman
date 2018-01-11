@@ -295,6 +295,7 @@ $options = array(
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+		<input type="hidden" name="created_by" value="<?php echo $this->item->created_by; ?>" />
 		<?php echo $this->form->getInput('id'); ?>
 		<?php echo $this->form->getInput('asset_id'); ?>
 		<?php echo $this->form->getInput('tpl_id'); ?>

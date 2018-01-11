@@ -202,19 +202,20 @@ abstract class BwPostmanHelper
 	 *
 	 * @param    string     $view       The view to test.
 	 * @param    string     $action     The action to check
-	 * @param    array      $recordIds   The record to test.
+	 * @param    array      $recordIds  The record to test.
+	 * @param    boolean    $strict     check only for this context
 	 *
 	 * @return bool
 	 *
 	 * @since version
 	 */
-	private static function checkActionPermission($view, $action, $recordIds = array())
+	private static function checkActionPermission($view, $action, $recordIds = array(), $strict = false)
 	{
 		$user = JFactory::getUser();
 		$res  = false;
 
 		// Check view permission.
-		if (!self::canView($view))
+		if (!self::canView($view, $strict))
 		{
 			return false;
 		}
@@ -226,6 +227,24 @@ abstract class BwPostmanHelper
 		}
 
 		// Check specific view permission
+		$authAction	= 'bwpm.view.' . $view;
+		$assetName	= 'com_bwpostman.' . $view;
+
+		$strictView = '';
+		if ($strict)
+		{
+			$strictView = $view;
+		}
+
+		if ($action == 'archive' || $action == 'restore' || $action == 'delete')
+		{
+			$assetName	= 'com_bwpostman';
+			if (self::authorise($user->id, $authAction, $assetName, $strictView))
+			{
+				return true;
+			}
+		}
+
 		if ($user->authorise('bwpm.' . $view . '.' . $action, 'com_bwpostman.' . $view))
 		{
 			return true;
@@ -456,11 +475,12 @@ abstract class BwPostmanHelper
 	 * Method to check if you can view a specific view.
 	 *
 	 * @param    string $view The view to test.
+	 * @param    boolean    $strict     check only for this context
 	 *
 	 * @return    boolean
 	 * @since    1.2.0
 	 */
-	public static function canView($view = '')
+	public static function canView($view = '', $strict = false)
 	{
 		$user = JFactory::getUser();
 		$res  = false;
@@ -472,7 +492,21 @@ abstract class BwPostmanHelper
 		}
 
 		// Next check view permission.
-		if (self::authorise($user->id, 'bwpm.view.' . $view, 'com_bwpostman.' . $view))
+		$authAction	= 'bwpm.view.' . $view;
+		$assetName	= 'com_bwpostman.' . $view;
+
+		if ($view == 'archive')
+		{
+			$assetName	= 'com_bwpostman';
+		}
+
+		$strictView = '';
+		if ($strict)
+		{
+			$strictView = $view;
+		}
+
+		if (self::authorise($user->id, $authAction, $assetName, $strictView))
 		{
 			$res = true;
 		}
@@ -679,18 +713,19 @@ abstract class BwPostmanHelper
 	 *
 	 * @param    string     $view       The name of the context.
 	 * @param    array      $recordIds  The record to test.
+	 * @param    boolean    $strict     check only for this context
 	 *
 	 * @return    boolean
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canArchive($view = '', $recordIds = array())
+	public static function canArchive($view = '', $recordIds = array(), $strict = false)
 	{
 		// Initialise variables.
 		$action	= 'archive';
 
 		// Check permission
-		$res      = self::checkActionPermission($view, $action, $recordIds);
+		$res      = self::checkActionPermission($view, $action, $recordIds, $strict);
 
 		return $res;
 	}
@@ -711,7 +746,7 @@ abstract class BwPostmanHelper
 		$action   = 'delete';
 
 		// Check permission
-		$res      = self::checkActionPermission($view, $action, $recordIds);
+		$res      = self::checkActionPermission($view, $action, $recordIds, true);
 
 		return $res;
 	}
@@ -732,7 +767,7 @@ abstract class BwPostmanHelper
 		$action   = 'restore';
 
 		// Check permission
-		$res      = self::checkActionPermission($view, $action, $recordIds);
+		$res      = self::checkActionPermission($view, $action, $recordIds, true);
 
 		return $res;
 	}
@@ -860,7 +895,7 @@ abstract class BwPostmanHelper
 	/**
 	 * Erzeugt die Rechenaufgabe
 	 *
-	 * @return    string    $fileName    Gibt die Rechenaufgabe als String für den Dateinamen wieder
+	 * @return    void
 	 *
 	 * @since
 	 */
@@ -1413,15 +1448,17 @@ abstract class BwPostmanHelper
 	 * Method to check User object authorisation against an access control
 	 * object and optionally an access extension object
 	 *
+	 * @param   integer $userId     The ID of the user to check for
 	 * @param   string  $action     The name of the action to check for permission.
-	 * @param   string  $assetname  The name of the asset on which to perform the action.
+	 * @param   string  $assetName  The name of the asset on which to perform the action.
+	 * @param   string $strictView  check only for this context
 	 *
 	 * @return  boolean  True if authorised
 	 *
 	 * @since   11.1
 	 */
-	public static function authorise($userId, $action, $assetname = null)
+	public static function authorise($userId, $action, $assetName = null, $strictView = '')
 	{
-		return (bool) BwAccess::check($userId, $action, $assetname, false);
+		return (bool) BwAccess::check($userId, $action, $assetName, false, $strictView);
 	}
 }

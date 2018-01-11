@@ -143,6 +143,8 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
@@ -213,7 +215,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 
 					if (BwPostmanHelper::canAdd('subscriber'))		JToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
 					if (BwPostmanHelper::canEdit('subscriber'))		JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
-					if (BwPostmanHelper::canArchive('subscriber')) {
+					if (BwPostmanHelper::canArchive('subscriber', array(), true)) {
 						JToolbarHelper::divider();
 						JToolbarHelper::spacer();
 						JToolbarHelper::archiveList('subscriber.archive');
@@ -236,7 +238,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					if (BwPostmanHelper::canEdit('subscriber'))	JToolbarHelper::editList('subscriber.edit');
 					JToolbarHelper::spacer();
 					JToolbarHelper::divider();
-					if (BwPostmanHelper::canArchive('subscriber'))	JToolbarHelper::archiveList('subscriber.archive');
+					if (BwPostmanHelper::canArchive('subscriber', array(), true))	JToolbarHelper::archiveList('subscriber.archive');
 				break;
 		}
 		JToolbarHelper::divider();

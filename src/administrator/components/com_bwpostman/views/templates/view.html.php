@@ -25,14 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman templates View
@@ -115,6 +115,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.1.0
 	 */
 	public function display($tpl = null)
@@ -149,6 +151,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 	/**
 	 * Add the page title, submenu and toolbar.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.1.0
 	 */
 	protected function addToolbar()
@@ -167,7 +171,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 				$bar	= JToolbar::getInstance('toolbar');
 				$backlink 	= 'index.php?option=com_bwpostman&view=templates';
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::title (JText::_('COM_BWPOSTMAN_TPL_UPLOADTPL'), 'upload');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_UPLOADTPL'), 'upload');
 				JToolbarHelper::spacer();
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
@@ -177,19 +181,30 @@ class BwPostmanViewTemplates extends JViewLegacy
 				$bar	= JToolbar::getInstance('toolbar');
 				$backlink 	= 'index.php?option=com_bwpostman&view=templates';
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::title (JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'), 'plus');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'), 'plus');
 				JToolbarHelper::spacer();
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
 				break;
 			default:
 				// Set toolbar title
-				JToolbarHelper::title (JText::_('COM_BWPOSTMAN_TPLS'), 'picture');
+				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPLS'), 'picture');
 
 				// Set toolbar items for the page
-				if (BwPostmanHelper::canAdd('template'))		JToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
-				if (BwPostmanHelper::canAdd('template'))		JToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
-				if (BwPostmanHelper::canEdit('template'))	JToolbarHelper::editList('template.edit');
+				if (BwPostmanHelper::canAdd('template'))
+				{
+					JToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
+				}
+
+				if (BwPostmanHelper::canAdd('template'))
+				{
+					JToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
+				}
+
+				if (BwPostmanHelper::canEdit('template'))
+				{
+					JToolbarHelper::editList('template.edit');
+				}
 
 				if (BwPostmanHelper::canEditState('template', 0))
 				{
@@ -201,26 +216,33 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
 
-				if (BwPostmanHelper::canArchive('template'))
+				if (BwPostmanHelper::canArchive('template', array(), true))
 				{
 					JToolbarHelper::archiveList('template.archive');
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
+
 				if (BwPostmanHelper::canManage())
 				{
 					JToolbarHelper::checkin('templates.checkin');
 					JToolbarHelper::divider();
 				}
+
 				// template upload
 				if (BwPostmanHelper::canAdd('template'))
 				{
 					$bar = JToolbar::getInstance('toolbar');
-					JHtml::_( 'behavior.modal' );
-					$html = '<a class="btn btn-small" href="'. JUri::root(true) . '/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl" rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}" ><span class="icon-upload"></span>' .JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL'). '</a>';
-					$bar->appendButton( 'Custom', $html );
+					JHtml::_('behavior.modal');
+					$html = '<a class="btn btn-small" href="' . JUri::root(true) .
+								'/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl" 
+									rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}" >
+								<span class="icon-upload"></span>' . JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL') .
+							'</a>';
+					$bar->appendButton('Custom', $html);
 				}
 		}
+
 		$link   = BwPostmanHTMLHelper::getForumLink();
 
 		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);

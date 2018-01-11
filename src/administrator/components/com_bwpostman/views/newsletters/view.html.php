@@ -151,6 +151,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
@@ -243,7 +245,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if (BwPostmanHelper::canArchive('newsletter'))
+				if (BwPostmanHelper::canArchive('newsletter', array(), true))
 				{
 					JToolbarHelper::archiveList('newsletter.archive');
 					JToolbarHelper::divider();
@@ -274,7 +276,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if (BwPostmanHelper::canArchive('newsletter'))
+				if (BwPostmanHelper::canArchive('newsletter', array(), true))
 				{
 					JToolbarHelper::archiveList('newsletter.archive');
 					JToolbarHelper::divider();

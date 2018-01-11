@@ -191,7 +191,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		JToolbarHelper::spacer();
 
 		// Special archive button because we need a confirm dialog with 3 options
-		if (BwPostmanHelper::canArchive('campaign'))
+		if (BwPostmanHelper::canArchive('campaign', array(), true))
 		{
 			$bar= JToolbar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";

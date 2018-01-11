@@ -115,6 +115,8 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
@@ -171,7 +173,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			JToolbarHelper::unpublishList('mailinglists.unpublish');
 			JToolbarHelper::divider();
 		}
-		if (BwPostmanHelper::canArchive('mailinglist'))
+		if (BwPostmanHelper::canArchive('mailinglist', array(), true))
 		{
 			JToolbarHelper::archiveList('mailinglist.archive');
 			JToolbarHelper::divider();

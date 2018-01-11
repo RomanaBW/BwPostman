@@ -79,7 +79,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 		<?php endif; ?>
 			<?php
 				// Search tools bar
-				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools');
 			?>
 
 				<div class="row-fluid">
@@ -89,35 +89,39 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 								<td valign="top" width="90%">
 									<ul class="bwp_tabs">
 										<?php
-										if (BwPostmanHelper::canView('newsletter')) {
+										if (BwPostmanHelper::canArchive('newsletter', array(), true)) {
 											?>
 											<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
 												<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
 											</li>
 											<?php
 										}
-										if (BwPostmanHelper::canView('subscriber')) {
+
+										if (BwPostmanHelper::canArchive('subscriber', array(), true)) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
 											</li>
 											<?php
 										}
-										if (BwPostmanHelper::canView('campaign')) {
+
+										if (BwPostmanHelper::canArchive('campaign', array(), true)) {
 											?>
 											<li class="open">
 												<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
 											</li>
 											<?php
 										}
-										if (BwPostmanHelper::canView('mailinglist')) {
+
+										if (BwPostmanHelper::canArchive('mailinglist', array(), true)) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
 											</li>
 											<?php
 										}
-										if (BwPostmanHelper::canView('template')) {
+
+										if (BwPostmanHelper::canArchive('template', array(), true)) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
@@ -146,12 +150,13 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											</tfoot>
 											<tbody>
 											<?php
-											if (count($this->items) > 0) {
+											if (count($this->items) > 0)
+											{
 												foreach ($this->items as $i => $item) :
 													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-													$canEdit	= $user->authorise('bwpm.edit',			'com_bwpostman.newsletter.'.$item->id);
-													$canEditOwn	= $user->authorise('bwpm.edit.own',		'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
-													$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
+													$canEdit	= $user->authorise('bwpm.edit',			'com_bwpostman.newsletter.' . $item->id);
+													$canEditOwn	= $user->authorise('bwpm.edit.own',		'com_bwpostman.newsletter.' . $item->id) && $item->created_by == $userId;
+													$canChange	= $user->authorise('bwpm.edit.state',	'com_bwpostman.newsletter.' . $item->id) && $canCheckin;
 													?>
 													<tr class="row<?php echo $i % 2; ?>">
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
@@ -166,12 +171,13 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 														<td align="center"><?php echo $item->id; ?></td>
 													</tr>
 												<?php endforeach;
-												}
-												else { ?>
-													<tr class="row1">
-														<td colspan="6"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-													</tr><?php
-												}
+											}
+											else
+											{ ?>
+												<tr class="row1">
+													<td colspan="6"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+												</tr><?php
+											}
 											?>
 											</tbody>
 										</table>

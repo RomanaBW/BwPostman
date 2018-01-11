@@ -73,35 +73,35 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 							<td valign="top" width="90%">
 								<ul class="bwp_tabs">
 									<?php
-									if (BwPostmanHelper::canView('newsletter')) {
+									if (BwPostmanHelper::canArchive('newsletter', array(), true)) {
 									?>
 										<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
 											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
 										</li>
 										<?php
 									}
-									if (BwPostmanHelper::canView('subscriber')) {
+									if (BwPostmanHelper::canArchive('subscriber', array(), true)) {
 									?>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
 										</li>
 										<?php
 									}
-									if (BwPostmanHelper::canView('campaign')) {
+									if (BwPostmanHelper::canArchive('campaign', array(), true)) {
 									?>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
 										</li>
 										<?php
 									}
-									if (BwPostmanHelper::canView('mailinglist')) {
+									if (BwPostmanHelper::canArchive('mailinglist', array(), true)) {
 									?>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
 										</li>
 										<?php
 									}
-									if (BwPostmanHelper::canView('template')) {
+									if (BwPostmanHelper::canArchive('template', array(), true)) {
 									?>
 										<li class="open">
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>

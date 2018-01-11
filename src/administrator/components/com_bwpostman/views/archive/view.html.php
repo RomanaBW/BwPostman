@@ -150,7 +150,6 @@ class BwPostmanViewArchive extends JViewLegacy
 		if ($request_result === 'redirect')
 		{
 			$app->redirect($this->request_url);
-			// http://www.dev.nil/administrator/index.php?option=com_bwpostman&view=archive&layout=newsletters
 		}
 
 		$this->addToolbar();
@@ -187,23 +186,23 @@ class BwPostmanViewArchive extends JViewLegacy
 		switch ($layout)
 		{ // Which tab are we in?
 			case "newsletters":
-				if (BwPostmanHelper::canRestore('archive'))
+				if (BwPostmanHelper::canRestore('newsletter'))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('archive'))
+				if (BwPostmanHelper::canDelete('newsletter'))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
 				}
 				break;
 			case "subscribers":
-				if (BwPostmanHelper::canRestore('archive'))
+				if (BwPostmanHelper::canRestore('subscriber'))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('archive'))
+				if (BwPostmanHelper::canDelete('subscriber'))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
 				}
@@ -212,37 +211,37 @@ class BwPostmanViewArchive extends JViewLegacy
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
 				$bar = JToolbar::getInstance('toolbar');
 				$alt_archive = "unarchive";
-				if (BwPostmanHelper::canRestore('archive'))
+				if (BwPostmanHelper::canRestore('campaign'))
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive';
 					$bar->appendButton('Popup', 'unarchive', $alt_archive, $link, 500, 130);
 				}
 
 				$alt_delete = "delete";
-				if (BwPostmanHelper::canDelete('archive'))
+				if (BwPostmanHelper::canDelete('campaign'))
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete';
 					$bar->appendButton('Popup', 'delete', $alt_delete, $link, 500, 150);
 				}
 				break;
 			case "mailinglists":
-				if (BwPostmanHelper::canRestore('archive'))
+				if (BwPostmanHelper::canRestore('mailinglist'))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('archive'))
+				if (BwPostmanHelper::canDelete('mailinglist'))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
 				}
 				break;
 			case "templates":
-				if (BwPostmanHelper::canRestore('archive'))
+				if (BwPostmanHelper::canRestore('template'))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('archive'))
+				if (BwPostmanHelper::canDelete('template'))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
 				}
@@ -278,7 +277,7 @@ class BwPostmanViewArchive extends JViewLegacy
 
 		$allowed_layout = $this->getAllowedLayout($layout);
 
-		if ($allowed_layout == false)
+		if ($allowed_layout === false)
 		{
 			return false;
 		}
@@ -298,7 +297,7 @@ class BwPostmanViewArchive extends JViewLegacy
 	 *
 	 * @return string|bool $layout  requested layout or false on error
 	 *
-	 * @since version
+	 * @since 1.3.2
 	 */
 	private function extractLayout($uri_string)
 	{
@@ -327,7 +326,7 @@ class BwPostmanViewArchive extends JViewLegacy
 	 *
 	 * @return string|bool $allowed_layout  allowed layout or false on error
 	 *
-	 * @since version
+	 * @since 1.3.2
 	 */
 	private function getAllowedLayout($layout)
 	{
@@ -343,7 +342,7 @@ class BwPostmanViewArchive extends JViewLegacy
 			$allowedView	= BwPostmanHelper::canView($item);
 			if ($allowedView)
 			{
-				$allowedArchive = BwPostmanHelper::canArchive($item);
+				$allowedArchive = BwPostmanHelper::canArchive($item, array(), true);
 				if ($allowedArchive)
 				{
 					return $item . 's';

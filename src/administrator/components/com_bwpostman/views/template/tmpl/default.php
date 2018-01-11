@@ -229,12 +229,13 @@ $options = array(
 
 <div id="bwp_view_lists">
 	<?php
-		if ($this->queueEntries)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
- 		}
+	if ($this->queueEntries)
+	{
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+ 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEMPLATE'); ?></legend>
 			<div class="well well-small">
@@ -265,13 +266,13 @@ $options = array(
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL') , 'panel2');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'), 'panel2');
 						echo $this->loadTemplate('header');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_INTRO_LABEL') , 'panel3');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_INTRO_LABEL'), 'panel3');
 						echo $this->loadTemplate('intro');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL') , 'panel4');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'), 'panel4');
 						echo $this->loadTemplate('article');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL') , 'panel5');
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'), 'panel5');
 						echo $this->loadTemplate('footer');
 						echo JHtml::_('tabs.end');
 					?>
@@ -279,8 +280,14 @@ $options = array(
 					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
 				<div id="email_preview" class="fltlft span7">
-					<p><button class="btn btn-large btn-block btn-primary" type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;</p>
-					<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>" height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
+					<p>
+						<button class="btn btn-large btn-block btn-primary" type="submit">
+							<?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?>
+						</button>
+					</p>
+					<iframe id="myIframe" name="myIframeHtml"
+							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
+							height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>

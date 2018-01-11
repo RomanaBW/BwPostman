@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
 // Import helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman newsletters model
@@ -52,7 +52,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       2.0.0
 	 */
-	private $_query;
+	protected $query;
 
 	/**
 	 * Constructor
@@ -91,6 +91,7 @@ class BwPostmanModelNewsletters extends JModelList
 				'q.id',
 			);
 		}
+
 		parent::__construct($config);
 	}
 
@@ -103,6 +104,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -171,16 +174,16 @@ class BwPostmanModelNewsletters extends JModelList
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('filter.search');
-		$id	.= ':'.$this->getState('filter.search_filter');
-		$id	.= ':'.$this->getState('filter.published');
-		$id	.= ':'.$this->getState('filter.publish_up');
-		$id	.= ':'.$this->getState('filter.publish_down');
-		$id	.= ':'.$this->getState('filter.authors');
-		$id	.= ':'.$this->getState('filter.campaign_id');
-		$id	.= ':'.$this->getState('filter.mailinglists');
-		$id	.= ':'.$this->getState('filter.usergroups');
-		$id	.= ':'.$this->getState('filter.description');
+		$id	.= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.search_filter');
+		$id	.= ':' . $this->getState('filter.published');
+		$id	.= ':' . $this->getState('filter.publish_up');
+		$id	.= ':' . $this->getState('filter.publish_down');
+		$id	.= ':' . $this->getState('filter.authors');
+		$id	.= ':' . $this->getState('filter.campaign_id');
+		$id	.= ':' . $this->getState('filter.mailinglists');
+		$id	.= ':' . $this->getState('filter.usergroups');
+		$id	.= ':' . $this->getState('filter.description');
 
 		return parent::getStoreId($id);
 	}
@@ -193,18 +196,20 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @return 	int count Queue-data
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function getCountQueue()
 	{
 		$count_queue    = 0;
 
-		$this->_query = $this->_db->getQuery(true);
+		$this->query = $this->_db->getQuery(true);
 
-		$this->_query->select('COUNT(*)');
-		$this->_query->from($this->_db->quoteName('#__bwpostman_sendmailqueue'));
+		$this->query->select('COUNT(*)');
+		$this->query->from($this->_db->quoteName('#__bwpostman_sendmailqueue'));
 
-		$this->_db->setQuery($this->_query);
+		$this->_db->setQuery($this->query);
 		try
 		{
 			$count_queue = $this->_db->loadResult();
@@ -224,12 +229,14 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @return 	string Query
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	protected function getListQuery()
 	{
-		$jinput	        = JFactory::getApplication()->input;
-		$this->_query	= $this->_db->getQuery(true);
+		$jinput      = JFactory::getApplication()->input;
+		$this->query = $this->_db->getQuery(true);
 
 		//Get the tab in which we are for correct query
 		$tab	= $jinput->get('tab', 'unsent');
@@ -239,40 +246,41 @@ class BwPostmanModelNewsletters extends JModelList
 			case ("unsent"):
 			case ("sent"):
 			default:
-					$this->_query->select(
+					$this->query->select(
 						$this->getState(
 							'list.select',
 							'a.id, a.subject, a.attachment, a.description, a.checked_out, a.checked_out_time' .
 							', a.published, a.publish_up, a.publish_down, a.created_date, a.created_by, a.modified_time'
 						)
 					);
-					$this->_query->select($this->_db->quoteName('a.mailing_date'));
-					$this->_query->select($this->_db->quoteName('a.description'));
-					$this->_query->select($this->_db->quoteName('c.title') . ' AS ' . $this->_db->quoteName('campaign_id'));
+					$this->query->select($this->_db->quoteName('a.mailing_date'));
+					$this->query->select($this->_db->quoteName('a.description'));
+					$this->query->select($this->_db->quoteName('c.title') . ' AS ' . $this->_db->quoteName('campaign_id'));
 
-					$this->_query->from($this->_db->quoteName('#__bwpostman_newsletters') . 'AS a');
+					$this->query->from($this->_db->quoteName('#__bwpostman_newsletters') . 'AS a');
 				break;
 
 			case ("queue"):
-					$this->_query->select('DISTINCT(' . $this->_db->quoteName('sc.nl_id') . ')');
-					$this->_query->select($this->_db->quoteName('sc.subject') . ' AS subject');
-					$this->_query->select($this->_db->quoteName('q.id'));
-					$this->_query->select($this->_db->quoteName('q.recipient'));
-					$this->_query->select($this->_db->quoteName('q.trial'));
-					$this->_query->select($this->_db->quoteName('n.description'));
-					$this->_query->select($this->_db->quoteName('ua.name') . ' AS authors');
-					$this->_query->select($this->_db->quoteName('c.title') . ' AS ' . $this->_db->quoteName('campaign_id'));
+					$this->query->select('DISTINCT(' . $this->_db->quoteName('sc.nl_id') . ')');
+					$this->query->select($this->_db->quoteName('sc.subject') . ' AS subject');
+					$this->query->select($this->_db->quoteName('q.id'));
+					$this->query->select($this->_db->quoteName('q.recipient'));
+					$this->query->select($this->_db->quoteName('q.trial'));
+					$this->query->select($this->_db->quoteName('n.description'));
+					$this->query->select($this->_db->quoteName('ua.name') . ' AS authors');
+					$this->query->select($this->_db->quoteName('c.title') . ' AS ' . $this->_db->quoteName('campaign_id'));
 
-					$this->_query->from($this->_db->quoteName('#__bwpostman_sendmailcontent', 'sc'));
+					$this->query->from($this->_db->quoteName('#__bwpostman_sendmailcontent', 'sc'));
 				break;
 		}
-		$this->_getQueryJoins($tab);
-		$this->_getQueryWhere($tab);
-		$this->_getQueryOrder($tab);
 
-		$this->_db->setQuery($this->_query);
+		$this->getQueryJoins($tab);
+		$this->getQueryWhere($tab);
+		$this->getQueryOrder($tab);
 
-		return $this->_query;
+		$this->_db->setQuery($this->query);
+
+		return $this->query;
 	}
 
 	/**
@@ -286,27 +294,48 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryJoins($tab)
+	private function getQueryJoins($tab)
 	{
 		if ($tab == 'sent' || $tab == 'unsent')
 		{
 			// join over campaigns
-			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_campaigns', 'c') . ' ON ' . $this->_db->quoteName('c.id') . ' = ' . $this->_db->quoteName('a.campaign_id'));
+			$this->query->leftJoin(
+				$this->_db->quoteName('#__bwpostman_campaigns', 'c') .
+				' ON ' . $this->_db->quoteName('c.id') . ' = ' . $this->_db->quoteName('a.campaign_id')
+			);
 
 			// Join over the users for the checked out user.
-			$this->_query->select($this->_db->quoteName('uc.name') . ' AS editor');
-			$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out'));
+			$this->query->select($this->_db->quoteName('uc.name') . ' AS editor');
+			$this->query->join(
+				'LEFT',
+				$this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out')
+			);
 
 			// Join over the users for the author.
-			$this->_query->select($this->_db->quoteName('ua.name') . ' AS authors');
-			$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by'));
+			$this->query->select($this->_db->quoteName('ua.name') . ' AS authors');
+			$this->query->join(
+				'LEFT',
+				$this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by')
+			);
 		}
 		elseif ($tab == 'queue')
 		{
-			$this->_query->rightJoin($this->_db->quoteName('#__bwpostman_sendmailqueue', 'q') . ' ON ' . $this->_db->quoteName('q.content_id') . ' = ' . $this->_db->quoteName('sc.id'));
-			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_newsletters', 'n') . ' ON ' . $this->_db->quoteName('n.id') . ' = ' . $this->_db->quoteName('sc.nl_id'));
-			$this->_query->leftJoin($this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('n.created_by'));
-			$this->_query->leftJoin($this->_db->quoteName('#__bwpostman_campaigns', 'c') . ' ON ' . $this->_db->quoteName('c.id') . ' = ' . $this->_db->quoteName('n.campaign_id'));
+			$this->query->rightJoin(
+				$this->_db->quoteName('#__bwpostman_sendmailqueue', 'q') .
+				' ON ' . $this->_db->quoteName('q.content_id') . ' = ' . $this->_db->quoteName('sc.id')
+			);
+			$this->query->leftJoin(
+				$this->_db->quoteName('#__bwpostman_newsletters', 'n') .
+				' ON ' . $this->_db->quoteName('n.id') . ' = ' . $this->_db->quoteName('sc.nl_id')
+			);
+			$this->query->leftJoin(
+				$this->_db->quoteName('#__users', 'ua') .
+				' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('n.created_by')
+			);
+			$this->query->leftJoin(
+				$this->_db->quoteName('#__bwpostman_campaigns', 'c') .
+				' ON ' . $this->_db->quoteName('c.id') . ' = ' . $this->_db->quoteName('n.campaign_id')
+			);
 		}
 	}
 
@@ -317,26 +346,28 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @param   string     $tab
 	 *
+	 * @throws Exception
+	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryWhere($tab)
+	private function getQueryWhere($tab)
 	{
-		$this->_getFilterByAccessLevelFilter();
-		$this->_getFilterByViewLevel();
-		$this->_getFilterByComponentPermissions();
-		$this->_getFilterByCampaign($tab);
-		$this->_getFilterByAuthor($tab);
-		$this->_getFilterBySearchword($tab);
+		$this->getFilterByAccessLevelFilter();
+		$this->getFilterByViewLevel();
+		$this->getFilterByComponentPermissions();
+		$this->getFilterByCampaign($tab);
+		$this->getFilterByAuthor($tab);
+		$this->getFilterBySearchword($tab);
 
 		if ($tab == 'sent' || $tab == 'unsent')
 		{
-			$this->_getFilterByPublishedState();
-			$this->_getFilterByArchiveState();
-			$this->_getFilterByMailinglist();
-			$this->_getFilterByUsergroup();
-			$this->_getFilterByMailingDate($tab);
+			$this->getFilterByPublishedState();
+			$this->getFilterByArchiveState();
+			$this->getFilterByMailinglist();
+			$this->getFilterByUsergroup();
+			$this->getFilterByMailingDate($tab);
 		}
 	}
 
@@ -351,7 +382,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryOrder($tab)
+	private function getQueryOrder($tab)
 	{
 		$orderCol  = $this->state->get('list.ordering', 'a.subject');
 		$orderDirn = $this->state->get('list.direction', 'asc');
@@ -363,6 +394,7 @@ class BwPostmanModelNewsletters extends JModelList
 			{
 				$orderCol = 'a.modified_time';
 			}
+
 			if ($orderCol == 'sc.subject')
 			{
 				$orderCol = 'a.subject';
@@ -375,7 +407,8 @@ class BwPostmanModelNewsletters extends JModelList
 				$orderCol = 'sc.subject';
 			}
 		}
-		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+
+		$this->query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
 	}
 
 	/**
@@ -385,14 +418,19 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByAccessLevelFilter()
+	private function getFilterByAccessLevelFilter()
 	{
-		$access = $this->getState('filter.access');
-		if ($access)
+		if (JFactory::getApplication()->isSite())
 		{
-			$this->_query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+			$access = $this->getState('filter.access');
+			if ($access)
+			{
+				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+			}
 		}
 	}
 
@@ -403,16 +441,21 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByViewLevel()
+	private function getFilterByViewLevel()
 	{
-		$user	= JFactory::getUser();
-
-		if (!$user->authorise('core.admin'))
+		if (JFactory::getApplication()->isSite())
 		{
-			$groups	= implode(',', $user->getAuthorisedViewLevels());
-			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
+			$user = JFactory::getUser();
+
+			if (!$user->authorise('core.admin'))
+			{
+				$groups = implode(',', $user->getAuthorisedViewLevels());
+				$this->query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
+			}
 		}
 	}
 
@@ -425,13 +468,13 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByComponentPermissions()
+	private function getFilterByComponentPermissions()
 	{
 		$allowed_ids    = BwPostmanHelper::getAllowedRecords('newsletter');
 
 		if ($allowed_ids != 'all')
 		{
-			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
 
@@ -446,7 +489,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByCampaign($tab)
+	private function getFilterByCampaign($tab)
 	{
 		$campaign = $this->getState('filter.campaign_id');
 
@@ -454,11 +497,11 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			if ($tab == 'queue')
 			{
-				$this->_query->where('n.campaign_id = ' . (int) $campaign);
+				$this->query->where('n.campaign_id = ' . (int) $campaign);
 			}
 			else
 			{
-				$this->_query->where('a.campaign_id = ' . (int) $campaign);
+				$this->query->where('a.campaign_id = ' . (int) $campaign);
 			}
 		}
 	}
@@ -474,18 +517,18 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByAuthor($tab)
+	private function getFilterByAuthor($tab)
 	{
 		$authors = $this->getState('filter.authors');
 		if ($authors)
 		{
 			if ($tab == 'queue')
 			{
-				$this->_query->where('n.created_by = ' . (int) $authors);
+				$this->query->where('n.created_by = ' . (int) $authors);
 			}
 			else
 			{
-				$this->_query->where('a.created_by = ' . (int) $authors);
+				$this->query->where('a.created_by = ' . (int) $authors);
 			}
 		}
 	}
@@ -501,7 +544,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterBySearchword($tab)
+	private function getFilterBySearchword($tab)
 	{
 		$filtersearch = $this->getState('filter.search_filter');
 		$search			= $this->_db->escape($this->getState('filter.search'), true);
@@ -515,48 +558,60 @@ class BwPostmanModelNewsletters extends JModelList
 				case 'subject':
 					if($tab == 'queue')
 					{
-					$this->_query->where($this->_db->quoteName('c.subject') . ' LIKE ' . $this->_db->quote($search));
+						$this->query->where($this->_db->quoteName('c.subject') . ' LIKE ' . $this->_db->quote($search));
 					}
 					else
 					{
-						$this->_query->where($this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search));
+						$this->query->where($this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search));
 					}
 					break;
 				case 'description':
 					if($tab == 'queue')
 					{
-						$this->_query->where($this->_db->quoteName('n.description') . ' LIKE ' . $this->_db->quote($search));
+						$this->query->where($this->_db->quoteName('n.description') . ' LIKE ' . $this->_db->quote($search));
 					}
 					else
 					{
-						$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search));
+						$this->query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search));
 					}
 					break;
 				case 'subject_description':
 					if($tab == 'queue')
 					{
-						$this->_query->where('(' . $this->_db->quoteName('c.subject') . ' LIKE ' . $this->_db->quote($search) . ' OR ' . $this->_db->quoteName('n.description') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+						$this->query->where(
+							'(' . $this->_db->quoteName('c.subject') . ' LIKE ' . $this->_db->quote($search) .
+							' OR ' . $this->_db->quoteName('n.description') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						);
 					}
 					else
 					{
-						$this->_query->where('(' . $this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search) . ' OR ' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+						$this->query->where(
+							'(' . $this->_db->quoteName('a.subject') . ' LIKE ' . $this->_db->quote($search) .
+							' OR ' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						);
 					}
 					break;
 				case 'html_text_version':
 					if ($tab == 'unsent' || $tab == 'sent')
 					{
-						$this->_query->where('(' . $this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.text_version') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+						$this->query->where(
+							'(' . $this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false) .
+							' OR ' . $this->_db->quoteName('a.text_version') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						);
 					}
 					elseif ($tab == 'queue')
 					{
-						$this->_query->where('(' . $this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false) . 'OR ' . $this->_db->quoteName('q.text_version') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+						$this->query->where(
+							'(' . $this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false) .
+							'OR ' . $this->_db->quoteName('q.text_version') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						);
 					}
 					break;
 				case 'text_version':
-					$this->_query->where($this->_db->quoteName('a.text_version') . ' LIKE ' . $this->_db->quote($search. false));
+					$this->query->where($this->_db->quoteName('a.text_version') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'html_version':
-					$this->_query->where($this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($this->_db->quoteName('a.html_version') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				default:
 			}
@@ -572,7 +627,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByPublishedState()
+	private function getFilterByPublishedState()
 	{
 		// Define null and now dates, get params
 		$nullDate	= $this->_db->quote($this->_db->getNullDate());
@@ -586,28 +641,28 @@ class BwPostmanModelNewsletters extends JModelList
 				case 0:
 				case 1:
 				default:
-					$this->_query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
+					$this->query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
 					break;
 				case 2:
-					$this->_query->where($this->_db->quoteName('a.publish_down') . ' <> ' . $nullDate);
-					$this->_query->where($this->_db->quoteName('a.publish_down') . ' <= ' . $nowDate);
+					$this->query->where($this->_db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->query->where($this->_db->quoteName('a.publish_down') . ' <= ' . $nowDate);
 					break;
 				case 3:
-					$this->_query->where($this->_db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $nullDate . ')');
+					$this->query->where($this->_db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $nullDate . ')');
 					break;
 				case 4:
-					$this->_query->where($this->_db->quoteName('a.publish_up') . ' <= ' . $nowDate);
-					$this->_query->where($this->_db->quoteName('a.publish_down') . ' <> ' . $nullDate);
-					$this->_query->where($this->_db->quoteName('a.publish_down') . ' > ' . $nowDate);
+					$this->query->where($this->_db->quoteName('a.publish_up') . ' <= ' . $nowDate);
+					$this->query->where($this->_db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->query->where($this->_db->quoteName('a.publish_down') . ' > ' . $nowDate);
 					break;
 				case 5:
-					$this->_query->where($this->_db->quoteName('a.publish_up') . ' > ' . $nowDate);
+					$this->query->where($this->_db->quoteName('a.publish_up') . ' > ' . $nowDate);
 					break;
 			}
 		}
 		elseif ($published === '')
 		{
-			$this->_query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
+			$this->query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
 		}
 	}
 
@@ -621,9 +676,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByArchiveState()
+	private function getFilterByArchiveState()
 	{
-		$this->_query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
 	}
 
 	/**
@@ -635,13 +690,13 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByMailinglist()
+	private function getFilterByMailinglist()
 	{
 		$mailinglist = $this->getState('filter.mailinglists');
 		if ($mailinglist)
 		{
-			$this->_query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
-			$this->_query->where('m.mailinglist_id = ' . (int) $mailinglist);
+			$this->query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
+			$this->query->where('m.mailinglist_id = ' . (int) $mailinglist);
 		}
 	}
 
@@ -654,13 +709,13 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByUsergroup()
+	private function getFilterByUsergroup()
 	{
 		$usergroup = $this->getState('filter.usergroups');
 		if ($usergroup)
 		{
-			$this->_query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
-			$this->_query->where('m.mailinglist_id = ' . -(int) $usergroup);
+			$this->query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
+			$this->query->where('m.mailinglist_id = ' . -(int) $usergroup);
 		}
 	}
 
@@ -675,7 +730,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByMailingDate($tab)
+	private function getFilterByMailingDate($tab)
 	{
 		switch ($tab)
 		{
@@ -691,33 +746,34 @@ class BwPostmanModelNewsletters extends JModelList
 				break;
 		}
 
-		$this->_query->where('a.mailing_date' . $tab_int . "'0000-00-00 00:00:00'");
+		$this->query->where('a.mailing_date' . $tab_int . "'0000-00-00 00:00:00'");
 	}
 
-    /**
-     * Method to get a JPagination object for the data set.
-     *
-     * @return  JPagination  A JPagination object for the data set.
-     *
-     * @since   1.6
-     */
-    public function getQueuePagination()
-    {
-        // Get a storage key.
-        $store = $this->getStoreId('getPaginationQueue');
+	/**
+	 * Method to get a JPagination object for the data set.
+	 *
+	 * @return  JPagination  A JPagination object for the data set.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   1.6
+	 */
+	public function getQueuePagination()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId('getPaginationQueue');
 
-        // Try to load the data from internal storage.
-        if (isset($this->cache[$store]))
-        {
-            return $this->cache[$store];
-        }
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store]))
+		{
+			return $this->cache[$store];
+		}
 
-        $limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
+		$limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
 
-        // Create the pagination object and add the object to the internal cache.
-        $this->cache[$store] = new JPagination($this->getCountQueue(), $this->getStart(), $limit);
+		// Create the pagination object and add the object to the internal cache.
+		$this->cache[$store] = new JPagination($this->getCountQueue(), $this->getStart(), $limit);
 
-        return $this->cache[$store];
-    }
-
+		return $this->cache[$store];
+	}
 }

@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -42,54 +42,6 @@ jimport('joomla.application.component.modellist');
  */
 class BwPostmanModelTemplates extends JModelList
 {
-
-	/**
-	 * Templates data
-	 *
-	 * @var array
-	 *
-	 * @since 1.1.0
-	 */
-	var $_data = null;
-
-	/**
-	 * Number of all Templates
-	 *
-	 * @var integer
-	 *
-	 * @since 1.1.0
-	 */
-	var $_total = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 *
-	 * @since 1.1.0
-	 */
-	var $_pagination = null;
-
-	/**
-	 * Templates search
-	 *
-	 * @var string
-	 *
-	 * @since 1.1.0
-	 */
-	var $_search = null;
-
-	/**
-	 * Templates key
-	 * --> we need this as identifier for the different Templates filters (e.g. filter_order, search ...)
-	 * --> value will be "templates"
-	 *
-	 * @var	string
-	 *
-	 * @since 1.1.0
-	 */
-	var $_key = null;
-
 	/**
 	 * The query object
 	 *
@@ -97,7 +49,7 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since       2.0.0
 	 */
-	private $_query;
+	protected $query;
 
 	/**
 	 * Constructor
@@ -134,6 +86,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.1.0
 	 */
@@ -186,10 +140,10 @@ class BwPostmanModelTemplates extends JModelList
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('filter.search');
-		$id	.= ':'.$this->getState('filter.search_filter');
-		$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.published');
+		$id	.= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.search_filter');
+		$id	.= ':' . $this->getState('filter.access');
+		$id	.= ':' . $this->getState('filter.published');
 
 		return parent::getStoreId($id);
 	}
@@ -201,29 +155,31 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return 	string Query
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.1.0
 	 */
 	protected function getListQuery()
 	{
-		$this->_query		= $this->_db->getQuery(true);
+		$this->query = $this->_db->getQuery(true);
 
 		// Select the required fields from the table.
-		$this->_query->select(
-				$this->getState(
-						'list.select',
-						'a.id, a.title, a.thumbnail, a.standard, a.description, a.tpl_id, 
-						a.checked_out, a.checked_out_time, a.published, a.access, a.created_date, a.created_by'
-				)
+		$this->query->select(
+			$this->getState(
+				'list.select',
+				'a.id, a.title, a.thumbnail, a.standard, a.description, a.tpl_id, 
+				a.checked_out, a.checked_out_time, a.published, a.access, a.created_date, a.created_by'
+			)
 		);
-		$this->_query->from($this->_db->quoteName('#__bwpostman_templates', 'a'));
+		$this->query->from($this->_db->quoteName('#__bwpostman_templates', 'a'));
 
-		$this->_getQueryJoins();
-		$this->_getQueryWhere();
-		$this->_getQueryOrder();
+		$this->getQueryJoins();
+		$this->getQueryWhere();
+		$this->getQueryOrder();
 
-		$this->_db->setQuery($this->_query);
+		$this->_db->setQuery($this->query);
 
-		return $this->_query;
+		return $this->query;
 	}
 
 	/**
@@ -235,19 +191,28 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryJoins()
+	private function getQueryJoins()
 	{
 		// Join over the users for the checked out user.
-		$this->_query->select($this->_db->quoteName('uc.name') . ' AS editor');
-		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out'));
+		$this->query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->query->join(
+			'LEFT',
+			$this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out')
+		);
 
 		// Join over the asset groups.
-		$this->_query->select($this->_db->quoteName('ag.title') . ' AS access_level');
-		$this->_query->join('LEFT', $this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access'));
+		$this->query->select($this->_db->quoteName('ag.title') . ' AS access_level');
+		$this->query->join(
+			'LEFT',
+			$this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access')
+		);
 
 		// Join over the users for the author.
-		$this->_query->select($this->_db->quoteName('ua.name') , ' AS author_name');
-		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by'));
+		$this->query->select($this->_db->quoteName('ua.name'), ' AS author_name');
+		$this->query->join(
+			'LEFT',
+			$this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by')
+		);
 	}
 
 	/**
@@ -257,19 +222,20 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryWhere()
+	private function getQueryWhere()
 	{
-		$this->_getFilterByAccessLevelFilter();
-		$this->_getFilterByViewLevel();
-		$this->_getFilterByComponentPermissions();
-		$this->_getFilterByNewTemplates();
-		$this->_getFilterByTemplateFormat();
-		$this->_getFilterByPublishedState();
-		$this->_getFilterByArchiveState();
-		$this->_getFilterBySearchword();
-
+		$this->getFilterByAccessLevelFilter();
+		$this->getFilterByViewLevel();
+		$this->getFilterByComponentPermissions();
+		$this->getFilterByNewTemplates();
+		$this->getFilterByTemplateFormat();
+		$this->getFilterByPublishedState();
+		$this->getFilterByArchiveState();
+		$this->getFilterBySearchword();
 	}
 
 	/**
@@ -281,7 +247,7 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryOrder()
+	private function getQueryOrder()
 	{
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
@@ -291,7 +257,8 @@ class BwPostmanModelTemplates extends JModelList
 		{
 			$orderCol = 'ag.title';
 		}
-		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+
+		$this->query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
 	}
 
 	/**
@@ -301,14 +268,19 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByAccessLevelFilter()
+	private function getFilterByAccessLevelFilter()
 	{
-		$access = $this->getState('filter.access');
-		if ($access)
+		if (JFactory::getApplication()->isSite())
 		{
-			$this->_query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+			$access = $this->getState('filter.access');
+			if ($access)
+			{
+				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+			}
 		}
 	}
 
@@ -319,16 +291,21 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByViewLevel()
+	private function getFilterByViewLevel()
 	{
-		$user	= JFactory::getUser();
-
-		if (!$user->authorise('core.admin'))
+		if (JFactory::getApplication()->isSite())
 		{
-			$groups	= implode(',', $user->getAuthorisedViewLevels());
-			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
+			$user = JFactory::getUser();
+
+			if (!$user->authorise('core.admin'))
+			{
+				$groups = implode(',', $user->getAuthorisedViewLevels());
+				$this->query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
+			}
 		}
 	}
 
@@ -341,13 +318,13 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByComponentPermissions()
+	private function getFilterByComponentPermissions()
 	{
 		$allowed_ids    = BwPostmanHelper::getAllowedRecords('template');
 
 		if ($allowed_ids != 'all')
 		{
-			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
 
@@ -360,26 +337,28 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByNewTemplates()
+	private function getFilterByNewTemplates()
 	{
 		// Filter show only the new templates id > 0
-		$this->_query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
 	}
 
 
-		/**
+	/**
 	 * Method to get the filter by selected template format
 	 *
 	 * @access 	private
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByTemplateFormat()
+	private function getFilterByTemplateFormat()
 	{
 		// Filter show only the new templates id > 0
-		$this->_query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
 
 		// Filter by format.
 		$format = $this->getState('filter.tpl_id');
@@ -387,11 +366,12 @@ class BwPostmanModelTemplates extends JModelList
 		{
 			if ($format == '1')
 			{
-				$this->_query->where($this->_db->quoteName('a.tpl_id') . ' < 998');
+				$this->query->where($this->_db->quoteName('a.tpl_id') . ' < 998');
 			}
+
 			if ($format == '2')
 			{
-				$this->_query->where($this->_db->quoteName('a.tpl_id') . ' > 997');
+				$this->query->where($this->_db->quoteName('a.tpl_id') . ' > 997');
 			}
 		}
 	}
@@ -405,16 +385,16 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByPublishedState()
+	private function getFilterByPublishedState()
 	{
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
 		{
-			$this->_query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
+			$this->query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$this->_query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
+			$this->query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
 		}
 	}
 
@@ -427,9 +407,9 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByArchiveState()
+	private function getFilterByArchiveState()
 	{
-		$this->_query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
 	}
 
 	/**
@@ -441,7 +421,7 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterBySearchword()
+	private function getFilterBySearchword()
 	{
 		$filtersearch = $this->getState('filter.search_filter');
 		$search			= $this->_db->escape($this->getState('filter.search'), true);
@@ -453,13 +433,16 @@ class BwPostmanModelTemplates extends JModelList
 			switch ($filtersearch)
 			{
 				case 'description':
-					$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'title_description':
-					$this->_query->where('(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+					$this->query->where(
+						'(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) .
+						' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+					);
 					break;
 				case 'title':
-					$this->_query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				default:
 			}
@@ -508,14 +491,16 @@ class BwPostmanModelTemplates extends JModelList
 			switch ($file['error'])
 			{
 				case '1':
-				case '2': $msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_SIZE');
+				case '2':
+					$msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_SIZE');
 					break;
-				case '3': $msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
+				case '3':
+					$msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
 					break;
-				case '4': $msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
+				case '4':
+					$msg .= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
 					break;
 			}
-
 		}
 		else
 		{ // The file is okay
@@ -532,6 +517,7 @@ class BwPostmanModelTemplates extends JModelList
 				}
 			}
 		}
+
 		return $msg;
 	}
 
@@ -543,6 +529,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param   string
 	 *
 	 * @return  boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.1.0
 	 */
@@ -564,10 +552,11 @@ class BwPostmanModelTemplates extends JModelList
 
 		if (!$result || $result instanceof Exception) // extract failed
 		{
-			$this->_delMessage();
+			$this->delMessage();
 			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
 			return false;
 		}
+
 		echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT_OK') . '</p>';
 		return true;
 	}
@@ -579,6 +568,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param string    $step
 	 *
 	 * @return boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.1.0
 	 */
@@ -605,12 +596,12 @@ class BwPostmanModelTemplates extends JModelList
 			if (count($queries) != 0)
 			{
 				// Process each query in the $queries array (split out of sql file).
-				foreach ($queries as $this->_query)
+				foreach ($queries as $this->query)
 				{
-					$this->_query = trim($this->_query);
-					if ($this->_query != '' && $this->_query{0} != '#')
+					$this->query = trim($this->query);
+					if ($this->query != '' && $this->query{0} != '#')
 					{
-						$db->setQuery($this->_query);
+						$db->setQuery($this->query);
 
 						try
 						{
@@ -629,6 +620,7 @@ class BwPostmanModelTemplates extends JModelList
 			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
 			return false;
 		}
+
 		echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step . '_OK') . '</p>';
 		return true;
 	}
@@ -637,6 +629,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * Method to copy template thumbnail
 	 *
 	 * @access	public
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.1.0
 	 */
@@ -652,30 +646,49 @@ class BwPostmanModelTemplates extends JModelList
 		// make new folder and copy template thumbnails
 		$m_params   = JComponentHelper::getParams('com_media');
 		$dest       = JPATH_ROOT . '/' . $m_params->get('file_path', 'images') . '/bw_postman';
-		$dest2		= JPATH_ROOT.'/images/bw_postman';
-		$media_path = JPATH_ROOT.'/media/bw_postman/images/';
+		$dest2		= JPATH_ROOT . '/images/bw_postman';
+		$media_path = JPATH_ROOT . '/media/bw_postman/images/';
 
 		if (!JFolder::exists($dest))
+		{
 			JFolder::create($dest);
+		}
+
 		if (!JFile::exists($dest . '/index.html'))
+		{
 			JFile::copy(JPATH_ROOT . '/images/index.html', $dest . '/index.html');
+		}
 
 		if (!JFolder::exists($dest2))
-			JFolder::create(JPATH_ROOT.'/images/bw_postman');
-		if (!JFile::exists(JPATH_ROOT.'/images/bw_postman/index.html'))
-			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/bw_postman/index.html');
+		{
+			JFolder::create(JPATH_ROOT . '/images/bw_postman');
+		}
+
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/index.html'))
+		{
+			JFile::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/bw_postman/index.html');
+		}
 
 		$warn = false;
 		$files = JFolder::files($imagedir);
 		foreach ($files as $file)
 		{
 			if (!JFile::exists($dest . '/' . $file))
+			{
 				JFile::copy($imagedir . $file, $dest . '/' . $file);
+			}
+
 			if (!JFile::exists($dest2 . '/' . $file))
+			{
 				JFile::copy($imagedir . $file, $dest2 . '/' . $file);
+			}
+
 			if (!JFile::exists($media_path . '/' . $file))
+			{
 				JFile::copy($imagedir . $file, $media_path . '/' . $file);
-			$this->_delMessage();
+			}
+
+			$this->delMessage();
 			$path_now = $dest . '/';
 			if (!JFile::exists($dest . '/' . $file))
 			{
@@ -687,6 +700,7 @@ class BwPostmanModelTemplates extends JModelList
 			{
 				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
 			}
+
 			$path_now = $dest2 . '/';
 			if (!JFile::exists($dest2 . '/' . $file))
 			{
@@ -698,6 +712,7 @@ class BwPostmanModelTemplates extends JModelList
 			{
 				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
 			}
+
 			$path_now = $media_path;
 			if (!JFile::exists($media_path . $file))
 			{
@@ -709,7 +724,9 @@ class BwPostmanModelTemplates extends JModelList
 				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
 			}
 		}
-		if ($warn) {
+
+		if ($warn)
+		{
 			return false;
 		}
 		else {
@@ -722,9 +739,11 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @access	public
 	 *
-	 * @param   string  $file
+	 * @param   array  $file
 	 *
 	 * @return boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.1.0
 	 */
@@ -742,10 +761,16 @@ class BwPostmanModelTemplates extends JModelList
 
 		$warn = false;
 		if (JFile::exists($archivename))
+		{
 			JFile::delete($archivename);
+		}
+
 		if (JFolder::exists($extractdir))
+		{
 			JFolder::delete($extractdir);
-		$this->_delMessage();
+		}
+
+		$this->delMessage();
 		if (JFile::exists($archivename))
 		{
 			echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_WARNING', $archivename, $tempPath) . '</p>';
@@ -755,15 +780,21 @@ class BwPostmanModelTemplates extends JModelList
 		{
 			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_OK', $archivename, $tempPath) . '</p>';
 		}
+
 		if (JFolder::exists($extractdir))
 		{
-			echo '<p class="bw_tablecheck_warn">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_WARNING', '/tmp_bwpostman_installtpl/', $tempPath) . '</p>';
+			echo '<p class="bw_tablecheck_warn">' .
+				JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_WARNING', '/tmp_bwpostman_installtpl/', $tempPath) .
+				'</p>';
 			$warn = true;
 		}
 		else
 		{
-			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_OK', '/tmp_bwpostman_installtpl/', $tempPath) . '</p>';
+			echo '<p class="bw_tablecheck_ok">' .
+				JText::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_OK', '/tmp_bwpostman_installtpl/', $tempPath) .
+				'</p>';
 		}
+
 		if ($warn)
 		{
 			return false;
@@ -779,19 +810,22 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @access	private
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.1.0
 	 */
-	private function _delMessage()
+	private function delMessage()
 	{
 		$app = JFactory::getApplication();
 		$appReflection = new ReflectionClass(get_class($app));
 		$_messageQueue = $appReflection->getProperty('_messageQueue');
 		$_messageQueue->setAccessible(true);
 		$messages = $_messageQueue->getValue($app);
-		foreach($messages as $key=>$message)
+		foreach ($messages as $key => $message)
 		{
 			unset($messages[$key]);
 		}
-		$_messageQueue->setValue($app,$messages);
+
+		$_messageQueue->setValue($app, $messages);
 	}
 }

@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
 // Import helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman campaigns model
@@ -47,60 +47,13 @@ class BwPostmanModelCampaigns extends JModelList
 {
 
 	/**
-	 * Campaigns data
-	 *
-	 * @var array
-	 *
-	 * @since       0.9.1
-	 */
-	var $_data = null;
-
-	/**
-	 * Number of all campaigns
-	 *
-	 * @var integer
-	 *
-	 * @since       0.9.1
-	 */
-	var $_total = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 *
-	 * @since       0.9.1
-	 */
-	var $_pagination = null;
-
-	/**
-	 * Campaigns search
-	 *
-	 * @var string
-	 *
-	 * @since       0.9.1
-	 */
-	var $_search = null;
-
-	/**
-	 * Campaigns key
-	 * --> we need this as identifier for the different campaigns filters (e.g. filter_order, search ...)
-	 * --> value will be "campaigns"
-	 *
-	 * @var	string
-	 *
-	 * @since       0.9.1
-	 */
-	var $_key = null;
-
-	/**
 	 * The query object
 	 *
 	 * @var	object
 	 *
 	 * @since       2.0.0
 	 */
-	private $_query;
+	protected $query;
 
 	/**
 	 * Constructor
@@ -125,6 +78,7 @@ class BwPostmanModelCampaigns extends JModelList
 				'created_by', 'a.created_by'
 			);
 		}
+
 		parent::__construct($config);
 	}
 
@@ -137,6 +91,8 @@ class BwPostmanModelCampaigns extends JModelList
 	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -186,13 +142,13 @@ class BwPostmanModelCampaigns extends JModelList
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('filter.search');
-		$id	.= ':'.$this->getState('filter.search_filter');
-		$id	.= ':'.$this->getState('filter.title');
-		$id	.= ':'.$this->getState('filter.description');
-		$id	.= ':'.$this->getState('filter.newsletters');
-		$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.published');
+		$id	.= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.search_filter');
+		$id	.= ':' . $this->getState('filter.title');
+		$id	.= ':' . $this->getState('filter.description');
+		$id	.= ':' . $this->getState('filter.newsletters');
+		$id	.= ':' . $this->getState('filter.access');
+		$id	.= ':' . $this->getState('filter.published');
 
 		return parent::getStoreId($id);
 	}
@@ -204,30 +160,32 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @return 	string      query
 	 *
+	 * @throws Exception
+	 *
 	 * @since   0.9.1
 	 */
 	protected function getListQuery()
 	{
-		$this->_query	= $this->_db->getQuery(true);
-		$sub_query      = $this->_getSubQuery();
+		$this->query = $this->_db->getQuery(true);
+		$sub_query   = $this->getSubQuery();
 
 		// Select the required fields from the table.
-		$this->_query->select(
-				$this->getState(
-						'list.select',
-						'a.id, a.title, a.description, a.checked_out, a.checked_out_time' .
-						', a.published, a.access, a.created_date, a.created_by'
-				) . ', (' . $sub_query . ') AS newsletters'
+		$this->query->select(
+			$this->getState(
+				'list.select',
+				'a.id, a.title, a.description, a.checked_out, a.checked_out_time' .
+				', a.published, a.access, a.created_date, a.created_by'
+			) . ', (' . $sub_query . ') AS newsletters'
 		);
-		$this->_query->from($this->_db->quoteName('#__bwpostman_campaigns', 'a'));
+		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', 'a'));
 
-		$this->_getQueryJoins();
-		$this->_getQueryWhere();
-		$this->_getQueryOrder();
+		$this->getQueryJoins();
+		$this->getQueryWhere();
+		$this->getQueryOrder();
 
-		$this->_db->setQuery($this->_query);
+		$this->_db->setQuery($this->query);
 
-		return $this->_query;
+		return $this->query;
 	}
 
 	/**
@@ -238,7 +196,7 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getSubQuery()
+	private function getSubQuery()
 	{
 		$sub_query = $this->_db->getQuery(true);
 
@@ -259,19 +217,28 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryJoins()
+	private function getQueryJoins()
 	{
 		// Join over the users for the checked out user.
-		$this->_query->select($this->_db->quoteName('uc.name') . ' AS editor');
-		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out'));
+		$this->query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->query->join(
+			'LEFT',
+			$this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out')
+		);
 
 		// Join over the asset groups.
-		$this->_query->select($this->_db->quoteName('ag.title') . ' AS access_level');
-		$this->_query->join('LEFT', $this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access'));
+		$this->query->select($this->_db->quoteName('ag.title') . ' AS access_level');
+		$this->query->join(
+			'LEFT',
+			$this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access')
+		);
 
 		// Join over the users for the author.
-		$this->_query->select($this->_db->quoteName('ua.name') , ' AS author_name');
-		$this->_query->join('LEFT', $this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by'));
+		$this->query->select($this->_db->quoteName('ua.name'), ' AS author_name');
+		$this->query->join(
+			'LEFT',
+			$this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by')
+		);
 	}
 
 	/**
@@ -281,17 +248,18 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryWhere()
+	private function getQueryWhere()
 	{
-		$this->_getFilterByAccessLevelFilter();
-		$this->_getFilterByViewLevel();
-		$this->_getFilterByComponentPermissions();
-		$this->_getFilterByPublishedState();
-		$this->_getFilterByArchiveState();
-		$this->_getFilterBySearchword();
-
+		$this->getFilterByAccessLevelFilter();
+		$this->getFilterByViewLevel();
+		$this->getFilterByComponentPermissions();
+		$this->getFilterByPublishedState();
+		$this->getFilterByArchiveState();
+		$this->getFilterBySearchword();
 	}
 
 	/**
@@ -303,7 +271,7 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getQueryOrder()
+	private function getQueryOrder()
 	{
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
@@ -313,7 +281,8 @@ class BwPostmanModelCampaigns extends JModelList
 		{
 			$orderCol = 'ag.title';
 		}
-		$this->_query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+
+		$this->query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
 	}
 
 	/**
@@ -323,14 +292,19 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByAccessLevelFilter()
+	private function getFilterByAccessLevelFilter()
 	{
-		$access = $this->getState('filter.access');
-		if ($access)
+		if (JFactory::getApplication()->isSite())
 		{
-			$this->_query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+			$access = $this->getState('filter.access');
+			if ($access)
+			{
+				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+			}
 		}
 	}
 
@@ -341,16 +315,21 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByViewLevel()
+	private function getFilterByViewLevel()
 	{
-		$user	= JFactory::getUser();
-
-		if (!$user->authorise('core.admin'))
+		if (JFactory::getApplication()->isSite())
 		{
-			$groups	= implode(',', $user->getAuthorisedViewLevels());
-			$this->_query->where($this->_db->quoteName('a.access') . ' IN ('.$groups.')');
+			$user = JFactory::getUser();
+
+			if (!$user->authorise('core.admin'))
+			{
+				$groups = implode(',', $user->getAuthorisedViewLevels());
+				$this->query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
+			}
 		}
 	}
 
@@ -363,13 +342,13 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByComponentPermissions()
+	private function getFilterByComponentPermissions()
 	{
 		$allowed_ids    = BwPostmanHelper::getAllowedRecords('campaign');
 
 		if ($allowed_ids != 'all')
 		{
-			$this->_query->where($this->_db->quoteName('a.id') . ' IN ('.$allowed_ids.')');
+			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
 
@@ -382,16 +361,16 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByPublishedState()
+	private function getFilterByPublishedState()
 	{
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
 		{
-			$this->_query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
+			$this->query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$this->_query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
+			$this->query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
 		}
 	}
 
@@ -404,9 +383,9 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterByArchiveState()
+	private function getFilterByArchiveState()
 	{
-		$this->_query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
 	}
 
 	/**
@@ -418,7 +397,7 @@ class BwPostmanModelCampaigns extends JModelList
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFilterBySearchword()
+	private function getFilterBySearchword()
 	{
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = '%' . $this->_db->escape($this->getState('filter.search'), true) . '%';
@@ -428,13 +407,16 @@ class BwPostmanModelCampaigns extends JModelList
 			switch ($filtersearch)
 			{
 				case 'description':
-					$this->_query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'title_description':
-					$this->_query->where('(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+					$this->query->where(
+						'(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) .
+						' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+					);
 					break;
 				case 'title':
-					$this->_query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				default:
 			}

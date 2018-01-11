@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
@@ -33,7 +33,7 @@ jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman template Controller
@@ -56,6 +56,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * Constructor.
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 *
@@ -84,6 +86,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -92,6 +95,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * Method to call the start layout for the add text template
 	 *
 	 * @access	public
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 */
@@ -110,6 +115,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * Method to call the start layout for the add html template
 	 *
 	 * @access	public
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 */
@@ -177,6 +184,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function edit($key = null, $urlVar = null)
@@ -213,13 +222,15 @@ class BwPostmanControllerTemplate extends JControllerForm
 		{
 			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
+
 		if (!$allowed)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -235,7 +246,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -249,7 +261,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -265,6 +278,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 *
 	 * @return	bool    true on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.1.0
 	 */
 	public function archive()
@@ -272,7 +287,10 @@ class BwPostmanControllerTemplate extends JControllerForm
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Get the selected template(s)
 		$cid = $jinput->get('cid', array(0), 'post');
@@ -284,7 +302,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -296,8 +315,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 		// count selected standard templates
 		$query->select($db->quoteName('standard'));
 		$query->from($db->quoteName('#__bwpostman_templates'));
-		$query->where($db->quoteName('id')." IN (".implode(",", $cid).")");
-		$query->where($db->quoteName('standard')." = ".$db->quote(1));
+		$query->where($db->quoteName('id') . " IN (" . implode(",", $cid) . ")");
+		$query->where($db->quoteName('standard') . " = " . $db->quote(1));
 
 		$db->setQuery($query);
 		$db->execute();
@@ -307,23 +326,23 @@ class BwPostmanControllerTemplate extends JControllerForm
 		if ($count_std > 0)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
-			$link = JRoute::_('index.php?option=com_bwpostman&view=templates',false);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
 		}
 		else
 		{
-			$n = count ($cid);
+			$n = count($cid);
 
 			$model = $this->getModel('template');
 			if(!$model->archive($cid, 1))
 			{
 				if ($n > 1)
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_TPLS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_TPLS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 				else
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_TPL_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_TPL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 			}
 			else
@@ -335,6 +354,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 				{
 					$msg = JText::_('COM_BWPOSTMAN_TPL_ARCHIVED');
 				}
+
 				$link = JRoute::_('index.php?option=com_bwpostman&view=templates', false);
 
 				$this->setRedirect($link, $msg);

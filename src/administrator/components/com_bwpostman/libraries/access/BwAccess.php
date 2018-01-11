@@ -165,16 +165,17 @@ class BwAccess
 	/**
 	 * Method to check if a user is authorised to perform an action, optionally on an asset.
 	 *
-	 * @param   integer         $userId    Id of the user for which to check authorisation.
-	 * @param   string          $action    The name of the action to authorise.
-	 * @param   integer|string  $assetKey  The asset key (asset id or asset name). null fallback to root asset.
-	 * @param   boolean         $preload   Indicates whether preloading should be used.
+	 * @param   integer         $userId     Id of the user for which to check authorisation.
+	 * @param   string          $action     The name of the action to authorise.
+	 * @param   integer|string  $assetKey   The asset key (asset id or asset name). null fallback to root asset.
+	 * @param   boolean         $preload    Indicates whether preloading should be used.
+	 * @param   string          $strictView check only for this context
 	 *
 	 * @return  boolean|null  True if allowed, false for an explicit deny, null for an implicit deny.
 	 *
 	 * @since   11.1
 	 */
-	public static function check($userId, $action, $assetKey = null, $preload = true)
+	public static function check($userId, $action, $assetKey = null, $preload = false, $strictView = '')
 	{
 		// Sanitise inputs.
 		$userId = (int) $userId;
@@ -186,8 +187,20 @@ class BwAccess
 			self::$identities[$userId] = self::getGroupsByUser($userId, false);
 		}
 
+		$identities	= self::$identities[$userId];
+
+		// restrict identities to only this view, if set, especially needed for archive tabs
+		if ($strictView != '')
+		{
+			// Get group ids for this view by asset!
+			$wantedGroups = self::getWantedGroups($strictView);
+
+			// Limit identities to only these groups
+			$identities = array_intersect($wantedGroups, $identities);
+		}
+
 		// Get the JRules object and set data
-		$rules				= self::getAssetRules($assetKey, true, true, $preload);
+		$rules	= self::getAssetRules($assetKey, true, true, $preload);
 
 		if (!isset($rules->getData()[$action]))
 		{
@@ -205,9 +218,53 @@ class BwAccess
 		self::inheritRules($userId);
 
 		// Check for permission
-		$allow = self::ruleAllow(self::$identities[$userId]);
+		$allow = self::ruleAllow($identities);
 
 		return $allow;
+	}
+
+	/**
+	 * @param $strictView
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	protected static function getWantedGroups($strictView)
+	{
+		$sectionRules = json_decode(self::getSectionAsset($strictView), true);
+
+		$archiveRuleName	= 'bwpm.' . $strictView . '.archive';
+		$archiveRules		= $sectionRules[$archiveRuleName];
+
+		$wantedGroups		= array_keys($archiveRules);
+
+		return $wantedGroups;
+	}
+
+	/**
+	 * @param $section
+	 *
+	 * @return string
+	 *
+	 * @since 2.0.0
+	 */
+	protected static function getSectionAsset($section)
+	{
+		$assetName = 'com_bwpostman.' . $section;
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('rules'));
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('name') . ' = ' . $db->quote($assetName));
+
+		$db->setQuery($query);
+
+		$sectionRules = $db->loadResult();
+
+		return $sectionRules;
 	}
 
 	/**

@@ -1642,6 +1642,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$old_text_template	= $jinput->get('text_template_id_old', '', 'string');
 		$state_data			= $app->getUserState('com_bwpostman.edit.newsletter.data');
 
+		// support for plugin substitute links
+		if($form_data['substitute_links'] == '1')
+		{
+			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
+		}
+
 		// heal form fields
 		switch ($layout)
 		{

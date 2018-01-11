@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Registry\Registry as JRegistry;
 
@@ -46,224 +46,224 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @since       1.1.0
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
 	 * @var int asset_id
 	 *
 	 * @since       1.1.0
 	 */
-	var $asset_id = null;
+	public $asset_id = null;
 
 	/**
 	 * @var int standard template
 	 *
 	 * @since       1.1.0
 	 */
-	var $standard = 0;
+	public $standard = 0;
 
 	/**
 	 * @var string title
 	 *
 	 * @since       1.1.0
 	 */
-	var $title = null;
+	public $title = null;
 
 	/**
 	 * @var string description
 	 *
 	 * @since       1.1.0
 	 */
-	var $description = null;
+	public $description = null;
 
 	/**
 	 * @var string thumbnail url
 	 *
 	 * @since       1.1.0
 	 */
-	var $thumbnail = null;
+	public $thumbnail = null;
 
 	/**
 	 * @var string tpl_html
 	 *
 	 * @since       1.1.0
 	 */
-	var $tpl_html = null;
+	public $tpl_html = null;
 
 	/**
 	 * @var string tpl_css
 	 *
 	 * @since       1.1.0
 	 */
-	var $tpl_css = null;
+	public $tpl_css = null;
 
 	/**
 	 * @var string tpl_article
 	 *
 	 * @since       1.1.0
 	 */
-	var $tpl_article = null;
+	public $tpl_article = null;
 
 	/**
 	 * @var string tpl_divider
 	 *
 	 * @since       1.1.0
 	 */
-	var $tpl_divider = null;
+	public $tpl_divider = null;
 
 	/**
 	 * @var int tpl_id
 	 *
 	 * @since       1.1.0
 	 */
-	var $tpl_id = null;
+	public $tpl_id = null;
 
 	/**
 	 * @var string basics
 	 *
 	 * @since       1.1.0
 	 */
-	var $basics = null;
+	public $basics = null;
 
 	/**
 	 * @var string header
 	 *
 	 * @since       1.1.0
 	 */
-	var $header = null;
+	public $header = null;
 
 	/**
 	 * @var string intro
 	 *
 	 * @since       1.1.0
 	 */
-	var $intro = null;
+	public $intro = null;
 
 	/**
-	 * @var string article
+	 * @var array article
 	 *
 	 * @since       1.1.0
 	 */
-	var $article = null;
+	public $article = null;
 
 	/**
-	 * @var string footer
+	 * @var array footer
 	 *
 	 * @since       1.1.0
 	 */
-	var $footer = null;
+	public $footer = null;
 
 	/**
 	 * @var string button1
 	 *
 	 * @since       1.1.0
 	 */
-	var $button1 = null;
+	public $button1 = null;
 
 	/**
 	 * @var string button2
 	 *
 	 * @since       1.1.0
 	 */
-	var $button2 = null;
+	public $button2 = null;
 
 	/**
 	 * @var string button3
 	 *
 	 * @since       1.1.0
 	 */
-	var $button3 = null;
+	public $button3 = null;
 
 	/**
 	 * @var string button4
 	 *
 	 * @since       1.1.0
 	 */
-	var $button4 = null;
+	public $button4 = null;
 
 	/**
 	 * @var string button5
 	 *
 	 * @since       1.1.0
 	 */
-	var $button5 = null;
+	public $button5 = null;
 
 	/**
 	 * @var int access
 	 *
 	 * @since       1.1.0
 	 */
-	var $access = 1;
+	public $access = 1;
 
 	/**
 	 * @var int Published
 	 *
 	 * @since       1.1.0
 	 */
-	var $published = 0;
+	public $published = 0;
 
 	/**
 	 * @var datetime creation date of the newsletter
 	 *
 	 * @since       1.1.0
 	 */
-	var $created_date = '0000-00-00 00:00:00';
+	public $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Author
 	 *
 	 * @since       1.1.0
 	 */
-	var $created_by = 0;
+	public $created_by = 0;
 
 	/**
 	 * @var datetime last modification date of the newsletter
 	 *
 	 * @since       1.1.0
 	 */
-	var $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       1.1.0
 	 */
-	var $modified_by = 0;
+	public $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
 	 * @since       1.1.0
 	 */
-	var $checked_out = 0;
+	public $checked_out = 0;
 
 	/**
 	 * @var datetime Checked-out time
 	 *
 	 * @since       1.1.0
 	 */
-	var $checked_out_time = 0;
+	public $checked_out_time = 0;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       1.1.0
 	 */
-	var $archive_flag = 0;
+	public $archive_flag = 0;
 
 	/**
 	 * @var datetime Archive-date
 	 *
 	 * @since       1.1.0
 	 */
-	var $archive_date = '0000-00-00 00:00:00';
+	public $archive_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       1.1.0
 	 */
-	var $archived_by = 0;
+	public $archived_by = 0;
 
 	/**
 	 * Constructor
@@ -305,6 +305,8 @@ class BwPostmanTableTemplates extends JTable
 	 * Alias function
 	 *
 	 * @return  string
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.1.0
 	 */
@@ -348,6 +350,8 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @return  integer
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.1.0
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
@@ -372,6 +376,7 @@ class BwPostmanTableTemplates extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		if ($result)
 		{
 			$assetId = (int) $result;
@@ -445,6 +450,8 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @return boolean True
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.1.0
 	 */
 	public function check()
@@ -458,7 +465,10 @@ class BwPostmanTableTemplates extends JTable
 		// unset standard template if task is save2copy
 		$jinput	= JFactory::getApplication()->input;
 		$task = $jinput->get('task', 0);
-		if ($task == 'save2copy') $this->standard = 0;
+		if ($task == 'save2copy')
+		{
+			$this->standard = 0;
+		}
 
 		// *** prepare the template data ***
 		$item = $this;
@@ -488,20 +498,24 @@ class BwPostmanTableTemplates extends JTable
 		{
 			// first get templates tpls
 			$tpl_id		= $item->tpl_id;
-			$tpl_model	= JModelLegacy::getInstance( 'templates_tpl', 'BwPostmanModel' );
+			$tpl_model	= JModelLegacy::getInstance('templates_tpl', 'BwPostmanModel');
 			$tpl		= $tpl_model->getItem($tpl_id);
 
 			// get template model
-			$model		= JModelLegacy::getInstance( 'template', 'BwPostmanModel' );
+			$model		= JModelLegacy::getInstance('template', 'BwPostmanModel');
 			// make html template data
 			$this->tpl_html	= $model->makeTexttemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1)
+			{
 				$this->tpl_html = $this->tpl_html . '[%impressum%]';
+			}
 
 			// make article template data
 			$article			= $tpl->article_tpl;
 			$readon				= $tpl->readon_tpl;
-			$this->tpl_article	= $this->article['show_readon'] != 1 ? str_replace('[%readon_button%]', '', $article) : str_replace('[%readon_button%]', $readon, $article);
+			$this->tpl_article	= $this->article['show_readon'] != 1 ?
+				str_replace('[%readon_button%]', '', $article) :
+				str_replace('[%readon_button%]', $readon, $article);
 
 			//  set divider template
 			$this->tpl_divider	= $tpl->divider_tpl;
@@ -514,15 +528,17 @@ class BwPostmanTableTemplates extends JTable
 		{
 			// first get templates tpls
 			$tpl_id		= $item->tpl_id;
-			$tpl_model	= JModelLegacy::getInstance( 'templates_tpl', 'BwPostmanModel' );
+			$tpl_model	= JModelLegacy::getInstance('templates_tpl', 'BwPostmanModel');
 			$tpl		= $tpl_model->getItem($tpl_id);
 
 			// get template model
-			$model		= JModelLegacy::getInstance( 'template', 'BwPostmanModel' );
+			$model		= JModelLegacy::getInstance('template', 'BwPostmanModel');
 			// make html template data
 			$this->tpl_html = $model->makeTemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1)
+			{
 				$this->tpl_html = $this->tpl_html . '[%impressum%]';
+			}
 
 			// make css data
 			$this->tpl_css = $model->replaceZooms($tpl->css, $item);
@@ -530,7 +546,9 @@ class BwPostmanTableTemplates extends JTable
 			// make article template data
 			$article			= $model->replaceZooms($tpl->article_tpl, $item);
 			$readon				= $model->makeButton($tpl->readon_tpl, $item);
-			$this->tpl_article	= $this->article['show_readon'] != 1 ? str_replace('[%readon_button%]', '', $article) : str_replace('[%readon_button%]', $readon, $article);
+			$this->tpl_article	= $this->article['show_readon'] != 1 ?
+				str_replace('[%readon_button%]', '', $article) :
+				str_replace('[%readon_button%]', $readon, $article);
 
 			//  set divider template and replace placeholder
 			$tpl->divider_tpl	= $model->replaceZooms($tpl->divider_tpl, $item);
@@ -539,6 +557,7 @@ class BwPostmanTableTemplates extends JTable
 			// convert object array to string
 			self::converttostr($this);
 		}
+
 		// *** end prepare the template data ***
 
 		// Check for valid title
@@ -581,6 +600,7 @@ class BwPostmanTableTemplates extends JTable
 			$app->setUserState('com_bwpostman.edit.template.data', $this);
 			return false;
 		}
+
 		return true;
 	}
 
@@ -591,8 +611,10 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @return  boolean  True on success.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.1.0
-  	 */
+	 */
 	public function store($updateNulls = false)
 	{
 		$date = JFactory::getDate();
@@ -615,6 +637,7 @@ class BwPostmanTableTemplates extends JTable
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
 		}
+
 		$res	= parent::store($updateNulls);
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.template.id', $this->id);
 
@@ -634,67 +657,77 @@ class BwPostmanTableTemplates extends JTable
 	 */
 	private function converttostr($data)
 	{
-    // array to string
+		// array to string
 		if (isset($data->basics) && is_array($data->basics))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->basics);
 			$data->basics = (string) $registry;
 		}
+
 		if (isset($data->header) && is_array($data->header))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->header);
 			$data->header = (string) $registry;
 		}
+
 		if (isset($data->intro) && is_array($data->intro))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->intro);
 			$data->intro = (string) $registry;
 		}
+
 		if (isset($data->article) && is_array($data->article))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->article);
 			$data->article = (string) $registry;
 		}
+
 		if (isset($data->footer) && is_array($data->footer))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->footer);
 			$data->footer = (string) $registry;
 		}
+
 		if (isset($data->button1) && is_array($data->button1))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->button1);
 			$data->button1 = (string) $registry;
 		}
+
 		if (isset($data->button2) && is_array($data->button2))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->button2);
 			$data->button2 = (string) $registry;
 		}
+
 		if (isset($data->button3) && is_array($data->button3))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->button3);
 			$data->button3 = (string) $registry;
 		}
+
 		if (isset($data->button4) && is_array($data->button4))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->button4);
 			$data->button4 = (string) $registry;
 		}
+
 		if (isset($data->button5) && is_array($data->button5))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($data->button5);
 			$data->button5 = (string) $registry;
 		}
+
 		return $data;
 	}
 }

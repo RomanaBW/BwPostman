@@ -227,7 +227,7 @@ abstract class BwPostmanHelper
 		}
 
 		// Check specific view permission
-		$authAction	= 'bwpm.view.' . $view;
+		$authAction	= 'bwpm.view.' . $view . '.' . $action;
 		$assetName	= 'com_bwpostman.' . $view;
 
 		$strictView = '';
@@ -238,6 +238,7 @@ abstract class BwPostmanHelper
 
 		if ($action == 'archive' || $action == 'restore' || $action == 'delete')
 		{
+			$authAction	= 'bwpm.view.' . $view;
 			$assetName	= 'com_bwpostman';
 			if (self::authorise($user->id, $authAction, $assetName, $strictView))
 			{

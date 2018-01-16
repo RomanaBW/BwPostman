@@ -1640,13 +1640,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$sel_content		= $jinput->get('selected_content_old', '', 'string');
 		$old_template		= $jinput->get('template_id_old', '', 'string');
 		$old_text_template	= $jinput->get('text_template_id_old', '', 'string');
-		$state_data			= $app->getUserState('com_bwpostman.edit.newsletter.data');
 
 		// support for plugin substitute links
 		if($form_data['substitute_links'] == '1')
 		{
 			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 		}
+
+		$state_data			= $app->getUserState('com_bwpostman.edit.newsletter.data');
 
 		// heal form fields
 		switch ($layout)
@@ -2503,6 +2504,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$tblSendmailContent->reply_name	 	= $newsletters_data->from_name;
 		$tblSendmailContent->substitute_links 	= $newsletters_data->substitute_links;
 
+		// support for plugin substitute links
+		if ($tblSendmailContent->substitute_links == '1')
+		{
+			JFactory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
+		}
+
 		// Preprocess html version of the newsletter
 
 		// only for old text templates
@@ -3102,10 +3109,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 						JText::sprintf('COM_BWPOSTMAN_NL_EDIT_HREF', $uri->root(), $itemid_edit),
 						$body
 					);
-					$body = str_replace("[UNSUBSCRIBE_EMAIL]", $tblSendMailQueue->recipient, $body);
-					$body = str_replace("[UNSUBSCRIBE_CODE]", $recipients_data->editlink, $body);
-					$body = str_replace("[EDITLINK]", $recipients_data->editlink, $body);
 				}
+
+				$body = str_replace("[UNSUBSCRIBE_EMAIL]", $tblSendMailQueue->recipient, $body);
+				$body = str_replace("[UNSUBSCRIBE_CODE]", $recipients_data->editlink, $body);
+				$body = str_replace("[EDITLINK]", $recipients_data->editlink, $body);
 			}
 		}
 

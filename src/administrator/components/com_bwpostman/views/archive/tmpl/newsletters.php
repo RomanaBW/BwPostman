@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('behavior.tooltip');
@@ -63,7 +63,11 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 		<?php endif; ?>
 		<?php
 			// Search tools bar
-			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+			echo JLayoutHelper::render(
+				'default',
+				array('view' => $this, 'tab' => $tab),
+				$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+			);
 		?>
 
 			<div class="row-fluid">
@@ -76,35 +80,49 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 										if (BwPostmanHelper::canArchive('newsletter', array(), true)) {
 										?>
 											<li class="open"><!-- We need to use the setAttribute-function because of the IE -->
-												<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
+												<button onclick="layout.setAttribute('value','newsletters');this.form.submit();"
+														class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?>
+												</button>
 											</li>
 											<?php
 										}
+
 										if (BwPostmanHelper::canArchive('subscriber', array(), true)) {
 										?>
 											<li class="closed">
-												<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
+												<button onclick="layout.setAttribute('value','subscribers');this.form.submit();"
+														class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
+												</button>
 											</li>
 											<?php
 										}
+
 										if (BwPostmanHelper::canArchive('campaign', array(), true)) {
 										?>
 											<li class="closed">
-												<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
+												<button onclick="layout.setAttribute('value','campaigns');this.form.submit();"
+														class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
+												</button>
 											</li>
 											<?php
 										}
+
 										if (BwPostmanHelper::canArchive('mailinglist', array(), true)) {
 										?>
 											<li class="closed">
-												<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
+												<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();"
+														class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?>
+												</button>
 											</li>
 											<?php
 										}
+
 										if (BwPostmanHelper::canArchive('template', array(), true)) {
 										?>
 											<li class="closed">
-												<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
+												<button onclick="layout.setAttribute('value','templates');
+													this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
+												</button>
 											</li>
 											<?php
 										}
@@ -116,20 +134,81 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<thead>
 												<tr>
 													<th width="30" nowrap="nowrap">
-														<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+														<input type="checkbox" name="checkall-toggle" value=""
+																title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
+																onclick="Joomla.checkAll(this)" />
 													</th>
-													<th><?php echo JHtml::_('searchtools.sort',  'Subject', 'a.subject', $listDirn, $listOrder); ?></th>
-													<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-													<th width="150" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
-													<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?></th>
-													<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME' , 'campaigns', $listDirn, $listOrder); ?></th>
-													<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_PUBLISHED' , 'a.published', $listDirn, $listOrder); ?></th>
+													<th>
+														<?php echo JHtml::_('searchtools.sort',  'Subject', 'a.subject', $listDirn, $listOrder); ?>
+													</th>
 													<th nowrap="nowrap">
-														<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?><br />
-														<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
+														<?php echo JHtml::_(
+															'searchtools.sort',
+															'COM_BWPOSTMAN_NL_DESCRIPTION',
+															'a.description',
+															$listDirn,
+															$listOrder
+														); ?>
 													</th>
-													<th width="150"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
-													<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+													<th width="150" nowrap="nowrap">
+														<?php echo JHtml::_(
+															'searchtools.sort',
+															'COM_BWPOSTMAN_NL_MAILING_DATE',
+															'a.mailing_date',
+															$listDirn,
+															$listOrder
+														); ?>
+													</th>
+													<th width="100" nowrap="nowrap">
+														<?php echo JHtml::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?>
+													</th>
+													<th width="100" nowrap="nowrap">
+														<?php echo JHtml::_(
+															'searchtools.sort',
+															'COM_BWPOSTMAN_CAM_NAME',
+															'campaigns',
+															$listDirn,
+															$listOrder
+														); ?>
+													</th>
+													<th nowrap="nowrap">
+														<?php echo JHtml::_(
+															'searchtools.sort',
+															'COM_BWPOSTMAN_PUBLISHED',
+															'a.published',
+															$listDirn,
+															$listOrder
+														); ?>
+													</th>
+													<th nowrap="nowrap">
+														<?php echo JHtml::_(
+															'searchtools.sort',
+															'COM_BWPOSTMAN_NL_PUBLISH_UP',
+															'a.publish_up',
+															$listDirn,
+															$listOrder
+														); ?>
+														<br />
+														<?php echo JHtml::_(
+															'searchtools.sort',
+															'COM_BWPOSTMAN_NL_PUBLISH_DOWN',
+															'a.publish_down',
+															$listDirn,
+															$listOrder
+														); ?>
+													</th>
+													<th width="150">
+														<?php echo JHtml::_(
+															'searchtools.sort',
+															'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
+															'a.archive_date',
+															$listDirn,
+															$listOrder
+														); ?>
+													</th>
+													<th width="30" nowrap="nowrap">
+														<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+													</th>
 												</tr>
 											</thead>
 											<tfoot>
@@ -141,36 +220,86 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<?php
 											if (count($this->items) > 0) {
 												foreach ($this->items as $i => $item) :
-													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.'.$item->id);
-													$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.newsletter.'.$item->id) && $item->created_by == $userId;
-													$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
+													$canCheckin	= $user->authorise('core.manage',		'com_checkin')
+														|| $item->checked_out == $userId || $item->checked_out == 0;
+													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.' . $item->id);
+													$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.newsletter.' . $item->id)
+														&& $item->created_by == $userId;
+													$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.newsletter.' . $item->id)
+														&& $canCheckin;
 													?>
 													<tr class="row<?php echo $i % 2; ?>">
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 														<td><?php
 															echo $item->subject;
-															if ($item->mailing_date != '0000-00-00 00:00:00') { ?>&nbsp;&nbsp;
+															if ($item->mailing_date != '0000-00-00 00:00:00')
+															{ ?>&nbsp;&nbsp;
 																<span class="cam_preview">
-																	<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::<?php echo $this->escape($item->subject); ?>">
-																		<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id);?>" rel="{handler: 'iframe', size: {x: 650, y: 450}}"><?php echo JText::_('COM_BWPOSTMAN_HTML_NL');?></a>&nbsp;
+																	<span class="editlinktip hasTip"
+																			title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
+																			<?php echo $this->escape($item->subject); ?>">
+																		<a class="modal" href="<?php echo JRoute::_(
+																			'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id
+																		);?>"
+																				rel="{handler: 'iframe', size: {x: 650, y: 450}}">
+																			<?php echo JText::_('COM_BWPOSTMAN_HTML_NL');?>
+																		</a>&nbsp;
 																	</span>
-																	<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::<?php echo $this->escape($item->subject); ?>">
-																		<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id='. $item->id);?>" rel="{handler: 'iframe', size: {x: 650, y: 450}}"><?php echo JText::_('COM_BWPOSTMAN_TEXT_NL');?></a>&nbsp;
+																	<span class="editlinktip hasTip" title="
+																	<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
+																	<?php echo $this->escape($item->subject); ?>">
+																		<a class="modal" href="<?php echo JRoute::_(
+																			'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id='. $item->id
+																		);?>"
+																				rel="{handler: 'iframe', size: {x: 650, y: 450}}">
+																			<?php echo JText::_('COM_BWPOSTMAN_TEXT_NL');?>
+																		</a>&nbsp;
 																	</span>
 																</span>
 															<?php } ?>
 														</td>
 														<td align="center"><?php echo $item->description; ?></td>
-														<td align="center"><?php if ($item->mailing_date != '0000-00-00 00:00:00') echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5')); ?>&nbsp;</td>
-														<td align="center"><?php echo $item->author; ?></td>
-														<td align="center"><?php echo $item->campaigns; if ($item->campaign_archive_flag) echo " (".JText::_('ARCHIVED').")";?></td>
-														<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'newsletters.', $canChange); ?></td>
 														<td align="center">
-															<p style="text-align: center;"><?php echo ($item->publish_up != '0000-00-00 00:00:00') ? JHtml::date($item->publish_up, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?><br /></p>
-															<p style="text-align: center;"><?php echo ($item->publish_down != '0000-00-00 00:00:00') ? JHtml::date($item->publish_down, JText::_('BW_DATE_FORMAT_LC5')) : '-'; ?></p>
+															<?php if ($item->mailing_date != '0000-00-00 00:00:00')
+															{
+																echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5'));
+															}
+															?>&nbsp;
 														</td>
-														<td align="center"><?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+														<td align="center">
+															<?php echo $item->author; ?></td>
+														<td align="center">
+															<?php echo $item->campaigns;
+															if ($item->campaign_archive_flag)
+															{
+																echo " (" . JText::_('ARCHIVED') . ")";
+															}
+															?>
+														</td>
+														<td align="center">
+															<?php echo JHtml::_(
+																'jgrid.published',
+																$item->published,
+																$i,
+																'newsletters.',
+																$canChange
+															); ?>
+														</td>
+														<td align="center">
+															<p style="text-align: center;">
+																<?php echo ($item->publish_up != '0000-00-00 00:00:00')
+																	? JHtml::date($item->publish_up, JText::_('BW_DATE_FORMAT_LC5'))
+																	: '-'; ?>
+																<br /></p>
+															<p style="text-align: center;">
+																<?php echo ($item->publish_down != '0000-00-00 00:00:00')
+																	? JHtml::date($item->publish_down, JText::_('BW_DATE_FORMAT_LC5'))
+																	: '-'; ?>
+															</p>
+														</td>
+														<td align="center">
+															<?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?>
+														</td>
 														<td align="center"><?php echo $item->id; ?></td>
 													</tr>
 												<?php endforeach;

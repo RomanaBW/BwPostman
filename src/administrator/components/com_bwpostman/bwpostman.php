@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Component name and database prefix
 //define ('BWPOSTMAN_COMPONENT_NAME', basename (dirname (__FILE__)));
@@ -46,31 +46,41 @@ defined ('_JEXEC') or die ('Restricted access');
 //define ('BWPOSTMAN_URL_MEDIA', JUri::root() . 'media/' . BWPOSTMAN_NAME . '/');
 
 // Miscellaneous
-define ('BWPOSTMAN_LOG_MEM', 0);
+define('BWPOSTMAN_LOG_MEM', 0);
 
 // import joomla controller library
 jimport('joomla.application.component.controller');
 
 // Require class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/classes/admin.class.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/classes/admin.class.php');
 
-// Get the user object
-$user	= JFactory::getUser();
-$app	= JFactory::getApplication();
-// Access check.
-if ((!$user->authorise('core.manage', 'com_bwpostman')))
+try
 {
-	$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
-	return false;
+	// Get the user object
+	$user = JFactory::getUser();
+	$app  = JFactory::getApplication();
+	// Access check.
+	if ((!$user->authorise('core.manage', 'com_bwpostman')))
+	{
+		$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
+
+		return false;
+	}
+
+	// Preload user permissions
+	BwPostmanHelper::setPermissionsState();
+
+	// Get an instance of the controller
+	$controller = JControllerLegacy::getInstance('BwPostman');
+
+	// Perform the Request task
+	$jinput = JFactory::getApplication()->input;
+	$controller->execute($jinput->getCmd('task'));
+
+	// Redirect if set by the controller
+	$controller->redirect();
 }
-
-
-// Get an instance of the controller
-$controller	= JControllerLegacy::getInstance('BwPostman');
-
-// Perform the Request task
-$jinput = JFactory::getApplication()->input;
-$controller->execute($jinput->getCmd('task'));
-
-// Redirect if set by the controller
-$controller->redirect();
+catch (Exception $exception)
+{
+	JText::_('JERROR_AN_ERROR_HAS_OCCURRED');
+}

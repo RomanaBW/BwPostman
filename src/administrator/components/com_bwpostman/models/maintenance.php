@@ -3771,18 +3771,21 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		);
 
 		$rules['core.manage'] = array(
-			$usedGroups['Administrator']['id'] => true,
-			$usedGroups['Manager']['id']       => true,
+			$usedGroups['Administrator']['id']  => true,
+			$usedGroups['Manager']['id']        => true,
+			$usedGroups['BwPostmanAdmin']['id'] => true,
 		);
 
 		$rules['bwpm.create'] = array(
-			$usedGroups['Administrator']['id'] => true,
-			$usedGroups['Manager']['id']       => true,
+			$usedGroups['Administrator']['id']  => true,
+			$usedGroups['Manager']['id']        => true,
+			$usedGroups['BwPostmanAdmin']['id'] => true,
 		);
 
 		$rules['bwpm.delete'] = array(
 			$usedGroups['Administrator']['id']                 => true,
 			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanAdmin']['id']                => true,
 			$usedGroups['BwPostmanPublisher']['id']            => false,
 			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
 			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
@@ -3794,6 +3797,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.edit'] = array(
 			$usedGroups['Administrator']['id']              => true,
 			$usedGroups['Manager']['id']                    => true,
+			$usedGroups['BwPostmanAdmin']['id']             => true,
 			$usedGroups['BwPostmanEditor']['id']            => false,
 			$usedGroups['BwPostmanCampaignEditor']['id']    => false,
 			$usedGroups['BwPostmanMailinglistEditor']['id'] => false,
@@ -3803,13 +3807,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		);
 
 		$rules['bwpm.edit.own'] = array(
-			$usedGroups['Administrator']['id']          => true,
-			$usedGroups['Manager']['id']                => true,
+			$usedGroups['Administrator']['id']  => true,
+			$usedGroups['Manager']['id']        => true,
+			$usedGroups['BwPostmanAdmin']['id'] => true,
 		);
 
 		$rules['bwpm.edit.state'] = array(
 			$usedGroups['Administrator']['id']              => true,
 			$usedGroups['Manager']['id']                    => true,
+			$usedGroups['BwPostmanAdmin']['id']             => true,
 			$usedGroups['BwPostmanEditor']['id']            => false,
 			$usedGroups['BwPostmanCampaignEditor']['id']    => false,
 			$usedGroups['BwPostmanMailinglistEditor']['id'] => false,
@@ -3821,6 +3827,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.archive'] = array(
 			$usedGroups['Administrator']['id']                 => true,
 			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanAdmin']['id']                => true,
 			$usedGroups['BwPostmanPublisher']['id']            => false,
 			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
 			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
@@ -3832,6 +3839,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.restore'] = array(
 			$usedGroups['Administrator']['id']                 => true,
 			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanAdmin']['id']                => true,
 			$usedGroups['BwPostmanPublisher']['id']            => false,
 			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
 			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
@@ -3843,6 +3851,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.send'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
 			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
@@ -3852,6 +3861,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.archive'] = array(
 			$usedGroups['Administrator']['id']                 => true,
 			$usedGroups['Manager']['id']                       => true,
+			$usedGroups['BwPostmanAdmin']['id']                => true,
 			$usedGroups['BwPostmanPublisher']['id']            => false,
 			$usedGroups['BwPostmanCampaignPublisher']['id']    => false,
 			$usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
@@ -3863,6 +3873,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.maintenance'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanPublisher']['id']        => false,
 			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
 			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
@@ -3874,6 +3885,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.manage'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanPublisher']['id']        => false,
 			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
 			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
@@ -3885,6 +3897,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.campaign'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
 			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
@@ -3894,6 +3907,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.mailinglist'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
 			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
@@ -3903,6 +3917,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.newsletter'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
 			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
@@ -3912,6 +3927,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.subscriber'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
 			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
 			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
@@ -3921,6 +3937,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$rules['bwpm.view.template'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
 			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
 			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
 			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,

@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 // Require helper classes
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman General View
@@ -73,6 +73,15 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	public $request_url;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * property to hold queue entries property
 	 *
 	 * @var boolean $queueEntries
@@ -97,6 +106,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
@@ -111,6 +122,7 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		$this->archive		= $this->get('Archivedata');
 		$this->general		= $this->get('Generaldata');
 		$this->request_url	= $uri_string;
+		$this->permissions	= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
@@ -138,6 +150,6 @@ class BwPostmanViewBwPostman extends JViewLegacy
 
 		$this->sidebar = JHtmlSidebar::render();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

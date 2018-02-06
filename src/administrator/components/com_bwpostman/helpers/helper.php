@@ -29,25 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php';
 
-//
-// Component development:
-//
-// Newsletter sending 1=on, 0=off
-//if (!defined ('BWPOSTMAN_NL_SENDING')) define ('BWPOSTMAN_NL_SENDING', 1);
-
-
-// Component name amd database prefix
-//if (!defined ('BWPOSTMAN_COMPONENT_NAME')) define ('BWPOSTMAN_COMPONENT_NAME', basename (dirname (__FILE__)));
-//if (!defined ('BWPOSTMAN_NAME')) define ('BWPOSTMAN_NAME', substr (BWPOSTMAN_COMPONENT_NAME, 4));
-
-// Component location
-//if (!defined ('BWPOSTMAN_COMPONENT_LOCATION')) define ('BWPOSTMAN_COMPONENT_LOCATION', basename (dirname (dirname (__FILE__))));
-
-// Component paths
-//if (!defined ('BWPOSTMAN_PATH_COMPONENT_RELATIVE')) define ('BWPOSTMAN_PATH_COMPONENT_RELATIVE', BWPOSTMAN_COMPONENT_LOCATION . '/' . BWPOSTMAN_COMPONENT_NAME);
-//if (!defined ('BWPOSTMAN_PATH_SITE')) define ('BWPOSTMAN_PATH_SITE', JPATH_ROOT .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
-//if (!defined ('BWPOSTMAN_PATH_ADMIN')) define ('BWPOSTMAN_PATH_ADMIN', JPATH_ADMINISTRATOR .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
-//if (!defined ('BWPOSTMAN_PATH_MEDIA')) define ('BWPOSTMAN_PATH_MEDIA', JPATH_ROOT .'/media/' . BWPOSTMAN_NAME);
 
 /**
  * Class BwPostmanHelper
@@ -63,7 +44,25 @@ abstract class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	static $session = null;
+	private static $session = null;
+
+	/**
+	 * property to hold permissions array
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	private static $permissions = null;
+
+	/**
+	 * property to hold the groups the user is member of
+	 *
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	private static $userGroups = null;
 
 	/**
 	 * Configure the Link bar.
@@ -72,17 +71,24 @@ abstract class BwPostmanHelper
 	 *
 	 * @return    void
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function addSubmenu($vName)
 	{
+		if (!is_array(self::$permissions))
+		{
+			self::setPermissionsState();
+		}
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY'),
 			'index.php?option=com_bwpostman',
 			$vName == 'bwpostman'
 		);
 
-		if (self::canView('newsletter'))
+		if (self::$permissions['view']['newsletter'])
 		{
 			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
@@ -91,7 +97,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canView('subscriber'))
+		if (self::$permissions['view']['subscriber'])
 		{
 			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
@@ -100,7 +106,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canView('campaign'))
+		if (self::$permissions['view']['campaign'])
 		{
 			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
@@ -109,7 +115,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canView('mailinglist'))
+		if (self::$permissions['view']['mailinglist'])
 		{
 			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
@@ -118,7 +124,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canView('template'))
+		if (self::$permissions['view']['template'])
 		{
 			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
@@ -127,7 +133,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canView('archive'))
+		if (self::$permissions['view']['archive'])
 		{
 			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
@@ -136,7 +142,7 @@ abstract class BwPostmanHelper
 			);
 		}
 
-		if (self::canView('maintenance'))
+		if (self::$permissions['view']['maintenance'])
 		{
 			JHtmlSidebar::addEntry(
 				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
@@ -202,26 +208,126 @@ abstract class BwPostmanHelper
 	 *
 	 * @param    string     $view       The view to test.
 	 * @param    string     $action     The action to check
-	 * @param    array      $recordIds  The record to test.
-	 * @param    boolean    $strict     check only for this context
+	 * @param    array      $recordIds  The record(s) to test.
+	 * @param    boolean    $strict     check only for this context/view
 	 *
 	 * @return bool
 	 *
-	 * @since version
+	 * @throws Exception
+	 *
+	 * @since 2.0.0
 	 */
 	private static function checkActionPermission($view, $action, $recordIds = array(), $strict = false)
 	{
-		$user = JFactory::getUser();
-		$res  = false;
+		if (!is_array(self::$permissions))
+		{
+			self::setPermissionsState();
+		}
+
+		// Check for admin
+		if (isset(self::$permissions['com']['admin']) && !self::$permissions['com']['admin'])
+		{
+			return true;
+		}
 
 		// Check view permission.
-		if (!self::canView($view, $strict))
+		if (isset(self::$permissions['com']['view'][$view]) && !self::$permissions['com']['view'][$view])
 		{
 			return false;
 		}
 
+		$user = JFactory::getUser();
+
+		// First test only for explicit user groups
+		if (count($recordIds))
+		{
+			$strictView = '';
+			$res		= false;
+
+			if ($strict)
+			{
+				$strictView = $view;
+			}
+
+			foreach ($recordIds as $recordId)
+			{
+				// Check for item specific permissions
+				// Return result, if one of the groups is explicitly named, else go downwards
+				$authAction	= 'bwpm.view.' . $view . '.' . $action;
+				$assetName	= 'com_bwpostman.' . $view . '.' . $recordId;
+				if (self::authorise($authAction, $assetName, $strictView))
+				{
+					$res = true;
+				}
+				elseif ((int) $recordId === 0) // new record
+				{
+					// @ToDo: Is this behaviour always correct?
+					$res = false;
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+
+		// Check for view specific permissions
+		// Return result, if one of the groups is named, else go downwards
+		if (isset(self::$permissions['view'][$action]) && self::$permissions['view'][$action])
+		{
+			return true;
+		}
+
+		// Check for component permissions
+		// Return result, if one of the groups is named, else go downwards
+		if (isset(self::$permissions['com'][$action]) && self::$permissions['com'][$action])
+		{
+			return true;
+		}
+
+
+		// Now test for parent user groups
+		if (count($recordIds))
+		{
+			$strictView = '';
+			$res		= false;
+			if ($strict)
+			{
+				$strictView = $view;
+			}
+
+			foreach ($recordIds as $recordId)
+			{
+				// Check for item specific permissions
+				// Return result, if one of the groups is named, else go downwards
+				$authAction	= 'bwpm.view.' . $view . '.' . $action;
+				$assetName	= 'com_bwpostman.' . $view . '.' . $recordId;
+				if (self::authorise($authAction, $assetName, $strictView))
+				{
+					$res = true;
+				}
+				elseif ((int) $recordId === 0) // new record
+				{
+					$res = false;
+				}
+				else
+				{
+					$res = false;
+					break;
+				}
+			}
+		}
+
+		// Check for view specific permissions
+		// Return result, if one of the groups is named, else go downwards
+
+		// Check for component permissions
+		// Return result, if one of the groups is named, else go downwards
+
+
+
 		// Check general component permission
-		if ($user->authorise('bwpm.' . $action, 'com_bwpostman'))
+		if (isset(self::$permissions['com'][$action]) && self::$permissions['com'][$action])
 		{
 			return true;
 		}
@@ -240,13 +346,13 @@ abstract class BwPostmanHelper
 		{
 			$authAction	= 'bwpm.view.' . $view;
 			$assetName	= 'com_bwpostman';
-			if (self::authorise($user->id, $authAction, $assetName, $strictView))
+			if (self::authorise($authAction, $assetName, $strictView))
 			{
 				return true;
 			}
 		}
 
-		if (self::authorise($user->id, $authAction, $assetName, $strictView))
+		if (self::authorise($authAction, $assetName, $strictView))
 		{
 			return true;
 		}
@@ -270,6 +376,83 @@ abstract class BwPostmanHelper
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Method to get permissions for all views
+	 *
+	 * @return mixed
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.0.0
+	 */
+	protected static function getPermissionsForAllViews()
+	{
+		$permissions = array();
+
+		$views = array(
+			'newsletter',
+			'subscriber',
+			'campaign',
+			'mailinglist',
+			'template',
+			'archive',
+			'manage',
+			'maintenance',
+		);
+
+		foreach ($views as $view)
+		{
+			$permissions[$view] = self::canView($view, false);
+		}
+
+		return $permissions;
+	}
+
+	/**
+	 * Method to get permissions for all views
+	 *
+	 * @param string $view		the section to get the rights for
+	 *
+	 * @return mixed
+	 *
+	 * @since 2.0.0
+	 */
+	protected static function getPermissionsForSingleViews($view)
+	{
+		$user 			= JFactory::getUser();
+		$permissions	= array();
+
+		// @ToDo: Revise: $user or self:: for authorise!
+		if ($view !== 'archive' && $view !== 'maintenance')
+		{
+			$permissions['create']    = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, $view);
+			$permissions['edit']      = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view, $view);
+			$permissions['editOwn']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view, $view);
+			$permissions['editState'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view, $view);
+			$permissions['archive']   = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view, $view);
+		}
+
+		if ($view === 'newsletter')
+		{
+			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view, $view);
+		}
+
+		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view, $view);
+
+		if ($view !== 'maintenance')
+		{
+			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view, $view);
+		}
+
+		if ($view === 'maintenance')
+		{
+			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view, $view);
+			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view, $view);
+		}
+
+		return $permissions;
 	}
 
 	/**
@@ -363,7 +546,6 @@ abstract class BwPostmanHelper
 
 	public static function getActions($id = 0, $section = '')
 	{
-		$user   = JFactory::getUser();
 		$path   = JPATH_ADMINISTRATOR . '/components/com_bwpostman/access.xml';
 		$result = new JObject;
 
@@ -394,91 +576,130 @@ abstract class BwPostmanHelper
 
 		foreach ($actions as $action)
 		{
-			$result->set($action->name, $user->authorise($action->name, $assetName));
+			$result->set($action->name, self::authorise($action->name, $assetName));
 		}
 
 		return $result;
 	}
 
 	/**
+	 * Method to cache permissions to BwPostman in user state
+	 *
+	 * @return    void
+	 *
+	 * @throws Exception
+	 *
+	 * @since    2.0.0
+	 */
+	public static function setPermissionsState()
+	{
+		$app = \JFactory::getApplication();
+
+		// Debugging variable, normally set to false
+		$reload = true;
+
+		if (is_array(self::$permissions) && !$reload)
+		{
+			return;
+		}
+
+		if (!is_null($app->getUserState('com_bwpm.permissions', null)) && !$reload)
+		{
+			self::$permissions = $app->getUserState('com_bwpm.permissions', null);
+
+			return;
+		}
+
+		$user 			= JFactory::getUser();
+		$permissions	= array();
+
+		// Set permissions for component
+		$permissions['com']['admin']     = $user->authorise('core.admin', 'com_bwpostman');
+		$permissions['com']['manage']    = $user->authorise('core.manage', 'com_bwpostman');
+		$permissions['com']['create']    = $user->authorise('bwpm.create', 'com_bwpostman');
+		$permissions['com']['edit']      = $user->authorise('bwpm.edit', 'com_bwpostman');
+		$permissions['com']['editOwn']   = $user->authorise('bwpm.edit.own', 'com_bwpostman');
+		$permissions['com']['editState'] = $user->authorise('bwpm.edit.state', 'com_bwpostman');
+		$permissions['com']['archive']   = $user->authorise('bwpm.archive', 'com_bwpostman');
+		$permissions['com']['restore']   = $user->authorise('bwpm.restore', 'com_bwpostman');
+		$permissions['com']['delete']    = $user->authorise('bwpm.delete', 'com_bwpostman');
+		$permissions['com']['send']      = $user->authorise('bwpm.send', 'com_bwpostman');
+
+		self::$permissions = $permissions;
+
+		$permissions['view'] = self::getPermissionsForAllViews();
+
+		self::$permissions = $permissions;
+
+		// Set permissions for views
+		$views = array(
+			'newsletter',
+			'subscriber',
+			'campaign',
+			'mailinglist',
+			'template',
+			'archive',
+			'maintenance',
+		);
+
+		foreach ($views as $view)
+		{
+			$permissions[$view] = self::getPermissionsForSingleViews($view);
+		}
+
+		self::$permissions = $permissions;
+
+		$app->setUserState('com_bwpm.permissions', $permissions);
+	}
+
+	/**
 	 * Method to check if you can administer BwPostman
 	 *
 	 * @return    boolean
+	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canAdmin()
 	{
-		$user = JFactory::getUser();
-		$res  = false;
-
-		if ($user->authorise('core.admin', 'com_bwpostman'))
+		if (!is_array(self::$permissions))
 		{
-			$res = true;
+			self::setPermissionsState();
 		}
 
-		return $res;
+		return self::$permissions['com']['admin'];
 	}
 
 	/**
 	 * Method to check if you can manage BwPostman
 	 *
 	 * @return    boolean
+	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canManage()
 	{
-		$user = JFactory::getUser();
-		$res  = false;
-
-		if ($user->authorise('core.admin', 'com_bwpostman') || $user->authorise('core.manage', 'com_bwpostman'))
+		if (!is_array(self::$permissions))
 		{
-			$res = true;
+			self::setPermissionsState();
 		}
 
-		return $res;
-	}
-
-	/**
-	 * Method to check if you can check in an item
-	 *
-	 * @param    string    $view            The view to test.
-	 * @param    int       $recordId        The record to test.
-	 * @param    int       $checkedOut      user id, who checked out this item
-	 *
-	 * @return    boolean
-	 * @since    1.2.0
-	 */
-	public static function canCheckin($view, $recordId, $checkedOut = 0)
-	{
-		$user    = JFactory::getUser();
-		$userId  = $user->get('id');
-		$allowed = false;
-
-		if (self::canManage() || $checkedOut == $userId || $checkedOut == 0)
-		{
-			$allowed = true;
-		}
-
-		if (!$allowed)
-		{
-			$allowed = self::canEditState($view, $recordId);
-		}
-
-		if (!$allowed)
-		{
-			$allowed = self::canEdit($view, array($recordId));
-		}
-
-		return $allowed;
+		return self::$permissions['com']['manage'];
 	}
 
 	/**
 	 * Method to check if you can view a specific view.
 	 *
-	 * @param    string $view The view to test.
+	 * @param    string     $view       The view to test.
 	 * @param    boolean    $strict     check only for this context
 	 *
 	 * @return    boolean
+	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canView($view = '', $strict = false)
@@ -507,7 +728,7 @@ abstract class BwPostmanHelper
 			$strictView = $view;
 		}
 
-		if (self::authorise($user->id, $authAction, $assetName, $strictView))
+		if (self::authorise($authAction, $assetName, $strictView))
 		{
 			$res = true;
 		}
@@ -522,16 +743,85 @@ abstract class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canAdd($view = '')
 	{
-		$action = 'create';
+		if (!is_array(self::$permissions))
+		{
+			self::setPermissionsState();
+		}
 
-		// Check permission
-		$res      = self::checkActionPermission($view, $action, array(0));
+		$allowed = self::$permissions['com']['create'] || self::$permissions[$view]['create'];
 
-		return $res;
+		return $allowed;
+	}
+
+	/**
+	 * Method to check if you can check in an item
+	 *
+	 * @param    string    $view            The view to test.
+	 * @param    int       $recordId        The record to test.
+	 * @param    int       $checkedOut      user id, who checked out this item
+	 *
+	 * @return    boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since    1.2.0
+	 */
+	public static function canCheckin($view, $recordId, $checkedOut = 0)
+	{
+		// If nothing is checked out, there is nothing to test
+		if ($checkedOut == 0)
+		{
+			return true;
+		}
+
+		$user    = JFactory::getUser();
+		$userId  = $user->get('id');
+
+		// If current user checked out, he may check in.
+		if ($checkedOut == $userId)
+		{
+			return true;
+		}
+
+		if (!is_array(self::$permissions))
+		{
+			self::setPermissionsState();
+		}
+
+		// If current user can admin or can manage, he may check in.
+		if (self::$permissions['com']['admin'] || self::$permissions['com']['manage'])
+		{
+			return true;
+		}
+
+		// Get groups user is member of
+		if (!is_array(self::$userGroups))
+		{
+			BwAccess::getGroupsByUser($userId);
+		}
+
+		// @ToDo: Fill following with life
+		if ($recordId)
+		{
+			// Check for item specific edit.state permission
+			// If allowed, return with true, else go downwards
+		}
+
+		// Check for view specific edit.state permission
+		// If allowed, return with true, else go downwards
+
+		// Check for component specific edit.state permission
+		// If allowed, return true, else return false
+
+
+
+		return false;
 	}
 
 	/**
@@ -542,10 +832,33 @@ abstract class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canEdit($view = '', $data = array())
 	{
+		if (!is_array(self::$permissions))
+		{
+			self::setPermissionsState();
+		}
+
+		// @ToDo: What if permission is denied on item base? Check for all following!
+
+		// Check for general edit permission
+		if (self::$permissions['com']['edit'])
+		{
+			return true;
+		}
+
+		// Check for view edit permission
+		if (self::$permissions[$view]['edit'])
+		{
+			return true;
+		}
+
+		// Fallback for edit.own permission
+
 		// Initialise variables.
 		$user       = JFactory::getUser();
 		$userId     = $user->get('id');
@@ -553,6 +866,7 @@ abstract class BwPostmanHelper
 		$recordId   = 0;
 		$createdBy  = 0;
 
+		// Extract needed data
 		if (is_object($data))
 		{
 			if (property_exists($data, 'id'))
@@ -588,35 +902,45 @@ abstract class BwPostmanHelper
 			}
 		}
 
-		// Check permission
-		$res      = self::checkActionPermission($view, $action, array($recordId));
-		// Fallback on edit own.
-		if (!$res)
+		// This part is needed for displaying the button
+		if (!$recordId)
 		{
-			// Then test if the permission is available.
-			if ($user->authorise('bwpm.edit.own', 'com_bwpostman')
-				|| $user->authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view)
-				|| $user->authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId)
-			)
+			$res = false;
+
+			if (self::$permissions['com']['edit.own'] || self::$permissions[$view]['edit.own'])
 			{
-				// Check for general 'edit own' permission, used for displaying button
-				if (!$recordId)
-				{
-					$res = true;
-				}
-				else
-				{
-					$ownerId = self::getOwnerId($view, $recordId, $createdBy);
-					// Now test the owner is the user. If the owner matches 'me' then allow access.
-					if ($ownerId == $userId)
-					{
-						$res = true;
-					}
-				}
+				$res = true;
+			}
+
+			return $res;
+		}
+
+		// This part is used, if we have a record to check against
+		// First general or view permission
+		if (self::$permissions['com']['edit.own'] || self::$permissions[$view]['edit.own'])
+		{
+			$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+
+			// Now test the owner is the user. If the owner matches 'me' then allow access.
+			if ($ownerId == $userId)
+			{
+				return true;
 			}
 		}
 
-		return $res;
+		// Second item specific permission
+		if ($user->authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId))
+		{
+			$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+
+			// Now test the owner is the user. If the owner matches 'me' then allow access.
+			if ($ownerId == $userId)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -626,6 +950,8 @@ abstract class BwPostmanHelper
 	 * @param    int        $recordId   The record to test.
 	 *
 	 * @return    boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
@@ -646,6 +972,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canSend($recordId = 0)
@@ -662,6 +990,8 @@ abstract class BwPostmanHelper
 	 * Method to check if you can clear the queue.
 	 *
 	 * @return    boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
@@ -680,6 +1010,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since    2.0.0
 	 */
 	public static function canResetQueue()
@@ -696,6 +1028,8 @@ abstract class BwPostmanHelper
 	 * Method to check if you can retry to send the queue.
 	 *
 	 * @return    boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
@@ -718,6 +1052,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canArchive($view = '', $recordIds = array(), $strict = false)
@@ -739,6 +1075,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	public static function canDelete($view = '', $recordIds = array())
@@ -759,6 +1097,8 @@ abstract class BwPostmanHelper
 	 * @param    array      $recordIds   The record to test.
 	 *
 	 * @return    boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
@@ -1221,6 +1561,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @return  string  $allowed_ids
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function getAllowedRecords($view)
@@ -1342,6 +1684,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @return  array           $allowed_ids
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	private static function checkRecordsForPermission($view, $items)
@@ -1373,6 +1717,8 @@ abstract class BwPostmanHelper
 	 * @param   string $view    The name of the context.
 	 *
 	 * @return  array           $allowed_ids
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1449,7 +1795,6 @@ abstract class BwPostmanHelper
 	 * Method to check User object authorisation against an access control
 	 * object and optionally an access extension object
 	 *
-	 * @param   integer $userId     The ID of the user to check for
 	 * @param   string  $action     The name of the action to check for permission.
 	 * @param   string  $assetName  The name of the asset on which to perform the action.
 	 * @param   string $strictView  check only for this context
@@ -1458,8 +1803,10 @@ abstract class BwPostmanHelper
 	 *
 	 * @since   11.1
 	 */
-	public static function authorise($userId, $action, $assetName = null, $strictView = '')
+	public static function authorise($action, $assetName = null, $strictView = '')
 	{
+		$userId = JFactory::getUser()->id;
+
 		return (bool) BwAccess::check($userId, $action, $assetName, false, $strictView);
 	}
 }

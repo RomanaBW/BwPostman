@@ -74,6 +74,15 @@ class BwPostmanViewArchive extends JViewLegacy
 	protected $state;
 
 	/**
+	 * property to hold user permissions
+	 *
+	 * @var array  $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	protected $permissions;
+
+	/**
 	 * property to hold filter form
 	 *
 	 * @var object  $filterForm
@@ -138,8 +147,9 @@ class BwPostmanViewArchive extends JViewLegacy
 		$this->filterForm		= $this->get('FilterForm');
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->state			= $this->get('State');
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
-		$request_result = $this->checkForAllowedTab();
+		$request_result = $this->checkForAllowedTabs();
 
 		if ($request_result === false)
 		{
@@ -263,28 +273,28 @@ class BwPostmanViewArchive extends JViewLegacy
 	 *
 	 * @since       2.0.0
 	 */
-	private function checkForAllowedTab()
+	private function checkForAllowedTabs()
 	{
 		$uri        = JUri::getInstance('SERVER');
-		$uri_string = $uri->toString();
-		$uri_short  = substr($uri_string, strrpos($uri_string, '/') + 1, strlen($uri_string));
+		$uriString = $uri->toString();
+		$uriShort  = substr($uriString, strrpos($uriString, '/') + 1, strlen($uriString));
 
-		$layout = $this->extractLayout($uri_short);
+		$layout = $this->extractLayout($uriShort);
 		if ($layout == false)
 		{
 			return false;
 		}
 
-		$allowed_layout = $this->getAllowedLayout($layout);
+		$allowedLayouts = $this->getAllowedLayouts();
 
-		if ($allowed_layout === false)
+		if (!count($allowedLayouts))
 		{
 			return false;
 		}
 
-		if ($allowed_layout != $layout)
+		if (!in_array($layout, $allowedLayouts))
 		{
-			$this->request_url = str_replace($layout, $allowed_layout, $uri_short);
+			$this->request_url = str_replace($layout, $allowedLayouts[0], $uriShort);
 			return 'redirect';
 		}
 
@@ -322,32 +332,25 @@ class BwPostmanViewArchive extends JViewLegacy
 
 	/**
 	 *
-	 * @param   string      $layout
-	 *
-	 * @return string|bool $allowed_layout  allowed layout or false on error
+	 * @return array $allowedLayouts  allowed layouts
 	 *
 	 * @since 1.3.2
 	 */
-	private function getAllowedLayout($layout)
+	private function getAllowedLayouts()
 	{
-		if (BwPostmanHelper::canView(substr($layout, 0, -1)))
-		{
-			return $layout;
-		}
+		$allowedLayouts = array();
 
-		// check for some allowed layout
-		$all_layouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'template');
-		foreach ($all_layouts as $item)
+		// check for allowed layouts
+		$allLayouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'template');
+		foreach ($allLayouts as $item)
 		{
 			$allowedView	= BwPostmanHelper::canView($item);
 			if ($allowedView)
 			{
-				$allowedArchive = BwPostmanHelper::canArchive($item, array(), true);
-				if ($allowedArchive)
-				{
-					return $item . 's';
-				}
+				$allowedLayouts[] = $item . 's';
 			}
 		}
+
+		return $allowedLayouts;
 	}
 }

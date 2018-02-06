@@ -183,7 +183,7 @@ class BwAccess
 
 		if (!isset(self::$identities[$userId]))
 		{
-			// Get all groups against which the user is mapped. Other than Joomla I only need the direct groups.
+			// Get all groups against the user is mapped. Other than Joomla I only need the direct groups.
 			self::$identities[$userId] = self::getGroupsByUser($userId, false);
 		}
 
@@ -204,7 +204,7 @@ class BwAccess
 
 		if (!isset($rules->getData()[$action]))
 		{
-			return false;
+			return null;
 		}
 
 		self::$actionRule	= $rules->getData()[$action]->getData();
@@ -232,12 +232,16 @@ class BwAccess
 	 */
 	protected static function getWantedGroups($strictView)
 	{
+		$wantedGroups = array();
 		$sectionRules = json_decode(self::getSectionAsset($strictView), true);
 
 		$archiveRuleName	= 'bwpm.' . $strictView . '.archive';
 		$archiveRules		= $sectionRules[$archiveRuleName];
 
-		$wantedGroups		= array_keys($archiveRules);
+		if (is_array($archiveRules))
+		{
+			$wantedGroups		= array_keys($archiveRules);
+		}
 
 		return $wantedGroups;
 	}

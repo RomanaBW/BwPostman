@@ -89,7 +89,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 								<td valign="top" width="90%">
 									<ul class="bwp_tabs">
 										<?php
-										if (BwPostmanHelper::canArchive('newsletter', array(), true)) {
+										if ($this->permissions['newsletter']['archive'] && $this->permissions['view']['newsletter']) {
 											?>
 											<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
 												<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
@@ -97,7 +97,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if (BwPostmanHelper::canArchive('subscriber', array(), true)) {
+										if ($this->permissions['subscriber']['archive'] && $this->permissions['view']['subscriber']) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
@@ -105,7 +105,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if (BwPostmanHelper::canArchive('campaign', array(), true)) {
+										if ($this->permissions['campaign']['archive'] && $this->permissions['view']['campaign']) {
 											?>
 											<li class="open">
 												<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
@@ -113,7 +113,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if (BwPostmanHelper::canArchive('mailinglist', array(), true)) {
+										if ($this->permissions['mailinglist']['archive'] && $this->permissions['view']['mailinglist']) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
@@ -121,7 +121,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if (BwPostmanHelper::canArchive('template', array(), true)) {
+										if ($this->permissions['template']['archive'] && $this->permissions['view']['template']) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>

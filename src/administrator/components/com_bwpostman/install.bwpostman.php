@@ -110,6 +110,13 @@ class Com_BwPostmanInstallerScript
 									);
 
 	/**
+	 * @var string ID of BwPostmanAdmin usergroup
+	 *
+	 * @since       2.0.0
+	 */
+	private $adminUsergroup = null;
+
+	/**
 	 * Executes additional installation processes
 	 *
 	 * @since       0.9.6.3
@@ -283,8 +290,10 @@ class Com_BwPostmanInstallerScript
 			// Set BwPostman default settings in the extensions table at install
 			$this->setDefaultParams();
 
-			// Create sample user groups and access levels
+			// Create sample user groups, set viewlevel
 			$this->createSampleUsergroups();
+			$this->addBwPmAdminToViewlevel();
+			$this->addBwPmAdminToRootAsset();
 
 			/*
 			 * Create base assets
@@ -326,6 +335,8 @@ class Com_BwPostmanInstallerScript
 			if (version_compare($oldRelease, '2.0.0', 'lt'))
 			{
 				$this->createSampleUsergroups();
+				$this->addBwPmAdminToViewlevel();
+				$this->addBwPmAdminToRootAsset();
 			}
 
 			// convert tables to UTF8MB4
@@ -396,8 +407,9 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
+		$this->deleteBwPmAdminFromRootAsset();
+		$this->deleteBwPmAdminFromViewlevels();
 		$this->deleteSampleUsergroups();
-
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
@@ -811,17 +823,18 @@ class Com_BwPostmanInstallerScript
 			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
 			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
-			// get group ID of manager
-			$manager_id = $this->getGroupId('Manager');
+			// get group ID of public
+			$public_id = $this->getGroupId('Public');
 
 			// Create user group BwPostmanAdmin
-			if (!$ret = $groupModel->save(array('id' => 0, 'parent_id' => $manager_id, 'title' => 'BwPostmanAdmin')))
+			if (!$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin')))
 			{
 				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
 				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret));
 			}
 
 			$admin_groupId = $this->getGroupId('BwPostmanAdmin');
+			$this->adminUsergroup = $admin_groupId;
 
 			// Create user group BwPostmanManager
 			if (!$ret = $groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager')))
@@ -852,6 +865,87 @@ class Com_BwPostmanInstallerScript
 		catch (RuntimeException $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+	}
+
+	/**
+	 * Method to add BwPostmanAdmin to view level special
+	 *
+	 * @return boolean  true on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	private function addBwPmAdminToViewlevel()
+	{
+		try
+		{
+			// get the model for viewlevels
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+			$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+
+			// Get viewlevel special
+			$specialLevel = $viewlevelModel->getItem(3);
+
+			// Insert BwPostmanAdmin to the rules of viewlevel special
+			array_unshift($specialLevel->rules, (int) $this->adminUsergroup);
+			$specialLevelArray = \Joomla\Utilities\ArrayHelper::fromObject($specialLevel, false);
+
+			// Save viewlevel special
+			$viewlevelModel->save($specialLevelArray);
+
+			return true;
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+	}
+
+	/**
+	 * Method to add BwPostmanAdmin to view level special
+	 *
+	 * @return boolean  true on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	private function addBwPmAdminToRootAsset()
+	{
+		try
+		{
+			// Get group ID of BwPostmanAdmin
+			$adminGroup = $this->getGroupId('BwPostmanAdmin');
+
+			// Get root asset
+			$rootRules = $this->getRootAsset();
+
+			// Insert BwPostmanAdmin to root asset
+			$tmpRules   = json_decode($rootRules, true);
+
+			$tmpRules['core.login.site'][$adminGroup]  = 1;
+			$tmpRules['core.login.admin'][$adminGroup] = 1;
+			$tmpRules['core.create'][$adminGroup]      = 1;
+			$tmpRules['core.delete'][$adminGroup]      = 1;
+			$tmpRules['core.edit'][$adminGroup]        = 1;
+			$tmpRules['core.edit.own'][$adminGroup]    = 1;
+			$tmpRules['core.edit.state'][$adminGroup]  = 1;
+
+			$newRootRules = json_encode($tmpRules);
+
+			// Save root asset
+			$this->saveRootAsset($newRootRules);
+
+			return true;
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
 			return false;
 		}
 	}
@@ -901,6 +995,7 @@ class Com_BwPostmanInstallerScript
 			try
 			{
 				$bwpostman_main_group  = $_db->loadResult();
+				$bwpostman_main_group  = (int) $bwpostman_main_group;
 			}
 			catch (RuntimeException $e)
 			{
@@ -929,7 +1024,7 @@ class Com_BwPostmanInstallerScript
 				}
 			}
 
-			// delete actual user from BwPostman user groups
+			// delete current user from BwPostman user groups
 			if (is_array($member_ids) || is_object($member_ids))
 			{
 				foreach ($member_ids as $item)
@@ -938,14 +1033,15 @@ class Com_BwPostmanInstallerScript
 				}
 			}
 
-			JAccess::clearStatics();
-
 			// get the model for user groups
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models', 'UsersModel');
 			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
-			// delete main user group of BwPostman (all other user groups of BwPostman will be deleted automatically by Joomla)
-			if (!$groupModel->delete($bwpostman_main_group))
+			JAccess::clearStatics();
+
+			// delete main user group of BwPostman (all other (sub) user groups of BwPostman will be deleted automatically by Joomla)
+			$res = $groupModel->delete($bwpostman_main_group);
+			if (!$res)
 			{
 				throw new BwException(JText::_('COM_BWPOSTMAN_DEINSTALLATION_ERROR_REMOVE_USERGROUPS'));
 			}
@@ -960,6 +1056,96 @@ class Com_BwPostmanInstallerScript
 		catch (BwException $e)
 		{
 			echo $e->getMessage();
+			return false;
+		}
+	}
+
+	/**
+	 * Method to add BwPostmanAdmin to view level special
+	 *
+	 * @return boolean  true on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	private function deleteBwPmAdminFromViewlevels()
+	{
+		// get group ID of BwPostmanAdmin
+		$adminGroup = $this->getGroupId('BwPostmanAdmin');
+
+		if ($adminGroup)
+		{
+			try
+			{
+				// get the model for viewlevels
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+				$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+
+				// Get viewlevel special
+				$specialLevel = $viewlevelModel->getItem(3);
+
+				// Remove BwPostmanAdmin from to the rules of viewlevel special
+				if (in_array($adminGroup, $specialLevel->rules))
+				{
+					array_shift($specialLevel->rules);
+					$specialLevelArray = \Joomla\Utilities\ArrayHelper::fromObject($specialLevel);
+
+					// Save viewlevel special
+					$viewlevelModel->save($specialLevelArray);
+				}
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to add BwPostmanAdmin to view level special
+	 *
+	 * @return boolean  true on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	private function deleteBwPmAdminFromRootAsset()
+	{
+		try
+		{
+			// Get group ID of BwPostmanAdmin
+			$adminGroup = $this->getGroupId('BwPostmanAdmin');
+
+			// Get root asset
+			$rootRules = $this->getRootAsset();
+
+			// Insert BwPostmanAdmin to root asset
+			$tmpRules   = json_decode($rootRules, true);
+
+			unset($tmpRules['core.login.site'][$adminGroup]);
+			unset($tmpRules['core.login.admin'][$adminGroup]);
+			unset($tmpRules['core.create'][$adminGroup]);
+			unset($tmpRules['core.delete'][$adminGroup]);
+			unset($tmpRules['core.edit'][$adminGroup]);
+			unset($tmpRules['core.edit.own'][$adminGroup]);
+			unset($tmpRules['core.edit.state'][$adminGroup]);
+
+			$newRootRules = json_encode($tmpRules);
+
+			// Save root asset
+			$this->saveRootAsset($newRootRules);
+
+			return true;
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
 			return false;
 		}
 	}
@@ -1579,5 +1765,47 @@ H2	{
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+	}
+
+	/**
+	 *
+	 * @return mixed
+	 *
+	 * @since version
+	 */
+	private function getRootAsset()
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('rules'));
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('name') . ' = ' . $db->Quote('root.1'));
+
+		$db->setQuery($query);
+
+		$rootRules = $db->loadResult();
+
+		return $rootRules;
+	}
+
+	/**
+	 * @param $newRootRules
+	 *
+	 *
+	 * @since version
+	 */
+	private function saveRootAsset($newRootRules)
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->update($db->quoteName('#__assets'));
+		$query->set($db->quoteName('rules') . " = " . $db->Quote($newRootRules));
+		$query->where($db->quoteName('name') . ' = ' . $db->Quote('root.1'));
+
+		$db->setQuery($query);
+
+		$db->execute();
 	}
 }

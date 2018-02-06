@@ -27,24 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Component name and database prefix
-//define ('BWPOSTMAN_COMPONENT_NAME', basename (dirname (__FILE__)));
-//define ('BWPOSTMAN_NAME', substr (BWPOSTMAN_COMPONENT_NAME, 4));
-
-// Component location
-//define ('BWPOSTMAN_COMPONENT_LOCATION', basename (dirname (dirname (__FILE__))));
-
-// Component paths
-//define ('BWPOSTMAN_PATH_COMPONENT_RELATIVE', BWPOSTMAN_COMPONENT_LOCATION . '/' . BWPOSTMAN_COMPONENT_NAME);
-//define ('BWPOSTMAN_PATH_SITE', JPATH_ROOT .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
-//define ('BWPOSTMAN_PATH_ADMIN', JPATH_ADMINISTRATOR .'/'. BWPOSTMAN_PATH_COMPONENT_RELATIVE);
-//define ('BWPOSTMAN_PATH_MEDIA', JPATH_ROOT . '/media/' . BWPOSTMAN_NAME);
-
-// URLs
-//define ('BWPOSTMAN_URL_COMPONENT', 'index.php?option=' . BWPOSTMAN_COMPONENT_NAME);
-//define ('BWPOSTMAN_URL_SITE', JUri::root() . BWPOSTMAN_PATH_COMPONENT_RELATIVE . '/');
-//define ('BWPOSTMAN_URL_MEDIA', JUri::root() . 'media/' . BWPOSTMAN_NAME . '/');
-
 // Miscellaneous
 define('BWPOSTMAN_LOG_MEM', 0);
 
@@ -53,6 +35,7 @@ jimport('joomla.application.component.controller');
 
 // Require class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/classes/admin.class.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 try
 {

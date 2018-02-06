@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
@@ -59,7 +59,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 </script>
 
 <div id="bwp_view_lists">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
 				<?php echo $this->sidebar; ?>
@@ -77,13 +78,28 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<table id="main-table" class="adminlist table table-striped">
 					<thead>
 						<tr>
-							<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-							<th width="250" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap">
+								<input type="checkbox" name="checkall-toggle" value=""
+										title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+							</th>
+							<th width="250" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?>
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+							</th>
+							<th width="100" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
+							</th>
+							<th width="100" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?>
+							</th>
+							<th width="100" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?>
+							</th>
+							<th width="30" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+							</th>
 						</tr>
 					</thead>
 					<tfoot>
@@ -100,16 +116,34 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 								<td>
 									<?php if ($item->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'mailinglists.', BwPostmanHelper::canCheckin('mailinglist', $item->checked_out)); ?>
+										<?php echo JHtml::_(
+											'jgrid.checkedout',
+											$i,
+											$item->editor,
+											$item->checked_out_time,
+											'mailinglists.',
+											BwPostmanHelper::canCheckin('mailinglist', $item->checked_out)
+										); ?>
 									<?php endif; ?>
 									<?php if (BwPostmanHelper::canEdit('mailinglist', $item)) : ?>
-										<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=mailinglist.edit&id='. $item->id);?>"><?php echo $this->escape($item->title); ?></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=mailinglist.edit&id=' . $item->id);?>">
+											<?php echo $this->escape($item->title); ?>
+										</a>
 									<?php else : ?>
 										<?php echo $this->escape($item->title); ?>
 									<?php endif; ?>
 								</td>
 								<td><?php echo $item->description; ?></td>
-								<td align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'mailinglists.', BwPostmanHelper::canEditState('mailinglist', $item->id), 'cb'); ?>
+								<td align="center">
+									<?php echo JHtml::_(
+										'jgrid.published',
+										$item->published,
+										$i,
+										'mailinglists.',
+										BwPostmanHelper::canEditState('mailinglist', $item->id),
+										'cb'
+									); ?>
+								</td>
 								<td><?php echo $this->escape($item->access_level); ?></td>
 								<td align="center"><?php echo $item->subscribers; ?></td>
 								<td align="center"><?php echo $item->id; ?></td>

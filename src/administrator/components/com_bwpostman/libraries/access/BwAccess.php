@@ -189,6 +189,11 @@ class BwAccess
 
 		$identities	= self::$identities[$userId];
 
+		if (self::isRoot($identities))
+		{
+			return true;
+		}
+
 		// restrict identities to only this view, if set, especially needed for archive tabs
 		if ($strictView != '')
 		{
@@ -269,6 +274,37 @@ class BwAccess
 		$sectionRules = $db->loadResult();
 
 		return $sectionRules;
+	}
+
+	/**
+	 * @param array $identities
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.0.0
+	 */
+	protected static function isRoot($identities)
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__usergroups'));
+		$query->where($db->quoteName('title') . ' = ' . $db->quote('Super Users'));
+
+		$db->setQuery($query);
+
+		$rootGroup = $db->loadResult();
+
+		$isRoot    = array_keys($identities, $rootGroup);
+
+		if (count($isRoot))
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

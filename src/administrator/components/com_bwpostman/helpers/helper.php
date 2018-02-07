@@ -421,17 +421,16 @@ abstract class BwPostmanHelper
 	 */
 	protected static function getPermissionsForSingleViews($view)
 	{
-		$user 			= JFactory::getUser();
 		$permissions	= array();
 
 		// @ToDo: Revise: $user or self:: for authorise!
 		if ($view !== 'archive' && $view !== 'maintenance')
 		{
-			$permissions['create']    = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, $view);
-			$permissions['edit']      = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view, $view);
-			$permissions['editOwn']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view, $view);
-			$permissions['editState'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view, $view);
-			$permissions['archive']   = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view, $view);
+			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, $view);
+			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view, $view);
+			$permissions['edit.own']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view, $view);
+			$permissions['edit.state'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view, $view);
+			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view, $view);
 		}
 
 		if ($view === 'newsletter')
@@ -614,16 +613,16 @@ abstract class BwPostmanHelper
 		$permissions	= array();
 
 		// Set permissions for component
-		$permissions['com']['admin']     = $user->authorise('core.admin', 'com_bwpostman');
-		$permissions['com']['manage']    = $user->authorise('core.manage', 'com_bwpostman');
-		$permissions['com']['create']    = $user->authorise('bwpm.create', 'com_bwpostman');
-		$permissions['com']['edit']      = $user->authorise('bwpm.edit', 'com_bwpostman');
-		$permissions['com']['editOwn']   = $user->authorise('bwpm.edit.own', 'com_bwpostman');
-		$permissions['com']['editState'] = $user->authorise('bwpm.edit.state', 'com_bwpostman');
-		$permissions['com']['archive']   = $user->authorise('bwpm.archive', 'com_bwpostman');
-		$permissions['com']['restore']   = $user->authorise('bwpm.restore', 'com_bwpostman');
-		$permissions['com']['delete']    = $user->authorise('bwpm.delete', 'com_bwpostman');
-		$permissions['com']['send']      = $user->authorise('bwpm.send', 'com_bwpostman');
+		$permissions['com']['admin']      = $user->authorise('core.admin', 'com_bwpostman');
+		$permissions['com']['manage']     = $user->authorise('core.manage', 'com_bwpostman');
+		$permissions['com']['create']     = $user->authorise('bwpm.create', 'com_bwpostman');
+		$permissions['com']['edit']       = $user->authorise('bwpm.edit', 'com_bwpostman');
+		$permissions['com']['edit.own']   = $user->authorise('bwpm.edit.own', 'com_bwpostman');
+		$permissions['com']['edit.state'] = $user->authorise('bwpm.edit.state', 'com_bwpostman');
+		$permissions['com']['archive']    = $user->authorise('bwpm.archive', 'com_bwpostman');
+		$permissions['com']['restore']    = $user->authorise('bwpm.restore', 'com_bwpostman');
+		$permissions['com']['delete']     = $user->authorise('bwpm.delete', 'com_bwpostman');
+		$permissions['com']['send']       = $user->authorise('bwpm.send', 'com_bwpostman');
 
 		self::$permissions = $permissions;
 

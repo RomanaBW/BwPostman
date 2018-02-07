@@ -3959,7 +3959,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		// @ToDo: Check if exceptions are handled correctly
 		// Set all actions possible in and with sections
-		$actions = array('create', 'edit', 'edit.own', 'edit.state', 'archive', 'restore', 'delete', 'newsletter.send');
+		$actions = array('create', 'edit', 'edit.own', 'edit.state', 'archive', 'restore', 'delete', 'send');
 
 		$rules = $this->componentRules;
 
@@ -3975,12 +3975,62 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				foreach ($actions as $action)
 				{
-					if ($action == 'newsletter.send' && $singularTableName != 'newsletter')
+					if ($action == 'send' && $singularTableName != 'newsletter')
 					{
 						continue;
 					}
 
 					$rules['bwpm.' . $singularTableName . '.' . $action] = $reducedGroupsActions[$action];
+
+					$BwPmSectionAdmin     = 'BwPostman' . ucfirst($singularTableName) . 'Admin';
+					$BwPmSectionPublisher = 'BwPostman' . ucfirst($singularTableName) . 'Publisher';
+					$BwPmSectionEditor    = 'BwPostman' . ucfirst($singularTableName) . 'Editor';
+
+					//@ToDo: Set permissions for section groups
+					$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionAdmin] = true;
+
+					switch ($action)
+					{
+						case 'create':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = true;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = true;
+							break;
+
+						case 'edit':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = true;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = false;
+							break;
+
+						case 'edit.own':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = true;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = true;
+							break;
+
+						case 'edit.state':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = true;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = false;
+							break;
+
+						case 'archive':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = false;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = false;
+							break;
+
+						case 'restore':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = false;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = false;
+							break;
+
+						case 'delete':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = false;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = false;
+							break;
+
+						case 'send':
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionPublisher] = true;
+							$rules['bwpm.' . $singularTableName . '.' . $action][$BwPmSectionEditor] = true;
+							break;
+					}
 				}
 			}
 		}
@@ -4222,7 +4272,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$groups = $this->usedGroups;
 
 		$reducedRules = array();
-
+dump($actionRules, 'Reduce rights for Installed Groups: ActionRules');
+dump($groups, 'Reduce rights for Installed Groups: Groups');
 		foreach ($actionRules as $action => $groupRules)
 		{
 			$reducedRule = array();
@@ -4255,8 +4306,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 
 				if (key_exists('BwPostmanAdmin', $groupRules)
-					&& key_exists('Manager', $groupRules)
-					&& $groupRules['BwPostmanAdmin'] != $groupRules['Manager'])
+//					&& key_exists('Manager', $groupRules)
+//					&& $groupRules['BwPostmanAdmin'] != $groupRules['Manager']
+				)
 				{
 					$reducedRule[$groups['BwPostmanAdmin']['id']] = $groupRules['BwPostmanAdmin'];
 				}
@@ -4276,8 +4328,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 
 				if (key_exists('BwPostmanCampaignAdmin', $groupRules)
-					&& key_exists('BwPostmanAdmin', $groupRules)
-					&& $groupRules['BwPostmanCampaignAdmin'] != $groupRules['BwPostmanAdmin'])
+//					&& key_exists('BwPostmanAdmin', $groupRules)
+//					&& $groupRules['BwPostmanCampaignAdmin'] != $groupRules['BwPostmanAdmin']
+				)
 				{
 					$reducedRule[$groups['BwPostmanCampaignAdmin']['id']] = $groupRules['BwPostmanCampaignAdmin'];
 				}
@@ -4297,8 +4350,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 
 				if (key_exists('BwPostmanMailinglistAdmin', $groupRules)
-					&& key_exists('BwPostmanAdmin', $groupRules)
-					&& $groupRules['BwPostmanMailinglistAdmin'] != $groupRules['BwPostmanAdmin'])
+//					&& key_exists('BwPostmanAdmin', $groupRules)
+//					&& $groupRules['BwPostmanMailinglistAdmin'] != $groupRules['BwPostmanAdmin']
+				)
 				{
 					$reducedRule[$groups['BwPostmanMailinglistAdmin']['id']] = $groupRules['BwPostmanMailinglistAdmin'];
 				}
@@ -4318,8 +4372,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 
 				if (key_exists('BwPostmanNewsletterAdmin', $groupRules)
-					&& key_exists('BwPostmanAdmin', $groupRules)
-					&& $groupRules['BwPostmanNewsletterAdmin'] != $groupRules['BwPostmanAdmin'])
+//					&& key_exists('BwPostmanAdmin', $groupRules)
+//					&& $groupRules['BwPostmanNewsletterAdmin'] != $groupRules['BwPostmanAdmin']
+				)
 				{
 					$reducedRule[$groups['BwPostmanNewsletterAdmin']['id']] = $groupRules['BwPostmanNewsletterAdmin'];
 				}
@@ -4339,8 +4394,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 
 				if (key_exists('BwPostmanSubscriberAdmin', $groupRules)
-					&& key_exists('BwPostmanAdmin', $groupRules)
-					&& $groupRules['BwPostmanSubscriberAdmin'] != $groupRules['BwPostmanAdmin'])
+//					&& key_exists('BwPostmanAdmin', $groupRules)
+//					&& $groupRules['BwPostmanSubscriberAdmin'] != $groupRules['BwPostmanAdmin']
+				)
 				{
 					$reducedRule[$groups['BwPostmanSubscriberAdmin']['id']] = $groupRules['BwPostmanSubscriberAdmin'];
 				}
@@ -4360,8 +4416,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 
 				if (key_exists('BwPostmanTemplateAdmin', $groupRules)
-					&& key_exists('BwPostmanAdmin', $groupRules)
-					&& $groupRules['BwPostmanTemplateAdmin'] != $groupRules['BwPostmanAdmin'])
+//					&& key_exists('BwPostmanAdmin', $groupRules)
+//					&& $groupRules['BwPostmanTemplateAdmin'] != $groupRules['BwPostmanAdmin']
+				)
 				{
 					$reducedRule[$groups['BwPostmanTemplateAdmin']['id']] = $groupRules['BwPostmanTemplateAdmin'];
 				}
@@ -4383,6 +4440,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$reducedRules[$action] = $reducedRule;
 		}
+dump($reducedRules, 'Reduce rights for Installed Groups: ReducedRules');
 
 		return $reducedRules;
 	}

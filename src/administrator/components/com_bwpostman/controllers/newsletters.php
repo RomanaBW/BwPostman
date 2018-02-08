@@ -233,7 +233,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
         foreach ($ids as $item)
         {
-            $allowed = BwPostmanHelper::canCheckin('newsletter', $item);
+            $allowed = BwPostmanHelper::canCheckin($item);
 
             // Access check.
             if ($allowed)

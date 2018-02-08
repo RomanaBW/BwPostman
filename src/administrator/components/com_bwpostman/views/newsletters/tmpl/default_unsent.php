@@ -167,7 +167,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										<?php } ?>
 									</td>
 									<td>
-										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', BwPostmanHelper::canCheckin('newsletter', $item->checked_out)); ?>
+										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', BwPostmanHelper::canCheckin($item->checked_out)); ?>
 										<?php if (BwPostmanHelper::canEdit('newsletter', $item)) : ?>
 											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&layout=edit_basic&task=newsletter.edit&id='. $item->id . '&referrer=newsletters');?>">
 												<?php echo $this->escape($item->subject); ?></a>

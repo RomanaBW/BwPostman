@@ -95,7 +95,7 @@ $colNum = 8;
 					<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id, 0, 'cid', 'ub'); ?></td>
 					<td>
 						<?php if ($item->checked_out) : ?>
-							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'subscribers.', BwPostmanHelper::canCheckin('subscriber', $item->checked_out), 'ub'); ?>
+							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'subscribers.', BwPostmanHelper::canCheckin($item->checked_out), 'ub'); ?>
 						<?php endif; ?>
 						<?php if (BwPostmanHelper::canEdit('subscriber', $item)) : ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=subscriber.edit&id='. $item->id);?>">

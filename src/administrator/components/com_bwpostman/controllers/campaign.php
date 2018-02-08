@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
@@ -33,7 +33,7 @@ jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 
 /**
@@ -55,9 +55,20 @@ class BwPostmanControllerCampaign extends JControllerForm
 	protected $text_prefix = 'COM_BWPOSTMAN_CAM';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 *
@@ -65,8 +76,9 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
+		parent::__construct($config);
 	}
 
 	/**
@@ -81,12 +93,13 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('campaign'))
+		if (!$this->permissions['view']['campaign'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -102,7 +115,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		return BwPostmanHelper::canAdd('campaign');
+		return $this->permissions['campaign']['create'];
 	}
 
 	/**
@@ -142,6 +155,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
 	 * (sometimes required to avoid router collisions).
 	 *
+	 * @throws Exception
+	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
 	 *
 	 * @since	1.0.1
@@ -180,13 +195,15 @@ class BwPostmanControllerCampaign extends JControllerForm
 		{
 			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
+
 		if (!$allowed)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -202,7 +219,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -216,7 +234,8 @@ class BwPostmanControllerCampaign extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -251,16 +270,19 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * Method to archive one or more campaigns and if the user want also the assigned newsletters
 	 * --> campaigns-table: archive_flag = 1, set archive_date
 	 *
-	 * @access	public
-	 *
 	 * @return 	bool    true on success
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
 	public function archive()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$jinput	= JFactory::getApplication()->input;
 
@@ -277,13 +299,14 @@ class BwPostmanControllerCampaign extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
 		}
 
-		$n = count ($cid);
+		$n = count($cid);
 
 		$model = $this->getModel('campaign');
 		if(!$model->archive($cid, 1, $archive_nl))
@@ -291,21 +314,21 @@ class BwPostmanControllerCampaign extends JControllerForm
 			if ($n > 1) {
 				if ($archive_nl)
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAMS_NL_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAMS_NL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 				else
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAMS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAMS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 			}
 			else {
 				if ($archive_nl)
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAM_NL_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAM_NL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 				else
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_CAM_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAM_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 			}
 		}
@@ -333,10 +356,13 @@ class BwPostmanControllerCampaign extends JControllerForm
 					$msg = JText::_('COM_BWPOSTMAN_CAM_ARCHIVED');
 				}
 			}
+
 			$link = JRoute::_('index.php?option=com_bwpostman&view=campaigns', false);
 
 			$this->setRedirect($link, $msg);
 		}
+
+		return true;
 	}
 
 	/**
@@ -394,9 +420,9 @@ class BwPostmanControllerCampaign extends JControllerForm
 	/**
 	 * Dummy Method for Plugin BwTimeControl
 	 *
-	 * @access	public
-	 *
 	 * @return 	void
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */

@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Campaigns Controller
@@ -51,9 +51,20 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	protected $text_prefix = 'COM_BWPOSTMAN_CAMS';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 *
@@ -61,6 +72,8 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 */
 	public function __construct($config = array())
 	{
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
 		parent::__construct($config);
 
 		// Register Extra tasks
@@ -94,11 +107,13 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 *
 	 * @return  BwPostmanControllerCampaigns		This object to support chaining.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('campaign'))
+		if (!$this->permissions['view']['campaign'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
@@ -155,6 +170,8 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function checkin()
@@ -181,6 +198,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 				return false;
 			}
 		}
+
 		return $res;
 	}
 }

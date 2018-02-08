@@ -124,13 +124,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return  mixed
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.0.1
 	 */
 	public function saveTables($update = false)
 	{
 		// @ToDo: Use simpleXml correctly
 		// Access check.
-		if (!BwPostmanHelper::canAdmin())
+		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$permissions['maintenance']['save'])
 		{
 			return false;
 		}

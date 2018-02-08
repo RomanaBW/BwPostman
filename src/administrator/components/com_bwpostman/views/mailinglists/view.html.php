@@ -25,14 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman Lists View
@@ -100,6 +100,15 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	public $total;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
@@ -136,6 +145,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
 		$this->addToolbar();
 
@@ -161,25 +171,35 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MLS'), 'list');
+		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MLS'), 'list');
 
 		// Set toolbar items for the page
-		if (BwPostmanHelper::canAdd('mailinglist'))	    JToolbarHelper::addNew('mailinglist.add');
-		if (BwPostmanHelper::canEdit('mailinglist'))	JToolbarHelper::editList('mailinglist.edit');
+		if ($this->permissions['mailinglist']['create'])
+		{
+			JToolbarHelper::addNew('mailinglist.add');
+		}
+
+		if ($this->permissions['mailinglist']['edit'] || $this->permissions['mailinglist']['edit.own'])
+		{
+			JToolbarHelper::editList('mailinglist.edit');
+		}
+
 		JToolbarHelper::divider();
-		if (BwPostmanHelper::canEditState('mailinglist', 0))
+		if ($this->permissions['mailinglist']['edit.state'])
 		{
 			JToolbarHelper::publishList('mailinglists.publish');
 			JToolbarHelper::unpublishList('mailinglists.unpublish');
 			JToolbarHelper::divider();
 		}
-		if (BwPostmanHelper::canArchive('mailinglist', array(), true))
+
+		if ($this->permissions['mailinglist']['archive'])
 		{
 			JToolbarHelper::archiveList('mailinglist.archive');
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 		}
-		if (BwPostmanHelper::canManage())
+
+		if ($this->permissions['com']['admin'])
 		{
 			JToolbarHelper::checkin('mailinglists.checkin');
 			JToolbarHelper::divider();

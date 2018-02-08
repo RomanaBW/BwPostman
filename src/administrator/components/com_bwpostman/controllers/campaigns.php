@@ -167,7 +167,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 
 		foreach ($ids as $item)
 		{
-			$allowed = BwPostmanHelper::canCheckin('campaign', $item);
+			$allowed = BwPostmanHelper::canCheckin($item);
 
 			// Access check.
 			if ($allowed)

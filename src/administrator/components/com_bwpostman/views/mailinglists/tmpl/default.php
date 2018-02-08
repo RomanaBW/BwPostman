@@ -122,7 +122,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											$item->editor,
 											$item->checked_out_time,
 											'mailinglists.',
-											BwPostmanHelper::canCheckin('mailinglist', $item->checked_out)
+											BwPostmanHelper::canCheckin($item->checked_out)
 										); ?>
 									<?php endif; ?>
 									<?php if (BwPostmanHelper::canEdit('mailinglist', $item)) : ?>

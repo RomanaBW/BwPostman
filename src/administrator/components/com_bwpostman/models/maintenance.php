@@ -531,6 +531,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		foreach ($rules as $data)
 		{
 			$item = json_decode($data['rules']);
@@ -3212,7 +3213,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$_db->execute();
 
 				// delete newly created tables
-				$query = ('RENAME TABLE ' . $_db->quoteName($table["tableNameGeneric"] . '_tmp') . ' TO ' . $_db->quoteName($table["tableNameGeneric"]));
+				$query = (
+					'RENAME TABLE ' . $_db->quoteName($table["tableNameGeneric"] . '_tmp') . ' TO ' . $_db->quoteName($table["tableNameGeneric"])
+				);
 
 				$_db->setQuery($query);
 				$_db->execute();
@@ -4276,8 +4279,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$groups = $this->usedGroups;
 
 		$reducedRules = array();
-dump($actionRules, 'Reduce rights for Installed Groups: ActionRules');
-dump($groups, 'Reduce rights for Installed Groups: Groups');
+
 		foreach ($actionRules as $action => $groupRules)
 		{
 			$reducedRule = array();
@@ -4309,10 +4311,7 @@ dump($groups, 'Reduce rights for Installed Groups: Groups');
 					$reducedRule[$groups['Editor']['id']] = $groupRules['Editor'];
 				}
 
-				if (key_exists('BwPostmanAdmin', $groupRules)
-//					&& key_exists('Manager', $groupRules)
-//					&& $groupRules['BwPostmanAdmin'] != $groupRules['Manager']
-				)
+				if (key_exists('BwPostmanAdmin', $groupRules))
 				{
 					$reducedRule[$groups['BwPostmanAdmin']['id']] = $groupRules['BwPostmanAdmin'];
 				}
@@ -4331,10 +4330,7 @@ dump($groups, 'Reduce rights for Installed Groups: Groups');
 					$reducedRule[$groups['BwPostmanEditor']['id']] = $groupRules['BwPostmanEditor'];
 				}
 
-				if (key_exists('BwPostmanCampaignAdmin', $groupRules)
-//					&& key_exists('BwPostmanAdmin', $groupRules)
-//					&& $groupRules['BwPostmanCampaignAdmin'] != $groupRules['BwPostmanAdmin']
-				)
+				if (key_exists('BwPostmanCampaignAdmin', $groupRules))
 				{
 					$reducedRule[$groups['BwPostmanCampaignAdmin']['id']] = $groupRules['BwPostmanCampaignAdmin'];
 				}
@@ -4353,10 +4349,7 @@ dump($groups, 'Reduce rights for Installed Groups: Groups');
 					$reducedRule[$groups['BwPostmanCampaignEditor']['id']] = $groupRules['BwPostmanCampaignEditor'];
 				}
 
-				if (key_exists('BwPostmanMailinglistAdmin', $groupRules)
-//					&& key_exists('BwPostmanAdmin', $groupRules)
-//					&& $groupRules['BwPostmanMailinglistAdmin'] != $groupRules['BwPostmanAdmin']
-				)
+				if (key_exists('BwPostmanMailinglistAdmin', $groupRules))
 				{
 					$reducedRule[$groups['BwPostmanMailinglistAdmin']['id']] = $groupRules['BwPostmanMailinglistAdmin'];
 				}
@@ -4375,10 +4368,7 @@ dump($groups, 'Reduce rights for Installed Groups: Groups');
 					$reducedRule[$groups['BwPostmanMailinglistEditor']['id']] = $groupRules['BwPostmanMailinglistEditor'];
 				}
 
-				if (key_exists('BwPostmanNewsletterAdmin', $groupRules)
-//					&& key_exists('BwPostmanAdmin', $groupRules)
-//					&& $groupRules['BwPostmanNewsletterAdmin'] != $groupRules['BwPostmanAdmin']
-				)
+				if (key_exists('BwPostmanNewsletterAdmin', $groupRules))
 				{
 					$reducedRule[$groups['BwPostmanNewsletterAdmin']['id']] = $groupRules['BwPostmanNewsletterAdmin'];
 				}
@@ -4397,10 +4387,7 @@ dump($groups, 'Reduce rights for Installed Groups: Groups');
 					$reducedRule[$groups['BwPostmanNewsletterEditor']['id']] = $groupRules['BwPostmanNewsletterEditor'];
 				}
 
-				if (key_exists('BwPostmanSubscriberAdmin', $groupRules)
-//					&& key_exists('BwPostmanAdmin', $groupRules)
-//					&& $groupRules['BwPostmanSubscriberAdmin'] != $groupRules['BwPostmanAdmin']
-				)
+				if (key_exists('BwPostmanSubscriberAdmin', $groupRules))
 				{
 					$reducedRule[$groups['BwPostmanSubscriberAdmin']['id']] = $groupRules['BwPostmanSubscriberAdmin'];
 				}
@@ -4419,10 +4406,7 @@ dump($groups, 'Reduce rights for Installed Groups: Groups');
 					$reducedRule[$groups['BwPostmanSubscriberEditor']['id']] = $groupRules['BwPostmanSubscriberEditor'];
 				}
 
-				if (key_exists('BwPostmanTemplateAdmin', $groupRules)
-//					&& key_exists('BwPostmanAdmin', $groupRules)
-//					&& $groupRules['BwPostmanTemplateAdmin'] != $groupRules['BwPostmanAdmin']
-				)
+				if (key_exists('BwPostmanTemplateAdmin', $groupRules))
 				{
 					$reducedRule[$groups['BwPostmanTemplateAdmin']['id']] = $groupRules['BwPostmanTemplateAdmin'];
 				}
@@ -4444,7 +4428,6 @@ dump($groups, 'Reduce rights for Installed Groups: Groups');
 
 			$reducedRules[$action] = $reducedRule;
 		}
-dump($reducedRules, 'Reduce rights for Installed Groups: ReducedRules');
 
 		return $reducedRules;
 	}

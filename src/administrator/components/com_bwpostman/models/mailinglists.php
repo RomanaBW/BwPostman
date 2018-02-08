@@ -411,7 +411,10 @@ class BwPostmanModelMailinglists extends JModelList
 					$this->query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
 					break;
 				case 'title_description':
-					$this->query->where('(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) . ' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')');
+					$this->query->where(
+						'(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false)
+						. ' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+					);
 					break;
 				case 'title':
 					$this->query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));

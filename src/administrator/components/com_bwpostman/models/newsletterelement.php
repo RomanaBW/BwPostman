@@ -51,7 +51,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @since
 	 */
-	var $_data = null;
+	private $data = null;
 
 	/**
 	 * Number of all newsletters
@@ -60,7 +60,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @since
 	 */
-	var $_total = null;
+	private $total = null;
 
 	/**
 	 * Pagination object
@@ -69,7 +69,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @since
 	 */
-	var $_pagination = null;
+	private $pagination = null;
 
 	/**
 	 * Newsletters search
@@ -78,7 +78,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @since
 	 */
-	var $_search = null;
+	private $search = null;
 
 	/**
 	 * Mailinglists key
@@ -89,11 +89,13 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @since
 	 */
-	var $_key = null;
+	private $key = null;
 
 	/**
 	 * Constructor
 	 * --> handles the pagination and set the mailinglists key
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -103,11 +105,11 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 		$app = JFactory::getApplication();
 
-		$this->_key = $this->getName();
+		$this->key = $this->getName();
 
 		// Get the pagination request variables
-		$limit		= $app->getUserStateFromRequest($this->_key.'_limit', 'limit', $app->get('list_limit'), 0);
-		$limitstart	= $app->getUserStateFromRequest($this->_key.'_limitstart', 'limitstart', 0);
+		$limit		= $app->getUserStateFromRequest($this->key . '_limit', 'limit', $app->get('list_limit'), 0);
+		$limitstart	= $app->getUserStateFromRequest($this->key . '_limitstart', 'limitstart', 0);
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -120,16 +122,19 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @return 	object Mailinglists-data
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	public function getData()
 	{
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$query      = $this->buildQuery();
+			$this->data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		return $this->_data;
+
+		return $this->data;
 	}
 
 	/**
@@ -139,17 +144,20 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @return 	int Total number
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	public function getTotal()
 	{
 		// Load the content if it doesn't already exist
-		if (!$this->_total)
+		if (!$this->total)
 		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			$query       = $this->buildQuery();
+			$this->total = $this->_getListCount($query);
 		}
-		return $this->_total;
+
+		return $this->total;
 	}
 
 	/**
@@ -159,17 +167,20 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @return 	object Pagination
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	public function getPagination()
 	{
 		// Load the content if it doesn't already exist
-		if (empty($this->_pagination))
+		if (empty($this->pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
+			$this->pagination = new JPagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
 		}
-		return $this->_pagination;
+
+		return $this->pagination;
 	}
 
 	/**
@@ -179,9 +190,11 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @return 	string Query
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	private function _buildQuery()
+	private function buildQuery()
 	{
 		$app = JFactory::getApplication();
 		$_db	= $this->_db;
@@ -199,7 +212,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		$search = $this->getSearch();
 
 		// Get the search filter
-		$filter_search = $app->getUserStateFromRequest($this->_key.'_filter_search', 'filter_search', 'subject', 'string');
+		$filter_search = $app->getUserStateFromRequest($this->key . '_filter_search', 'filter_search', 'subject', 'string');
 
 		if ($search != '')
 		{
@@ -208,21 +221,21 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 			foreach ($fields as $field)
 			{
 				$search = $_db->quote('%' . str_replace(' ', '%', $_db->escape(trim($search), true) . '%'));
-				$query->where('a.'.$field . " LIKE " . $search);
+				$query->where('a.' . $field . " LIKE " . $search);
 			}
 		}
 
 		// Get the filter order
-		$filter_order		= $app->getUserStateFromRequest($this->_key.'_filter_order', '.filter_order', 'a.subject', 'word');
-		$filter_order_Dir	= $app->getUserStateFromRequest($this->_key.'_filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$filter_order		= $app->getUserStateFromRequest($this->key . '_filter_order', '.filter_order', 'a.subject', 'word');
+		$filter_order_Dir	= $app->getUserStateFromRequest($this->key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		if ($filter_order == 'a.subject')
 		{
-			$query->order('a.subject '.$filter_order_Dir);
+			$query->order('a.subject ' . $filter_order_Dir);
 		}
 		else
 		{
-			$query->order($_db->escape($filter_order.' '.$filter_order_Dir));
+			$query->order($_db->escape($filter_order . ' ' . $filter_order_Dir));
 		}
 
 		return $query;
@@ -235,17 +248,20 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @return 	string
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	private function getSearch()
 	{
-		if (!$this->_search)
+		if (!$this->search)
 		{
 			$app = JFactory::getApplication();
 
-			$search = $app->getUserStateFromRequest($this->_key.'_search', 'search', '', 'string');
-			$this->_search = JString::strtolower($search);
+			$search       = $app->getUserStateFromRequest($this->key . '_search', 'search', '', 'string');
+			$this->search = JString::strtolower($search);
 		}
-		return $this->_search;
+
+		return $this->search;
 	}
 }

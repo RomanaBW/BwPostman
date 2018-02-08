@@ -458,12 +458,15 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return  string
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.1.0
 	 */
 	public function uploadTplFiles($file)
 	{
 		// Access check.
-		if (!BwPostmanHelper::canAdd('template'))
+		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		if (!$permissions['template']['create'])
 		{
 			return false;
 		}

@@ -107,6 +107,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	private $arise_queue       = 0;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor
 	 * Determines the newsletter ID
 	 *
@@ -116,6 +125,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function __construct()
 	{
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
 		parent::__construct();
 
 		$jinput	= JFactory::getApplication()->input;
@@ -304,7 +315,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 				$query->where($_db->quoteName('published') . ' = ' . (int) 0);
 				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-				//			$query->where($_db->quoteName('access') . ' = ' . (int) 1);
 
 				$_db->setQuery($query);
 
@@ -1078,7 +1088,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function copy($cid = array())
 	{
-		if (!BwPostmanHelper::canAdd('newsletter'))
+		if (!$this->permissions['newsletter']['create'])
 		{
 			return false;
 		}
@@ -4007,14 +4017,16 @@ class HTML_content
 			if ($params->get('link_titles') && $row->link_on != '')
 			{
 				?>
-				<h2><a href="<?php echo $row->link_on;?>"
-					class="contentpagetitle<?php echo $params->get('pageclass_sfx'); ?>">
-								<?php echo $row->title;?></a></h2>
-								<?php
+				<h2>
+					<a href="<?php echo $row->link_on;?>" class="contentpagetitle<?php echo $params->get('pageclass_sfx'); ?>">
+						<?php echo $row->title;?>
+					</a>
+				</h2>
+				<?php
 			}
 			else
 			{
-								?>
+				?>
 				<h2><?php echo $row->title;?></h2>
 				<?php
 			}
@@ -4042,8 +4054,6 @@ class HTML_content
 	/**
 	 * Writes p-tag for Author and CreateDate
 	 *
-	 * @param   object  $row
-	 *
 	 * @return  void
 	 *
 	 * @since       2.0.0
@@ -4057,8 +4067,6 @@ class HTML_content
 
 	/**
 	 * Writes p-tag for Author and CreateDate
-	 *
-	 * @param   object  $row
 	 *
 	 * @return  void
 	 *
@@ -4132,8 +4140,8 @@ class HTML_content
 		if ($params->get('url') && $row->urls)
 		{
 			?>
-			<p class="row_url"><a
-				href="http://<?php echo $row->urls; ?>" target="_blank"> <?php echo $row->urls; ?></a>
+			<p class="row_url">
+				<a href="http://<?php echo $row->urls; ?>" target="_blank"> <?php echo $row->urls; ?></a>
 			</p>
 			<?php
 		}
@@ -4161,8 +4169,10 @@ class HTML_content
 		if (($mod_date != '') && $params->get('modifydate'))
 		{
 			?>
-			<p class="modifydate"><?php echo JText::_('LAST_UPDATED'); ?>
-			(<?php echo $mod_date; ?>)</p>
+			<p class="modifydate">
+				<?php echo JText::_('LAST_UPDATED'); ?>
+				(<?php echo $mod_date; ?>)
+			</p>
 			<?php
 		}
 	}

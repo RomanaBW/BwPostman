@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
@@ -33,7 +33,7 @@ jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Newsletter Controller
@@ -53,11 +53,22 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	protected $text_prefix = 'COM_BWPOSTMAN_NL';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @see		JController
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -73,6 +84,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$this->registerTask('publish_apply', 'save');
 		$this->registerTask('publish_save', 'save');
 		$this->registerTask('changeTab', 'changeTab');
+
+		$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
 	}
 
 	/**
@@ -87,12 +100,13 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('newsletter'))
+		if (!$this->permissions['view']['newsletter'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -108,7 +122,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		return BwPostmanHelper::canAdd('newsletter');
+		return $this->permissions['newsletter']['create'];
 	}
 
 	/**
@@ -125,7 +139,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		return BwPostmanHelper::canEdit('newsletter', $data);
 	}
-
 
 	/**
 	 * Method to check if you can send a newsletter.
@@ -165,6 +178,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function edit($key = null, $urlVar = null)
@@ -201,13 +216,15 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		{
 			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
+
 		if (!$allowed)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -223,7 +240,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -238,7 +256,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -254,6 +273,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @access	public
 	 *
 	 * @return 	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 */
@@ -286,10 +307,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
 
 					$this->setRedirect(
-							JRoute::_(
-									'index.php?option=' . $this->option . '&view=' . $this->view_item
-									. $this->getRedirectToItemAppend($recordId, $key), false
-							)
+						JRoute::_(
+							'index.php?option=' . $this->option . '&view=' . $this->view_item
+							. $this->getRedirectToItemAppend($recordId, $key),
+							false
+						)
 					);
 					return false;
 				}
@@ -304,12 +326,12 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$dispatcher = JEventDispatcher::getInstance();
 
 		JPluginHelper::importPlugin('bwpostman');
-//		$dispatcher->trigger('onBwPostmanAfterNewsletterCancel', array());
 
 		$this->setRedirect(
 			JRoute::_(
 				'index.php?option=' . $this->option . '&view=' . $this->view_list
-				. $this->getRedirectToListAppend(), false
+				. $this->getRedirectToListAppend(),
+				false
 			)
 		);
 
@@ -324,13 +346,13 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 *
 	 * @return  boolean  True if successful, false otherwise.
 	 *
-	 * @access	public
+	 * @throws 	Exception
 	 *
 	 * @return	void
 	 *
 	 * @since	1.1.0
 	 */
-	public function save($key = NULL, $urlVar = NULL)
+	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -362,15 +384,16 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
 
-        $app		= JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if (!$allowed)
 		{
-            $app->setUserState('com_bwpostman.edit.newsletter.data', null);
+			$app->setUserState('com_bwpostman.edit.newsletter.data', null);
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -392,7 +415,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Populate the row id from the session.
 		$data[$key] = $recordId;
 
-	// The save2copy task needs to be handled slightly differently.
+		// The save2copy task needs to be handled slightly differently.
 		if ($task == 'save2copy')
 		{
 			// Check-in the original row.
@@ -404,7 +427,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				$this->setRedirect(
 					JRoute::_(
 						'index.php?option=' . $this->option . '&view=' . $this->view_item
-						. $this->getRedirectToItemAppend($recordId, $urlVar), false
+						. $this->getRedirectToItemAppend($recordId, $urlVar),
+						false
 					)
 				);
 				return false;
@@ -455,7 +479,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -474,7 +499,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -493,15 +519,16 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 			return false;
 		}
 
 		$this->setMessage(
-		JText::_(
-			($lang->hasKey($this->text_prefix . ($recordId == 0 && $app->isSite() ? '_SUBMIT' : '') . '_SAVE_SUCCESS')
+			JText::_(
+				($lang->hasKey($this->text_prefix . ($recordId == 0 && $app->isSite() ? '_SUBMIT' : '') . '_SAVE_SUCCESS')
 				? $this->text_prefix
 				: 'JLIB_APPLICATION') . ($recordId == 0 && $app->isSite() ? '_SUBMIT' : '') . '_SAVE_SUCCESS'
 			)
@@ -521,7 +548,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$this->setRedirect(
 						JRoute::_(
 							'index.php?option=' . $this->option . '&view=' . $this->view_item
-							. $this->getRedirectToItemAppend($recordId, $urlVar), false
+							. $this->getRedirectToItemAppend($recordId, $urlVar),
+							false
 						)
 					);
 				break;
@@ -535,7 +563,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$this->setRedirect(
 						JRoute::_(
 							'index.php?option=' . $this->option . '&view=' . $this->view_item
-							. $this->getRedirectToItemAppend(null, $urlVar), false
+							. $this->getRedirectToItemAppend(null, $urlVar),
+							false
 						)
 					);
 				break;
@@ -550,7 +579,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$this->setRedirect(
 						JRoute::_(
 							'index.php?option=' . $this->option . '&view=' . $this->view_list
-							. $this->getRedirectToListAppend(), false
+							. $this->getRedirectToListAppend(),
+							false
 						)
 					);
 				break;
@@ -566,7 +596,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$this->setRedirect(
 						JRoute::_(
 							'index.php?option=' . $this->option . '&view=' . $this->view_item
-							. $this->getRedirectToItemAppend($recordId, $urlVar), false
+							. $this->getRedirectToItemAppend($recordId, $urlVar),
+							false
 						)
 					);
 				break;
@@ -586,7 +617,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$this->setRedirect(
 						JRoute::_(
 							'index.php?option=' . $this->option . '&view=' . $this->view_list
-							. $this->getRedirectToListAppend(), false
+							. $this->getRedirectToListAppend(),
+							false
 						)
 					);
 				break;
@@ -602,7 +634,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	/**
 	 * Method to set the newsletter contents while changing tabs
 	 *
-	 * @access	public
+	 * @throws 	Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function changeTab()
@@ -620,7 +653,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. '&layout=' . $tab . '&id=' . $recordId, false
+					. '&layout=' . $tab . '&id=' . $recordId,
+					false
 				)
 			);
 		}
@@ -634,7 +668,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	/**
 	 * Method to send out newsletter from newsletters list
 	 *
-	 * @access	public
+	 * @throws 	Exception
+	 *
+	 * @since
 	 */
 	public function sendOut()
 	{
@@ -645,7 +681,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$tab		= 'send';
 
 		if (count($cids) > 1)
+		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_WARNING_SENDING_ONLY_ONE_NL'), 'warning');
+		}
 
 		// set edit tab to send
 		$app->setUserState($this->context . '.tab' . $recordId, $tab);
@@ -654,7 +692,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$this->setRedirect(
 			JRoute::_(
 				'index.php?option=' . $this->option . '&view=' . $this->view_item
-				. '&layout=edit_' . $tab . '&id=' . $recordId, false
+				. '&layout=edit_' . $tab . '&id=' . $recordId,
+				false
 			)
 		);
 	}
@@ -662,16 +701,19 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	/**
 	 * Method to send a newsletter to the subscribers or the test-recipients
 	 *
-	 * @access	public
-	 *
 	 * @return boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
 	public function sendmail()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('newsletter');
@@ -697,12 +739,14 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			{
 				$app->enqueueMessage($error[$i]['err_msg'], 'error');
 			}
+
 			$this->setRedirect(
-					JRoute::_(
-							'index.php?option=' . $this->option . '&view=' . $this->view_item
-							. $this->getRedirectToItemAppend($recordId, 'id'), false
-							)
-				);
+				JRoute::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_item
+					. $this->getRedirectToItemAppend($recordId, 'id'),
+					false
+				)
+			);
 		}
 		// form data are valid
 		else
@@ -717,10 +761,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED'), 'error');
 
 				$this->setRedirect(
-						JRoute::_(
-							'index.php?option=' . $this->option . '&view=' . $this->view_list
-							. $this->getRedirectToListAppend(), false
-						)
+					JRoute::_(
+						'index.php?option=' . $this->option . '&view=' . $this->view_list
+						. $this->getRedirectToListAppend(),
+						false
+					)
 				);
 				return false;
 			}
@@ -737,75 +782,82 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					case "sendmail":
 					case "sendmailandpublish":
 							// Check if there are assigned mailinglists or joomla user groups and if they contain subscribers/users
-							if (!$model->checkRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id']))
+						if (!$model->checkRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id']))
+						{
+							$app->enqueueMessage($ret_msg, 'error');
+							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+							$link = JRoute::_(
+								'index.php?option=' . $this->option . '&view=' . $this->view_item
+								. $this->getRedirectToItemAppend($recordId, 'id'),
+								false
+							);
+							$this->setRedirect($link);
+						}
+						else
+						{
+							if (!$model->sendNewsletter($ret_msg, 'recipients', $recordId, $unconfirmed, $data['campaign_id']))
 							{
 								$app->enqueueMessage($ret_msg, 'error');
 								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 								$link = JRoute::_(
-											'index.php?option=' . $this->option . '&view=' . $this->view_item
-											. $this->getRedirectToItemAppend($recordId, 'id'), false
-										);
+									'index.php?option=' . $this->option . '&view=' . $this->view_item
+									. $this->getRedirectToItemAppend($recordId, 'id'),
+									false
+								);
 								$this->setRedirect($link);
 							}
 							else
 							{
-								if (!$model->sendNewsletter($ret_msg, 'recipients', $recordId, $unconfirmed, $data['campaign_id']))
-								{
-									$app->enqueueMessage($ret_msg, 'error');
-									$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-									$link = JRoute::_(
-											'index.php?option=' . $this->option . '&view=' . $this->view_item
-											. $this->getRedirectToItemAppend($recordId, 'id'), false
-									);
-									$this->setRedirect($link);
-								}
-								else
-								{
-									$startsending = 1;
-									$model->checkin($recordId);
-									// set start tab 'basic'
-									$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-								}
+								$startsending = 1;
+								$model->checkin($recordId);
+								// set start tab 'basic'
+								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 							}
+						}
 						break;
 					case "sendtestmail":
-							// Check if there are test-recipients
-							if (!$model->checkTestrecipients())
+						// Check if there are test-recipients
+						if (!$model->checkTestrecipients())
+						{
+							$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_TESTRECIPIENTS'), 'error');
+							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+							$link = JRoute::_(
+								'index.php?option=' . $this->option . '&view=' . $this->view_item
+								. $this->getRedirectToItemAppend($recordId, 'id'),
+								false
+							);
+							$this->setRedirect($link);
+						}
+						else
+						{
+							if (!$model->sendNewsletter($ret_msg, 'testrecipients', $recordId, $unconfirmed, $data['campaign_id']))
 							{
-								$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_TESTRECIPIENTS'), 'error');
+								$app->enqueueMessage($ret_msg, 'error');
 								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 								$link = JRoute::_(
-											'index.php?option=' . $this->option . '&view=' . $this->view_item
-											. $this->getRedirectToItemAppend($recordId, 'id'), false
-										);
+									'index.php?option=' . $this->option . '&view=' . $this->view_item
+									. $this->getRedirectToItemAppend($recordId, 'id'),
+									false
+								);
 								$this->setRedirect($link);
 							}
 							else
 							{
-								if (!$model->sendNewsletter($ret_msg, 'testrecipients', $recordId, $unconfirmed, $data['campaign_id']))
-								{
-									$app->enqueueMessage($ret_msg, 'error');
-									$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-									$link = JRoute::_(
-											'index.php?option=' . $this->option . '&view=' . $this->view_item
-											. $this->getRedirectToItemAppend($recordId, 'id'), false
-									);
-									$this->setRedirect($link);
-								}
-								else
-								{
-									$startsending = 1;
-									$model->checkin($recordId);
-									// set start tab 'basic'
-									$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-								}
+								$startsending = 1;
+								$model->checkin($recordId);
+								// set start tab 'basic'
+								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 							}
+						}
 						break;
 				}
 
 				if ($startsending){
 					if ($task == "sendmailandpublish")
+					{
 						$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', 1);
+					}
+
 					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
 					$app->setUserState('newsletter.id', null);
 					$app->setUserState('com_bwpostman.newsletters.publish_id', $recordId);
@@ -818,28 +870,33 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			{
 				$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 				$link = JRoute::_(
-							'index.php?option=' . $this->option . '&view=' . $this->view_item
-							. $this->getRedirectToItemAppend($recordId, 'id'), false
-						);
+					'index.php?option=' . $this->option . '&view=' . $this->view_item
+					. $this->getRedirectToItemAppend($recordId, 'id'),
+					false
+				);
 				$this->setRedirect($link);
 			}
 		}
+
 		return true;
 	}
 
 	/**
 	 * Method to copy a newsletter
 	 *
-	 * @access	public
-	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
 	public function copy()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$app	= JFactory::getApplication();
 
@@ -880,7 +937,10 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	public function archive()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Get the selected newsletter(s)
 		$res		= true;
@@ -902,7 +962,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -913,22 +974,22 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 		if ($res === false)
 		{
-			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout='.$layout, false);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
 			$this->setRedirect($link, $msg, 'error');
 		}
 
-		$n		= count ($cid);
+		$n		= count($cid);
 		$model	= $this->getModel('newsletter');
 
 		if(!$model->archive($cid, 1))
 		{ // Couldn't archive
 			if ($n > 1)
 			{
-				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_NLS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_NLS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 			}
 			else
 			{
-				echo "<script> alert ('".JText::_('COM_BWPOSTMAN_NL_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_NL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 			}
 		}
 		else
@@ -943,9 +1004,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				$msg = JText::_('COM_BWPOSTMAN_NL_ARCHIVED');
 			}
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout='.$layout, false);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
 			$this->setRedirect($link, $msg);
 		}
+
+		return true;
 	}
 
 	/**
@@ -967,7 +1030,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Setup redirect info.
 		if ($layout)
 		{
-			if ($layout == 'default') $layout	= 'edit_basic';
+			if ($layout == 'default')
+			{
+				$layout	= 'edit_basic';
+			}
+
 			$append .= '&layout=' . $layout;
 		}
 
@@ -975,6 +1042,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		{
 			$append .= '&' . $urlVar . '=' . $recordId;
 		}
+
 		return $append;
 	}
 }

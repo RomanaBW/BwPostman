@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
@@ -33,7 +33,7 @@ jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Subscriber Controller
@@ -52,9 +52,20 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	protected $text_prefix = 'COM_BWPOSTMAN_SUB';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 *
@@ -64,6 +75,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
 		parent::__construct($config);
 
 		// Register Extra tasks
@@ -82,12 +95,13 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('subscriber'))
+		if (!$this->permissions['view']['subscriber'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -118,7 +132,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		return BwPostmanHelper::canEdit('subscriber', $data);
+		return $this->permissions['subscriber']['create'];
 	}
 
 	/**
@@ -142,6 +156,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @param	string	$key		The name of the primary key of the URL variable.
 	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
 	 * (sometimes required to avoid router collisions).
+	 *
+	 * @throws Exception
 	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
 	 *
@@ -182,13 +198,15 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		{
 			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
 		}
+
 		if (!$allowed)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
@@ -204,7 +222,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -214,12 +233,12 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		{
 			// Check-out succeeded, push the new record id into the session.
 			$this->holdEditId($context, $recordId);
-//			$app->setUserState($context . '.data', null);
 
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, $urlVar), false
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
 				)
 			);
 
@@ -229,6 +248,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 	/**
 	 * Overwrite for method to add a new record for a subscriber
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -242,6 +263,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 	/**
 	 * Overwrite for method to add a new record for a test-recipient
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -257,9 +280,9 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * Method to archive one or more subscribers/test-recipients
 	 * --> subscribers-table: archive_flag = 1, set archive_date
 	 *
-	 * @access	public
-	 *
 	 * @return 	bool    true on success
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -268,7 +291,10 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'confirmed');
@@ -283,13 +309,14 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			$this->setRedirect(
 				JRoute::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(), false
+					. $this->getRedirectToListAppend(),
+					false
 				)
 			);
 			return false;
 		}
 
-		$n = count ($cid);
+		$n = count($cid);
 
 		$model = $this->getModel('subscriber');
 		if(!$model->archive($cid, 1)) { // Couldn't archive
@@ -297,22 +324,22 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			{
 				if ($n > 1)
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_TESTS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_TESTS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 				else
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_TEST_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_TEST_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 			}
 			else
 			{
 				if ($n > 1)
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_SUBS_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_SUBS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 				else
 				{
-					echo "<script> alert ('".JText::_('COM_BWPOSTMAN_SUB_ERROR_ARCHIVING', true)."'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_SUB_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 			}
 		}
@@ -344,6 +371,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			$link = JRoute::_('index.php?option=com_bwpostman&view=subscribers', false);
 			$this->setRedirect($link, $msg);
 		}
+
+		return true;
 	}
 
 	/**
@@ -353,13 +382,18 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 *
 	 * @return	boolean	True if successful, false otherwise and internal error is set.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.8
 	 *
 	 */
 	public function batch($model = null)
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$app		= JFactory::getApplication();
 		$jinput		= $app->input;
@@ -381,6 +415,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			{
 				$option = $this->option;
 			}
+
 			$contexts[$id] = $option . '.' . $this->context . '.' . $id;
 		}
 
@@ -402,6 +437,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 					$message	.= ' ' . JText::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_N_ITEMS', $result['done']);
 					$message	.= ' ' . JText::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
 				}
+
 				if ($result['task']	== 'unsubscribe')
 				{
 					if ($message == '') {
@@ -413,9 +449,11 @@ class BwPostmanControllerSubscriber extends JControllerForm
 						$sub_text	= JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE', $old_list);
 						$message	.= '<br />' . JText::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
 					}
+
 					$message	.= ' ' . JText::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_N_ITEMS', $result['done']);
 					$message	.= ' ' . JText::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
 				}
+
 				$this->setMessage($message);
 			}
 		}

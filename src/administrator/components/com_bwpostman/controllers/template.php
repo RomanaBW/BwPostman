@@ -53,6 +53,15 @@ class BwPostmanControllerTemplate extends JControllerForm
 	protected $text_prefix = 'COM_BWPOSTMAN_TPL';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
@@ -65,6 +74,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
 		parent::__construct($config);
 	}
 
@@ -80,7 +91,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('template'))
+		if (!$this->permissions['view']['template'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
@@ -142,7 +153,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		return BwPostmanHelper::canAdd('template');
+		return $this->permissions['subscriber']['create'];
 	}
 
 	/**

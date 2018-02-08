@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controlleradmin');
@@ -33,7 +33,7 @@ jimport('joomla.application.component.controlleradmin');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Templates Controller
@@ -53,9 +53,20 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	protected $text_prefix = 'COM_BWPOSTMAN_TPLS';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 *
@@ -63,13 +74,14 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 */
 	public function __construct($config = array())
 	{
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
 		parent::__construct($config);
 
 		// Register Extra tasks
 		$this->registerTask('addhtml', 'addhtml');
 		$this->registerTask('addtext', 'addtext');
 		$this->registerTask('apply', 'save');
-
 	}
 
 	/**
@@ -98,11 +110,13 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 *
 	 * @return  BwPostmanControllerTemplates		This object to support chaining.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.1.0
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('template'))
+		if (!$this->permissions['view']['template'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
@@ -130,6 +144,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 *
 	 * @return	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.1.0
 	 */
 	public function publish()
@@ -138,7 +154,10 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Get the selected template(s)
 		$cid = $jinput->get('cid', array(0), 'post');
@@ -156,8 +175,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		// count selected standard templates
 		$query->select($db->quoteName('standard'));
 		$query->from($db->quoteName('#__bwpostman_templates'));
-		$query->where($db->quoteName('id')." IN (".implode(",", $cid).")");
-		$query->where($db->quoteName('standard')." = ".$db->quote(1));
+		$query->where($db->quoteName('id') . " IN (" . implode(",", $cid) . ")");
+		$query->where($db->quoteName('standard') . " = " . $db->quote(1));
 
 		$db->setQuery($query);
 
@@ -169,19 +188,22 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		{
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		$count_std = $db->getNumRows();
 
 		// unpublish only, if no standard template is selected
 		if ($count_std > 0 && $this->getTask() == 'unpublish')
 		{
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
-			$link = JRoute::_('index.php?option=com_bwpostman&view=templates',false);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
 		}
 		else
 		{
 			parent::publish();
 		}
+
+		return true;
 	}
 
 	/**
@@ -189,12 +211,17 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 *
 	 * @access	public
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.1.0
 	 */
 	public function uploadtpl()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Access check.
 		if (!BwPostmanHelper::canAdd('template'))
@@ -221,5 +248,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates&layout=installtpl', false);
 			$this->setRedirect($link);
 		}
+
+		return true;
 	}
 }

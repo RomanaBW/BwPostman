@@ -25,12 +25,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
 
-require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/models/templates.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates.php');
 
 /**
  * BwPostman Templates Controller
@@ -47,6 +47,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 *
 	 * @access	public
 	 *
+	 * @throws BwException
+	 * @throws Exception
+	 *
 	 * @since       1.1.0
 	 */
 	public function installtpl()
@@ -62,7 +65,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$jinput	= $app->input;
 
 		$step       = $jinput->get('step', 1);
-        $alertClass = 'success';
+		$alertClass = 'success';
 		$ready      = "0";
 		$msg        = null;
 
@@ -87,8 +90,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						$alertClass = 'error';
-                     	$ready = "1";
+						$ready = "1";
 					}
+
 					$step = "2";
 					break;
 
@@ -101,8 +105,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$alertClass = 'error';
-                    	$ready = "1";
+						$ready = "1";
 					}
+
 					$step = "3";
 					break;
 
@@ -115,8 +120,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						$alertClass = 'error';
-                    	$ready = "1";
+						$ready = "1";
 					}
+
 					$step = "4";
 					break;
 
@@ -126,6 +132,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					{
 						$alertClass = 'warning';
 					}
+
 					$step = "5";
 					break;
 
@@ -135,8 +142,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					{
 						$alertClass = 'warning';
 					}
+
 					$app->setUserState('com_bwpostman.templates.uploadfile', '');
-                    $ready = "1";
+					$ready = "1";
 					$step = "6";
 					echo '<h3 class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_OK') . '</h3>';
 					break;

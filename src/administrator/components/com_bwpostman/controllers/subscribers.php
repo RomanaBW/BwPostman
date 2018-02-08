@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controlleradmin');
@@ -33,7 +33,7 @@ jimport('joomla.application.component.controlleradmin');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Subscribers Controller
@@ -53,9 +53,20 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	protected $text_prefix = 'COM_BWPOSTMAN_SUBS';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 *
@@ -63,6 +74,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 */
 	public function __construct($config = array())
 	{
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
 		parent::__construct($config);
 
 		// Register Extra tasks
@@ -83,12 +96,13 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('subscriber'))
+		if (!$this->permissions['view']['subscriber'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -116,9 +130,9 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * --> If the validation failed, add INVALID_ to the name
 	 * --> If the validation was successful, set status = 1 and set confirmation_date and confirmed_by
 	 *
-	 * @access	public
-	 *
 	 * @return	mixed   load Validation Result layout
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -127,7 +141,10 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$cid = $jinput->get('cid', array(), 'post');
 		ArrayHelper::toInteger($cid);
@@ -148,20 +165,18 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$session = JFactory::getSession();
 		$session->set('validation_res', $validation_res);
 
-		$url = JUri::base().'index.php?option=com_bwpostman&view=subscriber&layout=validation';
-		echo '<script type="text/javascript">'."\n"
-		.'<!--'."\n"
-		.'window.location = "'.$url.'"'."\n"
-		.'//-->'."\n"
-		.'</script>'."\n";
+		$url = JUri::base() . 'index.php?option=com_bwpostman&view=subscriber&layout=validation';
+		echo '<script type="text/javascript">' . "\n"
+		. '<!--' . "\n"
+		. 'window.location = "' . $url . '"' . "\n"
+		. '//-->' . "\n"
+		. '</script>' . "\n";
 		exit();
 	}
 
 	/**
 	 * Method to finish the validation
 	 * --> all data which we store into the session will be cleared
-	 *
-	 * @param	public
 	 *
 	 * @return 	void
 	 *
@@ -170,7 +185,10 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	public function finishValidation()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$session		= JFactory::getSession();
 		$validation_res	= $session->get('validation_res');
@@ -179,6 +197,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		{
 			$session->clear('validation_res');
 		}
+
 		$msg = JText::_('COM_BWPOSTMAN_SUB_VALIDATION_FINISHED');
 		$link = JRoute::_('index.php?option=com_bwpostman&controller=subscribers&layout=unconfirmed', false);
 
@@ -192,6 +211,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 *
 	 * @return boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function importSubscribers()
@@ -200,7 +221,10 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$user	= JFactory::getUser();
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'confirmed');
@@ -208,11 +232,11 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		// Access check.
 		if (!$user->authorise('bwpm.create', 'com_bwpostman') && !$user->authorise('bwpm.subscriber.create', 'com_bwpostman.subscriber'))
 		{
-//			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_NO_PERMISSION'), 'warning');
-			$link = JRoute::_('index.php?option=com_bwpostman&view=subscribers&layout='.$layout, false);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=subscribers&layout=' . $layout, false);
 			$this->setRedirect($link);
 			return false;
 		}
+
 		$jinput->set('hidemainmenu', 1);
 		$jinput->set('view', 'subscriber');
 		$jinput->set('layout', 'import');
@@ -228,6 +252,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 *
 	 * @return	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function prepareImport()
@@ -239,7 +265,10 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$caption    = false;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('importfile');
@@ -252,7 +281,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 		// Retrieve the delimiter and the caption field from the upload form
 		$post	= $jinput->getArray(
-					array(
+			array(
 						'fileformat' => 'string',
 						'delimiter' => 'string',
 						'enclosure' => 'string',
@@ -265,7 +294,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 						'task' => 'string',
 						'controller' => 'string',
 						'option' => 'string'
-				));
+			)
+		);
 
 		$fileformat	= $post['fileformat'];
 
@@ -295,7 +325,15 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		// We also need the data for the next import-step
 		if ($fileformat == 'csv')
 		{
-			$import_general_data = array('fileformat' => $fileformat, 'delimiter' => $delimiter, 'enclosure' => $enclosure, 'caption' => $caption, 'filename' => $filename, 'dest' => $dest, 'ext' => $ext);
+			$import_general_data = array(
+				'fileformat' => $fileformat,
+				'delimiter' => $delimiter,
+				'enclosure' => $enclosure,
+				'caption' => $caption,
+				'filename' => $filename,
+				'dest' => $dest,
+				'ext' => $ext
+			);
 		}
 		else
 		{
@@ -315,12 +353,15 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 			switch ($file['error'])
 			{
 				case '1':
-				case '2': $msg .= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_SIZE');
-				break;
-				case '3': $msg .= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_PART');
-				break;
-				case '4': $msg .= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_NO_FILE');
-				break;
+				case '2':
+					$msg .= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_SIZE');
+					break;
+				case '3':
+					$msg .= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_PART');
+					break;
+				case '4':
+					$msg .= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_NO_FILE');
+					break;
 			}
 
 			$link = JRoute::_('index.php?option=com_bwpostman&view=subscriber&layout=import&task=importSubscribers', false);
@@ -338,7 +379,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 			}
 			// Check if the extension is identical to the selected fileformat
 			// --> if not, redirect to import.php
-			elseif (((strtolower(JFile::getExt($filename)) == 'csv') && ($fileformat != 'csv')) || ((strtolower(JFile::getExt($filename)) == 'xml') && ($fileformat != 'xml')))
+			elseif (((strtolower(JFile::getExt($filename)) == 'csv') && ($fileformat != 'csv'))
+				|| ((strtolower(JFile::getExt($filename)) == 'xml') && ($fileformat != 'xml')))
 			{
 				$msg = JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILE_FORMAT');
 				$link = JRoute::_('index.php?option=com_bwpostman&view=subscriber&layout=import&task=importSubscribers', false);
@@ -364,22 +406,30 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 						if ($ext == 'csv')
 						{ // CSV file
 							$delimiter = stripcslashes($delimiter);
-							if (($data = fgetcsv ($fh, 1000, $delimiter)) !== FALSE)
+							if (($data = fgetcsv($fh, 1000, $delimiter)) !== false)
 							{
 								$import_fields	= array();
 
 								if ($caption)
 								{
-									for ($i=0; $i < count($data); $i++)
+									for ($i = 0; $i < count($data); $i++)
 									{
-										$import_fields[] 	= JHtml::_('select.option', "column_$i", JText::_('COM_BWPOSTMAN_SUB_IMPORT_COLUMN')."$i ({$data[$i]})");
+										$import_fields[] 	= JHtml::_(
+											'select.option',
+											"column_$i",
+											JText::_('COM_BWPOSTMAN_SUB_IMPORT_COLUMN') . "$i ({$data[$i]})"
+										);
 									}
 								}
 								else
 								{
-									for ($i=0; $i < count($data); $i++)
+									for ($i = 0; $i < count($data); $i++)
 									{
-										$import_fields[] 	= JHtml::_('select.option', 'column_'.$i, JText::_('COM_BWPOSTMAN_SUB_IMPORT_COLUMN').$i);
+										$import_fields[] 	= JHtml::_(
+											'select.option',
+											'column_' . $i,
+											JText::_('COM_BWPOSTMAN_SUB_IMPORT_COLUMN') . $i
+										);
 									}
 								}
 
@@ -408,29 +458,36 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 							$xml_fields_keys	= array_keys(get_object_vars($parser->subscriber));
 							$import_fields		= array();
 
-							for ($i=0; $i < count($xml_fields_keys); $i++)
+							for ($i = 0; $i < count($xml_fields_keys); $i++)
 							{
-								$import_fields[] 	= JHtml::_('select.option', "$xml_fields_keys[$i]", JText::_('COM_BWPOSTMAN_SUB_IMPORT_FIELD')."$i ({$xml_fields_keys[$i]})");
+								$import_fields[] 	= JHtml::_(
+									'select.option',
+									"$xml_fields_keys[$i]",
+									JText::_('COM_BWPOSTMAN_SUB_IMPORT_FIELD') . "$i ({$xml_fields_keys[$i]})"
+								);
 							}
+
 							$session->set('import_fields', $import_fields);
 						}
 
 						fclose($fh);
 					}
+
 					$link = JRoute::_('index.php?option=com_bwpostman&view=subscriber&layout=import1', false);
 					$this->setRedirect($link);
 				}
 			}
 		}
+
 		return true;
 	}
 
 	/**
 	 * Method to import subscriber data
 	 *
-	 * @access	public
-	 *
 	 * @return	void
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -439,18 +496,22 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$post	= $jinput->getArray(
-					array(
-						'db_fields' => 'array',
-						'emailformat' => 'string',
-						'import_fields' => 'array',
-						'jform' => 'array',
-						'task' => 'string',
-						'controller' => 'string',
-						'option' => 'string'
-					));
+			array(
+				'db_fields' => 'array',
+				'emailformat' => 'string',
+				'import_fields' => 'array',
+				'jform' => 'array',
+				'task' => 'string',
+				'controller' => 'string',
+				'option' => 'string'
+			)
+		);
 
 		$model			= $this->getModel('subscriber');
 		$import_result	= array();
@@ -498,6 +559,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		{
 			$import_result['import_warn'] = $import_warn;
 		}
+
 		//Get session object and store the result-array into the session
 		$session = JFactory::getSession();
 		$session->set('import_result', $import_result);
@@ -510,8 +572,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * Method to finish or cancel the import process
 	 * --> all session data which we needed for the import will be cleared
 	 *
-	 * @param	public
-	 *
 	 * @return 	void
 	 *
 	 * @since       0.9.1
@@ -519,7 +579,10 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	public function finishImport()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$session	= JFactory::getSession();
 		$finished	= false;
@@ -534,6 +597,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 			{
 				JFile::delete($dest);
 			}
+
 			$session->clear('import_general_data');
 		}
 
@@ -558,6 +622,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		{
 			$msg = JText::_('COM_BWPOSTMAN_SUB_IMPORT_FINISHED');
 		}
+
 		$link = JRoute::_('index.php?option=com_bwpostman&controller=subscribers', false);
 
 		$this->setRedirect($link, $msg);
@@ -566,9 +631,9 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	/**
 	 * Method to call the layout for the export process
 	 *
-	 * @access	public
-	 *
 	 * @return boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -578,7 +643,10 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$user	= JFactory::getUser();
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'confirmed');
@@ -586,8 +654,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		// Access check.
 		if (!$user->authorise('bwpm.edit', 'com_bwpostman') && !$user->authorise('bwpm.subscriber.edit', 'com_bwpostman.subscriber'))
 		{
-//			$msg = $app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_EXPORT_NO_PERMISSION'), 'warning');
-			$link = JRoute::_('index.php?option=com_bwpostman&controller=subscribers&layout='.$layout, false);
+			$link = JRoute::_('index.php?option=com_bwpostman&controller=subscribers&layout=' . $layout, false);
 			$this->setRedirect($link);
 			return false;
 		}
@@ -604,7 +671,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * Method to call the view for the export process
 	 * --> we will take the raw-view which calls the export-function in the model
 	 *
-	 * @access	public
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -613,25 +680,29 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$document	= JFactory::getDocument();
 		$app		= JFactory::getApplication();
 		$post		= $jinput->getArray(
-						array(
-							'fileformat' => 'string',
-							'delimiter' => 'string',
-							'enclosure' => 'string',
-							'status1' => 'string',
-							'status0' => 'string',
-							'status9' => 'string',
-							'archive0' => 'string',
-							'archive1' => 'string',
-							'export_fields' => 'array',
-							'task' => 'string',
-							'controller' => 'string',
-							'option' => 'string'
-						));
+			array(
+				'fileformat' => 'string',
+				'delimiter' => 'string',
+				'enclosure' => 'string',
+				'status1' => 'string',
+				'status0' => 'string',
+				'status9' => 'string',
+				'archive0' => 'string',
+				'archive1' => 'string',
+				'export_fields' => 'array',
+				'task' => 'string',
+				'controller' => 'string',
+				'option' => 'string'
+			)
+		);
 
 		$app->setUserState('com_bwpostman.subscribers.export.data', $post);
 		$jinput->set('view', 'subscriber');
@@ -653,6 +724,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 *
 	 * @return 	mixed True on success | error object
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	protected function _sendMail(&$subscriber, $itemid = null)
@@ -662,19 +735,34 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 		$name 		= $subscriber->name;
 		$firstname 	= $subscriber->firstname;
-		if ($firstname != '') $name = $firstname . ' ' . $name;
+		if ($firstname != '')
+		{
+			$name = $firstname . ' ' . $name;
+		}
+
 		$sitename	= $app->get('sitename');
 		$siteURL	= JUri::root();
 
 		$subject 	= JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
 		if (is_null($itemid))
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG', $name, $siteURL, $siteURL."index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");
+			$message = JText::sprintf(
+				'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
+				$name,
+				$siteURL,
+				$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
+			);
 		}
 		else
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG', $name, $siteURL, $siteURL."index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}");
+			$message = JText::sprintf(
+				'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
+				$name,
+				$siteURL,
+				$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
+			);
 		}
+
 		$subject = html_entity_decode($subject, ENT_QUOTES);
 		$message = html_entity_decode($message, ENT_QUOTES);
 
@@ -690,7 +778,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$reply[1]	= $params->get('default_from_name');
 
 		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply[0],$reply[1]);
+		$mailer->addReplyTo($reply[0], $reply[1]);
 		$mailer->addRecipient($subscriber->email);
 		$mailer->setSubject($subject);
 		$mailer->setBody($message);
@@ -703,7 +791,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	/**
 	 * Method to set the tab state while changing tabs, used for building the appropriate toolbar
 	 *
-	 * @access	public
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */

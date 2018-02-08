@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
@@ -33,7 +33,7 @@ jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Mailinglist Controller
@@ -52,9 +52,20 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	protected $text_prefix = 'COM_BWPOSTMAN_ML';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param 	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 
@@ -62,6 +73,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
 		parent::__construct($config);
 	}
 
@@ -77,12 +90,13 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		if (!BwPostmanHelper::canView('mailinglist'))
+		if (!$this->permissions['view']['mailinglist'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -98,7 +112,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		return BwPostmanHelper::canAdd('mailinglist');
+		return $this->permissions['mailinglist']['create'];
 	}
 
 	/**
@@ -230,9 +244,9 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 * Method to archive one or more mailinglists
 	 * --> mailinglists-table: archive_flag = 1, set archive_date
 	 *
-	 * @access	public
-	 *
 	 * @return 	void
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -241,7 +255,10 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Get the selected mailinglist(s)
 		$cid = $jinput->get('cid', array(0), 'post');

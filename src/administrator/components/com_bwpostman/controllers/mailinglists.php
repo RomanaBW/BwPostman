@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Mailinglists Controller
@@ -51,9 +51,20 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	protected $text_prefix = 'COM_BWPOSTMAN_MLS';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Constructor
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws  Exception
 	 *
 	 * @since	1.0.1
 	 *
@@ -66,6 +77,8 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 	}
 
 	/**
@@ -94,11 +107,13 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 *
 	 * @return  BwPostmanControllerMailinglists		This object to support chaining.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		if (!BwPostmanHelper::canView('mailinglist'))
+		if (!$this->permissions['view']['mailinglist'])
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
@@ -110,13 +125,13 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		// Show the layout depending on the task
 		switch($this->getTask())
 		{
-			case 'add'     :
+			case 'add':
 				$jinput->set('hidemainmenu', 1);
 				$jinput->set('layout', 'form');
 				$jinput->set('view', 'mailinglist');
 				break;
 
-			case 'edit'    :
+			case 'edit':
 				$jinput->set('hidemainmenu', 1);
 				$jinput->set('layout', 'form');
 				$jinput->set('view', 'mailinglist');
@@ -127,6 +142,8 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 				$jinput->set('view', 'mailinglists');
 				break;
 		}
+
 		parent::display();
+		return $this;
 	}
 }

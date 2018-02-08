@@ -39,20 +39,41 @@ defined ('_JEXEC') or die ('Restricted access');
 <fieldset class="adminform">
 	<table border="0" class="admintable">
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_TITLE'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_TITLE');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->ml->title;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_DESC'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_DESC');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->ml->description;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_ACCESS'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_ACCESS');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->ml->access_level; ?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('PUBLISHED'); echo ':'; ?></strong></td>
-			<td><?php
+			<td align="right">
+				<strong>
+					<?php echo JText::_('PUBLISHED');
+					echo ':'; ?>
+				</strong>
+			</td>
+			<td>
+				<?php
 				switch ($this->ml->published) {
 					case "0":
 						echo JText::_('COM_BWPOSTMAN_NO');

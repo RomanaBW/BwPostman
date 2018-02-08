@@ -33,27 +33,34 @@ defined ('_JEXEC') or die ('Restricted access');
 	/* <![CDATA[ */
 		function check() // Checks if one or more campaigns are selected
 		{
-      var htmlText="";
-      htmlText += '<form name="popupForm" action="#" method="get">';
-      htmlText += '	<fieldset>';
-      htmlText += '		<table width="100%">';
-      htmlText += '			<tr>';
-			if(window.parent.document.adminForm.boxchecked.value==0){
-        htmlText += '				<th height="30" align="center"><?php echo JText::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';
-			} else {
-        htmlText += '				<th height="30" align="center"><?php echo JText::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?></th>';
-        htmlText += '			</tr>';
-        htmlText += '			<tr>';
-        htmlText += '				<td height="30" align="center">';
-        htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'1\');"	value="<?php echo JText::_("COM_BWPOSTMAN_YES");?>" />';
-        htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'0\');"	value="<?php echo JText::_("COM_BWPOSTMAN_NO");?>" />';
-        htmlText += '				</td>';
-      }
-      htmlText += '			</tr>';
-      htmlText += '		</table>';
-      htmlText += '	</fieldset>';
-      htmlText += '</form>';
-      document.write(htmlText);
+			var htmlText="";
+			htmlText += '<form name="popupForm" action="#" method="get">';
+			htmlText += '	<fieldset>';
+			htmlText += '		<table width="100%">';
+			htmlText += '			<tr>';
+			if(window.parent.document.adminForm.boxchecked.value == 0)
+			{
+				htmlText += '				<th height="30" align="center"><?php echo JText::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';
+			}
+			else
+			{
+				htmlText += '				<th height="30" align="center">
+					<?php echo JText::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?>
+					</th>';
+				htmlText += '			</tr>';
+				htmlText += '			<tr>';
+				htmlText += '				<td height="30" align="center">';
+				htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'1\');"' +
+														'value="<?php echo JText::_("COM_BWPOSTMAN_YES");?>" />';
+				htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'0\');"' +
+					'                               value="<?php echo JText::_("COM_BWPOSTMAN_NO");?>" />';
+				htmlText += '				</td>';
+			}
+			htmlText += '			</tr>';
+			htmlText += '		</table>';
+			htmlText += '	</fieldset>';
+			htmlText += '</form>';
+			document.write(htmlText);
 		}
 		check();
 	/* ]]> */

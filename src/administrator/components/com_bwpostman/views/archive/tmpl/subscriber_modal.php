@@ -38,39 +38,84 @@ defined ('_JEXEC') or die ('Restricted access');
 <fieldset class="adminform">
 	<table border="0" class="admintable">
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NAME'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_NAME');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->name;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_EMAIL'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_EMAIL');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->email;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_EMAILFORMAT'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_EMAILFORMAT');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->emailformat;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_SUB_REGISTRATION_DATE'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_SUB_REGISTRATION_DATE');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->registration_date;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_SUB_REGISTERED_BY'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_SUB_REGISTERED_BY');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->registered_by;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMATION_DATE'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMATION_DATE');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->confirmation_date;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMED_BY'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMED_BY');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->confirmed_by;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->archive_date;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->sub->archived_by;?></td>
 		</tr>
 	</table>
@@ -84,18 +129,21 @@ defined ('_JEXEC') or die ('Restricted access');
 		<tr>
 			<td>
 				<?php
-					$lists = $this->sub->lists;
+				$lists = $this->sub->lists;
 
-					if (!empty($lists)) {
-						echo "<ul>";
-						foreach ($lists AS $list) {
-							echo "<li><strong>{$list->title}:</strong> {$list->description}</li>";
-						}
-						echo "</ul>";
+				if (!empty($lists))
+				{
+					echo "<ul>";
+					foreach ($lists AS $list) {
+						echo "<li><strong>{$list->title}:</strong> {$list->description}</li>";
 					}
-					else {
-						echo JText::_('COM_BWPOSTMAN_ARC_SUB_NO_ASSIGNED_ML');
-					}
+
+					echo "</ul>";
+				}
+				else
+					{
+					echo JText::_('COM_BWPOSTMAN_ARC_SUB_NO_ASSIGNED_ML');
+				}
 				?>
 			</td>
 		</tr>

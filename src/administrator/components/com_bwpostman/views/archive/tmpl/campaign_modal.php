@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 ?>
 
@@ -39,11 +39,21 @@ defined ('_JEXEC') or die ('Restricted access');
 <fieldset class="adminform">
 	<table class="admintable">
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_TITLE'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_TITLE');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->cam->title;?></td>
 		</tr>
 		<tr>
-			<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_DESC'); echo ':'; ?></strong></td>
+			<td align="right">
+				<strong>
+					<?php echo JText::_('COM_BWPOSTMAN_DESC');
+					echo ':'; ?>
+				</strong>
+			</td>
 			<td><?php echo $this->cam->description;?></td>
 		</tr>
 	</table>
@@ -58,26 +68,25 @@ defined ('_JEXEC') or die ('Restricted access');
 			<td><?php
 			$newsletters = $this->cam->newsletters;
 
-			if (!empty($newsletters)) {
-
+			if (!empty($newsletters))
+			{
 				echo "<ul>";
 
 				foreach ($newsletters AS $newsletter) {
 					if ($newsletter->archive_flag == 0) {
 						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id})</li>";
 					}
-					else {
-						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id}, ". JText::_('COM_BWPOSTMAN_ARC_NL').")</li>";
+					else
+					{
+						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id}, " . JText::_('COM_BWPOSTMAN_ARC_NL') . ")</li>";
 					}
 				}
 
 				echo "</ul>";
-
 			}
 			else {
 				echo JText::_('COM_BWPOSTMAN_ARC_CAM_NO_ASSIGNED_NL');
 			}
-
 			?></td>
 		</tr>
 	</table>

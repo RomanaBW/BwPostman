@@ -220,17 +220,11 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<?php
 											if (count($this->items) > 0) {
 												foreach ($this->items as $i => $item) :
-													$canCheckin	= $user->authorise('core.manage',		'com_checkin')
-														|| $item->checked_out == $userId || $item->checked_out == 0;
-													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.' . $item->id);
-													$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.newsletter.' . $item->id)
-														&& $item->created_by == $userId;
-													$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.newsletter.' . $item->id)
-														&& $canCheckin;
 													?>
 													<tr class="row<?php echo $i % 2; ?>">
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-														<td><?php
+														<td>
+															<?php
 															echo $item->subject;
 															if ($item->mailing_date != '0000-00-00 00:00:00')
 															{ ?>&nbsp;&nbsp;
@@ -238,9 +232,11 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 																	<span class="editlinktip hasTip"
 																			title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
 																			<?php echo $this->escape($item->subject); ?>">
-																		<a class="modal" href="<?php echo JRoute::_(
+																		<a class="modal" href="
+																		<?php echo JRoute::_(
 																			'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id
-																		);?>"
+																		);
+																		?>"
 																				rel="{handler: 'iframe', size: {x: 650, y: 450}}">
 																			<?php echo JText::_('COM_BWPOSTMAN_HTML_NL');?>
 																		</a>&nbsp;
@@ -248,7 +244,8 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 																	<span class="editlinktip hasTip" title="
 																	<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
 																	<?php echo $this->escape($item->subject); ?>">
-																		<a class="modal" href="<?php echo JRoute::_(
+																		<a class="modal" href="
+																		<?php echo JRoute::_(
 																			'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id='. $item->id
 																		);?>"
 																				rel="{handler: 'iframe', size: {x: 650, y: 450}}">
@@ -260,7 +257,8 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 														</td>
 														<td align="center"><?php echo $item->description; ?></td>
 														<td align="center">
-															<?php if ($item->mailing_date != '0000-00-00 00:00:00')
+															<?php
+															if ($item->mailing_date != '0000-00-00 00:00:00')
 															{
 																echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5'));
 															}

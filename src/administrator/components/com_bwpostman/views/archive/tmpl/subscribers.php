@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the modal behavior for the subscriber preview
 JHtml::_('bootstrap.tooltip');
@@ -63,7 +63,11 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 		<?php endif; ?>
 			<?php
 				// Search tools bar
-				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+				echo JLayoutHelper::render(
+					'default',
+					array('view' => $this, 'tab' => $tab),
+					$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+				);
 			?>
 
 			<div class="row-fluid">
@@ -76,35 +80,50 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['newsletter']) {
 									?>
 										<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
-											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
+											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['subscriber']) {
 									?>
 										<li class="open">
-											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
+											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();"
+													class="buttonAsLink_open">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['campaign']) {
 									?>
 										<li class="closed">
-											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
+											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['mailinglist']) {
 									?>
 										<li class="closed">
-											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
+											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['template']) {
 									?>
 										<li class="closed">
-											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
+											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
+											</button>
 										</li>
 										<?php
 									}
@@ -115,15 +134,69 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 									<table class="adminlist">
 										<thead>
 											<tr>
-												<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-												<th width="200"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?></th>
-												<th width="150"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?></th>
-												<th><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?></th>
-												<th width="100"><?php echo JHtml::_('searchtools.sort',  'JSTATUS', 'a.status', $listDirn, $listOrder); ?></th>
-												<th width="100"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?></th>
-												<th width="100"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?></th>
-												<th width="120"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
-												<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+												<th width="30" nowrap="nowrap">
+													<input type="checkbox" name="checkall-toggle" value=""
+															title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+												</th>
+												<th width="200">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_SUB_NAME',
+														'a.name',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="150">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_SUB_FIRSTNAME',
+														'a.firstname',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th>
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_EMAIL',
+														'a.email',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="100">
+													<?php echo JHtml::_('searchtools.sort',  'JSTATUS', 'a.status', $listDirn, $listOrder); ?></th>
+												<th width="100">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_EMAILFORMAT',
+														'a.emailformat',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="100">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_SUB_ML_NUM',
+														'mailinglists',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="120">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
+														'a.archive_date',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="30" nowrap="nowrap">
+													<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+												</th>
 											</tr>
 										</thead>
 										<tfoot>
@@ -135,22 +208,30 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 											<?php
 											if (count($this->items) > 0) {
 												foreach ($this->items as $i => $item) :
-													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.newsletter.'.$item->id);
-													$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.newsletter.'.$item->id) && $canCheckin;
 													?>
 													<tr class="row<?php echo $i % 2; ?>">
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 														<td>
-															<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_SUB');?>::<?php echo $this->escape($item->name); ?>">
-																<a class="modal" href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=archive&format=raw&layout=subscriber_modal&sub_id='. $item->id); ?>" rel="{handler: 'iframe', size: {x: 600, y: 400}}"> <?php
-																if ($item->name) {
-																	echo $item->name;
-																}
-																else {
-																	echo JText::_('COM_BWPOSTMAN_SUB_NONAME');
-																}
-																?> </a>&nbsp;
+															<span class="editlinktip hasTip"
+																	title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_SUB');?>::
+																	<?php echo $this->escape($item->name); ?>">
+																<a class="modal" href="
+																<?php
+																echo JRoute::_(
+																	'index.php?option=com_bwpostman&view=archive&format=raw&layout=subscriber_modal&sub_id='. $item->id
+																); ?>"
+																		rel="{handler: 'iframe', size: {x: 600, y: 400}}">
+																	<?php
+																	if ($item->name)
+																	{
+																		echo $item->name;
+																	}
+																	else
+																	{
+																		echo JText::_('COM_BWPOSTMAN_SUB_NONAME');
+																	}
+																	?>
+																</a>&nbsp;
 															</span>
 														</td>
 														<td><?php echo $item->firstname; ?></td>
@@ -167,7 +248,9 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 														</td>
 														<td align="center"><?php echo $item->emailformat; ?></td>
 														<td align="center"><?php echo $item->mailinglists; ?></td>
-														<td align="center"><?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+														<td align="center">
+															<?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?>
+														</td>
 														<td align="center"><?php echo $item->id; ?></td>
 													</tr>
 												<?php endforeach;

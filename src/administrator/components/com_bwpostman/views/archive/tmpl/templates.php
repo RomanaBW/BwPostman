@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('behavior.tooltip');
@@ -63,7 +63,11 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 		<?php endif; ?>
 			<?php
 				// Search tools bar
-				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+				echo JLayoutHelper::render(
+					'default',
+					array('view' => $this, 'tab' => $tab),
+					$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+				);
 			?>
 
 			<div class="row-fluid">
@@ -76,35 +80,49 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['newsletter']) {
 									?>
 										<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
-											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?></button>
+											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['subscriber']) {
 									?>
 										<li class="closed">
-											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
+											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['campaign']) {
 									?>
 										<li class="closed">
-											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?></button>
+											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['mailinglist']) {
 									?>
 										<li class="closed">
-											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?></button>
+											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?>
+											</button>
 										</li>
 										<?php
 									}
+
 									if ($this->permissions['view']['archive'] && $this->permissions['view']['template']) {
 									?>
 										<li class="open">
-											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?></button>
+											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink_open">
+												<?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
+											</button>
 										</li>
 										<?php
 									}
@@ -115,14 +133,54 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 									<table class="adminlist">
 										<thead>
 											<tr>
-												<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-												<th width="250" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-												<th width="150" nowrap="nowrap"><?php echo JText::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?></th>
-												<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-												<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?></th>
-												<th width="100"><?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
-												<th width="120"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ARC_ARCHIVE_DATE', 'a.archive_date', $listDirn, $listOrder); ?></th>
-												<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+												<th width="30" nowrap="nowrap">
+													<input type="checkbox" name="checkall-toggle" value="" title="
+													<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+												</th>
+												<th width="250" nowrap="nowrap">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_TPL_TITLE',
+														'a.title',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="150" nowrap="nowrap">
+													<?php echo JText::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?></th>
+												<th nowrap="nowrap">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_TPL_DESCRIPTION',
+														'a.description',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="100" nowrap="nowrap">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_TPL_FORMAT',
+														'a.tpl_id',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="100">
+													<?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
+												</th>
+												<th width="120">
+													<?php echo JHtml::_(
+														'searchtools.sort',
+														'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
+														'a.archive_date',
+														$listDirn,
+														$listOrder
+													); ?>
+												</th>
+												<th width="30" nowrap="nowrap">
+													<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+												</th>
 											</tr>
 										</thead>
 										<tfoot>
@@ -134,19 +192,32 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 											<?php
 											if (count($this->items) > 0) {
 												foreach ($this->items as $i => $item) :
-													$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-													$canEdit	= $user->authorise('core.edit',			'com_bwpostman.templates.'.$item->id);
-													$canEditOwn	= $user->authorise('core.edit.own',		'com_bwpostman.templates.'.$item->id) && $item->created_by == $userId;
-													$canChange	= $user->authorise('core.edit.state',	'com_bwpostman.templates.'.$item->id) && $canCheckin;
 													?>
 													<tr class="row<?php echo $i % 2; ?>">
 														<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 														<td><?php echo $item->title; ?></td>
-														<td><?php if ($item->thumbnail) : ?><img src="<?php echo JUri::root( true ) . '/' . $item->thumbnail; ?>" style="width: 140px;" /><?php endif; ?></td>
+														<td><?php if ($item->thumbnail) : ?>
+																<img src="
+																<?php echo JUri::root(true) . '/' . $item->thumbnail; ?>"
+																		style="width: 140px;" />
+															<?php endif; ?>
+														</td>
 														<td><?php echo $item->description; ?></td>
 														<td align="center"><?php echo $item->tpl_id; ?></td>
-														<td align="center"><?php if ($item->published) { echo JText::_('COM_BWPOSTMAN_YES'); } else { echo JText::_('COM_BWPOSTMAN_NO');} ?></td>
-														<td align="center"><?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+														<td align="center">
+															<?php
+															if ($item->published)
+															{
+																echo JText::_('COM_BWPOSTMAN_YES');
+															}
+															else
+															{
+																echo JText::_('COM_BWPOSTMAN_NO');
+															} ?>
+														</td>
+														<td align="center">
+															<?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?>
+														</td>
 														<td align="center"><?php echo $item->id; ?></td>
 													</tr>
 												<?php endforeach;

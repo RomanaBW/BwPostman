@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -75,9 +75,11 @@ class BwPostmanViewArchive extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public function display ($tpl = Null)
+	public function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
 		$jinput	= $app->input;
@@ -109,5 +111,6 @@ class BwPostmanViewArchive extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+		return $this;
 	}
 }

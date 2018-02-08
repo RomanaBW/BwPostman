@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Maintenance Controller
@@ -106,6 +106,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -146,9 +147,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Method to call the view for the save tables process
 	 * --> we will take the raw-view which calls the saveTables-function in the model
 	 *
-	 * @access	public
-	 *
 	 * @return boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
@@ -178,9 +179,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Method to call the layout for the check tables process
 	 *
-	 * @access	public
-	 *
 	 * @return boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
@@ -203,7 +204,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Method to call the layout for the restore tables process
 	 *
-	 * @access	public
+	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
@@ -226,9 +227,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Method to call the layout for the restore tables process
 	 *
-	 * @access	public
-	 *
 	 * @return boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
@@ -301,8 +302,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
 				$this->setRedirect($link, $msg, 'error');
 
-			// Check if the extension is identical to the selected file format
-			// --> if not, redirect to import.php
+				// Check if the extension is identical to the selected file format
+				// --> if not, redirect to import.php
 			}
 			else
 			{ // Everything is fine
@@ -321,6 +322,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				}
 			}
 		}
+
 		$this->setRedirect($link);
 		return true;
 	}

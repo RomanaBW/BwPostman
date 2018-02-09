@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -49,8 +49,10 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
 	 * @since       1.0.1
+	 * @throws Exception
+	 *
 	 */
-	public function display ($tpl = Null)
+	public function display($tpl = null)
 	{
 		$app 	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
@@ -95,7 +97,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 			if ($user_browser == "msie")
 			{
-				$appWeb->setHeader('Cache-Control','must-revalidate, post-check=0, pre-check=0', true);
+				$appWeb->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true);
 				$appWeb->setHeader('Pragma', 'public', true);
 			}
 
@@ -131,5 +133,6 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			echo '</div>';
 
 		}
+		return $this;
 	}
 }

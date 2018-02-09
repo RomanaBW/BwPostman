@@ -25,14 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper classes
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman maintenance View
@@ -109,6 +109,15 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	public $sidebar;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * property to hold total value
 	 *
 	 * @var object  $total
@@ -120,11 +129,11 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	/**
 	 * Execute and display a template script.
 	 *
-	 * @access	public
-	 *
 	 * @param	string $tpl Template
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
@@ -134,7 +143,9 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		JHtml::_('bootstrap.framework');
 		JHtml::_('jquery.framework');
 
-		if (!BwPostmanHelper::canView('maintenance'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['maintenance'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -155,7 +166,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
+		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
 
 		// Set toolbar items for the page
 		if ($layout == 'restoreTables')
@@ -212,14 +223,15 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$style	= '.layout-updateCheckSave .navbar {display:none;}'
 					. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
 					. 'body {padding-top:0;}';
-			$document->addStyleDeclaration( $style );
+			$document->addStyleDeclaration($style);
 			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
 		}
 
-		if (BwPostmanHelper::canAdmin())
-        {
-            JToolbarHelper::preferences('com_bwpostman', '500', '900');
-        }
+		if ($this->permissions['com']['admin'])
+		{
+			JToolbarHelper::preferences('com_bwpostman', '500', '900');
+		}
+
 		JToolbarHelper::spacer();
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
@@ -246,8 +258,13 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			default:
 		}
 
-		if (empty($layout)) $this->sidebar = JHtmlSidebar::render();
+		if (empty($layout))
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
 
 		parent::display($tpl);
+
+		return $this;
 	}
 }

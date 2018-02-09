@@ -25,14 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 //JHtml::_('behavior.framework',true);
 JHtml::_('behavior.modal');
-JHtml::_('behavior.framework',true);
+JHtml::_('behavior.framework', true);
 $uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHtml::_('script','system/modal'.$uncompressed.'.js', true, true);
-JHtml::_('stylesheet','media/system/css/modal.css');
+JHtml::_('script', 'system/modal' . $uncompressed . '.js', true, true);
+JHtml::_('stylesheet', 'media/system/css/modal.css');
 
 $model		= $this->getModel();
 
@@ -42,12 +42,12 @@ $release	= $session->get('release', null, 'bwpostman');
 
 $lang = JFactory::getLanguage();
 //Load first english files
-$lang->load('com_bwpostman.sys',JPATH_ADMINISTRATOR,'en_GB',true);
-$lang->load('com_bwpostman',JPATH_ADMINISTRATOR,'en_GB',true);
+$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
+$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 
 //load specific language
-$lang->load('com_bwpostman.sys',JPATH_ADMINISTRATOR,null,true);
-$lang->load('com_bwpostman',JPATH_ADMINISTRATOR,null,true);
+$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, null, true);
+$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
 $show_update	= false;
 $show_right		= false;

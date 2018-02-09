@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
@@ -74,7 +74,10 @@ JHtml::_('bootstrap.tooltip');
 					<tr>
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?>"><?php echo $image; ?></span>
+							<span class="editlinktip hasTip hasTooltip"
+									title="<?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?>">
+								<?php echo $image; ?>
+							</span>
 						</td>
 						<td>
 							<input type="file" name="restorefile" id="restorefile" />
@@ -83,8 +86,9 @@ JHtml::_('bootstrap.tooltip');
 					<tr>
 						<td width="250" align="center" class="key">
 							<input type="button" class="btn btn-success" name="submitbutton"
-								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>
-							onclick="Joomla.submitbutton('maintenance.doRestore'); document.getElementById('loading').style.display = 'block';" value="<?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_BUTTON'); ?>">
+									onclick="Joomla.submitbutton('maintenance.doRestore');
+										document.getElementById('loading').style.display = 'block';"
+									value="<?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_BUTTON'); ?>">
 						</td>
 					</tr>
 				</table>

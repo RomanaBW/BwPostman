@@ -25,30 +25,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.modal');
-JHtml::_('behavior.framework',true);
+JHtml::_('behavior.framework', true);
 $uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHtml::_('script','system/modal'.$uncompressed.'.js', true, true);
-JHtml::_('stylesheet','media/system/css/modal.css');
+JHtml::_('script', 'system/modal' . $uncompressed . '.js', true, true);
+JHtml::_('stylesheet', 'media/system/css/modal.css');
 
 $model		= $this->getModel();
-
-
-
-
-/*
-switch ($this->check_res['type']) {
-	case 'error':	$class	= "bw_tablecheck_error bw_maintenance_result err";
-		break;
-	case 'warn':	$class	= "bw_tablecheck_warn bw_maintenance_result";
-		break;
-	case 'message':	$class	= "bw_tablecheck_ok bw_maintenance_result ok";
-		break;
-}
-*/
 ?>
+
 <div id="checkResult" class="row-fluid">
 	<div class="span6 inner well">
 		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>

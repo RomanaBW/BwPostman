@@ -25,11 +25,11 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -101,11 +101,22 @@ class BwPostmanViewMailinglist extends JViewLegacy
 
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -116,7 +127,9 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-		if (!BwPostmanHelper::canView('mailinglist'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['mailinglist'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -143,6 +156,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 
 	/**
 	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -171,7 +186,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$isNew = ($this->item->id < 1);
 
 		// Set toolbar title and items
-        $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
 		if ($isNew && BwPostmanHelper::canAdd('mailinglist'))
@@ -179,7 +194,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 			JToolbarHelper::save('mailinglist.save');
 			JToolbarHelper::apply('mailinglist.apply');
 			JToolbarHelper::cancel('mailinglist.cancel');
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 		}
 		else
 		{
@@ -193,9 +208,10 @@ class BwPostmanViewMailinglist extends JViewLegacy
 					JToolbarHelper::apply('mailinglist.apply');
 				}
 			}
+
 			// Rename the cancel button for existing items
 			JToolbarHelper::cancel('mailinglist.cancel', 'JTOOLBAR_CLOSE');
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 		}
 
 		$backlink   = '';
@@ -203,16 +219,18 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		{
 			$backlink 	= $_SERVER['HTTP_REFERER'];
 		}
+
 		$siteURL 	= $uri->base();
 
 		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL.'index.php?option=com_bwpostman')
+		if ($backlink == $siteURL . 'index.php?option=com_bwpostman')
 		{
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 			JToolbarHelper::back();
 		}
+
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
 		$link   = BwPostmanHTMLHelper::getForumLink();

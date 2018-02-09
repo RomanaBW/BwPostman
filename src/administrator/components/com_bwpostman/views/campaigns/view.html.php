@@ -202,7 +202,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			JToolbarHelper::addNew('campaign.add');
 		}
 
-		if (BwPostmanHelper::canEdit('campaign'))
+		if ($this->permissions['campaign']['edit'] || $this->permissions['campaign']['edit.own'])
 		{
 			JToolbarHelper::editList('campaign.edit');
 		}
@@ -211,7 +211,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		JToolbarHelper::spacer();
 
 		// Special archive button because we need a confirm dialog with 3 options
-		if (BwPostmanHelper::canArchive('campaign', array(), true))
+		if ($this->permissions['campaign']['archive'])
 		{
 			$bar = JToolbar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";
@@ -228,7 +228,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			JToolbarHelper::spacer();
 		}
 
-		if (BwPostmanHelper::canEdit('campaign', 0))
+		if ($this->permissions['com']['admin'])
 		{
 			JToolbarHelper::checkin('campaigns.checkin');
 			JToolbarHelper::divider();

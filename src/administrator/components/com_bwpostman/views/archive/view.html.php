@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 
 /**
@@ -135,7 +135,9 @@ class BwPostmanViewArchive extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('archive'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['archive'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_ARC')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -147,7 +149,6 @@ class BwPostmanViewArchive extends JViewLegacy
 		$this->filterForm		= $this->get('FilterForm');
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->state			= $this->get('State');
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
 		$request_result = $this->checkForAllowedTabs();
 
@@ -196,23 +197,23 @@ class BwPostmanViewArchive extends JViewLegacy
 		switch ($layout)
 		{ // Which tab are we in?
 			case "newsletters":
-				if (BwPostmanHelper::canRestore('newsletter'))
+				if ($this->permissions['newsletter']['restore'])
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('newsletter'))
+				if ($this->permissions['newsletter']['delete'])
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
 				}
 				break;
 			case "subscribers":
-				if (BwPostmanHelper::canRestore('subscriber'))
+				if ($this->permissions['subscriber']['restore'])
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('subscriber'))
+				if ($this->permissions['subscriber']['delete'])
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
 				}
@@ -221,37 +222,37 @@ class BwPostmanViewArchive extends JViewLegacy
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
 				$bar = JToolbar::getInstance('toolbar');
 				$alt_archive = "unarchive";
-				if (BwPostmanHelper::canRestore('campaign'))
+				if ($this->permissions['campaign']['restore'])
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive';
 					$bar->appendButton('Popup', 'unarchive', $alt_archive, $link, 500, 130);
 				}
 
 				$alt_delete = "delete";
-				if (BwPostmanHelper::canDelete('campaign'))
+				if ($this->permissions['campaign']['delete'])
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete';
 					$bar->appendButton('Popup', 'delete', $alt_delete, $link, 500, 150);
 				}
 				break;
 			case "mailinglists":
-				if (BwPostmanHelper::canRestore('mailinglist'))
+				if ($this->permissions['mailinglist']['restore'])
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('mailinglist'))
+				if ($this->permissions['mailinglist']['delete'])
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
 				}
 				break;
 			case "templates":
-				if (BwPostmanHelper::canRestore('template'))
+				if ($this->permissions['template']['restore'])
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if (BwPostmanHelper::canDelete('template'))
+				if ($this->permissions['template']['delete'])
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
 				}
@@ -344,7 +345,7 @@ class BwPostmanViewArchive extends JViewLegacy
 		$allLayouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'template');
 		foreach ($allLayouts as $item)
 		{
-			$allowedView	= BwPostmanHelper::canView($item);
+			$allowedView	= $this->permissions['view'][$item];
 			if ($allowedView)
 			{
 				$allowedLayouts[] = $item . 's';

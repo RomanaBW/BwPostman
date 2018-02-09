@@ -132,7 +132,9 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('mailinglist'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['mailinglist'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -145,7 +147,6 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
 		$this->addToolbar();
 
@@ -155,6 +156,8 @@ class BwPostmanViewMailinglists extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+
+		return $this;
 	}
 
 

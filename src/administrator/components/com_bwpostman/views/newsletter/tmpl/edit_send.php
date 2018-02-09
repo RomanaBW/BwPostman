@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -34,8 +34,16 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $image = '<i class="icon-info"></i>';
 
-$image_testrecipients	= JHtml::_('image', 'administrator/components/com_bwpostman/assets/images/send.png', JText::_('COM_BWPOSTMAN_NL_SEND_TO_TESTRECIPIENTS'));
-$image_newsletter		= JHtml::_('image', 'administrator/components/com_bwpostman/assets/images/send_f2.png', JText::_('COM_BWPOSTMAN_NL_SENDMAIL'));
+$image_testrecipients	= JHtml::_(
+	'image',
+	'administrator/components/com_bwpostman/assets/images/send.png',
+	JText::_('COM_BWPOSTMAN_NL_SEND_TO_TESTRECIPIENTS')
+);
+$image_newsletter		= JHtml::_(
+	'image',
+	'administrator/components/com_bwpostman/assets/images/send_f2.png',
+	JText::_('COM_BWPOSTMAN_NL_SENDMAIL')
+);
 ?>
 
 <script type="text/javascript">
@@ -119,7 +127,8 @@ Joomla.submitbutton = function (pressbutton)
 </script>
 
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm">
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
@@ -142,7 +151,7 @@ Joomla.submitbutton = function (pressbutton)
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
-				<?php if (BwPostmanHelper::canSend((int)$this->item->id)) { ?>
+				<?php if (BwPostmanHelper::canSend((int) $this->item->id)) { ?>
 					<li class="open">
 						<button onclick="return changeTab('edit_send');" class="buttonAsLink_open">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
@@ -174,16 +183,20 @@ Joomla.submitbutton = function (pressbutton)
 							<td>&nbsp;</td>
 							<td>
 								<label class="checkbox"></label>
-								<input type="checkbox" id="send_to_unconfirmed" name="send_to_unconfirmed" />&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_TO_UNCONFIRMED');?>
+								<input type="checkbox" id="send_to_unconfirmed" name="send_to_unconfirmed" />&nbsp;
+								<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_TO_UNCONFIRMED');?>
 							</td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
 							<td>
-								<input class="input-mini inputbox" name="mails_per_pageload" id="mails_per_pageload" title="mails_per_pageload" size="4" maxlength="10"
-									value="<?php echo $this->params->get('default_mails_per_pageload');?>" />
+								<input class="input-mini inputbox" name="mails_per_pageload" id="mails_per_pageload" title="mails_per_pageload"
+										size="4" maxlength="10" value="<?php echo $this->params->get('default_mails_per_pageload');?>" />
 								<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD'); ?>&nbsp;
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD_NOTE'); ?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
 								<br /><br />
 							</td>
 						</tr>
@@ -194,7 +207,8 @@ Joomla.submitbutton = function (pressbutton)
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmail');"
 										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_BUTTON'); ?>" />
 									<input class="btn" type="button" onclick="Joomla.submitbutton('newsletter.sendmailandpublish');"
-										value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_AND_PUBLISH_BUTTON'); ?>" title="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_AND_PUBLISH_BUTTON'); ?>" />
+											value="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_AND_PUBLISH_BUTTON'); ?>"
+											title="<?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL_AND_PUBLISH_BUTTON'); ?>" />
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -229,14 +243,45 @@ Joomla.submitbutton = function (pressbutton)
 		</div>
 
 		<?php
-			foreach($this->form->getFieldset('basic_1_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('basic_2_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('text_version_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('templates_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('selected_content_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('available_content_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('publish_hidden') as $field) echo $field->input;
+		foreach($this->form->getFieldset('basic_1_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('basic_2_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('html_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('text_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('templates_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('selected_content_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('available_content_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('publish_hidden') as $field)
+		{
+			echo $field->input;
+		}
 		?>
 
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

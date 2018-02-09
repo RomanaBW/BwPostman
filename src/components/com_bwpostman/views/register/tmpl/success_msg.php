@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Success message - will be shown if
 // 1. the newsletter account has been successfully activated --> show a link to the edit mode

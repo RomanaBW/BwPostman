@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 ?>
 
@@ -48,24 +48,44 @@ defined ('_JEXEC') or die ('Restricted access');
 		</table>
 
 		<fieldset>
-		    <table border="0">
-			    <tr>
-					<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME'); echo ':'; ?></strong></td>
-			       <td><?php echo $this->item->from_name;?></td>
+			<table border="0">
+				<tr>
+					<td align="right">
+						<strong><?php
+							echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME');
+							echo ':'; ?>
+						</strong>
+					</td>
+					<td><?php echo $this->item->from_name;?></td>
 				</tr>
-			    <tr>
-					<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL'); echo ':'; ?></strong></td>
-			       <td><?php echo $this->item->from_email;?></td>
+				<tr>
+					<td align="right">
+						<strong><?php
+							echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
+							echo ':'; ?>
+						</strong>
+					</td>
+					<td><?php echo $this->item->from_email;?></td>
 				</tr>
-			    <tr>
-					<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL'); echo ':'; ?></strong></td>
-			       <td><?php echo $this->item->reply_email;?></td>
+				<tr>
+					<td align="right">
+						<strong><?php
+							echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
+							echo ':'; ?>
+						</strong>
+					</td>
+					<td><?php echo $this->item->reply_email;?></td>
 				</tr>
-			    <tr>
-					<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_SUBJECT'); echo ':'; ?></strong></td>
-			       <td><?php echo $this->item->subject;?></td>
+				<tr>
+					<td align="right">
+						<strong><?php
+							echo JText::_('COM_BWPOSTMAN_NL_SUBJECT');
+							echo ':'; ?>
+						</strong>
+					</td>
+					<td><?php echo $this->item->subject;?></td>
 				</tr>
-		    </table>
+			</table>
 		</fieldset>
 
 		<fieldset>

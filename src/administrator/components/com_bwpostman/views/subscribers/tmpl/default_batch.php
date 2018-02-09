@@ -25,7 +25,7 @@
  */
 
 // no direct access
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Get some states
 $filter_id	= $this->escape($this->state->get('filter.mailinglist'));

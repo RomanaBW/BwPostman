@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 use Joomla\Registry\Registry as Registry;

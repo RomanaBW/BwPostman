@@ -152,14 +152,16 @@ Joomla.submitbutton = function (pressbutton)
 window.onload = function()
 {
 	var substitute =  document.getElementsByName("jform[substitute_links]");
-	for (var i=0; i < substitute.length; i++) {
+	for (var i=0; i < substitute.length; i++)
+	{
 		substitute[i].onclick = function()
 		{
 			document.getElementById("add_content").value = "1";
 			document.getElementById("template_id_old").value = "";
 		};
 	}
-}
+};
+
 <?php endif; ?>
 /* ]]> */
 </script>
@@ -290,10 +292,12 @@ window.onload = function()
 								<div class="well-white well-small">
 									<fieldset class="adminform">
 										<legend>
-											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+											<span class="editlinktip hasTip hasTooltip"
+													title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
 												<?php echo $image; ?>
 											</span>
-											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+											<span class="editlinktip hasTip hasTooltip"
+													title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
 												<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
 											</span>
 										</legend>
@@ -305,10 +309,12 @@ window.onload = function()
 													<div class="well well-small">
 														<fieldset class="adminform">
 															<legend>
-																<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">
+																<span class="editlinktip hasTip hasTooltip"
+																		title="<?php echo JText::_($field->description); ?>">
 																	<?php echo $image; ?>
 																</span>
-																<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">
+																<span class="editlinktip hasTip hasTooltip"
+																		title="<?php echo JText::_($field->description); ?>">
 																	<?php echo $field->label; ?>
 																</span>
 															</legend>
@@ -342,7 +348,8 @@ window.onload = function()
 								<div class="well-white well-small">
 									<fieldset class="adminform usergroups">
 										<legend>
-											<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+											<span class="editlinktip hasTip hasTooltip"
+													title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
 												<?php echo $image; ?>
 											</span>
 											<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
@@ -374,7 +381,7 @@ window.onload = function()
 											<?php if ($field->hidden): ?>
 												<li><?php echo $field->input; ?></li>
 											<?php else: ?>
-												<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+												<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 													<?php echo $field->input; ?></li>
 											<?php endif; ?>
 										<?php endforeach; ?>

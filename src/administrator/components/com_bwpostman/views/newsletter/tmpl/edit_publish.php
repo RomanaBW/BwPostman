@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -73,7 +73,7 @@ Joomla.submitbutton = function (pressbutton)
 								<?php if ($field->hidden): ?>
 									<?php echo $field->input; ?>
 								<?php else: ?>
-									<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+									<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 										<div class="controls"><?php echo $field->input; ?></div></li>
 								<?php endif; ?>
 							<?php endforeach; ?>
@@ -86,7 +86,7 @@ Joomla.submitbutton = function (pressbutton)
 								<?php if ($field->hidden): ?>
 									<li><?php echo $field->input; ?></li>
 								<?php else: ?>
-									<li <?php echo 'class="' . $field->name  . '"'; ?>><?php echo $field->label; ?>
+									<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 										<div class="controls"><?php echo $field->input; ?></div></li>
 								<?php endif; ?>
 							<?php endforeach; ?>
@@ -99,12 +99,35 @@ Joomla.submitbutton = function (pressbutton)
 		</div>
 
 		<?php
-			foreach($this->form->getFieldset('basic_1_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('selected_content_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('available_content_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('text_version_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('templates_hidden') as $field) echo $field->input;
+		foreach($this->form->getFieldset('basic_1_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('selected_content_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('available_content_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('html_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('text_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('templates_hidden') as $field)
+		{
+			echo $field->input;
+		}
 		?>
 
 		<div class="clr clearfix"></div>

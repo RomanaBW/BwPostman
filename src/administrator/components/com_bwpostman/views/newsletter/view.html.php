@@ -135,6 +135,15 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	public $template;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * @var boolean
 	 *
 	 * @since       2.0.0
@@ -158,7 +167,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$dispatcher = JEventDispatcher::getInstance();
 		$app		= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('newsletter'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['newsletter'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_NLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -259,7 +270,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		else
 		{
 			// For new records, check the create permission.
-			if ($isNew && BwPostmanHelper::canAdd('newsletter'))
+			if ($isNew && $this->permissions['newsletter']['create'])
 			{
 				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 				JToolbarHelper::save('newsletter.save');

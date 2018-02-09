@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-$image = JHtml::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image = JHtml::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
 ?>
 
 <script type="text/javascript">
@@ -83,7 +83,8 @@ Joomla.submitbutton = function (pressbutton)
 </script>
 
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm">
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
@@ -106,7 +107,7 @@ Joomla.submitbutton = function (pressbutton)
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
-				<?php if (BwPostmanHelper::canSend((int)$this->item->id)) { ?>
+				<?php if (BwPostmanHelper::canSend((int) $this->item->id)) { ?>
 					<li class="closed">
 						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
@@ -123,14 +124,29 @@ Joomla.submitbutton = function (pressbutton)
 				<div class="well well-small">
 					<table class="admintable">
 						<tr>
-							<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME'); echo ':'; ?></strong></td>
+							<td align="right">
+								<strong><?php
+									echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME');
+									echo ':'; ?>
+								</strong>
+							</td>
 							<td><?php echo $this->item->from_name;?></td></tr>
 						<tr>
-							<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL'); echo ':'; ?></strong></td>
+							<td align="right">
+								<strong><?php
+									echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
+									echo ':'; ?>
+								</strong>
+							</td>
 							<td><?php echo $this->item->from_email;?></td>
 						</tr>
 						<tr>
-							<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL'); echo ':'; ?></strong></td>
+							<td align="right">
+								<strong><?php
+									echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
+									echo ':'; ?>
+								</strong>
+							</td>
 							<td><?php echo $this->item->reply_email;?></td>
 						</tr>
 						<tr>
@@ -138,7 +154,12 @@ Joomla.submitbutton = function (pressbutton)
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td align="right"><strong><?php echo JText::_('COM_BWPOSTMAN_NL_SUBJECT'); echo ':'; ?></strong></td>
+							<td align="right">
+								<strong><?php
+									echo JText::_('COM_BWPOSTMAN_NL_SUBJECT');
+									echo ':'; ?>
+								</strong>
+							</td>
 							<td><?php echo $this->item->subject;?></td>
 						</tr>
 					</table>
@@ -148,7 +169,9 @@ Joomla.submitbutton = function (pressbutton)
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeHtml"
-							src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_html_preview&amp;format=raw&amp;task=previewHTML&amp;nl_id=<?php echo $this->item->id; ?>"
+							src="index.php?option=com_bwpostman&amp;view=newsletter&amp;
+							layout=newsletter_html_preview&amp;format=raw&amp;task=previewHTML&amp;nl_id=<?php
+							echo $this->item->id; ?>"
 						height="500" width="100%" style="border: 1px solid #999999;"></iframe>
 					</div>
 				</div>
@@ -158,7 +181,9 @@ Joomla.submitbutton = function (pressbutton)
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeText"
-						src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=newsletter_text_preview&amp;format=raw&amp;task=previewText&amp;nl_id=<?php echo $this->item->id; ?>"
+						src="index.php?option=com_bwpostman&amp;view=newsletter&amp;
+						layout=newsletter_text_preview&amp;format=raw&amp;task=previewText&amp;nl_id=<?php
+						echo $this->item->id; ?>"
 						height="400" width="100%" style="border: 1px solid #999999;"></iframe>
 					</div>
 				</div>
@@ -166,14 +191,45 @@ Joomla.submitbutton = function (pressbutton)
 		</div>
 
 		<?php
-			foreach($this->form->getFieldset('basic_1_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('basic_2_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('text_version_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('templates_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('selected_content_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('available_content_hidden') as $field) echo $field->input;
-			foreach($this->form->getFieldset('publish_hidden') as $field) echo $field->input;
+		foreach($this->form->getFieldset('basic_1_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('basic_2_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('html_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('text_version_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('templates_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('selected_content_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('available_content_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
+		foreach($this->form->getFieldset('publish_hidden') as $field)
+		{
+			echo $field->input;
+		}
 		?>
 
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Form to order the editlink
 // --> the editlink is needed to modify the subscriber account if the subscriber is not logged into the website

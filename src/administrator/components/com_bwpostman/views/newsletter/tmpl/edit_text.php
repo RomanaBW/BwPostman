@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-$image = JHtml::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image = JHtml::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
 ?>
 
 <script type="text/javascript">
@@ -83,7 +83,8 @@ Joomla.submitbutton = function (pressbutton)
 </script>
 
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm">
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
@@ -106,7 +107,7 @@ Joomla.submitbutton = function (pressbutton)
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
-				<?php if (BwPostmanHelper::canSend((int)$this->item->id)) { ?>
+				<?php if (BwPostmanHelper::canSend((int) $this->item->id)) { ?>
 					<li class="closed">
 						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
@@ -122,7 +123,7 @@ Joomla.submitbutton = function (pressbutton)
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_TEXT'); ?></legend>
 				<div class="well well-small">
 					<div class="row-fluid clearfix">
-						<?php echo '<div class="span12">'.JText::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE').'</div>'; ?>
+						<?php echo '<div class="span12">' . JText::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE') . '</div>'; ?>
 					</div>
 					<ul class="unstyled">
 						<?php
@@ -136,12 +137,13 @@ Joomla.submitbutton = function (pressbutton)
 							{
 								$show = array("jform[text_version]", "jform[intro_text_headline]", "jform[intro_text_text]");
 							}
+
 							if (in_array($field->name, $show)) :
 								if ($field->hidden) :
 									echo $field->input;
 								else :
 									if ($field->name == 'jform[text_version]') { ?>
-										<li <?php echo 'class="' . $field->name  . '"'; ?>>
+										<li <?php echo 'class="' . $field->name . '"'; ?>>
 											<div class="row-fluid clearfix">
 												<?php echo '<div class="span12">'; ?>
 												<?php echo $field->label; ?>
@@ -150,19 +152,27 @@ Joomla.submitbutton = function (pressbutton)
 											<div class="row-fluid clearfix"><?php echo $field->input; ?></div>
 											<div class="row-fluid clearfix" style="margin-top: 10px;">
 												<?php
-													$link = JUri::base() . '#';
-													if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
-														$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
-														$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
-													}
-													else {
+												$link = JUri::base() . '#';
+												if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+												{
+													$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+													$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+												}
+												else
+												{
 													$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
-													}
-													foreach ($linktexts as $key => $linktext) {
-														echo "                    <a class=\"btn btn-small pull-left\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</a>";
-														echo '                     <p>&nbsp;'.JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'.$key).'</p>';
-													}
-													if(JPluginHelper::isEnabled('bwpostman', 'personalize')) echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+												}
+
+												foreach ($linktexts as $key => $linktext) {
+													echo "                    <a class=\"btn btn-small pull-left\"
+													 onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</a>";
+													echo '                     <p>&nbsp;' . JText::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
+												}
+
+												if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+												{
+													echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+												}
 												?>
 											</div>
 										</li>
@@ -184,13 +194,40 @@ Joomla.submitbutton = function (pressbutton)
 				<div class="clr clearfix"></div>
 
 				<?php
-					foreach($this->form->getFieldset('basic_1_hidden') as $field) echo $field->input;
-					foreach($this->form->getFieldset('basic_2_hidden') as $field) echo $field->input;
-					foreach($this->form->getFieldset('html_version_hidden') as $field) echo $field->input;
-					foreach($this->form->getFieldset('templates_hidden') as $field) echo $field->input;
-					foreach($this->form->getFieldset('selected_content_hidden') as $field) echo $field->input;
-					foreach($this->form->getFieldset('available_content_hidden') as $field) echo $field->input;
-					foreach($this->form->getFieldset('publish_hidden') as $field) echo $field->input;
+				foreach($this->form->getFieldset('basic_1_hidden') as $field)
+				{
+					echo $field->input;
+				}
+
+				foreach($this->form->getFieldset('basic_2_hidden') as $field)
+				{
+					echo $field->input;
+				}
+
+				foreach($this->form->getFieldset('html_version_hidden') as $field)
+				{
+					echo $field->input;
+				}
+
+				foreach($this->form->getFieldset('templates_hidden') as $field)
+				{
+					echo $field->input;
+				}
+
+				foreach($this->form->getFieldset('selected_content_hidden') as $field)
+				{
+					echo $field->input;
+				}
+
+				foreach($this->form->getFieldset('available_content_hidden') as $field)
+				{
+					echo $field->input;
+				}
+
+				foreach($this->form->getFieldset('publish_hidden') as $field)
+				{
+					echo $field->input;
+				}
 				?>
 
 			</fieldset>

@@ -58,23 +58,31 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <div id="bwp_view_lists">
 	<?php
-		if ($this->queueEntries)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
-		}
+	if ($this->queueEntries)
+	{
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
-		<?php if (property_exists($this, 'sidebar')) : ?>
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-inline">
+		<?php
+		if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
 				<?php echo $this->sidebar; ?>
 			</div>
 			<div id="j-main-container" class="span10">
-			<?php else :  ?>
+			<?php
+		else : ?>
 				<div id="j-main-container">
-			<?php endif; ?>
+			<?php
+		endif; ?>
 			<?php
 				// Search tools bar
-				echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'queue'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+				echo JLayoutHelper::render(
+					'default',
+					array('view' => $this, 'tab' => 'queue'),
+					$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+				);
 			?>
 
 			<div class="form-horizontal">
@@ -89,7 +97,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ((count($this->count_queue) > 0) && BwPostmanHelper::canSend(0)) { ?>
+					<?php if ((count($this->count_queue) > 0) && $this->permissions['newsletter']['send']) { ?>
 						<li class="open">
 							<button onclick="return changeTab('queue');" class="buttonAsLink_open">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
@@ -104,37 +112,49 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<table id="main-table" class="adminlist table table-striped">
 					<thead>
 						<tr>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
-							<th width="250" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
+							</th>
+							<th width="250" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
+							</th>
+							<th width="30" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
+							</th>
+							<th width="30" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php
-						if (count($this->items))
-						{
-							foreach ($this->items as $i => $item) :
-								?>
-								<tr class="row<?php echo $i % 2; ?>">
-									<td><?php echo $this->escape($item->subject); ?></td>
-									<td><?php echo $this->escape($item->description); ?></td>
-									<td><?php echo $item->authors; ?></td>
-									<td><?php echo $item->recipient; ?></td>
-									<td><?php echo $item->trial; ?></td>
-									<td align="center"><?php echo $item->id; ?></td>
-								</tr><?php
-							endforeach;
-						}
-						else
-						{
-						// if no data ?>
-							<tr class="row1">
-								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
+					if (count($this->items))
+					{
+						foreach ($this->items as $i => $item) :
+							?>
+							<tr class="row<?php echo $i % 2; ?>">
+								<td><?php echo $this->escape($item->subject); ?></td>
+								<td><?php echo $this->escape($item->description); ?></td>
+								<td><?php echo $item->authors; ?></td>
+								<td><?php echo $item->recipient; ?></td>
+								<td><?php echo $item->trial; ?></td>
+								<td align="center"><?php echo $item->id; ?></td>
 							</tr><?php
-						}
+						endforeach;
+					}
+					else
+					{
+						// if no data ?>
+						<tr class="row1">
+							<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
+						</tr><?php
+					}
 					?>
 					</tbody>
 				</table>

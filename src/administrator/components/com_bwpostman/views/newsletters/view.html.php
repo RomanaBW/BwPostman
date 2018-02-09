@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman Newsletters View
@@ -63,16 +63,16 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 */
 	protected $pagination;
 
-    /**
-     * property to hold pagination object for queue
-     *
-     * @var object  $pagination
-     *
-     * @since       0.9.1
-     */
-    protected $queuePagination;
+	/**
+	 * property to hold pagination object for queue
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
+	 */
+	protected $queuePagination;
 
-    /**
+	/**
 	 * property to hold state
 	 *
 	 * @var array|object  $state
@@ -136,6 +136,15 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	public $context;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
@@ -159,7 +168,9 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('newsletter'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['newsletter'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_NLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -183,7 +194,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->filterForm		= $this->get('FilterForm');
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->pagination		= $this->get('Pagination');
-        $this->queuePagination	= $this->get('QueuePagination');
+		$this->queuePagination	= $this->get('QueuePagination');
 		$this->total 			= $this->get('total');
 		$this->count_queue		= $this->get('CountQueue');
 		$this->context			= 'com_bwpostman.newsletters';
@@ -199,6 +210,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+		return $this;
 	}
 
 	/**
@@ -216,36 +228,40 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_NLS'), 'envelope');
+		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NLS'), 'envelope');
 
 		// Set toolbar items for the page
 
 		switch ($tab)
 		{ // The layout-variable tells us which tab we are in
 			case "sent":
-				if (BwPostmanHelper::canEdit('newsletter'))
+				if ($this->permissions['newsletter']['edit'])
 				{
 					JToolbarHelper::editList('newsletter.edit');
 				}
-				if (BwPostmanHelper::canEditState('newsletter', 0))
+
+				if ($this->permissions['newsletter']['edit.state'])
 				{
 					JToolbarHelper::publishList('newsletters.publish');
 					JToolbarHelper::unpublishList('newsletters.unpublish');
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if (BwPostmanHelper::canAdd('newsletter'))
+
+				if ($this->permissions['newsletter']['create'])
 				{
 					JToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if (BwPostmanHelper::canManage()) {
+
+				if ($this->permissions['com']['admin']) {
 					JToolbarHelper::checkin('newsletters.checkin');
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if (BwPostmanHelper::canArchive('newsletter', array(), true))
+
+				if ($this->permissions['newsletter']['archive'])
 				{
 					JToolbarHelper::archiveList('newsletter.archive');
 					JToolbarHelper::divider();
@@ -253,42 +269,70 @@ class BwPostmanViewNewsletters extends JViewLegacy
 				}
 				break;
 			case "queue":
-				$bar= JToolbar::getInstance('toolbar');
+				$bar = JToolbar::getInstance('toolbar');
 				$alt = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
-				if (BwPostmanHelper::canSend(0))
+				if ($this->permissions['newsletter']['send'])
 				{
-					JToolbarHelper::custom('newsletters.resetSendAttempts', 'unpublish.png', 'unpublish_f2.png', 'COM_BWPOSTMAN_NL_RESET_TRIAL', false);
-					$bar->appendButton('Popup', 'envelope', $alt, 'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', 600, 600);
+					JToolbarHelper::custom(
+						'newsletters.resetSendAttempts',
+						'unpublish.png',
+						'unpublish_f2.png',
+						'COM_BWPOSTMAN_NL_RESET_TRIAL',
+						false
+					);
+					$bar->appendButton(
+						'Popup',
+						'envelope',
+						$alt,
+						'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending',
+						600,
+						600
+					);
 					JToolbarHelper::custom('newsletters.clear_queue', 'delete.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
 				}
 				break;
 			case "unsent":
 			default:
-				if (BwPostmanHelper::canAdd('newsletter'))	JToolbarHelper::addNew('newsletter.add');
-				if (BwPostmanHelper::canEdit('newsletter'))	JToolbarHelper::editList('newsletter.edit');
-				if (BwPostmanHelper::canAdd('newsletter'))	JToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+				if ($this->permissions['newsletter']['create'])
+				{
+					JToolbarHelper::addNew('newsletter.add');
+				}
+
+				if ($this->permissions['newsletter']['edit'])
+				{
+					JToolbarHelper::editList('newsletter.edit');
+				}
+
+				if ($this->permissions['newsletter']['create'])
+				{
+					JToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+				}
+
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
 
-				if (BwPostmanHelper::canSend(0))
+				if ($this->permissions['newsletter']['send'])
 				{
 					JToolbarHelper::custom('newsletter.sendOut', 'envelope', 'send_f2.png', 'COM_BWPOSTMAN_NL_SEND', true);
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if (BwPostmanHelper::canArchive('newsletter', array(), true))
+
+				if ($this->permissions['newsletter']['archive'])
 				{
 					JToolbarHelper::archiveList('newsletter.archive');
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
-				if (BwPostmanHelper::canManage())
+
+				if ($this->permissions['com']['admin'])
 				{
 					JToolbarHelper::checkin('newsletters.checkin');
 					JToolbarHelper::divider();
 				}
 				break;
 		}
+
 		$link   = BwPostmanHTMLHelper::getForumLink();
 
 		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);

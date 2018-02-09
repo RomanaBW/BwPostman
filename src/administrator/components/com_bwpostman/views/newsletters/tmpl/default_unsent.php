@@ -58,7 +58,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	{
 		if (pressbutton == 'newsletters.archive')
 		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE' , true); ?>");
+			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>");
 			if (ConfirmArchive == true)
 			{
 				submitform(pressbutton);
@@ -74,35 +74,36 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <?php
 // Open modalbox if task == startsending --> we will show the sending process in the modalbox
-	$jinput	= JFactory::getApplication()->input;
-	$task	= $jinput->get->get('task');
+$jinput	= JFactory::getApplication()->input;
+$task	= $jinput->get->get('task');
 
-	if ($task == "startsending")
-	{
-		echo '<script type="text/javascript">'."\n";
-		echo "window.addEvent('load', function() {\n";
-		// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
-		echo "SqueezeBox.open('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', {handler: 'iframe', size: { x: 600, y: 450 }, closable: false, closeBtn: false, iframeOptions: {id: 'sendFrame', name: 'sendFrame'}}); \n";
-		echo "});\n";
-		echo "</script>\n";
-	}
+if ($task == "startsending")
+{
+	echo '<script type="text/javascript">' . "\n";
+	echo "window.addEvent('load', function() {\n";
+	// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
+	echo "SqueezeBox.open('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', {handler: 'iframe', size: { x: 600, y: 450 }, closable: false, closeBtn: false, iframeOptions: {id: 'sendFrame', name: 'sendFrame'}}); \n";
+	echo "});\n";
+	echo "</script>\n";
+}
 ?>
 
 <div id="bwp_view_lists">
 	<?php
-		// Open modalbox if task == startsending --> we will show the sending process in the modalbox
-		$jinput	= JFactory::getApplication()->input;
-		$task	= $jinput->get->get('task');
+	// Open modalbox if task == startsending --> we will show the sending process in the modalbox
+	$jinput	= JFactory::getApplication()->input;
+	$task	= $jinput->get->get('task');
 
-		if ($task != 'startsending')
+	if ($task != 'startsending')
+	{
+		if ($this->queueEntries)
 		{
-				if ($this->queueEntries)
-				{
-					JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
-				}
-	 		}
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		}
+	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
 				<?php echo $this->sidebar; ?>
@@ -113,7 +114,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php endif; ?>
 		<?php
 			// Search tools bar
-			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => 'unsent'), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+			echo JLayoutHelper::render(
+				'default',
+				array('view' => $this, 'tab' => 'unsent'),
+				$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+			);
 		?>
 
 			<div class="form-horizontal">
@@ -128,7 +133,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ($this->queueEntries && BwPostmanHelper::canSend(0)) { ?>
+					<?php if ($this->queueEntries && $this->permissions['newsletter']['send']) { ?>
 						<li class="closed">
 							<button onclick="return changeTab('queue');" class="buttonAsLink">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
@@ -143,14 +148,37 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<table id="main-table" class="adminlist table table-striped">
 					<thead>
 						<tr>
-							<th width="30" nowrap="nowrap" align="center"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th width="150" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE', 'a.modified_time', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?></th>
-							<th width="100" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?></th>
-							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap" align="center">
+								<input type="checkbox" name="checkall-toggle" value=""
+										title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+							</th>
+							<th width="150" nowrap="nowrap">
+								<?php echo JHtml::_(
+									'searchtools.sort',
+									'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE',
+									'a.modified_time',
+									$listDirn,
+									$listOrder
+								); ?>
+							</th>
+							<th width="100" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
+							</th>
+							<th width="100" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
+							</th>
+							<th width="30" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -167,16 +195,39 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										<?php } ?>
 									</td>
 									<td>
-										<?php if ($item->checked_out) echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'newsletters.', BwPostmanHelper::canCheckin($item->checked_out)); ?>
+										<?php
+										if ($item->checked_out)
+										{
+											echo JHtml::_(
+												'jgrid.checkedout',
+												$i,
+												$item->editor,
+												$item->checked_out_time,
+												'newsletters.',
+												BwPostmanHelper::canCheckin($item->checked_out)
+											);
+										} ?>
 										<?php if (BwPostmanHelper::canEdit('newsletter', $item)) : ?>
-											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter&layout=edit_basic&task=newsletter.edit&id='. $item->id . '&referrer=newsletters');?>">
-												<?php echo $this->escape($item->subject); ?></a>
+											<a href="
+											<?php
+											echo JRoute::_(
+												'index.php?option=com_bwpostman&view=newsletter&layout=edit_basic&task=newsletter.edit&id='
+												. $item->id . '&referrer=newsletters'
+											);?>">
+												<?php echo $this->escape($item->subject); ?>
+											</a>
 										<?php else : ?>
 											<?php echo $this->escape($item->subject); ?>
 										<?php endif; ?>
 									</td>
 									<td><?php echo $this->escape($item->description); ?></td>
-									<td><?php if ($item->modified_time != '0000-00-00 00:00:00') echo JHtml::date($item->modified_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+									<td>
+										<?php
+										if ($item->modified_time != '0000-00-00 00:00:00')
+										{
+											echo JHtml::date($item->modified_time, JText::_('BW_DATE_FORMAT_LC5'));
+										} ?>
+									</td>
 									<td><?php echo $item->authors; ?></td>
 									<td align="center"><?php echo $item->campaign_id; ?></td>
 									<td align="center"><?php echo $item->id; ?></td>
@@ -185,7 +236,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						}
 						else
 						{
-			            // if no data ?>
+							// if no data ?>
 							<tr class="row1">
 								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 							</tr><?php

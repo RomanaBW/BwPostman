@@ -25,11 +25,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
 
 use Joomla\String\StringHelper as JStringHelper;
+
 /**
  * Class BwPostmanViewNewsletterelement
  *
@@ -89,6 +90,8 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.0.1
 	 */
 	public function display($tpl = null)
@@ -103,14 +106,14 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		$key = $this->getName();
 
 		// Load the ordering, the search and the filters
-		$filter_order 		= $app->getUserStateFromRequest($key.'_filter_order', 'filter_order', 'a.subject', 'cmd');
-		$filter_order_Dir 	= $app->getUserStateFromRequest($key.'_filter_order_Dir', 'filter_order_Dir', '', 'word');
-		$search				= $app->getUserStateFromRequest($key.'_search', 'search', '', 'string');
+		$filter_order 		= $app->getUserStateFromRequest($key . '_filter_order', 'filter_order', 'a.subject', 'cmd');
+		$filter_order_Dir 	= $app->getUserStateFromRequest($key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$search				= $app->getUserStateFromRequest($key . '_search', 'search', '', 'string');
 		$search				= JStringHelper::strtolower($search);
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_( 'COM_BWPOSTMAN_SELECTNEWSLETTER' ));
+		$document->setTitle(JText::_('COM_BWPOSTMAN_SELECTNEWSLETTER'));
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get data from the model
@@ -133,6 +136,6 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+		return $this;
 	}
 }//end class
-

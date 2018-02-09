@@ -208,7 +208,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @param    string     $view       The view to test.
 	 * @param    string     $action     The action to check
-	 * @param    array      $recordIds  The record(s) to test.
+	 * @param    int        $recordId   The record(s) to test.
 	 * @param    boolean    $strict     check only for this context/view
 	 *
 	 * @return bool
@@ -217,15 +217,15 @@ abstract class BwPostmanHelper
 	 *
 	 * @since 2.0.0
 	 */
-	private static function checkActionPermission($view, $action, $recordIds = array(), $strict = false)
+	private static function checkActionPermission($view, $action, $recordId = 0, $strict = false)
 	{
 		if (!is_array(self::$permissions))
 		{
 			self::setPermissionsState();
 		}
 
-		// Check for admin
-		if (isset(self::$permissions['com']['admin']) && !self::$permissions['com']['admin'])
+		// Check for admin permission
+		if (isset(self::$permissions['com']['admin']) && self::$permissions['com']['admin'])
 		{
 			return true;
 		}
@@ -236,111 +236,37 @@ abstract class BwPostmanHelper
 			return false;
 		}
 
-		$user = JFactory::getUser();
-
-		// First test only for explicit user groups
-		if (count($recordIds))
-		{
-			$strictView = '';
-			$res		= false;
-
-			if ($strict)
-			{
-				$strictView = $view;
-			}
-
-			foreach ($recordIds as $recordId)
-			{
-				// Check for item specific permissions
-				// Return result, if one of the groups is explicitly named, else go downwards
-				$authAction	= 'bwpm.view.' . $view . '.' . $action;
-				$assetName	= 'com_bwpostman.' . $view . '.' . $recordId;
-				if (self::authorise($authAction, $assetName, $strictView))
-				{
-					$res = true;
-				}
-				elseif ((int) $recordId === 0) // new record
-				{
-					// @ToDo: Is this behaviour always correct?
-					$res = false;
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
-
-		// Check for view specific permissions
-		// Return result, if one of the groups is named, else go downwards
-		if (isset(self::$permissions['view'][$action]) && self::$permissions['view'][$action])
-		{
-			return true;
-		}
-
-		// Check for component permissions
-		// Return result, if one of the groups is named, else go downwards
-		if (isset(self::$permissions['com'][$action]) && self::$permissions['com'][$action])
-		{
-			return true;
-		}
-
-
-		// Now test for parent user groups
-		if (count($recordIds))
-		{
-			$strictView = '';
-			$res		= false;
-			if ($strict)
-			{
-				$strictView = $view;
-			}
-
-			foreach ($recordIds as $recordId)
-			{
-				// Check for item specific permissions
-				// Return result, if one of the groups is named, else go downwards
-				$authAction	= 'bwpm.view.' . $view . '.' . $action;
-				$assetName	= 'com_bwpostman.' . $view . '.' . $recordId;
-				if (self::authorise($authAction, $assetName, $strictView))
-				{
-					$res = true;
-				}
-				elseif ((int) $recordId === 0) // new record
-				{
-					$res = false;
-				}
-				else
-				{
-					$res = false;
-					break;
-				}
-			}
-		}
-
-		// Check for view specific permissions
-		// Return result, if one of the groups is named, else go downwards
-
-		// Check for component permissions
-		// Return result, if one of the groups is named, else go downwards
-
-
-
-		// Check general component permission
-		if (isset(self::$permissions['com'][$action]) && self::$permissions['com'][$action])
-		{
-			return true;
-		}
-
-		// Check specific view permission
-		$authAction	= 'bwpm.view.' . $view . '.' . $action;
-		$assetName	= 'com_bwpostman.' . $view;
-
 		$strictView = '';
+
 		if ($strict)
 		{
 			$strictView = $view;
 		}
+
+		// First: Test for item specific permissions
+		if ($recordId)
+		{
+			// Check for item specific permissions
+			// Return result, if we have the permission explicitly named, else go downwards
+			$authAction	= 'bwpm.view.' . $view . '.' . $action;
+			$assetName	= 'com_bwpostman.' . $view . '.' . $recordId;
+
+			$actionAllowed = self::authorise($authAction, $assetName, $strictView);
+
+			if ($actionAllowed !== null)
+			{
+				return $actionAllowed;
+			}
+		}
+
+		// Second: Check for view specific permissions
+		// Return result, if one of the groups is named, else go downwards
+		if (isset(self::$permissions[$view][$action]) && !self::$permissions[$view][$action])
+		{
+			return false;
+		}
+
+		// @ToDo: What do I do with the following?
 
 		if ($action == 'archive' || $action == 'restore' || $action == 'delete')
 		{
@@ -352,30 +278,13 @@ abstract class BwPostmanHelper
 			}
 		}
 
-		if (self::authorise($authAction, $assetName, $strictView))
+		// Third: Check for component permissions
+		if (isset(self::$permissions['com'][$action]) && self::$permissions['com'][$action])
 		{
 			return true;
 		}
 
-		// Check record specific permission
-		foreach ($recordIds as $recordId)
-		{
-			if ($user->authorise('bwpm.' . $view . '.' . $action, 'com_bwpostman.' . $view . (int) $recordId))
-			{
-				$res = true;
-			}
-			elseif ((int) $recordId === 0) // new record
-			{
-				$res = false;
-			}
-			else
-			{
-				$res = false;
-				break;
-			}
-		}
-
-		return $res;
+		return false;
 	}
 
 	/**
@@ -761,8 +670,6 @@ abstract class BwPostmanHelper
 	/**
 	 * Method to check if you can check in an item
 	 *
-	 * @param    string    $view            The view to test.
-	 * @param    int       $recordId        The record to test.
 	 * @param    int       $checkedOut      user id, who checked out this item
 	 *
 	 * @return    boolean
@@ -771,7 +678,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canCheckin($view, $recordId, $checkedOut = 0)
+	public static function canCheckin($checkedOut = 0)
 	{
 		// If nothing is checked out, there is nothing to test
 		if ($checkedOut == 0)
@@ -805,21 +712,6 @@ abstract class BwPostmanHelper
 			BwAccess::getGroupsByUser($userId);
 		}
 
-		// @ToDo: Fill following with life
-		if ($recordId)
-		{
-			// Check for item specific edit.state permission
-			// If allowed, return with true, else go downwards
-		}
-
-		// Check for view specific edit.state permission
-		// If allowed, return with true, else go downwards
-
-		// Check for component specific edit.state permission
-		// If allowed, return true, else return false
-
-
-
 		return false;
 	}
 
@@ -842,28 +734,26 @@ abstract class BwPostmanHelper
 			self::setPermissionsState();
 		}
 
-		// @ToDo: What if permission is denied on item base? Check for all following!
-
-		// Check for general edit permission
-		if (self::$permissions['com']['edit'])
+		// If current user can admin, he always may edit.
+		if (self::$permissions['com']['admin'])
 		{
 			return true;
 		}
 
-		// Check for view edit permission
-		if (self::$permissions[$view]['edit'])
-		{
-			return true;
-		}
-
-		// Fallback for edit.own permission
+		/*
+		 * To enable item based deny to someone, who normally has the permission to edit, first check on item level.
+		 * If there is found an entry on item level, this one has priority!
+		 * If no entry on item level is found, we have check further, until we find an entry.
+		 * If we find no entry on all levels, we deny.
+		 *
+		 * To reach that, we also need a return value of null at authorize method. So we can't use $user->authorize
+		 */
 
 		// Initialise variables.
-		$user       = JFactory::getUser();
-		$userId     = $user->get('id');
-		$action     = 'edit';
-		$recordId   = 0;
-		$createdBy  = 0;
+		$user      = JFactory::getUser();
+		$userId    = $user->get('id');
+		$recordId  = 0;
+		$createdBy = 0;
 
 		// Extract needed data
 		if (is_object($data))
@@ -915,38 +805,70 @@ abstract class BwPostmanHelper
 		}
 
 		// This part is used, if we have a record to check against
-		// First general or view permission
-		if (self::$permissions['com']['edit.own'] || self::$permissions[$view]['edit.own'])
+		if ($recordId)
 		{
-			$ownerId = self::getOwnerId($view, $recordId, $createdBy);
-
-			// Now test the owner is the user. If the owner matches 'me' then allow access.
-			if ($ownerId == $userId)
+			// First check for item specific edit.own permission
+			$editOwnItem = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId, true);
+			if ($editOwnItem !== null)
 			{
-				return true;
+				if ($editOwnItem)
+				{
+					$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+
+					// Now test the owner is the user. If the owner matches 'me' then allow access.
+					if ($ownerId == $userId)
+					{
+						return true;
+					}
+				}
+			}
+
+			// Second check for item specific edit permission
+			$editItem = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view . '.' . $recordId, true);
+			if ($editItem !== null)
+			{
+				return $editItem;
 			}
 		}
 
-		// Second item specific permission
-		if ($user->authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId))
+		// Third check for general or view edit.own permission
+		$editOwn = self::$permissions['com']['edit.own'] || self::$permissions[$view]['edit.own'];
+		if ($editOwn !== null)
 		{
-			$ownerId = self::getOwnerId($view, $recordId, $createdBy);
-
-			// Now test the owner is the user. If the owner matches 'me' then allow access.
-			if ($ownerId == $userId)
+			if ($editOwn)
 			{
-				return true;
+				$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+
+				// Now test the owner is the user. If the owner matches 'me' then allow access.
+				if ($ownerId == $userId)
+				{
+					return true;
+				}
 			}
+
+			return false;
+		}
+
+		// Check for view edit permission
+		if (self::$permissions[$view]['edit'])
+		{
+			return true;
+		}
+
+		// Check for general edit permission
+		if (self::$permissions['com']['edit'])
+		{
+			return true;
 		}
 
 		return false;
 	}
 
 	/**
-	 * Method to check if you can edit the state of a record.
+	 * Method to check if you can edit the state of a record or a set of records.
 	 *
 	 * @param    string     $view       The view to test.
-	 * @param    int        $recordId   The record to test.
+	 * @param    array|int  $recordIds   The record ids to test.
 	 *
 	 * @return    boolean
 	 *
@@ -954,14 +876,26 @@ abstract class BwPostmanHelper
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canEditState($view = '', $recordId = 0)
+	public static function canEditState($view = '', $recordIds = array())
 	{
 		$action = 'edit.state';
 
-		// Check permission
-		$res      = self::checkActionPermission($view, $action, array($recordId));
+		if (!is_array($recordIds))
+		{
+			$ids[]		= $recordIds;
+			$recordIds	= $ids;
+		}
 
-		return $res;
+		// Check permission
+		foreach ($recordIds as $recordId)
+		{
+			if (self::checkActionPermission($view, $action, $recordId) !== true)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -979,8 +913,14 @@ abstract class BwPostmanHelper
 	{
 		$action = 'send';
 
+		if (is_array($recordId))
+		{
+			$id			= $recordId[0];
+			$recordId	= $id;
+		}
+
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action, array($recordId));
+		$res      = self::checkActionPermission('newsletter', $action, $recordId);
 
 		return $res;
 	}
@@ -999,7 +939,7 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action, array());
+		$res      = self::checkActionPermission('newsletter', $action);
 
 		return $res;
 	}
@@ -1018,7 +958,7 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action, array());
+		$res      = self::checkActionPermission('newsletter', $action);
 
 		return $res;
 	}
@@ -1037,7 +977,7 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action, array());
+		$res      = self::checkActionPermission('newsletter', $action);
 
 		return $res;
 	}
@@ -1046,7 +986,7 @@ abstract class BwPostmanHelper
 	 * Method to check if you can archive an existing record.
 	 *
 	 * @param    string     $view       The name of the context.
-	 * @param    array      $recordIds  The record to test.
+	 * @param    int|array  $recordIds  The records to test.
 	 * @param    boolean    $strict     check only for this context
 	 *
 	 * @return    boolean
@@ -1060,17 +1000,34 @@ abstract class BwPostmanHelper
 		// Initialise variables.
 		$action	= 'archive';
 
-		// Check permission
-		$res      = self::checkActionPermission($view, $action, $recordIds, $strict);
+		if (!is_array($recordIds))
+		{
+			$ids[]		= $recordIds;
+			$recordIds	= $ids;
+		}
 
-		return $res;
+		if (!count($recordIds))
+		{
+			$recordIds[] = 0;
+		}
+
+		// Check permission
+		foreach ($recordIds as $recordId)
+		{
+			if (self::checkActionPermission($view, $action, $recordId, $strict) === true)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
 	 * Method to check if you can delete an archived record.
 	 *
-	 * @param    string $view       The name of the context.
-	 * @param    array  $recordIds   The record to test.
+	 * @param    string     $view        The name of the context.
+	 * @param    int|array  $recordIds   The record to test.
 	 *
 	 * @return    boolean
 	 *
@@ -1083,17 +1040,29 @@ abstract class BwPostmanHelper
 		// Initialise variables.
 		$action   = 'delete';
 
-		// Check permission
-		$res      = self::checkActionPermission($view, $action, $recordIds, true);
+		if (!is_array($recordIds))
+		{
+			$ids[]		= $recordIds;
+			$recordIds	= $ids;
+		}
 
-		return $res;
+		// Check permission
+		foreach ($recordIds as $recordId)
+		{
+			if (self::checkActionPermission($view, $action, $recordId) !== true)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
 	 * Method to check if you can restore an archived record.
 	 *
 	 * @param    string     $view       The name of the context.
-	 * @param    array      $recordIds   The record to test.
+	 * @param    int|array  $recordIds  The record to test.
 	 *
 	 * @return    boolean
 	 *
@@ -1106,10 +1075,22 @@ abstract class BwPostmanHelper
 		// Initialise variables.
 		$action   = 'restore';
 
-		// Check permission
-		$res      = self::checkActionPermission($view, $action, $recordIds, true);
+		if (!is_array($recordIds))
+		{
+			$ids[]		= $recordIds;
+			$recordIds	= $ids;
+		}
 
-		return $res;
+		// Check permission
+		foreach ($recordIds as $recordId)
+		{
+			if (self::checkActionPermission($view, $action, $recordId) !== true)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -1603,7 +1584,7 @@ abstract class BwPostmanHelper
 
 	/**
 	 * Method to get an array of strings of all asset names of the component section
-	 * The array items are of the form 'component.section.id', where th part with id may be empty (section-wide permission)
+	 * The array items are of the form 'component.section.id', where the part with id may be empty (section-wide permission)
 	 *
 	 * @param   string  $view           The name of the context.
 	 *
@@ -1798,7 +1779,7 @@ abstract class BwPostmanHelper
 	 * @param   string  $assetName  The name of the asset on which to perform the action.
 	 * @param   string $strictView  check only for this context
 	 *
-	 * @return  boolean  True if authorised
+	 * @return  boolean|null  True if permission is set, null otherwise
 	 *
 	 * @since   11.1
 	 */
@@ -1806,6 +1787,6 @@ abstract class BwPostmanHelper
 	{
 		$userId = JFactory::getUser()->id;
 
-		return (bool) BwAccess::check($userId, $action, $assetName, false, $strictView);
+		return BwAccess::check($userId, $action, $assetName, false, $strictView);
 	}
 }

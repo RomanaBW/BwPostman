@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Registry\Registry as JRegistry;
 
@@ -37,9 +37,12 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 ?>
 
 <li class="imgOutline thumbnail height-80 width-80 center">
-	<a class="doc-preview" href="javascript:ImageManager.populateFields('<?php echo $this->_tmp_doc->path_relative; ?>')" title="<?php echo $this->_tmp_doc->name; ?>" >
+	<a class="doc-preview" href="javascript:ImageManager.populateFields('<?php echo $this->_tmp_doc->path_relative; ?>')"
+			title="<?php echo $this->_tmp_doc->name; ?>" >
 		<div class="height-50">
-			<?php echo JHtml::_('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->name, null, true, true) ? JHtml::_('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->title, null, true) : JHtml::_('image', 'media/con_info.png', $this->_tmp_doc->name, null, true); ?>
+			<?php echo JHtml::_('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->name, null, true, true)
+				? JHtml::_('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->title, null, true)
+				: JHtml::_('image', 'media/con_info.png', $this->_tmp_doc->name, null, true); ?>
 		</div>
 		<div class="small">
 			<?php echo JHtml::_('string.truncate', $this->_tmp_doc->name, 10, false); ?>
@@ -48,5 +51,5 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 </li>
 <?php
 $dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
-?>
+
 

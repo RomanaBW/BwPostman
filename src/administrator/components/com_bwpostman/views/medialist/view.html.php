@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_media/models/list.php';
 
@@ -117,6 +117,8 @@ class BwPostmanViewMediaList extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.0.4
 	 */
 	public function display($tpl = null)
@@ -167,6 +169,8 @@ class BwPostmanViewMediaList extends JViewLegacy
 		$this->state		= &$state;
 
 		parent::display($tpl);
+
+		return $this;
 	}
 
 	/**
@@ -176,7 +180,7 @@ class BwPostmanViewMediaList extends JViewLegacy
 	 *
 	 * @since       1.0.4
 	 */
-	function setFolder($index = 0)
+	public function setFolder($index = 0)
 	{
 		if (isset($this->folders[$index]))
 		{
@@ -195,7 +199,7 @@ class BwPostmanViewMediaList extends JViewLegacy
 	 *
 	 * @since       1.0.4
 	 */
-	function setImage($index = 0)
+	public function setImage($index = 0)
 	{
 		if (isset($this->images[$index]))
 		{
@@ -214,7 +218,7 @@ class BwPostmanViewMediaList extends JViewLegacy
 	 *
 	 * @since       1.0.4
 	 */
-	function setDocument($index = 0)
+	public function setDocument($index = 0)
 	{
 		if (isset($this->documents[$index]))
 		{

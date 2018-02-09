@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('behavior.tooltip');
@@ -34,21 +34,22 @@ JHtml::_('formbehavior.chosen', 'select');
 
 //Load tabs behavior for the Tabs
 //jimport('joomla.html.html.tabs');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/bwtabs.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/bwtabs.php');
 
 // Load the modal behavior for the newsletter preview
 JHtml::_('behavior.modal', 'a.popup');
 
 $tab_options = array(
-    'onActive' => 'function(title, description){
-        description.setStyle("display", "block");
-        title.addClass("open").removeClass("closed");
-    }',
-    'onBackground' => 'function(title, description){
-        description.setStyle("display", "none");
-        title.addClass("closed").removeClass("open");
-    }',
-    'useCookie' => 'true', // note the quotes around true, since it must be a string. But if you put false there, you must not use quotes otherwise JHtmlBwTabs will handle it as true
+	'onActive' => 'function(title, description){
+		description.setStyle("display", "block");
+		title.addClass("open").removeClass("closed");
+	}',
+	'onBackground' => 'function(title, description){
+		description.setStyle("display", "none");
+		title.addClass("closed").removeClass("open");
+	}',
+	'useCookie' => 'true',  // note the quotes around true, since it must be a string.
+							// But if you put false there, you must not use quotes otherwise JHtmlBwTabs will handle it as true
 );
 
 /**
@@ -91,27 +92,37 @@ $tab_options = array(
 		}
 		<?php } ?>
 
-		<?php if (property_exists($this->item, 'tc_mailing_data'))
-		{ ?>
-		return checkReasonableTimes(pressbutton);
 		<?php
-		} ?>
+		if (property_exists($this->item, 'tc_mailing_data'))
+		{ ?>
+			return checkReasonableTimes(pressbutton);
+			<?php
+		}
+		?>
 	};
 /* ]]> */
 </script>
 
 <div id="bwp_editform">
 	<?php
-		if ($this->queueEntries) {
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
- 		}
+	if ($this->queueEntries)
+	{
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm">
 		<?php
 			echo JHtmlBwTabs::start('bwp-cam-nl-pane', $tab_options);
 
 			// Start Tab basic
-			echo JHtmlBwTabs::panel(JText::_(empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id)), 'basic', '');
+			echo JHtmlBwTabs::panel(
+				JText::_(
+					empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id)
+				),
+				'basic',
+				''
+			);
 			echo $this->loadTemplate('basic');
 
 			// Start Tab assigned/unsent newsletters
@@ -123,6 +134,7 @@ $tab_options = array(
 					$text	= JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
 				}
 			}
+
 			echo JHtmlBwTabs::panel($text, 'unsent', '');
 			echo $this->loadTemplate('unsent');
 

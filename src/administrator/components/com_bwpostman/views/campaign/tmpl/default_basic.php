@@ -25,23 +25,40 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 $image = '<i class="icon-info"></i>';
 ?>
 
 <fieldset class="adminform">
-	<legend><?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?></legend>
+	<legend>
+		<?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
+	</legend>
 	<div class="well well-small">
 		<div class="width-60 fltlft span8 control-group">
 			<ul class="adminformlist unstyled">
-				<?php if (isset($this->item->err_code)) if (($this->item->err_code == 101) || ($this->item->err_code == 102)) ?>
+				<?php
+				if (isset($this->item->err_code))
+				{
+					if (($this->item->err_code == 101) || ($this->item->err_code == 102))
+					{
+
+					}
+				}
+				?>
 				<li>
 					<?php echo $this->form->getLabel('title'); ?>
 					<div class="controls"><?php echo $this->form->getInput('title'); ?></div>
 				</li>
 
-				<?php if (isset($this->item->err_code)) if (($this->item->err_code == 101) || ($this->item->err_code == 102)) ?>
+				<?php
+				if (isset($this->item->err_code))
+				{
+					if (($this->item->err_code == 101) || ($this->item->err_code == 102))
+					{
+
+					}
+				}?>
 				<li>
 					<?php echo $this->form->getLabel('description'); ?>
 					<div class="controls"><?php echo $this->form->getInput('description'); ?></div>
@@ -61,8 +78,12 @@ $image = '<i class="icon-info"></i>';
 
 		<div class="width-40 fltrt span4 control-group">
 			<ul class="adminformlist width_50 unstyled">
-				<?php if (empty($this->item->campaign_id))
-						$this->form->setFieldAttribute('campaign_id', 'type', 'hidden');
+				<?php
+				if (empty($this->item->campaign_id))
+				{
+					$this->form->setFieldAttribute('campaign_id', 'type', 'hidden');
+				}
+
 				?>
 				<li>
 					<?php echo $this->form->getLabel('campaign_id'); ?>
@@ -104,8 +125,14 @@ $image = '<i class="icon-info"></i>';
 					<div class="well-white well-small">
 						<fieldset class="adminform">
 							<legend>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>"><?php echo $image; ?></span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;
+									<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
+								</span>
 							</legend>
 							<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
 								<?php if ($field->hidden): ?>
@@ -115,14 +142,29 @@ $image = '<i class="icon-info"></i>';
 										<div class="well well-small">
 											<fieldset class="adminform">
 												<legend>
-													<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>"><?php echo $image; ?></span>
-													<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_($field->description); ?>">&nbsp;<?php echo $field->label; ?></span>
+													<span class="editlinktip hasTip hasTooltip"
+															title="<?php echo JText::_($field->description); ?>">
+														<?php echo $image; ?>
+													</span>
+													<span class="editlinktip hasTip hasTooltip"
+															title="<?php echo JText::_($field->description); ?>">
+														<?php echo $field->label; ?>
+													</span>
 												</legend>
 												<div class="row-fluid clearfix">
 													<?php
-														$input_field	= trim($field->input);
-														if (!empty($input_field)) echo $field->input;
-														else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>';
+													$input_field	= trim($field->input);
+													if (!empty($input_field))
+													{
+														echo $field->input;
+													}
+													else
+													{
+														echo '<div class="width-50 fltlft span6">
+															<label class="mailinglist_label noclear checkbox">' . JText::_('COM_BWPOSTMAN_NO_DATA') . '
+															</label>
+															</div>';
+													}
 													?>
 												</div>
 											</fieldset>
@@ -138,7 +180,10 @@ $image = '<i class="icon-info"></i>';
 					<div class="well-white well-small">
 						<fieldset class="adminform usergroups">
 							<legend>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+									<?php echo $image; ?>
+								</span>
 								<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 							</legend>
 							<?php foreach($this->form->getFieldset('usergroups') as $field): ?>

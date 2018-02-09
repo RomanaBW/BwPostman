@@ -25,14 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman Campaigns View
@@ -118,11 +118,22 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	public $total;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -130,7 +141,9 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('campaign'))
+		$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['campaign'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_CAMS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -159,6 +172,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+		return $this;
 	}
 
 
@@ -180,26 +194,40 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_CAMS'), 'list');
+		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAMS'), 'list');
 
 		// Set toolbar items for the page
-		if (BwPostmanHelper::canAdd('campaign'))
+		if ($this->permissions['campaign']['create'])
+		{
 			JToolbarHelper::addNew('campaign.add');
+		}
+
 		if (BwPostmanHelper::canEdit('campaign'))
+		{
 			JToolbarHelper::editList('campaign.edit');
+		}
+
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
 
 		// Special archive button because we need a confirm dialog with 3 options
 		if (BwPostmanHelper::canArchive('campaign', array(), true))
 		{
-			$bar= JToolbar::getInstance('toolbar');
+			$bar = JToolbar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";
-			$bar->appendButton('Popup', 'archive', $alt, 'index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive', 500, 110);
+			$bar->appendButton(
+				'Popup',
+				'archive',
+				$alt,
+				'index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive',
+				500,
+				110
+			);
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 		}
+
 		if (BwPostmanHelper::canEdit('campaign', 0))
 		{
 			JToolbarHelper::checkin('campaigns.checkin');

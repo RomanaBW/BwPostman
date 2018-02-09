@@ -92,11 +92,22 @@ class BwPostmanViewCampaign extends JViewLegacy
 	public $newsletters;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -105,7 +116,9 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$app		= JFactory::getApplication();
 		$document	= JFactory::getDocument();
 
-		if (!BwPostmanHelper::canView('campaign'))
+		$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['mailinglist'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_CAMS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -132,9 +145,12 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$this->addToolbar();
 		// Call parent display
 		parent::display($tpl);
+		return $this;
 	}
 	/**
 	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -163,7 +179,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$isNew = ($this->item->id < 1);
 
 		// Set toolbar title and items
-        $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// For new records, check the create permission.
 		if ($isNew && BwPostmanHelper::canAdd('campaign'))
@@ -171,7 +187,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 			JToolbarHelper::save('campaign.save');
 			JToolbarHelper::apply('campaign.apply');
 			JToolbarHelper::cancel('campaign.cancel');
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS').': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 		}
 		else
 		{
@@ -185,6 +201,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 					JToolbarHelper::apply('campaign.apply');
 				}
 			}
+
 			// Rename the cancel button for existing items
 			if (JFactory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
 			{
@@ -195,7 +212,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 				JToolbarHelper::cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
 			}
 
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS').': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 		}
 
 		JFactory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
@@ -203,13 +220,14 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$siteURL 	= $uri->base();
 
 		// If we came from the main page we will show a back-button
-		if ($backlink == $siteURL.'index.php?option=com_bwpostman')
+		if ($backlink == $siteURL . 'index.php?option=com_bwpostman')
 		{
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();
 			JToolbarHelper::spacer();
 			JToolbarHelper::back();
 		}
+
 		JToolbarHelper::spacer();
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();

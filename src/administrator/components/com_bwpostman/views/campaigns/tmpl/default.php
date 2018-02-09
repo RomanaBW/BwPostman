@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
@@ -56,7 +56,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 </script>
 
 <div id="bwp_view_lists">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=campaigns'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=campaigns'); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
 				<?php echo $this->sidebar; ?>
@@ -74,10 +75,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<table id="main-table" class="adminlist table table-striped">
 					<thead>
 						<tr>
-							<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?></th>
-							<th nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?></th>
+							<th width="30" nowrap="nowrap">
+								<input type="checkbox" name="checkall-toggle" value=""
+										title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+							</th>
+							<th nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?>
+							</th>
 							<?php
 							if ($this->auto_nbr)
 							{ ?>
@@ -96,49 +105,88 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</tfoot>
 					<tbody>
 						<?php
-							if (count($this->items) > 0)
+						if (count($this->items) > 0)
+						{
+							foreach ($this->items as $i => $item)
 							{
-								foreach ($this->items as $i => $item) :
-									?>
-									<tr class="row<?php echo $i % 2; ?>">
-										<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-										<td>
-										<?php if ($item->checked_out) : ?>
-											<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'campaigns.', BwPostmanHelper::canCheckin($item->checked_out)); ?>
-										<?php endif; ?>
-										<?php if (BwPostmanHelper::canEdit('campaign', $item)) : ?>
-												<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=campaign.edit&id='. $item->id);?>">
-													<?php echo $this->escape($item->title); ?></a>
-											<?php else : ?>
-												<?php echo $this->escape($item->title); ?>
-											<?php endif; ?>
-										</td>
-										<td><?php echo $item->description; ?></td>
-										<td align="center"><?php echo $item->newsletters; ?></td>
+								?>
+								<tr class="row<?php echo $i % 2; ?>">
+									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+									<td>
+									<?php
+									if ($item->checked_out)
+									{ ?>
 										<?php
-										if ($this->auto_nbr) {
-											$checked	= '';
-											if ($item->active) {
-												$checked	= 'checked="checked" ';
+										echo JHtml::_(
+											'jgrid.checkedout',
+											$i,
+											$item->editor,
+											$item->checked_out_time,
+											'campaigns.',
+											BwPostmanHelper::canCheckin($item->checked_out)
+										);
+									} ?>
+									<?php
+									if (BwPostmanHelper::canEdit('campaign', $item))
+									{ ?>
+										<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=campaign.edit&id=' . $item->id); ?>">
+											<?php echo $this->escape($item->title); ?>
+										</a> <?php
+									}
+									else
+									{
+										echo $this->escape($item->title);
+									} ?>
+									</td>
+									<td><?php echo $item->description; ?></td>
+									<td align="center"><?php echo $item->newsletters; ?></td>
+									<?php
+									if ($this->auto_nbr)
+									{
+										$checked = '';
+										if ($item->active)
+										{
+											$checked = 'checked="checked" ';
+										} ?>
+										<td align="center">
+											<?php
+											if ($item->auto)
+											{
+												echo JText::_('COM_BWPOSTMAN_YES');
+											}
+											?>
+										</td>
+										<td align="center">
+											<?php
+											if ($item->auto)
+											{
+												if ($item->active)
+												{ ?>
+													<a href="
+													<?php echo
+														JRoute::_(
+															'index.php?option=com_bwpostman&view=campaign&task=campaign.activate&cid[0]=' . $item->id
+														);
+														?>"
+														class="btn btn-micro active hasTooltip"><i class="icon-publish"></i>
+													</a>
+													<?php
+												}
 											} ?>
-											<td align="center"><?php if ($item->auto) echo JText::_('COM_BWPOSTMAN_YES'); ?></td>
-											<td align="center">
-												<?php if ($item->auto) {
-													if ($item->active)?>
-													<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&view=campaign&task=campaign.activate&cid[0]='. $item->id); ?>" class="btn btn-micro active hasTooltip"><i class="icon-publish"></i></a></td>
-												<?php }
-										}
-										?>
-										<td align="center"><?php echo $item->id; ?></td>
-									</tr><?php
-								endforeach;
+										</td>
+										<?php
+									} ?>
+									<td align="center"><?php echo $item->id; ?></td>
+								</tr>
+							<?php
 							}
-							else
-							{ ?>
-								<tr class="row1">
-									<td colspan="5"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-								</tr><?php
-							}
+						}
+						else
+						{ ?>
+							<tr class="row1">
+								<td colspan="5"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+							</tr><?php
+						}
 						?>
 					</tbody>
 				</table>

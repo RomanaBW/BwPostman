@@ -25,7 +25,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 ?>
 
 <fieldset class="adminform">
@@ -52,84 +52,99 @@ defined ('_JEXEC') or die ('Restricted access');
 						<tr>
 							<th>
 							<?php
-								if ($automation)
-								{
-									echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAIL_NUMBER');
-								}
-								else
-								{
-									echo JText::_('NUM');
-								} ?>
+							if ($automation)
+							{
+								echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAIL_NUMBER');
+							}
+							else
+							{
+								echo JText::_('NUM');
+							} ?>
 							</th>
 							<th align="left"><?php echo JText::_('SUBJECT'); ?></th>
 							<th width="150"><?php echo JText::_('COM_BWPOSTMAN_NL_MAILING_DATE'); ?></th>
 							<?php
-								if ($automation)
-								{ ?>
-									<th width="150"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_RECIPIENT'); ?></th>
-								<?php }
-								else
-								{ ?>
-									<th width="150"><?php echo JText::_('AUTHOR'); ?></th>
-									<th width="150"><?php echo JText::_('PUBLISHED'); ?></th>
-								<?php
-								}
+							if ($automation)
+							{ ?>
+								<th width="150"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_RECIPIENT'); ?></th>
+							<?php }
+							else
+							{ ?>
+								<th width="150"><?php echo JText::_('AUTHOR'); ?></th>
+								<th width="150"><?php echo JText::_('PUBLISHED'); ?></th>
+							<?php
+							}
 							?>
 						</tr>
 					</thead>
 					<tbody>
 					<?php
-						$k = 0;
+					$k = 0;
 
-						$newsletters_sent = $this->newsletters->sent;
-						for ($i=0, $n=count($newsletters_sent); $i < $n; $i++)
-						{
-							$item		= &$newsletters_sent[$i];
-							$link_html	= 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_html_modal&amp;task=insideModal&amp;nl_id='. $item->id;
-							$link_text	= 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_text_modal&amp;task=insideModal&amp;nl_id='. $item->id;
-							?>
-							<tr class="<?php echo "item$k"; ?>">
+					$newsletters_sent = $this->newsletters->sent;
+					for ($i = 0, $n = count($newsletters_sent); $i < $n; $i++)
+					{
+						$item		= &$newsletters_sent[$i];
+						$link_html	= 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_html_modal&amp;task=insideModal&amp;nl_id='. $item->id;
+						$link_text	= 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_text_modal&amp;task=insideModal&amp;nl_id='. $item->id;
+						?>
+						<tr class="<?php echo "item$k"; ?>">
+							<td align="center">
+							<?php
+							if ($automation)
+							{
+								echo $item->mail_number;
+							}
+							else
+							{
+								echo $item->id;
+							} ?>
+							</td>
+							<td><?php echo $item->subject; ?>&nbsp;&nbsp;
+								<span class="cam_preview">
+									<span class="editlinktip hasTip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
+										<?php
+										echo '<a class="popup" href="' . $link_html . '" 
+										rel="{handler: \'iframe\', size: {x: 600, y: 450}, iframeOptions: {id: \'htmlFrame\'}}">'
+											. JText::_('COM_BWPOSTMAN_HTML_NL') . '</a>'; ?>&nbsp;
+										</span>
+									<span class="editlinktip hasTip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
+										<?php
+										echo '<a class="popup" href="' . $link_text . '"
+										 rel="{handler: \'iframe\', size: {x: 600, y: 450}, iframeOptions: {id: \'textFrame\'}}">'
+											. JText::_('COM_BWPOSTMAN_TEXT_NL') . '</a>'; ?>
+									</span>
+								</span>
+							</td>
+							<?php
+							if ($automation)
+							{ ?>
+								<td align="center"><?php echo JHtml::date($item->sent_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+								<td align="center"><?php echo $item->email; ?></td>
+							<?php
+							}
+							else
+							{ ?>
+								<td align="center"><?php echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+								<td align="center"><?php echo $item->author; ?></td>
 								<td align="center">
-								<?php
-									if ($automation)
+									<?php
+									if ($item->published)
 									{
-										echo $item->mail_number;
+										echo JText::_('COM_BWPOSTMAN_YES');
 									}
 									else
 									{
-										echo $item->id;
-									} ?>
-								</td>
-								<td><?php echo $item->subject; ?>&nbsp;&nbsp;
-									<span class="cam_preview">
-										<span class="editlinktip hasTip"
-											title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
-											<?php echo '<a class="popup" href="'.$link_html.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}, iframeOptions: {id: \'htmlFrame\'}}">'.JText::_('COM_BWPOSTMAN_HTML_NL').'</a>'; ?>&nbsp;
-											</span>
-										<span class="editlinktip hasTip"
-											title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
-											<?php echo '<a class="popup" href="'.$link_text.'" rel="{handler: \'iframe\', size: {x: 600, y: 450}, iframeOptions: {id: \'textFrame\'}}">'.JText::_('COM_BWPOSTMAN_TEXT_NL').'</a>'; ?>
-										</span>
-									</span>
-								</td>
-								<?php
-								if ($automation)
-								{ ?>
-									<td align="center"><?php echo JHtml::date($item->sent_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
-									<td align="center"><?php echo $item->email; ?></td>
-								<?php
-								}
-								else
-								{ ?>
-									<td align="center"><?php echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
-									<td align="center"><?php echo $item->author; ?></td>
-									<td align="center"><?php if ($item->published) { echo JText::_('COM_BWPOSTMAN_YES'); } else { echo JText::_('COM_BWPOSTMAN_NO');}?>
-								<?php
-								} ?>
-							</tr>
+										echo JText::_('COM_BWPOSTMAN_NO');
+									}?>
 							<?php
-							$k = 1 - $k;
-						}
+							} ?>
+						</tr>
+						<?php
+						$k = 1 - $k;
+					}
 					?>
 					</tbody>
 				</table>

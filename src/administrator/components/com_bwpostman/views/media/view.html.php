@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_media/models/manager.php';
 
@@ -105,6 +105,8 @@ class BwPostmanViewMedia extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.0.4
 	 */
 	public function display($tpl = null)
@@ -149,8 +151,8 @@ class BwPostmanViewMedia extends JViewLegacy
 		}
 
 		$js = "
-			var basepath = '".$base."';
-			var viewstyle = '".$style."';
+			var basepath = '" . $base . "';
+			var viewstyle = '" . $style . "';
 		";
 		$document->addScriptDeclaration($js);
 
@@ -170,5 +172,7 @@ class BwPostmanViewMedia extends JViewLegacy
 		$this->folders		= $mediaModel->getFolderTree();
 
 		parent::display($tpl);
+
+		return $this;
 	}
 }

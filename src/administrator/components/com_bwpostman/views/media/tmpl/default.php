@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 // Load tooltip instance without HTML support because we have a HTML tag in the tip
 JHtml::_('bootstrap.tooltip', '.noHtmlTip', array('html' => false));
@@ -40,7 +40,8 @@ echo $params->get('file_path', 'images'); ?>/';
 </script>
 
 
-<form action="index.php?option=com_bwpostman&amp;asset=<?php echo $jinput->getCmd('asset'); ?>&amp;author=<?php echo $jinput->getCmd('author'); ?>" class="form-vertical" id="imageForm" method="post" enctype="multipart/form-data">
+<form action="index.php?option=com_bwpostman&amp;asset=<?php echo $jinput->getCmd('asset'); ?>&amp;author=<?php echo $jinput->getCmd('author'); ?>"
+		class="form-vertical" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
 		<span id="message"></span><?php echo JHtml::_('image', 'media/dots.gif', '...', array('width' => 22, 'height' => 12), true) ?>
 	</div>
@@ -53,17 +54,37 @@ echo $params->get('file_path', 'images'); ?>/';
 				</div>
 				<div class="controls">
 					<?php echo $this->folderList; ?>
-					<button class="btn" type="button" id="upbutton" title="<?php echo JText::_('COM_BWPOSTMAN_MEDIA_DIRECTORY_UP') ?>"><?php echo JText::_('COM_BWPOSTMAN_MEDIA_UP') ?></button>
+					<button class="btn" type="button" id="upbutton" title="<?php echo JText::_('COM_BWPOSTMAN_MEDIA_DIRECTORY_UP') ?>">
+						<?php echo JText::_('COM_BWPOSTMAN_MEDIA_UP') ?>
+					</button>
 				</div>
 			</div>
 			<div class="pull-right">
-				<button class="btn btn-primary" type="button" onclick="<?php if ($this->state->get('field.id')):?>window.parent.jInsertFieldValue(document.id('f_url').value,'<?php echo $this->state->get('field.id');?>');<?php else:?>ImageManager.onok();<?php endif;?>window.parent.SqueezeBox.close();"><?php echo JText::_('COM_BWPOSTMAN_MEDIA_INSERT') ?></button>
+				<button class="btn btn-primary" type="button"
+						onclick="<?php
+						if ($this->state->get('field.id'))
+						{ ?>
+							window.parent.jInsertFieldValue(document.id('f_url').value,'<?php echo $this->state->get('field.id');?>');
+							<?php
+						}
+						else
+						{ ?>
+							ImageManager.onok();<?php
+						}
+						?>
+						window.parent.SqueezeBox.close();">
+						<?php echo JText::_('COM_BWPOSTMAN_MEDIA_INSERT') ?>
+				</button>
 				<button class="btn" type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('JCANCEL') ?></button>
 			</div>
 		</div>
 	</div>
 
-	<iframe id="imageframe" name="imageframe" src="index.php?option=com_bwpostman&amp;view=mediaList&amp;tmpl=component&amp;folder=&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>"></iframe>
+	<iframe id="imageframe" name="imageframe"
+			src="index.php?option=com_bwpostman&amp;view=mediaList&amp;tmpl=component&amp;folder=&amp;
+			asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>">
+
+	</iframe>
 
 	<div class="well">
 		<div class="row">
@@ -83,8 +104,13 @@ echo $params->get('file_path', 'images'); ?>/';
 	</div>
 </form>
 
-<?php if ($user->authorise('core.create', 'com_media')) : ?>
-	<form action="<?php echo JUri::base(); ?>index.php?option=com_bwpostman&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>&amp;view=media" id="uploadForm" class="form-horizontal" name="uploadForm" method="post" enctype="multipart/form-data">
+<?php if ($user->authorise('core.create', 'com_media'))
+{ ?>
+	<form action="
+		<?php echo JUri::base(); ?>index.php?option=com_bwpostman&amp;task=file.upload&amp;tmpl=component&amp;
+			<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;
+			asset=<?php echo $jinput->getCmd('asset');?>&amp;author=<?php echo $jinput->getCmd('author');?>&amp;view=media"
+			id="uploadForm" class="form-horizontal" name="uploadForm" method="post" enctype="multipart/form-data">
 		<div id="uploadform" class="well">
 			<fieldset id="upload-noflash" class="actions">
 				<div class="control-group">
@@ -92,15 +118,29 @@ echo $params->get('file_path', 'images'); ?>/';
 						<label for="upload-file" class="control-label"><?php echo JText::_('COM_BWPOSTMAN_MEDIA_UPLOAD_FILE'); ?></label>
 					</div>
 					<div class="controls">
-						<input type="file" id="upload-file" name="Filedata[]" multiple /><button class="btn btn-primary" id="upload-submit"><i class="icon-upload icon-white"></i> <?php echo JText::_('COM_BWPOSTMAN_MEDIA_START_UPLOAD'); ?></button>
-						<p class="help-block"><?php echo $this->config->get('upload_maxsize') == '0' ? JText::_('COM_BWPOSTMAN_MEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_BWPOSTMAN_MEDIA_UPLOAD_FILES', $this->config->get('upload_maxsize')); ?></p>
+						<input type="file" id="upload-file" name="Filedata[]" multiple />
+						<button class="btn btn-primary" id="upload-submit">
+							<i class="icon-upload icon-white"></i>
+							<?php echo JText::_('COM_BWPOSTMAN_MEDIA_START_UPLOAD'); ?>
+						</button>
+						<p class="help-block">
+							<?php
+							echo
+							$this->config->get('upload_maxsize') == '0'
+								? JText::_('COM_BWPOSTMAN_MEDIA_UPLOAD_FILES_NOLIMIT')
+								: JText::sprintf('COM_BWPOSTMAN_MEDIA_UPLOAD_FILES', $this->config->get('upload_maxsize')); ?>
+						</p>
 					</div>
 				</div>
 			</fieldset>
 		</div>
-		<?php JFactory::getSession()->set('com_bwpostman.media.return_url', 'index.php?option=com_bwpostman&view=media&tmpl=component&fieldid=' . $jinput->getCmd('fieldid', '') . '&e_name=' . $jinput->getCmd('e_name') . '&asset=' . $jinput->getCmd('asset') . '&author=' . $jinput->getCmd('author')); ?>
+		<?php JFactory::getSession()->set(
+			'com_bwpostman.media.return_url',
+			'index.php?option=com_bwpostman&view=media&tmpl=component&fieldid=' . $jinput->getCmd('fieldid', '')
+			. '&e_name=' . $jinput->getCmd('e_name') . '&asset=' . $jinput->getCmd('asset') . '&author=' . $jinput->getCmd('author')
+		); ?>
 	</form>
-<?php endif; ?>
+<?php }
 
 
 

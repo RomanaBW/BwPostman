@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman Subscriber View
@@ -145,6 +145,15 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	public $request_url_raw;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * property to hold result
 	 *
 	 * @var string $result
@@ -160,6 +169,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl=null)
@@ -168,7 +179,9 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$jinput	= JFactory::getApplication()->input;
 		$params = JComponentHelper::getParams('com_bwpostman');
 
-		if (!BwPostmanHelper::canView('subscriber'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['subscriber'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUB')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -182,12 +195,12 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		switch ($layout)
 		{
 			case 'export':
-				self::_displayExportForm();
+				self::displayExportForm();
 				break;
 			case 'import':
 			case 'import1':
 			case 'import2':
-				self::_displayImportForm();
+				self::displayImportForm();
 				break;
 			case 'edit':
 			default:
@@ -206,11 +219,28 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				}
 
 				// Get show fields
-				if (!$params->get('show_name_field'))		$this->form->setFieldAttribute('name', 'type', 'hidden');
-				if (!$params->get('show_firstname_field'))	$this->form->setFieldAttribute('firstname', 'type', 'hidden');
-				if (!$params->get('show_gender'))	        $this->form->setFieldAttribute('gender', 'type', 'hidden');
-				if (!$params->get('show_special'))	        $this->form->setFieldAttribute('special', 'type', 'hidden');
-				if (!$params->get('show_emailformat')) {
+				if (!$params->get('show_name_field'))
+				{
+					$this->form->setFieldAttribute('name', 'type', 'hidden');
+				}
+
+				if (!$params->get('show_firstname_field'))
+				{
+					$this->form->setFieldAttribute('firstname', 'type', 'hidden');
+				}
+
+				if (!$params->get('show_gender'))
+				{
+					$this->form->setFieldAttribute('gender', 'type', 'hidden');
+				}
+
+				if (!$params->get('show_special'))
+				{
+					$this->form->setFieldAttribute('special', 'type', 'hidden');
+				}
+
+				if (!$params->get('show_emailformat'))
+				{
 					$this->form->setFieldAttribute('emailformat', 'type', 'hidden');
 				}
 				else
@@ -223,27 +253,48 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$this->obligation['firstname']  	= $params->get('firstname_field_obligation');
 				$this->obligation['special']	    = $params->get('special_field_obligation');
 				$this->obligation['special_label']	= JText::_($params->get('special_label'));
-				if ($params->get('name_field_obligation')) 		$this->form->setFieldAttribute('name', 'required', 'true');
-				if ($params->get('firstname_field_obligation'))	$this->form->setFieldAttribute('firstname', 'required', 'true');
-				if ($params->get('special_field_obligation'))	$this->form->setFieldAttribute('special', 'required', true);
+				if ($params->get('name_field_obligation'))
+				{
+					$this->form->setFieldAttribute('name', 'required', 'true');
+				}
+
+				if ($params->get('firstname_field_obligation'))
+				{
+					$this->form->setFieldAttribute('firstname', 'required', 'true');
+				}
+
+				if ($params->get('special_field_obligation'))
+				{
+					$this->form->setFieldAttribute('special', 'required', true);
+				}
 
 				// Set label and description/tooltip for additional field
-				if ($params->get('special_desc') != '') 		$this->form->setFieldAttribute('special', 'description', $params->get('special_desc'));
-				if ($params->get('special_label') != '') 		$this->form->setFieldAttribute('special', 'label', $params->get('special_label'));
+				if ($params->get('special_desc') != '')
+				{
+					$this->form->setFieldAttribute('special', 'description', $params->get('special_desc'));
+				}
+
+				if ($params->get('special_label') != '')
+				{
+					$this->form->setFieldAttribute('special', 'label', $params->get('special_label'));
+				}
 
 				$this->addToolbar();
 		}
+
 		parent::display($tpl);
+
+		return $this;
 	}
 
 	/**
 	 * View Import Forms
 	 *
-	 * @access	private
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	private function _displayImportForm()
+	private function displayImportForm()
 	{
 		$app		= JFactory::getApplication();
 		$params 	= JComponentHelper::getParams('com_bwpostman');
@@ -266,20 +317,29 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 		// Get general import data from the session (fileformat, filename ...)
 		$import_general_data = $session->get('import_general_data');
-		if(isset($import_general_data) && is_array($import_general_data)) $import = $import_general_data;
+		if(isset($import_general_data) && is_array($import_general_data))
+		{
+			$import = $import_general_data;
+		}
 
 		// get the fileformat select list for the layouts import1 and import2
-		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList(isset ($import['fileformat']) ? $import['fileformat'] : '');
+		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList(isset($import['fileformat']) ? $import['fileformat'] : '');
 
 		// Get the csv-delimiter select list for the layouts import1 and import2
 		// Delimiter which is stored in the session
-		if (isset($import['delimiter'])) $session_delimiter = $import['delimiter'];
+		if (isset($import['delimiter']))
+		{
+			$session_delimiter = $import['delimiter'];
+		}
 
 		$lists['delimiter']	= BwPostmanHTMLHelper::getDelimiterList($session_delimiter);
 
 		// Get the csv-enclosure select list for the layouts import1 and import2
 		// Enclosure which is stored in the session
-		if (isset($import['enclosure'])) $session_enclosure = $import['enclosure'];
+		if (isset($import['enclosure']))
+		{
+			$session_enclosure = $import['enclosure'];
+		}
 
 		$lists['enclosure']	= BwPostmanHTMLHelper::getEnclosureList($session_enclosure);
 
@@ -288,8 +348,16 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 		// Build the select list for the importfile fields from the session object for the layout import2
 		$import_fields = $session->get('import_fields');
-		if (isset($import_fields)) {
-			$lists['import_fields']	= JHtml::_('select.genericlist', $import_fields, 'import_fields[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
+		if (isset($import_fields))
+		{
+			$lists['import_fields']	= JHtml::_(
+				'select.genericlist',
+				$import_fields,
+				'import_fields[]',
+				'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 260px;"',
+				'value',
+				'text'
+			);
 		}
 
 		// Get the emailformat select list for the layout import2
@@ -314,11 +382,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	/**
 	 * View Export Form
 	 *
-	 * @access	private
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	private function _displayExportForm()
+	private function displayExportForm()
 	{
 		$app = JFactory::getApplication();
 
@@ -333,7 +401,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$lists['enclosure']		= BwPostmanHTMLHelper::getEnclosureList();
 
 		// We need a RAW-view for the export function
-		$uri->setVar('format','raw');
+		$uri->setVar('format', 'raw');
 
 		// Save a reference into view
 		$this->lists            = $lists;
@@ -346,12 +414,13 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	/**
 	 * View Validation Form
 	 *
-	 * @access	private
 	 * @param 	string $tpl Template
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	private function _displayValidationForm($tpl)
+	private function displayValidationForm($tpl)
 	{
 		$session 	= JFactory::getSession();
 		$uri		= JUri::getInstance();
@@ -360,8 +429,10 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		// Get the result data from the session
 		$validation_res = $session->get('validation_res');
 		$row            = new stdClass();
-		if (isset($validation_res) && (is_array($validation_res))) {
-			foreach ($validation_res AS $key => $value) {
+		if (isset($validation_res) && (is_array($validation_res)))
+		{
+			foreach ($validation_res AS $key => $value)
+			{
 				$row->$key = $value;
 			}
 		}
@@ -386,6 +457,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	/**
 	 * Add the page title, styles and toolbar.
 	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -454,6 +526,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				else {
 					$title	= (JText::_('COM_BWPOSTMAN_SUB_DETAILS'));
 				}
+
 				$document->setTitle($title);
 
 				// Set toolbar title and items
@@ -461,11 +534,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 				// For new records, check the create permission.
-				if ($this->item->id < 1 && BwPostmanHelper::canAdd('subscriber')) {
+				if ($this->item->id < 1 && $this->permissions['subscriber']['create']) {
 					JToolbarHelper::save('subscriber.save');
 					JToolbarHelper::apply('subscriber.apply');
 					JToolbarHelper::cancel('subscriber.cancel');
-					JToolbarHelper::title($title .': <small>[ ' . JText::_('NEW').' ]</small>', 'plus');
+					JToolbarHelper::title($title . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 				}
 				else {
 					// Can't save the record if it's checked out.
@@ -476,22 +549,24 @@ class BwPostmanViewSubscriber extends JViewLegacy
 							JToolbarHelper::apply('subscriber.apply');
 						}
 					}
+
 					// Rename the cancel button for existing items
 					JToolbarHelper::cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
-					JToolbarHelper::title($title .': <small>[ ' . JText::_('EDIT').' ]</small>', 'edit');
+					JToolbarHelper::title($title . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 				}
 
 				$backlink 	= $_SERVER['HTTP_REFERER'];
 				$siteURL 	= $uri->base();
 
 				// If we came from the cover page we will show a back-button
-				if ($backlink == $siteURL.'index.php?option=com_bwpostman') {
+				if ($backlink == $siteURL . 'index.php?option=com_bwpostman') {
 					JToolbarHelper::spacer();
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 					JToolbarHelper::back();
 				}
 		}
+
 		JToolbarHelper::spacer();
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();

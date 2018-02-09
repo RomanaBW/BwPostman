@@ -34,9 +34,21 @@ JHtml::_('formbehavior.chosen', 'select');
 $jinput	= JFactory::getApplication()->input;
 
 // Split the result array into three arrays which contains errors and warnings which occurred during the import process
-if (isset ($this->result['mail_err'])) $mail_err = $this->result['mail_err'];
-if (isset($this->result['import_err'])) $import_err = $this->result['import_err'];
-if (isset($this->result['import_warn'])) $import_warn = $this->result['import_warn'];
+if (isset($this->result['mail_err']))
+{
+	$mail_err = $this->result['mail_err'];
+}
+
+if (isset($this->result['import_err']))
+{
+	$import_err = $this->result['import_err'];
+}
+
+if (isset($this->result['import_warn']))
+{
+	$import_warn = $this->result['import_warn'];
+}
+
 $option			= $jinput->getCmd('option');
 $fileformat		= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat');
 
@@ -52,7 +64,11 @@ else
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<?php
-	if ((empty($mail_err)) && (empty($import_err)) && (empty($import_warn))) echo '<div class="alert alert-success">' . JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS') . '</div>';
+	if ((empty($mail_err)) && (empty($import_err)) && (empty($import_warn)))
+	{
+		echo '<div class="alert alert-success">' . JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS') . '</div>';
+	}
+
 	if (!empty($mail_err))
 	{ // The subscribers were imported but the confirmation email couldn't be sent ?>
 		<fieldset class="adminform">
@@ -66,22 +82,25 @@ else
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($mail_err AS $mailing){ ?>
+				<?php
+				foreach ($mail_err AS $mailing){ ?>
 					<tr>
 						<td align="center"><?php echo $mailing['row']; ?></td>
 						<td><?php echo $mailing['email']; ?></td>
 						<td><?php echo $mailing['msg']; ?></td>
 					</tr>
-					<?php } ?>
+					<?php
+				} ?>
 				</tbody>
 			</table>
 		</fieldset>
 	<?php
 	}
+
 	// Email error
 	if (!empty($import_err))
 	{
-	// Subscriber couldn't be imported ?>
+		// Subscriber couldn't be imported ?>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR'); ?></legend>
 			<table class="adminlist table table-bordered">
@@ -93,13 +112,22 @@ else
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($import_err AS $error){ ?>
+				<?php
+				foreach ($import_err AS $error){ ?>
 					<tr>
 						<td align="center"><?php echo $error['row']; ?></td>
 						<td><?php echo $error['email']; ?></td>
-						<td><?php echo $error['msg']; if (isset($error['id'])) { echo " (ID: ".$error['id'].")"; } ?></td>
+						<td>
+							<?php
+							echo $error['msg'];
+							if (isset($error['id']))
+							{
+								echo " (ID: " . $error['id'] . ")";
+							} ?>
+						</td>
 					</tr>
-					<?php } ?>
+					<?php
+				} ?>
 				</tbody>
 			</table>
 		</fieldset>
@@ -108,7 +136,7 @@ else
 	// Import error
 	if (!empty($import_warn))
 	{
-	// The subscriber was imported but some data were changed ?>
+		// The subscriber was imported but some data were changed ?>
 		<fieldset class="adminform"><legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_WARNING'); ?></legend>
 			<table class="adminlist">
 				<thead>
@@ -119,18 +147,21 @@ else
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($import_warn AS $warning){ ?>
+				<?php
+				foreach ($import_warn AS $warning){ ?>
 					<tr>
 						<td align="center"><?php echo $warning['row']; ?></td>
 						<td><?php echo $warning['email']; ?></td>
 						<td><?php echo $warning['msg'];  ?></td>
 					</tr>
-					<?php } ?>
+					<?php
+				} ?>
 				</tbody>
 			</table>
 		</fieldset>
 	<?php
 	}
+
 	// Import warning ?>
 
 	<input type="hidden" name="task" value="" />

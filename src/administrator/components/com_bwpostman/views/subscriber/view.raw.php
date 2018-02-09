@@ -42,19 +42,32 @@ jimport('joomla.application.component.view');
 class BwPostmanViewSubscriber extends JViewLegacy
 {
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public function display ($tpl = Null)
+	public function display($tpl = null)
 	{
 		$app 	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('subscriber'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['subscriber'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUBS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -92,12 +105,13 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		{
 			$appWeb->setHeader('Content-Disposition', "attachment; filename=\"$filename.xml\"", true);
 		}
+
 		$appWeb->setHeader('Expires', gmdate('D, d M Y H:i:s') . ' GMT', true);
 		$appWeb->setHeader('Pragma', 'no-cache', true);
 
 		if ($user_browser == "msie")
 		{
-			$appWeb->setHeader('Cache-Control','must-revalidate, post-check=0, pre-check=0', true);
+			$appWeb->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true);
 			$appWeb->setHeader('Pragma', 'public', true);
 		}
 
@@ -113,5 +127,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		// Get the export data
 		$model = $this->getModel('subscriber');
 		echo $model->export($post);
+
+		return $this;
 	}
 }

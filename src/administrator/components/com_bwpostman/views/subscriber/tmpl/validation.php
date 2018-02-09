@@ -57,11 +57,15 @@ $option = $jinput->getCmd('option');
 				<td><?php echo $res_row['firstname']; ?></td>
 				<td><?php echo $res_row['email']; ?></td>
 				<td><?php
-				if ($res_row['result'] == 1) {
+				if ($res_row['result'] == 1)
+				{
 					echo "$image_pos ";
-				} else {
+				}
+				else
+				{
 					echo "$image_neg ";
 				}
+
 				echo $res_row['result_txt'];
 				?></td>
 			</tr>

@@ -50,7 +50,9 @@ $option	= $jinput->getCmd('option');
 					<tr class="bwptable">
 						<td width="250" align="right" class="key">
 							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?>"><?php echo $image; ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?>">
+								<?php echo $image; ?>
+							</span>
 						</td>
 						<td class="bwptable">
 							<div class="bwpmailformat">
@@ -61,34 +63,50 @@ $option	= $jinput->getCmd('option');
 					<tr class="importfile">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>"><?php echo $image; ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
+								<?php echo $image; ?>
+							</span>
 						</td>
 						<td>
-							<input type="file" name="importfile" id="importfile" <?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?> />
+							<input type="file" name="importfile" id="importfile"
+								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?> />
 						</td>
 					</tr>
 					<tr class="delimiter">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>"><?php echo $image; ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
+								<?php echo $image; ?>
+							</span>
 						</td>
 						<td><?php echo $this->lists['delimiter'];?></td>
 					</tr>
 					<tr class="enclosure">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>"><?php echo $image; ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
+								<?php echo $image; ?>
+							</span>
 						</td>
 						<td><?php echo $this->lists['enclosure'];?></td>
 					</tr>
 					<tr class="caption">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>"><?php echo $image; ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
+								<?php echo $image; ?>
+							</span>
 						</td>
 						<td>
 							<input type="checkbox" id="caption" name="caption" title="caption"
-								<?php if (isset ($this->import['caption'])) { if ($this->import['caption'] == 1) echo "checked"; } ?>
+								<?php
+								if (isset($this->import['caption']))
+								{
+									if ($this->import['caption'] == 1)
+									{
+										echo "checked";
+									}
+								} ?>
 							/>
 						</td>
 					</tr>
@@ -96,7 +114,8 @@ $option	= $jinput->getCmd('option');
 						<td width="250" align="center" class="key">
 							<input type="button" class="btn btn-success" name="submitbutton" id=""
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>
-										onclick="Joomla.submitbutton('subscribers.prepareImport');" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
+										onclick="Joomla.submitbutton('subscribers.prepareImport');"
+										value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
 							/>
 						</td>
 					</tr>

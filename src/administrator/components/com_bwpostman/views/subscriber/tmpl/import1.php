@@ -79,15 +79,15 @@ JHtml::_('behavior.keepalive');
 		{
 			if(element.options[i].selected == true)
 			{
-		   		if(i != 0)
-			    {
-			    	var temp = new Option(element.options[i-1].text,element.options[i-1].value);
-				    var temp2 = new Option(element.options[i].text,element.options[i].value);
-				    element.options[i-1] = temp2;
-				    element.options[i-1].selected = true;
-				    element.options[i] = temp;
-		   		}
-		 	}
+				if(i != 0)
+				{
+					var temp = new Option(element.options[i-1].text,element.options[i-1].value);
+					var temp2 = new Option(element.options[i].text,element.options[i].value);
+					element.options[i-1] = temp2;
+					element.options[i-1].selected = true;
+					element.options[i] = temp;
+				}
+			}
 		}
 	}
 
@@ -97,15 +97,15 @@ JHtml::_('behavior.keepalive');
 		{
 			if(element.options[i].selected == true)
 			{
-		   		if(i != (element.options.length - 1))
-			    {
-		     		var temp = new Option(element.options[i+1].text,element.options[i+1].value);
-		     		var temp2 = new Option(element.options[i].text,element.options[i].value);
-		     		element.options[i+1] = temp2;
-		     		element.options[i+1].selected = true;
-		     		element.options[i] = temp;
-		   		}
-		 	}
+				if(i != (element.options.length - 1))
+				{
+					var temp = new Option(element.options[i+1].text,element.options[i+1].value);
+					var temp2 = new Option(element.options[i].text,element.options[i].value);
+					element.options[i+1] = temp2;
+					element.options[i+1].selected = true;
+					element.options[i] = temp;
+				}
+			}
 		}
 	}
 
@@ -147,15 +147,48 @@ JHtml::_('behavior.keepalive');
 					?>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></td>
-						<td><?php if ($this->import['delimiter'] == '\t') { echo "Tabulator"; } elseif ($this->import['delimiter'] == ' ') { echo "Space"; } else {echo $this->import['delimiter'];} ?></td>
+						<td>
+							<?php
+							if ($this->import['delimiter'] == '\t')
+							{
+								echo "Tabulator";
+							}
+							elseif ($this->import['delimiter'] == ' ')
+							{
+								echo "Space";
+							}
+							else
+							{
+								echo $this->import['delimiter'];
+							} ?></td>
 					</tr>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></td>
-						<td><?php if ($this->import['enclosure'] == '') echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION'); else echo $this->import['enclosure']; ?></td>
+						<td>
+							<?php
+							if ($this->import['enclosure'] == '')
+							{
+								echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION');
+							}
+							else
+							{
+								echo $this->import['enclosure'];
+							} ?>
+						</td>
 					</tr>
 					<tr>
 						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></td>
-						<td><?php if (empty($this->import['caption'])) { echo JText::_('COM_BWPOSTMAN_NO'); } else { echo JText::_('COM_BWPOSTMAN_YES');} ?></td>
+						<td>
+							<?php
+							if (empty($this->import['caption']))
+							{
+								echo JText::_('COM_BWPOSTMAN_NO');
+							}
+							else
+							{
+								echo JText::_('COM_BWPOSTMAN_YES');
+							} ?>
+						</td>
 					</tr>
 				<?php
 				}
@@ -173,16 +206,25 @@ JHtml::_('behavior.keepalive');
 						<tr>
 							<td width="150" align="right" class="key" rowspan="2"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS'); ?>
 								<br />
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
 							</td>
 							<td><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
 								&nbsp;
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
 							</td>
 							<td>&nbsp;</td>
 							<td><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS'); ?>
 								&nbsp;
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
 							</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
@@ -190,18 +232,23 @@ JHtml::_('behavior.keepalive');
 						<tr>
 							<td valign="top" width="180"><?php echo $this->lists['db_fields']; ?>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-								<input class="btn btn-small" type="button" onclick="removeOptions(db_fields);" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" /> </span>
+								<input class="btn btn-small" type="button" onclick="removeOptions(db_fields);"
+										value="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
+								</span>
 							</td>
 							<td width="20" align="center"><strong>=</strong></td>
 							<td valign="top" width="280"><?php echo $this->lists['import_fields']; ?>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
-									<input class="btn btn-small" type="button" onclick="moveUp(document.getElementById('import_fields'));" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
+									<input class="btn btn-small" type="button" onclick="moveUp(document.getElementById('import_fields'));"
+											value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
 								</span>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
-									<input class="btn btn-small" type="button" onclick="moveDown(document.getElementById('import_fields'));" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
+									<input class="btn btn-small" type="button" onclick="moveDown(document.getElementById('import_fields'));"
+											value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
 								</span>
 								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-									<input class="btn btn-small" type="button" onclick="removeOptions(import_fields);" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
+									<input class="btn btn-small" type="button" onclick="removeOptions(import_fields);"
+											value="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
 								</span>
 							</td>
 							<td>&nbsp;</td>
@@ -216,14 +263,27 @@ JHtml::_('behavior.keepalive');
 							<div class="well well-small">
 								<fieldset class="adminform">
 									<legend>
-										<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>"><?php echo $image; ?></span>
+										<span class="editlinktip hasTip hasTooltip"
+												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
+											<?php echo $image; ?>
+										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
 									</legend>
 									<div class="row-fluid clearfix">
 										<?php
-											$ml_available	= $this->form->getInput('ml_available');
-		 									if (!empty($ml_available)) echo $this->form->getInput('ml_available');
-											else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>';
+										$ml_available	= $this->form->getInput('ml_available');
+										if (!empty($ml_available))
+										{
+											echo $this->form->getInput('ml_available');
+										}
+										else
+										{ ?>
+											<div class="width-50 fltlft span6">
+												<label class="mailinglist_label noclear checkbox">
+													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+												</label>
+											</div><?php
+										}
 										?>
 									</div>
 								</fieldset>
@@ -234,15 +294,28 @@ JHtml::_('behavior.keepalive');
 							<div class="well well-small">
 								<fieldset class="adminform">
 									<legend>
-										<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>"><?php echo $image; ?></span>
+										<span class="editlinktip hasTip hasTooltip"
+												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
+											<?php echo $image; ?>
+										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
 									</legend>
 									<div class="row-fluid clearfix">
 										<?php
-											$ml_unavailable	= $this->form->getInput('ml_unavailable');
+										$ml_unavailable	= $this->form->getInput('ml_unavailable');
 
-											if (!empty($ml_unavailable)) { echo $this->form->getInput('ml_unavailable'); }
-											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; }
+										if (!empty($ml_unavailable))
+										{
+											echo $this->form->getInput('ml_unavailable');
+										}
+										else
+										{ ?>
+											<div class="width-50 fltlft span6">
+												<label class="mailinglist_label noclear checkbox">
+													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+												</label>
+											</div><?php
+										}
 										?>
 									</div>
 								</fieldset>
@@ -253,15 +326,28 @@ JHtml::_('behavior.keepalive');
 							<div class="well well-small">
 								<fieldset class="adminform">
 									<legend>
-										<span class="editlinktip hasTip hasTooltip"	title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>"><?php echo $image; ?></span>
+										<span class="editlinktip hasTip hasTooltip"
+												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+											<?php echo $image; ?>
+										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
 									</legend>
 									<div class="row-fluid clearfix">
 										<?php
-											$ml_intern	= $this->form->getInput('ml_intern');
-											if (!empty($ml_intern)) { echo $this->form->getInput('ml_intern'); }
-											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; }
-											?>
+										$ml_intern	= $this->form->getInput('ml_intern');
+										if (!empty($ml_intern))
+										{
+											echo $this->form->getInput('ml_intern');
+										}
+										else
+										{ ?>
+											<div class="width-50 fltlft span6">
+												<label class="mailinglist_label noclear checkbox">
+													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+												</label>
+											</div><?php
+										}
+										?>
 									</div>
 								</fieldset>
 							</div>
@@ -273,7 +359,10 @@ JHtml::_('behavior.keepalive');
 					<table class="admintable bwptable import">
 						<tr>
 							<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT'); ?>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE');?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE');?>">
+									<?php echo $image; ?>
+								</span>
 							</td>
 							<td><?php echo $this->lists['emailformat']; ?></td>
 						</tr>
@@ -281,7 +370,10 @@ JHtml::_('behavior.keepalive');
 					<table class="admintable bwptable import">
 						<tr>
 							<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>">
+									<?php echo $image; ?>
+								</span>
 							</td>
 							<td><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></td>
 						</tr>
@@ -291,7 +383,12 @@ JHtml::_('behavior.keepalive');
 			<table class="admintable bwptable import">
 				<tr>
 					<td width="250" align="center" class="key"><input type="button" class="btn btn-success"
-						onclick="if(check()){selectAllOptions(document.adminForm['db_fields[]']);selectAllOptions(document.adminForm['import_fields[]']);Joomla.submitbutton('subscribers.import');}"
+						onclick="if(check())
+						{
+							selectAllOptions(document.adminForm['db_fields[]']);
+							selectAllOptions(document.adminForm['import_fields[]']);
+							Joomla.submitbutton('subscribers.import');
+						}"
 						 value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON1'); ?>" />
 					</td>
 				</tr>

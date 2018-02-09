@@ -76,13 +76,13 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 
 		var form = document.adminForm;
 
-	   	cb = document.getElementById('confirm');
+		cb = document.getElementById('confirm');
 
-	    // Does the checkbox 'confirm' exist?
-	    if(cb == null)
-	    {
-	        return;
-	    }
+		// Does the checkbox 'confirm' exist?
+		if(cb == null)
+		{
+			return;
+		}
 
 		if (form.jform_confirm.checked == false)
 		{
@@ -94,15 +94,20 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 
 <div id="bwp_editform">
 	<?php
-		if ($this->queueEntries)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
- 		}
+	if ($this->queueEntries)
+	{
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
-				<legend><?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_SUB') : JText::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id); ?></legend>
+				<legend>
+					<?php
+					echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_SUB') : JText::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id);
+					?>
+				</legend>
 				<div class="well well-small">
 					<div class="width-60 fltlft span8 control-group">
 						<ul class="adminformlist unstyled">
@@ -199,22 +204,37 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 				<div class="width-100 fltlft row-fluid">
 					<fieldset class="adminform">
 						<legend>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>"><?php echo $image; ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
+								<?php echo $image; ?>
+							</span>
 							<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE'); ?></span>
 						</legend>
 						<div class="width-33 fltlft span4">
 							<div class="well well-small">
 								<fieldset class="adminform">
 									<legend>
-										<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>"><?php echo $image; ?></span>
+										<span class="editlinktip hasTip hasTooltip"
+												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
+											<?php echo $image; ?>
+										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
 									</legend>
 									<div class="row-fluid clearfix">
 										<?php
-											$ml_available	= $this->form->getInput('ml_available');
+										$ml_available	= $this->form->getInput('ml_available');
 
-											if (!empty($ml_available)) echo $this->form->getInput('ml_available');
-											else echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>';
+										if (!empty($ml_available))
+										{
+											echo $this->form->getInput('ml_available');
+										}
+										else
+										{ ?>
+											<div class="width-50 fltlft span6">
+												<label class="mailinglist_label noclear checkbox">
+													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+												</label>
+											</div><?php
+										}
 										?>
 									</div>
 								</fieldset>
@@ -225,15 +245,28 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 							<div class="well well-small">
 								<fieldset class="adminform">
 									<legend>
-										<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>"><?php echo $image; ?></span>
+										<span class="editlinktip hasTip hasTooltip"
+												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
+											<?php echo $image; ?>
+										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
 									</legend>
 									<div class="row-fluid clearfix">
 										<?php
-											$ml_unavailable	= $this->form->getInput('ml_unavailable');
+										$ml_unavailable	= $this->form->getInput('ml_unavailable');
 
-											if (!empty($ml_unavailable)) { echo $this->form->getInput('ml_unavailable'); }
-											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; }
+										if (!empty($ml_unavailable))
+										{
+											echo $this->form->getInput('ml_unavailable');
+										}
+										else
+										{ ?>
+											<div class="width-50 fltlft span6">
+												<label class="mailinglist_label noclear checkbox">
+													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+												</label>
+											</div><?php
+										}
 										?>
 									</div>
 								</fieldset>
@@ -244,15 +277,28 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 							<div class="well well-small">
 								<fieldset class="adminform">
 									<legend>
-										<span class="editlinktip hasTip hasTooltip"	title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>"><?php echo $image; ?></span>
+										<span class="editlinktip hasTip hasTooltip"
+												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+											<?php echo $image; ?>
+										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
 									</legend>
 									<div class="row-fluid clearfix">
 										<?php
-											$ml_intern	= $this->form->getInput('ml_intern');
+										$ml_intern	= $this->form->getInput('ml_intern');
 
-											if (!empty($ml_intern)) { echo $this->form->getInput('ml_intern'); }
-											else { echo '<div class="width-50 fltlft span6"><label class="mailinglist_label noclear checkbox">'. JText::_('COM_BWPOSTMAN_NO_DATA') .'</label></div>'; }
+										if (!empty($ml_intern))
+										{
+											echo $this->form->getInput('ml_intern');
+										}
+										else
+										{ ?>
+											<div class="width-50 fltlft span6">
+												<label class="mailinglist_label noclear checkbox">
+													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+												</label>
+											</div><?php
+										}
 										?>
 									</div>
 								</fieldset>

@@ -100,6 +100,15 @@ class BwPostmanViewTemplates extends JViewLegacy
 	public $total;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
@@ -123,7 +132,9 @@ class BwPostmanViewTemplates extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('template'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['template'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -145,6 +156,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+
+		return $this;
 	}
 
 
@@ -191,22 +204,22 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPLS'), 'picture');
 
 				// Set toolbar items for the page
-				if (BwPostmanHelper::canAdd('template'))
+				if ($this->permissions['template']['create'])
 				{
 					JToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
 				}
 
-				if (BwPostmanHelper::canAdd('template'))
+				if ($this->permissions['template']['create'])
 				{
 					JToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
 				}
 
-				if (BwPostmanHelper::canEdit('template'))
+				if ($this->permissions['template']['edit'] || $this->permissions['template']['edit.own'])
 				{
 					JToolbarHelper::editList('template.edit');
 				}
 
-				if (BwPostmanHelper::canEditState('template', 0))
+				if ($this->permissions['template']['edit.state'])
 				{
 					JToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
 					JToolbarHelper::publishList('templates.publish');
@@ -216,14 +229,14 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
 
-				if (BwPostmanHelper::canArchive('template', array(), true))
+				if ($this->permissions['template']['archive'])
 				{
 					JToolbarHelper::archiveList('template.archive');
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 				}
 
-				if (BwPostmanHelper::canManage())
+				if ($this->permissions['template']['admin'])
 				{
 					JToolbarHelper::checkin('templates.checkin');
 					JToolbarHelper::divider();

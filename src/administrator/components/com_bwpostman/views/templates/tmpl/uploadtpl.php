@@ -51,7 +51,9 @@ $option	= $jinput->getCmd('option');
 						<tr>
 							<td align="right" class="key">
 								<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?></span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>"><?php echo $image; ?></span>
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
 							</td>
 							<td>
 								<input type="file" name="uploadfile" id="uploadfile" />
@@ -60,7 +62,8 @@ $option	= $jinput->getCmd('option');
 						<tr>
 							<td width="250" align="center" class="key">
 								<input type="button" class="btn btn-success" name="submitbutton"
-									onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
+									onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';"
+									value="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
 							</td>
 						</tr>
 					</table>

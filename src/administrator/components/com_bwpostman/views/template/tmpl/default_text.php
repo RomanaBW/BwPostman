@@ -350,7 +350,8 @@ $options = array(
 					</p>
 					<iframe id="myIframe" name="myIframeHtml"
 							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
-							height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
+							height="800" width="100%" style="border: 1px solid #c2c2c2;">
+					</iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>

@@ -28,7 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -54,26 +54,39 @@ class BwPostmanViewTemplate extends JViewLegacy
 	protected $pre;
 
 	/**
-	 * Display
+	 * property to hold permissions as array
 	 *
-	 * @access	public
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
+	 * Display
 	 *
 	 * @param	string $tpl Template
 	 *
 	 * @since	1.1.0
 	 *
+	 * @throws Exception
+	 *
 	 * @return void
 	 */
 	public function display($tpl = null)
 	{
-		if (!BwPostmanHelper::canView('template'))
+		$app		= JFactory::getApplication();
+
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['template'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
 		// load template data and decode object
-		$pre =	JFactory::getApplication()->getUserState('com_bwpostman.edit.template.tpldata');
+		$pre = JFactory::getApplication()->getUserState('com_bwpostman.edit.template.tpldata');
 
 		$this->pre	= $pre;
 

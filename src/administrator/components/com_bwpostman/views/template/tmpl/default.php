@@ -232,7 +232,7 @@ $options = array(
 	if ($this->queueEntries)
 	{
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
- 	}
+	}
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
@@ -286,8 +286,9 @@ $options = array(
 						</button>
 					</p>
 					<iframe id="myIframe" name="myIframeHtml"
-							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
-							height="800" width="100%" style="border: 1px solid #c2c2c2;"></iframe>
+						src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
+						height="800" width="100%" style="border: 1px solid #c2c2c2;">
+					</iframe>
 				</div>
 				<div class="clr clearfix"></div>
 			</div>

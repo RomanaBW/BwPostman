@@ -150,6 +150,15 @@ class BwPostmanViewTemplate extends JViewLegacy
 	public $legalTagEnd = '';
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -167,7 +176,9 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-		if (!BwPostmanHelper::canView('template'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['template'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -254,7 +265,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		// Set toolbar title and items
 
 		// For new records, check the create permission.
-		if ($isNew && BwPostmanHelper::canAdd('template'))
+		if ($isNew && $this->permissions['template']['create'])
 		{
 			JToolbarHelper::save('template.save');
 			JToolbarHelper::apply('template.apply');
@@ -276,7 +287,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 			}
 
 			// If checked out, we can still copy
-			if (BwPostmanHelper::canAdd('template'))
+			if ($this->permissions['template']['create'])
 			{
 				JToolbarHelper::save2copy('template.save2copy');
 			}

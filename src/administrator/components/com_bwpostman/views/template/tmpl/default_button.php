@@ -33,9 +33,9 @@ echo '  <li><div class="clr clearfix"></div>';
 echo JHtml::_('tabs.start', 'buttons', array('startOffset' => 0));
 
 while ($i <= 5) :
-	$fieldSets = $this->form->getFieldsets('button'.$i);
+	$fieldSets = $this->form->getFieldsets('button' . $i);
 	foreach ($fieldSets as $name => $fieldSet) :
-		echo JHtml::_('tabs.panel', JText::_($fieldSet->label) . ' ' . $i, 'bpanel'.$i);
+		echo JHtml::_('tabs.panel', JText::_($fieldSet->label) . ' ' . $i, 'bpanel' . $i);
 		?>
 		<fieldset class="panelform">
 			<legend><?php echo $this->escape(JText::_($fieldSet->label)) . ' ' . $i; ?></legend>
@@ -56,4 +56,3 @@ endwhile;
 
 echo JHtml::_('tabs.end');
 echo '  </li>';
-?>

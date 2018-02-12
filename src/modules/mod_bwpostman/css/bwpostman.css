@@ -29,8 +29,7 @@
 
 #mod_bwpostman [class^="icon-"],
 #mod_bwpostman [class*=" icon-"] {
-	background-position:	14px 14px;
-	background-repeat:		no-repeat;
+	background :        	14px 14px no-repeat;
 	display:				inline-block;
 	height:					14px;
 	line-height:			14px;
@@ -92,8 +91,7 @@
 	-webkit-border-radius:	0 4px 4px 0;
 	-moz-border-radius:		0 4px 4px 0;
 	border-radius:			0 4px 4px 0;
-	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-	filter:					progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0, enabled=false);
 	*zoom:					1;
 	-webkit-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -129,8 +127,7 @@
 	-webkit-border-radius:	0 4px 4px 0;
 	-moz-border-radius:		0 4px 4px 0;
 	border-radius:			0 4px 4px 0;
-	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-	filter:					progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0, enabled=false);
 	*zoom:					1;
 	-webkit-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);

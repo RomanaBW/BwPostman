@@ -29,7 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 if (!JComponentHelper::isEnabled('com_bwpostman')) {
-	JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_COMPONENT_NOT_INSTALLED'), 'error');
+	JFactory::getApplication()->enqueueMessage(
+		JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_COMPONENT_NOT_INSTALLED'),
+		'error'
+	);
 	return false;
 }
 
@@ -38,7 +41,7 @@ if (!JComponentHelper::isEnabled('com_bwpostman')) {
  *
  * @since       2.0.0
  */
-class plgBwPostmanPersonalize extends JPlugin
+class PlgBwPostmanPersonalize extends JPlugin
 {
 	/**
 	 * Database object
@@ -77,12 +80,12 @@ class plgBwPostmanPersonalize extends JPlugin
 		$gender = null;
 		// get gender
 		if ($context == 'com_bwpostman.send') {
-			$gender = $this->_getGenderFromSubscriberId($id);
+			$gender = $this->getGenderFromSubscriberId($id);
 		}
 		elseif ($context == 'com_bwpostman.view') {
 			if ($id > 0)
 			{
-				$gender = $this->_getGenderFromUserId($id);
+				$gender = $this->getGenderFromUserId($id);
 			}
 		}
 
@@ -92,24 +95,27 @@ class plgBwPostmanPersonalize extends JPlugin
 		$matches 		= array();
 		$count_matches	= preg_match_all($regex_all, $body, $matches, PREG_OFFSET_CAPTURE | PREG_PATTERN_ORDER);
 
-		for($j = 0; $j < $count_matches; $j++) {
+		for($j = 0; $j < $count_matches; $j++)
+		{
 			// Get plugin parameters
 			$bwpm_personalize	= $matches[0][$j][0];
 			preg_match($regex_one, $bwpm_personalize, $bwpm_personalize_parts);
 
-			$gender_strings = $this->_extractGenderStrings($bwpm_personalize_parts);
+			$gender_strings = $this->extractGenderStrings($bwpm_personalize_parts);
 
 			// if gender not set replace with last parameter
 			if ($gender === null)
 			{
 				$gender = 2;
 			}
+
 			// set replace value depending on gender
 			$replace_value = $gender_strings[$gender];
 
 			// modify newsletter body
 			$body = preg_replace($regex_all, $replace_value, $body, 1);
 		}
+
 		return true;
 	}
 
@@ -122,7 +128,7 @@ class plgBwPostmanPersonalize extends JPlugin
 	 *
 	 * @since       2.0.0
 	 */
-	protected function _getGenderFromSubscriberId($id)
+	protected function getGenderFromSubscriberId($id)
 	{
 		$_db 	= $this->db;
 		$query  = $this->db->getQuery(true);
@@ -146,7 +152,7 @@ class plgBwPostmanPersonalize extends JPlugin
 	 *
 	 * @since       2.0.0
 	 */
-	protected function _getGenderFromUserId($id)
+	protected function getGenderFromUserId($id)
 	{
 		$_db   = $this->db;
 		$query = $this->db->getQuery(true);
@@ -170,7 +176,7 @@ class plgBwPostmanPersonalize extends JPlugin
 	 *
 	 * @since       2.0.0
 	 */
-	protected function _extractGenderStrings($bwpm_personalize_parts)
+	protected function extractGenderStrings($bwpm_personalize_parts)
 	{
 		$parts = explode("|", $bwpm_personalize_parts[2]);
 		array_shift($parts);
@@ -190,14 +196,13 @@ class plgBwPostmanPersonalize extends JPlugin
 				$gender_string[] = $bwpm_personalize_parts[0];
 			}
 		}
+
 		// if personalization parameters are incomplete, fill with original string (do nothing)
 		while (count($gender_string) < 3)
 		{
 			$gender_string[] = $bwpm_personalize_parts[0];
 		}
 
-
 		return $gender_string;
 	}
 }
-

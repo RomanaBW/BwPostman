@@ -29,7 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 if (!JComponentHelper::isEnabled('com_bwpostman')) {
-	JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_DEMO_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_DEMO_COMPONENT_NOT_INSTALLED'), 'error');
+	JFactory::getApplication()->enqueueMessage(
+		JText::_('PLG_BWPOSTMAN_PLUGIN_DEMO_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_DEMO_COMPONENT_NOT_INSTALLED'),
+		'error'
+	);
 	return false;
 }
 

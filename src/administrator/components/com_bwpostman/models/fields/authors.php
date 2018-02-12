@@ -34,8 +34,8 @@ JFormHelper::loadFieldClass('list');
  *
  * @since       1.0.8
  */
-class JFormFieldAuthors extends JFormFieldList {
-
+class JFormFieldAuthors extends JFormFieldList
+{
 	/**
 	 * property to hold authors
 	 *
@@ -49,6 +49,8 @@ class JFormFieldAuthors extends JFormFieldList {
 	 * Method to get the field options.
 	 *
 	 * @return  array  The field option objects.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.8
 	 */
@@ -70,7 +72,7 @@ class JFormFieldAuthors extends JFormFieldList {
 		$query->from('#__users AS u');
 		$query->where('u.id IN (' . $sub_query . ')');
 
-		$_db->setQuery ($query);
+		$_db->setQuery($query);
 
 		try
 		{
@@ -83,7 +85,7 @@ class JFormFieldAuthors extends JFormFieldList {
 
 		$parent = new stdClass;
 		$parent->value	= '';
-		$parent->text	= '- '. JText::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') .' -';
+		$parent->text	= '- ' . JText::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') . ' -';
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

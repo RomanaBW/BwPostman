@@ -68,7 +68,7 @@ class JFormFieldMyColor extends JFormFieldColor
 
 		$class = $classes ? ' class="' . trim($classes) . '"' : '';
 
-		return '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+		return '<input type="text" name="' . $this->name . '" id="' . $this->id . '" value="'
 			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $class . $size . $disabled . $onchange . $onblur . '/>';
 	}
 }

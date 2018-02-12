@@ -57,12 +57,14 @@ class JFormFieldAvailableContent extends JFormFieldList
 	{
 		$return = '<label for="' . $this->id . '" class="available_content_label">' . JText::_($this->element['label']) . '</label>';
 		return $return;
- 	}
+	}
 
 	/**
 	 * Method to get the radio button field input markup.
 	 *
 	 * @return  string  The field input markup.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -80,6 +82,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		{
 			$attr .= ' disabled="disabled"';
 		}
+
 		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 		$attr .= $this->multiple ? ' multiple="multiple"' : '';
 
@@ -111,6 +114,8 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 *
 	 * @return	array	The field option objects.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function getOptions()
@@ -141,9 +146,9 @@ class JFormFieldAvailableContent extends JFormFieldList
 	/**
 	 * Method to get the available content items which can be used to compose a newsletter
 	 *
-	 * @access	public
-	 *
 	 * @return	array
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
@@ -164,7 +169,9 @@ class JFormFieldAvailableContent extends JFormFieldList
 		}
 
 		if (is_array($selected_content))
-			$selected_content	= implode(',',$selected_content);
+		{
+			$selected_content	= implode(',', $selected_content);
+		}
 
 		// Get available content which is categorized
 		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id'));
@@ -173,9 +180,16 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('c'));
 		$query->where($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' > ' . $_db->quote('0'));
 		// params - get only not excluded categories
-		if ($exc_cats) $query->where('(' . $_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN (' .implode(',', $exc_cats) . ') AND ' . $_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' NOT IN (' .implode(',', $exc_cats) . '))');
+		if ($exc_cats)
+		{
+			$query->where(
+				'(' . $_db->quoteName('c') . '.' . $_db->quoteName('id')
+				. ' NOT IN (' . implode(',', $exc_cats) . ') AND ' . $_db->quoteName('c') . '.' . $_db->quoteName('parent_id')
+				. ' NOT IN (' . implode(',', $exc_cats) . '))'
+			);
+		}
 
-		$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') .' ASC');
+		$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') . ' ASC');
 
 		$_db->setQuery($query);
 
@@ -188,13 +202,18 @@ class JFormFieldAvailableContent extends JFormFieldList
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
+		$rows_list = array();
+
 		foreach($categories as $category)
 		{
-			$rows_list  = array();
+			$rows_list = array();
 
 			$query	= $_db->getQuery(true);
 			$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
-			$query->select('CONCAT(' . $_db->quoteName('cc') . '.' . $_db->quoteName('path') . ', " = ",' . $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS ' . $_db->quoteName('text'));
+			$query->select(
+				'CONCAT(' . $_db->quoteName('cc') . '.' . $_db->quoteName('path') . ', " = ",'
+				. $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS ' . $_db->quoteName('text')
+			);
 			$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('c'));
 			$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc'));
 
@@ -204,11 +223,13 @@ class JFormFieldAvailableContent extends JFormFieldList
 			$query->where($_db->quoteName('cc') . '.' . $_db->quoteName('parent_id') . ' = ' . (int) $category->parent);
 
 			if ($selected_content)
-				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
+			{
+				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN (' . $selected_content . ')');
+			}
 
-			$query->order($_db->quoteName('cc') . '.' . $_db->quoteName('path').' ASC');
-			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('created').' DESC');
-			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title').' ASC');
+			$query->order($_db->quoteName('cc') . '.' . $_db->quoteName('path') . ' ASC');
+			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('created') . ' DESC');
+			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') . ' ASC');
 
 			$_db->setQuery($query);
 			try
@@ -220,24 +241,31 @@ class JFormFieldAvailableContent extends JFormFieldList
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
-			if(sizeof($rows_list) > 0)
+			if(count($rows_list) > 0)
+			{
 				$options	= array_merge($options, $rows_list);
+			}
 		}
 
 		// Get available content which is uncategorized
 		$query	= $_db->getQuery(true);
 		$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
-		$query->select('CONCAT("' . JText::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT_UNCATEGORIZED') . ' = ",' .  $_db->quoteName('title') . ') AS ' . $_db->quoteName('text'));
+		$query->select(
+			'CONCAT("' . JText::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT_UNCATEGORIZED') . ' = ",'
+			. $_db->quoteName('title') . ') AS ' . $_db->quoteName('text')
+		);
 		$query->from($_db->quoteName('#__content'));
 
 		$query->where($_db->quoteName('state') . ' > ' . (int) 0);
 		$query->where($_db->quoteName('catid') . ' = ' . (int) 0);
 
 		if ($selected_content)
-			$query->where($_db->quoteName('id') . ' NOT IN ('.$selected_content.')');
+		{
+			$query->where($_db->quoteName('id') . ' NOT IN (' . $selected_content . ')');
+		}
 
-		$query->order($_db->quoteName('created').' DESC');
-		$query->order($_db->quoteName('title').' ASC');
+		$query->order($_db->quoteName('created') . ' DESC');
+		$query->order($_db->quoteName('title') . ' ASC');
 
 		$_db->setQuery($query);
 		try
@@ -250,7 +278,10 @@ class JFormFieldAvailableContent extends JFormFieldList
 		}
 
 		// @ToDo: must there not stand $options?
-		if(sizeof($rows_list_uncat) > 0)	$options	= array_merge($rows_list, $rows_list_uncat);
+		if(count($rows_list_uncat) > 0)
+		{
+			$options	= array_merge($rows_list, $rows_list_uncat);
+		}
 
 		return $options;
 	}

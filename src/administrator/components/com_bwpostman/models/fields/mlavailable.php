@@ -49,15 +49,6 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	public $type = 'MlAvailable';
 
 	/**
-	 * The subscriber id to check for
-	 *
-	 * @var    int
-	 *
-	 * @since  1.0.1
-	 */
-	private $_subscriber_id = null;
-
-	/**
 	 * Method to get the field input markup.
 	 *
 	 * @return  string  The field input markup.
@@ -75,6 +66,8 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	 *
 	 * @return  string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.0.1
 	 */
 	public function getInput()
@@ -89,7 +82,6 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data');
 		$nl_id		= $app->getUserState('com_bwpostman.edit.newsletter.id', null);
 		$subs_id	= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
-
 
 		$disabled	= $this->element['disabled'] == 'true' ? true : false;
 		$readonly	= $this->element['readonly'] == 'true' ? true : false;
@@ -106,6 +98,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		{
 			$attributes .= 'class="inputbox" ';
 		}
+
 		$m = $this->element['multiple'];
 		if ($m)
 		{
@@ -124,6 +117,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		{
 			$attributes .= 'disabled="disabled"';
 		}
+
 		$options = (array) $this->getOptions();
 
 		if (is_object($item))
@@ -167,12 +161,17 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		foreach ($options as $option)
 		{
 			if (is_array($ml_select))
+			{
 				$selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
+			}
+
 			$i++;
 			$return	.= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
-			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]' . '" value="' . $option->value . '"' . $attributes . $selected . ' />';
-			$return	.= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">'. $option->title .'</span></label></p>';
+			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
+			$return	.= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
+			$return	.= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">' . $option->title . '</span></label></p>';
 		}
+
 		return $return;
 	}
 
@@ -181,6 +180,8 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -236,6 +237,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		{
 			$query->where($_db->quoteName('access') . ' = ' . (int) 1);
 		}
+
 		$query->order('title ASC');
 
 		$_db->setQuery($query);

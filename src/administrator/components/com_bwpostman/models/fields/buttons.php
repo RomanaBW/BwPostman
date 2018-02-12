@@ -40,13 +40,11 @@ class JFormFieldbuttons extends JFormField
 	/**
 	 * Element name
 	 *
-	 * @access	protected
-	 *
 	 * @var		string
 	 *
 	 * @since   1.0.8
-	*/
-	var	$_name = 'Subject';
+	 */
+	protected 	$name = 'Subject';
 
 	/**
 	 * Method to get the field input markup.
@@ -78,19 +76,19 @@ class JFormFieldbuttons extends JFormField
 				btn.fireEvent('click');
 			}";
 
-		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp;field='.$fieldName;
+		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp;field=' . $fieldName;
 		$doc->addScriptDeclaration($js);
 
 		JHtml::_('behavior.modal', 'a.modal');
 
 		// The active newsletter id field.
-		if (0 == (int)$this->value)
+		if (0 == (int) $this->value)
 		{
 			$value = '';
 		}
 		else
 		{
-			$value = (int)$this->value;
+			$value = (int) $this->value;
 		}
 
 		// class='required' for client side validation
@@ -101,8 +99,10 @@ class JFormFieldbuttons extends JFormField
 		}
 
 		$html  = '<span class="input-append">';
-		$html .= '<input type="text" class="input-medium" id="b_'.$fieldName.'" value="' . $newsletter->subject . '" disabled="disabled" size="35" />';
-		$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_BUTTON_LABEL') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+		$html .= '<input type="text" class="input-medium" id="b_' . $fieldName . '" value="' . $newsletter->subject . '"';
+		$html .= 'disabled="disabled" size="35" />';
+		$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_BUTTON_LABEL') . '"';
+		$html .= 'href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
 		$html .= "\n<input type=\"hidden\" id=\"a_$fieldName\" $class name=\"$fieldName\" value=\"$value\" />";
 
 		return $html;

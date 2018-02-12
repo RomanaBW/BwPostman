@@ -107,7 +107,7 @@ class JFormFieldAllMedia extends JFormField
 	/**
 	 * The previewWidth.
 	 *
-	 * @var    int
+	 * @var    integer
 	 *
 	 * @since  1.0.4
 	 */
@@ -116,7 +116,7 @@ class JFormFieldAllMedia extends JFormField
 	/**
 	 * The previewHeight.
 	 *
-	 * @var    int
+	 * @var    integer
 	 *
 	 * @since  1.0.4
 	 */
@@ -219,6 +219,8 @@ class JFormFieldAllMedia extends JFormField
 	 * Use attributes to identify specific created_by and asset_id fields
 	 *
 	 * @return  string  The field input markup.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.4
 	 */
@@ -363,8 +365,8 @@ class JFormFieldAllMedia extends JFormField
 			);
 
 			$img = JHtml::image($src, JText::_('JLIB_FORM_MEDIA_PREVIEW_ALT'), $imgattr);
-			$previewImg = '<div id="' . $this->id . '_preview_img"' . ($src ? '' : ' style="display:none"') . '>' . $img . '</div>';
-			$previewImgEmpty = '<div id="' . $this->id . '_preview_empty"' . ($src ? ' style="display:none"' : '') . '>'
+			$previewImg = '<div id="' . $this->id . '_preview_img" ' . ($src ? '' : ' style="display:none"') . '>' . $img . '</div>';
+			$previewImgEmpty = '<div id="' . $this->id . '_preview_empty" ' . ($src ? ' style="display:none"' : '') . '>'
 				. JText::_('JLIB_FORM_MEDIA_PREVIEW_EMPTY') . '</div>';
 
 			if ($showAsTooltip)
@@ -419,12 +421,16 @@ class JFormFieldAllMedia extends JFormField
 						: 'index.php?option=com_bwpostman&amp;view=media&amp;tmpl=component' . $asset_txt . '&amp;author='
 						. $this->form->getValue($this->authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
 				. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}, iframeOptions: {name: \'mediaFrame\', id: \'mediaFrame\'}}">';
-			$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a><a class="btn hasTooltip" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '" href="#" onclick="';
+			$html[] = JText::_(
+				'JLIB_FORM_BUTTON_SELECT'
+			)
+			. '</a><a class="btn hasTooltip" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '" href="#" onclick="';
 			$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
 			$html[] = 'return false;';
 			$html[] = '">';
 			$html[] = '<i class="icon-remove"></i></a>';
 		}
+
 		$html[] = '</div>';
 
 		return implode("\n", $html);

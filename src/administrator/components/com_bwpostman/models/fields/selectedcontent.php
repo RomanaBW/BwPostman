@@ -64,6 +64,8 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 *
 	 * @return  string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.0.1
 	 */
 	public function getInput()
@@ -102,6 +104,8 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 *
 	 * @return	array	The field option objects.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function getOptions()
@@ -135,12 +139,13 @@ class JFormFieldSelectedContent extends JFormFieldList
 
 		return $options;
 	}
+
 	/**
 	 * Method to get the available content items which can be used to compose a newsletter
 	 *
-	 * @access	public
-	 *
 	 * @return	array
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
@@ -159,9 +164,9 @@ class JFormFieldSelectedContent extends JFormFieldList
 		if ($selected_content)
 		{
 			if (!is_array($selected_content))
-				$selected_content = explode(',',$selected_content);
-
-			$selected_content_items = array();
+			{
+				$selected_content = explode(',', $selected_content);
+			}
 
 			// We do a foreach to protect our ordering
 			foreach ($selected_content as $value)
@@ -173,7 +178,10 @@ class JFormFieldSelectedContent extends JFormFieldList
 
 				$query	= $_db->getQuery(true);
 				$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id') . 'AS value');
-				$query->select('CONCAT((' . $subquery . '), " = ",' . $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS ' . $_db->quoteName('text'));
+				$query->select(
+					'CONCAT((' . $subquery . '), " = ",' . $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS '
+					. $_db->quoteName('text')
+				);
 				$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('c'));
 				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' = ' . (int) $value);
 
@@ -189,6 +197,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 				}
 			}
 		}
+
 		return $options;
 	}
 }

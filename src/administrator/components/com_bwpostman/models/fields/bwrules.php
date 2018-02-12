@@ -231,7 +231,9 @@ class JFormFieldBwRules extends JFormFieldRules
 				$html[] = '<select onchange="sendPermissions.call(this, event)" data-chosen="true" class="input-small novalidate"'
 					. ' name="' . $this->name . '[' . $action->name . '][' . $group->value . ']"'
 					. ' id="' . $this->id . '_' . $action->name	. '_' . $group->value . '"'
-					. ' title="' . strip_tags(JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->text))) . '">';
+					. ' title="' . strip_tags(
+						JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->text))
+					) . '">';
 
 				/**
 				 * Possible values:
@@ -243,19 +245,19 @@ class JFormFieldBwRules extends JFormFieldRules
 				// Get the actual setting for the action for this group.
 				$assetRule = $newItem === false ? $assetRules->allow($action->name, $group->value) : null;
 
-				// Build the dropdowns for the permissions sliders
+				// Build the dropdown for the permissions sliders
 
 				// The parent group has "Not Set", all children can rightly "Inherit" from that.
-				$html[] = '<option value=""' . ($assetRule === null ? ' selected="selected"' : '') . '>'
+				$html[] = '<option value="" ' . ($assetRule === null ? ' selected="selected"' : '') . '>'
 					. JText::_(empty($group->parent_id) && $isGlobalConfig ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
-				$html[] = '<option value="1"' . ($assetRule === true ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_ALLOWED')
+				$html[] = '<option value="1" ' . ($assetRule === true ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_ALLOWED')
 					. '</option>';
-				$html[] = '<option value="0"' . ($assetRule === false ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_DENIED')
+				$html[] = '<option value="0" ' . ($assetRule === false ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_DENIED')
 					. '</option>';
 
 				$html[] = '</select>&#160; ';
 
-				$html[] = '<span id="icon_' . $this->id . '_' . $action->name . '_' . $group->value . '"' . '></span>';
+				$html[] = '<span id="icon_' . $this->id . '_' . $action->name . '_' . $group->value . '"></span>';
 				$html[] = '</td>';
 
 				// Build the Calculated Settings column.

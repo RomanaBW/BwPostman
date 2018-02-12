@@ -57,14 +57,16 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 	 */
 	public function getLabel()
 	{
-          $return = JText::_($this->element['label']);
+		  $return = JText::_($this->element['label']);
 		  return $return;
- 	}
+	}
 
 	/**
 	 * Method to get the radio button field input markup.
 	 *
 	 * @return  string  The field input markup.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -91,6 +93,7 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		{
 			$attributes .= 'class="inputbox" ';
 		}
+
 		$m = $this->element['multiple'];
 		if ($m) {
 			$type = 'checkbox';
@@ -108,6 +111,7 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		{
 			$attributes .= 'disabled="disabled"';
 		}
+
 		$options = (array) $this->getOptions();
 
 		// Get item and selected mailinglists
@@ -157,12 +161,17 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		foreach ($options as $option)
 		{
 			if (is_array($ml_select))
+			{
 				$selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
+			}
+
 			$i++;
 			$return	.= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
-			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]' . '" value="' . $option->value . '"' . $attributes . $selected . ' />';
-			$return	.= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">'. $option->title .'</span></label></p>';
+			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
+			$return	.= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
+			$return	.= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">' . $option->title . '</span></label></p>';
 		}
+
 		return $return;
 	}
 
@@ -170,6 +179,8 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -224,6 +235,7 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 		{
 			$query->where($_db->quoteName('access') . ' > ' . (int) 1);
 		}
+
 		$query->order('title ASC');
 
 		$_db->setQuery($query);

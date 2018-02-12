@@ -34,8 +34,8 @@ JFormHelper::loadFieldClass('list');
  *
  * @since           1.2.0
  */
-class JFormFieldArcMailinglists extends JFormFieldList {
-
+class JFormFieldArcMailinglists extends JFormFieldList
+{
 	/**
 	 * property to hold archived mailing lists
 	 *
@@ -49,6 +49,8 @@ class JFormFieldArcMailinglists extends JFormFieldList {
 	 * Method to get the field options.
 	 *
 	 * @return	array  The field option objects.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */
@@ -68,7 +70,7 @@ class JFormFieldArcMailinglists extends JFormFieldList {
 		$query->leftJoin('#__bwpostman_mailinglists AS m ON m.id = nm.mailinglist_id');
 		$query->order('m.title');
 
-		$_db->setQuery ($query);
+		$_db->setQuery($query);
 
 		try
 		{

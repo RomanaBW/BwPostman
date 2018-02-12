@@ -34,8 +34,8 @@ JFormHelper::loadFieldClass('list');
  *
  * @since       1.2.0
  */
-class JFormFieldArcUsergroups extends JFormFieldList {
-
+class JFormFieldArcUsergroups extends JFormFieldList
+{
 	/**
 	 * property to hold archived user groups
 	 *
@@ -49,6 +49,8 @@ class JFormFieldArcUsergroups extends JFormFieldList {
 	 * Method to get the field options.
 	 *
 	 * @return	array  The field option objects.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */
@@ -68,7 +70,7 @@ class JFormFieldArcUsergroups extends JFormFieldList {
 		$query->leftJoin('#__usergroups AS u ON CONCAT("-", u.id) = nm.mailinglist_id');
 		$query->order('u.title');
 
-		$_db->setQuery ($query);
+		$_db->setQuery($query);
 
 		try
 		{

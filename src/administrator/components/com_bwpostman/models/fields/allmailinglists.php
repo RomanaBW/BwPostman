@@ -34,8 +34,8 @@ JFormHelper::loadFieldClass('list');
  *
  * @since
  */
-class JFormFieldAllMailinglists extends JFormFieldList {
-
+class JFormFieldAllMailinglists extends JFormFieldList
+{
 	/**
 	 * property to hold all mailing lists
 	 *
@@ -49,6 +49,8 @@ class JFormFieldAllMailinglists extends JFormFieldList {
 	 * Method to get the field options.
 	 *
 	 * @return  array  The field option objects.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.8
 	 */
@@ -64,7 +66,7 @@ class JFormFieldAllMailinglists extends JFormFieldList {
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
 
-		$_db->setQuery ($query);
+		$_db->setQuery($query);
 
 		try
 		{

@@ -53,6 +53,8 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	 *
 	 * @return  string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.2.0
 	 */
 	protected function getInput()
@@ -78,11 +80,13 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 
 		// note for old templates
 		if ($selected < 1)
+		{
 			$html[]	= JText::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
+		}
 
 		if (count($options) > 0)
 		{
-		// Build the radio field output.
+			// Build the radio field output.
 			foreach ($options as $i => $option)
 			{
 				// Initialize some option attributes.
@@ -98,15 +102,19 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 				$onclick	= !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 				$onchange	= !empty($option->onchange) ? ' onchange="' . $option->onchange . '"' : '';
 
-				$html[]		= '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
-				$html[]		= '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
-								. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $inputclass . $onclick
-								. $onchange . $disabled . ' />';
+				$html[]	= '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
+				$html[]	= '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
+							. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $inputclass . $onclick
+							. $onchange . $disabled . ' />';
 
-				$html[]		= '<div class="media-preview add-on fltlft">';
-				$html[]		= '<span class="hasTipPreview" title="&lt;strong&gt;'.$option->description.'&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;div id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'. $option->value .'_preview_img&quot; src=&quot;'.JUri::root() .$option->thumbnail.'&quot; alt=&quot;'.$option->title.'&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'.$option->title.'</span>';
-				$html[]		= '</div>';
-				$html[]		= '</label>';
+				$html[]	= '<div class="media-preview add-on fltlft">';
+				$html[]	= '<span class="hasTipPreview" title="&lt;strong&gt;' . $option->description . '&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;'
+					. '&lt;div id=&quot;jform_[template_id]' . $option->value . '_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'
+					. $option->value . '_preview_img&quot; src=&quot;' . JUri::root() . $option->thumbnail . '&quot; alt=&quot;' . $option->title
+					. '&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'
+					. $option->title . '</span>';
+				$html[]	= '</div>';
+				$html[]	= '</label>';
 			}
 		}
 		else
@@ -124,6 +132,9 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
+	 *
+	 * @throws Exception
+	 *
 	 * @since	1.2.0
 	 */
 	public function getOptions()
@@ -139,10 +150,10 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 
 		// Build the select list for the templates
 		$query	= $_db->getQuery(true);
-		$query->select($_db->quoteName('id')  . ' AS ' . $_db->quoteName('value'));
-		$query->select($_db->quoteName('title')  . ' AS ' . $_db->quoteName('title'));
-		$query->select($_db->quoteName('description')  . ' AS ' . $_db->quoteName('description'));
-		$query->select($_db->quoteName('thumbnail')  . ' AS ' . $_db->quoteName('thumbnail'));
+		$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
+		$query->select($_db->quoteName('title') . ' AS ' . $_db->quoteName('title'));
+		$query->select($_db->quoteName('description') . ' AS ' . $_db->quoteName('description'));
+		$query->select($_db->quoteName('thumbnail') . ' AS ' . $_db->quoteName('thumbnail'));
 		$query->from($_db->quoteName('#__bwpostman_templates'));
 		// special for old newsletters with template_id < 1
 		if (is_object($item))
@@ -156,6 +167,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 				$query->where($_db->quoteName('id') . ' > ' . $_db->quote('0'));
 			}
 		}
+
 		$query->where($_db->quoteName('archive_flag') . ' = ' . $_db->quote('0'));
 		$query->where($_db->quoteName('published') . ' = ' . $_db->quote('1'));
 		$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->quote('997'));

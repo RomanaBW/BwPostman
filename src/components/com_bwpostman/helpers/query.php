@@ -46,19 +46,19 @@ class BwPostmanHelperQuery
 	{
 		switch ($orderby)
 		{
-			case 'alpha' :
+			case 'alpha':
 				$orderby = 'c.path, ';
 				break;
 
-			case 'ralpha' :
+			case 'ralpha':
 				$orderby = 'c.path DESC, ';
 				break;
 
-			case 'order' :
+			case 'order':
 				$orderby = 'c.lft, ';
 				break;
 
-			default :
+			default:
 				$orderby = '';
 				break;
 		}
@@ -82,47 +82,47 @@ class BwPostmanHelperQuery
 
 		switch ($orderby)
 		{
-			case 'date' :
+			case 'date':
 				$orderby = $queryDate;
 				break;
 
-			case 'rdate' :
+			case 'rdate':
 				$orderby = $queryDate . ' DESC ';
 				break;
 
-			case 'alpha' :
+			case 'alpha':
 				$orderby = 'a.subject';
 				break;
 
-			case 'ralpha' :
+			case 'ralpha':
 				$orderby = 'a.subject DESC';
 				break;
 
-			case 'hits' :
+			case 'hits':
 				$orderby = 'a.hits DESC';
 				break;
 
-			case 'rhits' :
+			case 'rhits':
 				$orderby = 'a.hits';
 				break;
 
-			case 'order' :
+			case 'order':
 				$orderby = 'a.ordering';
 				break;
 
-			case 'author' :
+			case 'author':
 				$orderby = 'author';
 				break;
 
-			case 'rauthor' :
+			case 'rauthor':
 				$orderby = 'author DESC';
 				break;
 
-			case 'front' :
+			case 'front':
 				$orderby = 'a.featured DESC, fp.ordering, ' . $queryDate . ' DESC ';
 				break;
 
-			default :
+			default:
 				$orderby = 'a.ordering';
 				break;
 		}
@@ -145,20 +145,20 @@ class BwPostmanHelperQuery
 
 		switch ($orderDate)
 		{
-			case 'modified' :
+			case 'modified':
 				$queryDate = ' CASE WHEN a.modified = ' . $db->quote($db->getNullDate()) . ' THEN a.created_date ELSE a.modified END';
 				break;
 
 			// Use created if publish_up is not set
-			case 'published' :
+			case 'published':
 				$queryDate = ' CASE WHEN a.publish_up = ' . $db->quote($db->getNullDate()) . ' THEN a.created_date ELSE a.publish_up END ';
 				break;
 
-			case 'created_date' :
+			case 'created_date':
 				$queryDate = ' a.created_date ';
 				break;
-			case 'mailing_date' :
-			default :
+			case 'mailing_date':
+			default:
 				$queryDate = ' a.mailing_date ';
 				break;
 		}

@@ -33,9 +33,9 @@ jimport('joomla.application.component.controller');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require component helper classes and exception class
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
-require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 
 /**
@@ -49,20 +49,20 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	/**
 	 * Subscriber ID
 	 *
-	 * @var int
+	 * @var integer
 	 *
 	 * @since       2.0.0
 	 */
-	var $_subscriberid;
+	protected $subscriberid;
 
 	/**
 	 * User ID in subscriber-table
 	 *
-	 * @var int
+	 * @var integer
 	 *
 	 * @since       2.0.0
 	 */
-	var $_userid;
+	protected $userid;
 
 	/**
 	 * Constructor
@@ -87,16 +87,17 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 *
 	 * @since       2.0.0
 	 */
-/*	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = false)
 	{
 		parent::display();
 	}
-*/
+
 	/**
 	 * Method to save the registration
 	 *
-	 * @access public
 	 * @author Romana Boldt
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -106,39 +107,43 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		$app	= JFactory::getApplication();
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$model		= $this->getModel('register');
 		$session	= JFactory::getSession();
 
 		// process input data, which will be stored in state
 		$post	= $jinput->getArray(
-					array(
-						'agreecheck_mod' => 'string',
-						'agreecheck' => 'string',
-						'a_emailformat' => 'string',
-						'emailformat' => 'string',
-						'a_firstname' => 'string',
-						'firstname' => 'string',
-						'a_name' => 'string',
-						'name' => 'string',
-						'a_gender' => 'string',
-						'gender' => 'string',
-						'a_special' => 'string',
-						'special' => 'string',
-						'email' => 'string',
-						'falle' => 'string',
-						'language' => 'string',
-						'mailinglists' => 'array',
-						'module_title' => 'string',
-						'registration_ip' => 'string',
-						'stringQuestion' => 'string',
-						'stringCaptcha' => 'string',
-						'codeCaptcha' => 'string',
-						'bwp-' . BwPostmanHelper::getCaptcha(1) => 'string',
-						'bwp-' . BwPostmanHelper::getCaptcha(2) => 'string',
-						'task' => 'string'
-					));
+			array(
+				'agreecheck_mod' => 'string',
+				'agreecheck' => 'string',
+				'a_emailformat' => 'string',
+				'emailformat' => 'string',
+				'a_firstname' => 'string',
+				'firstname' => 'string',
+				'a_name' => 'string',
+				'name' => 'string',
+				'a_gender' => 'string',
+				'gender' => 'string',
+				'a_special' => 'string',
+				'special' => 'string',
+				'email' => 'string',
+				'falle' => 'string',
+				'language' => 'string',
+				'mailinglists' => 'array',
+				'module_title' => 'string',
+				'registration_ip' => 'string',
+				'stringQuestion' => 'string',
+				'stringCaptcha' => 'string',
+				'codeCaptcha' => 'string',
+				'bwp-' . BwPostmanHelper::getCaptcha(1) => 'string',
+				'bwp-' . BwPostmanHelper::getCaptcha(2) => 'string',
+				'task' => 'string'
+			)
+		);
 
 		if (isset($post['a_firstname']))
 		{
@@ -150,6 +155,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			{
 				$post['firstname']	= $post['a_firstname'];
 			}
+
 			unset($post['a_firstname']);
 		}
 
@@ -163,6 +169,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			{
 				$post['name']	= $post['a_name'];
 			}
+
 			unset($post['a_name']);
 		}
 
@@ -194,7 +201,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		$app->setUserState('com_bwpostman.subscriber.register.data', $post);
 
 		// Subscriber is guest
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			// Check if the email address from the registration form is stored in user table and gives back the id
 			$post['user_id'] = $model->isRegUser($post['email']);
@@ -202,7 +209,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		}
 		else
 		{
-			$post['user_id'] = $this->_userid;
+			$post['user_id'] = $this->userid;
 		}
 
 		// process input data, which will *not* be stored in state
@@ -218,11 +225,13 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		if (!$model->save($post))
 		{
 			// process failed save
-			$subscriber_data = array('name' => $post['name'],
-			                         'firstname' => $post['firstname'],
-			                         'email' => $post['email'],
-			                         'emailformat' => $post['emailformat'],
-			                         'mailinglists' => $post['mailinglists']);
+			$subscriber_data = array(
+				'name' => $post['name'],
+				'firstname' => $post['firstname'],
+				'email' => $post['email'],
+				'emailformat' => $post['emailformat'],
+				'mailinglists' => $post['mailinglists']
+			);
 			$session->set('subscriber_data', $subscriber_data);
 
 			$err = $app->getUserState('com_bwpostman.subscriber.register.error', null);
@@ -263,13 +272,14 @@ class BwPostmanControllerRegister extends JControllerLegacy
 				BwPostmanSubscriberHelper::errorSendingEmail($err_msg, $post['email']);
 			}
 		}
+
 		parent::display();
 	}
 
 	/**
 	 * Method to activate an account via the activation link
 	 *
-	 * @access public
+	 * @throws Exception
 	 *
 	 * @since       2.0.0
 	 */
@@ -312,7 +322,10 @@ class BwPostmanControllerRegister extends JControllerLegacy
 				$itemid = $model->getItemid();
 				$success_msg = 'COM_BWPOSTMAN_SUCCESS_ACCOUNTACTIVATION';
 				BwPostmanSubscriberHelper::success($success_msg, $editlink, $itemid);
-				if ($send_mail) $model->sendActivationNotification($subscriber_id);
+				if ($send_mail)
+				{
+					$model->sendActivationNotification($subscriber_id);
+				}
 			}
 		}
 
@@ -324,7 +337,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * Method to send the activation link
 	 * --> is needed if someone forgot the activation link
 	 *
-	 * @access public
+	 * @throws Exception
 	 *
 	 * @since       2.0.0
 	 */
@@ -334,27 +347,33 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		$subs_id    = null;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		// Get required system objects
 		$model			= $this->getModel('register');
 		$err			= new stdClass();
 		$err->err_code	= 0;
 		$post			= $jinput->getArray(
-							array(
-								'email' => 'string',
-								'id' => 'string',
-								'task' => 'string',
-								'language' => 'string',
-								'option' => 'string'
-							));
+			array(
+				'email' => 'string',
+				'id' => 'string',
+				'task' => 'string',
+				'language' => 'string',
+				'option' => 'string'
+			)
+		);
 
 		$id	= $post['id'];
 
 		if (array_key_exists('email', $post))
 		{
-			if ($post['email'] !== NULL)
+			if ($post['email'] !== null)
+			{
 				$id = $model->isRegSubscriber($post['email']);
+			}
 		}
 
 		$subscriberdata = BwPostmanSubscriberHelper::getSubscriberData($id);
@@ -364,7 +383,11 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			$subs_id		= null;
 			$err->err_id    = null;
 			$err->err_code	= 408; // Email address does not exist
-			$err->err_msg	= JText::sprintf('COM_BWPOSTMAN_ERROR_EMAILDOESNTEXIST', $post['email'], JRoute::_('index.php?option=com_bwpostman&view=register'));
+			$err->err_msg	= JText::sprintf(
+				'COM_BWPOSTMAN_ERROR_EMAILDOESNTEXIST',
+				$post['email'],
+				JRoute::_('index.php?option=com_bwpostman&view=register')
+			);
 		}
 		elseif ($subscriberdata->archive_flag == 1)
 		{
@@ -401,6 +424,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 				BwPostmanSubscriberHelper::errorSendingEmail($err_msg, $subscriber->email);
 			}
 		}
+
 		$jinput->set('view', 'register');
 		parent::display();
 	}
@@ -410,7 +434,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 *
 	 * @since	1.0.1
 	 */
-	public function showCaptcha() {
+	public function showCaptcha()
+	{
 		BwPostmanHelper::showCaptcha();
 	}
 }

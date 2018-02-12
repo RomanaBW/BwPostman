@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 // Require component admin helper class and exception class
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
 
 
 /**
@@ -50,6 +50,8 @@ class BwPostmanControllerNewsletters extends JControllerLegacy
 	 * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0
 	 */

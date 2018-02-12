@@ -32,10 +32,12 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since       0.9.1
  */
-class BwPostman {
-
+class BwPostman
+{
 	/**
 	 * Method to write the BwPostman footer
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -44,7 +46,7 @@ class BwPostman {
 
 		$app = JFactory::getApplication();
 
-		JPluginHelper::importPlugin('bwpostman','copyright');
+		JPluginHelper::importPlugin('bwpostman', 'copyright');
 
 		$copyright = '<span>BwPostman by </span><a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 

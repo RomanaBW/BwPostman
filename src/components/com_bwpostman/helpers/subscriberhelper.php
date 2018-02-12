@@ -68,11 +68,11 @@ class BwPostmanSubscriberHelper
 	 *
 	 * Returns 0 if user has no newsletter subscription
 	 *
-	 * @access    public
-	 *
 	 * @param    int $uid user ID
 	 *
 	 * @return    int $id     subscriber ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -114,6 +114,8 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @return    object  $subscriber subscriber object
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0 (here)
 	 */
 	public static function getSubscriberData($id)
@@ -148,6 +150,8 @@ class BwPostmanSubscriberHelper
 	 * @param    object $err          associative array of error data
 	 * @param    int    $subscriberid subscriber ID
 	 * @param    string $email        subscriber email
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -211,13 +215,14 @@ class BwPostmanSubscriberHelper
 				$jinput->set('layout', 'error_geteditlink');
 				break;
 		}
+
 		$session->set('session_error', $session_error);
 	}
 
 	/**
 	 * Method to process wrong or empty edit links
 	 *
-	 * @access    public
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -236,9 +241,9 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process wrong or empty activation code
 	 *
-	 * @access    public
-	 *
 	 * @param    string error message
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -260,9 +265,9 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process a wrong unsubscribe-link
 	 *
-	 * @access    public
-	 *
 	 * @param    string error message
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -286,10 +291,10 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process errors which occur if an email could not been send
 	 *
-	 * @access    public
-	 *
 	 * @param    string $err_msg error message
 	 * @param    string $email   email error
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -311,11 +316,11 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process successfully performed actions
 	 *
-	 * @access    public
-	 *
 	 * @param    string $success_msg success message
 	 * @param    string $editlink    editlink
 	 * @param    int    $itemid      menu item ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -381,8 +386,10 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$link = $siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}";
+					$link = $siteURL
+						. "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}";
 				}
+
 				$message = $active_msg . JText::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
 				break;
 			case 1: // Send Editlink
@@ -390,33 +397,61 @@ class BwPostmanSubscriberHelper
 				$subject  = JText::sprintf('COM_BWPOSTMAN_SEND_EDITLINK_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_SEND_EDITLINK_MSG', $name, $sitename, $siteURL . "index.php?option=com_bwpostman&view=edit&editlink={$editlink}");
+					$message = JText::sprintf(
+						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
+						$name,
+						$sitename,
+						$siteURL . "index.php?option=com_bwpostman&view=edit&editlink={$editlink}"
+					);
 				}
 				else
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_SEND_EDITLINK_MSG', $name, $sitename, $siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=edit&editlink={$editlink}");
+					$message = JText::sprintf(
+						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
+						$name,
+						$sitename,
+						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=edit&editlink={$editlink}"
+					);
 				}
 				break;
 			case 2: // Send Activation reminder
 				$subject = JText::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG', $name, $sitename, $siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");
+					$message = JText::sprintf(
+						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
+						$name,
+						$sitename,
+						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
+					);
 				}
 				else
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG', $name, $sitename, $siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}");
+					$message = JText::sprintf(
+						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
+						$name,
+						$sitename,
+						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
+					);
 				}
 				break;
 			case 3: // Send confirmation mail because the email address has been changed
 				$subject = JText::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG', $name, $siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}");
+					$message = JText::sprintf(
+						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
+						$name,
+						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
+					);
 				}
 				else
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG', $name, $siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}");
+					$message = JText::sprintf(
+						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
+						$name,
+						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
+					);
 				}
 				break;
 		}
@@ -464,6 +499,7 @@ class BwPostmanSubscriberHelper
 		{
 			$gender .= ' checked="checked"';
 		}
+
 		$gender .= ' />';
 		$gender .= '<label for="genMale"><span>' . JText::_('COM_BWPOSTMAN_MALE') . '</span></label>';
 		$gender .= '<input type="radio" name="gender" id="genFemale" value="1"';
@@ -471,6 +507,7 @@ class BwPostmanSubscriberHelper
 		{
 			$gender .= ' checked="checked"';
 		}
+
 		$gender .= ' />';
 		$gender .= '<label for="genFemale"><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></label>';
 		$gender .= '</fieldset>';
@@ -495,6 +532,7 @@ class BwPostmanSubscriberHelper
 		{
 			$emailformat .= ' checked="checked"';
 		}
+
 		$emailformat .= ' />';
 		$emailformat .= '<label for="formatText"><span>' . JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat .= '<input type="radio" name="emailformat" id="formatHtml" value="1"';
@@ -502,6 +540,7 @@ class BwPostmanSubscriberHelper
 		{
 			$emailformat .= 'checked="checked"';
 		}
+
 		$emailformat .= ' />';
 		$emailformat .= '<label for="formatHtml"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
 		$emailformat .= '</fieldset>';
@@ -550,6 +589,8 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @return boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0 (here)
 	 */
 	public static function storeMailinglistsOfSubscriber($subscriber_id, $mailinglist_ids)
@@ -562,15 +603,18 @@ class BwPostmanSubscriberHelper
 			$query = $_db->getQuery(true);
 
 			$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->columns(array(
-				$_db->quoteName('subscriber_id'),
-				$_db->quoteName('mailinglist_id')
-			));
+			$query->columns(
+				array(
+					$_db->quoteName('subscriber_id'),
+					$_db->quoteName('mailinglist_id')
+				)
+			);
 			$query->values(
 				(int) $subscriber_id . ',' .
 				(int) $list_id
 			);
 		}
+
 		try
 		{
 			$_db->setQuery($query);
@@ -588,15 +632,13 @@ class BwPostmanSubscriberHelper
 	 * Method to fill void data
 	 * --> the subscriber data filled with default values
 	 *
-	 * @access	public
-	 *
 	 * @return 	object  $subscriber     subscriber object
 	 *
 	 * @since       2.0.0 (here)
 	 */
 	public static function fillVoidSubscriber()
 	{
-		/* Load an empty subscriber */
+		// Load an empty subscriber
 		$subscriber = JTable::getInstance('subscribers', 'BwPostmanTable');
 		$subscriber->load();
 		$subscriber->mailinglists  = array();
@@ -607,11 +649,11 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to get all mailinglists which the user is authorized to see
 	 *
-	 * @access 	public
-	 *
 	 * @param   integer     $id
 	 *
 	 * @return 	object Mailinglists
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
@@ -669,7 +711,8 @@ class BwPostmanSubscriberHelper
 			{
 				$ml_ids[]	= $value->id;
 			}
-			$get_mls	= array_diff ($selected, $ml_ids);
+
+			$get_mls	= array_diff($selected, $ml_ids);
 
 			// if there are internal mailinglists selected, get them ...
 			if (!empty($get_mls))
@@ -677,7 +720,7 @@ class BwPostmanSubscriberHelper
 				$query->clear();
 				$query->select('*');
 				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('id') . ' IN (' .implode(',', $get_mls) . ')');
+				$query->where($_db->quoteName('id') . ' IN (' . implode(',', $get_mls) . ')');
 				$query->order($_db->quoteName('title') . 'ASC');
 
 				try
@@ -691,6 +734,7 @@ class BwPostmanSubscriberHelper
 				}
 			}
 		}
+
 		// ...and add them to the mailinglists array
 		if (!empty($add_mls))
 		{
@@ -704,11 +748,11 @@ class BwPostmanSubscriberHelper
 	 * Method to get the user ID of a subscriber from the subscribers-table depending on the subscriber ID
 	 * --> is needed for the constructor
 	 *
-	 * @access 	public
-	 *
 	 * @param 	int     $id     subscriber ID
 	 *
 	 * @return 	int user ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */

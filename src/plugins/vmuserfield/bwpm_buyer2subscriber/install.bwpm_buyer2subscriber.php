@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since   2.0.0
  */
-class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
+class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 {
 	/**
 	 * @var string
@@ -42,35 +42,35 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	protected $min_bwpostman_version    = '1.3.2';
 
 	/**
-	 * @var int
+	 * @var integer
 	 *
 	 * @since 2.0.0
 	 */
 	protected $user_id    = 0;
 
 	/**
-	 * @var int
+	 * @var integer
 	 *
 	 * @since 2.0.0
 	 */
 	protected $now_date    = '0000-00-00 00:00:00';
 
 	/**
-	 * @var int
+	 * @var integer
 	 *
 	 * @since 2.0.0
 	 */
 	protected $vm_vendor_id    = 0;
 
 	/**
-	 * @var int
+	 * @var integer
 	 *
 	 * @since 2.0.0
 	 */
 	protected $userfield_insert_ordering_position    = 0;
 
 	/**
-	 * @var int
+	 * @var integer
 	 *
 	 * @since 2.0.0
 	 */
@@ -84,6 +84,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return  boolean  True on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.6.3
 	 */
 
@@ -96,7 +98,10 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 
 			if (version_compare($BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 			{
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version), 'error');
+				JFactory::getApplication()->enqueueMessage(
+					JText::sprintf('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version),
+					'error'
+				);
 				return false;
 			}
 
@@ -116,6 +121,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * Method to get component version
 	 *
 	 * @return string
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -139,6 +146,7 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return $version;
 	}
 
@@ -146,6 +154,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * Method to set status of User2Subscriber plugin activation (property)
 	 *
 	 * @return bool
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -176,6 +186,7 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		{
 			$plugin_installed   = true;
 		}
+
 		return $plugin_installed;
 	}
 
@@ -186,6 +197,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * @param   JAdapterInstance	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -209,30 +222,34 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		return true;
 	}
 
-    /**
-     * Called on deinstallation
-     *
-     * @param   JAdapterInstance  $adapter  The object responsible for running this script
-     *
-     * @since   2.0.0
-     */
-    public function uninstall(JAdapterInstance $adapter)
-    {
-	    $bw_userfield_ids = $this->getBwUserfieldIDs();
+	/**
+	 * Called on deinstallation
+	 *
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function uninstall(JAdapterInstance $adapter)
+	{
+		$bw_userfield_ids = $this->getBwUserfieldIDs();
 
-	    if (count($bw_userfield_ids) > 0)
-	    {
-	    	$this->deleteBwUserfields($bw_userfield_ids);
-		    $this->deleteBwUserfieldValues($bw_userfield_ids);
-	    }
-    }
+		if (count($bw_userfield_ids) > 0)
+		{
+			$this->deleteBwUserfields($bw_userfield_ids);
+			$this->deleteBwUserfieldValues($bw_userfield_ids);
+		}
+	}
 
 	/**
 	 * Sets widely used variables as properties
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-    protected function setInitialValues()
+	protected function setInitialValues()
 	{
 		$this->user_id  = JFactory::getUser()->get('id');
 		$this->now_date = JFactory::getDate()->toSql();
@@ -247,6 +264,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return int   $vm_vendor_id
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function getVmVendorId()
@@ -258,7 +277,7 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 
 		$query->select($_db->quoteName('virtuemart_vendor_id'));
 		$query->from($_db->quoteName('#__virtuemart_vmusers'));
-		$query->where($_db->quoteName('user_is_vendor') . ' = ' . (int)1);
+		$query->where($_db->quoteName('user_is_vendor') . ' = ' . (int) 1);
 
 		$_db->setQuery($query);
 
@@ -280,6 +299,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * @param   string $field_name
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -313,6 +334,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * (userfield_insert_ordering_position) with its userfield_value entries
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -383,6 +406,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * (userfield_insert_ordering_position) with its userfield_value entries
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -473,6 +498,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function insertBwPostmanNewsletterFormatFieldToVm()
@@ -494,7 +521,7 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(0) . ',' .
 			$_db->quote(0) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote(NULL) . ',' .
+			$_db->quote(null) . ',' .
 			$_db->quote('1') . ',' .
 			$_db->quote(1) . ',' .
 			$_db->quote(0) . ',' .
@@ -562,6 +589,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function insertBwPostmanGenderFieldToVm()
@@ -583,7 +612,7 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(0) . ',' .
 			$_db->quote(0) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote(NULL) . ',' .
+			$_db->quote(null) . ',' .
 			$_db->quote('') . ',' .
 			$_db->quote(1) . ',' .
 			$_db->quote(0) . ',' .
@@ -669,6 +698,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function insertBwPostmanAdditionalFieldToVm()
@@ -739,6 +770,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function freeOrderingPosition()
@@ -764,6 +797,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * Increments ordering column at userfield table of VM from current position and above
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -795,6 +830,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return  int
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function writeUserfieldToVmTable($values)
@@ -803,40 +840,42 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query = $_db->getQuery(true);
 
 		$query->insert($_db->quoteName('#__virtuemart_userfields'));
-		$query->columns(array(
-			$_db->quoteName('virtuemart_userfield_id'),
-			$_db->quoteName('virtuemart_vendor_id'),
-			$_db->quoteName('userfield_jplugin_id'),
-			$_db->quoteName('name'),
-			$_db->quoteName('title'),
-			$_db->quoteName('description'),
-			$_db->quoteName('type'),
-			$_db->quoteName('maxlength'),
-			$_db->quoteName('size'),
-			$_db->quoteName('required'),
-			$_db->quoteName('cols'),
-			$_db->quoteName('rows'),
-			$_db->quoteName('value'),
-			$_db->quoteName('default'),
-			$_db->quoteName('registration'),
-			$_db->quoteName('shipment'),
-			$_db->quoteName('account'),
-			$_db->quoteName('cart'),
-			$_db->quoteName('readonly'),
-			$_db->quoteName('calculated'),
-			$_db->quoteName('sys'),
-			$_db->quoteName('userfield_params'),
-			$_db->quoteName('ordering'),
-			$_db->quoteName('shared'),
-			$_db->quoteName('published'),
-			$_db->quoteName('created_on'),
-			$_db->quoteName('created_by'),
-			$_db->quoteName('modified_on'),
-			$_db->quoteName('modified_by'),
-			$_db->quoteName('locked_on'),
-			$_db->quoteName('locked_by'),
-		));
-		$query->values($values);
+		$query->columns(
+			array(
+				$_db->quoteName('virtuemart_userfield_id'),
+				$_db->quoteName('virtuemart_vendor_id'),
+				$_db->quoteName('userfield_jplugin_id'),
+				$_db->quoteName('name'),
+				$_db->quoteName('title'),
+				$_db->quoteName('description'),
+				$_db->quoteName('type'),
+				$_db->quoteName('maxlength'),
+				$_db->quoteName('size'),
+				$_db->quoteName('required'),
+				$_db->quoteName('cols'),
+				$_db->quoteName('rows'),
+				$_db->quoteName('value'),
+				$_db->quoteName('default'),
+				$_db->quoteName('registration'),
+				$_db->quoteName('shipment'),
+				$_db->quoteName('account'),
+				$_db->quoteName('cart'),
+				$_db->quoteName('readonly'),
+				$_db->quoteName('calculated'),
+				$_db->quoteName('sys'),
+				$_db->quoteName('userfield_params'),
+				$_db->quoteName('ordering'),
+				$_db->quoteName('shared'),
+				$_db->quoteName('published'),
+				$_db->quoteName('created_on'),
+				$_db->quoteName('created_by'),
+				$_db->quoteName('modified_on'),
+				$_db->quoteName('modified_by'),
+				$_db->quoteName('locked_on'),
+				$_db->quoteName('locked_by'),
+			)
+		);
+		$query->values(implode(',', $values));
 
 		$_db->setQuery($query);
 
@@ -861,6 +900,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function writeUserfieldValuesToVmTable($values)
@@ -869,21 +910,23 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query = $_db->getQuery(true);
 
 		$query->insert($_db->quoteName('#__virtuemart_userfield_values'));
-		$query->columns(array(
-			$_db->quoteName('virtuemart_userfield_value_id'),
-			$_db->quoteName('virtuemart_userfield_id'),
-			$_db->quoteName('fieldtitle'),
-			$_db->quoteName('fieldvalue'),
-			$_db->quoteName('sys'),
-			$_db->quoteName('ordering'),
-			$_db->quoteName('created_on'),
-			$_db->quoteName('created_by'),
-			$_db->quoteName('modified_on'),
-			$_db->quoteName('modified_by'),
-			$_db->quoteName('locked_on'),
-			$_db->quoteName('locked_by'),
-		));
-		$query->values($values);
+		$query->columns(
+			array(
+				$_db->quoteName('virtuemart_userfield_value_id'),
+				$_db->quoteName('virtuemart_userfield_id'),
+				$_db->quoteName('fieldtitle'),
+				$_db->quoteName('fieldvalue'),
+				$_db->quoteName('sys'),
+				$_db->quoteName('ordering'),
+				$_db->quoteName('created_on'),
+				$_db->quoteName('created_by'),
+				$_db->quoteName('modified_on'),
+				$_db->quoteName('modified_by'),
+				$_db->quoteName('locked_on'),
+				$_db->quoteName('locked_by'),
+			)
+		);
+		$query->values(implode(',', $values));
 
 		$_db->setQuery($query);
 
@@ -902,6 +945,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * Gets IDs of all still installed userfields used by plugin
 	 *
 	 * @return  array   $bw_userfield_ids
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -922,14 +967,13 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 
 		$query->select($_db->quoteName('virtuemart_userfield_id'));
 		$query->from($_db->quoteName('#__virtuemart_userfields'));
-		$query->where($_db->quoteName('name') . ' IN (' . implode (',', $bw_userfield_names) . ')');
+		$query->where($_db->quoteName('name') . ' IN (' . implode(',', $bw_userfield_names) . ')');
 
 		$_db->setQuery($query);
 
 		try
 		{
 			$bw_userfield_ids   = $_db->loadColumn();
-
 		}
 		catch (Exception $e)
 		{
@@ -945,6 +989,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * @param   array   $bw_userfield_ids
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -968,6 +1014,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * @param $item_id
 	 *
 	 * @return int
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1001,7 +1049,9 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @param $item
 	 *
-	 * @since version
+	 * @throws Exception
+	 *
+	 * @since 2.0.0
 	 */
 	protected function deleteItemAtUninstall($item)
 	{
@@ -1029,6 +1079,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * @param   int     $ordering_number
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1060,6 +1112,8 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function deleteBwUserfieldValues($bw_userfield_ids)
@@ -1068,7 +1122,7 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query = $_db->getQuery(true);
 
 		$query->delete($_db->quoteName('#__virtuemart_userfield_values'));
-		$query->where($_db->quoteName('virtuemart_userfield_id') . ' IN (' . implode (',', $bw_userfield_ids) . ')');
+		$query->where($_db->quoteName('virtuemart_userfield_id') . ' IN (' . implode(',', $bw_userfield_ids) . ')');
 
 		$_db->setQuery($query);
 
@@ -1082,4 +1136,3 @@ class plgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 	}
 }
-

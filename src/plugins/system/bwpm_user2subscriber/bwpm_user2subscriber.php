@@ -30,9 +30,9 @@ defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
 
-require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
-require_once (JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
-require_once (JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+require_once(JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
@@ -73,7 +73,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	/**
 	 * Property to hold component enabled status
 	 *
-	 * @var    bool
+	 * @var    boolean
 	 *
 	 * @since  2.0.0
 	 */
@@ -96,6 +96,14 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @since  2.0.0
 	 */
 	protected $form;
+
+	/**
+	 * Property to hold app
+	 *
+	 * @var    object
+	 *
+	 * @since  2.0.0
+	 */
 	protected $app;
 
 	/**
@@ -107,8 +115,32 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected $stored_subscriber_data = array();
 
+
+	/**
+	 * Property to hold logger
+	 *
+	 * @var    object
+	 *
+	 * @since  2.0.0
+	 */
 	private $logger;
+
+	/**
+	 * Property to hold log category
+	 *
+	 * @var    object
+	 *
+	 * @since  2.0.0
+	 */
 	private $log_cat  = 'Plg_U2S';
+
+	/**
+	 * Property to hold debug
+	 *
+	 * @var    boolean
+	 *
+	 * @since  2.0.0
+	 */
 	private $debug    = false;
 
 	/**
@@ -275,7 +307,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		$data_helper = $data;
-		$data_helper = (array)$data_helper;
+		$data_helper = (array) $data_helper;
 		if (isset($data_helper['language']))
 		{
 			unset($data_helper['language']);
@@ -288,7 +320,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if (!empty($data_helper))
 		{
-			$this->logger->addEntry(new JLogEntry('Array is not okay'), JLog::DEBUG, $this->log_cat);
+			$this->logger->addEntry(new JLogEntry('Array is not okay'));
 			return true;
 		}
 
@@ -306,20 +338,21 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			return false;
 		}
-		$this->logger->addEntry(new JLogEntry('Form is instance'), JLog::DEBUG, $this->log_cat);
+
+		$this->logger->addEntry(new JLogEntry('Form is instance'));
 
 		// Add CSS and JS for the radio fields
 		$doc = JFactory::getDocument();
 
-		$css_file   = JUri::base( true ) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
+		$css_file   = JUri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
 		$doc->addStyleSheet($css_file);
 
 		// makes sure that jQuery is loaded first
 		JHtml::_('jquery.framework');
-		$js_file= JUri::base( true ) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
+		$js_file = JUri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
 
 		$doc->addScript($js_file);
-		$this->logger->addEntry(new JLogEntry('Script and CSS added'), JLog::DEBUG, $this->log_cat);
+		$this->logger->addEntry(new JLogEntry('Script and CSS added'));
 
 		$this->processGenderField();
 		$this->processLastnameField();
@@ -357,6 +390,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			return false;
 		}
+
 		return true;
 	}
 
@@ -528,10 +562,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$session->set('plg_bwpm_user2subscriber.userid', $user_id);
 			$session->set('plg_bwpm_user2subscriber.activation', $old_activation);
 		}
+
 		return true;
 	}
 
-		/**
+	/**
 	 * Event method onUserAfterSave
 	 *
 	 * @param   array   $data       User data
@@ -540,6 +575,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @param   string  $error      error message translated by JText()
 	 *
 	 * @return  bool
+	 *
+	 * @throws Exception
 	 *
 	 * @since  2.0.0
 	 */
@@ -740,6 +777,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @return  bool        True on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since  2.0.0
 	 */
 	protected function activateSubscription($user_mail)
@@ -780,7 +819,6 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$send_mail = $params->get('activation_to_webmaster');
 
 			// @ToDo: How could I get here with no object $this->stored_subscriber_data
-//			if ($send_mail && $res))
 			if ($send_mail && $res && $subscriber_id)
 			{
 				$model  = JModelLegacy::getInstance('Register', 'BwPostmanModel');
@@ -938,6 +976,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			$res    = true;
 		}
+
 		return $res;
 	}
 
@@ -972,6 +1011,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			return false;
 		}
+
 		return $res;
 	}
 
@@ -1006,6 +1046,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			return false;
 		}
+
 		return $res;
 	}
 
@@ -1053,6 +1094,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			return false;
 		}
+
 		JFactory::getUser();
 
 		return $res_update_subscriber;
@@ -1063,6 +1105,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since  2.0.0
 	 */
 	public function onAfterRender()
@@ -1070,7 +1114,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$session = JFactory::getSession();
 		$jinput  = $this->app->input;
 
-		$confirm             = (int)$jinput->get('confirm', 0);
+		$confirm             = (int) $jinput->get('confirm', 0);
 		$subscription_data   = $session->get('plg_bwpm_buyer2subscriber.subscription_data', array());
 		$session->clear('plg_bwpm_buyer2subscriber.subscription_data');
 
@@ -1088,4 +1132,3 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 	}
 }
-

@@ -32,7 +32,8 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 2.0.0
  */
-abstract class BWPM_User2SubscriberHelper {
+abstract class BWPM_User2SubscriberHelper
+{
 	/**
 	 * Method to check if user has a subscription
 	 *
@@ -91,7 +92,7 @@ abstract class BWPM_User2SubscriberHelper {
 
 		$result  = $_db->loadAssoc();
 
-		if (!$result['status'] && $result['activation'] =! '')
+		if (!$result['status'] && $result['activation'] != '')
 		{
 			return true;
 		}
@@ -304,6 +305,7 @@ abstract class BWPM_User2SubscriberHelper {
 		{
 			return $subscriber;
 		}
+
 		return false;
 	}
 
@@ -316,6 +318,8 @@ abstract class BWPM_User2SubscriberHelper {
 	 * @param array         $mailinglist_ids
 	 *
 	 * @return object       $subscriber
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -448,7 +452,7 @@ abstract class BWPM_User2SubscriberHelper {
 	public static function saveSubscriber($data)
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
+		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables');
 		$table  = JTable::getInstance('Subscribers', 'BwPostmanTable');
 
 		// Bind the data.
@@ -458,7 +462,8 @@ abstract class BWPM_User2SubscriberHelper {
 		}
 
 		// Check the data.
-		/* @ToDo: spam check as yet implemented is evil to implement in registration form of Joomla.
+		/*
+		 * @ToDo: spam check as yet implemented is evil to implement in registration form of Joomla.
 		 * Better solution would be a plugin for spam check to outsource spam check from table check.
 		 * That would also open the possibility to use other spam check methods/plugins
 		 */
@@ -503,10 +508,12 @@ abstract class BWPM_User2SubscriberHelper {
 			$query = $_db->getQuery(true);
 
 			$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->columns(array(
-				$_db->quoteName('subscriber_id'),
-				$_db->quoteName('mailinglist_id')
-			));
+			$query->columns(
+				array(
+					$_db->quoteName('subscriber_id'),
+					$_db->quoteName('mailinglist_id')
+				)
+			);
 			$query->values(
 				$_db->quote($subscriber_id) . ',' .
 				$_db->quote($mailinglist_id)

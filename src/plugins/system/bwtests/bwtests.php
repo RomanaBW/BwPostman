@@ -34,7 +34,7 @@ jimport('joomla.plugin.plugin');
  *
  * @since       2.0.0
  */
-class plgBwTests extends JPlugin
+class PlgBwTests extends JPlugin
 {
 	// only a dummy
 }

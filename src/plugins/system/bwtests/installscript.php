@@ -33,80 +33,82 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since       2.0.0
  */
-class plgBwTestsInstallerScript
+class PlgBwTestsInstallerScript
 {
-  /**
-   * Method to install the extension
-   *
-   * @param object  $parent is the class calling this method
-   *
-   * @return void
-   *
-   * @since       2.0.0
-   */
-  function install($parent)
-  {
-//    $this->showFinished(false);
-  }
+	/**
+	 * Method to install the extension
+	 *
+	 * @param object  $parent is the class calling this method
+	 *
+	 * @return void
+	 *
+	 * @since       2.0.0
+	 */
+	public function install($parent)
+	{
+		//    $this->showFinished(false);
+	}
 
-  /**
-   * Method to uninstall the extension
-   *
-   * @return void
-   *
-   * @since       2.0.0
-  */
-  function uninstall()
-  {
+	/**
+	 * Method to uninstall the extension
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.0.0
+	 */
+	public function uninstall()
+	{
 		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BW_PLUGIN_TESTS_UNINSTALL_THANKYOU'), 'message');
-  }
+	}
 
-  /**
-   * Method to update the extension
-   *
-   * @param object  $parent is the class calling this method
+	/**
+	 * Method to update the extension
+	 *
+	 * @param object  $parent is the class calling this method
+	 *
+	 * @return void
+	 *
+	 * @since       2.0.0
+	 */
+	public function update($parent)
+	{
+		//		$this->showFinished(true);
+	}
 
-   * @return void
-   *
-   * @since       2.0.0
-  */
-  function update($parent)
-  {
-//		$this->showFinished(true);
-  }
+	/**
+	 * Method to run after an install/update/uninstall method
+	 *
+	 * @param string  $type       is the type of change (install, update or discover_install)
+	 *
+	 * @return void
+	 *
+	 * @since       2.0.0
+	 */
+	public function postflight($type)
+	{
+		// We only need to perform this if the extension is being installed, not updated
+		if ($type == 'install')
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
 
-  /**
-   * Method to run after an install/update/uninstall method
-   *
-   * @param string  $type       is the type of change (install, update or discover_install)
+			$fields = array(
+				$db->quoteName('enabled') . ' = ' . (int) 1,
+				$db->quoteName('ordering') . ' = ' . (int) 9999
+			);
 
-   * @return void
-   *
-   * @since       2.0.0
-  */
-  function postflight($type)
-  {
-	  // We only need to perform this if the extension is being installed, not updated
-	  if ( $type == 'install' )
-	  {
-		  $db = JFactory::getDbo();
-		  $query = $db->getQuery(true);
+			$conditions = array(
+				$db->quoteName('element') . ' = ' . $db->quote('bwtests'),
+				$db->quoteName('folder') . ' = ' . $db->quote('system'),
+				$db->quoteName('type') . ' = ' . $db->quote('plugin')
+			);
 
-		  $fields = array(
-			  $db->quoteName('enabled') . ' = ' . (int) 1,
-			  $db->quoteName('ordering') . ' = ' . (int) 9999
-        );
+			$query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
 
-        $conditions = array(
-	        $db->quoteName('element') . ' = ' . $db->quote('bwtests'),
-	        $db->quoteName('folder') . ' = ' . $db->quote('system'),
-	        $db->quoteName('type') . ' = ' . $db->quote('plugin')
-        );
-
-        $query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
-
-        $db->setQuery($query);
-        $db->execute();
-    }
-  }
+			$db->setQuery($query);
+			$db->execute();
+		}
+	}
 }

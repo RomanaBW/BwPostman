@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since   2.0.0
  */
-class plgSystemBwPm_User2SubscriberInstallerScript
+class PlgSystemBwPm_User2SubscriberInstallerScript
 {
 	/**
 	 * @var string
@@ -49,6 +49,8 @@ class plgSystemBwPm_User2SubscriberInstallerScript
 	 *
 	 * @return  boolean  True on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.6.3
 	 */
 
@@ -61,7 +63,10 @@ class plgSystemBwPm_User2SubscriberInstallerScript
 
 			if (version_compare($BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 			{
-				JFactory::getApplication()->enqueueMessage(sprintf('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version), 'error');
+				JFactory::getApplication()->enqueueMessage(
+					sprintf('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version),
+					'error'
+				);
 				return false;
 			}
 		}
@@ -73,6 +78,8 @@ class plgSystemBwPm_User2SubscriberInstallerScript
 	 * Method to get component version
 	 *
 	 * @return string
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -96,7 +103,7 @@ class plgSystemBwPm_User2SubscriberInstallerScript
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return $version;
 	}
 }
-

@@ -61,6 +61,8 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	 *
 	 * @return	string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.2.0
 	 */
 	protected function getInput()
@@ -83,8 +85,9 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		$html[] = '			<table class="adminlist table">';
 		$html[] = '				<thead>';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">'. JText::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+		$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
+				. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
 		$html[] = '						<th width="70" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
 		$html[] = '						<th width="200" nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
 		$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
@@ -110,7 +113,8 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
-				$html[] = '								<td><input type="checkbox" id="mb'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+				$html[] = '								<td><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
+					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
 				$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
 				$html[] = '								<td>' . JText::_($option->text) . '</td>';
 				$html[] = '								<td>' . JText::_($option->description) . '</td>';
@@ -122,9 +126,10 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		else
 		{
 			$html[] = '							<tr class="row1">';
-			$html[] = '								<td colspan="7"><strong>'. JText::_('COM_BWPOSTMAN_NO_ML').'</strong></td>';
+			$html[] = '								<td colspan="7"><strong>' . JText::_('COM_BWPOSTMAN_NO_ML') . '</strong></td>';
 			$html[] = '							</tr>';
 		}
+
 		$html[] = '				</tbody>';
 		$html[] = '			</table>';
 		$html[] = '		</div>';
@@ -140,6 +145,8 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	 *
 	 * @return	array  The field option objects.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.2.0
 	 */
 	protected function getOptions()
@@ -151,13 +158,15 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		$_db		= JFactory::getDbo();
 		$query		= $_db->getQuery(true);
 
-		$query->select("a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published, a.archive_flag AS archived");
+		$query->select(
+			"a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published, a.archive_flag AS archived"
+		);
 		$query->from('#__bwpostman_mailinglists AS a');
 
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		$query->order($_db->quoteName('text')  . 'ASC');
+		$query->order($_db->quoteName('text') . 'ASC');
 
 		try
 		{
@@ -168,6 +177,7 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		{
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 

@@ -52,6 +52,8 @@ class JFormFieldMenuItems extends JFormFieldList
 	 *
 	 * @return  array  The field option objects.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.2.0
 	 */
 	protected function getOptions()
@@ -63,9 +65,12 @@ class JFormFieldMenuItems extends JFormFieldList
 		$query->select($_db->quoteName('id') . ' AS value');
 		$query->select($_db->quoteName('title') . ' AS text');
 		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=archive') . ' OR ' . $_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=newsletters'));
+		$query->where(
+			$_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=archive')
+			. ' OR ' . $_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=newsletters')
+		);
 		$query->where($_db->quoteName('client_id') . ' = ' . (int) 0);
-		$query->order($_db->quoteName('title').' ASC');
+		$query->order($_db->quoteName('title') . ' ASC');
 
 		try
 		{

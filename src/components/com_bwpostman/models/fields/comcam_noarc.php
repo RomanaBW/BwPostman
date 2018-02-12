@@ -61,6 +61,8 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 	 *
 	 * @return  string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
 	 */
 	protected function getInput()
@@ -82,8 +84,9 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$html[] = '			<table class="adminlist table">';
 		$html[] = '				<thead>';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">'. JText::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this)" /></th>';
+		$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value=""
+						 title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this)" /></th>';
 		$html[] = '						<th width="200" nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
 		$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
 		$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
@@ -103,20 +106,21 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
- 				$html[] = '								<td><input type="checkbox" id="cb'  . $i . '" name="' . $this->name . '" ' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+				$html[] = '								<td><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
+					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
 				$html[] = '								<td>' . JText::_($option->text) . '</td>';
 				$html[] = '								<td>' . JText::_($option->description) . '</td>';
 				$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';
 				$html[] = '							</tr>';
 			}
-
 		}
 		else
 		{
 				$html[] = '							<tr class="row1">';
-				$html[] = '								<td colspan="5"><strong>'. JText::_('COM_BWPOSTMAN_NO_CAM').'</strong></td>';
+				$html[] = '								<td colspan="5"><strong>' . JText::_('COM_BWPOSTMAN_NO_CAM') . '</strong></td>';
 				$html[] = '							</tr>';
 		}
+
 		$html[] = '				</tbody>';
 		$html[] = '		</table>';
 		$html[] = '	</div>';
@@ -131,6 +135,8 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 	 * Method to get the field options.
 	 *
 	 * @return  array  The field option objects.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   11.1
 	 */
@@ -150,14 +156,16 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('archive_flag') . ' = ' . (int) 0);
 		$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('campaign_id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('id'));
 
-		$query->select("a.id AS value, a.title AS text, a.description as description, a.archive_flag AS archived" . ', (' . $sub_query . ') AS newsletters');
+		$query->select(
+			"a.id AS value, a.title AS text, a.description as description, a.archive_flag AS archived" . ', (' . $sub_query . ') AS newsletters'
+		);
 		$query->from('#__bwpostman_campaigns AS a');
 		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
 
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		$query->order($_db->quoteName('text')  . 'ASC');
+		$query->order($_db->quoteName('text') . 'ASC');
 
 		try
 		{

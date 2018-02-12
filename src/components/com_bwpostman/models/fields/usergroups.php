@@ -69,6 +69,8 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 	 *
 	 * @return  string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.2.0
 	 */
 	protected function getInput()
@@ -91,8 +93,9 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		$html[] = '			<table class="adminlist table">';
 		$html[] = '				<thead>';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">'. JText::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+		$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
+			. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
 		$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
@@ -111,17 +114,19 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				$html[] = '							 <td align="center">' . JText::_($option->value) . '</td>';
-				$html[] = '              <td><input type="checkbox" id="ub'  . $i . '" name="' . $this->name . '"' . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
+				$html[] = '              <td><input type="checkbox" id="ub' . $i . '" name="' . $this->name . '" value="'
+					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
 				$html[] = '							 <td>' . JText::_($option->text) . '</td>';
 				$html[] = '						  </tr>';
 			}
-	    }
+		}
 		else
 		{
 			$html[] = '							<tr class="row1">';
-			$html[] = '								<td colspan="3"><strong>'. JText::_('COM_BWPOSTMAN_NO_CAM').'</strong></td>';
+			$html[] = '								<td colspan="3"><strong>' . JText::_('COM_BWPOSTMAN_NO_CAM') . '</strong></td>';
 			$html[] = '							</tr>';
 		}
+
 		$html[] = '				</tbody>';
 		$html[] = '     </table>';
 		$html[] = '    </div>';
@@ -137,6 +142,8 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 	 *
 	 * @return  array  The field option objects.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.2.0
 	 */
 	protected function getOptions()
@@ -150,13 +157,13 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 
 			$_db = JFactory::getDbo();
 			$query = $_db->getQuery(true)
-			->select('CONCAT("-",a.id) AS value')
-			->select('a.title AS text')
-			->select('COUNT(DISTINCT b.id) AS level')
-			->from('#__usergroups as a')
-			->join('LEFT', '#__usergroups  AS b ON a.lft > b.lft AND a.rgt < b.rgt')
-			->group('a.id, a.title, a.lft, a.rgt')
-			->order('a.lft ASC');
+				->select('CONCAT("-",a.id) AS value')
+				->select('a.title AS text')
+				->select('COUNT(DISTINCT b.id) AS level')
+				->from('#__usergroups as a')
+				->join('LEFT', '#__usergroups  AS b ON a.lft > b.lft AND a.rgt < b.rgt')
+				->group('a.id, a.title, a.lft, a.rgt')
+				->order('a.lft ASC');
 			try
 			{
 				$_db->setQuery($query);
@@ -177,10 +184,4 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 
 		return static::$options[$hash];
 	}
-
-
-
-
-
-
 }

@@ -26,7 +26,6 @@
 
 //use Joomla\Registry\Format\Json;
 
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -165,6 +164,8 @@ class Com_BwPostmanInstallerScript
 	 * @param   JAdapterInstance	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.6.3
 	 */
@@ -1521,6 +1522,8 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 
@@ -1567,84 +1570,86 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * returns default values for params
 	 *
-	 * @return  string	Json-encoded default values for params
+	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
 
 	private function setDefaultParams()
 	{
-		$css_styles =
-"
- body	{
-	font-family: Tahoma, Arial, Helvetica, Univers, sans-serif;
-	font-size: 15px;
-	background:#E9EDF0;
-	padding:0px;
-	margin:0px;
-	padding-bottom:40px;
-	color: #3F3F3F;
-}
+		$css_styles
+			= "
+			body	{
+			font-family: Tahoma, Arial, Helvetica, Univers, sans-serif;
+			font-size: 15px;
+			background:#E9EDF0;
+			padding:0px;
+			margin:0px;
+			padding-bottom:40px;
+			color: #3F3F3F;
+		}
 
-.outer	{
-	margin: 0 auto;
-}
-
-.header	{
-	padding: 10px auto;
-	border-bottom: 5px solid #599DCA;
-	text-align: center;
-	width: 100%;
-}
-
-.logo	{
-	max-width: 100%;
-}
-
-.content-outer	{
-	max-width: 1000px;
-	margin: 10px auto;
-}
-
-.content	{
-	text-align: left;
-	background: #E9EDF0;
-	border-radius: 8px 8px 8px 8px;
-	box-shadow: 1px 1px 3px 2px #599DCA;
-	margin: 0 5px;
-	padding: 0;
-}
-
-.content-inner	{
-	padding: 20px 15px;
-}
-
-H1	{
-	color: #fff;
-	background: #599DCA;
-	border-radius: 8px 8px 0 0;
-	font-size: 16px;
-	font-weight: bold;
-	text-align: center;
-	padding: 10px 0;
-}
-
-H2	{
-	border-radius: 8px 8px 8px 8px;
-	box-shadow: 1px 1px 3px 2px #599DCA;
-	color: #3061AF;
-	padding: 5px;
-}
-
-.footer-outer	{
-	max-width: 1000px;
-	margin: 10px auto;
-}
-
-.footer-inner	{
-	margin: 0 5px;
-}
-";
+		.outer	{
+			margin: 0 auto;
+		}
+		
+		.header	{
+			padding: 10px auto;
+			border-bottom: 5px solid #599DCA;
+			text-align: center;
+			width: 100%;
+		}
+		
+		.logo	{
+			max-width: 100%;
+		}
+		
+		.content-outer	{
+			max-width: 1000px;
+			margin: 10px auto;
+		}
+		
+		.content	{
+			text-align: left;
+			background: #E9EDF0;
+			border-radius: 8px 8px 8px 8px;
+			box-shadow: 1px 1px 3px 2px #599DCA;
+			margin: 0 5px;
+			padding: 0;
+		}
+		
+		.content-inner	{
+			padding: 20px 15px;
+		}
+		
+		H1	{
+			color: #fff;
+			background: #599DCA;
+			border-radius: 8px 8px 0 0;
+			font-size: 16px;
+			font-weight: bold;
+			text-align: center;
+			padding: 10px 0;
+		}
+		
+		H2	{
+			border-radius: 8px 8px 8px 8px;
+			box-shadow: 1px 1px 3px 2px #599DCA;
+			color: #3061AF;
+			padding: 5px;
+		}
+		
+		.footer-outer	{
+			max-width: 1000px;
+			margin: 10px auto;
+		}
+		
+		.footer-inner	{
+			margin: 0 5px;
+		}
+		";
 
 		$params_default = array();
 		$config	= JFactory::getConfig();
@@ -1694,6 +1699,8 @@ H2	{
 	 * install or update access rules for component
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */

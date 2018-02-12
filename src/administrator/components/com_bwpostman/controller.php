@@ -53,12 +53,14 @@ class BwPostmanController extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		parent::display();
+
+		return $this;
 	}
 
 	/**
 	 * Method to call the start layout for the add text template
 	 *
-	 * @access	public
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 */
@@ -76,7 +78,7 @@ class BwPostmanController extends JControllerLegacy
 	/**
 	 * Method to call the start layout for the add html template
 	 *
-	 * @access	public
+	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 */

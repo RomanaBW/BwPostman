@@ -44,70 +44,70 @@ class BwPostmanTableTemplates_Tpl extends JTable
 	 *
 	 * @since       1.1.0
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
 	 * @var string title
 	 *
 	 * @since       1.1.0
 	 */
-	var $title = null;
+	public $title = null;
 
 	/**
 	 * @var string css
 	 *
 	 * @since       1.1.0
 	 */
-	var $css = null;
+	public $css = null;
 
 	/**
 	 * @var string header_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	var $header_tpl = null;
+	public $header_tpl = null;
 
 	/**
 	 * @var string intro_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	var $intro_tpl = null;
+	public $intro_tpl = null;
 
 	/**
 	 * @var string divider_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	var $divider_tpl = null;
+	public $divider_tpl = null;
 
 	/**
 	 * @var string article_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	var $article_tpl = null;
+	public $article_tpl = null;
 
 	/**
 	 * @var string readon_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	var $readon_tpl = null;
+	public $readon_tpl = null;
 
 	/**
 	 * @var string footer_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	var $footer_tpl = null;
+	public $footer_tpl = null;
 
 	/**
 	 * @var string button_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	var $button_tpl = null;
+	public $button_tpl = null;
 
 	/**
 	 * Constructor

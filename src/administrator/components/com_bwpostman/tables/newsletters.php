@@ -325,6 +325,8 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @return  string
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.0.1
 	 */
 	public function getAssetParentId()
@@ -393,6 +395,7 @@ class BwPostmanTableNewsletters extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		if ($result)
 		{
 			$assetId = (int) $result;
@@ -460,11 +463,13 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @return boolean True
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function check()
 	{
-		jimport ('joomla.mail.helper');
+		jimport('joomla.mail.helper');
 
 		$app	= JFactory::getApplication();
 		$query	= $this->_db->getQuery(true);
@@ -538,9 +543,9 @@ class BwPostmanTableNewsletters extends JTable
 
 		if ($fault)
 		{
-//			$app->setUserState('com_bwpostman.edit.newsletter.data', $this);
 			return false;
 		}
+
 		return true;
 	}
 
@@ -550,6 +555,8 @@ class BwPostmanTableNewsletters extends JTable
 	 * @param $id
 	 *
 	 * @return boolean True on success
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -564,7 +571,10 @@ class BwPostmanTableNewsletters extends JTable
 		{
 			// Take the id loaded in this object
 			if (!$this->id)
+			{
 				return false;
+			}
+
 			$nl_id = $this->id;
 		}
 
@@ -585,8 +595,8 @@ class BwPostmanTableNewsletters extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
-		return true;
 
+		return true;
 	}
 
 	/**
@@ -595,6 +605,8 @@ class BwPostmanTableNewsletters extends JTable
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
 	 * @return  boolean  True on success.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -617,11 +629,9 @@ class BwPostmanTableNewsletters extends JTable
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
 		}
+
 		$res	= parent::store($updateNulls);
 		$app->setUserState('com_bwpostman.newsletter.id', $this->id);
-
-		// reset tab to basic if adding new newsletter was ok
-//		if ($res && $id == 0) $app->setUserState('com_bwpostman.newsletter.tab', 'edit_basic');
 
 		return $res;
 	}

@@ -44,98 +44,98 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
 	 * @var int asset_id
 	 *
 	 * @since       1.0.1
 	 */
-	var $asset_id = null;
+	public $asset_id = null;
 
 	/**
 	 * @var string Campaign title
 	 *
 	 * @since       0.9.1
 	 */
-	var $title = null;
+	public $title = null;
 
 	/**
 	 * @var string Campaign description
 	 *
 	 * @since       0.9.1
 	 */
-	var $description = null;
+	private $description = null;
 
 	/**
 	 * @var int Access level/View level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
 	 *
 	 * @since       0.9.1
 	 */
-	var $access = 1;
+	public $access = 1;
 
 	/**
 	 * @var datetime creation date of the campaign
 	 *
 	 * @since       0.9.1
 	 */
-	var $created_date = '0000-00-00 00:00:00';
+	public $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $created_by = 0;
+	public $created_by = 0;
 
 	/**
 	 * @var datetime last modification date of the campaign
 	 *
 	 * @since       0.9.1
 	 */
-	var $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $modified_by = 0;
+	public $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
 	 * @since       0.9.1
 	 */
-	var $checked_out = 0;
+	public $checked_out = 0;
 
 	/**
 	 * @var datetime Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
-	var $checked_out_time = '0000-00-00 00:00:00';
+	public $checked_out_time = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       0.9.1
 	 */
-	var $archive_flag = 0;
+	public $archive_flag = 0;
 
 	/**
 	 * @var datetime Archive-date
 	 *
 	 * @since       0.9.1
 	 */
-	var $archive_date = '0000-00-00 00:00:00';
+	public $archive_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int ID --> 0 = campaign is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       0.9.1
 	 */
-	var $archived_by = 0;
+	public $archived_by = 0;
 
 	/**
 	 * Constructor
@@ -177,6 +177,8 @@ class BwPostmanTableCampaigns extends JTable
 	 * Alias function
 	 *
 	 * @return  integer
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -220,6 +222,8 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @return  integer
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.0.1
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
@@ -244,6 +248,7 @@ class BwPostmanTableCampaigns extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		if ($result)
 		{
 			$assetId = (int) $result;
@@ -311,6 +316,8 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @return boolean True
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function check()
@@ -359,6 +366,7 @@ class BwPostmanTableCampaigns extends JTable
 			$app->setUserState('com_bwpostman.edit.campaign.data', $this);
 			return false;
 		}
+
 		return true;
 	}
 
@@ -368,6 +376,8 @@ class BwPostmanTableCampaigns extends JTable
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
 	 * @return  boolean  True on success.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -388,6 +398,7 @@ class BwPostmanTableCampaigns extends JTable
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
 		}
+
 		$res	= parent::store($updateNulls);
 		JFactory::getApplication()->setUserState('com_bwpostman.edit.campaign.id', $this->id);
 

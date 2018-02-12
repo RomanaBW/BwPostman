@@ -294,6 +294,8 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @return boolean True
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function check()
@@ -359,6 +361,8 @@ class BwPostmanTableMailinglists extends JTable
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
 	 * @return  boolean  True on success.
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */

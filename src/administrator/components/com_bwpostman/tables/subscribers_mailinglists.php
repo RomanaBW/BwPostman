@@ -44,14 +44,14 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $subscriber_id = null;
+	public $subscriber_id = null;
 
 	/**
 	 * @var int Primary Key list-id
 	 *
 	 * @since       0.9.1
 	 */
-	var $mailinglist_id = null;
+	public $mailinglist_id = null;
 
 	/**
 	 * Constructor
@@ -102,9 +102,6 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 		{
 			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
-
-		// Cast properties
-		$this->id	= (int) $this->id;
 
 		return parent::bind($data, $ignore);
 	}

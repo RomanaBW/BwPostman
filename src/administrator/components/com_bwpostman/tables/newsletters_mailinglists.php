@@ -44,14 +44,14 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $newsletter_id = null;
+	public $newsletter_id = null;
 
 	/**
 	 * @var int Primary Key Mailinglist-ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $mailinglist_id = null;
+	public $mailinglist_id = null;
 
 	/**
 	 * Constructor
@@ -75,6 +75,8 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function copyLists($oldid, $newid)
@@ -84,7 +86,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 		$query		= $_db->getQuery(true);
 		$subQuery	= $_db->getQuery(true);
 
-		$subQuery->select($_db->quote($newid)  . ' AS ' . $_db->quoteName('newsletter_id'));
+		$subQuery->select($_db->quote($newid) . ' AS ' . $_db->quoteName('newsletter_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
 		$subQuery->where($_db->quoteName('newsletter_id') . ' = ' . (int) $oldid);
@@ -103,14 +105,16 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 		{
 			$query->clear();
 			$query->insert($_db->quoteName($this->_tbl));
-			$query->columns(array(
+			$query->columns(
+				array(
 				$_db->quoteName('newsletter_id'),
 				$_db->quoteName('mailinglist_id')
-				));
+				)
+			);
 			$query->values(
-					(int) $list['newsletter_id'] . ',' .
+				(int) $list['newsletter_id'] . ',' .
 					(int) $list['mailinglist_id']
-				);
+			);
 			$_db->setQuery($query);
 
 			try
@@ -122,6 +126,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPY_MAILINGLISTS_FAILED'), 'error');
 			}
 		}
+
 		return true;
 	}
 }

@@ -46,56 +46,56 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
 	 * @var int Content-ID --> from the sendmailcontent-Table
 	 *
 	 * @since       0.9.1
 	 */
-	var $content_id = null;
+	public $content_id = null;
 
 	/**
 	 * @var string Recipient email
 	 *
 	 * @since       0.9.1
 	 */
-	var $recipient = null;
+	public $recipient = null;
 
 	/**
 	 * @var int Mode --> 0 = Text, 1 = HTML
 	 *
 	 * @since
 	 */
-	var $mode = null;
+	public $mode = null;
 
 	/**
 	 * @var string Recipient name
 	 *
 	 * @since       0.9.1
 	 */
-	var $name = null;
+	public $name = null;
 
 	/**
 	 * @var string Recipient firstname
 	 *
 	 * @since       0.9.1
 	 */
-	var $firstname = null;
+	public $firstname = null;
 
 	/**
 	 * @var int Subscriber ID
 	 *
 	 * @since       0.9.1
 	 */
-	var $subscriber_id = null;
+	public $subscriber_id = null;
 
 	/**
 	 * @var int Number of delivery attempts
 	 *
 	 * @since       0.9.1
 	 */
-	var $trial = null;
+	public $trial = null;
 
 	/**
 	 * Constructor
@@ -117,7 +117,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @param array|object  $data       Named array
 	 * @param string        $ignore     Space separated list of fields not to bind
 	 *
-	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @return boolean
 	 *
@@ -176,11 +176,11 @@ class BwPostmanTableSendmailqueue extends JTable
 	/**
 	 * Method to get the first entry of this table
 	 *
-	 * @access 	public
-
 	 * @param   int     $trial  Only pop entries with < trial
 	 *
 	 * @return 	int --> 0 if nothing was selected
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -194,7 +194,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		$query->select('*');
 		$query->from($_db->quoteName($this->_tbl));
 		$query->where($_db->quoteName('trial') . ' < ' . (int) $trial);
-		$query->order($_db->quoteName($this->_tbl_key).' ASC LIMIT 0,1');
+		$query->order($_db->quoteName($this->_tbl_key) . ' ASC LIMIT 0,1');
 
 		$_db->setQuery($query);
 
@@ -204,8 +204,9 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(),'error');
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		if (count($result))
 		{
 			if ($this->bind($result))
@@ -216,6 +217,7 @@ class BwPostmanTableSendmailqueue extends JTable
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -231,8 +233,10 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @param   string  $firstname          Recipient first name
 	 * @param   int     $subscriber_id      Subscriber ID
 	 * @param   int     $trial              Number of delivery attempts
-
+	 *
 	 * @return 	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -242,15 +246,17 @@ class BwPostmanTableSendmailqueue extends JTable
 		$query	= $_db->getQuery(true);
 
 		$query->insert($_db->quoteName($this->_tbl));
-		$query->columns(array(
-			$_db->quoteName('content_id'),
-			$_db->quoteName('mode'),
-			$_db->quoteName('recipient'),
-			$_db->quoteName('name'),
-			$_db->quoteName('firstname'),
-			$_db->quoteName('subscriber_id'),
-			$_db->quoteName('trial')
-		));
+		$query->columns(
+			array(
+				$_db->quoteName('content_id'),
+				$_db->quoteName('mode'),
+				$_db->quoteName('recipient'),
+				$_db->quoteName('name'),
+				$_db->quoteName('firstname'),
+				$_db->quoteName('subscriber_id'),
+				$_db->quoteName('trial'),
+				)
+		);
 		$query->values(
 			(int) $content_id . ',' .
 			(int) $emailformat . ',' .
@@ -270,6 +276,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return true;
 	}
 
@@ -285,12 +292,17 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 
 	public function pushAllFromNlId($nl_id, $content_id, $status, $cam_id)
 	{
-		if (!$content_id) return false;
+		if (!$content_id)
+		{
+			return false;
+		}
 
 		$_db		= $this->_db;
 		$subQuery1	= $_db->getQuery(true);
@@ -335,7 +347,7 @@ class BwPostmanTableSendmailqueue extends JTable
 				$_db->quoteName('firstname') . ',' .
 				$_db->quoteName('subscriber_id') .
 		')';
-		$query .=$subQuery1;
+		$query .= $subQuery1;
 
 		$_db->setQuery($query);
 
@@ -345,8 +357,9 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(),'error');
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return true;
 	}
 
@@ -360,11 +373,16 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function pushAllSubscribers($content_id, $status)
 	{
-		if (!$content_id) return false;
+		if (!$content_id)
+		{
+			return false;
+		}
 
 		$_db		= $this->_db;
 		$subQuery	= $_db->getQuery(true);
@@ -381,14 +399,16 @@ class BwPostmanTableSendmailqueue extends JTable
 		$subQuery->where($_db->quoteName('archive_flag') . ' = ' . $_db->quote('0'));
 
 		$query->insert($this->_tbl);
-		$query->columns(array(
-			$_db->quoteName('content_id'),
-			$_db->quoteName('recipient'),
-			$_db->quoteName('mode'),
-			$_db->quoteName('name'),
-			$_db->quoteName('firstname'),
-			$_db->quoteName('subscriber_id')
-		));
+		$query->columns(
+			array(
+				$_db->quoteName('content_id'),
+				$_db->quoteName('recipient'),
+				$_db->quoteName('mode'),
+				$_db->quoteName('name'),
+				$_db->quoteName('firstname'),
+				$_db->quoteName('subscriber_id')
+			)
+		);
 		$query->values($subQuery);
 
 		try
@@ -399,6 +419,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return true;
 	}
 
@@ -413,16 +434,26 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function pushJoomlaUser($content_id, $usergroups, $format = 0)
 	{
 		if (!$content_id)
+		{
 			return false;
+		}
+
 		if (!is_array($usergroups))
+		{
 			return false;
+		}
+
 		if (!count($usergroups))
+		{
 			return false;
+		}
 
 		$_db		= $this->_db;
 		$sub_res    = array();
@@ -432,7 +463,7 @@ class BwPostmanTableSendmailqueue extends JTable
 
 		$subQuery1->select($_db->quoteName('g') . '.' . $_db->quoteName('user_id'));
 		$subQuery1->from($_db->quoteName('#__user_usergroup_map') . ' AS ' . $_db->quoteName('g'));
-		$subQuery1->where($_db->quoteName('g') . '.' . $_db->quoteName('group_id') . ' IN (' . implode(',', $usergroups) . ')' );
+		$subQuery1->where($_db->quoteName('g') . '.' . $_db->quoteName('group_id') . ' IN (' . implode(',', $usergroups) . ')');
 
 		$subQuery->select($_db->quote($content_id) . ' AS content_id');
 		$subQuery->select($_db->quoteName('email', 'recipient'));
@@ -459,15 +490,17 @@ class BwPostmanTableSendmailqueue extends JTable
 			$query		= $_db->getQuery(true);
 
 			$query->insert($_db->quoteName($this->_tbl));
-			$query->columns(array(
-				$_db->quoteName('content_id'),
-				$_db->quoteName('recipient'),
-				$_db->quoteName('mode'),
-				$_db->quoteName('name'),
-				$_db->quoteName('subscriber_id')
-			));
+			$query->columns(
+				array(
+					$_db->quoteName('content_id'),
+					$_db->quoteName('recipient'),
+					$_db->quoteName('mode'),
+					$_db->quoteName('name'),
+					$_db->quoteName('subscriber_id'),
+				)
+			);
 			$query->values(
-					$_db->quote($result->content_id) . ', ' .
+				$_db->quote($result->content_id) . ', ' .
 					$_db->quote($result->recipient) . ', ' .
 					$_db->quote($result->mode) . ', ' .
 					$_db->quote($result->name) . ', ' .
@@ -484,6 +517,7 @@ class BwPostmanTableSendmailqueue extends JTable
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+
 		return true;
 	}
 
@@ -491,6 +525,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * Method to reset sending trials
 	 *
 	 * @return bool
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -513,6 +549,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return true;
 	}
 }

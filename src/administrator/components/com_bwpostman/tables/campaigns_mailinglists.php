@@ -44,14 +44,14 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @since
 	 */
-	var $campaign_id = null;
+	public $campaign_id = null;
 
 	/**
 	 * @var int Primary Key Mailinglist-ID
 	 *
 	 * @since
 	 */
-	var $mailinglist_id = null;
+	public $mailinglist_id = null;
 
 	/**
 	 * Constructor
@@ -73,6 +73,8 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 * @param 	int $oldid      ID of the existing campaign
 	 * @param 	int $newid      ID of the copied campaign
 	 *
+	 * @throws Exception
+	 *
 	 * @return 	boolean
 	 *
 	 * @since
@@ -84,7 +86,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$query		= $_db->getQuery(true);
 		$subQuery	= $_db->getQuery(true);
 
-		$subQuery->select($_db->quote($newid)  . ' AS ' . $_db->quoteName('campaign_id'));
+		$subQuery->select($_db->quote($newid) . ' AS ' . $_db->quoteName('campaign_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
 		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . (int) $oldid);
@@ -103,14 +105,16 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		{
 			$query->clear();
 			$query->insert($_db->quoteName($this->_tbl));
-			$query->columns(array(
+			$query->columns(
+				array(
 				$_db->quoteName('campaign_id'),
 				$_db->quoteName('mailinglist_id')
-				));
+				)
+			);
 			$query->values(
-					(int) $list['campaign_id'] . ',' .
+				(int) $list['campaign_id'] . ',' .
 					(int) $list['mailinglist_id']
-				);
+			);
 			$_db->setQuery($query);
 
 			try
@@ -122,6 +126,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
 			}
 		}
+
 		return true;
 	}
 }

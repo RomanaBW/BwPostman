@@ -15,7 +15,6 @@
 				description="COM_BWPOSTMAN_NL_FILTER_TITLE_DESC"
 				onchange="this.form.submit();"
 				>
-<!-- 				<option value="">COM_BWPOSTMAN_FILTER_SEARCH_FOR</option> -->
 				<option value="subject">COM_BWPOSTMAN_NL_FILTER_SEARCH_SUBJECT</option>
 				<option value="description">COM_BWPOSTMAN_NL_FILTER_SEARCH_DESCRIPTION</option>
 				<option value="subject_description">COM_BWPOSTMAN_NL_FILTER_SEARCH_SUBJECT_DESCRIPTION</option>

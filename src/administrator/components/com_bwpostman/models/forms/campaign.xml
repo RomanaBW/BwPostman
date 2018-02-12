@@ -80,40 +80,6 @@
 			readonly="true"
 		/>
 
-<!--
-		<field
-			name="active"
-			type="list"
-			label="COM_BWPOSTMAN_FIELD_ACTIVATE_LABEL"
-			description="COM_BWPOSTMAN_FIELD_ACTIVATE_DESC"
-			class="inputbox"
-			filter="intval"
-			size="1"
-			default="1"
-		>
-			<option value="1">
-				JPUBLISHED</option>
-			<option value="0">
-				JUNPUBLISHED</option>
-		</field>
-
-		<field
-			name="automailing"
-			type="list"
-			label="COM_BWPOSTMAN_FIELD_AUTOMAILING_LABEL"
-			description="COM_BWPOSTMAN_FIELD_AUTOMAILING_DESC"
-			class="inputbox"
-			filter="intval"
-			size="1"
-			default="1"
-		>
-			<option value="1">
-				JPUBLISHED</option>
-			<option value="0">
-				JUNPUBLISHED</option>
-		</field>
--->
-
 		<field
 			name="buttonspacer"
 			description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
@@ -145,38 +111,6 @@
 			name="archive_by"
 			type="hidden"
 		/>
-
-<!--
-		<field
-			name="publish_up"
-			type="calendar"
-			label="COM_BWPOSTMAN_FIELD_PUBLISH_UP_LABEL"
-			description="COM_BWPOSTMAN_FIELD_PUBLISH_UP_DESC"
-			class="inputbox" format="%Y-%m-%d %H:%M:%S"
-			size="22"
-			filter="user_utc"
-		/>
-
-		<field
-			name="publish_down"
-			type="calendar"
-			label="COM_BWPOSTMAN_FIELD_PUBLISH_DOWN_LABEL"
-			description="COM_BWPOSTMAN_FIELD_PUBLISH_DOWN_DESC"
-			class="inputbox" format="%Y-%m-%d %H:%M:%S"
-			size="22"
-			filter="user_utc"
-		/>
-
-		<field
-			name="mail_ordering"
-			type="text"
-			label="COM_BWPOSTMAN_FIELD_MAIL_ORDERING_LABEL"
-			description="COM_BWPOSTMAN_FIELD_MAIL_ORDERING_DESC"
-			class="inputbox"
-			size="6"
-			default="0"
-		/>
--->
 	</fieldset>
 
 	<fieldset name="rules" addfieldpath="/administrator/components/com_bwpostman/models/fields">

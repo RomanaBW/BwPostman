@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
-require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 
 /**
@@ -44,20 +44,20 @@ class BwPostmanModelEdit extends JModelAdmin
 	/**
 	 * Subscriber ID
 	 *
-	 * @var int
+	 * @var integer
 	 *
 	 * @since       0.9.1
 	 */
-	var $_id;
+	private $id;
 
 	/**
 	 * User ID in subscriber-table
 	 *
-	 * @var int
+	 * @var integer
 	 *
 	 * @since       0.9.1
 	 */
-	var $_userid;
+	private $userid;
 
 	/**
 	 * Subscriber data
@@ -66,7 +66,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 *
 	 * @since       0.9.1
 	 */
-	var $_data;
+	private $data;
 
 	/**
 	 * Constructor
@@ -82,19 +82,23 @@ class BwPostmanModelEdit extends JModelAdmin
 		$id			= 0;
 
 		if ($user->guest)
-		{ // Subscriber is guest
+		{
+			// Subscriber is guest
 			$session				= JFactory::getSession();
 			$session_subscriberid	= $session->get('session_subscriberid');
 
 			if(isset($session_subscriberid) && is_array($session_subscriberid))
-			{ // Session contains subscriber ID
+			{
+				// Session contains subscriber ID
 				$id	= $session_subscriberid['id'];
 			}
 		}
 		else
-		{ // Subscriber is user
+		{
+			// Subscriber is user
 			$id	= BwPostmanSubscriberHelper::getSubscriberId($user->get('id')); // Get the subscriber ID from the subscribers-table
 		}
+
 		$this->setData($id);
 	}
 
@@ -108,7 +112,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @return	JTable	A database object
 	 *
 	 * @since  1.0.1
-	*/
+	 */
 	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -118,6 +122,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -150,7 +156,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return	mixed	A JForm object on success, false on failure
-
+	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -163,15 +171,15 @@ class BwPostmanModelEdit extends JModelAdmin
 		{
 			return false;
 		}
+
 		$jinput	= JFactory::getApplication()->input;
 		$id		= $jinput->get('id', 0);
 		$user	= JFactory::getUser();
 
 		// Check for existing subscriber.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('bwpm.subscriber.edit.state', 'com_bwpostman.subscriber.'.(int) $id))
-				|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman'))
-			)
+		if ($id != 0 && (!$user->authorise('bwpm.subscriber.edit.state', 'com_bwpostman.subscriber.' . (int) $id))
+			|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman')))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('status', 'disabled', 'true');
@@ -237,8 +245,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	protected function setData($id)
 	{
-		$this->_id		= $id;
-		$this->_data	= null;
+		$this->id   = $id;
+		$this->data = null;
 	}
 
 	/**
@@ -247,6 +255,8 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param	int     $pk 	The id of the subscriber.
 	 *
 	 * @return	mixed	Menu item data object on success, false on failure.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -268,7 +278,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		try
 		{
 			$_db->setQuery($query);
-			$this->_data	= $_db->loadObject();
+			$this->data = $_db->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
@@ -276,26 +286,26 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 
 		// if no data get, take default values
-		if (!is_object($this->_data))
+		if (!is_object($this->data))
 		{
-			$this->_data	= BwPostmanSubscriberHelper::fillVoidSubscriber();
+			$this->data = BwPostmanSubscriberHelper::fillVoidSubscriber();
 		}
 
 		// set id and mailinglists property
-		$this->_id  = $pk;
-		$this->_data->mailinglists  = $this->_getMailinglistsOfSubscriber($pk);
+		$this->id                 = $pk;
+		$this->data->mailinglists = $this->getMailinglistsOfSubscriber($pk);
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**
 	 * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
 	 *
-	 * @access 	public
-	 *
 	 * @param 	int		$id     subscriber ID
 	 *
 	 * @return 	string	user ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -325,9 +335,9 @@ class BwPostmanModelEdit extends JModelAdmin
 	/**
 	 * Method to get a unique activation string
 	 *
-	 * @access 	public
-	 *
 	 * @return 	string	$newActivation
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -364,15 +374,16 @@ class BwPostmanModelEdit extends JModelAdmin
 				$match_activation = false;
 			}
 		}
+
 		return $newActivation;
 	}
 
 	/**
 	 * Method to get the menu item ID which will be needed for some links
 	 *
-	 * @access	public
-	 *
 	 * @return 	int menu item ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -416,24 +427,27 @@ class BwPostmanModelEdit extends JModelAdmin
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+
 		return $itemid;
 	}
 
 	/**
 	 * Checks if an editlink exists in the subscribers-table
 	 *
-	 * @access 	public
-	 *
 	 * @param 	string  $editlink   to edit the subscriber data
 	 *
 	 * @return 	int subscriber ID
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public function checkEditlink ($editlink)
+	public function checkEditlink($editlink)
 	{
 		if ($editlink === null)
+		{
 			return 0;
+		}
 
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
@@ -453,7 +467,10 @@ class BwPostmanModelEdit extends JModelAdmin
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (empty($id)) $id = 0;
+		if (empty($id))
+		{
+			$id = 0;
+		}
 
 		return $id;
 	}
@@ -486,6 +503,7 @@ class BwPostmanModelEdit extends JModelAdmin
 				BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
 			}
 		}
+
 		return true;
 	}
 
@@ -496,9 +514,11 @@ class BwPostmanModelEdit extends JModelAdmin
 	 *
 	 * @return mixed
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	private function _getMailinglistsOfSubscriber($pk)
+	private function getMailinglistsOfSubscriber($pk)
 	{
 		$list_id_values = null;
 		$_db    = $this->_db;
@@ -518,6 +538,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return $list_id_values;
 	}
 }

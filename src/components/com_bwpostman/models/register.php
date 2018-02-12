@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
-require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 
 /**
@@ -60,7 +60,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @return	JTable	A database object
 	 *
 	 * @since  1.0.1
-	*/
+	 */
 	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -70,6 +70,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -112,9 +114,9 @@ class BwPostmanModelRegister extends JModelAdmin
 	/**
 	 * Method to get the menu item ID which will be needed for some links
 	 *
-	 * @access	public
-	 *
 	 * @return 	int menu item ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -145,15 +147,15 @@ class BwPostmanModelRegister extends JModelAdmin
 	/**
 	 * Method to check by an input email address if a user has a newsletter account (user = no guest)
 	 *
-	 * @access 	public
-	 *
 	 * @param 	string $email   user email
 	 *
 	 * @return 	int     $uid    user ID
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public function isRegUser ($email)
+	public function isRegUser($email)
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
@@ -172,7 +174,11 @@ class BwPostmanModelRegister extends JModelAdmin
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
-		if ($uid == NULL) $uid = 0;
+
+		if ($uid == null)
+		{
+			$uid = 0;
+		}
 
 		return $uid;
 	}
@@ -180,15 +186,15 @@ class BwPostmanModelRegister extends JModelAdmin
 	/**
 	 * Method to check if an email address exists in the subscribers-table
 	 *
-	 * @access 	public
-	 *
 	 * @param 	string  $email  subscriber email
 	 *
 	 * @return 	int     $id     subscriber ID
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public function isRegSubscriber ($email)
+	public function isRegSubscriber($email)
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
@@ -208,6 +214,7 @@ class BwPostmanModelRegister extends JModelAdmin
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return $id;
 	}
 
@@ -215,11 +222,11 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * Method to save the subscriber data into the subscribers-table
 	 * Sets editlink and activation code and checks if the data are valid
 	 *
-	 * @access 	public
-	 *
 	 * @param 	array   $data       associative array of data to store
 	 *
 	 * @return 	Boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -230,10 +237,10 @@ class BwPostmanModelRegister extends JModelAdmin
 		$app	= JFactory::getApplication();
 
 		// Create the editlink and check if the string doesn't exist twice or more
-		$data['editlink'] = $this->_createEditlink();
+		$data['editlink'] = $this->createEditlink();
 
 		// Create the activation and check if the string doesn't exist twice or more
-		$data['activation'] = $this->_createActivation();
+		$data['activation'] = $this->createActivation();
 		$app->setUserState('com_bwpostman.subscriber.activation', $data['activation']);
 
 		if (parent::save($data))
@@ -249,23 +256,23 @@ class BwPostmanModelRegister extends JModelAdmin
 				}
 			}
 
-//			$data['activation'];
-
 			return true;
 		}
 		else
+		{
 			return false;
+		}
 	}
 
 	/**
 	 * Method to delete a subscriber and the subscribed mailinglists
 	 * --> is also called from the store method if a email is registered but archived by the user himself
 	 *
-	 * @access 	public
-	 *
 	 * @param 	int     $pks        subscriber ID
 	 *
 	 * @return 	Boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -293,13 +300,12 @@ class BwPostmanModelRegister extends JModelAdmin
 				return false;
 			}
 		}
+
 		return true;
 	}
 
 	/**
 	 * Method to activate the newsletter account of a subscriber
-	 *
-	 * @access 	public
 	 *
 	 * @param 	string  $activation     activation code for the newsletter account
 	 * @param 	string $ret_err_msg     error message
@@ -308,13 +314,15 @@ class BwPostmanModelRegister extends JModelAdmin
 	 *
 	 * @return 	Boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function activateSubscriber($activation, &$ret_err_msg, &$ret_editlink, $activation_ip)
 	{
 		$app	    = JFactory::getApplication();
 		$subscriber = null;
-		$this->addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/models');
+		$this->addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/models');
 
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
@@ -340,8 +348,15 @@ class BwPostmanModelRegister extends JModelAdmin
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (isset($subscriber->editlink)) $ret_editlink = $subscriber->editlink;
-		if (isset($subscriber->id)) $id = $subscriber->id;
+		if (isset($subscriber->editlink))
+		{
+			$ret_editlink = $subscriber->editlink;
+		}
+
+		if (isset($subscriber->id))
+		{
+			$id = $subscriber->id;
+		}
 
 		// Is it a valid user to activate?
 		if (!empty($id))
@@ -382,17 +397,17 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * Method to unsubscribe
 	 * --> the subscriber data will be deleted
 	 *
-	 * @access	public
-	 *
 	 * @param 	string $editlink
 	 * @param 	string $email
 	 * @param 	string $ret_err_msg     error message
 	 *
 	 * @return 	Boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public function unsubscribe ($editlink, $email, &$ret_err_msg)
+	public function unsubscribe($editlink, $email, &$ret_err_msg)
 	{
 		$app	= JFactory::getApplication();
 		$_db	= $this->_db;
@@ -438,11 +453,11 @@ class BwPostmanModelRegister extends JModelAdmin
 	/**
 	 * Method to send an information to webmaster, when a new subscriber activated the account
 	 *
-	 * @access 	public
-	 *
 	 * @param 	int		$subscriber_id      subscriber id
 	 *
-	 * @return 	Boolean
+	 * @return 	void
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -458,13 +473,21 @@ class BwPostmanModelRegister extends JModelAdmin
 		$from[0]	= JMailHelper::cleanAddress($params->get('default_from_email'));
 		$from[1]	= $params->get('default_from_name');
 		$mail->setSender($from);
-		$mail->addReplyTo($from[0],$from[1]);
+		$mail->addReplyTo($from[0], $from[1]);
 
 		// set recipient
 		$recipient_mail	= JMailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
 		$recipient_name	= $params->get('activation_from_name');
-		if (!is_string($recipient_mail)) $recipient_mail = $from[0];
-		if (!is_string($recipient_name)) $recipient_name = $from[1];
+		if (!is_string($recipient_mail))
+		{
+			$recipient_mail = $from[0];
+		}
+
+		if (!is_string($recipient_name))
+		{
+			$recipient_name = $from[1];
+		}
+
 		$mail->addRecipient($recipient_mail, $recipient_name);
 
 		// set subject
@@ -579,9 +602,11 @@ class BwPostmanModelRegister extends JModelAdmin
 	 *
 	 * @return string   $activation
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	private function _createActivation()
+	private function createActivation()
 	{
 		// @ToDo: Move to helper class to get access by plugins
 		$_db                = $this->_db;
@@ -627,9 +652,11 @@ class BwPostmanModelRegister extends JModelAdmin
 	 *
 	 * @return string   $editlink
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	private function _createEditlink()
+	private function createEditlink()
 	{
 		// @ToDo: Move to helper class to get access by plugins
 		$_db                = $this->_db;

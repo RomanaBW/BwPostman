@@ -44,11 +44,11 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * property to hold context
 	 *
-	 * @var string  $_context
+	 * @var string $context
 	 *
 	 * @since       0.9.1
 	 */
-	public $_context = 'com_bwpostman.newsletters';
+	public $context = 'com_bwpostman.newsletters';
 
 	/**
 	 * property to hold extension name
@@ -57,7 +57,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       0.9.1
 	 */
-	protected $_extension = 'com_bwpostman';
+	protected $extension = 'com_bwpostman';
 
 	/**
 	 * property to hold newsletters
@@ -66,7 +66,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       0.9.1
 	 */
-	protected $_newsletters = null;
+	protected $newsletters = null;
 
 	/**
 	 * Newsletter id
@@ -75,7 +75,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       0.9.1
 	 */
-	var $_id = null;
+	private $id = null;
 
 	/**
 	 * Newsletter data
@@ -84,16 +84,16 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       0.9.1
 	 */
-	var $_data = null;
+	private $data = null;
 
 	/**
 	 * Number of all Newsletters which are shown
 	 *
-	 * @var int
+	 * @var integer
 	 *
 	 * @since       0.9.1
 	 */
-	var $_total = null;
+	private $total = null;
 
 	/**
 	 * Pagination object
@@ -102,7 +102,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       0.9.1
 	 */
-	var $_pagination = null;
+	private $pagination = null;
 
 	/**
 	 * Newsletter filter
@@ -111,10 +111,12 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       0.9.1
 	 */
-	var $_filter = null;
+	private $filter = null;
 
 	/**
 	 * Constructor
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -125,7 +127,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$jinput	= JFactory::getApplication()->input;
 
 		$id = $jinput->get('id');
-		$this->setId((int)$id);
+		$this->setId((int) $id);
 
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
@@ -142,6 +144,7 @@ class BwPostmanModelNewsletters extends JModelList
 				'a.ordering, ordering'
 			);
 		}
+
 		parent::__construct($config);
 	}
 
@@ -155,7 +158,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @return	JTable	A database object
 	 *
 	 * @since  1.0.1
-	*/
+	 */
 	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -169,9 +172,11 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @param string    $ordering
 	 * @param string    $direction
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
-	protected function populateState($ordering = NULL, $direction = NULL)
+	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialize variables.
 		$app	= JFactory::getApplication('site');
@@ -182,7 +187,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->setState('newsletter.id', $pk);
 
 		// Load the parameters. Merge Global and Menu Item params into new object
-		$params     = JComponentHelper::getParams($this->_extension);
+		$params     = JComponentHelper::getParams($this->extension);
 		$menuParams = new JRegistry;
 		$menu       = $app->getMenu()->getActive();
 
@@ -221,9 +226,11 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->setState('list.ordering', $orderCol);
 
 		$listOrder = $app->getUserStateFromRequest('com_bwpostman.newsletters.list.filter_order_Dir', 'filter_order_Dir', 'DESC', 'cmd');
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
 			$listOrder = 'DESC';
 		}
+
 		$this->setState('list.direction', $listOrder);
 
 		$this->setState('layout', JFactory::getApplication()->input->getCmd('layout'));
@@ -232,7 +239,11 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->setState('list.limit', $limit);
 
 		$limitstart = $app->input->get->get->get('start');
-		if ($limitstart === NULL) $limitstart = $app->input->get->get->get('limitstart');
+		if ($limitstart === null)
+		{
+			$limitstart = $app->input->get->get->get('limitstart');
+		}
+
 		$this->setState('list.start', $limitstart);
 	}
 
@@ -277,8 +288,8 @@ class BwPostmanModelNewsletters extends JModelList
 	public function setId($id = 0)
 	{
 		// Set new venue ID and wipe data
-		$this->_id 		= $id;
-		$this->_data 	= null;
+		$this->id   = $id;
+		$this->data = null;
 	}
 
 	/**
@@ -288,6 +299,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @param	JDatabaseQuery|string  $query  The query.
 	 *
 	 * @return	integer  Number of rows for query.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */
@@ -334,7 +347,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$guest	= $user->get('guest');
 		$groups	= $user->getAuthorisedViewLevels();
 
-		$this->_pagination = parent::getPagination();
+		$this->pagination = parent::getPagination();
 
 		// Convert the parameter fields into objects.
 		foreach ($items as &$item)
@@ -409,8 +422,10 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @access public?
 	 * @return string Query
+	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 */
 	protected function getListQuery()
@@ -428,7 +443,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if (empty($menuId) && !empty($mod_id))
 		{
-			$module = $this->_getModuleById($mod_id);
+			$module = $this->getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
 
@@ -446,7 +461,6 @@ class BwPostmanModelNewsletters extends JModelList
 
 		// get accessible campaigns
 		$cams	= $this->getAccessibleCampaigns('false');
-
 
 		// Filter by mailing list
 		$mailinglist = $this->getState('filter.mailinglist');
@@ -498,7 +512,7 @@ class BwPostmanModelNewsletters extends JModelList
 				// Use mailing date if publish_up is 0
 				'CASE WHEN a.publish_up = ' . $nullDate . ' THEN a.mailing_date ELSE a.publish_up END as publish_up,' .
 				'publish_down'
-				)
+			)
 		);
 
 		$query->from($_db->quoteName('#__bwpostman_newsletters') . ' AS ' . $_db->quoteName('a'));
@@ -542,12 +556,14 @@ class BwPostmanModelNewsletters extends JModelList
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
 			case 'arc_or_down':
-					$query->where('(a.archive_flag = 1
+					$query->where(
+						'(a.archive_flag = 1
 							OR (
-									a.publish_down <> ' . $nullDate . '
+								a.publish_down <> ' . $nullDate . '
 								AND a.publish_down <= ' . $nowDate . '
 								AND a.publish_up <= ' . $nowDate . '
-							))');
+							))'
+					);
 				break;
 			case 'all':
 				break;
@@ -579,12 +595,11 @@ class BwPostmanModelNewsletters extends JModelList
 		$limit	= (int) $params->get('display_num', '10');
 		$limit	= $this->getState('filter.limit', $limit);
 		$this->setState('filter.limit', $limit);
-//		$query->setLimit($_db->escape($limit));
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering', 'a.mailing_date');
 		$orderDirn	= $this->state->get('list.direction', 'DESC');
-		$query->order($_db->escape($orderCol.' '.$orderDirn));
+		$query->order($_db->escape($orderCol . ' ' . $orderDirn));
 		$query->group($_db->quoteName('a.mailing_date'));
 
 		$_db->setQuery($query);
@@ -595,9 +610,9 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Method to get all published mailing lists which the user is authorized to see
 	 *
-	 * @access 	public
-	 *
 	 * @return 	array	ID and title of allowed mailinglists
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -630,17 +645,18 @@ class BwPostmanModelNewsletters extends JModelList
 		foreach ($mailinglists as $item) {
 			$allowed[]	= $item['id'];
 		}
+
 		return $allowed;
 	}
 
 	/**
 	 * Method to get all published mailing lists which the user is authorized to see and which are selected in menu
 	 *
-	 * @access 	public
-	 *
 	 * @param	boolean	$title          with title
 	 *
 	 * @return 	array	$mailinglists   ID and title of allowed mailinglists
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */
@@ -657,7 +673,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if (empty($menuId) && !empty($mod_id))
 		{
-			$module = $this->_getModuleById($mod_id);
+			$module = $this->getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
 
@@ -696,7 +712,10 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		// if no mls is left, make array
-		if (count($mls) == 0) $mls[]	= 0;
+		if (count($mls) == 0)
+		{
+			$mls[]	= 0;
+		}
 
 		// Check permission, if desired
 		if ($all_mls || $check != 'no')
@@ -762,17 +781,18 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			$mailinglists	= $mls;
 		}
+
 		return $mailinglists;
 	}
 
 	/**
 	 * Method to get all campaigns which the user is authorized to see
 	 *
-	 * @access 	public
-	 *
 	 * @param	boolean	$title      with title
 	 *
 	 * @return 	array	$campaigns  ID of allowed campaigns
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */
@@ -791,7 +811,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if (empty($menuId) && !empty($mod_id))
 		{
-			$module = $this->_getModuleById($mod_id);
+			$module = $this->getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
 
@@ -814,6 +834,7 @@ class BwPostmanModelNewsletters extends JModelList
 			{
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
+
 			$cams		= array();
 			if (count($res_cams) > 0) {
 				foreach ($res_cams as $item) {
@@ -825,8 +846,12 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			$cams	= $sel_cams;
 		}
+
 		// if no cam is left, make array
-		if (count($cams) == 0) $cams[]	= 0;
+		if (count($cams) == 0)
+		{
+			$cams[]	= 0;
+		}
 
 		// Check permission, if desired
 		if ($all_cams || $check != 'no')
@@ -883,6 +908,7 @@ class BwPostmanModelNewsletters extends JModelList
 			{
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
+
 			if (count($acc_cams) > 0)
 			{
 				$cams		= array();
@@ -892,8 +918,12 @@ class BwPostmanModelNewsletters extends JModelList
 				}
 			}
 		}
+
 		// if no cam is left, make array to return
-		if (count($cams) == 0) $cams[]	= 0;
+		if (count($cams) == 0)
+		{
+			$cams[]	= 0;
+		}
 
 		if ($title === true)
 		{
@@ -917,17 +947,18 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			$campaigns	= $cams;
 		}
+
 		return $campaigns;
 	}
 
 	/**
 	 * Method to get all user groups which the user is authorized to see
 	 *
-	 * @access 	public
-	 *
 	 * @param	boolean	$title      with title
 	 *
 	 * @return 	array	$groups     ID of allowed campaigns
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */
@@ -943,7 +974,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if (empty($menuId) && !empty($mod_id))
 		{
-			$module = $this->_getModuleById($mod_id);
+			$module = $this->getModuleById($mod_id);
 			$params	= new JRegistry($module->params);
 		}
 
@@ -966,6 +997,7 @@ class BwPostmanModelNewsletters extends JModelList
 			{
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
+
 			$groups		= array();
 			if (count($res_groups) > 0)
 			{
@@ -977,6 +1009,7 @@ class BwPostmanModelNewsletters extends JModelList
 			{
 				$groups[]	= 0;
 			}
+
 			//convert usergroups to match bwPostman's needs
 			$c_groups	= array();
 			if (count($groups) > 0)
@@ -994,7 +1027,11 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			$c_groups	= $sel_groups;
 		}
-		if (count($c_groups) == 0) $c_groups[]	= 0;
+
+		if (count($c_groups) == 0)
+		{
+			$c_groups[]	= 0;
+		}
 
 		// Check permission, if desired
 		if ($all_groups || $check != 'no')
@@ -1019,7 +1056,10 @@ class BwPostmanModelNewsletters extends JModelList
 			$sel_groups	= array_intersect($a_groups, $c_groups);
 		}
 
-		if (count($sel_groups) == 0) $sel_groups[]	= 0;
+		if (count($sel_groups) == 0)
+		{
+			$sel_groups[]	= 0;
+		}
 
 		if ($title === true)
 		{
@@ -1050,15 +1090,15 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Method to get all user groups which the user is authorized to see
 	 *
-	 * @access 	public
-	 *
 	 * @param	int	    $id     module ID
 	 *
 	 * @return 	object	$module module object
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.2.0
 	 */
-	private function _getModuleById($id = 0)
+	private function getModuleById($id = 0)
 	{
 		$module = null;
 		$_db	= JFactory::getDbo();
@@ -1079,7 +1119,5 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		return $module;
-
 	}
-
 }

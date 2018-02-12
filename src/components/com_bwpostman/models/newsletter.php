@@ -42,6 +42,8 @@ class BwPostmanModelNewsletter extends JModelItem
 	 *
 	 * @return	mixed	string on success, null on failure.
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.2.0
 	 */
 	public function getContent()
@@ -77,5 +79,4 @@ class BwPostmanModelNewsletter extends JModelItem
 
 		return $newsletter;
 	}
-
 }

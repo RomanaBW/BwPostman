@@ -46,11 +46,11 @@ if ($filter_id)
 }
 
 // Create the batch selector to change select the mailinglist by which to add or remove.
-$batch_lists =	'<label id="batch-choose-action-lbl" for="batch-choose-action">' . JText::_('COM_BWPOSTMAN_SUB_BATCH_MENU_LABEL') . '</label>'
+$batch_lists = '<label id="batch-choose-action-lbl" for="batch-choose-action">' . JText::_('COM_BWPOSTMAN_SUB_BATCH_MENU_LABEL') . '</label>'
 				. '<div class="clr"></div>'
 				. '<div id="batch-choose-action" class="control-group">'
 				. '<select name="batch[mailinglist_id]" class="inputbox" id="batch-mailinglist-id">'
-				. JHtml::_('select.options', $this->mailinglists, 'value', 'text', '', '' , '')
+				. JHtml::_('select.options', $this->mailinglists, 'value', 'text', '', '', '')
 				. '</select>'
 				. '</div>'
 				. '<div id="batch-task" class="control-group radio">'

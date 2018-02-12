@@ -34,7 +34,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 //Load tabs behavior for the Tabs
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/bwtabs.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/bwtabs.php');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
@@ -47,13 +47,17 @@ $tab	= $app->getUserState($this->context . '.tab', 'confirmed');
 switch ($tab)
 {
 	default:
-	case 'confirmed'		: $tab_offset	= 0;
+	case 'confirmed':
+		$tab_offset	= 0;
 		break;
-	case 'unconfirmed'		: $tab_offset	= 1;
+	case 'unconfirmed':
+		$tab_offset	= 1;
 		break;
-	case 'testrecipients'	: $tab_offset	= 2;
+	case 'testrecipients':
+		$tab_offset	= 2;
 		break;
 }
+
 $tab_cookie	= false;
 
 $tab_options = array(
@@ -68,7 +72,8 @@ $tab_options = array(
         title.addClass("closed").removeClass("open");
     }',
 	'startOffset' => $tab_offset,  // 0 starts on the first tab, 1 starts the second, etc...
-	'useCookie' => $tab_cookie, // note the quotes around true, since it must be a string. But if you put false there, you must not use quotes otherwise JHtmlTabs will handle it as true
+	'useCookie' => $tab_cookie, // note the quotes around true, since it must be a string. But if you put false there, you
+								// must not use quotes otherwise JHtmlTabs will handle it as true
 );
 ?>
 
@@ -79,7 +84,7 @@ $tab_options = array(
 
 		if (pressbutton == 'archive')
 		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE' , true); ?>");
+			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE', true); ?>");
 			if (ConfirmArchive == true)
 			{
 				submitform(pressbutton);
@@ -94,7 +99,8 @@ $tab_options = array(
 </script>
 
 <div id="bwp_view_lists">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=subscribers'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=subscribers'); ?>"
+			method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
 				<?php echo $this->sidebar; ?>
@@ -105,29 +111,42 @@ $tab_options = array(
 		<?php endif; ?>
 		<?php
 			// Search tools bar
-			echo JLayoutHelper::render('default', array('view' => $this, 'tab' => $tab), $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools');
+			echo JLayoutHelper::render(
+				'default',
+				array('view' => $this, 'tab' => $tab),
+				$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+			);
 		?>
 
 			<div class="row-fluid">
 				<?php
 					echo JHtmlBwTabs::start('bwpostman_subscribers_tabs', $tab_options);
-					echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'), 'confirmed',
+					echo JHtmlBwTabs::panel(
+						JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'),
+						'confirmed',
 						"
 							document.adminForm.getElementById('tab').setAttribute('value', 'confirmed');
 							Joomla.submitbutton('subscribers.changeTab');
-						");
+						"
+					);
 					echo $this->loadTemplate('confirmed');
-					echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'), 'unconfirmed',
+					echo JHtmlBwTabs::panel(
+						JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'),
+						'unconfirmed',
 						"
 							document.adminForm.getElementById('tab').setAttribute('value', 'unconfirmed');
 							Joomla.submitbutton('subscribers.changeTab');
-						");
+						"
+					);
 					echo $this->loadTemplate('unconfirmed');
-					echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_TEST'), 'testrecipients',
+					echo JHtmlBwTabs::panel(
+						JText::_('COM_BWPOSTMAN_TEST'),
+						'testrecipients',
 						"
 							document.adminForm.getElementById('tab').setAttribute('value', 'testrecipients');
 							Joomla.submitbutton('subscribers.changeTab');
-						");
+						"
+					);
 					echo $this->loadTemplate('testrecipients');
 					echo JHtmlBwTabs::end();
 				?>

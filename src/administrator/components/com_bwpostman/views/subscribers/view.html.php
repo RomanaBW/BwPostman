@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 
 /**
@@ -128,6 +128,15 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	public $params;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public $permissions;
+
+	/**
 	 * property to hold context
 	 *
 	 * @var string  $context
@@ -151,7 +160,9 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 
-		if (!BwPostmanHelper::canView('subscriber'))
+		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+		if (!$this->permissions['view']['subscriber'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUB')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
@@ -176,11 +187,15 @@ class BwPostmanViewSubscribers extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+
+		return $this;
 	}
 
 
 	/**
 	 * Add the page title, submenu and toolbar.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -188,7 +203,6 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');
-		$user	= JFactory::getUser();
 
 		// Get the toolbar object instance
 		$bar = JToolbar::getInstance('toolbar');
@@ -199,51 +213,80 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title (JText::_('COM_BWPOSTMAN_SUB'), 'users');
+		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB'), 'users');
 
 		// Set toolbar items for the page
 		switch ($tab)
 		{ // The layout-variable tells us which tab we are in
-			default;
+			default:
 			case "confirmed":
 			case "unconfirmed":
-					if (BwPostmanHelper::canAdd('subscriber'))	JToolbarHelper::addNew('subscriber.add');
-					if (BwPostmanHelper::canEdit('subscriber'))	JToolbarHelper::editList('subscriber.edit');
-					JToolbarHelper::spacer();
+				if ($this->permissions['subscriber']['create'])
+				{
+					JToolbarHelper::addNew('subscriber.add');
+				}
+
+				if ($this->permissions['subscriber']['edit'] || $this->permissions['subscriber']['edit.own'])
+				{
+					JToolbarHelper::editList('subscriber.edit');
+				}
+
+				JToolbarHelper::spacer();
+				JToolbarHelper::divider();
+				JToolbarHelper::spacer();
+
+				if ($this->permissions['subscriber']['create'])
+				{
+					JToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
+				}
+
+				if ($this->permissions['subscriber']['edit'])
+				{
+					JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+				}
+
+				if ($this->permissions['subscriber']['archive']) {
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
+					JToolbarHelper::archiveList('subscriber.archive');
+				}
 
-					if (BwPostmanHelper::canAdd('subscriber'))		JToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
-					if (BwPostmanHelper::canEdit('subscriber'))		JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
-					if (BwPostmanHelper::canArchive('subscriber', array(), true)) {
-						JToolbarHelper::divider();
-						JToolbarHelper::spacer();
-						JToolbarHelper::archiveList('subscriber.archive');
-					}
-					// Add a batch button
-					if (BwPostmanHelper::canAdd('subscriber') || BwPostmanHelper::canEdit('subscriber'))
-					{
-						JHtml::_('bootstrap.modal', 'collapseModal');
-						$title = JText::_('JTOOLBAR_BATCH');
+				// Add a batch button
+				if ($this->permissions['subscriber']['create'] || $this->permissions['subscriber']['edit'])
+				{
+					JHtml::_('bootstrap.modal', 'collapseModal');
+					$title = JText::_('JTOOLBAR_BATCH');
 
-						// Instantiate a new JLayoutFile instance and render the batch button
-						$layout = new JLayoutFile('joomla.toolbar.batch');
+					// Instantiate a new JLayoutFile instance and render the batch button
+					$layout = new JLayoutFile('joomla.toolbar.batch');
 
-						$dhtml = $layout->render(array('title' => $title));
-						$bar->appendButton('Custom', $dhtml, 'batch');
-					}
+					$dhtml = $layout->render(array('title' => $title));
+					$bar->appendButton('Custom', $dhtml, 'batch');
+				}
 				break;
 			case "testrecipients":
-					if (BwPostmanHelper::canAdd('subscriber'))	JToolbarHelper::addNew('subscriber.add_test');
-					if (BwPostmanHelper::canEdit('subscriber'))	JToolbarHelper::editList('subscriber.edit');
-					JToolbarHelper::spacer();
-					JToolbarHelper::divider();
-					if (BwPostmanHelper::canArchive('subscriber', array(), true))	JToolbarHelper::archiveList('subscriber.archive');
+				if ($this->permissions['subscriber']['create'])
+				{
+					JToolbarHelper::addNew('subscriber.add_test');
+				}
+
+				if ($this->permissions['subscriber']['edit'] || $this->permissions['subscriber']['edit.own'])
+				{
+					JToolbarHelper::editList('subscriber.edit');
+				}
+
+				JToolbarHelper::spacer();
+				JToolbarHelper::divider();
+				if ($this->permissions['subscriber']['archive'])
+				{
+					JToolbarHelper::archiveList('subscriber.archive');
+				}
 				break;
 		}
+
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
-		if (BwPostmanHelper::canManage())
+		if ($this->permissions['subscriber']['admin'])
 		{
 			JToolbarHelper::checkin('subscribers.checkin');
 			JToolbarHelper::divider();

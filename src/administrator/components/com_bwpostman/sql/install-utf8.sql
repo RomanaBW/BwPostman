@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
   `created_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` INT(10) unsigned NOT NULL DEFAULT '0',
   `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` INT(10) unsigned NOT NULL DEFAULT ,
+  `modified_by` INT(10) unsigned NOT NULL DEFAULT '0',
   `checked_out` INT(11) NOT NULL DEFAULT '0',
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `archive_flag` TINYINT(1) unsigned NOT NULL DEFAULT '0',

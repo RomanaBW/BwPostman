@@ -32,78 +32,82 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since       1.2.0
  */
-class mod_BwPostman_overviewInstallerScript
+class Mod_BwPostman_OverviewInstallerScript
 {
 	/**
 	 * @var JAdapterInstance $parentInstaller
 	 *
 	 * @since       1.2.0
 	 */
-	var $parentInstaller;
+	protected $parentInstaller;
 
 	/**
 	 * @var string $minimum_joomla_release
 	 *
 	 * @since       1.2.0
 	 */
-	var $minimum_joomla_release;
+	protected $minimum_joomla_release;
 
 	/**
 	 * @var string release
 	 *
 	 * @since       1.2.0
 	 */
-	var $release = null;
+	protected $release = null;
 
 	/**
-   * Method to install the extension
-   *
-   * @return void
-   *
-   * @since       1.2.0
-  */
-  function install()
-  {
-    $this->showFinished(false);
-  }
+	 * Method to install the extension
+	 *
+	 * @return void
+	 *
+	 * @since       1.2.0
+	 */
+	public function install()
+	{
+		$this->showFinished(false);
+	}
 
-  /**
-   * Method to uninstall the extension
-   *
-   * @return void
-   *
-   * @since       1.2.0
-  */
-  function uninstall()
-  {
+	/**
+	 * Method to uninstall the extension
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.2.0
+	 */
+	public function uninstall()
+	{
 		JFactory::getApplication()->enqueueMessage(JText::_('MOD_BWPOSTMAN_OVERVIEW_UNINSTALL_THANKYOU'), 'message');
-  }
+	}
 
-  /**
-   * Method to update the extension
-   *
-   * @return void
-   *
-   * @since       1.2.0
-  */
-  function update()
-  {
+	/**
+	 * Method to update the extension
+	 *
+	 * @return void
+	 *
+	 * @since       1.2.0
+	 */
+	public function update()
+	{
 		$this->showFinished(true);
-  }
+	}
 
-  /**
-   * Method to run before an install/update/uninstall method
-   *
-   * @param string  $type       is the type of change (install, update or discover_install)
-   * @param object  $parent is the class calling this method
-   *
-   * @return boolean            false if error occurs
-   *
-   * @since       1.2.0
-  */
-  function preflight($type, $parent)
-  {
-		$app 		= JFactory::getApplication ();
+	/**
+	 * Method to run before an install/update/uninstall method
+	 *
+	 * @param string  $type       is the type of change (install, update or discover_install)
+	 * @param object  $parent is the class calling this method
+	 *
+	 * @return boolean            false if error occurs
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.2.0
+	 */
+	public function preflight($type, $parent)
+	{
+		$app 		= JFactory::getApplication();
 		$jversion	= new JVersion();
 
 		// Get component manifest file version
@@ -131,14 +135,18 @@ class mod_BwPostman_overviewInstallerScript
 			$oldRelease = $this->getManifestVar('version');
 			$app->setUserState('mod_bwpostman_overview.update.oldRelease', $oldRelease);
 
-			if (version_compare( $this->release, $oldRelease, 'lt'))
+			if (version_compare($this->release, $oldRelease, 'lt'))
 			{
-				$app->enqueueMessage(JText::sprintf('MOD_BWPOSTMAN_OVERVIEW_INSTALL_ERROR_INCORRECT_VERSION_SEQUENCE', $oldRelease, $this->release), 'error');
+				$app->enqueueMessage(
+					JText::sprintf('MOD_BWPOSTMAN_OVERVIEW_INSTALL_ERROR_INCORRECT_VERSION_SEQUENCE', $oldRelease, $this->release),
+					'error'
+				);
 				return false;
 			}
 		}
-	  return true;
-  }
+
+		return true;
+	}
 
 	/**
 	 * get a variable from the manifest file (actually, from the manifest cache).
@@ -163,20 +171,19 @@ class mod_BwPostman_overviewInstallerScript
 		return $manifest[$name];
 	}
 
-
-  /**
-   * Method to run after an install/update/uninstall method
-   *
-   * @param string  $type       is the type of change (install, update or discover_install)
-   * @param object  $parent     is the class calling this method
-
-   * @return void
-   *
-   * @since       1.2.0
-  */
-  function postflight($type, $parent)
-  {
-  }
+	/**
+	 * Method to run after an install/update/uninstall method
+	 *
+	 * @param string  $type       is the type of change (install, update or discover_install)
+	 * @param object  $parent     is the class calling this method
+	 *
+	 * @return void
+	 *
+	 * @since       1.2.0
+	 */
+	public function postflight($type, $parent)
+	{
+	}
 
 	/**
 	 * shows the HTML after installation/update
@@ -191,12 +198,12 @@ class mod_BwPostman_overviewInstallerScript
 	{
 		$lang = JFactory::getLanguage();
 		//Load first english files
-		$lang->load('mod_bwpostman_overview.sys',JPATH_SITE,'en_GB',true);
-		$lang->load('mod_bwpostman_overview',JPATH_SITE,'en_GB',true);
+		$lang->load('mod_bwpostman_overview.sys', JPATH_SITE, 'en_GB', true);
+		$lang->load('mod_bwpostman_overview', JPATH_SITE, 'en_GB', true);
 
 		//load specific language
-		$lang->load('mod_bwpostman_overview.sys',JPATH_SITE,null,true);
-		$lang->load('mod_bwpostman_overview',JPATH_SITE,null,true);
+		$lang->load('mod_bwpostman_overview.sys', JPATH_SITE, null, true);
+		$lang->load('mod_bwpostman_overview', JPATH_SITE, null, true);
 
 		$show_update	= false;
 		$show_right		= false;
@@ -211,6 +218,7 @@ class mod_BwPostman_overviewInstallerScript
 		{
 			$forum	= "https://www.boldt-webservice.de/de/forum/bwpostman.html";
 		}
+
 		$manual	= "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
 
 		if ($update)
@@ -221,6 +229,7 @@ class mod_BwPostman_overviewInstallerScript
 		{
 			$string_special		= JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
 		}
+
 		$string_new			= JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_UPDATE_NEW_DESC');
 		$string_improvement	= JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
 		$string_bugfix		= JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_UPDATE_BUGFIX_DESC');
@@ -229,6 +238,7 @@ class mod_BwPostman_overviewInstallerScript
 		{
 			$show_update	= true;
 		}
+
 		if ($show_update || $string_special != '')
 		{
 			$show_right	= true;
@@ -256,19 +266,21 @@ class mod_BwPostman_overviewInstallerScript
 			if($update)
 			{
 				echo JText::sprintf('MOD_BWPOSTMAN_OVERVIEW_UPGRADE_SUCCESSFUL', $this->release);
-//				echo '<br />'.JText::_('MOD_BWPOSTMAN_OVERVIEW_EXTENSION_UPGRADE_REMIND');
-			} else
+			}
+			else
 			{
 				echo JText::sprintf('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_SUCCESSFUL', $this->release);
 			}
 			?>
 			</h2>
 		</div>
-		<?php if ($show_right)
+		<?php
+		if ($show_right)
 		{ ?>
 			<div class="cpanel">
 				<div class="icon" >
-					<?php if ($update)
+					<?php
+					if ($update)
 					{ ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_modules'); ?>">
 					<?php
@@ -278,46 +290,54 @@ class mod_BwPostman_overviewInstallerScript
 						<a href="<?php echo JRoute::_('index.php?option=com_modules&amp;filter_search=bw'); ?>">
 					<?php
 					} ?>
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?>" src="../modules/mod_bwpostman_overview/images/icon-48-bwpostman.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?>"
+								src="../modules/mod_bwpostman_overview/images/icon-48-bwpostman.png">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $manual; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_MANUAL'); ?>" src="../modules/mod_bwpostman_overview/images/icon-48-manual.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_MANUAL'); ?>"
+								src="../modules/mod_bwpostman_overview/images/icon-48-manual.png">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_MANUAL'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $forum; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_FORUM'); ?>" src="../modules/mod_bwpostman_overview/images/icon-48-forum.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_FORUM'); ?>"
+								src="../modules/mod_bwpostman_overview/images/icon-48-forum.png">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_FORUM'); ?></span>
 					</a>
 				</div>
 			</div>
-		<?php }?>
+		<?php
+		} ?>
 	</div>
 
 	<div id="mod_bwp_install_right">
-		<?php if ($show_right)
+		<?php
+		if ($show_right)
 		{ ?>
-			<?php if ($string_special != '')
+			<?php
+			if ($string_special != '')
 			{ ?>
 				<div class="mod_bwp_install_specialnote">
 					<h2><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
 					<p class="urgent"><?php echo $string_special; ?></p>
 					<div class="icon">
-						 <?php if ($update)
-						 { ?>
+						<?php
+						if ($update)
+						{ ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_modules'); ?>">
 						<?php
-						 }
+						}
 						else
 						{ ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_modules&amp;filter_search=bw'); ?>">
 						<?php
 						} ?>
-								<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?>" src="../modules/mod_bwpostman_overview/images/icon-48-bwpostman.png">
+								<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?>"
+										src="../modules/mod_bwpostman_overview/images/icon-48-bwpostman.png">
 								<span><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?></span>
 							</a>
 					</div>
@@ -325,49 +345,58 @@ class mod_BwPostman_overviewInstallerScript
 			<?php
 			}?>
 
-			<?php if ($show_update)
+			<?php
+			if ($show_update)
 			{ ?>
 				<div class="mod_bwp_install_updateinfo">
 					<h2><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_UPDATEINFO') ?></h2>
-					<?php if ($string_new != '')
+					<?php
+					if ($string_new != '')
 					{ ?>
 						<h3><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
 						<div><?php echo $string_new; ?></div>
 					<?php
 					}?>
-					<?php if ($string_improvement != '')
+					<?php
+					if ($string_improvement != '')
 					{ ?>
 					<h3><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
 						<div><?php echo $string_improvement; ?></div>
 					<?php
 					}?>
-					<?php if ($string_bugfix != '')
+					<?php
+					if ($string_bugfix != '')
 					{ ?>
 						<h3><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
 						<div><?php echo $string_bugfix; ?></div>
 					<?php
 					}?>
 				</div>
-			<?php }?>
-		<?php }
+			<?php
+			}?>
+		<?php
+		}
 		else
 		{ ?>
 			<div class="cpanel">
 				<div class="icon" >
-					<a href="<?php echo JRoute::_('index.php?option=com_modules&amp;filter_search=bw&amp;token='.JUtility::getToken()); ?>">
-            <img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?>" src="../modules/mod_bwpostman_overview/images/icon-48-bwpostman.png">
+					<a href="<?php echo JRoute::_('index.php?option=com_modules&amp;filter_search=bw&amp;token=' . JUtility::getToken()); ?>">
+			<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?>"
+					src="../modules/mod_bwpostman_overview/images/icon-48-bwpostman.png">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $manual; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_MANUAL'); ?>" src="../modules/mod_bwpostman_overview/images/icon-48-manual.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_MANUAL'); ?>"
+								src="../modules/mod_bwpostman_overview/images/icon-48-manual.png">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_MANUAL'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $forum; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_FORUM'); ?>" src="../modules/mod_bwpostman_overview/images/icon-48-forum.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_FORUM'); ?>"
+								src="../modules/mod_bwpostman_overview/images/icon-48-forum.png">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_FORUM'); ?></span>
 					</a>
 				</div>
@@ -378,7 +407,8 @@ class mod_BwPostman_overviewInstallerScript
 	<div class="clr"></div>
 
 	<div class="mod_bwp_install_footer">
-		<p class="small"><?php echo JText::_('&copy; 2012-'); echo date (" Y")?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
+		<p class="small"><?php echo JText::_('&copy; 2012-'); echo date(" Y")?> by <a href="https://www.boldt-webservice.de"
+					target="_blank">Boldt Webservice</a></p>
 	</div>
 </div>
 <br /><br /><br />

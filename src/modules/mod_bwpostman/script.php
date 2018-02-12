@@ -241,13 +241,15 @@ class Mod_BwPostmanInstallerScript
 		{
 			$show_right	= true;
 		}
+
+		$asset_path = 'modules/mod_bwpostman';
 		?>
 
-<link rel="stylesheet" href="../modules/mod_bwpostman/css/install.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo JRoute::_($asset_path . '/css/install.css'); ?>" type="text/css" />
 
 <div id="mod_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img border="0" align="center" src="../modules/mod_bwpostman/images/bw_header.png" alt="Boldt Webservice" />
+		<img border="0" align="center" src="<?php echo JRoute::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>
@@ -288,19 +290,21 @@ class Mod_BwPostmanInstallerScript
 					<?php
 					} ?>
 						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?>"
-								src="../modules/mod_bwpostman/images/icon-48-bwpostman.png">
+								src="<?php echo JRoute::_($asset_path . '/images/icon-48-bwpostman.png'); ?>">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $manual; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_MANUAL'); ?>" src="../modules/mod_bwpostman/images/icon-48-manual.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_MANUAL'); ?>"
+								src="<?php echo JRoute::_($asset_path . '/images/icon-48-manual.png'); ?>">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $forum; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_FORUM'); ?>" src="../modules/mod_bwpostman/images/icon-48-forum.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_FORUM'); ?>"
+								src="<?php echo JRoute::_($asset_path . '/images/icon-48-forum.png'); ?>">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_INSTALL_FORUM'); ?></span>
 					</a>
 				</div>
@@ -331,7 +335,7 @@ class Mod_BwPostmanInstallerScript
 						<?php
 						} ?>
 								<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?>"
-										src="../modules/mod_bwpostman/images/icon-48-bwpostman.png">
+										src="<?php echo JRoute::_($asset_path . '/images/icon-48-bwpostman.png'); ?>">
 								<span><?php echo JText::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?></span>
 							</a>
 					</div>
@@ -375,19 +379,22 @@ class Mod_BwPostmanInstallerScript
 			<div class="cpanel">
 				<div class="icon" >
 					<a href="<?php echo JRoute::_('index.php?option=com_modules&amp;filter_search=bw&amp;token=' . JUtility::getToken()); ?>">
-			<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?>" src="../modules/mod_bwpostman/images/icon-48-bwpostman.png">
+			<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?>"
+					src="<?php echo JRoute::_($asset_path . '/images/icon-48-bwpostman.png'); ?>">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $manual; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_MANUAL'); ?>" src="../modules/mod_bwpostman/images/icon-48-manual.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_MANUAL'); ?>"
+								src="<?php echo JRoute::_($asset_path . '/images/icon-48-manual.png'); ?>">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $forum; ?>" target="_blank">
-						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_FORUM'); ?>" src="../modules/mod_bwpostman/images/icon-48-forum.png">
+						<img alt="<?php echo JText::_('MOD_BWPOSTMAN_INSTALL_FORUM'); ?>"
+								src="<?php echo JRoute::_($asset_path . '/images/icon-48-forum.png'); ?>">
 						<span><?php echo JText::_('MOD_BWPOSTMAN_INSTALL_FORUM'); ?></span>
 					</a>
 				</div>

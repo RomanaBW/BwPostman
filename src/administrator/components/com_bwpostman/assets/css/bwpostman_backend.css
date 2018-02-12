@@ -151,8 +151,7 @@
 }
 
 span.icon_attachment {
-	background-image:	url(../images/icon-16-attachment.png) ;
-	background-repeat:	no-repeat;
+	background:     	url(../images/icon-16-attachment.png) no-repeat;
 	display:			inline-block;
 	height:				16px;
 	line-height:		16px;
@@ -553,7 +552,7 @@ table.import {
 }
 
 .layout-import1 .tip-wrap {
-	-width:				500px !important;
+	width:				500px !important;
 }
 
 .bwptable.export span.hasTip {
@@ -585,7 +584,7 @@ table.export {
 }
 
 .layout-export1 .tip-wrap {
-	-width:				500px !important;
+	width:				500px !important;
 }
 
 
@@ -682,8 +681,7 @@ table.export {
 
 #checkResult .inner .well, #checkResult .alert-success, #checkResult .alert-error, #checkResult .alert-warning,
 #restoreResult .inner .well, #restoreResult .alert-success, #restoreResult .alert-error, #restoreResult .alert-warning {
-	background-position: 10px 3px;
-	background-repeat: no-repeat;
+	background: 10px 3px no-repeat;
 }
 
 #checkResult .inner .well,
@@ -754,7 +752,6 @@ button {
 	-moz-border-left-colors:	none;
 	-moz-border-right-colors:	none;
 	-moz-border-top-colors:		none;
-	border-color:				rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #b3b3b3;
 	border-image:				none;
 	border-style:				solid;
 	border-width:				1px;
@@ -767,17 +764,13 @@ button {
 	-webkit-border-radius:		6px;
 	-moz-border-radius:			6px;
 	border-radius:				6px;
-	font-size:					17.5px;
-	padding:					11px 19px;
+	font-size:					17px;
+	padding:					11px 0;
 	box-sizing:					border-box;
 	display:					block;
-	padding-left:				0;
-	padding-right:				0;
 	width:						100%;
-	background-color:			#006dcc;
-	background-image:			linear-gradient(to bottom, #0088cc, #0044cc);
-	background-repeat:			repeat-x;
-	border-color:				rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	background:			        #006dcc linear-gradient(to bottom, #0088cc, #0044cc) repeat-x;
+	border-color:				rgba(0, 0, 0, 0.25) #b3b3b3;
 	color:						#ffffff;
 	text-shadow:				0 -1px 0 rgba(0, 0, 0, 0.25);
 }

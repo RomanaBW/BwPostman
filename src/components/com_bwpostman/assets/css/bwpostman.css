@@ -161,8 +161,7 @@
 }
 
 #bwpostman .tooltip-arrow {
-	border-color:		transparent;
-	border-style:		solid;
+	border:		        transparent solid;
 	height:				0;
 	position:			absolute;
 	width:				0;
@@ -786,8 +785,7 @@
 
 #bwpostman [class^="icon-"],
 #bwpostman [class*=" icon-"] {
-	background-position:	14px 14px;
-	background-repeat:		no-repeat;
+	background:         	14px 14px no-repeat;
 	display:				inline-block;
 	height:					14px;
 	line-height:			14px;

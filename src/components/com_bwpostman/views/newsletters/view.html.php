@@ -136,6 +136,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
@@ -189,7 +191,10 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			'select.genericlist',
 			$years,
 			'year',
-			array('list.attr' => 'size="1" class="inputbox input-small" onchange="document.getElementById(\'adminForm\').submit();"', 'list.select' => $state->get('filter.year'))
+			array(
+				'list.attr' => 'size="1" class="inputbox input-small" onchange="document.getElementById(\'adminForm\').submit();"',
+				'list.select' => $state->get('filter.year')
+			)
 		);
 		$form->limitField = $pagination->getLimitBox();
 
@@ -233,10 +238,13 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
+		{
 			$document->addStyleSheet(JUri::root(true) . $css_filename);
+		}
 
 		// Set parent display
 		parent::display($tpl);
 
+		return $this;
 	}
 }

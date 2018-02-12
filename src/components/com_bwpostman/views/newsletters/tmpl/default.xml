@@ -8,22 +8,6 @@
 	<fields name="params">
 		<!-- Basic options. -->
 		<fieldset name="basic" label="COM_BWPOSTMAN_NEWSLETTER_BASIC_OPTIONS">
-<!-- 
-			<field name="orderby_sec" type="list"
-				default="rdate"
-				description="COM_BWPOSTMAN_NEWSLETTER_ORDER_DESC"
-				label="COM_BWPOSTMAN_NEWSLETTER_ORDER_LABEL"
-			>
-				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
-				<option value="date">JGLOBAL_OLDEST_FIRST</option>
-				<option value="alpha">COM_BWPOSTMAN_NL_SUBJECT_ALPHABETICAL</option>
-				<option value="ralpha">COM_BWPOSTMAN_NL_SUBJECT_REVERSE_ALPHABETICAL</option>
-			<option value="author">JGLOBAL_AUTHOR_ALPHABETICAL</option>
-				<option value="rauthor">JGLOBAL_AUTHOR_REVERSE_ALPHABETICAL</option>
-				<option value="hits">JGLOBAL_MOST_HITS</option>
-				<option value="rhits">JGLOBAL_LEAST_HITS</option>
-			</field>
- -->
 			<field name="show_type"
 				type="list"
 				default="not_arc_down"
@@ -151,22 +135,22 @@
 				default=""
 				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_ML_FILTER_DESC"
 				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_ML_FILTER_LABEL"
-				class="radio btn-group btn-group-yesno" 
+				class="radio btn-group btn-group-yesno"
 			>
 				<option value="1">COM_BWPOSTMAN_ALL</option>
 				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
 			</field>
 
-			<field 
-				name="ml_available" 
-				type="comml" 
-				label="COM_BWPOSTMAN_MENU_ML_AVAILABLE_LABEL" 
-				labelclass="control-label" 
-				description="COM_BWPOSTMAN_MENU_ML_AVAILABLE_DESC" 
-				multiple="true" 
-				size="5" 
-				default="0" 
-				class="inputbox" 
+			<field
+				name="ml_available"
+				type="comml"
+				label="COM_BWPOSTMAN_MENU_ML_AVAILABLE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_MENU_ML_AVAILABLE_DESC"
+				multiple="true"
+				size="5"
+				default="0"
+				class="inputbox"
 			/>
 
 			<field name="groups_selected_all"
@@ -174,47 +158,47 @@
 				default=""
 				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_DESC"
 				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_LABEL"
-				class="radio btn-group btn-group-yesno" 
+				class="radio btn-group btn-group-yesno"
 			>
 				<option value="1">COM_BWPOSTMAN_ALL</option>
 				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
 			</field>
 
-			<field 
-				name="groups_available" 
-				type="usergroups" 
-				label="COM_BWPOSTMAN_MENU_GROUPS_AVAILABLE_LABEL" 
-				labelclass="control-label" 
-				description="COM_BWPOSTMAN_MENU_GROUPS_AVAILABLE_DESC" 
-				multiple="true" 
-				size="1" 
-				default="0" 
-				class="inputbox" 
+			<field
+				name="groups_available"
+				type="usergroups"
+				label="COM_BWPOSTMAN_MENU_GROUPS_AVAILABLE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_MENU_GROUPS_AVAILABLE_DESC"
+				multiple="true"
+				size="1"
+				default="0"
+				class="inputbox"
 			/>
 		</fieldset>
-		
+
 		<fieldset name="COM_BWPOSTMAN_CAM_AVAILABLE" addfieldpath="/components/com_bwpostman/models/fields">
 			<field name="cam_selected_all"
 				type="radio"
 				default=""
 				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_CAM_FILTER_DESC"
 				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_CAM_FILTER_LABEL"
-				class="radio btn-group btn-group-yesno" 
+				class="radio btn-group btn-group-yesno"
 			>
 				<option value="1">COM_BWPOSTMAN_ALL</option>
 				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
 			</field>
 
-			<field 
-				name="cam_available" 
-				type="comcam" 
-				label="COM_BWPOSTMAN_MENU_CAM_AVAILABLE_LABEL" 
-				labelclass="control-label" 
-				description="COM_BWPOSTMAN_MENU_CAM_AVAILABLE_DESC" 
-				multiple="true" 
-				size="5" 
-				default="" 
-				class="inputbox mailinglists" 
+			<field
+				name="cam_available"
+				type="comcam"
+				label="COM_BWPOSTMAN_MENU_CAM_AVAILABLE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_MENU_CAM_AVAILABLE_DESC"
+				multiple="true"
+				size="5"
+				default=""
+				class="inputbox mailinglists"
 			/>
 		</fieldset>
 	</fields>

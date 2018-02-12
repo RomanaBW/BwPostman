@@ -61,35 +61,56 @@ defined('_JEXEC') or die('Restricted access');
 <div id="bwpostman">
 	<div id="bwp_com_nl_single">
 	<?php // if newsletter unpublished - only backlink
-	if ($this->newsletter->published != 0) {
+	if ($this->newsletter->published != 0)
+	{
 		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) { ?>
-			<h1 class="contentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
-			<?php if ($this->page_title) : ?><h2><?php echo $this->newsletter->subject?></h2><?php endif; ?>
-		<?php }
-		else {?>
-			<?php if ($this->page_title) : ?><h1><?php echo $this->newsletter->subject?></h1><?php endif; ?>
-		<?php } ?>
+			<h1 class="contentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			</h1>
+			<?php
+			if ($this->page_title)
+			{ ?>
+				<h2><?php echo $this->newsletter->subject ?></h2><?php
+			} ?>
+		<?php
+		}
+		else
+		{ ?>
+			<?php
+			if ($this->page_title)
+			{ ?>
+				<h1><?php echo $this->newsletter->subject?></h1><?php
+			} ?>
+		<?php
+		} ?>
 
 		<p class="mailingdate<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 			<?php echo JHtml::date($this->newsletter->mailing_date, JText::_('DATE_FORMAT_LC3'));  ?>
-			<?php if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide') { ?>
+			<?php
+			if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide')
+			{ ?>
 				<span class="btn" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
 					<a class="link-attachment" href="<?php echo JUri::base() . '/' . $this->newsletter->attachment; ?>" target="_blank">
 						<i class="icon_attachment"></i>
 					</a>
 				</span>
-			<?php } ?>
+			<?php
+			} ?>
 		</p>
 
 	<div class="nl_text">
-		<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=nl_preview&amp;format=raw&amp;id=<?php echo $this->newsletter->id; ?>" height="800" style="width:100%; border: 1px solid #c2c2c2;"></iframe>
+		<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=nl_preview&amp;format=raw&amp;
+		id=<?php echo $this->newsletter->id; ?>" height="800" style="width:100%; border: 1px solid #c2c2c2;"></iframe>
 	</div>
-	<?php } ?>
+	<?php
+	} ?>
 		<p class="back_link btn"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo JText::_('JPREV'); ?></a></p>
 
-		<?php if ($this->params->get('show_boldt_link') === '1')
+		<?php
+		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>
 		<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-        <?php } ?>
+		<?php
+		} ?>
 	</div>
 </div>

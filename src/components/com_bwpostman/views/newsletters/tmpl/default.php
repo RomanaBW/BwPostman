@@ -45,10 +45,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 <div id="bwpostman">
 	<div id="bwp_com_nl_all">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			</h1>
 		<?php endif; ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline form-horizontal">
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>" method="post"
+				name="adminForm" id="adminForm" class="form-inline form-horizontal">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
 				<div class="clearfix">
 					<div class="search_left">
@@ -57,11 +60,17 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								<?php echo JText::_('JSEARCH_FILTER'); ?>
 							</label>
 							<div class="btn-wrapper input-append">
-								<input type="text" name="filter_search" id="filter_search" class="inputbox go" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_BWPOSTMAN_SEARCH'); ?> " />
-								<button type="submit" class="append-area hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
+								<input type="text" name="filter_search" id="filter_search" class="inputbox go"
+										value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+										title="<?php echo JText::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
+										placeholder="<?php echo JText::_('COM_BWPOSTMAN_SEARCH'); ?> " />
+								<button type="submit" class="append-area hasTooltip"
+										title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
 									<i class="icon-search"></i>
 								</button>
-								<button type="button" class="append-area hasTooltip js-stools-btn-clear reset" title="<?php echo JHtml::tooltipText('COM_BWPOSTMAN_RESET'); ?>" onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
+								<button type="button" class="append-area hasTooltip js-stools-btn-clear reset"
+										title="<?php echo JHtml::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
+										onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
 									<i class="icon-remove"></i>
 								</button>
 							</div>
@@ -73,13 +82,46 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<div class="js-stools-field-filter filter_year"><?php echo $this->form->yearField; ?></div>
 						<?php endif; ?>
 						<?php if ($this->params->get('ml_filter_enable') != 'hide' && count($this->mailinglists) > 2) : ?>
-							<div class="js-stools-field-filter filter_mls"><?php echo JHtml::_('select.genericlist', $this->mailinglists, 'filter.mailinglist', 'class="inputbox input-medium filter-mailinglist"', 'id', 'title', $this->state->get('filter.mailinglist'), 'filter.mailinglist'); ?></div>
+							<div class="js-stools-field-filter filter_mls">
+								<?php echo JHtml::_(
+									'select.genericlist',
+									$this->mailinglists,
+									'filter.mailinglist',
+									'class="inputbox input-medium filter-mailinglist"',
+									'id',
+									'title',
+									$this->state->get('filter.mailinglist'),
+									'filter.mailinglist'
+								); ?>
+							</div>
 						<?php endif; ?>
 						<?php if ($this->params->get('groups_filter_enable') != 'hide' && count($this->usergroups) > 2) : ?>
-							<div class="js-stools-field-filter filter_groups"><?php echo JHtml::_('select.genericlist', $this->usergroups, 'filter.usergroup', 'class="inputbox input-medium filter-usergroup"', 'id', 'title', $this->state->get('filter.usergroup'), 'filter.usergroup'); ?></div>
+							<div class="js-stools-field-filter filter_groups">
+								<?php echo JHtml::_(
+									'select.genericlist',
+									$this->usergroups,
+									'filter.usergroup',
+									'class="inputbox input-medium filter-usergroup"',
+									'id',
+									'title',
+									$this->state->get('filter.usergroup'),
+									'filter.usergroup'
+								); ?>
+							</div>
 						<?php endif; ?>
 						<?php if ($this->params->get('cam_filter_enable') != 'hide' && count($this->campaigns) > 2) : ?>
-							<div class="js-stools-field-filter filter_cams"><?php echo JHtml::_('select.genericlist', $this->campaigns, 'filter.campaign', 'class="inputbox input-medium filter-campaign"', 'id', 'title', $this->state->get('filter.campaign'), 'filter.campaign'); ?></div>
+							<div class="js-stools-field-filter filter_cams">
+								<?php echo JHtml::_(
+									'select.genericlist',
+									$this->campaigns,
+									'filter.campaign',
+									'class="inputbox input-medium filter-campaign"',
+									'id',
+									'title',
+									$this->state->get('filter.campaign'),
+									'filter.campaign'
+								); ?>
+							</div>
 						<?php endif; ?>
 						<div class="js-stools-field-filter filter_list"><?php echo $this->form->limitField; ?></div>
 					</div>
@@ -89,43 +131,64 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<table id="bwp_newsletters_table<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<thead>
 					<tr>
-						<th class="date_head"><?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_DATE', 'a.mailing_date', $listDirn, $listOrder); ?></th>
-						<th class="subject_head"><?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_SUBJECT', 'a.subject', $listDirn, $listOrder); ?></th>
-						<th class="clicks_head"><?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_HITS', 'a.hits', $listDirn, $listOrder); ?></th>
+						<th class="date_head">
+							<?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_DATE', 'a.mailing_date', $listDirn, $listOrder); ?>
+						</th>
+						<th class="subject_head">
+							<?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+						</th>
+						<th class="clicks_head">
+							<?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_HITS', 'a.hits', $listDirn, $listOrder); ?>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
 				<?php
-					if (count($this->items) > 0) {
-						foreach ($this->items as $i => $item) : ?>
-							<tr class="row<?php echo $i % 2; ?>">
-								<td class="date"><?php $date = JHtml::date($item->mailing_date, JText::_('DATE_FORMAT_LC3')); echo $date;?></td>
-								<td class="subject">
-									<a href="<?php echo JRoute::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id={$item->id}"); ?>"><?php echo $item->subject; ?></a>
-									<?php if (!empty($item->attachment) && $this->params->get('attachment_enable') != 'hide') { ?>
-										<a  class="link-attachment" href="<?php echo JUri::base() . '/' . $item->attachment; ?>" target="_blank">
-											<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
-										</a>
-									<?php } ?>
-								</td>
-								<td class="clicks"><?php echo $item->hits; ?></td>
-							</tr>
+				if (count($this->items) > 0)
+				{
+					foreach ($this->items as $i => $item)
+					{ ?>
+						<tr class="row<?php echo $i % 2; ?>">
+							<td class="date">
+								<?php $date = JHtml::date($item->mailing_date, JText::_('DATE_FORMAT_LC3'));
+								echo $date; ?>
+							</td>
+							<td class="subject">
+								<a href="<?php echo JRoute::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id={$item->id}");
+								?>">
+									<?php echo $item->subject; ?>
+								</a>
+								<?php
+								if (!empty($item->attachment) && $this->params->get('attachment_enable') != 'hide')
+								{ ?>
+									<a class="link-attachment" href="<?php echo JUri::base() . '/' . $item->attachment; ?>" target="_blank">
+										<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+									</a>
+									<?php
+								} ?>
+							</td>
+							<td class="clicks"><?php echo $item->hits; ?></td>
+						</tr>
 						<?php
-						endforeach;
 					}
-					else { ?>
-						<tr class="row0">
-							<td colspan="3"><?php echo JText::_('COM_BWPOSTMAN_NO_NEWSLETTERS_FOUND'); ?></td>
-					<?php } ?>
+				}
+				else
+				{ ?>
+					<tr class="row0">
+						<td colspan="3"><?php echo JText::_('COM_BWPOSTMAN_NO_NEWSLETTERS_FOUND'); ?></td> <?php
+				} ?>
 				</tbody>
 			</table>
 
-			<?php if ($this->pagination->pagesTotal > 1) { ?>
+			<?php
+			if ($this->pagination->pagesTotal > 1)
+			{ ?>
 				<div class="pagination">
 					<?php echo $this->pagination->getPagesLinks(); ?>
 					<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?> </p>
 				</div>
-			<?php } ?>
+			<?php
+			} ?>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="" />
@@ -133,13 +196,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 			<input type="hidden" name="id" value="<?php //echo $this->items->id; ?>" />
 			<?php echo JHtml::_('form.token'); ?>
-
 		</form>
 
-        <?php if ($this->params->get('show_boldt_link') === '1')
-        { ?>
+		<?php
+		if ($this->params->get('show_boldt_link') === '1')
+		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-        <?php } ?>
+			<?php
+		} ?>
 	</div>
 </div>
 

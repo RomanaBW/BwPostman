@@ -38,7 +38,9 @@ defined('_JEXEC') or die('Restricted access');
 <div id="bwpostman">
 	<div id="bwp_com_register_success">
 		<?php if ($this->params->def('show_page_title', 1)) { ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<?php echo $this->escape($this->params->get('page_title')); ?>
+			</h1>
 		<?php } ?>
 
 		<div class="content_inner">
@@ -52,18 +54,21 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					else
 					{
-						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit&amp;editlink={$this->success->editlink}");
+						$link = JRoute::_(
+							JUri::root() . "index.php?option=com_bwpostman&amp;
+							Itemid={$this->success->itemid}&amp;view=edit&amp;editlink={$this->success->editlink}"
+						);
 					}
 				}
 				else
 				{
 					if (is_null($this->success->itemid))
 					{
-						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit") ;
+						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit");
 					}
 					else
 					{
-						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit") ;
+						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit");
 					}
 				}
 
@@ -72,15 +77,18 @@ defined('_JEXEC') or die('Restricted access');
 				echo $msg;
 			}
 			else
-			{ 	// Case 2, 3, 4
+			{	// Case 2, 3, 4
 				if (property_exists($this->success, 'success_msg'))
+				{
 					echo '<div class="success-message">' . JText::_($this->success->success_msg) . '</div>';
+				}
 			}
 
-            if ($this->params->get('show_boldt_link') === '1')
-            { ?>
+			if ($this->params->get('show_boldt_link') === '1')
+			{ ?>
 				<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-            <?php } ?>
+			<?php
+			} ?>
 		</div>
 	</div>
 </div>

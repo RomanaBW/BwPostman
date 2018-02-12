@@ -38,9 +38,13 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="bwpostman">
 	<div id="bwp_com_error_account_blocked">
-		<?php if ($this->params->def('show_page_title', 1)) { ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
-		<?php }
+		<?php
+		if ($this->params->def('show_page_title', 1)) { ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<?php echo $this->escape($this->params->get('page_title')); ?>
+			</h1>
+		<?php
+		}
 
 		$admin_email = $this->params->def('default_from_email', JFactory::getConfig()->get('mailfrom'));
 
@@ -55,12 +59,14 @@ defined('_JEXEC') or die('Restricted access');
 			$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
 			echo $msg;
 		}
+
 		$msg1 = JText::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email);
 		echo '<p class="contact-admin">' . JHtml::_('content.prepare', $msg1) . '</p>';
 
-        if ($this->params->get('show_boldt_link') === '1')
-        { ?>
+		if ($this->params->get('show_boldt_link') === '1')
+		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-        <?php } ?>
+		<?php
+		} ?>
 	</div>
 </div>

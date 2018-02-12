@@ -41,19 +41,19 @@ function BwPostmanBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (isset ($query['view']))
+	if (isset($query['view']))
 	{
-		$segments[]= $query['view'];
+		$segments[] = $query['view'];
 		unset($query['view']);
 	}
 
-	if (isset ($query['task']))
+	if (isset($query['task']))
 	{
-		$segments[]= $query['task'];
+		$segments[] = $query['task'];
 		unset($query['task']);
 	}
 
-	if (isset ($query['id']))
+	if (isset($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
@@ -73,21 +73,21 @@ function BwPostmanBuildRoute(&$query)
  *
  * @since
  */
-function BwPostmanParseRoute ($segments)
+function BwPostmanParseRoute($segments)
 {
 	$vars = array();
 
-	if (isset ($segments[0]))
+	if (isset($segments[0]))
 	{
 		$vars['view'] = $segments[0];
 	}
 
-	if (isset ($segments[1]))
+	if (isset($segments[1]))
 	{
 		$vars['task'] = $segments[1];
 	}
 
-	if (isset ($segments[1]))
+	if (isset($segments[1]))
 	{
 		$vars['id'] = $segments[1];
 	}

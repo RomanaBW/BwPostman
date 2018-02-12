@@ -35,17 +35,23 @@ defined('_JEXEC') or die('Restricted access');
 <div id="bwpostman">
 	<div id="bwp_com_getedit_link">
 		<?php if ($this->params->def('show_page_title', 1)) { ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<?php echo $this->escape($this->params->get('page_title')); ?>
+			</h1>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=sendEditlink'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate">
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=sendEditlink'); ?>" method="post"
+				id="bwp_com_form" name="bwp_com_form" class="form-validate">
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink_text">
 					<?php echo JText::_('COM_BWPOSTMAN_EDITLINK_MSG'); ?>
 				</p>
 				<p class="getlink_email">
 					<span><label id="emailmsg" for="email"> <?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>:</label></span>
-					<span><input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>" class="inputbox required validate-email" maxlength="100" /></span>
+					<span>
+						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
+								class="inputbox required validate-email" maxlength="100" />
+					</span>
 				</p>
 			</div>
 
@@ -57,9 +63,11 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JHtml::_('form.token'); ?>
 		</form>
 
-        <?php if ($this->params->get('show_boldt_link') === '1')
-        { ?>
+		<?php
+		if ($this->params->get('show_boldt_link') === '1')
+		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-        <?php } ?>
+		<?php
+		} ?>
 	</div>
 </div>

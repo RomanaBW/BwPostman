@@ -35,14 +35,20 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="bwpostman">
 	<div id="bwp_com_error_geteditlink">
-		<?php if ($this->params->def('show_page_title', 1)) { ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
-		<?php }
+		<?php
+		if ($this->params->def('show_page_title', 1)) { ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<?php echo $this->escape($this->params->get('page_title')); ?>
+			</h1>
+		<?php
+		}
+
 		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
 		echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
 		?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate">
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
+				name="bwp_com_form" class="form-validate">
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink">
 					<label id="emailmsg" for="email"> <?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
@@ -58,9 +64,11 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JHtml::_('form.token'); ?>
 		</form>
 
-		<?php if ($this->params->get('show_boldt_link') === '1')
+		<?php
+		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>
-		<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-        <?php } ?>
+			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+		<?php
+		} ?>
 	</div>
 </div>

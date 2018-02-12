@@ -91,6 +91,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
@@ -117,9 +119,12 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		{
 			$document->setTitle($newsletter->subject);
 		}
+
 		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
+		{
 			$document->addStyleSheet(JUri::root(true) . $css_filename);
+		}
 
 		// Get the global list params and preset them
 		$globalParams				= JComponentHelper::getParams('com_bwpostman', true);
@@ -151,7 +156,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				}
 			}
 			else
-			{ // we come from single menu link, use menu params if set, otherwise global details params are used
+			{
+				// we come from single menu link, use menu params if set, otherwise global details params are used
 				if ($menuParams->get('attachment_single_enable') !== null)
 				{
 					$this->attachment_enabled	= $menuParams->get('attachment_single_enable');
@@ -178,5 +184,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		// Set parent display
 		parent::display($tpl);
+
+		return $this;
 	}
 }

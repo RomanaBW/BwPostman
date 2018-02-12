@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 //get helper class
-require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 
 /**
@@ -75,6 +75,8 @@ class BwPostmanViewEdit extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl = null)
@@ -93,6 +95,7 @@ class BwPostmanViewEdit extends JViewLegacy
 			{
 				$subscriber->$key = $value;
 			}
+
 			$subscriber->id	= 0;
 			$session->clear('subscriber_data');
 		}
@@ -104,8 +107,11 @@ class BwPostmanViewEdit extends JViewLegacy
 				$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
 			}
 		}
+
 		if (is_array($subscriber->mailinglists))
+		{
 			$app->setUserState('com_bwpostman.subscriber.selected_lists', $subscriber->mailinglists);
+		}
 
 		// Get the mailinglists which the subscriber is authorized to see
 		$lists['available_mailinglists'] = BwPostmanSubscriberHelper::getAuthorizedMailinglists($subscriber->id);
@@ -117,7 +123,9 @@ class BwPostmanViewEdit extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
+		{
 			$document->addStyleSheet(JUri::root(true) . $css_filename);
+		}
 
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))
@@ -128,6 +136,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		{
 			$mailformat_selected = $subscriber->emailformat;
 		}
+
 		$lists['emailformat']  = BwPostmanSubscriberHelper::buildMailformatSelectList($mailformat_selected);
 
 		// Build the gender select list
@@ -139,6 +148,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		{
 			$gender_selected = $subscriber->gender;
 		}
+
 		$lists['gender']    = BwPostmanSubscriberHelper::buildGenderList($gender_selected);
 
 		// Save a reference into the view
@@ -147,5 +157,7 @@ class BwPostmanViewEdit extends JViewLegacy
 
 		// Set parent display
 		parent::display($tpl);
+
+		return $this;
 	}
 }

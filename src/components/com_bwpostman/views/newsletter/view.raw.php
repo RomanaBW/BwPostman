@@ -61,5 +61,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		// Call parent display
 		parent::display($tpl);
+
+		return $this;
 	}
 }

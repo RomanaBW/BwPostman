@@ -28,13 +28,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Required class
-require_once (JPATH_COMPONENT_SITE.'/classes/bwpostman.class.php');
+require_once(JPATH_COMPONENT_SITE . '/classes/bwpostman.class.php');
 
 // Set the table directory
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 // Require the base controller
-require_once (JPATH_COMPONENT.'/controller.php');
+require_once(JPATH_COMPONENT . '/controller.php');
 
 // Require specific controller
 $jinput = JFactory::getApplication()->input;
@@ -42,16 +42,16 @@ $view   = $jinput->get('view', '');
 
 if ($view)
 {
-    $path = JPATH_COMPONENT.'/controllers/'.$view.'.php';
+	$path = JPATH_COMPONENT . '/controllers/' . $view . '.php';
 
-    if (file_exists($path))
-    {
-        include_once $path;
-    }
+	if (file_exists($path))
+	{
+		include_once $path;
+	}
 }
 
 // Create the controller
-$classname    = 'BwPostmanController'.ucfirst($view);
+$classname    = 'BwPostmanController' . ucfirst($view);
 $controller   = new $classname;
 
 // Perform the Request task

@@ -37,9 +37,13 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="bwpostman">
 	<div id="bwp_com_error_account_general">
-		<?php if ($this->params->def('show_page_title', 1)) { ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h1>
-		<?php }
+		<?php
+		if ($this->params->def('show_page_title', 1)) { ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<?php echo $this->escape($this->params->get('page_title')); ?>
+			</h1>
+		<?php
+		}
 
 		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
 
@@ -65,6 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 				{
 					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
 				}
+
 				$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $link) . '</p>';
 			}
 		}
@@ -90,16 +95,19 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				else
 				{
-					$link = JRoute::_(JUri::root()."index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
+					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
 				}
 			}
+
 			$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email, $link) . '</p>';
 		}
+
 		echo $msg;
 
-        if ($this->params->get('show_boldt_link') === '1')
-        { ?>
-		<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-		<?php } ?>
+		if ($this->params->get('show_boldt_link') === '1')
+		{ ?>
+			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+		<?php
+		} ?>
 	</div>
 </div>

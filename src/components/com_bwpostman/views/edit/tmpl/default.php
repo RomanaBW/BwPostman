@@ -137,13 +137,20 @@ JHtml::_('behavior.formvalidator');
 <div id="bwpostman">
 	<div id="bwp_com_edit_subscription">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			</h1>
 		<?php endif; ?>
 
 		<div class="content_inner">
-			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=save'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
+			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=save'); ?>" method="post" id="bwp_com_form"
+					name="bwp_com_form" class="form-validate form-inline">
 				<?php
-				echo JLayoutHelper::render('default', array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists), $basePath = JPATH_COMPONENT .'/layouts/subscriber');
+				echo JLayoutHelper::render(
+					'default',
+					array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists),
+					$basePath = JPATH_COMPONENT . '/layouts/subscriber'
+				);
 				?>
 
 				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
@@ -161,9 +168,13 @@ JHtml::_('behavior.formvalidator');
 					</p>
 				</div>
 
-				<button class="button validate save btn" type="button" onclick="return submitbutton('submit');"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?></button>
+				<button class="button validate save btn" type="button" onclick="return submitbutton('submit');">
+					<?php echo JText::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
+				</button>
 				<?php if (JFactory::getUser()->get('guest')):   ?>
-					<button class="button validate leave btn" type="button" onclick="return submitbutton('submitleave');"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?></button>
+					<button class="button validate leave btn" type="button" onclick="return submitbutton('submitleave');">
+						<?php echo JText::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
+					</button>
 				<?php endif; ?>
 
 				<input type="hidden" name="option" value="com_bwpostman" />
@@ -180,10 +191,12 @@ JHtml::_('behavior.formvalidator');
 				<?php echo JHtml::_('form.token'); ?>
 			</form>
 
-            <?php if ($this->params->get('show_boldt_link') === '1')
-            { ?>
+			<?php
+			if ($this->params->get('show_boldt_link') === '1')
+			{ ?>
 				<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-            <?php } ?>
+			<?php
+			} ?>
 		</div>
 	</div>
 </div>

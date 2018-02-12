@@ -32,8 +32,8 @@ jimport('joomla.application.component.view');
 jimport('joomla.application.component.helper');
 
 // Require helper classes
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
-require_once (JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanViewRegister
@@ -103,6 +103,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function display($tpl=null)
@@ -119,7 +121,10 @@ class BwPostmanViewRegister extends JViewLegacy
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename)) $document->addStyleSheet(JUri::root(true) . $css_filename);
+		if (file_exists(JPATH_BASE . $css_filename))
+		{
+			$document->addStyleSheet(JUri::root(true) . $css_filename);
+		}
 
 		switch ($layout)
 		{
@@ -128,26 +133,29 @@ class BwPostmanViewRegister extends JViewLegacy
 			case "error_accountnotactivated":
 			case "error_email":
 			case "error_geteditlink":
-				$this->_displayError();
+				$this->displayError();
 				break;
 			case "success_msg":
-				$this->_displaySuccess();
+				$this->displaySuccess();
 				break;
 			default:
-				$this->_displayDefault();
+				$this->displayDefault();
 				break;
 		}
+
 		parent::display($tpl);
+
+		return $this;
 	}
 
 	/**
 	 * View Error Display
 	 *
-	 * @access	private
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	private function _displayError()
+	private function displayError()
 	{
 		$session	    = JFactory::getSession();
 		$this->error    = new stdClass();
@@ -159,6 +167,7 @@ class BwPostmanViewRegister extends JViewLegacy
 			{
 				$this->error->$key = $value;
 			}
+
 			$session->clear('session_error');
 		}
 
@@ -173,7 +182,7 @@ class BwPostmanViewRegister extends JViewLegacy
 	 *
 	 * @since       0.9.1
 	 */
-	private function _displaySuccess()
+	private function displaySuccess()
 	{
 		$session	    = JFactory::getSession();
 		$this->success  = new stdClass();
@@ -196,7 +205,7 @@ class BwPostmanViewRegister extends JViewLegacy
 	 *
 	 * @since       0.9.1
 	 */
-	private function _displayDefault()
+	private function displayDefault()
 	{
 		$user		= JFactory::getUser();
 		$session	= JFactory::getSession();
@@ -212,6 +221,7 @@ class BwPostmanViewRegister extends JViewLegacy
 			{
 				$subscriber->$key = $value;
 			}
+
 			$subscriber->id	= 0;
 			$session->clear('subscriber_data');
 		}
@@ -238,6 +248,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		{
 			$mailformat_selected = $subscriber->emailformat;
 		}
+
 		$lists['emailformat'] = BwPostmanSubscriberHelper::buildMailformatSelectList($mailformat_selected);
 
 		// Build the gender select list
@@ -249,6 +260,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		{
 			$gender_selected = $subscriber->gender;
 		}
+
 		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList($gender_selected);
 
 		// Save references into view

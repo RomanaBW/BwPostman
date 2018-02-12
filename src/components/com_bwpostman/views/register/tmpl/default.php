@@ -34,7 +34,7 @@ JHtml::_('behavior.formvalidator');
 // Depends on jQuery UI
 JHtml::_('jquery.ui', array('core'));
 
-require_once (JPATH_SITE . '/components/com_content/helpers/route.php');
+require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
 
 $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>
@@ -45,19 +45,27 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 		if ($this->lists['available_mailinglists'])
 		{
 			if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
-				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo $this->params->escape($this->params->get('page_heading')); ?></h1>
+				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+					<?php echo $this->params->escape($this->params->get('page_heading')); ?>
+				</h1>
 			<?php endif; ?>
 
 		<div class="content_inner">
-			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=register.save'); ?>" method="post" id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
+			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=register.save'); ?>" method="post"
+					id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>
 				<p class="user_hightlight">
 					<label for="falle"><strong><?php echo addslashes(JText::_('COM_BWPOSTMAN_SPAMCHECK')); ?></strong></label>
-					<input type="text" name="falle" id="falle" size="20"  title="<?php echo addslashes(JText::_('COM_BWPOSTMAN_SPAMCHECK')); ?>" maxlength="50" />
+					<input type="text" name="falle" id="falle" size="20"
+							title="<?php echo addslashes(JText::_('COM_BWPOSTMAN_SPAMCHECK')); ?>" maxlength="50" />
 				</p>
 				<?php // End Spamcheck
 
-				echo JLayoutHelper::render('default', array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists), $basePath = JPATH_COMPONENT .'/layouts/subscriber');
+				echo JLayoutHelper::render(
+					'default',
+					array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists),
+					$basePath = JPATH_COMPONENT . '/layouts/subscriber'
+				);
 				?>
 				<?php // Question
 				if ($this->params->get('use_captcha') == 1) : ?>
@@ -66,7 +74,8 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 						<p class="security_question_lbl"><?php echo $this->params->get('security_question'); ?></p>
 						<p class="question-result input-append">
 							<label id="question" for="stringQuestion"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
-							<input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span>
+							<input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" />
+							<span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>
 				<?php endif; // End question ?>
@@ -78,10 +87,15 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 
 					<div class="captcha">
 						<p class="captcha-text"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl"><img src="<?php echo JUri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" /></p>
+						<p class="security_question_lbl">
+							<img src="<?php echo JUri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;
+							task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>"
+									alt="captcha" />
+						</p>
 						<p class="captcha-result input-append">
 							<label id="captcha" for="stringCaptcha"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
-							<input type="text" name="stringCaptcha" id="stringCaptcha" size="40" maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span>
+							<input type="text" name="stringCaptcha" id="stringCaptcha" size="40" maxlength="50" />
+							<span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
@@ -94,22 +108,49 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 						<p class="agree_check">
 							<input title="agreecheck" type="checkbox" id="agreecheck" name="agreecheck" />
 							<?php // Disclaimer article and target_blank or not
-							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0) {
-
-								?>
-								<span><?php $disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id'))); echo '<a href="'.$disclaimer_link.'"'; if ($this->params->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('COM_BWPOSTMAN_DISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
+							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
+							{ ?>
+								<span>
+									<?php
+									$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id')));
+									echo '<a href="' . $disclaimer_link . '"';
+									if ($this->params->get('disclaimer_target') == 0)
+									{
+										echo ' target="_blank"';
+									};
+									echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
+								</span>
 								<?php
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
 							{
 								?>
-								<span><?php $disclaimer_link = JRoute::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem')); echo '<a href="'.$disclaimer_link.'"'; if ($this->params->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('COM_BWPOSTMAN_DISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
-							<?php }
-							else {
-								// Disclaimer url and target_blank or not
-								?>
-								<span><?php echo '<a href="'. $this->params->get('disclaimer_link') . '"'; if ($this->params->get('disclaimer_target') == 0) {echo ' target="_blank"';}; echo '>'. JText::_('COM_BWPOSTMAN_DISCLAIMER').'</a> <i class="icon-star"></i>'; ?></span>
+								<span>
+									<?php
+									$disclaimer_link = JRoute::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem'));
+									echo '<a href="' . $disclaimer_link . '"';
+									if ($this->params->get('disclaimer_target') == 0)
+									{
+										echo ' target="_blank"';
+									};
+									echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
+								</span>
+							<?php
+							}
+							else
+							{
+								// Disclaimer url and target_blank or not ?>
+								<span>
+									<?php
+									echo '<a href="' . $this->params->get('disclaimer_link') . '"';
+									if ($this->params->get('disclaimer_target') == 0)
+									{
+										echo ' target="_blank"';
+									}
+
+									echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
+								</span>
 							<?php } ?>
 						</p>
 					<?php endif; // Show disclaimer ?>
@@ -118,16 +159,21 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 					</p>
 				</div>
 
-				<p class="button-register text-right"><button class="button validate btn text-right" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button></p>
+				<p class="button-register text-right">
+					<button class="button validate btn text-right" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
+				</p>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="view" value="register" />
 			<input type="hidden" name="id" value="<?php echo $this->subscriber->id; ?>" />
 			<input type="hidden" name="bwp-<?php echo $this->captcha; ?>" value="1" />
-			<input type="hidden" name="name_field_obligation" id="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" />
-			<input type="hidden" name="firstname_field_obligation" id="firstname_field_obligation" value="<?php echo $this->params->get('firstname_field_obligation'); ?>" />
-			<input type="hidden" name="special_field_obligation" id="special_field_obligation" value="<?php echo $this->params->get('special_field_obligation'); ?>" />
+			<input type="hidden" name="name_field_obligation" id="name_field_obligation"
+					value="<?php echo $this->params->get('name_field_obligation'); ?>" />
+			<input type="hidden" name="firstname_field_obligation" id="firstname_field_obligation"
+					value="<?php echo $this->params->get('firstname_field_obligation'); ?>" />
+			<input type="hidden" name="special_field_obligation" id="special_field_obligation"
+					value="<?php echo $this->params->get('special_field_obligation'); ?>" />
 			<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
 			<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
 			<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
@@ -142,10 +188,11 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 			echo JText::_('COM_BWPOSTMAN_MESSAGE_NO_AVAILIBLE_MAILINGLIST');
 		}
 
-        if ($this->params->get('show_boldt_link') === '1')
-        { ?>
+		if ($this->params->get('show_boldt_link') === '1')
+		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
-        <?php } ?>
+		<?php
+		} ?>
 	</div>
 </div>
 

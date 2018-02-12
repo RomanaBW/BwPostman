@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since       0.9.1
  */
-class modBwPostmanHelper
+class ModBwPostmanHelper
 {
 	/**
 	 * Method to get the subscriber ID of the user
@@ -63,7 +63,7 @@ class modBwPostmanHelper
 		}
 		else
 		{ // User is logged in
-			$subscriberid = modBwPostmanHelper::getSubscriberIdFromUserID($user->get('id'));
+			$subscriberid = self::getSubscriberIdFromUserID($user->get('id'));
 		}
 
 		return $subscriberid;
@@ -170,7 +170,8 @@ class modBwPostmanHelper
 				$query->order($_db->quoteName('title') . 'ASC');
 			}
 		}
-		$_db->setQuery ($query);
+
+		$_db->setQuery($query);
 
 		$mailinglists = $_db->loadObjectList();
 
@@ -216,7 +217,7 @@ class modBwPostmanHelper
 	 *
 	 * @since       0.9.1
 	 */
-	public static function getUserData ($userid)
+	public static function getUserData($userid)
 	{
 		$_db	= JFactory::getDbo();
 		$id		= 0;
@@ -233,7 +234,6 @@ class modBwPostmanHelper
 		$user->user_id = $id;
 
 		return $user;
-
 	}
 
 	/**
@@ -260,7 +260,7 @@ class modBwPostmanHelper
 			$query->from($_db->quoteName('#__users'));
 			$query->where($_db->quoteName('id') . ' = ' . (int) $userid);
 
-			$_db->setQuery ($query);
+			$_db->setQuery($query);
 			$usertype = $_db->loadResult();
 
 			if (empty($usertype)) {
@@ -271,4 +271,3 @@ class modBwPostmanHelper
 		return $usertype;
 	}
 }
-

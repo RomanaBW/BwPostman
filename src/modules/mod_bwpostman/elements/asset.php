@@ -36,12 +36,12 @@ jimport('joomla.form.formfield');
 class JFormFieldAsset extends JFormField
 {
 	/**
-	* property to hold type
-	*
-	* @var string
+	 * property to hold type
 	 *
-	* @since
-	*/
+	 * @var string
+	 *
+	 * @since
+	 */
 	protected $type = 'Asset';
 
 	/**
@@ -54,8 +54,8 @@ class JFormFieldAsset extends JFormField
 	protected function getInput()
 	{
 		$doc = JFactory::getDocument();
-		$doc->addScriptDeclaration('
-			window.onload=display_yes_no;
+		$doc->addScriptDeclaration(
+			'window.onload=display_yes_no;
 			function display_yes_no()
 			{
 				var radios = document.getElementsByName("jform[params][com_params]");
@@ -92,10 +92,9 @@ class JFormFieldAsset extends JFormField
 					document.getElementById("jform_params_disclaimer_menuitem").style.display=css_Style;
 					document.getElementById("jform_params_disclaimer_menuitem_chzn").style.display=css_Style;
 				}
-			}
-		');
+			}'
+		);
 
-	return null;
+		return null;
 	}
 }
-

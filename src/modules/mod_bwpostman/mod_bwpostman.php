@@ -27,7 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once (dirname(__FILE__).'/helper.php');
+require_once(dirname(__FILE__) . '/helper.php');
 
 jimport('joomla.application.component.helper');
 
@@ -36,9 +36,9 @@ $document	= JFactory::getDocument();
 $module     = JModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
-if (is_file(JPATH_ADMINISTRATOR.'/components/com_bwpostman/bwpostman.php'))
+if (is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
 {
-	require_once (JPATH_ADMINISTRATOR.'/components/com_bwpostman/helpers/helper.php');
+	require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 }
 else
 {
@@ -93,7 +93,10 @@ else
 	{
 		$layout = "default";
 
-		if ($userid > 0) $subscriber = modBwPostmanHelper::getUserData($userid);
+		if ($userid > 0)
+		{
+			$subscriber = modBwPostmanHelper::getUserData($userid);
+		}
 
 		// Build the email format select list
 		$mailformat_selected = $paramsComponent->get('default_emailformat');
@@ -105,14 +108,16 @@ else
 		{
 			$emailformat .= 'checked="checked"';
 		}
+
 		$emailformat     .= '/>';
-		$emailformat		.= '<label for="formatTextMod"><span>'. JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat		.= '<label for="formatTextMod"><span>' . JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat     .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
 
 		if($mailformat_selected)
 		{
 			$emailformat .= 'checked="checked"';
 		}
+
 		$emailformat     .= '/>';
 		$emailformat     .= '<label for="formatHtmlMod"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
 		$emailformat     .= '</fieldset>';
@@ -128,14 +133,16 @@ else
 		{
 			$gender .= 'checked="checked"';
 		}
+
 		$gender     .= '/>';
-		$gender		.= '<label for="genMaleMod"><span>'. JText::_('MOD_BWPOSTMAN_MALE') . '</span></label>';
+		$gender		.= '<label for="genMaleMod"><span>' . JText::_('MOD_BWPOSTMAN_MALE') . '</span></label>';
 		$gender     .= '<input type="radio" name="a_gender" id="genFemaleMod" value="1"';
 
 		if($gender_selected)
 		{
 			$gender .= 'checked="checked"';
 		}
+
 		$gender     .= '/>';
 		$gender     .= '<label for="genFemaleMod"><span>' . JText::_('MOD_BWPOSTMAN_FEMALE') . '</span></label>';
 		$gender     .= '</fieldset>';
@@ -148,7 +155,7 @@ else
 		$mod_mls = $params->get('mod_ml_available');
 
 		// Get the available mailinglists
-		$mailinglists = modBwPostmanHelper::getMailinglists($usertype, $mod_mls);
+		$mailinglists = modBwPostmanHelper::getMailinglists($usertype[0], $mod_mls);
 
 		$n = count($mailinglists);
 
@@ -159,15 +166,26 @@ else
 		{
 			foreach ($mailinglists AS $mailinglist)
 			{
-				$available_mailinglists[] = JHtml::_('select.option', $mailinglist->id, $mailinglist->title .':<br />'.$mailinglist->description);
+				$available_mailinglists[] = JHtml::_('select.option', $mailinglist->id, $mailinglist->title . ':<br />' . $mailinglist->description);
 			}
 		}
-		$lists['list']	= JHtml::_('select.genericlist', $available_mailinglists, 'list[]', 'class="inputbox" size="'.$n.'" multiple="multiple" style="padding: 6px; width: 150px;"', 'value', 'text');
+
+		$lists['list']	= JHtml::_(
+			'select.genericlist',
+			$available_mailinglists,
+			'list[]',
+			'class="inputbox" size="' . $n . '" multiple="multiple" style="padding: 6px; width: 150px;"',
+			'value',
+			'text'
+		);
 	}
 
 	$itemid = modBwPostmanHelper::getItemID();
 
 	$path = JModuleHelper::getLayoutPath('mod_bwpostman', $layout);
 
-	if (file_exists($path)) require ($path);
+	if (file_exists($path))
+	{
+		require($path);
+	}
 }

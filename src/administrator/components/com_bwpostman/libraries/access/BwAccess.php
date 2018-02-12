@@ -184,6 +184,7 @@ class BwAccess
 		if (!isset(self::$identities[$userId]))
 		{
 			// Get all groups against the user is mapped. Other than Joomla I only need the direct groups.
+			// @ToDo: Do I really need only direct groups? I also need inherited permissions! What I don't need: Parents up to Manager
 			self::$identities[$userId] = self::getGroupsByUser($userId, false);
 		}
 
@@ -198,10 +199,11 @@ class BwAccess
 		if ($strictView != '')
 		{
 			// Get group ids for this view by asset!
+			// @ToDo: This method was only to get archive permissions, now there is an additional use case, but method is not adjusted!
 			$wantedGroups = self::getWantedGroups($strictView);
 
 			// Limit identities to only these groups
-			$identities = array_intersect($wantedGroups, $identities);
+//			$identities = array_intersect($wantedGroups, $identities);
 		}
 
 		// Get the JRules object and set data
@@ -389,8 +391,8 @@ class BwAccess
 	 */
 	public static function ruleAllow($identities)
 	{
-		// Implicit deny by default.
-		$result = false;
+		// Implicit null by default.
+		$result = null;
 
 		// Check that the inputs are valid.
 		if (!empty($identities))

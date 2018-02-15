@@ -89,8 +89,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								<?php echo JText::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?>
 							</th>
 							<th class="center" align="center" width="100" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?><
-								/th>
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?>
+								</th>
 							<th class="center" align="center" width="60" nowrap="nowrap">
 								<?php echo JText::_('COM_BWPOSTMAN_TPL_SET_DEFAULT'); ?>
 							</th>

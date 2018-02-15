@@ -299,13 +299,10 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		if (JFactory::getApplication()->isSite())
+		$access = $this->getState('filter.access');
+		if ($access)
 		{
-			$access = $this->getState('filter.access');
-			if ($access)
-			{
-				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
-			}
+			$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
 		}
 	}
 

@@ -117,6 +117,8 @@ class SubscriberEditPage
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function CreateSubscriberWithoutCleanup(\AcceptanceTester $I)

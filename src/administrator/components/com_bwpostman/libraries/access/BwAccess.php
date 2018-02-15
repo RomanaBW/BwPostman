@@ -184,7 +184,7 @@ class BwAccess
 		if (!isset(self::$identities[$userId]))
 		{
 			// Get all groups against the user is mapped. Other than Joomla I only need the direct groups.
-			// @ToDo: Do I really need only direct groups? I also need inherited permissions! What I don't need: Parents up to Manager
+			// @ToDo: Do I really need only direct groups? I also need inherited permissions! What I don't need: Parents up to Manager or root
 			self::$identities[$userId] = self::getGroupsByUser($userId, false);
 		}
 
@@ -243,11 +243,14 @@ class BwAccess
 		$sectionRules = json_decode(self::getSectionAsset($strictView), true);
 
 		$archiveRuleName	= 'bwpm.' . $strictView . '.archive';
-		$archiveRules		= $sectionRules[$archiveRuleName];
-
-		if (is_array($archiveRules))
+		if (isset($archiveRules, $sectionRules))
 		{
-			$wantedGroups		= array_keys($archiveRules);
+			$archiveRules		= $sectionRules[$archiveRuleName];
+
+			if (is_array($archiveRules))
+			{
+				$wantedGroups		= array_keys($archiveRules);
+			}
 		}
 
 		return $wantedGroups;
@@ -372,7 +375,6 @@ class BwAccess
 
 			$parentIdentities[$identity] = $db->loadAssocList();
 		}
-
 
 		return $parentIdentities;
 	}
@@ -1150,10 +1152,10 @@ class BwAccess
 				$secondDot = strpos($assetName, '.', $firstDot + 1);
 
 				if ($secondDot !== false)
-		{
+				{
 					$assetName = substr($assetName, 0, $secondDot);
 				}
-		}
+			}
 
 			$loaded[$assetKey] = $assetName;
 		}

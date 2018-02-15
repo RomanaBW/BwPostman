@@ -73,8 +73,8 @@ $colNum = 8;
 			<th width="100" nowrap="nowrap">
 				<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?>
 			</th>
-			<th width="30" nowrap="nowrap"><
-				?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+			<th width="30" nowrap="nowrap">
+				<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 			</th>
 		</tr>
 	</thead>

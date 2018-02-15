@@ -280,7 +280,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 																$item->published,
 																$i,
 																'newsletters.',
-																$canChange
+																BwPostmanHelper::canEditState('newsletter', $item->id)
 															); ?>
 														</td>
 														<td align="center">

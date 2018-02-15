@@ -215,7 +215,7 @@ class SubscribeComponentCest
 		}
 		else
 		{
-			$I->seeInPopup(SubsView::$popup_select_newsletter);
+			$I->seeInPopup(SubsView::$invalid_select_newsletter_mod);
 			$I->acceptPopup();
 		}
 

@@ -65,7 +65,7 @@ class BwPostmanTableCampaigns extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	private $description = null;
+	public $description = null;
 
 	/**
 	 * @var int Access level/View level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels

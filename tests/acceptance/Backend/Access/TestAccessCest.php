@@ -22,9 +22,9 @@ use Page\MaintenancePage as MaintenancePage;
 use Page\OptionsPage as OptionsPage;
 
 /**
-* Class TestInstallationCest
-*
-* This class contains all methods to test access at backend of BwPostman
+ * Class TestInstallationCest
+ *
+ * This class contains all methods to test access at backend of BwPostman
  *
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
@@ -43,7 +43,7 @@ use Page\OptionsPage as OptionsPage;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @since   2.0.0
-*/
+ */
 class TestAccessCest
 {
 	/**
@@ -56,7 +56,7 @@ class TestAccessCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function _login(LoginPage $loginPage, array $user)
+	public function login(LoginPage $loginPage, array $user)
 	{
 		$loginPage->logIntoBackend($user);
 	}
@@ -67,6 +67,8 @@ class TestAccessCest
 	 * @param   \AcceptanceTester            $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -79,15 +81,15 @@ class TestAccessCest
 
 		foreach (AccessPage::$all_users as $user)
 		{
-			$this->_login($loginPage, $user);
+			$this->login($loginPage, $user);
 
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
 				$permission_array   = '_main_list_permissions';
-				$allowed            = $this->_getAllowedByUser($user, $button, $permission_array);
-				$archive_allowed    = $this->_getAllowedByUser($user, 'Archive', $permission_array);
+				$allowed            = $this->getAllowedByUser($user, $button, $permission_array);
+				$archive_allowed    = $this->getAllowedByUser($user, 'Archive', $permission_array);
 
-				$this->_checkAccessByJoomlaMenu($I, $button, $allowed);
+				$this->checkAccessByJoomlaMenu($I, $button, $allowed);
 
 				$I->amOnPage(MainView::$url);
 				$I->waitForElement(Generals::$pageTitle, 30);
@@ -101,11 +103,11 @@ class TestAccessCest
 				{
 					$I->dontSeeElement($link);
 
-					$this->_checkVisibilityOfGeneralStatistics($I, $button, false);
+					$this->checkVisibilityOfGeneralStatistics($I, $button, false);
 
-					$this->_checkVisibilityOfArchiveStatistics($I, $button, $archive_allowed, false);
+					$this->checkVisibilityOfArchiveStatistics($I, $button, $archive_allowed, false);
 
-					$this->_checkVisibilityOfSubmenuItems($I, $button, $archive_allowed, false);
+					$this->checkVisibilityOfSubmenuItems($I, $button, $archive_allowed, false);
 
 					if ($button == 'Basic settings')
 					{
@@ -122,17 +124,18 @@ class TestAccessCest
 						$I->see('Options', AccessPage::$options_button);
 					}
 
-					$this->_checkVisibilityOfGeneralStatistics($I, $button, true);
+					$this->checkVisibilityOfGeneralStatistics($I, $button, true);
 
-					$this->_checkVisibilityOfArchiveStatistics($I, $button, $archive_allowed, true);
+					$this->checkVisibilityOfArchiveStatistics($I, $button, $archive_allowed, true);
 
-					$this->_checkVisibilityOfSubmenuItems($I, $button, $archive_allowed, true);
+					$this->checkVisibilityOfSubmenuItems($I, $button, $archive_allowed, true);
 
 					$I->clickAndWait($link, 1);
 					$I->see($text_to_see, Generals::$pageTitle);
 				}
 			}
-			$this->_logout($I, $loginPage);
+
+			$this->logout($I, $loginPage);
 		}
 	}
 
@@ -145,7 +148,7 @@ class TestAccessCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _getAllowedByUser($user, $button, $permission_array)
+	private function getAllowedByUser($user, $button, $permission_array)
 	{
 		$permission_array = $user['user'] . $permission_array;
 		$allowed          = AccessPage::${$permission_array}[$button];
@@ -158,14 +161,15 @@ class TestAccessCest
 	 * @param string           $button
 	 * @param string           $allowed
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkAccessByJoomlaMenu(\AcceptanceTester $I, $button, $allowed)
+	private function checkAccessByJoomlaMenu(\AcceptanceTester $I, $button, $allowed)
 	{
 		if ($button != 'Basic settings')
 		{
-			$I->clickAndWait( AccessPage::$j_menu_components, 1);
+			$I->clickAndWait(AccessPage::$j_menu_components, 1);
 			$I->see('BwPostman', AccessPage::$j_menu_bwpostman);
 
 			$I->moveMouseOver(AccessPage::$j_menu_bwpostman);
@@ -194,10 +198,11 @@ class TestAccessCest
 	 * @param string           $button
 	 * @param string           $visible
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkVisibilityOfGeneralStatistics(\AcceptanceTester $I, $button, $visible)
+	private function checkVisibilityOfGeneralStatistics(\AcceptanceTester $I, $button, $visible)
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
@@ -227,7 +232,7 @@ class TestAccessCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkVisibilityOfArchiveStatistics(\AcceptanceTester $I, $button, $archive_allowed, $visible)
+	private function checkVisibilityOfArchiveStatistics(\AcceptanceTester $I, $button, $archive_allowed, $visible)
 	{
 		if ($button != 'Basic settings')
 		{
@@ -257,10 +262,11 @@ class TestAccessCest
 	 * @param string           $archive_allowed
 	 * @param string           $visible
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkVisibilityOfSubmenuItems(\AcceptanceTester $I, $button, $archive_allowed, $visible)
+	private function checkVisibilityOfSubmenuItems(\AcceptanceTester $I, $button, $archive_allowed, $visible)
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
@@ -284,6 +290,7 @@ class TestAccessCest
 						$I->dontSeeElement($statistics_archive_text);
 					}
 				}
+
 				$I->clickAndWait(AccessPage::$link_statistics_general, 1);
 			}
 			else
@@ -300,6 +307,8 @@ class TestAccessCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function TestAccessRightsForAddButtonsFromMainView(\AcceptanceTester $I)
@@ -311,12 +320,12 @@ class TestAccessCest
 
 		foreach (AccessPage::$all_users as $user)
 		{
-			$this->_login($loginPage, $user);
+			$this->login($loginPage, $user);
 
 			foreach (AccessPage::$main_add_buttons as $button => $link)
 			{
 				$permission_array = '_main_add_permissions';
-				$allowed          = $this->_getAllowedByUser($user, $button, $permission_array);
+				$allowed          = $this->getAllowedByUser($user, $button, $permission_array);
 
 				$I->amOnPage(MainView::$url);
 				$I->waitForElement(Generals::$pageTitle, 30);
@@ -342,17 +351,20 @@ class TestAccessCest
 					$I->dontSeeElement($link);
 				}
 			}
-			$this->_logout($I, $loginPage);
+
+			$this->logout($I, $loginPage);
 		}
 	}
 
 	/**
 	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
-     * loop over all list views
+	 * loop over all list views
 	 *
 	 * @param   \AcceptanceTester            $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -367,68 +379,70 @@ class TestAccessCest
 		for ($i = 0; $i < count(AccessPage::$all_users); $i++)
 		{
 			// @ToDo: Consider, that some webmaster may set user permissions e.g. to send newsletter but not to create or edit one
-            // Simplify user variable
+			// Simplify user variable
 			$user   = AccessPage::$all_users[$i];
 
 			// @ToDo: This is a workaround to debug tests. Comment out users which are not wanted
-            $wanted_users = array(
-//                'BwPostmanAdmin',
-//                'BwPostmanManager',
-                'BwPostmanPublisher',
-                'BwPostmanEditor',
-//                'BwPostmanCampaignAdmin',
-//                'BwPostmanCampaignPublisher',
-//                'BwPostmanCampaignEditor',
-//                'BwPostmanMailinglistAdmin',
-//                'BwPostmanMailinglistPublisher',
-//                'BwPostmanMailinglistEditor',
-//                'BwPostmanNewsletterAdmin',
-//                'BwPostmanNewsletterPublisher',
-//                'BwPostmanNewsletterEditor',
-//                'BwPostmanSubscriberAdmin',
-//                'BwPostmanSubscriberPublisher',
-//                'BwPostmanSubscriberEditor',
-//                'BwPostmanTemplateAdmin',
-//                'BwPostmanTemplatePublisher',
-//                'BwPostmanTemplateEditor',
-            );
+			$wanted_users = array(
+				'BwPostmanAdmin',
+				//'BwPostmanManager',
+				//'BwPostmanPublisher',
+				//'BwPostmanEditor',
+				//'BwPostmanCampaignAdmin',
+				//'BwPostmanCampaignPublisher',
+				//'BwPostmanCampaignEditor',
+				//'BwPostmanMailinglistAdmin',
+				//'BwPostmanMailinglistPublisher',
+				//'BwPostmanMailinglistEditor',
+				//'BwPostmanNewsletterAdmin',
+				//'BwPostmanNewsletterPublisher',
+				//'BwPostmanNewsletterEditor',
+				//'BwPostmanSubscriberAdmin',
+				//'BwPostmanSubscriberPublisher',
+				//'BwPostmanSubscriberEditor',
+				//'BwPostmanTemplateAdmin',
+				//'BwPostmanTemplatePublisher',
+				//'BwPostmanTemplateEditor',
+				);
 
-            if (!in_array($user['user'], $wanted_users))
+			if (!in_array($user['user'], $wanted_users))
 			{
 				continue;
 			}
-			$this->_login($loginPage, $user);
+
+			$this->login($loginPage, $user);
 
 			// Loop over main view list buttons
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
-                // @ToDo: This is a workaround to debug tests. Comment tests which are not wanted
-                $unwanted_section    = array(
-//                    'Newsletters',
-//                    'Subscribers',
-//                    'Campaigns',
-//                    'Mailinglists',
-//                    'Templates',
-//                    'Archive',
-//                    'Basic settings',
-//                    'Maintenance',
-                    );
+				// @ToDo: This is a workaround to debug tests. Comment tests which are not wanted
+				$unwanted_section    = array(
+					'Newsletters',
+					//'Subscribers',
+					//'Campaigns',
+					//'Mailinglists',
+					//'Templates',
+					//'Archive',
+					//'Basic settings',
+					//'Maintenance',
+					);
 
-                if (in_array($button, $unwanted_section))
-                {
-                    continue;
-                }
+				if (in_array($button, $unwanted_section))
+				{
+					continue;
+				}
 
 				$list_permission_array  = '_main_list_permissions';
-				$allowed                = $this->_getAllowedByUser($user, $button, $list_permission_array);
-codecept_debug('User: ' . $user['user']);
-codecept_debug('Button: ' . $button);
-codecept_debug('Allowed: ' . $allowed);
+				$allowed                = $this->getAllowedByUser($user, $button, $list_permission_array);
+
+				codecept_debug('User: ' . $user['user']);
+				codecept_debug('Button: ' . $button);
+				codecept_debug('Allowed: ' . $allowed);
 
 				$I->amOnPage(MainView::$url);
 				$I->waitForElement(Generals::$pageTitle, 30);
 				$I->see('BwPostman');
-                $I->seeElement(Generals::$toolbar['Help']);
+				$I->seeElement(Generals::$toolbar['Help']);
 
 				if ($allowed)
 				{
@@ -437,29 +451,29 @@ codecept_debug('Allowed: ' . $allowed);
 
 					if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 					{
-                        $I->see($button, Generals::$pageTitle);
+						$I->see($button, Generals::$pageTitle);
 
-                        $item_permission_array = AccessPage::${$user['user'] . '_item_permissions'};
+						$item_permission_array = AccessPage::${$user['user'] . '_item_permissions'};
 
-                        $this->_createNewItem($I, $button, $item_permission_array);
+						$this->createNewItem($I, $button, $item_permission_array);
 
-						$this->_editItem($I, $button, 'own', $item_permission_array); // own item
-						$this->_editItem($I, $button, 'other', $item_permission_array); // other item
+						$this->editItem($I, $button, 'own', $item_permission_array); // own item
+						$this->editItem($I, $button, 'other', $item_permission_array); // other item
 
-						$this->_changeStateItem($I, $button, $item_permission_array); //own item
+						$this->changeStateItem($I, $button, $item_permission_array); //own item
 
-						$this->_checkinOwnItem($I, $button, $link, $item_permission_array);
+						$this->checkinOwnItem($I, $button, $link, $item_permission_array);
 						// @ToDo: Use other user to lock. Question: How to determine other user?
-//						$this->_checkinOtherItem($I, $i, $button, $link);
+						// $this->_checkinOtherItem($I, $i, $button, $link);
 
 						$this->restoreArchivedItem($I, $button, $user, $item_permission_array); // own item
-                        $this->deleteArchivedItem($I, $button, $user, $item_permission_array); // own item
+						$this->deleteArchivedItem($I, $button, $user, $item_permission_array); // own item
 
 						if ($button == 'Newsletters')
 						{
-							$this->_duplicateNewsletter($I, $user, $item_permission_array);
+							$this->duplicateNewsletter($I, $user, $item_permission_array);
 
-							$this->_sendNewsletter($I, $user, $item_permission_array);
+							$this->sendNewsletter($I, $user, $item_permission_array);
 
 							// @ToDo: set publish/unpublish date
 							// @ToDo: handle queue
@@ -472,55 +486,57 @@ codecept_debug('Allowed: ' . $allowed);
 						}
 						elseif ($button == 'Templates')
 						{
-							$this->_setDefaultTemplate($I, $item_permission_array);
+							$this->setDefaultTemplate($I, $item_permission_array);
 
 							// @ToDo: import template
 						}
 					}
-                    elseif ($button == 'Archive')
+					elseif ($button == 'Archive')
 					{
 						// @ToDo: restore other item?
 						// @ToDo: delete other item?
 					}
-                    elseif ($button == 'Basic settings')
-                    {
-                        $I->see('BwPostman Configuration', Generals::$pageTitle);
-                        $I->click(Generals::$toolbar['Save & Close']);
-                        $I->waitForElement(Generals::$pageTitle, 30);
-                        $I->see('BwPostman');
+					elseif ($button == 'Basic settings')
+					{
+						$I->see('BwPostman Configuration', Generals::$pageTitle);
+						$I->click(Generals::$toolbar['Save & Close']);
+						$I->waitForElement(Generals::$pageTitle, 30);
+						$I->see('BwPostman');
 
-                        $I->seeElement(Generals::$toolbar['Options']);
-                    }
-                    elseif ($button == 'Maintenance')
-                    {
-                        $item_permission_array = AccessPage::${$user['user'] . '_item_permissions'};
-                        $admin_allowed         = $item_permission_array['Maintenance']['permissions']['Admin'];
+						$I->seeElement(Generals::$toolbar['Options']);
+					}
+					elseif ($button == 'Maintenance')
+					{
+						$item_permission_array = AccessPage::${$user['user'] . '_item_permissions'};
+						$admin_allowed         = $item_permission_array['Maintenance']['permissions']['Admin'];
 
-                        $I->see($button, Generals::$pageTitle);
+						$I->see($button, Generals::$pageTitle);
 
-                        if ($admin_allowed)
-                        {
-                            $I->seeElement(MaintenancePage::$checkTablesButton);
-                            $I->seeElement(MaintenancePage::$saveTablesButton);
-                            $I->seeElement(MaintenancePage::$restoreTablesButton);
-                            $I->seeElement(MaintenancePage::$settingsButton);
-                        }
-                        else
-                        {
-                            $I->dontSeeElement(MaintenancePage::$checkTablesButton);
-                            $I->dontSeeElement(MaintenancePage::$saveTablesButton);
-                            $I->dontSeeElement(MaintenancePage::$restoreTablesButton);
-                            $I->dontSeeElement(MaintenancePage::$settingsButton);
-                        }
-                        $I->seeElement(MaintenancePage::$forumButton);
-                    }
+						if ($admin_allowed)
+						{
+							$I->seeElement(MaintenancePage::$checkTablesButton);
+							$I->seeElement(MaintenancePage::$saveTablesButton);
+							$I->seeElement(MaintenancePage::$restoreTablesButton);
+							$I->seeElement(MaintenancePage::$settingsButton);
+						}
+						else
+						{
+							$I->dontSeeElement(MaintenancePage::$checkTablesButton);
+							$I->dontSeeElement(MaintenancePage::$saveTablesButton);
+							$I->dontSeeElement(MaintenancePage::$restoreTablesButton);
+							$I->dontSeeElement(MaintenancePage::$settingsButton);
+						}
+
+						$I->seeElement(MaintenancePage::$forumButton);
+					}
 				}
 				else
 				{
-                    $I->dontSeeElement($link);
+					$I->dontSeeElement($link);
 				}
 			}
-			$this->_logout($I, $loginPage);
+
+			$this->logout($I, $loginPage);
 		}
 	}
 
@@ -531,9 +547,11 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _createNewItem($I, $button, $permission_array)
+	private function createNewItem($I, $button, $permission_array)
 	{
 		$allowed    = $permission_array[$button]['permissions']['Create'];
 
@@ -542,7 +560,7 @@ codecept_debug('Allowed: ' . $allowed);
 
 		if ($allowed)
 		{
-			$title_to_see = $this->_getTitleToSee($button, '');
+			$title_to_see = $this->getTitleToSee($button, '');
 
 			$I->see($title_to_see, Generals::$pageTitle);
 
@@ -561,13 +579,13 @@ codecept_debug('Allowed: ' . $allowed);
 	/**
 	 * @param $button
 	 * @param $add_text
-     * @param $check_content
+	 * @param $check_content
 	 *
 	 * @return string
 	 *
 	 * @since 2.0.0
 	 */
-	private function _getTitleToSee($button, $add_text, $check_content = '')
+	private function getTitleToSee($button, $add_text, $check_content = '')
 	{
 		$title_to_see = substr($button, 0, -1) . ' details: ';
 
@@ -575,8 +593,8 @@ codecept_debug('Allowed: ' . $allowed);
 		{
 			$title_to_see = 'Templatedetails:';
 
-            $add_text = ' ' . $check_content . ' ' . $add_text;
-        }
+			$add_text = ' ' . $check_content . ' ' . $add_text;
+		}
 
 		$title_to_see .= $add_text;
 
@@ -591,9 +609,11 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _editItem($I, $button, $action, $permission_array)
+	private function editItem($I, $button, $action, $permission_array)
 	{
 		$check_content  = $permission_array[$button][$action]['check content'];
 		$check_locator  = $permission_array[$button]['check locator'];
@@ -611,18 +631,18 @@ codecept_debug('Allowed: ' . $allowed);
 		$I->assertEquals(true, $item_found);
 
 		// by link
-        if ($allowed)
-        {
-            $I->seeLink($check_content);
-            $I->click(sprintf($check_link, $check_content));
-            $I->waitForElement(Generals::$pageTitle, 30);
+		if ($allowed)
+		{
+			$I->seeLink($check_content);
+			$I->click(sprintf($check_link, $check_content));
+			$I->waitForElement(Generals::$pageTitle, 30);
 
-            $this->_checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
-        }
-        else
-        {
-            $I->dontSeeLink($check_content);
-        }
+			$this->checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
+		}
+		else
+		{
+			$I->dontSeeLink($check_content);
+		}
 
 		// find page and row for desired item
 		$item_found  = $I->findPageWithItemAndScrollToItem($check_content);
@@ -630,19 +650,19 @@ codecept_debug('Allowed: ' . $allowed);
 		$I->assertEquals(true, $item_found);
 
 		// by checkbox
-		$checkbox       = $this->_getCheckbox($I, $check_content);
+		$checkbox       = $this->getCheckbox($I, $check_content);
 
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Edit']);
 
 		if ($allowed)
-        {
-            $this->_checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
-        }
-        else
-        {
-            $I->see($button, Generals::$pageTitle);
-        }
+		{
+			$this->checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
+		}
+		else
+		{
+			$I->see($button, Generals::$pageTitle);
+		}
 	}
 
 	/**
@@ -652,14 +672,15 @@ codecept_debug('Allowed: ' . $allowed);
 	 * @param string            $check_locator
 	 * @param boolean           $allowed
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkForEditResult($I, $button, $check_content, $check_locator, $allowed)
+	private function checkForEditResult($I, $button, $check_content, $check_locator, $allowed)
 	{
 		if ($allowed)
 		{
-			$title_to_see = $this->_getTitleToSee($button, '[ Edit ]', $check_content);
+			$title_to_see = $this->getTitleToSee($button, '[ Edit ]', $check_content);
 
 			$I->see($title_to_see, Generals::$pageTitle);
 			$I->seeInField($check_locator, $check_content);
@@ -683,7 +704,7 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @since 2.0.0
 	 */
-	private function _getCheckbox($I, $title_content)
+	private function getCheckbox($I, $title_content)
 	{
 		$checkbox_nbr  = $I->getTableRowIdBySearchValue($title_content);
 		$checkbox = sprintf(AccessPage::$checkbox_identifier, $checkbox_nbr - 1);
@@ -698,9 +719,11 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _changeStateItem($I, $button, $permission_array)
+	private function changeStateItem($I, $button, $permission_array)
 	{
 		$has_state_to_change    = array('Newsletters', 'Mailinglists', 'Templates');
 		$allowed                = $permission_array[$button]['permissions']['ModifyState'];
@@ -718,9 +741,9 @@ codecept_debug('Allowed: ' . $allowed);
 			$item_text  = strtolower(substr($button, 0, -1));
 
 			if ($item_text == 'mailinglist')
-            {
-                $item_text = 'mailing list';
-            }
+			{
+				$item_text = 'mailing list';
+			}
 
 			$I->publishByIcon($I, $permission_array[$button]['publish_by_icon'], $item_text, $extraClick, $allowed);
 			$I->publishByToolbar($I, $permission_array[$button]['publish_by_toolbar'], $item_text, $extraClick, $allowed);
@@ -754,22 +777,22 @@ codecept_debug('Allowed: ' . $allowed);
 			return;
 		}
 
-        $ui_data = $this->getUiData($button);
+		$ui_data = $this->getUiData($button);
 
-        $edit_data   = $ui_data['edit_data'];
-        $manage_data = $ui_data['manage_data'];
+		$edit_data   = $ui_data['edit_data'];
+		$manage_data = $ui_data['manage_data'];
 
 		if (!$restore_allowed)
 		{
-		    // @ToDo: Check for visibility of tabs
+			// @ToDo: Check for visibility of tabs
 			$I->switchToArchive($I, $edit_data['archive_tab']);
 			$I->dontSeeElement(Generals::$toolbar['Restore']);
 			$I->switchToSection($I, $manage_data);
 			return;
 		}
 
-        // create item to play with
-        $edit_data = $this->createItemForRestoreAndDelete($I, $button, $user, $permission_array, $edit_data);
+		// create item to play with
+		$edit_data = $this->createItemForRestoreAndDelete($I, $button, $user, $permission_array, $edit_data);
 
 		// archive item
 		$I->HelperArchiveItems($I, $manage_data, $edit_data);
@@ -778,42 +801,42 @@ codecept_debug('Allowed: ' . $allowed);
 		$I->HelperRestoreItems($I, $manage_data, $edit_data);
 
 		// delete item to cleanup
-        $this->deleteItem($I, $button, $user, $permission_array, $manage_data, $edit_data);
+		$this->deleteItem($I, $button, $user, $permission_array, $manage_data, $edit_data);
 	}
 
-    /**
-     * @param \AcceptanceTester  $I
-     * @param string             $button
-     * @param array              $user
-     * @param array              $permission_array
-     *
-     * @return void
-     *
-     * @since 2.0.0
-     */
-    private function deleteArchivedItem($I, $button, $user, $permission_array)
-    {
-        $archive_allowed    = $permission_array[$button]['permissions']['Archive'];
+	/**
+	 * @param \AcceptanceTester  $I
+	 * @param string             $button
+	 * @param array              $user
+	 * @param array              $permission_array
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	private function deleteArchivedItem($I, $button, $user, $permission_array)
+	{
+		$archive_allowed    = $permission_array[$button]['permissions']['Archive'];
 
-        if (!$archive_allowed)
-        {
-            $I->dontSeeElement(Generals::$toolbar['Archive']);
-            return;
-        }
+		if (!$archive_allowed)
+		{
+			$I->dontSeeElement(Generals::$toolbar['Archive']);
+			return;
+		}
 
-        $ui_data = $this->getUiData($button);
+		$ui_data = $this->getUiData($button);
 
-        $edit_data   = $ui_data['edit_data'];
-        $manage_data = $ui_data['manage_data'];
+		$edit_data   = $ui_data['edit_data'];
+		$manage_data = $ui_data['manage_data'];
 
-        // create item to play with
-        $edit_data = $this->createItemForRestoreAndDelete($I, $button, $user, $permission_array, $edit_data);
+		// create item to play with
+		$edit_data = $this->createItemForRestoreAndDelete($I, $button, $user, $permission_array, $edit_data);
 
-        // delete item to cleanup
-        $this->deleteItem($I, $button, $user, $permission_array, $manage_data, $edit_data);
-    }
+		// delete item to cleanup
+		$this->deleteItem($I, $button, $user, $permission_array, $manage_data, $edit_data);
+	}
 
-    /**
+	/**
 	 * @param \AcceptanceTester  $I
 	 * @param string             $button
 	 * @param string             $link
@@ -821,9 +844,11 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _checkinOwnItem($I, $button, $link, $permission_array)
+	private function checkinOwnItem($I, $button, $link, $permission_array)
 	{
 		$check_content  = $permission_array[$button]['own']['check content'];
 		$check_link     = $permission_array[$button]['check link'];
@@ -835,7 +860,7 @@ codecept_debug('Allowed: ' . $allowed);
 			$col_nbr++;
 		}
 
-		$this->_openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
 
 		$row_nbr    = $I->getTableRowIdBySearchValue($check_content);
 		$lock_icon  = sprintf(AccessPage::$checkout_icon, $row_nbr, $col_nbr);
@@ -843,18 +868,18 @@ codecept_debug('Allowed: ' . $allowed);
 		// by icon
 		$I->seeElement($lock_icon);
 		$I->click($lock_icon);
-		$this->_checkCheckinResult($I, $check_content, $lock_icon, $button);
+		$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
 
-		$this->_openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
 
 		// see lock icon
 		$I->seeElement($lock_icon);
 
 		// by toolbar
-		$checkbox       = $this->_getCheckbox($I, $check_content);
+		$checkbox       = $this->getCheckbox($I, $check_content);
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Check-In']);
-		$this->_checkCheckinResult($I, $check_content, $lock_icon, $button);
+		$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
 	}
 
 	/**
@@ -864,10 +889,11 @@ codecept_debug('Allowed: ' . $allowed);
 	 * @param $check_content
 	 * @param $item_link
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link)
+	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link)
 	{
 		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
 
@@ -890,24 +916,25 @@ codecept_debug('Allowed: ' . $allowed);
 
 		$I->assertEquals(true, $item_found);
 	}
+
 	/**
 	 * @param \AcceptanceTester $I
 	 * @param $check_content
 	 * @param $lock_icon
-     * @param $button
+	 * @param $button
 	 *
 	 * @return void
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button)
+	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button)
 	{
-        $I->scrollTo(Generals::$sys_message_container, 0, 100);
+		$I->scrollTo(Generals::$sys_message_container, 0, 100);
 
-        $item = substr(strtolower($button), 0, -1);
+		$item = substr(strtolower($button), 0, -1);
 
 		$item = str_replace('subscriber', 'recipient', $item);
-        $item = str_replace('mailinglist', 'mailing list', $item);
+		$item = str_replace('mailinglist', 'mailing list', $item);
 
 		$I->see(sprintf(AccessPage::$checkin_success_text, $item), Generals::$alert_success);
 
@@ -926,17 +953,19 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _checkinOtherItem($I, $i, $button, $link)
+	private function checkinOtherItem($I, $i, $button, $link)
 	{
 		// Other user: next one from array. If current user is last one, take previous for other user
 		$current_user   = AccessPage::$all_users[$i];
-		$next_user      = $this->_getNextUser($i);
+		$next_user      = $this->getNextUser($i);
 
 		$next_permission_array      = AccessPage::${$next_user['user'] . '_item_permissions'};
 
-		$this->_switchLoggedInUser($I, $next_user);
+		$this->switchLoggedInUser($I, $next_user);
 
 		// open item
 		$check_content  = $next_permission_array[$button]['own']['check content'];
@@ -949,20 +978,20 @@ codecept_debug('Allowed: ' . $allowed);
 			$col_nbr++;
 		}
 
-		$this->_openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
 
-		$this->_switchLoggedInUser($I, $current_user);
+		$this->switchLoggedInUser($I, $current_user);
 
 		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
 
 		if ($item_found !== true)
 		{
 			// logout current user
-			$this->_switchLoggedInUser($I, $next_user);
+			$this->switchLoggedInUser($I, $next_user);
 
-			$this->_checkinOwnItem($I, $button, $link, $next_permission_array);
+			$this->checkinOwnItem($I, $button, $link, $next_permission_array);
 
-			$this->_switchLoggedInUser($I, $current_user);
+			$this->switchLoggedInUser($I, $current_user);
 		}
 		else
 		{
@@ -974,7 +1003,7 @@ codecept_debug('Allowed: ' . $allowed);
 
 			if ($current_user['name'] == 'BwPostmanAdmin')
 			{
-				$this->_checkCheckinResult($I, $check_content, $lock_icon, $button);
+				$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
 			}
 			else
 			{
@@ -982,11 +1011,11 @@ codecept_debug('Allowed: ' . $allowed);
 				$I->see(AccessPage::$checkin_error_text, Generals::$alert_error);
 
 				// logout current user
-				$this->_switchLoggedInUser($I, $next_user);
+				$this->switchLoggedInUser($I, $next_user);
 
-				$this->_checkinOwnItem($I, $button, $link, $next_permission_array);
+				$this->checkinOwnItem($I, $button, $link, $next_permission_array);
 
-				$this->_switchLoggedInUser($I, $current_user);
+				$this->switchLoggedInUser($I, $current_user);
 			}
 		}
 	}
@@ -999,33 +1028,34 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @since 2.0.0
 	 */
-	private function _getNextUser($i)
+	private function getNextUser($i)
 	{
 		$next_user_id = $i + 1;
 		if ($next_user_id > count(AccessPage::$all_users))
 		{
 			$next_user_id = 1;
 		}
+
 		$next_user = AccessPage::$all_users[$next_user_id];
 
 		return $next_user;
 	}
+
 	/**
 	 * @param $I
 	 * @param $user_to_login
 	 *
-	 *
 	 * @since 2.0.0
 	 */
-	private function _switchLoggedInUser($I, $user_to_login)
+	private function switchLoggedInUser($I, $user_to_login)
 	{
 		$loginPage = new LoginPage($I);
 
 		// logout current user
-		$this->_logout($I, $loginPage, false);
+		$this->logout($I, $loginPage, false);
 
 		// login as other user
-		$this->_login($loginPage, $user_to_login);
+		$this->login($loginPage, $user_to_login);
 	}
 
 	/**
@@ -1035,6 +1065,8 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function TestAccessRightsByDirectLinks(\AcceptanceTester $I)
@@ -1042,21 +1074,21 @@ codecept_debug('Allowed: ' . $allowed);
 		$loginPage  = new LoginPage($I);
 		foreach (AccessPage::$all_users as $user)
 		{
-			$this->_login($loginPage, $user);
+			$this->login($loginPage, $user);
 
 			// Loop over array with direct links
 			foreach (AccessPage::$direct_links as $link)
 			{
-				$this->_testResultForLink($I, $link, $user);
+				$this->testResultForLink($I, $link, $user);
 			}
 
 			// Loop over array with direct links
 			foreach (AccessPage::$button_links as $link)
 			{
-				$this->_testResultForLink($I, $link, $user);
+				$this->testResultForLink($I, $link, $user);
 			}
 
-			$this->_logout($I, $loginPage);
+			$this->logout($I, $loginPage);
 		}
 	}
 
@@ -1069,15 +1101,17 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return  string
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _testResultForLink(\AcceptanceTester $I, $link, $user)
+	private function testResultForLink(\AcceptanceTester $I, $link, $user)
 	{
 		// click link an wait for page loaded
 		$I->amOnPage($link);
 		$I->waitForElement('.//*[@id=\'isisJsData\']/div/div', 30);
 
-		$expected_result    = $this->_getExpectedResultByUser($I, $user, $link);
+		$expected_result    = $this->getExpectedResultByUser($I, $user, $link);
 
 		// Check for allowed/forbidden
 		return $expected_result;
@@ -1092,11 +1126,13 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return  string
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getExpectedResultByUser(\AcceptanceTester $I, $user, $link)
+	private function getExpectedResultByUser(\AcceptanceTester $I, $user, $link)
 	{
-		$action = $this->_getActionForLink($I, $link);
+		$action = $this->getActionForLink($I, $link);
 
 		$permission_for_action = OptionsPage::$bwpm_groups[$user]['permissions'][$action];
 
@@ -1117,9 +1153,11 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @return  string
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getActionForLink(\AcceptanceTester $I, $link)
+	private function getActionForLink(\AcceptanceTester $I, $link)
 	{
 		$action = '';
 
@@ -1134,13 +1172,13 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @param   \AcceptanceTester     $I
 	 * @param   LoginPage             $loginPage
-     * @param   boolean               $truncateSession
+	 * @param   boolean               $truncateSession
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public function _logout(\AcceptanceTester $I, LoginPage $loginPage, $truncateSession = false)
+	public function logout(\AcceptanceTester $I, LoginPage $loginPage, $truncateSession = false)
 	{
 		$loginPage->logoutFromBackend($I, $truncateSession);
 	}
@@ -1154,7 +1192,7 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @since 2.0.0
 	 */
-	private function _duplicateNewsletter(\AcceptanceTester $I, $user, $item_permission_array)
+	private function duplicateNewsletter(\AcceptanceTester $I, $user, $item_permission_array)
 	{
 		$create_allowed    = $item_permission_array['Newsletters']['permissions']['Create'];
 
@@ -1174,12 +1212,12 @@ codecept_debug('Allowed: ' . $allowed);
 		{
 			$I->dontSeeElement(Generals::$toolbar['Archive']);
 
-			$this->_switchLoggedInUser($I, Generals::$admin);
-            $I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
+			$this->switchLoggedInUser($I, Generals::$admin);
+			$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
 			$I->HelperArcDelItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array, $delete_allowed);
 
-			$this->_switchLoggedInUser($I, $user);
+			$this->switchLoggedInUser($I, $user);
 		}
 		else
 		{
@@ -1189,11 +1227,11 @@ codecept_debug('Allowed: ' . $allowed);
 
 				$I->dontSeeElement(Generals::$toolbar['Delete']);
 
-				$this->_switchLoggedInUser($I, Generals::$admin);
+				$this->switchLoggedInUser($I, Generals::$admin);
 
 				$I->HelperDeleteItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array);
 
-				$this->_switchLoggedInUser($I,$user);
+				$this->switchLoggedInUser($I, $user);
 
 				$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 			}
@@ -1209,7 +1247,7 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @since 2.0.0
 	 */
-	private function _sendNewsletter(\AcceptanceTester $I, $user, $item_permission_array)
+	private function sendNewsletter(\AcceptanceTester $I, $user, $item_permission_array)
 	{
 		$I->wantTo("Send a newsletter to real recipients, checked by permissions");
 
@@ -1221,23 +1259,23 @@ codecept_debug('Allowed: ' . $allowed);
 			return;
 		}
 
-		$this->_switchLoggedInUser($I, Generals::$admin);
+		$this->switchLoggedInUser($I, Generals::$admin);
 
 		NewsletterEditPage::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		$this->_switchLoggedInUser($I, $user);
+		$this->switchLoggedInUser($I, $user);
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
 		$I->seeElement(Generals::$toolbar['Send']);
 		NewsletterEditPage::SendNewsletterToRealRecipients($I, $user['user']);
 
-		$this->_switchLoggedInUser($I, Generals::$admin);
+		$this->switchLoggedInUser($I, Generals::$admin);
 
 		$I->amOnPage(NewsletterManagerPage::$url);
 		$I->clickAndWait(NewsletterManagerPage::$tab2, 1);
 
 		$I->HelperArcDelItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array, true);
-		$this->_switchLoggedInUser($I, $user);
+		$this->switchLoggedInUser($I, $user);
 	}
 
 	/**
@@ -1248,146 +1286,144 @@ codecept_debug('Allowed: ' . $allowed);
 	 *
 	 * @since 2.0.0
 	 */
-	private function _setDefaultTemplate(\AcceptanceTester $I, $item_permission_array)
+	private function setDefaultTemplate(\AcceptanceTester $I, $item_permission_array)
 	{
 		$I->wantTo("check setting default template by permissions");
 
-        $set_default_allowed = $item_permission_array['Templates']['permissions']['ModifyState'];
+		$set_default_allowed = $item_permission_array['Templates']['permissions']['ModifyState'];
 
-        $I->scrollTo(Generals::$sys_message_container, 0, -100);
-        $I->clickAndWait(Generals::$clear_button, 1);
+		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->clickAndWait(Generals::$clear_button, 1);
 
-        $I->scrollTo(Generals::$pagination_bar);
+		$I->scrollTo(Generals::$pagination_bar);
 
-        $linkToFirstPage    = count($I->grabMultiple(Generals::$first_page));
+		$linkToFirstPage    = count($I->grabMultiple(Generals::$first_page));
 
-        if ($linkToFirstPage === 1)
-        {
-            $I->click(Generals::$first_page);
-        }
+		if ($linkToFirstPage === 1)
+		{
+			$I->click(Generals::$first_page);
+		}
 
-        $I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 		TemplateManagerPage::setDefaultTemplates($I, $set_default_allowed);
 	}
 
-    /**
-     * @param \AcceptanceTester $I
-     * @param $button
-     * @param $user
-     * @param $permission_array
-     * @param $edit_data
-     *
-     * @return array
-     *
-     * @since 2.0.0
-     */
-    private function createItemForRestoreAndDelete($I, $button, $user, $permission_array, $edit_data)
-    {
-        $create_allowed = $permission_array[$button]['permissions']['Create'];
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param $button
+	 * @param $user
+	 * @param $permission_array
+	 * @param $edit_data
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	private function createItemForRestoreAndDelete($I, $button, $user, $permission_array, $edit_data)
+	{
+		$create_allowed = $permission_array[$button]['permissions']['Create'];
 
-        if (!$create_allowed)
-        {
-            $this->_switchLoggedInUser($I, 'BwPostmanAdmin');
-        }
+		if (!$create_allowed)
+		{
+			$this->switchLoggedInUser($I, 'BwPostmanAdmin');
+		}
 
-        switch ($button)
-        {
-            case 'Newsletters':
-                NewsletterEditPage::_CreateNewsletterWithoutCleanup($I, $user['user']);
-                break;
-            case 'Subscribers':
-                $this->_switchLoggedInUser($I, $user);
+		switch ($button)
+		{
+			case 'Newsletters':
+				NewsletterEditPage::_CreateNewsletterWithoutCleanup($I, $user['user']);
+				break;
+			case 'Subscribers':
+				$this->switchLoggedInUser($I, $user);
 
-                SubscriberEditPage::_CreateSubscriberWithoutCleanup($I);
-                $edit_data = SubscriberEditPage::prepareDeleteArray($I);
+				SubscriberEditPage::_CreateSubscriberWithoutCleanup($I);
+				$edit_data = SubscriberEditPage::prepareDeleteArray($I);
 
-                break;
-            case 'Campaigns':
-                CampaignEditPage::_createCampaignWithoutCleanup($I);
-                break;
-            case 'Mailinglists':
-                MailinglistEditPage::_createMailinglistWithoutCleanup($I);
-                break;
-            case 'Templates':
-                TemplateEditPage::_createTemplateWithoutCleanup($I);
-                break;
-        }
+				break;
+			case 'Campaigns':
+				CampaignEditPage::_createCampaignWithoutCleanup($I);
+				break;
+			case 'Mailinglists':
+				MailinglistEditPage::_createMailinglistWithoutCleanup($I);
+				break;
+			case 'Templates':
+				TemplateEditPage::_createTemplateWithoutCleanup($I);
+				break;
+		}
 
-        if (!$create_allowed)
-        {
-            $this->_switchLoggedInUser($I, $user['user']);
-        }
+		if (!$create_allowed)
+		{
+			$this->switchLoggedInUser($I, $user['user']);
+		}
 
+		return $edit_data;
+	}
 
-        return $edit_data;
-    }
+	/**
+	 * @param $button
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.0
+	 */
+	private function getUiData($button)
+	{
+		$ui_data     = array();
 
-    /**
-     * @param $button
-     *
-     * @return array
-     *
-     * @since 2.0.0
-     */
-    private function getUiData($button)
-    {
-        $ui_data     = array();
+		switch ($button)
+		{
+			case 'Newsletters':
+				$ui_data['edit_data']   = NewsletterEditPage::$arc_del_array;
+				$ui_data['manage_data'] = NewsletterManagerPage::$arc_del_array;
+				break;
+			case 'Subscribers':
+				$ui_data['edit_data']   = SubscriberEditPage::$arc_del_array;
+				$ui_data['manage_data'] = SubscriberManagerPage::$arc_del_array;
+				break;
+			case 'Campaigns':
+				$ui_data['edit_data']   = CampaignEditPage::$arc_del_array;
+				$ui_data['manage_data'] = CampaignManagerPage::$arc_del_array;
+				break;
+			case 'Mailinglists':
+				$ui_data['edit_data']   = MailinglistEditPage::$arc_del_array;
+				$ui_data['manage_data'] = MailinglistManagerPage::$arc_del_array;
+				break;
+			case 'Templates':
+				$ui_data['edit_data']   = TemplateEditPage::$arc_del_array;
+				$ui_data['manage_data'] = TemplateManagerPage::$arc_del_array;
+				break;
+		}
 
-        switch ($button)
-        {
-            case 'Newsletters':
-                $ui_data['edit_data']   = NewsletterEditPage::$arc_del_array;
-                $ui_data['manage_data'] = NewsletterManagerPage::$arc_del_array;
-                break;
-            case 'Subscribers':
-                $ui_data['edit_data']   = SubscriberEditPage::$arc_del_array;
-                $ui_data['manage_data'] = SubscriberManagerPage::$arc_del_array;
-                break;
-            case 'Campaigns':
-                $ui_data['edit_data']   = CampaignEditPage::$arc_del_array;
-                $ui_data['manage_data'] = CampaignManagerPage::$arc_del_array;
-                break;
-            case 'Mailinglists':
-                $ui_data['edit_data']   = MailinglistEditPage::$arc_del_array;
-                $ui_data['manage_data'] = MailinglistManagerPage::$arc_del_array;
-                break;
-            case 'Templates':
-                $ui_data['edit_data']   = TemplateEditPage::$arc_del_array;
-                $ui_data['manage_data'] = TemplateManagerPage::$arc_del_array;
-                break;
-        }
+		return $ui_data;
+	}
 
-        return $ui_data;
-    }
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param $button
+	 * @param $user
+	 * @param $permission_array
+	 * @param $manage_data
+	 * @param $edit_data
+	 *
+	 *
+	 * @since 2.0.0
+	 */
+	private function deleteItem($I, $button, $user, $permission_array, $manage_data, $edit_data)
+	{
+		$delete_allowed = $permission_array[$button]['permissions']['Delete'];
 
-    /**
-     * @param \AcceptanceTester $I
-     * @param $button
-     * @param $user
-     * @param $permission_array
-     * @param $manage_data
-     * @param $edit_data
-     *
-     *
-     * @since 2.0.0
-     */
-    private function deleteItem($I, $button, $user, $permission_array, $manage_data, $edit_data)
-    {
-        $delete_allowed = $permission_array[$button]['permissions']['Delete'];
+		// HelperArcDelItems
+		if (!$delete_allowed)
+		{
+			$I->dontSeeElement(Generals::$toolbar['Delete']);
 
-        // HelperArcDelItems
-        if (!$delete_allowed)
-        {
-            $I->dontSeeElement(Generals::$toolbar['Delete']);
-
-            $this->_switchLoggedInUser($I, 'BwPostmanAdmin');
-            $I->HelperArcDelItems($I, $manage_data, $edit_data, true);
-            $this->_switchLoggedInUser($I, $user['user']);
-        }
-        else
-        {
-            $I->HelperArcDelItems($I, $manage_data, $edit_data, $delete_allowed);
-        }
-    }
+			$this->switchLoggedInUser($I, 'BwPostmanAdmin');
+			$I->HelperArcDelItems($I, $manage_data, $edit_data, true);
+			$this->switchLoggedInUser($I, $user['user']);
+		}
+		else
+		{
+			$I->HelperArcDelItems($I, $manage_data, $edit_data, $delete_allowed);
+		}
+	}
 }
-

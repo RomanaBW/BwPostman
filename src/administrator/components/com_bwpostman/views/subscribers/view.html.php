@@ -286,7 +286,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
-		if ($this->permissions['subscriber']['admin'])
+		if ($this->permissions['com']['admin'])
 		{
 			JToolbarHelper::checkin('subscribers.checkin');
 			JToolbarHelper::divider();

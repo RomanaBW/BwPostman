@@ -236,7 +236,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 					JToolbarHelper::spacer();
 				}
 
-				if ($this->permissions['template']['admin'])
+				if ($this->permissions['com']['admin'])
 				{
 					JToolbarHelper::checkin('templates.checkin');
 					JToolbarHelper::divider();

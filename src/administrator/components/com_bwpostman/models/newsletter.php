@@ -3377,7 +3377,7 @@ class contentRenderer
 
 		$content['text_version'] = '';
 
-		if ($nl_content == null)
+		if ($nl_content == null || $nl_content[0] == '-1')
 		{
 			$content['html_version'] .= '';
 			$content['text_version'] .= '';

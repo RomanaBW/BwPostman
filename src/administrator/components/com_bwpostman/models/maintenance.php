@@ -2766,6 +2766,48 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
+	 * Method to write a new asset at the table asset. Shifts left and right value at existing assets and inserts the new asset.
+	 *
+	 * @param   string $sectionName
+	 * @param   array  $sectionRules
+	 *
+	 * @return mixed    $base_asset     base asset of BwPostman
+	 *
+	 * @throws BwException
+	 * @throws Exception
+	 *
+	 * @since    1.3.0
+	 */
+	public function updateSectionAsset($sectionName, $sectionRules)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+
+		$assetName = 'com_bwpostman.' . $sectionName;
+
+		try
+		{
+			$rules = new JAccessRules($sectionRules);
+
+			$db	= JFactory::getDbo();
+			$query	= $db->getQuery(true);
+
+			$query->update($db->quoteName('#__assets'));
+			$query->set($db->quoteName('rules') . " = " . $db->Quote($rules));
+			$query->where($db->quoteName('name') . ' = ' . $db->Quote($assetName));
+
+			$db->setQuery($query);
+			$result = $db->execute();
+
+
+			return $result;
+		}
+		catch (RuntimeException $e)
+		{
+			throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionName));
+		}
+	}
+
+	/**
 	 * Method to update an existing asset at the table asset
 	 *
 	 * @param   array  $asset
@@ -3710,9 +3752,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$rulesJson		= $componentAsset['rules'];
 		}
 
-			$rules 			= new JAccessRules($rulesJson);
+		$rules = new JAccessRules($rulesJson);
 
-			$this->updateComponentRules($rules);
+		$this->updateComponentRules($rules);
 		$this->initializeSectionAssets();
 
 		foreach ($this->tableNames as $table)
@@ -3720,8 +3762,21 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$hasAsset = $this->checkForAsset($table['tableNameGeneric']);
 			if ($hasAsset)
 			{
-				$this->presetSectionRules($table);
-				$this->insertBaseAsset($table, false);
+				$sectionRules = $this->presetSectionRules($table);
+
+				$sectionName = substr($table['tableNameRaw'], 0, -1);
+
+				// @ToDo: Check if asset exists. If so, update, else insert
+				$sectionAssetExists = $this->getAssetFromTableByName('com_bwpostman.' . $sectionName);
+
+				if (!is_null($sectionAssetExists))
+				{
+					$this->updateSectionAsset($sectionName, $sectionRules);
+				}
+				else
+				{
+					$this->insertBaseAsset($table, false);
+				}
 			}
 		}
 	}

@@ -118,7 +118,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 
 		$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
-		if (!$this->permissions['view']['mailinglist'])
+		if (!$this->permissions['view']['campaign'])
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_CAMS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');

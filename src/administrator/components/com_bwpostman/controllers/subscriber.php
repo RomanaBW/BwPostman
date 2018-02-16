@@ -132,7 +132,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		return $this->permissions['subscriber']['create'];
+		return BwPostmanHelper::canEdit('subscriber', $data);
 	}
 
 	/**

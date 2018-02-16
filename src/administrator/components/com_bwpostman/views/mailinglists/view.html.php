@@ -202,7 +202,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			JToolbarHelper::spacer();
 		}
 
-		if ($this->permissions['com']['admin'])
+		if (BwPostmanHelper::canEdit('mailinglist', 0) || BwPostmanHelper::canEditState('mailinglist', 0))
 		{
 			JToolbarHelper::checkin('mailinglists.checkin');
 			JToolbarHelper::divider();

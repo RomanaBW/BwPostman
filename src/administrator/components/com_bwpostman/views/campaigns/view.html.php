@@ -228,7 +228,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			JToolbarHelper::spacer();
 		}
 
-		if ($this->permissions['com']['admin'])
+		if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0))
 		{
 			JToolbarHelper::checkin('campaigns.checkin');
 			JToolbarHelper::divider();

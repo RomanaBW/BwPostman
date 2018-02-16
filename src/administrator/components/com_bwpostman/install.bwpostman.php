@@ -297,7 +297,7 @@ class Com_BwPostmanInstallerScript
 			$this->addBwPmAdminToRootAsset();
 
 			/*
-			 * Create base assets
+			 * Create section assets
 			 *
 			 */
 			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
@@ -333,11 +333,19 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// @ToDo: Reflect, how to reinstall sample groups, if user deleted them and wants them back
-			if (version_compare($oldRelease, '2.0.0', 'lt'))
+			if (version_compare($oldRelease, '2.0.0', 'le'))
 			{
-				$this->createSampleUsergroups();
+//				$this->createSampleUsergroups();
 				$this->addBwPmAdminToViewlevel();
 				$this->addBwPmAdminToRootAsset();
+				/*
+				 * Rewrite section assets
+				 *
+				 */
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+				$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
+
+				$maintenanceModel->createBaseAssets();
 			}
 
 			// convert tables to UTF8MB4

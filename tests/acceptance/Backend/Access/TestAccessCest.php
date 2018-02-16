@@ -339,7 +339,7 @@ class TestAccessCest
 
 					if ($button == 'HTML-Template' ||$button == 'Text-Template')
 					{
-						$text_to_see    = 'Templatedetails:';
+						$text_to_see    = 'Template details:';
 					}
 
 					$I->clickAndWait($link, 1);
@@ -384,25 +384,25 @@ class TestAccessCest
 
 			// @ToDo: This is a workaround to debug tests. Comment out users which are not wanted
 			$wanted_users = array(
-				'BwPostmanAdmin',
+				//'BwPostmanAdmin',
 				//'BwPostmanManager',
-				//'BwPostmanPublisher',
-				//'BwPostmanEditor',
-				//'BwPostmanCampaignAdmin',
-				//'BwPostmanCampaignPublisher',
-				//'BwPostmanCampaignEditor',
-				//'BwPostmanMailinglistAdmin',
-				//'BwPostmanMailinglistPublisher',
-				//'BwPostmanMailinglistEditor',
-				//'BwPostmanNewsletterAdmin',
-				//'BwPostmanNewsletterPublisher',
-				//'BwPostmanNewsletterEditor',
-				//'BwPostmanSubscriberAdmin',
-				//'BwPostmanSubscriberPublisher',
-				//'BwPostmanSubscriberEditor',
-				//'BwPostmanTemplateAdmin',
-				//'BwPostmanTemplatePublisher',
-				//'BwPostmanTemplateEditor',
+				'BwPostmanPublisher',
+				'BwPostmanEditor',
+				'BwPostmanCampaignAdmin',
+				'BwPostmanCampaignPublisher',
+				'BwPostmanCampaignEditor',
+				'BwPostmanMailinglistAdmin',
+				'BwPostmanMailinglistPublisher',
+				'BwPostmanMailinglistEditor',
+				'BwPostmanNewsletterAdmin',
+				'BwPostmanNewsletterPublisher',
+				'BwPostmanNewsletterEditor',
+				'BwPostmanSubscriberAdmin',
+				'BwPostmanSubscriberPublisher',
+				'BwPostmanSubscriberEditor',
+				'BwPostmanTemplateAdmin',
+				'BwPostmanTemplatePublisher',
+				'BwPostmanTemplateEditor',
 				);
 
 			if (!in_array($user['user'], $wanted_users))
@@ -415,7 +415,7 @@ class TestAccessCest
 			// Loop over main view list buttons
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
-				// @ToDo: This is a workaround to debug tests. Comment tests which are not wanted
+				// @ToDo: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
 					'Newsletters',
 					//'Subscribers',
@@ -591,7 +591,7 @@ class TestAccessCest
 
 		if ($button == 'HTML-Template' || $button == 'Text-Template' || $button == 'Templates')
 		{
-			$title_to_see = 'Templatedetails:';
+			$title_to_see = 'Template details:';
 
 			$add_text = ' ' . $check_content . ' ' . $add_text;
 		}
@@ -1336,7 +1336,7 @@ class TestAccessCest
 			case 'Subscribers':
 				$this->switchLoggedInUser($I, $user);
 
-				SubscriberEditPage::_CreateSubscriberWithoutCleanup($I);
+				SubscriberEditPage::CreateSubscriberWithoutCleanup($I);
 				$edit_data = SubscriberEditPage::prepareDeleteArray($I);
 
 				break;

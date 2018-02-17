@@ -338,7 +338,7 @@ class SubscriberManagerPage
 		}
 
 		$I->amOnPage(self::$url);
-		$I->see('Subscriber details', Generals::$pageTitle);
+		$I->see('Subscribers', Generals::$pageTitle);
 		$I->clickAndWait($tab, 1);
 	}
 

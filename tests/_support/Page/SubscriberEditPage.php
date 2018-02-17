@@ -134,7 +134,7 @@ class SubscriberEditPage
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(self::$success_saved, Generals::$alert_msg);
-		$I->see('Subscriber details', Generals::$pageTitle);
+		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
 	/**

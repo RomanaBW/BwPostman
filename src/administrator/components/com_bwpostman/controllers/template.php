@@ -153,7 +153,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		return $this->permissions['subscriber']['create'];
+		return $this->permissions['template']['create'];
 	}
 
 	/**

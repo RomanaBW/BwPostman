@@ -3692,15 +3692,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$rules['bwpm.' . $tableName . 'delete'] = $tmpRule;
 
-		if ($tableNameUC == '_Newsletter')
+		if ($tableNameUC == 'Newsletter')
 		{
+			$tmpRule = array();
 			if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
 			{
-				$rules['bwpm.newsletter.send'] = array(
-					$bwpmUserGroups['BwPostmanAdmin'] => true,
-				);
+				$tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
 			}
 		}
+
+		$rules['bwpm.' . $tableName . 'send'] = $tmpRule;
 
 		// Merge specific rules with predefined (basic) rules
 		$mergedRules = array();
@@ -4355,6 +4356,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				if (key_exists('Publisher', $groupRules)
 					&& key_exists('Manager', $groupRules)
 					&& $groupRules['Publisher'] != $groupRules['Manager'])
+				{
+					$reducedRule[$groups['Publisher']['id']] = $groupRules['Publisher'];
+				}
+				elseif (key_exists('Publisher', $groupRules)
+					&& key_exists('Administrator', $groupRules)
+					&& $groupRules['Publisher'] != $groupRules['Administrator'])
 				{
 					$reducedRule[$groups['Publisher']['id']] = $groupRules['Publisher'];
 				}

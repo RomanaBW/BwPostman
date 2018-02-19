@@ -325,7 +325,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::spacer();
 				}
 
-				if ($this->permissions['com']['admin'])
+				if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
 				{
 					JToolbarHelper::checkin('newsletters.checkin');
 					JToolbarHelper::divider();

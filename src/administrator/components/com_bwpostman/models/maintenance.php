@@ -4043,7 +4043,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						continue;
 					}
 
-					$rules['bwpm.' . $singularTableName . '.' . $action] = $reducedGroupsActions[$action];
+					if ($action != 'send')
+					{
+						$rules['bwpm.' . $singularTableName . '.' . $action] = $reducedGroupsActions[$action];
+					}
+					else
+					{
+						$rules['bwpm.' . $singularTableName . '.' . $action] = $reducedGroupsActions['newsletter.' . $action];
+					}
 
 					$BwPmSectionAdmin     = 'BwPostman' . ucfirst($singularTableName) . 'Admin';
 					$BwPmSectionPublisher = 'BwPostman' . ucfirst($singularTableName) . 'Publisher';

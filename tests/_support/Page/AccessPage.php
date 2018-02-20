@@ -1431,7 +1431,7 @@ class AccessPage
 						'Archive'           => false,
 						'Restore'           => false,
 						'Delete'            => false,
-						'SendNewsletter'    => false,
+						'SendNewsletter'    => true,
 					),
 				'own'   =>
 					array(
@@ -1983,7 +1983,7 @@ class AccessPage
 						'Archive'           => false,
 						'Restore'           => false,
 						'Delete'            => false,
-						'SendNewsletter'    => false,
+						'SendNewsletter'    => true,
 					),
 				'own'   =>
 					array(

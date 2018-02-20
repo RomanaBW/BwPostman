@@ -1652,7 +1652,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$old_text_template	= $jinput->get('text_template_id_old', '', 'string');
 
 		// support for plugin substitute links
-		if($form_data['substitute_links'] == '1')
+		if(isset($form_data['substitute_links']) && $form_data['substitute_links'] == '1')
 		{
 			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 		}
@@ -1680,6 +1680,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['usergroups']		= $state_data->usergroups;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
+
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
 				{
 					$form_data['ml_available']	    = $state_data->ml_available;
@@ -1695,7 +1696,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				$form_data['substitute_links']	= $state_data->substitute_links;
+				if (property_exists($state_data, 'substitute_links'))
+				{
+					$form_data['substitute_links']	= $state_data->substitute_links;
+				}
 				break;
 			case 'edit_text':
 				$form_data['attachment']		= $state_data->attachment;
@@ -1719,7 +1723,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				$form_data['substitute_links']	= $state_data->substitute_links;
+				if (property_exists($state_data, 'substitute_links'))
+				{
+					$form_data['substitute_links']	= $state_data->substitute_links;
+				}
 				break;
 			case 'edit_preview':
 				$form_data['attachment']		= $state_data->attachment;
@@ -1744,7 +1751,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				$form_data['substitute_links']	= $state_data->substitute_links;
+				if (property_exists($state_data, 'substitute_links'))
+				{
+					$form_data['substitute_links']	= $state_data->substitute_links;
+				}
 				break;
 			case 'edit_send':
 				$form_data['attachment']		= $state_data->attachment;
@@ -1769,7 +1779,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				$form_data['substitute_links']	= $state_data->substitute_links;
+				if (property_exists($state_data, 'substitute_links'))
+				{
+					$form_data['substitute_links']	= $state_data->substitute_links;
+				}
 				break;
 			default:
 				$form_data['html_version']		= $state_data->html_version;
@@ -2512,12 +2525,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$tblSendmailContent->bcc_email 		= null;
 		$tblSendmailContent->reply_email 	= $newsletters_data->reply_email;
 		$tblSendmailContent->reply_name	 	= $newsletters_data->from_name;
-		$tblSendmailContent->substitute_links 	= $newsletters_data->substitute_links;
 
-		// support for plugin substitute links
-		if ($tblSendmailContent->substitute_links == '1')
+		if (property_exists($newsletters_data, 'substitute_links'))
 		{
-			JFactory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
+			$tblSendmailContent->substitute_links 	= $newsletters_data->substitute_links;
+
+			// support for plugin substitute links
+			if ($tblSendmailContent->substitute_links == '1')
+			{
+				JFactory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
+			}
 		}
 
 		// Preprocess html version of the newsletter

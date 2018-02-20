@@ -298,7 +298,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::addNew('newsletter.add');
 				}
 
-				if ($this->permissions['newsletter']['edit'])
+				if ($this->permissions['newsletter']['edit'] || $this->permissions['newsletter']['edit.own'])
 				{
 					JToolbarHelper::editList('newsletter.edit');
 				}

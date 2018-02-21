@@ -1696,7 +1696,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				if (property_exists($state_data, 'substitute_links'))
+				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
 				}
@@ -1723,7 +1723,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				if (property_exists($state_data, 'substitute_links'))
+				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
 				}
@@ -1751,19 +1751,45 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				if (property_exists($state_data, 'substitute_links'))
+				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
 				}
 				break;
 			case 'edit_send':
-				$form_data['attachment']		= $state_data->attachment;
-				$form_data['html_version']		= $state_data->html_version;
-				$form_data['text_version']		= $state_data->text_version;
-				$form_data['campaign_id']		= $state_data->campaign_id;
-				$form_data['usergroups']		= $state_data->usergroups;
-				$form_data['template_id']		= $state_data->template_id;
-				$form_data['text_template_id']	= $state_data->text_template_id;
+				$form_data['id']                    = $state_data->id;
+				$form_data['subject']               = $state_data->subject;
+				$form_data['description']           = $state_data->description;
+				$form_data['asset_id']              = $state_data->asset_id;
+				$form_data['from_name']             = $state_data->from_name;
+				$form_data['from_email']            = $state_data->from_email;
+				$form_data['reply_email']           = $state_data->reply_email;
+				$form_data['access']                = $state_data->access;
+				$form_data['intro_headline']        = $state_data->intro_headline;
+				$form_data['intro_text_headline']   = $state_data->intro_text_headline;
+				$form_data['intro_text']            = $state_data->intro_text;
+				$form_data['intro_text_text']       = $state_data->intro_text_text;
+				$form_data['hits']                  = $state_data->hits;
+				$form_data['access']                = $state_data->access;
+				$form_data['template_old_id']       = $state_data->template_old_id;
+				$form_data['text_template_old_id']  = $state_data->text_template_old_id;
+				$form_data['publish_up']            = $state_data->publish_up;
+				$form_data['publish_down']          = $state_data->publish_down;
+				$form_data['created_by']            = $state_data->created_by;
+				$form_data['modified_by']           = $state_data->modified_by;
+				$form_data['archived_by']           = $state_data->archived_by;
+				$form_data['created_date']          = $state_data->created_date;
+				$form_data['modified_time']         = $state_data->modified_time;
+				$form_data['archive_date']          = $state_data->archive_date;
+				$form_data['archive_flag']          = $state_data->archive_flag;
+				$form_data['attachment']            = $state_data->attachment;
+				$form_data['html_version']          = $state_data->html_version;
+				$form_data['text_version']          = $state_data->text_version;
+				$form_data['campaign_id']           = $state_data->campaign_id;
+				$form_data['usergroups']            = $state_data->usergroups;
+				$form_data['template_id']           = $state_data->template_id;
+				$form_data['text_template_id']      = $state_data->text_template_id;
+
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
 				{
 					$form_data['ml_available']		= $state_data->ml_available;
@@ -1779,7 +1805,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ml_intern']			= $state_data->ml_intern;
 				}
 
-				if (property_exists($state_data, 'substitute_links'))
+				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
 				}

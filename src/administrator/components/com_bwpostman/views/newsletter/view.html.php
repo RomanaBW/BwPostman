@@ -293,7 +293,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				if (!$checkedOut)
 				{
 					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-					if (BwPostmanHelper::canEdit('newsletter', $this->item))
+					if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
 					{
 						JToolbarHelper::save('newsletter.save');
 						JToolbarHelper::apply('newsletter.apply');

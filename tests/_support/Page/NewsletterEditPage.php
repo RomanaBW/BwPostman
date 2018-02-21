@@ -456,7 +456,7 @@ class NewsletterEditPage
 		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$I->wait(2);
+		$I->wait(10);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 		$I->waitForText(self::$success_send_ready, 400);
 		$I->see(self::$success_send_ready);

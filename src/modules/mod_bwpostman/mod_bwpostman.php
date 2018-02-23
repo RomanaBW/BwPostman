@@ -148,14 +148,20 @@ else
 		$gender     .= '</fieldset>';
 		$lists['gender'] = $gender;
 
-		// Get the usertype
-		$usertype	= JUserHelper::getUserGroups($userid);
-
 		// Get the checked mailinglists from module parameters
 		$mod_mls = $params->get('mod_ml_available');
 
+		// Get the usertype
+		$usertype = '';
+		$usertypeArray	= JUserHelper::getUserGroups($userid);
+
+		if (!empty($usertypeArray))
+		{
+			$usertype = $usertypeArray[0];
+		}
+
 		// Get the available mailinglists
-		$mailinglists = modBwPostmanHelper::getMailinglists($usertype[0], $mod_mls);
+		$mailinglists = modBwPostmanHelper::getMailinglists($usertype, $mod_mls);
 
 		$n = count($mailinglists);
 

@@ -28,16 +28,16 @@ use Page\Generals as Generals;
  */
 class NewsletterEditPage
 {
-    // include url of current page
-    public static $url = 'administrator/index.php?option=com_bwpostman&view=newsletter&layout=edit_basic';
+	// include url of current page
+	public static $url = 'administrator/index.php?option=com_bwpostman&view=newsletter&layout=edit_basic';
 
-    /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     *
-     * @since   2.0.0
-     */
+	/**
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 *
+	 * @since   2.0.0
+	 */
 
-    public static $tab1             = ".//*[@id='adminForm']/div[1]/ul/li[1]/button";
+	public static $tab1             = ".//*[@id='adminForm']/div[1]/ul/li[1]/button";
 	public static $tab2             = ".//*[@id='adminForm']/div[1]/ul/li[2]/button";
 	public static $tab3             = ".//*[@id='adminForm']/div[1]/ul/li[3]/button";
 	public static $tab4             = ".//*[@id='adminForm']/div[1]/ul/li[4]/button";
@@ -75,11 +75,11 @@ class NewsletterEditPage
 	public static $button_send_test     = ".//*[@id='adminForm']/div[3]/fieldset[2]/div/table/tbody/tr[2]/td[2]/input";
 	public static $success_send         = 'The newsletters are sent';
 	public static $success_send_ready   = 'All newsletters in the queue';
-    public static $success_send_number  = '%s  of  %s  newsletters need to be sent.';
+	public static $success_send_number  = '%s  of  %s  newsletters need to be sent.';
 
-    public static $nbr_only_confirmed   = 128;
-    public static $nbr_unconfirmed      = 83;
-    public static $nbr_usergroup        = 4;
+	public static $nbr_only_confirmed   = 128;
+	public static $nbr_unconfirmed      = 83;
+	public static $nbr_usergroup        = 4;
 
 	public static $mark_to_send         = ".//*[@id='cb0']";
 	public static $duplicate_prefix     = "Copy of '";
@@ -107,7 +107,7 @@ class NewsletterEditPage
 	public static $publish_down_button  = ".//*[@id='jform_publish_down_img']";
 //	public static $today_up             = "html/body/div[10]/table/thead/tr[2]/td[3]/div";
 	public static $today_up             = ".//*[@class='calendar']/table/thead/tr[2]/td[3]/div[contains(text(), 'Today')]";
-    public static $today_down           = "html/body/div[11]/table/thead/tr[2]/td[3]/div";
+	public static $today_down           = "html/body/div[11]/table/thead/tr[2]/td[3]/div";
 
 	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label/div/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
 	public static $template_text    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label/div/span[contains(text(),'Standard TEXT Template 3')]";
@@ -213,13 +213,14 @@ class NewsletterEditPage
 	 * Test method to copy a newsletter
 	 *
 	 * @param   \AcceptanceTester $I
-	 * @param   string            $username
+	 * @param   string          $username
+	 * @param 	boolean			$withCleanup
 	 *
 	 * @return  void
 	 *
 	 * @since   2.0.0
 	 */
-	public static function CopyNewsletter(\AcceptanceTester $I, $username)
+	public static function CopyNewsletter(\AcceptanceTester $I, $username, $withCleanup = true)
 	{
 		$I->wantTo("Copy a newsletter");
 		$I->amOnPage(NlManage::$url);
@@ -236,19 +237,22 @@ class NewsletterEditPage
 		$I->waitForText(self::$duplicate_prefix . self::$field_subject . "'", 30);
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
 
-		$archive_allowed    = true;
-		$delete_allowed     = true;
-
-		if ($username != Generals::$admin['author'])
+		if ($withCleanup)
 		{
-			$archive_allowed = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['Archive'];
-			$delete_allowed  = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['Delete'];
-		}
+			$archive_allowed    = true;
+			$delete_allowed     = true;
 
-		if ($archive_allowed)
-		{
-			$I->HelperArcDelItems($I, NlManage::$arc_del_array, self::$arc_del_array, $delete_allowed);
-			$I->see('Newsletters', Generals::$pageTitle);
+			if ($username != Generals::$admin['author'])
+			{
+				$archive_allowed = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['Archive'];
+				$delete_allowed  = AccessPage::${$username . '_item_permissions'}['Newsletters']['permissions']['Delete'];
+			}
+
+			if ($archive_allowed)
+			{
+				$I->HelperArcDelItems($I, NlManage::$arc_del_array, self::$arc_del_array, $delete_allowed);
+				$I->see('Newsletters', Generals::$pageTitle);
+			}
 		}
 	}
 
@@ -278,7 +282,7 @@ class NewsletterEditPage
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param \AcceptanceTester $I
-     * @param boolean           $toUsergroup
+	 * @param boolean           $toUsergroup
 	 *
 	 * @return string   $content_title  title of content
 	 *
@@ -339,7 +343,7 @@ class NewsletterEditPage
 	 * Method to select recipients for newsletter
 	 *
 	 * @param \AcceptanceTester $I
-     * @param boolean           $toUsergroup
+	 * @param boolean           $toUsergroup
 	 *
 	 * @return void
 	 *
@@ -348,15 +352,15 @@ class NewsletterEditPage
 	public static function selectRecipients(\AcceptanceTester $I, $toUsergroup = false)
 	{
 		if (!$toUsergroup)
-        {
+		{
 			$I->scrollTo(self::$legend_recipients);
-            $I->click(sprintf(Generals::$mls_accessible, 2));
-        }
-        else
-        {
+			$I->click(sprintf(Generals::$mls_accessible, 2));
+		}
+		else
+		{
 			$I->scrollTo(self::$usergroup_recipients, 0, -100);
-            $I->click(Generals::$mls_usergroup);
-        }
+			$I->click(Generals::$mls_usergroup);
+		}
 //		$I->click(sprintf(Generals::$mls_nonaccessible, 3));
 //		$I->click(sprintf(Generals::$mls_internal, 4));
 	}
@@ -384,7 +388,7 @@ class NewsletterEditPage
 	 *
 	 * @param   \AcceptanceTester   $I
 	 * @param   string              $username
-     * @param   boolean             $toUsergroup
+	 * @param   boolean             $toUsergroup
 	 *
 	 * @return  void
 	 *
@@ -409,8 +413,8 @@ class NewsletterEditPage
 	 *
 	 * @param   \AcceptanceTester   $I
 	 * @param   boolean             $sentToUnconfirmed
-     * @param   boolean             $toUsergroup
-     * @param   boolean             $buildQueue
+	 * @param   boolean             $toUsergroup
+	 * @param   boolean             $buildQueue
 	 *
 	 * @before  _login
 	 *
@@ -426,32 +430,32 @@ class NewsletterEditPage
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(self::$tab5_legend1);
 
-		$I->click(self::$tab2);
-        $I->click(self::$tab3);
-        $I->click(self::$toolbar['Save']);
+//		$I->click(self::$tab2);
+//      $I->click(self::$tab3);
+//		$I->click(self::$toolbar['Save']);
 
-        $I->click(self::$tab5);
+//		$I->click(self::$tab5);
 
-        $nbrToSend  = self::$nbr_only_confirmed;
+		$nbrToSend  = self::$nbr_only_confirmed;
 
-        if ($sentToUnconfirmed)
-        {
-            $I->click(self::$checkbox_unconfirmed);
-            $nbrToSend += self::$nbr_unconfirmed;
-        }
+		if ($sentToUnconfirmed)
+		{
+			$I->click(self::$checkbox_unconfirmed);
+			$nbrToSend += self::$nbr_unconfirmed;
+		}
 
-        if ($toUsergroup)
-        {
-            $nbrToSend = self::$nbr_usergroup;
-        }
+		if ($toUsergroup)
+		{
+			$nbrToSend = self::$nbr_usergroup;
+		}
 
-        $remainsToSend  = '0';
-        if ($buildQueue)
-        {
-            $remainsToSend = $nbrToSend;
-        }
+		$remainsToSend  = '0';
+		if ($buildQueue)
+		{
+			$remainsToSend = $nbrToSend;
+		}
 
-        $I->clickAndWait(self::$button_send, 1);
+		$I->clickAndWait(self::$button_send, 1);
 
 		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();

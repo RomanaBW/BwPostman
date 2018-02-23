@@ -552,13 +552,23 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		// Sanitize data
-		$old_activation = ArrayHelper::getValue($oldUser, 'activation', '', 'string');
-		$new_activation = ArrayHelper::getValue($newUser, 'activation', '', 'string');
+		$old_activation	= ArrayHelper::getValue($oldUser, 'activation', '', 'string');
+		$new_activation	= ArrayHelper::getValue($newUser, 'activation', '', 'string');
+		$oldMail		= ArrayHelper::getValue($oldUser, 'email', '', 'string');
+		$newMail		= ArrayHelper::getValue($newUser, 'email', '', 'string');
 		$user_id        = ArrayHelper::getValue($oldUser, 'id', 0, 'int');
+		$changeMail		= false;
+
+		if ($oldMail != $newMail)
+		{
+			$changeMail = true;
+		}
+
+		$session = JFactory::getSession();
+		$session->set('plg_bwpm_user2subscriber.changeMail', $changeMail);
 
 		if ($old_activation != '' && ($old_activation != $new_activation))
 		{
-			$session = JFactory::getSession();
 			$session->set('plg_bwpm_user2subscriber.userid', $user_id);
 			$session->set('plg_bwpm_user2subscriber.activation', $old_activation);
 		}
@@ -622,6 +632,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		$activation     = $session->get('plg_bwpm_user2subscriber.activation');
+		$changeMail     = $session->get('plg_bwpm_user2subscriber.changeMail');
 		$task           = JFactory::getApplication()->input->get->get('task', '', 'string');
 		$token          = JFactory::getApplication()->input->get->get('token', '', 'string');
 		$session->clear('plg_bwpm_user2subscriber');
@@ -645,10 +656,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$new_mailinglists           = $this->params->get('ml_available', array());
 			$updateMailinglists_result  = BWPM_User2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
 
-			return $updateMailinglists_result;
+			if (!$updateMailinglists_result)
+			{
+				return false;
+			}
 		}
 
-		if ($this->params->get('auto_update_email_option'))
+		if ($this->params->get('auto_update_email_option') && $changeMail)
 		{
 			$email_update_result  = $this->updateMailaddress($user_mail);
 

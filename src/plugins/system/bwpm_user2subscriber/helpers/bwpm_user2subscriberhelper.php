@@ -231,7 +231,7 @@ abstract class BWPM_User2SubscriberHelper
 		{
 			$found  = array_search($new_id, $subscribed_mailinglists);
 
-			if (!$found)
+			if ($found === false)
 			{
 				$mailinglists_to_add[]  = $new_id;
 			}

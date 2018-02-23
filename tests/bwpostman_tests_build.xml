@@ -115,15 +115,12 @@
 	        description="set rebase, needed while testing failed, testing installation/update or manual desire">
 
 		<available file="${test_dir}/_output/${project_name}/failed" property="failed" value="true"/>
-		<echo message="Failed: ${failed}" />
 		<if>
 			<equals arg1="${failed}" arg2="1"/>
 			<then>
-				<echo message="Failed in 1. IF: ${failed}" />
 				<property name="rebase" value="true" override="true" />
 			</then>
 		</if>
-		<echo message="Rebase nach Fehlerdatei: ${rebase}" />
 
 		<if>
 			<equals arg1="${bwpm_install}" arg2="1"/>
@@ -131,7 +128,6 @@
 				<property name="rebase" value="true" override="true" />
 			</then>
 		</if>
-		<echo message="Rebase nach Install: ${rebase}" />
 	</target>
 
 	<target name="start_infrastructure" depends="set_rebase" description="start test infrastructure">

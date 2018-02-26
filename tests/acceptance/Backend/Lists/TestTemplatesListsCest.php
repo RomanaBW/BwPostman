@@ -2,7 +2,6 @@
 use Page\Generals as Generals;
 use Page\TemplateManagerPage as TplManage;
 
-
 /**
  * Class TestTemplatesListsCest
  *
@@ -94,6 +93,8 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SortTemplatesByTableHeader(AcceptanceTester $I)
@@ -119,6 +120,8 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SortTemplatesBySelectList(AcceptanceTester $I)
@@ -143,6 +146,8 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -196,6 +201,8 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -275,7 +282,7 @@ class TestTemplatesListsCest
 		TplManage::SetDefaultTemplates($I, true);
 	}
 
-		/**
+	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I
@@ -289,5 +296,4 @@ class TestTemplatesListsCest
 	{
 		$loginPage->logoutFromBackend($I);
 	}
-
 }

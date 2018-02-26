@@ -96,6 +96,8 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SortMailinglistsByTableHeader(AcceptanceTester $I)
@@ -121,6 +123,8 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SortMailinglistsBySelectList(AcceptanceTester $I)
@@ -145,6 +149,8 @@ class TestMailinglistsListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -187,6 +193,8 @@ class TestMailinglistsListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

@@ -84,6 +84,8 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneMailinglistCompleteMainView(AcceptanceTester $I)
@@ -94,7 +96,7 @@ class TestMailinglistsDetailsCest
 		$I->see('BwPostman', Generals::$pageTitle);
 		$I->click(MainView::$addMailinglistButton);
 
-		$this->_fillFormExtended($I);
+		$this->fillFormExtended($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->see("Message", Generals::$alert_header);
@@ -125,8 +127,8 @@ class TestMailinglistsDetailsCest
 
 		MlEdit::_fillFormSimple($I);
 
-        $I->clickAndWait(MlEdit::$toolbar['Cancel'], 1);
-        $I->see("Mailinglists", Generals::$pageTitle);
+		$I->clickAndWait(MlEdit::$toolbar['Cancel'], 1);
+		$I->see("Mailinglists", Generals::$pageTitle);
 	}
 
 	/**
@@ -140,6 +142,8 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneMailinglistCompleteListView(AcceptanceTester $I)
@@ -148,7 +152,7 @@ class TestMailinglistsDetailsCest
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormExtended($I);
+		$this->fillFormExtended($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -169,6 +173,8 @@ class TestMailinglistsDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -207,6 +213,8 @@ class TestMailinglistsDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -255,29 +263,17 @@ class TestMailinglistsDetailsCest
 	}
 
 	/**
-	 * Test method to logout from backend
-	 *
-	 * @param   AcceptanceTester    $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function _failed (AcceptanceTester $I)
-	{
-
-	}
-
-	/**
 	 * Method to fill form with check of required fields
 	 * This method fills in the end all fields, but meanwhile all required fields are omitted, one by one,
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormExtended(AcceptanceTester $I)
+	private function fillFormExtended(AcceptanceTester $I)
 	{
 		// fill title, omit description
 		$I->fillField(MlEdit::$title, MlEdit::$field_title);

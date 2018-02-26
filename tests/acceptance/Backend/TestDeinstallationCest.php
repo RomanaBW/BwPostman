@@ -1,12 +1,11 @@
 <?php
-use Step\Acceptance\Installation as InstallationTester;
 use Page\Generals as Generals;
 use Page\InstallationPage as InstallPage;
 
 /**
-* Class TestDeinstallationCest
-*
-* This class contains all methods to test installation, update and deinstallation of BwPostman
+ * Class TestDeinstallationCest
+ *
+ * This class contains all methods to test installation, update and deinstallation of BwPostman
  *
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
@@ -25,7 +24,7 @@ use Page\InstallationPage as InstallPage;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @since   2.0.0
-*/
+ */
 class TestDeinstallationCest
 {
 	/**
@@ -52,6 +51,8 @@ class TestDeinstallationCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -102,4 +103,3 @@ class TestDeinstallationCest
 		$loginPage->logoutFromBackend($I);
 	}
 }
-

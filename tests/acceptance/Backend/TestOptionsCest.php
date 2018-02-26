@@ -4,9 +4,9 @@ use Page\MainviewPage as MainView;
 use Page\OptionsPage as OptionsPage;
 
 /**
-* Class TestOptionsCest
-*
-* This class contains all methods to test options of BwPostman
+ * Class TestOptionsCest
+ *
+ * This class contains all methods to test options of BwPostman
  *
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
@@ -25,7 +25,7 @@ use Page\OptionsPage as OptionsPage;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @since   2.0.0
-*/
+ */
 class TestOptionsCest
 {
 	/**
@@ -68,6 +68,8 @@ class TestOptionsCest
 	 * @before  _login
 	 *
 	 * @after   _logout
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -141,4 +143,3 @@ class TestOptionsCest
 		$loginPage->logoutFromBackend($I);
 	}
 }
-

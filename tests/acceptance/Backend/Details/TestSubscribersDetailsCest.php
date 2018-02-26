@@ -56,6 +56,8 @@ class TestSubscribersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneSubscriberCancelMainView(AcceptanceTester $I)
@@ -66,7 +68,7 @@ class TestSubscribersDetailsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
-		$this->_fillFormExtended($I);
+		$this->fillFormExtended($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Back'], 1);
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -83,6 +85,8 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -104,7 +108,6 @@ class TestSubscribersDetailsCest
 
 		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
-
 	}
 
 	/**
@@ -118,6 +121,8 @@ class TestSubscribersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneSubscriberCancelListView(AcceptanceTester $I)
@@ -127,7 +132,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormExtended($I);
+		$this->fillFormExtended($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
 		$I->see("Subscribers", Generals::$pageTitle);
@@ -143,6 +148,8 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -177,6 +184,8 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -219,6 +228,8 @@ class TestSubscribersDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -270,28 +281,17 @@ class TestSubscribersDetailsCest
 	}
 
 	/**
-	 * Test method to logout from backend
-	 *
-	 * @param   AcceptanceTester    $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function _failed (AcceptanceTester $I){
-
-	}
-
-	/**
 	 * Method to fill form with check of required fields
 	 * This method fills in the end all fields, but meanwhile all required fields are omitted, one by one,
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormExtended(AcceptanceTester $I)
+	private function fillFormExtended(AcceptanceTester $I)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
@@ -315,6 +315,7 @@ class TestSubscribersDetailsCest
 					$I->acceptPopup();
 				}
 			}
+
 			$I->fillField(SubEdit::$firstname, SubEdit::$field_firstname);
 		}
 
@@ -332,6 +333,7 @@ class TestSubscribersDetailsCest
 					$I->acceptPopup();
 				}
 			}
+
 			$I->fillField(SubEdit::$name, SubEdit::$field_name);
 		}
 
@@ -349,6 +351,7 @@ class TestSubscribersDetailsCest
 					$I->acceptPopup();
 				}
 			}
+
 			$I->fillField(SubEdit::$special, SubEdit::$field_special);
 		}
 
@@ -365,6 +368,7 @@ class TestSubscribersDetailsCest
 			$I->clickAndWait(SubEdit::$mailformat, 1);
 			$I->clickAndWait(SubManage::$format_text, 1);
 		}
+
 		$I->clickAndWait(SubEdit::$confirm, 1);
 		$I->clickAndWait(SubEdit::$confirmed, 1);
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));

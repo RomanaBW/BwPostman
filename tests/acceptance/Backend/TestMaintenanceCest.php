@@ -4,9 +4,9 @@ use Page\MaintenancePage as MaintenancePage;
 use Page\MainviewPage as MainView;
 
 /**
-* Class TestMaintenanceCest
-*
-* This class contains all methods to test maintenance functionality at back end
+ * Class TestMaintenanceCest
+ *
+ * This class contains all methods to test maintenance functionality at back end
  *
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
@@ -53,6 +53,8 @@ class TestMaintenanceCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function saveTables(AcceptanceTester $I)
@@ -87,6 +89,8 @@ class TestMaintenanceCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function checkTables(AcceptanceTester $I)
@@ -109,7 +113,6 @@ class TestMaintenanceCest
 		$I->waitForElement(MaintenancePage::$step5SuccessClass, 30);
 		$I->see(MaintenancePage::$step5SuccessMsg, MaintenancePage::$step5SuccessClass);
 		$I->click(MaintenancePage::$checkBackButton);
-
 	}
 
 	/**
@@ -141,6 +144,8 @@ class TestMaintenanceCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function testBasicSettings(AcceptanceTester $I)
@@ -169,6 +174,8 @@ class TestMaintenanceCest
 	 * after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -205,4 +212,3 @@ class TestMaintenanceCest
 		$loginPage->logoutFromBackend($I);
 	}
 }
-

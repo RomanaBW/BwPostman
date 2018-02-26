@@ -28,21 +28,88 @@ namespace Page;
 class Generals
 {
 	// include url of current page
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $url          = '/administrator/index.php?option=com_bwpostman';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $archive_url  = '/administrator/index.php?option=com_bwpostman&view=archive&layout=newsletters';
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $control_panel        = "Control Panel";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_txt            = "Log in";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $nav_user_menu        = ".//*[contains(@class, 'nav-user')]/li/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $nav_user_menu_logout = ".//*[contains(@class, 'nav-user')]/li/ul/li[5]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $logout_txt           = "Log out";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $com_options;
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $sys_message_container    = ".//*[@id='system-message-container']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $media_frame              = "mediaFrame";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $image_frame              = "imageframe";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $back_button  = ".//*[@id='toolbar-back']/button";
 
 	/**
@@ -53,11 +120,32 @@ class Generals
 	protected $tester;
 
 	// backend users
-	public static $admin        = array('user' =>'AdminTester', 'password' =>'BwPostmanTest', 'author' => 'AdminTester');
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
+	public static $admin        = array('user' => 'AdminTester', 'password' => 'BwPostmanTest', 'author' => 'AdminTester');
 
-
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $extension            = "BwPostman";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_u2s           = "BwPostman Plugin User2Subscriber";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $first_list_entry     = ".//*[@id='cb0']";
 
 	/*
@@ -66,24 +154,116 @@ class Generals
 	 * public static $formSubmitButton = "#mainForm input[type=submit]";
 	 */
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pageTitle        = 'h1.page-title';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_header     = 'h4.alert-heading';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_heading    = "//*[@id='system-message-container']/div[1]/h4";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert            = 'div.alert';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_success    = 'div.alert-success';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_msg        = 'div.alert-message';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_warn       = 'div.alert-warning';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_error      = 'div.alert-error';
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_success_txt    = 'Success';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_msg_txt        = 'Message';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_warn_txt       = 'Warning';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_error_txt      = 'Error';
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $archive_alert_success = 'div.alert-success > div.alert-message';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $archive_txt           = 'Archive';
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $header           = '/html/body/div[2]/section/div/div/div[2]/form/div/fieldset/legend';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $check_all_button = ".//*[@name='checkall-toggle']";
 
 	/**
@@ -158,6 +338,11 @@ class Generals
 		'Maintenance'   => ".//*[@id='submenu']/li/a[contains(text(), 'Maintenance')]",
 	);
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $submenu_toggle_button  = ".//*[@id='j-toggle-sidebar-icon']";
 
 	/**
@@ -216,6 +401,12 @@ class Generals
 	 * @since   2.0.0
 	 */
 	public static $select_list_selected_location = ".//*[@id='%s']/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $select_list_open              = ".//*[@id='%s']/div";
 
 	/**
@@ -235,82 +426,406 @@ class Generals
 	 * @since   2.0.0
 	 */
 	public static $main_table                   = ".//*[@id='main-table']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $table_headcol_arrow_location = ".//*/table/thead/tr/th[%s]/a/span";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_list_id       = "filter_search_filter_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_field         = ".//*[@id='filter_search']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_list          = ".//*[@id='filter_search_filter_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_button        = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[1]/button";
 
-
 	// Filter bar
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $filterbar_button     = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[2]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $filter_bar_open      = ".//*[@id='j-main-container']/div[1]/div[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $clear_button         = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[3]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $null_row             = ".//*/table/tbody/tr/td";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $null_msg             = "There are no data available";
 
 	// Filter status
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $status_list_id       = "filter_published_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $status_list          = ".//*[@id='filter_published_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $status_none          = ".//*[@id='filter_published_chzn']/div/ul/li[text()='- Select Status -']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $status_unpublished   = ".//*[@id='filter_published_chzn']/div/ul/li[text()='unpublished']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $status_published     = ".//*[@id='filter_published_chzn']/div/ul/li[text()='published']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $icon_unpublished     = ".//*[@id='j-main-container']/*/span[contains(@class, 'icon-unpublish')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $icon_published       = ".//*[@id='j-main-container']/*/span[contains(@class, 'icon-publish')]";
 
 	// filter identifiers
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $publish_row          = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $unpublish_row        = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $attachment_row       = ".//*[@id='main-table']/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $null_date            = '0000-00-00 00:00:00';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $table_header         = ".//*/thead";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pagination_bar       = '.pagination.pagination-toolbar';
 
 		// Filter access
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_column        = ".//*/td[5]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_list_id       = "filter_access_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_list          = ".//*[@id='filter_access_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_none          = ".//*[@id='filter_access_chzn']/div/ul/li[text()='- Select Access -']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_public        = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Public']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_guest         = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Guest']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_registered    = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Registered']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_special       = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Special']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_super         = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Super Users']";
 
 	// list ordering
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $ordering_list        = ".//*[@id='list_fullordering_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $ordering_value       = ".//*[@id='list_fullordering_chzn']/div/ul/li[text()='";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $ordering_id          = "list_fullordering_chzn";
 
 	// list limit
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_list_id        = "list_limit_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_list           = ".//*[@id='list_limit_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_5              = ".//*[@id='list_limit_chzn']/div/ul/li[text()='5']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_10             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='10']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_15             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='15']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_20             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='20']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_25             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='25']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $limit_30             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='30']";
 
 	// Pagination
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $first_page           = ".//*/a/span[contains(@class, 'icon-first')]";
-	public static $prev_page            = ".//*/a/span[contains(@class, 'icon-previous')]";
-	public static $next_page            = ".//*/a/span[contains(@class, 'icon-next')]";
-	public static $last_page            = ".//*/a/span[contains(@class, 'icon-last')]";
-	public static $page_1               = ".//*/div/ul/li/a[contains(text(), '1')]";
-	public static $page_2               = ".//*/div/ul/li/a[contains(text(), '2')]";
-	public static $page_3               = ".//*/div/ul/li/a[contains(text(), '3')]";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $prev_page            = ".//*/a/span[contains(@class, 'icon-previous')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $next_page            = ".//*/a/span[contains(@class, 'icon-next')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $last_page            = ".//*/a/span[contains(@class, 'icon-last')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $page_1               = ".//*/div/nav/ul/li/a[contains(text(), '1')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $page_2               = ".//*/div/nav/ul/li/a[contains(text(), '2')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $page_3               = ".//*/div/nav/ul/li/a[contains(text(), '3')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $last_page_identifier = ".//*/ul[contains(@class, 'pagination-list')]/li[contains(@class, 'active')]/span";
 
 
 	// buttons
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_red   = 'btn active btn-danger';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_green = 'btn active btn-success';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_grey  = 'btn';
 
 	// General error messages
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $msg_edit_no_permission   = "No permission to edit this item!";
 
 	/**
@@ -322,8 +837,26 @@ class Generals
 	 * @since  2.0.0
 	 */
 	public static $mls_accessible       = ".//*[@id='jform_ml_available_%s']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mls_nonaccessible    = ".//*[@id='jform_ml_unavailable_%s']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mls_internal         = ".//*[@id='jform_ml_intern_%s']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mls_usergroup        = ".//*[@id='1group_2']";
 
 
@@ -350,7 +883,7 @@ class Generals
 	 *
 	 * @since  2.0.0
 	 */
-	public static function getInstallFileName ()
+	public static function getInstallFileName()
 	{
 		return '/Support/Software/Joomla/BwPostman/' . self::$versionToTest . '/com_bwpostman/com_bwpostman.' . self::$versionToTest . '.zip';
 	}
@@ -370,17 +903,18 @@ class Generals
 	/**
 	 * @param \AcceptanceTester $I
 	 *
+	 * @throws \Exception
 	 *
 	 * @since version
 	 */
 	public static function dontSeeAnyWarning(\AcceptanceTester $I)
 	{
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(self::$alert_header, 30);
 
-		$I->dontSee(Generals::$alert_warn_txt, Generals::$alert);
-		$I->dontSee(Generals::$alert_error_txt, Generals::$alert);
+		$I->dontSee(self::$alert_warn_txt, self::$alert);
+		$I->dontSee(self::$alert_error_txt, self::$alert);
 
-		$I->dontSeeElement(Generals::$alert_warn);
-		$I->dontSeeElement(Generals::$alert_error);
+		$I->dontSeeElement(self::$alert_warn);
+		$I->dontSeeElement(self::$alert_error);
 	}
 }

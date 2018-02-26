@@ -2,7 +2,6 @@
 use Page\Generals as Generals;
 use Page\SubscriberviewPage as SubsView;
 
-
 /**
  * Class SubscribeModuleCest
  *
@@ -37,19 +36,21 @@ class SubscribeModuleCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SubscribeModuleSimpleActivateAndUnsubscribe(AcceptanceTester $I)
 	{
 		$I->wantTo("Subscribe to mailinglist by module");
 		$I->expectTo('get confirmation mail');
-		$this->_subscribeByModule($I);
+		$this->subscribeByModule($I);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
-		$this->_activate($I, SubsView::$mail_fill_1);
+		$this->activate($I, SubsView::$mail_fill_1);
 
-		$this->_unsubscribe($I, SubsView::$activated_edit_Link);
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
 	}
 
 	/**
@@ -58,6 +59,8 @@ class SubscribeModuleCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -77,6 +80,8 @@ class SubscribeModuleCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -160,9 +165,11 @@ class SubscribeModuleCest
 	 *
 	 * @param \AcceptanceTester             $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _subscribeByModule(\AcceptanceTester $I)
+	private function subscribeByModule(\AcceptanceTester $I)
 	{
 		$options    = $I->getManifestOptions('mod_bwpostman');
 
@@ -216,9 +223,11 @@ class SubscribeModuleCest
 	 * @param string                        $mailaddress
 	 * @param bool                          $good
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _activate(\AcceptanceTester $I, $mailaddress, $good = true)
+	private function activate(\AcceptanceTester $I, $mailaddress, $good = true)
 	{
 		$activation_code = $I->getActivationCode($mailaddress);
 		$I->amOnPage(SubsView::$activation_link . $activation_code);
@@ -234,9 +243,11 @@ class SubscribeModuleCest
 	 * @param \AcceptanceTester             $I
 	 * @param string                        $button
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _unsubscribe(\AcceptanceTester $I, $button)
+	private function unsubscribe(\AcceptanceTester $I, $button)
 	{
 		$I->click($button);
 		$I->waitForElement(SubsView::$view_edit, 30);
@@ -245,5 +256,4 @@ class SubscribeModuleCest
 		$I->click(SubsView::$button_submitleave);
 		$I->dontSee(SubsView::$mail_fill_1, SubsView::$mail);
 	}
-
 }

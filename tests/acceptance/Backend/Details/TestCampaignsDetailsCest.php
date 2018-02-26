@@ -58,6 +58,8 @@ class TestCampaignsDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneCampaignCancelMainView(AcceptanceTester $I)
@@ -87,6 +89,8 @@ class TestCampaignsDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneCampaignCompleteMainView(AcceptanceTester $I)
@@ -98,7 +102,7 @@ class TestCampaignsDetailsCest
 		$I->click(MainView::$addCampaignButton);
 		$I->waitForText('Campaign details', 30);
 
-		$this->_fillFormExtended($I);
+		$this->fillFormExtended($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_success, 30);
@@ -120,6 +124,8 @@ class TestCampaignsDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneCampaignCancelListView(AcceptanceTester $I)
@@ -128,10 +134,10 @@ class TestCampaignsDetailsCest
 		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		$this->_fillFormExtended($I);
+		$this->fillFormExtended($I);
 
 		$I->click(CamEdit::$toolbar['Cancel']);
-        $I->see("Campaigns", Generals::$pageTitle);
+		$I->see("Campaigns", Generals::$pageTitle);
 	}
 
 	/**
@@ -144,6 +150,8 @@ class TestCampaignsDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -174,6 +182,8 @@ class TestCampaignsDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -212,6 +222,8 @@ class TestCampaignsDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -259,29 +271,17 @@ class TestCampaignsDetailsCest
 	}
 
 	/**
-	 * Test method to logout from backend
-	 *
-	 * @param   AcceptanceTester    $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function _failed (AcceptanceTester $I)
-	{
-
-	}
-
-	/**
 	 * Method to fill form with check of required fields
 	 * This method fills in the end all fields, but meanwhile all required fields are omitted, one by one,
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormExtended(AcceptanceTester $I)
+	private function fillFormExtended(AcceptanceTester $I)
 	{
 		// fill title, omit recipients
 		$I->fillField(CamEdit::$title, CamEdit::$field_title);

@@ -52,6 +52,8 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SortCampaignsByTableHeader(AcceptanceTester $I)
@@ -77,6 +79,8 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SortCampaignsBySelectList(AcceptanceTester $I)
@@ -101,6 +105,8 @@ class TestCampaignsListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -173,5 +179,4 @@ class TestCampaignsListsCest
 	{
 		$loginPage->logoutFromBackend($I);
 	}
-
 }

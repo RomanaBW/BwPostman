@@ -3,9 +3,9 @@ use Page\Generals as Generals;
 use Helper\Acceptance as Helper;
 
 /**
-* Class TestPlaygroundCest
-*
-* This class is for playing around with various possibilities
+ * Class TestPlaygroundCest
+ *
+ * This class is for playing around with various possibilities
  *
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
@@ -24,7 +24,7 @@ use Helper\Acceptance as Helper;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @since   2.0.0
-*/
+ */
 class TestPlaygroundCest
 {
 	/**
@@ -69,6 +69,8 @@ class TestPlaygroundCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function setOption(AcceptanceTester $I)
@@ -97,4 +99,3 @@ codecept_debug(Generals::$com_options->default_from_name);
 		$loginPage->logoutFromBackend($I);
 	}
 }
-

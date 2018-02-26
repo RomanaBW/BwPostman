@@ -2,7 +2,6 @@
 use Page\Generals as Generals;
 use Page\MenuEntriesManagerPage as MEManage;
 
-
 /**
  * Class MenuEntriesCest
  *
@@ -53,6 +52,8 @@ class MenuEntriesCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function createRegistrationEntry(AcceptanceTester $I)
@@ -64,18 +65,25 @@ class MenuEntriesCest
 		$I->see(MEManage::$main_menu_txt, MEManage::$main_menu_label);
 
 		// create menu entry in BE
-		$this->_createMenuEntry($I, MEManage::$fill_title_register, MEManage::$menu_entry_type_txt_register, MEManage::$menu_entry_link_txt_register);
+		$this->createMenuEntry($I, MEManage::$fill_title_register, MEManage::$menu_entry_type_txt_register, MEManage::$menu_entry_link_txt_register);
 
 		// check menu entry in FE
 		$FE = $I->haveFriend('Frontend');
-		$FE->does(function (AcceptanceTester $I)
-		{
-			$this->_checkMenuEntryInFE($I, MEManage::$fill_title_register, MEManage::$main_menu_register, MEManage::$menu_entry_msg_register, MEManage::$menu_entry_identifier_register);
-		}
+		$FE->does(
+			function (AcceptanceTester $I)
+			{
+				$this->checkMenuEntryInFE(
+					$I,
+					MEManage::$fill_title_register,
+					MEManage::$main_menu_register,
+					MEManage::$menu_entry_msg_register,
+					MEManage::$menu_entry_identifier_register
+				);
+			}
 		);
 
-	// delete menu entry by subroutine
-	$this->_deleteMenuItem($I, MEManage::$fill_title_register);
+		// delete menu entry by subroutine
+		$this->deleteMenuItem($I, MEManage::$fill_title_register);
 	}
 
 	/**
@@ -89,6 +97,8 @@ class MenuEntriesCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function createEditSubscriptionEntry(AcceptanceTester $I)
@@ -100,18 +110,25 @@ class MenuEntriesCest
 		$I->see(MEManage::$main_menu_txt, MEManage::$main_menu_label);
 
 		// create menu entry in BE
-		$this->_createMenuEntry($I, MEManage::$fill_title_edit, MEManage::$menu_entry_type_txt_edit, MEManage::$menu_entry_link_txt_edit);
+		$this->createMenuEntry($I, MEManage::$fill_title_edit, MEManage::$menu_entry_type_txt_edit, MEManage::$menu_entry_link_txt_edit);
 
 		// check menu entry in FE
 		$FE = $I->haveFriend('Frontend');
-		$FE->does(function (AcceptanceTester $I)
-		{
-			$this->_checkMenuEntryInFE($I, MEManage::$fill_title_edit, MEManage::$main_menu_edit, MEManage::$menu_entry_msg_edit, MEManage::$menu_entry_identifier_edit);
-		}
+		$FE->does(
+			function (AcceptanceTester $I)
+			{
+				$this->checkMenuEntryInFE(
+					$I,
+					MEManage::$fill_title_edit,
+					MEManage::$main_menu_edit,
+					MEManage::$menu_entry_msg_edit,
+					MEManage::$menu_entry_identifier_edit
+				);
+			}
 		);
 
 		// delete menu entry by subroutine
-		$this->_deleteMenuItem($I, MEManage::$fill_title_edit);
+		$this->deleteMenuItem($I, MEManage::$fill_title_edit);
 	}
 
 	/**
@@ -125,6 +142,8 @@ class MenuEntriesCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function createNewsletterListEntry(AcceptanceTester $I)
@@ -136,7 +155,7 @@ class MenuEntriesCest
 		$I->see(MEManage::$main_menu_txt, MEManage::$main_menu_label);
 
 		// create menu entry in BE
-		$this->_createMenuEntry($I, MEManage::$fill_title_nl_list, MEManage::$menu_entry_type_txt_nl_list, MEManage::$menu_entry_link_txt_nl_list);
+		$this->createMenuEntry($I, MEManage::$fill_title_nl_list, MEManage::$menu_entry_type_txt_nl_list, MEManage::$menu_entry_link_txt_nl_list);
 
 		// @ToDo: Select Mailinglists, without this I get empty list
 		$I->clickAndWait(MEManage::$fill_title_nl_list, 1);
@@ -147,14 +166,21 @@ class MenuEntriesCest
 
 		// check menu entry in FE
 		$FE = $I->haveFriend('Frontend');
-		$FE->does(function (AcceptanceTester $I)
-		{
-			$this->_checkMenuEntryInFE($I, MEManage::$fill_title_nl_list, MEManage::$main_menu_nl_list, MEManage::$menu_entry_msg_nl_list, MEManage::$menu_entry_identifier_nl_list);
-		}
+		$FE->does(
+			function (AcceptanceTester $I)
+			{
+				$this->checkMenuEntryInFE(
+					$I,
+					MEManage::$fill_title_nl_list,
+					MEManage::$main_menu_nl_list,
+					MEManage::$menu_entry_msg_nl_list,
+					MEManage::$menu_entry_identifier_nl_list
+				);
+			}
 		);
 
 		// delete menu entry by subroutine
-		$this->_deleteMenuItem($I, MEManage::$fill_title_nl_list);
+		$this->deleteMenuItem($I, MEManage::$fill_title_nl_list);
 	}
 
 	/**
@@ -168,6 +194,8 @@ class MenuEntriesCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function createNewsletterSingleEntry(AcceptanceTester $I)
@@ -179,18 +207,30 @@ class MenuEntriesCest
 		$I->see(MEManage::$main_menu_txt, MEManage::$main_menu_label);
 
 		// create menu entry in BE
-		$this->_createMenuEntry($I, MEManage::$fill_title_nl_single, MEManage::$menu_entry_type_txt_nl_single, MEManage::$menu_entry_link_txt_nl_single);
+		$this->createMenuEntry(
+			$I,
+			MEManage::$fill_title_nl_single,
+			MEManage::$menu_entry_type_txt_nl_single,
+			MEManage::$menu_entry_link_txt_nl_single
+		);
 
 		// check menu entry in FE
 		$FE = $I->haveFriend('Frontend');
-		$FE->does(function (AcceptanceTester $I)
-		{
-			$this->_checkMenuEntryInFE($I, MEManage::$fill_title_nl_single, MEManage::$main_menu_nl_single, MEManage::$menu_entry_msg_nl_single, MEManage::$menu_entry_identifier_nl_single);
-		}
+		$FE->does(
+			function (AcceptanceTester $I)
+			{
+				$this->checkMenuEntryInFE(
+					$I,
+					MEManage::$fill_title_nl_single,
+					MEManage::$main_menu_nl_single,
+					MEManage::$menu_entry_msg_nl_single,
+					MEManage::$menu_entry_identifier_nl_single
+				);
+			}
 		);
 
 		// delete menu entry by subroutine
-		$this->_deleteMenuItem($I, MEManage::$fill_title_nl_single);
+		$this->deleteMenuItem($I, MEManage::$fill_title_nl_single);
 	}
 
 	/**
@@ -203,7 +243,7 @@ class MenuEntriesCest
 	 *
 	 * @since   2.0.0
 	 */
-	private function _deleteMenuItem(AcceptanceTester $I, $item)
+	private function deleteMenuItem(AcceptanceTester $I, $item)
 	{
 		// reduce view to main menu
 		$I->clickSelectList(MEManage::$main_menu_select, MEManage::$main_menu_select_mainmenu, MEManage::$main_menu_select_id);
@@ -230,7 +270,6 @@ class MenuEntriesCest
 
 		// clear filter
 		$I->clickAndWait(MEManage::$clear_button, 1);
-
 	}
 
 	/**
@@ -241,26 +280,29 @@ class MenuEntriesCest
 	 * @param string            $type
 	 * @param string            $link
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _createMenuEntry(AcceptanceTester $I, $title, $type, $link)
+	private function createMenuEntry(AcceptanceTester $I, $title, $type, $link)
 	{
 		$I->clickAndWait(MEManage::$new_entry_button, 1);
 
 		$I->fillField(MEManage::$menu_entry_title, $title);
-/*
- *      // attach a name so that we can switch to the iframe later
+		/*
+		// attach a name so that we can switch to the iframe later
 		$I->executeJS('jQuery(".iframe").attr("name", "blah")');
 		$I->switchToIFrame("blah");
 		// This does not work because iframe is not named and has no ID
 		$I->clickAndWait(MEManage::$menu_entry_type, 3);
 
-//		$iframe = $I->haveFriend("Menus: New Item - Bw-Test - Administration");
+		// $iframe = $I->haveFriend("Menus: New Item - Bw-Test - Administration");
 
 		$I->switchToIFrame(MEManage::$iframe_type);
 		$I->clickAndWait(MEManage::$menu_type_bwpm, 1);
 		$I->clickAndWait(MEManage::$menu_type_register, 2);
-*/
+		*/
+
 		// Workaround for missing iframe name, part 1
 		$I->fillReadonlyInput("jform_type", MEManage::$menu_entry_type_field, $type);
 		$I->fillReadonlyInput("jform_link", MEManage::$menu_entry_link_field, $link);
@@ -293,7 +335,7 @@ class MenuEntriesCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkMenuEntryInFE(AcceptanceTester $I, $title, $entry, $control_msg, $control_identifier)
+	private function checkMenuEntryInFE(AcceptanceTester $I, $title, $entry, $control_msg, $control_identifier)
 	{
 		$I->amOnPage(MEManage::$home);
 
@@ -317,5 +359,4 @@ class MenuEntriesCest
 	{
 		$loginPage->logoutFromBackend($I);
 	}
-
 }

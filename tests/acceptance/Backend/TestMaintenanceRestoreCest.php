@@ -1,12 +1,11 @@
 <?php
 use Page\Generals as Generals;
 use Page\MaintenancePage as MaintenancePage;
-use Page\MainviewPage as MainView;
 
 /**
-* Class TestMaintenanceRestoreCest
-*
-* This class contains all methods to test maintenance functionality at back end
+ * Class TestMaintenanceRestoreCest
+ *
+ * This class contains all methods to test maintenance functionality at back end
  *
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
@@ -75,4 +74,3 @@ class TestMaintenanceRestoreCest
 		$loginPage->logoutFromBackend($I);
 	}
 }
-

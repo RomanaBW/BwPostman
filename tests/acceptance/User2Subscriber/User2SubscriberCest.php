@@ -184,6 +184,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function setupUser2Subscriber(AcceptanceTester $I)
@@ -227,6 +229,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithoutSubscription(AcceptanceTester $I)
@@ -253,6 +257,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -283,6 +289,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithoutActivationExtended(AcceptanceTester $I)
@@ -312,6 +320,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -348,6 +358,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -392,6 +404,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithExistingSubscriptionDifferentList(AcceptanceTester $I)
@@ -434,6 +448,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithActivationByBackend(AcceptanceTester $I)
@@ -468,6 +484,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -504,6 +522,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithoutFormatSelectionHTML(AcceptanceTester $I)
@@ -536,6 +556,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -572,6 +594,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithAnotherMailinglist(AcceptanceTester $I)
@@ -607,6 +631,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithTwoMailinglists(AcceptanceTester $I)
@@ -641,6 +667,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -703,6 +731,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithMailChangeYes(AcceptanceTester $I)
@@ -737,6 +767,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberFunctionWithoutActivationWithMailChangeYes(AcceptanceTester $I)
@@ -768,6 +800,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -807,6 +841,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -888,6 +924,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberOptionsPluginDeactivated(AcceptanceTester $I)
@@ -965,6 +1003,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberOptionsSwitchShowFormat(AcceptanceTester $I)
@@ -1028,6 +1068,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1100,6 +1142,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberOptionsAutoUpdate(AcceptanceTester $I)
@@ -1141,6 +1185,8 @@ class User2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1184,6 +1230,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberOptionsMailinglists(AcceptanceTester $I)
@@ -1223,6 +1271,8 @@ class User2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function initializeTestValues($I)
@@ -1258,6 +1308,8 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function selectRegistrationPage(AcceptanceTester $I)
@@ -1272,6 +1324,8 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function switchSubscriptionYesAndNo(AcceptanceTester $I)
@@ -1284,6 +1338,8 @@ class User2SubscriberCest
 	 * Method to fill all required Joomla fields on Joomla registration form
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1298,6 +1354,8 @@ class User2SubscriberCest
 	 * Method to fill all required Joomla fields on Joomla registration form
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1357,6 +1415,8 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function fillBwPostmanPartAtRegisterFormExtended(AcceptanceTester $I)
@@ -1403,6 +1463,8 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function fillBwPostmanPartAtRegisterFormSimple(AcceptanceTester $I)
@@ -1448,6 +1510,8 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function registerAndCheckMessage(AcceptanceTester $I)
@@ -1486,6 +1550,8 @@ class User2SubscriberCest
 	 * Method to check if subscription was successful
 	 *
 	 * @param   AcceptanceTester    $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1605,6 +1671,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function deleteJoomlaUserByDb(AcceptanceTester $I)
@@ -1636,6 +1704,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function deleteJoomlaUser(AcceptanceTester $I)
@@ -1662,6 +1732,8 @@ class User2SubscriberCest
 
 	/**
 	 * @param AcceptanceTester $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1802,6 +1874,8 @@ class User2SubscriberCest
 	 *
 	 * @param \AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	private function activate(\AcceptanceTester $I)
@@ -1933,6 +2007,8 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function editComponentOptions(AcceptanceTester $I)
@@ -1947,6 +2023,8 @@ class User2SubscriberCest
 
 	/**
 	 * @param AcceptanceTester $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */

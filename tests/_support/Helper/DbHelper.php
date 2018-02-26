@@ -149,7 +149,7 @@ class DbHelper extends Module
 	 * @param   array       $criteria           special criteria, i.e. WHERE
 	 * @param   array       $credentials        credentials of database
 	 *
-	 * @return  array
+	 * @return  string
 	 *
 	 * @since   2.0.0
 	 */

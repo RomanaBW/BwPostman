@@ -57,6 +57,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneHtmlTemplateCancelMainView(AcceptanceTester $I)
@@ -68,7 +70,7 @@ class TestTemplatesDetailsCest
 		$I->click(MainView::$addHtmlTemplateButton);
 		$I->waitForElement(TplEdit::$tpl_tab1, 30);
 
-		$this->_fillFormExtendedHtml($I);
+		$this->fillFormExtendedHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
 
@@ -86,6 +88,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneHtmlTemplateCompleteMainView(AcceptanceTester $I)
@@ -97,7 +101,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(MainView::$addHtmlTemplateButton);
 
-		$this->_fillFormSimpleHtml($I);
+		$this->fillFormSimpleHtml($I);
 
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 3);
@@ -124,6 +128,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneHtmlTemplateCancelListView(AcceptanceTester $I)
@@ -133,7 +139,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
-		$this->_fillFormExtendedHtml($I);
+		$this->fillFormExtendedHtml($I);
 
 		$I->click(TplEdit::$toolbar['Cancel']);
 
@@ -154,6 +160,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneHtmlTemplateListView(AcceptanceTester $I)
@@ -163,7 +171,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
-		$this->_fillFormSimpleHtml($I);
+		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -185,6 +193,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateHtmlTemplateTwiceListView(AcceptanceTester $I)
@@ -194,7 +204,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
-		$this->_fillFormSimpleHtml($I);
+		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -204,7 +214,7 @@ class TestTemplatesDetailsCest
 		$I->see('Template', Generals::$pageTitle);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
-		$this->_fillFormSimpleHtml($I);
+		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -233,6 +243,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneTextTemplateCancelMainView(AcceptanceTester $I)
@@ -244,7 +256,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(MainView::$addTextTemplateButton);
 
-		$this->_fillFormExtendedText($I);
+		$this->fillFormExtendedText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
 
@@ -262,6 +274,8 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -302,6 +316,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneTextTemplateCancelListView(AcceptanceTester $I)
@@ -311,7 +327,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		$this->_fillFormExtendedText($I);
+		$this->fillFormExtendedText($I);
 
 		$I->click(TplEdit::$toolbar['Cancel']);
 
@@ -331,6 +347,8 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -363,6 +381,8 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -403,6 +423,8 @@ class TestTemplatesDetailsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -455,20 +477,6 @@ class TestTemplatesDetailsCest
 	}
 
 	/**
-	 * Test method to logout from backend
-	 *
-	 * @param   AcceptanceTester    $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function _failed (AcceptanceTester $I)
-	{
-
-	}
-
-	/**
 	 * Method to fill form for HTML template with check of required fields
 	 * This method simply fills all fields, required or not
 	 *
@@ -476,15 +484,15 @@ class TestTemplatesDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormSimpleHtml(AcceptanceTester $I)
+	private function fillFormSimpleHtml(AcceptanceTester $I)
 	{
 		TplEdit::_fillRequired($I, 'HTML');
 
 		TplEdit::_selectThumbnail($I);
 
-		$this->_fillHtmlContent($I);
+		$this->fillHtmlContent($I);
 
-		$this->_fillCssContent($I);
+		$this->fillCssContent($I);
 	}
 
 	/**
@@ -494,16 +502,18 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormExtendedHtml(AcceptanceTester $I)
+	private function fillFormExtendedHtml(AcceptanceTester $I)
 	{
-		$this->_fillRequiredExtended($I, 'HTML');
+		$this->fillRequiredExtended($I, 'HTML');
 
 		// select thumbnail
 		TplEdit::_selectThumbnail($I);
 
-		$this->_selectRadiosExtended($I);
+		$this->selectRadiosExtended($I);
 	}
 
 	/**
@@ -513,25 +523,29 @@ class TestTemplatesDetailsCest
 	 *
 	 * @param AcceptanceTester  $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormExtendedText(AcceptanceTester $I)
+	private function fillFormExtendedText(AcceptanceTester $I)
 	{
-		$this->_fillRequiredExtended($I, 'Text');
+		$this->fillRequiredExtended($I, 'Text');
 
 		// select thumbnail
 		TplEdit::_selectThumbnail($I);
 
-		$this->_selectRadiosExtended($I);
+		$this->selectRadiosExtended($I);
 	}
 
 	/**
 	 * @param AcceptanceTester  $I
 	 * @param string            $type
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _fillRequiredExtended(AcceptanceTester $I, $type)
+	private function fillRequiredExtended(AcceptanceTester $I, $type)
 	{
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
@@ -552,46 +566,46 @@ class TestTemplatesDetailsCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _selectRadiosExtended(AcceptanceTester $I)
+	private function selectRadiosExtended(AcceptanceTester $I)
 	{
 		//show author
 		// switch no
 		$I->click(TplEdit::$show_author_no);
-		$I->seeElement(TplEdit::$show_author_no, ['class' => Generals::$button_red]);
-		$I->dontSeeElement(TplEdit::$show_author_yes, ['class' => Generals::$button_green]);
-		$I->seeElement(TplEdit::$show_author_yes, ['class' => Generals::$button_grey]);
+		$I->seeElement(TplEdit::$show_author_no, array('class' => Generals::$button_red));
+		$I->dontSeeElement(TplEdit::$show_author_yes, array('class' => Generals::$button_green));
+		$I->seeElement(TplEdit::$show_author_yes, array('class' => Generals::$button_grey));
 
 		// switch yes
 		$I->click(TplEdit::$show_author_yes);
-		$I->dontSeeElement(TplEdit::$show_author_no, ['class' => Generals::$button_red]);
-		$I->seeElement(TplEdit::$show_author_yes, ['class' => Generals::$button_green]);
-		$I->seeElement(TplEdit::$show_author_no, ['class' => Generals::$button_grey]);
+		$I->dontSeeElement(TplEdit::$show_author_no, array('class' => Generals::$button_red));
+		$I->seeElement(TplEdit::$show_author_yes, array('class' => Generals::$button_green));
+		$I->seeElement(TplEdit::$show_author_no, array('class' => Generals::$button_grey));
 
 		// show created date
 		// switch no
 		$I->click(TplEdit::$show_created_no);
-		$I->seeElement(TplEdit::$show_created_no, ['class' => Generals::$button_red]);
-		$I->dontSeeElement(TplEdit::$show_created_yes, ['class' => Generals::$button_green]);
-		$I->seeElement(TplEdit::$show_created_yes, ['class' => Generals::$button_grey]);
+		$I->seeElement(TplEdit::$show_created_no, array('class' => Generals::$button_red));
+		$I->dontSeeElement(TplEdit::$show_created_yes, array('class' => Generals::$button_green));
+		$I->seeElement(TplEdit::$show_created_yes, array('class' => Generals::$button_grey));
 
 		// switch yes
 		$I->click(TplEdit::$show_created_yes);
-		$I->dontSeeElement(TplEdit::$show_created_no, ['class' => Generals::$button_red]);
-		$I->seeElement(TplEdit::$show_created_yes, ['class' => Generals::$button_green]);
-		$I->seeElement(TplEdit::$show_created_no, ['class' => Generals::$button_grey]);
+		$I->dontSeeElement(TplEdit::$show_created_no, array('class' => Generals::$button_red));
+		$I->seeElement(TplEdit::$show_created_yes, array('class' => Generals::$button_green));
+		$I->seeElement(TplEdit::$show_created_no, array('class' => Generals::$button_grey));
 
 		// show readon button
 		// switch no
 		$I->click(TplEdit::$show_readon_no);
-		$I->seeElement(TplEdit::$show_readon_no, ['class' => Generals::$button_red]);
-		$I->dontSeeElement(TplEdit::$show_readon_yes, ['class' => Generals::$button_green]);
-		$I->seeElement(TplEdit::$show_readon_yes, ['class' => Generals::$button_grey]);
+		$I->seeElement(TplEdit::$show_readon_no, array('class' => Generals::$button_red));
+		$I->dontSeeElement(TplEdit::$show_readon_yes, array('class' => Generals::$button_green));
+		$I->seeElement(TplEdit::$show_readon_yes, array('class' => Generals::$button_grey));
 
 		// switch yes
 		$I->click(TplEdit::$show_readon_yes);
-		$I->dontSeeElement(TplEdit::$show_readon_no, ['class' => Generals::$button_red]);
-		$I->seeElement(TplEdit::$show_readon_yes, ['class' => Generals::$button_green]);
-		$I->seeElement(TplEdit::$show_readon_no, ['class' => Generals::$button_grey]);
+		$I->dontSeeElement(TplEdit::$show_readon_no, array('class' => Generals::$button_red));
+		$I->seeElement(TplEdit::$show_readon_yes, array('class' => Generals::$button_green));
+		$I->seeElement(TplEdit::$show_readon_no, array('class' => Generals::$button_grey));
 	}
 
 	/**
@@ -599,7 +613,7 @@ class TestTemplatesDetailsCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _fillHtmlContent(AcceptanceTester $I)
+	private function fillHtmlContent(AcceptanceTester $I)
 	{
 		$I->clickAndWait(TplEdit::$tpl_tab3, 1);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
@@ -617,7 +631,7 @@ class TestTemplatesDetailsCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _fillCssContent(AcceptanceTester $I)
+	private function fillCssContent(AcceptanceTester $I)
 	{
 		$I->click(TplEdit::$tpl_tab2);
 		$I->fillField(TplEdit::$css_style, TplEdit::$css_style_content);

@@ -60,6 +60,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneNewsletterCancelMainView(\AcceptanceTester $I)
@@ -87,6 +89,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneNewsletterCompleteMainView(\AcceptanceTester $I)
@@ -97,7 +101,7 @@ class TestNewslettersDetailsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addNewsletterButton);
 
-		$this->_fillFormSimpleWithCampaign($I);
+		$this->fillFormSimpleWithCampaign($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
@@ -117,17 +121,19 @@ class TestNewslettersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CreateOneNewsletterCancelListView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter cancel list view");
 		$I->amOnPage(NlManage::$url);
-$I->wait(3);
+		$I->wait(3);
 		$I->click(Generals::$toolbar['New']);
 		$I->wait(3);
 
-		$this->_fillFormExtended($I);
+		$this->fillFormExtended($I);
 
 		$I->click(NlEdit::$toolbar['Cancel']);
 		$I->see("Newsletters", Generals::$pageTitle);
@@ -143,6 +149,8 @@ $I->wait(3);
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -174,6 +182,8 @@ $I->wait(3);
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -216,7 +226,8 @@ $I->wait(3);
 	 *
 	 * @since   2.0.0
 	 */
-/*	public function CreateMultipleNewslettersListView(\AcceptanceTester $I)
+	/*
+	public function CreateMultipleNewslettersListView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create multiple Newsletters from list view");
 		$I->amOnPage(NlManage::$url);
@@ -257,7 +268,6 @@ $I->wait(3);
 
 			$I->scrollTo(NlEdit::$legend_content);
 			$I->doubleClick(sprintf(NlEdit::$available_content, ($i % 6) + 1));
-//			$I->wait(2);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
@@ -266,7 +276,7 @@ $I->wait(3);
 		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
 	}
 	}
-*/
+	*/
 
 	/**
 	 * Test method to create same single Newsletter twice from main view
@@ -278,6 +288,8 @@ $I->wait(3);
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -339,6 +351,8 @@ $I->wait(3);
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SendNewsletterToTestrecipients(\AcceptanceTester $I)
@@ -368,7 +382,6 @@ $I->wait(3);
 		$I->waitForElement(NlEdit::$tab3_editor);
 		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$tab3_editor);
-
 
 		// change to tab 4
 		$I->clickAndWait(NlEdit::$tab4, 5);
@@ -416,6 +429,8 @@ $I->wait(3);
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SendNewsletterToRealRecipients(\AcceptanceTester $I)
@@ -440,6 +455,8 @@ $I->wait(3);
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -466,6 +483,8 @@ $I->wait(3);
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SendNewsletterToUnconfirmed(\AcceptanceTester $I)
@@ -490,6 +509,8 @@ $I->wait(3);
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -597,19 +618,6 @@ $I->wait(3);
 	}
 
 	/**
-	 * Test method to logout from backend
-	 *
-	 * @param   \AcceptanceTester    $I
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function _failed (\AcceptanceTester $I){
-
-	}
-
-	/**
 	 * Method to fill form with campaign (no other recipients to select) without check of required fields
 	 * This method simply fills all fields, required or not
 	 *
@@ -619,7 +627,7 @@ $I->wait(3);
 	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormSimpleWithCampaign(\AcceptanceTester $I)
+	private function fillFormSimpleWithCampaign(\AcceptanceTester $I)
 	{
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
@@ -658,9 +666,11 @@ $I->wait(3);
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _fillFormExtended(\AcceptanceTester $I)
+	private function fillFormExtended(\AcceptanceTester $I)
 	{
 		// omit recipients
 		$I->click(NlEdit::$toolbar['Save']);

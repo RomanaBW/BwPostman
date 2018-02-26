@@ -2,7 +2,6 @@
 use Page\Generals as Generals;
 use Page\SubscriberviewPage as SubsView;
 
-
 /**
  * Class SubscribeComponentCest
  *
@@ -37,19 +36,21 @@ class SubscribeComponentCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SubscribeSimpleActivateAndUnsubscribe(AcceptanceTester $I)
 	{
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
-		$this->_activate($I, SubsView::$mail_fill_1);
+		$this->activate($I, SubsView::$mail_fill_1);
 
-		$this->_unsubscribe($I, SubsView::$activated_edit_Link);
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
 	}
 
 	/**
@@ -59,24 +60,26 @@ class SubscribeComponentCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SubscribeTwiceActivateAndUnsubscribe(AcceptanceTester $I)
 	{
 		$I->wantTo("Subscribe to mailinglist by component a second time");
 		$I->expectTo('see error message');
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 		$I->wait(5);
 
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$err_activation_incomplete, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_activation_incomplete);
 
-		$this->_activate($I, SubsView::$mail_fill_1);
+		$this->activate($I, SubsView::$mail_fill_1);
 
-		$this->_unsubscribe($I, SubsView::$activated_edit_Link);
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
 	}
 
 	/**
@@ -86,17 +89,19 @@ class SubscribeComponentCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SubscribeTwiceActivateGetActivationAndUnsubscribe(AcceptanceTester $I)
 	{
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$err_activation_incomplete, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_activation_incomplete);
 
@@ -104,9 +109,9 @@ class SubscribeComponentCest
 		$I->waitForElement(SubsView::$success_message, 30);
 		$I->see(SubsView::$activation_sent_text, SubsView::$success_message);
 
-		$this->_activate($I, SubsView::$mail_fill_1);
+		$this->activate($I, SubsView::$mail_fill_1);
 
-		$this->_unsubscribe($I, SubsView::$activated_edit_Link);
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
 	}
 
 	/**
@@ -116,23 +121,25 @@ class SubscribeComponentCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SubscribeActivateSubscribeGetEditlinkAndUnsubscribe(AcceptanceTester $I)
 	{
 		$I->wantTo("Subscribe to mailinglist and unsubscribe by edit link");
 		$I->expectTo('unsubscribe with edit link');
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
-		$this->_activate($I, SubsView::$mail_fill_1);
+		$this->activate($I, SubsView::$mail_fill_1);
 
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$err_already_subscribed, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_already_subscribed);
 
-		$editlink_code  = $this->_gotoEdit($I);
+		$editlink_code  = $this->gotoEdit($I);
 		$I->amOnPage(SubsView::$editlink . $editlink_code);
 
 		$I->seeElement(SubsView::$view_edit);
@@ -147,6 +154,8 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -185,6 +194,7 @@ class SubscribeComponentCest
 			{
 				$I->see(SubsView::$invalid_field_firstname);
 			}
+
 			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
 		}
 
@@ -201,6 +211,7 @@ class SubscribeComponentCest
 			{
 				$I->see(SubsView::$invalid_field_name);
 			}
+
 			$I->fillField(SubsView::$name, SubsView::$lastname_fill);
 		}
 
@@ -209,24 +220,25 @@ class SubscribeComponentCest
 		//omit mailinglist selection
 		$I->clickAndWait(SubsView::$button_register, 1);
 
-		if ($bwpm_version == '132')
-		{
-			$I->see(SubsView::$invalid_select_newsletter_132);
-		}
-		else
-		{
-			$I->seeInPopup(SubsView::$invalid_select_newsletter_mod);
-			$I->acceptPopup();
-		}
+		$I->see(SubsView::$invalid_select_newsletter_132);
+
+		$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
+		$I->fillField(SubsView::$name, SubsView::$lastname_fill);
 
 		$I->checkOption(SubsView::$ml1);
+
+		$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
+		$I->fillField(SubsView::$name, SubsView::$lastname_fill);
+		$I->fillField(SubsView::$mail, SubsView::$mail_fill_1);
 
 		// omit additional field
 		if ($options->show_special || $options->special_field_obligation)
 		{
 			$I->click(SubsView::$button_register);
-			$I->seeInPopup(sprintf(SubsView::$popup_enter_special, $options->special_label));
-			$I->acceptPopup();
+			$I->see(sprintf(SubsView::$popup_enter_special, $options->special_label));
+			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
+			$I->fillField(SubsView::$name, SubsView::$lastname_fill);
+			$I->fillField(SubsView::$mail, SubsView::$mail_fill_1);
 			$I->fillField(SubsView::$special, SubsView::$special_fill);
 		}
 
@@ -234,8 +246,11 @@ class SubscribeComponentCest
 		if ($options->disclaimer)
 		{
 			$I->click(SubsView::$button_register);
-			$I->seeInPopup(SubsView::$popup_accept_disclaimer);
-			$I->acceptPopup();
+			$I->see(SubsView::$popup_accept_disclaimer);
+			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
+			$I->fillField(SubsView::$name, SubsView::$lastname_fill);
+			$I->fillField(SubsView::$mail, SubsView::$mail_fill_1);
+			$I->fillField(SubsView::$special, SubsView::$special_fill);
 			$I->checkOption(SubsView::$disclaimer);
 		}
 	}
@@ -247,19 +262,25 @@ class SubscribeComponentCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function SubscribeSimpleActivateChangeAndUnsubscribe(AcceptanceTester $I)
+/*	public function SubscribeSimpleActivateChangeAndUnsubscribe(AcceptanceTester $I)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
+		// Subscribe
 		$I->wantTo("Subscribe to mailinglist by component, change values and unsubscribe");
 		$I->expectTo('get confirmation mail');
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
-		$this->_activate($I, SubsView::$mail_fill_1);
+		// Activate
+		$this->activate($I, SubsView::$mail_fill_1);
+
+		// Edit
 		$I->click(SubsView::$button_edit);
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -310,12 +331,12 @@ class SubscribeComponentCest
 			$I->see(SubsView::$msg_saved_changes);
 		}
 
-		$this->_activate($I, SubsView::$mail_fill_2);
+		$this->activate($I, SubsView::$mail_fill_2);
 		$I->click(SubsView::$button_edit);
 
-		$this->_unsubscribe($I, SubsView::$button_unsubscribe);
+		$this->unsubscribe($I, SubsView::$button_unsubscribe);
 	}
-
+*/
 	/**
 	 * Test method to get error message while activating a non existing subscription
 	 *
@@ -323,21 +344,23 @@ class SubscribeComponentCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SubscribeActivateUnsubscribeAndActivate(AcceptanceTester $I)
 	{
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
-		$this->_subscribeByComponent($I);
+		$this->subscribeByComponent($I);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
-		$this->_activate($I, SubsView::$mail_fill_1);
+		$this->activate($I, SubsView::$mail_fill_1);
 
-		$this->_unsubscribe($I, SubsView::$activated_edit_Link);
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
 
-		$this->_activate($I, SubsView::$mail_fill_1, false);
+		$this->activate($I, SubsView::$mail_fill_1, false);
 		$I->waitForElement(SubsView::$err_not_activated, 30);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_invalid_link);
@@ -349,6 +372,8 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -371,6 +396,8 @@ class SubscribeComponentCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -408,9 +435,11 @@ class SubscribeComponentCest
 	 *
 	 * @param \AcceptanceTester             $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _subscribeByComponent(\AcceptanceTester $I)
+	private function subscribeByComponent(\AcceptanceTester $I)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
@@ -451,6 +480,7 @@ class SubscribeComponentCest
 		{
 			$I->checkOption(SubsView::$disclaimer);
 		}
+
 		$I->click(SubsView::$button_register);
 	}
 
@@ -461,9 +491,11 @@ class SubscribeComponentCest
 	 * @param string                        $mailaddress
 	 * @param bool                          $good
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _activate(\AcceptanceTester $I, $mailaddress, $good = true)
+	private function activate(\AcceptanceTester $I, $mailaddress, $good = true)
 	{
 		$activation_code = $I->getActivationCode($mailaddress);
 		$I->amOnPage(SubsView::$activation_link . $activation_code);
@@ -480,9 +512,11 @@ class SubscribeComponentCest
 	 *
 	 * @return string                       $editlink_code
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _gotoEdit(\AcceptanceTester $I)
+	private function gotoEdit(\AcceptanceTester $I)
 	{
 		$I->click(SubsView::$get_edit_Link);
 		$I->waitForElement(SubsView::$view_edit_link, 30);
@@ -502,9 +536,11 @@ class SubscribeComponentCest
 	 * @param \AcceptanceTester             $I
 	 * @param string                        $button
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _unsubscribe(\AcceptanceTester $I, $button)
+	private function unsubscribe(\AcceptanceTester $I, $button)
 	{
 		$I->click($button);
 		$I->waitForElement(SubsView::$view_edit, 30);
@@ -513,5 +549,4 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_submitleave);
 		$I->dontSee(SubsView::$mail_fill_1, SubsView::$mail);
 	}
-
 }

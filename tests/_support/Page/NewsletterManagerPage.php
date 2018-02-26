@@ -32,26 +32,57 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-    public static $url      = '/administrator/index.php?option=com_bwpostman&view=newsletters';
-//	public static $section  = 'newsletter';
+	public static $url      = '/administrator/index.php?option=com_bwpostman&view=newsletters';
+
+	/**
+	 * @var integer
+	 *
+	 * @since   2.0.0
+	 */
 	public static $wait_db  = 1;
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
-     */
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 * public static $usernameField = '#username';
+	 * public static $formSubmitButton = "#mainForm input[type=submit]";
+	 */
 
-//	public static $tab1 = ".//*[@id='bwpostman_newsletters_tabs']/dt[2]";
-//	public static $tab2 = ".//*[@id='bwpostman_newsletters_tabs']/dt[3]";
-//	public static $tab3 = ".//*[@id='bwpostman_newsletters_tabs']/dt[4]";
-
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $tab1 = ".//*[@id='j-main-container']/div[2]/ul/li[1]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $tab2 = ".//*[@id='j-main-container']/div[2]/ul/li[2]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $tab3 = ".//*[@id='j-main-container']/div[2]/ul/li[3]/button";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $first_list_link          = ".//*[@id='main-table']/tbody/tr[1]/td[3]/p[1]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $first_list_entry_tab2    = ".//*[@id='ub0']";
+
 	/**
 	 * Array of sorting criteria values for unsent newsletters
 	 *
@@ -107,34 +138,178 @@ class NewsletterManagerPage
 	);
 
 	// Filter authors
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $authors_col                  = ".//*[@id='main-table']/tbody/*/td[6]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_authors_list_id       = "filter_authors_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_authors_list          = ".//*[@id='filter_authors_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_author_1              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BwPostmanAdmin')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_author_2              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BwPostmanEditor')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_author_3              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'AdminTester')]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_author_1_txt          = 'BwPostmanAdmin';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_author_2_txt          = 'BwPostmanEditor';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_author_3_txt          = 'AdminTester';
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+
 	// Filter campaign
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_campaign_list_id       = "filter_campaign_id_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_campaign_list          = ".//*[@id='filter_campaign_id_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_campaign_none          = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[text()='- Select campaign -']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_campaign_without       = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[text()='- Without campaign -']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_campaign_cam           = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[3]";
 
 	// Filter mailinglist
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_list_id   = "filter_mailinglists_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_list      = ".//*[@id='filter_mailinglists_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_1         = ".//*[@id='filter_mailinglists_chzn']/div/ul/li[text()='01 Mailingliste 3 A']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_2         = ".//*[@id='filter_mailinglists_chzn']/div/ul/li[text()='02 Mailingliste 6 A']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_3         = ".//*[@id='filter_mailinglists_chzn']/div/ul/li[text()='02 Mailingliste 9 A']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_1_txt     = '01 Mailingliste 3 A';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_2_txt     = '02 Mailingliste 6 A';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_mailinglist_3_txt     = '02 Mailingliste 9 A';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
@@ -151,14 +326,32 @@ class NewsletterManagerPage
 		'search_res'           => array(array(11, 0, 11, 0, 0, 0), array(2, 2, 2, 0, 0, 0), array(0, 0, 0, 5, 5, 5)),
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $search_clear_val     = 'Newsletter for testing 1';
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_cam_result   = array(
 											'Template Gedicht 1',
 											'Template Gedicht 3',
 											'Test Newsletter single 15',
 										);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_nocam_result = array(
 											'Newsletter for testing 1',
 											'Newsletter for testing 10',
@@ -182,13 +375,23 @@ class NewsletterManagerPage
 											'Newsletter for testing 4',
 										);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $filter_sent_cam_result   = array(
-		"Kopie von 'Kopie von 'Template Gedicht 1''",
-		"Kopie von 'Template Gedicht 1'",
 		"Test Newsletter 11.4.2015 23:30:35",
 		"Test Newsletter 12.4.2015 10:32:6",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $search_sent_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
@@ -204,15 +407,33 @@ class NewsletterManagerPage
 		'search_res'           => array(array(3, 0, 3, 0, 0, 0), array(15, 6, 19, 20, 28, 31), array(0, 0, 0, 9, 2, 9)),
 	);
 
-	public static $search_sent_clear_val     = "Kopie von 'Kopie von 'Template Gedicht 1''";
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $search_sent_clear_val     = "Test Newsletter 10.4.2015 0:14:17";
+
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $publish_by_icon   = array(
-		'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
-		'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
-		'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+		'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
+		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "Newsletter for testing 1",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
@@ -240,33 +461,45 @@ class NewsletterManagerPage
 		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[3]/td[3]",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $pagination_sent_data_array  = array(
-		'p1_val1'              => "Kopie von 'Kopie von 'Template Gedicht 1''",
+		'p1_val1'              => " Test Newsletter 10.4.2015 0:14:17",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p1_val_last'          => "Test Newsletter 11.4.2015 13:26:59",
+		'p1_val_last'          => " Test Newsletter 11.4.2015 20:32:13",
 		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p2_val1'              => "Test Newsletter 11.4.2015 18:28:23",
+		'p2_val1'              => " Test Newsletter 11.4.2015 21:2:49",
 		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p2_val_last'          => "Test Newsletter 12.4.2015 10:32:6",
+		'p2_val_last'          => " Test Newsletter 12.4.2015 5:30:52",
 		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p3_val1'              => "Test Newsletter 12.4.2015 2:1:47",
+		'p3_val1'              => " Test Newsletter 12.4.2015 7:3:32",
 		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p3_val3'              => " Test Newsletter 9.4.2015 22:52:14",
-		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
+		'p3_val3'              => " Test Newsletter 9.4.2015 23:5:25",
+		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[8]/td[3]",
 
-		'p_prev_val1'          => "Test Newsletter 12.4.2015 2:1:47",
+		'p_prev_val1'          => " Test Newsletter 11.4.2015 21:2:49",
 		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p_prev_val_last'      => "Test Newsletter 9.4.2015 22:52:14",
+		'p_prev_val_last'      => " Test Newsletter 12.4.2015 5:30:52",
 		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p_last_val1'          => "Test Newsletter 9.4.2015 23:5:25",
+		'p_last_val1'          => " Test Newsletter 12.4.2015 7:3:32",
 		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p_last_val_last'      => "Test Newsletter 9.4.2015 23:5:25",
-		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
+		'p_last_val_last'      => " Test Newsletter 9.4.2015 23:5:25",
+		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[3]",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $arc_del_array    = array(
 		'section'   => 'newsletter',
 		'url'   => "/administrator/index.php?option=com_bwpostman&view=newsletters",
@@ -338,41 +571,88 @@ class NewsletterManagerPage
 		'id'            => 'a.id',
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $sent_column_publish_up   = ".//*[@id='main-table']/tbody/tr[1]/td[9]/p[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $sent_column_publish_down = ".//*[@id='main-table']/tbody/tr[1]/td[9]/p[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $sent_column_description  = ".//*[@id='main-table']/tbody/tr[1]/td[4]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $queue_warning_msg    = "An error occurred while sending the newsletters, please go Newsletters → Queue and revise the entries!";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $queue_cleared_msg    = "The queue has been cleared.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $queue_sending_trials_col = ".//*[@id='main-table']/tbody/tr/td[5]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $queue_list_id            = ".//*[@id='main-table']/thead/tr/th[6]/a";
 
-    public static $pagination_queue_data_array  = array(
-        'p1_val1'              => "r.barth@tester-net.nil",
-        'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-        'p1_val_last'          => "heidi.brockhaus@tester-net.nil",
-        'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-        'p2_val1'              => "juri.ehrenberg@tester-net.nil",
-        'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-        'p2_val_last'          => "h.burkhardt@tester-net.nil",
-        'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
+	public static $pagination_queue_data_array  = array(
+		'p1_val1'              => "r.barth@tester-net.nil",
+		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
+		'p1_val_last'          => "heidi.brockhaus@tester-net.nil",
+		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-        'p3_val1'              => "lilian.holloway@tester-net.nil",
-        'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-        'p3_val3'              => " ian.wolters@tester-net.nil",
-        'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
+		'p2_val1'              => "juri.ehrenberg@tester-net.nil",
+		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
+		'p2_val_last'          => "h.burkhardt@tester-net.nil",
+		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-        'p_prev_val1'          => "finn.kaczmarek@tester-net.nil",
-        'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-        'p_prev_val_last'      => "n.hammond@tester-net.nil",
-        'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
+		'p3_val1'              => "lilian.holloway@tester-net.nil",
+		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
+		'p3_val3'              => " ian.wolters@tester-net.nil",
+		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-        'p_last_val1'          => "maya.eich@tester-net.nil",
-        'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-        'p_last_val_last'      => "info@boldt-coaching.de",
-        'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[4]",
-    );
+		'p_prev_val1'          => "finn.kaczmarek@tester-net.nil",
+		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
+		'p_prev_val_last'      => "n.hammond@tester-net.nil",
+		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
+		'p_last_val1'          => "maya.eich@tester-net.nil",
+		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
+		'p_last_val_last'      => "info@boldt-coaching.de",
+		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[4]",
+	);
 }

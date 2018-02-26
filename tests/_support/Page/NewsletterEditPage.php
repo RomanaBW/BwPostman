@@ -29,139 +29,758 @@ use Page\Generals as Generals;
 class NewsletterEditPage
 {
 	// include url of current page
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $url = 'administrator/index.php?option=com_bwpostman&view=newsletter&layout=edit_basic';
 
 	/**
 	 * Declare UI map for this page here. CSS or XPath allowed.
+	 */
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab1             = ".//*[@id='adminForm']/div[1]/ul/li[1]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab2             = ".//*[@id='adminForm']/div[1]/ul/li[2]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab3             = ".//*[@id='adminForm']/div[1]/ul/li[3]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab4             = ".//*[@id='adminForm']/div[1]/ul/li[4]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab5             = ".//*[@id='adminForm']/div[1]/ul/li[5]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab1_legend1      = "General information";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab1_legend2      = "Newslettertemplates";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab1_legend3      = "Recipients";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab1_legend4      = "Website content";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab2_legend      = "HTML Version";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab2_editor      = ".//*[@id='tinymce']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab2_iframe      = "jform_html_version_ifr";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab3_legend      = "Text Version";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab3_editor      = ".//*[@id='jform_text_version']";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab4_legend1                 = "Email header";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab4_preview_html            = ".//*[@id='adminForm']/div[3]/fieldset[2]/div";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab4_preview_html_iframe     = "myIframeHtml";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab4_preview_html_divider    = "/html/body/table[1]/tbody/tr[5]/td";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab4_preview_text            = "Preview of text newsletter";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab4_preview_text_iframe     = "myIframeText";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $preview_html      = ".//*/table[2]/tbody/tr[1]/td/h1";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $preview_text      = ".//*[@id='preview_text']/textarea";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab5_legend1      = "Send newsletters";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab5_legend2      = "Send test newsletters";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $tab5_send_iframe  = "sendFrame";
+
+	/**
+	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
 
-	public static $tab1             = ".//*[@id='adminForm']/div[1]/ul/li[1]/button";
-	public static $tab2             = ".//*[@id='adminForm']/div[1]/ul/li[2]/button";
-	public static $tab3             = ".//*[@id='adminForm']/div[1]/ul/li[3]/button";
-	public static $tab4             = ".//*[@id='adminForm']/div[1]/ul/li[4]/button";
-	public static $tab5             = ".//*[@id='adminForm']/div[1]/ul/li[5]/button";
-
-	public static $tab1_legend1      = "General information";
-	public static $tab1_legend2      = "Newslettertemplates";
-	public static $tab1_legend3      = "Recipients";
-	public static $tab1_legend4      = "Website content";
-
-	public static $tab2_legend      = "HTML Version";
-	public static $tab2_editor      = ".//*[@id='tinymce']";
-	public static $tab2_iframe      = "jform_html_version_ifr";
-
-	public static $tab3_legend      = "Text Version";
-	public static $tab3_editor      = ".//*[@id='jform_text_version']";
-
-	public static $tab4_legend1                 = "Email header";
-	public static $tab4_preview_html            = ".//*[@id='adminForm']/div[3]/fieldset[2]/div";
-	public static $tab4_preview_html_iframe     = "myIframeHtml";
-	public static $tab4_preview_html_divider    = "/html/body/table[1]/tbody/tr[5]/td";
-	public static $tab4_preview_text            = "Preview of text newsletter";
-	public static $tab4_preview_text_iframe     = "myIframeText";
-
-	public static $preview_html      = ".//*/table[2]/tbody/tr[1]/td/h1";
-	public static $preview_text      = ".//*[@id='preview_text']/textarea";
-
-	public static $tab5_legend1      = "Send newsletters";
-	public static $tab5_legend2      = "Send test newsletters";
-	public static $tab5_send_iframe  = "sendFrame";
-
 	public static $checkbox_unconfirmed = ".//*[@id='send_to_unconfirmed']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $button_send          = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/table/tbody/tr[5]/td[2]/input[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $button_send_publish  = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/table/tbody/tr[5]/td[2]/input[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $button_send_test     = ".//*[@id='adminForm']/div[3]/fieldset[2]/div/table/tbody/tr[2]/td[2]/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $success_send         = 'The newsletters are sent';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $success_send_ready   = 'All newsletters in the queue';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $success_send_number  = '%s  of  %s  newsletters need to be sent.';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $nbr_only_confirmed   = 128;
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $nbr_unconfirmed      = 83;
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $nbr_usergroup        = 4;
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $mark_to_send         = ".//*[@id='cb0']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $duplicate_prefix     = "Copy of '";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $from_name            = ".//*[@id='jform_from_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $from_email           = ".//*[@id='jform_from_email']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $reply_email          = ".//*[@id='jform_reply_email']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $subject              = ".//*[@id='jform_subject']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $campaign             = ".//*[@id='jform_campaign_id']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $campaign_selected    = "01 Kampagne 5 A";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $description          = ".//*[@id='jform_description']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment                   = ".//*[@id='jform_attachment']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment_id                = "jform_attachment";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment_select_button     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/a[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment_select            = "html/body/ul/li/a[contains(@href,'joomla_black.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment_media_url_field   = ".//*[@id='f_url']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment_url               = "images/joomla_black.png";
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $publish_up           = ".//*[@id='jform_publish_up']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $publish_up_button    = ".//*[@id='jform_publish_up_img']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $publish_down         = ".//*[@id='jform_publish_down']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $publish_down_button  = ".//*[@id='jform_publish_down_img']";
-//	public static $today_up             = "html/body/div[10]/table/thead/tr[2]/td[3]/div";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $today_up             = ".//*[@class='calendar']/table/thead/tr[2]/td[3]/div[contains(text(), 'Today')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $today_down           = "html/body/div[11]/table/thead/tr[2]/td[3]/div";
 
-	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label/div/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
-	public static $template_text    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label/div/span[contains(text(),'Standard TEXT Template 3')]";
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label/div/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $template_text
+		= ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label/div/span[contains(text(),'Standard TEXT Template 3')]";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $msg_required_sender_name     = "Field required: Sender's name";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $msg_required_sender_email    = "Field required: Sender's email";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $msg_required_replyto_email   = "Field required: 'Reply to' email";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $msg_required_subject         = "Field required: Subject";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $msg_no_recipients            = "No recipients selected!";
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_from_name    = "Sam";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_from_email   = "sam.sample@tester-net.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_reply_email  = "sample@tester-net.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_subject      = "1. Simple Single Test Newsletter";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_description  = 'Description for the test newsletter';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_attachment   = 'images/joomla_black.png';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_campaign     = '';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_publish_up   = '';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_publish_down = '';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_edit_publish_up    = '2017-03-14 17:00:00';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_edit_publish_down  = '2017-03-25 17:00:00';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_edit_description   = 'Changed description for the test newsletter';
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $legend_general       = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $legend_templates     = ".//*[@id='adminForm']/div[3]/fieldset[1]/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $legend_recipients    = ".//*[@id='recipients']/div/div[1]/div/fieldset/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $usergroup_recipients = ".//*[@id='recipients']/div/div[2]/div/fieldset/div[24]/div/label";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $legend_content       = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/legend";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $required_from_name   = "Field required: Sender's name";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $required_from_email  = "Field required: Sender's email";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $required_reply_email = "Field required: 'Reply to' email";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $required_subject     = 'Field required: Subject';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $popup_recipients     = 'No recipients selected!';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $success_saved        = 'Newsletter saved successfully!';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $warn_save            = "A newsletter with subject '%s' already exists. Do You have an appropriate description?";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $error_save           = 'Save failed with the following error:';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $popup_send_confirm   = 'Do you wish to send the newsletter?';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $success_inList_subject   = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $success_inList_desc      = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $success_inList_author    = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[6]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_title          = "1. Simple Single Test Newsletter";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $published                = '#jform_published';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $published_list_id        = "jform_published_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $published_list           = ".//*[@id='jform_published_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $published_list_text      = ".//*[@id='jform_published_chzn']/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $published_unpublished    = ".//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $published_published      = ".//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.0.0
+	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "1. Simple Single Test Newsletter",
 		'archive_tab'          => ".//.//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
@@ -195,18 +814,84 @@ class NewsletterEditPage
 		'Back'         => ".//*[@id='toolbar-back']/button",
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $female   = ".//*[@id='jform_gender_chzn']/div/ul/li[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $male     = ".//*[@id='jform_gender_chzn']/div/ul/li[3]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $available_content_list   = ".//*[@id='jform_available_content']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $selected_content_list    = ".//*[@id='jform_selected_content']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $available_content        = ".//*[@id='jform_available_content']/option[%s]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $selected_content         = ".//*[@id='jform_selected_content']/option[%s]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $add_content              = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $remove_content           = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[2]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_sent_description  = 'Description for the test newsletter';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_sent_publish_up   = '';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_sent_publish_down = '';
 
 	/**
@@ -217,6 +902,8 @@ class NewsletterEditPage
 	 * @param 	boolean			$withCleanup
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -263,6 +950,8 @@ class NewsletterEditPage
 	 * @param string            $username
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -361,8 +1050,6 @@ class NewsletterEditPage
 			$I->scrollTo(self::$usergroup_recipients, 0, -100);
 			$I->click(Generals::$mls_usergroup);
 		}
-//		$I->click(sprintf(Generals::$mls_nonaccessible, 3));
-//		$I->click(sprintf(Generals::$mls_internal, 4));
 	}
 
 	/**
@@ -392,9 +1079,11 @@ class NewsletterEditPage
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public static function _CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username, $toUsergroup = false)
+	public static function CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username, $toUsergroup = false)
 	{
 		$I->wantTo("Create Newsletter without cleanup");
 		$I->amOnPage(NlManage::$url);
@@ -422,6 +1111,8 @@ class NewsletterEditPage
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false)
@@ -430,18 +1121,12 @@ class NewsletterEditPage
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(self::$tab5_legend1);
 
-//		$I->click(self::$tab2);
-//      $I->click(self::$tab3);
-//		$I->click(self::$toolbar['Save']);
-
-//		$I->click(self::$tab5);
-
 		$nbrToSend  = self::$nbr_only_confirmed;
 
 		if ($sentToUnconfirmed)
 		{
 			$I->click(self::$checkbox_unconfirmed);
-			$nbrToSend += self::$nbr_unconfirmed;
+			$nbrToSend .= self::$nbr_unconfirmed;
 		}
 
 		if ($toUsergroup)
@@ -460,7 +1145,7 @@ class NewsletterEditPage
 		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$I->wait(10);
+		$I->wait(4);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 		$I->waitForText(self::$success_send_ready, 400);
 		$I->see(self::$success_send_ready);

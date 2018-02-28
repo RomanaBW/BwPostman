@@ -93,7 +93,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 								<td valign="top" width="90%">
 									<ul class="bwp_tabs">
 										<?php
-										if ($this->permissions['newsletter']['archive'] && $this->permissions['view']['newsletter']) {
+										if ($this->permissions['newsletter']['archive'] && $this->permissions['newsletter']['archive']) {
 											?>
 											<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
 												<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink">
@@ -103,7 +103,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if ($this->permissions['subscriber']['archive'] && $this->permissions['view']['subscriber']) {
+										if ($this->permissions['subscriber']['archive'] && $this->permissions['subscriber']['archive']) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink">
@@ -112,7 +112,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if ($this->permissions['campaign']['archive'] && $this->permissions['view']['campaign']) {
+										if ($this->permissions['campaign']['archive'] && $this->permissions['campaign']['archive']) {
 											?>
 											<li class="open">
 												<button onclick="layout.setAttribute('value','campaigns');this.form.submit();"
@@ -123,7 +123,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if ($this->permissions['mailinglist']['archive'] && $this->permissions['view']['mailinglist']) {
+										if ($this->permissions['mailinglist']['archive'] && $this->permissions['mailinglist']['archive']) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();"
@@ -134,7 +134,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											<?php
 										}
 
-										if ($this->permissions['template']['archive'] && $this->permissions['view']['template']) {
+										if ($this->permissions['template']['archive'] && $this->permissions['template']['archive']) {
 											?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink">

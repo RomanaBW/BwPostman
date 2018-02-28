@@ -77,7 +77,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 								<td valign="top" width="90%">
 									<ul class="bwp_tabs">
 										<?php
-										if ($this->permissions['view']['archive'] && $this->permissions['view']['newsletter']) {
+										if ($this->permissions['view']['archive'] && $this->permissions['newsletter']['archive']) {
 										?>
 											<li class="open"><!-- We need to use the setAttribute-function because of the IE -->
 												<button onclick="layout.setAttribute('value','newsletters');this.form.submit();"
@@ -87,7 +87,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<?php
 										}
 
-										if ($this->permissions['view']['archive'] && $this->permissions['view']['subscriber']) {
+										if ($this->permissions['view']['archive'] && $this->permissions['subscriber']['archive']) {
 										?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','subscribers');this.form.submit();"
@@ -97,7 +97,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<?php
 										}
 
-										if ($this->permissions['view']['archive'] && $this->permissions['view']['campaign']) {
+										if ($this->permissions['view']['archive'] && $this->permissions['campaign']['archive']) {
 										?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','campaigns');this.form.submit();"
@@ -107,7 +107,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<?php
 										}
 
-										if ($this->permissions['view']['archive'] && $this->permissions['view']['mailinglist']) {
+										if ($this->permissions['view']['archive'] && $this->permissions['mailinglist']['archive']) {
 										?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();"
@@ -117,7 +117,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<?php
 										}
 
-										if ($this->permissions['view']['archive'] && $this->permissions['view']['template']) {
+										if ($this->permissions['view']['archive'] && $this->permissions['template']['archive']) {
 										?>
 											<li class="closed">
 												<button onclick="layout.setAttribute('value','templates');

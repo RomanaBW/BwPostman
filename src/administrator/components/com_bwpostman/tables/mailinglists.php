@@ -239,7 +239,7 @@ class BwPostmanTableMailinglists extends JTable
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
 		$asset = JTable::getInstance('Asset');
-		$asset->loadByName('com_bwpostman');
+		$asset->loadByName('com_bwpostman.mailinglist');
 		return $asset->id;
 	}
 

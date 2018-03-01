@@ -316,47 +316,13 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  integer
 	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
+	 * @since   11.1
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
-		// Initialise variables.
-		$assetId = null;
-		$result  = 0;
-
-		// Build the query to get the asset id for the table.
-		$query = $this->_db->getQuery(true);
-		$query->select($this->_db->quoteName('id'));
-		$query->from($this->_db->quoteName('#__assets'));
-		$query->where($this->_db->quoteName('name') . " LIKE 'com_bwpostman.subscriber'");
-
-		// Get the asset id from the database.
-		$this->_db->setQuery($query);
-		try
-		{
-			$result = $this->_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if ($result)
-		{
-			$assetId = (int) $result;
-		}
-
-		// Return the asset id.
-		if ($assetId)
-		{
-			return $assetId;
-		}
-		else
-		{
-			return parent::_getAssetParentId($table, $id);
-		}
+		$asset = JTable::getInstance('Asset');
+		$asset->loadByName('com_bwpostman.subscriber');
+		return $asset->id;
 	}
 
 	/**

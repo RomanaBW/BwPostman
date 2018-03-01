@@ -267,7 +267,7 @@ class JFormFieldBwRules extends JFormFieldRules
 
 				// Get the group, group parent id, and group global config recursive calculated permission for the chosen action.
 				$inheritedGroupRule            = BwAccess::checkGroup((int) $group->value, $action->name, $assetId);
-				$inheritedGroupParentAssetRule = !empty($parentAssetId) ? BWAccess::checkGroup($group->value, $action->name, $parentAssetId) : null;
+				$inheritedGroupParentAssetRule = !empty($parentAssetId) ? BwAccess::checkGroup($group->value, $action->name, $parentAssetId) : null;
 				$inheritedParentGroupRule      = !empty($group->parent_id) ? BwAccess::checkGroup($group->parent_id, $action->name, $assetId) : null;
 
 				// Current group is a Super User group, so calculated setting is "Allowed (Super User)".

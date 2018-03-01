@@ -509,6 +509,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 				'jform' => 'array',
 				'task' => 'string',
 				'controller' => 'string',
+				'confirm' => 'string',
 				'option' => 'string'
 			)
 		);

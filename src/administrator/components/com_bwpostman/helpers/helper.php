@@ -251,7 +251,7 @@ abstract class BwPostmanHelper
 			$authAction	= 'bwpm.view.' . $view . '.' . $action;
 			$assetName	= 'com_bwpostman.' . $view . '.' . $recordId;
 
-			$actionAllowed = self::authorise($authAction, $assetName, $strictView);
+			$actionAllowed = self::authorise($authAction, $assetName);
 
 			if ($actionAllowed !== null)
 			{
@@ -272,7 +272,7 @@ abstract class BwPostmanHelper
 		{
 			$authAction	= 'bwpm.view.' . $view;
 			$assetName	= 'com_bwpostman';
-			if (self::authorise($authAction, $assetName, $strictView))
+			if (self::authorise($authAction, $assetName))
 			{
 				return true;
 			}
@@ -335,29 +335,29 @@ abstract class BwPostmanHelper
 		// @ToDo: Revise: $user or self:: for authorise!
 		if ($view !== 'archive' && $view !== 'maintenance')
 		{
-			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, $view);
-			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view, $view);
-			$permissions['edit.own']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view, $view);
-			$permissions['edit.state'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view, $view);
-			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view, $view);
+			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view);
+			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view);
+			$permissions['edit.own']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view);
+			$permissions['edit.state'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view);
+			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view);
 		}
 
 		if ($view === 'newsletter')
 		{
-			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view, $view);
+			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view);
 		}
 
-		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view, $view);
+		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view);
 
 		if ($view !== 'maintenance')
 		{
-			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view, $view);
+			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view);
 		}
 
 		if ($view === 'maintenance')
 		{
-			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view, $view);
-			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view, $view);
+			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view);
+			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view);
 		}
 
 		return $permissions;
@@ -602,7 +602,6 @@ abstract class BwPostmanHelper
 	 * Method to check if you can view a specific view.
 	 *
 	 * @param    string     $view       The view to test.
-	 * @param    boolean    $strict     check only for this context
 	 *
 	 * @return    boolean
 	 *
@@ -610,9 +609,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canView($view = '', $strict = false)
+	public static function canView($view = '')
 	{
-		$user = JFactory::getUser();
 		$res  = false;
 
 		// Check general component permission first.
@@ -630,13 +628,7 @@ abstract class BwPostmanHelper
 			$assetName	= 'com_bwpostman';
 		}
 
-		$strictView = '';
-		if ($strict)
-		{
-			$strictView = $view;
-		}
-
-		if (self::authorise($authAction, $assetName, $strictView))
+		if (self::authorise($authAction, $assetName))
 		{
 			$res = true;
 		}
@@ -808,7 +800,7 @@ abstract class BwPostmanHelper
 		if ($recordId)
 		{
 			// First check for item specific edit.own permission
-			$editOwnItem = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId, true);
+			$editOwnItem = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId);
 			if ($editOwnItem !== null)
 			{
 				if ($editOwnItem)
@@ -824,7 +816,7 @@ abstract class BwPostmanHelper
 			}
 
 			// Second check for item specific edit permission
-			$editItem = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view . '.' . $recordId, true);
+			$editItem = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view . '.' . $recordId);
 			if ($editItem !== null)
 			{
 				return $editItem;
@@ -1777,16 +1769,15 @@ abstract class BwPostmanHelper
 	 *
 	 * @param   string  $action     The name of the action to check for permission.
 	 * @param   string  $assetName  The name of the asset on which to perform the action.
-	 * @param   string $strictView  check only for this context
 	 *
 	 * @return  boolean|null  True if permission is set, null otherwise
 	 *
 	 * @since   11.1
 	 */
-	public static function authorise($action, $assetName = null, $strictView = '')
+	public static function authorise($action, $assetName = null)
 	{
 		$userId = JFactory::getUser()->id;
 
-		return BwAccess::check($userId, $action, $assetName, false, $strictView);
+		return BwAccess::check($userId, $action, $assetName, false);
 	}
 }

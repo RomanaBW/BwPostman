@@ -209,7 +209,6 @@ abstract class BwPostmanHelper
 	 * @param    string     $view       The view to test.
 	 * @param    string     $action     The action to check
 	 * @param    int        $recordId   The record(s) to test.
-	 * @param    boolean    $strict     check only for this context/view
 	 *
 	 * @return bool
 	 *
@@ -217,7 +216,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since 2.0.0
 	 */
-	private static function checkActionPermission($view, $action, $recordId = 0, $strict = false)
+	private static function checkActionPermission($view, $action, $recordId = 0)
 	{
 		if (!is_array(self::$permissions))
 		{
@@ -234,13 +233,6 @@ abstract class BwPostmanHelper
 		if (isset(self::$permissions['com']['view'][$view]) && !self::$permissions['com']['view'][$view])
 		{
 			return false;
-		}
-
-		$strictView = '';
-
-		if ($strict)
-		{
-			$strictView = $view;
 		}
 
 		// First: Test for item specific permissions
@@ -313,7 +305,7 @@ abstract class BwPostmanHelper
 
 		foreach ($views as $view)
 		{
-			$permissions[$view] = self::canView($view, false);
+			$permissions[$view] = self::canView($view);
 		}
 
 		return $permissions;
@@ -704,6 +696,8 @@ abstract class BwPostmanHelper
 			BwAccess::getGroupsByUser($userId);
 		}
 
+		// @ToDo: case when I am section admin is not covered!
+
 		return false;
 	}
 
@@ -979,7 +973,6 @@ abstract class BwPostmanHelper
 	 *
 	 * @param    string     $view       The name of the context.
 	 * @param    int|array  $recordIds  The records to test.
-	 * @param    boolean    $strict     check only for this context
 	 *
 	 * @return    boolean
 	 *
@@ -987,7 +980,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canArchive($view = '', $recordIds = array(), $strict = false)
+	public static function canArchive($view = '', $recordIds = array())
 	{
 		// Initialise variables.
 		$action	= 'archive';
@@ -1006,7 +999,7 @@ abstract class BwPostmanHelper
 		// Check permission
 		foreach ($recordIds as $recordId)
 		{
-			if (self::checkActionPermission($view, $action, $recordId, $strict) === true)
+			if (self::checkActionPermission($view, $action, $recordId) === true)
 			{
 				return true;
 			}

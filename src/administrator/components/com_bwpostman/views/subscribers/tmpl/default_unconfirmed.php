@@ -122,7 +122,7 @@ $colNum = 8;
 							$item->editor,
 							$item->checked_out_time,
 							'subscribers.',
-							BwPostmanHelper::canCheckin($item->checked_out),
+							BwPostmanHelper::canCheckin('subscriber', $item->checked_out),
 							'ub'
 						);
 					}

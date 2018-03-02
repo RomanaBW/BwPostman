@@ -280,7 +280,7 @@ abstract class BwPostmanHelper
 	}
 
 	/**
-	 * Method to get permissions for all views
+	 * Method to get admin permissions for all sections
 	 *
 	 * @return mixed
 	 *
@@ -288,7 +288,36 @@ abstract class BwPostmanHelper
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function getPermissionsForAllViews()
+	protected static function getAdminPermissionsForAllSections()
+	{
+		$permissions = array();
+
+		$sections = array(
+			'newsletter',
+			'subscriber',
+			'campaign',
+			'mailinglist',
+			'template',
+		);
+
+		foreach ($sections as $section)
+		{
+			$permissions[$section] = self::canAdmin($section);
+		}
+
+		return $permissions;
+	}
+
+	/**
+	 * Method to get view permissions for all views
+	 *
+	 * @return mixed
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.0.0
+	 */
+	protected static function getViewPermissionsForAllViews()
 	{
 		$permissions = array();
 
@@ -527,7 +556,8 @@ abstract class BwPostmanHelper
 
 		self::$permissions = $permissions;
 
-		$permissions['view'] = self::getPermissionsForAllViews();
+		$permissions['admin'] = self::getAdminPermissionsForAllSections();
+		$permissions['view'] = self::getViewPermissionsForAllViews();
 
 		self::$permissions = $permissions;
 
@@ -555,20 +585,39 @@ abstract class BwPostmanHelper
 	/**
 	 * Method to check if you can administer BwPostman
 	 *
+	 * @param 	string	$section
+	 *
 	 * @return    boolean
 	 *
 	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canAdmin()
+	public static function canAdmin($section)
 	{
 		if (!is_array(self::$permissions))
 		{
 			self::setPermissionsState();
 		}
 
-		return self::$permissions['com']['admin'];
+		if (self::$permissions['com']['admin'])
+		{
+			return true;
+		}
+
+		// Next check section permission.
+		$authAction	= 'bwpm.admin.' . $section;
+		$assetName	= 'com_bwpostman.' . $section;
+
+		if ($section != 'archive' && $section != 'manage' & $section != 'maintenance')
+		{
+			if (self::authorise($authAction, $assetName))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -603,12 +652,10 @@ abstract class BwPostmanHelper
 	 */
 	public static function canView($view = '')
 	{
-		$res  = false;
-
 		// Check general component permission first.
-		if (self::canAdmin())
+		if (self::canAdmin($view))
 		{
-			$res = true;
+			return true;
 		}
 
 		// Next check view permission.
@@ -622,10 +669,10 @@ abstract class BwPostmanHelper
 
 		if (self::authorise($authAction, $assetName))
 		{
-			$res = true;
+			return true;
 		}
 
-		return $res;
+		return false;
 	}
 
 	/**
@@ -654,6 +701,7 @@ abstract class BwPostmanHelper
 	/**
 	 * Method to check if you can check in an item
 	 *
+	 * @param    string	   $section
 	 * @param    int       $checkedOut      user id, who checked out this item
 	 *
 	 * @return    boolean
@@ -662,7 +710,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canCheckin($checkedOut = 0)
+	public static function canCheckin($section, $checkedOut = 0)
 	{
 		// If nothing is checked out, there is nothing to test
 		if ($checkedOut == 0)
@@ -690,13 +738,11 @@ abstract class BwPostmanHelper
 			return true;
 		}
 
-		// Get groups user is member of
-		if (!is_array(self::$userGroups))
+		// If current user can admin this section, he may check in.
+		if (self::$permissions['admin'][$section])
 		{
-			BwAccess::getGroupsByUser($userId);
+			return true;
 		}
-
-		// @ToDo: case when I am section admin is not covered!
 
 		return false;
 	}
@@ -1533,7 +1579,7 @@ abstract class BwPostmanHelper
 	public static function getAllowedRecords($view)
 	{
 		// check for general permissions
-		if (self::canAdmin())
+		if (self::canAdmin($view))
 		{
 			return 'all';
 		}

@@ -80,6 +80,7 @@ class BwPostmanInstallHelper
 				return version_compare($client_version, '5.5.3', '>=');
 			}
 		}
+
 		return false;
 	}
 
@@ -92,6 +93,8 @@ class BwPostmanInstallHelper
 	 * @param   string $conversion_file     name of conversion file
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -107,6 +110,7 @@ class BwPostmanInstallHelper
 		{
 			return;
 		}
+
 		// check if already converted
 		// @Todo: How to solve, if a new table joins up?
 		if (self::tablesAreConverted($reference_table))
@@ -160,6 +164,8 @@ class BwPostmanInstallHelper
 	 *
 	 * @return  boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function tablesAreConverted($test_table = '')
@@ -187,6 +193,7 @@ class BwPostmanInstallHelper
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
 		return $ret;
 	}
 }

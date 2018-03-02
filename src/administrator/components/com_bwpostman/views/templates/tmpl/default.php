@@ -128,7 +128,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											$item->editor,
 											$item->checked_out_time,
 											'templates.',
-											BwPostmanHelper::canCheckin($item->checked_out)
+											BwPostmanHelper::canCheckin('template', $item->checked_out)
 										);
 									}
 

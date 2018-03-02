@@ -372,7 +372,6 @@
 			type="bwrules"
 			label=""
 			translate_label="false"
-			class="inputbox"
 			filter="rules"
 			component="com_bwpostman"
 			section="newsletter"

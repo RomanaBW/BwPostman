@@ -123,7 +123,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											$item->editor,
 											$item->checked_out_time,
 											'campaigns.',
-											BwPostmanHelper::canCheckin($item->checked_out)
+											BwPostmanHelper::canCheckin('campaign', $item->checked_out)
 										);
 									} ?>
 									<?php

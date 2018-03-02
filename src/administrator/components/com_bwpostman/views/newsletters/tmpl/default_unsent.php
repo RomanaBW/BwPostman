@@ -204,7 +204,7 @@ if ($task == "startsending")
 												$item->editor,
 												$item->checked_out_time,
 												'newsletters.',
-												BwPostmanHelper::canCheckin($item->checked_out)
+												BwPostmanHelper::canCheckin('newsletter', $item->checked_out)
 											);
 										} ?>
 										<?php if (BwPostmanHelper::canEdit('newsletter', $item)) : ?>

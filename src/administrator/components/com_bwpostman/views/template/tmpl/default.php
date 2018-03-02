@@ -238,9 +238,15 @@ $options = array(
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
 			<legend>
-				<?php echo JText::_(
-					empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_TPL') : JText::sprintf('COM_BWPOSTMAN_EDIT_TPL', $this->item->id)
-				); ?>
+				<?php
+				$title = JText::_('COM_BWPOSTMAN_NEW_TPL_HTML');
+				if ($this->item->id)
+				{
+					$title = JText::sprintf('COM_BWPOSTMAN_EDIT_TPL_HTML', $this->item->id);
+				}
+
+				echo $title
+				?>
 			</legend>
 			<div class="well well-small">
 				<div class="fltlft width-40 span5 control-group">

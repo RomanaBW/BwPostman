@@ -65,7 +65,9 @@ Joomla.submitbutton = function (pressbutton)
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
 		<div class="form-horizontal">
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_EDIT_PUBLISHED'); ?></legend>
+				<legend>
+					<?php echo JText::sprintf('COM_BWPOSTMAN_NL_EDIT_PUBLISHED', $this->item->id); ?>
+				</legend>
 				<div class="well well-small">
 					<div class="width-50 fltlft span6 control-group">
 						<ul class="adminformlist unstyled">

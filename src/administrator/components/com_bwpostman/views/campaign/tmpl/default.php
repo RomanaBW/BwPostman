@@ -113,54 +113,59 @@ $tab_options = array(
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<?php
-			echo JHtmlBwTabs::start('bwp-cam-nl-pane', $tab_options);
+		echo JHtmlBwTabs::start('bwp-cam-nl-pane', $tab_options);
 
 			// Start Tab basic
-			echo JHtmlBwTabs::panel(
-				JText::_(
-					empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id)
-				),
-				'basic',
-				''
-			);
-			echo $this->loadTemplate('basic');
+		$title = JText::_('COM_BWPOSTMAN_NEW_CAM');
 
-			// Start Tab assigned/unsent newsletters
-			$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
-			if (property_exists($this->item, 'automailing_values'))
+		if ($this->item->id)
+		{
+			$title = JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id);
+		}
+
+		echo JHtmlBwTabs::panel(
+			$title,
+			'basic',
+			''
+		);
+		echo $this->loadTemplate('basic');
+
+		// Start Tab assigned/unsent newsletters
+		$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
+		if (property_exists($this->item, 'automailing_values'))
+		{
+			if ($this->item->automailing_values !== null)
 			{
-				if ($this->item->automailing_values !== null)
-				{
-					$text	= JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
-				}
+				$text	= JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
 			}
+		}
 
-			echo JHtmlBwTabs::panel($text, 'unsent', '');
-			echo $this->loadTemplate('unsent');
+		echo JHtmlBwTabs::panel($text, 'unsent', '');
+		echo $this->loadTemplate('unsent');
 
-			if (property_exists($this->item, 'tc_mailing_data'))
-			{
-				// Start Tab autovalues
-				echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOVALUES_TITLE'), 'autovalues', '');
-				echo $this->item->tc_mailing_data;
-			}
+		if (property_exists($this->item, 'tc_mailing_data'))
+		{
+			// Start Tab autovalues
+			echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOVALUES_TITLE'), 'autovalues', '');
+			echo $this->item->tc_mailing_data;
+		}
 
-			if (property_exists($this->item, 'queued_letters'))
-			{
-				// Start Tab automailing queue
-				echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_TITLE'), 'autoqueue', '');
-				echo $this->item->queued_letters;
-			}
+		if (property_exists($this->item, 'queued_letters'))
+		{
+			// Start Tab automailing queue
+			echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_TITLE'), 'autoqueue', '');
+			echo $this->item->queued_letters;
+		}
 
-			// Start Tab sent newsletters
-			echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_NL_SENT'), 'sent', '');
-			echo $this->loadTemplate('sent');
+		// Start Tab sent newsletters
+		echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_NL_SENT'), 'sent', '');
+		echo $this->loadTemplate('sent');
 
-			// Start Tab permissions
-				echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'), 'rules', '');
-				echo $this->loadTemplate('rules');
+		// Start Tab permissions
+			echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'), 'rules', '');
+			echo $this->loadTemplate('rules');
 
-			echo JHtmlBwTabs::end();
+		echo JHtmlBwTabs::end();
 		?>
 
 		<input type="hidden" name="task" value="" />

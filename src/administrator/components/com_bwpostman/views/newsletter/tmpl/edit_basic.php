@@ -204,7 +204,18 @@ window.onload = function()
 		<div class="tab-wrapper-bwp">
 			<div class="form-horizontal">
 				<fieldset class="adminform">
-					<legend><?php echo JText::_('COM_BWPOSTMAN_NL_GENERAL'); ?></legend>
+					<legend>
+						<?php
+						$title = JText::_('COM_BWPOSTMAN_NL_GENERAL');
+
+						if ($this->item->id)
+						{
+							$title = JText::sprintf('COM_BWPOSTMAN_NL_GENERAL_EDIT', $this->item->id);
+						}
+
+						echo $title;
+						?>
+					</legend>
 					<div class="well well-small">
 						<div class="width-50 fltlft span6 control-group">
 							<ul class="adminformlist unstyled">

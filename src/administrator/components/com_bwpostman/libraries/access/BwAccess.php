@@ -195,17 +195,6 @@ class BwAccess
 			return true;
 		}
 
-		// restrict identities to only this view, if set, especially needed for archive tabs
-		if ($strictView != '')
-		{
-			// Get group ids for this view by asset!
-			// @ToDo: This method was only to get archive permissions, now there is an additional use case, but method is not adjusted!
-			$wantedGroups = self::getWantedGroups($strictView);
-
-			// Limit identities to only these groups
-//			$identities = array_intersect($wantedGroups, $identities);
-		}
-
 		// Get the JRules object and set data
 		$rules	= self::getAssetRules($assetKey, true, true, $preload);
 
@@ -231,41 +220,14 @@ class BwAccess
 	}
 
 	/**
-	 * @param $strictView
-	 *
-	 * @return array
-	 *
-	 * @since 2.0.0
-	 */
-	protected static function getWantedGroups($strictView)
-	{
-		$wantedGroups = array();
-		$sectionRules = json_decode(self::getSectionAsset($strictView), true);
-
-		$archiveRuleName	= 'bwpm.' . $strictView . '.archive';
-		if (isset($archiveRules, $sectionRules))
-		{
-			$archiveRules		= $sectionRules[$archiveRuleName];
-
-			if (is_array($archiveRules))
-			{
-				$wantedGroups		= array_keys($archiveRules);
-			}
-		}
-
-		return $wantedGroups;
-	}
-
-	/**
-	 * @param $section
+	 * @param $assetName
 	 *
 	 * @return string
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function getSectionAsset($section)
+	protected static function getSectionAsset($assetName)
 	{
-		$assetName = 'com_bwpostman.' . $section;
 		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true);
@@ -768,7 +730,7 @@ class BwAccess
 	 */
 	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = true, $preload = true)
 	{
-		// Auto preloads the components assets and root asset (if chosen).
+		// Auto preload the components assets and root asset (if chosen).
 		if ($preload)
 		{
 			self::preload('components');
@@ -777,7 +739,7 @@ class BwAccess
 		// When asset key is null fallback to root asset.
 		$assetKey = self::cleanAssetKey($assetKey);
 
-		// Auto preloads assets for the asset type (if chosen).
+		// Auto preload assets for the asset type (if chosen).
 		if ($preload)
 		{
 			self::preload(self::getAssetType($assetKey));
@@ -794,8 +756,8 @@ class BwAccess
 
 		// Get the asset name and the extension name.
 		$assetName     = self::getAssetName($assetKey);
-		$itemId        = self::getItemId($assetName);
-		$extensionName = self::getSectionNameFromAsset($assetName);
+		$sectionName 	= self::getAssetType($assetName);
+		$extensionName = self::getExtensionNameFromAsset($assetName);
 
 		// If asset id does not exist fallback to extension asset, then root asset.
 		if (!$assetId)
@@ -809,7 +771,11 @@ class BwAccess
 
 			if (self::$rootAssetId !== null && $assetName !== self::$preloadedAssets[self::$rootAssetId])
 			{
-				\JLog::add('No asset found for ' . $assetName . ', falling back to ' . self::$preloadedAssets[self::$rootAssetId], \JLog::WARNING, 'assets');
+				\JLog::add(
+					'No asset found for ' . $assetName . ', falling back to ' . self::$preloadedAssets[self::$rootAssetId],
+					\JLog::WARNING,
+					'assets'
+				);
 
 				return self::getAssetRules(self::$preloadedAssets[self::$rootAssetId], $recursive, $recursiveParentAsset, $preload);
 			}
@@ -826,7 +792,8 @@ class BwAccess
 			// If not in any recursive mode. We only want the asset rules.
 			if (!$recursive && !$recursiveParentAsset)
 			{
-				$collected = array(self::$assetPermissionsParentIdMapping[$extensionName][$assetId]->rules);
+				$collected = array(self::getSectionAsset($assetName));
+//				$collected = array(self::$assetPermissionsParentIdMapping[$extensionName][$assetId]->rules);
 			}
 			// If there is any type of recursive mode.
 			else
@@ -1035,29 +1002,6 @@ class BwAccess
 	}
 
 	/**
-	 * Method to get the asset  from the asset key.
-	 *
-	 * @param   string  $assetName  The asset name.
-	 *
-	 * @return  integer  The item id.
-	 *
-	 * @since   3.7.0
-	 */
-	protected static function getItemId($assetName)
-	{
-		$id = 0;
-		$lastDot = strrpos($assetName, '.');
-		$lastString = substr($assetName, $lastDot);
-
-		if (is_numeric($lastString))
-		{
-			$id = $lastString;
-		}
-
-		return $id;
-	}
-
-	/**
 	 * Method to get the asset name from the asset key.
 	 *
 	 * @param   integer|string  $assetKey  The asset key (asset id or asset name).
@@ -1198,7 +1142,7 @@ class BwAccess
 	 *
 	 * @param   integer  $groupId  Id of the group for which to get the title of.
 	 *
-	 * @return  string  Tthe title of the group
+	 * @return  string  The title of the group
 	 *
 	 * @since   3.5
 	 */
@@ -1431,7 +1375,11 @@ class BwAccess
 	 */
 	public static function getActions($component, $section = 'component')
 	{
-		\JLog::add(__METHOD__ . ' is deprecated. Use Access::getActionsFromFile or Access::getActionsFromData instead.', \JLog::WARNING, 'deprecated');
+		\JLog::add(
+			__METHOD__ . ' is deprecated. Use Access::getActionsFromFile or Access::getActionsFromData instead.',
+			\JLog::WARNING,
+			'deprecated'
+		);
 
 		$actions = self::getActionsFromFile(
 			JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml',

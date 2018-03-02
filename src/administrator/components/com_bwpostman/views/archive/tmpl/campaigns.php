@@ -206,26 +206,6 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'camp
 											if (count($this->items) > 0)
 											{
 												foreach ($this->items as $i => $item) :
-													$canCheckin	= $user->authorise(
-														'core.manage',
-														'com_checkin'
-													)
-													|| $item->checked_out == $userId || $item->checked_out == 0;
-
-													$canEdit	= $user->authorise('bwpm.edit', 'com_bwpostman.newsletter.' . $item->id);
-
-													$canEditOwn	= $user->authorise(
-														'bwpm.edit.own',
-														'com_bwpostman.newsletter.' . $item->id
-													)
-													&& $item->created_by == $userId;
-
-													$canChange	= $user->authorise(
-														'bwpm.edit.state',
-														'com_bwpostman.newsletter.' . $item->id
-													)
-													&& $canCheckin;
-
 													$link = 'index.php?option=com_bwpostman&view=archive&format=raw&layout=campaign_modal&cam_id=';
 													$link .= $item->id;
 													?>

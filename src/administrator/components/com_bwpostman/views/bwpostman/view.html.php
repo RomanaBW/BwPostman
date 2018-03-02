@@ -133,7 +133,7 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		JToolbarHelper::title(JText::_('COM_BWPOSTMAN'), 'envelope');
 
 		// Set toolbar items for the page
-		if (BwPostmanHelper::canAdmin())
+		if ($this->permissions['com']['admin'])
 		{
 			JToolbarHelper::preferences('com_bwpostman', '500', '900');
 			JToolbarHelper::spacer();

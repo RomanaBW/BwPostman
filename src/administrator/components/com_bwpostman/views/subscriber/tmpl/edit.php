@@ -102,12 +102,14 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<div class="tab-wrapper-bwp">
+			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+			<?php echo JHtml::_(
+				'bootstrap.addTab',
+				'myTab',
+				'details',
+				is_null($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_SUB') : JText::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id)
+			); ?>
 			<fieldset class="adminform">
-				<legend>
-					<?php
-					echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_SUB') : JText::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id);
-					?>
-				</legend>
 				<div class="well well-small">
 					<div class="width-60 fltlft span8 control-group">
 						<ul class="adminformlist unstyled">
@@ -307,23 +309,21 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 					</fieldset>
 				</div>
 			<?php  endif ?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php
-/*			if (BwPostmanHelper::canAdmin()): ?>
-				<div class="fltlft">
-					<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-
-						<?php echo JHtml::_('sliders.panel', JText::_('COM_BWPOSTMAN_SUBS_FIELDSET_RULES'), 'access-rules'); ?>
-						<div class="well well-small">
-							<fieldset class="panelform">
-								<?php echo $this->form->getInput('rules'); ?>
-							</fieldset>
-						</div>
-					<?php echo JHtml::_('sliders.end'); ?>
+			if (BwPostmanHelper::canAdmin('subscriber')): ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_BWPOSTMAN_SUBS_FIELDSET_RULES')); ?>
+				<div class="well well-small">
+					<fieldset class="adminform">
+						<?php echo $this->form->getInput('rules'); ?>
+					</fieldset>
 				</div>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endif
-*/			?>
+			?>
 		</div>
-		<div class="clr"></div>
+		<div class="clearfix"></div>
+		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 		<?php

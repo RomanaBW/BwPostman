@@ -418,10 +418,24 @@ window.onload = function()
 			<fieldset class="adminform">
 				<?php
 				?>
+			</fieldset>
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?></legend>
+				<?php
+				if ($this->permissions['com']['admin'] || $this->permissions['admin']['newsletter']): ?>
+					<div class="fltlft">
+						<div class="well well-small">
+							<fieldset class="panelform">
+								<?php echo $this->form->getInput('rules'); ?>
+							</fieldset>
+						</div>
+					</div>
+				<?php endif; ?>
 
 			</fieldset>
-			<div class="clr clearfix"></div>
 		</div>
+		<div class="clearfix"></div>
+</div>
 
 		<?php
 		foreach($this->form->getFieldset('html_version_hidden') as $field)

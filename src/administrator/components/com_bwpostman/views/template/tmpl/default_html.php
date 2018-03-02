@@ -209,7 +209,11 @@ $options = array(
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEMPLATE'); ?></legend>
+			<legend>
+				<?php echo JText::_(
+					empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_TPL_HTML') : JText::sprintf('COM_BWPOSTMAN_EDIT_TPL_HTML', $this->item->id)
+				); ?>
+			</legend>
 			<div class="well well-small">
 				<div class="fltlft width-40 span5 control-group">
 					<?php
@@ -334,6 +338,13 @@ $options = array(
 						<div><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_DESC'); ?></div>
 						<?php echo $this->loadTemplate('tpl_tags'); ?>
 					</fieldset>
+					<?php
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FIELDSET_RULES'), 'panel5'); ?>
+						<div class="well well-small">
+								<fieldset class="adminform">
+									<?php echo $this->form->getInput('rules'); ?>
+								</fieldset>
+						</div>
 					<?php
 						echo JHtml::_('tabs.end');
 					?>

@@ -147,16 +147,16 @@ JHtml::_('formbehavior.chosen', 'select');
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 			<?php
-/*			if (BwPostmanHelper::canAdmin()): ?>
+			if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist']): ?>
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
 				<div class="well well-small">
 						<fieldset class="adminform">
 							<?php echo $this->form->getInput('rules'); ?>
 						</fieldset>
 				</div>
-				<?php echo JHtml::_('bootstrap.endTab'); ?>
-			<?php endif
-*/			?>
+			<?php endif;
+				echo JHtml::_('bootstrap.endTab');
+			?>
 			<div class="clearfix"></div>
 			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		</div>

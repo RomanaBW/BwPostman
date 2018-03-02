@@ -318,7 +318,8 @@ class JFormFieldBwRules extends JFormFieldRules
 					// Third part: Overwrite the calculated permissions labels for special cases.
 
 					// Global configuration with "Not Set" permission. Calculated permission is "Not Allowed (Default)".
-					if (empty($group->parent_id) && $isGlobalConfig === true && $assetRule === null)
+					elseif (empty($group->parent_id) && $isGlobalConfig === true && $assetRule === null
+						|| $inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
 					{
 						$result['class'] = 'label label-important';
 						$result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED_DEFAULT');
@@ -329,12 +330,12 @@ class JFormFieldBwRules extends JFormFieldRules
 					 * Or some parent group has an explicit "Denied".
 					 * Calculated permission is "Not Allowed (Locked)".
 					 */
-					elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
+/*					elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
 					{
 						$result['class'] = 'label label-important';
 						$result['text']  = '<span class="icon-lock icon-white"></span>' . JText::_('JLIB_RULES_NOT_ALLOWED_LOCKED');
 					}
-				}
+*/				}
 
 				$html[] = '<span class="' . $result['class'] . '">' . $result['text'] . '</span>';
 				$html[] = '</td>';

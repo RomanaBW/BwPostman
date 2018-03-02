@@ -123,11 +123,7 @@ $tab_options = array(
 			$title = JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id);
 		}
 
-		echo JHtmlBwTabs::panel(
-			$title,
-			'basic',
-			''
-		);
+		echo JHtmlBwTabs::panel($title, 'basic', '');
 		echo $this->loadTemplate('basic');
 
 		// Start Tab assigned/unsent newsletters

@@ -223,27 +223,31 @@ abstract class BwPostmanHelper
 			self::setPermissionsState();
 		}
 
-		// Check for admin permission
+		// Do not forbid for admin
 		if (isset(self::$permissions['com']['admin']) && self::$permissions['com']['admin'])
 		{
 			return true;
 		}
 
-		// Check view permission.
-		if (isset(self::$permissions['com']['view'][$view]) && !self::$permissions['com']['view'][$view])
-		{
-			return false;
-		}
+		/*
+		 * Real permission checks
+		 *
+		 * To enable item based deny to someone, who normally has the permission to edit (or vice versa), first check on item level.
+		 * If there is found an entry on item level, this one has priority!
+		 * If no entry on item level is found, we have check further, until we find an entry.
+		 * If we find no entry on all levels, we deny.
+		 *
+		 * To reach that, we also need a return value of null at authorize method. So we can't use $user->authorize
+		 */
 
-		// First: Test for item specific permissions
+		// First: Check for item specific permissions
 		if ($recordId)
 		{
-			// Check for item specific permissions
 			// Return result, if we have the permission explicitly named, else go downwards
-			$authAction	= 'bwpm.view.' . $view . '.' . $action;
+			$authAction	= 'bwpm.' . $view . '.' . $action;
 			$assetName	= 'com_bwpostman.' . $view . '.' . $recordId;
 
-			$actionAllowed = self::authorise($authAction, $assetName);
+			$actionAllowed = self::authorise($authAction, $assetName, $recordId);
 
 			if ($actionAllowed !== null)
 			{
@@ -258,13 +262,12 @@ abstract class BwPostmanHelper
 			return false;
 		}
 
-		// @ToDo: What do I do with the following?
-
 		if ($action == 'archive' || $action == 'restore' || $action == 'delete')
+		// @ToDo: What do I do with this? Do I ever get here? Is this the right position?
 		{
 			$authAction	= 'bwpm.view.' . $view;
 			$assetName	= 'com_bwpostman';
-			if (self::authorise($authAction, $assetName))
+			if (self::authorise($authAction, $assetName, $recordId))
 			{
 				return true;
 			}
@@ -356,32 +359,67 @@ abstract class BwPostmanHelper
 		// @ToDo: Revise: $user or self:: for authorise!
 		if ($view !== 'archive' && $view !== 'maintenance')
 		{
-			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view);
-			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view);
-			$permissions['edit.own']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view);
-			$permissions['edit.state'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view);
-			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view);
+			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, 0);
+			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view, 0);
+			$permissions['edit.own']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view, 0);
+			$permissions['edit.state'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view, 0);
+			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view, 0);
 		}
 
 		if ($view === 'newsletter')
 		{
-			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view);
+			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view, 0);
 		}
 
-		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view);
+		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view, 0);
 
 		if ($view !== 'maintenance')
 		{
-			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view);
+			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view, 0);
 		}
 
 		if ($view === 'maintenance')
 		{
-			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view);
-			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view);
+			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view, 0);
+			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view, 0);
 		}
 
 		return $permissions;
+	}
+
+	/**
+	 * @param $view
+	 *
+	 * @return bool
+	 *
+	 * @since version
+	 *
+	 * @throws Exception
+	 */
+	private static function displayButton($view)
+	{
+		if (self::$permissions['com']['edit.own']
+			|| self::$permissions['com']['edit']
+			|| self::$permissions[$view]['edit.own']
+			|| self::$permissions[$view]['edit']
+		)
+		{
+			return true;
+		}
+
+		// Enhancement for item specific rights
+		$allowedItems = self::getAllowedRecords($view);
+
+		foreach ($allowedItems as $allowedItem)
+		{
+			$editItem = self::checkActionPermission($view, 'edit', $allowedItem);
+			if ($editItem === true)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -505,7 +543,7 @@ abstract class BwPostmanHelper
 
 		foreach ($actions as $action)
 		{
-			$result->set($action->name, self::authorise($action->name, $assetName));
+			$result->set($action->name, self::authorise($action->name, $assetName, $id));
 		}
 
 		return $result;
@@ -611,7 +649,7 @@ abstract class BwPostmanHelper
 
 		if ($section != 'archive' && $section != 'manage' & $section != 'maintenance')
 		{
-			if (self::authorise($authAction, $assetName))
+			if (self::authorise($authAction, $assetName, 0))
 			{
 				return true;
 			}
@@ -667,7 +705,7 @@ abstract class BwPostmanHelper
 			$assetName	= 'com_bwpostman';
 		}
 
-		if (self::authorise($authAction, $assetName))
+		if (self::authorise($authAction, $assetName, 0))
 		{
 			return true;
 		}
@@ -761,19 +799,8 @@ abstract class BwPostmanHelper
 	 */
 	public static function canEdit($view = '', $data = array())
 	{
-		if (!is_array(self::$permissions))
-		{
-			self::setPermissionsState();
-		}
-
-		// If current user can admin, he always may edit.
-		if (self::$permissions['com']['admin'])
-		{
-			return true;
-		}
-
 		/*
-		 * To enable item based deny to someone, who normally has the permission to edit, first check on item level.
+		 * To enable item based deny to someone, who normally has the permission to edit (or vice versa), first check on item level.
 		 * If there is found an entry on item level, this one has priority!
 		 * If no entry on item level is found, we have check further, until we find an entry.
 		 * If we find no entry on all levels, we deny.
@@ -790,22 +817,10 @@ abstract class BwPostmanHelper
 		// Extract needed data
 		if (is_object($data))
 		{
-			if (property_exists($data, 'id'))
-			{
-				$recordId = (int) $data->id;
-			}
-
-			if (property_exists($data, 'created_by'))
-			{
-				$createdBy = (int) $data->created_by;
-			}
-
-			if (property_exists($data, 'registered_by'))
-			{
-				$createdBy = (int) $data->registered_by;
-			}
+			$data = \Joomla\Utilities\ArrayHelper::fromObject($data);
 		}
-		elseif (is_array($data))
+
+		if (is_array($data))
 		{
 			if (key_exists('id', $data))
 			{
@@ -826,41 +841,32 @@ abstract class BwPostmanHelper
 		// This part is needed for displaying the button
 		if (!$recordId)
 		{
-			$res = false;
-
-			if (self::$permissions['com']['edit.own'] || self::$permissions[$view]['edit.own'])
-			{
-				$res = true;
-			}
-
-			return $res;
+			return self::displayButton($view);
 		}
 
-		// This part is used, if we have a record to check against
-		if ($recordId)
-		{
-			// First check for item specific edit.own permission
-			$editOwnItem = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view . '.' . $recordId);
-			if ($editOwnItem !== null)
-			{
-				if ($editOwnItem)
-				{
-					$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+		// Now lets check for a specific record
 
-					// Now test the owner is the user. If the owner matches 'me' then allow access.
-					if ($ownerId == $userId)
-					{
-						return true;
-					}
+		// First check for item specific edit.own permission
+		$editOwnItem = self::checkActionPermission($view, 'edit.own', $recordId);
+		if ($editOwnItem !== null)
+		{
+			if ($editOwnItem)
+			{
+				$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+
+				// Now test the owner is the user. If the owner matches 'me' then allow access.
+				if ($ownerId == $userId)
+				{
+					return true;
 				}
 			}
+		}
 
-			// Second check for item specific edit permission
-			$editItem = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view . '.' . $recordId);
-			if ($editItem !== null)
-			{
-				return $editItem;
-			}
+		// Second check for item specific edit permission
+		$editItem = self::checkActionPermission($view, 'edit', $recordId);
+		if ($editItem !== null)
+		{
+			return $editItem;
 		}
 
 		// Third check for general or view edit.own permission
@@ -881,13 +887,13 @@ abstract class BwPostmanHelper
 			return false;
 		}
 
-		// Check for view edit permission
+		// Fourth Check for view edit permission
 		if (self::$permissions[$view]['edit'])
 		{
 			return true;
 		}
 
-		// Check for general edit permission
+		// Last check for general edit permission
 		if (self::$permissions['com']['edit'])
 		{
 			return true;
@@ -1028,6 +1034,11 @@ abstract class BwPostmanHelper
 	 */
 	public static function canArchive($view = '', $recordIds = array())
 	{
+		if (self::$permissions['mailinglist']['archive'])
+		{
+			return true;
+		}
+
 		// Initialise variables.
 		$action	= 'archive';
 
@@ -1042,7 +1053,7 @@ abstract class BwPostmanHelper
 			$recordIds[] = 0;
 		}
 
-		// Check permission
+		// Check permission for submitted records
 		foreach ($recordIds as $recordId)
 		{
 			if (self::checkActionPermission($view, $action, $recordId) === true)
@@ -1050,6 +1061,8 @@ abstract class BwPostmanHelper
 				return true;
 			}
 		}
+
+		// Get allowed records
 
 		return false;
 	}
@@ -1570,7 +1583,7 @@ abstract class BwPostmanHelper
 	 *
 	 * @param   string  $view       The name of the context.
 	 *
-	 * @return  string  $allowed_ids
+	 * @return  array|string  $allowed_items
 	 *
 	 * @throws Exception
 	 *
@@ -1588,12 +1601,12 @@ abstract class BwPostmanHelper
 		$item_records  = self::extractIdFromAssetName($asset_records);
 		$allowed_items = self::checkRecordsForPermission($view, $item_records);
 
-		$general_permission = array_search(0, $allowed_items);
+/*		$general_permission = array_search(0, $allowed_items);
 		if ($general_permission !== false)
 		{
 			return 'all';
 		}
-
+*/
 		// check for mailinglist specific permissions
 		if ($view != 'mailinglist')
 		{
@@ -1608,9 +1621,8 @@ abstract class BwPostmanHelper
 		}
 
 		$allowed_items  = array_unique($allowed_items);
-		$allowed_ids    = implode(',', $allowed_items);
 
-		return $allowed_ids;
+		return $allowed_items;
 	}
 
 	/**
@@ -1808,15 +1820,16 @@ abstract class BwPostmanHelper
 	 *
 	 * @param   string  $action     The name of the action to check for permission.
 	 * @param   string  $assetName  The name of the asset on which to perform the action.
+	 * @param   integer $recordId   The id of the record
 	 *
 	 * @return  boolean|null  True if permission is set, null otherwise
 	 *
 	 * @since   11.1
 	 */
-	public static function authorise($action, $assetName = null)
+	public static function authorise($action, $assetName = null, $recordId = 0)
 	{
 		$userId = JFactory::getUser()->id;
 
-		return BwAccess::check($userId, $action, $assetName, false);
+		return BwAccess::check($userId, $action, $assetName, false, $recordId);
 	}
 }

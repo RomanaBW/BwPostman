@@ -759,7 +759,7 @@ class TestNewslettersListsCest
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '1');
 
 		// create newsletter and send (without success)
-		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['user']);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['user']);
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, true);
 
 		$I->see(NlManage::$queue_warning_msg);

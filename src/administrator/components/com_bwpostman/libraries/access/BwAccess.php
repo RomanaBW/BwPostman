@@ -169,13 +169,13 @@ class BwAccess
 	 * @param   string          $action     The name of the action to authorise.
 	 * @param   integer|string  $assetKey   The asset key (asset id or asset name). null fallback to root asset.
 	 * @param   boolean         $preload    Indicates whether preloading should be used.
-	 * @param   string          $strictView check only for this context
+	 * @param   integer         $recordId   the id of the record to check for, if given
 	 *
 	 * @return  boolean|null  True if allowed, false for an explicit deny, null for an implicit deny.
 	 *
 	 * @since   11.1
 	 */
-	public static function check($userId, $action, $assetKey = null, $preload = false, $strictView = '')
+	public static function check($userId, $action, $assetKey = null, $preload = false, $recordId = 0)
 	{
 		// Sanitise inputs.
 		$userId = (int) $userId;
@@ -204,6 +204,11 @@ class BwAccess
 		}
 
 		self::$actionRule	= $rules->getData()[$action]->getData();
+
+		if (isset(self::$actionRule[$recordId]) && self::$actionRule[$recordId])
+		{
+			return true;
+		}
 
 		/*
 		 * Workaround:
@@ -756,7 +761,6 @@ class BwAccess
 
 		// Get the asset name and the extension name.
 		$assetName     = self::getAssetName($assetKey);
-		$sectionName 	= self::getAssetType($assetName);
 		$extensionName = self::getExtensionNameFromAsset($assetName);
 
 		// If asset id does not exist fallback to extension asset, then root asset.
@@ -793,7 +797,6 @@ class BwAccess
 			if (!$recursive && !$recursiveParentAsset)
 			{
 				$collected = array(self::getSectionAsset($assetName));
-//				$collected = array(self::$assetPermissionsParentIdMapping[$extensionName][$assetId]->rules);
 			}
 			// If there is any type of recursive mode.
 			else
@@ -1065,40 +1068,6 @@ class BwAccess
 			if ($assetName !== 'root.1' && $firstDot !== false)
 			{
 				$assetName = substr($assetName, 0, $firstDot);
-			}
-
-			$loaded[$assetKey] = $assetName;
-		}
-
-		return $loaded[$assetKey];
-	}
-
-	/**
-	 * Method to get the section name from the asset name.
-	 *
-	 * @param   integer|string  $assetKey  The asset key (asset id or asset name).
-	 *
-	 * @return  string  The extension and section name (ex: com_bwpostman.mailinglist).
-	 *
-	 * @since    1.6
-	 */
-	public static function getSectionNameFromAsset($assetKey)
-	{
-		static $loaded = array();
-
-		if (!isset($loaded[$assetKey]))
-		{
-			$assetName = self::getAssetName($assetKey);
-			$firstDot  = strpos($assetName, '.');
-
-			if ($assetName !== 'root.1' && $firstDot !== false)
-			{
-				$secondDot = strpos($assetName, '.', $firstDot + 1);
-
-				if ($secondDot !== false)
-				{
-					$assetName = substr($assetName, 0, $secondDot);
-				}
 			}
 
 			$loaded[$assetKey] = $assetName;

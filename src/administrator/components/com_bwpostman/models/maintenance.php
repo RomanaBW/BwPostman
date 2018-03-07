@@ -4007,6 +4007,56 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
 		);
 
+		$rules['bwpm.admin.campaign'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.admin.mailinglist'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.admin.newsletter'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.admin.subscriber'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
+		$rules['bwpm.admin.template'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+		);
+
 		$this->componentRules = $rules;
 	}
 

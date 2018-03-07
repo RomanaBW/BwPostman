@@ -104,11 +104,18 @@ class SubscriberEditPage
 	 *
 	 * @since  2.0.0
 	 */
-	public static $mls_accessible       = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[1]/div/fieldset/div/p[%s]/label";
-	public static $mls_nonaccessible    = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[2]/div/fieldset/div/p[%s]/label";
-	public static $mls_internal         = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/div/p[%s]/label";
+	// This is the version before tabs
+	//public static $mls_accessible       = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[1]/div/fieldset/div/p[%s]/label";
+	//public static $mls_nonaccessible    = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[2]/div/fieldset/div/p[%s]/label";
+	//public static $mls_internal         = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/div/p[%s]/label";
 
-	public static $mls_internal_label   = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/legend";
+	//public static $mls_internal_label   = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/legend";
+
+	public static $mls_accessible       = ".//*[@id='details']/div/fieldset/div[1]/div/fieldset/div/p[%s]/label";
+	public static $mls_nonaccessible    = ".//*[@id='details']/div/fieldset/div[2]/div/fieldset/div/p[%s]/label";
+	public static $mls_internal         = ".//*[@id='details']/div/fieldset/div[3]/div/fieldset/div/p[%s]/label";
+
+	public static $mls_internal_label   = ".//*[@id='details']/div/fieldset/div[3]/div/fieldset/legend";
 
 	/**
 	 * Test method to create single Subscriber without cleanup for testing restore permission

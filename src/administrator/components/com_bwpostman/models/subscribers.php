@@ -237,7 +237,7 @@ class BwPostmanModelSubscribers extends JModelList
 	{
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
-		$this->getFilterByComponentPermissions();
+//		$this->getFilterByComponentPermissions();
 		$this->getFilterBySubscriberState();
 		$this->getFilterByMailinglist();
 		$this->getFilterByMailformat();
@@ -327,10 +327,11 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	private function getFilterByComponentPermissions()
 	{
-		$allowed_ids    = BwPostmanHelper::getAllowedRecords('subscriber');
+		$allowed_items  = BwPostmanHelper::getAllowedRecords('subscriber');
 
-		if ($allowed_ids != 'all')
+		if ($allowed_items != 'all')
 		{
+			$allowed_ids    = implode(',', $allowed_items);
 			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}

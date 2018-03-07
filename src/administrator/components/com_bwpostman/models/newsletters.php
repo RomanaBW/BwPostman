@@ -356,7 +356,7 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
-		$this->getFilterByComponentPermissions();
+//		$this->getFilterByComponentPermissions();
 		$this->getFilterByCampaign($tab);
 		$this->getFilterByAuthor($tab);
 		$this->getFilterBySearchword($tab);
@@ -470,10 +470,11 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	private function getFilterByComponentPermissions()
 	{
-		$allowed_ids    = BwPostmanHelper::getAllowedRecords('newsletter');
+		$allowed_items  = BwPostmanHelper::getAllowedRecords('newsletter');
 
-		if ($allowed_ids != 'all')
+		if ($allowed_items != 'all')
 		{
+			$allowed_ids    = implode(',', $allowed_items);
 			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}

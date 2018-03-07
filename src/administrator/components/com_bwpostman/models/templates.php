@@ -230,7 +230,7 @@ class BwPostmanModelTemplates extends JModelList
 	{
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
-		$this->getFilterByComponentPermissions();
+//		$this->getFilterByComponentPermissions();
 		$this->getFilterByNewTemplates();
 		$this->getFilterByTemplateFormat();
 		$this->getFilterByPublishedState();
@@ -320,10 +320,11 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	private function getFilterByComponentPermissions()
 	{
-		$allowed_ids    = BwPostmanHelper::getAllowedRecords('template');
+		$allowed_items  = BwPostmanHelper::getAllowedRecords('template');
 
-		if ($allowed_ids != 'all')
+		if ($allowed_items != 'all')
 		{
+			$allowed_ids    = implode(',', $allowed_items);
 			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}

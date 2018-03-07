@@ -1764,15 +1764,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['from_name']             = $state_data->from_name;
 				$form_data['from_email']            = $state_data->from_email;
 				$form_data['reply_email']           = $state_data->reply_email;
-				$form_data['access']                = $state_data->access;
 				$form_data['intro_headline']        = $state_data->intro_headline;
 				$form_data['intro_text_headline']   = $state_data->intro_text_headline;
 				$form_data['intro_text']            = $state_data->intro_text;
 				$form_data['intro_text_text']       = $state_data->intro_text_text;
 				$form_data['hits']                  = $state_data->hits;
 				$form_data['access']                = $state_data->access;
-				$form_data['template_old_id']       = $state_data->template_old_id;
-				$form_data['text_template_old_id']  = $state_data->text_template_old_id;
 				$form_data['publish_up']            = $state_data->publish_up;
 				$form_data['publish_down']          = $state_data->publish_down;
 				$form_data['created_by']            = $state_data->created_by;
@@ -1789,6 +1786,31 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['usergroups']            = $state_data->usergroups;
 				$form_data['template_id']           = $state_data->template_id;
 				$form_data['text_template_id']      = $state_data->text_template_id;
+
+				if (is_object($state_data) && property_exists($state_data, 'template_old_id'))
+				{
+					$form_data['template_old_id'] = $state_data->template_old_id;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'text_template_old_id'))
+				{
+					$form_data['text_template_old_id'] = $state_data->text_template_old_id;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'created_by'))
+				{
+					$form_data['created_by'] = $state_data->created_by;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'modified_by'))
+				{
+					$form_data['modified_by'] = $state_data->modified_by;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'access'))
+				{
+					$form_data['access'] = $state_data->access;
+				}
 
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
 				{
@@ -3257,7 +3279,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				// and test-entries may be deleted
 				if ($recipients_data->status == 9)
 				{
-					// @todo delete entry in content-table?
+					// @Todo: Delete entry in sendmailcontent-table?
 				}
 			}
 		}

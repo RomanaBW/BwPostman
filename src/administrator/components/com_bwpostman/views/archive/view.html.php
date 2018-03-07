@@ -221,7 +221,7 @@ class BwPostmanViewArchive extends JViewLegacy
 			case "campaigns":
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
 				$bar = JToolbar::getInstance('toolbar');
-				$alt_archive = "unarchive";
+				$alt_archive = JText::_('COM_BWPOSTMAN_UNARCHIVE');
 				if ($this->permissions['campaign']['restore'])
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive';

@@ -274,14 +274,14 @@ class NewsletterEditPage
 
 
 	/**
-	 * @var string
+	 * @var integer
 	 *
 	 * @since   2.0.0
 	 */
 	public static $nbr_only_confirmed   = 128;
 
 	/**
-	 * @var string
+	 * @var integer
 	 *
 	 * @since   2.0.0
 	 */
@@ -1126,7 +1126,7 @@ class NewsletterEditPage
 		if ($sentToUnconfirmed)
 		{
 			$I->click(self::$checkbox_unconfirmed);
-			$nbrToSend .= self::$nbr_unconfirmed;
+			$nbrToSend += self::$nbr_unconfirmed;
 		}
 
 		if ($toUsergroup)
@@ -1145,7 +1145,7 @@ class NewsletterEditPage
 		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$I->wait(4);
+		$I->wait(6);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 		$I->waitForText(self::$success_send_ready, 400);
 		$I->see(self::$success_send_ready);

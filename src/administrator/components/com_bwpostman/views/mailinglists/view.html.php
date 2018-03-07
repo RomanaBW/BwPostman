@@ -182,7 +182,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			JToolbarHelper::addNew('mailinglist.add');
 		}
 
-		if ($this->permissions['mailinglist']['edit'] || $this->permissions['mailinglist']['edit.own'])
+		if (BwPostmanHelper::canEdit('mailinglist'))
 		{
 			JToolbarHelper::editList('mailinglist.edit');
 		}
@@ -195,7 +195,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			JToolbarHelper::divider();
 		}
 
-		if ($this->permissions['mailinglist']['archive'])
+		if (BwPostmanHelper::canArchive('mailinglist'))
 		{
 			JToolbarHelper::archiveList('mailinglist.archive');
 			JToolbarHelper::divider();

@@ -382,6 +382,8 @@ class NewsletterManagerPage
 	 * @since   2.0.0
 	 */
 	public static $filter_sent_cam_result   = array(
+		"Kopie von 'Kopie von 'Template Gedicht 1''",
+		"Kopie von 'Template Gedicht 1'",
 		"Test Newsletter 11.4.2015 23:30:35",
 		"Test Newsletter 12.4.2015 10:32:6",
 	);
@@ -407,13 +409,12 @@ class NewsletterManagerPage
 		'search_res'           => array(array(3, 0, 3, 0, 0, 0), array(15, 6, 19, 20, 28, 31), array(0, 0, 0, 9, 2, 9)),
 	);
 
-
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $search_sent_clear_val     = "Test Newsletter 10.4.2015 0:14:17";
+	public static $search_sent_clear_val     = "Kopie von 'Kopie von 'Template Gedicht 1''";
 
 
 	/**
@@ -468,30 +469,30 @@ class NewsletterManagerPage
 	 * @since   2.0.0
 	 */
 	public static $pagination_sent_data_array  = array(
-		'p1_val1'              => " Test Newsletter 10.4.2015 0:14:17",
+		'p1_val1'              => "Kopie von 'Kopie von 'Template Gedicht 1''",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p1_val_last'          => " Test Newsletter 11.4.2015 20:32:13",
+		'p1_val_last'          => "Test Newsletter 11.4.2015 13:26:59",
 		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p2_val1'              => " Test Newsletter 11.4.2015 21:2:49",
+		'p2_val1'              => "Test Newsletter 11.4.2015 18:28:23",
 		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p2_val_last'          => " Test Newsletter 12.4.2015 5:30:52",
+		'p2_val_last'          => "Test Newsletter 12.4.2015 10:32:6",
 		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p3_val1'              => " Test Newsletter 12.4.2015 7:3:32",
+		'p3_val1'              => "Test Newsletter 12.4.2015 2:1:47",
 		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p3_val3'              => " Test Newsletter 9.4.2015 23:5:25",
-		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[8]/td[3]",
+		'p3_val3'              => " Test Newsletter 9.4.2015 22:52:14",
+		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p_prev_val1'          => " Test Newsletter 11.4.2015 21:2:49",
+		'p_prev_val1'          => "Test Newsletter 12.4.2015 2:1:47",
 		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p_prev_val_last'      => " Test Newsletter 12.4.2015 5:30:52",
+		'p_prev_val_last'      => "Test Newsletter 9.4.2015 22:52:14",
 		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p_last_val1'          => " Test Newsletter 12.4.2015 7:3:32",
+		'p_last_val1'          => "Test Newsletter 9.4.2015 23:5:25",
 		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'p_last_val_last'      => " Test Newsletter 9.4.2015 23:5:25",
-		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[3]",
+		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
 	);
 
 

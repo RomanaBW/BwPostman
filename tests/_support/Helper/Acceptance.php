@@ -1,12 +1,12 @@
 <?php
 namespace Helper;
+
 use Codeception;
 use Page\Generals;
-use Page\AccessPage as AccessPage;
 
 /**
  * here you can define custom actions
- *all public methods declared in helper class will be available in $I
+ * all public methods declared in helper class will be available in $I
  *
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
@@ -25,45 +25,15 @@ use Page\AccessPage as AccessPage;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @since   2.0.0
-*/
+ */
 class Acceptance extends Codeception\Module
 {
-	/**
-	 * Method to fill database with test data before tests are processed
-	 *
-	 * @since   2.0.0
-	 */
-	public function _getQueryBase()
-	{
-		$credentials    = $this->_getDbCredentials();
-
-		return "mysql -u " . $credentials['user'] . " -p" . $credentials['password'] . " " . $credentials['database'] . " < " . Generals::$db_data_path;
-	}
-
-	/**
-	 * Method to fill database with test data before tests are processed
-	 *
-	 * @since   2.0.0
-	 */
-	public function _getBackupQuery()
-	{
-		$credentials    = $this->_getDbCredentials();
-
-		$command    = "mysqldump -u " . $credentials['user'] . " -p" . $credentials['password'];
-		$options    = "  --skip-add-drop-table --single-transaction ";
-		$special    = " | sed -r 's/CREATE TABLE (`[^`]+`)/TRUNCATE TABLE \\1;\\nCREATE TABLE IF NOT EXISTS \\1/g'";
-		$target     = " > " . Generals::$db_data_path;
-
-		$tables     = DbHelper::getTableNames($credentials);
-
-		$query   = $command . $options . $credentials['database'] . " " . $tables . $special . $target;
-
-		return $query;
-	}
 	/**
 	 * Method to change browser
 	 *
 	 * @param $browser
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -92,6 +62,7 @@ class Acceptance extends Codeception\Module
 		{
 			return false;
 		}
+
 		return true;
 	}
 
@@ -163,11 +134,22 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
+	 *
+	 * @throws \Exception
 	 * @since   2.0.0
 	 */
-	public function GetListData($table_name = 'mailinglists', $columns = '*', $archive = 0, $status = '', $order_col = '', $order_dir = 'ASC', $limit = 20, $criteria = array(), $tab = 1)
+	public function GetListData(
+		$table_name = 'mailinglists',
+		$columns = '*',
+		$archive = 0,
+		$status = '',
+		$order_col = '',
+		$order_dir = 'ASC',
+		$limit = 20,
+		$criteria = array(), $tab = 1
+	)
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 		$join           = '';
 
 		if (strpos($table_name, 'mailinglists') !== false)
@@ -189,7 +171,18 @@ class Acceptance extends Codeception\Module
 		$table_name  = Generals::$db_prefix . 'bwpostman_' . $table_name;
 		$table_name .= $join;
 
-		$result = DbHelper::grabFromDatabaseWithLimit($table_name, $columns, $archive, $status, $order_col, $order_dir, $limit, $criteria, $credentials, $tab);
+		$result = DbHelper::grabFromDatabaseWithLimit(
+			$table_name,
+			$columns,
+			$archive,
+			$status,
+			$order_col,
+			$order_dir,
+			$limit,
+			$criteria,
+			$credentials,
+			$tab
+		);
 		return $result;
 	}
 
@@ -200,12 +193,14 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _SubstituteAccess($data = array())
+	private function SubstituteAccess($data = array())
 	{
 		$result     = array();
-		$usergroups = $this->_getUsergroups();
+		$usergroups = $this->getUsergroups();
 		foreach ($data as $item)
 		{
 			$dataset = array();
@@ -215,8 +210,10 @@ class Acceptance extends Codeception\Module
 				{
 					$value = $usergroups[$value];
 				}
+
 				$dataset[$key] = $value;
 			}
+
 			$result[] = $dataset;
 		}
 
@@ -232,7 +229,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	private function _SubstituteNullDate($data = array())
+	private function SubstituteNullDate($data = array())
 	{
 		$result     = array();
 
@@ -248,8 +245,10 @@ class Acceptance extends Codeception\Module
 						$value  = '-';
 					}
 				}
+
 				$dataset[$key] = $value;
 			}
+
 			$result[] = $dataset;
 		}
 
@@ -265,7 +264,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	private function _SubstituteGender($data = array())
+	private function SubstituteGender($data = array())
 	{
 		$result     = array();
 		$gender     = array('male', 'female');
@@ -285,8 +284,10 @@ class Acceptance extends Codeception\Module
 						$value = '';
 					}
 				}
+
 				$dataset[$key] = $value;
 			}
+
 			$result[] = $dataset;
 		}
 
@@ -302,7 +303,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	private function _SubstituteMailformat($data = array())
+	private function SubstituteMailformat($data = array())
 	{
 		$result     = array();
 		$format     = array('Text', 'HTML');
@@ -316,8 +317,10 @@ class Acceptance extends Codeception\Module
 					$key   = 'Email format';
 					$value = $format[$value];
 				}
+
 				$dataset[$key] = $value;
 			}
+
 			$result[] = $dataset;
 		}
 
@@ -353,8 +356,10 @@ class Acceptance extends Codeception\Module
 						$value = 'TEXT';
 					}
 				}
+
 				$dataset[$key] = $value;
 			}
+
 			$result[] = $dataset;
 		}
 
@@ -364,20 +369,22 @@ class Acceptance extends Codeception\Module
 	/**
 	 * DbHelper method get query for number of subscribers per mailinglist
 	 *
-	 * @return  string
+	 * @return  array
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getUsergroups()
+	private function getUsergroups()
 	{
-		$credentials = $this->_getDbCredentials();
+		$credentials = $this->getDbCredentials();
 		$criteria    = array();
 		$driver      = new Codeception\Lib\Driver\Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
 		$query = 'SELECT `id`, `title` FROM `' . Generals::$db_prefix . 'viewlevels`';
 
 		$sth = $driver->executeQuery($query, $criteria);
-		$res = $sth->fetchAll(\PDO::FETCH_ASSOC);;
+		$res = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
 		$groups = array();
 		foreach ($res as $item)
@@ -451,9 +458,11 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return mixed
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getDbCredentials()
+	private function getDbCredentials()
 	{
 		$_db = $this->getModule('Db');
 
@@ -476,12 +485,14 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
+	 *
+	 * @throws \Exception
 	 * @since   2.0.0
 	 */
 
 	public function getActivationCode($subscriber_mail)
 	{
-		$credentials = self::_getDbCredentials();
+		$credentials = self::getDbCredentials();
 
 		$result = DbHelper::fetchActivationCode($subscriber_mail, $criteria = array(), $credentials);
 
@@ -495,12 +506,14 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 
 	public function getJoomlaActivationCode($user_mail)
 	{
-		$credentials = self::_getDbCredentials();
+		$credentials = self::getDbCredentials();
 
 		$result = DbHelper::fetchJoomlaActivationCode($user_mail, $criteria = array(), $credentials);
 
@@ -512,14 +525,16 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   string $subscriber_mail mail address of subscriber
 	 *
-	 * @return  array
+	 * @return  string
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
 
 	public function getEditlinkCode($subscriber_mail)
 	{
-		$credentials    = self::_getDbCredentials();
+		$credentials    = self::getDbCredentials();
 		$result         = DbHelper::fetchEditLink($subscriber_mail, $criteria = array(), $credentials);
 
 		return $result;
@@ -538,6 +553,8 @@ class Acceptance extends Codeception\Module
 	 * @param integer               $loop_counts    how many sort criteria are given?
 	 * @param int                   $tab            tab of view, not always needed
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function loopFilterList(\AcceptanceTester $I, $sort_data_array, $manner, $columns, $table, $archive, $status, $loop_counts  = 0, $tab = 1)
@@ -551,10 +568,12 @@ class Acceptance extends Codeception\Module
 		{
 			$i = 1;
 		}
+
 		if (strpos($table, 'templates') !== false)
 		{
 			$i = 3;
 		}
+
 		foreach ($sort_data_array['sort_criteria'] as $key => $criterion)
 		{
 			foreach (Generals::$sort_orders as $order)
@@ -576,6 +595,7 @@ class Acceptance extends Codeception\Module
 					{
 						$i = 2;
 					}
+
 					$db_order = 'ASC';
 					$arrow    = 'up';
 				}
@@ -585,18 +605,28 @@ class Acceptance extends Codeception\Module
 					$arrow    = 'down';
 				}
 
-				$row_values_raw = $I->GetListData($table, $columns, $archive, $status, $sort_data_array['select_criteria'][$key], $db_order, $list_length, array(), $tab);
+				$row_values_raw = $I->GetListData(
+					$table,
+					$columns,
+					$archive,
+					$status,
+					$sort_data_array['select_criteria'][$key],
+					$db_order,
+					$list_length,
+					array(),
+					$tab
+				);
 				if ($key == 'access')
 				{
-					$row_values = self::_SubstituteAccess($row_values_raw);
+					$row_values = self::SubstituteAccess($row_values_raw);
 				}
 				elseif ($key == 'gender')
 				{
-					$row_values = self::_SubstituteGender($row_values_raw);
+					$row_values = self::SubstituteGender($row_values_raw);
 				}
 				elseif ($key == 'Email format')
 				{
-					$row_values = self::_SubstituteMailformat($row_values_raw);
+					$row_values = self::SubstituteMailformat($row_values_raw);
 				}
 				elseif ($key == 'tpl_id')
 				{
@@ -604,7 +634,7 @@ class Acceptance extends Codeception\Module
 				}
 				elseif ($key == 'publish_up' || $key == 'publish_down')
 				{
-					$row_values = self::_SubstituteNullDate($row_values_raw);
+					$row_values = self::SubstituteNullDate($row_values_raw);
 				}
 				else
 				{
@@ -624,13 +654,21 @@ class Acceptance extends Codeception\Module
 				}
 				else
 				{
-					$I->clickSelectList(Generals::$ordering_list, Generals::$ordering_value . $sort_data_array['sort_criteria_select'][$key] . " " . $order . "']", Generals::$ordering_id);
+					$I->clickSelectList(
+						Generals::$ordering_list,
+						Generals::$ordering_value . $sort_data_array['sort_criteria_select'][$key] . " " . $order . "']",
+						Generals::$ordering_id
+					);
 				}
+
 				$I->expectTo('see arrow ' . $arrow . ' at ' . $criterion);
 				$I->waitForElement(sprintf(Generals::$table_headcol_arrow_location, $i), 30);
 				$I->seeElement(sprintf(Generals::$table_headcol_arrow_location, $i), array('class' => Generals::$sort_arrows[$arrow]));
 				$I->expectTo('see text ' . $sort_data_array['sort_criteria_select'][$key] . ' ' . $order);
-				$I->see($sort_data_array['sort_criteria_select'][$key] . ' ' . $order, sprintf(Generals::$select_list_selected_location, Generals::$ordering_id));
+				$I->see(
+					$sort_data_array['sort_criteria_select'][$key] . ' ' . $order,
+					sprintf(Generals::$select_list_selected_location, Generals::$ordering_id)
+				);
 
 				// loop over column values
 				$row_values_actual = self::GetTableRows($I, true);
@@ -644,28 +682,30 @@ class Acceptance extends Codeception\Module
 					{
 						case 'published':
 							$col = 4;
-								if (strpos($table, 'templates') !== false)
-								{
-									$col = 6;
-								}
+							if (strpos($table, 'templates') !== false)
+							{
+								$col = 6;
+							}
+
 							if (strpos($table, 'newsletter') !== false && $tab == 2)
 							{
 								$col = 8;
 							}
-								if ($needle == '1')
-								{
-									$I->seeElement(sprintf(Generals::$publish_row, ($k + 1), $col));
-								}
-								else
-								{
-									$I->seeElement(sprintf(Generals::$unpublish_row, ($k + 1), $col));
-								}
+
+							if ($needle == '1')
+							{
+								$I->seeElement(sprintf(Generals::$publish_row, ($k + 1), $col));
+							}
+							else
+							{
+								$I->seeElement(sprintf(Generals::$unpublish_row, ($k + 1), $col));
+							}
 							break;
-						case 'attachment';
-								if ($needle != '')
-								{
-									$I->seeElement(sprintf(Generals::$attachment_row, ($k + 1)));
-								}
+						case 'attachment':
+							if ($needle != '')
+							{
+								$I->seeElement(sprintf(Generals::$attachment_row, ($k + 1)));
+							}
 							break;
 						case 'modified_time':
 							if ($needle == Generals::$null_date)
@@ -673,8 +713,8 @@ class Acceptance extends Codeception\Module
 								//do nothing;
 							}
 							break;
-						case 'gender';
-						case 'authors';
+						case 'gender':
+						case 'authors':
 						case 'campaign_id':
 							if (($needle == '') || ($needle == null))
 							{
@@ -696,6 +736,8 @@ class Acceptance extends Codeception\Module
 	 * Helper method to filter by status
 	 *
 	 * @param \AcceptanceTester $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -724,7 +766,7 @@ class Acceptance extends Codeception\Module
 	 * @param array             $publish_by_icon
 	 * @param string            $item
 	 * @param string            $extra_click
-     * @param boolean           $allowed
+	 * @param boolean           $allowed
 	 *
 	 * @since   2.0.0
 	 */
@@ -734,25 +776,27 @@ class Acceptance extends Codeception\Module
 		$I->clickAndWait($publish_by_icon['publish_button'], 2);
 
 		if (!$allowed)
-        {
-            $I->dontSee("One " . $item . " published!");
-            return;
-        }
+		{
+			$I->dontSee("One " . $item . " published!");
+			return;
+		}
+
 		$I->see("One " . $item . " published!");
 
-		if ($item   == 'newsletter')
+		if ($item == 'newsletter')
 		{
 			$I->clickAndWait($extra_click, 2);
 		}
 
 		$I->seeElement($publish_by_icon['publish_result']);
 
-		$I->clickAndWait($publish_by_icon['unpublish_button'],1);
+		$I->clickAndWait($publish_by_icon['unpublish_button'], 1);
 		$I->see("One " . $item . " unpublished!");
-		if ($item   == 'newsletter')
+		if ($item == 'newsletter')
 		{
 			$I->clickAndWait($extra_click, 2);
 		}
+
 		$I->seeElement($publish_by_icon['unpublish_result']);
 	}
 
@@ -763,7 +807,7 @@ class Acceptance extends Codeception\Module
 	 * @param array             $publish_by_toolbar
 	 * @param string            $item
 	 * @param string            $extra_click
-     * @param boolean           $allowed
+	 * @param boolean           $allowed
 	 *
 	 * @since   2.0.0
 	 */
@@ -771,19 +815,19 @@ class Acceptance extends Codeception\Module
 	{
 		// switch status by toolbar
 		$I->wait(2);
-        if (!$allowed)
-        {
-            $I->dontSeeElement(Generals::$toolbar['Publish']);
-            $I->dontSeeElement(Generals::$toolbar['Unpublish']);
-            return;
-        }
+		if (!$allowed)
+		{
+			$I->dontSeeElement(Generals::$toolbar['Publish']);
+			$I->dontSeeElement(Generals::$toolbar['Unpublish']);
+			return;
+		}
 
 		$I->click($publish_by_toolbar['publish_button']);
 		$I->clickAndWait(Generals::$toolbar['Publish'], 1);
 
 		$I->see("One " . $item . " published!");
 
-		if ($item   == 'newsletter')
+		if ($item == 'newsletter')
 		{
 			$I->clickAndWait($extra_click, 2);
 		}
@@ -794,7 +838,7 @@ class Acceptance extends Codeception\Module
 		$I->clickAndWait(Generals::$toolbar['Unpublish'], 1);
 		$I->see("One " . $item . " unpublished!");
 
-		if ($item   == 'newsletter')
+		if ($item == 'newsletter')
 		{
 			$I->clickAndWait($extra_click, 2);
 		}
@@ -816,37 +860,73 @@ class Acceptance extends Codeception\Module
 		if (isset($pagination_data_array['p1_val1']))
 		{
 			$I->assertEquals($listlenght, count(self::GetTableRows($I, true)));
-			$this->_browsePages($I, $pagination_data_array['p1_val1'], $pagination_data_array['p1_field1'], $pagination_data_array['p1_val_last'], $pagination_data_array['p1_field_last']);
+			$this->browsePages(
+				$I,
+				$pagination_data_array['p1_val1'],
+				$pagination_data_array['p1_field1'],
+				$pagination_data_array['p1_val_last'],
+				$pagination_data_array['p1_field_last']
+			);
 		}
 
 		if (isset($pagination_data_array['p2_val1']))
 		{
-			$I->clickAndWait(Generals::$next_page,1);
-			$this->_browsePages($I, $pagination_data_array['p2_val1'], $pagination_data_array['p2_field1'], $pagination_data_array['p2_val_last'], $pagination_data_array['p2_field_last']);
+			$I->clickAndWait(Generals::$next_page, 1);
+			$this->browsePages(
+				$I,
+				$pagination_data_array['p2_val1'],
+				$pagination_data_array['p2_field1'],
+				$pagination_data_array['p2_val_last'],
+				$pagination_data_array['p2_field_last']
+			);
 		}
 
 		if (isset($pagination_data_array['p_last_val1']))
 		{
-			$I->clickAndWait(Generals::$last_page,1);
-			$this->_browsePages($I, $pagination_data_array['p_last_val1'], $pagination_data_array['p_last_field1'], $pagination_data_array['p_last_val_last'], $pagination_data_array['p_last_field_last']);
+			$I->clickAndWait(Generals::$last_page, 1);
+			$this->browsePages(
+				$I,
+				$pagination_data_array['p_last_val1'],
+				$pagination_data_array['p_last_field1'],
+				$pagination_data_array['p_last_val_last'],
+				$pagination_data_array['p_last_field_last']
+			);
 		}
 
 		if (isset($pagination_data_array['p_prev_val1']))
 		{
-			$I->clickAndWait(Generals::$prev_page,1);
-			$this->_browsePages($I, $pagination_data_array['p_prev_val1'], $pagination_data_array['p_prev_field1'], $pagination_data_array['p_prev_val_last'], $pagination_data_array['p_prev_field_last']);
+			$I->clickAndWait(Generals::$prev_page, 1);
+			$this->browsePages(
+				$I,
+				$pagination_data_array['p_prev_val1'],
+				$pagination_data_array['p_prev_field1'],
+				$pagination_data_array['p_prev_val_last'],
+				$pagination_data_array['p_prev_field_last']
+			);
 		}
 
 		if (isset($pagination_data_array['p1_val1']))
 		{
 			$I->clickAndWait(Generals::$first_page, 1);
-			$this->_browsePages($I, $pagination_data_array['p1_val1'], $pagination_data_array['p1_field1'], $pagination_data_array['p1_val_last'], $pagination_data_array['p1_field_last']);
+			$this->browsePages(
+				$I,
+				$pagination_data_array['p1_val1'],
+				$pagination_data_array['p1_field1'],
+				$pagination_data_array['p1_val_last'],
+				$pagination_data_array['p1_field_last']
+			);
 		}
 
 		if (isset($pagination_data_array['p3_val1']))
 		{
 			$I->clickAndWait(Generals::$page_3, 1);
-			$this->_browsePages($I, $pagination_data_array['p3_val1'], $pagination_data_array['p3_field1'], $pagination_data_array['p3_val3'], $pagination_data_array['p3_field3']);
+			$this->browsePages(
+				$I,
+				$pagination_data_array['p3_val1'],
+				$pagination_data_array['p3_field1'],
+				$pagination_data_array['p3_val3'],
+				$pagination_data_array['p3_field3']
+			);
 		}
 	}
 
@@ -933,6 +1013,8 @@ class Acceptance extends Codeception\Module
 	 * @param array             $search_data_array
 	 * @param bool              $exact
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true)
@@ -950,7 +1032,7 @@ class Acceptance extends Codeception\Module
 				$I->wait(1);
 
 				// open 'search by' list, select 'search by' value
-				$I->clickSelectList( Generals::$search_list, $search_data_array['search_by'][$i], Generals::$search_list_id);
+				$I->clickSelectList(Generals::$search_list, $search_data_array['search_by'][$i], Generals::$search_list_id);
 				// click search button
 				$I->click(Generals::$search_button);
 				$I->waitForElement(Generals::$main_table);
@@ -977,6 +1059,8 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function HelperArcDelItems(\AcceptanceTester $I, $manage_data, $edit_data, $delete_allowed)
@@ -999,6 +1083,8 @@ class Acceptance extends Codeception\Module
 	 * @param                   $edit_data
 	 *
 	 * @return void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1063,6 +1149,7 @@ class Acceptance extends Codeception\Module
 	 * @param                   $manage_data
 	 * @param                   $edit_data
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1106,6 +1193,7 @@ class Acceptance extends Codeception\Module
 		{
 			$I->see($edit_data['success_remove2'], Generals::$archive_alert_success);
 		}
+
 		$I->dontSee($edit_data['field_title']);
 	}
 
@@ -1114,6 +1202,7 @@ class Acceptance extends Codeception\Module
 	 * @param                   $manage_data
 	 * @param                   $edit_data
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1139,6 +1228,7 @@ class Acceptance extends Codeception\Module
 		{
 			$restore_button = $edit_data['restore_button'];
 		}
+
 		$I->clickAndWait($restore_button, 1);
 
 		if ($manage_data['section'] == 'campaigns')
@@ -1160,6 +1250,7 @@ class Acceptance extends Codeception\Module
 		{
 			$I->see($edit_data['success_restore2'], Generals::$archive_alert_success);
 		}
+
 		$I->dontSee($edit_data['field_title']);
 
 		$I->switchToSection($I, $manage_data);
@@ -1169,6 +1260,7 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param string            $archive_tab
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1202,11 +1294,13 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  object      $options
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function getManifestOptions($extension)
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 
 		$options = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
@@ -1219,7 +1313,7 @@ class Acceptance extends Codeception\Module
 				$options = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
 			}
 		}
-//codecept_debug($options);
+
 		return $options;
 	}
 
@@ -1230,11 +1324,13 @@ class Acceptance extends Codeception\Module
 	 * @param   string      $option         the option to update
 	 * @param   mixed       $value          the new value for this option
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function setManifestOption($extension = 'com_bwpostman', $option, $value)
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 		$options        = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
 
@@ -1258,11 +1354,13 @@ class Acceptance extends Codeception\Module
 	 * @param   array       $data               array of key-value pairs to update
 	 * @param   array       $where_condition
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0.
 	 */
 	public function updateInDatabase($table, array $data, $where_condition)
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 		$values         = array();
 
@@ -1285,41 +1383,46 @@ class Acceptance extends Codeception\Module
 	 * @param   string      $table              the name of table to update
 	 * @param   int         $value              value to set autoincrement to
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0.
 	 */
 	public function resetAutoIncrement($table, $value)
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 
 		DbHelper::resetAutoIncrement($table, $value, $criteria, $credentials);
 	}
 
-    /**
-     * Truncate table session. This record will **not** be reset after the test.
-     *
-     *
-     * @since   2.0.0.
-     */
-    public function truncateSession()
-    {
-        $credentials    = $this->_getDbCredentials();
+	/**
+	 * Truncate table session. This record will **not** be reset after the test.
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0.
+	 */
+	public function truncateSession()
+	{
+		$credentials    = $this->getDbCredentials();
 
-        DbHelper::truncateSession($credentials);
-    }
+		DbHelper::truncateSession($credentials);
+	}
 
-    /**
+	/**
 	 * Method to get ID of an extension
 	 *
 	 * @param   string      $extension      the extension to set the option for
 	 *
 	 * @return  integer     $id             ID of the extension
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function _getExtensionId($extension = 'com_bwpostman')
+	private function getExtensionId($extension = 'com_bwpostman')
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 
 		$id = DbHelper::getExtensionIdFromDatabase($extension, $credentials);
 
@@ -1331,11 +1434,13 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   string      $title         the title of the menu entry
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function setComponentIdInMenu($title)
 	{
-		$id     = $this->_getExtensionId('com_bwpostman');
+		$id     = $this->getExtensionId('com_bwpostman');
 
 		$data   = array('component_id' => $id);
 		$where  = array('title' => $title);
@@ -1352,7 +1457,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since 2.0.0
 	 */
-	private function _browsePages(\AcceptanceTester $I, $top_val, $top_val_field, $last_val, $last_val_field)
+	private function browsePages(\AcceptanceTester $I, $top_val, $top_val_field, $last_val, $last_val_field)
 	{
 		$I->scrollTo(Generals::$table_header);
 		$I->see($top_val, $top_val_field);
@@ -1362,16 +1467,18 @@ class Acceptance extends Codeception\Module
 
 	/**
 	 * Test method to get group ID by name
-	 *^
+	 *
 	 * @param   string      $groupname
 	 *
 	 * @return  int
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
 	public function getGroupIdByName($groupname)
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 
 		$group_id = (int) DbHelper::getGroupIdByName($groupname, $criteria, $credentials);
@@ -1386,11 +1493,13 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function getRuleNamesByComponentAsset($extension)
 	{
-		$credentials    = $this->_getDbCredentials();
+		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 
 		$rules_string = DbHelper::getRuleNamesByComponentAsset($extension, $criteria, $credentials);
@@ -1401,7 +1510,9 @@ class Acceptance extends Codeception\Module
 		foreach ($rules_raw as $rule_name => $value)
 		{
 			if ($rule_name != 'bwpm.admin')
-			$rules[]   = $rule_name;
+			{
+				$rules[]   = $rule_name;
+			}
 		}
 
 		// @ToDo: resolve this workaround
@@ -1423,15 +1534,17 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function setExtensionStatus($extension, $status)
 	{
-		$credentials = $this->_getDbCredentials();
+		$credentials = $this->getDbCredentials();
 		$criteria    = array();
 		$driver      = new Codeception\Lib\Driver\Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
-		$query = 'UPDATE `' . Generals::$db_prefix . 'extensions`' . ' SET `enabled` = ' . $status . " WHERE `element` = '" . $extension . "'";
+		$query = 'UPDATE `' . Generals::$db_prefix . 'extensions` SET `enabled` = ' . $status . " WHERE `element` = '" . $extension . "'";
 
 		$sth = $driver->executeQuery($query, $criteria);
 	}
@@ -1444,11 +1557,13 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function deleteRecordFromDatabase($table, $condition)
 	{
-		$credentials = $this->_getDbCredentials();
+		$credentials = $this->getDbCredentials();
 		$criteria    = array();
 		$driver      = new Codeception\Lib\Driver\Db($credentials['dsn'], $credentials['user'], $credentials['password']);
 
@@ -1472,11 +1587,9 @@ class Acceptance extends Codeception\Module
 			$where_clause   = $condition;
 		}
 
-//		$query      = "UPDATE $table_name SET `params` = '$options' $where";
 		$query      = "DELETE FROM " . Generals::$db_prefix . $table . $where_clause;
 
 		$sth = $driver->executeQuery($query, $criteria);
 		$res = $sth->rowCount();
 	}
 }
-

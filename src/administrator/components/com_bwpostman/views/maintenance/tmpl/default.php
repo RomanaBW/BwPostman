@@ -56,7 +56,7 @@ if ($this->queueEntries)
 						<td>
 							<div id="cpanel" class="cpanel_j3">
 								<?php
-								if (BwPostmanHelper::canAdmin()) {
+								if (BwPostmanHelper::canAdmin('maintenance')) {
 									$option = $jinput->getCmd('option', 'com_bwpostman');
 									$link = 'index.php?option=' . $option . '&view=maintenance&layout=checkTables';
 									BwPostmanHTMLHelper::quickiconButton(

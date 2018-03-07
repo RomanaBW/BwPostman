@@ -226,7 +226,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					JToolbarHelper::addNew('subscriber.add');
 				}
 
-				if ($this->permissions['subscriber']['edit'] || $this->permissions['subscriber']['edit.own'])
+				if (BwPostmanHelper::canEdit('subscriber'))
 				{
 					JToolbarHelper::editList('subscriber.edit');
 				}
@@ -245,14 +245,14 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
 				}
 
-				if ($this->permissions['subscriber']['archive']) {
+				if (BwPostmanHelper::canArchive('subscriber')) {
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 					JToolbarHelper::archiveList('subscriber.archive');
 				}
 
 				// Add a batch button
-				if ($this->permissions['subscriber']['create'] || $this->permissions['subscriber']['edit'])
+				if ($this->permissions['subscriber']['create'] || BwPostmanHelper::canEdit('subscriber'))
 				{
 					JHtml::_('bootstrap.modal', 'collapseModal');
 					$title = JText::_('JTOOLBAR_BATCH');
@@ -270,14 +270,14 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					JToolbarHelper::addNew('subscriber.add_test');
 				}
 
-				if ($this->permissions['subscriber']['edit'] || $this->permissions['subscriber']['edit.own'])
+				if (BwPostmanHelper::canEdit('subscriber'))
 				{
 					JToolbarHelper::editList('subscriber.edit');
 				}
 
 				JToolbarHelper::spacer();
 				JToolbarHelper::divider();
-				if ($this->permissions['subscriber']['archive'])
+				if (BwPostmanHelper::canArchive('subscriber'))
 				{
 					JToolbarHelper::archiveList('subscriber.archive');
 				}
@@ -286,7 +286,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
-		if (BwPostmanHelper::canEdit('subscriber', 0) || BwPostmanHelper::canEditState('subscriber', 0))
+		if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
 		{
 			JToolbarHelper::checkin('subscribers.checkin');
 			JToolbarHelper::divider();

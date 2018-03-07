@@ -188,7 +188,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		}
 
 		JToolbarHelper::divider();
-		if ($this->permissions['mailinglist']['edit.state'])
+		if (BwPostmanHelper::canEditState('mailinglist'))
 		{
 			JToolbarHelper::publishList('mailinglists.publish');
 			JToolbarHelper::unpublishList('mailinglists.unpublish');

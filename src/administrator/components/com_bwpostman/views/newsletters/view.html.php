@@ -235,12 +235,12 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		switch ($tab)
 		{ // The layout-variable tells us which tab we are in
 			case "sent":
-				if ($this->permissions['newsletter']['edit'])
+				if (BwPostmanHelper::canEdit('newsletter'))
 				{
 					JToolbarHelper::editList('newsletter.edit');
 				}
 
-				if ($this->permissions['newsletter']['edit.state'])
+				if (BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
 				{
 					JToolbarHelper::publishList('newsletters.publish');
 					JToolbarHelper::unpublishList('newsletters.unpublish');
@@ -261,7 +261,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::spacer();
 				}
 
-				if ($this->permissions['newsletter']['archive'])
+				if (BwPostmanHelper::canArchive('newsletter'))
 				{
 					JToolbarHelper::archiveList('newsletter.archive');
 					JToolbarHelper::divider();
@@ -298,7 +298,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::addNew('newsletter.add');
 				}
 
-				if ($this->permissions['newsletter']['edit'] || $this->permissions['newsletter']['edit.own'])
+				if (BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
 				{
 					JToolbarHelper::editList('newsletter.edit');
 				}
@@ -318,7 +318,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::spacer();
 				}
 
-				if ($this->permissions['newsletter']['archive'])
+				if (BwPostmanHelper::canArchive('newsletter'))
 				{
 					JToolbarHelper::archiveList('newsletter.archive');
 					JToolbarHelper::divider();

@@ -932,6 +932,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 *
 	 * @return 	bool    true on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function archive()
@@ -966,6 +968,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					false
 				)
 			);
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
+
 			return false;
 		}
 

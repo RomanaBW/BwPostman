@@ -313,6 +313,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 					false
 				)
 			);
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
+
 			return false;
 		}
 

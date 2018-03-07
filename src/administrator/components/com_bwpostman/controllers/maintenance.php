@@ -156,7 +156,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function saveTables()
 	{
 		// Access check.
-		if (!BwPostmanHelper::canAdmin())
+		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
@@ -188,7 +188,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function checkTables()
 	{
 		// Access check.
-		if (!BwPostmanHelper::canAdmin())
+		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
@@ -211,7 +211,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function restoreTables()
 	{
 		// Access check.
-		if (!BwPostmanHelper::canAdmin())
+		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
@@ -242,7 +242,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		}
 
 		// Access check.
-		if (!BwPostmanHelper::canAdmin())
+		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
 			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);

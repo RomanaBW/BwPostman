@@ -437,7 +437,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Send a newsletter to real recipients");
 
-		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
 		NlEdit::SendNewsletterToRealRecipients($I);
 
@@ -464,7 +464,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Send a newsletter to a real user group");
 
-		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, true);
 
@@ -491,7 +491,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Send a newsletter also to a unconfirmed recipients");
 
-		NlEdit::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
 		NlEdit::SendNewsletterToRealRecipients($I, true);
 

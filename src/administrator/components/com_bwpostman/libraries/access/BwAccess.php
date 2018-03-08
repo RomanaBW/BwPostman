@@ -196,7 +196,7 @@ class BwAccess
 		}
 
 		// Get the JRules object and set data
-		$rules	= self::getAssetRules($assetKey, true, true, $preload);
+		$rules	= self::getAssetRules($assetKey, false, true, $preload);
 
 		if (!isset($rules->getData()[$action]))
 		{
@@ -205,9 +205,12 @@ class BwAccess
 
 		self::$actionRule	= $rules->getData()[$action]->getData();
 
-		if (isset(self::$actionRule[$recordId]) && self::$actionRule[$recordId])
+		foreach ($identities as $identity)
 		{
-			return true;
+			if (isset(self::$actionRule[$identity]) && self::$actionRule[$identity])
+			{
+				return true;
+			}
 		}
 
 		/*

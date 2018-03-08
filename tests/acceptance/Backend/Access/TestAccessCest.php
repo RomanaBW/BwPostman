@@ -1,6 +1,7 @@
 <?php
 namespace Backend\Access;
 
+use Mockery\Exception;
 use Page\Generals as Generals;
 use Page\MainviewPage as MainView;
 use Page\Login as LoginPage;
@@ -1315,6 +1316,8 @@ class TestAccessCest
 	 * @param $permission_array
 	 * @param $edit_data
 	 *
+	 * @throws \Exception
+	 *
 	 * @return array
 	 *
 	 * @since 2.0.0
@@ -1344,7 +1347,7 @@ class TestAccessCest
 				CampaignEditPage::createCampaignWithoutCleanup($I);
 				break;
 			case 'Mailinglists':
-				MailinglistEditPage::_createMailinglistWithoutCleanup($I);
+				MailinglistEditPage::createMailinglistWithoutCleanup($I);
 				break;
 			case 'Templates':
 				TemplateEditPage::_createTemplateWithoutCleanup($I);

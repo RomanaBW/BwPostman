@@ -203,8 +203,9 @@ abstract class BwPostmanHelper
 	}
 
 	/**
-	 * Method to check, if a given action is allowed
-	 * Breaks and returns false, if one of the items to check has no permission
+	 * Method to check, if a given action to a given item is allowed
+	 * Breaks and returns false, if the item to check has explicit no permission
+	 * Also returns false, if no permission is found
 	 *
 	 * @param    string     $view       The view to test.
 	 * @param    string     $action     The action to check
@@ -255,22 +256,26 @@ abstract class BwPostmanHelper
 			}
 		}
 
+		// Handle archive actions
+/*		if ($action == 'restore' || $action == 'delete')
+			// @ToDo: What do I do with this? Do I ever get here? Is this the right position?
+		{
+			$authAction	= 'bwpm.view.' . $view;
+			$assetName	= 'com_bwpostman';
+
+			$actionAllowed = self::authorise($authAction, $assetName, $recordId);
+
+			if ($actionAllowed !== null)
+			{
+				return $actionAllowed;
+			}
+		}
+*/
 		// Second: Check for view specific permissions
 		// Return result, if one of the groups is named, else go downwards
 		if (isset(self::$permissions[$view][$action]) && !self::$permissions[$view][$action])
 		{
 			return false;
-		}
-
-		if ($action == 'archive' || $action == 'restore' || $action == 'delete')
-		// @ToDo: What do I do with this? Do I ever get here? Is this the right position?
-		{
-			$authAction	= 'bwpm.view.' . $view;
-			$assetName	= 'com_bwpostman';
-			if (self::authorise($authAction, $assetName, $recordId))
-			{
-				return true;
-			}
 		}
 
 		// Third: Check for component permissions
@@ -388,7 +393,9 @@ abstract class BwPostmanHelper
 	}
 
 	/**
-	 * @param $view
+	 * @param   string  $view
+	 * @param   string  $action            may be edit/edit.own, archive, restore or delete
+	 * @param   integer $itemsFromArchive  Do we want items from archive?
 	 *
 	 * @return bool
 	 *
@@ -396,23 +403,24 @@ abstract class BwPostmanHelper
 	 *
 	 * @throws Exception
 	 */
-	private static function displayButton($view)
+	private static function displayButton($view, $action, $itemsFromArchive)
 	{
-		if (self::$permissions['com']['edit.own']
-			|| self::$permissions['com']['edit']
-			|| self::$permissions[$view]['edit.own']
-			|| self::$permissions[$view]['edit']
-		)
+		if (isset(self::$permissions['com'][$action]) && self::$permissions['com'][$action])
+		{
+			return true;
+		}
+
+		if (isset(self::$permissions[$view][$action]) && self::$permissions[$view][$action])
 		{
 			return true;
 		}
 
 		// Enhancement for item specific rights
-		$allowedItems = self::getAllowedRecords($view);
+		$allowedItems = self::getAllowedRecords($view, $action,  $itemsFromArchive);
 
 		foreach ($allowedItems as $allowedItem)
 		{
-			$editItem = self::checkActionPermission($view, 'edit', $allowedItem);
+			$editItem = self::checkActionPermission($view, $action, $allowedItem);
 			if ($editItem === true)
 			{
 				return true;
@@ -841,7 +849,16 @@ abstract class BwPostmanHelper
 		// This part is needed for displaying the button
 		if (!$recordId)
 		{
-			return self::displayButton($view);
+			$display = self::displayButton($view, 'edit', 0);
+
+			if ($display)
+			{
+				return true;
+			}
+
+			$display = self::displayButton($view, 'edit.own', 0);
+
+			return $display;
 		}
 
 		// Now lets check for a specific record
@@ -916,6 +933,26 @@ abstract class BwPostmanHelper
 	 */
 	public static function canEditState($view = '', $recordIds = array())
 	{
+		if (self::$permissions['com']['edit'])
+		{
+			return true;
+		}
+
+		if (self::$permissions['com']['edit.state'])
+		{
+			return true;
+		}
+
+		if ($view !== '' && self::$permissions[$view]['edit'])
+		{
+			return true;
+		}
+
+		if ($view !== '' && self::$permissions[$view]['edit.state'])
+		{
+			return true;
+		}
+
 		$action = 'edit.state';
 
 		if (!is_array($recordIds))
@@ -927,13 +964,13 @@ abstract class BwPostmanHelper
 		// Check permission
 		foreach ($recordIds as $recordId)
 		{
-			if (self::checkActionPermission($view, $action, $recordId) !== true)
+			if (self::checkActionPermission($view, $action, $recordId) === true)
 			{
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -1023,8 +1060,9 @@ abstract class BwPostmanHelper
 	/**
 	 * Method to check if you can archive an existing record.
 	 *
-	 * @param    string     $view       The name of the context.
-	 * @param    int|array  $recordIds  The records to test.
+	 * @param    string     $view          The name of the context.
+	 * @param    integer    $itemsFromArchive  Do we want items from archive?
+	 * @param    int|array  $recordIds     The records to test.
 	 *
 	 * @return    boolean
 	 *
@@ -1032,9 +1070,14 @@ abstract class BwPostmanHelper
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canArchive($view = '', $recordIds = array())
+	public static function canArchive($view = '', $itemsFromArchive = 0, $recordIds = array())
 	{
-		if (self::$permissions['mailinglist']['archive'])
+		if (self::$permissions['com']['archive'])
+		{
+			return true;
+		}
+
+		if ($view !== '' && self::$permissions[$view]['archive'])
 		{
 			return true;
 		}
@@ -1053,6 +1096,14 @@ abstract class BwPostmanHelper
 			$recordIds[] = 0;
 		}
 
+		// This part is needed for displaying the button
+		if (!$recordIds[0])
+		{
+			$display = self::displayButton($view, $action, $itemsFromArchive);
+
+			return $display;
+		}
+
 		// Check permission for submitted records
 		foreach ($recordIds as $recordId)
 		{
@@ -1062,7 +1113,20 @@ abstract class BwPostmanHelper
 			}
 		}
 
-		// Get allowed records
+		// Get allowed records for list view
+		if ($recordIds[0] === 0)
+		{
+			$allowedItems = self::getAllowedRecords($view, $action,  1);
+
+			foreach ($allowedItems as $allowedItem)
+			{
+				$archiveItem = self::checkActionPermission($view, 'archive', $allowedItem);
+				if ($archiveItem === true)
+				{
+					return true;
+				}
+			}
+		}
 
 		return false;
 	}
@@ -1081,6 +1145,16 @@ abstract class BwPostmanHelper
 	 */
 	public static function canDelete($view = '', $recordIds = array())
 	{
+		if (self::$permissions['com']['delete'])
+		{
+			return true;
+		}
+
+		if ($view !== '' && self::$permissions[$view]['delete'])
+		{
+			return true;
+		}
+
 		// Initialise variables.
 		$action   = 'delete';
 
@@ -1090,16 +1164,24 @@ abstract class BwPostmanHelper
 			$recordIds	= $ids;
 		}
 
-		// Check permission
+		// This part is needed for displaying the button
+		if (!$recordIds[0])
+		{
+			$display = self::displayButton($view, $action, 1);
+
+			return $display;
+		}
+
+		// Check permission for submitted records
 		foreach ($recordIds as $recordId)
 		{
-			if (self::checkActionPermission($view, $action, $recordId) !== true)
+			if (self::checkActionPermission($view, $action, $recordId) === true)
 			{
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -1116,6 +1198,16 @@ abstract class BwPostmanHelper
 	 */
 	public static function canRestore($view = '', $recordIds = array())
 	{
+		if (self::$permissions['com']['restore'])
+		{
+			return true;
+		}
+
+		if ($view !== '' && self::$permissions[$view]['restore'])
+		{
+			return true;
+		}
+
 		// Initialise variables.
 		$action   = 'restore';
 
@@ -1125,16 +1217,24 @@ abstract class BwPostmanHelper
 			$recordIds	= $ids;
 		}
 
-		// Check permission
+		// This part is needed for displaying the button
+		if (!$recordIds[0])
+		{
+			$display = self::displayButton($view, $action, 1);
+
+			return $display;
+		}
+
+		// Check permission for submitted records
 		foreach ($recordIds as $recordId)
 		{
-			if (self::checkActionPermission($view, $action, $recordId) !== true)
+			if (self::checkActionPermission($view, $action, $recordId) === true)
 			{
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -1579,17 +1679,19 @@ abstract class BwPostmanHelper
 	}
 
 	/**
-	 * Method to get the allowed records as comma separated list
+	 * Method to get the allowed records
 	 *
-	 * @param   string  $view       The name of the context.
+	 * @param   string    $view          The name of the context.
+	 * @param   string    $action        The action to check
+	 * @param   integer   $fromArchive   Do we want items from archive?
 	 *
-	 * @return  array|string  $allowed_items
+	 * @return  array|string  $allowed_items or string 'all'
 	 *
 	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function getAllowedRecords($view)
+	public static function getAllowedRecords($view, $action, $fromArchive = 0)
 	{
 		// check for general permissions
 		if (self::canAdmin($view))
@@ -1599,14 +1701,23 @@ abstract class BwPostmanHelper
 
 		$asset_records = self::getSectionAssetNames($view);
 		$item_records  = self::extractIdFromAssetName($asset_records);
-		$allowed_items = self::checkRecordsForPermission($view, $item_records);
 
-/*		$general_permission = array_search(0, $allowed_items);
-		if ($general_permission !== false)
+		// Differentiate between archive view and section view
+		$reducedItems = self::getItemsSeparatedByArchive($view, $fromArchive, $item_records);
+
+		$allowed_items = array();
+		foreach ($reducedItems as $reducedItem)
 		{
-			return 'all';
+			$testItem = self::checkActionPermission($view, $action, $reducedItem['id']);
+
+			if ($testItem)
+			{
+				$allowed_items[] = $reducedItem['id'];
+			}
 		}
-*/
+
+//		$allowed_items = self::checkRecordsForPermission($view, $action, $reducedItems);
+
 		// check for mailinglist specific permissions
 		if ($view != 'mailinglist')
 		{
@@ -1623,6 +1734,43 @@ abstract class BwPostmanHelper
 		$allowed_items  = array_unique($allowed_items);
 
 		return $allowed_items;
+	}
+
+	/**
+	 * Method to get only archived or only not archived records
+	 *
+	 * @param   string  $view           The name of the context.
+	 * @param   integer $fromArchive    Do we come from archive?
+	 * @param   array   $itemRecords    items to check for
+	 *
+	 * @return  array|string  $allowed_items or string 'all'
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public static function getItemsSeparatedByArchive($view, $fromArchive, $itemRecords)
+	{
+		$itemsToCheck = array();
+
+		foreach ($itemRecords as $itemRecord)
+		{
+			$itemsToCheck[] = $itemRecord['id'];
+		}
+
+		$db	= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__bwpostman_' . $view . 's'));
+		$query->where($db->quoteName('archive_flag') . ' = ' . $db->Quote($fromArchive));
+		$query->where($db->quoteName('id') . ' IN (' . implode(',', $itemsToCheck) . ')');
+
+		$db->setQuery($query);
+
+		$reducedItems = $db->loadAssocList();
+
+		return $reducedItems;
 	}
 
 	/**
@@ -1702,8 +1850,9 @@ abstract class BwPostmanHelper
 	 * Method to check for item specific permission
 	 * items without permission will be removed
 	 *
-	 * @param   string $view    The name of the context.
-	 * @param   array           $items
+	 * @param   string   $view      The name of the context.
+	 * @param   string   $action    The action to check
+	 * @param   array    $items     The Items to check for
 	 *
 	 * @return  array           $allowed_ids
 	 *
@@ -1711,16 +1860,21 @@ abstract class BwPostmanHelper
 	 *
 	 * @since   2.0.0
 	 */
-	private static function checkRecordsForPermission($view, $items)
+	private static function checkRecordsForPermission($view, $action, $items)
 	{
 		$allowed_ids = array();
 
 		foreach ($items as $item)
 		{
-			$allowed = self::canEdit($view, $item);
-			if ($allowed)
+			switch ($action)
 			{
-				$allowed_ids[] = $item['id'];
+				case 'edit':
+					$allowed = self::canEdit($view, $item);
+					if ($allowed)
+					{
+						$allowed_ids[] = $item['id'];
+					}
+					break;
 			}
 		}
 
@@ -1753,7 +1907,7 @@ abstract class BwPostmanHelper
 		// Get the mailinglists the user may handle
 		$asset_records          = self::getSectionAssetNames('mailinglist');
 		$item_records           = self::extractIdFromAssetName($asset_records);
-		$allowed_mailinglists   = self::checkRecordsForPermission('mailinglist', $item_records);
+		$allowed_mailinglists   = self::checkRecordsForPermission('mailinglist', '', $item_records);
 
 		$general_permission = array_search(0, $allowed_mailinglists);
 		if ($general_permission !== false)

@@ -1320,9 +1320,9 @@ class Acceptance extends Codeception\Module
 	/**
 	 * Method to set a single option of specified extension
 	 *
-	 * @param   string      $extension      the extension to set the option for
-	 * @param   string      $option         the option to update
-	 * @param   mixed       $value          the new value for this option
+	 * @param   string            $extension      the extension to set the option for
+	 * @param   string            $option         the option to update
+	 * @param   mixed|array       $value          the new value for this option
 	 *
 	 * @throws \Exception
 	 *

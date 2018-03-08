@@ -197,23 +197,23 @@ class BwPostmanViewArchive extends JViewLegacy
 		switch ($layout)
 		{ // Which tab are we in?
 			case "newsletters":
-				if ($this->permissions['newsletter']['restore'])
+				if (BwPostmanHelper::canRestore('newsletter', 0))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if ($this->permissions['newsletter']['delete'])
+				if (BwPostmanHelper::canDelete('newsletter', 0))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
 				}
 				break;
 			case "subscribers":
-				if ($this->permissions['subscriber']['restore'])
+				if (BwPostmanHelper::canRestore('subscriber', 0))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if ($this->permissions['subscriber']['delete'])
+				if (BwPostmanHelper::canDelete('subscriber', 0))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
 				}
@@ -222,37 +222,37 @@ class BwPostmanViewArchive extends JViewLegacy
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
 				$bar = JToolbar::getInstance('toolbar');
 				$alt_archive = JText::_('COM_BWPOSTMAN_UNARCHIVE');
-				if ($this->permissions['campaign']['restore'])
+				if (BwPostmanHelper::canRestore('campaign', 0))
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive';
 					$bar->appendButton('Popup', 'unarchive', $alt_archive, $link, 500, 130);
 				}
 
 				$alt_delete = "delete";
-				if ($this->permissions['campaign']['delete'])
+				if (BwPostmanHelper::canDelete('campaign', 0))
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete';
 					$bar->appendButton('Popup', 'delete', $alt_delete, $link, 500, 150);
 				}
 				break;
 			case "mailinglists":
-				if ($this->permissions['mailinglist']['restore'])
+				if (BwPostmanHelper::canRestore('mailinglist', 0))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if ($this->permissions['mailinglist']['delete'])
+				if (BwPostmanHelper::canDelete('mailinglist', 0))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
 				}
 				break;
 			case "templates":
-				if ($this->permissions['template']['restore'])
+				if (BwPostmanHelper::canRestore('template', 0))
 				{
 					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
-				if ($this->permissions['template']['delete'])
+				if (BwPostmanHelper::canDelete('template', 0))
 				{
 					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
 				}

@@ -34,14 +34,20 @@ class TemplateManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-    public static $url      = '/administrator/index.php?option=com_bwpostman&view=templates';
+	public static $url      = '/administrator/index.php?option=com_bwpostman&view=templates';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $section  = 'template';
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
-     */
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 * public static $usernameField = '#username';
+	 * public static $formSubmitButton = "#mainForm input[type=submit]";
+	 */
 
 	/**
 	 * Array of sorting criteria values for this page
@@ -92,39 +98,141 @@ class TemplateManagerPage
 	);
 
 	// publish by icon
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $publish_by_icon   = array(
-		'publish_button'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
-		'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
-		'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+		'publish_result'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	// publish by toolbar
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $publish_by_toolbar   = array(
-		'publish_button'    =>  ".//*[@id='cb3']",
-		'publish_result'    =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='cb3']",
-		'unpublish_result'  =>  ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => ".//*[@id='cb3']",
+		'publish_result'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => ".//*[@id='cb3']",
+		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $default_button1      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $default_result1      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $no_default_result1   = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $default_button2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $default_result2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $no_default_result2   = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	// Filter mail format
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_list_id       = "filter_tpl_id_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_list          = ".//*[@id='filter_tpl_id_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_none          = ".//*[@id='filter_tpl_id_chzn']/div/ul/li[text()='Select email format']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text          = ".//*/li[text()='Text']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_html          = ".//*/li[text()='HTML']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text_column   = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[4]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text_text     = 'Text';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text_html     = 'HTML';
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
@@ -137,8 +245,19 @@ class TemplateManagerPage
 		// array of arrays: outer array per search value, inner arrays per 'search by'
 		'search_res'           => array(array(2, 2, 0), array(0, 4, 4)),
 	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_clear_val     = ' Boldt Webservice';
 
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "Boldt Webservice",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
@@ -166,10 +285,34 @@ class TemplateManagerPage
 		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[2]/td[2]",
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $archive_confirm    = 'Do you wish to archive the selected template(s)?';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $remove_confirm     = 'Do you wish to remove the selected template(s)?';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $success_remove     = 'The selected template has been removed.';
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array    = array(
 		'section'   => 'template',
 		'url'   => '/administrator/index.php?option=com_bwpostman&view=templates',
@@ -199,7 +342,7 @@ class TemplateManagerPage
 		}
 		else
 		{
-		    $I->dontSeeElement(Generals::$toolbar['Default']);
+			$I->dontSeeElement(Generals::$toolbar['Default']);
 			$I->dontSeeElement(self::$default_result1);
 			$I->seeElement(self::$no_default_result1);
 		}

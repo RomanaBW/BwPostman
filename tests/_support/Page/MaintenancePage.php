@@ -27,44 +27,212 @@ use Page\MainviewPage as MainView;
  */
 class MaintenancePage
 {
-    // include url of current page
-    public static $url          = "/administrator/index.php?option=com_bwpostman&view=maintenance";
+	// include url of current page
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $url          = "/administrator/index.php?option=com_bwpostman&view=maintenance";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $forum_url    = "https://www.boldt-webservice.de/de/forum/bwpostman.html";
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
-     */
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 * public static $usernameField = '#username';
+	 * public static $formSubmitButton = "#mainForm input[type=submit]";
+	 */
 
-    public static $checkTablesButton    = ".//*[@id='cpanel']/div[1]/div/a";
-    public static $saveTablesButton     = ".//*[@id='cpanel']/div[2]/div/a/img";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $checkTablesButton    = ".//*[@id='cpanel']/div[1]/div/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $saveTablesButton     = ".//*[@id='cpanel']/div[2]/div/a/img";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $restoreTablesButton  = ".//*[@id='cpanel']/div[3]/div/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $settingsButton       = ".//*[@id='cpanel']/div[4]/div/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $forumButton          = ".//*[@id='cpanel']/div[5]/div/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $checkBackButton      = ".//*[@id='toolbar-arrow-left']/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $cancelSettingsButton = ".//*[@id='toolbar-cancel']/button";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $heading              = "Maintenance";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $checkHeading         = "Check tables";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $headingRestoreFile   = ".//*[@id='adminForm']/fieldset/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $headingSettings      = "BwPostman Configuration";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step1Field           = ".//*[@id='step1'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step2Field           = ".//*[@id='step2'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step3Field           = ".//*[@id='step3'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step4Field           = ".//*[@id='step4'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step5Field           = ".//*[@id='step5'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step6Field           = ".//*[@id='step6'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step7Field           = ".//*[@id='step7'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step8Field           = ".//*[@id='step8'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step9Field           = ".//*[@id='step9'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step10Field          = ".//*[@id='step10'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step11Field          = ".//*[@id='step11'][contains(@class, 'alert-success')]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step5SuccessClass    = ".//*[@id='step5'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step11SuccessClass   = ".//*[@id='step11'][contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step5SuccessMsg      = "Check asset-id's and user-id's..";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $step11SuccessMsg     = "Check: Check asset ids and user ids...";
 
 	/**
@@ -78,6 +246,8 @@ class MaintenancePage
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function restoreTables(\AcceptanceTester $I)
@@ -88,10 +258,10 @@ class MaintenancePage
 		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(MaintenancePage::$heading);
+		$I->see(self::$heading);
 
-		$I->click(MaintenancePage::$restoreTablesButton);
-		$I->waitForElement(MaintenancePage::$headingRestoreFile, 30);
+		$I->click(self::$restoreTablesButton);
+		$I->waitForElement(self::$headingRestoreFile, 30);
 
 		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
 		if ($bwpm_version == '132')
@@ -106,22 +276,21 @@ class MaintenancePage
 		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
 		$I->dontSeeElement(Generals::$alert_error);
 
-		$I->waitForElementVisible(MaintenancePage::$step1Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step2Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step3Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step4Field, 90);
-		$I->waitForElementVisible(MaintenancePage::$step5Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step6Field, 120);
-		$I->waitForElementVisible(MaintenancePage::$step7Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step8Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step9Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step10Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step11Field, 30);
-		$I->waitForElementVisible(MaintenancePage::$step11SuccessClass, 30);
-		$I->see(MaintenancePage::$step11SuccessMsg, MaintenancePage::$step11SuccessClass);
-		$I->click(MaintenancePage::$checkBackButton);
+		$I->waitForElementVisible(self::$step1Field, 30);
+		$I->waitForElementVisible(self::$step2Field, 30);
+		$I->waitForElementVisible(self::$step3Field, 30);
+		$I->waitForElementVisible(self::$step4Field, 90);
+		$I->waitForElementVisible(self::$step5Field, 30);
+		$I->waitForElementVisible(self::$step6Field, 120);
+		$I->waitForElementVisible(self::$step7Field, 30);
+		$I->waitForElementVisible(self::$step8Field, 30);
+		$I->waitForElementVisible(self::$step9Field, 30);
+		$I->waitForElementVisible(self::$step10Field, 30);
+		$I->waitForElementVisible(self::$step11Field, 30);
+		$I->waitForElementVisible(self::$step11SuccessClass, 30);
+		$I->see(self::$step11SuccessMsg, self::$step11SuccessClass);
+		$I->click(self::$checkBackButton);
 		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(MaintenancePage::$heading, Generals::$pageTitle);
+		$I->see(self::$heading, Generals::$pageTitle);
 	}
-
 }

@@ -27,30 +27,108 @@ use Page\CampaignManagerPage as CamManage;
  */
 class CampaignEditPage
 {
-    // include url of current page
-    public static $url = 'administrator/index.php?option=com_bwpostman&view=campaign&layout=edit';
+	// Include url of current page
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     */
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $url = 'administrator/index.php?option=com_bwpostman&view=campaign&layout=edit';
 
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 */
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $title        = '#jform_title';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $description  = '#jform_description';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_title        = '001 new campaign for tests';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_description  = 'A pretty description would be nice.';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $success_save       = 'Campaign saved successfully!';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $error_save         = 'Save failed with the following error:';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_title        = 'You have to enter a title for the campaign.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_description  = 'You have to enter a description for the campaign.';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_no_recipients  = 'No recipients selected!';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $warning_no_title     = 'Field required: Campaign title';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $title_col            = ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]";
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 new campaign for tests",
 		'archive_button'       => ".//*[@id='toolbar-popup-archive']/button",
@@ -96,13 +174,13 @@ class CampaignEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function _CreateCampaignWithoutCleanup(\AcceptanceTester $I)
+	public static function CreateCampaignWithoutCleanup(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create campaign without cleanup");
 		$I->amOnPage(CamManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		self::_fillFormSimple($I);
+		self::fillFormSimple($I);
 
 		$I->click(self::$toolbar['Save & Close']);
 
@@ -120,7 +198,7 @@ class CampaignEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function _fillFormSimple(\AcceptanceTester $I)
+	public static function fillFormSimple(\AcceptanceTester $I)
 	{
 		$I->fillField(self::$title, self::$field_title);
 		$I->fillField(self::$description, self::$field_description);

@@ -99,6 +99,8 @@ class Login
 	 *
 	 * @return	void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since  2.0.0
 	 */
 	public function logIntoBackend($user, \AcceptanceTester $I = null)
@@ -123,7 +125,10 @@ class Login
 	 *
 	 * @param \AcceptanceTester $I
 	 * @param $truncateSession
+	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

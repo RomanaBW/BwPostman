@@ -25,52 +25,214 @@ namespace Page;
  */
 class InstallationPage
 {
-    // include url of current page
-    public static $install_url          = "/administrator/index.php?option=com_installer";
-    public static $extension_manage_url = "/administrator/index.php?option=com_installer&view=manage";
+	// include url of current page
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $install_url          = "/administrator/index.php?option=com_installer";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $extension_manage_url = "/administrator/index.php?option=com_installer&view=manage";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_manage_url    = "/administrator/index.php?option=com_plugins&view=plugins";
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
-     */
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 * public static $usernameField = '#username';
+	 * public static $formSubmitButton = "#mainForm input[type=submit]";
+	 */
 
-    public static $installField      = ".//*[@id='install_package']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $installField      = ".//*[@id='install_package']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installButton     = ".//*[@id='installbutton_package']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installButton37   = ".//*[@id='select-file-button']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installFileComponent = "pkg_bwpostman.zip";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installFileU2S       = "plg_bwpostman_bwpm_user2subscriber.zip";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installFileB2S       = "plg_bwpostman_bwpm_buyer2subscriber.zip";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installFileComponent_132 = "com_bwpostman.1.3.2.zip";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $headingInstall       = "Extensions: Install";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $headingManage        = "Extensions: Manage";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $headingPlugins       = "Plugins";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pluginSavedSuccess   = "Plugin saved.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_no_match      = "There are no extensions installed matching your query.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installSuccessMsg    = "Installation of the package was successful.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $uninstallSuccessMsg  = "Thank you for using BwPostman. BwPostman is now removed from your system.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installU2SSuccessMsg    = "Installation of the plugin was successful.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installB2SSuccessMsg    = "Installation of the plugin was successful.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installB2SErrorComMsg   = "BwPostman Plugin Buyer2Subscriber requires an installed BwPostman ";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installB2SErrorU2SMsg   = "BwPostman Plugin Buyer2Subscriber requires an installed BwPostman Plugin User2Subscriber!";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $installB2SErrorVmMsg    = "BwPostman Plugin Buyer2Subscriber requires an installed BwPostman Plugin User2Subscriber!";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $optionsSuccessMsg    = "Configuration successfully saved.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $enableSuccessMsg       = "1 extension successfully enabled.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pluginEnableSuccessMsg = "Plugin successfully enabled.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $icon_published       = ".//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'icon-publish')]";
 
 	/**
@@ -83,6 +245,8 @@ class InstallationPage
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -100,8 +264,9 @@ class InstallationPage
 		{
 			$install_file   = self::$installFileComponent_132;
 		}
-codecept_debug('JS-String:' . (string)"jQuery('input[type=file]#install_package').val('$install_file');");
-		if ((int)getenv('BW_TEST_JOOMLA_VERSION') < 370)
+
+		codecept_debug('JS-String:' . (string) "jQuery('input[type=file]#install_package').val('$install_file');");
+		if ((int) getenv('BW_TEST_JOOMLA_VERSION') < 370)
 		{
 			// until Joomla 3.6.5
 			$I->attachFile(self::$installField, $install_file);
@@ -111,11 +276,7 @@ codecept_debug('JS-String:' . (string)"jQuery('input[type=file]#install_package'
 		{
 			// Since Joomla 3.7.0
 			// @ToDo: Use ULR oder folder upload
-//			$I->executeJS('jQuery("#legacy-uploader").css("display", "visible !important");');
 			$I->executeJS("jQuery('input[type=file]#install_package').val('$install_file');");
-//			$I->fillField(".//*[@id='install_package']", $install_file);
-//			$I->executeJS('jQuery("#legacy-uploader").css("display", "none");');
-
 		}
 
 		$I->waitForElement(Generals::$sys_message_container, 120);
@@ -124,5 +285,4 @@ codecept_debug('JS-String:' . (string)"jQuery('input[type=file]#install_package'
 		$I->see(self::$installSuccessMsg, Generals::$alert_success);
 		$I->dontSee("Error", Generals::$alert_heading);
 	}
-
 }

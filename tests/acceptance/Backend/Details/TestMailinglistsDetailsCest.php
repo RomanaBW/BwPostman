@@ -66,7 +66,7 @@ class TestMailinglistsDetailsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addMailinglistButton);
 
-		MlEdit::_fillFormSimple($I);
+		MlEdit::fillFormSimple($I);
 
 		$I->clickAndWait(MlEdit::$toolbar['Back'], 1);
 
@@ -125,7 +125,7 @@ class TestMailinglistsDetailsCest
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		MlEdit::_fillFormSimple($I);
+		MlEdit::fillFormSimple($I);
 
 		$I->clickAndWait(MlEdit::$toolbar['Cancel'], 1);
 		$I->see("Mailinglists", Generals::$pageTitle);
@@ -184,7 +184,7 @@ class TestMailinglistsDetailsCest
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		MlEdit::_fillFormSimple($I);
+		MlEdit::fillFormSimple($I);
 		$I->click(MlEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -224,7 +224,7 @@ class TestMailinglistsDetailsCest
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		MlEdit::_fillFormSimple($I);
+		MlEdit::fillFormSimple($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
@@ -234,7 +234,7 @@ class TestMailinglistsDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		MlEdit::_fillFormSimple($I);
+		MlEdit::fillFormSimple($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->see("Error", Generals::$alert_header);

@@ -31,155 +31,774 @@ class User2SubscriberPage
 
 	// Frontend stuff
 	// used urls and links
-    public static $register_url         = '/index.php?option=com_users&view=registration';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $register_url         = '/index.php?option=com_users&view=registration';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $user_activation_url  = '/index.php?option=com_users&task=registration.activate&token=';
 
 	//view identifier
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $view_register        = ".//*[@id='member-registration']/fieldset[1]/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $view_register_subs   = ".//*[@id='member-registration']/fieldset[2]/legend";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_red   = 'btn active btn-success btn-danger'; // needed for chromium
 
 	// login field identifiers
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_identifier_name            = ".//*[@id='jform_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_identifier_username        = ".//*[@id='jform_username']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_identifier_password1       = ".//*[@id='jform_password1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_identifier_password2       = ".//*[@id='jform_password2']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_identifier_email1          = ".//*[@id='jform_email1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_identifier_email2          = ".//*[@id='jform_email2']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_identifier_register        = ".//*[@id='member-registration']/div/div/button";
 
 	// login field values user 1
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value_name         = "Sam Sample";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value_username     = "Sam";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value_password     = "!08Sam15";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value_email        = "dummy-1@tester-net.nil";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $change_value_email       = "dummy-2@tester-net.nil";
 
 	// login field values user 2
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value2_name         = "Chiara Abbott";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value2_username     = "Chiara";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value2_password     = "!08Sam15";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $login_value2_email        = "c.abbott@tester-net.nil";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_field     = "";
 
 	// subscriber field identifiers
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_subscribe_no     = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_subscribe_yes    = ".//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_female           = ".//*[@id='jform_bwpm_user2subscriber_gender']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_male             = ".//*[@id='jform_bwpm_user2subscriber_gender']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_name             = ".//*[@id='jform_bwpm_user2subscriber_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_firstname        = ".//*[@id='jform_bwpm_user2subscriber_firstname']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_special          = ".//*[@id='jform_bwpm_user2subscriber_special']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_format_text      = ".//*[@id='jform_bwpm_user2subscriber_emailformat']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_identifier_format_html      = ".//*[@id='jform_bwpm_user2subscriber_emailformat']/label[2]";
 
 	// subscriber field values
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_null_value         = "NO_NAME_AVAILABLE";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value_name         = "Sample";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value_firstname    = "Sam";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value_special      = "0815";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value_name2        = "Sedlmeier";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value_firstname2   = "Andre";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value_special2     = "0816";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value2_name        = "Abbott";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subs_value2_firstname   = "Chiara";
 
 	// success message identifiers
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $success_heading_identifier   = ".//*[@id='system-message']/div/h4";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $success_message_identifier   = ".//*[@id='system-message']/div/div/div";
-	public static $activation_completed_text    = "Your Account has been successfully activated. You can now log in using the username and password you chose during the registration.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $activation_completed_text
+		= "Your Account has been successfully activated. You can now log in using the username and password you chose during the registration.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $activation_complete          = ".//*[@id='system-message']/div/div/div";
 
 	// error message identifiers
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $error_message_name               = "Invalid field:  Last Name";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $error_message_firstname          = "Invalid field:  First Name";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $error_message_special            = "Invalid field:  %s";
 
 	// backend stuff
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $user_management_url              = 'administrator/index.php?option=com_users&view=users';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_page                      = "/administrator/index.php?option=com_plugins";
 
 	// com_users related
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $user_edit_identifier             = ".//*[@id='userList']/tbody/*/td[2]/div[1]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $toolbar_apply_button             = ".//*[@id='toolbar-apply']/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $toolbar_save_button              = ".//*[@id='toolbar-save']/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $toolbar_delete_button            = ".//*[@id='toolbar-delete']/button";
 
 	// com_bwpostman related
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subscriber_email_col_identifier  = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subscriber_format_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[6]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subscriber_email_col_ident_no_gender  = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[4]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subscriber_format_col_ident_no_gender = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subscriber_filter_col_identifier = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subscriber_edit_link             = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]/a";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subslist_identifier_name         = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subslist_identifier_firstname    = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subslist_identifier_gender       = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[4]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subslist_identifier_special      = ".//*[@id='jform_special']";
 
 	// mailinglist check
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mailinglist1_checked             = ".//*[@id='jform_ml_available_1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mailinglist2_checked             = ".//*[@id='jform_ml_available_4']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mailinglist_fieldset_identifier  = "//*[@id='adminForm']/div[1]/div[1]/fieldset/div[1]/div/fieldset/legend/span[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $subscriber_details_close         = ".//*[@id='toolbar-cancel']/button";
 
 	// check for selected options
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $user_id_identifier               = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr/td[7]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $email_identifier                 = ".//*[@id='userList']/tbody/tr[1]/td[7]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mail_field_identifier            = ".//*[@id='jform_email']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mailformat_identifier            = ".//*[@id='jform_show_emailformat-lbl']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mailformat_button_identifier     = ".//*[@id='jform_default_emailformat']/label[%s]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_show_identifier           = ".//*[@id='jform_show_emailformat-lbl']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_show_button_identifier    = ".//*[@id='jform_show_emailformat']/label[%s]";
 
 	// com_plugin related
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $view_plugin                      = "Plugins";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_name                      = "BwPostman Plugin User2Subscriber";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $icon_published_identifier        = ".//*[@id='pluginList']/tbody/tr/td[3]/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_edit_identifier           = ".//*[@id='pluginList']/tbody/tr/td[4]/a";
 
 	// plugin edit tab options
 	// @ToDo: make more flexible
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_tab_options               = ".//*[@id='myTabTabs']/li[2]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_message_identifier        = ".//*[@id='jform_params_register_message_option']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_show_format_yes           = ".//*[@id='jform_params_show_format_selection_option']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_show_format_no            = ".//*[@id='jform_params_show_format_selection_option']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_format_html               = ".//*[@id='jform_params_predefined_mailformat_option']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_format_text               = ".//*[@id='jform_params_predefined_mailformat_option']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_auto_update_yes           = ".//*[@id='jform_params_auto_update_email_option']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_auto_update_no            = ".//*[@id='jform_params_auto_update_email_option']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_auto_delete_yes           = ".//*[@id='jform_params_register_subscribe_option']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_auto_delete_no            = ".//*[@id='jform_params_register_subscribe_option']/label[1]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_message_old               = 'Test text for newsletter message text';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_message_new               = 'New newsletter message text';
 
 	// plugin edit tab mailinglists
 	// @ToDo: make more flexible
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_tab_mailinglists          = ".//*[@id='myTabTabs']/li[3]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_checkbox_mailinglist      = ".//*[@id='mb%s']";
 
 	//messages
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $delete_confirm           = "Are you sure you want to delete? Confirming will permanently delete the selected item(s)!";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $delete_success           = "1 user deleted.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $register_success         = "Your account has been created and a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $config_save_success      = "Configuration saved.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_disabled_success  = 'Plugin successfully disabled';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_enabled_success   = 'Plugin successfully enabled';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $plugin_saved_success     = 'Plugin saved';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $username_used            = 'The username you entered is not available. Please pick another username.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mailaddress_used         = 'The email address you entered is already in use or invalid. Please enter another email address.';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $bwpm_subs_table      = "bwpostman_subscribers";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $bwpm_subs_mls_table  = "bwpostman_subscribers_mailinglists";
 
 	/**
@@ -222,5 +841,4 @@ class User2SubscriberPage
 			$I->seeInDatabase($table_mls, array('subscriber_id' => $subs_id, 'mailinglist_id' => $mls));
 		}
 	}
-
 }

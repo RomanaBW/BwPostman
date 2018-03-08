@@ -1,7 +1,6 @@
 <?php
 namespace Backend\Details;
 
-
 use Page\Generals as Generals;
 use Page\NewsletterEditPage as NlEdit;
 use Page\NewsletterManagerPage as NlManage;

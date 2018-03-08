@@ -67,6 +67,8 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function installWithoutInstalledComponent(AcceptanceTester $I)
@@ -74,7 +76,7 @@ class Buyer2SubscriberInstallCest
 		$I->wantTo("Install plugin without installed component");
 		$I->expectTo("see error message and no installed plugin Buyer2Subscriber");
 
-		$this->_installPlugin($I);
+		$this->installPlugin($I);
 
 		$I->waitForElement(Generals::$alert_error, 30);
 		$I->see(InstallPage::$installB2SErrorComMsg, Generals::$alert_error);
@@ -98,6 +100,8 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function installWithPrerequisites(AcceptanceTester $I)
@@ -107,7 +111,7 @@ class Buyer2SubscriberInstallCest
 
 		InstallPage::installation($I);
 
-		$this->_installPlugin($I);
+		$this->installPlugin($I);
 
 		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see(InstallPage::$installB2SSuccessMsg, Generals::$alert_success);
@@ -119,7 +123,7 @@ class Buyer2SubscriberInstallCest
 
 		$I->see(BuyerPage::$plugin_name);
 
-		$this->_checkForPluginFieldsAtVM($I);
+		$this->checkForPluginFieldsAtVM($I);
 
 		Options::saveDefaults($I);
 
@@ -136,6 +140,8 @@ class Buyer2SubscriberInstallCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -199,29 +205,31 @@ class Buyer2SubscriberInstallCest
 		$this->editPluginOptions($I);
 		$I->clickAndWait(BuyerPage::$plugin_tab_options, 1);
 
-		$this->_switchPluginMessage($I, UserPage::$plugin_message_new);
+		$this->switchPluginMessage($I, UserPage::$plugin_message_new);
 
 		// look at FE
 		$user = $I->haveFriend('User1');
-		$user->does(function (AcceptanceTester $I)
-		{
-			$this->_gotoAddressEditPage($I);
+		$user->does(
+			function (AcceptanceTester $I)
+			{
+				$this->gotoAddressEditPage($I);
 
-			$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
-		}
+				$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
+			}
 		);
 		$user->leave();
 
-		$this->_switchPluginMessage($I, UserPage::$plugin_message_old);
+		$this->switchPluginMessage($I, UserPage::$plugin_message_old);
 
 		// look at FE
 		$user = $I->haveFriend('User2');
-		$user->does(function (AcceptanceTester $I)
-		{
-			$this->_gotoAddressEditPage($I);
+		$user->does(
+			function (AcceptanceTester $I)
+			{
+				$this->gotoAddressEditPage($I);
 
-			$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
-		}
+				$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
+			}
 		);
 		$user->leave();
 
@@ -238,7 +246,7 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _switchPluginMessage(AcceptanceTester $I, $message)
+	private function switchPluginMessage(AcceptanceTester $I, $message)
 	{
 		$I->fillField(BuyerPage::$plugin_message_identifier, $message);
 		$I->clickAndWait(Generals::$toolbar['save'], 1);
@@ -296,12 +304,13 @@ class Buyer2SubscriberInstallCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _checkForPluginFieldsAtVM(AcceptanceTester $I)
+	private function checkForPluginFieldsAtVM(AcceptanceTester $I)
 	{
-		$this->_gotoVMUserfieldsPage($I);
+		$this->gotoVMUserfieldsPage($I);
 
 		$I->fillField(BuyerPage::$filter_field, BuyerPage::$filter_search_value);
 		$I->click(BuyerPage::$filter_go_button);
@@ -318,10 +327,11 @@ class Buyer2SubscriberInstallCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _gotoVMUserfieldsPage(AcceptanceTester $I)
+	private function gotoVMUserfieldsPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(BuyerPage::$link_to_shopper_fields);
 		$I->waitForElement(BuyerPage::$userfield_page_identifier, 30);
@@ -331,10 +341,11 @@ class Buyer2SubscriberInstallCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _gotoAddressEditPage(AcceptanceTester $I)
+	private function gotoAddressEditPage(AcceptanceTester $I)
 	{
 		$I->click(BuyerPage::$button_enter_address);
 		$I->waitForElement(BuyerPage::$header_account_details);
@@ -346,7 +357,7 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function _checkForPluginFieldsNotVisible($I)
+	protected function checkForPluginFieldsNotVisible($I)
 	{
 		$I->dontSeeElement(BuyerPage::$message_identifier);
 		$I->dontSeeElement(BuyerPage::$subscription_identifier);
@@ -398,10 +409,11 @@ class Buyer2SubscriberInstallCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _installPlugin(AcceptanceTester $I)
+	private function installPlugin(AcceptanceTester $I)
 	{
 		$I->amOnPage(InstallPage::$install_url);
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -427,4 +439,3 @@ class Buyer2SubscriberInstallCest
 		$loginPage->logoutFromBackend($I);
 	}
 }
-

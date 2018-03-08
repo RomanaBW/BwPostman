@@ -306,7 +306,7 @@ class NewsletterManagerPage
 	public static $filter_mailinglist_3_txt     = '02 Mailingliste 9 A';
 
 	/**
-	 * @var string
+	 * @var array
 	 *
 	 * @since   2.0.0
 	 */

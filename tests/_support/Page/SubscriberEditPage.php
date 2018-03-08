@@ -2,6 +2,7 @@
 namespace Page;
 
 use Page\SubscriberManagerPage as SubManage;
+
 /**
  * Class SubscriberEditPage
  *
@@ -27,6 +28,12 @@ use Page\SubscriberManagerPage as SubManage;
 class SubscriberEditPage
 {
 	// include url of current page
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $url = 'administrator/index.php?option=com_bwpostman&view=subscriber&layout=edit';
 
 	/**
@@ -35,32 +42,170 @@ class SubscriberEditPage
 	 * @since   2.0.0
 	 */
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $edit_form	= ".//*[@id='adminForm']/div[1]/fieldset/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $firstname    = ".//*[@id='jform_firstname']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $name         = ".//*[@id='jform_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $email        = ".//*[@id='jform_email']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $special      = ".//*[@id='jform_special']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $gender       = ".//*[@id='jform_gender_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mailformat   = ".//*[@id='jform_emailformat_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $confirm      = ".//*[@id='jform_status_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $unconfirmed  = ".//*[@id='jform_status_chzn']/div/ul/li[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $confirmed    = ".//*[@id='jform_status_chzn']/div/ul/li[1]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_firstname    = "Sam";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_name         = "Sample";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_email        = "sam.sample@test.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_special      = "0815";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_gender     = 'You have to enter a first name for the subscriber.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_firstname  = 'You have to enter a first name for the subscriber.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_name       = 'You have to enter a name for the subscriber.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_email      = 'You have to enter an email address for the subscriber.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_special    = 'You have to enter a value in field %s.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $success_saved    = 'Subscriber saved successfully!';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $error_save       = 'Save failed with the following error:';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_title          = "sam.sample@test.nil";
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "sam.sample@test.nil",
 		'archive_tab'          => ".//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
@@ -94,7 +239,19 @@ class SubscriberEditPage
 		'Help'         => ".//*[@id='toolbar-help']/button",
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $female   = ".//*[@id='jform_gender_chzn']/div/ul/li[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $male     = ".//*[@id='jform_gender_chzn']/div/ul/li[3]";
 	/**
 	 * Variables for selecting mailinglists
@@ -111,10 +268,34 @@ class SubscriberEditPage
 
 	//public static $mls_internal_label   = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/legend";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mls_accessible       = ".//*[@id='details']/div/fieldset/div[1]/div/fieldset/div/p[%s]/label";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mls_nonaccessible    = ".//*[@id='details']/div/fieldset/div[2]/div/fieldset/div/p[%s]/label";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mls_internal         = ".//*[@id='details']/div/fieldset/div[3]/div/fieldset/div/p[%s]/label";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mls_internal_label   = ".//*[@id='details']/div/fieldset/div[3]/div/fieldset/legend";
 
 	/**

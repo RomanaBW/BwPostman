@@ -89,6 +89,10 @@ class TestAccessCest
 				$allowed            = $this->getAllowedByUser($user, $button, $permission_array);
 				$archive_allowed    = $this->getAllowedByUser($user, 'Archive', $permission_array);
 
+				codecept_debug('User: ' . $user['user']);
+				codecept_debug('Button: ' . $button);
+				codecept_debug('Allowed: ' . $allowed);
+
 				$this->checkAccessByJoomlaMenu($I, $button, $allowed);
 
 				$I->amOnPage(MainView::$url);
@@ -384,8 +388,8 @@ class TestAccessCest
 
 			// @ToDo: This is a workaround to debug tests. Comment out users which are not wanted
 			$wanted_users = array(
-				//'BwPostmanAdmin',
-				//'BwPostmanManager',
+				'BwPostmanAdmin',
+				'BwPostmanManager',
 				'BwPostmanPublisher',
 				'BwPostmanEditor',
 				'BwPostmanCampaignAdmin',
@@ -565,6 +569,19 @@ class TestAccessCest
 			$I->see($title_to_see, Generals::$pageTitle);
 
 			$I->click(Generals::$toolbar['Cancel']);
+			if ($button === 'Templates')
+			{
+				try
+				{
+					$I->seeInPopup('Any changes will not be saved. Close without saving?');
+					$I->acceptPopup();
+				}
+				catch (\Exception $e)
+				{
+					codecept_debug('Popup Templates not found');
+				}
+			}
+
 			$I->waitForElement(Generals::$pageTitle, 30);
 			$I->see('BwPostman');
 		}
@@ -764,6 +781,8 @@ class TestAccessCest
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	private function restoreArchivedItem($I, $button, $user, $permission_array)
@@ -811,6 +830,8 @@ class TestAccessCest
 	 * @param array              $permission_array
 	 *
 	 * @return void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1190,6 +1211,8 @@ class TestAccessCest
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	private function duplicateNewsletter(\AcceptanceTester $I, $user, $item_permission_array)
@@ -1202,40 +1225,15 @@ class TestAccessCest
 			return;
 		}
 
-		// duplicate
-		NewsletterEditPage::CopyNewsletter($I, $user['user']);
+		// duplicate, also cleans up
+		NewsletterEditPage::CopyNewsletter($I, $user['user'], false);
 
-		$archive_allowed    = $item_permission_array['Newsletters']['permissions']['Archive'];
-		$delete_allowed     = $item_permission_array['Newsletters']['permissions']['Delete'];
+		// cleanup
+		$this->switchLoggedInUser($I, Generals::$admin);
+		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
-		if (!$archive_allowed)
-		{
-			$I->dontSeeElement(Generals::$toolbar['Archive']);
-
-			$this->switchLoggedInUser($I, Generals::$admin);
-			$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
-
-			$I->HelperArcDelItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array, $delete_allowed);
-
-			$this->switchLoggedInUser($I, $user);
-		}
-		else
-		{
-			if (!$delete_allowed)
-			{
-				$I->switchToArchive($I, NewsletterEditPage::$arc_del_array['archive_tab']);
-
-				$I->dontSeeElement(Generals::$toolbar['Delete']);
-
-				$this->switchLoggedInUser($I, Generals::$admin);
-
-				$I->HelperDeleteItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array);
-
-				$this->switchLoggedInUser($I, $user);
-
-				$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
-			}
-		}
+		$I->HelperArcDelItems($I, NewsletterManagerPage::$arc_del_array, NewsletterEditPage::$arc_del_array, true);
+		$this->switchLoggedInUser($I, $user);
 	}
 
 	/**
@@ -1244,6 +1242,8 @@ class TestAccessCest
 	 * @param array             $item_permission_array
 	 *
 	 * @return void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1261,7 +1261,7 @@ class TestAccessCest
 
 		$this->switchLoggedInUser($I, Generals::$admin);
 
-		NewsletterEditPage::_CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		NewsletterEditPage::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
 		$this->switchLoggedInUser($I, $user);
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
@@ -1331,7 +1331,7 @@ class TestAccessCest
 		switch ($button)
 		{
 			case 'Newsletters':
-				NewsletterEditPage::_CreateNewsletterWithoutCleanup($I, $user['user']);
+				NewsletterEditPage::CreateNewsletterWithoutCleanup($I, $user['user']);
 				break;
 			case 'Subscribers':
 				$this->switchLoggedInUser($I, $user);
@@ -1341,7 +1341,7 @@ class TestAccessCest
 
 				break;
 			case 'Campaigns':
-				CampaignEditPage::_createCampaignWithoutCleanup($I);
+				CampaignEditPage::createCampaignWithoutCleanup($I);
 				break;
 			case 'Mailinglists':
 				MailinglistEditPage::_createMailinglistWithoutCleanup($I);
@@ -1405,6 +1405,7 @@ class TestAccessCest
 	 * @param $manage_data
 	 * @param $edit_data
 	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */

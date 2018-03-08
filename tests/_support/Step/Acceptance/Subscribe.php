@@ -1,5 +1,6 @@
 <?php
 namespace Step\Acceptance;
+
 use Helper\Acceptance;
 use Page\SubscriberviewPage;
 
@@ -14,35 +15,37 @@ use Page\SubscriberviewPage;
  */
 class Subscribe extends \AcceptanceTester
 {
-    /**
-     * Test method to subscribe to newsletter in front end by component
-     *
-     * @param SubscriberviewPage  $subscriberView
-     * @param string                    $mailaddress
-     *
-     * @since   2.0.0
-     */
-    public function subscribeByComponent(SubscriberviewPage $subscriberView, $mailaddress)
-    {
-        $I = $this;
+	/**
+	 * Test method to subscribe to newsletter in front end by component
+	 *
+	 * @param SubscriberviewPage  $subscriberView
+	 * @param string                    $mailaddress
+	 *
+	 * @since   2.0.0
+	 */
+	public function subscribeByComponent(SubscriberviewPage $subscriberView, $mailaddress)
+	{
+		$I = $this;
 
-        $I->amOnPage($subscriberView::$register_url);
-        $I->seeElement($subscriberView::$view_register);
+		$I->amOnPage($subscriberView::$register_url);
+		$I->seeElement($subscriberView::$view_register);
 
-        $I->fillField($subscriberView::$firstname, $subscriberView::$firstname_fill);
-        $I->fillField($subscriberView::$name, $subscriberView::$lastname_fill);
-        $I->fillField($subscriberView::$special, $subscriberView::$special_fill);
-        $I->fillField($subscriberView::$mail, $mailaddress);
-        $I->checkOption($subscriberView::$ml1);
-        $I->checkOption($subscriberView::$disclaimer);
-        $I->click($subscriberView::$button_register);
-    }
+		$I->fillField($subscriberView::$firstname, $subscriberView::$firstname_fill);
+		$I->fillField($subscriberView::$name, $subscriberView::$lastname_fill);
+		$I->fillField($subscriberView::$special, $subscriberView::$special_fill);
+		$I->fillField($subscriberView::$mail, $mailaddress);
+		$I->checkOption($subscriberView::$ml1);
+		$I->checkOption($subscriberView::$disclaimer);
+		$I->click($subscriberView::$button_register);
+	}
 
 	/**
 	 * Test method to subscribe to newsletter in front end by module
 	 *
 	 * @param SubscriberviewPage $subscriberView
-	 * @param string                    $mailaddress
+	 * @param string             $mailaddress
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -66,36 +69,39 @@ class Subscribe extends \AcceptanceTester
 	}
 
 	/**
-     * Test method to activate newsletter subscription
-     *
-     * @param SubscriberviewPage    $subscriberView
-     * @param Acceptance            $helper
+	 * Test method to activate newsletter subscription
+	 *
+	 * @param SubscriberviewPage    $subscriberView
+	 * @param Acceptance            $helper
 	 * @param string                $mailaddress
 	 *
 	 * @since   2.0.0
-     */
-    public function activate(SubscriberviewPage $subscriberView, Acceptance $helper, $mailaddress, $good = true)
-    {
-        $I = $this;
+	 */
+	public function activate(SubscriberviewPage $subscriberView, Acceptance $helper, $mailaddress, $good = true)
+	{
+		$I = $this;
 
-        $I->wantTo("Activate mailinglist subscription");
-        $I->expectTo('see activation message');
-        $activation_code = $I->getActivationCode($mailaddress);
-        $I->amOnPage($subscriberView::$activation_link . $activation_code);
-	    if ($good)
-	    {
-		    $I->see($subscriberView::$activation_completed_text, $subscriberView::$activation_complete);
-	    }
-    }
+		$I->wantTo("Activate mailinglist subscription");
+		$I->expectTo('see activation message');
+		$activation_code = $I->getActivationCode($mailaddress);
+		$I->amOnPage($subscriberView::$activation_link . $activation_code);
+		if ($good)
+		{
+			$I->see($subscriberView::$activation_completed_text, $subscriberView::$activation_complete);
+		}
+	}
 
 	/**
 	 * Test method to go to edit newsletter subscription
 	 *
-	 * @param SubscriberviewPage $subscriberView
-	 * @param Acceptance       $helper
-	 * @param string                    $mailaddress
+	 * @param SubscriberviewPage   $subscriberView
+	 * @param Acceptance           $helper
+	 * @param string               $mailaddress
 	 *
-	 * @return string                $editlink_code
+	 * @return string              $editlink_code
+	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function gotoEdit(SubscriberviewPage $subscriberView, Acceptance $helper, $mailaddress)
@@ -120,8 +126,10 @@ class Subscribe extends \AcceptanceTester
 	 * Test method to unsubscribe from all newsletters
 	 *
 	 * @param SubscriberviewPage  $subscriberView
-	 * @param string                    $button
-	 * @param string                    $mailaddress
+	 * @param string              $button
+	 * @param string              $mailaddress
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -138,5 +146,4 @@ class Subscribe extends \AcceptanceTester
 		$I->click($subscriberView::$button_submitleave);
 		$I->dontSee($mailaddress, $subscriberView::$mail);
 	}
-
 }

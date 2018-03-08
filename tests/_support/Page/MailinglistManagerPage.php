@@ -35,6 +35,12 @@ class MailinglistManagerPage
 	 * @since   2.0.0
 	 */
 	public static $url = '/administrator/index.php?option=com_bwpostman&view=mailinglists';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $section = 'Mailinglists';
 
 	/*
@@ -95,20 +101,38 @@ class MailinglistManagerPage
 		'title'       => 'a.title'
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $publish_by_icon   = array(
-		'publish_button'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
-		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
-		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
+		'publish_result'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
+		'unpublish_result'  => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $publish_by_toolbar   = array(
-		'publish_button'    =>  ".//*[@id='cb5']",
-		'publish_result'    =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  =>  ".//*[@id='cb5']",
-		'unpublish_result'  =>  ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => ".//*[@id='cb5']",
+		'publish_result'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => ".//*[@id='cb5']",
+		'unpublish_result'  => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by' => array(
@@ -121,8 +145,20 @@ class MailinglistManagerPage
 		'search_res' => array(array(0, 0, 0), array(2, 2, 0)),
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_clear_val = '01 Mailingliste 2 weiterer Lauf A';
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pagination_data_array  = array(
 		'p1_val1' => "01 Mailingliste 2 A",
 		'p1_field1' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
@@ -150,6 +186,12 @@ class MailinglistManagerPage
 		'p_last_field_last' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[2]",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array    = array(
 		'section'   => 'Mailinglists',
 		'url'   => '/administrator/index.php?option=com_bwpostman&view=mailinglists',

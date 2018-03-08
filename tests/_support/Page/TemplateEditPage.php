@@ -27,74 +27,334 @@ use Page\TemplateManagerPage as TplManage;
  */
 class TemplateEditPage
 {
-    // include url of current page
-    public static $url = 'administrator/index.php?option=com_bwpostman&view=template&layout=edit';
+	// include url of current page
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     */
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $url = 'administrator/index.php?option=com_bwpostman&view=template&layout=edit';
 
-    public static $tpl_tab1     = ".//*[@id='template_tabs']/dt[2]/span/h3/a";
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 */
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $tpl_tab1     = ".//*[@id='template_tabs']/dt[2]/span/h3/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $tpl_tab2     = ".//*[@id='template_tabs']/dt[3]/span/h3/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $tpl_tab3     = ".//*[@id='template_tabs']/dt[4]/span/h3/a";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $title        = '#jform_title';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $description  = '#jform_description';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumbnail               = ".//*[@id='jform_thumbnail']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumbnail_list_pos      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[3]/a/img[@src='%s']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumbnail_id            = "jform_thumbnail";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_thumbnail         = 'images/powered_by.png';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumb_select_button     = './/*[@id=\'adminForm\']/fieldset/div/div[1]/div[1]/dd[1]/fieldset[1]/div/ul/li[3]/div/div/a[1]';
-//	public static $thumb_select            = "html/body/ul/li[6]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumb_select            = "html/body/ul/li/a[contains(@href,'powered_by.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumb_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumb_media_url_field   = ".//*[@id='f_url']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $thumb_url               = "/images/powered_by.png";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $show_author_no   = ".//*[@id='jform_article_show_author']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $show_author_yes  = ".//*[@id='jform_article_show_author']/label[2]";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $show_created_no   = ".//*[@id='jform_article_show_createdate']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $show_created_yes  = ".//*[@id='jform_article_show_createdate']/label[2]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $show_readon_no   = ".//*[@id='jform_article_show_readon']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $show_readon_yes  = ".//*[@id='jform_article_show_readon']/label[2]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access       = '#jform_access';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $published    = '#jform_published';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_title        = '001 Test Template';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_description  = 'A pretty description for this %s template would be nice.';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $msg_cancel         = 'Any changes will not be saved. Close without saving?';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $css_style        = ".//*[@id='jform_tpl_css']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $html_style       = ".//*[@id='jform_tpl_html']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $text_style       = ".//*[@id='jform_tpl_html']";
 
 	//buttons
-//	public static $button_editor_toggle     = ".//*[@id='wf_editor_jform_tpl_html_toggle']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_editor_toggle     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/div/div[1]/ul/li[2]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_refresh_preview   = ".//*[@id='email_preview']/p/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_first_name        = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_last_name         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_full_name         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_content           = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[4]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_unsubscribe       = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[5]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_editlink          = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[6]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $button_impressum         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[7]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $success_save       = 'Template saved successfully!';
-//	public static $success_save       = 'Item successfully saved.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $error_save         = 'Save failed with the following error:';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_title        = 'You have to enter a title for the template.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_description  = 'You have to enter a description for the template.';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_changes_not_saved  = 'Any changes will not be saved. Close without saving?';
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 Test Template",
 		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
@@ -129,8 +389,26 @@ class TemplateEditPage
 		'Help'          => ".//*[@id='toolbar-help']/button",
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $css_style_content        = '';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $html_style_content       = '';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $text_style_content       = '';
 
 	/**
@@ -140,12 +418,10 @@ class TemplateEditPage
 	 */
 	public function __construct()
 	{
-                $base_dir   = '/vms/dockers/global_data/tests';
-//                $data_dir   = $base_dir . '/BwPostman/tests/_data/';
-                $data_dir   = 'tests/_data/';
-		self::$css_style_content    = $this->_getFileContent($data_dir . 'html-newsletter.css');
-		self::$html_style_content   = $this->_getFileContent($data_dir . 'html-newsletter.txt');
-		self::$text_style_content   = $this->_getFileContent($data_dir . 'text-newsletter.txt');
+		$data_dir   = 'tests/_data/';
+		self::$css_style_content    = $this->getFileContent($data_dir . 'html-newsletter.css');
+		self::$html_style_content   = $this->getFileContent($data_dir . 'html-newsletter.txt');
+		self::$text_style_content   = $this->getFileContent($data_dir . 'text-newsletter.txt');
 	}
 
 	/**
@@ -157,7 +433,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	private function _getFileContent($file_name)
+	private function getFileContent($file_name)
 	{
 		$content    = '';
 
@@ -166,6 +442,7 @@ class TemplateEditPage
 		{
 			$content .= trim($content_tmp[$i]) . "\n";
 		}
+
 		return  $content;
 	}
 
@@ -176,9 +453,11 @@ class TemplateEditPage
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public static function _CreateTemplateWithoutCleanup(\AcceptanceTester $I)
+	public static function CreateTemplateWithoutCleanup(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create Text template");
 		$I->amOnPage(TplManage::$url);
@@ -186,7 +465,7 @@ class TemplateEditPage
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		self::_fillFormSimpleText($I);
+		self::fillFormSimpleText($I);
 
 		$I->clickAndWait(self::$toolbar['Save & Close'], 1);
 
@@ -202,16 +481,19 @@ class TemplateEditPage
 	 *
 	 * @param \AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public static function _fillFormSimpleText(\AcceptanceTester $I)
+	public static function fillFormSimpleText(\AcceptanceTester $I)
 	{
-		self::_fillRequired($I, 'Text');
+		self::fillRequired($I, 'Text');
 
-		self::_selectThumbnail($I);
+		self::selectThumbnail($I);
 
-		self::_fillTextContent($I);
+		self::fillTextContent($I);
 	}
+
 	/**
 	 * Method to fill required fields
 	 * Usable for both, HTML and Text
@@ -221,7 +503,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function _fillRequired(\AcceptanceTester $I, $type)
+	public static function fillRequired(\AcceptanceTester $I, $type)
 	{
 		$I->fillField(self::$title, self::$field_title);
 		$I->fillField(self::$description, sprintf(self::$field_description, $type));
@@ -232,9 +514,11 @@ class TemplateEditPage
 	 *
 	 * @param \AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public static function _selectThumbnail(\AcceptanceTester $I)
+	public static function selectThumbnail(\AcceptanceTester $I)
 	{
 
 		$I->clickAndWait(self::$thumb_select_button, 1);
@@ -253,13 +537,12 @@ class TemplateEditPage
 		$I->switchToIFrame();
 	}
 
-
 	/**
 	 * @param \AcceptanceTester $I
 	 *
 	 * @since 2.0.0
 	 */
-	public static function _fillTextContent(\AcceptanceTester $I)
+	public static function fillTextContent(\AcceptanceTester $I)
 	{
 		$I->click(self::$tpl_tab2);
 		$I->fillField(self::$text_style, self::$text_style_content);

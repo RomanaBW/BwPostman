@@ -27,42 +27,192 @@ use Page\MailinglistManagerPage as MlManage;
  */
 class MailinglistEditPage
 {
-    // include url of current page
-    public static $url = 'administrator/index.php?option=com_bwpostman&view=mailinglist&layout=edit';
+	// include url of current page
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     */
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $url = 'administrator/index.php?option=com_bwpostman&view=mailinglist&layout=edit';
 
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 */
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $title        = '#jform_title';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $description  = '#jform_description';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access               = '#jform_access';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_list_id       = "jform_access_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_list          = ".//*[@id='jform_access_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_list_text     = ".//*[@id='jform_access_chzn']/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_public        = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Public']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_guest         = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Guest']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_registered    = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Registered']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_special       = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Special']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $access_super         = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Super Users']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $published                = '#jform_published';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $published_list_id        = "jform_published_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $published_list           = ".//*[@id='jform_published_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $published_list_text      = ".//*[@id='jform_published_chzn']/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $published_unpublished    = ".//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $published_published      = ".//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_title        = '001 General mailing list';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_description  = 'A pretty description would be nice.';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $success_save       = 'Mailinglist saved successfully!';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $error_save         = 'Save failed with the following error:';
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_title        = 'You have to enter a title for the mailinglist.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $popup_description  = 'You have to enter a description for the mailinglist.';
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 General mailing list",
 		'archive_tab'          => ".//.//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived mailinglists')]",
@@ -104,7 +254,7 @@ class MailinglistEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function _fillFormSimple(\AcceptanceTester $I)
+	public static function fillFormSimple(\AcceptanceTester $I)
 	{
 		$I->fillField(self::$title, self::$field_title);
 		$I->fillField(self::$description, self::$field_description);
@@ -117,15 +267,17 @@ class MailinglistEditPage
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public static function _CreateMailinglistWithoutCleanup(\AcceptanceTester $I)
+	public static function CreateMailinglistWithoutCleanup(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create mailinglist without cleanup");
 		$I->amOnPage(MlManage::$url);
 		$I->click(Generals::$toolbar['New']);
 
-		self::_fillFormSimple($I);
+		self::fillFormSimple($I);
 
 		$I->click(self::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);

@@ -2,7 +2,6 @@
 use Page\Generals as Generals;
 use Page\CampaignManagerPage as CamManage;
 
-
 /**
  * Class TestCampaignsListsCest
  *

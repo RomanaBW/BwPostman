@@ -34,14 +34,20 @@ class CampaignManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-    public static $url      = '/administrator/index.php?option=com_bwpostman&view=campaigns';
+	public static $url      = '/administrator/index.php?option=com_bwpostman&view=campaigns';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $section  = 'campaigns';
 
-    /*
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
-     */
+	/*
+	 * Declare UI map for this page here. CSS or XPath allowed.
+	 * public static $usernameField = '#username';
+	 * public static $formSubmitButton = "#mainForm input[type=submit]";
+	 */
 
 	/**
 	 * Array of sorting criteria values for this page
@@ -86,6 +92,12 @@ class CampaignManagerPage
 	);
 
 	// enter default 'search by' as last array element
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_data_array  = array(
 		'search_by'            => array(
 											".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
@@ -97,8 +109,20 @@ class CampaignManagerPage
 	'search_res'           => array(array(6, 8, 4), array(1, 1, 0)),
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_clear_val     = '01 Kampagne 2 A';
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "01 Kampagne 2 A",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
@@ -126,6 +150,12 @@ class CampaignManagerPage
 		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[3]/td[2]",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array    = array(
 		'section'                   => 'campaigns',
 		'url'                       => '/administrator/index.php?option=com_bwpostman&view=campaigns',

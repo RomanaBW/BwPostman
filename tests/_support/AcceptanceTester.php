@@ -1,7 +1,6 @@
 <?php
 use Page\Generals as Generals;
 
-
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -37,11 +36,11 @@ use Page\Generals as Generals;
  */
 class AcceptanceTester extends \Codeception\Actor
 {
-    use _generated\AcceptanceTesterActions;
+	use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+	/**
+	 * Define custom actions here
+	 */
 
 	/**
 	 * Method to remove readonly attribute from a form field
@@ -144,11 +143,9 @@ class AcceptanceTester extends \Codeception\Actor
 		$set_invisible .= "for (var i = 0; i < document.getElementsByName('$radio_id').length; i++) {";
 		$set_invisible .= "document.getElementsByName('$radio_id')[i].setAttribute('style', 'display: one');";
 		$set_invisible .= "};";
-//		$set_invisible    = "for each (button in radio_buttons) {button.setAttribute('style', 'display: none');};";
 		$this->executeJS($set_visible);
 		$this->wait(10);
 
-//		$this->executeJS('$(\'#genFemale\').setAttribute(\'style\', \'display: visible\');');
 		$this->selectOption("#genFemale", $value_text);
 		$this->executeJS($set_invisible);
 	}
@@ -219,6 +216,7 @@ class AcceptanceTester extends \Codeception\Actor
 				break;
 			}
 		}
+
 		return $id;
 	}
 
@@ -229,6 +227,8 @@ class AcceptanceTester extends \Codeception\Actor
 	 *
 	 * @return boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 
@@ -236,9 +236,9 @@ class AcceptanceTester extends \Codeception\Actor
 	{
 		$found      = false;
 		$count      = 1;
-        $last_page  = $this->_getLastPageNumber();
+		$last_page  = $this->getLastPageNumber();
 
-        while (!$found)
+		while (!$found)
 		{
 			$table_search_result  = $this->getTableRowIdBySearchValue($search_value);
 
@@ -250,10 +250,11 @@ class AcceptanceTester extends \Codeception\Actor
 			}
 			else
 			{
-                if ($count >= $last_page)
-                {
-                    return false;
-                }
+				if ($count >= $last_page)
+				{
+					return false;
+				}
+
 				$this->scrollTo(Generals::$pagination_bar);
 				$this->click(Generals::$next_page);
 
@@ -261,6 +262,7 @@ class AcceptanceTester extends \Codeception\Actor
 				$count++;
 			}
 		}
+
 		return true;
 	}
 
@@ -270,6 +272,8 @@ class AcceptanceTester extends \Codeception\Actor
 	 * @param string            $select_list
 	 * @param string            $select_value
 	 * @param string            $select_list_id
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -299,30 +303,29 @@ class AcceptanceTester extends \Codeception\Actor
 		$this->wait($time);
 	}
 
-    /**
-     *
-     * @return int|mixed
-     *
-     * @since 2.0.0
-     */
-    private function _getLastPageNumber()
-    {
-        $last_page = 1;
+	/**
+	 *
+	 * @return int|mixed
+	 *
+	 * @since 2.0.0
+	 */
+	private function getLastPageNumber()
+	{
+		$last_page = 1;
 
-        $this->scrollTo(Generals::$pagination_bar);
+		$this->scrollTo(Generals::$pagination_bar);
 
-        $pagination_accessible   = count($this->grabMultiple(Generals::$last_page));
+		$pagination_accessible   = count($this->grabMultiple(Generals::$last_page));
 
-        if ($pagination_accessible > 0)
-        {
-            $this->click(Generals::$last_page);
-            $last_page = $this->grabTextFrom(Generals::$last_page_identifier);
+		if ($pagination_accessible > 0)
+		{
+			$this->click(Generals::$last_page);
+			$last_page = $this->grabTextFrom(Generals::$last_page_identifier);
 
-            $this->scrollTo(Generals::$pagination_bar);
-            $this->click(Generals::$first_page);
-        }
+			$this->scrollTo(Generals::$pagination_bar);
+			$this->click(Generals::$first_page);
+		}
 
-        return $last_page;
-    }
-
+		return $last_page;
+	}
 }

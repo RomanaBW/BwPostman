@@ -288,7 +288,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(MainView::$addTextTemplateButton);
 
-		TplEdit::_fillFormSimpleText($I);
+		TplEdit::fillFormSimpleText($I);
 
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
@@ -359,7 +359,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		TplEdit::_fillFormSimpleText($I);
+		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -393,7 +393,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		TplEdit::_fillFormSimpleText($I);
+		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -436,7 +436,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		TplEdit::_fillFormSimpleText($I);
+		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
@@ -447,7 +447,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		TplEdit::_fillFormSimpleText($I);
+		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);

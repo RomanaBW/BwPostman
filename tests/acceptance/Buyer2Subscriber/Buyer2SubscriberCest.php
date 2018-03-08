@@ -4,7 +4,6 @@ use Page\Login as LoginPage;
 use Page\Buyer2SubscriberPage as BuyerPage;
 use Page\User2SubscriberPage as UserPage;
 
-
 /**
  * Class Buyer2SubscriberCest
  *
@@ -45,22 +44,66 @@ class Buyer2SubscriberCest
 	 */
 	private $mls_to_subscribe = array();
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	private $subs_selected          = true;
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	private $existing_data          = array();
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	private $entry_data             = array();
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	private $params                 = array();
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public $result_data             = array();
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public $order_number            = '';
-	public $omitted                 = false
-;
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public $omitted                 = false;
+
 	/**
 	 * Test method to order without activated Plugin B2S
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -77,12 +120,12 @@ class Buyer2SubscriberCest
 		$this->result_data      = BuyerPage::$result_data_no_existing_subs[0];
 
 		$I->setExtensionStatus('bwpm_buyer2subscriber', 0);
-		$this->_doOrderUntilAddressEditPage($I);
-		$this->_checkForPluginFieldsNotVisible($I);
-		$this->_fillAddressAndSubmitOrder($I);
-		$this->_checkForSubscriptionProcessed($I);
+		$this->doOrderUntilAddressEditPage($I);
+		$this->checkForPluginFieldsNotVisible($I);
+		$this->fillAddressAndSubmitOrder($I);
+		$this->checkForSubscriptionProcessed($I);
 		$I->setExtensionStatus('bwpm_buyer2subscriber', 1);
-		$this->_cleanup($I);
+		$this->cleanup($I);
 	}
 
 	/**
@@ -91,6 +134,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -107,11 +152,11 @@ class Buyer2SubscriberCest
 		$this->result_data      = BuyerPage::$result_data_no_existing_subs[0];
 
 		$I->setExtensionStatus('bwpm_user2subscriber', 0);
-		$this->_doOrderUntilAddressEditPage($I);
-		$this->_checkForPluginFieldsNotVisible($I);
-		$this->_checkForSubscriptionProcessed($I);
+		$this->doOrderUntilAddressEditPage($I);
+		$this->checkForPluginFieldsNotVisible($I);
+		$this->checkForSubscriptionProcessed($I);
 		$I->setExtensionStatus('bwpm_user2subscriber', 1);
-		$this->_cleanup($I);
+		$this->cleanup($I);
 	}
 
 	/**
@@ -120,6 +165,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -136,11 +183,11 @@ class Buyer2SubscriberCest
 		$this->result_data      = BuyerPage::$result_data_no_existing_subs[0];
 
 		$I->setExtensionStatus('com_bwpostman', 0);
-		$this->_doOrderUntilAddressEditPage($I);
-		$this->_checkForPluginFieldsNotVisible($I);
-		$this->_checkForSubscriptionProcessed($I);
+		$this->doOrderUntilAddressEditPage($I);
+		$this->checkForPluginFieldsNotVisible($I);
+		$this->checkForSubscriptionProcessed($I);
 		$I->setExtensionStatus('com_bwpostman', 1);
-		$this->_cleanup($I);
+		$this->cleanup($I);
 	}
 
 	/**
@@ -149,6 +196,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -164,11 +213,11 @@ class Buyer2SubscriberCest
 		$this->params           = BuyerPage::$entry_data_no_existing_subs[0]['params'];
 		$this->result_data      = BuyerPage::$result_data_no_existing_subs[0];
 
-		$this->_doOrderUntilAddressEditPage($I);
-		$this->_fillAddressAndSubmitOrder($I);
-		$this->_checkForOrderReceived($I);
-		$this->_checkForSubscriptionProcessed($I);
-		$this->_cleanup($I);
+		$this->doOrderUntilAddressEditPage($I);
+		$this->fillAddressAndSubmitOrder($I);
+		$this->checkForOrderReceived($I);
+		$this->checkForSubscriptionProcessed($I);
+		$this->cleanup($I);
 	}
 
 	/**
@@ -177,6 +226,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -193,13 +244,13 @@ class Buyer2SubscriberCest
 		$this->params           = BuyerPage::$entry_data_existing_subs[0]['params'];
 		$this->result_data      = BuyerPage::$result_data_existing_subs[0];
 
-		$this->_makeExistingSubscription($I, 4);
+		$this->makeExistingSubscription($I, 4);
 
-		$this->_doOrderUntilAddressEditPage($I);
-		$this->_fillAddressAndSubmitOrder($I);
-		$this->_checkForOrderReceived($I);
-		$this->_checkForSubscriptionProcessed($I);
-		$this->_cleanup($I);
+		$this->doOrderUntilAddressEditPage($I);
+		$this->fillAddressAndSubmitOrder($I);
+		$this->checkForOrderReceived($I);
+		$this->checkForSubscriptionProcessed($I);
+		$this->cleanup($I);
 	}
 
 	/**
@@ -208,6 +259,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -224,12 +277,12 @@ class Buyer2SubscriberCest
 		$this->params           = BuyerPage::$entry_data_missing_additional[0]['params'];
 		$this->result_data      = BuyerPage::$entry_data_subs_missing_additional[0];
 
-		$this->_setManifestOptions($I);
+		$this->setManifestOptions($I);
 		$I->setExtensionStatus('bwpm_buyer2subscriber', 1);
 
-		$this->_doOrderUntilAddressEditPage($I);
-		$this->_fillAddressAndSubmitOrder($I);
-		$this->_checkForMissingRequired($I);
+		$this->doOrderUntilAddressEditPage($I);
+		$this->fillAddressAndSubmitOrder($I);
+		$this->checkForMissingRequired($I);
 	}
 
 	/**
@@ -238,6 +291,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -249,7 +304,7 @@ class Buyer2SubscriberCest
 		$entry_data  = BuyerPage::$entry_data_no_existing_subs;
 		$result_data = BuyerPage::$result_data_no_existing_subs;
 
-		for ($k= 0; $k<count($entry_data); $k++)
+		for ($k = 0; $k < count($entry_data); $k++)
 		{
 			try
 			{
@@ -259,21 +314,21 @@ class Buyer2SubscriberCest
 				$this->params       = $entry_data[$k]['params'];
 				$this->result_data  = $result_data[$k];
 
-				$this->_setManifestOptions($I);
+				$this->setManifestOptions($I);
 
-				$this->_doOrderUntilAddressEditPage($I);
-				$this->_fillAddressAndSubmitOrder($I);
-				$this->_checkForOrderReceived($I);
+				$this->doOrderUntilAddressEditPage($I);
+				$this->fillAddressAndSubmitOrder($I);
+				$this->checkForOrderReceived($I);
 
 				$this->existing_data    = $this->entry_data;
 
-				$this->_checkForSubscriptionProcessed($I);
+				$this->checkForSubscriptionProcessed($I);
 
-				$this->_cleanup($I);
+				$this->cleanup($I);
 			}
 			catch (\RuntimeException $e)
 			{
-				$this->_handleException($I, $e);
+				$this->handleException($I, $e);
 			}
 		}
 	}
@@ -285,6 +340,8 @@ class Buyer2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function orderWithSubscriptionExistingSubscriptionSameML($I)
@@ -295,7 +352,7 @@ class Buyer2SubscriberCest
 		$entry_data  = BuyerPage::$entry_data_existing_subs;
 		$result_data = BuyerPage::$result_data_existing_subs;
 
-		for ($k= 0; $k<count($entry_data); $k++)
+		for ($k = 0; $k < count($entry_data); $k++)
 		{
 			try
 			{
@@ -306,19 +363,19 @@ class Buyer2SubscriberCest
 				$this->entry_data       = $entry_data[$k]['entry_data'];
 				$this->result_data      = $result_data[$k];
 
-				$this->_setManifestOptions($I);
+				$this->setManifestOptions($I);
 
-				$this->_makeExistingSubscription($I, 4);
+				$this->makeExistingSubscription($I, 4);
 
-				$this->_doOrderUntilAddressEditPage($I);
-				$this->_fillAddressAndSubmitOrder($I);
-				$this->_checkForOrderReceived($I);
-				$this->_checkForSubscriptionProcessed($I);
-				$this->_cleanup($I);
+				$this->doOrderUntilAddressEditPage($I);
+				$this->fillAddressAndSubmitOrder($I);
+				$this->checkForOrderReceived($I);
+				$this->checkForSubscriptionProcessed($I);
+				$this->cleanup($I);
 			}
 			catch (\RuntimeException $e)
 			{
-				$this->_handleException($I, $e);
+				$this->handleException($I, $e);
 			}
 		}
 	}
@@ -329,6 +386,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -344,16 +403,16 @@ class Buyer2SubscriberCest
 		$this->params           = BuyerPage::$entry_data_existing_subs[1]['params'];
 		$this->result_data      = BuyerPage::$result_data_existing_subs[1];
 
-		$this->_makeExistingSubscription($I, 6);
+		$this->makeExistingSubscription($I, 6);
 
-		$this->_doOrderUntilAddressEditPage($I);
-		$this->_fillAddressAndSubmitOrder($I);
+		$this->doOrderUntilAddressEditPage($I);
+		$this->fillAddressAndSubmitOrder($I);
 
-		$this->_checkForOrderReceived($I);
+		$this->checkForOrderReceived($I);
 
-		$this->_checkForSubscriptionProcessed($I);
+		$this->checkForSubscriptionProcessed($I);
 
-		$this->_cleanup($I);
+		$this->cleanup($I);
 	}
 
 	/**
@@ -373,29 +432,31 @@ class Buyer2SubscriberCest
 		$this->editPluginOptions($I);
 		$I->clickAndWait(BuyerPage::$plugin_tab_options, 1);
 
-		$this->_switchPluginMessage($I, UserPage::$plugin_message_new);
+		$this->switchPluginMessage($I, UserPage::$plugin_message_new);
 
 		// look at FE
 		$user = $I->haveFriend('User1');
-		$user->does(function (AcceptanceTester $I)
-		{
-			$this->_doOrderUntilAddressEditPage($I);
+		$user->does(
+			function (AcceptanceTester $I)
+			{
+				$this->doOrderUntilAddressEditPage($I);
 
-			$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
-		}
+				$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
+			}
 		);
 		$user->leave();
 
-		$this->_switchPluginMessage($I, UserPage::$plugin_message_old);
+		$this->switchPluginMessage($I, UserPage::$plugin_message_old);
 
 		// look at FE
 		$user = $I->haveFriend('User2');
-		$user->does(function (AcceptanceTester $I)
-		{
-			$this->_doOrderUntilAddressEditPage($I);
+		$user->does(
+			function (AcceptanceTester $I)
+			{
+				$this->doOrderUntilAddressEditPage($I);
 
-			$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
-		}
+				$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
+			}
 		);
 		$user->leave();
 
@@ -475,7 +536,7 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _switchPluginMessage(AcceptanceTester $I, $message)
+	private function switchPluginMessage(AcceptanceTester $I, $message)
 	{
 		$I->fillField(BuyerPage::$plugin_message_identifier, $message);
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
@@ -486,24 +547,26 @@ class Buyer2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _doOrderUntilAddressEditPage(AcceptanceTester $I)
+	private function doOrderUntilAddressEditPage(AcceptanceTester $I)
 	{
-		$this->_gotoProductPage($I);
-		$this->_addItemAndGotoCart($I);
-		$this->_verifyCartReached($I);
-		$this->_gotoAddressEditPage($I);
+		$this->gotoProductPage($I);
+		$this->addItemAndGotoCart($I);
+		$this->verifyCartReached($I);
+		$this->gotoAddressEditPage($I);
 	}
 
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _gotoProductPage(AcceptanceTester $I)
+	private function gotoProductPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(BuyerPage::$link_to_product);
 		$I->waitForElement(BuyerPage::$product_page_identifier, 30);
@@ -513,10 +576,11 @@ class Buyer2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _addItemAndGotoCart(AcceptanceTester $I)
+	private function addItemAndGotoCart(AcceptanceTester $I)
 	{
 		$I->click(BuyerPage::$button_add_to_cart);
 		$I->waitForElementVisible(BuyerPage::$link_in_popup_show_cart, 30);
@@ -527,10 +591,11 @@ class Buyer2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _verifyCartReached(AcceptanceTester $I)
+	private function verifyCartReached(AcceptanceTester $I)
 	{
 		$I->waitForElement(BuyerPage::$header_cart_identifier, 30);
 		$I->see(BuyerPage::$header_cart_text);
@@ -540,10 +605,11 @@ class Buyer2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _gotoAddressEditPage(AcceptanceTester $I)
+	private function gotoAddressEditPage(AcceptanceTester $I)
 	{
 		$I->click(BuyerPage::$button_enter_address);
 		$I->waitForElement(BuyerPage::$header_account_details);
@@ -555,7 +621,7 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function _checkForPluginFieldsNotVisible($I)
+	protected function checkForPluginFieldsNotVisible($I)
 	{
 		$I->dontSeeElement(BuyerPage::$message_identifier);
 		$I->dontSeeElement(BuyerPage::$subscription_identifier);
@@ -569,7 +635,7 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function _checkForMissingRequired($I)
+	protected function checkForMissingRequired($I)
 	{
 		$I->seeInPopup(BuyerPage::$error_popup_missing_additional);
 		$I->acceptPopup();
@@ -583,7 +649,7 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function _checkForSubscriptionProcessed($I)
+	protected function checkForSubscriptionProcessed($I)
 	{
 		$table_subs  = Generals::$db_prefix . UserPage::$bwpm_subs_table;
 		$table_mls   = Generals::$db_prefix . UserPage::$bwpm_subs_mls_table;
@@ -591,19 +657,17 @@ class Buyer2SubscriberCest
 		if ($this->subs_selected)
 		{
 			$subs_id     = $I->grabFromDatabase($table_subs, 'id', array('email' => $this->entry_data['email']));
-			$data_subs   = $this->_prepareSubsData($this->result_data);
+			$data_subs   = $this->prepareSubsData($this->result_data);
 
 			$data_mls    = array('subscriber_id' => $subs_id, 'mailinglist_id'   => 4);
-//			$data_mls2    = array('subscriber_id' => $subs_id, 'mailinglist_id'   => 6);
 
 			$I->seeInDatabase($table_subs, $data_subs);
 			$I->seeInDatabase($table_mls, $data_mls);
-//			$I->seeInDatabase($table_mls, $data_mls2);
 		}
 		elseif (array_key_exists('email', $this->existing_data))
 		{
 			$subs_id     = $I->grabFromDatabase($table_subs, 'id', array('email' => $this->existing_data['email']));
-			$data_subs   = $this->_prepareSubsData($this->result_data);
+			$data_subs   = $this->prepareSubsData($this->result_data);
 			$data_mls    = array('subscriber_id' => $subs_id, 'mailinglist_id'   => 4);
 
 			$I->seeInDatabase($table_subs, $data_subs);
@@ -625,7 +689,7 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _prepareSubsData($data)
+	private function prepareSubsData($data)
 	{
 		$data['status'] = 1;
 
@@ -640,27 +704,30 @@ class Buyer2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-	protected function _cleanup($I)
+	protected function cleanup($I)
 	{
-		$this->_deleteOrder($I);
+		$this->deleteOrder($I);
 
 		if ($this->subs_selected)
 		{
-			$this->_deleteSubscription($I);
+			$this->deleteSubscription($I);
 		}
 	}
 
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-	protected function _deleteOrder($I)
+	protected function deleteOrder($I)
 	{
 		$table  = BuyerPage::$vm_order_table;
-//		$data   = array('order_number' => $this->order_number);
 		// @ToDo: rewrite following method to build WHERE clause there, feeded by an array submitted like a line before, see next method
 		$data   = " WHERE `order_number` = '$this->order_number'";
 
@@ -670,12 +737,14 @@ class Buyer2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-	protected function _deleteSubscription($I)
+	protected function deleteSubscription($I)
 	{
 		$table_subs  = UserPage::$bwpm_subs_table;
-		$data_subs   = $this->_prepareSubsData($this->result_data);
+		$data_subs   = $this->prepareSubsData($this->result_data);
 
 		$subs_id     = $I->grabFromDatabase(Generals::$db_prefix . $table_subs, 'id', array('email' => $this->existing_data['email']));
 
@@ -696,10 +765,10 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function _makeExistingSubscription($I, $ml_id)
+	protected function makeExistingSubscription($I, $ml_id)
 	{
 		$table_subs     = Generals::$db_prefix . UserPage::$bwpm_subs_table;
-		$existing_subs  = $this->_prepareSubsData($this->existing_data);
+		$existing_subs  = $this->prepareSubsData($this->existing_data);
 
 		$I->haveInDatabase($table_subs, $existing_subs);
 
@@ -714,9 +783,11 @@ class Buyer2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-	protected function _fillAddressAndSubmitOrder($I)
+	protected function fillAddressAndSubmitOrder($I)
 	{
 		$entries    = $this->entry_data;
 		$params    = $this->params;
@@ -727,17 +798,28 @@ class Buyer2SubscriberCest
 			$I->clickSelectList(BuyerPage::$subscription_list, BuyerPage::$subscription_yes, BuyerPage::$subscription_identifier);
 			if ($params['show_emailformat'])
 			{
-				$I->clickSelectList(BuyerPage::$format_list, sprintf(BuyerPage::$format_list_value, (int)$entries['selected_format'] + 1), BuyerPage::$subscription_identifier);
+				$I->clickSelectList(
+					BuyerPage::$format_list,
+					sprintf(BuyerPage::$format_list_value, (int) $entries['selected_format'] + 1),
+					BuyerPage::$subscription_identifier
+				);
 			}
+
 			if ($params['show_gender'])
 			{
-				$I->clickSelectList(BuyerPage::$gender_list, sprintf(BuyerPage::$gender_value, (int)$entries['gender'] + 1), BuyerPage::$gender_identifier);
+				$I->clickSelectList(
+					BuyerPage::$gender_list,
+					sprintf(BuyerPage::$gender_value, (int) $entries['gender'] + 1),
+					BuyerPage::$gender_identifier
+				);
 			}
+
 			if ($params['show_special'])
 			{
 				$I->fillField(BuyerPage::$additional_identifier, $entries['special']);
 			}
 		}
+
 		$I->fillField(BuyerPage::$billto_identifier_firstname, $entries['firstname']);
 		$I->fillField(BuyerPage::$billto_identifier_lastname, $entries['name']);
 		$I->fillField(BuyerPage::$billto_identifier_street, $entries['street']);
@@ -750,18 +832,20 @@ class Buyer2SubscriberCest
 		{
 			$I->waitForElement(BuyerPage::$header_cart_identifier, 30);
 
-			$this->_checkoutCart($I);
+			$this->checkoutCart($I);
 
-			$this->_grabOrderNumber($I);
+			$this->grabOrderNumber($I);
 		}
 	}
 
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function _checkoutCart($I)
+	private function checkoutCart($I)
 	{
 		$I->scrollTo(BuyerPage::$button_check_out_now, 0, -100);
 		$I->clickAndWait(BuyerPage::$button_tos, 1);
@@ -774,7 +858,7 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function _grabOrderNumber($I)
+	protected function grabOrderNumber($I)
 	{
 		$order_string       = $I->grabTextFrom(BuyerPage::$order_number_field);
 		$order_texts        = explode(' ', $order_string);
@@ -786,7 +870,7 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	protected function _checkForOrderReceived($I)
+	protected function checkForOrderReceived($I)
 	{
 		$table  = Generals::$db_prefix . BuyerPage::$vm_order_table;
 		$data   = array('order_number' => $this->order_number);
@@ -840,11 +924,8 @@ class Buyer2SubscriberCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function _setManifestOptions($I)
+	private function setManifestOptions($I)
 	{
-//		$params       = $this->entry_data['params'];
-//		$this->params = $params;
-
 		foreach ($this->params as $param => $value)
 		{
 			$I->setManifestOption('com_bwpostman', $param, $value);
@@ -855,13 +936,13 @@ class Buyer2SubscriberCest
 	 * @param AcceptanceTester $I
 	 * @param \RuntimeException $e
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function _handleException($I, $e)
+	private function handleException($I, $e)
 	{
 		sprintf('Runtime-Exception: %s', $e->getMessage());
-		$this->_cleanup($I);
+		$this->cleanup($I);
 	}
 }
-

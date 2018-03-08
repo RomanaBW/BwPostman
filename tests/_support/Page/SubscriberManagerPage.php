@@ -36,7 +36,19 @@ class SubscriberManagerPage
 	 * @since   2.0.0
 	 */
 	public static $url      = '/administrator/index.php?option=com_bwpostman&view=subscribers';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $section  = 'subscriber';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $wait_db  = 1;
 
 	/*
@@ -45,16 +57,64 @@ class SubscriberManagerPage
 	 * public static $formSubmitButton = "#mainForm input[type=submit]";
 	 */
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $tab_confirmed   = ".//*[@id='bwpostman_subscribers_tabs']/dt[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $tab_unconfirmed = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $tab_testers     = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $first_list_link          = ".//*[@id='main-table']/tbody/tr[1]/td[2]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $first_list_entry_tab2    = ".//*[@id='ub0']";
 
 	// search subscriber
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_for_list_id               = "filter_search_filter_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_for_list                  = ".//*[@id='filter_search_filter_chzn']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_for_value                 = ".//*[@id='filter_search_filter_chzn']/div/ul/li[contains(text(), '%s')]";
 
 	/**
@@ -117,6 +177,12 @@ class SubscriberManagerPage
 		'id'            => 'a.id',
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
@@ -130,24 +196,102 @@ class SubscriberManagerPage
 		// array of arrays: outer array per search value, inner arrays per 'search by'
 		'search_res'           => array(array(0, 0, 0, 0, 0), array(2, 1, 3, 3, 3)),
 	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $search_clear_val     = 'Abbott';
 
 	// Filter mail format
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_list_id       = "filter_emailformat_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_list          = ".//*[@id='filter_emailformat_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_none          = ".//*[@id='filter_emailformat_chzn']/div/ul/li[text()='Select email format']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text          = ".//*/li[text()='Text']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_html          = ".//*/li[text()='HTML']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text_column   = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[5]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text_text     = 'Text';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $format_text_html     = 'HTML';
 
 	// Filter mailinglist
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $ml_list_id       = "filter_mailinglist_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $ml_list          = ".//*[@id='filter_mailinglist_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $ml_select        = ".//*/li[text()='04 Mailingliste 14 A']";
 
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $filter_subs_result   = array(
 											'c.abbott@tester-net.nil',
 											'c.breidenbach@tester-net.nil',
@@ -160,6 +304,12 @@ class SubscriberManagerPage
 											'lili.zech@tester-net.nil'
 										);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "Abbott",
 		'p1_field1'            => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
@@ -186,46 +336,214 @@ class SubscriberManagerPage
 		'p_last_val_last'      => "Zuschuss",
 		'p_last_field_last'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[8]/td[2]",
 	);
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $arc_del_array    = array(
 		'section'   => 'subscriber',
 		'url'   => '/administrator/index.php?option=com_bwpostman&view=subscribers',
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_button    = ".//*[@id='fileformatcsv']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_button    = ".//*[@id='fileformatxml']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_file    = "import_demo.csv";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_file    = "import_demo.xml";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_search_button = ".//*[@id='importfile']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_delimiter = ".//*[@id='delimiter_chzn']/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_separator = ".//*[@id='enclosure_chzn']/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_caption   = ".//*[@id='caption']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_button_further = ".//*[@id='adminForm']/fieldset/div/div/table/tbody/tr[6]/td/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_button_import  = ".//*[@id='adminForm']/fieldset[2]/div/table/tbody/tr/td/input";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_legend_step_2 = ".//*[@id='adminForm']/fieldset[2]/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_legend_mls    = ".//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/div/fieldset/legend/span[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_legend_format = ".//*[@id='adminForm']/fieldset[2]/div/div[3]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_cb_text_format  = ".//*[@id='emailformat0']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_cb_html_format  = ".//*[@id='emailformat1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_cb_confirm_subs = ".//*[@id='confirm']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_field_0   = "Column_0 (name)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_field_1   = "Column_1 (firstname)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_field_2   = "Column_2 (email)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_field_3   = "Column_3 (emailformat)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_field_4   = "Column_4 (status)";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_field_0   = "Field_0 (name)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_field_1   = "Field_1 (firstname)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_field_2   = "Field_2 (email)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_field_3   = "Field_3 (emailformat)";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_field_4   = "Field_4 (status)";
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_csv_subscribers   = array(
 		array(
 			'name' => 'Muster',
@@ -271,6 +589,12 @@ class SubscriberManagerPage
 		),
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_xml_subscribers   = array(
 		array(
 			'name' => 'Muster',
@@ -302,22 +626,94 @@ class SubscriberManagerPage
 		),
 	);
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_mls_target    = ".//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/div/fieldset/div/p[2]/label";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $import_msg_success   = "The import has successfully been completed.";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_csv_confirmed   = ".//*[@id='status1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_csv_unconfirmed = ".//*[@id='status0']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_csv_testers     = ".//*[@id='status9']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_csv_unarchived = ".//*[@id='archive0']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_csv_archived   = ".//*[@id='archive1']";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_legend_fields = ".//*[@id='adminForm']/fieldset/div/table/tbody/tr[5]/td[1]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_button_up     = ".//*[@id='adminForm']/fieldset/div/table/tbody/tr[5]/td[2]/span[1]/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_button_down   = ".//*[@id='adminForm']/fieldset/div/table/tbody/tr[5]/td[2]/span[2]/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_button_remove = ".//*[@id='adminForm']/fieldset/div/table/tbody/tr[5]/td[2]/span[3]/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_button_export = ".//*[@id='adminForm']/fieldset/div/table/tbody/tr[6]/td/input";
 
 	/**
@@ -356,5 +752,4 @@ class SubscriberManagerPage
 		$I->clickSelectList(Generals::$search_list, $search_for_value, self::$search_for_list_id);
 		$I->clickAndWait(Generals::$search_button, 1);
 	}
-
 }

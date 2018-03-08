@@ -1350,7 +1350,7 @@ class TestAccessCest
 				MailinglistEditPage::createMailinglistWithoutCleanup($I);
 				break;
 			case 'Templates':
-				TemplateEditPage::_createTemplateWithoutCleanup($I);
+				TemplateEditPage::createTemplateWithoutCleanup($I);
 				break;
 		}
 

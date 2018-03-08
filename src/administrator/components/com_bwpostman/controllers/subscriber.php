@@ -146,7 +146,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 */
 	protected function allowArchive($recordIds = array())
 	{
-		return BwPostmanHelper::canArchive('subscriber', $recordIds);
+		return BwPostmanHelper::canArchive('subscriber', 0, $recordIds);
 	}
 
 	/**
@@ -304,7 +304,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (!BwPostmanHelper::canArchive('subscriber', $cid))
+		if (!BwPostmanHelper::canArchive('subscriber', 0, $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

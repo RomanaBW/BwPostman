@@ -317,7 +317,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$time = $date->toSql();
 
 			// Access check.
-			if (!BwPostmanHelper::canArchive('mailinglist', $cid))
+			if (!BwPostmanHelper::canArchive('mailinglist', 0, $cid))
 			{
 				return false;
 			}

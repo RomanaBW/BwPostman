@@ -1032,7 +1032,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$time = $date->toSql();
 
 			// Access check.
-			if (!BwPostmanHelper::canArchive('newsletter', $cid))
+			if (!BwPostmanHelper::canArchive('newsletter', 0, $cid))
 			{
 				return false;
 			}

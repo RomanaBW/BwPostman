@@ -144,7 +144,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	protected function allowArchive($recordIds = array())
 	{
-		return BwPostmanHelper::canArchive('campaign', $recordIds);
+		return BwPostmanHelper::canArchive('campaign', 0, $recordIds);
 	}
 
 	/**
@@ -294,7 +294,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (!BwPostmanHelper::canArchive('campaign', $cid))
+		if (!BwPostmanHelper::canArchive('campaign', 0, $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

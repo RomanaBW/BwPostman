@@ -182,7 +182,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	protected function allowArchive($recordIds = array())
 	{
-		return BwPostmanHelper::canArchive('template', $recordIds);
+		return BwPostmanHelper::canArchive('template', 0, $recordIds);
 	}
 
 	/**
@@ -308,7 +308,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (!BwPostmanHelper::canArchive('template', $cid))
+		if (!BwPostmanHelper::canArchive('template', 0, $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

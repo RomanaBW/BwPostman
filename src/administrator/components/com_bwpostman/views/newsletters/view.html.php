@@ -240,7 +240,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					JToolbarHelper::editList('newsletter.edit');
 				}
 
-				if (BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
+				if (BwPostmanHelper::canEditState('newsletter'))
 				{
 					JToolbarHelper::publishList('newsletters.publish');
 					JToolbarHelper::unpublishList('newsletters.unpublish');

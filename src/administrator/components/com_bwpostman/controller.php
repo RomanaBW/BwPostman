@@ -92,4 +92,35 @@ class BwPostmanController extends JControllerLegacy
 		$link = JRoute::_('index.php?option=com_bwpostman&view=template&layout=default_html', false);
 		$this->setRedirect($link);
 	}
+
+	/**
+	 * Method to GET permission value and give it to the model for storing in the database.
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.5
+	 */
+	public function storePermission()
+	{
+		$app	= JFactory::getApplication();
+
+		// Send json mime type.
+		$app->mimeType = 'application/json';
+		$app->setHeader('Content-Type', $app->mimeType . '; charset=' . $app->charSet);
+		$app->sendHeaders();
+
+		// Check if user token is valid.
+		if (!JSession::checkToken('get'))
+		{
+			$app->enqueueMessage(JText::_('JINVALID_TOKEN'), 'error');
+			echo new JResponseJson;
+			$app->close();
+		}
+
+		$model = $this->getModel('BwPostman');
+		echo new JResponseJson($model->storePermissions());
+		$app->close();
+	}
 }

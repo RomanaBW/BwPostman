@@ -118,7 +118,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 										<?php
 									}
 
-									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template, 1')) {
+									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1)) {
 									?>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink">

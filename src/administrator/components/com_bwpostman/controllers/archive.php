@@ -160,7 +160,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 		// Access check.
 		$view   = substr($tab, 0, -1);
-		if (!BwPostmanHelper::canRestore($view, $cid))
+		if (!$this->allowRestore($view, $cid))
 		{
 			$this->setRedirect(
 				JRoute::_(
@@ -379,7 +379,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 *
 	 * @access	public
 	 *
-	 * @return JControllerLegacy
+	 * @return boolean|JControllerLegacy
 	 *
 	 * @throws Exception
 	 *

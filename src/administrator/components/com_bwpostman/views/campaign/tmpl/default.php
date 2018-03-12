@@ -158,8 +158,11 @@ $tab_options = array(
 		echo $this->loadTemplate('sent');
 
 		// Start Tab permissions
+		if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
+		{
 			echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'), 'rules', '');
 			echo $this->loadTemplate('rules');
+		}
 
 		echo JHtmlBwTabs::end();
 		?>

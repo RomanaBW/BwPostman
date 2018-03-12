@@ -273,9 +273,9 @@ abstract class BwPostmanHelper
 */
 		// Second: Check for view specific permissions
 		// Return result, if one of the groups is named, else go downwards
-		if (isset(self::$permissions[$view][$action]) && !self::$permissions[$view][$action])
+		if (isset(self::$permissions[$view][$action]) && (self::$permissions[$view][$action] !== null))
 		{
-			return false;
+			return self::$permissions[$view][$action];
 		}
 
 		// Third: Check for component permissions

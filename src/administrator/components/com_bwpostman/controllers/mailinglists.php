@@ -146,4 +146,64 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		parent::display();
 		return $this;
 	}
+
+	/**
+	 * Method to check if you can publish/unpublish records
+	 *
+	 * @param	array 	$recordIds		an array of items to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowPublish($recordIds = array())
+	{
+		foreach ($recordIds as $recordId)
+		{
+			$allowed = BwPostmanHelper::canEditState('mailinglist', 0, $recordId);
+
+			if (!$allowed)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to (un)publish mailinglists
+	 *
+	 * @access	public
+	 *
+	 * @return	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.1.0
+	 */
+	public function publish()
+	{
+		$jinput	= JFactory::getApplication()->input;
+
+		// Check for request forgeries
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
+
+		// Get the selected template(s)
+		$cid = $jinput->get('cid', array(0), 'post');
+		\Joomla\Utilities\ArrayHelper::toInteger($cid);
+
+		// Access check
+		if (!$this->allowPublish($cid))
+		{
+			return false;
+		}
+
+		parent::publish();
+
+		return true;
+	}
 }

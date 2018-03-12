@@ -961,6 +961,19 @@ abstract class BwPostmanHelper
 			$recordIds	= $ids;
 		}
 
+		if (!count($recordIds))
+		{
+			$recordIds[] = 0;
+		}
+
+		// This part is needed for displaying the button
+		if (!$recordIds[0])
+		{
+			$display = self::displayButton($view, $action, 0);
+
+			return $display;
+		}
+
 		// Check permission
 		foreach ($recordIds as $recordId)
 		{

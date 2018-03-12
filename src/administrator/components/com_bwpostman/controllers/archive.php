@@ -33,7 +33,7 @@ jimport('joomla.application.component.controller');
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Import helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman Archive Controller
@@ -76,6 +76,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			$this->redirect();
 			return $this;
 		}
+
 		parent::display();
 		return $this;
 	}
@@ -115,6 +116,10 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 *
 	 * @access	public
 	 *
+	 * @return boolean|JControllerLegacy
+	 *
+	 * @throws Exception
+	 *
 	 * @since   0.9.1
 	 */
 	public function unarchive()
@@ -123,9 +128,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken()) {
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
-		$tab = $jinput->get('layout','newsletters');
+		$tab = $jinput->get('layout', 'newsletters');
 
 		$cid = $jinput->get('cid', array(0), 'post');
 		ArrayHelper::toInteger($cid);
@@ -136,197 +143,213 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		{
 			$this->setRedirect(
 				JRoute::_(
-					'index.php?option=com_bwpostman&view=archive&layout=' . $tab, false
+					'index.php?option=com_bwpostman&view=archive&layout=' . $tab,
+					false
 				)
 			);
 			return false;
 		}
 
-		$n = count ($cid);
+		$n = count($cid);
 
 		switch ($tab)
 		{
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
-					$model = $this->getModel('newsletter');
-					if(!$model->archive($cid, 0))
+				$model = $this->getModel('newsletter');
+				if(!$model->archive($cid, 0))
+				{
+					if ($n > 1)
 					{
-						if ($n > 1)
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NLS', true)."'); window.history.go(-1); </script>\n";
-						}
-						else
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NL', true)."'); window.history.go(-1); </script>\n";
-						}
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NLS', true);
 					}
 					else
 					{
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_UNARCHIVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_NL_UNARCHIVED');
-						}
-
-						$app->enqueueMessage($msg);
-						$jinput->set('layout', 'newsletters');
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NL', true);
 					}
+
+					echo "<script>alert ('" . $alert . "'); window.history.go(-1); </script>\n";
+				}
+				else
+				{
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_UNARCHIVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_NL_UNARCHIVED');
+					}
+
+					$app->enqueueMessage($msg);
+					$jinput->set('layout', 'newsletters');
+				}
 				break;
 
 			// We are in the subscribers_tab
 			case "subscribers":
-					$model = $this->getModel('subscriber');
-					if(!$model->archive($cid, 0))
+				$model = $this->getModel('subscriber');
+				if(!$model->archive($cid, 0))
+				{
+					if ($n > 1)
 					{
-						if ($n > 1)
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUBS', true)."'); window.history.go(-1); </script>\n";
-						}
-						else
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUB', true)."'); window.history.go(-1); </script>\n";
-						}
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUBS', true);
 					}
 					else
 					{
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_UNARCHIVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_UNARCHIVED');
-						}
-
-						$app->enqueueMessage($msg);
-						$jinput->set('layout', 'subscribers');
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUB', true);
 					}
+
+					echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
+				}
+				else
+				{
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_UNARCHIVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_UNARCHIVED');
+					}
+
+					$app->enqueueMessage($msg);
+					$jinput->set('layout', 'subscribers');
+				}
 				break;
 
 			// We are in the campaigns_tab
 			case "campaigns":
-					// If archive_nl = 1 the assigned newsletters shall be archived, too
-					$unarchive_nl = $jinput->get('unarchive_nl');
+				// If archive_nl = 1 the assigned newsletters shall be archived, too
+				$unarchive_nl = $jinput->get('unarchive_nl');
 
-					$model = $this->getModel('campaign');
-					if(!$model->archive($cid, 0, $unarchive_nl))
+				$model = $this->getModel('campaign');
+				if(!$model->archive($cid, 0, $unarchive_nl))
+				{
+					if ($n > 1)
 					{
-						if ($n > 1)
+						if ($unarchive_nl)
 						{
-							if ($unarchive_nl)
-							{
-								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS_NL', true)."'); window.history.go(-1); </script>\n";
-							}
-							else
-							{
-								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS', true)."'); window.history.go(-1); </script>\n";
-							}
+							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS_NL', true);
 						}
 						else
 						{
-							if ($unarchive_nl)
-							{
-								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM_NL', true)."'); window.history.go(-1); </script>\n";
-							}
-							else
-							{
-								echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM', true)."'); window.history.go(-1); </script>\n";
-							}
+							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS', true);
 						}
+
+						echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
 					}
-					else {
-						if ($n > 1)
+					else
+					{
+						if ($unarchive_nl)
 						{
-							if ($unarchive_nl)
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_UNARCHIVED');
-							}
-							else
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_UNARCHIVED');
-							}
+							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM_NL', true);
 						}
 						else
 						{
-							if ($unarchive_nl)
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_UNARCHIVED');
-							}
-							else
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_UNARCHIVED');
-							}
+							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM', true);
 						}
-						$app->enqueueMessage($msg);
-						$jinput->set('layout', 'campaigns');
+
+						echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
 					}
+				}
+				else {
+					if ($n > 1)
+					{
+						if ($unarchive_nl)
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_UNARCHIVED');
+						}
+						else
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_UNARCHIVED');
+						}
+					}
+					else
+					{
+						if ($unarchive_nl)
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_UNARCHIVED');
+						}
+						else
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_UNARCHIVED');
+						}
+					}
+
+					$app->enqueueMessage($msg);
+					$jinput->set('layout', 'campaigns');
+				}
 				break;
 
 			// We are in the mailinglists_tab
 			case "mailinglists":
-					$model = $this->getModel('mailinglist');
-					if(!$model->archive($cid, 0))
+				$model = $this->getModel('mailinglist');
+				if(!$model->archive($cid, 0))
+				{
+					if ($n > 1)
 					{
-						if ($n > 1)
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_MLS', true)."'); window.history.go(-1); </script>\n";
-						}
-						else
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_ML', true)."'); window.history.go(-1); </script>\n";
-						}
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_MLS', true);
 					}
 					else
 					{
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_UNARCHIVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ML_UNARCHIVED');
-						}
-						$app->enqueueMessage($msg);
-						$jinput->set('layout', 'mailinglists');
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_ML', true);
 					}
+
+					echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
+				}
+				else
+				{
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_UNARCHIVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ML_UNARCHIVED');
+					}
+
+					$app->enqueueMessage($msg);
+					$jinput->set('layout', 'mailinglists');
+				}
 				break;
 
 			// We are in the templates_tab
 			case "templates":
-					$model = $this->getModel('template');
-					if(!$model->archive($cid, 0))
+				$model = $this->getModel('template');
+				if(!$model->archive($cid, 0))
+				{
+					if ($n > 1)
 					{
-						if ($n > 1)
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPLS', true)."'); window.history.go(-1); </script>\n";
-						}
-						else
-						{
-							echo "<script> alert ('".JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPL', true)."'); window.history.go(-1); </script>\n";
-						}
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPLS', true);
 					}
 					else
 					{
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_UNARCHIVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_UNARCHIVED');
-						}
-						$app->enqueueMessage($msg);
-						$jinput->set('layout', 'templates');
+						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPL', true);
 					}
+
+					echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
+				}
+				else
+				{
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_UNARCHIVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_UNARCHIVED');
+					}
+
+					$app->enqueueMessage($msg);
+					$jinput->set('layout', 'templates');
+				}
 				break;
 		}
-		$jinput->set('view', 'archive');
-		parent::display();
 
+		$jinput->set('view', 'archive');
+		return parent::display();
 	}
 
 	/**
@@ -335,6 +358,10 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 *
 	 * @access	public
 	 *
+	 * @return JControllerLegacy
+	 *
+	 * @throws Exception
+	 *
 	 * @since   0.9.1
 	 */
 	public function delete()
@@ -342,10 +369,13 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		$jinput	= JFactory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
 
 		$app	= JFactory::getApplication();
-		$tab	= $jinput->get('layout','newsletters');
+		$tab	= $jinput->get('layout', 'newsletters');
 		$cid	= $jinput->get('cid', array(0), 'post');
 		$type	= 'message';
 
@@ -357,185 +387,185 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		{
 			$this->setRedirect(
 				JRoute::_(
-					'index.php?option=com_bwpostman&view=archive&layout=' . $tab, false
+					'index.php?option=com_bwpostman&view=archive&layout=' . $tab,
+					false
 				)
 			);
 			return false;
 		}
 
-		$n = count ($cid);
+		$n = count($cid);
 
 		switch ($tab)
 		{
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
-					$model = $this->getModel('newsletter');
-					if(!$model->delete($cid))
+				$model = $this->getModel('newsletter');
+				if(!$model->delete($cid))
+				{
+					$type	= 'error';
+					if ($n > 1)
 					{
-						$type	= 'error';
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NLS');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NL');
-						}
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NLS');
 					}
 					else
 					{
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_REMOVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_NL_REMOVED');
-						}
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NL');
 					}
+				}
+				else
+				{
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_REMOVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_NL_REMOVED');
+					}
+				}
 				break;
 
 			// We are in the subscribers_tab
 			case "subscribers":
-					$model = $this->getModel('subscriber');
-					if(!$model->delete($cid))
+				$model = $this->getModel('subscriber');
+				if(!$model->delete($cid))
+				{
+					$type	= 'error';
+					if ($n > 1)
 					{
-						$type	= 'error';
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUBS');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUB');
-						}
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUBS');
 					}
 					else
 					{
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_REMOVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_REMOVED');
-						}
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUB');
 					}
+				}
+				else
+				{
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_REMOVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_REMOVED');
+					}
+				}
 				break;
 
 			// We are in the campaigns_tab
 			case "campaigns":
-					// If archive_nl = 1 the assigned newsletters shall be archived, too
-					$remove_nl = $jinput->get('remove_nl');
-					$model = $this->getModel('campaign');
-					if(!$model->delete($cid, $remove_nl))
-					{
-						$type	= 'error';
-						if ($n > 1) {
-							if ($remove_nl)
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NL');
-							}
-							else
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS');
-							}
+				// If archive_nl = 1 the assigned newsletters shall be archived, too
+				$remove_nl = $jinput->get('remove_nl');
+				$model = $this->getModel('campaign');
+				if(!$model->delete($cid, $remove_nl))
+				{
+					$type	= 'error';
+					if ($n > 1) {
+						if ($remove_nl)
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NL');
 						}
-						else {
-							if ($remove_nl)
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM_NL');
-							}
-							else
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM');
-							}
+						else
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS');
 						}
 					}
 					else {
-						if ($n > 1)
+						if ($remove_nl)
 						{
-							if ($remove_nl)
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_REMOVED');
-							}
-							else
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_REMOVED');
-							}
+							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM_NL');
 						}
-						else {
-							if ($remove_nl)
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_REMOVED');
-							}
-							else
-							{
-								$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_REMOVED');
-							}
+						else
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM');
 						}
 					}
+				}
+				else {
+					if ($n > 1)
+					{
+						if ($remove_nl)
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_REMOVED');
+						}
+						else
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_REMOVED');
+						}
+					}
+					else {
+						if ($remove_nl)
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_REMOVED');
+						}
+						else
+						{
+							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_REMOVED');
+						}
+					}
+				}
 				break;
 
 			// We are in the mailinglists_tab
 			case "mailinglists":
-					$model = $this->getModel('mailinglist');
-					if(!$model->delete($cid))
+				$model = $this->getModel('mailinglist');
+				if(!$model->delete($cid))
+				{
+					$type	= 'error';
+					if ($n > 1)
 					{
-						$type	= 'error';
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_ML');
-						}
-
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS');
 					}
 					else
 					{
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_REMOVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ML_REMOVED');
-						}
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_ML');
 					}
-					break;
-
-				// We are in the templates_tab
-				case "templates":
-					$model = $this->getModel('template');
-					if(!$model->delete($cid))
+				}
+				else
+				{
+					if ($n > 1)
 					{
-						$type	= 'error';
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPLS');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPL');
-						}
+						$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_REMOVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ML_REMOVED');
+					}
+				}
+				break;
 
+			// We are in the templates_tab
+			case "templates":
+				$model = $this->getModel('template');
+				if(!$model->delete($cid))
+				{
+					$type	= 'error';
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPLS');
 					}
-					else {
-						if ($n > 1)
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_REMOVED');
-						}
-						else
-						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_REMOVED');
-						}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPL');
 					}
+				}
+				else {
+					if ($n > 1)
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_REMOVED');
+					}
+					else
+					{
+						$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_REMOVED');
+					}
+				}
 				break;
 		}
+
 		$app->enqueueMessage($msg, $type);
-		parent::display();
+		return parent::display();
 	}
 }

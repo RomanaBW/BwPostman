@@ -133,8 +133,33 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					$jinput->set('view', 'templates');
 				break;
 		}
+
 		parent::display();
 		return $this;
+	}
+
+	/**
+	 * Method to check if you can publish/unpublish records
+	 *
+	 * @param	array 	$recordIds		an array of items to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowPublish($recordIds = array())
+	{
+		foreach ($recordIds as $recordId)
+		{
+			$allowed = BwPostmanHelper::canEditState('template', 0, $recordId);
+
+			if (!$allowed)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -161,10 +186,10 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 		// Get the selected template(s)
 		$cid = $jinput->get('cid', array(0), 'post');
-		ArrayHelper::toInteger($cid);
+		\Joomla\Utilities\ArrayHelper::toInteger($cid);
 
 		// Access check
-		if (!BwPostmanHelper::canEditState('template', $cid))
+		if (!$this->allowPublish($cid))
 		{
 			return false;
 		}

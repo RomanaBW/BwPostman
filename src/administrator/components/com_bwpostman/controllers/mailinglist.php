@@ -141,7 +141,17 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 */
 	protected function allowArchive($recordIds = array())
 	{
-		return BwPostmanHelper::canArchive('mailinglist', 0, $recordIds);
+		foreach ($recordIds as $recordId)
+		{
+			$allowed = BwPostmanHelper::canArchive('mailinglist', 0, $recordId);
+
+			if (!$allowed)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -265,7 +275,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
-		if (!BwPostmanHelper::canArchive('mailinglist', 0, $cid))
+		if (!$this->allowArchive($cid))
 		{
 			$this->setRedirect(
 				JRoute::_(

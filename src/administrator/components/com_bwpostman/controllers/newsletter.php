@@ -906,19 +906,28 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPY_CREATE_RIGHTS_MISSING'), 'error');
 		}
 
+		// Get the newsletter IDs to copy
+		$cid	= $this->input->get('cid', array(), 'array');
 		$model	= $this->getModel('newsletter');
 
-		// Get the newsletter IDs to copy
-		$cid = $this->input->get('cid', array(), 'array');
-
-		$res	= $model->copy($cid);
-
-		if ($res === true)
+		foreach ($cid as $id)
 		{
-			$dispatcher = JEventDispatcher::getInstance();
+			if (!$this->allowEdit(array('id' => $id)))
+			{
+				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPY_CREATE_RIGHTS_MISSING'), 'error');
+			}
+			else
+			{
+				$res	= $model->copy($cid);
 
-			JPluginHelper::importPlugin('bwpostman');
-			$dispatcher->trigger('onBwPostmanAfterNewsletterCopy', array());
+				if ($res === true)
+				{
+					$dispatcher = JEventDispatcher::getInstance();
+
+					JPluginHelper::importPlugin('bwpostman');
+					$dispatcher->trigger('onBwPostmanAfterNewsletterCopy', array());
+				}
+			}
 		}
 
 		parent::display();

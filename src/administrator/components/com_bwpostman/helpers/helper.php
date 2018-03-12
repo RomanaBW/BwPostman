@@ -1181,6 +1181,8 @@ abstract class BwPostmanHelper
 			}
 		}
 
+		JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_DELETE_RIGHTS_MISSING', $view), 'error');
+
 		return false;
 	}
 
@@ -1233,6 +1235,8 @@ abstract class BwPostmanHelper
 				return true;
 			}
 		}
+
+		JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_RESTORE_RIGHTS_MISSING', $view), 'error');
 
 		return false;
 	}

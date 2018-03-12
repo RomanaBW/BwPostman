@@ -1479,6 +1479,64 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
+	 * Method to check, if column asset_id has a real value. If not, there is no possibility to delete data sets in BwPostman.
+	 * Therefore each dataset without real value for asset_id has to be stored one time, to get this value
+	 *
+	 * @return    bool
+	 *
+	 * @since    1.0.1
+	 *
+	 * @throws Exception
+	 * @throws BwException
+	 */
+	public function checkAssetParentId()
+	{
+		// Set tables that has column asset_id
+		// @ToDo: Check if exceptions are handled correctly
+		$this->getTableNamesFromDB();
+
+		// Get component asset id
+		$componentAsset = $this->getBaseAsset('component', true);
+
+		foreach ($this->tableNames as $table)
+		{
+			// Shortcut
+			$tableNameGeneric = $table['tableNameGeneric'];
+			$hasAsset         = $this->checkForAsset($tableNameGeneric);
+
+			if ($hasAsset)
+			{
+				// Get section asset
+				$sectionAsset = $this->getBaseAsset($table['tableNameRaw'], true);
+
+				try
+				{
+					// Replace parent asset id of items with component as parent
+					$db	= JFactory::getDbo();
+					$query	= $db->getQuery(true);
+
+					$query->update($db->quoteName('#__assets'));
+					$query->set($db->quoteName('parent_id') . " = " . $db->Quote($sectionAsset['id']));
+					$query->where($db->quoteName('name') . ' LIKE ' . $db->Quote($sectionAsset['name'] . '.%'));
+					$query->where($db->quoteName('parent_id') . ' <> ' . $db->Quote($sectionAsset['id']));
+
+					$db->setQuery($query);
+
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					throw new BwException(
+						JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionAsset['name'])
+					);
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to check, if user_id of subscriber matches ID in joomla user table, updating if mail address exists.
 	 * Only datasets with entered user_id in table subscribers will be checked
 	 *
@@ -2797,7 +2855,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$db->setQuery($query);
 			$result = $db->execute();
-
 
 			return $result;
 		}

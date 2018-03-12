@@ -52,21 +52,21 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function tCheck()
 	{
-		// Check for request forgeries
-		if (!JSession::checkToken('get')) {
-			throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
-		}
-
-		$app = JFactory::getApplication();
-		$session = JFactory::getSession();
-		$jinput	= $app->input;
-
-		$step = $jinput->get('step', 0);
-		$alertClass = 'success';
-		$ready = "0";
-
 		try
 		{
+			// Check for request forgeries
+			if (!JSession::checkToken('get')) {
+				throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+			}
+
+			$app = JFactory::getApplication();
+			$session = JFactory::getSession();
+			$jinput	= $app->input;
+
+			$step = $jinput->get('step', 0);
+			$alertClass = 'success';
+			$ready = "0";
+
 			// start output buffer
 			ob_start();
 
@@ -95,31 +95,31 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					$session->set('tcheck_inTaNa', '');
 
 					// get needed tables from installation file
-					$this->_getNeededTables($session);
+					$this->getNeededTables($session);
 					$step = "2";
 					break;
 
 				case 'step2':
 					// get installed table names
-					$this->_getInstalledTableNames($session);
+					$this->getInstalledTableNames($session);
 					$step = "3";
 					break;
 
 				case 'step3':
 					// convert to generic table names
-					$this->_convertTableNames($session);
+					$this->convertTableNames($session);
 					$step = "4";
 					break;
 
 				case 'step4':
 					// check table columns
-					$this->_checkTableColumns($session);
+					$this->checkTableColumns($session);
 					$step = "5";
 					break;
 
 				case 'step5':
 					// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-					$this->_checkAssetAndUserIds($session);
+					$this->checkAssetAndUserIds($session);
 					// clear session variables
 					$session->clear('tcheck_needTa');
 					$session->clear('tcheck_inTaNa');
@@ -169,6 +169,13 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
 			$msg['type']	= 'error';
 		}
+
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			$msg['type']	= 'error';
+		}
 	}
 
 	/**
@@ -180,20 +187,21 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function tRestore()
 	{
-		// Check for request forgeries
-		if (!JSession::checkToken('get'))
-		{
-			throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
-		}
-
-		if (function_exists('set_time_limit'))
-		{
-			set_time_limit(0);
-		}
-
-		$app     = JFactory::getApplication();
 		try
 		{
+			// Check for request forgeries
+			if (!JSession::checkToken('get'))
+			{
+				throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+			}
+
+			if (function_exists('set_time_limit'))
+			{
+				set_time_limit(0);
+			}
+
+			$app     = JFactory::getApplication();
+
 			// Initialize variables
 			$jinput  = $app->input;
 			$error   = '';
@@ -463,25 +471,25 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step7':
 					JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
 					// get needed tables from installation file
-					$this->_getNeededTables($session);
+					$this->getNeededTables($session);
 					$step = "8";
 					break;
 
 				case 'step8':
 					// get installed table names
-					$this->_getInstalledTableNames($session);
+					$this->getInstalledTableNames($session);
 					$step = "9";
 					break;
 
 				case 'step9':
 					// convert to generic table names
-					$this->_convertTableNames($session);
+					$this->convertTableNames($session);
 					$step = "10";
 					break;
 
 				case 'step10':
 					// check table columns
-					$this->_checkTableColumns($session);
+					$this->checkTableColumns($session);
 					$step = "11";
 					break;
 
@@ -489,7 +497,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					try
 					{
 						// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-						$this->_checkAssetAndUserIds($session);
+						$this->checkAssetAndUserIds($session);
 						// clear session variables
 						$session->clear('tcheck_needTa');
 						$session->clear('tcheck_inTaNa');
@@ -572,6 +580,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			echo json_encode($res);
 			$app->close();
 		}
+
 		catch (RuntimeException $e)
 		{
 			$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
@@ -595,6 +604,13 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			echo json_encode($res);
 			$app->close();
 		}
+
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			$msg['type']	= 'error';
+		}
 	}
 
 	/**
@@ -605,7 +621,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @since   1.3.0
 	 */
 
-	protected function _getNeededTables($session)
+	protected function getNeededTables($session)
 	{
 		$model        = $this->getModel('maintenance');
 
@@ -629,7 +645,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @since   1.3.0
 	 */
 
-	protected function _getInstalledTableNames($session)
+	protected function getInstalledTableNames($session)
 	{
 		$model				= $this->getModel('maintenance');
 		$tableNamesArray	= $model->getTableNamesFromDB();
@@ -657,7 +673,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @since   1.3.0
 	 */
 
-	protected function _convertTableNames($session)
+	protected function convertTableNames($session)
 	{
 		$model	             = $this->getModel('maintenance');
 		$genericTableNames   = $session->get('tcheck_inTaNa');
@@ -682,7 +698,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @since   1.3.0
 	 */
 
-	protected function _checkTableColumns($session)
+	protected function checkTableColumns($session)
 	{
 		// get stored session variables
 		$model	      = $this->getModel('maintenance');
@@ -715,13 +731,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @since   1.3.0
 	 */
-	protected function _checkAssetAndUserIds($session)
+	protected function checkAssetAndUserIds($session)
 	{
 		$model	= $this->getModel('maintenance');
 
 		echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_ASSET_IDS') . '</h4>';
 		// check asset IDs (necessary because asset_id = 0 prevents deleting)
 		if (!$model->checkAssetId())
+		{
+			echo '<p class="bw_tablecheck_warn">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN') . '</p>';
+			$alertClass = 'warning';
+		}
+
+		// check asset IDs (necessary because asset_id = 0 prevents deleting)
+		if (!$model->checkAssetParentId())
 		{
 			echo '<p class="bw_tablecheck_warn">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN') . '</p>';
 			$alertClass = 'warning';

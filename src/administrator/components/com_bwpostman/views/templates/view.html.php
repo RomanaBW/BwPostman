@@ -214,12 +214,12 @@ class BwPostmanViewTemplates extends JViewLegacy
 					JToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
 				}
 
-				if ($this->permissions['template']['edit'] || $this->permissions['template']['edit.own'])
+				if (BwPostmanHelper::canEdit('template'))
 				{
 					JToolbarHelper::editList('template.edit');
 				}
 
-				if ($this->permissions['template']['edit.state'])
+				if (BwPostmanHelper::canEditState('template'))
 				{
 					JToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
 					JToolbarHelper::publishList('templates.publish');
@@ -229,7 +229,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 				JToolbarHelper::divider();
 				JToolbarHelper::spacer();
 
-				if ($this->permissions['template']['archive'])
+				if (BwPostmanHelper::canArchive('template'))
 				{
 					JToolbarHelper::archiveList('template.archive');
 					JToolbarHelper::divider();

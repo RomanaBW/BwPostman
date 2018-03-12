@@ -276,22 +276,27 @@ $options = array(
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'), 'panel2');
-						echo $this->loadTemplate('header');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_INTRO_LABEL'), 'panel3');
-						echo $this->loadTemplate('intro');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'), 'panel4');
-						echo $this->loadTemplate('article');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'), 'panel5');
-						echo $this->loadTemplate('footer');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FIELDSET_RULES'), 'panel6'); ?>
+					echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'), 'panel2');
+					echo $this->loadTemplate('header');
+					echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_INTRO_LABEL'), 'panel3');
+					echo $this->loadTemplate('intro');
+					echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'), 'panel4');
+					echo $this->loadTemplate('article');
+					echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'), 'panel5');
+					echo $this->loadTemplate('footer');
+					if ($this->permissions['com']['admin'] || $this->permissions['admin']['template'])
+					{
+						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FIELDSET_RULES'), 'panel6');
+						?>
 						<div class="well well-small">
 							<fieldset class="adminform">
 								<?php echo $this->form->getInput('rules'); ?>
 							</fieldset>
 						</div>
 						<?php
-							echo JHtml::_('tabs.end');
+					}
+
+					echo JHtml::_('tabs.end');
 					?>
 					<div class="clr clearfix"></div>
 					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>

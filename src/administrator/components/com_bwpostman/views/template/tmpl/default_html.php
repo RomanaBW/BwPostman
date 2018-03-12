@@ -339,14 +339,18 @@ $options = array(
 						<?php echo $this->loadTemplate('tpl_tags'); ?>
 					</fieldset>
 					<?php
+					if ($this->permissions['com']['admin'] || $this->permissions['admin']['template'])
+					{
 						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FIELDSET_RULES'), 'panel5'); ?>
 						<div class="well well-small">
-								<fieldset class="adminform">
-									<?php echo $this->form->getInput('rules'); ?>
-								</fieldset>
+							<fieldset class="adminform">
+								<?php echo $this->form->getInput('rules'); ?>
+							</fieldset>
 						</div>
-					<?php
-						echo JHtml::_('tabs.end');
+						<?php
+					}
+
+					echo JHtml::_('tabs.end');
 					?>
 					<div class="clr clearfix"></div>
 					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>

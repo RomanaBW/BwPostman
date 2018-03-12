@@ -93,7 +93,17 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 */
 	protected function allowRestore($view = 'newsletter', $recordIds = array())
 	{
-		return BwPostmanHelper::canRestore($view, $recordIds);
+		foreach ($recordIds as $recordId)
+		{
+			$allowed = BwPostmanHelper::canRestore($view, $recordId);
+
+			if (!$allowed)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -108,8 +118,19 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 */
 	protected function allowDelete($view = 'newsletter', $recordIds = array())
 	{
-		return BwPostmanHelper::canDelete($view, $recordIds);
+		foreach ($recordIds as $recordId)
+		{
+			$allowed = BwPostmanHelper::canDelete($view, $recordId);
+
+			if (!$allowed)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
+
 	/**
 	 * Method to unarchive items
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)

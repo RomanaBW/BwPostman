@@ -2,7 +2,7 @@
 <access component="com_bwpostman">
 	<section name="component">
 		<action name="core.admin" title="COM_BWPOSTMAN_ACTION_ADMIN_CORE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_CORE_DESC" />
-		<action name="core.login.admin" title="COM_BWPOSTMAN_ACTION_ADMIN_LOGIN_CORE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_LOGIN_CORE_DESC" />
+		<action name="core.login.admin" title="COM_BWPOSTMAN_ACTION_ADMIN_LOGIN_CORE" description="COM_BWPOSTMAN_ACTION_ADMIN_LOGIN_CORE_DESC" />
 		<action name="core.manage" title="COM_BWPOSTMAN_ACTION_MANAGE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_MANAGE_DESC" />
 		<action name="bwpm.create" title="COM_BWPOSTMAN_ACTION_CREATE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_CREATE_DESC" />
 		<action name="bwpm.edit" title="COM_BWPOSTMAN_ACTION_EDIT" description="COM_BWPOSTMAN_COMPONENT_ACCESS_EDIT_DESC" />

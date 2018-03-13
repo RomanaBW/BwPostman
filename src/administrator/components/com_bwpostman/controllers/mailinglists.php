@@ -154,16 +154,21 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 *
 	 * @return	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since	2.0.0
 	 */
 	protected function allowPublish($recordIds = array())
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canEditState('mailinglist', 0, $recordId);
+			$allowed = BwPostmanHelper::canEditState('mailinglist', $recordId);
 
 			if (!$allowed)
 			{
+				$link = JRoute::_('index.php?option=com_bwpostman&view=mailinglists', false);
+				$this->setRedirect($link, JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+
 				return false;
 			}
 		}
@@ -192,7 +197,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 			jexit(JText::_('JINVALID_TOKEN'));
 		}
 
-		// Get the selected template(s)
+		// Get the selected mailinglists(s)
 		$cid = $jinput->get('cid', array(0), 'post');
 		\Joomla\Utilities\ArrayHelper::toInteger($cid);
 
@@ -201,9 +206,12 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		{
 			return false;
 		}
+		else
+		{
+			parent::publish();
 
-		parent::publish();
-
-		return true;
+			return true;
+		}
 	}
+
 }

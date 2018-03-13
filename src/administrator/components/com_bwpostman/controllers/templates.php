@@ -151,10 +151,13 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canEditState('template', 0, $recordId);
+			$allowed = BwPostmanHelper::canEditState('template', $recordId);
 
 			if (!$allowed)
 			{
+				$link = JRoute::_('index.php?option=com_bwpostman&view=templates', false);
+				$this->setRedirect($link, JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+
 				return false;
 			}
 		}

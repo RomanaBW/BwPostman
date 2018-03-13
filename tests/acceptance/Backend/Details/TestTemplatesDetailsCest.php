@@ -486,9 +486,9 @@ class TestTemplatesDetailsCest
 	 */
 	private function fillFormSimpleHtml(AcceptanceTester $I)
 	{
-		TplEdit::_fillRequired($I, 'HTML');
+		TplEdit::fillRequired($I, 'HTML');
 
-		TplEdit::_selectThumbnail($I);
+		TplEdit::selectThumbnail($I);
 
 		$this->fillHtmlContent($I);
 
@@ -511,7 +511,7 @@ class TestTemplatesDetailsCest
 		$this->fillRequiredExtended($I, 'HTML');
 
 		// select thumbnail
-		TplEdit::_selectThumbnail($I);
+		TplEdit::selectThumbnail($I);
 
 		$this->selectRadiosExtended($I);
 	}
@@ -532,7 +532,7 @@ class TestTemplatesDetailsCest
 		$this->fillRequiredExtended($I, 'Text');
 
 		// select thumbnail
-		TplEdit::_selectThumbnail($I);
+		TplEdit::selectThumbnail($I);
 
 		$this->selectRadiosExtended($I);
 	}

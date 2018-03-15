@@ -178,7 +178,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											($item->standard != '0' && !empty($item->standard)),
 											$i,
 											'template.',
-											BwPostmanHelper::canEditState('template', $item->id) && $item->standard != '1'
+											BwPostmanHelper::canEditState('template', (int) $item->id) && $item->standard != '1'
 										);?></td>
 									<td class="center" align="center">
 										<?php echo JHtml::_(
@@ -186,7 +186,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											$item->published,
 											$i,
 											'templates.',
-											BwPostmanHelper::canEditState('template', $item->id),
+											BwPostmanHelper::canEditState('template', (int) $item->id),
 											'cb'
 										); ?>
 									<td>

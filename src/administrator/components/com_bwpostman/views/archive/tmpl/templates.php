@@ -77,7 +77,8 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 							<td valign="top" width="90%">
 								<ul class="bwp_tabs">
 									<?php
-									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1)) {
+									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1, 0))
+									{
 									?>
 										<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
 											<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink">
@@ -87,7 +88,8 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 										<?php
 									}
 
-									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1)) {
+									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1, 0))
+									{
 									?>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink">
@@ -97,7 +99,8 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 										<?php
 									}
 
-									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1)) {
+									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1, 0))
+									{
 									?>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','campaigns');this.form.submit();" class="buttonAsLink">
@@ -107,7 +110,8 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 										<?php
 									}
 
-									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1)) {
+									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1, 0))
+									{
 									?>
 										<li class="closed">
 											<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();" class="buttonAsLink">
@@ -117,7 +121,8 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'temp
 										<?php
 									}
 
-									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1)) {
+									if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1, 0))
+									{
 									?>
 										<li class="open">
 											<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink_open">

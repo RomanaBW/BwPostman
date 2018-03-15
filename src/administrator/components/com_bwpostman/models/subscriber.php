@@ -773,9 +773,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$userid	= $user->get('id');
 
 			// Access check.
-			if (!BwPostmanHelper::canArchive('subscriber', 0, $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canArchive('subscriber', 0, (int) $id))
+				{
+					return false;
+				}
 			}
 		}
 		else

@@ -488,9 +488,12 @@ class BwPostmanModelCampaign extends JModelAdmin
 			$time = $date->toSql();
 
 			// Access check.
-			if (!BwPostmanHelper::canArchive('campaign', 0, $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canArchive('campaign', 0, (int) $id))
+				{
+					return false;
+				}
 			}
 		}
 		else

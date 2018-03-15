@@ -317,9 +317,12 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$time = $date->toSql();
 
 			// Access check.
-			if (!BwPostmanHelper::canArchive('mailinglist', 0, $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canArchive('mailinglist', 0, (int) $id))
+				{
+					return false;
+				}
 			}
 		}
 		else
@@ -442,6 +445,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 
 		return false;
 	}
+
 	/**
 	 * @param $id
 	 *

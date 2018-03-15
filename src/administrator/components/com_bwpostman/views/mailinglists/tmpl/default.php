@@ -140,7 +140,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										$item->published,
 										$i,
 										'mailinglists.',
-										BwPostmanHelper::canEditState('mailinglist', $item->id),
+										BwPostmanHelper::canEditState('mailinglist', (int) $item->id),
 										'cb'
 									); ?>
 								</td>

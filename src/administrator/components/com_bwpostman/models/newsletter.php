@@ -178,7 +178,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$permission = BwPostmanHelper::canEditState('newsletter', $record->id);
+		$permission = BwPostmanHelper::canEditState('newsletter', (int) $record->id);
 
 		return $permission;
 	}

@@ -151,7 +151,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canEditState('template', $recordId);
+			$allowed = BwPostmanHelper::canEditState('template', (int) $recordId);
 
 			if (!$allowed)
 			{

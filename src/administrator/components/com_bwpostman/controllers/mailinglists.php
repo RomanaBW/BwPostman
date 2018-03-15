@@ -162,7 +162,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canEditState('mailinglist', $recordId);
+			$allowed = BwPostmanHelper::canEditState('mailinglist', (int) $recordId);
 
 			if (!$allowed)
 			{
@@ -206,12 +206,9 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		{
 			return false;
 		}
-		else
-		{
-			parent::publish();
 
-			return true;
-		}
+		parent::publish();
+
+		return true;
 	}
-
 }

@@ -223,7 +223,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 										);
 									} ?>
 									<?php
-									if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', $item->id)) : ?>
+									if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', (int) $item->id)) : ?>
 										<p>
 											<a href="
 											<?php echo JRoute::_(
@@ -272,7 +272,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 										$item->published,
 										$i,
 										'newsletters.',
-										BwPostmanHelper::canEditState('newsletter', $item->id),
+										BwPostmanHelper::canEditState('newsletter', (int) $item->id),
 										'ub'
 									); ?>
 								</td>

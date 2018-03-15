@@ -124,7 +124,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$permission = BwPostmanHelper::canEditState('mailinglist', $record->id);
+		$permission = BwPostmanHelper::canEditState('mailinglist', (int) $record->id);
 
 		return $permission;
 	}

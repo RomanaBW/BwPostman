@@ -126,7 +126,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$permission = BwPostmanHelper::canEditState('template', $record->id);
+		$permission = BwPostmanHelper::canEditState('template', (int) $record->id);
 
 		return $permission;
 	}

@@ -126,7 +126,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$permission = BwPostmanHelper::canEditState('campaign', $record->id);
+		$permission = BwPostmanHelper::canEditState('campaign', (int) $record->id);
 
 		return $permission;
 	}

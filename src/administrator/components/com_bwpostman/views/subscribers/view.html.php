@@ -245,7 +245,8 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
 				}
 
-				if (BwPostmanHelper::canArchive('subscriber')) {
+				if (BwPostmanHelper::canArchive('subscriber'))
+				{
 					JToolbarHelper::divider();
 					JToolbarHelper::spacer();
 					JToolbarHelper::archiveList('subscriber.archive');

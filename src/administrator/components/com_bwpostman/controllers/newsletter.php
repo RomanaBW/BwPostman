@@ -167,7 +167,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canArchive('newsletter', 0, $recordId);
+			$allowed = BwPostmanHelper::canArchive('newsletter', 0, (int) $recordId);
 
 			if (!$allowed)
 			{

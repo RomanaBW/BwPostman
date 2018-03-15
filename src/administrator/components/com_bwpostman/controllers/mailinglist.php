@@ -143,7 +143,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canArchive('mailinglist', 0, $recordId);
+			$allowed = BwPostmanHelper::canArchive('mailinglist', 0, (int) $recordId);
 
 			if (!$allowed)
 			{

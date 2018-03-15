@@ -184,7 +184,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canArchive('template', 0, $recordId);
+			$allowed = BwPostmanHelper::canArchive('template', 0, (int) $recordId);
 
 			if (!$allowed)
 			{

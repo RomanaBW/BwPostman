@@ -146,7 +146,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canArchive('campaign', 0, $recordId);
+			$allowed = BwPostmanHelper::canArchive('campaign', 0, (int) $recordId);
 
 			if (!$allowed)
 			{

@@ -191,6 +191,35 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	}
 
 	/**
+	 * Method to check if you can publish/unpublish records
+	 *
+	 * @param	array 	$recordIds		an array of items to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowPublish($recordIds = array())
+	{
+		foreach ($recordIds as $recordId)
+		{
+			$allowed = BwPostmanHelper::canEditState('newsletter', (int) $recordId);
+
+			if (!$allowed)
+			{
+				$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters', false);
+				$this->setRedirect($link, JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to publish a list of newsletters.
 	 *
 	 * @return	bool
@@ -199,7 +228,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 *
 	 * @since	1.0.1
 	 */
-	public  function publish()
+	public function publish()
 	{
 		$jinput	= JFactory::getApplication()->input;
 
@@ -214,7 +243,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		ArrayHelper::toInteger($cid);
 
 		// Access check
-		if (!BwPostmanHelper::canEditState('newsletter', $cid))
+		if (!$this->allowPublish($cid))
 		{
 			return false;
 		}

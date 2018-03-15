@@ -786,8 +786,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$userid	= "-1";
 
 			// Access check.
-			if (!BwPostmanHelper::canRestore('subscriber', $cid)) {
-				return false;
+			foreach ($cid as $id)
+			{
+				if (!BwPostmanHelper::canRestore('subscriber', (int) $id))
+				{
+					return false;
+				}
 			}
 		}
 
@@ -831,9 +835,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function delete(&$pks)
 	{
 		// Access check.
-		if (!BwPostmanHelper::canDelete('subscriber', $pks))
+		foreach ($pks as $id)
 		{
-			return false;
+			if (!BwPostmanHelper::canDelete('subscriber', (int) $id))
+			{
+				return false;
+			}
 		}
 
 		if (count($pks))

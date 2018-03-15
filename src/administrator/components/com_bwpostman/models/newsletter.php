@@ -1043,9 +1043,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		else
 		{
 			// Access check.
-			if (!BwPostmanHelper::canRestore('newsletter', $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canRestore('newsletter', (int) $id))
+				{
+					return false;
+				}
 			}
 
 			$time	= '0000-00-00 00:00:00';
@@ -1213,9 +1216,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			ArrayHelper::toInteger($pks);
 
 			// Access check.
-			if (!BwPostmanHelper::canDelete('newsletter', $pks))
+			foreach ($pks as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canDelete('newsletter', (int) $id))
+				{
+					return false;
+				}
 			}
 
 			// Delete newsletter from newsletters-table

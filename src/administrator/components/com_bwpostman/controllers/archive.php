@@ -95,7 +95,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canRestore($view, $recordId);
+			$allowed = BwPostmanHelper::canRestore($view, (int) $recordId);
 
 			if (!$allowed)
 			{
@@ -120,7 +120,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	{
 		foreach ($recordIds as $recordId)
 		{
-			$allowed = BwPostmanHelper::canDelete($view, $recordId);
+			$allowed = BwPostmanHelper::canDelete($view, (int) $recordId);
 
 			if (!$allowed)
 			{

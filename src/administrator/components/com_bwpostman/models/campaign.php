@@ -499,9 +499,12 @@ class BwPostmanModelCampaign extends JModelAdmin
 		else
 		{
 			// Access check.
-			if (!BwPostmanHelper::canRestore('campaign', $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canRestore('campaign', (int) $id))
+				{
+					return false;
+				}
 			}
 
 			$time	= '0000-00-00 00:00:00';
@@ -705,9 +708,12 @@ class BwPostmanModelCampaign extends JModelAdmin
 			ArrayHelper::toInteger($pks);
 
 			// Access check.
-			if (!BwPostmanHelper::canDelete('campaign', $pks))
+			foreach ($pks as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canDelete('campaign', (int) $id))
+				{
+					return false;
+				}
 			}
 
 			// Delete campaigns from campaigns table

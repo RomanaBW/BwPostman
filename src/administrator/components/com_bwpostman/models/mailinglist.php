@@ -328,9 +328,12 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		else
 		{
 			// Access check.
-			if (!BwPostmanHelper::canRestore('mailinglist', $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canRestore('mailinglist', (int) $id))
+				{
+					return false;
+				}
 			}
 
 			$time	= '0000-00-00 00:00:00';
@@ -384,9 +387,12 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		{
 			ArrayHelper::toInteger($pks);
 			// Access check.
-			if (!BwPostmanHelper::canDelete('mailinglist', $pks))
+			foreach ($pks as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canDelete('mailinglist', (int) $id))
+				{
+					return false;
+				}
 			}
 
 			$lists_table	= JTable::getInstance('mailinglists', 'BwPostmanTable');

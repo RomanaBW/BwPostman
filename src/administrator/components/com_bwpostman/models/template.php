@@ -486,9 +486,12 @@ class BwPostmanModelTemplate extends JModelAdmin
 		else
 		{
 			// Access check.
-			if (!BwPostmanHelper::canRestore('template', $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canRestore('template', (int) $id))
+				{
+					return false;
+				}
 			}
 
 			$time	= '0000-00-00 00:00:00';
@@ -540,9 +543,12 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$app	= JFactory::getApplication();
 
 		// Access check.
-		if (!BwPostmanHelper::canDelete('template', $pks))
+		foreach ($pks as $id)
 		{
-			return false;
+			if (!BwPostmanHelper::canDelete('template', (int) $id))
+			{
+				return false;
+			}
 		}
 
 		if (count($pks))

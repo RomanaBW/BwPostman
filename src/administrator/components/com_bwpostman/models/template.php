@@ -475,9 +475,12 @@ class BwPostmanModelTemplate extends JModelAdmin
 			$time = $date->toSql();
 
 			// Access check.
-			if (!BwPostmanHelper::canArchive('template', 0, $cid))
+			foreach ($cid as $id)
 			{
-				return false;
+				if (!BwPostmanHelper::canArchive('template', 0, (int) $id))
+				{
+					return false;
+				}
 			}
 		}
 		else

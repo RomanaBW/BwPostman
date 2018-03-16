@@ -23,7 +23,6 @@
 		<action name="bwpm.admin.campaign" title="COM_BWPOSTMAN_ACTION_ADMIN_CAMPAIGNS" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_CAMPAIGNS_DESC" />
 		<action name="bwpm.admin.mailinglist" title="COM_BWPOSTMAN_ACTION_ADMIN_MAILINGLISTS" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_MAILINGLISTS_DESC" />
 		<action name="bwpm.admin.template" title="COM_BWPOSTMAN_ACTION_ADMIN_TEMPLATES" description="COM_BWPOSTMAN_COMPONENT_ACCESS_ADMIN_TEMPLATES_DESC" />
-		<action name="bwpm.view.manage" title="COM_BWPOSTMAN_ACTION_VIEW_MANAGE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_MANAGE_DESC" />
 		<action name="bwpm.view.maintenance" title="COM_BWPOSTMAN_ACTION_VIEW_MAINTENANCE" description="COM_BWPOSTMAN_COMPONENT_ACCESS_VIEW_MAINTENANCE_DESC" />
 	</section>
 	<section name="newsletter">

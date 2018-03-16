@@ -84,26 +84,31 @@ class OptionsPage
 	/*
 	* Tab registration
 	*/
+
 	// UI
 
 	/*
 	* Tab activation
 	*/
+
 	// UI
 
 	/*
 	 * Tab lists view
 	 */
+
 	// UI
 
 	/*
 	 * Tab single view
 	 */
+
 	// UI
 
 	/*
 	 * Tab permissions
 	 */
+
 	// UI
 
 	/**
@@ -111,7 +116,7 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider= ".//*/a[contains(@href, '#permission-%s')]";
+	public static $perm_slider = ".//*/a[contains(@href, '#permission-%s')]";
 
 
 	/**
@@ -330,7 +335,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Allowed',
 													'bwpm.view.template' => 'Allowed',
 													'bwpm.view.archive' => 'Allowed',
-													'bwpm.view.manage' => 'Allowed',
+//													'bwpm.view.manage' => 'Allowed',
 													'bwpm.view.maintenance' => 'Allowed',
 												),
 												'parent'    => 'Manager',
@@ -355,7 +360,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Denied',
+//													'bwpm.view.manage' => 'Denied',
 													'bwpm.view.maintenance' => 'Denied',
 												),
 												'parent'    => 'BwPostmanAdmin',
@@ -380,7 +385,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Denied',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanManager',
@@ -405,7 +410,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanPublisher',
@@ -430,7 +435,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Denied',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Denied',
+//													'bwpm.view.manage' => 'Denied',
 													'bwpm.view.maintenance' => 'Denied',
 												),
 												'parent'    => 'BwPostmanAdmin',
@@ -455,7 +460,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Denied',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanMailinglistAdmin',
@@ -480,7 +485,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanMailinglistPublisher',
@@ -505,7 +510,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Denied',
 													'bwpm.view.template' => 'Denied',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Denied',
+//													'bwpm.view.manage' => 'Denied',
 													'bwpm.view.maintenance' => 'Denied',
 												),
 												'parent'    => 'BwPostmanAdmin',
@@ -530,7 +535,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Denied',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanSubscriberAdmin',
@@ -555,7 +560,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanSubscriberPublisher',
@@ -580,7 +585,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Denied',
 													'bwpm.view.template' => 'Denied',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Denied',
+//													'bwpm.view.manage' => 'Denied',
 													'bwpm.view.maintenance' => 'Denied',
 												),
 												'parent'    => 'BwPostmanAdmin',
@@ -605,7 +610,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Denied',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanNewsletterAdmin',
@@ -630,7 +635,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanNewsletterPublisher',
@@ -655,7 +660,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Denied',
 													'bwpm.view.template' => 'Denied',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Denied',
+//													'bwpm.view.manage' => 'Denied',
 													'bwpm.view.maintenance' => 'Denied',
 												),
 												'parent'    => 'BwPostmanAdmin',
@@ -680,7 +685,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Denied',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanCampaignAdmin',
@@ -705,7 +710,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanCampaignPublisher',
@@ -730,7 +735,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Denied',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Denied',
+//													'bwpm.view.manage' => 'Denied',
 													'bwpm.view.maintenance' => 'Denied',
 												),
 												'parent'    => 'BwPostmanAdmin',
@@ -755,7 +760,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Denied',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanTemplateAdmin',
@@ -780,7 +785,7 @@ class OptionsPage
 													'bwpm.view.mailinglist' => 'Inherited',
 													'bwpm.view.template' => 'Inherited',
 													'bwpm.view.archive' => 'Inherited',
-													'bwpm.view.manage' => 'Inherited',
+//													'bwpm.view.manage' => 'Inherited',
 													'bwpm.view.maintenance' => 'Inherited',
 												),
 												'parent'    => 'BwPostmanTemplatePublisher',
@@ -841,7 +846,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Allowed',
 												'bwpm.view.template' => 'Allowed',
 												'bwpm.view.archive' => 'Allowed',
-												'bwpm.view.manage' => 'Allowed',
+//												'bwpm.view.manage' => 'Allowed',
 												'bwpm.view.maintenance' => 'Allowed',
 											),
 											'BwPostmanManager'
@@ -862,7 +867,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Allowed (Inherited)',
 												'bwpm.view.template' => 'Allowed (Inherited)',
 												'bwpm.view.archive' => 'Allowed (Inherited)',
-												'bwpm.view.manage' => 'Not Allowed',
+//												'bwpm.view.manage' => 'Not Allowed',
 												'bwpm.view.maintenance' => 'Not Allowed',
 											),
 											'BwPostmanPublisher'
@@ -883,7 +888,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Allowed (Inherited)',
 												'bwpm.view.template' => 'Allowed (Inherited)',
 												'bwpm.view.archive' => 'Not Allowed',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanEditor'
@@ -904,7 +909,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Allowed (Inherited)',
 												'bwpm.view.template' => 'Allowed (Inherited)',
 												'bwpm.view.archive' => 'Not Allowed (Locked)',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanMailinglistAdmin'
@@ -925,7 +930,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Allowed (Inherited)',
 												'bwpm.view.template' => 'Not Allowed',
 												'bwpm.view.archive' => 'Allowed (Inherited)',
-												'bwpm.view.manage' => 'Not Allowed',
+//												'bwpm.view.manage' => 'Not Allowed',
 												'bwpm.view.maintenance' => 'Not Allowed',
 											),
 											'BwPostmanMailinglistPublisher'
@@ -946,7 +951,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Allowed (Inherited)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanMailinglistEditor'
@@ -967,7 +972,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Allowed (Inherited)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed (Locked)',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanSubscriberAdmin'
@@ -988,7 +993,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed',
 												'bwpm.view.template' => 'Not Allowed',
 												'bwpm.view.archive' => 'Allowed (Inherited)',
-												'bwpm.view.manage' => 'Not Allowed',
+//												'bwpm.view.manage' => 'Not Allowed',
 												'bwpm.view.maintenance' => 'Not Allowed',
 											),
 											'BwPostmanSubscriberPublisher'
@@ -1009,7 +1014,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanSubscriberEditor'
@@ -1030,7 +1035,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed (Locked)',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanNewsletterAdmin'
@@ -1051,7 +1056,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed',
 												'bwpm.view.template' => 'Not Allowed',
 												'bwpm.view.archive' => 'Allowed (Inherited)',
-												'bwpm.view.manage' => 'Not Allowed',
+//												'bwpm.view.manage' => 'Not Allowed',
 												'bwpm.view.maintenance' => 'Not Allowed',
 											),
 											'BwPostmanNewsletterPublisher'
@@ -1072,7 +1077,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanNewsletterEditor'
@@ -1093,7 +1098,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed (Locked)',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanCampaignAdmin'
@@ -1114,7 +1119,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed',
 												'bwpm.view.template' => 'Not Allowed',
 												'bwpm.view.archive' => 'Allowed (Inherited)',
-												'bwpm.view.manage' => 'Not Allowed',
+//												'bwpm.view.manage' => 'Not Allowed',
 												'bwpm.view.maintenance' => 'Not Allowed',
 											),
 											'BwPostmanCampaignPublisher'
@@ -1135,7 +1140,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanCampaignEditor'
@@ -1156,7 +1161,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Not Allowed (Locked)',
 												'bwpm.view.archive' => 'Not Allowed (Locked)',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanTemplateAdmin'
@@ -1177,7 +1182,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed',
 												'bwpm.view.template' => 'Allowed (Inherited)',
 												'bwpm.view.archive' => 'Allowed (Inherited)',
-												'bwpm.view.manage' => 'Not Allowed',
+//												'bwpm.view.manage' => 'Not Allowed',
 												'bwpm.view.maintenance' => 'Not Allowed',
 											),
 											'BwPostmanTemplatePublisher'
@@ -1198,7 +1203,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Allowed (Inherited)',
 												'bwpm.view.archive' => 'Not Allowed',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 											'BwPostmanTemplateEditor'
@@ -1219,7 +1224,7 @@ class OptionsPage
 												'bwpm.view.mailinglist' => 'Not Allowed (Locked)',
 												'bwpm.view.template' => 'Allowed (Inherited)',
 												'bwpm.view.archive' => 'Not Allowed (Locked)',
-												'bwpm.view.manage' => 'Not Allowed (Locked)',
+//												'bwpm.view.manage' => 'Not Allowed (Locked)',
 												'bwpm.view.maintenance' => 'Not Allowed (Locked)',
 											),
 	);

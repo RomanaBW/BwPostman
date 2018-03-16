@@ -1731,7 +1731,6 @@ class Com_BwPostmanInstallerScript
 								"bwpm.view.mailinglist" => array('7' => 1, '6' => 1),
 								"bwpm.view.template" => array('7' => 1, '6' => 1),
 								"bwpm.view.archive" => array('7' => 1, '6' => 1),
-								"bwpm.view.manage" => array('7' => 1, '6' => 1),
 								"bwpm.view.maintenance" => array('7' => 1, '6' => 1),
 							);
 		// get stored component rules

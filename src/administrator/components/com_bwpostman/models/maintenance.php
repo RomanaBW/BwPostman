@@ -4001,7 +4001,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
 			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
 		);
-
+/*
 		$rules['bwpm.view.manage'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
@@ -4014,7 +4014,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
 			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
 		);
-
+*/
 		$rules['bwpm.view.campaign'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,

@@ -2,13 +2,13 @@
 Changelog for BwPostman Component
 *********************************
 
-This is a changelog for the Joomla!3.3.6 component BwPostman
+This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 2.0.0 released (20-Sept-2017)----
+--- version 2.0.0 released (1-May-2017)----
 With this version BwPostman only is distributed as package, that contains all that BwPostman contains for free. With this
-version there is only this changelog available, separate changelogs for modules and plugins are not longer updated.
+version there is only this changelog available, separate change logs for modules and plugins are not longer updated.
 
 - new:
     - Plugin for enhanced personalization
@@ -17,7 +17,7 @@ version there is only this changelog available, separate changelogs for modules 
     - Buttons for enhanced personalization inserted at editing templates and newsletters
 
 - bugfix:
-    - link to Boldt Webservice now totally removed when selected not to show
+    - Link to Boldt Webservice now totally removed when selected not to show
     - Typos corrected at language files
     - Table check at attribute NULL corrected
     - Form check by javascript corrected
@@ -29,7 +29,7 @@ version there is only this changelog available, separate changelogs for modules 
 - improvement:
     - Collation of tables changed from utf8 to utf8mb4
     - Access management of component enhanced
-    - table column archived_by changed to integer
+    - Table column archived_by changed to integer
     - Email check at module subscription enhanced to meet new TLDs
     - CSS styles for radio buttons module subscription modified
 

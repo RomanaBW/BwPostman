@@ -309,6 +309,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		if (isset($post['unsubscribe']))
 		{
 			$this->unsubscribe($post['id']);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 		}
 		else
 		{
@@ -413,7 +414,9 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 				}
 			}
+			$link = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $model->getItemid(), false);
 		}
+		$this->setRedirect($link);
 
 		parent::display();
 	}

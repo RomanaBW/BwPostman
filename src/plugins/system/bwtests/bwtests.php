@@ -7,7 +7,7 @@
  * @version 1.0.0 bwpte
  * @package			BW Tests Plugin
  * @author			Romana Boldt
- * @copyright		(C) 2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright		(C) 2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license			GNU/GPL v3, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

@@ -5,7 +5,7 @@
  *
  * BwPostman User2Subscriber Plugin javascript file for BwPostman.
  *
- * @version 2.0.1 bwpmpu2s
+ * @version 2.0.2 bwpmpu2s
  * @package			BwPostman User2Subscriber Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016-2018 Boldt Webservice <forum@boldt-webservice.de>

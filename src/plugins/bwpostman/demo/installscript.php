@@ -4,7 +4,7 @@
  *
  * BwPostman Demo Plugin installer.
  *
- * @version 2.0.1 bwpmpd
+ * @version 2.0.2 bwpmpd
  * @package			BwPostman Demo Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016-2018 Boldt Webservice <forum@boldt-webservice.de>

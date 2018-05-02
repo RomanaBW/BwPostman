@@ -5,7 +5,7 @@
  *
  * BwPostman Buyer2Subscriber Plugin main file for BwPostman.
  *
- * @version 2.0.0 bwpmpbs
+ * @version 2.0.1 bwpmpbs
  * @package			BwPostman Buyer2Subscriber Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>

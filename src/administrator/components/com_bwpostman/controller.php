@@ -4,7 +4,7 @@
  *
  * BwPostman main controller for backend.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.1 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>

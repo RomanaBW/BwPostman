@@ -4,7 +4,7 @@
  *
  * BwPostman main component for frontend.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.1 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
  * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>

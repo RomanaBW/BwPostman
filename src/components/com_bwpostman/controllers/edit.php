@@ -315,6 +315,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		{
 			$model  = $this->getModel('edit');
 			$itemid = $model->getItemid();
+			$link   = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid, false);
 
 			// Email address has changed
 			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id'])))
@@ -383,6 +384,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 
 					$jinput->set('view', 'register');
+					$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 				}
 				else
 				{
@@ -403,6 +405,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 						$jinput->set('view', 'register');
 						$app->setUserState('subscriber.id', 0);
+						$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 					}
 					else
 					{
@@ -414,7 +417,6 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 				}
 			}
-			$link = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $model->getItemid(), false);
 		}
 		$this->setRedirect($link);
 

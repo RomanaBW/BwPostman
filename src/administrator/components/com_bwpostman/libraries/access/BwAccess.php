@@ -266,7 +266,7 @@ class BwAccess
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__usergroups'));
-		$query->where($db->quoteName('title') . ' = ' . $db->quote('Super Users'));
+		$query->where($db->quoteName('id') . ' = ' . $db->quote('8'));
 
 		$db->setQuery($query);
 

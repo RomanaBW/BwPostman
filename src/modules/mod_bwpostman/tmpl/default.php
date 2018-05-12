@@ -314,7 +314,21 @@ function checkModRegisterForm()
 			if ($n == 1)
 			{ ?>
 				<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>"
-				title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" /><?php
+				title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" />
+				<?php
+				if ($params->get('show_desc') == 1)
+				{ ?>
+					<p class="mailinglist-description-single"><?php
+						echo substr(JText::_($mailinglists[0]->description), 0, $params->get('desc_length'));
+
+						if (strlen(JText::_($mailinglists[0]->description)) > $params->get('desc_length'))
+						{
+							echo '... ';
+							echo JHTML::tooltip(JText::_($mailinglists[0]->description), $mailinglists[0]->title, 'tooltip.png', '', '');
+						} ?>
+					</p>
+					<?php
+				}
 			}
 			else
 			{ ?>
@@ -331,15 +345,20 @@ function checkModRegisterForm()
 						<span class="mailinglist-title">
 							<?php
 							echo $mailinglist->title;
-							if ($paramsComponent->get('show_desc') == 1)
+							if ($params->get('show_desc') == 1)
 							{
 							?>:
-								</span><br /><?php
-									echo substr($mailinglist->description, 0, $paramsComponent->get('desc_length'));
-								if (strlen($mailinglist->description) > $paramsComponent->get('desc_length'))
-								{
-									echo '...';
-								}
+								</span><br />
+								<span class="mailinglist-description">
+									<?php
+									echo substr(JText::_($mailinglist->description), 0, $params->get('desc_length'));
+									if (strlen(JText::_($mailinglist->description)) > $params->get('desc_length'))
+									{
+										echo '... ';
+										echo JHTML::tooltip(JText::_($mailinglist->description), $mailinglist->title, 'tooltip.png', '', '');
+									} ?>
+								</span>
+						<?php
 							}
 							else
 							{

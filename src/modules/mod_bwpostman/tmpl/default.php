@@ -309,6 +309,9 @@ function checkModRegisterForm()
 
 		<?php // Show available mailinglists
 		$n = count($mailinglists);
+
+		$descLength = $params->get('desc_length');
+
 		if (($mailinglists) && ($n > 0))
 		{
 			if ($n == 1)
@@ -319,9 +322,9 @@ function checkModRegisterForm()
 				if ($params->get('show_desc') == 1)
 				{ ?>
 					<p class="mailinglist-description-single"><?php
-						echo substr(JText::_($mailinglists[0]->description), 0, $params->get('desc_length'));
+						echo substr(JText::_($mailinglists[0]->description), 0, $descLength);
 
-						if (strlen(JText::_($mailinglists[0]->description)) > $params->get('desc_length'))
+						if (strlen(JText::_($mailinglists[0]->description)) > $descLength)
 						{
 							echo '... ';
 							echo JHTML::tooltip(JText::_($mailinglists[0]->description), $mailinglists[0]->title, 'tooltip.png', '', '');
@@ -351,8 +354,8 @@ function checkModRegisterForm()
 								</span><br />
 								<span class="mailinglist-description">
 									<?php
-									echo substr(JText::_($mailinglist->description), 0, $params->get('desc_length'));
-									if (strlen(JText::_($mailinglist->description)) > $params->get('desc_length'))
+									echo substr(JText::_($mailinglist->description), 0, $descLength);
+									if (strlen(JText::_($mailinglist->description)) > $descLength)
 									{
 										echo '... ';
 										echo JHTML::tooltip(JText::_($mailinglist->description), $mailinglist->title, 'tooltip.png', '', '');

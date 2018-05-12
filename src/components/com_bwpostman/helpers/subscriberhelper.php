@@ -598,17 +598,18 @@ class BwPostmanSubscriberHelper
 		$_db   = JFactory::getDbo();
 		$query = $_db->getQuery(true);
 
+		$query->columns(
+			array(
+				$_db->quoteName('subscriber_id'),
+				$_db->quoteName('mailinglist_id')
+			)
+		);
+
 		foreach ($mailinglist_ids AS $list_id)
 		{
-			$query = $_db->getQuery(true);
+//			$query = $_db->getQuery(true);
 
 			$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->columns(
-				array(
-					$_db->quoteName('subscriber_id'),
-					$_db->quoteName('mailinglist_id')
-				)
-			);
 			$query->values(
 				(int) $subscriber_id . ',' .
 				(int) $list_id

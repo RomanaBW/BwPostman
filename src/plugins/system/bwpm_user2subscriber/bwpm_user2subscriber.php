@@ -295,6 +295,10 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		$mailinglists   = $this->params->get('ml_available', array());
+		$session = JFactory::getSession();
+		$session->set('plg_bwpm_user2subscriber.ml_available', $mailinglists);
+		$session->set('plg_bwpm_user2subscriber.show_desc', $this->params->get('show_desc', 'true'));
+		$session->set('plg_bwpm_user2subscriber.desc_length', $this->params->get('desc_length', '150'));
 
 		if ($this->debug)
 		{
@@ -515,7 +519,10 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processSelectedMailinglists()
 	{
-		$this->form->setValue('mailinglists', 'bwpm_user2subscriber', json_encode($this->params->get('ml_available', array())));
+		$this->form->setValue('mailinglists', 'bwpm_user2subscriber', $this->form->getInput('mailinglists'));
+		$this->form->setValue('mailinglists_required', 'bwpm_user2subscriber', 1);
+
+//		$this->form->setFieldAttribute('mailinglists', 'required', 'true', 'bwpm_user2subscriber');
 	}
 
 	/**
@@ -748,7 +755,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		try
 		{
-			$mailinglist_ids    = json_decode($subscriber_data['mailinglists']);
+			$mailinglist_ids    = $subscriber_data['mailinglists'];
 
 			if ((count($mailinglist_ids) == 1) && ($mailinglist_ids[0] == 0))
 			{

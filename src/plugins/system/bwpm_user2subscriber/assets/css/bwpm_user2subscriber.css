@@ -149,3 +149,13 @@
 	min-width: 84px;
 	padding: 2px 12px;
 }
+
+.plg-u2s-ml-title
+{
+	font-weight: bold;
+}
+
+.plg-u2s-ml-description
+{
+	font-size: 85%;
+}

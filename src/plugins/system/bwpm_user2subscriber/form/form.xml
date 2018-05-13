@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fields name="bwpm_user2subscriber">
+	<fields name="bwpm_user2subscriber" addfieldpath="/plugins/system/bwpm_user2subscriber/form/fields">
 		<fieldset
 			name="bwpm_user2subscriber"
 			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_LABEL"
@@ -90,8 +90,14 @@
 					PLG_BWPOSTMAN_HTML</option>
 			</field>
 			<field
-					name="mailinglists"
-					type="hidden"
+				name="mailinglists"
+				type="u2smls"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_ML_AVAILABLE_LABEL"
+				labelclass="control-label bwpm-u2s-fields-toggle"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_ML_AVAILABLE_DESC"
+				multiple="true"
+				class="inputbox mailinglists"
+				required="false"
 			>
 			</field>
 			<field
@@ -122,6 +128,12 @@
 					name="emailformat_show"
 					type="hidden"
 					default="1"
+			>
+			</field>
+			<field
+					name="mailinglists_required"
+					type="hidden"
+					default="0"
 			>
 			</field>
 

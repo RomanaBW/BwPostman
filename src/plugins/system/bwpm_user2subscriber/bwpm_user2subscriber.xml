@@ -99,6 +99,11 @@
 						default="0"
 						class="inputbox"
 				/>
+				<field name="show_desc" type="radio" class="btn-group btn-group-yesno" default="1" label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ML_SHOW_DESC" description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ML_SHOW_DESC_NOTE">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="desc_length" type="text" default="150" label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ML_DESC_LENGTH" description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ML_DESC_LENGTH_NOTE" />
 			</fieldset>
 
 		</fields>

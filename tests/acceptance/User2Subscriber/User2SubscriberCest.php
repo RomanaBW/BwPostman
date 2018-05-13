@@ -680,11 +680,11 @@ class User2SubscriberCest
 		$this->initializeTestValues($I);
 
 		//set other option settings
-		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("0"));
+		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array());
 
 		$this->selectRegistrationPage($I);
 
-		$this->dontSeePluginInputFields($I);
+		$I->dontSee(RegPage::$subs_identifier_subscribe_no);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -1431,6 +1431,7 @@ class User2SubscriberCest
 		$I->see(RegPage::$error_message_name);
 		$I->see(RegPage::$error_message_firstname);
 		$I->see(sprintf(RegPage::$error_message_special, $com_options->special_label));
+		$I->see(RegPage::$error_message_mailinglists);
 
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
 		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
@@ -2062,6 +2063,7 @@ class User2SubscriberCest
 		$I->dontSee(RegPage::$subs_identifier_subscribe_no);
 		$I->dontSee(RegPage::$subs_identifier_format_html);
 		$I->dontSee(RegPage::$subs_identifier_format_text);
+		$I->dontSee(RegPage::$subs_identifier_mailinglists);
 	}
 
 	/**

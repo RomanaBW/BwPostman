@@ -524,7 +524,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailinglist_fieldset_identifier  = "//*[@id='adminForm']/div[1]/div[1]/fieldset/div[1]/div/fieldset/legend/span[2]";
+	public static $mailinglist_fieldset_identifier  = "//*[@id='adminForm']/div/div[1]/div[1]/div/fieldset/legend/span[2]";
 
 	/**
 	 * @var string

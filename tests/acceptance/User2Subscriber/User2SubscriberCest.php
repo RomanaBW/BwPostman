@@ -688,8 +688,6 @@ class User2SubscriberCest
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
-		$this->fillBwPostmanPartAtRegisterFormSimple($I);
-
 		$this->registerAndCheckMessage($I);
 
 		$this->activate($I);
@@ -1457,18 +1455,21 @@ class User2SubscriberCest
 		{
 			$I->fillField(RegPage::$subs_identifier_special, RegPage::$subs_value_special);
 		}
+
+		$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
 	}
 
 	/**
 	 * Method to fill all required BwPostman fields on Joomla registration form
 	 *
-	 * @param AcceptanceTester $I
+	 * @param AcceptanceTester	$I
+	 * @param boolean			$withMl
 	 *
 	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	protected function fillBwPostmanPartAtRegisterFormSimple(AcceptanceTester $I)
+	protected function fillBwPostmanPartAtRegisterFormSimple(AcceptanceTester $I, $withMl = true)
 	{
 		$com_options    = $I->getManifestOptions('com_bwpostman');
 
@@ -1494,6 +1495,11 @@ class User2SubscriberCest
 		{
 			$I->fillField(RegPage::$subs_identifier_special, RegPage::$subs_value_special);
 		}
+
+		if ($withMl)
+		{
+			$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
+		}
 	}
 
 	/**
@@ -1506,6 +1512,8 @@ class User2SubscriberCest
 	protected function fillBwPostmanPartAtRegisterFormSimpleOnlySubscription(AcceptanceTester $I)
 	{
 		$I->clickAndWait(RegPage::$subs_identifier_subscribe_yes, 1);
+
+		$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
 	}
 
 	/**

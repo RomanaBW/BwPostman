@@ -813,8 +813,7 @@ class BwPostmanTableSubscribers extends JTable
 
 		if ($this->gender == '')
 		{
-			$this->gender   = null;
-			$updateNulls    = true;
+			$this->gender   = 2;
 		}
 
 		if ($this->id)

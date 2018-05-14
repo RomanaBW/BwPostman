@@ -287,6 +287,11 @@
 		/>
 
 		<field
+				name="asset_id"
+				type="hidden"
+		/>
+
+		<field
 			name="rules"
 			type="bwrules"
 			label=""

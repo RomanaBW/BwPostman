@@ -338,6 +338,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->obligation['firstname']; ?>" />
 		<input type="hidden" name="special_field_obligation" value="<?php echo $this->obligation['special']; ?>" />
 		<input type="hidden" id="jform_title" name="jform[title]" value="<?php echo $this->form->getValue('title') ?>">
+		<?php echo $this->form->getInput('asset_id'); ?>
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

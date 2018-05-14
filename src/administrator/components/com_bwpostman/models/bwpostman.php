@@ -722,12 +722,12 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			 * Or some parent group has an explicit "Denied".
 			 * Calculated permission is "Not Allowed (Locked)".
 			 */
-			elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
+/*			elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
 			{
 				$result['class'] = 'label label-important';
 				$result['text']  = '<span class="icon-lock icon-white" aria-hidden="true"></span>' . JText::_('JLIB_RULES_NOT_ALLOWED_LOCKED');
 			}
-		}
+*/		}
 
 		// If removed or added super user from group, we need to refresh the page to recalculate all settings.
 		if ($isSuperUserGroupBefore != $isSuperUserGroupAfter)

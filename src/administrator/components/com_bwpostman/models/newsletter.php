@@ -516,6 +516,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$form->setFieldAttribute('published', 'type', 'hidden');
 		}
 
+		$form->setValue('title', '', $form->getValue('subject'));
+
 		return $form;
 	}
 

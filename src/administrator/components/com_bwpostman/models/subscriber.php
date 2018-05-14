@@ -318,6 +318,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$form->setFieldAttribute('status', 'default', '1');
 		}
 
+		$form->setValue('title', '', $form->getValue('name'));
+
 		return $form;
 	}
 

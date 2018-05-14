@@ -281,7 +281,12 @@
 			type="hidden"
 		/>
 
-  		<field
+		<field
+				name="title"
+				type="hidden"
+		/>
+
+		<field
 			name="rules"
 			type="bwrules"
 			label=""

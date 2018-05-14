@@ -89,7 +89,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return	boolean|JTable	A database object
 	 *
 	 * @since  1.0.1
 	 */

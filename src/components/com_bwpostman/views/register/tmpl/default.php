@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
+JHtml::_('formbehavior.chosen', 'select');
 
 // Depends on jQuery UI
 JHtml::_('jquery.ui', array('core'));

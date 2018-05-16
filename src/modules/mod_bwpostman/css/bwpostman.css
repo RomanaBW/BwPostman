@@ -232,7 +232,7 @@ p#bwp_mod_form_genderformat label {
 }
 
 div#bwp_mod_form_genderfield {
-
+	margin-bottom: 9px;
 }
 
 #mod_bwpostman .radio.btn-group input[type="radio"] {

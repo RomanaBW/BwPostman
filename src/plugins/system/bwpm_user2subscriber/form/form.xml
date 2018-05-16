@@ -26,19 +26,22 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
+
 			<field
 				name="gender"
-				type="radio"
+				type="list"
 				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_LABEL"
 				labelclass="control-label bwpm-u2s-fields-toggle"
 				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC"
 				required="false"
-				class="registerradio btn-group btn-group-yesno bwpm-u2s-fields-toggle"
+				class="bwpm-u2s-fields-toggle"
 			>
+				<option value="2">
+					COM_BWPOSTMAN_NO_GENDER</option>
 				<option value="1">
-					PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_FEMALE</option>
+					COM_BWPOSTMAN_FEMALE</option>
 				<option value="0">
-					PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MALE</option>
+					COM_BWPOSTMAN_MALE</option>
 			</field>
 
 			<field

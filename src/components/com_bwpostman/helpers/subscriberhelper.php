@@ -485,32 +485,43 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to build the gender select list
 	 *
-	 * @param $gender_selected
+	 * @param string   $gender_selected
+	 * @param string   $name
 	 *
 	 * @return string
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function buildGenderList($gender_selected)
+	public static function buildGenderList($gender_selected = '2', $name = 'gender')
 	{
-		$gender = '<fieldset id="edit_gender" class="radio btn-group">';
-		$gender .= '<input type="radio" name="gender" id="genMale" value="0"';
-		if (!$gender_selected)
+
+		$gender = '<select id="gender" name="'  . $name . '" >';
+
+		$gender .= '<option value="2"';
+		if ($gender_selected == '2')
 		{
-			$gender .= ' checked="checked"';
+			$gender .= ' selected="selected"';
 		}
 
-		$gender .= ' />';
-		$gender .= '<label for="genMale"><span>' . JText::_('COM_BWPOSTMAN_MALE') . '</span></label>';
-		$gender .= '<input type="radio" name="gender" id="genFemale" value="1"';
-		if ($gender_selected)
+		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_NO_GENDER') . '</span></option>';
+
+		$gender .= '<option value="0"';
+		if ($gender_selected == '0')
 		{
-			$gender .= ' checked="checked"';
+			$gender .= ' selected="selected"';
 		}
 
-		$gender .= ' />';
-		$gender .= '<label for="genFemale"><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></label>';
-		$gender .= '</fieldset>';
+		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_MALE') . '</span></option>';
+
+		$gender .= '<option value="1"';
+		if ($gender_selected == '1')
+		{
+			$gender .= ' selected="selected"';
+		}
+
+		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></option>';
+
+		$gender .= '</select>';
 
 		return $gender;
 	}

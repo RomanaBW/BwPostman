@@ -119,7 +119,7 @@ $colNum = 7;
 						{
 							echo JText::_('COM_BWPOSTMAN_MALE');
 						}
-						elseif ($item->gender === null)
+						else
 						{
 							echo JText::_('COM_BWPOSTMAN_NO_GENDER');
 						}

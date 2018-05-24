@@ -58,6 +58,10 @@
 			size="30"
 			directory=""
 		/>
+		<field
+				name="title"
+				type="hidden"
+		/>
 	</fieldset>
 
 	<fieldset name="basic_2">
@@ -450,6 +454,11 @@
 		<field
 			name="subject"
 			type="hidden"
+		/>
+
+		<field
+				name="title"
+				type="hidden"
 		/>
 	</fieldset>
 

@@ -4,10 +4,10 @@
  *
  * BwPostman subscriber helper class for frontend.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -485,32 +485,43 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to build the gender select list
 	 *
-	 * @param $gender_selected
+	 * @param string   $gender_selected
+	 * @param string   $name
 	 *
 	 * @return string
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function buildGenderList($gender_selected)
+	public static function buildGenderList($gender_selected = '2', $name = 'gender')
 	{
-		$gender = '<fieldset id="edit_gender" class="radio btn-group">';
-		$gender .= '<input type="radio" name="gender" id="genMale" value="0"';
-		if (!$gender_selected)
+
+		$gender = '<select id="gender" name="'  . $name . '" >';
+
+		$gender .= '<option value="2"';
+		if ($gender_selected == '2')
 		{
-			$gender .= ' checked="checked"';
+			$gender .= ' selected="selected"';
 		}
 
-		$gender .= ' />';
-		$gender .= '<label for="genMale"><span>' . JText::_('COM_BWPOSTMAN_MALE') . '</span></label>';
-		$gender .= '<input type="radio" name="gender" id="genFemale" value="1"';
-		if ($gender_selected)
+		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_NO_GENDER') . '</span></option>';
+
+		$gender .= '<option value="0"';
+		if ($gender_selected == '0')
 		{
-			$gender .= ' checked="checked"';
+			$gender .= ' selected="selected"';
 		}
 
-		$gender .= ' />';
-		$gender .= '<label for="genFemale"><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></label>';
-		$gender .= '</fieldset>';
+		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_MALE') . '</span></option>';
+
+		$gender .= '<option value="1"';
+		if ($gender_selected == '1')
+		{
+			$gender .= ' selected="selected"';
+		}
+
+		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></option>';
+
+		$gender .= '</select>';
 
 		return $gender;
 	}
@@ -598,17 +609,18 @@ class BwPostmanSubscriberHelper
 		$_db   = JFactory::getDbo();
 		$query = $_db->getQuery(true);
 
+		$query->columns(
+			array(
+				$_db->quoteName('subscriber_id'),
+				$_db->quoteName('mailinglist_id')
+			)
+		);
+
 		foreach ($mailinglist_ids AS $list_id)
 		{
-			$query = $_db->getQuery(true);
+//			$query = $_db->getQuery(true);
 
 			$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->columns(
-				array(
-					$_db->quoteName('subscriber_id'),
-					$_db->quoteName('mailinglist_id')
-				)
-			);
 			$query->values(
 				(int) $subscriber_id . ',' .
 				(int) $list_id

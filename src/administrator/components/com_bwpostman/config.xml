@@ -222,6 +222,14 @@
 			<option value="1">COM_BWPOSTMAN_HTML</option>
 		</field>
 
+		<field name="spacer2_5" type="spacer" hr="true" />
+
+		<field name="show_desc" type="radio" class="btn-group btn-group-yesno" default="1" label="COM_BWPOSTMAN_SHOW_DESC" description="COM_BWPOSTMAN_SHOW_DESC_NOTE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="desc_length" type="text" default="150" label="COM_BWPOSTMAN_DESC_LENGTH" description="COM_BWPOSTMAN_DESC_LENGTH_NOTE" />
+
 		<field name="spacer2_4" type="spacer" hr="true" />
 
 		<field name="disclaimer"
@@ -235,7 +243,8 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="spacer2_5" type="spacer" label="COM_BWPOSTMAN_DISCLAIMER_LABEL" />
+		<field name="spacer2_6" type="spacer" hr="true" />
+		<field name="spacer2_7" type="spacer" label="COM_BWPOSTMAN_DISCLAIMER_LABEL" />
 
 		<field name="disclaimer_selection"
 			type="radio"
@@ -284,7 +293,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="spacer2_6" type="spacer" hr="true" />
+		<field name="spacer2_8" type="spacer" hr="true" />
 
 		<field name="use_captcha"
 			type="radio"

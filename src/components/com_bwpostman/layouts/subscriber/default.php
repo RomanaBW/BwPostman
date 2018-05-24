@@ -269,35 +269,67 @@ $lists      = $displayData['lists'];
 		<div class="contentpane<?php echo $params->get('pageclass_sfx'); ?>">
 			<?php
 			$n = count($lists['available_mailinglists']);
-			if ($n == 1)
-			{ ?>
-				<input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
-						name="<?php echo "mailinglists[]"; ?>" value="<?php echo $lists['available_mailinglists'][0]->id; ?>" checked="checked" />
-				<?php
-			}
-			else
-			{ ?>
-				<p class="mail_available">
-					<?php echo JText::_('COM_BWPOSTMAN_MAILINGLISTS'); ?>
-				</p>
-				<?php
-				foreach ($lists['available_mailinglists'] as $i => $item)
+
+			$descLength = $params->get('desc_length');
+
+			if ($lists['available_mailinglists'] && ($n > 0))
+			{
+				if ($n == 1)
 				{ ?>
-					<p class="mail_available_list <?php echo "mailinglists$i"; ?>">
-						<input title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
-								name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
+					<input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
+							name="<?php echo "mailinglists[]"; ?>" value="<?php echo $lists['available_mailinglists'][0]->id; ?>" checked="checked" />
+					<?php
+					if ($params->get('show_desc') == 1)
+					{ ?>
+						<p class="mailinglist-description-single"><?php
+							echo substr(JText::_($lists['available_mailinglists'][0]->description), 0, $descLength);
+
+							if (strlen(JText::_($lists['available_mailinglists'][0]->description)) > $descLength)
+							{
+								echo '... ';
+								echo JHTML::tooltip(JText::_($lists['available_mailinglists'][0]->description),
+									$lists['available_mailinglists'][0]->title, 'tooltip.png', '', '');
+							} ?>
+						</p>
+						<?php
+					}
+				}
+				else
+				{ ?>
+					<p class="mail_available">
+						<?php echo JText::_('COM_BWPOSTMAN_MAILINGLISTS'); ?>
+					</p>
+					<?php
+					foreach ($lists['available_mailinglists'] as $i => $item)
+					{ ?>
+						<p class="mail_available_list <?php echo "mailinglists$i"; ?>">
+							<input title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
+									name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
 							<?php
-							if ((is_array($subscriber->mailinglists)) && (in_array((int) $item->id, $subscriber->mailinglists)))
+							if ((is_array($subscriber->mailinglists)) && (in_array((int) $item->id,
+									$subscriber->mailinglists)))
 							{
 								echo "checked=\"checked\"";
 							} ?> />
-						<span class="mail_available_list_title"><?php echo "$item->title: "; ?></span><?php echo "$item->description"; ?>
-					</p>
+							<span class="mail_available_list_title">
+								<?php echo "$item->title: "; ?>
+							</span>
+							<span>
+								<?php
+								echo substr(JText::_($item->description), 0, $descLength);
+								if (strlen(JText::_($item->description)) > $descLength)
+								{
+									echo '... ';
+									echo JHTML::tooltip(JText::_($item->description), $item->title, 'tooltip.png', '', '');
+								} ?>
+							</span>
+						</p>
+						<?php
+					} ?>
+					<div class="maindivider<?php echo $params->get('pageclass_sfx'); ?>"></div>
 					<?php
-				} ?>
-				<div class="maindivider<?php echo $params->get('pageclass_sfx'); ?>"></div>
-				<?php
-			} ?>
+				}
+			}?>
 		</div>
 
 		<?php

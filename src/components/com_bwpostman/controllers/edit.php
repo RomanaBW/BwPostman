@@ -4,10 +4,10 @@
  *
  * BwPostman edit controller for frontend.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Site
  * @author Romana Boldt
- * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -309,11 +309,13 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		if (isset($post['unsubscribe']))
 		{
 			$this->unsubscribe($post['id']);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 		}
 		else
 		{
 			$model  = $this->getModel('edit');
 			$itemid = $model->getItemid();
+			$link   = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid, false);
 
 			// Email address has changed
 			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id'])))
@@ -382,6 +384,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 
 					$jinput->set('view', 'register');
+					$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 				}
 				else
 				{
@@ -402,6 +405,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 						$jinput->set('view', 'register');
 						$app->setUserState('subscriber.id', 0);
+						$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 					}
 					else
 					{
@@ -414,6 +418,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				}
 			}
 		}
+		$this->setRedirect($link);
 
 		parent::display();
 	}

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="component" version="3.0" method="upgrade">
 	<name>COM_BWPOSTMAN</name>
-	<creationDate>October 2017</creationDate>
+	<creationDate>May 2018</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>This component is released under the GNU/GPLv3 License or later</license>
-	<version>2.0.0</version>
+	<version>2.0.2</version>
 	<description></description>
 
 	<install>

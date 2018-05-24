@@ -4,10 +4,10 @@
  *
  * BwPostman main model for backend.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -722,12 +722,12 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			 * Or some parent group has an explicit "Denied".
 			 * Calculated permission is "Not Allowed (Locked)".
 			 */
-			elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
+/*			elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
 			{
 				$result['class'] = 'label label-important';
 				$result['text']  = '<span class="icon-lock icon-white" aria-hidden="true"></span>' . JText::_('JLIB_RULES_NOT_ALLOWED_LOCKED');
 			}
-		}
+*/		}
 
 		// If removed or added super user from group, we need to refresh the page to recalculate all settings.
 		if ($isSuperUserGroupBefore != $isSuperUserGroupAfter)

@@ -4,10 +4,10 @@
  *
  * BwPostman all subscribers confirmed template for backend.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -129,7 +129,7 @@ $colNum = 8;
 						{
 							echo JText::_('COM_BWPOSTMAN_MALE');
 						}
-						elseif ($item->gender === null)
+						else
 						{
 							echo JText::_('COM_BWPOSTMAN_NO_GENDER');
 						}

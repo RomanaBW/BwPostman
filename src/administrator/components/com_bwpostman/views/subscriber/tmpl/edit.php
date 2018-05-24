@@ -4,10 +4,10 @@
  *
  * BwPostman single subscriber template for backend.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -337,6 +337,8 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		<input type="hidden" name="name_field_obligation" value="<?php echo $this->obligation['name']; ?>" />
 		<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->obligation['firstname']; ?>" />
 		<input type="hidden" name="special_field_obligation" value="<?php echo $this->obligation['special']; ?>" />
+		<input type="hidden" id="jform_title" name="jform[title]" value="<?php echo $this->form->getValue('title') ?>">
+		<?php echo $this->form->getInput('asset_id'); ?>
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

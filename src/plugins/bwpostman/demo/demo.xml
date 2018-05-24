@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension group="bwpostman" method="upgrade" type="plugin" version="3.4">
 	<name>PLG_BWPOSTMAN_PLUGIN_DEMO</name>
-	<version>2.0.0</version>
+	<version>2.0.2</version>
 	<creationDate>June 2016</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>

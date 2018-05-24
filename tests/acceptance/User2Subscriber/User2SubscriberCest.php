@@ -13,7 +13,7 @@ use Page\InstallationPage as InstallPage;
  * This class contains all methods to test subscription while registration to Joomla! at front end
  *
  * @package Register Subscribe Plugin
- * @copyright (C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2016-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -680,15 +680,13 @@ class User2SubscriberCest
 		$this->initializeTestValues($I);
 
 		//set other option settings
-		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("0"));
+		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array());
 
 		$this->selectRegistrationPage($I);
 
-		$this->dontSeePluginInputFields($I);
+		$I->dontSee(RegPage::$subs_identifier_subscribe_no);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
-
-		$this->fillBwPostmanPartAtRegisterFormSimple($I);
 
 		$this->registerAndCheckMessage($I);
 
@@ -1431,6 +1429,7 @@ class User2SubscriberCest
 		$I->see(RegPage::$error_message_name);
 		$I->see(RegPage::$error_message_firstname);
 		$I->see(sprintf(RegPage::$error_message_special, $com_options->special_label));
+		$I->see(RegPage::$error_message_mailinglists);
 
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
 		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
@@ -1456,18 +1455,21 @@ class User2SubscriberCest
 		{
 			$I->fillField(RegPage::$subs_identifier_special, RegPage::$subs_value_special);
 		}
+
+		$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
 	}
 
 	/**
 	 * Method to fill all required BwPostman fields on Joomla registration form
 	 *
-	 * @param AcceptanceTester $I
+	 * @param AcceptanceTester	$I
+	 * @param boolean			$withMl
 	 *
 	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	protected function fillBwPostmanPartAtRegisterFormSimple(AcceptanceTester $I)
+	protected function fillBwPostmanPartAtRegisterFormSimple(AcceptanceTester $I, $withMl = true)
 	{
 		$com_options    = $I->getManifestOptions('com_bwpostman');
 
@@ -1493,6 +1495,11 @@ class User2SubscriberCest
 		{
 			$I->fillField(RegPage::$subs_identifier_special, RegPage::$subs_value_special);
 		}
+
+		if ($withMl)
+		{
+			$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
+		}
 	}
 
 	/**
@@ -1505,6 +1512,8 @@ class User2SubscriberCest
 	protected function fillBwPostmanPartAtRegisterFormSimpleOnlySubscription(AcceptanceTester $I)
 	{
 		$I->clickAndWait(RegPage::$subs_identifier_subscribe_yes, 1);
+
+		$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
 	}
 
 	/**
@@ -2062,6 +2071,7 @@ class User2SubscriberCest
 		$I->dontSee(RegPage::$subs_identifier_subscribe_no);
 		$I->dontSee(RegPage::$subs_identifier_format_html);
 		$I->dontSee(RegPage::$subs_identifier_format_text);
+		$I->dontSee(RegPage::$subs_identifier_mailinglists);
 	}
 
 	/**

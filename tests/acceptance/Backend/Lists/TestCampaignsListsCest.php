@@ -6,7 +6,7 @@ use Page\CampaignManagerPage as CamManage;
  * Class TestCampaignsListsCest
  *
  * This class contains all methods to test list view of campaigns at back end
- * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

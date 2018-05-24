@@ -3,7 +3,7 @@
  *
  * BwPostman complete CSS-styles for frontend module to modify by user.
  *
- * @version 2.0.0 bwpm
+ * @version 2.0.2 bwpm
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -232,7 +232,7 @@ p#bwp_mod_form_genderformat label {
 }
 
 div#bwp_mod_form_genderfield {
-
+	margin-bottom: 9px;
 }
 
 #mod_bwpostman .radio.btn-group input[type="radio"] {
@@ -305,6 +305,21 @@ div#bwp_mod_form_listsfield {
 
 #mod_bwpostman #bwp_mod_form_listsfield p span a {
 
+}
+
+#mod_bwpostman #bwp_mod_form_listsfield p span.mailinglist-title {
+
+}
+
+#mod_bwpostman #bwp_mod_form_listsfield p span.mailinglist-description {
+	display: inline-block;
+	font-size: 83%;
+	padding-left: 25px;
+}
+
+#mod_bwpostman p.mailinglist-description-single {
+	font-size: 83%;
+	padding: 0 10px;
 }
 
 /*------------- Disclaimer -------------------------------*/

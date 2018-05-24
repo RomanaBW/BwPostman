@@ -4,7 +4,7 @@
  *
  * BwPostman single mailinglist model for backend.
  *
- * @version 2.0.1 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
@@ -89,7 +89,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return	boolean|JTable	A database object
 	 *
 	 * @since  1.0.1
 	 */

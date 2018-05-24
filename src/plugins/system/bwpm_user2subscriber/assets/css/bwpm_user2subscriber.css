@@ -5,7 +5,7 @@
  *
  * BwPostman User2Subscriber Plugin css file for BwPostman.
  *
- * @version 2.0.1 bwpmpu2s
+ * @version 2.0.2 bwpmpu2s
  * @package			BwPostman User2Subscriber Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016-2018 Boldt Webservice <forum@boldt-webservice.de>
@@ -148,4 +148,14 @@
 .registerradio.btn-group.btn-group-yesno > .btn {
 	min-width: 84px;
 	padding: 2px 12px;
+}
+
+.plg-u2s-ml-title
+{
+	font-weight: bold;
+}
+
+.plg-u2s-ml-description
+{
+	font-size: 85%;
 }

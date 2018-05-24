@@ -260,19 +260,7 @@ class BwAccess
 	 */
 	protected static function isRoot($identities)
 	{
-		$db = JFactory::getDbo();
-
-		$query = $db->getQuery(true);
-
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__usergroups'));
-		$query->where($db->quoteName('title') . ' = ' . $db->quote('Super Users'));
-
-		$db->setQuery($query);
-
-		$rootGroup = $db->loadResult();
-
-		$isRoot    = array_keys($identities, $rootGroup);
+		$isRoot    = array_keys($identities, 8);
 
 		if (count($isRoot))
 		{

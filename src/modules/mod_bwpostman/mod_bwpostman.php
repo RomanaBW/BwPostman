@@ -4,7 +4,7 @@
  *
  * BwPostman main part of module.
  *
- * @version 2.0.1 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(dirname(__FILE__) . '/helper.php');
+require_once JPATH_BASE . '/components/com_bwpostman/helpers/subscriberhelper.php';
 
 jimport('joomla.application.component.helper');
 
@@ -124,29 +125,7 @@ else
 		$lists['emailformat'] = $emailformat;
 
 		// Build the gender select list
-		$gender_selected = 0;
-
-		$gender 	= '<fieldset id="edit_gender" class="radio btn-group">';
-		$gender		.= '<input type="radio" name="a_gender" id="genMaleMod" value="0"';
-
-		if(!$gender_selected)
-		{
-			$gender .= 'checked="checked"';
-		}
-
-		$gender     .= '/>';
-		$gender		.= '<label for="genMaleMod"><span>' . JText::_('MOD_BWPOSTMAN_MALE') . '</span></label>';
-		$gender     .= '<input type="radio" name="a_gender" id="genFemaleMod" value="1"';
-
-		if($gender_selected)
-		{
-			$gender .= 'checked="checked"';
-		}
-
-		$gender     .= '/>';
-		$gender     .= '<label for="genFemaleMod"><span>' . JText::_('MOD_BWPOSTMAN_FEMALE') . '</span></label>';
-		$gender     .= '</fieldset>';
-		$lists['gender'] = $gender;
+		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender');
 
 		// Get the checked mailinglists from module parameters
 		$mod_mls = $params->get('mod_ml_available');

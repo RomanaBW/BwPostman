@@ -23,10 +23,9 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_SUBS_FIELD_GENDER_DESC"
 				required="false"
-				class="chzn-state"
 		>
-			<option value="">
-				COM_BWPOSTMAN_SUB_SELECT_GENDER</option>
+			<option value="2">
+				COM_BWPOSTMAN_NO_GENDER</option>
 			<option value="1">
 				COM_BWPOSTMAN_FEMALE</option>
 			<option value="0">
@@ -281,7 +280,17 @@
 			type="hidden"
 		/>
 
-  		<field
+		<field
+				name="title"
+				type="hidden"
+		/>
+
+		<field
+				name="asset_id"
+				type="hidden"
+		/>
+
+		<field
 			name="rules"
 			type="bwrules"
 			label=""

@@ -6,7 +6,7 @@
  *
  * BwPostman Buyer2Subscriber Plugin installation script.
  *
- * @version 2.0.1 bwpmpbs
+ * @version 2.0.2 bwpmpbs
  * @package			BwPostman Buyer2Subscriber Plugin
  * @author			Romana Boldt
  * @copyright		(C) 2016 Boldt Webservice <forum@boldt-webservice.de>

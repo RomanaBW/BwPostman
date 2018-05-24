@@ -4,7 +4,7 @@
  *
  * BwPostman all subscribers confirmed template for backend.
  *
- * @version 2.0.1 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
@@ -129,7 +129,7 @@ $colNum = 8;
 						{
 							echo JText::_('COM_BWPOSTMAN_MALE');
 						}
-						elseif ($item->gender === null)
+						else
 						{
 							echo JText::_('COM_BWPOSTMAN_NO_GENDER');
 						}

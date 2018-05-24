@@ -218,6 +218,11 @@ class JFormFieldBwRules extends JFormFieldRules
 
 			foreach ($actions as $action)
 			{
+				if (strpos($action->name, 'create') !== false)
+				{
+					continue;
+				}
+
 				$html[] = '<tr>';
 				$html[] = '<td headers="actions-th' . $group->value . '">';
 				$html[] = '<label for="' . $this->id . '_' . $action->name . '_' . $group->value . '" class="hasTooltip" title="'

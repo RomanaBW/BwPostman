@@ -4,7 +4,7 @@
  *
  * BwPostman model for a backend element to select a single newsletter for a view in frontend.
  *
- * @version 2.0.1 bwpm
+ * @version 2.0.2 bwpm
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>

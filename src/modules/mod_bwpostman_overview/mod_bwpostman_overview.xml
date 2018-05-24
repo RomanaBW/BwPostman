@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" version="3.3" client="site" method="upgrade">
 	<name>MOD_BWPOSTMAN_OVERVIEW</name>
-	<creationDate>May 2018</creationDate>
+	<creationDate>MAY-19-2018</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>

@@ -5,7 +5,7 @@ namespace Page;
  * Class RegisterSubscribePage
  *
  * @package Register Subscribe Plugin
- * @copyright (C) 2016-2017 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2016-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

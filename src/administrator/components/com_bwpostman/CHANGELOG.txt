@@ -6,7 +6,13 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 2.0.0 released (1-May-2017)----
+--- version 2.0.1 released (2-May-2018)----
+
+- bugfix:
+    - Saving changed subscription with error fixed
+
+
+--- version 2.0.0 released (1-May-2018)----
 With this version BwPostman only is distributed as package, that contains all that BwPostman contains for free. With this
 version there is only this changelog available, separate change logs for modules and plugins are not longer updated.
 

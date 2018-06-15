@@ -22,5 +22,10 @@ pipeline {
         echo 'Alle Akzeptanztests'
       }
     }
+    stage('Manual Tests') {
+      steps {
+        echo 'Benutzeroberfläche'
+      }
+    }
   }
 }

@@ -25,6 +25,7 @@ pipeline {
     stage('Manual Tests') {
       steps {
         echo 'Benutzeroberfläche'
+        echo 'Worst-Case-Tests'
       }
     }
   }

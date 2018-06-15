@@ -5,7 +5,7 @@ pipeline {
       steps {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
-        echo 'Akzeptanz-Tests passend zu Ae„nderungen'
+        echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'
         echo 'Code-Analyse: DRY'

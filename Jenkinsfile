@@ -17,5 +17,10 @@ pipeline {
         echo 'Installationspaket bauen'
       }
     }
+    stage('AcceptanceTests') {
+      steps {
+        echo 'Alle Akzeptanztests'
+      }
+    }
   }
 }

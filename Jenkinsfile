@@ -26,6 +26,7 @@ pipeline {
       steps {
         echo 'Benutzeroberfläche'
         echo 'Worst-Case-Tests'
+        echo 'nicht-funktionale Tests: Datenschutz, Sicherheit, ...'
       }
     }
   }

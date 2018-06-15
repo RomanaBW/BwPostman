@@ -29,5 +29,16 @@ pipeline {
         echo 'nicht-funktionale Tests (Datenschutz, Sicherheit, ...)'
       }
     }
+    stage('Release') {
+      steps {
+        echo 'Datum im Manifest aktualisieren'
+        echo 'Upload auf Webserver'
+        echo 'bei alter Webseite: Neues Paket und neues Objekt anlegen'
+        echo 'Beschreibung auf Webseite aktualisieren'
+        echo 'Handbuch im Web aktualisieren'
+        echo 'Update-Server aktualisieren'
+        echo 'JED aktualisieren'
+      }
+    }
   }
 }

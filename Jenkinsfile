@@ -5,11 +5,11 @@ pipeline {
       steps {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
-        echo 'Akzeptanz-Tests passend zu √Ñnderungen'
-        echo 'Validit√§t von HTML'
+        echo 'Akzeptanz-Tests passend zu AeÑnderungen'
+        echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'
         echo 'Code-Analyse: DRY'
-        echo 'Code-Analyse: Komplexit√§t'
+        echo 'Code-Analyse: Komplexitaet'
         echo 'Code-Analyse: Warnungen'
         echo 'DB Rebase'
         echo 'Versionsnummer einbauen'
@@ -17,14 +17,14 @@ pipeline {
         echo 'Installationspaket bauen'
       }
     }
-    stage('AcceptanceTests') {
+    stage('Acceptance Tests') {
       steps {
         echo 'Alle Akzeptanztests'
       }
     }
     stage('Manual Tests') {
       steps {
-        echo 'Benutzeroberfl‰che'
+        echo 'Benutzeroberflaeche'
         echo 'Worst-Case-Tests'
         echo 'nicht-funktionale Tests (Datenschutz, Sicherheit, ...)'
       }

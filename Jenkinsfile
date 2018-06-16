@@ -9,7 +9,7 @@ pipeline {
         echo 'Unit-Tests'
         echo "Workspace: ${WORKSPACE}"
         echo "Build: ${BUILD_NUMBER}"
-        echo "Versionsnummer: params.VERSION_NUMBER"
+        echo "Versionsnummer: ${params.VERSION_NUMBER}"
         echo 'Smoke-Tests'
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'

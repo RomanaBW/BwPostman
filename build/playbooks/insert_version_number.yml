@@ -29,6 +29,6 @@
     - name: replace version number
       replace:
         path: "{{ item.path }}"
-        regexp: "@version 2.0.2 bwpm"
+        regexp: "@version %%version_number%% build %%build_number%%"
         replace: "@version %%version%%"
       with_items: "{{ files_list.files }}"

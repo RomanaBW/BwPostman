@@ -4,7 +4,7 @@
  *
  * BwPostman form field class selectable mailinglists for plugin.
  *
- * @version 2.0.2 bwpmpu2s
+ * @version %%version_number%% build %%build_number%%
  * @package BwPostman User2Subscriber Plugin
  * @author Romana Boldt
  * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>

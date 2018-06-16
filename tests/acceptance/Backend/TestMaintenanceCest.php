@@ -8,7 +8,7 @@ use Page\MainviewPage as MainView;
  *
  * This class contains all methods to test maintenance functionality at back end
  *
- * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

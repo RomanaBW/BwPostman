@@ -4,10 +4,10 @@
  *
  * BwPostman media list sub-template image for backend, based on joomla com_media.
  *
- * @version 2.0.2 bwpm
+ * @version %%version_number%% build %%build_number%%
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

@@ -7,7 +7,7 @@ use Page\Generals;
 /** here you can define custom actions
  * all public methods declared in helper class will be available in $I
  *
- * @copyright (C) 2012-2018 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

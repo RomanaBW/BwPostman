@@ -1,0 +1,34 @@
+# The fist basic segmentation I got from readme.md.
+
+---
+- hosts: localhost
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - name: get source files list
+      find:
+        paths: "/repositories/BwPostman/packages/workingOnTest/"
+        excludes:
+          - "*.zip"
+          - "*.pdf"
+          - "*.png"
+          - "*.jpg"
+          - "*.jpeg"
+          - "*.gif"
+          - "*.sql"
+          - "*.ttf"
+          - "index.html"
+        recurse: yes
+      register: files_list
+
+    - name: number of files found
+      debug:
+        msg: "Number of files found: {{ files_list.matched }}"
+
+    - name: replace version number
+      replace:
+        path: "{{ item.path }}"
+        regexp: "@version 2.0.2 bwpm"
+        replace: "@version %%version%%"
+      with_items: "{{ files_list.files }}"

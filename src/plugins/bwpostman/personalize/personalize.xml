@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension group="bwpostman" method="upgrade" type="plugin" version="3.4">
 	<name>PLG_BWPOSTMAN_PLUGIN_PERSONALIZE</name>
-	<version>2.0.2</version>
-	<creationDate>MAY-19-2018</creationDate>
+	<version>%%version_number%%</version>
+	<creationDate>%%creation_date%%</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>

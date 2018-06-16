@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" version="3.3" client="site" method="upgrade">
 	<name>MOD_BWPOSTMAN_OVERVIEW</name>
-	<creationDate>MAY-19-2018</creationDate>
+	<creationDate>%%creation_date%%</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
-	<version>2.0.2</version>
+	<version>%%version_number%%</version>
 	<scriptfile>script.php</scriptfile>
 	<description>MOD_BWPOSTMAN_OVERVIEW_XML_DESCRIPTION</description>
 

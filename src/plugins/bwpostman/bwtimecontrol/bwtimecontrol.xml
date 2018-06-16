@@ -3,7 +3,7 @@
 <extension version="2.5" type="plugin" group="bwpostman" method="upgrade">
 	<name>PLG_BWPOSTMAN_BWTIMECONTROL</name>
 	<version>1.2.0</version>
-	<creationDate>March 2015</creationDate>
+	<creationDate>%%creation_date%%</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>

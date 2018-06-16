@@ -2,10 +2,16 @@ pipeline {
   agent any
   stages {
     stage('Build') {
+      input {
+        parameters {
+          string(number: "VERSION_NUMBER", defaultValue: "2.1.0", description: "The new/next version number of the project.")
+        }
+      }
       steps {
         echo 'Unit-Tests'
         echo "Workspace: $WORKSPACE"
         echo "Build: $BUILD_NUMBER"
+        echo "Versionsnummer: $VERSION_NUMBER"
         echo 'Smoke-Tests'
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'

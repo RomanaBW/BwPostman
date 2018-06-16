@@ -7,11 +7,11 @@
  * BwPostman User2Subscriber Plugin main file for BwPostman.
  *
  * @version 2.0.2 bwpmpu2s
- * @package			BwPostman User2Subscriber Plugin
- * @author			Romana Boldt
- * @copyright		(C) 2016-2018 Boldt Webservice <forum@boldt-webservice.de>
+ * @package BwPostman User2Subscriber Plugin
+ * @author Romana Boldt
+ * @copyright (C) 2016-2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
- * @license			GNU/GPL v3, see LICENSE.txt
+ * @license GNU/GPL v3, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or

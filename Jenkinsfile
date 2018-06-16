@@ -4,6 +4,8 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Unit-Tests'
+        echo "Workspace: $WORKSPACE"
+        echo "Build: $BUILD_NUMBER"
         echo 'Smoke-Tests'
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
@@ -13,7 +15,7 @@ pipeline {
         echo 'Code-Analyse: Warnungen'
         echo 'DB Rebase'
         echo 'Versionsnummer einbauen'
-        echo 'BUildnummer einbauen'
+        echo 'Buildnummer einbauen'
         echo 'Installationspaket bauen'
       }
     }

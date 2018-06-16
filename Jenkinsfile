@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       input {
         parameters {
-          string(number: "VERSION_NUMBER", defaultValue: "2.1.0", description: "The new/next version number of the project.")
+          string(name: "VERSION_NUMBER", defaultValue: "2.1.0", description: "The new/next version number of the project.")
         }
       }
       steps {

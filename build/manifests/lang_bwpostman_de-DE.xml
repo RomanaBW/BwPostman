@@ -2,13 +2,13 @@
 <extension type="file" version="3.0" method="upgrade">
 	<name>BwPostman German Language Pack</name>
 	<element>lang_bwpostman_de-DE</element>
-	<creationDate>May 2018</creationDate>
+	<creationDate>%%creation_date%%</creationDate>
 	<author>Boldt Webservice</author>
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>This component is released under the GNU/GPLv3 License or later</license>
-	<version>2.0.2</version>
+	<version>%%version_number%%</version>
 
 	<description>German (Germany) language file for BwPostman</description>
 

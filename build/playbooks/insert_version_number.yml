@@ -1,4 +1,6 @@
-# The fist basic segmentation I got from readme.md.
+# @ToDo: Use correct path
+# @ToDo: Replace variables for version_number, build_number, copyright_year, creation_date
+
 
 ---
 - hosts: localhost
@@ -29,6 +31,6 @@
     - name: replace version number
       replace:
         path: "{{ item.path }}"
-        regexp: "@version %%version_number%% build %%build_number%%"
+        regexp: "@version %%version_number%%"
         replace: "@version %%version%%"
       with_items: "{{ files_list.files }}"

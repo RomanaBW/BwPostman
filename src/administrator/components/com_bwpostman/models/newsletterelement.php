@@ -4,7 +4,7 @@
  *
  * BwPostman model for a backend element to select a single newsletter for a view in frontend.
  *
- * @version %%version_number%% build %%build_number%%
+ * @version %%version_number%%
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>

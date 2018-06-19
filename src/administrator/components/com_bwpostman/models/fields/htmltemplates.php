@@ -4,7 +4,7 @@
  *
  * BwPostman  form field HTML templates class.
  *
- * @version %%version_number%% build %%build_number%%
+ * @version %%version_number%%
  * @package BwPostman-Admin
  * @author Karl Klostermann
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>

@@ -4,7 +4,7 @@
  *
  * BwPostman backend element to select a single newsletter for a view in frontend.
  *
- * @version %%version_number%% build %%build_number%%
+ * @version %%version_number%%
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Renders a newsletter element
  *
- * @version %%version_number%% build %%build_number%%
+ * @version %%version_number%%
  * @package BwPostman-Admin
  *
  * @since       1.0.8

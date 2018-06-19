@@ -3,7 +3,7 @@
  *
  * BwPostman Javascript for newsletter editing.
  *
- * @version %%version_number%% build %%build_number%%
+ * @version %%version_number%%
  * @package BwPostman-Admin
  * @author Romana Boldt, Karl Klostermann
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>

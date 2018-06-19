@@ -17,9 +17,9 @@
 		<property name="BwPostman_repo_dir" value="${repo_base_dir}/BwPostman" override="true" />
 		<property name="lib_repo_dir" value="${repo_base_dir}/BwLib" override="true" />
 
-		<property name="upload" value="1" override="true" />
+		<property name="upload" value="0" override="true" />
 
-		<property name="version" value="2.0.2" override="true" />
+		<property name="version" value="2.0.3" override="true" />
 		<property name="lib_version" value="0.9.1" override="true" />
 
 		<property name="home_dir" value="/home/romana/PhpstormProjects/BwPostman" override="true" />
@@ -53,7 +53,7 @@
 		<echo msg="test base dir…" />
 		<property name="test_container_dir" value="${BwPostman_repo_dir}/tests" override="true" />
 
-		<property name="upload_dir" value="/webservice/download/bwpostman" override="true" />
-		<property name="upload_lang_dir" value="/webservice/download/bwpostman/translations" override="true" />
+		<property name="upload_dir" value="/www/htdocs/webservice/download/bwpostman" override="true" />
+		<property name="upload_lang_dir" value="/www/htdocs/webservice/download/bwpostman/translations" override="true" />
 	</target>
 </project>

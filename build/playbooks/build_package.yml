@@ -6,7 +6,7 @@
   tasks:
     - name: Remove folders which are not needed
       file:
-        path: "{{ workspace }}/src/{{ item }}"
+        path: "{{ project_base_dir }}/src/{{ item }}"
         state: absent
       with_items: "{{ to_delete }}"
 
@@ -16,14 +16,14 @@
       vars:
         bw_version: "{{ version_number }}"
         bw_build: "{{ build }}"
-        bw_workspace: "{{ workspace }}"
+        bw_workspace: "{{ project_base_dir }}"
         bw_manifest_list: "{{ manifest_list }}"
 
 #   build component package
     - include_role:
         name: romanabw.build-jcomponent-package
       vars:
-        bw_workspace: "{{ workspace }}/src"
+        bw_workspace: "{{ project_base_dir }}/src"
         bw_extension: "{{ extension_name }}"
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
@@ -34,7 +34,7 @@
     - include_role:
         name: romanabw.build-jmodule-package
       vars:
-        bw_workspace: "{{ workspace }}/src"
+        bw_workspace: "{{ project_base_dir }}/src"
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
         bw_module_name: "mod_bwpostman"
@@ -43,7 +43,7 @@
     - include_role:
         name: romanabw.build-jmodule-package
       vars:
-        bw_workspace: "{{ workspace }}/src"
+        bw_workspace: "{{ project_base_dir }}/src"
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
         bw_module_name: "mod_bwpostman_overview"
@@ -52,7 +52,7 @@
     - include_role:
         name: romanabw.build-jplugin-package
       vars:
-        bw_workspace: "{{ workspace }}/src"
+        bw_workspace: "{{ project_base_dir }}/src"
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "personalize"
@@ -62,7 +62,7 @@
     - include_role:
         name: romanabw.build-jplugin-package
       vars:
-        bw_workspace: "{{ workspace }}/src"
+        bw_workspace: "{{ project_base_dir }}/src"
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bwpm_user2subscriber"
@@ -72,7 +72,7 @@
     - include_role:
         name: romanabw.build-jpackage-package
       vars:
-        bw_workspace: "{{ workspace }}"
+        bw_workspace: "{{ project_base_dir }}"
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_extension: "{{ extension_name }}"
         bw_package_parts: "{{ package_parts }}"

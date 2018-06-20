@@ -16,9 +16,6 @@ pipeline {
         echo 'Code-Analyse: Komplexitaet'
         echo 'Code-Analyse: Warnungen'
         echo 'DB Rebase'
-        echo 'Versionsnummer einbauen'
-        echo 'Buildnummer einbauen'
-        echo 'Installationspaket bauen'
       }
     }
     stage('Acceptance Tests') {

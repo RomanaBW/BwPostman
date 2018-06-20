@@ -1,1 +1,59 @@
 ---
+extension_name: "bwpostman"
+
+target_base_path: "/repositories/artifacts"
+
+package_parts:
+  - com_bwpostman
+  - mod_bwpostman
+  - mod_bwpostman_overview
+  - plg_personalize
+  - plg_bwpm_user2subscriber
+
+languages:
+  - de-DE
+  - en-GB
+  - it-IT
+  - ja-JP
+  - es-ES
+
+to_delete:
+  - index.php
+  - administrator/index.php
+  - administrator/language/de-DE/de-DE.plg_bwpostman_bwtimecontrol.ini
+  - administrator/language/de-DE/de-DE.plg_bwpostman_bwtimecontrol.sys.ini
+  - administrator/language/de-DE/de-DE.plg_bwpostman_demo.ini
+  - administrator/language/de-DE/de-DE.plg_bwpostman_demo.sys.ini
+  - administrator/language/de-DE/de-DE.plg_bwtests.ini
+  - administrator/language/de-DE/de-DE.plg_bwtests.sys.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.sys.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_demo.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_demo.sys.ini
+  - administrator/language/en-GB/en-GB.plg_bwtests.ini
+  - administrator/language/en-GB/en-GB.plg_bwtests.sys.ini
+  - administrator/language/it-IT/it-IT.plg_bwpostman_demo.ini
+  - administrator/language/it-IT/it-IT.plg_bwpostman_demo.sys.ini
+  - plugins/attachments
+  - plugins/quickicon
+  - plugins/search
+  - plugins/vendor
+  - plugins/bwpostman/demo
+  - plugins/bwpostman/bwtimecontrol
+  - plugins/system/bwtests
+  - plugins/composer.json
+  - plugins/composer.lock
+
+manifest_list:
+  - src/administrator/components/com_bwpostman/bwpostman.xml
+  - src/modules/mod_bwpostman/mod_bwpostman.xml
+  - src/modules/mod_bwpostman_overview/mod_bwpostman_overview.xml
+  - src/plugins/vmuserfield/bwpm_buyer2subscriber/bwpm_buyer2subscriber.xml
+  - src/plugins/bwpostman/personalize/personalize.xml
+  - src/plugins/system/bwpm_user2subscriber/bwpm_user2subscriber.xml
+  - build/manifests/pkg_bwpostman.xml
+  - build/manifests/lang_bwpostman_de-DE.xml
+  - build/manifests/lang_bwpostman_en-GB.xml
+  - build/manifests/lang_bwpostman_it-IT.xml
+  - build/manifests/lang_bwpostman_es-ES.xml
+  - build/manifests/lang_bwpostman_ja-JP.xml

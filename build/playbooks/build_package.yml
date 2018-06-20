@@ -1,0 +1,78 @@
+---
+- hosts: localhost
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - name: Remove folders which are not needed
+      file:
+        path: "{{ workspace }}/src/{{ item }}"
+        state: absent
+      with_items: "{{ to_delete }}"
+
+#   inject current variable values (version, build, copyright year)
+    - include_role:
+        name: romanabw.inject-current-build-variables
+      vars:
+        bw_version: "{{ version_number }}"
+        bw_build: "{{ build }}"
+        bw_workspace: "{{ workspace }}"
+        bw_manifest_list: "{{ manifest_list }}"
+
+#   build component package
+    - include_role:
+        name: romanabw.build-jcomponent-package
+      vars:
+        bw_workspace: "{{ workspace }}/src"
+        bw_extension: "{{ extension_name }}"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_mb4_support: "{{ mb4_support }}"
+        bw_media_folder: "bw_postman"
+
+#   build registration module package
+    - include_role:
+        name: romanabw.build-jmodule-package
+      vars:
+        bw_workspace: "{{ workspace }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_module_name: "mod_bwpostman"
+
+#   build overview module package
+    - include_role:
+        name: romanabw.build-jmodule-package
+      vars:
+        bw_workspace: "{{ workspace }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_module_name: "mod_bwpostman_overview"
+
+#    - name: build personalize plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ workspace }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "personalize"
+        bw_plugin_group: "bwpostman"
+
+#    - name: build u2s plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ workspace }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bwpm_user2subscriber"
+        bw_plugin_group: "system"
+
+#    - name: pack complete package
+    - include_role:
+        name: romanabw.build-jpackage-package
+      vars:
+        bw_workspace: "{{ workspace }}"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_extension: "{{ extension_name }}"
+        bw_package_parts: "{{ package_parts }}"

@@ -7,7 +7,7 @@ pipeline {
     stage('Build') {
       steps {
         echo 'current path: ${pwd()}'
-      	sh 'ansible-playbook ./build/playbooks/build_package.yml --extra-vars 'workspace=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'
+        sh 'ansible-playbook ./build/playbooks/build_package.yml --extra-vars 'workspace=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'
         echo 'Unit-Tests'
         echo "Workspace: ${WORKSPACE}"
         echo "Build: ${BUILD_NUMBER}"

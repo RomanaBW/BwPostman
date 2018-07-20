@@ -1,0 +1,84 @@
+---
+log_path: '/data/logs'
+record_path: "/data/repositories/artifacts/bwpostman/videos"
+
+screen_size: '1440x900'
+display: ':45'
+
+# runtime install ? min
+# runtime update ? min
+# runtime uninstall ? min
+# runtime options ? min
+# runtime lists 11 min
+# runtime maintenance 3 min
+# runtime frontend 2 min
+# runtime details 16 min
+# runtime user2subscriber 10 min
+# runtime access ?? min
+
+test_file:
+  - suite: install
+    testsuite_file: Backend/TestInstallationCest
+  - suite: update
+    testsuite_file: Backend/TestUpdateCest
+  - suite: uninstall
+    testsuite_file: Backend/TestDeinstallationCest
+  - suite: options
+    testsuite_file: Backend/TestOptionsCest
+  - suite: lists
+    testsuite_file: Backend/Lists
+  - suite: maintenance
+    testsuite_file: Backend/TestMaintenanceCest
+  - suite: restore
+    testsuite_file: Backend/TestMaintenanceCest::restoreTables
+  - suite: frontend
+    testsuite_file: Frontend
+  - suite: details
+    testsuite_file: Backend/Details
+  - suite: user2subscriber
+    testsuite_file: User2Subscriber
+  - suite: access
+    testsuite_file: Backend/Access
+#  - personalize:
+#  - restore:
+#  - module_subs:
+#  - module_overview:
+
+test_suites:
+  - name: smoke
+    tests:
+      - install
+      - restore
+      - uninstall
+
+  - name: accept1
+    tests:
+      - install
+      - restore
+      - options
+      - lists
+      - maintenance
+
+  - name: accept2
+    tests:
+      - install
+      - restore
+      - options
+      - details
+
+  - name: accept3
+    tests:
+      - install
+      - restore
+      - options
+      - frontend
+      - user2subscriber
+  #  - personalize
+
+  - name: accept4
+    tests:
+      - install
+      - restore
+      - options
+      - access
+

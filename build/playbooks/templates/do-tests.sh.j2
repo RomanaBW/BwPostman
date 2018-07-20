@@ -1,0 +1,36 @@
+#! /bin/bash
+
+# start x-server
+/usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
+export DISPLAY={{ display }}
+
+java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.logfile=/data/logs/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >/data/logs/selenium.log 2>/data/logs/selenium.log &
+
+# Loop until selenium server is available
+until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do
+    printf '.'
+    sleep 1
+done
+printf '\n'
+
+# Start recording
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>{{ log_path }}/ffmpeg.log"
+
+# run tests
+cd {{ bw_project_base_dir }}
+
+{% set selected_suite = '' %}
+{% for suite in test_suites if suite.name == test_suite %}
+{% set selected_suite = suite.tests %}
+{% for item in selected_suite %}
+{% for selected_file in test_file if selected_file.suite == item %}
+codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
+# Wait for browser to close
+sleep 1
+
+# Stop recording
+tmux send-keys -t BwPostmanRecording1 q

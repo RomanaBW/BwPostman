@@ -46,7 +46,7 @@
 #    - name: Refresh inventory
 #      meta: refresh_inventory
 
-- hosts: "{{ tester_ip }}"
+- hosts: "{{ tester_ip.msg }}"
   vars_files:
     - vars/vars.yml
     - vars/tests.yml

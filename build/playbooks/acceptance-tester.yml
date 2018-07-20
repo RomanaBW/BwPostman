@@ -31,7 +31,7 @@
 
     - name: Ensure inventory is created and equipped with the correct values
       become: true
-      become_user: romana
+      become_user: root
       template:
         src: "hosts.j2"
         dest: "inventory/hosts"

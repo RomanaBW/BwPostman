@@ -5,17 +5,13 @@
     - vars/tests.yml
 
   tasks:
-#    - name: Modify Vagrantfile for this tester VM
-#      template:
-#        src: "Vagrantfile.j2"
-#        dest: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester/Vagrantfile"
-
     - name: Setup tester VM by vagrant up
+      become: true
+      become_user: romana
       command: 'vagrant up {{ test_suite }}'
       args:
         chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
       delegate_to: 'localhost'
-#    - import_playbook: /vms-uni2/vagrant/infrastructure/farm1/J-Tester/start-tester.yml
 
     - name: Ensure inventory folder is present
       file:
@@ -62,12 +58,16 @@
       shell: '/data/do-tests.sh'
 
     - name: Shutdown tester machine
+      become: true
+      become_user: romana
       command: 'vagrant halt {{ test_suite }}'
       args:
         chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
       delegate_to: 'localhost'
 
     - name: Remove tester machine
+      become: true
+      become_user: romana
       command: 'vagrant destroy {{ test_suite }}'
       args:
         chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'

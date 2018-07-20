@@ -17,8 +17,6 @@
       file:
         path: "inventory"
         state: directory
-        owner: romana
-        group: users
         mode: 0775
 
     - name: Set variable for filename

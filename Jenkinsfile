@@ -8,7 +8,7 @@ pipeline {
       steps {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
-        sh "ansible-playbook ${WORKSPACE}/build/playbooks/acceptance-tester.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
+        sh "ansible-playbook ${WORKSPACE}/build/playbooks/acceptance-tester.yml -u romana --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'

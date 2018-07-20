@@ -35,7 +35,7 @@
 
     - name: display IP of fact
       debug:
-        msg: "{{ bw_tester_ip.msg }}"
+        msg: "{{ hostvars['localhost'][bw_tester_ip.msg] }}"
 #    - name: Ensure inventory is created and equipped with the correct values
 #      become: true
 #      become_user: root
@@ -46,7 +46,7 @@
 #    - name: Refresh inventory
 #      meta: refresh_inventory
 
-- hosts: "{{ tester_ip.msg }}"
+- hosts: "{{ hostvars['localhost'][bw_tester_ip.msg] }}"
   vars_files:
     - vars/vars.yml
     - vars/tests.yml

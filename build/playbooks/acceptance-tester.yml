@@ -19,7 +19,6 @@
       file:
         path: "inventory"
         state: directory
-        mode: 0775
 
     - name: Set variable for filename
       set_fact:

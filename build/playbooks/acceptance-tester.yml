@@ -46,7 +46,7 @@
 #    - name: Refresh inventory
 #      meta: refresh_inventory
 
-- hosts: "{{ hostvars['localhost'][tester_ip] }}"
+- hosts: "{{ hostvars['localhost']['tester_ip'] }}"
   vars_files:
     - vars/vars.yml
     - vars/tests.yml

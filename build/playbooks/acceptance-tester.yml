@@ -20,15 +20,15 @@
 #        path: "inventory"
 #        state: directory
 #
-#    - name: Set variable for filename
-#      set_fact:
-#        filename: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester/files/{{ test_suite }}-ip.txt"
-#
-#    - name: display IP of gererated VM (file content)
-#      debug:
-#        msg: "{{ lookup ('file', '{{ filename }}') }}"
-#      register: bw_tester_ip
-#
+    - name: Set variable for filename
+      set_fact:
+        filename: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester/files/{{ test_suite }}-ip.txt"
+
+    - name: display IP of gererated VM (file content)
+      debug:
+        msg: "{{ lookup ('file', '{{ filename }}') }}"
+      register: bw_tester_ip
+
 #    - name: Ensure inventory is created and equipped with the correct values
 #      become: true
 #      become_user: root
@@ -39,7 +39,7 @@
 #    - name: Refresh inventory
 #      meta: refresh_inventory
 
-- hosts: "{{ test_suite }}"
+- hosts: "{{ bw_tester_ip }}"
   vars_files:
     - vars/vars.yml
     - vars/tests.yml

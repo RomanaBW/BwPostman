@@ -38,6 +38,8 @@
         msg: "{{ hostvars['localhost']['tester_ip'] }}"
 
     - name: Ensure inventory is created and equipped with the correct values
+      become: true
+      become_user: root
       template:
         src: "hosts.j2"
         dest: "inventory/hosts"

@@ -9,7 +9,7 @@ pipeline {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
         sh "cd ${WORKSPACE}/build/playbooks"
-        sh "ansible-playbook acceptance-tester.yml -vvvv -i ./inventory/hosts -u romana --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
+        sh "ansible-playbook ./acceptance-tester.yml -vvvv -i ./inventory/hosts -u romana --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'

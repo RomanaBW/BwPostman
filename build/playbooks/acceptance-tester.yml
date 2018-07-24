@@ -36,17 +36,17 @@
     - name: display IP of fact
       debug:
         msg: "{{ hostvars['localhost']['tester_ip'] }}"
-#    - name: Ensure inventory is created and equipped with the correct values
-#      become: true
-#      become_user: root
-#      template:
-#        src: "hosts.j2"
-#        dest: "inventory/hosts"
-#
-#    - name: Refresh inventory
-#      meta: refresh_inventory
+    - name: Ensure inventory is created and equipped with the correct values
+      become: true
+      become_user: root
+      template:
+        src: "hosts.j2"
+        dest: "inventory/hosts"
 
-- hosts: "{{ hostvars['localhost']['tester_ip'] }}"
+    - name: Refresh inventory
+      meta: refresh_inventory
+
+- hosts: "{{ test_suite }}"
   vars_files:
     - vars/vars.yml
     - vars/tests.yml

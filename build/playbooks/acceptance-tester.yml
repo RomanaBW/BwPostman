@@ -36,6 +36,7 @@
     - name: display IP of fact
       debug:
         msg: "{{ hostvars['localhost']['tester_ip'] }}"
+
     - name: Ensure inventory is created and equipped with the correct values
       become: true
       become_user: root

@@ -48,6 +48,8 @@
       meta: refresh_inventory
 
 - hosts: "{{ test_suite }}"
+  become: true
+  become_user: romana
   vars_files:
     - vars/vars.yml
     - vars/tests.yml

@@ -10,7 +10,7 @@ pipeline {
         echo 'Smoke-Tests'
         sh "cd ${WORKSPACE}/build/playbooks/"
         sh "ls"
-        sh "sudo -u romana ansible-playbook ${WORKSPACE}/build/playbooks/acceptance-tester.yml -vvvv -i ${WORKSPACE}/build/playbooks/inventory/hosts --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
+        sh "sudo -u romana ansible-playbook ${WORKSPACE}/build/playbooks/acceptance-tester.yml -v -i ${WORKSPACE}/build/playbooks/inventory/hosts --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'

@@ -24,7 +24,7 @@ cd {{ bw_project_base_dir }}
 {% set selected_suite = suite.tests %}
 {% for item in selected_suite %}
 {% for selected_file in test_file if selected_file.suite == item %}
-codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+sudo -u romana codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 {% endfor %}
 {% endfor %}
 {% endfor %}

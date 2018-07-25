@@ -66,7 +66,7 @@
         mode: 0775
 
     - name: Do tests
-      shell: 'sudo -u romana /data/do-tests.sh'
+      shell: '/data/do-tests.sh'
 
 #    - name: Shutdown tester machine
 #      command: 'vagrant halt {{ test_suite }}'

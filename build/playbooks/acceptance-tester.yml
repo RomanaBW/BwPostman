@@ -68,14 +68,14 @@
     - name: Do tests
       shell: '/data/do-tests.sh'
 
-    - name: Shutdown tester machine
-      command: 'vagrant halt {{ test_suite }}'
-      args:
-        chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
-      delegate_to: 'localhost'
-
-    - name: Remove tester machine
-      command: 'vagrant destroy {{ test_suite }}'
-      args:
-        chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
-      delegate_to: 'localhost'
+#    - name: Shutdown tester machine
+#      command: 'vagrant halt {{ test_suite }}'
+#      args:
+#        chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
+#      delegate_to: 'localhost'
+#
+#    - name: Remove tester machine
+#      command: 'vagrant destroy {{ test_suite }}'
+#      args:
+#        chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
+#      delegate_to: 'localhost'

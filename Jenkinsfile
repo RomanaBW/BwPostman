@@ -8,7 +8,7 @@ pipeline {
       steps {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
-        sh "cd ${WORKSPACE}/build/playbooks/ \&& ls"
+        sh "cd ${WORKSPACE}/build/playbooks/ && ls"
         sh "ls"
         sh "sudo -u romana ansible-playbook ${WORKSPACE}/build/playbooks/acceptance-tester.yml -v -i ${WORKSPACE}/build/playbooks/inventory/hosts --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
         echo 'Akzeptanz-Tests passend zu Aenderungen'

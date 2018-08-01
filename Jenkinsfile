@@ -10,9 +10,9 @@ pipeline {
 //        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
-        dir ("${params.VAGRANT_DIR"}) {
+        dir ("${params.VAGRANT_DIR}") {
           sh "vagrant up smoke"
-          def SmokeIp = readFile("${params.VAGRANT_DIR}/files/smoke-ip.txt").text
+          def SmokeIp = readFile("files/smoke-ip.txt").text
           echo "${SmokeIp}"
         }
         dir ('build/playbooks/') {

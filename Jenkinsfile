@@ -12,9 +12,7 @@ pipeline {
         echo 'Smoke-Tests'
         dir ('/vms-uni2/vagrant/infrastructure/farm1/J-Tester/') {
           sh "vagrant up smoke"
-          def getIp() {
-            def SmokeIp = readFile('files/smoke-ip.txt').text
-          }
+          def SmokeIp = readFile('files/smoke-ip.txt')
           echo "${SmokeIp}"
         }
         dir ('build/playbooks/') {

@@ -11,6 +11,7 @@ pipeline {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
         dir ('/vms-uni2/vagrant/infrastructure/farm1/J-Tester/') {
+          echo "vagrant up smoke"
           sh "vagrant up smoke"
           script {
             def SmokeIp = readFile('files/smoke-ip.txt')

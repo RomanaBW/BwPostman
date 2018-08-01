@@ -2,6 +2,7 @@ pipeline {
   agent any
   parameters {
     string(name: "VERSION_NUMBER", defaultValue: "2.1.0", description: "The new/next version number of the project.")
+    string(name: "VAGRANT_DIR", defaultValue: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester", description: "Path to the vagrant file")
   }
   stages {
     stage('Build') {
@@ -9,9 +10,14 @@ pipeline {
 //        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
+        dir (${VAGRANT_DIR}) {
+          sh "vagrant up smoke"
+          String SmokeIp = new File("${VAGRANT_DIR}/files/smoke-ip.txt").text
+          echo "${SmokeIp}"
+        }
         dir ('build/playbooks/') {
-          sh "ls"
-          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
+          echo "${SmokeIp}"
+//          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
         }
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'

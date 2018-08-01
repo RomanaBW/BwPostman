@@ -10,14 +10,11 @@ pipeline {
 //        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
-        dir ('/vms-uni2/vagrant/infrastructure/farm1/J-Tester/') {
-          echo "vagrant up smoke"
-          sh "vagrant up smoke"
-          script {
-            def SmokeIp = readFile('files/smoke-ip.txt')
-          }
-          echo "${SmokeIp}"
+        sh "/vms-uni2/vagrant/infrastructure/farm1/J-Tester/vagrant up smoke"
+        script {
+          def SmokeIp = readFile('files/smoke-ip.txt')
         }
+        echo "${SmokeIp}"
         dir ('build/playbooks/') {
           echo "${SmokeIp}"
 //          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"

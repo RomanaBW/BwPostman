@@ -65,9 +65,9 @@
         dest: "/data/do-tests.sh"
         mode: 0775
 
-    - name: Do tests
-      shell: '/data/do-tests.sh'
-
+#    - name: Do tests
+#      shell: '/data/do-tests.sh'
+#
 #    - name: Shutdown tester machine
 #      command: 'vagrant halt {{ test_suite }}'
 #      args:

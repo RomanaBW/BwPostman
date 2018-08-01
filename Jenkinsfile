@@ -10,12 +10,12 @@ pipeline {
 //        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
-        dir ('build/playbooks/') {
-          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
-        }
-        sshagent(credentials: ['romana']) {
-          sh "ssh -o StrictHostKeyChecking=no -l romana 192.168.121.172 /data/do-tests.sh"
-        }
+//        dir ('build/playbooks/') {
+//          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
+//        }
+//        sshagent(credentials: ['romana']) {
+        sh "ssh -o StrictHostKeyChecking=no romana@192.168.121.172 /data/do-tests.sh"
+//        }
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'

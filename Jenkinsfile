@@ -3,6 +3,7 @@ pipeline {
   parameters {
     string(name: "VERSION_NUMBER", defaultValue: "2.1.0", description: "The new/next version number of the project.")
     string(name: "VAGRANT_DIR", defaultValue: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester", description: "Path to the vagrant file")
+    string(name: "SMOKE_IP", defaultValue: "192.168.50.10", description: "Fix IP for smoke tester")
   }
   stages {
     stage('Build') {
@@ -14,7 +15,7 @@ pipeline {
 //          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
 //        }
 //        sshagent(credentials: ['romana']) {
-        sh "ssh -v -o StrictHostKeyChecking=no jenkins@192.168.50.10 cd /data/do-tests.sh"
+        sh "ssh -v -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} cd /data/do-tests.sh"
 //        }
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'

@@ -1,6 +1,7 @@
 ---
 log_path: '/data/logs'
-test_log_path: "/data/repositories/artifacts/bwpostman/logs/j3810_bwpm200"
+test_manifest_path: "/repositories/BwPostman/tests"
+test_log_path: "/data/repositories/artifacts/bwpostman/logs/j{{ joomla_version }}_bwpm{{ version_number }}"
 record_path: "/data/repositories/artifacts/bwpostman/videos"
 
 screen_size: '1440x900'

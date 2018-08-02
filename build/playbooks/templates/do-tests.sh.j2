@@ -19,15 +19,20 @@ tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -
 # run tests
 cd {{ bw_project_base_dir }}
 
+# initialize failed check variable
+failed_check=0
+
 {% set selected_suite = '' %}
 {% for suite in test_suites if suite.name == test_suite %}
 {% set selected_suite = suite.tests %}
 {% for item in selected_suite %}
 {% for selected_file in test_file if selected_file.suite == item %}
-/usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+if [ ${failed_check} = 0 ]; then
+  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+fi
 if [ -f {{ test_log_path }}/failed ]; then
   echo "Current test {{ item }} failed!"
-  exit 1
+  failed_check=1
 fi
 {% endfor %}
 {% endfor %}
@@ -38,3 +43,5 @@ sleep 1
 
 # Stop recording
 tmux send-keys -t BwPostmanRecording1 q
+
+exit ${failed_check}

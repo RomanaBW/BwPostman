@@ -47,6 +47,13 @@
     - name: Refresh inventory
       meta: refresh_inventory
 
+    - name: Prepare manifest for acceptance tests
+      become: true
+      become_user: root
+      template:
+        src: "acceptance.suite.yml.j2"
+        dest: "{{ test_manifest_path }}/acceptance.suite.yml"
+
 - hosts: "{{ test_suite }}"
   become: true
   become_user: romana

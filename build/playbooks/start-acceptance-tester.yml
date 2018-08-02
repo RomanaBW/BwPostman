@@ -47,11 +47,6 @@
     - name: Refresh inventory
       meta: refresh_inventory
 
-    - name: ensure failed file is absent
-      file:
-        path: "{{ test_log_path }}/failed"
-        state: absent
-
 - hosts: "{{ test_suite }}"
   become: true
   become_user: romana
@@ -63,6 +58,11 @@
     - name: Set project dir variable
       set_fact:
         bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman/') }}"
+
+    - name: ensure failed file is absent
+      file:
+        path: "{{ test_log_path }}/failed"
+        state: absent
 
     - name: Create test script
       template:

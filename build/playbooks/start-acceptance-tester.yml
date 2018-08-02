@@ -60,6 +60,8 @@
       file:
         path: "{{ test_log_path }}"
         state: directory
+        owner: romana
+        group: users
         mode: 0775
 
     - name: Prepare manifest for acceptance tests

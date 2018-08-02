@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  become: true
+  become_user: romana
+
+  tasks:
+    - name: Shutdown tester machine
+      command: 'vagrant halt {{ test_suite }}'
+      args:
+        chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
+
+    - name: Remove tester machine
+      command: 'vagrant destroy {{ test_suite }}'
+      args:
+        chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'

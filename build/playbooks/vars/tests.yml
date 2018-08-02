@@ -1,5 +1,6 @@
 ---
 log_path: '/data/logs'
+test_log_path: "/data/repositories/artifacts/bwpostman/logs/j3810_bwpm200"
 record_path: "/data/repositories/artifacts/bwpostman/videos"
 
 screen_size: '1440x900'

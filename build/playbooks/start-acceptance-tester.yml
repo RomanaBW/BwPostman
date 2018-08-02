@@ -60,6 +60,13 @@
       file:
         path: "{{ test_log_path }}"
         state: directory
+
+    - name: ensure permissions for log folder are correct
+      become: true
+      become_user: root
+      file:
+        path: "{{ test_log_path }}"
+        state: present
         owner: romana
         group: users
         mode: 0775

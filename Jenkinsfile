@@ -12,12 +12,14 @@ pipeline {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
         dir ('build/playbooks/') {
-          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
+          sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
         }
 //        sshagent(credentials: ['romana']) {
-//        sh "ssh -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} 'cd / && ls -lsh --color'"
         sh "ssh -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} /data/do-tests.sh"
 //        }
+        dir ('build/playbooks/') {
+          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'test_suite=smoke'"
+        }
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'

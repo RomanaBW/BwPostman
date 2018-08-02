@@ -61,15 +61,15 @@
         path: "{{ test_log_path }}"
         state: directory
 
-    - name: ensure permissions for log folder are correct
+    - name: ensure owner for log folder is correct
       become: true
       become_user: root
-      file:
-        path: "{{ test_log_path }}"
-        state: present
-        owner: romana
-        group: users
-        mode: 0775
+      shell: "chown -R romana {{ test_log_path }}"
+
+    - name: ensure mode for log folder is correct
+      become: true
+      become_user: root
+      shell: "chmod -R 0775 {{ test_log_path }}"
 
     - name: Prepare manifest for acceptance tests
       become: true

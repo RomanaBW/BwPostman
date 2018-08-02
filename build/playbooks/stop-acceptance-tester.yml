@@ -18,7 +18,7 @@
 
     - name: check state of failed file
       stat:
-        path: "{{ test_log_path }}/failed"
+        path: "/repositories/artifacts/bwpostman/logs/j3810_bwpm200//failed"
       register: failed_state
 
     - name: throw error if failed file exists

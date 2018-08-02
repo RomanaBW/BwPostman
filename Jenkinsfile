@@ -15,7 +15,7 @@ pipeline {
 //          sh "sudo -u romana ansible-playbook acceptance-tester.yml -v --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=smoke'"
 //        }
 //        sshagent(credentials: ['romana']) {
-        sh "ssh -v -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} 'cd / && ls -lsh --color"
+        sh "ssh -v -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} 'cd / && ls -lsh --color'"
 //        sh "ssh -v -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} /data/do-tests.sh"
 //        }
         echo 'Akzeptanz-Tests passend zu Aenderungen'

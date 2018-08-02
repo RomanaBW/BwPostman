@@ -55,6 +55,8 @@
         dest: "{{ codeception_manifest_path }}/codeception.yml"
 
     - name: ensure log folder for test results exists
+      become: true
+      become_user: root
       file:
         path: "{{ test_log_path }}"
         state: directory

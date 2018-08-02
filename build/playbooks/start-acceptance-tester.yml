@@ -1,0 +1,71 @@
+---
+- hosts: localhost
+  become: true
+  become_user: romana
+  vars_files:
+    - vars/vars.yml
+    - vars/tests.yml
+
+  tasks:
+    - name: Setup tester VM by vagrant up
+      command: 'vagrant up {{ test_suite }}'
+      args:
+        chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
+      delegate_to: 'localhost'
+
+#    - name: Ensure inventory folder is present
+#      become: true
+#      become_user: romana
+#      file:
+#        path: "inventory"
+#        state: directory
+#
+    - name: Set variable for filename
+      set_fact:
+        filename: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester/files/{{ test_suite }}-ip.txt"
+
+    - name: display IP of gererated VM (file content)
+      debug:
+        msg: "{{ lookup ('file', '{{ filename }}') }}"
+      register: bw_tester_ip
+
+    - name: Set variable for ip
+      set_fact:
+        tester_ip: "{{ bw_tester_ip.msg }}"
+
+    - name: display IP of fact
+      debug:
+        msg: "{{ hostvars['localhost']['tester_ip'] }}"
+
+    - name: Ensure inventory is created and equipped with the correct values
+      become: true
+      become_user: root
+      template:
+        src: "hosts.j2"
+        dest: "inventory/hosts"
+
+    - name: Refresh inventory
+      meta: refresh_inventory
+
+    - name: ensure failed file is absent
+      file:
+        path: "{{ test_log_path }}/failed"
+        state: absent
+
+- hosts: "{{ test_suite }}"
+  become: true
+  become_user: romana
+  vars_files:
+    - vars/vars.yml
+    - vars/tests.yml
+
+  tasks:
+    - name: Set project dir variable
+      set_fact:
+        bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman/') }}"
+
+    - name: Create test script
+      template:
+        src: "do-tests.sh.j2"
+        dest: "/data/do-tests.sh"
+        mode: 0775

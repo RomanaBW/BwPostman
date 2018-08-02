@@ -4,7 +4,8 @@ pipeline {
     string(name: "VERSION_NUMBER", defaultValue: "2.1.0", description: "The new/next version number of the project.")
     string(name: "VAGRANT_DIR", defaultValue: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester", description: "Path to the vagrant file")
     string(name: "SMOKE_IP", defaultValue: "192.168.50.10", description: "Fix IP for smoke tester")
-    string(name: "JOOMLA_VERSION", defaultValue: "3810", description: "Version of Joomla to test against")
+    string(name: "JOOMLA_VERSION", defaultValue: "3.8.10", description: "Version of Joomla to test against")
+    string(name: "JOOMLA_VERSION_WOD", defaultValue: "3810", description: "Version of Joomla to test against")
     string(name: "BWPM_VERSION", defaultValue: "210", description: "Version of BwPostman without dots")
   }
   stages {
@@ -14,13 +15,13 @@ pipeline {
         echo 'Unit-Tests'
         echo 'Smoke-Tests'
         dir ('build/playbooks/') {
-          sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} bwpm_version=${params.BWPM_VERSION} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=smoke'"
+          sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} bwpm_version=${params.BWPM_VERSION} joomla_version=${params.JOOMLA_VERSION_WOD} build=${BUILD_NUMBER} test_suite=smoke'"
         }
 //        sshagent(credentials: ['romana']) {
         sh "ssh -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} /data/do-tests.sh"
 //        }
         dir ('build/playbooks/') {
-          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} bwpm_version=${params.BWPM_VERSION} joomla_version=${params.JOOMLA_VERSION} test_suite=smoke'"
+          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} bwpm_version=${params.BWPM_VERSION} joomla_version=${params.JOOMLA_VERSION_WOD} test_suite=smoke'"
         }
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'

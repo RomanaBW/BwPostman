@@ -70,14 +70,14 @@
         dest: "{{ acceptance_manifest_path }}/acceptance.suite.yml"
 
 - hosts: "{{ test_suite }}"
-  become: true
-  become_user: romana
   vars_files:
     - vars/vars.yml
     - vars/tests.yml
 
   tasks:
     - name: Set project dir variable
+      become: true
+      become_user: romana
       set_fact:
         bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman/') }}"
 
@@ -87,6 +87,8 @@
         state: absent
 
     - name: Create test script
+      become: true
+      become_user: romana
       template:
         src: "do-tests.sh.j2"
         dest: "/data/do-tests.sh"

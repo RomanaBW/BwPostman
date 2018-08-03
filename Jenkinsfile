@@ -10,7 +10,7 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Create installation package'
-//        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
 
         echo 'Unit-Tests'
 
@@ -36,8 +36,16 @@ pipeline {
     }
     stage('Acceptance Tests') {
       steps {
-        echo 'Alle Akzeptanztests'
-//        sh "ansible-playbook ${WORKSPACE}/build/playbooks/acceptance-tester.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} test_suite=accept1'"
+        echo 'start acceptance tester 1'
+        dir ('build/playbooks/') {
+          sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept1'"
+        }
+        echo 'do Acceptance Tests Part 1'
+        sh "ssh -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} /data/do-tests.sh"
+        echo 'stop acceptance tester 1'
+        dir ('build/playbooks/') {
+          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=accept1'"
+        }
       }
     }
     stage('Manual Tests') {

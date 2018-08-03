@@ -58,7 +58,6 @@ test_suites:
     tests:
       - install
       - restore
-      - options
       - lists
       - maintenance
 

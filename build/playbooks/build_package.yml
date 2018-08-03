@@ -30,49 +30,54 @@
         bw_mb4_support: "{{ mb4_support }}"
         bw_media_folder: "bw_postman"
 
-##   build registration module package
-#    - include_role:
-#        name: romanabw.build-jmodule-package
-#      vars:
-#        bw_workspace: "{{ project_base_dir }}/src"
-#        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
-#        bw_languages: "{{ languages }}"
-#        bw_module_name: "mod_bwpostman"
-#
-##   build overview module package
-#    - include_role:
-#        name: romanabw.build-jmodule-package
-#      vars:
-#        bw_workspace: "{{ project_base_dir }}/src"
-#        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
-#        bw_languages: "{{ languages }}"
-#        bw_module_name: "mod_bwpostman_overview"
-#
-##    - name: build personalize plugin package
-#    - include_role:
-#        name: romanabw.build-jplugin-package
-#      vars:
-#        bw_workspace: "{{ project_base_dir }}/src"
-#        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
-#        bw_languages: "{{ languages }}"
-#        bw_plugin_name: "personalize"
-#        bw_plugin_group: "bwpostman"
-#
-##    - name: build u2s plugin package
-#    - include_role:
-#        name: romanabw.build-jplugin-package
-#      vars:
-#        bw_workspace: "{{ project_base_dir }}/src"
-#        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
-#        bw_languages: "{{ languages }}"
-#        bw_plugin_name: "bwpm_user2subscriber"
-#        bw_plugin_group: "system"
-#
-##    - name: pack complete package
-#    - include_role:
-#        name: romanabw.build-jpackage-package
-#      vars:
-#        bw_workspace: "{{ project_base_dir }}"
-#        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
-#        bw_extension: "{{ extension_name }}"
-#        bw_package_parts: "{{ package_parts }}"
+#   build registration module package
+    - include_role:
+        name: romanabw.build-jmodule-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_module_name: "mod_bwpostman"
+
+#   build overview module package
+    - include_role:
+        name: romanabw.build-jmodule-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_module_name: "mod_bwpostman_overview"
+
+#    - name: build personalize plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "personalize"
+        bw_plugin_group: "bwpostman"
+
+#    - name: build u2s plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bwpm_user2subscriber"
+        bw_plugin_group: "system"
+
+#    - name: pack complete package
+    - include_role:
+        name: romanabw.build-jpackage-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_extension: "{{ extension_name }}"
+        bw_package_parts: "{{ package_parts }}"
+
+    - name: copy package to test data folder
+      copy:
+        src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
+        dest: "{{ test_data_path }}/pkg_{{ extension_name }}.zip"

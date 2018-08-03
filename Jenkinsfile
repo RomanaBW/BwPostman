@@ -9,18 +9,22 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+        echo 'Create installation package'
+//        sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+
         echo 'Unit-Tests'
-        echo 'Smoke-Tests'
+
+        echo 'start Smoke-Tester'
         dir ('build/playbooks/') {
-//          sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=smoke'"
+          sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=smoke'"
         }
-//        sshagent(credentials: ['romana']) {
-//        sh "ssh -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} /data/do-tests.sh"
-//        }
+        echo 'do Smoke-Tests'
+        sh "ssh -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} /data/do-tests.sh"
+        echo 'stop Smoke-Tester'
         dir ('build/playbooks/') {
-//          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=smoke'"
+          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=smoke'"
         }
+
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'
         echo 'Code-Analyse: Testabdeckung'

@@ -2,7 +2,7 @@
 extension_name: "bwpostman"
 
 target_base_path: "/repositories/artifacts"
-test_data_path: "/repositories/BwPostman//tests/_data"
+test_data_path: "/repositories/BwPostman/tests/_data"
 
 package_parts:
   - com_bwpostman

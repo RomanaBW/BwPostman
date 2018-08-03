@@ -65,14 +65,12 @@ test_suites:
     tests:
       - install
       - restore
-      - options
       - details
 
   - name: accept3
     tests:
       - install
       - restore
-      - options
       - frontend
       - user2subscriber
   #  - personalize
@@ -81,6 +79,5 @@ test_suites:
     tests:
       - install
       - restore
-      - options
       - access
 

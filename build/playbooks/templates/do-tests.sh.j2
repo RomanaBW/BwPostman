@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# delete old failure file
+rm {{ test_log_path }}/failed
+
 # start x-server
 /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
 export DISPLAY={{ display }}

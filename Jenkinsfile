@@ -56,7 +56,7 @@ pipeline {
                 sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=accept1'"
               }
             }
-            echo 'Result acceptance 1: ' currentBuild.result
+            echo currentBuild.result
           }
         }
         stage ('Acceptance Tester 2') {
@@ -73,7 +73,7 @@ pipeline {
                 sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=accept2'"
               }
             }
-            echo 'Result acceptance 2: ' currentBuild.result
+            echo currentBuild.result
           }
         }
         stage ('Acceptance Tester 3') {
@@ -90,7 +90,7 @@ pipeline {
                 sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=accept3'"
               }
             }
-            echo 'Result acceptance 3: ' currentBuild.result
+            echo currentBuild.result
           }
         }
         stage ('Acceptance Tester 4') {
@@ -107,7 +107,7 @@ pipeline {
                 sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=accept4'"
               }
             }
-            echo 'Result acceptance 4: ' currentBuild.result
+            echo currentBuild.result
           }
         }
       }

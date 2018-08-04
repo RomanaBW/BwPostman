@@ -94,7 +94,7 @@ pipeline {
           }
         }
         stage ('Acceptance Tester 4') {
-          stseps {
+          steps {
             catchError {
               echo 'start acceptance tester 4'
               dir ('build/playbooks/') {

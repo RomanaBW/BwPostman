@@ -20,7 +20,7 @@ modules:
             sessionName: PHPSTORM
 
         Db:
-            dsn: 'mysql:host={{ test_db_host }};dbname=joomlatest'
+            dsn: 'mysql:host={{ test_db_host }};dbname={{ test_db_dbname }}'
             user: '{{ test_db_user }}'
             password: '{{ test_db_password }}'
             populate: false

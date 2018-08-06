@@ -5,6 +5,7 @@
   vars_files:
     - vars/vars.yml
     - vars/tests.yml
+    - vars/vault.yml
 
   tasks:
     - name: Setup tester VM by vagrant up
@@ -75,6 +76,7 @@
   vars_files:
     - vars/vars.yml
     - vars/tests.yml
+    - vars/vault.yml
 
   tasks:
     - name: Set project dir variable

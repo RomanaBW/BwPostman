@@ -104,14 +104,6 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installFileComponent_132 = "com_bwpostman.1.3.2.zip";
-
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
 	public static $headingInstall       = "Extensions: Install";
 
 	/**
@@ -259,24 +251,23 @@ class InstallationPage
 		$I->see(self::$headingInstall);
 
 		$install_file   = self::$installFileComponent;
+		$new_j_installer = true;
 
-		if (getenv('BW_TEST_BWPM_VERSION') == 132)
+		if ($new_j_installer)
 		{
-			$install_file   = self::$installFileComponent_132;
+			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: visible');");
 		}
 
-		codecept_debug('JS-String:' . (string) "jQuery('input[type=file]#install_package').val('$install_file');");
-		if ((int) getenv('BW_TEST_JOOMLA_VERSION') < 370)
+		$I->attachFile(self::$installField, $install_file);
+
+		if (!$new_j_installer)
 		{
-			// until Joomla 3.6.5
-			$I->attachFile(self::$installField, $install_file);
 			$I->click(self::$installButton);
 		}
-		else
+
+		if ($new_j_installer)
 		{
-			// Since Joomla 3.7.0
-			// @ToDo: Use ULR oder folder upload
-			$I->executeJS("jQuery('input[type=file]#install_package').val('$install_file');");
+			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
 		}
 
 		$I->waitForElement(Generals::$sys_message_container, 120);

@@ -4,6 +4,16 @@ extension_name: "bwpostman"
 target_base_path: "/repositories/artifacts"
 test_data_path: "/repositories/BwPostman/tests/_data"
 
+codecept_path_tests: "tests"
+codecept_path_data: "../artifacts/bwpostman"
+codecept_path_support: "tests/_support"
+codecept_path_output: "tests/_output"
+
+test_db_host: "localhost"
+test_db_dbname: "joomlatest"
+test_db_user: "root"
+test_db_password: "{{ vault_test_db_password }}"
+
 package_parts:
   - com_bwpostman
   - mod_bwpostman

@@ -1,9 +1,9 @@
 actor: Tester
 paths:
-    tests: tests
+    tests: {{ codecept_path_tests }}
     log: {{ test_log_path }}
-    data: ../artifacts/bwpostman
-    support: tests/_support
+    data: {{ codecept_path_data }}
+    support: {{ codecept_path_support }}
 #    envs: tests/_envs
 settings:
     bootstrap: _bootstrap.php
@@ -20,10 +20,9 @@ modules:
             sessionName: PHPSTORM
 
         Db:
-            dsn: 'mysql:host=localhost;dbname=joomlatest'
-            user: 'root'
-            password: 'barbapapa'
-#            dump: '/daten/vhosts/dev/joomla-cms/tests/_data/testdata_bwpostman_complete.sql'
+            dsn: 'mysql:host={{ test_db_host }};dbname=joomlatest'
+            user: '{{ test_db_user }}'
+            password: '{{ test_db_password }}'
             populate: false
             cleanup: false
 

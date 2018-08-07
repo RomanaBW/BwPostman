@@ -7,10 +7,8 @@
 class_name: AcceptanceTester
 
 paths:
-  tests: {{ codecept_path_tests }}
   log: {{ codecept_path_output }}
   data: {{ codecept_path_data }}
-  support: {{ codecept_path_support }}
 
 modules:
   enabled:
@@ -30,7 +28,6 @@ modules:
           chromeOptions:
               args: ["--no-sandbox", "--window-size=1440,900"]
 
-
       connection_timeout: 60
       restart: false
 
@@ -43,6 +40,7 @@ modules:
       dsn: 'mysql:host={{ test_db_host }};dbname={{ test_db_dbname }}'
       user: '{{ test_db_user }}'
       password: '{{ test_db_password }}'
+
       populate: false
       cleanup: false
       reconnect: true

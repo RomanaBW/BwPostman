@@ -73,6 +73,7 @@
       copy:
         src: "{{ project_workspace }}/tests/"
         dest: "/data/tests"
+        mode: 0775
 
     - name: remove AcceptanceTesterActions.php
       file:

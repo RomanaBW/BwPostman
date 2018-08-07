@@ -23,6 +23,8 @@ tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -
 #cd {{ bw_project_base_dir }}
 cd /data
 
+/usr/local/bin/codecept build
+
 # initialize failed check variable
 failed_check=0
 

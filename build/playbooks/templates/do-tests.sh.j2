@@ -20,8 +20,8 @@ printf '\n'
 tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ codecept_path_output }}.mp4 2>{{ log_path }}/ffmpeg.log"
 
 # run tests
-#cd {{ bw_project_base_dir }}
-cd /data
+cd {{ bw_project_base_dir }}
+#cd /data
 
 # initialize failed check variable
 failed_check=0

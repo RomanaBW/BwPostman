@@ -7,42 +7,43 @@
 class_name: AcceptanceTester
 
 paths:
-    log: {{ test_log_path }}
-    data: tests/_data
+  tests: {{ codecept_path_tests }}
+  log: {{ codecept_path_output }}
+  data: {{ codecept_path_data }}
+  support: {{ codecept_path_support }}
 
 modules:
-    enabled:
-      - \Helper\Acceptance
-      - WebDriver
-      - Db
-      - Asserts
+  enabled:
+    - \Helper\Acceptance
+    - WebDriver
+    - Db
+    - Asserts
 
 # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
-    config:
-      WebDriver:
-        url: https://www.tester-net.nil
+  config:
+    WebDriver:
+      url: https://www.tester-net.nil
 
-        browser: chrome
-        port: 4445
-        capabilities:
-            chromeOptions:
-                args: ["--no-sandbox", "--window-size=1440,900"]
+      browser: chrome
+      port: 4445
+      capabilities:
+          chromeOptions:
+              args: ["--no-sandbox", "--window-size=1440,900"]
 
 
-        connection_timeout: 60
-        restart: false
+      connection_timeout: 60
+      restart: false
 
 #        browser: phantomjs
 #        port: 4447
 #        browser: firefox
 #        port: 4444
 
-      Db:
-        dsn: 'mysql:host=localhost;dbname=joomlatest'
-        user: 'tester'
-        password: 'barbamama'
-
-        populate: false
-        cleanup: false
-        reconnect: true
+    Db:
+      dsn: 'mysql:host={{ test_db_host }};dbname={{ test_db_dbname }}'
+      user: '{{ test_db_user }}'
+      password: '{{ test_db_password }}'
+      populate: false
+      cleanup: false
+      reconnect: true
 

@@ -28,7 +28,7 @@ pipeline {
         sh "ssh -o StrictHostKeyChecking=no jenkins@${params.SMOKE_IP} /data/do-tests.sh"
         echo 'stop Smoke-Tester'
         dir ('build/playbooks/') {
-          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=smoke'"
+//          sh "sudo -u romana ansible-playbook stop-acceptance-tester.yml -v --extra-vars 'version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} test_suite=smoke'"
         }
 
         echo 'Akzeptanz-Tests passend zu Aenderungen'

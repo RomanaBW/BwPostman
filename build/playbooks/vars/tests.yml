@@ -8,7 +8,7 @@ test_log_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ v
 codecept_path_tests: "tests"
 codecept_path_data: "../artifacts/bwpostman"
 codecept_path_support: "tests/_support"
-codecept_path_output: "./repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/logs"
+codecept_path_output: "./repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/logs"
 
 test_db_host: "localhost"
 test_db_dbname: "joomlatest"

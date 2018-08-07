@@ -57,8 +57,8 @@
         mode: 0777
 
 - hosts: "{{ test_suite }}"
-  become: true
-  become_user: romana
+#  become: true
+#  become_user: romana
   vars_files:
     - vars/vars.yml
     - vars/tests.yml
@@ -81,15 +81,15 @@
         state: absent
 
     - name: Prepare manifest for codeception tests
-      become: true
-      become_user: root
+#      become: true
+#      become_user: root
       template:
         src: "codeception.yml.j2"
         dest: "/data/codeception.yml"
 
     - name: Prepare manifest for acceptance tests
-      become: true
-      become_user: root
+#      become: true
+#      become_user: root
       template:
         src: "acceptance.suite.yml.j2"
         dest: "/data/tests/acceptance.suite.yml"

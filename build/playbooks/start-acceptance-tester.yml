@@ -78,7 +78,7 @@
 
     - name: copy tests
       copy:
-        src: "{{ project_workspace }}/tests"
+        src: "{{ project_workspace }}/tests/"
         dest: "/data/tests"
 
     - name: Prepare manifest for codeception tests

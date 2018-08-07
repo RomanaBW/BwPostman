@@ -2,8 +2,18 @@
 log_path: '/data/logs'
 acceptance_manifest_path: "/repositories/BwPostman/tests"
 codeception_manifest_path: "/repositories/BwPostman"
-test_log_path: "/data/repositories/artifacts/bwpostman/logs/j{{ joomla_version }}_bwpm{{ version_number }}"
-record_path: "/data/repositories/artifacts/bwpostman/videos"
+record_path: "/data/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/videos"
+test_log_path: "/data/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/logs"
+
+codecept_path_tests: "tests"
+codecept_path_data: "../artifacts/bwpostman"
+codecept_path_support: "tests/_support"
+codecept_path_output: "./repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/logs"
+
+test_db_host: "localhost"
+test_db_dbname: "joomlatest"
+test_db_user: "root"
+test_db_password: "{{ vault_test_db_password }}"
 
 screen_size: '1440x900'
 display: ':45'

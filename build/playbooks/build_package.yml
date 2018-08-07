@@ -80,4 +80,4 @@
     - name: copy package to test data folder
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
-        dest: "{{ test_data_path }}/data/pkg_{{ extension_name }}.zip"
+        dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"

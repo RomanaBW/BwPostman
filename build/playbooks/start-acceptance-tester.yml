@@ -74,6 +74,11 @@
         src: "{{ project_workspace }}/tests/"
         dest: "/data/tests"
 
+    - name: remove AcceptanceTesterActions.php
+      file:
+        path: "/data/tests/_support/_generated/AcceptanceTesterActions.php"
+        state: absent
+
     - name: Prepare manifest for codeception tests
       become: true
       become_user: root

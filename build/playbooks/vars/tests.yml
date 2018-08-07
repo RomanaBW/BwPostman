@@ -3,7 +3,7 @@ log_path: '/data/logs'
 acceptance_manifest_path: "/repositories/BwPostman/tests"
 codeception_manifest_path: "/repositories/BwPostman"
 record_path: "/data/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/videos"
-test_log_path: "/data/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/logs"
+test_log_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/logs"
 
 codecept_path_tests: "tests"
 codecept_path_data: "../artifacts/bwpostman"

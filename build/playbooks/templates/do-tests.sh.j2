@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # delete old failure file
-rm {{ test_log_path }}/failed
+rm {{ codecept_path_output }}/failed
 
 # start x-server
 /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
@@ -17,7 +17,7 @@ done
 printf '\n'
 
 # Start recording
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>{{ log_path }}/ffmpeg.log"
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ codecept_path_output }}.mp4 2>{{ log_path }}/ffmpeg.log"
 
 # run tests
 cd /data
@@ -33,7 +33,7 @@ failed_check=0
 if [ ${failed_check} = 0 ]; then
   /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 fi
-if [ -f {{ test_log_path }}/failed ]; then
+if [ -f {{ codecept_path_output }}/failed ]; then
   echo "Current test {{ item }} failed!"
   failed_check=1
 fi

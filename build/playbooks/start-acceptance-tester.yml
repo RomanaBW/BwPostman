@@ -48,13 +48,6 @@
     - name: Refresh inventory
       meta: refresh_inventory
 
-    - name: Prepare manifest for codeception tests
-      become: true
-      become_user: root
-      template:
-        src: "codeception.yml.j2"
-        dest: "{{ codeception_manifest_path }}/codeception.yml"
-
     - name: ensure log folder for test results exists
       become: true
       become_user: root
@@ -63,12 +56,12 @@
         state: directory
         mode: 0777
 
-    - name: Prepare manifest for acceptance tests
-      become: true
-      become_user: root
-      template:
-        src: "acceptance.suite.yml.j2"
-        dest: "{{ acceptance_manifest_path }}/acceptance.suite.yml"
+#    - name: Prepare manifest for acceptance tests
+#      become: true
+#      become_user: root
+#      template:
+#        src: "acceptance.suite.yml.j2"
+#        dest: "{{ acceptance_manifest_path }}/acceptance.suite.yml"
 
 - hosts: "{{ test_suite }}"
   become: true
@@ -82,6 +75,18 @@
     - name: Set project dir variable
       set_fact:
         bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman/') }}"
+
+    - name: copy tests
+      copy:
+        src: "{{ project_workspace }}"
+        dest: "/data/tests"
+
+    - name: Prepare manifest for codeception tests
+      become: true
+      become_user: root
+      template:
+        src: "codeception.yml.j2"
+        dest: "/data/codeception.yml"
 
     - name: Create test script
       template:

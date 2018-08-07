@@ -86,7 +86,7 @@
       become_user: root
       template:
         src: "acceptance.suite.yml.j2"
-        dest: "/data/acceptance/acceptance.suite.yml"
+        dest: "/data/tests/acceptance/acceptance.suite.yml"
 
     - name: Create test script
       template:

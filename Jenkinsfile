@@ -47,7 +47,7 @@ pipeline {
             catchError {
               echo 'start acceptance tester 1'
               dir ('build/playbooks/') {
-                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept1'"
+                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_workspace=${WORKSPACE} project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept1'"
               }
               echo 'do Acceptance Tests Part 1'
               sh "ssh -o StrictHostKeyChecking=no jenkins@${params.ACCEPT_1_IP} /data/do-tests.sh"
@@ -64,7 +64,7 @@ pipeline {
             catchError {
               echo 'start acceptance tester 2'
               dir ('build/playbooks/') {
-                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept2'"
+                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_workspace=${WORKSPACE} project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept2'"
               }
               echo 'do Acceptance Tests Part 2'
               sh "ssh -o StrictHostKeyChecking=no jenkins@${params.ACCEPT_2_IP} /data/do-tests.sh"
@@ -81,7 +81,7 @@ pipeline {
             catchError {
               echo 'start acceptance tester 3'
               dir ('build/playbooks/') {
-                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept3'"
+                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_workspace=${WORKSPACE} project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept3'"
               }
               echo 'do Acceptance Tests Part 3'
               sh "ssh -o StrictHostKeyChecking=no jenkins@${params.ACCEPT_3_IP} /data/do-tests.sh"
@@ -98,7 +98,7 @@ pipeline {
             catchError {
               echo 'start acceptance tester 4'
               dir ('build/playbooks/') {
-                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept4'"
+                sh "sudo -u romana ansible-playbook start-acceptance-tester.yml --extra-vars 'project_workspace=${WORKSPACE} project_base_dir=/data/repositories/BwPostman/ version_number=${params.VERSION_NUMBER} joomla_version=${params.JOOMLA_VERSION} build=${BUILD_NUMBER} test_suite=accept4'"
               }
               echo 'do Acceptance Tests Part 4'
               sh "ssh -o StrictHostKeyChecking=no jenkins@${params.ACCEPT_4_IP} /data/do-tests.sh"

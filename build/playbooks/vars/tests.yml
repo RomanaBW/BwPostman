@@ -1,7 +1,7 @@
 ---
 log_path: '/data/logs'
 record_path: "/data/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/videos"
-test_log_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/logs"
+test_log_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/logs"
 
 acceptance_manifest_path: "/data/tests"
 codeception_manifest_path: "/data"

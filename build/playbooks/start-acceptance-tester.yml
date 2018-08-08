@@ -98,6 +98,8 @@
         dest: "{{ codeception_manifest_path }}/codeception.yml"
 
     - name: Prepare manifest for acceptance tests
+      become: true
+      become_user: root
       template:
         src: "acceptance.suite.yml.j2"
         dest: "{{ acceptance_manifest_path }}/acceptance.suite.yml"

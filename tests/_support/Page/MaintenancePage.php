@@ -263,7 +263,7 @@ class MaintenancePage
 		$I->click(self::$restoreTablesButton);
 		$I->waitForElement(self::$headingRestoreFile, 30);
 
-		$I->attachFile(".//*[@id='restorefile']", "data/BwPostman_2_1_0_Tables.xml");
+		$I->attachFile(".//*[@id='restorefile']", "BwPostman_2_1_0_Tables.xml");
 
 		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
 		$I->dontSeeElement(Generals::$alert_error);

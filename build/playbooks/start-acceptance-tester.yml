@@ -56,6 +56,14 @@
         state: directory
         mode: 0777
 
+    - name: ensure video folder for test results exists
+      become: true
+      become_user: root
+      file:
+        path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/videos"
+        state: directory
+        mode: 0777
+
 - hosts: "{{ test_suite }}"
   vars_files:
     - vars/vars.yml

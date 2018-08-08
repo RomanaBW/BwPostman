@@ -21,7 +21,7 @@ pipeline {
         echo 'Unit-Tests'
 
         echo 'start Smoke-Tester'
-        bwpmaccept ('smoke', params.SMOKE_IP)
+        bwpmAccept ('smoke', params.SMOKE_IP)
 
         echo 'Akzeptanz-Tests passend zu Aenderungen'
         echo 'Validitaet von HTML'

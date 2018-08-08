@@ -18,7 +18,7 @@
 
     - name: check state of failed file
       stat:
-        path: "/repositories/artifacts/bwpostman/logs/j{{ joomla_version }}_bwpm{{ version_number }}/failed"
+        path: "/{{ codecept_path_output }}/failed"
       register: failed_state
 
     - name: throw error if failed file exists

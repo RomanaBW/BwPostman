@@ -76,10 +76,12 @@
         bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman/') }}"
 
     - name: copy tests
+      become: true
+      become_user: root
       copy:
         src: "{{ project_workspace }}/tests/"
         dest: "/data/tests"
-        mode: 0775
+        mode: 0777
 
     - name: remove AcceptanceTesterActions.php
       file:

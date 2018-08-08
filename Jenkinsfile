@@ -36,21 +36,25 @@ pipeline {
       parallel {
         stage ('Acceptance Tester 1') {
           steps {
+              echo 'Dummy'
 //            bwpmAccept ('accept1', ${params.ACCEPT_1_IP})
           }
         }
         stage ('Acceptance Tester 2') {
           steps {
+              echo 'Dummy'
 //            bwpmAccept ('accept2', ${params.ACCEPT_2_IP})
           }
         }
         stage ('Acceptance Tester 3') {
           steps {
+              echo 'Dummy'
 //            bwpmAccept ('accept3', ${params.ACCEPT_3_IP})
           }
         }
         stage ('Acceptance Tester 4') {
           steps {
+              echo 'Dummy'
 //            bwpmAccept ('accept4', ${params.ACCEPT_4_IP})
           }
         }

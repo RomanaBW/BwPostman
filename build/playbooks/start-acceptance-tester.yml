@@ -87,6 +87,8 @@
 
     - name: remove AcceptanceTesterActions.php
       file:
+      become: true
+      become_user: root
         path: "/data/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent
 

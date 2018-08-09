@@ -37,7 +37,7 @@ pipeline {
 			}
 			post {
 				always {
-					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					bwpmAcceptPostStepAlways ('smoke')
 				}
 				failure {
 					emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
@@ -54,7 +54,7 @@ pipeline {
 					}
 					post {
 						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+							bwpmAcceptPostStepAlways ('accept1')
 						}
 						failure {
 							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'

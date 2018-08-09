@@ -32,10 +32,13 @@ pipeline {
 		}
 
 		stage('Smoke-Testing') {
-			bwpmAccept ('smoke', params.SMOKE_IP)
-		}
-		post {
-			bwpmAcceptPostBuild ('smoke')
+			steps {
+				bwpmAccept ('smoke', params.SMOKE_IP)
+			}
+			}
+			post {
+				bwpmAcceptPostBuild ('smoke')
+			}
 		}
 
 		stage('Acceptance Tests') {

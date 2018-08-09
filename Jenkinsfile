@@ -53,7 +53,12 @@ pipeline {
 //                            bwpmAccept ('accept1', params.ACCEPT_1_IP)
 					}
 					post {
-						bwpmAcceptPostBuildAlways ('accept1')
+						always {
+							bwpmAcceptPostBuildAlways ('accept1')
+						}
+				failure {
+					emailext attachLog: true, body: "BwPostman build failed at accept1", subject: "BwPostman build failed at accept1", to: 'info@boldt-webservice.de'
+				}
 					}
 				}
 				stage ('Acceptance Tester 2') {

@@ -35,7 +35,6 @@ pipeline {
 			steps {
 				bwpmAccept ('smoke', params.SMOKE_IP)
 			}
-			}
 			post {
 				bwpmAcceptPostBuild ('smoke')
 			}

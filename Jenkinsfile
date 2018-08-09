@@ -18,88 +18,88 @@ pipeline {
                 echo 'Create installation package'
 //				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
             }
+        }
 
-            stage('Unit-Testing') {
-                steps {
-                    echo 'Unit-Tests'
-                    echo 'Validitaet von HTML'
-                    echo 'Code-Analyse: Testabdeckung'
-                    echo 'Code-Analyse: DRY'
-                    echo 'Code-Analyse: Komplexitaet'
-                    echo 'Code-Analyse: Warnungen'
-                }
+		stage('Unit-Testing') {
+			steps {
+				echo 'Unit-Tests'
+				echo 'Validitaet von HTML'
+				echo 'Code-Analyse: Testabdeckung'
+				echo 'Code-Analyse: DRY'
+				echo 'Code-Analyse: Komplexitaet'
+				echo 'Code-Analyse: Warnungen'
+			}
 
-            stage('Smoke-Testing') {
-                    bwpmAccept ('smoke', params.SMOKE_IP)
-                }
-				post {
-					bwpmAcceptPostBuild ('smoke')
-				}
-            }
+		stage('Smoke-Testing') {
+				bwpmAccept ('smoke', params.SMOKE_IP)
+			}
+			post {
+				bwpmAcceptPostBuild ('smoke')
+			}
+		}
 
-            stage('Acceptance Tests') {
-                parallel {
-                    stage ('Acceptance Tester 1') {
-                        steps {
-							echo 'Dummy'
+		stage('Acceptance Tests') {
+			parallel {
+				stage ('Acceptance Tester 1') {
+					steps {
+						echo 'Dummy'
 //                            bwpmAccept ('accept1', params.ACCEPT_1_IP)
-                        }
-                        post {
-                        	bwpmAcceptPostBuild ('accept1')
-                        }
-                    }
-                    stage ('Acceptance Tester 2') {
-                        steps {
-                            echo 'Dummy'
+					}
+					post {
+						bwpmAcceptPostBuild ('accept1')
+					}
+				}
+				stage ('Acceptance Tester 2') {
+					steps {
+						echo 'Dummy'
 //							bwpmAccept ('accept2', params.ACCEPT_2_IP)
-                        }
-                    }
-                    stage ('Acceptance Tester 3') {
-                        steps {
-							echo 'Dummy'
+					}
+				}
+				stage ('Acceptance Tester 3') {
+					steps {
+						echo 'Dummy'
 //                            bwpmAccept ('accept3', params.ACCEPT_3_IP)
-                        }
-                    }
-                    stage ('Acceptance Tester 4') {
-                        steps {
-							echo 'Dummy'
+					}
+				}
+				stage ('Acceptance Tester 4') {
+					steps {
+						echo 'Dummy'
 //                            bwpmAccept ('accept4', params.ACCEPT_4_IP)
-                        }
-                    }
-                }
-            }
+					}
+				}
+			}
+		}
 
-            stage('Pre-Release') {
-                steps {
-                    echo 'Upload auf Github Master-Branch'
-                }
-            }
+		stage('Pre-Release') {
+			steps {
+				echo 'Upload auf Github Master-Branch'
+			}
+		}
 
-            stage('Manual Tests') {
-                steps {
-                    echo 'Benutzeroberflaeche'
-                    echo 'Worst-Case-Tests'
-                    echo 'nicht-funktionale Tests (Datenschutz, Sicherheit, ...)'
-                }
-            }
+		stage('Manual Tests') {
+			steps {
+				echo 'Benutzeroberflaeche'
+				echo 'Worst-Case-Tests'
+				echo 'nicht-funktionale Tests (Datenschutz, Sicherheit, ...)'
+			}
+		}
 
-            stage('Release') {
-                steps {
-                    echo 'Upload auf Webserver'
-                    echo 'bei alter Webseite: Neues Paket und neues Objekt anlegen'
-                    echo 'Update-Server aktualisieren'
-                    echo 'JED aktualisieren'
-                    echo 'Upload auf Github Release-Branch'
-                }
-            }
+		stage('Release') {
+			steps {
+				echo 'Upload auf Webserver'
+				echo 'bei alter Webseite: Neues Paket und neues Objekt anlegen'
+				echo 'Update-Server aktualisieren'
+				echo 'JED aktualisieren'
+				echo 'Upload auf Github Release-Branch'
+			}
+		}
 
-            stage('Post-Release') {
-                steps {
-                    echo 'Beschreibung auf Webseite aktualisieren'
-                    echo 'Handbuch im Web aktualisieren'
-                    echo 'PDF-Handbuch aktualisieren und Upload'
-                }
-            }
+		stage('Post-Release') {
+			steps {
+				echo 'Beschreibung auf Webseite aktualisieren'
+				echo 'Handbuch im Web aktualisieren'
+				echo 'PDF-Handbuch aktualisieren und Upload'
+			}
         }
     }
 }

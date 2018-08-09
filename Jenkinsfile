@@ -36,7 +36,12 @@ pipeline {
 				bwpmAccept ('smoke', params.SMOKE_IP)
 			}
 			post {
-				bwpmAcceptPostBuild ('smoke')
+				always {
+					bwpmAcceptPostBuildAlways ('smoke')
+				}
+				failure {
+					emailext attachLog: true, body: "BwPostman build failed at smoke", subject: "BwPostman build failed at smoke", to: 'info@boldt-webservice.de'
+				}
 			}
 		}
 
@@ -48,7 +53,7 @@ pipeline {
 //                            bwpmAccept ('accept1', params.ACCEPT_1_IP)
 					}
 					post {
-						bwpmAcceptPostBuild ('accept1')
+						bwpmAcceptPostBuildAlways ('accept1')
 					}
 				}
 				stage ('Acceptance Tester 2') {

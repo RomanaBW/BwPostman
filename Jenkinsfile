@@ -29,13 +29,13 @@ pipeline {
 				echo 'Code-Analyse: Komplexitaet'
 				echo 'Code-Analyse: Warnungen'
 			}
+		}
 
 		stage('Smoke-Testing') {
-				bwpmAccept ('smoke', params.SMOKE_IP)
-			}
-			post {
-				bwpmAcceptPostBuild ('smoke')
-			}
+			bwpmAccept ('smoke', params.SMOKE_IP)
+		}
+		post {
+			bwpmAcceptPostBuild ('smoke')
 		}
 
 		stage('Acceptance Tests') {

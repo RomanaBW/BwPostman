@@ -37,7 +37,7 @@ pipeline {
 			}
 			post {
 				always {
-					bwpmAcceptPostBuildAlways ('smoke')
+					bwpmAcceptPostStepAlways ('smoke')
 				}
 				failure {
 					emailext attachLog: true, body: "BwPostman build failed at smoke", subject: "BwPostman build failed at smoke", to: 'info@boldt-webservice.de'
@@ -54,31 +54,59 @@ pipeline {
 					}
 					post {
 						always {
-							bwpmAcceptPostBuildAlways ('accept1')
+							bwpmAcceptPostStepAlways ('accept1')
 						}
-				failure {
-					emailext attachLog: true, body: "BwPostman build failed at accept1", subject: "BwPostman build failed at accept1", to: 'info@boldt-webservice.de'
-				}
+						failure {
+							emailext attachLog: true, body: "BwPostman build failed at accept1", subject: "BwPostman build failed at accept1", to: 'info@boldt-webservice.de'
+						}
 					}
 				}
+
 				stage ('Acceptance Tester 2') {
 					steps {
 						echo 'Dummy'
 //							bwpmAccept ('accept2', params.ACCEPT_2_IP)
 					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ('accept2')
+						}
+						failure {
+							emailext attachLog: true, body: "BwPostman build failed at accept2", subject: "BwPostman build failed at accept2", to: 'info@boldt-webservice.de'
+						}
+					}
 				}
+
 				stage ('Acceptance Tester 3') {
 					steps {
 						echo 'Dummy'
 //                            bwpmAccept ('accept3', params.ACCEPT_3_IP)
 					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ('accept3')
+						}
+						failure {
+							emailext attachLog: true, body: "BwPostman build failed at accept3", subject: "BwPostman build failed at accept3", to: 'info@boldt-webservice.de'
+						}
+					}
 				}
+
 				stage ('Acceptance Tester 4') {
 					steps {
 						echo 'Dummy'
 //                            bwpmAccept ('accept4', params.ACCEPT_4_IP)
 					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ('accept4')
+						}
+						failure {
+							emailext attachLog: true, body: "BwPostman build failed at accept4", subject: "BwPostman build failed at accept4", to: 'info@boldt-webservice.de'
+						}
+					}
 				}
+
 			}
 		}
 

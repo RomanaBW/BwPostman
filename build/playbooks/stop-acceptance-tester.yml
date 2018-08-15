@@ -15,13 +15,3 @@
       command: 'vagrant destroy {{ test_suite }}'
       args:
         chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
-
-#    - name: check state of failed file
-#      stat:
-#        path: "/{{ codecept_path_output }}/failed"
-#      register: failed_state
-#
-#    - name: throw error if failed file exists
-#      fail:
-#        msg: "{{ test_suite }} failed!"
-#      when: failed_state.stat.exists == True

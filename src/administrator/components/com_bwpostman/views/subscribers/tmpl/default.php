@@ -120,6 +120,7 @@ $tab_options = array(
 
 			<div class="row-fluid">
 				<?php
+				// @ToDo: give tables a unique identifier for tests
 					echo JHtmlBwTabs::start('bwpostman_subscribers_tabs', $tab_options);
 					echo JHtmlBwTabs::panel(
 						JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'),

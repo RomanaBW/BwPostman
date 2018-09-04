@@ -207,7 +207,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (count($result))
+		if ($result !== null && count($result))
 		{
 			if ($this->bind($result))
 			{

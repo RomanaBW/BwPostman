@@ -288,7 +288,7 @@ class ModBwPostmanOverviewHelper
 		}
 
 		// if no mls is left, make array
-		if (count($mls) == 0)
+		if ($mls === null || count($mls) == 0)
 		{
 			$mls[]	= 0;
 		}
@@ -510,7 +510,7 @@ class ModBwPostmanOverviewHelper
 			$c_groups	= $sel_groups;
 		}
 
-		if (count($c_groups) == 0)
+		if ($c_groups === null || count($c_groups) == 0)
 		{
 			$c_groups[]	= 0;
 		}

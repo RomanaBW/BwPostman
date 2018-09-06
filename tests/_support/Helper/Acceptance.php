@@ -71,35 +71,32 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   \AcceptanceTester $I
 	 * @param   boolean           $remove_thead
+	 * @param   string            $tableIdentifier
 	 *
 	 * @return  array   $rows
 	 *
 	 * @since   2.0.0
 	 */
-	public function GetTableRows(\AcceptanceTester $I, $remove_thead = true)
+	public function GetTableRows(\AcceptanceTester $I, $remove_thead = true, $tableIdentifier = ".//table[@id='main-table']")
 	{
+		$rowsIdentifier = $tableIdentifier . '/tbody/tr';
+
+		if (!$remove_thead)
+		{
+			$rowsIdentifier .= ",$tableIdentifier . '/thead/tr";
+		}
+
 		// get all table rows
-		$rows  = $I->grabMultiple('tr');
-
-		if ($remove_thead)
-		{
-			// remove table header if exists
-			if (self::elementExists($I, 'thead'))
-			{
-				array_shift($rows);
-			}
-		}
-
-		// remove table footer if exists
-		if (self::elementExists($I, 'tfoot'))
-		{
-			array_shift($rows);
-		}
+		$rows  = $I->grabMultiple($rowsIdentifier);
 
 		// remove empty elements
-		$rows   = array_filter($rows);
+		$filteredRows = array_filter($rows);
 
-		$result = str_replace(array("\r\n", "\n", "\r"), ' ', $rows);
+		// remove new lines and line breaks
+		$cleanedRows = str_replace(array("\r\n", "\n", "\r"), ' ', $filteredRows);
+
+		// reindexing of table
+		$result = array_slice($cleanedRows, 0);
 
 		return $result;
 	}
@@ -108,14 +105,16 @@ class Acceptance extends Codeception\Module
 	 * Helper method get list length in list view
 	 *
 	 * @param   \AcceptanceTester $I
+	 * @param   string            $tableIdentifier
 	 *
-	 * @return  int
+	 * @return  integer
 	 *
 	 * @since   2.0.0
 	 */
-	public function GetListLength(\AcceptanceTester $I)
+	public function GetListLength(\AcceptanceTester $I, $tableIdentifier = ".//table[@id='main-table']")
 	{
-		$row_count   = count($I->GetTableRows($I, true));
+		$rows = $I->GetTableRows($I, true, $tableIdentifier);
+		$row_count   = count($rows);
 		return $row_count;
 	}
 
@@ -935,6 +934,8 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param \AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function checkListlimit(\AcceptanceTester $I)
@@ -958,6 +959,8 @@ class Acceptance extends Codeception\Module
 	 * Helper method to check filter by access
 	 *
 	 * @param \AcceptanceTester $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1134,7 +1137,7 @@ class Acceptance extends Codeception\Module
 		// see message archived
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
-		if ($count == 1)
+		if ($count == '1')
 		{
 			$I->see($edit_data['archive_success_msg'], Generals::$alert_success);
 		}
@@ -1163,7 +1166,7 @@ class Acceptance extends Codeception\Module
 		$I->see($edit_data['field_title']);
 
 		//count items
-		$count = $I->GetListLength($I);
+		$count = $I->GetListLength($I, ".//table[@class='adminlist']");
 
 		$I->checkOption(Generals::$check_all_button);
 		$I->clickAndWait($edit_data['delete_button'], 1);
@@ -1185,7 +1188,7 @@ class Acceptance extends Codeception\Module
 		// see message deleted
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
-		if ($count == 1)
+		if ($count == '1')
 		{
 			$I->see($edit_data['success_remove'], Generals::$archive_alert_success);
 		}
@@ -1218,7 +1221,7 @@ class Acceptance extends Codeception\Module
 		$I->see($edit_data['field_title']);
 
 		//count items
-		$count = $I->GetListLength($I);
+		$count = $I->GetListLength($I, ".//table[@class='adminlist']");
 
 		$I->checkOption(Generals::$check_all_button);
 
@@ -1242,7 +1245,7 @@ class Acceptance extends Codeception\Module
 		// see message restored
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
-		if ($count == 1)
+		if ($count == '1')
 		{
 			$I->see($edit_data['success_restore'], Generals::$archive_alert_success);
 		}

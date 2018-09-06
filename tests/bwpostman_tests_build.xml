@@ -142,52 +142,52 @@
 				<then>
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/administrator/components/"
 							destinationDir="${web_dir}/${project_name}/files/administrator/components" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/administrator/language/"
 							destinationDir="${web_dir}/${project_name}/files/administrator/language" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/components/"
 							destinationDir="${web_dir}/${project_name}/files/components" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/images/"
 							destinationDir="${web_dir}/${project_name}/files/images" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/language/"
 							destinationDir="${web_dir}/${project_name}/files/language" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/media/"
 							destinationDir="${web_dir}/${project_name}/files/media" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/modules/"
 							destinationDir="${web_dir}/${project_name}/files/modules" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/plugins/bwpostman/"
 							destinationDir="${web_dir}/${project_name}/files/plugins/bwpostman" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/plugins/quickicon/"
 							destinationDir="${web_dir}/${project_name}/files/plugins/quickicon" />
 					<filesync
 							rsyncPath="/usr/bin/rsync"
-							options="-rlq"
+							options="-rlqc"
 							sourceDir="${src_dir}/plugins/system/"
 							destinationDir="${web_dir}/${project_name}/files/plugins/system" />
 					<if>
@@ -195,7 +195,7 @@
 						<else>
 							<filesync
 									rsyncPath="/usr/bin/rsync"
-									options="-rlq"
+									options="-rlqc"
 									sourceDir="${src_dir}/plugins/vmfields/"
 									destinationDir="${web_dir}/${project_name}/files/plugins/vmfields" />
 						</else>
@@ -256,7 +256,7 @@
 	</target>
 
 	<target name="stop_infrastructure" depends="remove_test_container" description="stop test infrastructure">
-		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} down" passthru="true" />
+<!--		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} down" passthru="true" />-->
 	</target>
 
 </project>

@@ -105,11 +105,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							</th>
 						</tr>
 					</thead>
-					<tfoot>
-						<tr>
-							<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
-						</tr>
-					</tfoot>
 					<tbody>
 						<?php
 						if (count($this->items) > 0)
@@ -206,12 +201,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</tbody>
 				</table>
 			</div>
+			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo JHtml::_('form.token'); ?>
 
-			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 		</div>
 	</form>
 </div>

@@ -39,6 +39,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -386,7 +388,7 @@ class TestTemplatesDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneTextTemplateListViewRestore(AcceptanceTester $I)
+	public function CreateOneTextTemplateRestoreListView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Text template list view");
 		$I->amOnPage(TplManage::$url);
@@ -469,6 +471,8 @@ class TestTemplatesDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
@@ -481,6 +485,8 @@ class TestTemplatesDetailsCest
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

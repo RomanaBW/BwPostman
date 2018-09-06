@@ -35,6 +35,8 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -134,6 +136,8 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function FilterSubscribersByMailformat(AcceptanceTester $I)
@@ -165,6 +169,8 @@ class TestSubscribersListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -240,6 +246,8 @@ class TestSubscribersListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -464,9 +472,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function SortUnconfirmedSubscribersByTableHeader(AcceptanceTester $I)
 		{
 			// @Todo: ensure UTF-8 characters are recognized; only testing problem
@@ -479,7 +488,7 @@ class TestSubscribersListsCest
 
 			$I->click(Generals::$submenu_toggle_button);
 
-			$sort_array     = $this->_prepareSortArray($I);
+			$sort_array     = $this->prepareSortArray($I);
 			$loop_counts    = 10;
 
 			$options    = $I->getManifestOptions('com_bwpostman');
@@ -491,13 +500,14 @@ class TestSubscribersListsCest
 
 
 			// loop over sorting criterion
+			// @ToDo: Codeception catches first appearance of element, but that is at confirmed subscribers and not visible!
+			// Conclusion: Needs an specific identifier for tables!
 			$columns    = implode(', ', SubsManage::$query_criteria);
 			$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 			$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
 
 			$I->click(Generals::$submenu_toggle_button);
 		}
-	*/
 
 	// @ToDo: Next tests with Chromium switches unpredictably to first tab, so correct check is not possible
 	// Would be better if I switch to tabs like at newsletters?
@@ -513,9 +523,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function SortUnconfirmedSubscribersBySelectList(AcceptanceTester $I)
 	{
 		// @Todo: ensure UTF-8 characters are recognized
@@ -528,7 +539,7 @@ class TestSubscribersListsCest
 
 		$I->click(Generals::$submenu_toggle_button);
 
-		$sort_array = $this->_prepareSortArray($I);
+		$sort_array = $this->prepareSortArray($I);
 		$loop_counts    = 10;
 
 		$options    = $I->getManifestOptions('com_bwpostman');
@@ -543,7 +554,6 @@ class TestSubscribersListsCest
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 		$I->loopFilterList($I, $sort_array, '', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
 	}
-	*/
 
 	/**
 	 * Test method to filter subscribers by status
@@ -556,9 +566,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function FilterUnconfirmedSubscribersByMailformat(AcceptanceTester $I)
 	{
 		$I->wantTo("Filter unconfirmed subscribers by email format");
@@ -578,7 +589,6 @@ class TestSubscribersListsCest
 		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 
 	}
-	*/
 
 	/**
 	 * Test method to filter subscribers by access
@@ -591,9 +601,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function FilterUnconfirmedSubscribersByMailinglist(AcceptanceTester $I)
 	{
 		$I->wantTo("Filter unconfirmed subscribers by mailing list");
@@ -607,7 +618,6 @@ class TestSubscribersListsCest
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result);
 	}
-	*/
 
 	/**
 	 * Test method to search subscribers
@@ -622,7 +632,6 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function SearchUnconfirmedSubscribers(AcceptanceTester $I)
 	{
 		$I->wantTo("Search unconfirmed Subscribers");
@@ -634,7 +643,6 @@ class TestSubscribersListsCest
 		$I->click(Generals::$clear_button);
 		$I->see(SubsManage::$search_clear_val);
 	}
-	*/
 
 	/**
 	 * Test method to check list limit of subscribers
@@ -649,7 +657,6 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function ListlimitUnconfirmedSubscribers(AcceptanceTester $I)
 	{
 		$I->wantTo("test list limit at unconfirmed subscribers");
@@ -657,7 +664,6 @@ class TestSubscribersListsCest
 
 		$I->checkListlimit($I);
 	}
-	*/
 
 	/**
 	 * Test method to check pagination of subscribers
@@ -670,9 +676,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function PaginationUnconfirmedSubscribers(AcceptanceTester $I)
 	{
 		$I->wantTo("test pagination at unconfirmed subscribers");
@@ -682,7 +689,6 @@ class TestSubscribersListsCest
 
 		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
 	}
-	*/
 
 	/**
 	 * Test method sorting subscribers by click to column in table header
@@ -695,9 +701,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function SortTestRecipientsByTableHeader(AcceptanceTester $I)
 	{
 		// @Todo: ensure UTF-8 characters are recognized; only testing problem
@@ -707,7 +714,7 @@ class TestSubscribersListsCest
 		$I->wait(1);
 		$I->click(Generals::$submenu_toggle_button);
 
-		$sort_array     = $this->_prepareSortArray($I);
+		$sort_array     = $this->prepareSortArray($I);
 		$loop_counts    = 10;
 
 		$options    = $I->getManifestOptions('com_bwpostman');
@@ -725,7 +732,6 @@ class TestSubscribersListsCest
 
 		$I->click(Generals::$submenu_toggle_button);
 	}
-	*/
 
 	/**
 	 * Test method sorting subscribers by selection at select list
@@ -738,9 +744,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function SortTestRecipientsBySelectList(AcceptanceTester $I)
 	{
 		// @Todo: ensure UTF-8 characters are recognized
@@ -749,7 +756,7 @@ class TestSubscribersListsCest
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
-		$sort_array = $this->_prepareSortArray($I);
+		$sort_array = $this->prepareSortArray($I);
 		$loop_counts    = 10;
 
 		$options    = $I->getManifestOptions('com_bwpostman');
@@ -764,7 +771,6 @@ class TestSubscribersListsCest
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 		$I->loopFilterList($I, $sort_array, '', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
 	}
-	*/
 
 	/**
 	 * Test method to filter subscribers by status
@@ -777,9 +783,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function FilterTestRecipientsByMailformat(AcceptanceTester $I)
 	{
 		$I->wantTo("Filter test recipients by email format");
@@ -798,7 +805,6 @@ class TestSubscribersListsCest
 
 		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 	}
-	*/
 
 	/**
 	 * Test method to filter subscribers by access
@@ -811,9 +817,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function FilterTestRecipientsByMailinglist(AcceptanceTester $I)
 	{
 		$I->wantTo("Filter test recipients by mailing list");
@@ -827,7 +834,6 @@ class TestSubscribersListsCest
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result);
 	}
-	*/
 
 	/**
 	 * Test method to search subscribers
@@ -842,7 +848,6 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function SearchTestRecipients(AcceptanceTester $I)
 	{
 		$I->wantTo("Search test recipients");
@@ -854,7 +859,6 @@ class TestSubscribersListsCest
 		$I->click(Generals::$clear_button);
 		$I->see(SubsManage::$search_clear_val);
 	}
-	*/
 
 	/**
 	 * Test method to check list limit of subscribers
@@ -869,7 +873,6 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function ListlimitTestRecipients(AcceptanceTester $I)
 	{
 		$I->wantTo("test list limit at test recipients");
@@ -877,7 +880,6 @@ class TestSubscribersListsCest
 
 		$I->checkListlimit($I);
 	}
-	*/
 
 	/**
 	 * Test method to check pagination of subscribers
@@ -890,9 +892,10 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	/*
 	public function PaginationTestRecipients(AcceptanceTester $I)
 	{
 		$I->wantTo("test pagination at test recipients");
@@ -902,7 +905,6 @@ class TestSubscribersListsCest
 
 		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
 	}
-	*/
 
 	/**
 	 * Test method to logout from backend
@@ -911,6 +913,8 @@ class TestSubscribersListsCest
 	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

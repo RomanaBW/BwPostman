@@ -648,6 +648,13 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
+	public static $exportPath   = "/%s/Downloads/";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $export_csv_confirmed   = ".//*[@id='status1']";
 
 	/**

@@ -46,6 +46,8 @@ test_file:
     testsuite_file: Backend/TestMaintenanceCest
   - suite: restore
     testsuite_file: Backend/TestMaintenanceCest::restoreTables
+  - suite: defaultOptions
+    testsuite_file: Backend/TestOptionsCest::saveDefaults
   - suite: frontend
     testsuite_file: Frontend
   - suite: details
@@ -70,6 +72,7 @@ test_suites:
     tests:
       - install
       - restore
+      - defaultOptions
       - lists
       - maintenance
 
@@ -77,12 +80,14 @@ test_suites:
     tests:
       - install
       - restore
+      - defaultOptions
       - details
 
   - name: accept3
     tests:
       - install
       - restore
+      - defaultOptions
       - frontend
       - user2subscriber
   #  - personalize
@@ -91,5 +96,6 @@ test_suites:
     tests:
       - install
       - restore
+      - defaultOptions
       - access
 

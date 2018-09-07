@@ -262,209 +262,6 @@ class TestSubscribersListsCest
 	}
 
 	/**
-	 * Test method to import subscribers by CSV file
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @throws \Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public function ImportSubscribersByCSV(AcceptanceTester $I)
-	{
-		$I->wantTo("import subscribers by CSV file");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-		$I->wait(1);
-
-		$I->click(Generals::$toolbar['Import']);
-		$I->dontSeeElement(SubsManage::$import_search_button);
-
-		$I->click(SubsManage::$import_csv_button);
-		$I->seeElement(SubsManage::$import_search_button);
-		$I->attachFile(SubsManage::$import_search_button, SubsManage::$import_csv_file);
-
-		$I->click(SubsManage::$import_csv_caption);
-
-		$I->click(SubsManage::$import_button_further);
-
-		$I->see(SubsManage::$import_csv_file);
-		$I->see('Yes');
-
-		$I->scrollTo(SubsManage::$import_legend_step_2);
-		$I->see(SubsManage::$import_csv_field_0);
-		$I->see(SubsManage::$import_csv_field_1);
-		$I->see(SubsManage::$import_csv_field_2);
-		$I->see(SubsManage::$import_csv_field_3);
-		$I->see(SubsManage::$import_csv_field_4);
-
-		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
-		$I->click(SubsManage::$import_mls_target);
-
-		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
-		$I->click(SubsManage::$import_cb_confirm_subs);
-
-		$I->click(SubsManage::$import_button_import);
-
-		$I->waitForElement(Generals::$alert_success, 60);
-		$I->see(SubsManage::$import_msg_success, Generals::$alert_success);
-
-		$I->click(Generals::$toolbar['Cancel']);
-
-		$this->cleanupImportedSubscribers($I, SubsManage::$import_csv_subscribers);
-	}
-
-	/**
-	 * Test method to import subscribers by XML file
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @throws \Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public function ImportSubscribersByXML(AcceptanceTester $I)
-	{
-		$I->wantTo("import subscribers by XML file");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-		$I->wait(1);
-
-		$I->click(Generals::$toolbar['Import']);
-		$I->dontSeeElement(SubsManage::$import_search_button);
-
-		$I->click(SubsManage::$import_xml_button);
-		$I->seeElement(SubsManage::$import_search_button);
-		$I->attachFile(SubsManage::$import_search_button, SubsManage::$import_xml_file);
-
-		$I->click(SubsManage::$import_button_further);
-
-		$I->see(SubsManage::$import_xml_file);
-
-		$I->scrollTo(SubsManage::$import_legend_step_2);
-		$I->see(SubsManage::$import_xml_field_0);
-		$I->see(SubsManage::$import_xml_field_1);
-		$I->see(SubsManage::$import_xml_field_2);
-		$I->see(SubsManage::$import_xml_field_3);
-		$I->see(SubsManage::$import_xml_field_4);
-
-		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
-		$I->click(SubsManage::$import_mls_target);
-
-		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
-		$I->click(SubsManage::$import_cb_confirm_subs);
-
-		$I->click(SubsManage::$import_button_import);
-
-		$I->waitForElement(Generals::$alert_success, 60);
-		$I->see(SubsManage::$import_msg_success, Generals::$alert_success);
-
-		$I->click(Generals::$toolbar['Cancel']);
-		$this->cleanupImportedSubscribers($I, SubsManage::$import_xml_subscribers);
-	}
-
-	/**
-	 * Test method to export subscribers to CSV file
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function ExportSubscribersToCSV(AcceptanceTester $I)
-	{
-		$I->wantTo("export subscribers to CSV file");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-		$I->wait(1);
-
-		$I->click(Generals::$toolbar['Export']);
-		$I->dontSeeElement(SubsManage::$import_search_button);
-
-		$I->click(SubsManage::$import_csv_button);
-		$I->seeElement(SubsManage::$export_csv_confirmed);
-
-		$I->click(SubsManage::$export_csv_confirmed);
-		$I->click(SubsManage::$export_csv_unarchived);
-
-		$I->scrollTo(SubsManage::$export_legend_fields);
-
-		$user = get_current_user();
-		codecept_debug("User: $user");
-
-		$exportPath     = sprintf(SubsManage::$exportPath, $user);
-		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
-
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
-
-		$I->assertTrue(file_exists($exportPath . $filename));
-
-		$I->click(Generals::$toolbar['Cancel']);
-	}
-
-	/**
-	 * Test method to export subscribers to XML file
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	public function ExportSubscribersToXML(AcceptanceTester $I)
-	{
-		$I->wantTo("export subscribers to XML file");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-		$I->wait(1);
-
-		$I->click(Generals::$toolbar['Export']);
-		$I->dontSeeElement(SubsManage::$import_search_button);
-
-		$I->click(SubsManage::$import_xml_button);
-		$I->seeElement(SubsManage::$export_csv_confirmed);
-
-		$I->click(SubsManage::$export_csv_confirmed);
-		$I->click(SubsManage::$export_csv_unarchived);
-
-		$I->scrollTo(SubsManage::$export_legend_fields);
-
-		$exportPath     = '/root/Downloads/';
-		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
-
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
-
-		$I->assertTrue(file_exists($exportPath . $filename));
-
-		$I->click(Generals::$toolbar['Cancel']);
-	}
-
-
-
-
-
-	/**
 	 * Test method sorting subscribers by click to column in table header
 	 *
 	 * @param   AcceptanceTester                $I
@@ -632,6 +429,8 @@ class TestSubscribersListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -849,6 +648,8 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function SearchTestRecipients(AcceptanceTester $I)
@@ -908,6 +709,206 @@ class TestSubscribersListsCest
 
 		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
 	}
+
+	/**
+	 * Test method to import subscribers by CSV file
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function ImportSubscribersByCSV(AcceptanceTester $I)
+	{
+		$I->wantTo("import subscribers by CSV file");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		$I->click(Generals::$toolbar['Import']);
+		$I->dontSeeElement(SubsManage::$import_search_button);
+
+		$I->click(SubsManage::$import_csv_button);
+		$I->seeElement(SubsManage::$import_search_button);
+		$I->attachFile(SubsManage::$import_search_button, SubsManage::$import_csv_file);
+
+		$I->click(SubsManage::$import_csv_caption);
+
+		$I->click(SubsManage::$import_button_further);
+
+		$I->see(SubsManage::$import_csv_file);
+		$I->see('Yes');
+
+		$I->scrollTo(SubsManage::$import_legend_step_2);
+		$I->see(SubsManage::$import_csv_field_0);
+		$I->see(SubsManage::$import_csv_field_1);
+		$I->see(SubsManage::$import_csv_field_2);
+		$I->see(SubsManage::$import_csv_field_3);
+		$I->see(SubsManage::$import_csv_field_4);
+
+		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
+		$I->click(SubsManage::$import_mls_target);
+
+		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
+		$I->click(SubsManage::$import_cb_confirm_subs);
+
+		$I->click(SubsManage::$import_button_import);
+
+		$I->waitForElement(Generals::$alert_success, 60);
+		$I->see(SubsManage::$import_msg_success, Generals::$alert_success);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$this->cleanupImportedSubscribers($I, SubsManage::$import_csv_subscribers);
+	}
+
+	/**
+	 * Test method to import subscribers by XML file
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function ImportSubscribersByXML(AcceptanceTester $I)
+	{
+		$I->wantTo("import subscribers by XML file");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		$I->click(Generals::$toolbar['Import']);
+		$I->dontSeeElement(SubsManage::$import_search_button);
+
+		$I->click(SubsManage::$import_xml_button);
+		$I->seeElement(SubsManage::$import_search_button);
+		$I->attachFile(SubsManage::$import_search_button, SubsManage::$import_xml_file);
+
+		$I->click(SubsManage::$import_button_further);
+
+		$I->see(SubsManage::$import_xml_file);
+
+		$I->scrollTo(SubsManage::$import_legend_step_2);
+		$I->see(SubsManage::$import_xml_field_0);
+		$I->see(SubsManage::$import_xml_field_1);
+		$I->see(SubsManage::$import_xml_field_2);
+		$I->see(SubsManage::$import_xml_field_3);
+		$I->see(SubsManage::$import_xml_field_4);
+
+		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
+		$I->click(SubsManage::$import_mls_target);
+
+		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
+		$I->click(SubsManage::$import_cb_confirm_subs);
+
+		$I->click(SubsManage::$import_button_import);
+
+		$I->waitForElement(Generals::$alert_success, 60);
+		$I->see(SubsManage::$import_msg_success, Generals::$alert_success);
+
+		$I->click(Generals::$toolbar['Cancel']);
+		$this->cleanupImportedSubscribers($I, SubsManage::$import_xml_subscribers);
+	}
+
+	/**
+	 * Test method to export subscribers to CSV file
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function ExportSubscribersToCSV(AcceptanceTester $I)
+	{
+		$I->wantTo("export subscribers to CSV file");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		$I->click(Generals::$toolbar['Export']);
+		$I->dontSeeElement(SubsManage::$import_search_button);
+
+		$I->click(SubsManage::$import_csv_button);
+		$I->seeElement(SubsManage::$export_csv_confirmed);
+
+		$I->click(SubsManage::$export_csv_confirmed);
+		$I->click(SubsManage::$export_csv_unarchived);
+
+		$I->scrollTo(SubsManage::$export_legend_fields);
+
+		$user = get_current_user();
+		codecept_debug("User: $user");
+
+		$exportPath     = sprintf(SubsManage::$exportPath, $user);
+		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+
+		$I->clickAndWait(SubsManage::$export_button_export, 10);
+
+		$I->assertTrue(file_exists($exportPath . $filename));
+
+		$I->click(Generals::$toolbar['Cancel']);
+	}
+
+	/**
+	 * Test method to export subscribers to XML file
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function ExportSubscribersToXML(AcceptanceTester $I)
+	{
+		$I->wantTo("export subscribers to XML file");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		$I->click(Generals::$toolbar['Export']);
+		$I->dontSeeElement(SubsManage::$import_search_button);
+
+		$I->click(SubsManage::$import_xml_button);
+		$I->seeElement(SubsManage::$export_csv_confirmed);
+
+		$I->click(SubsManage::$export_csv_confirmed);
+		$I->click(SubsManage::$export_csv_unarchived);
+
+		$I->scrollTo(SubsManage::$export_legend_fields);
+
+		$exportPath     = '/root/Downloads/';
+		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
+
+		$I->clickAndWait(SubsManage::$export_button_export, 10);
+
+		$I->assertTrue(file_exists($exportPath . $filename));
+
+		$I->click(Generals::$toolbar['Cancel']);
+	}
+
 
 	/**
 	 * Test method to logout from backend

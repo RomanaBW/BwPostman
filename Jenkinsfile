@@ -31,19 +31,19 @@ pipeline {
 			}
 		}
 
-		stage('smoke') {
-			steps {
-				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP)
-			}
-			post {
-				always {
-					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-				}
-				failure {
-					emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-				}
-			}
-		}
+//		stage('smoke') {
+//			steps {
+//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP)
+//			}
+//			post {
+//				always {
+//					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+//				}
+//				failure {
+//					emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
+//				}
+//			}
+//		}
 
 		stage('Acceptance Tests') {
 			parallel {

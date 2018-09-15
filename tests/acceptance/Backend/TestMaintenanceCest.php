@@ -69,17 +69,20 @@ class TestMaintenanceCest
 			$I->waitForElement(Generals::$pageTitle, 30);
 			$I->see(MaintenancePage::$heading);
 
+			$versionToTest = getenv('BWPM_VERSION');
+			codecept_debug("Version from environment: $versionToTest");
+
 			$user = getenv('BW_TESTER_USER');
-			codecept_debug("TesterUser from environment 1: $user");
+
 			if (!$user)
 			{
 				$user = 'root';
 			}
-			codecept_debug("TesterUser from environment 2: $user");
 
 			$path     = Generals::$downloadFolder[$user];
-			$filename = 'BwPostman_' . str_replace('.', '_', Generals::$versionToTest) . '_Tables_' . date("Y-m-d_H-i") . '.xml';
+			$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
 			$downloadPath = $path . $filename;
+
 			codecept_debug("Download path complete: $downloadPath");
 
 			$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);

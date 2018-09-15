@@ -69,7 +69,7 @@ class TestMaintenanceCest
 			$I->waitForElement(Generals::$pageTitle, 30);
 			$I->see(MaintenancePage::$heading);
 
-			$versionToTest = getenv('BWPM_VERSION');
+			$versionToTest = getenv('BWPM_VERSION_TO_TEST');
 			codecept_debug("Version from environment: $versionToTest");
 
 			$user = getenv('BW_TESTER_USER');

@@ -50,7 +50,7 @@ pipeline {
 				stage ('accept1') {
 					steps {
 //						echo 'Dummy'
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP)
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER)
 					}
 					post {
 						always {
@@ -65,7 +65,7 @@ pipeline {
 				stage ('accept2') {
 					steps {
 						echo 'Dummy'
-//							bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP)
+//							bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
 					}
 //					post {
 //						always {
@@ -80,7 +80,7 @@ pipeline {
 				stage ('accept3') {
 					steps {
 						echo 'Dummy'
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP)
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER)
 					}
 //					post {
 //						always {
@@ -95,7 +95,7 @@ pipeline {
 				stage ('accept4') {
 					steps {
 						echo 'Dummy'
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP)
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER)
 					}
 //					post {
 //						always {

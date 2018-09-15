@@ -5,6 +5,7 @@ rm {{ codecept_failed_file }}
 
 # export sudo user
 export BW_TESTER_USER="jenkins"
+export BWPM_VERSION= $1
 
 # start x-server
 /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &

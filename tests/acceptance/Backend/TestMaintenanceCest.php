@@ -69,7 +69,15 @@ class TestMaintenanceCest
 			$I->waitForElement(Generals::$pageTitle, 30);
 			$I->see(MaintenancePage::$heading);
 
-			$path     = '/root/Downloads/';
+			$user = getenv('BW_TESTER_USER');
+			if (!$user)
+			{
+				$user = 'root';
+			}
+			codecept_debug("TesterUser from environment: $user");
+
+			$path     = Generals::$downloadFolder[$user];
+			codecept_debug("Download path: $path");
 			$filename = 'BwPostman_' . str_replace('.', '_', Generals::$versionToTest) . '_Tables_' . date("Y-m-d_H-i") . '.xml';
 
 			$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);

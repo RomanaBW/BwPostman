@@ -855,10 +855,16 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = get_current_user();
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
 		codecept_debug("User: $user");
 
-		$exportPath     = sprintf(SubsManage::$exportPath, $user);
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
@@ -899,7 +905,16 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$exportPath     = '/root/Downloads/';
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		codecept_debug("User: $user");
+
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
 
 		$I->clickAndWait(SubsManage::$export_button_export, 10);

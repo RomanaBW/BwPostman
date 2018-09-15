@@ -276,6 +276,18 @@ class Generals
 	public static $versionToTest = '2.0.0';
 
 	/**
+	 * Version to test
+	 *
+	 * @var    array
+	 *
+	 * @since  2.1.0
+	 */
+	public static $downloadFolder = array(
+		'root' => '/root/Downloads/',
+		'jenkins' => '/home/jenkins/Downloads/',
+		);
+
+	/**
 	 * database prefix
 	 *
 	 * @var    string

@@ -3,6 +3,9 @@
 # delete old failure file
 rm {{ codecept_failed_file }}
 
+# export sudo user
+export BW_TESTER_USER=$SUDO_USER
+
 # start x-server
 /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
 export DISPLAY={{ display }}

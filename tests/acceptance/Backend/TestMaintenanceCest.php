@@ -70,11 +70,12 @@ class TestMaintenanceCest
 			$I->see(MaintenancePage::$heading);
 
 			$user = getenv('BW_TESTER_USER');
+			codecept_debug("TesterUser from environment 1: $user");
 			if (!$user)
 			{
 				$user = 'root';
 			}
-			codecept_debug("TesterUser from environment: $user");
+			codecept_debug("TesterUser from environment 2: $user");
 
 			$path     = Generals::$downloadFolder[$user];
 			codecept_debug("Download path: $path");

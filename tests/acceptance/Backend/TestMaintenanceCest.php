@@ -78,8 +78,8 @@ class TestMaintenanceCest
 			codecept_debug("TesterUser from environment 2: $user");
 
 			$path     = Generals::$downloadFolder[$user];
-			codecept_debug("Download path: $path");
 			$filename = 'BwPostman_' . str_replace('.', '_', Generals::$versionToTest) . '_Tables_' . date("Y-m-d_H-i") . '.xml';
+			codecept_debug("Download path complete: $path . $filename");
 
 			$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 

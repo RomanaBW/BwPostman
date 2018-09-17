@@ -1152,7 +1152,21 @@ class NewsletterEditPage
 		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();
 
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
 		$I->waitForElement(self::$tab5_send_iframeId, 20);
+		if ($user == 'jenkins')
+		{
+			$I->waitForElementNotVisible(self::$tab5_send_iframeId, 20);
+			$I->waitForElement(self::$tab5_send_iframeId, 20);
+			$I->waitForElementNotVisible(self::$tab5_send_iframeId, 20);
+			$I->waitForElement(self::$tab5_send_iframeId, 20);
+		}
 		$I->switchToIFrame(self::$tab5_send_iframe);
 		$I->waitForText(self::$success_send_ready, 180);
 		$I->see(self::$success_send_ready);

@@ -433,6 +433,7 @@ class TestNewslettersDetailsCest
 	 * Test method to create copy newsletter and send to real recipients
 	 *
 	 * @param   \AcceptanceTester                $I
+	 * @param    integer                         $iframeTime      time to wait for the last iframe sendFrame appearance (chromium 66+ specific)
 	 *
 	 * @before  _login
 	 *
@@ -444,13 +445,13 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendNewsletterToRealRecipients(\AcceptanceTester $I)
+	public function SendNewsletterToRealRecipients(\AcceptanceTester $I, $iframeTime)
 	{
 		$I->wantTo("Send a newsletter to real recipients");
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, $iframeTime);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -477,7 +478,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, true);
+		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -504,7 +505,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, true);
+		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 30);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

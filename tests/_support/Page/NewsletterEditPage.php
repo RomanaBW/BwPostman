@@ -1111,6 +1111,7 @@ class NewsletterEditPage
 	 * @param   boolean             $sentToUnconfirmed
 	 * @param   boolean             $toUsergroup
 	 * @param   boolean             $buildQueue
+	 * @param   integer             $iframeTime         time to wait for the last iframe sendFrame appearance (chromium 66+ specific)
 	 *
 	 * @before  _login
 	 *
@@ -1122,7 +1123,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false)
+	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20)
 	{
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
@@ -1161,7 +1162,7 @@ class NewsletterEditPage
 
 		if ($user == 'jenkins')
 		{
-			$I->wait(20);
+			$I->wait($iframeTime);
 		}
 
 		$I->waitForElement(self::$tab5_send_iframeId, 20);

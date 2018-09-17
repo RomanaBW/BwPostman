@@ -1268,7 +1268,7 @@ class TestAccessCest
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
 		$I->seeElement(Generals::$toolbar['Send']);
-		NewsletterEditPage::SendNewsletterToRealRecipients($I, $user['user']);
+		NewsletterEditPage::SendNewsletterToRealRecipients($I, $user['user'], false, false, 20);
 
 		$this->switchLoggedInUser($I, Generals::$admin);
 

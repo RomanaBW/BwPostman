@@ -73,7 +73,7 @@ test_suites:
       - install
       - restore
       - defaultOptions
-#      - maintenance
+      - maintenance
       - lists
 
   - name: accept2

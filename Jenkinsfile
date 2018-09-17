@@ -60,7 +60,7 @@ pipeline {
 //							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
 //						}
 //					}
-//				}
+				}
 
 				stage ('accept2') {
 					steps {

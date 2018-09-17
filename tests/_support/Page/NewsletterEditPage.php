@@ -1159,14 +1159,12 @@ class NewsletterEditPage
 			$user = 'root';
 		}
 
-		$I->waitForElement(self::$tab5_send_iframeId, 20);
 		if ($user == 'jenkins')
 		{
-			$I->waitForElementNotVisible(self::$tab5_send_iframeId, 20);
-			$I->waitForElement(self::$tab5_send_iframeId, 20);
-			$I->waitForElementNotVisible(self::$tab5_send_iframeId, 20);
-			$I->waitForElement(self::$tab5_send_iframeId, 20);
+			$I->wait(20);
 		}
+
+		$I->waitForElement(self::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 		$I->waitForText(self::$success_send_ready, 180);
 		$I->see(self::$success_send_ready);

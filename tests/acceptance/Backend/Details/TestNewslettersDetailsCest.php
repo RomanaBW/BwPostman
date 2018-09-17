@@ -404,7 +404,7 @@ class TestNewslettersDetailsCest
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$I->wait(2);
+		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
 		$I->waitForText(NlEdit::$success_send, 300);
 		$I->see(NlEdit::$success_send);

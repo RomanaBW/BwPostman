@@ -867,9 +867,13 @@ class TestSubscribersListsCest
 		$exportPath     = Generals::$downloadFolder[$user];
 		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 
+		$downloadPath = $exportPath . $filename;
+
+		codecept_debug("Download path complete: $downloadPath");
+
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
 
-		$I->assertTrue(file_exists($exportPath . $filename));
+		$I->assertTrue(file_exists($downloadPath));
 
 		$I->click(Generals::$toolbar['Cancel']);
 	}
@@ -917,9 +921,13 @@ class TestSubscribersListsCest
 		$exportPath     = Generals::$downloadFolder[$user];
 		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
 
+		$downloadPath = $exportPath . $filename;
+
+		codecept_debug("Download path complete: $downloadPath");
+
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
 
-		$I->assertTrue(file_exists($exportPath . $filename));
+		$I->assertTrue(file_exists($downloadPath));
 
 		$I->click(Generals::$toolbar['Cancel']);
 	}

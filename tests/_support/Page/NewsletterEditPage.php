@@ -227,6 +227,13 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
+	public static $tab5_send_iframeId  = "#sendFrame";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 
 	public static $checkbox_unconfirmed = ".//*[@id='send_to_unconfirmed']";
 
@@ -1145,7 +1152,7 @@ class NewsletterEditPage
 		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$I->wait(6);
+		$I->waitForElement(self::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 		$I->waitForText(self::$success_send_ready, 180);
 		$I->see(self::$success_send_ready);

@@ -45,13 +45,13 @@ pipeline {
 //			}
 //		}
 
-//		stage('Acceptance Tests') {
-//			parallel {
-//				stage ('accept1') {
-//					steps {
-////						echo 'Dummy'
+		stage('Acceptance Tests') {
+			parallel {
+				stage ('accept1') {
+					steps {
+						echo 'Dummy'
 //						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER)
-//					}
+					}
 //					post {
 //						always {
 //							bwpmAcceptPostStepAlways ("${STAGE_NAME}")

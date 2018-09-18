@@ -1047,6 +1047,7 @@ class NewsletterEditPage
 	 */
 	public static function selectRecipients(\AcceptanceTester $I, $toUsergroup = false)
 	{
+		codecept_debug("To usergroup: $toUsergroup");
 		if (!$toUsergroup)
 		{
 			$I->scrollTo(self::$legend_recipients);

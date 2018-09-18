@@ -41,6 +41,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(LoginPage $loginPage)
@@ -332,6 +334,8 @@ class TestNewslettersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function CopyNewsletter(\AcceptanceTester $I)
@@ -404,17 +408,17 @@ class TestNewslettersDetailsCest
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-//		$user = getenv('BW_TESTER_USER');
-//
-//		if (!$user)
-//		{
-//			$user = 'root';
-//		}
-//
-//		if ($user == 'jenkins')
-//		{
-//			$I->wait(3);
-//		}
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		if ($user == 'jenkins')
+		{
+			$I->wait(3);
+		}
 
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
@@ -457,7 +461,7 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Test method to create copy newsletter and send to a real usergroup
+	 * Test method to create a newsletter and send to a real usergroup
 	 *
 	 * @param   \AcceptanceTester                $I
 	 *
@@ -484,7 +488,7 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Test method to create copy newsletter and send to a real usergroup
+	 * Test method to create a newsletter and send to a real usergroup
 	 *
 	 * @param   \AcceptanceTester                $I
 	 *
@@ -511,7 +515,7 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Test method to create copy newsletter and send to real recipients
+	 * Test method to edit a sent newsletter
 	 *
 	 * @param   \AcceptanceTester                $I
 	 *
@@ -620,6 +624,8 @@ class TestNewslettersDetailsCest
 	 * @param   LoginPage            $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

@@ -416,7 +416,7 @@ class TestNewslettersDetailsCest
 //			$I->wait(3);
 //		}
 
-//		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
+		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
 		$I->waitForText(NlEdit::$success_send_ready, 60);
 		$I->see(NlEdit::$success_send_ready);

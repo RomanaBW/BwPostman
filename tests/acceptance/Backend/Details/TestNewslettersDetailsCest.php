@@ -477,7 +477,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 25);
+		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 0);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -504,7 +504,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 2);
+		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 25);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

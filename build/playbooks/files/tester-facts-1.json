@@ -1,0 +1,42 @@
+{
+    "192.168.121.184": {
+        "ansible_check_mode": false, 
+        "ansible_diff_mode": false, 
+        "ansible_facts": {}, 
+        "ansible_forks": 5, 
+        "ansible_inventory_sources": [
+            "/home/romana/PhpstormProjects/BwPostman/build/playbooks/inventory"
+        ], 
+        "ansible_playbook_python": "/usr/bin/python", 
+        "ansible_run_tags": [
+            "all"
+        ], 
+        "ansible_skip_tags": [], 
+        "ansible_version": {
+            "full": "2.5.1", 
+            "major": 2, 
+            "minor": 5, 
+            "revision": 1, 
+            "string": "2.5.1"
+        }, 
+        "group_names": [
+            "smoketester"
+        ], 
+        "groups": {
+            "all": [
+                "192.168.121.184"
+            ], 
+            "smoketester": [
+                "192.168.121.184"
+            ], 
+            "ungrouped": []
+        }, 
+        "inventory_dir": "/home/romana/PhpstormProjects/BwPostman/build/playbooks/inventory", 
+        "inventory_file": "/home/romana/PhpstormProjects/BwPostman/build/playbooks/inventory/hosts", 
+        "inventory_hostname": "192.168.121.184", 
+        "inventory_hostname_short": "192", 
+        "omit": "__omit_place_holder__49c1215cf96728a696168e46fea36ada41d2f3ea", 
+        "playbook_dir": "/home/romana/PhpstormProjects/BwPostman/build/playbooks", 
+        "test_suite": "run_3"
+    }
+}

@@ -89,7 +89,7 @@ test_suites:
       - restore
       - defaultOptions
       - frontend
-      - user2subscriber
+#      - user2subscriber
   #  - personalize
 
   - name: accept4

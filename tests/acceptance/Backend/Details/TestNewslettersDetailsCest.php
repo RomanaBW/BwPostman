@@ -418,8 +418,8 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
-		$I->waitForText(NlEdit::$success_send, 300);
-		$I->see(NlEdit::$success_send);
+		$I->waitForText(NlEdit::$success_send_ready, 60);
+		$I->see(NlEdit::$success_send_ready);
 		$I->switchToIFrame();
 		$I->wait(5);
 
@@ -477,7 +477,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 1);
+		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 25);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -504,7 +504,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 30);
+		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 2);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

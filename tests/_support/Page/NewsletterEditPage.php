@@ -1127,6 +1127,11 @@ class NewsletterEditPage
 	 */
 	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20)
 	{
+		codecept_debug("unconfirmed: $sentToUnconfirmed");
+		codecept_debug("usergroup: $toUsergroup");
+		codecept_debug("Queue: $buildQueue");
+		codecept_debug("iFrame time: $iframeTime");
+
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(self::$tab5_legend1);

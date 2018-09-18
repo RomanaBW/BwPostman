@@ -64,8 +64,8 @@ pipeline {
 
 				stage ('accept2') {
 					steps {
-//						echo 'Dummy'
-							bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
+						echo 'Dummy'
+//							bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
 					}
 //					post {
 //						always {

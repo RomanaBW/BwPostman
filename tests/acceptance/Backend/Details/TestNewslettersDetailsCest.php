@@ -413,7 +413,7 @@ class TestNewslettersDetailsCest
 
 		if ($user == 'jenkins')
 		{
-			$I->wait(20);
+			$I->wait(1);
 		}
 
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
@@ -433,7 +433,6 @@ class TestNewslettersDetailsCest
 	 * Test method to create copy newsletter and send to real recipients
 	 *
 	 * @param   \AcceptanceTester                $I
-	 * @param    integer                         $iframeTime      time to wait for the last iframe sendFrame appearance (chromium 66+ specific)
 	 *
 	 * @before  _login
 	 *
@@ -445,13 +444,13 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendNewsletterToRealRecipients(\AcceptanceTester $I, $iframeTime)
+	public function SendNewsletterToRealRecipients(\AcceptanceTester $I)
 	{
 		$I->wantTo("Send a newsletter to real recipients");
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, $iframeTime);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

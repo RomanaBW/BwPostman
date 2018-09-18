@@ -404,17 +404,17 @@ class TestNewslettersDetailsCest
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$user = getenv('BW_TESTER_USER');
-
-		if (!$user)
-		{
-			$user = 'root';
-		}
-
-		if ($user == 'jenkins')
-		{
-			$I->wait(1);
-		}
+//		$user = getenv('BW_TESTER_USER');
+//
+//		if (!$user)
+//		{
+//			$user = 'root';
+//		}
+//
+//		if ($user == 'jenkins')
+//		{
+//			$I->wait(3);
+//		}
 
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);

@@ -760,7 +760,7 @@ class TestNewslettersListsCest
 
 		// create newsletter and send (without success)
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['user']);
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, true);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, true, 20);
 
 		$I->see(NlManage::$queue_warning_msg);
 	}

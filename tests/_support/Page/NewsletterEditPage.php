@@ -1143,7 +1143,7 @@ class NewsletterEditPage
 		{
 			$nbrToSend = self::$nbr_usergroup;
 		}
-		codecept_debug("Nbr to send: .$nbrToSend");
+		codecept_debug("Nbr to send: $nbrToSend");
 
 		$remainsToSend  = '0';
 		if ($buildQueue)

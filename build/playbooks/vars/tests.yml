@@ -88,8 +88,8 @@ test_suites:
       - install
       - restore
       - defaultOptions
-      - frontend
-#      - user2subscriber
+#      - frontend
+      - user2subscriber
   #  - personalize
 
   - name: accept4

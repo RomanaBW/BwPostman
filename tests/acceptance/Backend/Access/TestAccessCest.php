@@ -422,7 +422,7 @@ class TestAccessCest
 			{
 				// @ToDo: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
-					'Newsletters',
+					//'Newsletters',
 					//'Subscribers',
 					//'Campaigns',
 					//'Mailinglists',
@@ -645,7 +645,6 @@ class TestAccessCest
 
 		// find page and row for desired item
 		$item_found  = $I->findPageWithItemAndScrollToItem($check_content);
-
 		$I->assertEquals(true, $item_found);
 
 		// by link

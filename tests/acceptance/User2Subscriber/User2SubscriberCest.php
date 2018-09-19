@@ -166,9 +166,11 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function login(\Page\Login $loginPage)
+	public function _login(\Page\Login $loginPage)
 	{
 		$loginPage->logIntoBackend(Generals::$admin, $this->tester);
 	}
@@ -178,9 +180,9 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
-	 * @before  login
+	 * @before  _login
 	 *
-	 * @after   logout
+	 * @after   _logout
 	 *
 	 * @return  void
 	 *
@@ -947,6 +949,8 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function User2SubscriberOptionsMessage(AcceptanceTester $I)
@@ -1434,9 +1438,20 @@ class User2SubscriberCest
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
 		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
 
+		$I->scrollTo(RegPage::$subs_identifier_subscribe_no);
+		$I->wait(2);
+
 		if ($com_options->show_gender)
 		{
-			$I->clickAndWait(RegPage::$subs_identifier_female, 1);
+			$I->click(RegPage::$gender_list);
+			$I->waitForElementVisible(RegPage::$subs_identifier_female, 2);
+
+			// click wanted value
+			$I->click(RegPage::$subs_identifier_female);
+
+
+//			$I->clickSelectList(RegPage::$gender_list, RegPage::$subs_identifier_female, RegPage::$gender_list_id);
+
 			self::$check_gender     = true;
 			self::$gender_selected  = 'female';
 		}
@@ -1999,6 +2014,8 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function editPluginOptions(AcceptanceTester $I)
@@ -2052,9 +2069,11 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function logout(AcceptanceTester $I, \Page\Login $loginPage)
+	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{
 		$loginPage->logoutFromBackend($I, false);
 	}

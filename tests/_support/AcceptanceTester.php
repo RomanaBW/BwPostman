@@ -16,7 +16,7 @@ use Page\Generals as Generals;
  *
  * @SuppressWarnings(PHPMD)
 
- * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2012-2017 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -161,7 +161,7 @@ class AcceptanceTester extends \Codeception\Actor
 
 	public function assertTableSearchResult($search_value, $expected_nbr)
 	{
-		$row_values_actual = $this->GetTableRows($this, true);
+		$row_values_actual = $this->GetTableRows($this);
 		$res_nbr           = count($row_values_actual);
 		$this->assertEquals($expected_nbr, $res_nbr);
 		// assert that all rows contain search value
@@ -181,7 +181,7 @@ class AcceptanceTester extends \Codeception\Actor
 
 	public function assertFilterResult($filter_values)
 	{
-		$row_values_actual = $this->GetTableRows($this, true);
+		$row_values_actual = $this->GetTableRows($this);
 		$res_nbr           = count($row_values_actual);
 		$this->assertEquals(count($filter_values), $res_nbr);
 		// assert that all rows contain filtered values
@@ -204,15 +204,15 @@ class AcceptanceTester extends \Codeception\Actor
 	public function getTableRowIdBySearchValue($search_value)
 	{
 		$id             = 0;
-		$row_values     = $this->GetTableRows($this, false);
+		$row_values     = $this->GetTableRows($this);
 
-		for ($i = 1; $i < count($row_values); $i++)
+		for ($i = 0; $i < count($row_values); $i++)
 		{
 			$found_value    = strpos($row_values[$i], $search_value);
 
 			if ($found_value !== false)
 			{
-				$id = $i;
+				$id = $i + 1;
 				break;
 			}
 		}

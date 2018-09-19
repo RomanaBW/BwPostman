@@ -217,16 +217,37 @@ class User2SubscriberPage
 	/**
 	 * @var string
 	 *
-	 * @since 2.0.0
+	 * @since 2.1.0
 	 */
-	public static $subs_identifier_female           = ".//*[@id='jform_bwpm_user2subscriber_gender']/label[1]";
+	public static $gender_list           = '//*[@id="jform_bwpm_user2subscriber_gender"]';
 
 	/**
 	 * @var string
 	 *
-	 * @since 2.0.0
+	 * @since 2.1.0
 	 */
-	public static $subs_identifier_male             = ".//*[@id='jform_bwpm_user2subscriber_gender']/label[2]";
+	public static $gender_list_id           = "jform_bwpm_user2subscriber_gender_chzn'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $subs_identifier_no_gender           = '//*[@id="jform_bwpm_user2subscriber_gender"]/option[1]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $subs_identifier_female           = '//*[@id="jform_bwpm_user2subscriber_gender"]/option[2]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $subs_identifier_male             = '//*[@id="jform_bwpm_user2subscriber_gender"]/option[3]';
 
 	/**
 	 * @var string

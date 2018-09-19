@@ -70,21 +70,15 @@ class Acceptance extends Codeception\Module
 	 * Helper method get table rows in list view
 	 *
 	 * @param   \AcceptanceTester $I
-	 * @param   boolean           $remove_thead
 	 * @param   string            $tableIdentifier
 	 *
 	 * @return  array   $rows
 	 *
 	 * @since   2.0.0
 	 */
-	public function GetTableRows(\AcceptanceTester $I, $remove_thead = true, $tableIdentifier = ".//table[@id='main-table']")
+	public function GetTableRows(\AcceptanceTester $I, $tableIdentifier = ".//table[@id='main-table']")
 	{
 		$rowsIdentifier = $tableIdentifier . '/tbody/tr';
-
-		if (!$remove_thead)
-		{
-			$rowsIdentifier .= ",$tableIdentifier . '/thead/tr";
-		}
 
 		// get all table rows
 		$rows  = $I->grabMultiple($rowsIdentifier);
@@ -113,7 +107,7 @@ class Acceptance extends Codeception\Module
 	 */
 	public function GetListLength(\AcceptanceTester $I, $tableIdentifier = ".//table[@id='main-table']")
 	{
-		$rows = $I->GetTableRows($I, true, $tableIdentifier);
+		$rows = $I->GetTableRows($I, $tableIdentifier);
 		$row_count   = count($rows);
 		return $row_count;
 	}
@@ -670,7 +664,7 @@ class Acceptance extends Codeception\Module
 				);
 
 				// loop over column values
-				$row_values_actual = self::GetTableRows($I, true);
+				$row_values_actual = self::GetTableRows($I);
 
 				for ($k = 0; $k < $list_length; $k++)
 				{
@@ -858,7 +852,7 @@ class Acceptance extends Codeception\Module
 	{
 		if (isset($pagination_data_array['p1_val1']))
 		{
-			$I->assertEquals($listlenght, count(self::GetTableRows($I, true)));
+			$I->assertEquals($listlenght, count(self::GetTableRows($I)));
 			$this->browsePages(
 				$I,
 				$pagination_data_array['p1_val1'],
@@ -940,19 +934,19 @@ class Acceptance extends Codeception\Module
 	 */
 	public function checkListlimit(\AcceptanceTester $I)
 	{
-		$I->assertEquals(20, count($I->GetTableRows($I, true)));
+		$I->assertEquals(20, count($I->GetTableRows($I)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5, Generals::$limit_list_id);
-		$I->assertEquals(5, count($I->GetTableRows($I, true)));
+		$I->assertEquals(5, count($I->GetTableRows($I)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_15, Generals::$limit_list_id);
-		$I->assertEquals(15, count($I->GetTableRows($I, true)));
+		$I->assertEquals(15, count($I->GetTableRows($I)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_20, Generals::$limit_list_id);
-		$I->assertEquals(20, count($I->GetTableRows($I, true)));
+		$I->assertEquals(20, count($I->GetTableRows($I)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
-		$I->assertEquals(10, count($I->GetTableRows($I, true)));
+		$I->assertEquals(10, count($I->GetTableRows($I)));
 	}
 
 	/**

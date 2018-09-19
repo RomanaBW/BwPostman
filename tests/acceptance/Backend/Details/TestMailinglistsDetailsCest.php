@@ -37,6 +37,8 @@ class TestMailinglistsDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -254,6 +256,8 @@ class TestMailinglistsDetailsCest
 	 * @param   \Page\Login         $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

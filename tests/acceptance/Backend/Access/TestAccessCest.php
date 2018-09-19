@@ -1,7 +1,6 @@
 <?php
 namespace Backend\Access;
 
-use Mockery\Exception;
 use Page\Generals as Generals;
 use Page\MainviewPage as MainView;
 use Page\Login as LoginPage;
@@ -55,9 +54,11 @@ class TestAccessCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function login(LoginPage $loginPage, array $user)
+	public function _login(LoginPage $loginPage, array $user)
 	{
 		$loginPage->logIntoBackend($user);
 	}
@@ -82,7 +83,7 @@ class TestAccessCest
 
 		foreach (AccessPage::$all_users as $user)
 		{
-			$this->login($loginPage, $user);
+			$this->_login($loginPage, $user);
 
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
@@ -140,7 +141,7 @@ class TestAccessCest
 				}
 			}
 
-			$this->logout($I, $loginPage);
+			$this->_logout($I, $loginPage);
 		}
 	}
 
@@ -325,7 +326,7 @@ class TestAccessCest
 
 		foreach (AccessPage::$all_users as $user)
 		{
-			$this->login($loginPage, $user);
+			$this->_login($loginPage, $user);
 
 			foreach (AccessPage::$main_add_buttons as $button => $link)
 			{
@@ -357,7 +358,7 @@ class TestAccessCest
 				}
 			}
 
-			$this->logout($I, $loginPage);
+			$this->_logout($I, $loginPage);
 		}
 	}
 
@@ -415,7 +416,7 @@ class TestAccessCest
 				continue;
 			}
 
-			$this->login($loginPage, $user);
+			$this->_login($loginPage, $user);
 
 			// Loop over main view list buttons
 			foreach (AccessPage::$main_list_buttons as $button => $link)
@@ -541,7 +542,7 @@ class TestAccessCest
 				}
 			}
 
-			$this->logout($I, $loginPage);
+			$this->_logout($I, $loginPage);
 		}
 	}
 
@@ -946,6 +947,8 @@ class TestAccessCest
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button)
@@ -1067,16 +1070,18 @@ class TestAccessCest
 	 * @param $user_to_login
 	 *
 	 * @since 2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	private function switchLoggedInUser($I, $user_to_login)
 	{
 		$loginPage = new LoginPage($I);
 
 		// logout current user
-		$this->logout($I, $loginPage, false);
+		$this->_logout($I, $loginPage, false);
 
 		// login as other user
-		$this->login($loginPage, $user_to_login);
+		$this->_login($loginPage, $user_to_login);
 	}
 
 	/**
@@ -1095,7 +1100,7 @@ class TestAccessCest
 		$loginPage  = new LoginPage($I);
 		foreach (AccessPage::$all_users as $user)
 		{
-			$this->login($loginPage, $user);
+			$this->_login($loginPage, $user);
 
 			// Loop over array with direct links
 			foreach (AccessPage::$direct_links as $link)
@@ -1109,7 +1114,7 @@ class TestAccessCest
 				$this->testResultForLink($I, $link, $user);
 			}
 
-			$this->logout($I, $loginPage);
+			$this->_logout($I, $loginPage);
 		}
 	}
 
@@ -1197,9 +1202,11 @@ class TestAccessCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function logout(\AcceptanceTester $I, LoginPage $loginPage, $truncateSession = false)
+	public function _logout(\AcceptanceTester $I, LoginPage $loginPage, $truncateSession = false)
 	{
 		$loginPage->logoutFromBackend($I, $truncateSession);
 	}

@@ -63,8 +63,8 @@ class TestInstallUsersCest
 	 */
 	public function TestAccessRightsForListViewButtonsFromMainView(\AcceptanceTester $I)
 	{
-		$I->wantTo("check permissions for main view list buttons");
-		$I->expectTo("see appropriate messages");
+		$I->wantTo("install needed users and assign to appropriate usergroups");
+		$I->expectTo("have users in database");
 
 		$loginPage = new LoginPage($I);
 		$this->_login($loginPage, Generals::$admin);
@@ -72,7 +72,7 @@ class TestInstallUsersCest
 		foreach (AccessPage::$all_users as $user)
 		{
 			# Check for usergroup. If not exists, throw exception
-			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'id', 'id', array('title' => $user['user']));
+			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $user['user']));
 
 			if (!$groupId)
 			{

@@ -1,6 +1,7 @@
 <?php
 namespace Backend\Access;
 
+use Codeception\Codecept;
 use Page\Generals as Generals;
 use Page\Login as LoginPage;
 
@@ -73,7 +74,8 @@ class TestInstallUsersCest
 		{
 			# Check for usergroup. If not exists, throw exception
 			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $user['user']));
-
+codecept_debug("User: " . $user['$user']);
+codecept_debug("Group ID: $groupId");
 			if (!$groupId)
 			{
 				$e = new \Exception();
@@ -82,7 +84,7 @@ class TestInstallUsersCest
 
 			# Check for user. If exists, skip
 			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $user['user']));
-
+codecept_debug("User ID: $userId");
 			if ($userId)
 			{
 				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.

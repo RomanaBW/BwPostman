@@ -77,10 +77,8 @@ class TestInstallUsersCest
 
 			# Check for usergroup. If not exists, throw exception
 			$userName = $user['user'];
-			codecept_debug("User: " . $userName);
 			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $userName));
-codecept_debug("Group ID:");
-codecept_debug($groupId);
+
 			if (!$groupId[0])
 			{
 				$e = new \Exception();
@@ -89,17 +87,14 @@ codecept_debug($groupId);
 
 			# Check for user. If exists, ensure checkbox is checked
 			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
-codecept_debug("User ID:");
-codecept_debug($userId[0]);
+
 			if ($userId[0])
 			{
 				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
-codecept_debug("Checkbox: $checkbox");
 
 				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
 				$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId[0]));
-				codecept_debug("GroupMap:");
-				codecept_debug($groupMap);
+
 				if (!$groupMap)
 				{
 					$I->insertRecordToTable('user_usergroup_map', "$userId[0], $groupId[0]");
@@ -121,7 +116,6 @@ codecept_debug("Checkbox: $checkbox");
 				$I->waitForElement(UsersPage::$publicGroup);
 
 				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
-				codecept_debug("Checkbox: $checkbox");
 				$I->click($checkbox);
 
 				$I->click(Generals::$toolbar['Save & Close']);

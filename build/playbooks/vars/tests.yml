@@ -55,7 +55,9 @@ test_file:
   - suite: user2subscriber
     testsuite_file: User2Subscriber
   - suite: access
-    testsuite_file: Backend/Access
+    testsuite_file: Backend/TestAccessCest
+  - suite: createUsers
+    testsuite_file: Backend/TestInstallUsersCest
 #  - personalize:
 #  - restore:
 #  - module_subs:
@@ -97,5 +99,6 @@ test_suites:
       - install
       - restore
       - defaultOptions
+      - createUsers
       - access
 

@@ -385,7 +385,7 @@ class TestAccessCest
 		for ($i = 0; $i < count(AccessPage::$all_users); $i++)
 		{
 			// @ToDo: Consider, that some webmaster may set user permissions e.g. to send newsletter but not to create or edit one
-			// Simplify user variable
+			// Shortcut for user variable
 			$user   = AccessPage::$all_users[$i];
 
 			// @ToDo: This is a workaround to debug tests. Comment out users which are not wanted

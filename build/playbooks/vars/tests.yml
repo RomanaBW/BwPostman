@@ -100,5 +100,5 @@ test_suites:
       - restore
       - defaultOptions
       - createUsers
-#      - access
+      - access
 

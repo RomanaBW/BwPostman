@@ -72,6 +72,9 @@ class TestInstallUsersCest
 
 		foreach (AccessPage::$all_users as $user)
 		{
+			# Switch to user page
+			$I->amOnPage(UsersPage::$user_management_url);
+
 			# Check for usergroup. If not exists, throw exception
 			$userName = $user['user'];
 			codecept_debug("User: " . $userName);
@@ -93,9 +96,6 @@ codecept_debug($userId[0]);
 				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
 				continue;
 			}
-
-			# Switch to user page
-			$I->amOnPage(UsersPage::$user_management_url);
 
 			$I->click(Generals::$toolbar['New']);
 			$I->waitForElement(UsersPage::$registerName);

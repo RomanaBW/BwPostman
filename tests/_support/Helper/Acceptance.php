@@ -1602,7 +1602,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	public function insertRecordToDatabase($table, $values)
+	public function insertRecordToTable($table, $values)
 	{
 		$credentials = $this->getDbCredentials();
 		$criteria    = array();

@@ -102,7 +102,7 @@ codecept_debug("Checkbox: $checkbox");
 				codecept_debug($groupMap);
 				if (!$groupMap)
 				{
-					$I->haveInDatabase(Generals::$db_prefix . 'user_usergroup_map', array('user_id' => $userId[0], 'group_id' => $groupId[0]));
+					$I->insertRecordToDatabase('user_usergroup_map', "$userId[0], $groupId[0]");
 				}
 			}
 			else {

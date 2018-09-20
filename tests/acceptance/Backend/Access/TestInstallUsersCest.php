@@ -2,8 +2,6 @@
 namespace Backend\Access;
 
 use Page\Generals as Generals;
-use Page\InstallationPage;
-use Page\InstallUsersPage;
 use Page\Login as LoginPage;
 
 use Page\AccessPage as AccessPage;
@@ -87,32 +85,33 @@ class TestInstallUsersCest
 
 			if ($userId)
 			{
+				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
 				continue;
 			}
 
 			# Switch to user page
-			$I->amOnPage(InstallUsersPage::$user_management_url);
+			$I->amOnPage(UsersPage::$user_management_url);
 
 			$I->click(Generals::$toolbar['New']);
-			$I->waitForElement(InstallUsersPage::$registerName);
+			$I->waitForElement(UsersPage::$registerName);
 
 			# Add user
-			$I->fillField(InstallUsersPage::$registerName, $user['user']);
-			$I->fillField(InstallUsersPage::$registerLoginName, $user['user']);
-			$I->fillField(InstallUsersPage::$registerPassword1, $user['password']);
-			$I->fillField(InstallUsersPage::$registerPassword2, $user['password']);
-			$I->fillField(InstallUsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
+			$I->fillField(UsersPage::$registerName, $user['user']);
+			$I->fillField(UsersPage::$registerLoginName, $user['user']);
+			$I->fillField(UsersPage::$registerPassword1, $user['password']);
+			$I->fillField(UsersPage::$registerPassword2, $user['password']);
+			$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
 
-			$I->click(InstallUsersPage::$usergroupTab);
-			$I->waitForElement(InstallUsersPage::$publicGroup);
+			$I->click(UsersPage::$usergroupTab);
+			$I->waitForElement(UsersPage::$publicGroup);
 
-			$checkbox = sprintf(InstallUsersPage::$usergroupCheckbox, $groupId);
+			$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
 			codecept_debug("Checkbox: $checkbox");
 			$I->click($checkbox);
 
 			$I->click(Generals::$toolbar['Save & Close']);
 			$I->waitForElement(Generals::$alert_success, 10);
-			$I->see(InstallUsersPage::$createSuccessMsg, Generals::$alert_success);
+			$I->see(UsersPage::$createSuccessMsg, Generals::$alert_success);
 		}
 		$this->_logout($I, $loginPage);
 	}

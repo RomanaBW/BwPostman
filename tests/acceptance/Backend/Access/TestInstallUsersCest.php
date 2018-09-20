@@ -100,30 +100,34 @@ codecept_debug("Checkbox: $checkbox");
 				$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId[0]));
 				codecept_debug("GroupMap:");
 				codecept_debug($groupMap);
-//					$I->haveInDatabase(Generals::$db_prefix . 'user_usergroup_map', array('user_id' => $userId[0], 'group_id' => $groupId[0]));
+				if (!$groupMap)
+				{
+					$I->haveInDatabase(Generals::$db_prefix . 'user_usergroup_map', array('user_id' => $userId[0], 'group_id' => $groupId[0]));
+				}
 			}
+			else {
+				// Create user, if not exists
+				$I->click(Generals::$toolbar['New']);
+				$I->waitForElement(UsersPage::$registerName);
 
-			// Create user, if not exists
-			$I->click(Generals::$toolbar['New']);
-			$I->waitForElement(UsersPage::$registerName);
+				# Add user
+				$I->fillField(UsersPage::$registerName, $user['user']);
+				$I->fillField(UsersPage::$registerLoginName, $user['user']);
+				$I->fillField(UsersPage::$registerPassword1, $user['password']);
+				$I->fillField(UsersPage::$registerPassword2, $user['password']);
+				$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
 
-			# Add user
-			$I->fillField(UsersPage::$registerName, $user['user']);
-			$I->fillField(UsersPage::$registerLoginName, $user['user']);
-			$I->fillField(UsersPage::$registerPassword1, $user['password']);
-			$I->fillField(UsersPage::$registerPassword2, $user['password']);
-			$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
+				$I->click(UsersPage::$usergroupTab);
+				$I->waitForElement(UsersPage::$publicGroup);
 
-			$I->click(UsersPage::$usergroupTab);
-			$I->waitForElement(UsersPage::$publicGroup);
+				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
+				codecept_debug("Checkbox: $checkbox");
+				$I->click($checkbox);
 
-			$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
-			codecept_debug("Checkbox: $checkbox");
-			$I->click($checkbox);
-
-			$I->click(Generals::$toolbar['Save & Close']);
-			$I->waitForElement(Generals::$alert_success, 10);
-			$I->see(UsersPage::$createSuccessMsg, Generals::$alert_success);
+				$I->click(Generals::$toolbar['Save & Close']);
+				$I->waitForElement(Generals::$alert_success, 10);
+				$I->see(UsersPage::$createSuccessMsg, Generals::$alert_success);
+			}
 		}
 		$this->_logout($I, $loginPage);
 	}

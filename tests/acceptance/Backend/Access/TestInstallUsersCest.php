@@ -87,16 +87,23 @@ codecept_debug($groupId);
 				throwException($e);
 			}
 
-			# Check for user. If exists, skip
+			# Check for user. If exists, ensure checkbox is checked
 			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
 codecept_debug("User ID:");
 codecept_debug($userId[0]);
 			if ($userId[0])
 			{
+				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
+codecept_debug("Checkbox: $checkbox");
+
 				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
-				continue;
+				$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId[0]));
+				codecept_debug("GroupMap:");
+				codecept_debug($groupMap);
+//					$I->haveInDatabase(Generals::$db_prefix . 'user_usergroup_map', array('user_id' => $userId[0], 'group_id' => $groupId[0]));
 			}
 
+			// Create user, if not exists
 			$I->click(Generals::$toolbar['New']);
 			$I->waitForElement(UsersPage::$registerName);
 

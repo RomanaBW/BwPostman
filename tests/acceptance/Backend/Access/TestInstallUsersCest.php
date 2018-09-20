@@ -78,16 +78,17 @@ class TestInstallUsersCest
 			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $userName));
 codecept_debug("Group ID:");
 codecept_debug($groupId);
-			if (!$groupId)
+			if (!$groupId[0])
 			{
 				$e = new \Exception();
 				throwException($e);
 			}
 
 			# Check for user. If exists, skip
-			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $user['user']));
-//codecept_debug("User ID: $userId");
-			if ($userId)
+			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
+codecept_debug("User ID:");
+codecept_debug($userId[0]);
+			if ($userId[0])
 			{
 				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
 				continue;
@@ -109,7 +110,7 @@ codecept_debug($groupId);
 			$I->click(UsersPage::$usergroupTab);
 			$I->waitForElement(UsersPage::$publicGroup);
 
-			$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
+			$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
 			codecept_debug("Checkbox: $checkbox");
 			$I->click($checkbox);
 

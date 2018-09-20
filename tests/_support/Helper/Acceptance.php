@@ -1589,4 +1589,28 @@ class Acceptance extends Codeception\Module
 		$sth = $driver->executeQuery($query, $criteria);
 		$res = $sth->rowCount();
 	}
+
+	/**
+	 * Method to insert records in specified table
+	 *
+	 * @param string    $table
+	 * @param string    $values
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function insertRecordToDatabase($table, $values)
+	{
+		$credentials = $this->getDbCredentials();
+		$criteria    = array();
+		$driver      = new Codeception\Lib\Driver\Db($credentials['dsn'], $credentials['user'], $credentials['password']);
+
+		$query      = "INSERT INTO " . Generals::$db_prefix . $table . ' VALUES (' . $values . ')';
+
+		$sth = $driver->executeQuery($query, $criteria);
+		$res = $sth->rowCount();
+	}
 }

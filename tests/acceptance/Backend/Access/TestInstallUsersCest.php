@@ -62,7 +62,7 @@ class TestInstallUsersCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function TestAccessRightsForListViewButtonsFromMainView(\AcceptanceTester $I)
+	public function installNeededUsers(\AcceptanceTester $I)
 	{
 		$I->wantTo("install needed users and assign to appropriate usergroups");
 		$I->expectTo("have users in database");
@@ -73,8 +73,9 @@ class TestInstallUsersCest
 		foreach (AccessPage::$all_users as $user)
 		{
 			# Check for usergroup. If not exists, throw exception
-			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $user['user']));
-codecept_debug("User: " . $user['$user']);
+			$userName = $user['user'];
+			codecept_debug("User: " . $userName);
+			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $userName));
 codecept_debug("Group ID: $groupId");
 			if (!$groupId)
 			{

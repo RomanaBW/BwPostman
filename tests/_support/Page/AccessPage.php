@@ -2,7 +2,7 @@
 namespace Page;
 
 /**
- * Class CampaignEditPage
+ * Class AccessPage
  *
  * @package Page
  * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>

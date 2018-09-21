@@ -130,6 +130,13 @@ codecept_debug("Value: $value");
 
 			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
 
+			// select usergroup
+			$slider = sprintf(OptionsPage::$perm_slider, $group_id);
+			$I->scrollTo($slider, 0, -100);
+
+			$I->click($slider);
+			$I->waitForElement($slider, 30);
+
 			// check success
 			foreach ($rules as $rule)
 			{

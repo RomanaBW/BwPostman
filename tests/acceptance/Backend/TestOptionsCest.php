@@ -101,6 +101,8 @@ class TestOptionsCest
 
 			$I->click($slider);
 			$I->waitForElement($slider, 30);
+codecept_debug("Rules:");
+codecept_debug($rules);
 
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)

@@ -320,6 +320,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Allowed',
+													'core.login.admin' => 'Allowed',
 													'core.manage' => 'Allowed',
 													'bwpm.create' => 'Allowed',
 													'bwpm.edit' => 'Allowed',
@@ -344,6 +345,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Denied',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -368,6 +370,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -392,6 +395,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Denied',
@@ -416,6 +420,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Denied',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -440,6 +445,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -464,6 +470,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Denied',
@@ -488,6 +495,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Denied',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -512,6 +520,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -536,6 +545,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Denied',
@@ -560,6 +570,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Denied',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -584,6 +595,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -608,6 +620,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Denied',
@@ -632,6 +645,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Denied',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -656,6 +670,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -680,6 +695,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Denied',
@@ -704,6 +720,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Denied',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -728,6 +745,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Inherited',
@@ -752,6 +770,7 @@ class OptionsPage
 											=> array (
 												'permissions' => array(
 													'core.admin' => 'Inherited',
+													'core.login.admin' => 'Inherited',
 													'core.manage' => 'Inherited',
 													'bwpm.create' => 'Inherited',
 													'bwpm.edit' => 'Denied',

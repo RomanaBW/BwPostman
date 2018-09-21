@@ -107,6 +107,7 @@ class TestOptionsCest
 			{
 				$identifier = './/*[@id="jform_rules_' . $rules[$i] . '_' . $group_id . '"]';
 				$value      = $actions[$rules[$i]];
+codecept_debug("Identifier: $identifier");
 
 				$I->scrollTo($identifier, 0, -150);
 				$I->waitForElementVisible($identifier, 30);

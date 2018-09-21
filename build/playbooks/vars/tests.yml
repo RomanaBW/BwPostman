@@ -48,6 +48,8 @@ test_file:
     testsuite_file: Backend/TestMaintenanceCest::restoreTables
   - suite: defaultOptions
     testsuite_file: Backend/TestOptionsCest::saveDefaults
+  - suite: setPermissions
+    testsuite_file: Backend/TestOptionsCest::setPermissions
   - suite: frontend
     testsuite_file: Frontend
   - suite: details
@@ -99,6 +101,7 @@ test_suites:
       - install
       - restore
       - defaultOptions
+      - setPermissions
       - createUsers
       - access
 

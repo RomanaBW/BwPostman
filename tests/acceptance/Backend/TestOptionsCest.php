@@ -114,8 +114,7 @@ codecept_debug("Value: $value");
 
 				$I->scrollTo($identifier, 0, -150);
 				$I->waitForElementVisible($identifier, 30);
-
-				$I->click($identifier);
+				$I->executeJS(' $(\''.$identifier.' option\').removeAttr("selected"); $(\'' . $identifier . ' option[value="' . $value . '"]\').attr("selected", true); $(\'' . $identifier . '\').change(); ');
 				$I->selectOption($identifier, $value);
 				$I->wait(1);
 			}

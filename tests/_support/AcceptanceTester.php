@@ -87,11 +87,11 @@ class AcceptanceTester extends \Codeception\Actor
 	 */
 	public function removeSelectedAttribute($input_element = '')
 	{
-//		$script = ' jQuery(\''.$input_element.' option\').removeAttr("selected");';
-//		$script .= ' jQuery(\'' . $input_element . ' option[value="' . $value . '"]\').attr("selected", true);';
-//		$script .= ' jQuery(\'' . $input_element . '\').change();';
-
-		$script = ' jQuery(\'' . $input_element . '\').find(\'option:selected\').remove().end();';
+		$script = 'jQuery( "' . $input_element . ' option:selected" )';
+		$script .= ".change(function () {";
+		$script .= "	jQuery( this ).removeAttr('selected');";
+		$script .= "})";
+		$script .= ".change();";
 
 		$this->executeJS($script);
 	}

@@ -128,6 +128,8 @@ codecept_debug("Value: $value");
 			// apply
 			$I->clickAndWait(Generals::$toolbar['Save'], 1);
 
+			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
+
 			// check success
 			foreach ($rules as $rule)
 			{

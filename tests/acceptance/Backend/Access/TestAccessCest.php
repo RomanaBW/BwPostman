@@ -1095,28 +1095,28 @@ class TestAccessCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function TestAccessRightsByDirectLinks(\AcceptanceTester $I)
-	{
-		$loginPage  = new LoginPage($I);
-		foreach (AccessPage::$all_users as $user)
-		{
-			$this->_login($loginPage, $user);
-
-			// Loop over array with direct links
-			foreach (AccessPage::$direct_links as $link)
-			{
-				$this->testResultForLink($I, $link, $user);
-			}
-
-			// Loop over array with direct links
-			foreach (AccessPage::$button_links as $link)
-			{
-				$this->testResultForLink($I, $link, $user);
-			}
-
-			$this->_logout($I, $loginPage);
-		}
-	}
+//	public function TestAccessRightsByDirectLinks(\AcceptanceTester $I)
+//	{
+//		$loginPage  = new LoginPage($I);
+//		foreach (AccessPage::$all_users as $user)
+//		{
+//			$this->_login($loginPage, $user);
+//
+//			// Loop over array with direct links
+//			foreach (AccessPage::$direct_links as $link)
+//			{
+//				$this->testResultForLink($I, $link, $user);
+//			}
+//
+//			// Loop over array with button links
+//			foreach (AccessPage::$button_links as $link)
+//			{
+//				$this->testResultForLink($I, $link, $user);
+//			}
+//
+//			$this->_logout($I, $loginPage);
+//		}
+//	}
 
 	/**
 	 * method to handle single link

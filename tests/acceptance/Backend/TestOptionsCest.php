@@ -105,7 +105,7 @@ class TestOptionsCest
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)
 			{
-				$identifier = ".//*[@id='jform_rules_" . $rules[$i] . '_' . $group_id . "']";
+				$identifier = './/*[@id="jform_rules_' . $rules[$i] . '_' . $group_id . '"]';
 				$value      = $actions[$rules[$i]];
 
 				$I->scrollTo($identifier, 0, -150);

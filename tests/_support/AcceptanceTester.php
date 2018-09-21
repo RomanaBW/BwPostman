@@ -77,6 +77,26 @@ class AcceptanceTester extends \Codeception\Actor
 	}
 
 	/**
+	 * Method to remove selected attribute from an option of a select list
+	 *
+	 * @param string            $input_element   ID of input element to remove readonly attribute
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function removeSelectedAttribute($input_element = '')
+	{
+//		$script = ' jQuery(\''.$input_element.' option\').removeAttr("selected");';
+//		$script .= ' jQuery(\'' . $input_element . ' option[value="' . $value . '"]\').attr("selected", true);';
+//		$script .= ' jQuery(\'' . $input_element . '\').change();';
+
+		$script = ' jQuery(\'' . $input_element . '\').find(\'option:selected\').remove().end();';
+
+		$this->executeJS($script);
+	}
+
+	/**
 	 * Method to fill a form field with readonly attribute
 	 *
 	 * @param string            $input_element   ID of input element to remove readonly attribute

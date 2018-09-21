@@ -115,7 +115,7 @@ codecept_debug("Value: $value");
 				$I->scrollTo($identifier, 0, -150);
 				$I->waitForElementVisible($identifier, 30);
 				$selector = '#jform_rules_' . $rules[$i] . '_' . $group_id;
-				$I->executeJS(' jQuery(\''.$selector.' option\').removeAttr("selected"); $(\'' . $selector . ' option[value="' . $value . '"]\').attr("selected", true); $(\'' . $selector . '\').change(); ');
+				$I->removeSelectedAttribute($selector);
 				$I->selectOption($identifier, $value);
 				$I->wait(1);
 			}

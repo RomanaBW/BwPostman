@@ -122,7 +122,7 @@ codecept_debug("Value: $value");
 
 				$I->click($identifier);
 				$I->selectOption($identifier, $value);
-				$I->wait(1);
+//				$I->wait(1);
 			}
 
 			// apply
@@ -140,6 +140,7 @@ codecept_debug("Value: $value");
 			// check success
 			foreach ($rules as $rule)
 			{
+codecept_debug("Rule: $rule");
 				$key_pos    = array_search($rule, $rules) + 1;
 				$identifier = sprintf(OptionsPage::$result_row, $group_id, $key_pos);
 				$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];

@@ -1496,29 +1496,55 @@ class Acceptance extends Codeception\Module
 	 */
 	public function getRuleNamesByComponentAsset($extension)
 	{
-		$credentials    = $this->getDbCredentials();
-		$criteria       = array();
+//		$credentials    = $this->getDbCredentials();
+//		$criteria       = array();
+//
+//		$rules_string = DbHelper::getRuleNamesByComponentAsset($extension, $criteria, $credentials);
+//
+//		$rules_raw  = json_decode($rules_string);
+//
+//		$rules  = array();
+//		foreach ($rules_raw as $rule_name => $value)
+//		{
+//			if ($rule_name != 'bwpm.admin')
+//			{
+//				$rules[]   = $rule_name;
+//			}
+//		}
+//
+//		// @ToDo: resolve this workaround
+//		//reorder core rules
+//		if (($rules[0] == 'core.manage') && ($rules[1] == 'core.admin'))
+//		{
+//			$rules[0] = 'core.admin';
+//			$rules[1] = 'core.manage';
+//		}
 
-		$rules_string = DbHelper::getRuleNamesByComponentAsset($extension, $criteria, $credentials);
-
-		$rules_raw  = json_decode($rules_string);
-
-		$rules  = array();
-		foreach ($rules_raw as $rule_name => $value)
-		{
-			if ($rule_name != 'bwpm.admin')
-			{
-				$rules[]   = $rule_name;
-			}
-		}
-
-		// @ToDo: resolve this workaround
-		//reorder core rules
-		if (($rules[0] == 'core.manage') && ($rules[1] == 'core.admin'))
-		{
-			$rules[0] = 'core.admin';
-			$rules[1] = 'core.manage';
-		}
+		$rules = array(
+			"core.admin",
+			"core.login.admin",
+			"core.manage",
+			"bwpm.create",
+			"bwpm.edit",
+			"bwpm.edit.own",
+			"bwpm.edit.state",
+			"bwpm.archive",
+			"bwpm.restore",
+			"bwpm.delete",
+			"bwpm.send",
+			"bwpm.view.newsletter",
+			"bwpm.view.subscriber",
+			"bwpm.view.campaign",
+			"bwpm.view.mailinglist",
+			"bwpm.view.template",
+			"bwpm.view.archive",
+			"bwpm.admin.newsletter",
+			"bwpm.admin.subscriber",
+			"bwpm.admin.campaign",
+			"bwpm.admin.mailinglist",
+			"bwpm.admin.template",
+			"bwpm.view.maintenance",
+		);
 
 		return $rules;
 	}

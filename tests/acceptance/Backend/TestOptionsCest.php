@@ -116,6 +116,7 @@ class TestOptionsCest
 
 				$I->click($identifier);
 				$I->selectOption($identifier, $value);
+				$I->wait(1);
 			}
 
 			// apply

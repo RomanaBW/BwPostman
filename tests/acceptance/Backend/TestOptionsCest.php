@@ -101,18 +101,12 @@ class TestOptionsCest
 
 			$I->click($slider);
 			$I->waitForElement($slider, 30);
-codecept_debug("Actions:");
-codecept_debug($actions);
-codecept_debug("Rules:");
-codecept_debug($rules);
 
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)
 			{
 				$identifier = './/*[@id="jform_rules_' . $rules[$i] . '_' . $group_id . '"]';
 				$value      = $actions[$rules[$i]];
-codecept_debug("Identifier: $identifier");
-codecept_debug("Value: $value");
 
 				$I->scrollTo($identifier, 0, -150);
 				$I->waitForElementVisible($identifier, 30);
@@ -122,7 +116,6 @@ codecept_debug("Value: $value");
 
 				$I->click($identifier);
 				$I->selectOption($identifier, $value);
-//				$I->wait(1);
 			}
 
 			// apply
@@ -140,11 +133,12 @@ codecept_debug("Value: $value");
 			// check success
 			foreach ($rules as $rule)
 			{
-codecept_debug("Rule: $rule");
 				$key_pos    = array_search($rule, $rules) + 1;
 				$identifier = sprintf(OptionsPage::$result_row, $group_id, $key_pos);
 				$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];
-				$I->scrollTo($key_pos, 0, -150);
+
+				$scrollPos = './/*[@id="jform_rules_' . $rule . '_' . $group_id . '"]';
+				$I->scrollTo($scrollPos, 0, -150);
 
 				$I->see($value, $identifier);
 			}

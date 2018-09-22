@@ -144,6 +144,7 @@ codecept_debug("Rule: $rule");
 				$key_pos    = array_search($rule, $rules) + 1;
 				$identifier = sprintf(OptionsPage::$result_row, $group_id, $key_pos);
 				$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];
+				$I->scrollTo($identifier, 0, -150);
 
 				$I->see($value, $identifier);
 			}

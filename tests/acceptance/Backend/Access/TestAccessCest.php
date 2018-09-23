@@ -388,27 +388,27 @@ class TestAccessCest
 			// Shortcut for user variable
 			$user   = AccessPage::$all_users[$i];
 
-			// @ToDo: This is a workaround to debug tests. Comment out users which are not wanted
+			// @ToDo: This is a workaround to debug tests. Comment out usergroups/users which are not wanted
 			$wanted_users = array(
-				'BwPostmanAdmin',
-				'BwPostmanManager',
+//				'BwPostmanAdmin',
+//				'BwPostmanManager',
 				'BwPostmanPublisher',
 				'BwPostmanEditor',
-				'BwPostmanCampaignAdmin',
-				'BwPostmanCampaignPublisher',
-				'BwPostmanCampaignEditor',
-				'BwPostmanMailinglistAdmin',
-				'BwPostmanMailinglistPublisher',
-				'BwPostmanMailinglistEditor',
-				'BwPostmanNewsletterAdmin',
-				'BwPostmanNewsletterPublisher',
-				'BwPostmanNewsletterEditor',
-				'BwPostmanSubscriberAdmin',
-				'BwPostmanSubscriberPublisher',
-				'BwPostmanSubscriberEditor',
-				'BwPostmanTemplateAdmin',
-				'BwPostmanTemplatePublisher',
-				'BwPostmanTemplateEditor',
+//				'BwPostmanCampaignAdmin',
+//				'BwPostmanCampaignPublisher',
+//				'BwPostmanCampaignEditor',
+//				'BwPostmanMailinglistAdmin',
+//				'BwPostmanMailinglistPublisher',
+//				'BwPostmanMailinglistEditor',
+//				'BwPostmanNewsletterAdmin',
+//				'BwPostmanNewsletterPublisher',
+//				'BwPostmanNewsletterEditor',
+//				'BwPostmanSubscriberAdmin',
+//				'BwPostmanSubscriberPublisher',
+//				'BwPostmanSubscriberEditor',
+//				'BwPostmanTemplateAdmin',
+//				'BwPostmanTemplatePublisher',
+//				'BwPostmanTemplateEditor',
 				);
 
 			if (!in_array($user['user'], $wanted_users))
@@ -424,13 +424,13 @@ class TestAccessCest
 				// @ToDo: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
 					//'Newsletters',
-					//'Subscribers',
-					//'Campaigns',
-					//'Mailinglists',
-					//'Templates',
-					//'Archive',
-					//'Basic settings',
-					//'Maintenance',
+					'Subscribers',
+					'Campaigns',
+					'Mailinglists',
+					'Templates',
+					'Archive',
+					'Basic settings',
+					'Maintenance',
 					);
 
 				if (in_array($button, $unwanted_section))
@@ -793,7 +793,7 @@ class TestAccessCest
 
 		if (!$archive_allowed)
 		{
-			$I->dontSeeElement(Generals::$toolbar['Archive']);
+//			$I->dontSeeElement(Generals::$toolbar['Archive']);
 			return;
 		}
 
@@ -805,9 +805,9 @@ class TestAccessCest
 		if (!$restore_allowed)
 		{
 			// @ToDo: Check for visibility of tabs
-			$I->switchToArchive($I, $edit_data['archive_tab']);
-			$I->dontSeeElement(Generals::$toolbar['Restore']);
-			$I->switchToSection($I, $manage_data);
+//			$I->switchToArchive($I, $edit_data['archive_tab']);
+//			$I->dontSeeElement(Generals::$toolbar['Restore']);
+//			$I->switchToSection($I, $manage_data);
 			return;
 		}
 

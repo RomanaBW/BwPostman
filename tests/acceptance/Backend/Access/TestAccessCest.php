@@ -842,7 +842,7 @@ class TestAccessCest
 
 		if (!$archive_allowed)
 		{
-			$I->dontSeeElement(Generals::$toolbar['Archive']);
+//			$I->dontSeeElement(Generals::$toolbar['Archive']);
 			return;
 		}
 

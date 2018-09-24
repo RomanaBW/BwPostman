@@ -470,6 +470,7 @@ class TestAccessCest
 
 						$this->checkinOwnItem($I, $button, $link, $item_permission_array);
 						// @ToDo: Use other user to lock. Question: How to determine other user?
+						// Workaround: If BwPostmanAdmin, then other user BwPostmanPublisher, else other user BwPostmanAdmin
 						// $this->_checkinOtherItem($I, $i, $button, $link);
 
 						$this->restoreArchivedItem($I, $button, $user, $item_permission_array); // own item

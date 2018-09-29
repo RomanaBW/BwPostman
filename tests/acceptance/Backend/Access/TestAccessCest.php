@@ -390,25 +390,25 @@ class TestAccessCest
 
 			// @ToDo: This is a workaround to debug tests. Comment out usergroups/users which are not wanted
 			$wanted_users = array(
-//				'BwPostmanAdmin',
-//				'BwPostmanManager',
+				'BwPostmanAdmin',
+				'BwPostmanManager',
 				'BwPostmanPublisher',
 				'BwPostmanEditor',
-//				'BwPostmanCampaignAdmin',
-//				'BwPostmanCampaignPublisher',
-//				'BwPostmanCampaignEditor',
-//				'BwPostmanMailinglistAdmin',
-//				'BwPostmanMailinglistPublisher',
-//				'BwPostmanMailinglistEditor',
-//				'BwPostmanNewsletterAdmin',
-//				'BwPostmanNewsletterPublisher',
-//				'BwPostmanNewsletterEditor',
-//				'BwPostmanSubscriberAdmin',
-//				'BwPostmanSubscriberPublisher',
-//				'BwPostmanSubscriberEditor',
-//				'BwPostmanTemplateAdmin',
-//				'BwPostmanTemplatePublisher',
-//				'BwPostmanTemplateEditor',
+				'BwPostmanCampaignAdmin',
+				'BwPostmanCampaignPublisher',
+				'BwPostmanCampaignEditor',
+				'BwPostmanMailinglistAdmin',
+				'BwPostmanMailinglistPublisher',
+				'BwPostmanMailinglistEditor',
+				'BwPostmanNewsletterAdmin',
+				'BwPostmanNewsletterPublisher',
+				'BwPostmanNewsletterEditor',
+				'BwPostmanSubscriberAdmin',
+				'BwPostmanSubscriberPublisher',
+				'BwPostmanSubscriberEditor',
+				'BwPostmanTemplateAdmin',
+				'BwPostmanTemplatePublisher',
+				'BwPostmanTemplateEditor',
 				);
 
 			if (!in_array($user['user'], $wanted_users))
@@ -423,14 +423,14 @@ class TestAccessCest
 			{
 				// @ToDo: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
-					//'Newsletters',
-					'Subscribers',
-					'Campaigns',
-					'Mailinglists',
-					'Templates',
-					'Archive',
-					'Basic settings',
-					'Maintenance',
+//					'Newsletters',
+//					'Subscribers',
+//					'Campaigns',
+//					'Mailinglists',
+//					'Templates',
+//					'Archive',
+//					'Basic settings',
+//					'Maintenance',
 					);
 
 				if (in_array($button, $unwanted_section))

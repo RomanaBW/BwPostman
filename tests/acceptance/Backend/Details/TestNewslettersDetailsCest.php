@@ -417,7 +417,7 @@ class TestNewslettersDetailsCest
 
 		if ($user == 'jenkins')
 		{
-			$I->wait(3);
+			$I->wait(0);
 		}
 
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);

@@ -543,10 +543,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				{
 					foreach ($rule as $key => $value)
 					{
-						if ($value == '1')
-						{
-							$allgroups[] = $key;
-						}
+						$allgroups[] = $key;
 					}
 				}
 			}

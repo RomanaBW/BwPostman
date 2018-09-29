@@ -1892,12 +1892,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (count($usergroups))
 			{
-				$new_groups = $this->getCurrentUserGroups($usergroups);
+				$groupsToReplace = $this->getCurrentUserGroups($usergroups);
 
-				if (is_array($new_groups))
+				if (is_array($groupsToReplace))
 				{
 					// rewrite component asset user groups
-					$this->rewriteAssetUserGroups('component', $com_assets, $new_groups);
+					$this->rewriteAssetUserGroups('component', $com_assets, $groupsToReplace);
 					$com_assets = JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
 					// rewrite table asset user groups
@@ -1908,7 +1908,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						{
 							// get table assets
 							$assets = $tables[$table]['table_assets'];
-							$this->rewriteAssetUserGroups($table, $assets, $new_groups);
+							$this->rewriteAssetUserGroups($table, $assets, $groupsToReplace);
 						}
 					}
 				}
@@ -3143,7 +3143,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 
-				$groups[] = array('old_id' => $item['id'], 'new_id' => $result);
+				$groups[] = array('old_id' => $item['id'], 'new_id' => $result, 'title' => $item['title']);
 			}
 			else
 			{
@@ -3151,7 +3151,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				if ($result['id'] !== $item['id'])
 				{
 					// memorize new id
-					$groups[] = array('old_id' => $item['id'], 'new_id' => $result['id']);
+					$groups[] = array('old_id' => $item['id'], 'new_id' => $result['id'], 'title' => $item['title']);
 				}
 			}
 		}
@@ -3169,9 +3169,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to rewrite user groups in the assets. Needed, if backup file processed contains other usergroups than currently installed ones.
 	 *
-	 * @param   string $table  component or table name of the assets are to rewrite
-	 * @param   array  $assets array of the table assets
-	 * @param   array  $groups array with old and new ID of changed user groups
+	 * @param   string $table             component or table name of the assets are to rewrite
+	 * @param   array  $assets            array of the table assets
+	 * @param   array  $groupsToReplace   array with old and new ID of changed user groups
 	 *
 	 * @return  void
 	 *
@@ -3180,14 +3180,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 */
-	private function rewriteAssetUserGroups($table, &$assets, $groups)
+	private function rewriteAssetUserGroups($table, &$assets, $groupsToReplace)
 	{
 		// @ToDo: Check if exceptions are handled correctly
 		$tables  = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tables');
 		$old_ids = array();
-		foreach ($groups as $group)
+		foreach ($groupsToReplace as $groupToReplace)
 		{
-			$old_ids[] = $group['old_id'];
+			$old_ids[] = $groupToReplace['old_id'];
 		}
 
 		// check assets
@@ -3196,25 +3196,30 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			if (key_exists('rules', $asset))
 			{
-				$rules = json_decode($asset['rules']);
+				$rules = json_decode($asset['rules'], true);
 				if ($rules !== null)
 				{
 					// rewrite user groups in rule
-					foreach ($rules as $rule)
+					foreach ($rules as $action => $rule)
 					{
 						$rewrite = false;
+						$ruleNew = array();
+
 						foreach ($rule as $key => $value)
 						{
 							$found = array_search($key, $old_ids);
 							if ($found !== false)
 							{
-								$rewrite        = true;
-								$key_old        = $groups[$found]['old_id'];
-								$key_new        = $groups[$found]['new_id'];
-								$rule->$key_new = $value;
-								unset($rule->$key_old);
+								$rewrite = true;
+								$newKey  = $groupsToReplace[$found]['new_id'];
+								$ruleNew[$newKey] = $value;
+							}
+							else
+							{
+								$ruleNew[$key] = $value;
 							}
 						}
+						$rules[$action] = $ruleNew;
 
 						if ($rewrite)
 						{

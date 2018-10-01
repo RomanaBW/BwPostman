@@ -92,7 +92,7 @@ test_suites:
       - install
       - restore
       - defaultOptions
-#      - frontend
+      - frontend
       - user2subscriber
   #  - personalize
 

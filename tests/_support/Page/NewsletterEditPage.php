@@ -1183,6 +1183,13 @@ class NewsletterEditPage
 
 			$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
 		}
+		else
+		{
+			if ($nbrToSend > 50)
+			{
+				$I->wait(180);
+			}
+		}
 
 		$I->switchToIFrame();
 		$I->wait(8);

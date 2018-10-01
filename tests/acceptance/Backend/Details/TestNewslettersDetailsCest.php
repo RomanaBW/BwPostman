@@ -424,9 +424,9 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
-		$I->waitForText(NlEdit::$success_send_ready, 60);
 		if ($user != 'jenkins')
 		{
+			$I->waitForText(NlEdit::$success_send_ready, 60);
 			$I->see(NlEdit::$success_send_ready);
 		}
 
@@ -440,7 +440,7 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Test method to create copy newsletter and send to real recipients
+	 * Test method to send newsletter to real recipients
 	 *
 	 * @param   \AcceptanceTester                $I
 	 *

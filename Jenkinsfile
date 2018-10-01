@@ -64,23 +64,8 @@ pipeline {
 
 				stage ('accept2') {
 					steps {
-//						echo 'Dummy'
-							bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
-					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-						}
-					}
-				}
-
-				stage ('accept3') {
-					steps {
 						echo 'Dummy'
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER)
+//							bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
 					}
 //					post {
 //						always {
@@ -90,6 +75,21 @@ pipeline {
 //							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
 //						}
 //					}
+				}
+
+				stage ('accept3') {
+					steps {
+//						echo 'Dummy'
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER)
+					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
+						}
+					}
 				}
 
 				stage ('accept4') {

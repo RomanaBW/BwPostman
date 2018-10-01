@@ -417,7 +417,7 @@ class TestNewslettersDetailsCest
 
 		if ($user == 'jenkins')
 		{
-			$I->wait(10);
+			$I->wait(6);
 		}
 
 //		within({frame: "#editor"}, () => {I.see('Page');});

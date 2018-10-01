@@ -417,22 +417,22 @@ class TestNewslettersDetailsCest
 
 		if ($user == 'jenkins')
 		{
-			$I->wait(1);
+			$I->wait(10);
 		}
 
 //		within({frame: "#editor"}, () => {I.see('Page');});
 
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
-		if ($user != 'jenkins')
-		{
+//		if ($user != 'jenkins')
+//		{
 			$I->waitForText(NlEdit::$success_send_ready, 60);
 			$I->see(NlEdit::$success_send_ready);
-		}
-		else
-		{
-			$I->wait(10);
-		}
+//		}
+//		else
+//		{
+//			$I->wait(10);
+//		}
 
 		$I->switchToIFrame();
 		$I->wait(5);
@@ -518,7 +518,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 0);
+		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 10);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

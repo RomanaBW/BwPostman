@@ -1185,10 +1185,7 @@ class NewsletterEditPage
 		}
 		else
 		{
-			if ($nbrToSend > 50)
-			{
-				$I->wait(180);
-			}
+			$I->wait(180);
 		}
 
 		$I->switchToIFrame();

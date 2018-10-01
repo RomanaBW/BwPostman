@@ -53,7 +53,7 @@ test_file:
   - suite: frontend
     testsuite_file: Frontend
   - suite: details
-    testsuite_file: Backend/Details/TestNewslettersDetailsCest
+    testsuite_file: Backend/Details
   - suite: user2subscriber
     testsuite_file: User2Subscriber
   - suite: createUsers

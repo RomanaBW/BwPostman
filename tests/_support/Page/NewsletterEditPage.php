@@ -1175,8 +1175,12 @@ class NewsletterEditPage
 
 		$I->waitForElement(self::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(self::$tab5_send_iframe);
-		$I->waitForText(self::$success_send_ready, 180);
-		$I->see(self::$success_send_ready);
+
+		if ($user == 'jenkins')
+		{
+			$I->waitForText(self::$success_send_ready, 180);
+			$I->see(self::$success_send_ready);
+		}
 
 		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
 

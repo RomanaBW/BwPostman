@@ -420,10 +420,16 @@ class TestNewslettersDetailsCest
 			$I->wait(1);
 		}
 
+//		within({frame: "#editor"}, () => {I.see('Page');});
+
 		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
 		$I->waitForText(NlEdit::$success_send_ready, 60);
-		$I->see(NlEdit::$success_send_ready);
+		if ($user != 'jenkins')
+		{
+			$I->see(NlEdit::$success_send_ready);
+		}
+
 		$I->switchToIFrame();
 		$I->wait(5);
 

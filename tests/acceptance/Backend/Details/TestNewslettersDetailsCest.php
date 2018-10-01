@@ -429,6 +429,10 @@ class TestNewslettersDetailsCest
 			$I->waitForText(NlEdit::$success_send_ready, 60);
 			$I->see(NlEdit::$success_send_ready);
 		}
+		else
+		{
+			$I->wait(10);
+		}
 
 		$I->switchToIFrame();
 		$I->wait(5);
@@ -481,13 +485,13 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendNewsletterToRealUsergroup(\AcceptanceTester $I)
+	public function SendNewsletterToUnconfirmed(\AcceptanceTester $I)
 	{
-		$I->wantTo("Send a newsletter to a real user group");
+		$I->wantTo("Send a newsletter also to a unconfirmed recipients");
 
-		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 0);
+		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 25);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -508,13 +512,13 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendNewsletterToUnconfirmed(\AcceptanceTester $I)
+	public function SendNewsletterToRealUsergroup(\AcceptanceTester $I)
 	{
-		$I->wantTo("Send a newsletter also to a unconfirmed recipients");
+		$I->wantTo("Send a newsletter to a real user group");
 
-		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
-		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 25);
+		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 0);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

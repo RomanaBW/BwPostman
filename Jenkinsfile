@@ -42,6 +42,7 @@ pipeline {
 							includes: '*.png',
 						)
 					])
+				}
 
 				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP)
 			}
@@ -58,6 +59,7 @@ pipeline {
 										includes: '*.png',
 										targetLocation: "${WORKSPACE}/${STAGE_NAME}")
 						])
+					}
 
 					emailext(
 						body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",

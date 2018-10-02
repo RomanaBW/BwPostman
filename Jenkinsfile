@@ -35,6 +35,14 @@ pipeline {
 
 		stage('smoke') {
 			steps {
+				dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
+					fileOperations([
+						fileDeleteOperation(
+							excludes: '',
+							includes: '*.png',
+						)
+					])
+
 				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP)
 			}
 			post {
@@ -42,7 +50,21 @@ pipeline {
 					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
 				}
 				failure {
-					emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
+					dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
+						fileOperations([
+								fileCopyOperation(
+										excludes: '',
+										flattenFiles: false,
+										includes: '*.png',
+										targetLocation: "${WORKSPACE}/${STAGE_NAME}")
+						])
+
+					emailext(
+						body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+						attachmentsPattern: "${STAGE_NAME}/*.png",
+						subject:"BwPostman build failed at ${STAGE_NAME}",
+						to: 'info@boldt-webservice.de'
+					)
 				}
 			}
 		}
@@ -60,6 +82,15 @@ pipeline {
 							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
 						}
 						failure {
+							dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
+								fileOperations([
+										fileCopyOperation(
+												excludes: '',
+												flattenFiles: false,
+												includes: '*.png',
+												targetLocation: "${WORKSPACE}/${STAGE_NAME}")
+								])
+
 							emailext(
 								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
 								attachmentsPattern: "${STAGE_NAME}/*.png",

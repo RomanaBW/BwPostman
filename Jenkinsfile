@@ -18,7 +18,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Create installation package'
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
             }
         }
 
@@ -35,14 +35,16 @@ pipeline {
 
 		stage('smoke') {
 			steps {
-//				dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
-//					fileOperations([
-//						fileDeleteOperation(
-//							excludes: '',
-//							includes: '*.png'
-//						)
-//					])
-//				}
+				echo "${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs"
+
+				dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs") {
+					fileOperations([
+						fileDeleteOperation(
+							excludes: '',
+							includes: '*.png'
+						)
+					])
+				}
 
 				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER)
 			}
@@ -51,7 +53,7 @@ pipeline {
 					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
 				}
 				failure {
-					dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
+					dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs") {
 						fileOperations([
 								fileCopyOperation(
 										excludes: '',
@@ -75,81 +77,81 @@ pipeline {
 			parallel {
 				stage ('accept1') {
 					steps {
-//						echo 'Dummy'
-						sleep 60
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER)
+						echo 'Dummy'
+//						sleep 60
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
-								fileOperations([
-										fileCopyOperation(
-												excludes: '',
-												flattenFiles: false,
-												includes: '*.png',
-												targetLocation: "${WORKSPACE}/${STAGE_NAME}")
-								])
-							}
-
-							emailext(
-								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "${STAGE_NAME}/*.png",
-								subject:"BwPostman build failed at ${STAGE_NAME}",
-								to: 'info@boldt-webservice.de'
-							)
-						}
-					}
+//					post {
+//						always {
+//							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+//						}
+//						failure {
+//							dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs") {
+//								fileOperations([
+//										fileCopyOperation(
+//												excludes: '',
+//												flattenFiles: false,
+//												includes: '*.png',
+//												targetLocation: "${WORKSPACE}/${STAGE_NAME}")
+//								])
+//							}
+//
+//							emailext(
+//								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+//								attachmentsPattern: "${STAGE_NAME}/*.png",
+//								subject:"BwPostman build failed at ${STAGE_NAME}",
+//								to: 'info@boldt-webservice.de'
+//							)
+//						}
+//					}
 				}
 
 				stage ('accept2') {
 					steps {
-//						echo 'Dummy'
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
+						echo 'Dummy'
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-						}
-					}
+//					post {
+//						always {
+//							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+//						}
+//						failure {
+//							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
+//						}
+//					}
 				}
 
 				stage ('accept3') {
 					steps {
-//						echo 'Dummy'
-						sleep 120
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER)
+						echo 'Dummy'
+//						sleep 120
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-						}
-					}
+//					post {
+//						always {
+//							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+//						}
+//						failure {
+//							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
+//						}
+//					}
 				}
 			}
 		}
 
 		stage ('accept4') {
 			steps {
-//				echo 'Dummy'
-				bwpmAccept ("accept4", params.ACCEPT_4_IP, params.VERSION_NUMBER)
+				echo 'Dummy'
+//				bwpmAccept ("accept4", params.ACCEPT_4_IP, params.VERSION_NUMBER)
 			}
-			post {
-				always {
-					bwpmAcceptPostStepAlways ("accept4")
-				}
-				failure {
-					emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-				}
-			}
+//			post {
+//				always {
+//					bwpmAcceptPostStepAlways ("accept4")
+//				}
+//				failure {
+//					emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
+//				}
+//			}
 		}
 
 		stage('Pre-Release') {

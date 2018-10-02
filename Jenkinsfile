@@ -11,7 +11,7 @@ pipeline {
         string(name: "ACCEPT_4_IP", defaultValue: "192.168.54.10", description: "Fix IP for acceptance tester 4")
         string(name: "ACCEPT_5_IP", defaultValue: "192.168.55.10", description: "Fix IP for acceptance tester 5")
         string(name: "ACCEPT_6_IP", defaultValue: "192.168.56.10", description: "Fix IP for acceptance tester 6")
-        string(name  "BW_ARTIFACTS_BASE", "/repositories/artifacts/bwpostman"
+        string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
 
     }
     stages {

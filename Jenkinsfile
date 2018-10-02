@@ -35,16 +35,16 @@ pipeline {
 
 		stage('smoke') {
 			steps {
-				dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
-					fileOperations([
-						fileDeleteOperation(
-							excludes: '',
-							includes: '*.png',
-						)
-					])
-				}
+//				dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}") {
+//					fileOperations([
+//						fileDeleteOperation(
+//							excludes: '',
+//							includes: '*.png'
+//						)
+//					])
+//				}
 
-				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP)
+				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER)
 			}
 			post {
 				always {

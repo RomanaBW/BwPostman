@@ -42,22 +42,7 @@ pipeline {
 					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
 				}
 				failure {
-					dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs") {
-						fileOperations([
-								fileCopyOperation(
-										excludes: '',
-										flattenFiles: false,
-										includes: '*.png',
-										targetLocation: "${WORKSPACE}/${STAGE_NAME}")
-						])
-					}
-
-					emailext(
-						body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-						attachmentsPattern: "${STAGE_NAME}/*.png",
-						subject:"BwPostman build failed at ${STAGE_NAME}",
-						to: 'info@boldt-webservice.de'
-					)
+					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
 				}
 			}
 		}
@@ -66,33 +51,18 @@ pipeline {
 			parallel {
 				stage ('accept1') {
 					steps {
-						echo 'Dummy'
+//						echo 'Dummy'
 //						sleep 60
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-//					post {
-//						always {
-//							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-//						}
-//						failure {
-//							dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs") {
-//								fileOperations([
-//										fileCopyOperation(
-//												excludes: '',
-//												flattenFiles: false,
-//												includes: '*.png',
-//												targetLocation: "${WORKSPACE}/${STAGE_NAME}")
-//								])
-//							}
-//
-//							emailext(
-//								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-//								attachmentsPattern: "${STAGE_NAME}/*.png",
-//								subject:"BwPostman build failed at ${STAGE_NAME}",
-//								to: 'info@boldt-webservice.de'
-//							)
-//						}
-//					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
 				}
 
 				stage ('accept2') {

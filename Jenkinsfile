@@ -35,18 +35,7 @@ pipeline {
 
 		stage('smoke') {
 			steps {
-				echo "${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs"
-
-				dir("${BW_ARTIFACTS_BASE}/j${JOOMLA_VERSION}_bwpm${VERSION_NUMBER}/${STAGE_NAME}/logs") {
-					fileOperations([
-						fileDeleteOperation(
-							excludes: '',
-							includes: '*.png'
-						)
-					])
-				}
-
-				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER)
+				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			post {
 				always {
@@ -79,7 +68,7 @@ pipeline {
 					steps {
 						echo 'Dummy'
 //						sleep 60
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER)
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 //					post {
 //						always {
@@ -109,7 +98,7 @@ pipeline {
 				stage ('accept2') {
 					steps {
 						echo 'Dummy'
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER)
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 //					post {
 //						always {
@@ -125,7 +114,7 @@ pipeline {
 					steps {
 						echo 'Dummy'
 //						sleep 120
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER)
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 //					post {
 //						always {
@@ -142,7 +131,7 @@ pipeline {
 		stage ('accept4') {
 			steps {
 				echo 'Dummy'
-//				bwpmAccept ("accept4", params.ACCEPT_4_IP, params.VERSION_NUMBER)
+//				bwpmAccept ("accept4", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 //			post {
 //				always {

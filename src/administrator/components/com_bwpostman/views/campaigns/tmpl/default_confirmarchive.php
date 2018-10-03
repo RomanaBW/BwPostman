@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 			var htmlText="";
 			htmlText += '<form name="popupForm" action="#" method="get">';
 			htmlText += '	<fieldset>';
-			htmlText += '		<table width="100%">';
+			htmlText += '		<table width="100%" id="confirm-archive">';
 			htmlText += '			<tr>';
 				if(window.parent.document.adminForm.boxchecked.value==0){
 			htmlText += '				<th height="30" align="center"><?php echo JText::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';

@@ -983,6 +983,8 @@ class NewsletterEditPage
 	 * @return string   $content_title  title of content
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	public static function fillFormSimple(\AcceptanceTester $I, $toUsergroup = false)
 	{

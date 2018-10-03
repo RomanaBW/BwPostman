@@ -1123,6 +1123,8 @@ class Acceptance extends Codeception\Module
 		{
 			// process newsletter popup
 			$I->switchToIFrame($manage_data['popup_archive_iframe']);
+			$I->waitForElement(".//*[@id='confirm-archive']", 20);
+			$I->waitForText($manage_data['popup_archive_newsletters']);
 			$I->see($manage_data['popup_archive_newsletters']);
 			$I->clickAndWait($manage_data['popup_button_no'], 1);
 			$I->switchToIFrame();
@@ -1168,6 +1170,8 @@ class Acceptance extends Codeception\Module
 		if ($manage_data['section'] == 'campaigns')
 		{
 			$I->switchToIFrame($manage_data['popup_delete_iframe']);
+			$I->waitForElement(".//*[@id='confirm-delete']", 20);
+			$I->waitForText($manage_data['popup_delete_newsletters']);
 			$I->see($manage_data['popup_delete_newsletters']);
 			$I->clickAndWait($manage_data['popup_button_no'], 1);
 			$I->switchToIFrame();
@@ -1231,6 +1235,7 @@ class Acceptance extends Codeception\Module
 		if ($manage_data['section'] == 'campaigns')
 		{
 			$I->switchToIFrame($manage_data['popup_restore_iframe']);
+			$I->waitForElement(".//*[@id='confirm-unarchive']", 20);
 			$I->see($manage_data['popup_restore_newsletters']);
 			$I->clickAndWait($manage_data['popup_button_no'], 1);
 			$I->switchToIFrame();

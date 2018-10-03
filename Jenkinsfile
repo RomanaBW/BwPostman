@@ -52,7 +52,7 @@ pipeline {
 				stage ('accept1') {
 					steps {
 //						echo 'Dummy'
-//						sleep 60
+						sleep 60
 						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 					post {
@@ -67,50 +67,50 @@ pipeline {
 
 				stage ('accept2') {
 					steps {
-						echo 'Dummy'
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						echo 'Dummy'
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-//					post {
-//						always {
-//							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-//						}
-//						failure {
-//							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-//						}
-//					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
 				}
 
 				stage ('accept3') {
 					steps {
-						echo 'Dummy'
-//						sleep 120
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						echo 'Dummy'
+						sleep 120
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-//					post {
-//						always {
-//							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-//						}
-//						failure {
-//							emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-//						}
-//					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
 				}
 			}
 		}
 
 		stage ('accept4') {
 			steps {
-				echo 'Dummy'
-//				bwpmAccept ("accept4", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//				echo 'Dummy'
+				bwpmAccept ("accept4", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
-//			post {
-//				always {
-//					bwpmAcceptPostStepAlways ("accept4")
-//				}
-//				failure {
-//					emailext body: "BwPostman build failed at ${STAGE_NAME}", subject: "BwPostman build failed at ${STAGE_NAME}", to: 'info@boldt-webservice.de'
-//				}
-//			}
+			post {
+				always {
+					bwpmAcceptPostStepAlways ("accept4")
+				}
+				failure {
+					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
 		}
 
 		stage('Pre-Release') {

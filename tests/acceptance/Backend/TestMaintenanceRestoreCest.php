@@ -34,6 +34,8 @@ class TestMaintenanceRestoreCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -52,6 +54,8 @@ class TestMaintenanceRestoreCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function restoreTables(AcceptanceTester $I)
@@ -66,6 +70,8 @@ class TestMaintenanceRestoreCest
 	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

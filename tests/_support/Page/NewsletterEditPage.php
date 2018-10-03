@@ -1021,14 +1021,20 @@ class NewsletterEditPage
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function selectAttachment(\AcceptanceTester $I)
 	{
 		$I->clickAndWait(self::$attachment_select_button, 1);
 		$I->switchToIFrame(Generals::$media_frame);
+		$I->waitForElementVisible("iframe#imageframe");
+
 		$I->switchToIFrame(Generals::$image_frame);
+		$I->waitForElementVisible("ul.manager");
 		$I->clickAndWait(self::$attachment_select, 1);
+
 		$I->switchToIFrame();
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->clickAndWait(self::$attachment_insert, 1);

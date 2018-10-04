@@ -1,4 +1,4 @@
-<?php
+s<?php
 /**
  * BwPostman Newsletter Component
  *
@@ -2233,9 +2233,18 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	private function replaceTplLinks(&$text)
 	{
+		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click	= $params->get('del_sub_1_click');
 
 		// replace edit and unsubscribe link
+		if ($del_sub_1_click === '0')
+		{
 		$replace1	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+		}
+		else
+		{
+			$replace1	= '<a href="[UNSUBSCRIBE_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+		}
 		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
 		$replace2	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
 		$text		= str_replace('[%edit_link%]', $replace2, $text);
@@ -2332,6 +2341,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		$uri  				= JUri::getInstance();
 		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click	= $params->get('del_sub_1_click');
 		$impressum			= $params->get('legal_information_text');
 		$impressum			= nl2br($impressum, true);
 		$sitelink           = $uri->root();
@@ -2352,7 +2362,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$dispatcher->trigger('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
 			}
 
+			if ($del_sub_1_click === '0')
+			{
 			$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . "<br /><br />" . $impressum;
+			}
+			else
+			{
+				$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . "<br /><br />" . $impressum;
+			}
 
 			$replace3  = isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
 				$tpl_assets['tpl_tags_legal_advanced_b'] :
@@ -2368,7 +2385,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// only for old newsletters with template_id < 1
 		if ($id < 1)
 		{
+			if ($del_sub_1_click === '0')
+			{
 			$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . $impressum;
+			}
+			else
+			{
+				$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . $impressum;
+			}
 			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
 		}
 
@@ -2415,9 +2439,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		$uri  				= JUri::getInstance();
 		$itemid_edit		= $this->getItemid('edit');
+		$itemid_unsubscribe	= $this->getItemid('register');
+		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click	= $params->get('del_sub_1_click');
 
+		if ($del_sub_1_click === '0')
+		{
 		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
 			'&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
+		}
+		else
+		{
+			$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
+				'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
+		}
+
 		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
 		$sitelink			= '';
 
@@ -2455,11 +2491,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	private function addTextFooter(&$text, &$id)
 	{
 		$uri  				= JUri::getInstance();
+		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');
 		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click	= $params->get('del_sub_1_click');
 		$impressum			= "\n\n" . $params->get('legal_information_text') . "\n\n";
 
-		$unsubscribelink	= '';
+		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
+				'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
 		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
 		$sitelink			= $uri->root();
 
@@ -2474,15 +2513,30 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (strpos($text, '[%impressum%]') !== false)
 		{
 			// replace [%impressum%]
+			if ($del_sub_1_click === '0')
+			{
 			$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
+			}
+			else
+			{
+				$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
+			}
 			$text		= str_replace('[%impressum%]', $replace, $text);
 		}
 
 		// only for old newsletters with template_id < 1
 		if ($id < 1)
 		{
+			if ($del_sub_1_click === '0')
+			{
 			$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
 				JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
+			}
+			else
+			{
+				$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
+					JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
+			}
 			$text		= str_replace("[dummy]", $replace, $text);
 		}
 

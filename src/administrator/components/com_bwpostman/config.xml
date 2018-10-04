@@ -381,6 +381,19 @@
 		/>
 	</fieldset>
 
+	<fieldset name="com_bwpostman_deactivation_settings" label="COM_BWPOSTMAN_DEREG_SETTINGS" description="COM_BWPOSTMAN_DEREG_SETTINGS_DESCRIPTION">
+		<field name="del_sub_1_click"
+			type="radio"
+			class="btn-group btn-group-yesno"
+			default="0"
+			label="COM_BWPOSTMAN_DELETE_SUBSCRIPTION"
+			description="COM_BWPOSTMAN_DELETE_SUBSCRIPTION_NOTE"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+
 	<fieldset name="com_bwpostman_lists_settings" label="COM_BWPOSTMAN_LISTS_SETTINGS" description="COM_BWPOSTMAN_LISTS_SETTINGS_DESCRIPTION">
 		<field
 			name="filter_field"

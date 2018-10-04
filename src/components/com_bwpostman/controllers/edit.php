@@ -442,6 +442,11 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$itemid	= $model->getItemid();
 		$email  = '';
 
+		// Check if the variable editlink exists in the uri
+		$uri		= JUri::getInstance();
+		$email		= $uri->getVar("email", null);
+		$editlink	= $uri->getVar("code", null);
+
 		// We come from the edit view
 		if ($id)
 		{

@@ -273,7 +273,7 @@ class MaintenancePage
 		$I->waitForElementVisible(self::$step3Field, 30);
 		$I->waitForElementVisible(self::$step4Field, 150);
 		$I->waitForElementVisible(self::$step5Field, 30);
-		$I->waitForElementVisible(self::$step6Field, 120);
+		$I->waitForElementVisible(self::$step6Field, 180);
 		$I->waitForElementVisible(self::$step7Field, 30);
 		$I->waitForElementVisible(self::$step8Field, 30);
 		$I->waitForElementVisible(self::$step9Field, 30);

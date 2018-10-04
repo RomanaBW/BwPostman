@@ -433,12 +433,19 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 						// loop over all tables
 						echo '<h5>' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE', $table_names[$i]) . '</h5>';
-						$model->reWriteTables($table_names[$i]);
+
+						$lastTable = false;
+						if ($i + 1 == count($table_names))
+						{
+							$lastTable = true;
+						}
+
+						$model->reWriteTables($table_names[$i], $lastTable);
 						$i++;
 						$session->set('trestore_i', $i);
 						$step = "6";
 
-						if ($i == count($table_names))
+						if ($lastTable)
 						{
 							// clear session variables
 							$session->clear('trestore_tablenames');

@@ -1317,6 +1317,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 
 			fclose($fh); // Close the file
+			unlink($dest);
 
 			// Return the error/mailing data arrays
 			$ret_err 	= $err;

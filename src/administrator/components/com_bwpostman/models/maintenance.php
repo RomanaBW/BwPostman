@@ -145,13 +145,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// create (empty) backup file
 		$date      = JFactory::getDate()->format("Y-m-d_H_i");
-		$path      = IS_WIN ? JFactory::getConfig()->get('tmp_path') : JFolder::makeSafe(JFactory::getConfig()->get('tmp_path'));
-		$file_name = $path . '/' . JFile::makeSafe('BwPostman_Tables_Server_' . $date . '.xml');
-		$handle    = fopen($file_name, 'wb');
+		$path      = JPATH_ROOT . "/images/bw_postman/backup_tables";
 
-		try
+		if (!JFolder::exists($path))
 		{
-			if (!JFolder::exists($path))
+			if (!JFolder::create($path))
 			{
 				if ($update)
 				{
@@ -164,7 +162,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path));
 			}
+		}
 
+//		$path      = IS_WIN ? JFactory::getConfig()->get('tmp_path') : JFolder::makeSafe(JFactory::getConfig()->get('tmp_path'));
+		$file_name = $path . '/' . JFile::makeSafe('BwPostman_Tables_Server_' . $date . '.xml');
+		$handle    = fopen($file_name, 'wb');
+
+		try
+		{
 			if ($handle === false)
 			{
 				if ($update)
@@ -1959,7 +1964,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to the rewrite tables
 	 *
-	 * @param   string $table     generic name of table to rewrite
+	 * @param   string  $table       generic name of table to rewrite
+	 * @param   boolean $lastTable   is this the last table?
 	 *
 	 * @return    void
 	 *
@@ -1968,185 +1974,198 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 */
-	public function reWriteTables($table)
+	public function reWriteTables($table, $lastTable = false)
 	{
 		// @ToDo: Check if exceptions are handled correctly
 		$tmp_file	= JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
-		$fp			= fopen($tmp_file, 'r');
-		try
+		$tmpFileExists = file_exists($tmp_file);
+		$dest	= JFactory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
+
+		if ($tmpFileExists)
 		{
-			$tables             = unserialize(fread($fp, filesize($tmp_file)));
-			$asset_loop         = 0;
-			$curr_asset_id      = 0;
-			$asset_transform    = array();
-			$base_asset         = $this->getBaseAsset($this->getRawTableName($table));
+			$fp = fopen($tmp_file, 'r');
 
-			$this->assetColnames = array_keys(JFactory::getDbo()->getTableColumns('#__assets'));
-
-			$asset_name     = $base_asset['name'];
-
-			// set some loop values (block size, …)
-			$data_loop_max = $this->getDataLoopMax($table);
-			$max_count     = ini_get('max_execution_time');
-			$data_max      = 0;
-			if (key_exists('table_data', $tables[$table]))
+			try
 			{
-				$data_max = count($tables[$table]['table_data']);
-			}
+				$tables             = unserialize(fread($fp, filesize($tmp_file)));
+				$asset_loop         = 0;
+				$curr_asset_id      = 0;
+				$asset_transform    = array();
+				$base_asset         = $this->getBaseAsset($this->getRawTableName($table));
 
-			$asset_loop_max = 1000;
-			$asset_max      = 0;
-			if (isset($tables[$table]['table_assets']))
-			{
-				$asset_max = count($tables[$table]['table_assets']);
-			}
+				$this->assetColnames = array_keys(JFactory::getDbo()->getTableColumns('#__assets'));
 
-			//Asset Inserting
-			if ($asset_name != '')
-			{
+				$asset_name     = $base_asset['name'];
+
+				// set some loop values (block size, …)
+				$data_loop_max = $this->getDataLoopMax($table);
+				$max_count     = ini_get('max_execution_time');
+				$data_max      = 0;
+				if (key_exists('table_data', $tables[$table]))
+				{
+					$data_max = count($tables[$table]['table_data']);
+				}
+
+				$asset_loop_max = 1000;
+				$asset_max      = 0;
+				if (isset($tables[$table]['table_assets']))
+				{
+					$asset_max = count($tables[$table]['table_assets']);
+				}
+
+				//Asset Inserting
+				if ($asset_name != '')
+				{
+					$s     = 0;
+					$count = 0;
+
+					// if there are data sets
+					if ($asset_max)
+					{
+						$asset_loop = 0;
+					}
+
+					// … insert data sets…
+					if (isset($tables[$table]['table_assets']))
+					{
+						if ($tables[$table]['table_assets'][0]['name'] === $asset_name)
+						{ // update base asset
+							$update_asset = array_shift($tables[$table]['table_assets']);
+							$this->updateBaseAsset($update_asset);
+						}
+						else
+						{ // process dataset assets
+							foreach ($tables[$table]['table_assets'] as $asset)
+							{
+								$asset_loop++;
+
+								if ($count++ == $max_count)
+								{
+									$count = 0;
+									ini_set('max_execution_time', ini_get('max_execution_time'));
+								}
+
+								// collect data sets until loop max
+								$dataset[] = $this->prepareAssetValues($asset, $asset_transform, $s, $base_asset, $curr_asset_id);
+
+								$s++;
+
+								// if asset loop max is reached or last data set, insert into table
+								if (($asset_loop == $asset_loop_max) || ($s == $asset_max))
+								{
+									// write collected assets to table
+									$this->writeLoopAssets($dataset, $s, $base_asset, $asset_transform);
+
+									//reset loop values
+									$asset_loop = 0;
+									$dataset    = array();
+								}
+							} // end foreach table assets
+						} // end switch base asset
+					} // end table assets exists
+				} // end asset inserting
+
+				/*
+				Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set,
+				 * but in empty tables there is nothing to update)
+				 */
 				$s     = 0;
 				$count = 0;
 
 				// if there are data sets
-				if ($asset_max)
+				if ($data_max)
 				{
-					$asset_loop = 0;
+					$dataset   = array();
+					$data_loop = 0;
+
+					// … insert data sets…
+					foreach ($tables[$table]['table_data'] as $item)
+					{
+						$data_loop++;
+
+						// update asset_id
+						if ($asset_name != '')
+						{
+							$asset_found = false;
+							for ($i = 0; $i < count($asset_transform); $i++)
+							{
+								$new_id = array_search($item['asset_id'], $asset_transform[$i]);
+								if ($new_id !== false)
+								{
+									$item['asset_id'] = $asset_transform[$i]['newAssetId'];
+									$asset_found      = true;
+									break;
+								}
+							}
+
+							if (!$asset_found)
+							{
+								$item['asset_id'] = 0;
+							}
+						}
+
+						if ($count++ == $max_count)
+						{
+							$count = 0;
+							ini_set('max_execution_time', ini_get('max_execution_time'));
+						}
+
+						// collect data sets until loop max
+						$values = $this->dbQuoteArray($item);
+
+						$dataset[] = '(' . implode(',', $values) . ')';
+						$s++;
+
+						// if data loop max is reached or last data set, insert into table
+						if (($data_loop == $data_loop_max) || ($s == $data_max))
+						{
+							// write collected data sets to table
+							$this->writeLoopDatasets($dataset, $table);
+
+							// reset loop values
+							$data_loop = 0;
+							$dataset   = array();
+						}
+					} // end foreach table items
+				} // endif data sets exists
+
+				echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table) . '</p><br />';
+
+				if ($table == '#__bwpostman_subscribers')
+				{
+					self::checkUserIds();
 				}
 
-				// … insert data sets…
-				if (isset($tables[$table]['table_assets']))
+				/*
+				 * // For transaction test purposes only
+				if($table_name_raw == 'newsletters') {
+					throw new BwException(JText::_('Test-Exception Newsletter written'));
+				}
+				*/
+
+				if ($lastTable)
 				{
-					if ($tables[$table]['table_assets'][0]['name'] === $asset_name)
-					{ // update base asset
-						$update_asset = array_shift($tables[$table]['table_assets']);
-						$this->updateBaseAsset($update_asset);
-					}
-					else
-					{ // process dataset assets
-						foreach ($tables[$table]['table_assets'] as $asset)
-						{
-							$asset_loop++;
+					fclose($fp);
 
-							if ($count++ == $max_count)
-							{
-								$count = 0;
-								ini_set('max_execution_time', ini_get('max_execution_time'));
-							}
-
-							// collect data sets until loop max
-							$dataset[] = $this->prepareAssetValues($asset, $asset_transform, $s, $base_asset, $curr_asset_id);
-
-							$s++;
-
-							// if asset loop max is reached or last data set, insert into table
-							if (($asset_loop == $asset_loop_max) || ($s == $asset_max))
-							{
-								// write collected assets to table
-								$this->writeLoopAssets($dataset, $s, $base_asset, $asset_transform);
-
-								//reset loop values
-								$asset_loop = 0;
-								$dataset    = array();
-							}
-						} // end foreach table assets
-					} // end switch base asset
-				} // end table assets exists
-			} // end asset inserting
-
-			/*
-			Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set,
-			 * but in empty tables there is nothing to update)
-			 */
-			$s     = 0;
-			$count = 0;
-
-			// if there are data sets
-			if ($data_max)
-			{
-				$dataset   = array();
-				$data_loop = 0;
-
-				// … insert data sets…
-				foreach ($tables[$table]['table_data'] as $item)
-				{
-					$data_loop++;
-
-					// update asset_id
-					if ($asset_name != '')
-					{
-						$asset_found = false;
-						for ($i = 0; $i < count($asset_transform); $i++)
-						{
-							$new_id = array_search($item['asset_id'], $asset_transform[$i]);
-							if ($new_id !== false)
-							{
-								$item['asset_id'] = $asset_transform[$i]['newAssetId'];
-								$asset_found      = true;
-								break;
-							}
-						}
-
-						if (!$asset_found)
-						{
-							$item['asset_id'] = 0;
-						}
-					}
-
-					if ($count++ == $max_count)
-					{
-						$count = 0;
-						ini_set('max_execution_time', ini_get('max_execution_time'));
-					}
-
-					// collect data sets until loop max
-					$values = $this->dbQuoteArray($item);
-
-					$dataset[] = '(' . implode(',', $values) . ')';
-					$s++;
-
-					// if data loop max is reached or last data set, insert into table
-					if (($data_loop == $data_loop_max) || ($s == $data_max))
-					{
-						// write collected data sets to table
-						$this->writeLoopDatasets($dataset, $table);
-
-						// reset loop values
-						$data_loop = 0;
-						$dataset   = array();
-					}
-				} // end foreach table items
-			} // endif data sets exists
-
-			echo '<p class="bw_tablecheck_ok">' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table) . '</p><br />';
-
-			if ($table == '#__bwpostman_subscribers')
-			{
-				self::checkUserIds();
+					unlink($tmp_file);
+					unlink($dest);
+					$this->deleteRestorePoint();
+				}
 			}
-
-			/*
-			 * // For transaction test purposes only
-			if($table_name_raw == 'newsletters') {
-				throw new BwException(JText::_('Test-Exception Newsletter written'));
-			}
-			*/
-
-			if ($table == '#__bwpostman_templates')
+			catch (BwException $e)
 			{
 				fclose($fp);
 				unlink($tmp_file);
-				$this->deleteRestorePoint();
+				unlink($dest);
+				throw new BwException($e->getMessage());
 			}
-		}
-		catch (BwException $e)
-		{
-			fclose($fp);
-			throw new BwException($e->getMessage());
-		}
-		catch (RuntimeException $e)
-		{
-			fclose($fp);
-			throw new BwException($e->getMessage());
+			catch (RuntimeException $e)
+			{
+				fclose($fp);
+				unlink($tmp_file);
+				unlink($dest);
+				throw new BwException($e->getMessage());
+			}
 		}
 	}
 

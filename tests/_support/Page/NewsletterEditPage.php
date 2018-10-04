@@ -379,7 +379,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_id                = "jform_attachment";
+	public static $attachment_id                = "#jform_attachment";
 
 
 	/**
@@ -401,7 +401,21 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
+	public static $attachment_upload_file       = "html/body/ul/li/a[contains(@href,'text-newsletter.txt')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $attachment_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $attachment_cancel            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[2]";
 
 	/**
 	 * @var string

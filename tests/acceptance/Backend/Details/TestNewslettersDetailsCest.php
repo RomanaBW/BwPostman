@@ -174,6 +174,54 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
+	 * Test method to upload a file while creating a newsletter, cancel creation
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneNewsletterWithFileUpload(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Newsletter and upload a file for attachment");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		$I->clickAndWait(NlEdit::$attachment_select_button, 1);
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->waitForElementVisible("iframe#imageframe");
+		$I->waitForElementVisible("#upload-file");
+
+		// Upload file
+		$I->attachFile(".//*[@id='upload-file']", "text-newsletter.txt");
+		$I->click("html/body/form[2]/div/fieldset/div/div[2]/button");
+		$I->dontSeeElement(Generals::$alert_error);
+
+		$I->switchToIFrame(Generals::$image_frame);
+		$I->waitForElementVisible("ul.manager");
+		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -100);
+		$I->clickAndWait(NlEdit::$attachment_upload_file, 1);
+
+		$I->switchToIFrame();
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->clickAndWait(NlEdit::$attachment_insert, 1);
+		$I->switchToIFrame();
+
+		$I->waitForElementVisible(NlEdit::$attachment, 20);
+
+		$I->click(NlEdit::$toolbar['Cancel']);
+		$I->see("Newsletters", Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single Newsletter from list view, save it and go back to list view
 	 *
 	 * @param   \AcceptanceTester                $I

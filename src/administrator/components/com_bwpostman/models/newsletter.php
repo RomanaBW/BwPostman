@@ -1,4 +1,4 @@
-s<?php
+<?php
 /**
  * BwPostman Newsletter Component
  *
@@ -173,6 +173,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @param	object	$record	A record object.
 	 *
 	 * @return	boolean	True if allowed to change the state of the record.
+	 *
+	 * @throws \Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -1209,6 +1211,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	boolean
 	 *
+	 * @throws \Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function delete(&$pks)
@@ -2011,6 +2015,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Method to reset the count of sending attempts in sendmailqueue.
 	 *
 	 * @return bool
+	 *
+	 * @throws \Exception
 	 *
 	 * @since
 	 */

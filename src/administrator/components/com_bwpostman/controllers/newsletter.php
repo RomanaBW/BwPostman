@@ -83,6 +83,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$this->registerTask('sendtestmail', 'sendmail');
 		$this->registerTask('publish_apply', 'save');
 		$this->registerTask('publish_save', 'save');
+		$this->registerTask('save2new', 'save');
 		$this->registerTask('changeTab', 'changeTab');
 
 		$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
@@ -414,7 +415,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$context	= "$this->option.edit.$this->context";
 		$task		= $this->getTask();
 
-		if (($task == 'save') || ($task == 'apply') || ($task == 'save2copy') || ($task == 'publish_save') || ($task == 'publish_apply'))
+		if (($task == 'save') || ($task == 'apply') || ($task == 'save2new')  || ($task == 'save2copy') || ($task == 'publish_save') || ($task == 'publish_apply'))
 		{
 			$this->changeTab();
 		}

@@ -186,6 +186,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		{
 			JToolbarHelper::save('campaign.save');
 			JToolbarHelper::apply('campaign.apply');
+			JToolbarHelper::save2new('campaign.save2new');
 			JToolbarHelper::cancel('campaign.cancel');
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 		}
@@ -199,6 +200,11 @@ class BwPostmanViewCampaign extends JViewLegacy
 				{
 					JToolbarHelper::save('campaign.save');
 					JToolbarHelper::apply('campaign.apply');
+
+					if ($this->permissions['campaign']['create'])
+					{
+						JToolbarHelper::save2new('campaign.save2new');
+					}
 				}
 			}
 

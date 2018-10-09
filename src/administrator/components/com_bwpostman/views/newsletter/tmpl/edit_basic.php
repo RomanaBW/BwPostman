@@ -96,11 +96,11 @@ Joomla.submitbutton = function (pressbutton)
 		return;
 	}
 
-	if (pressbutton == 'newsletter.apply')
+	if (pressbutton == 'newsletter.apply' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
 	{
 		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
 		{
-			document.adminForm.task.setAttribute('value','newsletter.apply');
+			document.adminForm.task.setAttribute('value',pressbutton);
 			if ($j("#jform_campaign_id option:selected").val() == '-1')
 			{
 				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
@@ -126,7 +126,7 @@ Joomla.submitbutton = function (pressbutton)
 	{
 		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
 		{
-			document.adminForm.task.setAttribute('value','newsletter.save');
+			document.adminForm.task.setAttribute('value',pressbutton);
 			if ($j("#jform_campaign_id option:selected").val() == '-1')
 			{
 				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);

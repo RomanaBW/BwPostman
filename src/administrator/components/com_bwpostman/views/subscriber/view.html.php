@@ -537,6 +537,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				if ($this->item->id < 1 && $this->permissions['subscriber']['create']) {
 					JToolbarHelper::save('subscriber.save');
 					JToolbarHelper::apply('subscriber.apply');
+					JToolbarHelper::save2new('subscriber.save2new');
 					JToolbarHelper::cancel('subscriber.cancel');
 					JToolbarHelper::title($title . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 				}
@@ -547,6 +548,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 						if (BwPostmanHelper::canEdit('subscriber', $this->item)) {
 							JToolbarHelper::save('subscriber.save');
 							JToolbarHelper::apply('subscriber.apply');
+
+							if ($this->permissions['subscriber']['create'])
+							{
+								JToolbarHelper::save2new('subscriber.save2new');
+							}
 						}
 					}
 

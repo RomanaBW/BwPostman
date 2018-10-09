@@ -72,7 +72,7 @@ Joomla.submitbutton = function (pressbutton)
 		return;
 	}
 
-	if (pressbutton == 'newsletter.save')
+	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
 	{
 		document.adminForm.task.setAttribute('value','newsletter.save');
 		submitform(pressbutton);

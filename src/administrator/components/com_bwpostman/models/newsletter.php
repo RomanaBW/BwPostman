@@ -3699,7 +3699,7 @@ class contentRenderer
 
 				$html_content = new HTML_content();
 
-				if ($tpl->article['show_title'] != 0)
+				if (key_exists('show_title', $tpl->article) && $tpl->article['show_title'] != 0)
 				{
 					ob_start();
 					// Displays Item Title

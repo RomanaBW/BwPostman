@@ -264,6 +264,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		{
 			JToolbarHelper::save('newsletter.publish_save');
 			JToolbarHelper::apply('newsletter.publish_apply');
+
 			JToolbarHelper::cancel('newsletter.cancel');
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 		}
@@ -275,6 +276,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 				JToolbarHelper::save('newsletter.save');
 				JToolbarHelper::apply('newsletter.apply');
+				JToolbarHelper::save2new('newsletter.save2new');
 
 				$task		= JFactory::getApplication()->input->get('task', '', 'string');
 				// If we came from the main page we will show a back button
@@ -297,6 +299,11 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					{
 						JToolbarHelper::save('newsletter.save');
 						JToolbarHelper::apply('newsletter.apply');
+
+						if ($this->permissions['newsletter']['create'])
+						{
+							JToolbarHelper::save2new('newsletter.save2new');
+						}
 					}
 				}
 

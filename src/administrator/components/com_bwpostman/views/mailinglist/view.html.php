@@ -193,6 +193,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		{
 			JToolbarHelper::save('mailinglist.save');
 			JToolbarHelper::apply('mailinglist.apply');
+			JToolbarHelper::save2new('mailinglist.save2new');
 			JToolbarHelper::cancel('mailinglist.cancel');
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ML_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 		}
@@ -206,6 +207,11 @@ class BwPostmanViewMailinglist extends JViewLegacy
 				{
 					JToolbarHelper::save('mailinglist.save');
 					JToolbarHelper::apply('mailinglist.apply');
+
+					if ($isNew && BwPostmanHelper::canAdd('mailinglist'))
+					{
+						JToolbarHelper::save2new('mailinglist.save2new');
+					}
 				}
 			}
 

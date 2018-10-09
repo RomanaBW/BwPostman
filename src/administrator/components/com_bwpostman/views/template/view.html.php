@@ -269,6 +269,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		{
 			JToolbarHelper::save('template.save');
 			JToolbarHelper::apply('template.apply');
+			JToolbarHelper::save2new('template.save2new');
 			JToolbarHelper::cancel('template.cancel');
 
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_TPL_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
@@ -283,6 +284,11 @@ class BwPostmanViewTemplate extends JViewLegacy
 				{
 					JToolbarHelper::save('template.save');
 					JToolbarHelper::apply('template.apply');
+
+					if ($this->permissions['template']['create'])
+					{
+						JToolbarHelper::save2new('template.save2new');
+					}
 				}
 			}
 

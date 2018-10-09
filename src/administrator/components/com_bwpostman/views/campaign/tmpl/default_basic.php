@@ -210,7 +210,7 @@ Joomla.submitbutton = function (pressbutton)
 		return;
 	}
 
-	if ((pressbutton == 'campaign.apply') || (pressbutton == 'campaign.save'))
+	if (pressbutton == 'campaign.apply') || (pressbutton == 'campaign.save' || pressbutton == 'save2new' || pressbutton == 'save2copy')
 	{
 		if ($j("input[type=checkbox]:checked").length)
 		{

@@ -206,7 +206,7 @@ $options = array(
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default_html&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
 			<legend>
@@ -369,6 +369,7 @@ $options = array(
 		</fieldset>
 
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="nl_method" value="default_html" />
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<?php echo $this->form->getInput('id'); ?>
 		<?php echo $this->form->getInput('asset_id'); ?>

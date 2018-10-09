@@ -40,20 +40,12 @@
 	background-image:	url(../images/icon-48-campaignadd.png);
 }
 
-.icon-48-campaignedit {
-	background-image:	url(../images/icon-48-campaignedit.png);
-}
-
 .icon-48-campaigns {
 	background-image:	url(../images/icon-48-campaigns.png);
 }
 
 .icon-48-mailinglistadd {
 	background-image:	url(../images/icon-48-mailinglistadd.png);
-}
-
-.icon-48-mailinglistedit {
-	background-image:	url(../images/icon-48-mailinglistedit.png);
 }
 
 .icon-48-mailinglists {
@@ -68,20 +60,12 @@
 	background-image:	url(../images/icon-48-text_templateadd.png);
 }
 
-.icon-48-templateedit {
-	background-image:	url(../images/icon-48-templateedit.png);
-}
-
 .icon-48-templates {
 	background-image:	url(../images/icon-48-templates.png);
 }
 
 .icon-48-newsletteradd {
 	background-image:	url(../images/icon-48-newsletteradd.png);
-}
-
-.icon-48-newsletteredit {
-	background-image:	url(../images/icon-48-newsletteredit.png);
 }
 
 .icon-48-newsletters {
@@ -92,20 +76,12 @@
 	background-image:	url(../images/icon-48-subscriberadd.png);
 }
 
-.icon-48-subscriberedit {
-	background-image:	url(../images/icon-48-subscriberedit.png);
-}
-
 .icon-48-subscribers {
 	background-image:	url(../images/icon-48-subscribers.png);
 }
 
 .icon-48-testrecipientadd {
 	background-image:	url(../images/icon-48-testrecipientadd.png);
-}
-
-.icon-48-testrecipientedit {
-	background-image:	url(../images/icon-48-testrecipientedit.png);
 }
 
 .icon-48-maintenance {
@@ -120,30 +96,6 @@
 
 .icon-48-tablecheck {
 	background-image:	url(../images/icon-48-tablecheck.png);
-}
-
-.icon-32-checkform {
-	background-image:	url(../images/icon-32-checkform.png);
-}
-
-.icon-32-export {
-	background-image:	url(../images/icon-32-export.png);
-}
-
-.icon-32-import {
-	background-image:	url(../images/icon-32-import.png);
-}
-
-.icon-32-validate {
-	background-image:	url(../images/icon-32-validate.png);
-}
-
-.icon-32-addhtml {
-	background-image:	url(../images/icon-32-addhtml.png);
-}
-
-.icon-32-addtext {
-	background-image:	url(../images/icon-32-addtext.png);
 }
 
 .icon-back:before {

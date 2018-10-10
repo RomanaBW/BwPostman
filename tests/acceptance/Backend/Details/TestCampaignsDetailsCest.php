@@ -175,6 +175,45 @@ class TestCampaignsDetailsCest
 	}
 
 	/**
+	 * Test method to create a single campaign from main view and click Save & New
+	 *
+	 * @param   AcceptanceTester            $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneCampaignSaveNewMainView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one campaign, save and get new record from main view");
+		$I->amOnPage(MainView::$url);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+		$I->click(MainView::$addCampaignButton);
+		$I->waitForText('Campaign details', 30);
+
+		CamEdit::fillFormSimple($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(CamEdit::$success_save, Generals::$alert_success);
+		$I->see('', CamEdit::$title);
+
+		$I->click(Generals::$toolbar['Cancel']);
+		$I->see("Campaigns", Generals::$pageTitle);
+
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
+		$I->see('Campaigns', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single campaign from list view, save it and go back to list view
 	 *
 	 * @param   AcceptanceTester                $I

@@ -174,6 +174,43 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
+	 * Test method to create a single Newsletter from list view, save it and go back to list view
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneNewsletterSaveNewListView(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Newsletter, save and get new record list view");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		NlEdit::fillFormSimple($I);
+
+		$I->click(Generals::$toolbar['Save & New']);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+
+		$I->see('', NlEdit::$subject);
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to upload a file while creating a newsletter, cancel creation
 	 *
 	 * @param   \AcceptanceTester                $I
@@ -201,7 +238,7 @@ class TestNewslettersDetailsCest
 		$I->waitForElementVisible("#upload-file");
 
 		// Upload file
-		$I->attachFile(".//*[@id='upload-file']", "text-newsletter.txt");
+		$I->attachFile(".//*[@id='upload-file']", "boldt-webservice.png");
 		$I->click("html/body/form[2]/div/fieldset/div/div[2]/button");
 		$I->dontSeeElement(Generals::$alert_error);
 

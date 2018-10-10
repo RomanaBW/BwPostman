@@ -166,6 +166,41 @@ class TestMailinglistsDetailsCest
 	}
 
 	/**
+	 * Test method to create a single mailing list from list view, save it and get new record
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneMailinglistSaveNewListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one mailinglist, save and get new record from list view");
+		$I->amOnPage(MlManage::$url);
+		$I->click(Generals::$toolbar['New']);
+
+		MlEdit::fillFormSimple($I);
+
+		$I->click(Generals::$toolbar['Save & New']);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see('', MlEdit::$title);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
+		$I->see('Mailinglists', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single mailing list from list view, save it and go back to list view
 	 *
 	 * @param   AcceptanceTester                $I

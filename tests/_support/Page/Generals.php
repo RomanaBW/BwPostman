@@ -381,6 +381,8 @@ class Generals
 		'Options'              => ".//*[@id='toolbar-options']/button",
 		'Save'                 => ".//*[@id='toolbar-apply']/button",
 		'Save & Close'         => ".//*[@id='toolbar-save']/button",
+		'Save & New'           => ".//*[@id='toolbar-save-new']/button",
+		'Save as Copy'         => ".//*[@id='toolbar-save-copy']/button",
 		'Cancel'               => ".//*[@id='toolbar-cancel']/button",
 		'Delete'               => ".//*[@id='toolbar-delete']/button",
 		'Restore'              => ".//*[@id='toolbar-unarchive']/button",

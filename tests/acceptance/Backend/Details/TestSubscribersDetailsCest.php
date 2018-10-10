@@ -38,6 +38,8 @@ class TestSubscribersDetailsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -189,6 +191,45 @@ class TestSubscribersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
+	public function CreateOneSubscriberSaveNewListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Subscriber complete, save and get new record list view");
+		$I->amOnPage(SubManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		SubEdit::fillFormSimple($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
+		$I->see('', SubEdit::$name);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
+		$I->see('Subscribers', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single Subscriber from list view, save it and go back to list view
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
 	public function CreateOneSubscriberListViewRestore(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Subscriber list view, archive and restore");
@@ -272,6 +313,8 @@ class TestSubscribersDetailsCest
 	 * @param   \Page\Login         $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

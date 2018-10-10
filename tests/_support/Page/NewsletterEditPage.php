@@ -401,7 +401,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_upload_file       = "html/body/ul/li/a[contains(@href,'text-newsletter.txt')]";
+	public static $attachment_upload_file       = "html/body/ul/li/a[contains(@href,'boldt-webservice.png')]";
 
 	/**
 	 * @var string

@@ -185,6 +185,47 @@ class TestTemplatesDetailsCest
 	}
 
 	/**
+	 * Test method to create a single HTML template from list view, save it and go back to list view
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneHtmlTemplateSaveNewListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one HTML template, save and get new record list view");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->click(Generals::$toolbar['Add HTML-Template']);
+
+		$this->fillFormSimpleHtml($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
+
+		$I->see('', TplEdit::$title);
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$msg_cancel);
+		$I->acceptPopup();
+
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create same single HTML template twice from main view
 	 *
 	 * @param   AcceptanceTester    $I

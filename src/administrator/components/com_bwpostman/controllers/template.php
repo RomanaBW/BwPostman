@@ -319,67 +319,27 @@ class BwPostmanControllerTemplate extends JControllerForm
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanAfterTemplateControllerSave', array());
 
-		// Redirect the user and adjust session state based on the chosen task.
-		$app    = JFactory::getApplication();
 		$task	= $this->getTask();
-		$model	= $this->getModel();
-		$recordId   = $this->input->getInt($urlVar);
-		$context	= "$this->option.edit.$this->context";
-		$state= $app->getUserState($context . '.data', null);
 
 		switch ($task)
 		{
 			case 'apply':
-				// Set the record data in the session.
-				$recordId = $app->getUserState($context . '.id')[0];
-				$this->holdEditId($context, $recordId);
-				$app->setUserState($context . '.data', null);
-				$model->checkout($recordId);
+				break;
 
-				// Redirect back to the edit screen.
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_item
-						. $this->getRedirectToItemAppend($recordId, $urlVar),
-						false
-					)
-				);
+			case 'save2copy':
 				break;
 
 			case 'save2new':
-				// Clear the record id and data from the session.
-				$this->releaseEditId($context, $recordId);
-				$app->setUserState($context . '.data', null);
+				$nl_method	= $this->input->get('nl_method', 'edit', 'string');
 
-				// Redirect back to the edit screen with new item.
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_item
-						. $this->getRedirectToItemAppend(null, $urlVar),
-						false
-					)
-				);
+				// If origin template is predefined template, redirect back to the edit screen of HTML template with new item.
+				if ($nl_method === 'edit')
+				{
+					$this->redirect = str_replace('&layout=edit', '&layout=default_html', $this->redirect);
+				}
 				break;
 
 			default:
-				// Clear the record id and data from the session.
-				$this->releaseEditId($context, $recordId);
-				$app->setUserState($context . '.data', null);
-				$app->setUserState('com_bwpostman.edit.template.data', null);
-
-				$dispatcher = JEventDispatcher::getInstance();
-
-				JPluginHelper::importPlugin('bwpostman');
-				$dispatcher->trigger('onBwPostmanAfterTemplateSave', array());
-
-				// Redirect to the list screen.
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_list
-						. $this->getRedirectToListAppend(),
-						false
-					)
-				);
 				break;
 		}
 	}
@@ -539,39 +499,5 @@ class BwPostmanControllerTemplate extends JControllerForm
 		}
 
 		$this->setRedirect('index.php?option=com_bwpostman&view=templates', false);
-	}
-
-	/**
-	 * Gets the URL arguments to append to an item redirect.
-	 *
-	 * @param	integer		$recordId	The primary key id for the item.
-	 * @param	string		$urlVar		The name of the URL variable for the id.
-	 *
-	 * @return	string		The arguments to append to the redirect URL.
-	 *
-	 * @since	1.2.0
-	 */
-	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
-	{
-		$layout	= $this->input->get('nl_method', 'edit', 'string');
-
-		$append	= '';
-
-		// Setup redirect info.
-		if ($layout != 'edit')
-		{
-			$append .= '&layout=' . $layout;
-		}
-		else
-		{
-			$append .= '&layout=default_html';
-		}
-
-		if ($recordId)
-		{
-			$append .= '&' . $urlVar . '=' . $recordId;
-		}
-
-		return $append;
 	}
 }

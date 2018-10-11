@@ -87,9 +87,9 @@ Joomla.submitbutton = function (pressbutton)
 		return;
 	}
 
-	if (pressbutton == 'newsletter.save')
+	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.apply' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
 	{
-		form.task.setAttribute('value','newsletter.save');
+		form.task.setAttribute('value',pressbutton);
 		submitform(pressbutton);
 		return;
 	}

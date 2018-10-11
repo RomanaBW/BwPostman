@@ -538,6 +538,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 					JToolbarHelper::save('subscriber.save');
 					JToolbarHelper::apply('subscriber.apply');
 					JToolbarHelper::save2new('subscriber.save2new');
+					JToolbarHelper::save2copy('subscriber.save2copy');
 					JToolbarHelper::cancel('subscriber.cancel');
 					JToolbarHelper::title($title . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
 				}
@@ -552,6 +553,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 							if ($this->permissions['subscriber']['create'])
 							{
 								JToolbarHelper::save2new('subscriber.save2new');
+								JToolbarHelper::save2copy('subscriber.save2copy');
 							}
 						}
 					}

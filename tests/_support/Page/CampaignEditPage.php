@@ -68,6 +68,13 @@ class CampaignEditPage
 	 *
 	 * @since 2.0.0
 	 */
+	public static $field_title2        = '001 new campaign for tests2';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_description  = 'A pretty description would be nice.';
 
 

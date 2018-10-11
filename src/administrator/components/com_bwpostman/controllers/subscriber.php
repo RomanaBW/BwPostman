@@ -309,69 +309,6 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher->trigger('onBwPostmanAfterSubscriberControllerSave', array());
-
-		// Redirect the user and adjust session state based on the chosen task.
-		$app    = JFactory::getApplication();
-		$task	= $this->getTask();
-		$model	= $this->getModel();
-		$recordId   = $this->input->getInt($urlVar);
-		$context	= "$this->option.edit.$this->context";
-
-		switch ($task)
-		{
-			case 'apply':
-				// Set the record data in the session.
-				$recordId = $model->getState($this->context . '.id');
-				$this->holdEditId($context, $recordId);
-				$app->setUserState($context . '.data', null);
-				$model->checkout($recordId);
-
-				// Redirect back to the edit screen.
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_item
-						. $this->getRedirectToItemAppend($recordId, $urlVar),
-						false
-					)
-				);
-				break;
-
-			case 'save2new':
-				// Clear the record id and data from the session.
-				$this->releaseEditId($context, $recordId);
-				$app->setUserState($context . '.data', null);
-
-				// Redirect back to the edit screen with new item.
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_item
-						. $this->getRedirectToItemAppend(null, $urlVar),
-						false
-					)
-				);
-				break;
-
-			default:
-				// Clear the record id and data from the session.
-				$this->releaseEditId($context, $recordId);
-				$app->setUserState($context . '.data', null);
-				$app->setUserState('com_bwpostman.edit.subscriber.data', null);
-
-				$dispatcher = JEventDispatcher::getInstance();
-
-				JPluginHelper::importPlugin('bwpostman');
-				$dispatcher->trigger('onBwPostmanAfterSubscriberSave', array());
-
-				// Redirect to the list screen.
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_list
-						. $this->getRedirectToListAppend(),
-						false
-					)
-				);
-				break;
-		}
 	}
 
 	/**

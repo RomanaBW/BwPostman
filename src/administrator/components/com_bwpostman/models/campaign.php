@@ -145,11 +145,11 @@ class BwPostmanModelCampaign extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		$app	= JFactory::getApplication();
-		$cid	= $app->getUserState('com_bwpostman.edit.campaign.id', 0);
 		$data	= $app->getUserState('com_bwpostman.edit.campaign.data', null);
-		$task   = $app->input->getCmd('task', '');
 		$_db	= $this->_db;
 		$id     = 0;
+
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
 
 		if (is_object($data) && property_exists($data, 'id'))
 		{
@@ -162,17 +162,6 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		if (!$data || ($id != $pk)) {
 			// Initialise variables.
-			if (is_array($cid)) {
-				if (!empty($cid)) {
-					$cid = (int) $cid[0];
-				}
-				else {
-					$cid = 0;
-				}
-			}
-
-			if (empty($pk)) $pk	= $cid;
-
 			$item	= parent::getItem($pk);
 
 			//get associated mailinglists

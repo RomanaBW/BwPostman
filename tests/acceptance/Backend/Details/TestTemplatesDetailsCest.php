@@ -212,10 +212,71 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
 		$I->see('', TplEdit::$title);
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$msg_cancel);
+		$I->acceptPopup();
+
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single HTML template from list view, save, modify and save as copy
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneHtmlTemplateSaveCopyListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one HTML template, save, modify and save as copy");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->click(Generals::$toolbar['Add HTML-Template']);
+
+		$this->fillFormSimpleHtml($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see('Template HTML', TplEdit::$tpl_tab3);
+
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
+		$I->seeInField(TplEdit::$title, TplEdit::$field_title);
+
+		// Grab ID of first template
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_templates', 'id', array('title' => TplEdit::$field_title));
+
+		$I->fillField(TplEdit::$title, TplEdit::$field_title2);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
+		$I->see('Template HTML', TplEdit::$tpl_tab3);
+
+		// Grab ID of second template
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_templates', 'id', array('title' => TplEdit::$field_title2));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
+
 		$I->click(Generals::$toolbar['Cancel']);
 
 		$I->seeInPopup(TplEdit::$msg_cancel);
@@ -415,6 +476,102 @@ class TestTemplatesDetailsCest
 	}
 
 	/**
+	 * Test method to create a single HTML template from list view, save it and get new record
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneTextTemplateSaveNewListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Text template, save and get new record list view");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->click(Generals::$toolbar['Add Text-Template']);
+
+		TplEdit::fillFormSimpleText($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see('Template TEXT', TplEdit::$tpl_tab2);
+
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
+
+		$I->see('', TplEdit::$title);
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single HTML template from list view, save, modify and save as copy
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneTextTemplateSaveCopyListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Text template, save and get new record list view");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->click(Generals::$toolbar['Add Text-Template']);
+
+		TplEdit::fillFormSimpleText($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see('Template TEXT', TplEdit::$tpl_tab2);
+
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
+		$I->seeInField(TplEdit::$title, TplEdit::$field_title);
+
+		// Grab ID of first template
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_templates', 'id', array('title' => TplEdit::$field_title));
+
+		$I->fillField(TplEdit::$title, TplEdit::$field_title2);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
+		$I->see('Template TEXT', TplEdit::$tpl_tab2);
+
+		// Grab ID of second template
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_templates', 'id', array('title' => TplEdit::$field_title2));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single Text template from list view, save it and go back to list view
 	 *
 	 * @param   AcceptanceTester    $I
@@ -431,7 +588,7 @@ class TestTemplatesDetailsCest
 	 */
 	public function CreateOneTextTemplateRestoreListView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Text template list view");
+		$I->wantTo("Create one Text template list view, archive and restore");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add Text-Template']);
@@ -499,6 +656,91 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$toolbar['Cancel']);
 
 		$I->see("Template", Generals::$pageTitle);
+
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to edit a default template from list view and save it as new
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function DefaultTemplateSaveNewListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Edit default template, save and get new record list view");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[4]/td[2]/a');
+
+		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see('Template HTML', TplEdit::$tpl_tab3);
+
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
+
+		$I->see('', TplEdit::$title);
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
+
+		$I->see('Template', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to edit a default template from list view and save it as copy
+	 *
+	 * @param   AcceptanceTester    $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function DefaultTemplateSaveCopyListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Edit default template, save as copy");
+		$I->amOnPage(TplManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[4]/td[2]/a');
+
+		// Grab ID of first template
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_templates', 'id', array('title' => 'Standard Creme'));
+
+		$I->fillField(TplEdit::$title, TplEdit::$field_title);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see('Header', TplEdit::$tpl_tab2);
+
+		$I->seeInField(TplEdit::$title, TplEdit::$field_title);
+
+		// Grab ID of second template
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_templates', 'id', array('title' => TplEdit::$field_title));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
+
+		$I->click(Generals::$toolbar['Cancel']);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);

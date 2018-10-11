@@ -214,6 +214,62 @@ class TestCampaignsDetailsCest
 	}
 
 	/**
+	 * Test method to create a single campaign from main view, modify and save as copy
+	 *
+	 * @param   AcceptanceTester            $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneCampaignSaveCopyMainView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one campaign, save, modify and save as copy");
+		$I->amOnPage(MainView::$url);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+		$I->click(MainView::$addCampaignButton);
+		$I->waitForText('Campaign details', 30);
+
+		CamEdit::fillFormSimple($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(CamEdit::$success_save, Generals::$alert_success);
+		$I->seeInField(CamEdit::$title, CamEdit::$field_title);
+
+		// Grab ID of first campaign
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_campaigns', 'id', array('title' => CamEdit::$field_title));
+
+		$I->fillField(CamEdit::$title, CamEdit::$field_title2);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(CamEdit::$success_save, Generals::$alert_msg);
+		$I->seeInField(CamEdit::$title, CamEdit::$field_title2);
+
+		// Grab ID of second campaign
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_campaigns', 'id', array('title' => CamEdit::$field_title2));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
+
+		$I->click(Generals::$toolbar['Cancel']);
+		$I->see("Campaigns", Generals::$pageTitle);
+
+		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
+		$I->see('Campaigns', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single campaign from list view, save it and go back to list view
 	 *
 	 * @param   AcceptanceTester                $I

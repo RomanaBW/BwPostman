@@ -277,6 +277,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				JToolbarHelper::save('newsletter.save');
 				JToolbarHelper::apply('newsletter.apply');
 				JToolbarHelper::save2new('newsletter.save2new');
+				JToolbarHelper::save2copy('newsletter.save2copy');
 
 				$task		= JFactory::getApplication()->input->get('task', '', 'string');
 				// If we came from the main page we will show a back button
@@ -303,6 +304,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 						if ($this->permissions['newsletter']['create'])
 						{
 							JToolbarHelper::save2new('newsletter.save2new');
+							JToolbarHelper::save2copy('newsletter.save2copy');
 						}
 					}
 				}

@@ -143,29 +143,12 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		$app	= JFactory::getApplication();
-		$cid	= $app->getUserState('com_bwpostman.edit.mailinglist.id', 0);
 		$data	= $app->getUserState('com_bwpostman.edit.mailinglist.data', null);
+
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
 
 		if (!$data)
 		{
-			// Initialise variables.
-			if (is_array($cid))
-			{
-				if (!empty($cid))
-				{
-					$cid = $cid[0];
-				}
-				else
-				{
-					$cid = 0;
-				}
-			}
-
-			if (empty($pk))
-			{
-				$pk	= (int) $cid;
-			}
-
 			$item	= parent::getItem($pk);
 		}
 		else

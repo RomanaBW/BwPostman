@@ -155,30 +155,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		$app			= JFactory::getApplication();
-		$cid			= $app->getUserState('com_bwpostman.edit.subscriber.id', 0);
 		$data			= $app->getUserState('com_bwpostman.edit.subscriber.data', null);
 		$mailinglists	= $app->getUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+
 		if (!$data)
 		{
-			// Initialise variables.
-			if (is_array($cid))
-			{
-				if (!empty($cid))
-				{
-					$cid = $cid[0];
-				}
-				else
-				{
-					$cid = 0;
-				}
-			}
-
-			if (empty($pk))
-			{
-				$pk	= (int) $cid;
-			}
-
 			$item	= parent::getItem($pk);
 
 			$_db	= $this->_db;

@@ -214,6 +214,13 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
+	public static $field_title2        = '001 Test Template 2';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_description  = 'A pretty description for this %s template would be nice.';
 
 
@@ -362,7 +369,7 @@ class TemplateEditPage
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
 		'archive_confirm'      => 'Do you wish to archive the selected template(s)?',
 		'archive_success_msg'  => 'The selected template has been archived.',
-		'archive_success2_msg' => 'The selected template have been archived.',
+		'archive_success2_msg' => 'The selected templates have been archived.',
 
 		'delete_button'        => ".//*[@id='toolbar-delete']/button",
 		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",

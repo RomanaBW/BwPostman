@@ -565,6 +565,13 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
+	public static $field_subject2      = "1. Simple Single Test Newsletter 2";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $field_description  = 'Description for the test newsletter';
 
 	/**

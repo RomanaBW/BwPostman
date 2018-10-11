@@ -201,6 +201,59 @@ class TestMailinglistsDetailsCest
 	}
 
 	/**
+	 * Test method to create a single mailing list from list view, save it, modify and save as copy
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneMailinglistSaveCopyListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one mailinglist, save, modify and save as copy");
+		$I->amOnPage(MlManage::$url);
+		$I->click(Generals::$toolbar['New']);
+
+		MlEdit::fillFormSimple($I);
+
+		$I->click(Generals::$toolbar['Save']);
+		$I->waitForElement(Generals::$alert_header, 30);
+
+		$I->see("Message", Generals::$alert_header);
+		$I->see(MlEdit::$success_save, Generals::$alert_success);
+		$I->seeInField(MlEdit::$title, MlEdit::$field_title);
+
+		// Grab ID of first mailinglist
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_mailinglists', 'id', array('title' => MlEdit::$field_title));
+
+		$I->fillField(MlEdit::$title, MlEdit::$field_title2);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->seeInField(MlEdit::$title, MlEdit::$field_title2);
+
+		// Grab ID of second mailinglist
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_mailinglists', 'id', array('title' => MlEdit::$field_title2));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
+		$I->see('Mailinglists', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single mailing list from list view, save it and go back to list view
 	 *
 	 * @param   AcceptanceTester                $I

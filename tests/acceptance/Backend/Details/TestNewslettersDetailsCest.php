@@ -211,6 +211,61 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
+	 * Test method to create a single Newsletter from list view, save it, modify and save as copy
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneNewsletterSaveCopyListView(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Newsletter, save, modify and save as copy");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		NlEdit::fillFormSimple($I);
+
+		$I->click(Generals::$toolbar['Save']);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+
+		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject);
+
+		// Grab ID of first newsletter
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_newsletters', 'id', array('subject' => NlEdit::$field_subject));
+
+		$I->fillField(NlEdit::$subject, NlEdit::$field_subject2);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
+
+		// Grab ID of second newsletter
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_newsletters', 'id', array('subject' => NlEdit::$field_subject2));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to upload a file while creating a newsletter, cancel creation
 	 *
 	 * @param   \AcceptanceTester                $I

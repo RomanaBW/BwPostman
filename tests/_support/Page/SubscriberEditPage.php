@@ -140,6 +140,13 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
+	public static $field_email2        = "sam.sample2@test.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $field_special      = "0815";
 
 
@@ -207,7 +214,7 @@ class SubscriberEditPage
 	 * @since 2.0.0
 	 */
 	public static $arc_del_array     = array(
-		'field_title'          => "sam.sample@test.nil",
+		'field_title'          => "sam.sample",
 		'archive_tab'          => ".//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
 		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[%s]",
@@ -331,6 +338,8 @@ class SubscriberEditPage
 	 *
 	 * @param \AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function fillFormSimple(\AcceptanceTester $I)
@@ -380,6 +389,8 @@ class SubscriberEditPage
 	 * @param \AcceptanceTester $I
 	 *
 	 * @return array
+	 *
+	 * @throws \Exception
 	 *
 	 * @since version
 	 */

@@ -177,7 +177,7 @@ class TestSubscribersDetailsCest
 	}
 
 	/**
-	 * Test method to create a single Subscriber from list view, save it and go back to list view
+	 * Test method to create a single Subscriber from list view, save it and get new and empty edit form
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -206,6 +206,62 @@ class TestSubscribersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
 		$I->see('', SubEdit::$name);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
+		$I->see('Subscribers', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single Subscriber from list view and save it as copy
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneSubscriberSaveCopyListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Subscriber complete, save, save as copy and get new record id");
+		$I->amOnPage(SubManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		SubEdit::fillFormSimple($I);
+
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
+		$I->seeInField(SubEdit::$email, SubEdit::$field_email);
+
+		// Grab ID of first subscriber
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_subscribers', 'id', array('email' => SubEdit::$field_email));
+
+		$I->fillField(SubEdit::$email, SubEdit::$field_email2);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
+		$I->seeInField(SubEdit::$email, SubEdit::$field_email2);
+
+		// Grab ID of second subscriber
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_subscribers', 'id', array('email' => SubEdit::$field_email2));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
 
 		$I->click(Generals::$toolbar['Cancel']);
 

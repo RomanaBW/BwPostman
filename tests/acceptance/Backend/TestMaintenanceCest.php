@@ -139,6 +139,8 @@ class TestMaintenanceCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function restoreTables(AcceptanceTester $I)

@@ -49,6 +49,16 @@ pipeline {
 
 		stage('Dev-Upload') {
 			steps {
+				dir("/repositories/artifacts/bwpostman") {
+					fileOperations([
+							fileCopyOperation(
+									excludes: '',
+									flattenFiles: false,
+									includes: 'pkg_bwpostman.zip',
+									targetLocation: "${WORKSPACE}/tests/_data")
+					])
+				}
+
 				sshPublisher(
 					publishers: [sshPublisherDesc(
 						configName: 'Web Dev',
@@ -63,8 +73,8 @@ pipeline {
 							patternSeparator: '[, ]+',
 							remoteDirectory: '',
 							remoteDirectorySDF: false,
-							removePrefix: '../../../../../../../../../repositories/artifacts/bwpostman/',
-							sourceFiles: '../../../../../../../../../repositories/artifacts/bwpostman/pkg_bwpostman.zip'
+							removePrefix: '${WORKSPACE}/tests/_data',
+							sourceFiles: '${WORKSPACE}/tests/_data/pkg_bwpostman.zip'
 						)],
 						usePromotionTimestamp: false,
 						useWorkspaceInPromotion: false,

@@ -74,7 +74,7 @@ pipeline {
 							remoteDirectory: '',
 							remoteDirectorySDF: false,
 							removePrefix: '',
-							sourceFiles: '${WORKSPACE}/tests/pkg_bwpostman.zip'
+							sourceFiles: 'tests/*.zip'
 						)],
 						usePromotionTimestamp: false,
 						useWorkspaceInPromotion: false,

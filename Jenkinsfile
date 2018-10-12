@@ -73,7 +73,7 @@ pipeline {
 							patternSeparator: '[, ]+',
 							remoteDirectory: '',
 							remoteDirectorySDF: false,
-							removePrefix: '',
+							removePrefix: 'tests',
 							sourceFiles: 'tests/*.zip'
 						)],
 						usePromotionTimestamp: false,

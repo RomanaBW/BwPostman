@@ -55,7 +55,7 @@ pipeline {
 									excludes: '',
 									flattenFiles: false,
 									includes: 'pkg_bwpostman.zip',
-									targetLocation: "${WORKSPACE}/tests/_data")
+									targetLocation: "${WORKSPACE}/tests")
 					])
 				}
 
@@ -73,8 +73,8 @@ pipeline {
 							patternSeparator: '[, ]+',
 							remoteDirectory: '',
 							remoteDirectorySDF: false,
-							removePrefix: '${WORKSPACE}/tests',
-							sourceFiles: '${WORKSPACE}/tests/_data/pkg_bwpostman.zip'
+							removePrefix: '',
+							sourceFiles: '${WORKSPACE}/tests/pkg_bwpostman.zip'
 						)],
 						usePromotionTimestamp: false,
 						useWorkspaceInPromotion: false,

@@ -73,7 +73,7 @@ pipeline {
 							patternSeparator: '[, ]+',
 							remoteDirectory: '',
 							remoteDirectorySDF: false,
-							removePrefix: '${WORKSPACE}/tests/_data',
+							removePrefix: '${WORKSPACE}/tests',
 							sourceFiles: '${WORKSPACE}/tests/_data/pkg_bwpostman.zip'
 						)],
 						usePromotionTimestamp: false,

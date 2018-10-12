@@ -97,7 +97,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ((count($this->count_queue) > 0) && $this->permissions['newsletter']['send']) { ?>
+					<?php if (($this->count_queue> 0) && $this->permissions['newsletter']['send']) { ?>
 						<li class="open">
 							<button onclick="return changeTab('queue');" class="buttonAsLink_open">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>

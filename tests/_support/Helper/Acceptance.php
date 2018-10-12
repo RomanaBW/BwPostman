@@ -1169,6 +1169,7 @@ class Acceptance extends Codeception\Module
 
 		if ($manage_data['section'] == 'campaigns')
 		{
+			$I->wait(2);
 			$I->switchToIFrame($manage_data['popup_delete_iframe']);
 //			$I->waitForElement(".//*[@id='confirm-delete']", 20);
 			$I->waitForText($manage_data['popup_delete_newsletters']);

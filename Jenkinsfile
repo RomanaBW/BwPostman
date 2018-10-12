@@ -49,7 +49,7 @@ pipeline {
 
 		stage('Dev-Upload') {
 			steps {
-				sshPublisher(publishers: [sshPublisherDesc(configName: 'Web Dev', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '/repositories/artifacts/bwpostman/', sourceFiles: '/repositories/artifacts/bwpostman/pkg_bwpostman.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+				sshPublisher(publishers: [sshPublisherDesc(configName: 'Web Dev', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '/repositories/artifacts/bwpostman/', sourceFiles: '/repositories/artifacts/bwpostman/pkg_bwpostman.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
 			}
 		}
 

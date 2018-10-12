@@ -297,6 +297,7 @@ class TestNewslettersDetailsCest
 		$I->click("html/body/form[2]/div/fieldset/div/div[2]/button");
 		$I->dontSeeElement(Generals::$alert_error);
 
+		$I->wait(2);
 		$I->switchToIFrame(Generals::$image_frame);
 		$I->waitForElementVisible("ul.manager");
 		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -100);

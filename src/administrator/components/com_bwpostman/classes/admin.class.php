@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+
+
 /**
  * BwPostman Footer
  *
@@ -42,27 +45,13 @@ class BwPostmanAdmin {
 	 * @return string
 	 *
 	 * @since   0.9.1
+	 *
+	 * @throws \Exception
 	 */
 	static public function footer()
 	{
-		$db		    = JFactory::getDbo();
-		$query	    = $db->getQuery(true);
-		$manifest   = array();
+		$version = BwPostmanHelper::getInstalledBwPostmanVersion();
 
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-		$db->setQuery($query);
-
-		try
-		{
-			$manifest = json_decode($db->loadResult(), true);
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return 'BwPostman version ' . $manifest['version'] . ' by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
+		return 'BwPostman version ' . $version . ' by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 	}
 }

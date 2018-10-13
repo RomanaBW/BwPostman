@@ -49,6 +49,8 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -195,6 +197,8 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function Buyer2SubscriberOptionsMessage(AcceptanceTester $I)
@@ -264,6 +268,8 @@ class Buyer2SubscriberInstallCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -369,6 +375,8 @@ class Buyer2SubscriberInstallCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function editPluginOptions(AcceptanceTester $I)
@@ -431,6 +439,8 @@ class Buyer2SubscriberInstallCest
 	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

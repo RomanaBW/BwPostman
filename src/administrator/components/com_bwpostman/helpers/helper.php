@@ -203,6 +203,38 @@ abstract class BwPostmanHelper
 	}
 
 	/**
+	 * Method to get the version of BwPostman installed
+	 *
+	 * @return string
+	 *
+	 * @since   0.9.1
+	 *
+	 * @throws \Exception
+	 */
+	static public function getInstalledBwPostmanVersion()
+	{
+		$db       = JFactory::getDbo();
+		$query    = $db->getQuery(true);
+		$manifest = array();
+
+		$query->select($db->quoteName('manifest_cache'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
+		$db->setQuery($query);
+
+		try
+		{
+			$manifest = json_decode($db->loadResult(), true);
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $manifest['version'];
+	}
+
+	/**
 	 * Method to check, if a given action to a given item is allowed
 	 * Breaks and returns false, if the item to check has explicit no permission
 	 * Also returns false, if no permission is found

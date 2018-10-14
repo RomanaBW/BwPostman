@@ -4,10 +4,10 @@
  *
  * BwPostman maintenance model for backend.
  *
- * @version %%version_number%%
+ * @version 2.1.0 build 416
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
-use Joomla\CMS\Filesystem\Folder as JFolder;
+//use Joomla\Filesystem\Folder as JFolder;
 
 // Require some classes
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
@@ -1736,10 +1736,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					if (((($tableName == '#__bwpostman_sendmailcontent') || ($tableName == '#__bwpostman_tc_sendmailcontent')) && ($key == 'body'))
 						|| (($tableName == '#__bwpostman_newsletters') && ($key == 'html_version'))
 						|| (($tableName == '#__bwpostman_templates')
-						&& (($key == 'tpl_html')
-						|| ($key == 'tpl_css')
-						|| ($key == 'tpl_article')
-						|| ($key == 'tpl_divider')))
+							&& (($key == 'tpl_html')
+								|| ($key == 'tpl_css')
+								|| ($key == 'tpl_article')
+								|| ($key == 'tpl_divider')))
 					)
 					{
 						$insert_string = '<![CDATA[' . $insert_string . ']]>';
@@ -3069,15 +3069,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			case '#__bwpostman_sendmailqueue':
 			case '#__bwpostman_tc_sendmailcontent':
 			case '#__bwpostman_tc_sendmailqueue':
-					$data_loop_max = 20;
+				$data_loop_max = 20;
 				break;
 			case '#__bwpostman_subscribers_mailinglists':
 			case '#__bwpostman_newsletters_mailinglists':
 			case '#__bwpostman_campaigns_mailinglists':
-					$data_loop_max = 10000;
+				$data_loop_max = 10000;
 				break;
 			default:
-					$data_loop_max = 1000;
+				$data_loop_max = 1000;
 				break;
 		}
 
@@ -4018,20 +4018,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
 			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
 		);
-/*
-		$rules['bwpm.view.manage'] = array(
-			$usedGroups['Administrator']['id']             => true,
-			$usedGroups['Manager']['id']                   => true,
-			$usedGroups['BwPostmanPublisher']['id']        => false,
-			$usedGroups['BwPostmanAdmin']['id']            => true,
-			$usedGroups['BwPostmanPublisher']['id']        => false,
-			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
-			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
-			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
-			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
-			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-		);
-*/
+		/*
+				$rules['bwpm.view.manage'] = array(
+					$usedGroups['Administrator']['id']             => true,
+					$usedGroups['Manager']['id']                   => true,
+					$usedGroups['BwPostmanPublisher']['id']        => false,
+					$usedGroups['BwPostmanAdmin']['id']            => true,
+					$usedGroups['BwPostmanPublisher']['id']        => false,
+					$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+					$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+					$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+					$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+					$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+				);
+		*/
 		$rules['bwpm.view.campaign'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
@@ -4976,7 +4976,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$dataset .= "'" . $curr_asset[$colName] . "',";
 		}
 
-		 $dataset = substr($dataset, 0, -1) . ')';
+		$dataset = substr($dataset, 0, -1) . ')';
 
 		return $dataset;
 	}

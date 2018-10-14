@@ -69,7 +69,7 @@ class TestMaintenanceCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
 
-		$versionToTest = getenv('BWPM_VERSION_TO_TEST');
+		$versionToTest = $this->getVersionNumber($I);
 
 		$user = getenv('BW_TESTER_USER');
 
@@ -81,8 +81,6 @@ class TestMaintenanceCest
 		$path     = Generals::$downloadFolder[$user];
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml.zip';
 		$downloadPath = $path . $filename;
-
-		codecept_debug('Download path: ' . $downloadPath);
 
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
@@ -117,7 +115,7 @@ class TestMaintenanceCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
 
-		$versionToTest = getenv('BWPM_VERSION_TO_TEST');
+		$versionToTest = $this->getVersionNumber($I);
 
 		$user = getenv('BW_TESTER_USER');
 
@@ -129,8 +127,6 @@ class TestMaintenanceCest
 		$path     = Generals::$downloadFolder[$user];
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
 		$downloadPath = $path . $filename;
-
-		codecept_debug('Download path: ' . $downloadPath);
 
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
@@ -278,6 +274,26 @@ class TestMaintenanceCest
 			$I->switchToWindow("new");
 			$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
 		}
+	}
+
+	/**
+	 * Method to get version of BwPostman from footer
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  string
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	private function getVersionNumber(AcceptanceTester $I)
+	{
+		$footerText = $I-> grabTextFrom('.bwpm_copyright');
+
+		$footerTextArray = explode(' ', $footerText);
+
+		return $footerTextArray[2];
 	}
 
 	/**

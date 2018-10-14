@@ -45,7 +45,7 @@ test_file:
   - suite: maintenance
     testsuite_file: Backend/TestMaintenanceCest
   - suite: restore
-    testsuite_file: Backend/TestMaintenanceCest::restoreTables
+    testsuite_file: Backend/TestMaintenanceCest::restoreTablesNoZip
   - suite: defaultOptions
     testsuite_file: Backend/TestOptionsCest::saveDefaults
   - suite: setPermissions
@@ -69,29 +69,30 @@ test_suites:
   - name: smoke
     tests:
       - install
+      - defaultOptions
       - restore
       - uninstall
 
   - name: accept1
     tests:
       - install
-      - restore
       - defaultOptions
+      - restore
       - maintenance
       - lists
 
   - name: accept2
     tests:
       - install
-      - restore
       - defaultOptions
+      - restore
       - details
 
   - name: accept3
     tests:
       - install
-      - restore
       - defaultOptions
+      - restore
       - frontend
       - user2subscriber
   #  - personalize
@@ -99,8 +100,8 @@ test_suites:
   - name: accept4
     tests:
       - install
-      - restore
       - defaultOptions
+      - restore
       - setPermissions
       - createUsers
       - access

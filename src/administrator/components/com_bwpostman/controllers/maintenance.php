@@ -32,6 +32,9 @@ jimport('joomla.application.component.controller');
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/maintenancehelper.php');
+
+use Joomla\Filesystem\File;
 
 /**
  * BwPostman Maintenance Controller
@@ -95,6 +98,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  BwPostmanControllerMaintenance		This object to support chaining.
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -260,13 +265,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		jimport('joomla.filesystem.file');
 
 		// Clean up filename to get rid of strange characters like spaces etc
-		$filename = JFile::makeSafe($file['name']);
+		$filename = File::makeSafe($file['name']);
 
 		// Set up the source and destination of the file
 		$src	= $file['tmp_name'];
-
-		$ext	= JFile::getExt($filename);
-		$dest	= JFactory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $ext;
 
 		// If the file isn't okay, redirect to restoretables.php
 		if ($file['error'] > 0)
@@ -296,7 +298,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		{ // The file is okay
 			// Check if the file has the right extension, we need xml
 			// --> if the extension is wrong, redirect to restoretables.php
-			if (strtolower(JFile::getExt($filename)) !== 'xml')
+			$fileExt = substr($filename, strrpos($filename, '.') + 1);
+
+			$dest	= JFactory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
+
+			if ($fileExt !== 'xml' && $fileExt !== 'zip')
 			{
 				$msg = JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_TYPE');
 				$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
@@ -307,7 +313,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			}
 			else
 			{ // Everything is fine
-				if (JFile::upload($src, $dest) === false)
+				if (File::upload($src, $dest) === false)
 				{
 					$msg	= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
 					$link	= JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
@@ -315,7 +321,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				}
 				else
 				{
-					// @ToDo: delete uploaded file after use
+					if ($fileExt === 'zip')
+					{
+						$dest = BwPostmanMaintenanceHelper::decompressBackupFile($dest, $filename);
+					}
+
 					$app->setUserState('com_bwpostman.maintenance.dest', $dest);
 
 					$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=doRestore', false);

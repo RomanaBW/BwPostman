@@ -29,6 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+
+use Joomla\Filesystem\File;
 
 /**
  * BwPostman Maintenance RAW View
@@ -68,19 +71,20 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		if ($layout == 'saveTables')
 		{
-			$db		= JFactory::getDbo();
-			$query	= $db->getQuery(true);
+			$compressed     = JComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
+			$dottedVersion  = BwPostmanHelper::getInstalledBwPostmanVersion();
+			$version	    = str_replace('.', '_', $dottedVersion);
+			$filename	    = "BwPostman_" . $version . "_Tables_" . $date->format("Y-m-d_H_i") . '.xml';
+			$xmlFileName    = File::makeSafe($filename);
+			$mimeType	    = "application/xml";
 
-			$query->select($db->quoteName('manifest_cache'));
-			$query->from($db->quoteName('#__extensions'));
-			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-			$db->setQuery($query);
+			if ($compressed)
+			{
+				$mimeType	= "application/zip";
+				$filename   .= '.zip';
+				$xmlFileName = File::makeSafe(File::stripExt($filename));
+			}
 
-			$manifest	= json_decode($db->loadResult(), true);
-			$version	= str_replace('.', '_', $manifest['version']);
-
-			$filename	= "BwPostman_" . $version . "_Tables_" . $date->format("Y-m-d_H:i") . '.xml';
-			$mime_type	= "application/xml";
 
 			// Maybe we need other headers depending on browser type...
 			jimport('joomla.environment.browser');
@@ -90,7 +94,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 			$appWeb->clearHeaders();
 
-			$appWeb->setHeader('Content-Type', $mime_type, true); // Joomla will overwrite this...
+			$appWeb->setHeader('Content-Type', $mimeType, true); // Joomla will overwrite this...
 			$appWeb->setHeader('Content-Disposition', "attachment; filename=\"$filename\"", true);
 			$appWeb->setHeader('Expires', gmdate('D, d M Y H:i:s') . ' GMT', true);
 			$appWeb->setHeader('Pragma', 'no-cache', true);
@@ -103,7 +107,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 			// Joomla overwrites content-type, we can't use $appWeb->setHeader()
 			$document = JFactory::getDocument();
-			$document->setMimeEncoding("application/xml");
+			$document->setMimeEncoding($mimeType);
 
 			@ob_end_clean();
 			ob_start();
@@ -113,7 +117,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			// Get the export data
 			$model	= $this->getModel('maintenance');
 
-			readfile($model->saveTables(false));
+			readfile($model->saveTables($xmlFileName, false));
 		}
 
 		if ($layout == 'doRestore')

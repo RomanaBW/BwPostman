@@ -238,7 +238,8 @@ class MaintenancePage
 	/**
 	 * Test method to restore tables
 	 *
-	 * @param   \AcceptanceTester                $I
+	 * @param   \AcceptanceTester   $I
+	 * @param   boolean             $compressed
 	 *
 	 * @before  _login
 	 *
@@ -250,7 +251,7 @@ class MaintenancePage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function restoreTables(\AcceptanceTester $I)
+	public static function restoreTables(\AcceptanceTester $I, $compressed = false)
 	{
 		$I->wantTo("Restore tables");
 		$I->expectTo("see 'Result check okay'");
@@ -263,7 +264,14 @@ class MaintenancePage
 		$I->click(self::$restoreTablesButton);
 		$I->waitForElement(self::$headingRestoreFile, 30);
 
-		$I->attachFile(".//*[@id='restorefile']", "BwPostman_2_1_0_Tables.xml");
+		$filename = "BwPostman_2_1_0_Tables.xml";
+
+		if ($compressed)
+		{
+			$filename .= ".zip";
+		}
+
+		$I->attachFile(".//*[@id='restorefile']", $filename);
 
 		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
 		$I->dontSeeElement(Generals::$alert_error);

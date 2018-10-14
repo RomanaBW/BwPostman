@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\CMS\Filesystem\Folder as JFolder;
 
 // Require some classes
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
@@ -104,22 +105,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected $assetTargetTables  = array('campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
 
 	/**
-	 * Constructor
-	 *
-	 * @since       1.0.1
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	/**
 	 * Method to save tables
 	 *
 	 * Cannot use JFile::write() because we want to append data
 	 *
 	 * @access    public
 	 *
+	 * @param   string  $fileName
 	 * @param   boolean $update
 	 *
 	 * @return  mixed
@@ -128,8 +120,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since       1.0.1
 	 */
-	public function saveTables($update = false)
+	public function saveTables($fileName, $update = false)
 	{
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/maintenancehelper.php');
 		// @ToDo: Use simpleXml correctly
 		// Access check.
 		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
@@ -164,9 +157,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-//		$path      = IS_WIN ? JFactory::getConfig()->get('tmp_path') : JFolder::makeSafe(JFactory::getConfig()->get('tmp_path'));
-		$file_name = $path . '/' . JFile::makeSafe('BwPostman_Tables_Server_' . $date . '.xml');
-		$handle    = fopen($file_name, 'wb');
+		$handle    = fopen($fileName, 'wb');
 
 		try
 		{
@@ -234,13 +225,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						if ($update)
 						{
 							echo '<p class="bw_tablecheck_error">'
-								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name)
+								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName)
 								. '</p>';
 
 							return false;
 						}
 
-						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name));
+						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName));
 					}
 					else
 					{
@@ -260,7 +251,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						if ($update)
 						{
 							echo '<p class="bw_tablecheck_error">'
-								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name)
+								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName)
 								. '</p>';
 
 							return false;
@@ -277,13 +268,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						if ($update)
 						{
 							echo '<p class="bw_tablecheck_error">'
-								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $file_name)
+								. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName)
 								. '</p>';
 
 							return false;
 						}
 
-						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $file_name));
+						throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName));
 					}
 
 					$file_data = array();
@@ -295,10 +286,18 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (fwrite($handle, $file_data) !== false)
 			{
+				$compressed = JComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
+				$backupFile = $fileName;
+
+				if ($compressed)
+				{
+					$backupFile = BwPostmanMaintenanceHelper::compressBackupFile($fileName);
+				}
+
 				if ($update)
 				{
 					echo '<p class="bw_tablecheck_ok">'
-						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $file_name)
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $fileName)
 						. '</p>';
 				}
 			}
@@ -307,13 +306,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				if ($update)
 				{
 					echo '<p class="bw_tablecheck_error">'
-						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name)
+						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName)
 						. '</p>';
 
 					return false;
 				}
 
-				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $file_name));
+				throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName));
 			}
 
 			fclose($handle);
@@ -321,7 +320,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (BwException $e)
 		{
 			echo $e->getMessage();
-			JFile::delete($file_name);
+			JFile::delete($fileName);
 			fclose($handle);
 
 			return false;
@@ -329,7 +328,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (Exception $e)
 		{
 			echo $e->getMessage();
-			JFile::delete($file_name);
+			JFile::delete($fileName);
 			fclose($handle);
 
 			return false;
@@ -341,7 +340,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		else
 		{
-			return $file_name;
+			return $backupFile;
 		}
 	}
 
@@ -1496,9 +1495,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// Set tables that has column asset_id
 		// @ToDo: Check if exceptions are handled correctly
 		$this->getTableNamesFromDB();
-
-		// Get component asset id
-		$componentAsset = $this->getBaseAsset('component', true);
 
 		foreach ($this->tableNames as $table)
 		{

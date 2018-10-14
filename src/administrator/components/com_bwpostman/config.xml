@@ -85,6 +85,19 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+		<field name="spacer1_5" type="spacer" hr="true" />
+
+		<field name="compress_backup"
+		       type="radio"
+		       class="btn-group btn-group-yesno"
+		       default="1"
+		       label="COM_BWPOSTMAN_COMPRESS_BACKUP_FILE"
+		       description="COM_BWPOSTMAN_COMPRESS_BACKUP_FILE_NOTE"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	</fieldset>
 
 	<fieldset name="com_bwpostman_registration_settings" label="COM_BWPOSTMAN_REG_SETTINGS" description="COM_BWPOSTMAN_REG_SETTINGS_DESCRIPTION">

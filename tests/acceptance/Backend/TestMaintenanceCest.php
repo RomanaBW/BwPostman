@@ -35,6 +35,8 @@ class TestMaintenanceCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -43,7 +45,7 @@ class TestMaintenanceCest
 	}
 
 	/**
-	 * Test method to save tables
+	 * Test method to save tables zipped
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -57,38 +59,84 @@ class TestMaintenanceCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function saveTables(AcceptanceTester $I)
+	public function saveTablesZip(AcceptanceTester $I)
 	{
-		if (getenv('BW_TEST_BWPM_VERSION') != '132')
+		$I->wantTo("Save tables zipped");
+		$I->expectTo("see zip file in download directory");
+		$I->amOnPage(MainView::$url);
+		$I->click(MainView::$maintenanceButton);
+
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(MaintenancePage::$heading);
+
+		$versionToTest = getenv('BWPM_VERSION_TO_TEST');
+
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
 		{
-			$I->wantTo("Save tables");
-			$I->expectTo("see file in download directory");
-			$I->amOnPage(MainView::$url);
-			$I->click(MainView::$maintenanceButton);
-
-			$I->waitForElement(Generals::$pageTitle, 30);
-			$I->see(MaintenancePage::$heading);
-
-			$versionToTest = getenv('BWPM_VERSION_TO_TEST');
-			codecept_debug("Version from environment: $versionToTest");
-
-			$user = getenv('BW_TESTER_USER');
-
-			if (!$user)
-			{
-				$user = 'root';
-			}
-
-			$path     = Generals::$downloadFolder[$user];
-			$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
-			$downloadPath = $path . $filename;
-
-			codecept_debug("Download path complete: $downloadPath");
-
-			$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
-
-			$I->assertTrue(file_exists($downloadPath));
+			$user = 'root';
 		}
+
+		$path     = Generals::$downloadFolder[$user];
+		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml.zip';
+		$downloadPath = $path . $filename;
+
+		codecept_debug('Download path: ' . $downloadPath);
+
+		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
+
+		$I->assertTrue(file_exists($downloadPath));
+	}
+
+	/**
+	 * Test method to save tables unzipped
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function saveTablesNoZip(AcceptanceTester $I)
+	{
+		$I->wantTo("Save tables unzipped");
+		$I->expectTo("see xml file in download directory");
+
+		$I->setManifestOption('com_bwpostman', 'compress_backup', '0');
+
+		$I->amOnPage(MainView::$url);
+		$I->click(MainView::$maintenanceButton);
+
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(MaintenancePage::$heading);
+
+		$versionToTest = getenv('BWPM_VERSION_TO_TEST');
+
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		$path     = Generals::$downloadFolder[$user];
+		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
+		$downloadPath = $path . $filename;
+
+		codecept_debug('Download path: ' . $downloadPath);
+
+		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
+
+		$I->assertTrue(file_exists($downloadPath));
+
+		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
 	}
 
 	/**
@@ -129,7 +177,7 @@ class TestMaintenanceCest
 	}
 
 	/**
-	 * Test method to restore tables
+	 * Test method to restore tables from unzipped file
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -143,9 +191,29 @@ class TestMaintenanceCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function restoreTables(AcceptanceTester $I)
+	public function restoreTablesNoZip(AcceptanceTester $I)
 	{
 		MaintenancePage::restoreTables($I);
+	}
+
+	/**
+	 * Test method to restore tables from unzipped file
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function restoreTablesZip(AcceptanceTester $I)
+	{
+		MaintenancePage::restoreTables($I, true);
 	}
 
 	/**
@@ -219,6 +287,8 @@ class TestMaintenanceCest
 	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

@@ -227,6 +227,13 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$document->setTitle(JText::_('COM_BWPOSTMAN_NLS'));
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
+		// Add Javascript to make squeezebox close-button invisible
+		$document->addScriptDeclaration('
+			window.dispButton = function() {
+				document.getElementById("sbox-btn-close").style.display = "none";
+			}
+		');
+
 		// Set toolbar title
 		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NLS'), 'envelope');
 

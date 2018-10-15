@@ -33,6 +33,8 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -103,6 +105,14 @@ class TestTemplatesListsCest
 		$I->amOnPage(TplManage::$url);
 		$I->wait(1);
 
+		$sidebarToggle = $I->grabAttributeFrom(".//div[@id='j-sidebar-container']", 'class');
+		codecept_debug("Sidebar toggle class:");
+		codecept_debug($sidebarToggle);
+		if ($sidebarToggle == 'j-sidebar-container j-toggle-transition j-sidebar-hidden')
+		{
+			$I->click(Generals::$submenu_toggle_button);
+		}
+
 		// loop over sorting criterion
 		$columns    = implode(', ', TplManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
@@ -169,6 +179,8 @@ class TestTemplatesListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -249,6 +261,8 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function PaginationTemplates(AcceptanceTester $I)
@@ -289,6 +303,8 @@ class TestTemplatesListsCest
 	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

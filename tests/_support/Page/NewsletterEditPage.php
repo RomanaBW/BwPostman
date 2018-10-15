@@ -724,6 +724,12 @@ class NewsletterEditPage
 	 */
 	public static $popup_send_confirm   = 'Do you wish to send the newsletter?';
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $popup_send_publish_confirm   = 'Do you wish to send and publish the newsletter on front end?';
 
 	/**
 	 * @var string
@@ -1143,6 +1149,7 @@ class NewsletterEditPage
 	 * @param   boolean             $toUsergroup
 	 * @param   boolean             $buildQueue
 	 * @param   integer             $iframeTime         time to wait for the last iframe sendFrame appearance (chromium 66+ specific)
+	 * @param   boolean             $publish            button send and publish?
 	 *
 	 * @before  _login
 	 *
@@ -1154,7 +1161,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20)
+	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20, $publish = false)
 	{
 		codecept_debug("unconfirmed: $sentToUnconfirmed");
 		codecept_debug("usergroup: $toUsergroup");
@@ -1185,9 +1192,17 @@ class NewsletterEditPage
 			$remainsToSend = $nbrToSend;
 		}
 
-		$I->clickAndWait(self::$button_send, 1);
+		if (!$publish)
+		{
+			$I->clickAndWait(self::$button_send, 1);
+			$I->seeInPopup(self::$popup_send_confirm);
+		}
+		else
+		{
+			$I->clickAndWait(self::$button_send_publish, 1);
+			$I->seeInPopup(self::$popup_send_publish_confirm);
+		}
 
-		$I->seeInPopup(self::$popup_send_confirm);
 		$I->acceptPopup();
 
 		$user = getenv('BW_TESTER_USER');

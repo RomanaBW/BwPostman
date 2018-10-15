@@ -78,6 +78,13 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$id				= $app->getUserState('com_bwpostman.newsletters.publish_id', 0);
 		$delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
 
+		$defaultPublish	= (int) $app->getUserState('com_bwpostman.newsletters.publish_nl_by_default', $params->get('publish_nl_by_default'));
+
+		if ($defaultPublish)
+		{
+			$sendandpublish = 1;
+		}
+
 		// Build delay message
 		if ((int) $params->get('mails_per_pageload_delay_unit') == 1000)
 		{

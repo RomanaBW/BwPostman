@@ -75,12 +75,12 @@
 
 		<field name="spacer1_4" type="spacer" hr="true" />
 
-		<field name="show_boldt_link"
-			type="radio"
-			class="btn-group btn-group-yesno"
-			default="1"
-			label="COM_BWPOSTMAN_SHOW_BOLDT_LINK"
-			description="COM_BWPOSTMAN_SHOW_BOLDT_LINK_NOTE"
+		<field name="publish_nl_by_default"
+		       type="radio"
+		       class="btn-group btn-group-yesno"
+		       default="0"
+		       label="COM_BWPOSTMAN_PUBLISH_NL_BY_DEFAULT"
+		       description="COM_BWPOSTMAN_PUBLISH_NL_BY_DEFAULT_NOTE"
 		>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -94,6 +94,19 @@
 		       default="1"
 		       label="COM_BWPOSTMAN_COMPRESS_BACKUP_FILE"
 		       description="COM_BWPOSTMAN_COMPRESS_BACKUP_FILE_NOTE"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="spacer1_6" type="spacer" hr="true" />
+
+		<field name="show_boldt_link"
+			type="radio"
+			class="btn-group btn-group-yesno"
+			default="1"
+			label="COM_BWPOSTMAN_SHOW_BOLDT_LINK"
+			description="COM_BWPOSTMAN_SHOW_BOLDT_LINK_NOTE"
 		>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>

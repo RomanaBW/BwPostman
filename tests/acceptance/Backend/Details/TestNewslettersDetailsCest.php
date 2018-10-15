@@ -576,7 +576,7 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Test method to send newsletter to real recipients
+	 * Test method to send newsletter to real recipients, publish option set to no
 	 *
 	 * @param   \AcceptanceTester                $I
 	 *
@@ -590,16 +590,145 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SendNewsletterToRealRecipients(\AcceptanceTester $I)
+	public function SendNewsletterToRealRecipientsPublishOptionNo(\AcceptanceTester $I)
 	{
-		$I->wantTo("Send a newsletter to real recipients");
+		$I->wantTo("Send a newsletter to real recipients with publish option no");
+		$I->expectTo("see unpublished sent newsletter");
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
+		// Check status of sent newsletter
+		$I->clickAndWait(NlManage::$tab2, 2);
+		$I->clickSelectList(
+			Generals::$ordering_list,
+			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
+			Generals::$ordering_id
+		);
+		$I->seeElement(NlManage::$first_line_unpublished);
+
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to send newsletter to real recipients, publish option set to yes
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function SendNewsletterToRealRecipientsPublishOptionYes(\AcceptanceTester $I)
+	{
+		$I->wantTo("Send a newsletter to real recipients with publish option yes");
+		$I->expectTo("see published sent newsletter");
+
+		$I->setManifestOption('com_bwpostman', 'publish_nl_by_default', '1');
+
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
+
+		// Check status of sent newsletter
+		$I->clickAndWait(NlManage::$tab2, 2);
+		$I->clickSelectList(
+			Generals::$ordering_list,
+			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
+			Generals::$ordering_id
+		);
+		$I->seeElement(NlManage::$first_line_published);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+
+		$I->setManifestOption('com_bwpostman', 'publish_nl_by_default', '0');
+	}
+
+	/**
+	 * Test method to send and publish newsletter to real recipients, publish option set to no
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function SendPublishNewsletterToRealRecipientsPublishOptionNo(\AcceptanceTester $I)
+	{
+		$I->wantTo("Send and publish a newsletter to real recipients with publish option no");
+		$I->expectTo("see published sent newsletter");
+
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20, true);
+
+		// Check status of sent newsletter
+		$I->clickAndWait(NlManage::$tab2, 2);
+		$I->clickSelectList(
+			Generals::$ordering_list,
+			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
+			Generals::$ordering_id
+		);
+		$I->seeElement(NlManage::$first_line_published);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to send and publish newsletter to real recipients, publish option set to yes
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function SendPublishNewsletterToRealRecipientsPublishOptionYes(\AcceptanceTester $I)
+	{
+		$I->wantTo("Send and publish a newsletter to real recipients with publish option yes");
+		$I->expectTo("see published sent newsletter");
+
+		$I->setManifestOption('com_bwpostman', 'publish_nl_by_default', '1');
+
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20, true);
+
+		// Check status of sent newsletter
+		$I->clickAndWait(NlManage::$tab2, 2);
+		$I->clickSelectList(
+			Generals::$ordering_list,
+			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
+			Generals::$ordering_id
+		);
+		$I->seeElement(NlManage::$first_line_published);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+
+		$I->setManifestOption('com_bwpostman', 'publish_nl_by_default', '0');
 	}
 
 	/**

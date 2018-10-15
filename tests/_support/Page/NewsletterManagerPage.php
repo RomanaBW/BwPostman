@@ -81,6 +81,20 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
+	public static $first_line_unpublished   = ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-unpublish']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $first_line_published     = ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-publish']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $first_list_entry_tab2    = ".//*[@id='ub0']";
 
 	/**

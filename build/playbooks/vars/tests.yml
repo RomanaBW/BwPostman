@@ -41,7 +41,7 @@ test_file:
   - suite: options
     testsuite_file: Backend/TestOptionsCest
   - suite: lists
-    testsuite_file: Backend/Lists/TestTemplatesListsCest
+    testsuite_file: Backend/Lists
   - suite: maintenance
     testsuite_file: Backend/TestMaintenanceCest
   - suite: restore

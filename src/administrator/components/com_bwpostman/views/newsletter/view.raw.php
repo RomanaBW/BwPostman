@@ -142,9 +142,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			if ($model->checkTrials(2))
 			{
 				echo '<div class="modal" style="height: 150px;overflow: auto;margin-bottom: 15px;" id="progress">';
-				echo '<script type="text/javascript">' . "\n";
-				echo "window.parent.dispButton(); \n";
-				echo "</script>\n";
 				$ret	= $model->sendMailsFromQueue($mails_per_step);
 				echo '</div>';
 				// number of queue entries during sending
@@ -160,7 +157,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				{   // There are more mails in the queue.
 					echo $delay_message;
 					echo '<script type="text/javascript">' . "\n";
-					echo "window.parent.dispButton(); \n";
 					echo "setTimeout('window.location.reload()'," . $delay . "); \n";
 					echo "</script>\n";
 				}
@@ -173,7 +169,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					ob_flush();
 					flush();
 					echo '<script type="text/javascript">' . "\n";
-					echo "window.parent.dispButton(); \n";
 					// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
 					echo "function goBackToQueue(){window.parent.location.href = 'index.php?option=com_bwpostman&view=newsletters&layout=queue';} \n";
 					echo "setTimeout('goBackToQueue()',5000); \n";
@@ -194,12 +189,29 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', null);
 					$app->setUserState('com_bwpostman.newsletters.publish_id', null);
 				}
+
+				if ($ret == 2)
+				{   // There are fatal errors.
+					echo "<br /><span style='color: #ff0000;'>" . JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . "</span>";
+					echo JText::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE');
+					echo '<script type="text/javascript">' . "\n";
+					// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
+					echo "function goBackToQueue(){window.parent.location.href = 'index.php?option=com_bwpostman&view=newsletters&layout=queue';} \n";
+					echo "setTimeout('goBackToQueue()',5000); \n";
+					echo "</script>\n";
+				}
 			}
 			else
 			{
 				// reset number of queue entries before start sending
 				$app->setUserState('com_bwpostman.newsletters.entries', null);
 				echo JText::_('COM_BWPOSTMAN_NL_SENDING_NO_QUEUE_ENTRIES_TO_SEND');
+				echo JText::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE');
+				echo '<script type="text/javascript">' . "\n";
+				// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
+				echo "function goBackToQueue(){window.parent.location.href = 'index.php?option=com_bwpostman&view=newsletters&layout=queue';} \n";
+				echo "setTimeout('goBackToQueue()',5000); \n";
+				echo "</script>\n";
 			}
 		}
 		elseif ($task == 'insideModal')

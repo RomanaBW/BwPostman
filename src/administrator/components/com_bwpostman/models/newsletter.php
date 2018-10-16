@@ -2245,7 +2245,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// replace edit and unsubscribe link
 		if ($del_sub_1_click === '0')
 		{
-		$replace1	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+			$replace1	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
 		}
 		else
 		{
@@ -2370,7 +2370,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if ($del_sub_1_click === '0')
 			{
-			$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . "<br /><br />" . $impressum;
+				$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . "<br /><br />" . $impressum;
 			}
 			else
 			{
@@ -2393,7 +2393,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			if ($del_sub_1_click === '0')
 			{
-			$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . $impressum;
+				$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . $impressum;
 			}
 			else
 			{
@@ -2451,8 +2451,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if ($del_sub_1_click === '0')
 		{
-		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
-			'&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
+			$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
+				'&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
 		}
 		else
 		{
@@ -2521,7 +2521,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			// replace [%impressum%]
 			if ($del_sub_1_click === '0')
 			{
-			$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
+				$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			}
 			else
 			{
@@ -2535,8 +2535,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			if ($del_sub_1_click === '0')
 			{
-			$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
-				JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
+				$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
+					JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			}
 			else
 			{
@@ -3027,29 +3027,40 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function sendMailsFromQueue($mailsPerStep = 100)
 	{
-		$sendMailCounter = 0;
-		echo JText::_('COM_BWPOSTMAN_NL_SENDING_PROCESS');
-		ob_flush();
-		flush();
-
-		while(1)
+		try
 		{
-			$ret = $this->sendMail(true);
-			if ($ret == 0)
-			{                              // Queue is empty!
-				return 0;
-				break;
+			$sendMailCounter = 0;
+			echo JText::_('COM_BWPOSTMAN_NL_SENDING_PROCESS');
+			ob_flush();
+			flush();
+
+			while(1)
+			{
+				$ret = $this->sendMail(true);
+				if ($ret == 0)
+				{                              // Queue is empty!
+					return 0;
+					break;
+				}
+
+				$sendMailCounter++;
+				if ($sendMailCounter >= $mailsPerStep)
+				{     // Maximum is reached.
+					return 1;
+					break;
+				}
 			}
 
-			$sendMailCounter++;
-			if ($sendMailCounter >= $mailsPerStep)
-			{     // Maximum is reached.
-				return 1;
-				break;
-			}
+			return 0;
 		}
-
-		return 0;
+		catch (\Throwable $e) // PHP-Version >= 7
+		{
+			return 2;
+		}
+		catch (\Exception $e) // PHP-Version < 7
+		{
+			return 2;
+		}
 	}
 
 	/**

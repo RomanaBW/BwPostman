@@ -62,7 +62,6 @@ pipeline {
 
 				script {
 					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-//					GIT_MESSAGE = commit_message
 				}
 
 				sshPublisher(

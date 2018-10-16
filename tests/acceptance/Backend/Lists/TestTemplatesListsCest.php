@@ -108,7 +108,7 @@ class TestTemplatesListsCest
 		$sidebarToggle = $I->grabAttributeFrom(".//div[@id='j-sidebar-container']", 'class');
 		codecept_debug("Sidebar toggle class:");
 		codecept_debug($sidebarToggle);
-		if ($sidebarToggle == 'j-sidebar-container j-toggle-transition j-sidebar-hidden')
+		if (strpos($sidebarToggle, 'j-sidebar-hidden') !== false)
 		{
 			$I->click(Generals::$submenu_toggle_button);
 		}

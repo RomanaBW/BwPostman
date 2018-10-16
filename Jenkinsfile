@@ -60,12 +60,12 @@ pipeline {
 					])
 				}
 
-				script {
-					def commit_message = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-					GIT_MESSAGE = commit_message
-					sh "echo 1 Git message: ${GIT_MESSAGE}"
-				}
-				sh "export GIT_MESSAGE=`git log -5 --pretty=%B` && echo 5 Git messages: ${GIT_MESSAGE}"
+				// script {
+				// 	def commit_message = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+				// 	GIT_MESSAGE = commit_message
+				// 	sh "echo 1 Git message: ${GIT_MESSAGE}"
+				// }
+				sh "export GIT_MESSAGE=`git log -5 --pretty=%B`"
 				sh "echo 5 Git messages: ${GIT_MESSAGE}"
 
 				sshPublisher(

@@ -62,7 +62,6 @@ pipeline {
 					])
 				}
 
-				sh "echo Git commit: ${checkout_result.GIT_COMMIT}"
 				sh "export GIT_MESSAGE=`git log -5 --pretty=%B`"
 				sh "echo 5 Git messages: ${GIT_MESSAGE}"
 

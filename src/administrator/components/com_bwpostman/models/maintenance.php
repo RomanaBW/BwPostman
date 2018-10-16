@@ -296,6 +296,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if ($update)
 				{
+					$path       = IS_WIN ? JFactory::getConfig()->get('tmp_path') : JFolder::makeSafe(JFactory::getConfig()->get('tmp_path'));
+					$backupFile = $path . $backupFile;
+
 					echo '<p class="bw_tablecheck_ok">'
 						. JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $fileName)
 						. '</p>';

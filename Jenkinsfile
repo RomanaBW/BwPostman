@@ -130,7 +130,7 @@ pipeline {
 					// 	failure {
 					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					// 	}
-					}
+					//}
 				}
 			}
 		}

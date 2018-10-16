@@ -62,6 +62,10 @@ pipeline {
 					])
 				}
 
+				sh "echo Git commit: ${checkout_result.GIT_COMMIT}"
+				sh "export GIT_MESSAGE=`git log -5 --pretty=%B`"
+				sh "echo 5 Git messages: ${GIT_MESSAGE}"
+
 				sshPublisher(
 					publishers: [sshPublisherDesc(
 						configName: 'Web Dev',
@@ -84,10 +88,6 @@ pipeline {
 						verbose: false
 					)]
 				)
-
-				sh "echo Git commit: ${checkout_result.GIT_COMMIT}"
-				sh "export GIT_MESSAGE=`git log -5 --pretty=%B`"
-				sh "echo 5 Git messages: ${GIT_MESSAGE}"
 
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and is uploaded to Boldt Webservice for testing purpose.</p><p>Commit message: ${GIT_MESSAGE}</p>",

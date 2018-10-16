@@ -68,8 +68,6 @@ pipeline {
 				sh "export GIT_MESSAGE=`git log -5 --pretty=%B` && echo 5 Git messages: ${GIT_MESSAGE}"
 				sh "echo 5 Git messages: ${GIT_MESSAGE}"
 
-				echo "${commit_message}"
-
 				sshPublisher(
 					publishers: [sshPublisherDesc(
 						configName: 'Web Dev',

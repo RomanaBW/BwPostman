@@ -126,7 +126,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// @ToDo: Use simpleXml correctly
 		// Access check.
 		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
-
+dump($fileName, 'FileName from parameter');
 		if (!$permissions['maintenance']['save'])
 		{
 			return false;
@@ -157,7 +157,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-		$fileName = $path . $fileName;
+		$fileName = $path . '/' . $fileName;
 		$handle    = fopen($fileName, 'wb');
 
 		try

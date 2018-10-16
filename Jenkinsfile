@@ -85,7 +85,9 @@ pipeline {
 					)]
 				)
 
-				sh "echo ${GIT_MESSAGE}"
+				commit_message = sh(returnStdout: true, script: "git log -n 5 ${checkout_result.GIT_COMMIT}")
+				sh "echo Commit message: ${commit_message}"
+				sh "echo Git commit: ${checkout_result.GIT_COMMIT}"
 
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and is uploaded to Boldt Webservice for testing purpose.</p><p>Commit message: ${GIT_MESSAGE}</p>",
@@ -100,33 +102,33 @@ pipeline {
 			parallel {
 				stage ('accept1') {
 					steps {
-//						echo 'Dummy'
-						sleep 60
- 						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						echo 'Dummy'
+						// sleep 60
+						// bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
+					// post {
+					// 	always {
+					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					// 	}
+					// 	failure {
+					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					// 	}
+					// }
 				}
 
 				stage ('accept2') {
 					steps {
-//						echo 'Dummy'
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						echo 'Dummy'
+						// bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
+					// post {
+					// 	always {
+					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					// 	}
+					// 	failure {
+					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					// 	}
+					// }
 				}
 
 				stage ('accept3') {

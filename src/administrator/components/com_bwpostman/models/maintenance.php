@@ -122,14 +122,31 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	public function saveTables($fileName, $update = false)
 	{
-		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/maintenancehelper.php');
 		// @ToDo: Use simpleXml correctly
 		// Access check.
 		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
-dump($fileName, 'FileName from parameter');
+
 		if (!$permissions['maintenance']['save'])
 		{
 			return false;
+		}
+
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/maintenancehelper.php');
+
+		if (is_bool($fileName))
+		{
+			$compressed     = JComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
+			$dottedVersion  = BwPostmanHelper::getInstalledBwPostmanVersion();
+			$version	    = str_replace('.', '_', $dottedVersion);
+			$filename	    = "BwPostman_" . $version . "_Tables_" . $date->format("Y-m-d_H_i") . '.xml';
+			$fileName    = File::makeSafe($filename);
+
+			if ($compressed)
+			{
+				$filename   .= '.zip';
+				$fileName = File::makeSafe(File::stripExt($filename));
+			}
+
 		}
 
 		// Import JFolder and JFileObject class

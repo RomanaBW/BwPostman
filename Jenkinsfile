@@ -82,7 +82,7 @@ pipeline {
 					)]
 				)
 
-				GIT_MESSAGE = sh 'git log -1 --format=%B ${GIT_COMMIT}'
+				def GIT_MESSAGE = sh 'git log -1 --format=%B ${GIT_COMMIT}'
 
 				echo ${GIT_MESSAGE}
 

@@ -62,7 +62,7 @@ pipeline {
 					])
 				}
 
-				sh "export GIT_MESSAGE=`git log -5 --pretty=%B`"
+				sh "export GIT_MESSAGE=`git log -5 --pretty=%B` && echo 5 Git messages: ${GIT_MESSAGE}"
 				sh "echo 5 Git messages: ${GIT_MESSAGE}"
 
 				sshPublisher(

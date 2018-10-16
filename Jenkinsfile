@@ -64,6 +64,7 @@ pipeline {
 
 				script {
 					def commit_message = sh(returnStdout: true, script: "git log -n 1 ${checkout_result.GIT_COMMIT}")
+					GIT_MESSAGE = commit_message
 				}
 				sh "export GIT_MESSAGE=`git log -5 --pretty=%B` && echo 5 Git messages: ${GIT_MESSAGE}"
 				sh "echo 5 Git messages: ${GIT_MESSAGE}"

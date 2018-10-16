@@ -125,7 +125,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// @ToDo: Use simpleXml correctly
 		// Access check.
 		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
-
+dump($fileName, 'File name as parameter');
 		if (!$permissions['maintenance']['save'])
 		{
 			return false;
@@ -138,7 +138,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$compressed     = JComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
 			$dottedVersion  = BwPostmanHelper::getInstalledBwPostmanVersion();
 			$version	    = str_replace('.', '_', $dottedVersion);
-			$filename	    = "BwPostman_" . $version . "_Tables_" . $date->format("Y-m-d_H_i") . '.xml';
+			$filename	    = "BwPostman_" . $version . "_Tables_" . JFactory::getDate()->format("Y-m-d_H_i") . '.xml';
 			$fileName    = File::makeSafe($filename);
 
 			if ($compressed)
@@ -148,6 +148,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 		}
+dump($fileName, 'File name after bool processing');
 
 		// Import JFolder and JFileObject class
 		jimport('joomla.filesystem.folder');

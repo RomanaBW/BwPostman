@@ -12,10 +12,8 @@ pipeline {
         string(name: "ACCEPT_5_IP", defaultValue: "192.168.55.10", description: "Fix IP for acceptance tester 5")
         string(name: "ACCEPT_6_IP", defaultValue: "192.168.56.10", description: "Fix IP for acceptance tester 6")
         string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
+		string(name: "GIT_MESSAGE", defaultValue: "not specified")
     }
-    environment {
-		GIT_MESSAGE = sh 'git log -1 --format=%B ${GIT_COMMIT}'
-	}
 
     stages {
         stage('Build') {
@@ -63,7 +61,7 @@ pipeline {
 				}
 
 				script {
-					def commit_message = sh(returnStdout: true, script: "git log -n 1 ${checkout_result.GIT_COMMIT}")
+					def commit_message = sh(returnStdout: true, script: "git log -n 1")
 					GIT_MESSAGE = commit_message
 				}
 				sh "export GIT_MESSAGE=`git log -5 --pretty=%B` && echo 5 Git messages: ${GIT_MESSAGE}"

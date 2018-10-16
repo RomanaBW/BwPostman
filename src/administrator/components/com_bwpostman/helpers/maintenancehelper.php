@@ -51,7 +51,6 @@ abstract class BwPostmanMaintenanceHelper
 	public static function compressBackupFile($fileName)
 	{
 		$params = JComponentHelper::getParams('com_bwpostman');
-dump($fileName, 'Filename');
 
 		$compressMethod = $params->get('compress_method', 'zip');
 		$compressedFile = $fileName . '.' . $compressMethod;
@@ -66,6 +65,11 @@ dump($fileName, 'Filename');
 			case 'zip':
 			default:
 				$compressResult = self::compressByZip($compressedFile, $onlyFileName, $fileData);
+
+				if ($compressResult)
+				{
+					JFile::delete($fileName);
+				}
 				break;
 		}
 

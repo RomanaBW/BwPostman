@@ -85,7 +85,7 @@ pipeline {
 					)]
 				)
 
-				commit_message = sh(returnStdout: true, script: "git log -n 5 ${checkout_result.GIT_COMMIT}")
+				def commit_message = sh(returnStdout: true, script: "git log -n 5 ${checkout_result.GIT_COMMIT}")
 				sh "echo Commit message: ${commit_message}"
 				sh "echo Git commit: ${checkout_result.GIT_COMMIT}"
 

@@ -47,42 +47,53 @@ pipeline {
 		// 	}
 		// }
 
-//		stage('Dev-Upload') {
-//			steps {
-//				dir("/repositories/artifacts/bwpostman") {
-//					fileOperations([
-//							fileCopyOperation(
-//									excludes: '',
-//									flattenFiles: false,
-//									includes: 'pkg_bwpostman.zip',
-//									targetLocation: "${WORKSPACE}/tests")
-//					])
-//				}
+		stage('Dev-Upload') {
+			steps {
+				dir("/repositories/artifacts/bwpostman") {
+					fileOperations([
+							fileCopyOperation(
+									excludes: '',
+									flattenFiles: false,
+									includes: 'pkg_bwpostman.zip',
+									targetLocation: "${WORKSPACE}/tests")
+					])
+				}
 
-		// 		sshPublisher(
-		// 			publishers: [sshPublisherDesc(
-		// 				configName: 'Web Dev',
-		// 				transfers: [sshTransfer(
-		// 					cleanRemote: false,
-		// 					excludes: '',
-		// 					execCommand: '',
-		// 					execTimeout: 120000,
-		// 					flatten: false,
-		// 					makeEmptyDirs: false,
-		// 					noDefaultExcludes: false,
-		// 					patternSeparator: '[, ]+',
-		// 					remoteDirectory: '',
-		// 					remoteDirectorySDF: false,
-		// 					removePrefix: 'tests',
-		// 					sourceFiles: 'tests/pkg_bwpostman.zip'
-		// 				)],
-		// 				usePromotionTimestamp: false,
-		// 				useWorkspaceInPromotion: false,
-		// 				verbose: false
-		// 			)]
-		// 		)
-		// 	}
-		// }
+				sshPublisher(
+					publishers: [sshPublisherDesc(
+						configName: 'Web Dev',
+						transfers: [sshTransfer(
+							cleanRemote: false,
+							excludes: '',
+							execCommand: '',
+							execTimeout: 120000,
+							flatten: false,
+							makeEmptyDirs: false,
+							noDefaultExcludes: false,
+							patternSeparator: '[, ]+',
+							remoteDirectory: '',
+							remoteDirectorySDF: false,
+							removePrefix: 'tests',
+							sourceFiles: 'tests/pkg_bwpostman.zip'
+						)],
+						usePromotionTimestamp: false,
+						useWorkspaceInPromotion: false,
+						verbose: false
+					)]
+				)
+
+				GIT_MESSAGE = sh 'git log -1 --format=%B ${GIT_COMMIT}'
+
+				echo ${GIT_MESSAGE}
+
+				emailext(
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and is uploaded to Boldt Webservice for testing purpose.</p><p>Commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman build ${currentBuild.number}",
+					to: 'info@boldt-webservice.de, webmaster@boldt-webservice.de'
+			)
+
+			}
+		}
 
 		stage('Acceptance Tests') {
 			parallel {

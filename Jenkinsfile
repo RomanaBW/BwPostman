@@ -12,8 +12,11 @@ pipeline {
         string(name: "ACCEPT_5_IP", defaultValue: "192.168.55.10", description: "Fix IP for acceptance tester 5")
         string(name: "ACCEPT_6_IP", defaultValue: "192.168.56.10", description: "Fix IP for acceptance tester 6")
         string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
-
     }
+    environment {
+		GIT_MESSAGE = sh 'git log -1 --format=%B ${GIT_COMMIT}'
+	}
+
     stages {
         stage('Build') {
             steps {
@@ -82,9 +85,7 @@ pipeline {
 					)]
 				)
 
-				def GIT_MESSAGE = sh 'git log -1 --format=%B ${GIT_COMMIT}'
-
-				echo ${GIT_MESSAGE}
+				sh "echo ${GIT_MESSAGE}"
 
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and is uploaded to Boldt Webservice for testing purpose.</p><p>Commit message: ${GIT_MESSAGE}</p>",

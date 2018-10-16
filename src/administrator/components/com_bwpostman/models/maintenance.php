@@ -138,13 +138,11 @@ dump($fileName, 'File name as parameter');
 			$compressed     = JComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
 			$dottedVersion  = BwPostmanHelper::getInstalledBwPostmanVersion();
 			$version	    = str_replace('.', '_', $dottedVersion);
-			$filename	    = "BwPostman_" . $version . "_Tables_" . JFactory::getDate()->format("Y-m-d_H_i") . '.xml';
-			$fileName    = File::makeSafe($filename);
+			$fileName	    = "BwPostman_" . $version . "_Tables_" . JFactory::getDate()->format("Y-m-d_H_i") . '.xml';
 
 			if ($compressed)
 			{
-				$filename   .= '.zip';
-				$fileName = File::makeSafe(File::stripExt($filename));
+				$fileName   .= '.zip';
 			}
 
 		}

@@ -36,16 +36,17 @@ pipeline {
 
 		stage('smoke') {
 			steps {
-				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				echo "J-Version at smoke: ${params.VERSION_NUMBER}"
+//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
-			post {
-				always {
-					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-				}
-				failure {
-					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
+			// post {
+			// 	always {
+			// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+			// 	}
+			// 	failure {
+			// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			// 	}
+			// }
 		}
 
 		stage('Dev-Upload') {

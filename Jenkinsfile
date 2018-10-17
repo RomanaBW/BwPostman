@@ -2,7 +2,7 @@ pipeline {
     agent any
     parameters {
         string(name: "VERSION_NUMBER", defaultValue: "2.1.0", description: "The new/next version number of the project.")
-        string(name: "JOOMLA_VERSION", defaultValue: "3.8.12", description: "Version of Joomla to test against")
+        string(name: "JOOMLA_VERSION", defaultValue: "3.8.13", description: "Version of Joomla to test against")
         string(name: "VAGRANT_DIR", defaultValue: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester", description: "Path to the vagrant file")
         string(name: "SMOKE_IP", defaultValue: "192.168.50.10", description: "Fix IP for smoke tester")
         string(name: "ACCEPT_1_IP", defaultValue: "192.168.51.10", description: "Fix IP for acceptance tester 1")

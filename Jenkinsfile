@@ -36,7 +36,6 @@ pipeline {
 
 		stage('smoke') {
 			steps {
-				echo "J-Version at smoke: ${params.JOOMLA_VERSION}"
 				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			post {
@@ -91,8 +90,9 @@ pipeline {
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number}",
-					to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
+					to: 'webmaster@boldt-webservice.de'
 			)
+//				to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
 
 			}
 		}
@@ -102,7 +102,7 @@ pipeline {
 				stage ('accept1') {
 					steps {
 //						echo 'Dummy'
-						sleep 60
+						sleep 120
 						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 					post {
@@ -118,6 +118,7 @@ pipeline {
 				stage ('accept2') {
 					steps {
 //						echo 'Dummy'
+						sleep 5
 						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 					post {
@@ -133,7 +134,7 @@ pipeline {
 				stage ('accept3') {
 					steps {
 //						echo 'Dummy'
-						sleep 120
+						sleep 240
 						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 					post {

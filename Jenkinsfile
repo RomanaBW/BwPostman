@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Create installation package'
-			sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+				// sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
             }
         }
 
@@ -36,7 +36,7 @@ pipeline {
 
 		stage('smoke') {
 			steps {
-				echo "J-Version at smoke: ${params.VERSION_NUMBER}"
+				echo "J-Version at smoke: ${params.JOOMLA_VERSION}"
 //				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			// post {

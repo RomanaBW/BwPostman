@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Create installation package'
-//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
             }
         }
 
@@ -37,16 +37,16 @@ pipeline {
 		stage('smoke') {
 			steps {
 				echo "J-Version at smoke: ${params.JOOMLA_VERSION}"
-//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
-			// post {
-			// 	always {
-			// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-			// 	}
-			// 	failure {
-			// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			// 	}
-			// }
+			post {
+				always {
+					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+				}
+				failure {
+					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
 		}
 
 		stage('Dev-Upload') {
@@ -91,7 +91,7 @@ pipeline {
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number}",
-					to: 'info@boldt-webservice.de, webmaster@boldt-webservice.de'
+					to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
 			)
 
 			}
@@ -132,18 +132,18 @@ pipeline {
 
 				stage ('accept3') {
 					steps {
-						echo 'Dummy'
-						// sleep 120
-						// bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						echo 'Dummy'
+						sleep 120
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					// post {
-					// 	always {
-					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-					// 	}
-					// 	failure {
-					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-					// 	}
-					//}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
 				}
 			}
 		}

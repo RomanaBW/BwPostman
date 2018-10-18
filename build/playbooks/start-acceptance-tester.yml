@@ -38,16 +38,16 @@
       debug:
         msg: "{{ hostvars['localhost']['tester_ip'] }}"
 
-    - name: Ensure inventory is created and equipped with the correct values
-      become: true
-      become_user: root
-      template:
-        src: "hosts.j2"
-        dest: "inventory/hosts"
-
-    - name: Refresh inventory
-      meta: refresh_inventory
-
+#    - name: Ensure inventory is created and equipped with the correct values
+#      become: true
+#      become_user: root
+#      template:
+#        src: "hosts.j2"
+#        dest: "inventory/hosts"
+#
+#    - name: Refresh inventory
+#      meta: refresh_inventory
+#
     - name: ensure log folder for test results exists
       become: true
       become_user: root

@@ -1,5 +1,20 @@
-[server]
-universe2
+[smoke]
+192.168.1.130 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
 
-[workplace]
-arbeitspferd
+[accept1]
+192.168.1.131 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[accept2]
+192.168.1.132 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[accept3]
+192.168.1.133 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[accept4]
+192.168.1.134 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[accept5]
+192.168.1.135 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[accept6]
+192.168.1.136 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'

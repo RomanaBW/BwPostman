@@ -71,6 +71,40 @@
     - vars/vault.yml
 
   tasks:
+    - name: set server node variable at smoke
+      set_fact:
+        server_node: "0"
+
+    - name: set server node variable at accept1
+      set_fact:
+        server_node: "1"
+      when: test_suite == 'accept1'
+
+    - name: set server node variable at accept2
+      set_fact:
+        server_node: "2"
+      when: test_suite == 'accept2'
+
+    - name: set server node variable at accept3
+      set_fact:
+        server_node: "3"
+      when: test_suite == 'accept3'
+
+    - name: set server node variable at accept4
+      set_fact:
+        server_node: "4"
+      when: test_suite == 'accept4'
+
+    - name: set server node variable at accept5
+      set_fact:
+        server_node: "5"
+      when: test_suite == 'accept5'
+
+    - name: set server node variable at accept6
+      set_fact:
+        server_node: "6"
+      when: test_suite == 'accept6'
+
     - name: Set project dir variable
       set_fact:
         bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman/') }}"

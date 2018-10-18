@@ -6,6 +6,8 @@ test_log_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ v
 acceptance_manifest_path: "/data/tests"
 codeception_manifest_path: "/data"
 
+tester_url: "https://www{{ server_node }}.tester-net.nil"
+
 codecept_path_tests: "tests"
 codecept_path_data: "repositories/artifacts/bwpostman/data"
 codecept_path_support: "tests/_support"

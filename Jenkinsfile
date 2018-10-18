@@ -101,50 +101,50 @@ pipeline {
 			parallel {
 				stage ('accept1') {
 					steps {
-//						echo 'Dummy'
-						sleep 120
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						echo 'Dummy'
+						// sleep 120
+						// bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
+					// post {
+					// 	always {
+					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					// 	}
+					// 	failure {
+					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					// 	}
+					// }
 				}
 
 				stage ('accept2') {
 					steps {
-//						echo 'Dummy'
-						sleep 5
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						echo 'Dummy'
+						// sleep 5
+						// bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
+					// post {
+					// 	always {
+					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					// 	}
+					// 	failure {
+					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					// 	}
+					// }
 				}
 
 				stage ('accept3') {
 					steps {
-//						echo 'Dummy'
-						sleep 240
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						echo 'Dummy'
+						// sleep 240
+						// bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
+					// post {
+					// 	always {
+					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					// 	}
+					// 	failure {
+					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					// 	}
+					// }
 				}
 			}
 		}

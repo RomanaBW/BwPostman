@@ -34,6 +34,7 @@ pipeline {
 			}
 		}
 
+
 		stage('smoke') {
 			steps {
 				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)

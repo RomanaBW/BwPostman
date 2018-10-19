@@ -98,39 +98,56 @@ pipeline {
 			}
 		}
 
-		stage('Acceptance Tests') {
+		stage('Acceptance Tests 1')
+		{
+			parallel
+			{
+				stage('accept1')
+				{
+					steps
+					{
+//						echo 'Dummy'
+						sleep
+						60
+						bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("${STAGE_NAME}")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
+				}
+
+				stage('accept2')
+				{
+					steps
+					{
+//						echo 'Dummy'
+						bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("${STAGE_NAME}")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
+				}
+			}
+		}
+
+		stage('Acceptance Tests 2') {
 			parallel {
-				stage ('accept1') {
-					steps {
-//						echo 'Dummy'
-						sleep 120
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
-				}
-
-				stage ('accept2') {
-					steps {
-//						echo 'Dummy'
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-					}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
-				}
-
 				stage ('accept3') {
 					steps {
 						echo 'Dummy'
@@ -146,10 +163,25 @@ pipeline {
 						}
 					}
 				}
+				stage ('accept4') {
+					steps {
+						echo 'Dummy'
+						sleep 240
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
+				}
 			}
 		}
 
-		stage ('accept4') {
+		stage ('accept5') {
 			steps {
 				echo 'Dummy'
 //				bwpmAccept ("accept4", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)

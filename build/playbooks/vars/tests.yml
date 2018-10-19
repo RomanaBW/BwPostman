@@ -60,8 +60,12 @@ test_file:
     testsuite_file: User2Subscriber
   - suite: createUsers
     testsuite_file: Backend/Access/TestInstallUsersCest
-  - suite: access
-    testsuite_file: Backend/Access/TestAccessCest
+  - suite: access1
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForListViewButtonsFromMainView
+  - suite: access2
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView
+  - suite: access3
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtons
 #  - personalize:
 #  - restore:
 #  - module_subs:
@@ -106,5 +110,15 @@ test_suites:
       - restore
       - setPermissions
       - createUsers
-      - access
+      - access1
+      - access2
+
+  - name: accept5
+    tests:
+    - install
+    - defaultOptions
+    - restore
+    - setPermissions
+    - createUsers
+    - access3
 

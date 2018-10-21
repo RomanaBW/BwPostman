@@ -23,7 +23,7 @@ Where can you get support and help?
 ---------------------
 * [Frequently Asked Questions](https://www.boldt-webservice.de/en/bw-forum/faq.html) (FAQ)
 * Find the [information you need](https://www.boldt-webservice.de/en/forum-en/bwpostman-manual.html)
-* Post questions at [our forum](https://www.boldt-webservice.de/en/forum-en/bwpostman.html)
+* Post questions at [our forum](https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html)
 
 Do you want to improve BwPostman?
 ---------------------

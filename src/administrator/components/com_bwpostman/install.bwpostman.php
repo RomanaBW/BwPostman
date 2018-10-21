@@ -8,7 +8,7 @@
  * @package BwPostman-Admin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
- * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
+ * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1334,7 +1334,7 @@ class Com_BwPostmanInstallerScript
 		if ($lang_ver != 'de')
 		{
 			$lang_ver = 'en';
-			$forum	= "https://www.boldt-webservice.de/en/forum-en/bwpostman.html";
+			$forum	= "https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html";
 		}
 		else
 		{

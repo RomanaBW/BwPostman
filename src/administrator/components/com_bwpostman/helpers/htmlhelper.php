@@ -321,11 +321,11 @@ abstract class BwPostmanHTMLHelper {
 		$lang_ver		= substr($lang->getTag(), 0, 2);
 		if ($lang_ver != 'de')
 		{
-			$link	= "https://www.boldt-webservice.de/en/forum-en/bwpostman.html";
+			$link   = "https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html";
 		}
 		else
 		{
-			$link	= "https://www.boldt-webservice.de/de/forum/bwpostman.html";
+			$link   = "https://www.boldt-webservice.de/de/forum/forum/bwpostman.html";
 		}
 
 		return $link;

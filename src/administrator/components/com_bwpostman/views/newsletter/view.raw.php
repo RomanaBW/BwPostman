@@ -151,7 +151,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				echo '<div id="progress" style="border: 1px solid silver; width: 98%; line-height: 30px; padding: 2px;">
 						<span style="position: absolute; left: 48%;"><b>' . $percent . ' %</b></span>
 						<div style="background-color: green; width: ' . $percent . '%; height: 30px;"></div>
-						</div><br />' . JText::sprintf('COM_BWPOSTMAN_NL_SENT_MESSAGE', $entries, $sumentries) . '<br />';
+						</div><br /><div id="nl_modal_to_send_message">' . JText::sprintf('COM_BWPOSTMAN_NL_SENT_MESSAGE', $entries, $sumentries) . '</div><br />';
 
 				if ($ret == 1)
 				{   // There are more mails in the queue.
@@ -165,7 +165,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				{   // No more mails to send.
 					// reset number of queue entries before start sending
 					$app->setUserState('com_bwpostman.newsletters.entries', null);
-					echo JText::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED');
+					echo '<div id="nl_modal_to_send_message">' . JText::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED') . "</div>";
 					ob_flush();
 					flush();
 					echo '<script type="text/javascript">' . "\n";
@@ -192,7 +192,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 				if ($ret == 2)
 				{   // There are fatal errors.
-					echo "<br /><span style='color: #ff0000;'>" . JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . "</span>";
+					echo "<br /><span id='nl_modal_to_send_message_error' style='color: #ff0000;'>" . JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . "</span>";
 					echo JText::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE');
 					echo '<script type="text/javascript">' . "\n";
 					// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML

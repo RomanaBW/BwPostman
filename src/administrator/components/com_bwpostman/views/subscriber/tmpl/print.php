@@ -63,20 +63,43 @@ defined('_JEXEC') or die('Restricted access');
 			margin-top: 30px;
 		}
 		p.heading {
-			font-size: 1.5em;
-			font-weight: bold;
+			font-size   : 1.5em;
+			font-weight : bold;
+		}
+		.btn {
+			background-color: #46a546;
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			color: #fff;
+			border-radius: 3px;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+			cursor: pointer;
+			display: inline-block;
+			font-size: 13px;
+			line-height: 18px;
+			margin-bottom: 0;
+			margin-right: 20px;
+			padding: 4px 30px;
+			text-align: center;
+			vertical-align: middle;
+			text-decoration: none;
+			float: right;
+		}
+		.btn:hover, .btn:focus {
+			background-color: #2f6f2f;
+			text-shadow: none;
+		}
+		@media print {
+			.btn {
+				display :none;
+			}
 		}
 	</style>
-	<script type="text/javascript">
-		window.onload = function () {
-			window.focus();
-			window.print();
-		}
-	</script>
 </head>
 
 <body id="preview_html">
-<p class="heading"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?></p>
+<p class="heading"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?>
+	<a class="btn" href="javascript:window.print()"><?php echo JText::_('JGLOBAL_SHOW_PRINT_ICON_LABEL'); ?></a>
+</p>
 <p class="date"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_PRINTDATE') . ': ' . date("d.m.Y"); ?></p>
 <p class="sub-heading"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_REG'); ?></p>
 <table>

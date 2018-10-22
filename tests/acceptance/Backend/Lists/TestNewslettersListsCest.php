@@ -35,6 +35,8 @@ class TestNewslettersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -217,6 +219,8 @@ class TestNewslettersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function ListlimitNewsletters(AcceptanceTester $I)
@@ -237,6 +241,8 @@ class TestNewslettersListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -527,6 +533,8 @@ class TestNewslettersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function ListlimitSentNewsletters(AcceptanceTester $I)
@@ -551,6 +559,8 @@ class TestNewslettersListsCest
 	 * @after   _logout
 	 *
 	 * @return  void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -710,6 +720,8 @@ class TestNewslettersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
@@ -726,7 +738,7 @@ class TestNewslettersListsCest
 	 */
 	private function prepareSortData($sort_data)
 	{
-		$bwpm_version = getenv('BW_TEST_BWPM_VERSION');
+//		$bwpm_version = getenv('BW_TEST_BWPM_VERSION');
 
 		/*
 		if ($bwpm_version == 132)

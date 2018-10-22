@@ -279,6 +279,12 @@ class NewsletterEditPage
 	 */
 	public static $success_send_number  = '%s  of  %s  newsletters need to be sent.';
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $success_send_number_id  = ".//*[@id='nl_modal_to_send_message']";
 
 	/**
 	 * @var integer
@@ -1220,6 +1226,7 @@ class NewsletterEditPage
 		$I->waitForElement(self::$tab5_send_iframeId, 20);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 
+		$I->waitForElementVisible(self::$success_send_number_id, 180);
 		$I->waitForText(self::$success_send_ready, 180);
 		$I->see(self::$success_send_ready);
 

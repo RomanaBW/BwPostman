@@ -377,33 +377,25 @@ class TestSubscribersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-//	public function TestSubscriberPrintDataButton(AcceptanceTester $I)
-//	{
-//		$I->wantTo("test print data button at subscriber details");
-//		$I->expectTo("see popup with subscriber data");
-//
-//		$I->amOnPage(SubManage::$url);
-//		$I->clickAndWait(SubEdit::$firstSubscriber, 1);
-//
-//		$I->clickAndWait(SubEdit::$printSubsDataButton, 3);
-//
-//		$I->clickAndWait('//*[@id="print-header"]/div/button[1]', 2);
-//
-////		$I->pressEscapeKey();
-////		$I->wait(3);
-//
-//		$html = $I->grabFromCurrentUrl();
-//		codecept_debug('HTML:');
-//		codecept_debug($html);
-//
-//		$I->switchToIFrame("subsData");
-//		$I->see(" l.abbott@tester-net.nil ", "html/body/table[1]/tbody/tr[4]/td[2]");
-//
-//		$I->clickAndWait("html/body/div[5]/a", 1);
-//		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
-//
-//		$I->see('Subscribers', Generals::$pageTitle);
-//	}
+	public function TestSubscriberPrintDataButton(AcceptanceTester $I)
+	{
+		$I->wantTo("test print data button at subscriber details");
+		$I->expectTo("see popup with subscriber data");
+
+		$I->amOnPage(SubManage::$url);
+		$I->clickAndWait(SubEdit::$firstSubscriber, 1);
+
+		$I->clickAndWait(SubEdit::$printSubsDataButton, 3);
+
+		$I->switchToIFrame("subsData");
+		$I->see(" l.abbott@tester-net.nil ", "html/body/table[1]/tbody/tr[4]/td[2]");
+
+		$I->switchToIFrame();
+		$I->clickAndWait("html/body/div[5]/a", 1);
+		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
+
+		$I->see('Subscribers', Generals::$pageTitle);
+	}
 
 	/**
 	 * Test method to logout from backend

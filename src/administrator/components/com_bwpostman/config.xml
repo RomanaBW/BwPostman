@@ -418,6 +418,35 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+		<field name="spacer4_1" type="spacer" hr="true" />
+
+		<field name="deactivation_to_webmaster"
+			type="radio"
+			class="btn-group btn-group-yesno"
+			default="0"
+			label="COM_BWPOSTMAN_ENABLE_DEACTIVATION_COPY"
+			description="COM_BWPOSTMAN_ENABLE_DEACTIVATION_COPY_NOTE"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="deactivation_from_name"
+			type="text"
+			size="50"
+			default=""
+			label="COM_BWPOSTMAN_DEACTIVATION_FROM_NAME"
+			description="COM_BWPOSTMAN_DEACTIVATION_FROM_NAME_NOTE"
+		/>
+
+		<field name="deactivation_to_webmaster_email"
+			size="50"
+			type="text"
+			default=""
+			label="COM_BWPOSTMAN_DEACTIVATION_TO_EMAIL"
+			description="COM_BWPOSTMAN_DEACTIVATION_TO_EMAIL_NOTE"
+		/>
 	</fieldset>
 
 	<fieldset name="com_bwpostman_lists_settings" label="COM_BWPOSTMAN_LISTS_SETTINGS" description="COM_BWPOSTMAN_LISTS_SETTINGS_DESCRIPTION">

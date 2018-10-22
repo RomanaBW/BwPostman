@@ -142,6 +142,113 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	}
 
 	/**
+	 * Method to get the data of a single subscriber for raw view
+	 *
+	 * @access	public
+	 *
+	 * @param 	int $sub_id     Subscriber ID
+	 *
+	 * @return 	object Subscriber
+	 *
+	 * @throws Exception
+	 *
+	 * @since
+	 */
+	public function getSubscriberData($sub_id = null)
+	{
+		$subscriber = array();
+		$_db		= $this->_db;
+		$query		= $_db->getQuery(true);
+		$subQuery1	= $_db->getQuery(true);
+		$subQuery2	= $_db->getQuery(true);
+		$subQuery3	= $_db->getQuery(true);
+		$subQuery4	= $_db->getQuery(true);
+
+		$subQuery1->select($_db->quoteName('u') . '.' . $_db->quoteName('name'));
+		$subQuery1->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
+		$subQuery1->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('s') . '.' . $_db->quoteName('confirmed_by'));
+
+		$subQuery2->select($_db->quoteName('u') . '.' . $_db->quoteName('name'));
+		$subQuery2->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
+		$subQuery2->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('s') . '.' . $_db->quoteName('registered_by'));
+
+		$subQuery3->select($_db->quoteName('u') . '.' . $_db->quoteName('name'));
+		$subQuery3->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
+		$subQuery3->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('s') . '.' . $_db->quoteName('archived_by'));
+
+		$subQuery4->select($_db->quoteName('u') . '.' . $_db->quoteName('name'));
+		$subQuery4->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
+		$subQuery4->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('s') . '.' . $_db->quoteName('modified_by'));
+
+		$query->select($_db->quoteName('s') . '.*');
+		$query->select(
+			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('confirmed_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery1 . ' ))
+			AS ' . $_db->quoteName('confirmed_by')
+		);
+		$query->select(
+			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('registered_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery2 . ' ))
+			AS ' . $_db->quoteName('registered_by')
+		);
+		$query->select('(' . $subQuery3 . ') AS ' . $_db->quoteName('archived_by'));
+		$query->select('(' . $subQuery4 . ') AS ' . $_db->quoteName('modified_by'));
+		$query->select(
+			' IF( ' . $_db->quoteName('s') . '.' . $_db->quoteName('emailformat') . ' = ' . (int) 0 . ', "Text", "HTML" )
+			AS ' . $_db->quoteName('emailformat')
+		);
+		$query->from($_db->quoteName('#__bwpostman_subscribers') . ' AS ' . $_db->quoteName('s'));
+		$query->where($_db->quoteName('s') . '.' . $_db->quoteName('id') . ' = ' . (int) $sub_id);
+
+		$_db->setQuery($query);
+		try
+		{
+			$subscriber = $_db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		$query->clear();
+		$query->select($_db->quoteName('mailinglist_id'));
+		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$mailinglist_id_values = $_db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if (!empty($mailinglist_id_values))
+		{
+			$mailinglist_ids = implode(',', $mailinglist_id_values);
+		}
+		else
+		{
+			$mailinglist_ids = 0;
+		}
+
+		$query->clear();
+		$query->select($_db->quoteName('id'));
+		$query->select($_db->quoteName('title'));
+		$query->select($_db->quoteName('description'));
+		$query->select($_db->quoteName('archive_flag'));
+		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($_db->quoteName('id') . ' IN  (' . $mailinglist_ids . ')');
+		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+
+		$_db->setQuery($query);
+		$subscriber->lists = $_db->loadObjectList();
+
+		return $subscriber;
+	}
+
+	/**
 	 * Method to get a single record.
 	 *
 	 * @param	integer	$pk	The id of the primary key.

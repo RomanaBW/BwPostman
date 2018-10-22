@@ -222,7 +222,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 																<a class="modal" href="
 																<?php
 																echo JRoute::_(
-																	'index.php?option=com_bwpostman&view=archive&format=raw&layout=subscriber_modal&sub_id='. $item->id
+																	'index.php?option=com_bwpostman&view=subscriber&layout=print&format=raw&task=insideModal&id='. $item->id
 																); ?>"
 																		rel="{handler: 'iframe', size: {x: 600, y: 400}}">
 																	<?php

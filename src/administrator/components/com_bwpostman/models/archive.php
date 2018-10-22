@@ -703,7 +703,7 @@ class BwPostmanModelArchive extends JModelList
 	 *
 	 * @since
 	 */
-	public function getSingleSubscriber($sub_id = null)
+	/*public function getSingleSubscriber($sub_id = null)
 	{
 		$subscriber = array();
 		$_db		= $this->_db;
@@ -726,16 +726,16 @@ class BwPostmanModelArchive extends JModelList
 
 		$query->select($_db->quoteName('s') . '.*');
 		$query->select(
-			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('confirmed_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery1 . ' )) 
+			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('confirmed_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery1 . ' ))
 			AS ' . $_db->quoteName('confirmed_by')
 		);
 		$query->select(
-			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('registered_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery2 . ' )) 
+			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('registered_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery2 . ' ))
 			AS ' . $_db->quoteName('registered_by')
 		);
 		$query->select('(' . $subQuery3 . ') AS ' . $_db->quoteName('archived_by'));
 		$query->select(
-			' IF( ' . $_db->quoteName('s') . '.' . $_db->quoteName('emailformat') . ' = ' . (int) 0 . ', "Text", "HTML" ) 
+			' IF( ' . $_db->quoteName('s') . '.' . $_db->quoteName('emailformat') . ' = ' . (int) 0 . ', "Text", "HTML" )
 			AS ' . $_db->quoteName('emailformat')
 		);
 		$query->from($_db->quoteName('#__bwpostman_subscribers') . ' AS ' . $_db->quoteName('s'));
@@ -790,6 +790,7 @@ class BwPostmanModelArchive extends JModelList
 
 		return $subscriber;
 	}
+	*/
 
 	/**
 	 * Method to get the data of a single campaign for raw view

@@ -246,6 +246,13 @@ class SubscriberEditPage
 		'Help'         => ".//*[@id='toolbar-help']/button",
 	);
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $printSubsDataButton   = "html/body/div[2]/section/div/div/div[2]/form/div/div[1]/div[1]/fieldset/div/div[2]/ul/li[1]/a";
+
 
 	/**
 	 * @var string
@@ -260,6 +267,7 @@ class SubscriberEditPage
 	 * @since 2.0.0
 	 */
 	public static $male     = ".//*[@id='jform_gender_chzn']/div/ul/li[3]";
+
 	/**
 	 * Variables for selecting mailinglists
 	 * Hint: Use with sprintf <nbr> for wanted row
@@ -268,13 +276,7 @@ class SubscriberEditPage
 	 *
 	 * @since  2.0.0
 	 */
-	// This is the version before tabs
-	//public static $mls_accessible       = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[1]/div/fieldset/div/p[%s]/label";
-	//public static $mls_nonaccessible    = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[2]/div/fieldset/div/p[%s]/label";
-	//public static $mls_internal         = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/div/p[%s]/label";
-
-	//public static $mls_internal_label   = ".//*[@id='adminForm']/div[1]/div[1]/fieldset/div[3]/div/fieldset/legend";
-
+	public static $firstSubscriber       = ".//*/dd[1]/table/tbody/tr[1]/td[2]/a";
 
 	/**
 	 * @var string

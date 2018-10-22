@@ -36,6 +36,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $image = '<i class="icon-info"></i>';
 
 // Load the tooltip behavior for the notes
+JHtml::_('behavior.modal');
 JHtml::_('behavior.keepalive');
 
 $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);
@@ -149,13 +150,24 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 									<div class="controls"><?php echo $this->form->getInput('status'); ?></div>
 								</li>
 							<?php } else { ?>
-								<div class="controls"><input id="jform_status" type="hidden" value="9" name="jform[status]"></div>
+								<li>
+									<div class="controls"><input id="jform_status" type="hidden" value="9" name="jform[status]"></div>
+								</li>
 							<?php } ?>
 						</ul>
 					</div>
 
 					<div class="width-40 fltrt span4 control-group">
 						<ul class="adminformlist width_50 unstyled">
+							<li>
+								<a class="modal btn btn-info btn-block" href="
+									<?php echo JRoute::_(
+									'index.php?option=com_bwpostman&view=subscriber&layout=print&format=raw&task=insideModal&id='
+									. (int) $this->item->id
+								); ?>" rel="{handler: 'iframe', size: {x: 700, y: 500}, iframeOptions: {name: 'subsData'}}">
+									<?php echo JText::_('COM_BWPOSTMAN_PRINT_SUB_DAT'); ?>
+								</a>
+							</li>
 							<li>
 								<?php echo $this->form->getLabel('confirmation_date'); ?>
 								<div class="controls"><?php echo $this->form->getInput('confirmation_date'); ?></div>

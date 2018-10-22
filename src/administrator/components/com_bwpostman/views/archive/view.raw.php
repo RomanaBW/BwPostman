@@ -95,10 +95,6 @@ class BwPostmanViewArchive extends JViewLegacy
 
 		switch ($layout)
 		{ // Which tab are we in?
-			case "subscriber_modal":
-				$sub_id		= $jinput->get('sub_id');
-				$this->sub	= $model->getSingleSubscriber((int) $sub_id);
-				break;
 			case "campaign_modal":
 				$cam_id		= $jinput->get('cam_id');
 				$this->cam	= $model->getSingleCampaign((int) $cam_id);

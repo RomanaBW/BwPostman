@@ -43,6 +43,21 @@ class Acceptance extends Codeception\Module
 	}
 
 	/**
+	 * Helper to press escape on browser dialog
+	 *
+	 * @return void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 2.1.0
+	 */
+	public function pressEscapeKey()
+	{
+		$escapeKey = \Facebook\WebDriver\WebDriverKeys::ESCAPE;
+		$this->getModule('WebDriver')->webDriver->getKeyboard()->sendKeys([$escapeKey]);
+	}
+
+	/**
 	 * Method to check if an element exists at page
 	 *
 	 * @param   \AcceptanceTester   $I

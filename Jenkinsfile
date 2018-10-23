@@ -133,10 +133,10 @@ pipeline {
 			}
 		}
 
-		stage('Acceptance Tests 2')
-		{
-			parallel
-			{
+		// stage('Acceptance Tests 2')
+		// {
+		// 	parallel
+		// 	{
 				stage('accept1')
 				{
 					steps
@@ -157,13 +157,13 @@ pipeline {
 						}
 					}
 				}
-			}
-		}
+		// 	}
+		// }
 
-		stage('Acceptance Tests 3')
-		{
-			parallel
-			{
+		// stage('Acceptance Tests 3')
+		// {
+		// 	parallel
+		// 	{
 				stage('accept2')
 				{
 					steps
@@ -183,8 +183,8 @@ pipeline {
 						}
 					}
 				}
-			}
-		}
+		// 	}
+		// }
 
 		stage ('accept5') {
 			steps {

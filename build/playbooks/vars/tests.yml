@@ -84,7 +84,6 @@ test_suites:
       - install
       - defaultOptions
       - restore
-#      - maintenance
       - lists
 
   - name: accept2
@@ -99,6 +98,7 @@ test_suites:
       - install
       - defaultOptions
       - restore
+      - maintenance
       - frontend
       - user2subscriber
   #  - personalize

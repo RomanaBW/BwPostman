@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Archive\Archive;
+
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
@@ -551,7 +553,9 @@ class BwPostmanModelTemplates extends JModelList
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
 
-		$adapter = JArchive::getAdapter('zip');
+		$archiveclass = new Archive;
+
+		$adapter = $archiveclass->getAdapter('zip');
 		$result = $adapter->extract($archivename, $extractdir);
 
 		if (!$result || $result instanceof Exception) // extract failed
@@ -831,5 +835,286 @@ class BwPostmanModelTemplates extends JModelList
 		}
 
 		$_messageQueue->setValue($app, $messages);
+	}
+
+	/**
+	 * Get file name for ZIP archive
+	 *
+	 * @return  string  The file name
+	 *
+	 * @since   2.1.0
+	 */
+	public function getBaseName()
+	{
+		if (!isset($this->basename))
+		{
+			$jinput = JFactory::getApplication()->input;
+			$this->exportid = $jinput->get('id');
+
+			jimport('joomla.filesystem.file');
+
+			$app = JFactory::getApplication('administrator');
+			$this->tmp_path = $app->get('tmp_path') . '/';
+
+			$basename = 'bwpostman_template_export_id_' . $this->exportid . '.zip';
+
+			$this->basename = $basename;
+		}
+
+		return $this->basename;
+	}
+
+	/**
+	 * Method to call the template export process
+	 *
+	 * @access	public
+	 *
+	 * @return  string
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.1.0
+	 */
+	public function getExportTpl($id = NULL, $tpl_id = NULL)
+	{
+		$id = $this->exportid;
+
+		if (!isset($this->content))
+		{
+			$settings = array
+			(
+				array
+				(
+					'table' =>  'bwpostman_templates',
+					'where1' =>  'id',
+					'where2'    =>  'id',
+					'insert'    =>  'INSERT IGNORE',
+					'nums'      =>  array(0,1,2,10,21,22,24,26,27,29,31),
+					'j'         =>  1
+				),
+				array
+				(
+					'table' =>  'bwpostman_templates_tpl',
+					'where1' =>  'id',
+					'where2'    =>  'tpl_id',
+					'insert'    =>  'REPLACE',
+					'nums'      =>  array(0),
+					'j'         =>  0
+				),
+				array
+				(
+					'table' =>  'bwpostman_templates_tags',
+					'where1' =>  'templates_table_id',
+					'where2'    =>  'id',
+					'insert'    =>  'INSERT IGNORE',
+					'nums'      =>  array(0,1,3,5,8,10),
+					'j'         =>  0
+				)
+			);
+
+			$keys = '';
+			$vals = '';
+
+			// prepare sql string
+			foreach($settings as $setting)
+			{
+				$_db	= $this->_db;
+				$query	= $_db->getQuery(true);
+
+				$query->select('*');
+				$query->from($_db->quoteName('#__' . $setting['table'] . ''));
+				$query->where($_db->quoteName($setting['where1']) . ' = ' . (($setting['where2'] == 'id') ? (int) $id : (int) $tpl_id));
+
+				$_db->setQuery($query);
+				try
+				{
+					$res = $_db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					$errormsg = JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					$this->errRedirect($errormsg);
+				}
+
+				// Load values
+				$row = $res->fetch_row();
+
+				if (!empty($row))
+				{
+					// Count fields in row
+					$num_fields = $res->field_count;
+
+					// Fieldnames
+					$fields_meta = $res->fetch_fields();
+
+					$field_set = array();
+					for ($j = $setting['j']; $j < $num_fields; $j++) {
+						$quote = "`";
+						$field_set[$j] = $quote . $fields_meta[$j]->name . $quote;;
+					}
+					$fields = implode(', ', $field_set);
+					$this->content .= $setting['insert'] . ' INTO `#__' . $setting['table'] . '`  (' . $fields . ') VALUES' . "\n";
+
+					// Set tpl_id, path to thumbnail
+					if ($setting['table'] == 'bwpostman_templates')
+					{
+						$tpl_id			= $row[10];
+						$this->imgpath	= $row[5];
+					}
+
+					// Values
+					$values = array();
+					for ($j = $setting['j']; $j < $num_fields; $j++) {
+
+						if (!isset($row[$j]) || is_null($row[$j]))	// NULL
+						{
+							$values[] = 'NULL';
+						}
+						elseif (in_array($j, $setting['nums']))     // INT
+						{
+							$values[] = $row[$j];
+						}
+						else                                         // STRING
+						{
+							$values[] = '\''
+								. $_db->escape($row[$j])
+								. '\'';
+						}
+					}
+					// Set standard template to 0
+					if ($setting['table'] == 'bwpostman_templates')
+					{
+						$values[1] = 0;
+					}
+					// We need the last insert id from 'bwpostman_templates'
+					if ($setting['table'] == 'bwpostman_templates_tags')
+					{
+						$values[0] = 'LAST_INSERT_ID()';
+					}
+					$this->content .= '(' . implode(', ', $values) . ');' . "\n";
+				}
+			}
+
+			$this->dummy = '/* Dummy SQL-Query */' . "\n" . 'SELECT id FROM `#__bwpostman_templates_tpl` WHERE `title` = `DUMMY`';
+
+			$content = $this->createZip();
+
+			$this->content = $content;
+		}
+
+		return $this->content;
+
+	}
+
+	/**
+	 * Method to create zip archive
+	 *
+	 * @access	protected
+	 *
+	 * @return  string
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.1.0
+	 */
+	protected function createZip()
+	{
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+
+		$files =	array(
+			array(
+				'name' => 'bwp_templates.sql',
+				'data' => $this->dummy,
+				'time' => time()
+			),
+			array(
+				'name' => 'bwp_templatestpl.sql',
+				'data' => $this->content,
+				'time' => time()
+			)
+		);
+
+
+		// We need thumbnail in tmp_path
+		$thumbnail = JPATH_ROOT . '/' . $this->imgpath;
+		if (JFile::exists($thumbnail))
+		{
+			$img = JFile::getName($thumbnail);
+			if (!JFolder::exists($this->tmp_path . 'images'))
+			{
+				JFolder::create($this->tmp_path . 'images');
+			}
+			if (JFile::exists($this->tmp_path . 'images/' . $img))
+			{
+				JFile::delete($this->tmp_path . 'images/' . $img);
+			}
+			JFile::copy($thumbnail, $this->tmp_path . 'images/' . $img);
+
+			$files[] =	array(
+				'name' => 'images/' . $img,
+				'data' => '',
+				'time' => time()
+			);
+		}
+
+		// Create ZIP
+		$ziproot = $this->tmp_path . $this->basename;
+
+		if (JFile::exists($ziproot))
+		{
+			if (!JFile::delete($ziproot))
+			{
+				$errormsg = JText::sprintf('COM_BWPOSTMAN_TPL_ERROR_ZIP_DELETE', $ziproot);
+				$this->errRedirect($errormsg);
+
+				return false;
+			}
+		}
+
+		$archive = new Archive;
+
+		if (!$packager = $archive->getAdapter('zip'))
+		{
+			$errormsg = JText::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_ADAPTER');
+			$this->errRedirect($errormsg);
+
+			return false;
+		}
+		elseif (!$packager->create($ziproot, $files))
+		{
+			$errormsg = JText::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_CREATE');
+			$this->errRedirect($errormsg);
+
+			return false;
+		}
+
+		// Delete thumbnail in tmp folder
+		JFolder::delete($this->tmp_path . 'images');
+
+		$content = file_get_contents($ziproot);
+
+
+		return $content;
+
+	}
+
+	/**
+	 * Method to redirect the raw view on errors
+	 *
+	 * @access	protected
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.1.0
+	 */
+	protected function errRedirect($errormsg, $type = 'error')
+	{
+		// Delete thumbnail in tmp folder
+		JFolder::delete($this->tmp_path . 'images');
+
+		$app = JFactory::getApplication();
+		$app->enqueueMessage($errormsg, $type);
+		$app->redirect(JRoute::_('index.php?option=com_bwpostman&view=templates', false));
 	}
 }

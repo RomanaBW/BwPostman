@@ -239,7 +239,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 *
 	 * @access	public
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 *
 	 * @since       1.1.0
 	 */
@@ -278,5 +278,27 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Method to export a newsletter template
+	 *
+	 * @throws \Exception
+	 *
+	 * @since       2.1.0
+	 */
+	public function exportTpl()
+	{
+		// get newsletter ID to send
+		$app		= JFactory::getApplication();
+		$cids		= $this->input->get('cid', array(), 'array');
+		$this->id	= (int)$cids[0];
+
+		// redirect to raw view
+		$this->setRedirect(
+			JRoute::_(
+				'index.php?option=' . $this->option . '&view=templates&format=raw&id=' . $this->id, false
+			)
+		);
 	}
 }

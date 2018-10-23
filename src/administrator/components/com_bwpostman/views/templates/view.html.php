@@ -253,6 +253,10 @@ class BwPostmanViewTemplates extends JViewLegacy
 								<span class="icon-upload"></span>' . JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL') .
 							'</a>';
 					$bar->appendButton('Custom', $html);
+
+				JToolbarHelper::custom('templates.exportTpl', 'download', '', 'COM_BWPOSTMAN_TPL_EXPORTTPL', true);
+				JToolbarHelper::divider();
+				JToolbarHelper::spacer();
 				}
 		}
 

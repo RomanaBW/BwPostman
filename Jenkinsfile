@@ -157,7 +157,13 @@ pipeline {
 						}
 					}
 				}
+			}
+		}
 
+		stage('Acceptance Tests 3')
+		{
+			parallel
+			{
 				stage('accept2')
 				{
 					steps

@@ -100,8 +100,6 @@ test_suites:
       - restore
       - maintenance
       - frontend
-      - user2subscriber
-  #  - personalize
 
   - name: accept4
     tests:
@@ -121,4 +119,12 @@ test_suites:
     - setPermissions
     - createUsers
     - access3
+
+  - name: accept6
+    tests:
+    - install
+    - defaultOptions
+    - restore
+    - user2subscriber
+#  - personalize
 

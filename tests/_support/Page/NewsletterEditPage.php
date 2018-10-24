@@ -1028,7 +1028,7 @@ class NewsletterEditPage
 		$I->fillField(self::$description, self::$field_description);
 
 		//select attachment
-		self::selectAttachment($I);
+//		self::selectAttachment($I);
 
 		// fill publish and unpublish
 		self::fillPublishedDate($I);

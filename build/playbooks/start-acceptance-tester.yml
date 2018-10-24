@@ -14,40 +14,6 @@
         chdir: '/vms-uni2/vagrant/infrastructure/farm1/J-Tester'
       delegate_to: 'localhost'
 
-#    - name: Ensure inventory folder is present
-#      become: true
-#      become_user: romana
-#      file:
-#        path: "inventory"
-#        state: directory
-#
-#    - name: Set variable for filename
-#      set_fact:
-#        filename: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester/files/{{ test_suite }}-ip.txt"
-
-#    - name: display IP of gererated VM (file content)
-#      debug:
-#        msg: "{{ lookup ('file', '{{ filename }}') }}"
-#      register: bw_tester_ip
-#
-#    - name: Set variable for ip
-#      set_fact:
-#        tester_ip: "{{ bw_tester_ip.msg }}"
-#
-#    - name: display IP of fact
-#      debug:
-#        msg: "{{ hostvars['localhost']['tester_ip'] }}"
-
-#    - name: Ensure inventory is created and equipped with the correct values
-#      become: true
-#      become_user: root
-#      template:
-#        src: "hosts.j2"
-#        dest: "inventory/hosts"
-#
-#    - name: Refresh inventory
-#      meta: refresh_inventory
-#
     - name: ensure log folder for test results exists
       become: true
       become_user: root

@@ -209,9 +209,20 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->campaigns		= $this->get('AccessibleCampaigns');
 		$this->usergroups		= $this->get('AccessibleUsergroups');
 
-		array_unshift($this->mailinglists, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
-		array_unshift($this->campaigns, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
-		array_unshift($this->usergroups, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
+		if (is_array($this->mailinglists))
+		{
+			array_unshift($this->mailinglists, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
+		}
+
+		if (is_array($this->campaigns))
+		{
+			array_unshift($this->campaigns, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
+		}
+
+		if (is_array($this->usergroups))
+		{
+			array_unshift($this->usergroups, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
+		}
 
 		// Because the application sets a default page title, we need to get it
 		// right from the menu item itself

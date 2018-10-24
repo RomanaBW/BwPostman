@@ -81,7 +81,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<div class="js-stools-field-filter filter_month"><?php echo $this->form->monthField; ?></div>
 							<div class="js-stools-field-filter filter_year"><?php echo $this->form->yearField; ?></div>
 						<?php endif; ?>
-						<?php if ($this->params->get('ml_filter_enable') != 'hide' && count($this->mailinglists) > 2) : ?>
+						<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2) : ?>
 							<div class="js-stools-field-filter filter_mls">
 								<?php echo JHtml::_(
 									'select.genericlist',
@@ -95,7 +95,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								); ?>
 							</div>
 						<?php endif; ?>
-						<?php if ($this->params->get('groups_filter_enable') != 'hide' && count($this->usergroups) > 2) : ?>
+						<?php if ($this->params->get('groups_filter_enable') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
 							<div class="js-stools-field-filter filter_groups">
 								<?php echo JHtml::_(
 									'select.genericlist',
@@ -109,7 +109,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								); ?>
 							</div>
 						<?php endif; ?>
-						<?php if ($this->params->get('cam_filter_enable') != 'hide' && count($this->campaigns) > 2) : ?>
+						<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
 							<div class="js-stools-field-filter filter_cams">
 								<?php echo JHtml::_(
 									'select.genericlist',

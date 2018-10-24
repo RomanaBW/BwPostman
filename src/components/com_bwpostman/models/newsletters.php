@@ -452,7 +452,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		$groups	= $this->getAccessibleUsergroups('false');
 
-		if (count($groups) > 0)
+		if (is_array($groups) && count($groups) > 0)
 		{
 			// merge mailinglists and usergroups and remove multiple values
 			$mls	= array_merge($mls, $groups);
@@ -712,7 +712,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		// if no mls is left, make array
-		if (count($mls) == 0)
+		if (!is_array($mls))
 		{
 			$mls[]	= 0;
 		}
@@ -722,7 +722,7 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			// get authorized viewlevels
 			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
-			if (count($accesslevels) > 0)
+			if (is_array($accesslevels) && count($accesslevels) > 0)
 			{
 				foreach ($accesslevels as $key => $value) {
 					$acc_levels[]	= $key;
@@ -759,7 +759,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$mls	= array_intersect($mls, $acc_mls);
 		}
 
-		if ($title === true)
+		if ($title === true && count($mls))
 		{
 			$query	= $_db->getQuery(true);
 			$query->select('id');
@@ -848,7 +848,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		// if no cam is left, make array
-		if (count($cams) == 0)
+		if (is_array($cams) && count($cams) == 0)
 		{
 			$cams[]	= 0;
 		}
@@ -858,7 +858,7 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			// get authorized viewlevels
 			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
-			if (count($accesslevels) > 0)
+			if (is_array($accesslevels) && count($accesslevels) > 0)
 			{
 				foreach ($accesslevels as $key => $value)
 				{
@@ -920,7 +920,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		// if no cam is left, make array to return
-		if (count($cams) == 0)
+		if (is_array($cams) && count($cams) == 0)
 		{
 			$cams[]	= 0;
 		}
@@ -999,7 +999,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 
 			$groups		= array();
-			if (count($res_groups) > 0)
+			if (is_array($res_groups) && count($res_groups) > 0)
 			{
 				foreach ($res_groups as $item) {
 					$groups[]	= $item['id'];
@@ -1012,7 +1012,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 			//convert usergroups to match bwPostman's needs
 			$c_groups	= array();
-			if (count($groups) > 0)
+			if (is_array($groups) && count($groups) > 0)
 			{
 				foreach ($groups as $value) {
 					$c_groups[]	= '-' . $value;
@@ -1028,7 +1028,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$c_groups	= $sel_groups;
 		}
 
-		if (count($c_groups) == 0)
+		if (!is_array($c_groups))
 		{
 			$c_groups[]	= 0;
 		}
@@ -1041,7 +1041,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 			//convert usergroups to match bwPostman's needs
 			$a_groups	= array();
-			if (count($acc_groups) > 0)
+			if (is_array($acc_groups) && count($acc_groups) > 0)
 			{
 				foreach ($acc_groups as $value)
 				{
@@ -1056,7 +1056,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$sel_groups	= array_intersect($a_groups, $c_groups);
 		}
 
-		if (count($sel_groups) == 0)
+		if (is_array($sel_groups) && count($sel_groups) == 0)
 		{
 			$sel_groups[]	= 0;
 		}

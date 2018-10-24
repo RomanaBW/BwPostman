@@ -49,55 +49,6 @@ pipeline {
 			}
 		}
 
-		stage('Dev-Upload') {
-			steps {
-				dir("/repositories/artifacts/bwpostman") {
-					fileOperations([
-							fileCopyOperation(
-									excludes: '',
-									flattenFiles: false,
-									includes: 'pkg_bwpostman.zip',
-									targetLocation: "${WORKSPACE}/tests")
-					])
-				}
-
-				script {
-					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-				}
-
-				sshPublisher(
-					publishers: [sshPublisherDesc(
-						configName: 'Web Dev',
-						transfers: [sshTransfer(
-							cleanRemote: false,
-							excludes: '',
-							execCommand: '',
-							execTimeout: 120000,
-							flatten: false,
-							makeEmptyDirs: false,
-							noDefaultExcludes: false,
-							patternSeparator: '[, ]+',
-							remoteDirectory: '',
-							remoteDirectorySDF: false,
-							removePrefix: 'tests',
-							sourceFiles: 'tests/pkg_bwpostman.zip'
-						)],
-						usePromotionTimestamp: false,
-						useWorkspaceInPromotion: false,
-						verbose: false
-					)]
-				)
-
-				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman build ${currentBuild.number}",
-					to: 'webmaster@boldt-webservice.de'
-			)
-//				to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
-
-			}
-		}
-
 		stage('Acceptance Tests 1') {
 			parallel {
 				stage ('accept3') {
@@ -130,6 +81,55 @@ pipeline {
 						}
 					}
 				}
+			}
+		}
+
+		stage('Dev-Upload') {
+			steps {
+				dir("/repositories/artifacts/bwpostman") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+						flattenFiles: false,
+						includes: 'pkg_bwpostman.zip',
+						targetLocation: "${WORKSPACE}/tests")
+				])
+				}
+
+				script {
+					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+				}
+
+				sshPublisher(
+					publishers: [sshPublisherDesc(
+					configName: 'Web Dev',
+					transfers: [sshTransfer(
+					cleanRemote: false,
+					excludes: '',
+					execCommand: '',
+					execTimeout: 120000,
+					flatten: false,
+					makeEmptyDirs: false,
+					noDefaultExcludes: false,
+					patternSeparator: '[, ]+',
+					remoteDirectory: '',
+					remoteDirectorySDF: false,
+					removePrefix: 'tests',
+					sourceFiles: 'tests/pkg_bwpostman.zip'
+			)],
+				usePromotionTimestamp: false,
+					useWorkspaceInPromotion: false,
+					verbose: false
+			)]
+			)
+
+				emailext(
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, first acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman build ${currentBuild.number}",
+					to: 'webmaster@boldt-webservice.de'
+			)
+//				to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
+
 			}
 		}
 

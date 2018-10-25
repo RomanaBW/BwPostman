@@ -140,6 +140,20 @@ class BwPostmanViewTemplates extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
+		// Template export
+		$jinput	= $app->input;
+		$task = $jinput->get('task', NULL);
+		if ($task == 'export')
+		{
+			$basename		= $this->get('BaseName');
+			$zip_created	= $this->get('ExportTpl');
+		}
+		if (isset($zip_created))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK', JRoute::_(JUri::root() . 'images/bw_postman/templates/' . $basename) , JText::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), JText::_('JCANCEL')), 'message');
+			$app->redirect('index.php?option=com_bwpostman&view=templates', false);
+		}
+
 		// Get data from the model
 		$this->state			= $this->get('State');
 		$this->items			= $this->get('Items');

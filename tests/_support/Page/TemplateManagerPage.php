@@ -319,6 +319,149 @@ class TemplateManagerPage
 	);
 
 	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $import_button      = "html/body/div[1]/div/div/div[2]/div/div/div[9]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importPageTitleField      = "html/body/div[2]/section/div/div/form/fieldset/legend";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importPageTitle      = "Select archive file";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importField      = "html/body/div[2]/section/div/div/form/fieldset/div[2]/div/table/tbody/tr[1]/td[2]/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $startImport_button      = "html/body/div[2]/section/div/div/form/fieldset/div[2]/div/table/tbody/tr[2]/td/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $step5Field      = "html/body/div[2]/section/div/div/div[2]/div[1]/p[5]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importSuccessField      = "html/body/div[2]/section/div/div/div[2]/div[2]/div/h3";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importSuccessText      = "The template has been successfully installed";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importBackButton      = "html/body/div[1]/div/div/div[2]/div/div/div[1]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importFile      = "standard_basic_import.zip";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $tableHeaderId      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/thead/tr/th[8]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $tableHeaderIdArrow      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/thead/tr/th[8]/a/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $firstTableTitle      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[1]/td[2]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importTemplateName      = "Standard Basic Import";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $firstTableCheckbox      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[1]/td[1]/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $firstTableId      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[1]/td[8]";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $export_button      = "html/body/div[1]/div/div/div[2]/div/div/div[10]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $exportPackSuccess = "The template has been packed and is ready to download!";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $exportPackSuccessField = "html/body/div[2]/section/div/div/div[1]/div/div";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $exportDownloadButton = "html/body/div[2]/section/div/div/div[1]/div/div/a";
+
+	/**
 	 * Test method to check pagination of templates
 	 *
 	 * @param   \AcceptanceTester   $I

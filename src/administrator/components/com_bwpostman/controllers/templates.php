@@ -290,14 +290,13 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	public function exportTpl()
 	{
 		// get newsletter ID to send
-		$app		= JFactory::getApplication();
 		$cids		= $this->input->get('cid', array(), 'array');
 		$this->id	= (int)$cids[0];
 
 		// redirect to raw view
 		$this->setRedirect(
 			JRoute::_(
-				'index.php?option=' . $this->option . '&view=templates&format=raw&id=' . $this->id, false
+				'index.php?option=' . $this->option . '&view=templates&task=export&id=' . $this->id, false
 			)
 		);
 	}

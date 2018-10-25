@@ -297,6 +297,110 @@ class TestTemplatesListsCest
 	}
 
 	/**
+	 * Test method to check import of templates
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function ImportTemplates(AcceptanceTester $I)
+	{
+		$I->wantTo("import a template");
+		$I->expectTo("see imported template");
+
+		$I->amOnPage(TplManage::$url);
+
+		$I->click(TplManage::$import_button);
+		$I->waitForElement(TplManage::$importPageTitleField);
+		$I->see(TplManage::$importPageTitle, TplManage::$importPageTitleField);
+
+		$I->attachFile(TplManage::$importField, TplManage::$importFile);
+
+		$I->click(TplManage::$startImport_button);
+		$I->dontSeeElement(Generals::$alert_error);
+
+		$I->waitForElementVisible(TplManage::$step5Field, 60);
+		$I->see(TplManage::$importSuccessText, TplManage::$importSuccessField);
+
+		$I->click(TplManage::$importBackButton);
+
+		$I->clickAndWait(TplManage::$tableHeaderId, 1);
+
+		$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
+
+		if ($arrowClass !== 'icon-arrow-down-3')
+		{
+			$I->clickAndWait(TplManage::$tableHeaderId, 1);
+		}
+
+		$I->see(TplManage::$firstTableTitle, TplManage::$importTemplateName);
+	}
+
+	/**
+	 * Test method to check export of templates
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function ExportTemplates(AcceptanceTester $I)
+	{
+		$I->wantTo("export a template");
+		$I->expectTo("see zip file in download directory");
+
+		$I->amOnPage(TplManage::$url);
+
+		$I->clickAndWait(TplManage::$tableHeaderId, 1);
+
+		$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
+
+		if ($arrowClass !== 'icon-arrow-down-3')
+		{
+			$I->clickAndWait(TplManage::$tableHeaderId, 1);
+		}
+
+		$tplId = $I->grabTextFrom(TplManage::$firstTableId);
+
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		$path     = Generals::$downloadFolder[$user];
+		$filename = 'bwpostman_template_export_id_' . $tplId . '.zip';
+		$downloadPath = $path . $filename;
+
+		$I->click(TplManage::$firstTableCheckbox);
+		$I->click(TplManage::$export_button);
+		$I->waitForElementVisible(TplManage::$exportDownloadButton, 10);
+		$I->see(TplManage::$exportPackSuccess, TplManage::$exportPackSuccessField);
+
+		$I->clickAndWait(TplManage::$exportDownloadButton, 3);
+
+		$I->assertTrue(file_exists($downloadPath));
+
+
+	}
+
+	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I

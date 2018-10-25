@@ -54,6 +54,48 @@ class BwPostmanModelTemplates extends JModelList
 	protected $query;
 
 	/**
+	 * @var	string
+	 *
+	 * @since       2.1.0
+	 */
+	protected $dummy;
+
+	/**
+	 * @var	string
+	 *
+	 * @since       2.1.0
+	 */
+	protected $content;
+
+	/**
+	 * @var	string
+	 *
+	 * @since       2.1.0
+	 */
+	protected $tmp_path;
+
+	/**
+	 * @var	string
+	 *
+	 * @since       2.1.0
+	 */
+	protected $imgPath;
+
+	/**
+	 * @var	string
+	 *
+	 * @since       2.1.0
+	 */
+	protected $basename;
+
+	/**
+	 * @var	string
+	 *
+	 * @since       2.1.0
+	 */
+	protected $exportId;
+
+	/**
 	 * Constructor
 	 * --> handles the pagination and set the Templates key
 	 *
@@ -318,18 +360,20 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByComponentPermissions()
-	{
-		$allowed_items  = BwPostmanHelper::getAllowedRecords('template');
-
-		if ($allowed_items != 'all')
-		{
-			$allowed_ids    = implode(',', $allowed_items);
-			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
-		}
-	}
+//	private function getFilterByComponentPermissions()
+//	{
+//		$allowed_items  = BwPostmanHelper::getAllowedRecords('template');
+//
+//		if ($allowed_items != 'all')
+//		{
+//			$allowed_ids    = implode(',', $allowed_items);
+//			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//		}
+//	}
 
 	/**
 	 * Method to get only new templates
@@ -842,21 +886,23 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return  string  The file name
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.1.0
 	 */
 	public function getBaseName()
 	{
 		if (!isset($this->basename))
 		{
-			$jinput = JFactory::getApplication()->input;
-			$this->exportid = $jinput->get('id');
+			$jinput         = JFactory::getApplication()->input;
+			$this->exportId = $jinput->get('id');
 
 			jimport('joomla.filesystem.file');
 
 			$app = JFactory::getApplication('administrator');
 			$this->tmp_path = $app->get('tmp_path') . '/';
 
-			$basename = 'bwpostman_template_export_id_' . $this->exportid . '.zip';
+			$basename = 'bwpostman_template_export_id_' . $this->exportId . '.zip';
 
 			$this->basename = $basename;
 		}
@@ -869,6 +915,9 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @access	public
 	 *
+	 * @param integer  $id      ID to export
+	 * @param integer  $tpl_id  template ID
+	 *
 	 * @return  string
 	 *
 	 * @throws \Exception
@@ -877,7 +926,8 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	public function getExportTpl($id = NULL, $tpl_id = NULL)
 	{
-		$id = $this->exportid;
+		$id = $this->exportId;
+		$zip_created = '';
 
 		if (!isset($this->content))
 		{
@@ -912,8 +962,7 @@ class BwPostmanModelTemplates extends JModelList
 				)
 			);
 
-			$keys = '';
-			$vals = '';
+			$this->content = '';
 
 			// prepare sql string
 			foreach($settings as $setting)
@@ -944,7 +993,7 @@ class BwPostmanModelTemplates extends JModelList
 					// Count fields in row
 					$num_fields = $res->field_count;
 
-					// Fieldnames
+					// Field names
 					$fields_meta = $res->fetch_fields();
 
 					$field_set = array();
@@ -958,8 +1007,8 @@ class BwPostmanModelTemplates extends JModelList
 					// Set tpl_id, path to thumbnail
 					if ($setting['table'] == 'bwpostman_templates')
 					{
-						$tpl_id			= $row[10];
-						$this->imgpath	= $row[5];
+						$tpl_id        = $row[10];
+						$this->imgPath = $row[5];
 					}
 
 					// Values
@@ -997,12 +1046,10 @@ class BwPostmanModelTemplates extends JModelList
 
 			$this->dummy = '/* Dummy SQL-Query */' . "\n" . 'SELECT id FROM `#__bwpostman_templates_tpl` WHERE `title` = `DUMMY`';
 
-			$content = $this->createZip();
-
-			$this->content = $content;
+			$zip_created = $this->createZip();
 		}
 
-		return $this->content;
+		return $zip_created;
 
 	}
 
@@ -1037,7 +1084,7 @@ class BwPostmanModelTemplates extends JModelList
 
 
 		// We need thumbnail in tmp_path
-		$thumbnail = JPATH_ROOT . '/' . $this->imgpath;
+		$thumbnail = JPATH_ROOT . '/' . $this->imgPath;
 		if (JFile::exists($thumbnail))
 		{
 			$img = JFile::getName($thumbnail);
@@ -1059,13 +1106,13 @@ class BwPostmanModelTemplates extends JModelList
 		}
 
 		// Create ZIP
-		$ziproot = $this->tmp_path . $this->basename;
+		$zipRoot = $this->tmp_path . $this->basename;
 
-		if (JFile::exists($ziproot))
+		if (JFile::exists($zipRoot))
 		{
-			if (!JFile::delete($ziproot))
+			if (!JFile::delete($zipRoot))
 			{
-				$errormsg = JText::sprintf('COM_BWPOSTMAN_TPL_ERROR_ZIP_DELETE', $ziproot);
+				$errormsg = JText::sprintf('COM_BWPOSTMAN_TPL_ERROR_ZIP_DELETE', $zipRoot);
 				$this->errRedirect($errormsg);
 
 				return false;
@@ -1081,7 +1128,7 @@ class BwPostmanModelTemplates extends JModelList
 
 			return false;
 		}
-		elseif (!$packager->create($ziproot, $files))
+		elseif (!$packager->create($zipRoot, $files))
 		{
 			$errormsg = JText::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_CREATE');
 			$this->errRedirect($errormsg);
@@ -1089,20 +1136,36 @@ class BwPostmanModelTemplates extends JModelList
 			return false;
 		}
 
+		$path = JPATH_ROOT . "/images/bw_postman/templates";
+
+		if (!JFolder::exists($path))
+		{
+			JFolder::create($path);
+		}
+		JFile::copy($zipRoot, JPATH_ROOT . '/images/bw_postman/templates/' . $this->basename);
+
 		// Delete thumbnail in tmp folder
 		JFolder::delete($this->tmp_path . 'images');
+		JFile::delete($zipRoot);
 
-		$content = file_get_contents($ziproot);
+		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/templates/' . $this->basename))
+		{
+			$errormsg = JText('COM_BWPOSTMAN_TPL_ERROR_COPY_ZIP');
+			$this->errRedirect($errormsg);
 
+			return false;
+		}
 
-		return $content;
-
+		return true;
 	}
 
 	/**
 	 * Method to redirect the raw view on errors
 	 *
 	 * @access	protected
+	 *
+	 * @param string    $errormsg
+	 * @param string    $type
 	 *
 	 * @throws \Exception
 	 *

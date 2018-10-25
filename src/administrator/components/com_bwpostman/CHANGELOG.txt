@@ -9,19 +9,19 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 --- version 2.1.o released (26-Oct-2018)----
 
 - new:
-    - 1-click-unsubscribe at option
-    - Mail to webmaster at unsubscription
+    - Component option for 1-click-unsubscribe
+    - Component option mail to webmaster at unsubscription
     - Button Save & Copy for all sections
     - Button Save & New for all sections
-    - Possibility to print subscriber data (GDPR)
+    - Possibility to print subscriber data at subscriber details (GDPR)
     - Component option to pack file at save tables (ZIP)
-    - Export templates added
-    - Component option to publish newsletter by default
+    - Export for templates added
+    - Component option to publish newsletter by default after sending
     - Additional optional checkbox with individual text directly before subscribe button (for GDPR)
 
 - bugfix:
     - SQL error at newsletter list view at front end fixed
-    - Upload error at upload file at attachments fixed
+    - Error at upload file at attachments at edit newsletter fixed
     - Link to forum changed to new target
 
 - improvement:

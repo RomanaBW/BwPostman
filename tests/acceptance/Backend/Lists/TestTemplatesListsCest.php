@@ -342,7 +342,8 @@ class TestTemplatesListsCest
 			$I->clickAndWait(TplManage::$tableHeaderId, 1);
 		}
 
-		$I->see(TplManage::$firstTableTitle, TplManage::$importTemplateName);
+		$I->waitForElementVisible(TplManage::$firstTableTitle, 5);
+		$I->see(TplManage::$importTemplateName, TplManage::$firstTableTitle);
 	}
 
 	/**

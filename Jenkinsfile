@@ -49,40 +49,40 @@ pipeline {
 			}
 		}
 
-// 		stage('Acceptance Tests 1') {
-// 			parallel {
-// 				stage ('accept3') {
-// 					steps {
-// //						echo 'Dummy'
-// //						sleep 60
-// 						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 					}
-// 					post {
-// 						always {
-// 							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-// 						}
-// 						failure {
-// 							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 						}
-// 					}
-// 				}
-// 				stage ('accept4') {
-// 					steps {
-// //						echo 'Dummy'
-// //						sleep 60
-// 						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 					}
-// 					post {
-// 						always {
-// 							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-// 						}
-// 						failure {
-// 							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 						}
-// 					}
-// 				}
-// 			}
-// 		}
+		stage('Acceptance Tests 1') {
+			parallel {
+				stage ('accept3') {
+					steps {
+//						echo 'Dummy'
+//						sleep 60
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
+				}
+				stage ('accept4') {
+					steps {
+//						echo 'Dummy'
+//						sleep 60
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
+				}
+			}
+		}
 
 		stage('Dev-Upload') {
 			steps {
@@ -126,7 +126,7 @@ pipeline {
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, first acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number}",
-					to: 'webmaster@boldt-webservice.de'
+					to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
 			)
 //				to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
 

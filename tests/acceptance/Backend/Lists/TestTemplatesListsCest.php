@@ -328,6 +328,7 @@ class TestTemplatesListsCest
 		$I->dontSeeElement(Generals::$alert_error);
 
 		$I->waitForElementVisible(TplManage::$step5Field, 60);
+		$I->waitForElementVisible(TplManage::$importSuccessField, 60);
 		$I->see(TplManage::$importSuccessText, TplManage::$importSuccessField);
 
 		$I->click(TplManage::$importBackButton);

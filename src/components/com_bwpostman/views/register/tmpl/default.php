@@ -72,7 +72,7 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 				if ($this->params->get('use_captcha') == 1) : ?>
 					<div class="question">
 						<p class="question-text"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl"><?php echo $this->params->get('security_question'); ?></p>
+						<p class="security_question_lbl"><?php echo JText::_($this->params->get('security_question')); ?></p>
 						<p class="question-result input-append">
 							<label id="question" for="stringQuestion"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" />

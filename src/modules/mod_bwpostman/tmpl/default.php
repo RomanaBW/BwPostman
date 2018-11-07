@@ -436,7 +436,7 @@ function checkModRegisterForm()
 		{ ?>
 			<div class="question">
 				<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
-				<p class="security_question_lbl"><?php echo $paramsComponent->get('security_question'); ?></p>
+				<p class="security_question_lbl"><?php echo JText::_($paramsComponent->get('security_question')); ?></p>
 				<p class="question input-append">
 					<input type="text" name="stringQuestion" id="a_stringQuestion"
 							placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" />

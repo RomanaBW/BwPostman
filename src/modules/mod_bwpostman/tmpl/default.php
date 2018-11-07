@@ -200,8 +200,9 @@ function checkModRegisterForm()
 		<?php // End Spamcheck
 		if ($paramsComponent->get('pretext'))
 		{ // Show pretext only if set in basic parameters
+			$preText = JText::_($paramsComponent->get('pretext'));
 			?>
-			<p id="bwp_mod_form_pretext"><?php echo nl2br($paramsComponent->get('pretext')); ?></p>
+			<p id="bwp_mod_form_pretext"><?php echo $preText; ?></p>
 			<?php
 		} // End: Show pretext only if set in basic parameters
 

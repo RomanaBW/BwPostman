@@ -364,11 +364,11 @@ class BwPostmanSubscriberHelper
 
 		$sitename          = JFactory::getConfig()->get('sitename');
 		$mailfrom          = $params->get('default_from_email');
-		$fromname          = $params->get('default_from_name');
-		$active_title      = $params->get('activation_salutation_text');
-		$active_intro      = $params->get('activation_text');
-		$permission_text   = $params->get('permission_text');
-		$legal_information = $params->get('legal_information_text');
+		$fromname          = JText::_($params->get('default_from_name'));
+		$active_title      = JText::_($params->get('activation_salutation_text'));
+		$active_intro      = JText::_($params->get('activation_text'));
+		$permission_text   = JText::_($params->get('permission_text'));
+		$legal_information = JText::_($params->get('legal_information_text'));
 		$active_msg        = $active_title . ' ' . $name . ",\n\n" . $active_intro . "\n";
 		$message           = '';
 		$subject           = '';

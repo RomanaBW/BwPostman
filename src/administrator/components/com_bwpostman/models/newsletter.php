@@ -2348,7 +2348,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$uri  				= JUri::getInstance();
 		$params 			= JComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= $params->get('legal_information_text');
+		$impressum			= JText::_($params->get('legal_information_text'));
 		$impressum			= nl2br($impressum, true);
 		$sitelink           = $uri->root();
 
@@ -2501,7 +2501,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$itemid_edit		= $this->getItemid('edit');
 		$params 			= JComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= "\n\n" . $params->get('legal_information_text') . "\n\n";
+		$impressum			= "\n\n" . JText::_($params->get('legal_information_text')) . "\n\n";
 
 		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
 				'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';

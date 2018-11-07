@@ -34,8 +34,10 @@ $lists      = $displayData['lists'];
 <div class="contentpane<?php echo $params->get('pageclass_sfx'); ?>">
 	<?php // Show pretext only if set in basic parameters
 	if ($params->get('pretext'))
-	{ ?>
-		<p class="pre_text"><?php echo nl2br($params->get('pretext')); ?></p>
+	{
+		$preText = JText::_($params->get('pretext'));
+		?>
+		<p class="pre_text"><?php echo $preText; ?></p>
 		<?php
 	} // End: Show pretext only if set in basic parameters ?>
 

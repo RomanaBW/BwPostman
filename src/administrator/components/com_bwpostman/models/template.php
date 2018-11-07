@@ -935,7 +935,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	{
 		// get legal info an ItemId's
 		$params 			= JComponentHelper::getParams('com_bwpostman');
-		$impressum			= "<br /><br />" . $params->get('legal_information_text');
+		$impressum			= "<br /><br />" . JText::_($params->get('legal_information_text'));
 		$impressum			= nl2br($impressum, true);
 
 		// replace edit and unsubscribe link
@@ -1268,7 +1268,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 				JUri::root(true),
 				$itemid_edit
 			) .
-			"<br /><br />" . $params->get('legal_information_text') . "<br /><br />";
+			"<br /><br />" . JText::_($params->get('legal_information_text')) . "<br /><br />";
 			$preview_text	= str_replace('[%impressum%]', nl2br($impressum, true), $preview_text);
 		}
 
@@ -1365,7 +1365,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 					JUri::root(true),
 					$itemid_edit
 				) .
-				"<br /><br />" . $params->get('legal_information_text') . "<br /><br />";
+				"<br /><br />" . JText::_($params->get('legal_information_text')) . "<br /><br />";
 			$preview_text	= $preview_text . nl2br($impressum, true);
 		}
 

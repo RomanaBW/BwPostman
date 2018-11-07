@@ -271,12 +271,12 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				// Set label and description/tooltip for additional field
 				if ($params->get('special_desc') != '')
 				{
-					$this->form->setFieldAttribute('special', 'description', $params->get('special_desc'));
+					$this->form->setFieldAttribute('special', 'description', JText::_($params->get('special_desc')));
 				}
 
 				if ($params->get('special_label') != '')
 				{
-					$this->form->setFieldAttribute('special', 'label', $params->get('special_label'));
+					$this->form->setFieldAttribute('special', 'label', JText::_($params->get('special_label')));
 				}
 
 				$this->addToolbar();

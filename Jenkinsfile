@@ -102,7 +102,7 @@ pipeline {
 
 				sshPublisher(
 					publishers: [sshPublisherDesc(
-					configName: 'Web Dev',
+					configName: 'Web Dev BwPostman',
 					transfers: [sshTransfer(
 					cleanRemote: false,
 					excludes: '',

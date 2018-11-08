@@ -527,8 +527,8 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->params->get('bw_register_message_option') != '')
 		{
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->title       = $this->params->get('bw_register_message_option');
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->description = $this->params->get('bw_register_message_option');
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->title       = JText::_($this->params->get('bw_register_message_option'));
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->description = JText::_($this->params->get('bw_register_message_option'));
 		}
 		else
 		{

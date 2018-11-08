@@ -549,7 +549,7 @@ class BwPostmanSubscriberHelper
 		$emailformat .= '<input type="radio" name="emailformat" id="formatHtml" value="1"';
 		if ($mailformat_selected)
 		{
-			$emailformat .= 'checked="checked"';
+			$emailformat .= ' checked="checked"';
 		}
 
 		$emailformat .= ' />';

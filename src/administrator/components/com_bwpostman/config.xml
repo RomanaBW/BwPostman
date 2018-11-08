@@ -319,6 +319,17 @@
 			<option value="1">JYES</option>
 		</field>
 
+		<field name="showinmodal"
+		       type="radio"
+		       class="btn-group btn-group-yesno"
+		       default="1"
+		       label="COM_BWPOSTMAN_DISCLAIMER_SHOWINMODAL"
+		       description="COM_BWPOSTMAN_DISCLAIMER_SHOWINMODAL_NOTE"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
 		<field name="spacer2_8" type="spacer" hr="true" />
 
 		<field name="use_captcha"

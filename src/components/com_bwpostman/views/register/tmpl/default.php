@@ -108,51 +108,43 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 						?>
 						<p class="agree_check">
 							<input title="agreecheck" type="checkbox" id="agreecheck" name="agreecheck" />
-							<?php // Disclaimer article and target_blank or not
+							<?php
+							// Extends the disclaimer link with '&tmpl=component' to see only the content
+							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
+							// Disclaimer article and target_blank or not
 							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
-							{ ?>
-								<span>
-									<?php
-									$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id')));
-									echo '<a href="' . $disclaimer_link . '"';
-									if ($this->params->get('disclaimer_target') == 0)
-									{
-										echo ' target="_blank"';
-									};
-									echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
-								</span>
-								<?php
+							{
+								$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id'))) . $tpl_com;
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
 							{
-								?>
-								<span>
-									<?php
-									$disclaimer_link = JRoute::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem'));
+								$disclaimer_link = JRoute::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem')) . $tpl_com;
+							}
+							// Disclaimer url and target_blank or not
+							else
+							{
+								$disclaimer_link = $this->params->get('disclaimer_link');
+							}
+							?>
+							<span>
+								<?php
+								// Show inside modalbox
+								if ($this->params->get('showinmodal') == 1)
+								{
+									echo '<a id="bwp_open"';
+								}
+								// Show not in modalbox
+								else
+								{
 									echo '<a href="' . $disclaimer_link . '"';
 									if ($this->params->get('disclaimer_target') == 0)
 									{
 										echo ' target="_blank"';
 									};
-									echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
-								</span>
-							<?php
-							}
-							else
-							{
-								// Disclaimer url and target_blank or not ?>
-								<span>
-									<?php
-									echo '<a href="' . $this->params->get('disclaimer_link') . '"';
-									if ($this->params->get('disclaimer_target') == 0)
-									{
-										echo ' target="_blank"';
-									}
-
-									echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
-								</span>
-							<?php } ?>
+								}
+								echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
+							</span>
 						</p>
 					<?php endif; // Show disclaimer ?>
 					<p class="show_disclaimer">
@@ -194,6 +186,14 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
 		<?php
 		} ?>
+		</div>
+	</div>
+	<!-- The Modal -->
+	<div id="bwp_Modal" class="bwp_modal">
+		<div id="bwp_modal-content">
+			<span class="bwp_close">&times;</span>
+			<div id="bwp_wrapper"></div>
+		</div>
 	</div>
 </div>
 
@@ -240,5 +240,67 @@ jQuery(document).ready(function()
 			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
 		}
 	});
+	<?php
+	if ($this->params->get('showinmodal') == 1)
+	{
+	?>
+	function setModal() {
+		// Set the modal height and width 90%
+		if (typeof window.innerWidth != 'undefined')
+		{
+			viewportwidth = window.innerWidth,
+				viewportheight = window.innerHeight
+		}
+		else if (typeof document.documentElement != 'undefined'
+			&& typeof document.documentElement.clientWidth !=
+			'undefined' && document.documentElement.clientWidth != 0)
+		{
+			viewportwidth = document.documentElement.clientWidth,
+				viewportheight = document.documentElement.clientHeight
+		}
+		else
+		{
+			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+				viewportheight = document.getElementsByTagName('body')[0].clientHeight
+		}
+		var modalcontent = document.getElementById('bwp_modal-content');
+		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
+		modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+
+		// Get the modal
+		var modal = document.getElementById('bwp_Modal');
+
+		// Get the Iframe-Wrapper and set Iframe
+		var wrapper = document.getElementById('bwp_wrapper');
+		var html = '<iframe id="iFrame" name="iFrame" src="<?php echo $disclaimer_link ?>" frameborder="0" style="width:100%; height:100%;"></iframe>';
+
+		// Get the button that opens the modal
+		var btnopen = document.getElementById("bwp_open");
+
+		// Get the <span> element that closes the modal
+		var btnclose = document.getElementsByClassName("bwp_close")[0];
+
+		// When the user clicks the button, open the modal
+		btnopen.onclick = function() {
+			wrapper.innerHTML = html;
+			modal.style.display = "block";
+		}
+
+		// When the user clicks on <span> (x), close the modal
+		btnclose.onclick = function() {
+			modal.style.display = "none";
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function(event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+	}
+	setModal();
+	<?php
+	}
+	?>
 })
 </script>

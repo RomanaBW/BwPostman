@@ -84,5 +84,5 @@
 
     - name: copy changelog to test data folder
       copy:
-        src: "{{ project_base_dir }}/src/administrator/CHANGELOG.txt"
+        src: "{{ project_base_dir }}/src/administrator/components/com_bwpostman/CHANGELOG.txt"
         dest: "{{ artifact_path }}/data/CHANGELOG"

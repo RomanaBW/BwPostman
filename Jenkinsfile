@@ -90,15 +90,19 @@ pipeline {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',
-						flattenFiles: false,
-						includes: "pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip",
-						targetLocation: "${WORKSPACE}/tests")
-					fileCopyOperation(
-						excludes: '',
-						flattenFiles: false,
-						includes: "CHANGELOG",
-						targetLocation: "${WORKSPACE}/tests")
-				])
+							flattenFiles: false,
+							includes: "pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip",
+							targetLocation: "${WORKSPACE}/tests")
+					])
+
+				dir("/repositories/artifacts/bwpostman") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+							flattenFiles: false,
+							includes: "CHANGELOG",
+							targetLocation: "${WORKSPACE}/tests")
+					])
 				}
 
 				script {

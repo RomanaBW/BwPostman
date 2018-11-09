@@ -6,14 +6,16 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
---- version 2.2.0 released (25-Jan-2019)----
+--- version 2.1.1 released (13-Nov-2018)----
 
 - new:
 	- All texts of options are multi-language capable
 	- Modal box for disclaimer at front end, selectable at options of component
 
+- bugfix:
+    - Update crashes, if one of the Plugins U2S or B2S is activated
 
---- version 2.1.o released (26-Oct-2018)----
+--- version 2.1.0 released (26-Oct-2018)----
 
 - new:
     - Component option for 1-click-unsubscribe

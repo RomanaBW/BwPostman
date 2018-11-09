@@ -100,7 +100,7 @@ pipeline {
 					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
 				}
 
-				echo "tests/pkg_bwpostman-{params.VERSION_NUMBER}.${currentBuild.number}.zip"
+				echo "tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
 
 				sshPublisher(
 					publishers: [sshPublisherDesc(

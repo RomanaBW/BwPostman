@@ -112,10 +112,10 @@ pipeline {
 					makeEmptyDirs: false,
 					noDefaultExcludes: false,
 					patternSeparator: '[, ]+',
-					remoteDirectory: '',
+					remoteDirectory: "{params.VERSION_NUMBER}.${currentBuild.number}",
 					remoteDirectorySDF: false,
 					removePrefix: 'tests',
-					sourceFiles: "tests/pkg_bwpostman-{params.VERSION_NUMBER}.${currentBuild.number}.zip"
+					sourceFiles: "tests/pkg_bwpostman-{params.VERSION_NUMBER}.${currentBuild.number}.zip,tests/CHANGELOG"
 			)],
 				usePromotionTimestamp: false,
 					useWorkspaceInPromotion: false,

@@ -81,3 +81,8 @@
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
+
+    - name: copy changelog to test data folder
+      copy:
+        src: "{{ project_base_dir }}/src/administrator/CHANGELOG.txt"
+        dest: "{{ artifact_path }}/data/CHANGELOG"

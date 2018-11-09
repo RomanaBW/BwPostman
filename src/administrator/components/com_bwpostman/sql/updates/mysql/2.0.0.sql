@@ -41,7 +41,7 @@ ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `bcc_email` VARCHAR(240
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `attachment` TEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_email` VARCHAR(240) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_name` VARCHAR(300) NOT NULL DEFAULT '';
-ALTER TABLE `#__bwpostman_sendmailcontent` ADD `substitute_links` TINYINT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `#__bwpostman_sendmailcontent` ADD COLUMN IF NOT EXISTS `substitute_links` TINYINT(1) NOT NULL DEFAULT '0';
 
 ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `recipient` VARCHAR(240) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `name` VARCHAR(300) NOT NULL DEFAULT '';

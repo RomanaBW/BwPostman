@@ -216,18 +216,18 @@ class Com_BwPostmanInstallerScript
 
 			// delete existing files in frontend and backend to prevent conflicts with previous relicts
 			jimport('joomla.filesystem.folder');
-			$admin_path	= JPATH_ADMINISTRATOR . '/components/com_bwpostman';
-			$site_path	= JPATH_SITE . '/components/com_bwpostman';
-
-			if (JFolder::exists($admin_path) === true)
-			{
-				JFolder::delete($admin_path);
-			}
-
-			if (JFolder::exists($site_path) === true)
-			{
-				JFolder::delete($site_path);
-			}
+//			$admin_path	= JPATH_ADMINISTRATOR . '/components/com_bwpostman';
+//			$site_path	= JPATH_SITE . '/components/com_bwpostman';
+//
+//			if (JFolder::exists($admin_path) === true)
+//			{
+//				JFolder::delete($admin_path);
+//			}
+//
+//			if (JFolder::exists($site_path) === true)
+//			{
+//				JFolder::delete($site_path);
+//			}
 		}
 
 		$_db	= JFactory::getDbo();

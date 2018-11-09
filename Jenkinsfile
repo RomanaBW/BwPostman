@@ -35,19 +35,19 @@ pipeline {
 		}
 
 
-		stage('smoke') {
-			steps {
-				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post {
-				always {
-					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-				}
-				failure {
-					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
+		// stage('smoke') {
+		// 	steps {
+		// 		bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+		// 	}
+		// 	post {
+		// 		always {
+		// 			bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+		// 		}
+		// 		failure {
+		// 			bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+		// 		}
+		// 	}
+		// }
 
 		stage('Acceptance Tests 1') {
 			parallel {
@@ -100,6 +100,8 @@ pipeline {
 					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
 				}
 
+				echo "tests/pkg_bwpostman-{params.VERSION_NUMBER}.${currentBuild.number}.zip"
+
 				sshPublisher(
 					publishers: [sshPublisherDesc(
 					configName: 'Web Dev BwPostman',
@@ -115,7 +117,7 @@ pipeline {
 					remoteDirectory: "{params.VERSION_NUMBER}.${currentBuild.number}",
 					remoteDirectorySDF: false,
 					removePrefix: 'tests',
-					sourceFiles: "tests/pkg_bwpostman-{params.VERSION_NUMBER}.${currentBuild.number}.zip,tests/CHANGELOG"
+					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-{params.VERSION_NUMBER}.${currentBuild.number}.zip"
 			)],
 				usePromotionTimestamp: false,
 					useWorkspaceInPromotion: false,

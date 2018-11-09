@@ -60,6 +60,8 @@ class BwPostmanControllerFile extends JControllerLegacy
 	 * @return	boolean
 	 *
 	 * @since	1.0.4
+	 *
+	 * @throws \Exception
 	 */
 	public function upload()
 	{
@@ -89,7 +91,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 		}
 
 		// Total length of post back data in bytes.
-		$contentLength = (int) $_SERVER['CONTENT_LENGTH'];
+		$contentLength = (int) JFactory::getApplication()->input->server->get('CONTENT_LENGTH', '', '');
 
 		// Instantiate the media helper
 		$mediaHelper = new JHelperMedia;

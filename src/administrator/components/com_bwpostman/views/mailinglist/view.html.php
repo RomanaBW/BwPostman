@@ -222,7 +222,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$backlink   = '';
 		if (key_exists('HTTP_REFERER', $_SERVER))
 		{
-			$backlink 	= $_SERVER['HTTP_REFERER'];
+			$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERRER', '', '');
 		}
 
 		$siteURL 	= $uri->base();

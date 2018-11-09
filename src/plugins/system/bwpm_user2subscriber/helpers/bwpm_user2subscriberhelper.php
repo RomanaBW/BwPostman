@@ -328,7 +328,6 @@ abstract class BWPM_User2SubscriberHelper
 		$date   = JFactory::getDate();
 		$time   = $date->toSql();
 
-		// @Todo: For version 2.0.0 of component replace $_SERVER['REMOTE_ADDR'] with the following
 		$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
 		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);

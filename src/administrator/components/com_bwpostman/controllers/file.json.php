@@ -51,6 +51,8 @@ class BwPostmanControllerFile extends JControllerLegacy
 	 * @return	void
 	 *
 	 * @since	1.0.4
+	 *
+	 * @throws \Exception
 	 */
 	function upload()
 	{
@@ -77,12 +79,13 @@ class BwPostmanControllerFile extends JControllerLegacy
 
 		// Instantiate the media helper
 		$mediaHelper = new JHelperMedia;
+		$contentLength = JFactory::getApplication()->input->server->get('CONTENT_LENGTH', '', '');
 
 		if (
-			$_SERVER['CONTENT_LENGTH'] > ($params->get('upload_maxsize', 0) * 1024 * 1024) ||
-			$_SERVER['CONTENT_LENGTH'] > $mediaHelper->toBytes(ini_get('upload_max_filesize')) ||
-			$_SERVER['CONTENT_LENGTH'] > $mediaHelper->toBytes(ini_get('post_max_size')) ||
-			$_SERVER['CONTENT_LENGTH'] > $mediaHelper->toBytes(ini_get('memory_limit'))
+			$contentLength > ($params->get('upload_maxsize', 0) * 1024 * 1024) ||
+			$contentLength > $mediaHelper->toBytes(ini_get('upload_max_filesize')) ||
+			$contentLength > $mediaHelper->toBytes(ini_get('post_max_size')) ||
+			$contentLength > $mediaHelper->toBytes(ini_get('memory_limit'))
 		)
 		{
 			$response = array(

@@ -324,7 +324,7 @@ Bugfix
 
 Version 0.9.8.1 released (Apr-13-2014)
 
-Bugfix ERROR 500 - Unknown column 'attachment' in 'field list' SQL=INSERT INTO `#__bwpostman_newsletters_tmp`
+Bugfix ERROR 500 - Unknown column 'attachment' in 'field list' SQL=INS…
 
 
 Version 0.9.8 released (Apr-09-2014)

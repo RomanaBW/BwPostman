@@ -1,17 +1,3 @@
-SET @dbname = DATABASE();
-SET @tablename = "# _bwpostman_newsletters";
-SET @columnname = "substitute_links";
-PREPARE alterIfNotExists FROM 'SELECT IF(
-	(
-		SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-		WHERE
-		(table_name = ?)
-		AND (table_schema = @dbname)
-		AND (column_name = @columnname)
-	) > 0,
-	"SELECT 1",
-	CONCAT("ALTER TABLE ", ?, " ADD ", @columnname, " INT(11);")
-)';
 
 --
 -- set archived_by to INT
@@ -46,7 +32,20 @@ ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_text` TEXT NOT 
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `html_version` LONGTEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `text_version` LONGTEXT NOT NULL DEFAULT '';
 
-SET @tablename = "# _bwpostman_newsletters";
+SET @tablename = "#__bwpostman_newsletters";
+SET @dbname = DATABASE();
+SET @columnname = "substitute_links";
+PREPARE alterIfNotExists FROM 'SELECT IF(
+	(
+		SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+		WHERE
+		(table_name = @tablename)
+		AND (table_schema = @dbname)
+		AND (column_name = @columnname)
+	) > 0,
+	"SELECT 1",
+	CONCAT("ALTER TABLE ", ?, " ADD ", @columnname, " INT(11);")
+)';
 EXECUTE alterIfNotExists USING @tablename;
 
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_name` VARCHAR(300) NOT NULL DEFAULT '';
@@ -60,6 +59,19 @@ ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_email` VARCHAR(2
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_name` VARCHAR(300) NOT NULL DEFAULT '';
 
 SET @tablename = "# __bwpostman_sendmailcontent";
+SET @dbname = DATABASE();
+SET @columnname = "substitute_links";
+PREPARE alterIfNotExists FROM 'SELECT IF(
+	(
+		SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+		WHERE
+		(table_name = @tablename)
+		AND (table_schema = @dbname)
+		AND (column_name = @columnname)
+	) > 0,
+	"SELECT 1",
+	CONCAT("ALTER TABLE ", ?, " ADD ", @columnname, " INT(11);")
+)';
 EXECUTE alterIfNotExists USING @tablename;
 
 ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `recipient` VARCHAR(240) NOT NULL DEFAULT '';

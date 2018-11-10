@@ -1,3 +1,18 @@
+SET @dbname = DATABASE();
+SET @tablename = "# _bwpostman_newsletters";
+SET @columnname = "substitute_links";
+PREPARE alterIfNotExists FROM 'SELECT IF(
+	(
+		SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+		WHERE
+		(table_name = ?)
+		AND (table_schema = @dbname)
+		AND (column_name = @columnname)
+	) > 0,
+	"SELECT 1",
+	CONCAT("ALTER TABLE ", ?, " ADD ", @columnname, " INT(11);")
+)';
+
 --
 -- set archived_by to INT
 --
@@ -31,24 +46,8 @@ ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_text` TEXT NOT 
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `html_version` LONGTEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `text_version` LONGTEXT NOT NULL DEFAULT '';
 
-SET @dbname = DATABASE();
-SET @tablename = "#__bwpostman_newsletters";
-SET @columnname = "substitute_links";
-SET @preparedStatement = (SELECT IF(
-																	 (
-																	 SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-																	 WHERE
-																			 (table_name = @tablename)
-																		 AND (table_schema = @dbname)
-																		 AND (column_name = @columnname)
-																	 ) > 0,
-																	 "SELECT 1",
-																	 CONCAT("ALTER TABLE ", @tablename, " ADD ", @columnname, " INT(11);")
-																		 ));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-DEALLOCATE PREPARE alterIfNotExists;
-
+SET @tablename = "# _bwpostman_newsletters";
+EXECUTE alterIfNotExists USING @tablename;
 
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_name` VARCHAR(300) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_email` VARCHAR(240) NOT NULL DEFAULT '';
@@ -59,7 +58,9 @@ ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `bcc_email` VARCHAR(240
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `attachment` TEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_email` VARCHAR(240) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_name` VARCHAR(300) NOT NULL DEFAULT '';
-ALTER TABLE `#__bwpostman_sendmailcontent` ADD COLUMN IF NOT EXISTS `substitute_links` TINYINT(1) NOT NULL DEFAULT '0';
+
+SET @tablename = "# __bwpostman_sendmailcontent";
+EXECUTE alterIfNotExists USING @tablename;
 
 ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `recipient` VARCHAR(240) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `name` VARCHAR(300) NOT NULL DEFAULT '';
@@ -132,3 +133,4 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tags` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 
+DEALLOCATE PREPARE alterIfNotExists;

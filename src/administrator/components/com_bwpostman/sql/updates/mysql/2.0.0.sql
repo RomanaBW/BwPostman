@@ -30,7 +30,7 @@ ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_headline` VARCH
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_text` TEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `html_version` LONGTEXT NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `text_version` LONGTEXT NOT NULL DEFAULT '';
-ALTER TABLE `#__bwpostman_newsletters` ADD `substitute_links` TINYINT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `#__bwpostman_newsletters` ADD COLUMN IF NOT EXISTS `substitute_links` TINYINT(1) NOT NULL DEFAULT '0';
 
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_name` VARCHAR(300) NOT NULL DEFAULT '';
 ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_email` VARCHAR(240) NOT NULL DEFAULT '';

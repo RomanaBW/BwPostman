@@ -50,6 +50,8 @@ abstract class BwPostmanMaintenanceHelper
 	 */
 	public static function compressBackupFile($fileName)
 	{
+		jimport('joomla.filesystem.file');
+
 		$params = JComponentHelper::getParams('com_bwpostman');
 
 		$compressMethod = $params->get('compress_method', 'zip');
@@ -96,7 +98,7 @@ abstract class BwPostmanMaintenanceHelper
 	 */
 	public static function compressByZip($compressedFile, $fileName, $fileData)
 	{
-		$packResult = false;
+		jimport('joomla.archive.archive');
 
 		$files = array(
 			'track' => array(
@@ -141,12 +143,14 @@ abstract class BwPostmanMaintenanceHelper
 	 */
 	public static function decompressBackupFile($srcFileName, $packName)
 	{
+		jimport('joomla.filesystem.file');
+		jimport('joomla.archive.archive');
+
 		$destFileName = str_replace('.zip', '.xml', $srcFileName);
 
 		$destPath	= JFactory::getConfig()->get('tmp_path');
 
 		// Run the packager
-		jimport('joomla.archive');
 		$archive = new JArchive;
 
 		if (!$packager = $archive->getAdapter('zip'))

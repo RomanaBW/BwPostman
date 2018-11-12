@@ -261,6 +261,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('restorefile');
 
+		jimport('joomla.filesystem.file');
+
 		// Clean up filename to get rid of strange characters like spaces etc
 		$filename = JFile::makeSafe($file['name']);
 

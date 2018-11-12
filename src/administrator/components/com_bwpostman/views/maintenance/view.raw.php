@@ -71,6 +71,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		if ($layout == 'saveTables')
 		{
+			jimport('joomla.filesystem.file');
+
 			$compressed     = JComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
 			$dottedVersion  = BwPostmanHelper::getInstalledBwPostmanVersion();
 			$version	    = str_replace('.', '_', $dottedVersion);

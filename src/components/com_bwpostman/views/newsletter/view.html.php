@@ -175,7 +175,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		}
 
 		// Setting the backlink
-		$backlink = JFactory::getApplication()->input->server->get('HTTP_REFERRER', '', '');
+		$backlink = JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
 
 		// Save a reference into the view
 		$this->backlink = $backlink;

@@ -563,7 +563,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 					JToolbarHelper::title($title . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
 				}
 
-				$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERRER', '', '');
+				$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
 				$siteURL 	= $uri->base();
 
 				// If we came from the cover page we will show a back-button

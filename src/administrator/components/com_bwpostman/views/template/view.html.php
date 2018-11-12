@@ -307,7 +307,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 			);
 		}
 
-		$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERRER', '', '');
+		$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
 		$siteURL 	= $uri->base();
 
 		// If we came from the cover page we will show a back-button

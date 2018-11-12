@@ -224,7 +224,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		}
 
 		JFactory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
-		$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERRER', '', '');
+		$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
 		$siteURL 	= $uri->base();
 
 		// If we came from the main page we will show a back-button

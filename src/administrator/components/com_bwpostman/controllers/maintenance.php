@@ -34,7 +34,7 @@ jimport('joomla.application.component.controller');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/maintenancehelper.php');
 
-use Joomla\Filesystem\File;
+//use Joomla\Filesystem\File as JFile;
 
 /**
  * BwPostman Maintenance Controller
@@ -261,11 +261,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('restorefile');
 
-		// Import filesystem libraries. Perhaps not necessary, but does not hurt
-		jimport('joomla.filesystem.file');
-
 		// Clean up filename to get rid of strange characters like spaces etc
-		$filename = File::makeSafe($file['name']);
+		$filename = JFile::makeSafe($file['name']);
 
 		// Set up the source and destination of the file
 		$src	= $file['tmp_name'];
@@ -313,7 +310,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			}
 			else
 			{ // Everything is fine
-				if (File::upload($src, $dest) === false)
+				if (JFile::upload($src, $dest) === false)
 				{
 					$msg	= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
 					$link	= JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);

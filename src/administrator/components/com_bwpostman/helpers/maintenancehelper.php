@@ -27,7 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Filesystem\File;
+//use Joomla\Archive\Archive;
 
 /**
  * Class BwPostmanMaintenanceHelper
@@ -107,17 +107,15 @@ abstract class BwPostmanMaintenanceHelper
 		);
 
 		// Run the packager
-		if (version_compare(JVERSION, '3.9.0', 'ge'))
+		$archive = new JArchive;
+
+		if (!$packager = $archive->getAdapter('zip'))
 		{
-			$packager = new Joomla\Archive\Zip();
-			$packResult = $packager->create($compressedFile, $files);
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
+
+			return false;
 		}
-		else
-		{
-			jimport('joomla.filesystem.archive.zip');
-			$packager = new JArchiveZip();
-			$packResult = $packager->create($compressedFile, array($fileName));
-		}
+		$packResult = $packager->create($compressedFile, $files);
 
 		if (!$packResult)
 		{
@@ -148,17 +146,16 @@ abstract class BwPostmanMaintenanceHelper
 		$destPath	= JFactory::getConfig()->get('tmp_path');
 
 		// Run the packager
-		if (version_compare(JVERSION, '3.9.0', 'ge'))
+		jimport('joomla.archive');
+		$archive = new JArchive;
+
+		if (!$packager = $archive->getAdapter('zip'))
 		{
-			$packager = new Joomla\Archive\Zip();
-			$packResult = $packager->extract($srcFileName, $destPath);
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
+
+			return false;
 		}
-		else
-		{
-			jimport('joomla.filesystem.archive.zip');
-			$packager = new JArchiveZip();
-			$packResult = $packager->extract($srcFileName, $packName);
-		}
+		$packResult = $packager->extract($srcFileName, $destPath);
 
 		if (!$packResult)
 		{
@@ -168,9 +165,9 @@ abstract class BwPostmanMaintenanceHelper
 		}
 		else
 		{
-			$unpackedSourceName = File::stripExt($packName);
-			File::delete($srcFileName);
-			File::move($destPath . '/' . $unpackedSourceName, $destPath . '/tmp_bwpostman_tablesav.xml');
+			$unpackedSourceName = JFile::stripExt($packName);
+			JFile::delete($srcFileName);
+			JFile::move($destPath . '/' . $unpackedSourceName, $destPath . '/tmp_bwpostman_tablesav.xml');
 		}
 
 		return $destFileName;

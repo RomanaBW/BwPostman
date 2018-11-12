@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 
-use Joomla\Filesystem\File;
+//use Joomla\Filesystem\File as JFile;
 
 /**
  * BwPostman Maintenance RAW View
@@ -75,16 +75,15 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$dottedVersion  = BwPostmanHelper::getInstalledBwPostmanVersion();
 			$version	    = str_replace('.', '_', $dottedVersion);
 			$filename	    = "BwPostman_" . $version . "_Tables_" . $date->format("Y-m-d_H_i") . '.xml';
-			$xmlFileName    = File::makeSafe($filename);
+			$xmlFileName    = JFile::makeSafe($filename);
 			$mimeType	    = "application/xml";
 
 			if ($compressed)
 			{
 				$mimeType	= "application/zip";
 				$filename   .= '.zip';
-				$xmlFileName = File::makeSafe(File::stripExt($filename));
+				$xmlFileName = JFile::makeSafe(JFile::stripExt($filename));
 			}
-
 
 			// Maybe we need other headers depending on browser type...
 			jimport('joomla.environment.browser');

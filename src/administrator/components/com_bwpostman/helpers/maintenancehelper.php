@@ -96,6 +96,8 @@ abstract class BwPostmanMaintenanceHelper
 	 */
 	public static function compressByZip($compressedFile, $fileName, $fileData)
 	{
+		$packResult = false;
+
 		$files = array(
 			'track' => array(
 				'name' => $fileName,
@@ -104,10 +106,20 @@ abstract class BwPostmanMaintenanceHelper
 			)
 		);
 
-		$packager = new Joomla\Archive\Zip();
-
 		// Run the packager
-		if (!$packager->create($compressedFile, $files))
+		if (version_compare(JVERSION, '3.9.0', 'ge'))
+		{
+			$packager = new Joomla\Archive\Zip();
+			$packResult = $packager->create($compressedFile, $files);
+		}
+		else
+		{
+			jimport('joomla.filesystem.archive.zip');
+			$packager = new JArchiveZip();
+			$packResult = $packager->create($compressedFile, array($fileName));
+		}
+
+		if (!$packResult)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_ZIP_CREATE'));
 
@@ -135,10 +147,20 @@ abstract class BwPostmanMaintenanceHelper
 
 		$destPath	= JFactory::getConfig()->get('tmp_path');
 
-		$packager = new Joomla\Archive\Zip();
-
 		// Run the packager
-		if (!$packager->extract($srcFileName, $destPath))
+		if (version_compare(JVERSION, '3.9.0', 'ge'))
+		{
+			$packager = new Joomla\Archive\Zip();
+			$packResult = $packager->extract($srcFileName, $destPath);
+		}
+		else
+		{
+			jimport('joomla.filesystem.archive.zip');
+			$packager = new JArchiveZip();
+			$packResult = $packager->extract($srcFileName, $packName);
+		}
+
+		if (!$packResult)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_ZIP_EXTRACT'));
 

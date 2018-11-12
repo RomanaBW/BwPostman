@@ -53,33 +53,33 @@ pipeline {
 			parallel {
 				stage ('accept3') {
 					steps {
-						echo 'Dummy'
+//						echo 'Dummy'
 //						sleep 60
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					// post {
-					// 	always {
-					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-					// 	}
-					// 	failure {
-					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-					// 	}
-					// }
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
 				}
 				stage ('accept4') {
 					steps {
-						echo 'Dummy'
+//						echo 'Dummy'
 //						sleep 60
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					// post {
-					// 	always {
-					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-					// 	}
-					// 	failure {
-					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-					// 	}
-					// }
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+						}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
 				}
 			}
 		}

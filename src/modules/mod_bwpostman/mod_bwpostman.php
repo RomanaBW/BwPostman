@@ -107,7 +107,7 @@ else
 
 		if(!$mailformat_selected)
 		{
-			$emailformat .= 'checked="checked"';
+			$emailformat .= ' checked="checked"';
 		}
 
 		$emailformat     .= '/>';
@@ -116,7 +116,7 @@ else
 
 		if($mailformat_selected)
 		{
-			$emailformat .= 'checked="checked"';
+			$emailformat .= ' checked="checked"';
 		}
 
 		$emailformat     .= '/>';

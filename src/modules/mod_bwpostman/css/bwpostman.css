@@ -32,7 +32,6 @@
 
 #mod_bwpostman [class^="icon-"],
 #mod_bwpostman [class*=" icon-"] {
-	background :        	14px 14px no-repeat;
 	display:				inline-block;
 	height:					14px;
 	line-height:			14px;
@@ -168,6 +167,54 @@
 	padding:			0;
 }
 
+#mod_bwpostman .bwp_mod_modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 99999; /* Sit on top */
+	padding-top: 10px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+#mod_bwpostman #bwp_mod_modal-content {
+	position: relative;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 15px;
+	border: 1px solid #888;
+	border-radius: 6px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	height: 100%;
+}
+
+#mod_bwpostman #bwp_mod_modal-header {
+	height: 30px;
+}
+
+#mod_bwpostman #bwp_mod_wrapper {
+	padding-top: 35px;
+	height: 100%;
+}
+
+#mod_bwpostman .bwp_mod_close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	line-height: 28px;
+}
+
+#mod_bwpostman .bwp__modclose:hover,
+#mod_bwpostman .bwp__modclose:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
 
 
 /*----------------------------------------------------------
@@ -327,7 +374,7 @@ div#bwp_mod_form_listsfield {
 
 /*------------- Disclaimer -------------------------------*/
 #mod_bwpostman #bwp_mod_form_disclaimer {
-
+	margin-top: 25px;
 }
 
 #mod_bwpostman #bwp_mod_form_disclaimer input {

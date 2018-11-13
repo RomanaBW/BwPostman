@@ -82,7 +82,10 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 		$query->select("a.id AS value, a.title AS title, a.description as description");
 		$query->from('#__bwpostman_mailinglists AS a');
 		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
-		$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $mailinglists) . ')');
+		if (count($mailinglists))
+		{
+			$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $mailinglists) . ')');
+		}
 
 		$_db->setQuery($query);
 		$options = $_db->loadObjectList();

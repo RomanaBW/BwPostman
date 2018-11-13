@@ -523,7 +523,7 @@ class BwPostmanModelNewsletters extends JModelList
 		// Filter by mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 
-		$whereMlsCamsClause = $this->getWhereMlsCamsClause($mls, $cams);
+		$whereMlsCamsClause = BwPostmanHelper::getWhereMlsCamsClause($mls, $cams);
 
 		$query->where($whereMlsCamsClause);
 
@@ -899,18 +899,8 @@ class BwPostmanModelNewsletters extends JModelList
 
 			$query->select('DISTINCT (' . $_db->quoteName('campaign_id') . ')');
 			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
-
-			$whereMlsClause = $this->getWhereMlsClause($acc_mls);
-			if ($whereMlsClause != '')
-			{
-				$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
-			}
-
-			$whereCamsClause = $this->getWhereCamsClause($cams);
-			if ($whereCamsClause != '')
-			{
-				$query->where($_db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
-			}
+			$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
+			$query->where($_db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
 
 			try
 			{
@@ -922,7 +912,7 @@ class BwPostmanModelNewsletters extends JModelList
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
-			if (count($acc_cams) > 0)
+			if (is_array($acc_cams) && count($acc_cams) > 0)
 			{
 				$cams		= array();
 				foreach ($acc_cams as $item)
@@ -1132,99 +1122,5 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		return $module;
-	}
-
-	/**
-	 * Method to get query where part for mailinglists
-	 *
-	 * @param $mls
-	 *
-	 * @return string
-	 *
-	 * @since 2.1.1
-	 */
-	protected function getWhereMlsClause($mls)
-	{
-		$whereMlsClause = '';
-		$nbrMls = 0;
-
-		if (is_array($mls))
-		{
-			$nbrMls = count($mls);
-		}
-
-		if ($nbrMls)
-		{
-			$whereMlsClause .= 'm.mailinglist_id IN (' . implode(',', $mls) . ')';
-		}
-
-		return $whereMlsClause;
-	}
-
-	/**
-	 * Method to get query where part for campaigns
-	 *
-	 * @param $cams
-	 *
-	 * @return string
-	 *
-	 * @since 2.1.1
-	 */
-	protected function getWhereCamsClause($cams)
-	{
-		$whereCamsClause = '';
-		$nbrCams = 0;
-
-		if (is_array($cams))
-		{
-			$nbrCams = count($cams);
-		}
-
-		if ($nbrCams)
-		{
-			$whereCamsClause .= 'a.campaign_id IN (' . implode(',', $cams) . ')';
-		}
-
-		return $whereCamsClause;
-	}
-
-	/**
-	 * Method to get query where part for campaigns and mailinglists
-	 *
-	 * @param $mls
-	 * @param $cams
-	 *
-	 * @return string
-	 *
-	 * @since 2.1.1
-	 */
-	protected function getWhereMlsCamsClause($mls, $cams)
-	{
-		$whereMlsCamsClause = '';
-		$whereMlsClause     = $this->getWhereMlsClause($mls);
-		$whereCamsClause    = $this->getWhereCAMSClause($cams);
-
-
-		if ($whereMlsClause != '')
-		{
-			$whereMlsCamsClause = 'm.mailinglist_id IN (' . implode(',', $mls) . ')';
-		}
-
-		if ($whereCamsClause != '')
-		{
-			if ($whereMlsClause != '')
-			{
-				$whereMlsCamsClause = '(' . $whereMlsCamsClause . ' OR ';
-			}
-
-			$whereMlsCamsClause .= 'a.campaign_id IN (' . implode(',', $cams) . ')';
-
-			if ($whereMlsClause != '')
-			{
-				$whereMlsCamsClause .= ')';
-			}
-		}
-
-		return $whereMlsCamsClause;
 	}
 }

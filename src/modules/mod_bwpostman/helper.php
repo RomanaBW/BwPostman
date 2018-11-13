@@ -123,7 +123,7 @@ class ModBwPostmanHelper
 		$_db = JFactory::getDbo();
 
 		// if mailinglists are checked in the module parameters
-		if (isset($mod_mls))
+		if (isset($mod_mls) && count($mod_mls))
 		{
 			$query	= $_db->getQuery(true);
 

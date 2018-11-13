@@ -727,7 +727,7 @@ class BwPostmanSubscriberHelper
 			$get_mls	= array_diff($selected, $ml_ids);
 
 			// if there are internal mailinglists selected, get them ...
-			if (!empty($get_mls))
+			if (is_array($get_mls) && !empty($get_mls))
 			{
 				$query->clear();
 				$query->select('*');

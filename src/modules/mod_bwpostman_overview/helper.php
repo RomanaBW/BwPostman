@@ -89,6 +89,9 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getItems(&$params)
 	{
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+		$nlModel = JModelLegacy::getInstance('Newsletters', 'BwPostmanModel');
+
 		// Get conditions
 		$menuItemId		= $params->get('menu_item');
 
@@ -140,7 +143,10 @@ class ModBwPostmanOverviewHelper
 
 		// Filter by accessible mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
-		$query->where('(m.mailinglist_id IN (' . implode(',', $mls) . ') OR a.campaign_id IN (' . implode(',', $cams) . '))');
+
+		$whereMlsCamsClause = BwPostmanHelper::getWhereMlsCamsClause($mls, $cams);
+
+		$query->where($whereMlsCamsClause);
 
 		// Filter by show type
 		switch ($params->get('show_type', 'arc'))

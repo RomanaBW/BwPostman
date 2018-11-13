@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 // Import helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 
 /**
  * BwPostman newsletters model

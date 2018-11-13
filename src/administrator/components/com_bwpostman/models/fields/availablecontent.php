@@ -180,7 +180,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('c'));
 		$query->where($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' > ' . $_db->quote('0'));
 		// params - get only not excluded categories
-		if ($exc_cats)
+		if (is_array($exc_cats) && $exc_cats)
 		{
 			$query->where(
 				'(' . $_db->quoteName('c') . '.' . $_db->quoteName('id')

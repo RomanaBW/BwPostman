@@ -378,7 +378,6 @@ abstract class BwPostmanHelper
 	{
 		$permissions	= array();
 
-		// @ToDo: Revise: $user or self:: for authorise!
 		if ($view !== 'archive' && $view !== 'maintenance')
 		{
 			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, 0);
@@ -1755,7 +1754,10 @@ abstract class BwPostmanHelper
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_' . $view . 's'));
 		$query->where($db->quoteName('archive_flag') . ' = ' . $db->Quote($fromArchive));
-		$query->where($db->quoteName('id') . ' IN (' . implode(',', $itemsToCheck) . ')');
+		if (count($itemsToCheck))
+		{
+			$query->where($db->quoteName('id') . ' IN (' . implode(',', $itemsToCheck) . ')');
+		}
 
 		$db->setQuery($query);
 
@@ -1976,5 +1978,100 @@ abstract class BwPostmanHelper
 		$userId = JFactory::getUser()->id;
 
 		return BwAccess::check($userId, $action, $assetName, false, $recordId);
+	}
+
+
+	/**
+	 * Method to get query where part for mailinglists
+	 *
+	 * @param $mls
+	 *
+	 * @return string
+	 *
+	 * @since 2.1.1
+	 */
+	public static function getWhereMlsClause($mls)
+	{
+		$whereMlsClause = '';
+		$nbrMls = 0;
+
+		if (is_array($mls))
+		{
+			$nbrMls = count($mls);
+		}
+
+		if ($nbrMls)
+		{
+			$whereMlsClause .= 'm.mailinglist_id IN (' . implode(',', $mls) . ')';
+		}
+
+		return $whereMlsClause;
+	}
+
+	/**
+	 * Method to get query where part for campaigns
+	 *
+	 * @param $cams
+	 *
+	 * @return string
+	 *
+	 * @since 2.1.1
+	 */
+	public static function getWhereCamsClause($cams)
+	{
+		$whereCamsClause = '';
+		$nbrCams = 0;
+
+		if (is_array($cams))
+		{
+			$nbrCams = count($cams);
+		}
+
+		if ($nbrCams)
+		{
+			$whereCamsClause .= 'a.campaign_id IN (' . implode(',', $cams) . ')';
+		}
+
+		return $whereCamsClause;
+	}
+
+	/**
+	 * Method to get query where part for campaigns and mailinglists
+	 *
+	 * @param $mls
+	 * @param $cams
+	 *
+	 * @return string
+	 *
+	 * @since 2.1.1
+	 */
+	public static function getWhereMlsCamsClause($mls, $cams)
+	{
+		$whereMlsCamsClause = '';
+		$whereMlsClause     = self::getWhereMlsClause($mls);
+		$whereCamsClause    = self::getWhereCamsClause($cams);
+
+
+		if ($whereMlsClause != '')
+		{
+			$whereMlsCamsClause = $whereMlsClause;
+		}
+
+		if ($whereCamsClause != '')
+		{
+			if ($whereMlsClause != '')
+			{
+				$whereMlsCamsClause = '(' . $whereMlsCamsClause . ' OR ';
+			}
+
+			$whereMlsCamsClause .= $whereCamsClause;
+
+			if ($whereMlsClause != '')
+			{
+				$whereMlsCamsClause .= ')';
+			}
+		}
+
+		return $whereMlsCamsClause;
 	}
 }

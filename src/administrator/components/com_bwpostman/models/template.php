@@ -689,7 +689,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$header = str_replace('[%alignment%]', 'center', $header);
 				$header = $item->header['logo_src'] != '' ?
 					str_replace('[%logo_src%]', JUri::root() . $item->header['logo_src'], $header) :
-					str_replace('[%logo_src%]', JUri::root() . '/administrator/components/com_bwpostman/assets/images/260x130.png', $header);
+					str_replace('[%logo_src%]', JUri::root() . 'administrator/components/com_bwpostman/assets/images/260x130.png', $header);
 				$header = $item->header['logo_width'] == '' ?
 					str_replace('[%logo_width%]', 260, $header) :
 					str_replace('[%logo_width%]', $item->header['logo_width'], $header);
@@ -721,7 +721,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$header = str_replace('[%alignment%]', $item->header['alignment'], $header);
 				$header = $item->header['logo_src'] != '' ?
 					str_replace('[%logo_src%]', JUri::root() . $item->header['logo_src'], $header) :
-					str_replace('[%logo_src%]', JUri::root() . '/administrator/components/com_bwpostman/assets/images/580x130.png', $header);
+					str_replace('[%logo_src%]', JUri::root() . 'administrator/components/com_bwpostman/assets/images/580x130.png', $header);
 				$header = $item->header['logo_width'] == '' ?
 					str_replace('[%logo_width%]', 580, $header) :
 					str_replace('[%logo_width%]', $item->header['logo_width'], $header);

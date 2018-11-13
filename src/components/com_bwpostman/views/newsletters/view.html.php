@@ -240,12 +240,11 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));
 		}
 
-		// Get document object, set document title and add css
+		// Get document object and add css
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document = JFactory::getDocument();
-		$document->setTitle($this->params->get('page_title'));
 
 		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))

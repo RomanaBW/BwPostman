@@ -388,7 +388,7 @@ class TestAccessCest
 			// Shortcut for user variable
 			$user   = AccessPage::$all_users[$i];
 
-			// @ToDo: This is a workaround to debug tests. Comment out usergroups/users which are not wanted
+			//@SpecialNote: This is a workaround to debug tests. Comment out usergroups/users which are not wanted
 			$wanted_users = array(
 				'BwPostmanAdmin',
 				'BwPostmanManager',
@@ -421,7 +421,7 @@ class TestAccessCest
 			// Loop over main view list buttons
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
-				// @ToDo: This is a workaround to debug tests. Comment tests which are wanted
+				// @SpecialNote: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
 //					'Newsletters',
 //					'Subscribers',
@@ -1188,7 +1188,7 @@ class TestAccessCest
 	{
 		$action = '';
 
-		// @ToDo: following is dummy to eliminate IDE warning while coding ist not ready
+		// @SpecialNote: following is dummy to eliminate IDE warning while coding is not ready
 		$I->waitForElement($link);
 
 		return $action;

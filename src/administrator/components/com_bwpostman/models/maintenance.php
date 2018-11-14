@@ -3850,7 +3850,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				$sectionName = substr($table['tableNameRaw'], 0, -1);
 
-				// @ToDo: Check if asset exists. If so, update, else insert
 				$sectionAssetExists = $this->getAssetFromTableByName('com_bwpostman.' . $sectionName);
 
 				if (!is_null($sectionAssetExists))

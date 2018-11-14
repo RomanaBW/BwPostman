@@ -79,14 +79,12 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$session		= JFactory::getSession();
 
 		//clear session error and success
-		// @Todo: is it necessary to check for array?
 		$session_error = $session->get('session_error');
 		if(isset($session_error) && is_array($session_error))
 		{
 			$session->clear('session_error');
 		}
 
-		// @Todo: is it necessary to check for array?
 		$session_success = $session->get('session_success');
 		if(isset($session_success) && is_array($session_success))
 		{

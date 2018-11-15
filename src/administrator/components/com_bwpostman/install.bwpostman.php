@@ -292,18 +292,7 @@ class Com_BwPostmanInstallerScript
 			$this->setDefaultParams();
 
 			// Create sample user groups, set viewlevel
-			$this->createSampleUsergroups();
-			$this->addBwPmAdminToViewlevel();
-			$this->addBwPmAdminToRootAsset();
-
-			/*
-			 * Create section assets
-			 *
-			 */
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
-
-			$maintenanceModel->createBaseAssets();
+			$this->installSampleUsergroups();
 		}
 
 		// check if sample templates exists
@@ -332,21 +321,9 @@ class Com_BwPostmanInstallerScript
 				$this->fillCamCrossTable();
 			}
 
-			// @ToDo: Reflect, how to reinstall sample groups, if user deleted them and wants them back
-			if (version_compare($oldRelease, '2.0.0', 'le'))
-			{
-				$this->createSampleUsergroups();
-				$this->addBwPmAdminToViewlevel();
-				$this->addBwPmAdminToRootAsset();
-				/*
-				 * Rewrite section assets
-				 *
-				 */
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-				$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
+			$this->installSampleUsergroups();
 
-				$maintenanceModel->createBaseAssets();
-			}
+			$this->repairRootAsset();
 
 			// convert tables to UTF8MB4
 			jimport('joomla.filesystem.file');
@@ -836,20 +813,36 @@ class Com_BwPostmanInstallerScript
 			$public_id = $this->getGroupId('Public');
 
 			// Create user group BwPostmanAdmin
-			if (!$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin')))
+			$groupExists = $this->getGroupId('BwPostmanAdmin');
+
+			if (!$groupExists)
 			{
-				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
-				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret));
+				$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
+
+				if (!$ret)
+				{
+					echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+					throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
+						$ret));
+				}
 			}
 
 			$admin_groupId = $this->getGroupId('BwPostmanAdmin');
 			$this->adminUsergroup = $admin_groupId;
 
 			// Create user group BwPostmanManager
-			if (!$ret = $groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager')))
+			$groupExists = $this->getGroupId('BwPostmanAdmin');
+
+			if (!$groupExists)
 			{
-				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
-				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret));
+				$ret = $groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager'));
+
+				if (!$ret)
+				{
+					echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+					throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
+						$ret));
+				}
 			}
 
 			$manager_groupId = $this->getGroupId('BwPostmanManager');
@@ -860,9 +853,16 @@ class Com_BwPostmanInstallerScript
 				$parent_id  = $manager_groupId;
 				foreach ($groups as $item)
 				{
-					if (!$groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item)))
+					$groupExists = $this->getGroupId($item);
+
+					if (!$groupExists)
 					{
-						throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+						$ret = $groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item));
+
+						if (!$ret)
+						{
+							throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+						}
 					}
 
 					$parent_id = $this->getGroupId($item);
@@ -891,6 +891,11 @@ class Com_BwPostmanInstallerScript
 	{
 		try
 		{
+			if (!(int) $this->adminUsergroup)
+			{
+				return false;
+			}
+
 			// get the model for viewlevels
 			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
 			$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
@@ -929,6 +934,11 @@ class Com_BwPostmanInstallerScript
 		{
 			// Get group ID of BwPostmanAdmin
 			$adminGroup = $this->getGroupId('BwPostmanAdmin');
+
+			if (!$adminGroup)
+			{
+				return false;
+			}
 
 			// Get root asset
 			$rootRules = $this->getRootAsset();
@@ -1164,7 +1174,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @param   string  $name  The name of the group
 	 *
-	 * @return  int  the ID of the group
+	 * @return  int|bool  the ID of the group or false, if group not exists
 	 *
 	 * @throws Exception
 	 *
@@ -1173,7 +1183,7 @@ class Com_BwPostmanInstallerScript
 
 	private function getGroupId($name)
 	{
-		$result = 0;
+		$result = false;
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 
@@ -1244,6 +1254,48 @@ class Com_BwPostmanInstallerScript
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+	}
+
+	/**
+	 * installs sample usergroups and add BwPostmanAdmin to viewlevel and root asset
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.1.1
+	 */
+	protected function installSampleUsergroups()
+	{
+		$this->createSampleUsergroups();
+		$this->addBwPmAdminToViewlevel();
+		$this->addBwPmAdminToRootAsset();
+		/*
+		 * Rewrite section assets
+		 *
+		 */
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+		$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
+
+		$maintenanceModel->createBaseAssets();
+	}
+
+	/**
+	 * removes empty user groups from root asset
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.1.1
+	 */
+	protected function repairRootAsset()
+	{
+		$rootRules = $this->getRootAsset();
+
+		$repairedRules = str_replace('"":1,', '', $rootRules);
+
+		$this->saveRootAsset($repairedRules);
 	}
 
 	/**

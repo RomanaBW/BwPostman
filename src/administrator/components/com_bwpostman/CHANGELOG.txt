@@ -17,7 +17,7 @@ Bugfix
 # Compression/Decompression of saved tables only works for Joomla! 3.8.1+
 # SQL error at newsletter overview at front end
 # Internal mailinglists are not accepted as recipients
-# Install user groups of BwPostman at update
+# Update from 1.3.2 to 2.0.x lets display unpublished articles of Joomla
 
 
 Version 2.1.0 released (26-Oct-2018)----

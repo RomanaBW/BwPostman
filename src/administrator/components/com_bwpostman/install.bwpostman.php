@@ -335,7 +335,7 @@ class Com_BwPostmanInstallerScript
 			// @ToDo: Reflect, how to reinstall sample groups, if user deleted them and wants them back
 			if (version_compare($oldRelease, '2.0.0', 'le'))
 			{
-//				$this->createSampleUsergroups();
+				$this->createSampleUsergroups();
 				$this->addBwPmAdminToViewlevel();
 				$this->addBwPmAdminToRootAsset();
 				/*

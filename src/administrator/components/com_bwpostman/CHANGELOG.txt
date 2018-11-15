@@ -16,6 +16,8 @@ Bugfix
 # Update crashes, if one of the Plugins U2S or B2S is activated
 # Compression/Decompression of saved tables only works for Joomla! 3.8.1+
 # SQL error at newsletter overview at front end
+# Internal mailinglists are not accepted as recipients
+# Install user groups of BwPostman at update
 
 
 Version 2.1.0 released (26-Oct-2018)----

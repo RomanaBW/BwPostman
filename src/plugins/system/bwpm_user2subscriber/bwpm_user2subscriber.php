@@ -356,6 +356,25 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$js_file = JUri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
 
 		$doc->addScript($js_file);
+
+		// Get disclaimer link if disclaimer enabled at component and plugin
+		$disclaimer_link = $this->getDisclaimerLink();
+
+		// Add JS for disclaimer modal box
+		if ($disclaimer_link)
+		{
+			$disclaimer_script =	'	var dc_src = "' . $disclaimer_link . '";' . "\n";
+			$disclaimer_script .=	'	jQuery(document).ready(function(){' . "\n";
+			$disclaimer_script .=	'		setPlgModal()' . "\n";
+			$disclaimer_script .=	'	});' . "\n";
+
+			$doc->addScriptDeclaration($disclaimer_script);
+		}
+		else
+		{
+			$this->removeDisclaimerField();
+		}
+
 		$this->logger->addEntry(new JLogEntry('Script and CSS added'));
 
 		$this->processGenderField();
@@ -422,9 +441,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('name_field_obligation'))
+		if ($com_params->get('name_field_obligation') && $com_params->get('show_name_field'))
 		{
-			$com_params->set('show_name_field', '1');
 			$this->form->setValue('name_required', 'bwpm_user2subscriber', 1);
 		}
 
@@ -443,9 +461,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('firstname_field_obligation'))
+		if ($com_params->get('firstname_field_obligation') && $com_params->get('show_firstname_field'))
 		{
-			$com_params->set('show_firstname_field', '1');
 			$this->form->setValue('firstname_required', 'bwpm_user2subscriber', 1);
 		}
 
@@ -464,9 +481,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('special_field_obligation'))
+		if ($com_params->get('special_field_obligation') && $com_params->get('show_special'))
 		{
-			$com_params->set('show_special', '1');
 			$this->form->setValue('additional_required', 'bwpm_user2subscriber', 1);
 		}
 
@@ -533,6 +549,57 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	protected function processCaptchaField()
 	{
 		$this->form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . BwPostmanHelper::getCaptcha(1), 'bwpm_user2subscriber');
+	}
+
+	/**
+	 * Method to check if disclaimer enabled and prepare the disclaimer link
+	 *
+	 * @param   array  $oldUser User data before saving
+	 * @param   bool   $isNew   true on new user
+	 * @param   array  $newUser User data to save
+	 *
+	 * @return  string
+	 *
+	 * @since 2.1.0
+	 */
+	protected function getDisclaimerLink()
+	{
+		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$disclaimer_link = '';
+
+		if ($this->params->get('disclaimer') && $com_params->get('disclaimer'))
+		{
+			// Extends the disclaimer link with '&tmpl=component' to see only the content
+			$tpl_com = '&amp;tmpl=component';
+			// Disclaimer article and target_blank or not
+			if ($com_params->get('disclaimer_selection') == 1 && $com_params->get('article_id') > 0)
+			{
+				require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
+				$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($com_params->get('article_id'))) . $tpl_com;
+			}
+			// Disclaimer menu item and target_blank or not
+			elseif ($com_params->get('disclaimer_selection') == 2 && $com_params->get('disclaimer_menuitem') > 0)
+			{
+				$disclaimer_link = JRoute::_('index.php?Itemid=' . $com_params->get('disclaimer_menuitem')) . $tpl_com;
+			}
+			// Disclaimer url and target_blank or not
+			else
+			{
+				$disclaimer_link = $com_params->get('disclaimer_link');
+			}
+		}
+
+		return $disclaimer_link;
+	}
+
+	/**
+	 * Method to remove input field disclaimer
+	 *
+	 * @since 2.1.0
+	 */
+	protected function removeDisclaimerField()
+	{
+		$this->form->removeField('bwpdisclaimer', 'bwpm_user2subscriber');
 	}
 
 	/**

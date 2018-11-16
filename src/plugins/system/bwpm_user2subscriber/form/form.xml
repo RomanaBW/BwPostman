@@ -104,6 +104,17 @@
 			>
 			</field>
 			<field
+				name="bwpdisclaimer"
+				type="disclaimer"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_LABEL"
+				labelclass="control-label bwpm-u2s-fields-toggle"
+				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_DESC"
+				class="disclaimer bwpm-u2s-fields-toggle"
+				value="1"
+				required="true"
+			>
+			</field>
+			<field
 				name="bw_captcha"
 				type="hidden"
 			    default="1"

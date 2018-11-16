@@ -30,7 +30,7 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="option">
+			<fieldset name="option" addfieldpath="/plugins/system/bwpm_user2subscriber/form/fields">
 				<field
 						name="register_message_option"
 						type="textarea"
@@ -41,7 +41,22 @@
 						cols="50"
 						rows="10"
 						default=""
-				/>
+					/>
+
+				<field name="spacer1_4" type="spacer" hr="true" />
+
+				<field name="disclaimer"
+			       type="radio"
+			       class="btn-group btn-group-yesno"
+			       default="0"
+			       label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ENABLE_DISCLAIMER"
+			       description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ENABLE_DISCLAIMER_NOTE"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="dcmessage" type="dcmessage" />
 
 				<field name="spacer2_4" type="spacer" hr="true" />
 

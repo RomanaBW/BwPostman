@@ -44,6 +44,13 @@ class MainviewPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.2.0
+	 */
+	public static $dashboard    = ".//*[@id='view_bwpostman']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $newslettersButton        = './/*[@id=\'cpanel\']/div[1]/div/a';

@@ -391,8 +391,9 @@ fi
 if [ "${BW_TEST_CAT}" == options_single ]
 then
 # single tests for setting general options
-codecept run acceptance Backend/TestOptionsCest::saveDefaults ${BW_TEST_DEBUG} --xml xmlreports/report_options_save_defaults.xml --html htmlreports/report_options_save_defaults.html
-codecept run acceptance Backend/TestOptionsCest::setPermissions ${BW_TEST_DEBUG} --xml xmlreports/report_options_set_permissions.xml --html htmlreports/report_options_set_permissions.html
+#codecept run acceptance Backend/TestOptionsCest::saveDefaults ${BW_TEST_DEBUG} --xml xmlreports/report_options_save_defaults.xml --html htmlreports/report_options_save_defaults.html
+#codecept run acceptance Backend/TestOptionsCest::setPermissions ${BW_TEST_DEBUG} --xml xmlreports/report_options_set_permissions.xml --html htmlreports/report_options_set_permissions.html
+codecept run acceptance Backend/TestOptionsCest::checkOptionSenderName ${BW_TEST_DEBUG} --xml xmlreports/report_options_senderName.xml --html htmlreports/report_options_senderName.html
 fi
 
 if [ "${BW_TEST_CAT}" == access_single ]

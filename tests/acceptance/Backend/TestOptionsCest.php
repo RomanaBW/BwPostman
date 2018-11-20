@@ -91,32 +91,14 @@ class TestOptionsCest
 
 		foreach(OptionsPage::$bwpm_groups as $groupname => $values)
 		{
-			// get ID of usergroup
-			$group_id   = $I->getGroupIdByName($groupname);
-			$actions    = $values['permissions'];
-
-			// select usergroup
-			$slider = sprintf(OptionsPage::$perm_slider, $group_id);
-			$I->scrollTo($slider, 0, -100);
-
-			$I->click($slider);
-			$I->waitForElement($slider, 30);
+			$actions  = $values['permissions'];
+			$group_id = $I->getGroupIdByName($groupname);
+			$slider   = $this->selectPermissionsSliderForUsergroup($I, $group_id);
 
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)
 			{
-				$identifier = './/*[@id="jform_rules_' . $rules[$i] . '_' . $group_id . '"]';
-				$value      = $actions[$rules[$i]];
-
-				$I->scrollTo($identifier, 0, -150);
-				$I->waitForElementVisible($identifier, 30);
-
-				$selector = '#jform_rules_' . $rules[$i] . '_' . $group_id;
-				$I->removeSelectedAttribute($selector);
-
-				$I->click($identifier);
-				$I->selectOption($identifier, $value);
-				$I->wait(1);
+				$this->setSinglePermission($I, $rules, $i, $group_id, $actions);
 			}
 
 			// apply
@@ -125,7 +107,6 @@ class TestOptionsCest
 			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
 
 			// select usergroup
-			$slider = sprintf(OptionsPage::$perm_slider, $group_id);
 			$I->scrollTo($slider, 0, -100);
 
 			$I->click($slider);
@@ -134,14 +115,7 @@ class TestOptionsCest
 			// check success
 			foreach ($rules as $rule)
 			{
-				$key_pos    = array_search($rule, $rules) + 1;
-				$identifier = sprintf(OptionsPage::$result_row, $group_id, $key_pos);
-				$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];
-
-				$scrollPos = './/*[@id="jform_rules_' . $rule . '_' . $group_id . '"]';
-				$I->scrollTo($scrollPos, 0, -150);
-
-				$I->see($value, $identifier);
+				$this->checkSetPermissionsSuccess($I, $rule, $rules, $group_id, $groupname);
 			}
 		}
 	}
@@ -161,5 +135,82 @@ class TestOptionsCest
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{
 		$loginPage->logoutFromBackend($I);
+	}
+
+	/**
+	 * Method to check success of setting permissions
+	 *
+	 * @param AcceptanceTester $I
+	 * @param                  $rule
+	 * @param                  $rules
+	 * @param                  $group_id
+	 * @param                  $groupname
+	 *
+	 * @return void
+	 *
+	 * @since 2.2.0
+	 */
+	protected function checkSetPermissionsSuccess(AcceptanceTester $I, $rule, $rules, $group_id, $groupname)
+	{
+		$key_pos    = array_search($rule, $rules) + 1;
+		$identifier = sprintf(OptionsPage::$result_row, $group_id, $key_pos);
+		$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];
+
+		$scrollPos = './/*[@id="jform_rules_' . $rule . '_' . $group_id . '"]';
+		$I->scrollTo($scrollPos, 0, -150);
+
+		$I->see($value, $identifier);
+	}
+
+	/**
+	 * Method to set single permission
+	 *
+	 * @param AcceptanceTester $I
+	 * @param                  $rules
+	 * @param                  $i
+	 * @param                  $group_id
+	 * @param                  $actions
+	 *
+	 * @since 2.2.0
+	 *
+	 * @throws Exception
+	 */
+	protected function setSinglePermission(AcceptanceTester $I, $rules, $i, $group_id, $actions)
+	{
+		$identifier = './/*[@id="jform_rules_' . $rules[$i] . '_' . $group_id . '"]';
+		$value      = $actions[$rules[$i]];
+
+		$I->scrollTo($identifier, 0, -150);
+		$I->waitForElementVisible($identifier, 30);
+
+		$selector = '#jform_rules_' . $rules[$i] . '_' . $group_id;
+		$I->removeSelectedAttribute($selector);
+
+		$I->click($identifier);
+		$I->selectOption($identifier, $value);
+		$I->wait(1);
+	}
+
+	/**
+	 * Method to select permissions slider for a given usergroup
+	 *
+	 * @param AcceptanceTester $I
+	 * @param                  $group_id
+	 *
+	 * @return string
+	 *
+	 * @since 2.2.0
+	 *
+	 * @throws Exception
+	 */
+	protected function selectPermissionsSliderForUsergroup(AcceptanceTester $I, $group_id)
+	{
+		$slider = sprintf(OptionsPage::$perm_slider, $group_id);
+		$I->scrollTo($slider, 0, -100);
+
+		$I->click($slider);
+		$I->waitForElement($slider, 30);
+
+		return $slider;
 	}
 }

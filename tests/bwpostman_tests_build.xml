@@ -256,7 +256,7 @@
 	</target>
 
 	<target name="stop_infrastructure" depends="remove_test_container" description="stop test infrastructure">
-<!--		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} down" passthru="true" />-->
+		<!--<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} down" passthru="true" />-->
 	</target>
 
 </project>

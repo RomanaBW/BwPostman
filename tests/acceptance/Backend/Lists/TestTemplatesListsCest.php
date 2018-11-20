@@ -344,6 +344,9 @@ class TestTemplatesListsCest
 
 		$I->waitForElementVisible(TplManage::$firstTableTitle, 5);
 		$I->see(TplManage::$importTemplateName, TplManage::$firstTableTitle);
+
+		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplManage::$arc_del_array_import, true);
+		$I->see('Template', Generals::$pageTitle);
 	}
 
 	/**

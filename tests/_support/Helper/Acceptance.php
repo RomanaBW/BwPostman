@@ -1347,7 +1347,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	public function setManifestOption($extension = 'com_bwpostman', $option, $value)
+	public function setManifestOption($extension = 'com_bwpostman', $option = '', $value = '')
 	{
 		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
@@ -1661,4 +1661,21 @@ class Acceptance extends Codeception\Module
 		$sth = $driver->executeQuery($query, $criteria);
 		$res = $sth->rowCount();
 	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param $registerUrl
+	 * @param $viewRegister
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 2.0.0
+	 */
+	public function selectRegistrationPage(\AcceptanceTester $I, $registerUrl, $viewRegister)
+	{
+		$I->amOnPage($registerUrl);
+		$I->waitForElementVisible($viewRegister);
+		$I->seeElement($viewRegister);
+	}
+
 }

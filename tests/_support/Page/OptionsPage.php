@@ -186,17 +186,317 @@ class OptionsPage
 	 */
 	public static $showBwLinkYes  = ".//*[@id='jform_show_boldt_link']/label[2]";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $sendersNameByJoomla  = "Joomla-Test";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $sendersNameByOption  = "Option-Test";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $sendersMailByJoomla  = "webmaster@boldt-webservice.de";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $sendersMailByOption  = "max.mayr@tester-net.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $replyMailByJoomla  = "webmaster@boldt-webservice.de";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $replyMailByOption  = "max.mayer@tester-net.nil";
+
+
 	/*
 	* Tab registration
 	*/
 
-	// UI
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $introText  = "";
 
-	/*
-	* Tab activation
-	*/
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showGenderNo  = ".//*[@id='jform_show_gender']/label[1]";
 
-	// UI
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showGenderYes  = ".//*[@id='jform_show_gender']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showLastNameNo  = ".//*[@id='jform_show_name_field']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showLastNameYes  = ".//*[@id='jform_show_name_field']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $obligatoryLastNameNo  = ".//*[@id='jform_name_field_obligation']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $obligatoryLastNameYes  = ".//*[@id='jform_name_field_obligation']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showFirstNameNo  = ".//*[@id='jform_show_firstname_field']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showFirstNameYes  = ".//*[@id='jform_show_firstname_field']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $obligatoryFirstNameNo  = ".//*[@id='jform_firstname_field_obligation']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $obligatoryFirstNameYes  = ".//*[@id='jform_firstname_field_obligation']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showAdditionalFieldNo  = ".//*[@id='jform_show_special']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showAdditionalFieldYes  = ".//*[@id='jform_show_special']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $obligatoryAdditionalFieldNo  = ".//*[@id='jform_special_field_obligation']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $obligatoryAdditionalFieldYes  = ".//*[@id='jform_special_field_obligation']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $additionalFieldLabel  = ".//*[@id='jform_special_label']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $additionalFieldTooltip  = ".//*[@id='jform_special_desc']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showMailinglistDescriptionNo  = ".//*[@id='jform_show_desc']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showMailinglistDescriptionYes  = ".//*[@id='jform_show_desc']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $MailinglistDescriptionLength  = ".//*[@id='jform_desc_length']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showDisclaimerNo  = ".//*[@id='jform_disclaimer']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showDisclaimerYes  = ".//*[@id='jform_disclaimer']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $DisclaimerLinkTargetUrl  = ".//*[@id='jform_disclaimer_selection']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $DisclaimerLinkTargetArticle  = ".//*[@id='jform_disclaimer_selection']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $DisclaimerLinkTargetMenuItem  = ".//*[@id='jform_disclaimer_selection']/label[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $DisclaimerLink  = ".//*[@id='jform_disclaimer_link']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $DisclaimerArticle  = ".//*[@id='jform_article_id_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $DisclaimerMenuItem  = ".//*[@id='jform_disclaimer_menuitem']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $disclaimerCurrentWindowNo  = ".//*[@id='jform_disclaimer_target']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $disclaimerCurrentWindowYes  = ".//*[@id='jform_disclaimer_target']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $disclaimerPopupNo  = ".//*[@id='jform_showinmodal']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $disclaimerPopupYes  = ".//*[@id='jform_showinmodal']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $secureRegistrationNo  = ".//*[@id='jform_use_captcha']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $secureRegistrationQuestion  = ".//*[@id='jform_use_captcha']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $secureRegistrationCaptcha  = ".//*[@id='jform_use_captcha']/label[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $SecurityQuestion  = ".//*[@id='jform_security_question']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $SecurityAnswer  = ".//*[@id='jform_security_answer']";
+
+
+
+
+
+
 
 	/*
 	 * Tab lists view

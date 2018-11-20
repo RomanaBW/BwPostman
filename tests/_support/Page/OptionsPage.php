@@ -80,6 +80,12 @@ class OptionsPage
 	/*
 	 * Tab basic settings
 	 */
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $sendersName  = ".//*[@id='jform_default_from_name']";
 
 	/*
 	* Tab registration

@@ -2,6 +2,7 @@
 use Page\Generals as Generals;
 use Page\MainviewPage as MainView;
 use Page\OptionsPage as OptionsPage;
+use \Page\NewsletterEditPage as NlEditPage;
 
 /**
  * Class TestOptionsCest
@@ -118,6 +119,41 @@ class TestOptionsCest
 				$this->checkSetPermissionsSuccess($I, $rule, $rules, $group_id, $groupname);
 			}
 		}
+	}
+
+	/**
+	 * Test method to check option sender name
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionSenderName(AcceptanceTester $I)
+	{
+		$I->wantTo("Preset sender name of BwPostman");
+		$I->amOnPage(MainView::$url);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+
+		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+
+		$I->fillField(OptionsPage::$sendersName, 'max.mayr@tester-net.nil');
+		$I->click(Generals::$toolbar['Save & Close'], 1);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->click(MainView::$addNewsletterButton);
+		$I->waitForElement(NlEditPage::$from_name, 30);
+		$I->seeInField(NlEditPage::$from_name, 'max.mayr@tester-net.nil');
+		$I->click(Generals::$toolbar['Cancel']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->setManifestOption('com_bwpostman', 'default_from_name', '');
 	}
 
 	/**

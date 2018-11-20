@@ -243,7 +243,7 @@ class User2SubscriberCest
 		$this->initializeTestValues($I);
 		self::$subscription_selected    = false;
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -272,7 +272,7 @@ class User2SubscriberCest
 		$this->initializeTestValues($I);
 		self::$subscription_selected    = false;
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->switchSubscriptionYesAndNo($I);
 
@@ -304,7 +304,7 @@ class User2SubscriberCest
 		$this->show_gender       = true;
 		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -341,7 +341,7 @@ class User2SubscriberCest
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -386,7 +386,7 @@ class User2SubscriberCest
 		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("17"));
 		$this->mls_to_subscribe = array(".//*[@id='jform_ml_available_7']");
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -427,7 +427,7 @@ class User2SubscriberCest
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
 		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '0');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -468,7 +468,7 @@ class User2SubscriberCest
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -501,7 +501,7 @@ class User2SubscriberCest
 		//set other option settings
 		self::$format   = 'Text';
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -538,7 +538,7 @@ class User2SubscriberCest
 		//set other option settings
 		$I->setManifestOption('com_bwpostman', 'show_emailformat', '0');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -575,7 +575,7 @@ class User2SubscriberCest
 		$I->setManifestOption('com_bwpostman', 'show_emailformat', '0');
 		$I->setManifestOption('com_bwpostman', 'default_emailformat', '0');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -610,7 +610,7 @@ class User2SubscriberCest
 		//set other option settings
 		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("6"));
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -647,7 +647,7 @@ class User2SubscriberCest
 		//set other option settings
 		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array("4", "6"));
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -684,7 +684,7 @@ class User2SubscriberCest
 		//set other option settings
 		$I->setManifestOption('bwpm_user2subscriber', 'ml_available', array());
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$I->dontSee(RegPage::$subs_identifier_subscribe_no);
 
@@ -742,7 +742,7 @@ class User2SubscriberCest
 
 		$this->initializeTestValues($I);
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -778,7 +778,7 @@ class User2SubscriberCest
 
 		$this->initializeTestValues($I);
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -816,7 +816,7 @@ class User2SubscriberCest
 		$this->auto_update  = false;
 		$I->setManifestOption('bwpm_user2subscriber', 'auto_update_email_option', '0');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -860,7 +860,7 @@ class User2SubscriberCest
 		self::$auto_delete  = false;
 		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '0');
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I);
 
@@ -906,7 +906,7 @@ class User2SubscriberCest
 		$I->setManifestOption('bwpm_user2subscriber', 'auto_delete_option', '1');
 
 		// register anew
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->fillJoomlaPartAtRegisterForm($I, 100);
 
@@ -935,7 +935,7 @@ class User2SubscriberCest
 
 		$I->setExtensionStatus('bwpm_user2subscriber', 0);
 
-		$this->selectRegistrationPage($I);
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 		$this->dontSeePluginInputFields($I);
 
@@ -970,7 +970,7 @@ class User2SubscriberCest
 		$user = $I->haveFriend('User');
 		$user->does(
 			function (AcceptanceTester $I) {
-				$this->selectRegistrationPage($I);
+				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 				$I->see(RegPage::$plugin_message_new, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
 			}
@@ -986,7 +986,7 @@ class User2SubscriberCest
 		$user = $I->haveFriend('User3');
 		$user->does(
 			function (AcceptanceTester $I) {
-				$this->selectRegistrationPage($I);
+				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
 				$I->see(RegPage::$plugin_message_old, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
 			}
@@ -1028,7 +1028,7 @@ class User2SubscriberCest
 		$user = $I->haveFriend('User4');
 		$user->does(
 			function (AcceptanceTester $I) {
-				$this->selectRegistrationPage($I);
+				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$I->scrollTo(RegPage::$view_register_subs);
 				$this->switchSubscriptionToYes($I);
 
@@ -1049,7 +1049,7 @@ class User2SubscriberCest
 		$user = $I->haveFriend('User5');
 		$user->does(
 			function (AcceptanceTester $I) {
-				$this->selectRegistrationPage($I);
+				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$I->scrollTo(RegPage::$view_register_subs);
 				$this->switchSubscriptionToYes($I);
 
@@ -1096,7 +1096,7 @@ class User2SubscriberCest
 		$user = $I->haveFriend('User6');
 		$user->does(
 			function (AcceptanceTester $I) {
-				$this->selectRegistrationPage($I);
+				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$this->switchSubscriptionToYes($I);
 
 				// @ToDo: FF gets green, Chromium gets red (additional class button-danger)
@@ -1122,7 +1122,7 @@ class User2SubscriberCest
 		$user = $I->haveFriend('User7');
 		$user->does(
 			function (AcceptanceTester $I) {
-				$this->selectRegistrationPage($I);
+				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$this->switchSubscriptionToYes($I);
 
 				// @ToDo: FF gets green, Chromium gets red (additional class button-danger)
@@ -1305,20 +1305,6 @@ class User2SubscriberCest
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '1');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '1');
 		$I->setManifestOption('com_bwpostman', 'show_gender', '0');
-	}
-
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @throws \Exception
-	 *
-	 * @since 2.0.0
-	 */
-	protected function selectRegistrationPage(AcceptanceTester $I)
-	{
-		$I->amOnPage(RegPage::$register_url);
-		$I->waitForElementVisible(RegPage::$view_register);
-		$I->seeElement(RegPage::$view_register);
 	}
 
 	/**

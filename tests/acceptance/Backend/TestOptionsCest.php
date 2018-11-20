@@ -123,6 +123,7 @@ class TestOptionsCest
 
 	/**
 	 * Test method to check option sender name
+	 * basic settings
 	 *
 	 * @param AcceptanceTester $I
 	 *
@@ -136,25 +137,280 @@ class TestOptionsCest
 	 */
 	public function checkOptionSenderName(AcceptanceTester $I)
 	{
-		$I->wantTo("Preset sender name of BwPostman");
+		$I->wantTo("check default sender name of BwPostman from Joomla settings");
+		$I->amOnPage(MainView::$url);
+
+		$I->click(MainView::$addNewsletterButton);
+		$I->waitForElement(NlEditPage::$from_name, 30);
+		$I->seeInField(NlEditPage::$from_name, OptionsPage::$sendersNameByJoomla);
+		$I->click(Generals::$toolbar['Back']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->wantTo("Preset sender name at options of BwPostman");
+		$I->amOnPage(MainView::$url);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+
+		$I->click(Generals::$toolbar['Options']);
+		$I->waitForElement("#config", 30);
+
+		$I->fillField(OptionsPage::$sendersName, OptionsPage::$sendersNameByOption);
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->click(MainView::$addNewsletterButton);
+		$I->waitForElement(NlEditPage::$from_name, 30);
+		$I->seeInField(NlEditPage::$from_name, OptionsPage::$sendersNameByOption);
+		$I->click(Generals::$toolbar['Back']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->setManifestOption('com_bwpostman', 'default_from_name', '');
+	}
+
+	/**
+	 * Test method to check option sender email
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionSenderEmail(AcceptanceTester $I)
+	{
+		$I->wantTo("check default sender email of BwPostman from Joomla settings");
+		$I->amOnPage(MainView::$url);
+
+		$I->click(MainView::$addNewsletterButton);
+		$I->waitForElement(NlEditPage::$from_email, 30);
+		$I->seeInField(NlEditPage::$from_email, OptionsPage::$sendersMailByJoomla);
+		$I->click(Generals::$toolbar['Back']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->wantTo("Preset sender email at options of BwPostman");
+		$I->amOnPage(MainView::$url);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+
+		$I->click(Generals::$toolbar['Options']);
+		$I->waitForElement("#config", 30);
+
+		$I->fillField(OptionsPage::$sendersEmail, OptionsPage::$sendersMailByOption);
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->click(MainView::$addNewsletterButton);
+		$I->waitForElement(NlEditPage::$from_email, 30);
+		$I->seeInField(NlEditPage::$from_email, OptionsPage::$sendersMailByOption);
+		$I->click(Generals::$toolbar['Back']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->setManifestOption('com_bwpostman', 'default_from_email', '');
+	}
+
+	/**
+	 * Test method to check option reply email
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionReplyEmail(AcceptanceTester $I)
+	{
+		$I->wantTo("check default reply email of BwPostman from Joomla settings");
+		$I->amOnPage(MainView::$url);
+
+		$I->click(MainView::$addNewsletterButton);
+		$I->waitForElement(NlEditPage::$reply_email, 30);
+		$I->seeInField(NlEditPage::$reply_email, OptionsPage::$replyMailByJoomla);
+		$I->click(Generals::$toolbar['Back']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		$I->wantTo("Preset reply email at options of BwPostman");
 		$I->amOnPage(MainView::$url);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
 
-		$I->fillField(OptionsPage::$sendersName, 'max.mayr@tester-net.nil');
-		$I->click(Generals::$toolbar['Save & Close'], 1);
+		$I->fillField(OptionsPage::$replyEmail, OptionsPage::$replyMailByOption);
+		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(MainView::$dashboard, 30);
 
 		$I->click(MainView::$addNewsletterButton);
-		$I->waitForElement(NlEditPage::$from_name, 30);
-		$I->seeInField(NlEditPage::$from_name, 'max.mayr@tester-net.nil');
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->waitForElement(NlEditPage::$reply_email, 30);
+		$I->seeInField(NlEditPage::$reply_email, OptionsPage::$replyMailByOption);
+		$I->click(Generals::$toolbar['Back']);
 		$I->waitForElement(MainView::$dashboard, 30);
 
-		$I->setManifestOption('com_bwpostman', 'default_from_name', '');
+		$I->setManifestOption('com_bwpostman', 'default_reply_email', '');
 	}
+
+	/**
+	 * Test method to check option excluded categories
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionExcludedCategories(AcceptanceTester $I)
+	{
+		$I->wantTo("check option excluded categories");
+		$I->amOnPage(MainView::$url);
+
+		// @ToDo: Fill with life
+	}
+
+	/**
+	 * Test method to check option newsletters per step
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionNewslettersPerStep(AcceptanceTester $I)
+	{
+		$I->wantTo("check option newsletters per step");
+		$I->amOnPage(MainView::$url);
+
+		// @ToDo: Fill with life
+	}
+	/**
+	 * Test method to check option delay time
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionDelayTime(AcceptanceTester $I)
+	{
+		$I->wantTo("check option delay time");
+		$I->amOnPage(MainView::$url);
+
+		// @ToDo: Fill with life
+	}
+
+	/**
+	 * Test method to check option delay unit
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionDelayUnit(AcceptanceTester $I)
+	{
+		$I->wantTo("check option delay unit");
+		$I->amOnPage(MainView::$url);
+
+		// @ToDo: Fill with life
+	}
+
+	/**
+	 * Test method to check option publish newsletter at sending
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionPublishNewsletterAtSending(AcceptanceTester $I)
+	{
+		$I->wantTo("check option publish newsletter at sending");
+		$I->amOnPage(MainView::$url);
+
+		// @ToDo: Fill with life
+	}
+
+	/**
+	 * Test method to check option compress backup
+	 * basic settings
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionCompressBackup(AcceptanceTester $I)
+	{
+		$I->wantTo("check option compress backup");
+		$I->amOnPage(MainView::$url);
+
+		// @ToDo: Fill with life
+	}
+
+	/**
+	 * Test method to check option show Boldt Webservice link
+	 *
+	 * @param AcceptanceTester $I
+	 * basic settings
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.0
+	 */
+	public function checkOptionShowBoldtWebserviceLink(AcceptanceTester $I)
+	{
+		$I->wantTo("check option show Boldt Webservice link");
+		$I->amOnPage(MainView::$url);
+
+		// @ToDo: Fill with life
+	}
+
 
 	/**
 	 * Test method to logout from backend

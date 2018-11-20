@@ -80,12 +80,111 @@ class OptionsPage
 	/*
 	 * Tab basic settings
 	 */
+
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
 	public static $sendersName  = ".//*[@id='jform_default_from_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $sendersEmail  = ".//*[@id='jform_default_from_email']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $replyEmail  = ".//*[@id='jform_default_reply_email']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $legalInfo  = ".//*[@id='jform_legal_information_text']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $excludedCategories  = ".//*[@id='jform_excluded_categories_chzn']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $numberNlsToSend  = ".//*[@id='jform_default_mails_per_pageload']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $delayTime  = ".//*[@id='jform_mails_per_pageload_delay']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $delayUnitSeconds  = ".//*[@id='jform_mails_per_pageload_delay_unit']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $delayUnitMinutes  = ".//*[@id='jform_mails_per_pageload_delay_unit']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $publishNlsAtSendingNo  = ".//*[@id='jform_publish_nl_by_default']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $publishNlsAtSendingYes  = ".//*[@id='jform_publish_nl_by_default']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $compressBackupFileNo  = ".//*[@id='jform_compress_backup']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $compressBackupFileYes  = ".//*[@id='jform_compress_backup']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showBwLinkNo  = ".//*[@id='jform_show_boldt_link']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $showBwLinkYes  = ".//*[@id='jform_show_boldt_link']/label[2]";
 
 	/*
 	* Tab registration

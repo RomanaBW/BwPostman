@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        string(name: "VERSION_NUMBER", defaultValue: "2.1.1", description: "The new/next version number of the project.")
+        string(name: "VERSION_NUMBER", defaultValue: "2.2.0", description: "The new/next version number of the project.")
         string(name: "JOOMLA_VERSION", defaultValue: "3.8.13", description: "Version of Joomla to test against")
         string(name: "VAGRANT_DIR", defaultValue: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester", description: "Path to the vagrant file")
         string(name: "SMOKE_IP", defaultValue: "192.168.2.130", description: "Fix IP for smoke tester")
@@ -68,18 +68,18 @@ pipeline {
 				}
 				stage ('accept4') {
 					steps {
-//						echo 'Dummy'
+						echo 'Dummy'
 //						sleep 60
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 						}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
+					// post {
+					// 	always {
+					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					// 	}
+					// 	failure {
+					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					// 	}
+					// }
 				}
 			}
 		}

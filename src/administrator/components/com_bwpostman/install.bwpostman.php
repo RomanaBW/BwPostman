@@ -336,12 +336,7 @@ class Com_BwPostmanInstallerScript
 
 			// check all tables of BwPostman
 			// Let Ajax client redirect
-			$modal = '<script type="text/javascript">' . "\n" .
-				'	var w = 700, h = 600;' . "\n" .
-				'	if (window.outerWidth) { w = window.outerWidth * 80 / 100;}' . "\n" .
-				'	if (window.outerHeight) { h = window.outerHeight * 80 / 100;}' . "\n" .
-				'	window.open("' . JUri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&layout=updateCheckSave", "popup", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no, width="+Math.round(w)+", height="+Math.round(h)+"");' . "\n" .
-				'</script>';
+			$modal = $this->getModal();
 			$app->enqueueMessage(JText::_('Installing BwPostman ... ') . $modal);
 		}
 
@@ -1873,5 +1868,85 @@ class Com_BwPostmanInstallerScript
 		$db->setQuery($query);
 
 		$db->execute();
+	}
+
+	/**
+	 * Get the HTML-String for popup modal
+	 *
+	 * @return	string
+	 *
+	 * @since	2.2.0
+	 */
+	private function getModal()
+	{
+		$url = JUri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&tmpl=component&layout=updateCheckSave';
+
+		$html =	'
+			<div id="bwp_Modal" class="bwp_modal">
+				<div id="bwp_modal-content">
+					<div id="bwp_modal-header"><span class="bwp_close" style="display:none;">&times;</span></div>
+					<div id="bwp_wrapper"></div>
+				</div>
+			</div>
+		';
+		$css = "#bwpostman .bwp_modal{display:none;position:fixed;z-index:99999;padding-top:10px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,0.4)}#bwpostman #bwp_modal-content{position:relative;background-color:#fefefe;margin:auto;border:1px solid #888;border-radius:6px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);height:100%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;pointer-events:auto;outline:0;padding:15px}#bwpostman #bwp_modal-header{height:35px}#bwpostman #bwp_wrapper{position:relative;-ms-flex:1 1 auto;flex:1 1 auto}#bwpostman .bwp_close{color:#aaa;float:right;font-size:28px;font-weight:700;line-height:28px;-webkit-appearance:non}#bwpostman .bwp_close:hover,#bwpostman .bwp_close:focus{color:#000;text-decoration:none;cursor:pointer}";
+
+		$js = "
+			var css = '{$css}',
+				head = document.head || document.getElementsByTagName('head')[0],
+				style = document.createElement('style');
+
+			style.type = 'text/css';
+			if (style.styleSheet){
+				// This is required for IE8 and below.
+				style.styleSheet.cssText = css;
+			} else {
+				style.appendChild(document.createTextNode(css));
+			}
+			head.appendChild(style);
+
+			function setModal() {
+				// Set the modal height and width 90%
+				if (typeof window.innerWidth != 'undefined')
+				{
+					viewportwidth = window.innerWidth,
+						viewportheight = window.innerHeight
+				}
+				else if (typeof document.documentElement != 'undefined'
+					&& typeof document.documentElement.clientWidth !=
+					'undefined' && document.documentElement.clientWidth != 0)
+				{
+					viewportwidth = document.documentElement.clientWidth,
+						viewportheight = document.documentElement.clientHeight
+				}
+				else
+				{
+					viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+						viewportheight = document.getElementsByTagName('body')[0].clientHeight
+				}
+				var modalcontent = document.getElementById('bwp_modal-content');
+				modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
+				modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+
+				// Get the modal
+				var modal = document.getElementById('bwp_Modal');
+
+				// Get the Iframe-Wrapper and set Iframe
+				var wrapper = document.getElementById('bwp_wrapper');
+				var html = '<iframe id=\"iFrame\" name=\"iFrame\" src=\"{$url}\" frameborder=\"0\" style=\"width:100%; height:100%;\"></iframe>';
+
+				// Open the modal
+					wrapper.innerHTML = html;
+					modal.style.display = 'block';
+
+			}
+			setModal();
+
+		";
+
+		$modal = <<<EOS
+		<div id="bwpostman">{$html}</div><script>{$js}</script>
+EOS;
+		return $modal;
 	}
 }

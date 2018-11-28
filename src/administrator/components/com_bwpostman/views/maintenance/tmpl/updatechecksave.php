@@ -151,6 +151,18 @@ function processUpdateStep(data)
 			jQuery('div#loading2').css({display:'none'});
 			jQuery('div#result').html(data.result);
 			jQuery('div#toolbar').find('button').removeAttr('disabled');
+			// Get the modal
+			var modal = window.parent.document.getElementById('bwp_Modal');
+			var btnclose = window.parent.document.getElementsByClassName('bwp_close')[0];
+			btnclose.style.display = 'block';
+			btnclose.onclick = function() {
+				modal.style.display = 'none';
+			}
+			window.parent.onclick = function(event) {
+				if (event.target == modal) {
+					modal.style.display = 'none';
+				}
+			}
 		}
 	});
 }

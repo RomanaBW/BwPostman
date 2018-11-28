@@ -81,7 +81,7 @@ class JFormFieldBwpSpacer extends JFormField
 	 */
 	protected function getLabel()
 	{
-		return ' ';
+		return ' <label class="spacer-lbl" style="display:none;"></label> ';
 	}
 
 	/**

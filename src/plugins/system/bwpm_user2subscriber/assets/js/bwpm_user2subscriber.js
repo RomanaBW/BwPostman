@@ -74,13 +74,15 @@ jQuery(document).ready(function()
 			'#jform_bwpm_user2subscriber_name_required',
 			'#jform_bwpm_user2subscriber_firstname_required',
 			'#jform_bwpm_user2subscriber_additional_required',
-			'#jform_bwpm_user2subscriber_mailinglists_required'
+			'#jform_bwpm_user2subscriber_mailinglists_required',
+			'#jform_bwpm_user2subscriber_bwpdisclaimer_required'
 		];
 		var field_identifier    = [
 			'#jform_bwpm_user2subscriber_name',
 			'#jform_bwpm_user2subscriber_firstname',
 			'#jform_bwpm_user2subscriber_special',
-			'#jform_bwpm_user2subscriber_mailinglists'
+			'#jform_bwpm_user2subscriber_mailinglists',
+			'#jform_bwpm_user2subscriber_bwpdisclaimer'
 		];
 		var len = field_required.length;
 
@@ -106,13 +108,15 @@ jQuery(document).ready(function()
 			'#jform_bwpm_user2subscriber_name_required',
 			'#jform_bwpm_user2subscriber_firstname_required',
 			'#jform_bwpm_user2subscriber_additional_required',
-			'#jform_bwpm_user2subscriber_mailinglists_required'
+			'#jform_bwpm_user2subscriber_mailinglists_required',
+			'#jform_bwpm_user2subscriber_bwpdisclaimer_required'
 		];
 		var field_identifier    = [
 			'#jform_bwpm_user2subscriber_name',
 			'#jform_bwpm_user2subscriber_firstname',
 			'#jform_bwpm_user2subscriber_special',
-			'#jform_bwpm_user2subscriber_mailinglists'
+			'#jform_bwpm_user2subscriber_mailinglists',
+			'#jform_bwpm_user2subscriber_bwpdisclaimer'
 		];
 		var len = field_required.length;
 

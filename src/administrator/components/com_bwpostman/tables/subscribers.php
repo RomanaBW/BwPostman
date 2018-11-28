@@ -390,16 +390,16 @@ class BwPostmanTableSubscribers extends JTable
 		$import	= $app->getUserState('com_bwpostman.subscriber.import', false);
 		$xtest	= $app->getUserState('com_bwpostman.subscriber.new_test', $this->status);
 		$data	= $app->getUserState('com_bwpostman.subscriber.register.data', array());
-		if ($app->isSite() && isset($data['module_title']))
+
+		if ($app->isSite() && !empty($data['mod_id']))
 		{
-			if ($data['module_title'] != '')
+			// if data from module, we need module params
+			// we can't use JoomlaModuleHelper, because module isn't shown on frontend
+			$params = BwPostmanSubscriberHelper::getModParams($data['mod_id']);
+			$module_params  = new JRegistry($params->params);
+			if ($module_params->get('com_params') == 0)
 			{
-				$module = JModuleHelper::getModule('mod_bwpostman', $data['module_title']);
-				$module_params  = new JRegistry($module->params);
-				if ($module_params->get('com_params') == 0)
-				{
-					$params = $module_params;
-				}
+				$params = $module_params;
 			}
 		}
 
@@ -433,7 +433,7 @@ class BwPostmanTableSubscribers extends JTable
 		if (!$import)
 		{
 			// Check for valid first name
-			if (($params->get('show_firstname_field')) && ($params->get('firstname_field_obligation')))
+			if ($params->get('firstname_field_obligation'))
 			{
 				if (trim($this->firstname) == '')
 				{
@@ -443,7 +443,7 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Check for valid name
-			if (($params->get('show_name_field')) && ($params->get('name_field_obligation')))
+			if ($params->get('name_field_obligation'))
 			{
 				if (trim($this->name) == '')
 				{
@@ -453,11 +453,11 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Check for valid additional field
-			if (($params->get('show_special')) && ($params->get('special_field_obligation')))
+			if ($params->get('special_field_obligation'))
 			{
 				if (trim($this->special) == '')
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($params->get('special_label'))), 'error');
+					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $params->get('special_label') != '' ? JText::_($params->get('special_label')) : JText::_('COM_BWPOSTMAN_SPECIAL')), 'error');
 					$fault	= true;
 				}
 			}
@@ -488,7 +488,7 @@ class BwPostmanTableSubscribers extends JTable
 			// agreecheck
 			if ($params->get('disclaimer') == 1)
 			{
-				if(!isset($data['agreecheck']))
+				if(!isset($data['agreecheck']) || (isset($data['mod_id']) && $fault))
 				{
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_AGREECHECK'), 'error');
 					$fault	= true;
@@ -518,7 +518,7 @@ class BwPostmanTableSubscribers extends JTable
 			if ($params->get('use_captcha') == 1)
 			{
 				// start check
-				if(trim($data['stringQuestion']) != trim($params->get('security_answer')))
+				if(trim($data['stringQuestion']) != trim($params->get('security_answer')) || (isset($data['mod_id']) && $fault))
 				{
 					// input wrong - set error
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
@@ -535,7 +535,7 @@ class BwPostmanTableSubscribers extends JTable
 				$delFile = 10;
 				// start check
 				$resultCaptcha = BwPostmanHelper::CheckCaptcha($data['codeCaptcha'], $data['stringCaptcha'], $captchaDir, $delFile);
-				if(!$resultCaptcha)
+				if(!$resultCaptcha || (isset($data['mod_id']) && $fault))
 				{
 					// input wrong - set error
 					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
@@ -635,7 +635,8 @@ class BwPostmanTableSubscribers extends JTable
 								$this->email,
 								$format_txt[$this->emailformat],
 								$testrecipient->id
-							)
+							),
+							'error'
 						);
 						$session->set('session_error', $err);
 						return false;
@@ -668,7 +669,8 @@ class BwPostmanTableSubscribers extends JTable
 								$this->email,
 								$format_txt[$this->emailformat],
 								$testrecipient->id
-							)
+							),
+							'error'
 						);
 						$session->set('session_error', $err);
 						return false;
@@ -709,7 +711,7 @@ class BwPostmanTableSubscribers extends JTable
 					$err['err_id']		= $xid;
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid));
+					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 					return false;
 				}
@@ -723,7 +725,7 @@ class BwPostmanTableSubscribers extends JTable
 					$err['err_email']	= $this->email;
 
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid));
+					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 
 					return false;
@@ -746,7 +748,8 @@ class BwPostmanTableSubscribers extends JTable
 							'COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS',
 							$this->email,
 							JRoute::_('index.php?option=com_bwpostman&view=edit')
-						)
+						),
+						'error'
 					);
 					$session->set('session_error', $err);
 					return false;

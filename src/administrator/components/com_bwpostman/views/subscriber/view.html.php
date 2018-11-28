@@ -219,12 +219,12 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				}
 
 				// Get show fields
-				if (!$params->get('show_name_field'))
+				if (!$params->get('show_name_field') && !$params->get('name_field_obligation'))
 				{
 					$this->form->setFieldAttribute('name', 'type', 'hidden');
 				}
 
-				if (!$params->get('show_firstname_field'))
+				if (!$params->get('show_firstname_field') && !$params->get('firstname_field_obligation'))
 				{
 					$this->form->setFieldAttribute('firstname', 'type', 'hidden');
 				}
@@ -234,7 +234,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 					$this->form->setFieldAttribute('gender', 'type', 'hidden');
 				}
 
-				if (!$params->get('show_special'))
+				if (!$params->get('show_special') && !$params->get('special_field_obligation'))
 				{
 					$this->form->setFieldAttribute('special', 'type', 'hidden');
 				}
@@ -265,7 +265,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 				if ($params->get('special_field_obligation'))
 				{
-					$this->form->setFieldAttribute('special', 'required', true);
+					$this->form->setFieldAttribute('special', 'required', 'true');
 				}
 
 				// Set label and description/tooltip for additional field

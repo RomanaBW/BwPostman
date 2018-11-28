@@ -74,7 +74,7 @@ JHtml::_('behavior.formvalidator');
 				{
 					if (form.special.value == "")
 					{
-						alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($this->params->get('special_label'))); ?>");
+						alert('<?php echo JText::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", JText::_($this->params->get("special_label"))); ?>');
 						fault = true;
 					}
 				}

@@ -38,7 +38,7 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="MOD_BWPOSTMAN_ML_AVAILABLE" addfieldpath="/modules/mod_bwpostman/elements">
+			<fieldset name="ml_available" label="MOD_BWPOSTMAN_ML_AVAILABLE_FIELDSET_LABEL" addfieldpath="/modules/mod_bwpostman/elements">
 				<field type="asset" />
 				<field name="spacer0_1" type="spacer" label="MOD_BWPOSTMAN_NO_ML_CHECKED_LABEL" />
 				<field name="mod_ml_available" type="modml" label="MOD_BWPOSTMAN_ML_AVAILABLE_LABEL" labelclass="control-label" description="MOD_BWPOSTMAN_ML_AVAILABLE_DESC" multiple="true" size="5" default="" class="inputbox mailinglists" />
@@ -50,7 +50,7 @@
 				<field name="desc_length" type="text" default="50" label="MOD_BWPOSTMAN_DESC_LENGTH" description="MOD_BWPOSTMAN_DESC_LENGTH_NOTE" />
 			</fieldset>
 
-			<fieldset name="MOD_BWPOSTMAN_REG_SETTINGS" addfieldpath="/administrator/components/com_content/models/fields">
+			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_content/models/fields">
 				<field name="spacer1_1" type="spacer" label="MOD_BWPOSTMAN_REG_SETTINGS_LABEL" />
 				<field name="com_params" type="radio" class="btn-group btn-group-yesno" default="1" label="MOD_BWPOSTMAN_USE_COM_PARAMS" description="MOD_BWPOSTMAN_USE_COM_PARAMS_NOTE">
 					<option value="0" onclick="display_yes_no();">JNO</option>
@@ -58,24 +58,7 @@
 				</field>
 				<field name="spacer1_2" type="spacer" class="mod_set" hr="true" />
 				<field name="pretext" type="textarea" class="mod_set" labelclass="mod_set" cols="50" rows="10" default="" label="MOD_BWPOSTMAN_PRETEXT" description="MOD_BWPOSTMAN_PRETEXT_NOTE" />
-				<field name="spacer2_1" type="spacer" class="mod_set" hr="true" />
-				<field name="show_name_field" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_NAME_FIELD" description="MOD_BWPOSTMAN_SHOW_NAME_FIELD_NOTE">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="name_field_obligation" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION" description="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION_NOTE">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="spacer2_2" type="spacer" class="mod_set" hr="true" />
-				<field name="show_firstname_field" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD" description="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD_NOTE">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="firstname_field_obligation" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION" description="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION_NOTE">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
+				<field name="spacer1_3" type="spacer" class="mod_set" hr="true" />
 				<field name="show_gender"
 				       type="radio"
 				       class="btn-group btn-group-yesno mod_set"
@@ -87,12 +70,29 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
-				<field name="spacer2_3" type="spacer" hr="true" />
+				<field name="spacer1_4" type="spacer" class="mod_set" hr="true" />
+				<field name="show_firstname_field" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD" description="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD_NOTE">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="firstname_field_obligation" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION" description="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION_NOTE">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="spacer1_5" type="spacer" class="mod_set" hr="true" />
+				<field name="show_name_field" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_NAME_FIELD" description="MOD_BWPOSTMAN_SHOW_NAME_FIELD_NOTE">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="name_field_obligation" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION" description="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION_NOTE">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="spacer1_6" type="spacer" class="mod_set" hr="true" />
 
 				<field name="show_special"
 				       type="radio"
-				       class="btn-group btn-group-yesno mod_set"
+				       class="btn-group btn-group-yesno mod_set bwpcheck"
 				       labelclass="mod_set"
 				       default="0"
 				       label="MOD_BWPOSTMAN_SHOW_SPECIAL"
@@ -104,7 +104,7 @@
 
 				<field name="special_field_obligation"
 				       type="radio"
-				       class="btn-group btn-group-yesno mod_set"
+				       class="btn-group btn-group-yesno mod_set bwpcheck"
 				       labelclass="mod_set"
 				       default="0"
 				       label="MOD_BWPOSTMAN_SPECIAL_FIELD_OBLIGATION"
@@ -124,9 +124,8 @@
 				       description="MOD_BWPOSTMAN_SPECIAL_FIELD_LABEL_NOTE"
 				/>
 
-				<field name="spacer2_3" type="spacer" hr="true" />
+				<field name="spacer1_7" type="spacer" class="mod_set" hr="true" />
 
-				<field name="spacer2_3" type="spacer" class="mod_set" hr="true" />
 				<field name="show_emailformat" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_EMAILFORMAT" description="MOD_BWPOSTMAN_SHOW_EMAILFORMAT_NOTE">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -135,12 +134,12 @@
 					<option value="0">Text</option>
 					<option value="1">HTML</option>
 				</field>
-				<field name="spacer2_4" type="spacer" class="mod_set" hr="true" />
+				<field name="spacer1_8" type="spacer" class="mod_set" hr="true" />
 				<field name="disclaimer" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="0" label="MOD_BWPOSTMAN_ENABLE_DISCLAIMER" description="MOD_BWPOSTMAN_ENABLE_DISCLAIMER_NOTE">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="spacer2_5" type="spacer" class="mod_set" label="MOD_BWPOSTMAN_DISCLAIMER_LABEL" />
+				<field name="spacer1_9" type="spacer" class="mod_set" label="MOD_BWPOSTMAN_DISCLAIMER_LABEL" />
 				<field name="disclaimer_selection" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="0" label="MOD_BWPOSTMAN_DISCLAIMER_SELECTION" description="MOD_BWPOSTMAN_DISCLAIMER_SELECTION_NOTE">
 					<option value="0">MOD_BWPOSTMAN_DISCLAIMER_URL</option>
 					<option value="1">MOD_BWPOSTMAN_DISCLAIMER_ARTICLE</option>
@@ -155,11 +154,11 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="showinmodal" type="radio" class="btn-group btn-group-yesno" default="1" label="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL" description="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL_NOTE">
+				<field name="showinmodal" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL" description="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL_NOTE">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="spacer2_6" type="spacer" class="mod_set" hr="true" />
+				<field name="spacer1_10" type="spacer" class="mod_set" hr="true" />
 				<field name="use_captcha" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="0" label="MOD_BWPOSTMAN_ENABLE_SECURITY" description="MOD_BWPOSTMAN_ENABLE_SECURITY_NOTE">
 					<option value="0">JNO</option>
 					<option value="1">MOD_BWPOSTMAN_QUESTION</option>

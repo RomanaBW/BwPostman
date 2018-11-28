@@ -160,6 +160,14 @@
 	text-decoration: none;
 	cursor: pointer;
 }
+
+#bwpostman p.input-append {
+	display: block;
+}
+#bwpostman p.edit_gender div {
+	display: inline-block;
+}
+
 /*----------------------------------------------------------
 		Tooltip
 ----------------------------------------------------------*/
@@ -294,16 +302,27 @@
 	display:			inline-block;
 }
 
+#bwpostman #bwp_search .filter_cams {
+	display:			inline-block;
+}
+
+#bwpostman #bwp_search .filter_groups {
+	display:			inline-block;
+}
+
 #bwpostman #bwp_search .filter_month {
 	display:			inline-block;
+	margin-bottom:      5px;
 }
 
 #bwpostman #bwp_search .filter_year {
 	display:			inline-block;
+	margin-bottom:      5px;
 }
 
 #bwpostman #bwp_search .filter_list {
 	display:			inline-block;
+	margin-bottom:      5px;
 }
 
 #bwpostman #bwp_search button.go {

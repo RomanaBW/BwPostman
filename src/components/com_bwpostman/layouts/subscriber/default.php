@@ -56,10 +56,10 @@ $lists      = $displayData['lists'];
 	<?php // Show formfield gender only if enabled in basic parameters
 	if ($params->get('show_gender') == 1)
 	{ ?>
-		<div class="edit_gender">
+		<p class="edit_gender">
 			<label id="gendermsg"> <?php echo JText::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
 			<?php echo $lists['gender']; ?>
-		</div> <?php
+		</p> <?php
 	} // End gender ?>
 
 	<?php // Show first name-field only if set in basic parameters
@@ -86,10 +86,6 @@ $lists      = $displayData['lists'];
 						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 						{
 							echo "invalid";
-						}
-						else
-						{
-							echo "inputbox required";
 						} ?>"
 						maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span>
 			<?php
@@ -139,10 +135,6 @@ $lists      = $displayData['lists'];
 						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 						{
 							echo "invalid";
-						}
-						else
-						{
-							echo "inputbox required";
 						} ?>"
 						maxlength="50" />  <span class="append-area"><i class="icon-star"></i></span> <?php
 			}
@@ -180,13 +172,13 @@ $lists      = $displayData['lists'];
 		} ?>
 
 		<p class="edit_special input<?php echo ($params->get('special_field_obligation')) ? '-append' : '' ?>">
-			<label id="specialmsg hasTooltip" title="<?php echo JHtml::tooltipText($tip); ?>" for="special"
+			<label id="specialmsg" class="hasTooltip" title="<?php echo JHtml::tooltipText($tip); ?>" for="special"
 				<?php
 				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 				{
-					echo "class=\"invalid\"";
-				} ?>>
-				<?php
+					echo " class=\"invalid\"";
+				}
+				echo ">";
 				if ($params->get('special_label') != '')
 				{
 					echo JText::_($params->get('special_label'));
@@ -250,7 +242,7 @@ $lists      = $displayData['lists'];
 			}
 			else
 			{
-				echo "inputbox required validate-email";
+				echo "inputbox validate-email";
 			} ?>"
 			maxlength="100" />  <span class="append-area"><i class="icon-star"></i></span>
 	</p>
@@ -296,7 +288,14 @@ $lists      = $displayData['lists'];
 					<?php
 					if ($params->get('show_desc') == 1)
 					{ ?>
-						<p class="mailinglist-description-single"><?php
+						<p class="mail_available">
+							<?php echo JText::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
+						</p>
+						<p class="mailinglist-description-single">
+							<span class="mail_available_list_title">
+								<?php echo $lists['available_mailinglists'][0]->title . ": "; ?>
+							</span>
+							<?php
 							echo substr(JText::_($lists['available_mailinglists'][0]->description), 0, $descLength);
 
 							if (strlen(JText::_($lists['available_mailinglists'][0]->description)) > $descLength)
@@ -327,8 +326,11 @@ $lists      = $displayData['lists'];
 								echo "checked=\"checked\"";
 							} ?> />
 							<span class="mail_available_list_title">
-								<?php echo "$item->title: "; ?>
+								<?php echo $params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
 							</span>
+							<?php
+							if ($params->get('show_desc') == 1)
+							{ ?>
 							<span>
 								<?php
 								echo substr(JText::_($item->description), 0, $descLength);
@@ -338,6 +340,8 @@ $lists      = $displayData['lists'];
 									echo JHTML::tooltip(JText::_($item->description), $item->title, 'tooltip.png', '', '');
 								} ?>
 							</span>
+							<?php
+							} ?>
 						</p>
 						<?php
 					} ?>

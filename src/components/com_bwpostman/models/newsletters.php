@@ -762,7 +762,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$mls	= array_intersect($mls, $acc_mls);
 		}
 
-		if ($title === true && count($mls))
+		if ($title === true)
 		{
 			$query	= $_db->getQuery(true);
 			$query->select('id');
@@ -851,7 +851,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		// if no cam is left, make array
-		if (is_array($cams) && count($cams) == 0)
+		if (count($cams) == 0)
 		{
 			$cams[]	= 0;
 		}
@@ -923,7 +923,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		// if no cam is left, make array to return
-		if (is_array($cams) && count($cams) == 0)
+		if (count($cams) == 0)
 		{
 			$cams[]	= 0;
 		}
@@ -1059,7 +1059,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$sel_groups	= array_intersect($a_groups, $c_groups);
 		}
 
-		if (is_array($sel_groups) && count($sel_groups) == 0)
+		if (count($sel_groups) == 0)
 		{
 			$sel_groups[]	= 0;
 		}

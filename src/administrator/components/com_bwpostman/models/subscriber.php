@@ -360,18 +360,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		}
 
-		// Check for required name
-		if (!$form->getValue('name_field_obligation'))
-		{
-			$form->setFieldAttribute('name', 'required', false);
-		}
-
-		// Check for required first name
-		if ($form->getValue('firstname_field_obligation'))
-		{
-			$form->setFieldAttribute('firstname', 'required', true);
-		}
-
 		// Check to show confirmation data or checkbox
 		$c_date	= strtotime($form->getValue('confirmation_date'));
 		if (empty($c_date))

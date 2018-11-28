@@ -134,14 +134,14 @@ class BwPostmanControllerRegister extends JControllerLegacy
 				'falle' => 'string',
 				'language' => 'string',
 				'mailinglists' => 'array',
-				'module_title' => 'string',
 				'registration_ip' => 'string',
 				'stringQuestion' => 'string',
 				'stringCaptcha' => 'string',
 				'codeCaptcha' => 'string',
 				'bwp-' . BwPostmanHelper::getCaptcha(1) => 'string',
 				'bwp-' . BwPostmanHelper::getCaptcha(2) => 'string',
-				'task' => 'string'
+				'task' => 'string',
+				'mod_id' => 'string'
 			)
 		);
 
@@ -226,8 +226,10 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		{
 			// process failed save
 			$subscriber_data = array(
+				'gender' => $post['gender'],
 				'name' => $post['name'],
 				'firstname' => $post['firstname'],
+				'special' => $post['special'],
 				'email' => $post['email'],
 				'emailformat' => $post['emailformat'],
 				'mailinglists' => $post['mailinglists']
@@ -240,11 +242,6 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			{
 				$err	= ArrayHelper::toObject($err);
 				BwPostmanSubscriberHelper::errorSubscriberData($err, $post['user_id'], $post['email']);
-			}
-			else
-			{
-				$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
-				$this->setRedirect($link);
 			}
 		}
 		else

@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// needed to validate email
+JHtml::_('behavior.formvalidator');
+
 // Displays a button to send the activation code
 // Will be shown if
 // 1. the editlink in the uri is correct but the account is not activated

@@ -57,7 +57,7 @@
 	font-size:				14px;
 	height:					auto;
 	line-height:			18px;
-	margin-bottom:			10px;
+	margin-bottom:			0;
 	padding:				4px 6px;
 	vertical-align:			middle;
 	position:				relative;
@@ -104,7 +104,6 @@
 	display:				inline-block;
 	*display:				inline;
 	padding:				4px 12px;
-	margin-bottom:			10px;
 	margin-left:			-1px;
 	font-size:				14px;
 	line-height:			18px;
@@ -165,6 +164,13 @@
 	width:				13px;
 	height:				13px;
 	padding:			0;
+}
+
+#mod_bwpostman input.inputbox {
+	padding:			4px 6px;
+	height:				auto;
+	line-height:		18px;
+	margin-bottom:		0;
 }
 
 #mod_bwpostman .bwp_mod_modal {
@@ -334,7 +340,7 @@ div#bwp_mod_form_emailformatfield div.controls label input.inputbox {
 /*------------- Available mailing lists-------------------*/
 p#bwp_mod_form_lists {
 	font-weight:		bold;
-	margin-top:			25px;
+	margin-top:			15px;
 }
 
 div#bwp_mod_form_listsfield {

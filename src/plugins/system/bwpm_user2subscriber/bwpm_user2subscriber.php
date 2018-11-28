@@ -369,6 +369,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$disclaimer_script .=	'	});' . "\n";
 
 			$doc->addScriptDeclaration($disclaimer_script);
+			$this->form->setValue('bwpdisclaimer_required', 'bwpm_user2subscriber', 1);
 		}
 		else
 		{
@@ -441,12 +442,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('name_field_obligation') && $com_params->get('show_name_field'))
+		if ($com_params->get('name_field_obligation'))
 		{
 			$this->form->setValue('name_required', 'bwpm_user2subscriber', 1);
 		}
 
-		if (!$com_params->get('show_name_field'))
+		if (!$com_params->get('show_name_field') && !$com_params->get('name_field_obligation'))
 		{
 			$this->form->removeField('name', 'bwpm_user2subscriber');
 		}
@@ -461,12 +462,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('firstname_field_obligation') && $com_params->get('show_firstname_field'))
+		if ($com_params->get('firstname_field_obligation'))
 		{
 			$this->form->setValue('firstname_required', 'bwpm_user2subscriber', 1);
 		}
 
-		if (!$com_params->get('show_firstname_field'))
+		if (!$com_params->get('show_firstname_field') && !$com_params->get('firstname_field_obligation'))
 		{
 			$this->form->removeField('firstname', 'bwpm_user2subscriber');
 		}
@@ -481,12 +482,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = JComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('special_field_obligation') && $com_params->get('show_special'))
+		if ($com_params->get('special_field_obligation'))
 		{
 			$this->form->setValue('additional_required', 'bwpm_user2subscriber', 1);
 		}
 
-		if (!$com_params->get('show_special'))
+		if (!$com_params->get('show_special') && !$com_params->get('special_field_obligation'))
 		{
 			$this->form->removeField('special', 'bwpm_user2subscriber');
 		}

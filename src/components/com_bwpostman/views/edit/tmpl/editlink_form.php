@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// needed to validate email
+JHtml::_('behavior.formvalidator');
+
 // Form to order the editlink
 // --> the editlink is needed to modify the subscriber account if the subscriber is not logged into the website
 // --> the editlink will be send with email

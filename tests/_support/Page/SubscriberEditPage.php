@@ -207,6 +207,34 @@ class SubscriberEditPage
 	 */
 	public static $field_title          = "sam.sample@test.nil";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $lastNameTitle          = "Last name ";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $firstNameTitle          = "First name ";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $emailTitle          = "Email ";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $specialTitle          = "Mitgliedsnummer ";
+
 
 	/**
 	 * @var array

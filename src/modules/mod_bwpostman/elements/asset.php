@@ -53,12 +53,16 @@ class JFormFieldAsset extends JFormField
 	 */
 	protected function getInput()
 	{
-		$doc = JFactory::getDocument();
-		$doc->addScriptDeclaration(
-			'window.onload=display_yes_no;
+		JHtml::_('jquery.framework');
+
+		$text = JText::_('MOD_BWPOSTMAN_FIELD_OBLIGATION');
+
+		$doc 		= JFactory::getDocument();
+		$js = "
+			window.onload=display_yes_no;
 			function display_yes_no()
 			{
-				var radios = document.getElementsByName("jform[params][com_params]");
+				var radios = document.getElementsByName('jform[params][com_params]');
 				for (var i = 0, length = radios.length; i < length; i++) 
 				{
 					if (radios[i].checked) 
@@ -69,31 +73,74 @@ class JFormFieldAsset extends JFormField
 				}
 				if (value == 1) 
 				{
-					css_Style = "none";
+					css_Style = 'none';
 				} 
 				else 
 				{
-					css_Style = "block";
+					css_Style = 'block';
 				}
-				document.getElementById("jform_params_disclaimer_menuitem").style.display=css_Style;
-				document.getElementById("jform_params_article_id_name").parentNode.parentNode.style.display=css_Style;
-				var mod_set = document.getElementsByClassName("mod_set");
+				document.getElementById('jform_params_disclaimer_menuitem').style.display=css_Style;
+				document.getElementById('jform_params_article_id_name').parentNode.parentNode.style.display=css_Style;
+				var mod_set = document.getElementsByClassName('mod_set');
 				var length1 = mod_set.length;
 				for (var i = 0; i < length1; i++) 
 				{
 					mod_set[i].style.display=css_Style;
 				}
-				if (document.getElementById("jform_params_disclaimer_menuitem_chzn")) 
+				if (document.getElementById('jform_params_disclaimer_menuitem_chzn'))
 				{
-					document.getElementById("jform_params_disclaimer_menuitem_chzn").style.display=css_Style;
+					document.getElementById('jform_params_disclaimer_menuitem_chzn').style.display=css_Style;
 				}
 				else 
 				{
-					document.getElementById("jform_params_disclaimer_menuitem").style.display=css_Style;
-					document.getElementById("jform_params_disclaimer_menuitem_chzn").style.display=css_Style;
+					document.getElementById('jform_params_disclaimer_menuitem').style.display=css_Style;
+					document.getElementById('jform_params_disclaimer_menuitem_chzn').style.display=css_Style;
 				}
-			}'
-		);
+			}
+			jQuery(document).ready(function()
+			{
+				// monitors obligation fields
+				jQuery('#attrib-reg_settings').on('change', '.bwpcheck :radio', function(){
+					var ind = jQuery(this).index('.bwpcheck :radio');
+					var a = Math.floor(ind/4);
+					bwpcheck(a);
+				});
+
+				// Displays a tip
+				function bwpcheck(a){
+					var click_fields    = [
+						'show_firstname_field',
+						'show_name_field',
+						'show_special'
+					];
+					var check_fields    = [
+						'firstname_field_obligation',
+						'name_field_obligation',
+						'special_field_obligation'
+					];
+					var value1 = jQuery('input[name=\"jform[params]['+click_fields[a]+']\"]:checked').val();
+					var value2 = jQuery('input[name=\"jform[params]['+check_fields[a]+']\"]:checked').val();
+					var text = '$text';
+
+					if (value1 == 0 && value2 == 1)
+					{
+						jQuery('#jform_params_'+click_fields[a]).after(text);
+						jQuery('#jform_params_'+click_fields[a]).next('.obligation').slideDown(800);
+					}
+					else
+					{
+						jQuery('#jform_params_'+click_fields[a]).next('.obligation').slideUp(800);
+					}
+				}
+
+				// check obligation fields after page rendering
+				for (a = 0; a < 3; a++)
+      			{
+					bwpcheck(a);
+      			}
+			});
+		";
+		$doc->addScriptDeclaration($js);
 
 		return null;
 	}

@@ -99,8 +99,7 @@ defined('_JEXEC') or die('Restricted access');
 		</p>
 
 	<div class="nl_text">
-		<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=nl_preview&amp;format=raw&amp;
-		id=<?php echo $this->newsletter->id; ?>" height="800" style="width:100%; border: 1px solid #c2c2c2;"></iframe>
+		<iframe id="myIframe" name="myIframeHtml" src="index.php?option=com_bwpostman&amp;view=newsletter&amp;layout=nl_preview&amp;format=raw&amp;id=<?php echo $this->newsletter->id; ?>" height="800" style="width:100%; border: 1px solid #c2c2c2;"></iframe>
 	</div>
 	<?php
 	} ?>

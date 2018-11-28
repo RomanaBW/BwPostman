@@ -83,7 +83,7 @@ function checkModRegisterForm()
 	{
 		if ((!document.getElementById("a_special").value) && (document.getElementById("special_field_obligation_mod").value === '1'))
 		{
-			errStr += "<?php echo JText::sprintf('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($paramsComponent->get('special_label'))); ?>\n";
+			errStr += "<?php echo JText::sprintf('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($paramsComponent->get('special_label') != '' ? JText::_($paramsComponent->get('special_label')) : JText::_('MOD_BWPOSTMAN_SPECIAL'))); ?>\n";
 		}
 	}
 
@@ -170,7 +170,7 @@ function checkModRegisterForm()
 		<div class="alert alert-warning">
 			<h4 class="alert-heading"><?php echo JText::_('WARNING'); ?></h4>
 			<div>
-				<p><?php echo JText::_('MOD_BWPOSTMAN_JAVAWARNING'); ?></p>
+				<p><?php echo JText::_('MOD_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -241,7 +241,7 @@ function checkModRegisterForm()
 			<?php
 		}
 
-		if ($paramsComponent->get('show_name_field'))
+		if ($paramsComponent->get('show_name_field') OR $paramsComponent->get('name_field_obligation'))
 		{
 			// Show name-field only if set in basic parameters
 			?>
@@ -271,7 +271,7 @@ function checkModRegisterForm()
 					? $required = '<span class="append-area"><i class="icon-star"></i></span>'
 					: $required = ''; ?>
 				<input type="text" name="a_special" id="a_special"
-						placeholder="<?php echo addslashes(JText::_($paramsComponent->get('special_label'))); ?>"
+						placeholder="<?php echo addslashes(JText::_($paramsComponent->get('special_label') != '' ? JText::_($paramsComponent->get('special_label')) : JText::_('MOD_BWPOSTMAN_SPECIAL'))); ?>"
 						value="<?php echo $sub_special; ?>" class="inputbox input-small" maxlength="50" />
 				<?php echo $required; ?>
 			</p>
@@ -447,8 +447,7 @@ function checkModRegisterForm()
 			<div class="captcha">
 				<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 				<p class="security_question_lbl">
-					<img src="<?php echo JUri::base(); ?>index.php?option=com_bwpostman&view=register&amp;
-							task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
+					<img src="<?php echo JUri::base(); ?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 				</p>
 				<p class="captcha input-append">
 					<input type="text" name="stringCaptcha" id="a_stringCaptcha"
@@ -476,7 +475,6 @@ function checkModRegisterForm()
 		<?php // TODO: Has subscriber->id to be here or may this remain empty? ?>
 		<!-- <input type="hidden" name="id" value="<?php echo isset($subscriber->id); ?>" /> -->
 		<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
-		<input type="hidden" name="module_title" value="<?php echo $module_title; ?>" />
 		<input type="hidden" name="name_field_obligation_mod" id="name_field_obligation_mod"
 				value="<?php echo $paramsComponent->get('name_field_obligation'); ?>" />
 		<input type="hidden" name="firstname_field_obligation_mod" id="firstname_field_obligation_mod"
@@ -488,6 +486,7 @@ function checkModRegisterForm()
 		<input type="hidden" name="show_firstname_field_mod" id="show_firstname_field_mod"
 				value="<?php echo $paramsComponent->get('show_firstname_field'); ?>" />
 		<input type="hidden" name="show_special_mod" id="show_special_mod" value="<?php echo $paramsComponent->get('show_special'); ?>" />
+		<input type="hidden" name="mod_id" id="mod_id" value="<?php echo $module_id; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
 

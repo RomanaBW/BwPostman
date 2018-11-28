@@ -76,14 +76,14 @@ else
 	{
 		// Module params
 		$paramsComponent = $params;
-		$module_title   = $module->title;
+		$module_id   = $module->id;
 	}
 	else
 	{
 		// Get the parameters of the component
 		// --> we need these parameters because we have to ensure that both the component and the module will work with the same settings
 		$paramsComponent = $app->getPageParameters('com_bwpostman');
-		$module_title   = '';
+		$module_id   = '';
 	}
 
 	if ($subscriberid)

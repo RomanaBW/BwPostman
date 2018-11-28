@@ -81,6 +81,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<div class="js-stools-field-filter filter_month"><?php echo $this->form->monthField; ?></div>
 							<div class="js-stools-field-filter filter_year"><?php echo $this->form->yearField; ?></div>
 						<?php endif; ?>
+						<div class="js-stools-field-filter filter_list"><?php echo $this->form->limitField; ?></div><br />
 						<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2) : ?>
 							<div class="js-stools-field-filter filter_mls">
 								<?php echo JHtml::_(
@@ -123,7 +124,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								); ?>
 							</div>
 						<?php endif; ?>
-						<div class="js-stools-field-filter filter_list"><?php echo $this->form->limitField; ?></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>

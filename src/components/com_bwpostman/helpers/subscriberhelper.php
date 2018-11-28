@@ -503,7 +503,7 @@ class BwPostmanSubscriberHelper
 			$gender .= ' selected="selected"';
 		}
 
-		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_NO_GENDER') . '</span></option>';
+		$gender .= '>' . JText::_('COM_BWPOSTMAN_NO_GENDER') . '</option>';
 
 		$gender .= '<option value="0"';
 		if ($gender_selected == '0')
@@ -511,7 +511,7 @@ class BwPostmanSubscriberHelper
 			$gender .= ' selected="selected"';
 		}
 
-		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_MALE') . '</span></option>';
+		$gender .= '>' . JText::_('COM_BWPOSTMAN_MALE') . '</option>';
 
 		$gender .= '<option value="1"';
 		if ($gender_selected == '1')
@@ -519,7 +519,7 @@ class BwPostmanSubscriberHelper
 			$gender .= ' selected="selected"';
 		}
 
-		$gender .= '><span>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</span></option>';
+		$gender .= '>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</option>';
 
 		$gender .= '</select>';
 
@@ -790,5 +790,39 @@ class BwPostmanSubscriberHelper
 		}
 
 		return $user_id;
+	}
+
+	/**
+	 * Method to get params from mod_bwpostman
+	 *
+	 * @param	int	    $id     module ID
+	 *
+	 * @return 	object	$params params object
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.2.0
+	 */
+	public static function getModParams($id = 0)
+	{
+		$params = null;
+		$_db	= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->select('m.params');
+		$query->from('#__modules AS m');
+		$query->where('m.id = ' . $id);
+
+		try
+		{
+			$_db->setQuery($query);
+			$params	= $_db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $params;
 	}
 }

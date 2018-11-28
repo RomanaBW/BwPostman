@@ -637,7 +637,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $invalid_field_name               = 'Invalid field:  Your name:';
+	public static $invalid_field_name               = 'Please enter a name!';
 
 	/**
 	 * @var string
@@ -651,7 +651,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $invalid_field_firstname          = 'Invalid field:  Your first name:';
+	public static $invalid_field_firstname          = 'Please enter a first name!';
 
 	/**
 	 * @var string
@@ -665,14 +665,14 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $invalid_field_mailaddress        = 'Invalid field:  Your email address:';
+	public static $invalid_field_mailaddress        = 'Please enter an email address!';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $invalid_field_special_mod        = 'Please enter a value into the %s field!';
+	public static $invalid_field_special_mod        = 'Please enter a value into the \"%s\" field!';
 
 	/**
 	 * @var string
@@ -700,7 +700,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $popup_enter_special              = 'Please enter a value into the %s field!';
+	public static $popup_enter_special              = 'Please enter a value into the "%s" field!';
 
 	/**
 	 * @var string

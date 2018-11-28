@@ -874,6 +874,17 @@ class Generals
 	 */
 	public static $mls_usergroup        = ".//*[@id='1group_2']";
 
+	/**
+	 * General messages
+	 * /
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $invalidField        = "Invalid field:  	";
+
 
 	/**
 	 * Basic route example for your current URL

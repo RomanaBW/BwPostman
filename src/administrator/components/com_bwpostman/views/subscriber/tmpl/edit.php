@@ -32,6 +32,7 @@ $image = '';
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
+JHtml::_('behavior.formvalidator');
 
 $image = '<i class="icon-info"></i>';
 
@@ -46,29 +47,35 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 /* <![CDATA[ */
 	Joomla.submitbutton = function (pressbutton)
 	{
-
 		var form = document.adminForm;
 		if (pressbutton == 'subscriber.cancel')
 		{
 			submitform(pressbutton);
 			return;
 		}
-		// Validate input fields
-		if ((form.jform_name.value == "") && (form.name_field_obligation.value == 1))
+		else
 		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_NAME', true); ?>");
-		} else if ((form.jform_firstname.value == "") && (form.firstname_field_obligation.value == 1))
-		{
-				alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME', true); ?>");
-		} else if ((form.jform_special.value == "") && (form.special_field_obligation.value == 1))
-		{
-			alert("<?php echo JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $this->obligation['special_label']); ?>");
-		} else if (form.jform_email.value== "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL', true); ?>");
-		} else
-		{
-			submitform(pressbutton);
+			var isValid=true;
+			var action = pressbutton.split('.');
+
+			if (action[1] != 'cancel' && action[1] != 'close')
+			{
+				var forms = jQuery('form.form-validate');
+				for (var i = 0; i < forms.length; i++)
+				{
+					if (!document.formvalidator.isValid(forms[i]))
+					{
+						isValid = false;
+						break;
+					}
+				}
+			}
+
+			if (isValid)
+			{
+				submitform(pressbutton);
+				return true;
+			}
 		}
 	};
 
@@ -101,7 +108,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 	}
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>"
-			method="post" name="adminForm" id="adminForm" class="form-horizontal">
+			method="post" name="adminForm" id="adminForm" class="form-horizontal form-validate">
 		<div class="tab-wrapper-bwp">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 			<?php echo JHtml::_(
@@ -346,9 +353,9 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		?>
 
 		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="name_field_obligation" value="<?php echo $this->obligation['name']; ?>" />
-		<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->obligation['firstname']; ?>" />
-		<input type="hidden" name="special_field_obligation" value="<?php echo $this->obligation['special']; ?>" />
+		<input type="hidden" name="jform[name_field_obligation]" value="<?php echo $this->obligation['name']; ?>" />
+		<input type="hidden" name="jform[firstname_field_obligation]" value="<?php echo $this->obligation['firstname']; ?>" />
+		<input type="hidden" name="jform[special_field_obligation]" value="<?php echo $this->obligation['special']; ?>" />
 		<input type="hidden" id="jform_title" name="jform[title]" value="<?php echo $this->form->getValue('title') ?>">
 		<?php echo $this->form->getInput('asset_id'); ?>
 		<?php echo JHtml::_('form.token'); ?>

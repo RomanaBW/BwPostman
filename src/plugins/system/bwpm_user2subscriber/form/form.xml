@@ -31,7 +31,7 @@
 				name="gender"
 				type="list"
 				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_LABEL"
-				labelclass="control-label bwpm-u2s-fields-toggle"
+				labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
 				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC"
 				required="false"
 				class="bwpm-u2s-fields-toggle"
@@ -48,7 +48,7 @@
 				name="name"
 				type="text"
 				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
-				labelclass="control-label bwpm-u2s-fields-toggle"
+				labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
 				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_DESC"
 				class="inputbox bwpm-u2s-fields-toggle"
 				size="30"
@@ -59,7 +59,7 @@
 				name="firstname"
 				type="text"
 				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_LABEL"
-				labelclass="control-label bwpm-u2s-fields-toggle"
+				labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
 				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_DESC"
 				class="inputbox bwpm-u2s-fields-toggle"
 				required="false"
@@ -70,7 +70,7 @@
 				name="special"
 				type="text"
 				label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
-				labelclass="control-label bwpm-u2s-fields-toggle"
+				labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
 				description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
 				class="inputbox bwpm-u2s-fields-toggle"
 				required="false"
@@ -110,8 +110,8 @@
 				labelclass="control-label bwpm-u2s-fields-toggle"
 				description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_DESC"
 				class="disclaimer bwpm-u2s-fields-toggle"
-				value="1"
-				required="true"
+				value="0"
+				required="false"
 			>
 			</field>
 			<field
@@ -150,8 +150,14 @@
 					default="0"
 			>
 			</field>
+			<field
+					name="bwpdisclaimer_required"
+					type="hidden"
+					default="0"
+			>
+			</field>
 
-			<field name="spacer2_4" type="spacer" hr="true" class="bwpm-u2s-fields-toggle" />
+			<field name="spacer2_4" type="spacer" hr="true" class="bwpm-u2s-fields-toggle spacer-lbl" />
 
 		</fieldset>
 	</fields>

@@ -445,8 +445,9 @@ class TestSubscribersDetailsCest
 
 				if ($options->firstname_field_obligation)
 				{
-					$I->seeInPopup(SubEdit::$popup_firstname);
-					$I->acceptPopup();
+					$I->waitForElement(Generals::$alert_header, 30);
+					$I->see("Error", Generals::$alert_header);
+					$I->see(Generals::$invalidField . SubEdit::$firstNameTitle, Generals::$alert_error);
 				}
 			}
 
@@ -463,8 +464,9 @@ class TestSubscribersDetailsCest
 
 				if ($options->name_field_obligation)
 				{
-					$I->seeInPopup(SubEdit::$popup_name);
-					$I->acceptPopup();
+					$I->waitForElement(Generals::$alert_header, 30);
+					$I->see("Error", Generals::$alert_header);
+					$I->see(Generals::$invalidField . SubEdit::$lastNameTitle, Generals::$alert_error);
 				}
 			}
 
@@ -481,8 +483,9 @@ class TestSubscribersDetailsCest
 				{
 					$I->click(SubEdit::$toolbar['Save']);
 
-					$I->seeInPopup(sprintf(SubEdit::$popup_special, $options->special_label));
-					$I->acceptPopup();
+					$I->waitForElement(Generals::$alert_header, 30);
+					$I->see("Error", Generals::$alert_header);
+					$I->see(Generals::$invalidField . SubEdit::$specialTitle, Generals::$alert_error);
 				}
 			}
 
@@ -493,8 +496,10 @@ class TestSubscribersDetailsCest
 		$I->fillField(SubEdit::$email, '');
 		$I->click(SubEdit::$toolbar['Save & Close']);
 
-		$I->seeInPopup(SubEdit::$popup_email);
-		$I->acceptPopup();
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Error", Generals::$alert_header);
+		$I->see(Generals::$invalidField . SubEdit::$emailTitle, Generals::$alert_error);
+
 		$I->fillField(SubEdit::$email, SubEdit::$field_email);
 
 		if ($options->show_emailformat)

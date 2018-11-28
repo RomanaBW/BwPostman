@@ -89,9 +89,7 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 					<div class="captcha">
 						<p class="captcha-text"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
 						<p class="security_question_lbl">
-							<img src="<?php echo JUri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;
-							task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>"
-									alt="captcha" />
+							<img src="<?php echo JUri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 						</p>
 						<p class="captcha-result input-append">
 							<label id="captcha" for="stringCaptcha"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
@@ -173,6 +171,13 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 			<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
 			<?php echo JHtml::_('form.token'); ?>
 			</form>
+			<!-- The Modal -->
+			<div id="bwp_Modal" class="bwp_modal">
+				<div id="bwp_modal-content">
+					<span class="bwp_close">&times;</span>
+					<div id="bwp_wrapper"></div>
+				</div>
+			</div>
 
 			<?php
 		}
@@ -186,13 +191,6 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
 		<?php
 		} ?>
-		</div>
-	</div>
-	<!-- The Modal -->
-	<div id="bwp_Modal" class="bwp_modal">
-		<div id="bwp_modal-content">
-			<span class="bwp_close">&times;</span>
-			<div id="bwp_wrapper"></div>
 		</div>
 	</div>
 </div>

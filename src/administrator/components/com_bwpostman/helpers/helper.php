@@ -1754,7 +1754,7 @@ abstract class BwPostmanHelper
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_' . $view . 's'));
 		$query->where($db->quoteName('archive_flag') . ' = ' . $db->Quote($fromArchive));
-		if (count($itemsToCheck))
+		if (is_array($itemsToCheck) && !empty($itemsToCheck))
 		{
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $itemsToCheck) . ')');
 		}
@@ -1941,7 +1941,10 @@ abstract class BwPostmanHelper
 
 				$query->select($_db->quoteName($field));
 				$query->from($_db->quoteName($table));
-				$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $allowed_mailinglists) . ')');
+				if (is_array($allowed_mailinglists) && !empty($allowed_mailinglists))
+				{
+					$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $allowed_mailinglists) . ')');
+				}
 
 				$_db->setQuery($query);
 
@@ -2000,7 +2003,7 @@ abstract class BwPostmanHelper
 			$nbrMls = count($mls);
 		}
 
-		if ($nbrMls)
+		if (is_array($mls) && !empty($mls))
 		{
 			$whereMlsClause .= 'm.mailinglist_id IN (' . implode(',', $mls) . ')';
 		}
@@ -2027,7 +2030,7 @@ abstract class BwPostmanHelper
 			$nbrCams = count($cams);
 		}
 
-		if ($nbrCams)
+		if (is_array($cams) && !empty($cams))
 		{
 			$whereCamsClause .= 'a.campaign_id IN (' . implode(',', $cams) . ')';
 		}

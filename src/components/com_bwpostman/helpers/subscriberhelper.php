@@ -369,7 +369,14 @@ class BwPostmanSubscriberHelper
 		$active_intro      = JText::_($params->get('activation_text'));
 		$permission_text   = JText::_($params->get('permission_text'));
 		$legal_information = JText::_($params->get('legal_information_text'));
-		$active_msg        = $active_title . ' ' . $name . ",\n\n" . $active_intro . "\n";
+		$active_msg        = $active_title;
+		if ($name !== '')
+		{
+			$active_msg        .= ' ' . $name;
+		}
+
+		$active_msg        .= "\n\n" . $active_intro . "\n";
+
 		$message           = '';
 		$subject           = '';
 

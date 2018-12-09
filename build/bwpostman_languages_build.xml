@@ -22,6 +22,7 @@
 		<property name="target_base_translations_dir_en" value="${target_base_translations_dir}/en-GB" override="true" />
 		<property name="target_base_translations_dir_es" value="${target_base_translations_dir}/es-ES" override="true" />
 		<property name="target_base_translations_dir_ja" value="${target_base_translations_dir}/ja-JP" override="true" />
+		<property name="target_base_translations_dir_it" value="${target_base_translations_dir}/it-IT" override="true" />
 
 		<echo msg="Deleting target directory… " />
 		<delete dir="${target_base_translations_dir}" includeemptydirs="true" failonerror="false" />
@@ -65,6 +66,13 @@
 				<exclude name="**/*bwtests*.ini" />
 			</fileset>
 		</copy>
+		<copy todir="${target_base_translations_dir_it}/admin">
+			<fileset dir="${source_admin_lang_dir}/it-IT">
+				<exclude name="**/*bwpostman_bwtimecontrol*.ini" />
+				<exclude name="**/*bwpostman_demo*.ini" />
+				<exclude name="**/*bwtests*.ini" />
+			</fileset>
+		</copy>
 
 		<echo msg="Copying site files…" />
 		<copy todir="${target_base_translations_dir_de}/site">
@@ -83,12 +91,17 @@
 			<fileset dir="${source_site_lang_dir}/ja-JP">
 			</fileset>
 		</copy>
+		<copy todir="${target_base_translations_dir_it}/site">
+			<fileset dir="${source_site_lang_dir}/it-IT">
+			</fileset>
+		</copy>
 
 		<echo msg="Copying manifest files…" />
 		<copy file="${manifest_dir}/lang_bwpostman_de-DE.xml" tofile="${target_base_translations_dir_de}/lang_bwpostman_de-DE.xml" />
 		<copy file="${manifest_dir}/lang_bwpostman_en-GB.xml" tofile="${target_base_translations_dir_en}/lang_bwpostman_en-GB.xml" />
 		<copy file="${manifest_dir}/lang_bwpostman_es-ES.xml" tofile="${target_base_translations_dir_es}/lang_bwpostman_es-ES.xml" />
 		<copy file="${manifest_dir}/lang_bwpostman_ja-JP.xml" tofile="${target_base_translations_dir_ja}/lang_bwpostman_jp-JP.xml" />
+		<copy file="${manifest_dir}/lang_bwpostman_it-IT.xml" tofile="${target_base_translations_dir_it}/lang_bwpostman_it-IT.xml" />
 
 		<echo msg="Chmod target dir…" />
 		<chmod file="${target_base_translations_dir}" mode="0777" />
@@ -126,6 +139,13 @@
 		<echo msg="…ja-JP…" />
 		<zip destfile="${target_base_translations_dir}/lang_${extension}.${version}.ja-JP.zip">
 			<fileset dir="${target_base_translations_dir_ja}">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+
+		<echo msg="…it-IT…" />
+		<zip destfile="${target_base_translations_dir}/lang_${extension}.${version}.it-IT.zip">
+			<fileset dir="${target_base_translations_dir_it}">
 				<include name="**/**" />
 			</fileset>
 		</zip>

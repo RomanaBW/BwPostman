@@ -77,12 +77,12 @@
         bw_extension: "{{ extension_name }}"
         bw_package_parts: "{{ package_parts }}"
 
-    - name: copy package to test data folder with buid and version number
+    - name: copy package to test data folder with build and version number
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
 
-    - name: copy package to test data folder without buid and version number
+    - name: copy package to test data folder without build and version number
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"

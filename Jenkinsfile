@@ -145,7 +145,7 @@ pipeline {
 					subject:"BwPostman build ${currentBuild.number}",
 					to: 'webmaster@boldt-webservice.de'
 			)
-//				to: 'k.klostermann@t-online.de, webmaster@boldt-webservice.de'
+//				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 
 			}
 		}

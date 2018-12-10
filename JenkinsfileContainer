@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo 'Remove not needed files'
                 echo 'ensure log folders are present'
-                echo 'Message for check trigger 5'
+                echo 'Message for check trigger 6'
             }
         }
 

@@ -24,7 +24,7 @@ pipeline {
 		stage('Prepare infrastructure') {
 			steps {
 				echo 'build database container'
-				sh "docker build -f docker/mysqldb/Dockerfile -t romana/mysql ./docker/mysqldb"
+				sh "docker build -f ./docker/mysqldb/Dockerfile -t romana/mysql ./docker/mysqldb"
 
 				echo 'build webserver container'
 				echo 'build mailserver container'

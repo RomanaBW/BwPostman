@@ -57,7 +57,7 @@ pipeline {
 		stage('Create infrastructure containers') {
 			steps {
 				echo 'Start initial infrastructure'
-				sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} up -d"
+				sh "docker-compose -f build/docker/run-bwpm-Suite_1.yml -p ${PROJECT_NAME} up -d"
 				echo 'Copy project files to webserver'
 				echo 'Fill database'
 				echo 'Stop initial infrastructure'

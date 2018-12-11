@@ -15,4 +15,4 @@
     - name: create docker compose file for infrastructure
       template:
         src: "run-bwpm.yml.j2"
-        dest: "${WORKSPACE}/build/docker/run-bwpm-{{ suite_vars['suite_number'] }}.yml"
+        dest: "../docker/run-bwpm-{{ suite_vars['suite_number'] }}.yml"

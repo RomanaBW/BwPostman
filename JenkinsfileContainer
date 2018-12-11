@@ -68,7 +68,7 @@ pipeline {
 		stage('smoke') {
 			steps {
 				echo 'Dummy '
-				sh "docker-compose -f /build/docker/run-bwpm.yml -p ${PROJECT_NAME} down"
+				sh "docker-compose -f build/docker/run-bwpm.yml -p ${PROJECT_NAME} down"
 				//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 		}

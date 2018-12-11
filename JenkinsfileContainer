@@ -49,7 +49,8 @@ pipeline {
 
 		stage('Create docker compose file') {
 			steps {
-					echo 'Create docker compose file'
+					echo 'Create docker compose file for infrastructure'
+					sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml"
 			}
 		}
 

@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  vars_files:
+    - vars/infrastructure-vars.yml
+
+  tasks:
+    - name: create docker compose file for infrastructure
+      template:
+        src: "run-bwpm.yml.j2"
+        dest: "run-bwpm.yml"
+

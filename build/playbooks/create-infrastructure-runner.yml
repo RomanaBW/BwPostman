@@ -1,11 +1,19 @@
 ---
 - hosts: localhost
   vars_files:
-    - vars/infrastructure-vars.yml
+    - vars/container-vars.yml
 
   tasks:
+    - name: set suite list variable
+      set_fact:
+        suite_vars: "{{ Suites[suite_set] }}"
+
+    - name: debug suite variable
+      debug:
+        msg: "{{ suite_vars['suite_number'] }}"
+
     - name: create docker compose file for infrastructure
       template:
         src: "run-bwpm.yml.j2"
-        dest: "run-bwpm.yml"
+        dest: "run-bwpm{{ suite_vars['suite_number'] }}.yml"
 

@@ -1,22 +1,22 @@
 version: '3'
 
 networks:
-  tester-net-bwpm.nil:
+  {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 172.18.0.16/29
+        - subnet: {{ suite_vars.subnet }}
 
 services:
-  mysqldbbwpm:
-    container_name: mysqldbbwpm
+  {{ db.service }}-{{ suite_vars.suite_number }}:
+    container_name: {{ db.container_name }}-{{ suite_vars.suite_number }}
     image: romana/mysql
-    hostname: mysqlserver-bwpm
-    domainname: tester-net-bwpm.nil
+    hostname: {{ db.host_name }}-{{ suite_vars.suite_number }}
+    domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     networks:
-      tester-net-bwpm.nil:
-        ipv4_address: 172.18.0.19
+      {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
+        ipv4_address: {{ suite_vars.db_ip }}
     expose:
       - "3306"
     ports:
@@ -30,33 +30,33 @@ services:
       MYSQL_USER: tester
       MYSQL_PASSWORD: barbamama
 
-  postfixbwpm:
-    container_name: "mail.tester-net-bwpm.nil"
+  {{ mailer.service }}-{{ suite_vars.suite_number }}:
+    container_name: {{ mailer.container_name }}-{{ suite_vars.suite_number }}
     image: romana/os-postfix
-    hostname: mail-bwpm
-    domainname: tester-net-bwpm.nil
+    hostname: {{ mailer.host_name }}.{{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
+    domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     expose:
       - "25"
 #    volumes:
 #      - ${BW_TEST_CONTAINER_DIR}/infrastructure/os_base/os_data:/outerworld
     networks:
-      tester-net-bwpm.nil:
-        ipv4_address: 172.18.0.18
+      {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
+        ipv4_address: {{ suite_vars.mailer_ip }}
 
-  webserverbwpm:
-    container_name: webserverbwpm
+  {{ webserver.service }}-{{ suite_vars.suite_number }}:
+    container_name: {{ webserver.container_name }}-{{ suite_vars.suite_number }}
     image: romana/apache_71
-    hostname: webserver-bwpm
-    domainname: tester-net-bwpm.nil
+    hostname: {{ webserver.host_name }}-{{ suite_vars.suite_number }}
+    domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     depends_on:
-      - "mysqldbbwpm"
+      - "{{ db.service }}-{{ suite_vars.suite_number }}"
     networks:
-      tester-net-bwpm.nil:
-        ipv4_address: 172.18.0.20
+      {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
+        ipv4_address: {{ suite_vars.webserver_ip }}
     expose:
       - "80"
     links:
-      - mysqldbbwpm:mysqldbbwpm
+      - {{ db.service }}-{{ suite_vars.suite_number }}:{{ db.service }}-{{ suite_vars.suite_number }}
     ports:
       - "8002:80"
 #    volumes:

@@ -1,0 +1,30 @@
+---
+network: "tester-net-bwpm"
+network_suffix: ".nil"
+
+db:
+  service: "mysqldbbwpm"
+  container_name: "mysqldbbwpm"
+  host_name: "mysqlserver-bwpm"
+
+mailer:
+  service: "postfixbwpm"
+  container_name: "mail"
+  host_name: "mail-bwpm"
+
+webserver:
+  service: "webserverbwpm"
+  container_name: "webserverbwpm"
+  host_name: "webserver-bwpm"
+
+Suites:
+  Suite_1:
+    suite_number: "1"
+    subnet: "172.18.0.24/29"
+    db_ip: "172.18.0.27"
+    mailer_ip: "172.18.0.26"
+    webserver_ip: "172.18.0.28"
+  Suite_2:
+    suite_number: "2"
+    subnet: "172.18.0.32/29"
+    network: "tester-net-bwpm"

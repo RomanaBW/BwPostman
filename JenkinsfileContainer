@@ -50,14 +50,14 @@ pipeline {
 		stage('Create docker compose file') {
 			steps {
 					echo 'Create docker compose file for infrastructure'
-					sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml"
+					sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_1'"
 			}
 		}
 
 		stage('Create infrastructure containers') {
 			steps {
 				echo 'Start initial infrastructure'
-				sh "docker-compose -f build/docker/run-bwpm.yml -p ${PROJECT_NAME} up -d"
+				sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} up -d"
 				echo 'Copy project files to webserver'
 				echo 'Fill database'
 				echo 'Stop initial infrastructure'

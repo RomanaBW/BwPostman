@@ -16,4 +16,3 @@
       template:
         src: "run-bwpm.yml.j2"
         dest: "run-bwpm-{{ suite_vars['suite_number'] }}.yml"
-

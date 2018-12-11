@@ -16,7 +16,7 @@ pipeline {
         stage('Prepare source files and log folders') {
             steps {
 				script {
-					PROJECT_NAME = "j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
+					PROJECT_NAME = "jparams.JOOMLA_VERSION_bwpmparams.BWPM_VERSION"
 				}
 
 				echo "Project Name: ${PROJECT_NAME}"

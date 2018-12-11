@@ -6,7 +6,7 @@ pipeline {
 	}
 
 	parameters {
-        string(name: "VERSION_NUMBER", defaultValue: "2.2.0", description: "The new/next version number of the project.")
+        string(name: "BWPM_VERSION", defaultValue: "2.1.2", description: "The new/next version number of the project.")
         string(name: "JOOMLA_VERSION", defaultValue: "3.9.1", description: "Version of Joomla to test against")
         string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
@@ -15,6 +15,11 @@ pipeline {
     stages {
         stage('Prepare source files and log folders') {
             steps {
+				script {
+					PROJECT_NAME = "j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
+				}
+
+				echo "Project Name: ${PROJECT_NAME}"
                 echo 'Remove not needed files'
                 echo 'ensure log folders are present'
                 echo 'Message for check trigger 6'
@@ -51,6 +56,7 @@ pipeline {
 		stage('Create infrastructure containers') {
 			steps {
 				echo 'Start initial infrastructure'
+				sh "docker-compose -f ./build/docker/run-bwpm.yml -p ${PROJECT_NAME} up -d"
 				echo 'Copy project files to webserver'
 				echo 'Fill database'
 				echo 'Stop initial infrastructure'
@@ -62,6 +68,7 @@ pipeline {
 		stage('smoke') {
 			steps {
 				echo 'Dummy '
+				sh "docker-compose -f ./build/docker/run-bwpm.yml -p ${PROJECT_NAME} down"
 				//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 		}

@@ -22,13 +22,29 @@ pipeline {
         }
 
 		stage('Prepare infrastructure') {
-			steps {
-				echo 'build database container'
-				sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
+			parallel {
+				stage('build database container') {
+					steps {
+						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
+					}
+				}
+				stage('build webserver container') {
+					steps {
+						sh "docker build -f ./build/docker/apache/Dockerfile71 -t romana/apache_71 ./build/docker/apache"
+					}
+				}
+				stage('build mailserver container') {
+					steps {
+						sh "docker build -f ./build/docker/os_base/Dockerfile -t romana/os_base ./build/docker/os_base"
+						sh "docker build -f ./build/docker/os_postfix/Dockerfile -t romana/os-postfix ./build/docker/os_postfix"
+					}
+				}
+			}
+		}
 
-				echo 'build webserver container'
-				echo 'build mailserver container'
-				echo 'Create docker compose file'
+		stage('Create docker compose file') {
+			steps {
+					echo 'Create docker compose file'
 			}
 		}
 

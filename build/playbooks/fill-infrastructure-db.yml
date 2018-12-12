@@ -13,4 +13,4 @@
         msg: "{{ suite_vars['suite_number'] }}"
 
     - name: fill database
-      command: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ db.host_name }}-{{ suite_vars.suite_number }} {{ BW_TEST_DB_NAME }} &lt; ./container_files/backups/{{ project_name }}.sql"
+      command: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ db.host_name }}-{{ suite_vars.suite_number }} {{ BW_TEST_DB_NAME }} < ./container_files/backups/{{ project_name }}.sql"

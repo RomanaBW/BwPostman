@@ -47,69 +47,87 @@ pipeline {
 
 		stage('Create docker compose file') {
 			parallel {
-				steps {
-						echo 'Create docker compose file for infrastructure'
-						sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_1'"
+				stage('Compose file suite 1') {
+					steps {
+							echo 'Create docker compose file for infrastructure'
+							sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_1'"
+					}
 				}
-				steps {
-						echo 'Create docker compose file for infrastructure'
-						sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_2'"
+				stage('Compose file suite 2') {
+					steps {
+							echo 'Create docker compose file for infrastructure'
+							sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_2'"
+					}
 				}
-				steps {
-						echo 'Create docker compose file for infrastructure'
-						sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_3'"
+				stage('Compose file suite 3') {
+					steps {
+							echo 'Create docker compose file for infrastructure'
+							sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_3'"
+					}
 				}
 			}
 		}
 
 		stage('Create infrastructure containers') {
 			parallel {
-				steps {
-					echo 'Start initial infrastructure'
-					sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} up -d"
-					echo 'Copy project files to webserver'
-					echo 'Fill database'
-					echo 'Stop initial infrastructure'
-					echo 'build image from webserver'
-					echo 'build image from database server'
+				stage('Start suite 1') {
+					steps {
+						echo 'Start initial infrastructure'
+						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} up -d"
+						echo 'Copy project files to webserver'
+						echo 'Fill database'
+						echo 'Stop initial infrastructure'
+						echo 'build image from webserver'
+						echo 'build image from database server'
+					}
 				}
-				steps {
-					echo 'Start initial infrastructure'
-					sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME} up -d"
-					echo 'Copy project files to webserver'
-					echo 'Fill database'
-					echo 'Stop initial infrastructure'
-					echo 'build image from webserver'
-					echo 'build image from database server'
+				stage('Start suite 2') {
+					steps {
+						echo 'Start initial infrastructure'
+						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME} up -d"
+						echo 'Copy project files to webserver'
+						echo 'Fill database'
+						echo 'Stop initial infrastructure'
+						echo 'build image from webserver'
+						echo 'build image from database server'
+					}
 				}
-				steps {
-					echo 'Start initial infrastructure'
-					sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME} up -d"
-					echo 'Copy project files to webserver'
-					echo 'Fill database'
-					echo 'Stop initial infrastructure'
-					echo 'build image from webserver'
-					echo 'build image from database server'
+				stage('Start suite 3') {
+					steps {
+						echo 'Start initial infrastructure'
+						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME} up -d"
+						echo 'Copy project files to webserver'
+						echo 'Fill database'
+						echo 'Stop initial infrastructure'
+						echo 'build image from webserver'
+						echo 'build image from database server'
+					}
 				}
 			}
 		}
 
 		stage('smoke') {
 			parallel {
-				steps {
-					echo 'Dummy '
-					sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} down"
-					//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				stage('Stop suite 1') {
+					steps {
+						echo 'Dummy '
+						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} down"
+						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
 				}
-				steps {
-					echo 'Dummy '
-					sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME} down"
-					//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				stage('Stop suite 1') {
+					steps {
+						echo 'Dummy '
+						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME} down"
+						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
 				}
-				steps {
-					echo 'Dummy '
-					sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME} down"
-					//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				stage('Stop suite 3') {
+					steps {
+						echo 'Dummy '
+						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME} down"
+						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
 				}
 			}
 		}

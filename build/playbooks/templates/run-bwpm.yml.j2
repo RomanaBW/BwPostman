@@ -20,7 +20,7 @@ services:
     expose:
       - "3306"
     ports:
-      - "3308:3306"
+      - "{{ suite_vars.db_port }}:3306"
 #    volumes:
 #      - ${BW_TEST_CONTAINER_DIR}/infrastructure/mysqldb/data/logs:/var/log/mysql/
 #      - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/tables:/var/lib/mysql
@@ -58,7 +58,7 @@ services:
     links:
       - {{ db.service }}-{{ suite_vars.suite_number }}:{{ db.service }}-{{ suite_vars.suite_number }}
     ports:
-      - "8002:80"
+      - "{{ suite_vars.webserver_port }}:80"
 #    volumes:
 #      - ${BW_TEST_CONTAINER_DIR}/infrastructure/apache/data/logs:/var/log/apache2/
 #      - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/files:/var/www/html

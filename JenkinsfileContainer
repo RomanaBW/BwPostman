@@ -42,6 +42,8 @@ pipeline {
 					])
 				}
 
+				sh "copy ./src/*.* ./container_files/files"
+
 
                 echo 'ToDo: Remove not needed files'
                 echo 'ToDo: ensure log folders are present'

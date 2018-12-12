@@ -27,4 +27,12 @@ Suites:
   Suite_2:
     suite_number: "2"
     subnet: "172.18.0.32/29"
-    network: "tester-net-bwpm"
+    db_ip: "172.18.0.35"
+    mailer_ip: "172.18.0.34"
+    webserver_ip: "172.18.0.36"
+  Suite_3:
+    suite_number: "3"
+    subnet: "172.18.0.40/29"
+    db_ip: "172.18.0.43"
+    mailer_ip: "172.18.0.42"
+    webserver_ip: "172.18.0.44"

@@ -12,5 +12,8 @@
       debug:
         msg: "{{ suite_vars['suite_number'] }}"
 
+    - name: check database
+      shell: "sudo docker exec {{ db.host_name }}-{{ suite_vars.suite_number }} mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -e 'show databases;'"
+
     - name: fill database
-      command: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ db.host_name }}-{{ suite_vars.suite_number }} {{ BW_TEST_DB_NAME }} < ./container_files/backups/{{ project_name }}.sql"
+      shell: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ db.host_name }}-{{ suite_vars.suite_number }} {{ BW_TEST_DB_NAME }} < ./container_files/backups/{{ project_name }}.sql"

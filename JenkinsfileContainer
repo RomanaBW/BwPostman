@@ -7,8 +7,8 @@ pipeline {
 	}
 
 	parameters {
-        string(name: "BWPM_VERSION_1", defaultValue: "211", description: "The new/next version number of the project.")
-        string(name: "JOOMLA_VERSION", defaultValue: "390", description: "Version of Joomla to test against")
+        string(name: "BWPM_VERSION", defaultValue: "211", description: "The new/next version number of the project.")
+        string(name: "JOOMLA_VERSION_1", defaultValue: "390", description: "Version of Joomla to test against")
         string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
     }
@@ -17,7 +17,7 @@ pipeline {
         stage('Prepare source files and log folders') {
             steps {
 				script {
-					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION_1}"
+					PROJECT_NAME = "j${params.JOOMLA_VERSION_1}_bwpm${params.BWPM_VERSION}"
 				}
 
 				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups"
@@ -142,21 +142,21 @@ pipeline {
 //					steps {
 //						echo 'Dummy '
 //						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} down"
-//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
 //					}
 //				}
 //				stage('Stop suite 2') {
 //					steps {
 //						echo 'Dummy '
 //						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME} down"
-//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
 //					}
 //				}
 //				stage('Stop suite 3') {
 //					steps {
 //						echo 'Dummy '
 //						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME} down"
-//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
 //					}
 //				}
 //			}

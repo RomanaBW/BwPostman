@@ -18,6 +18,7 @@ Improvement
 
 Bugfix
 # Missing media images at installation package
+# Captcha doesn't work
 
 
 Version 2.1.1 released (16-Nov-2018)----

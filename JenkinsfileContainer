@@ -7,7 +7,7 @@ pipeline {
 	}
 
 	parameters {
-        string(name: "BWPM_VERSION", defaultValue: "212", description: "The new/next version number of the project.")
+        string(name: "BWPM_VERSION", defaultValue: "220", description: "The new/next version number of the project.")
         string(name: "JOOMLA_VERSION", defaultValue: "391", description: "Version of Joomla to test against")
         string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")

@@ -19,7 +19,7 @@ pipeline {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
 				}
 
-				echo 'Project Name: '+"${PROJECT_NAME}"
+				echo 'Project Name: '+PROJECT_NAME
                 echo 'Remove not needed files'
                 echo 'ensure log folders are present'
                 echo 'Message for check trigger 6'

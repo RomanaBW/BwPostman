@@ -58,18 +58,18 @@ pipeline {
 			parallel {
 				stage ('accept3') {
 					steps {
-						echo 'Dummy'
+//						echo 'Dummy'
 //						sleep 60
-//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
-					// post {
-					// 	always {
-					// 		bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-					// 	}
-					// 	failure {
-					// 		bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-					// 	}
-					// }
+					post {
+						always {
+							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+					}
+						failure {
+							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+						}
+					}
 				}
 				stage ('accept4') {
 					steps {
@@ -117,28 +117,28 @@ pipeline {
 
 				echo "tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
 
-				// sshPublisher(
-				// 	publishers: [sshPublisherDesc(
-				// 	configName: 'Web Dev BwPostman',
-				// 	transfers: [sshTransfer(
-				// 		cleanRemote: false,
-				// 		excludes: '',
-				// 		execCommand: '',
-				// 		execTimeout: 120000,
-				// 		flatten: false,
-				// 		makeEmptyDirs: false,
-				// 		noDefaultExcludes: false,
-				// 		patternSeparator: '[, ]+',
-				// 		remoteDirectory: "${params.VERSION_NUMBER}.${currentBuild.number}",
-				// 		remoteDirectorySDF: false,
-				// 		removePrefix: 'tests',
-				// 		sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
-				// 	)],
-				// 	usePromotionTimestamp: false,
-				// 		useWorkspaceInPromotion: false,
-				// 		verbose: false
-				// 	)]
-				// )
+				sshPublisher(
+					publishers: [sshPublisherDesc(
+					configName: 'Web Dev BwPostman',
+					transfers: [sshTransfer(
+						cleanRemote: false,
+						excludes: '',
+						execCommand: '',
+						execTimeout: 120000,
+						flatten: false,
+						makeEmptyDirs: false,
+						noDefaultExcludes: false,
+						patternSeparator: '[, ]+',
+						remoteDirectory: "${params.VERSION_NUMBER}.${currentBuild.number}",
+						remoteDirectorySDF: false,
+						removePrefix: 'tests',
+						sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
+					)],
+					usePromotionTimestamp: false,
+						useWorkspaceInPromotion: false,
+						verbose: false
+					)]
+				)
 
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, first acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",

@@ -43,8 +43,8 @@ pipeline {
 				}
 
 				sh "cp -R ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
-				sh "mkdir ${WORKSPACE}/container_files/files-2"
-				sh "mkdir ${WORKSPACE}/container_files/files-3"
+				sh "mkdir -p ${WORKSPACE}/container_files/files-2"
+				sh "mkdir -p ${WORKSPACE}/container_files/files-3"
 				sh "cp -R ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
 				sh "cp -R ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"
 

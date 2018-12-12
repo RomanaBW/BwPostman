@@ -31,18 +31,20 @@ pipeline {
 					])
 				}
 
-				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files"
-				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
+				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files-1"
+				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files-1") {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',
 							flattenFiles: false,
 							includes: "**/*.*",
-							targetLocation: "${WORKSPACE}/container_files/files")
+							targetLocation: "${WORKSPACE}/container_files/files-1")
 					])
 				}
 
-				sh "cp -R ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files"
+				sh "cp -R ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
+				sh "cp -R ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
+				sh "cp -R ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"
 
 
                 echo 'ToDo: Remove not needed files'

@@ -2,6 +2,12 @@
 network: "tester-net-bwpm"
 network_suffix: ".nil"
 
+web_dir: "/vms/dockers/global_data/test_data"
+
+BW_TEST_DB_USER: "tester"
+BW_TEST_DB_PW: "barbamama"
+BW_TEST_DB_NAME: "joomlatest"
+
 db:
   service: "mysqldbbwpm"
   container_name: "mysqldbbwpm"
@@ -42,3 +48,5 @@ Suites:
     mailer_ip: "172.18.0.42"
     webserver_ip: "172.18.0.44"
     webserver_port: "8004"
+
+BW_TEST_DB_HOST: "mysqldbbwpm"

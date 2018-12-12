@@ -14,11 +14,32 @@ pipeline {
     }
 
     stages {
-        stage('ToDo: Prepare source files and log folders') {
+        stage('Prepare source files and log folders') {
             steps {
 				script {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
 				}
+
+				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+							flattenFiles: false,
+							includes: "*.zip",
+							targetLocation: "${WORKSPACE}/container_files/backups")
+					])
+				}
+
+				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+							flattenFiles: false,
+							includes: "**/*.*",
+							targetLocation: "${WORKSPACE}/container_files/files")
+					])
+				}
+
 
                 echo 'ToDo: Remove not needed files'
                 echo 'ToDo: ensure log folders are present'
@@ -50,19 +71,19 @@ pipeline {
 			parallel {
 				stage('Infrastructure suite 1') {
 					steps {
-						sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_1'"
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_1'"
 						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} up -d"
 					}
 				}
 				stage('Infrastructure suite 2') {
 					steps {
-						sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_2'"
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_2'"
 						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME} up -d"
 					}
 				}
 				stage('Infrastructure suite 3') {
 					steps {
-						sh "ansible-playbook ${WORKSPACE}/build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_3'"
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_3'"
 						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME} up -d"
 					}
 				}
@@ -73,9 +94,9 @@ pipeline {
 			parallel {
 				stage('Fill suite 1') {
 					steps {
-						sleep 20
 						echo 'Copy project files to webserver'
 						echo 'Fill database'
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME}'"
 						echo 'Stop initial infrastructure'
 						echo 'build image from webserver'
 						echo 'build image from database server'
@@ -83,9 +104,9 @@ pipeline {
 				}
 				stage('Fill suite 2') {
 					steps {
-						sleep 20
 						echo 'Copy project files to webserver'
 						echo 'Fill database'
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME}'"
 						echo 'Stop initial infrastructure'
 						echo 'build image from webserver'
 						echo 'build image from database server'
@@ -93,9 +114,9 @@ pipeline {
 				}
 				stage('Fill suite 3') {
 					steps {
-						sleep 20
 						echo 'Copy project files to webserver'
 						echo 'Fill database'
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME}'"
 						echo 'Stop initial infrastructure'
 						echo 'build image from webserver'
 						echo 'build image from database server'

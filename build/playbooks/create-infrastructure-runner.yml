@@ -8,10 +8,6 @@
       set_fact:
         suite_vars: "{{ Suites[suite_set] }}"
 
-    - name: debug suite variable
-      debug:
-        msg: "{{ suite_vars['suite_number'] }}"
-
     - name: create docker compose file for infrastructure
       template:
         src: "run-bwpm.yml.j2"

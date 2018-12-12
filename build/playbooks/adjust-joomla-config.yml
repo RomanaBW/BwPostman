@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  vars_files:
+    - vars/container-vars.yml
+
+  tasks:
+    - name: set suite list variable
+      set_fact:
+        suite_vars: "{{ Suites[suite_set] }}"
+
+    - name: debug suite variable
+      debug:
+        msg: "{{ suite_vars['suite_number'] }}"
+
+    - name: adjust joomla configuration
+      template:
+        src: "configuration.php.j2"
+        dest: "../../container_files/files-{{ suite_vars['suite_number'] }}/configuration.php"

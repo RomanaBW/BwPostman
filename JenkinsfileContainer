@@ -49,7 +49,6 @@ pipeline {
 				sh "cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
 				sh "cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"
 
-
                 echo 'ToDo: Remove not needed files'
                 echo 'ToDo: ensure log folders are present'
             }

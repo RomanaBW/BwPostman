@@ -21,9 +21,6 @@ services:
       - "3306"
     ports:
       - "{{ suite_vars.db_port }}:3306"
-#    volumes:
-#      - ${BW_TEST_CONTAINER_DIR}/infrastructure/mysqldb/data/logs:/var/log/mysql/
-#      - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/tables:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: barbapapa
       MYSQL_DATABASE: joomlatest
@@ -37,8 +34,6 @@ services:
     domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     expose:
       - "25"
-#    volumes:
-#      - ${BW_TEST_CONTAINER_DIR}/infrastructure/os_base/os_data:/outerworld
     networks:
       {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
         ipv4_address: {{ suite_vars.mailer_ip }}
@@ -59,6 +54,6 @@ services:
       - {{ db.service }}-{{ suite_vars.suite_number }}:{{ db.service }}-{{ suite_vars.suite_number }}
     ports:
       - "{{ suite_vars.webserver_port }}:80"
-#    volumes:
-#      - ${BW_TEST_CONTAINER_DIR}/infrastructure/apache/data/logs:/var/log/apache2/
-#      - ${BW_TEST_WEB_BASE_DIR}/${BW_TEST_PROJECT}/files:/var/www/html
+    volumes:
+      - {{  workspace  }}/container_files/logs/apache-{{ suite_vars.suite_number }}:/var/log/apache2/
+      - {{  workspace  }}/container_files/files:/var/www/html

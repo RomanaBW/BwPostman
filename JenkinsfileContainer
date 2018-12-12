@@ -20,16 +20,18 @@ pipeline {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
 				}
 
+				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups"
 				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups") {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',
 							flattenFiles: false,
-							includes: "*.zip",
+							includes: "*.sql",
 							targetLocation: "${WORKSPACE}/container_files/backups")
 					])
 				}
 
+				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files"
 				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
 					fileOperations([
 						fileCopyOperation(

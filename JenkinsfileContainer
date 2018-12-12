@@ -42,7 +42,7 @@ pipeline {
 					])
 				}
 
-				sh "copy ./src/*.* ./container_files/files"
+				sh "cp ./src/*.* ./container_files/files"
 
 
                 echo 'ToDo: Remove not needed files'

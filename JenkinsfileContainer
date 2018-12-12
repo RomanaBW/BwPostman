@@ -32,15 +32,17 @@ pipeline {
 				}
 
 				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files"
-				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-							flattenFiles: false,
-							includes: "**/*.*",
-							targetLocation: "${WORKSPACE}/container_files/files-1")
-					])
-				}
+//				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
+//					fileOperations([
+//						fileCopyOperation(
+//							excludes: '',
+//							flattenFiles: false,
+//							includes: "**/*.*",
+//							targetLocation: "${WORKSPACE}/container_files/files-1")
+//					])
+//				}
+
+				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/files/* ${WORKSPACE}/container_files/files-1"
 
 				sh "mkdir -p ${WORKSPACE}/container_files/files-2"
 				sh "mkdir -p ${WORKSPACE}/container_files/files-3"

@@ -31,8 +31,8 @@ pipeline {
 					])
 				}
 
-				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files-1"
-				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files-1") {
+				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files"
+				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',

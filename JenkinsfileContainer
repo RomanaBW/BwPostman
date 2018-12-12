@@ -7,8 +7,8 @@ pipeline {
 	}
 
 	parameters {
-        string(name: "BWPM_VERSION", defaultValue: "211", description: "The new/next version number of the project.")
-        string(name: "JOOMLA_VERSION_1", defaultValue: "390", description: "Version of Joomla to test against")
+        string(name: "BWPM_VERSION_2", defaultValue: "220", description: "The new/next version number of the project.")
+        string(name: "JOOMLA_VERSION_2", defaultValue: "391", description: "Version of Joomla to test against")
         string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
     }
@@ -17,7 +17,7 @@ pipeline {
         stage('Prepare source files and log folders') {
             steps {
 				script {
-					PROJECT_NAME = "j${params.JOOMLA_VERSION_1}_bwpm${params.BWPM_VERSION}"
+					PROJECT_NAME = "j${params.JOOMLA_VERSION_2}_bwpm${params.BWPM_VERSION_2}"
 				}
 
 				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups"
@@ -42,11 +42,12 @@ pipeline {
 					])
 				}
 
-				sh "cp -R ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
 				sh "mkdir -p ${WORKSPACE}/container_files/files-2"
 				sh "mkdir -p ${WORKSPACE}/container_files/files-3"
-				sh "cp -R ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
-				sh "cp -R ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"
+
+				sh "cp -rfpv ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
+				sh "cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
+				sh "cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"
 
 
                 echo 'ToDo: Remove not needed files'

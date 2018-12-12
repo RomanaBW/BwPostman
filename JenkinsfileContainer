@@ -98,7 +98,7 @@ pipeline {
 					steps {
 						echo 'Copy project files to webserver'
 						echo 'Fill database'
-						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME}'"
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
 						echo 'Stop initial infrastructure'
 						echo 'build image from webserver'
 						echo 'build image from database server'
@@ -108,7 +108,7 @@ pipeline {
 					steps {
 						echo 'Copy project files to webserver'
 						echo 'Fill database'
-						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME}'"
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
 						echo 'Stop initial infrastructure'
 						echo 'build image from webserver'
 						echo 'build image from database server'
@@ -118,7 +118,7 @@ pipeline {
 					steps {
 						echo 'Copy project files to webserver'
 						echo 'Fill database'
-						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME}'"
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
 						echo 'Stop initial infrastructure'
 						echo 'build image from webserver'
 						echo 'build image from database server'

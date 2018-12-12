@@ -16,4 +16,4 @@
       shell: "sudo docker exec {{ db.container_name }}-{{ suite_vars.suite_number }} mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -e 'show databases;'"
 
     - name: fill database
-      shell: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ db.container_name }}-{{ suite_vars.suite_number }} {{ BW_TEST_DB_NAME }} < ./container_files/backups/{{ project_name }}.sql"
+      shell: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ db.container_name }}-{{ suite_vars.suite_number }} {{ BW_TEST_DB_NAME }} < {{  workspace  }}/container_files/backups/{{ project_name }}.sql"

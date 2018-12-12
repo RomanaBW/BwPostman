@@ -13,7 +13,7 @@ pipeline {
     }
 
     stages {
-        stage('Prepare source files and log folders') {
+        stage('ToDo: Prepare source files and log folders') {
             steps {
 				script {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
@@ -22,7 +22,6 @@ pipeline {
 				echo 'Project Name: '+PROJECT_NAME
                 echo 'Remove not needed files'
                 echo 'ensure log folders are present'
-                echo 'Message for check trigger 6'
             }
         }
 

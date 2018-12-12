@@ -43,7 +43,7 @@ pipeline {
 				}
 
 				sleep 20
-				sh "cp ${WORKSPACE}/src/*.* ${WORKSPACE}/container_files/files"
+				sh "cp -vR ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files"
 
 
                 echo 'ToDo: Remove not needed files'

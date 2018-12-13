@@ -10,6 +10,10 @@
         state: absent
       with_items: "{{ to_delete }}"
 
+    - name: Debug suites variable
+      debug:
+        msg: "{{ Suites }}"
+
     - name: create dirs for webserver files
       file:
         path: "{{ project_base_dir }}/container_files/files-{{ item.suite_number }}"

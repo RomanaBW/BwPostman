@@ -7,10 +7,6 @@
 #    - vars/vault.yml
 
   tasks:
-    - name: set suite list variable
-      set_fact:
-        suite_vars: "{{ Suites[suite_set] }}"
-
     - name: Remove folders which are not needed
       file:
         path: "{{ project_base_dir }}/src/{{ item }}"

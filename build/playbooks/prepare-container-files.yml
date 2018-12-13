@@ -21,26 +21,35 @@
         - 2
         - 3
 
-#    - name: copy database dump
-#      copy:
-#        src: "{{ web_dir }}/{{ project_name }}/backups/*"
-#        dest: "{{ project_base_dir }}/container_files/backups"
-#
-#    - name: copy webserver files to webserver 1
-#      copy:
-#        src: "{{ web_dir }}/{{ project_name }}/files/*"
-#        dest: "{{ project_base_dir }}/container_files/files-1"
-#
+    - name: copy database dump
+      copy:
+        src: "{{ web_dir }}/{{ project_name }}/backups"
+        dest: "{{ project_base_dir }}/container_files/backups"
+
+    - name: copy webserver files to webserver 1
+      copy:
+        src: "{{ web_dir }}/{{ project_name }}/files"
+        dest: "{{ project_base_dir }}/container_files/files-1"
+
+    - name: Copy zone files for master DNS
+      copy:
+        src: "configuration/named/master"
+        dest: "/var/lib/named/"
+        owner: named
+        group: named
+        mode: 0600
+
+
     - name: copy checked out extension files from to webserver 1
       become: yes
       become_user: root
       copy:
-        src: "{{ project_base_dir }}/src/*"
+        src: "{{ project_base_dir }}/src"
         dest: "{{ project_base_dir }}/container_files/files-1"
 
     - name: copy tests to webserver 1
       copy:
-        src: "{{ web_dir }}/{{ project_name }}/tests/*"
+        src: "{{ web_dir }}/{{ project_name }}/tests"
         dest: "{{ project_base_dir }}/container_files/files-1/tests"
 
     - name: remove AcceptanceTesterActions.php
@@ -50,12 +59,12 @@
 
     - name: copy webserver files from webserver 1 to webserver 2
       copy:
-        src: "{{ project_base_dir }}/container_files/files-1/*"
+        src: "{{ project_base_dir }}/container_files/files-1"
         dest: "{{ project_base_dir }}/container_files/files-2"
 
     - name: copy webserver files from webserver 1 to webserver 3
       copy:
-        src: "{{ project_base_dir }}/container_files/files-1/*"
+        src: "{{ project_base_dir }}/container_files/files-1"
         dest: "{{ project_base_dir }}/container_files/files-3"
 
     - name: ensure log folder for test results exists

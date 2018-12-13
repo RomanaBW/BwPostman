@@ -73,21 +73,21 @@
     - name: Prepare manifest for codeception tests
       template:
         src: "codeception.container.yml.j2"
-        dest: "{{ project_base_dir }}/container_files/files-{{ item.suite_number }}/codeception.yml"
-      with_items: "{{ Suites }}"
+        dest: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}/codeception.yml"
+      with_dict: "{{ Suites }}"
 
     - name: Prepare manifest for acceptance tests
       template:
         src: "acceptance.suite.container.yml.j2"
-        dest: "{{ project_base_dir }}/container_files/files-{{ item.suite_number }}/tests/acceptance.suite.yml"
-      with_items: "{{ Suites }}"
+        dest: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"
+      with_dict: "{{ Suites }}"
 
     - name: Create test script
       template:
         src: "do-container-tests.sh.j2"
-        dest: "{{ project_base_dir }}/container_files/files-{{ item.suite_number }}/do-container-tests.sh"
+        dest: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"
         mode: 0775
-      with_items: "{{ Suites }}"
+      with_dict: "{{ Suites }}"
 
     #    sh "sudo chown -R romana ${WORKSPACE}/container_files/files-1"
 #    sh "sudo chgrp -R jenkins ${WORKSPACE}/container_files/files-1"

@@ -6,11 +6,11 @@
   tasks:
     - name: set suite list variable
       set_fact:
-        suite_vars: "{{ Suites }}"
+        suite_vars: "{{ Suites[suite_set] }}"
 
     - name: Debug suites variable
       debug:
-        msg: "{{ Suites }}"
+        msg: "{{ suite_vars }}"
 
     - name: create docker compose file for infrastructure
       template:

@@ -17,9 +17,9 @@
 
     - name: create dirs for webserver files
       file:
-        path: "{{ project_base_dir }}/container_files/files-{{ item.suite_number }}"
+        path: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}"
         state: directory
-      with_items: "{{ Suites }}"
+      with_dict: "{{ Suites }}"
 
     - name: copy database dump
       synchronize:

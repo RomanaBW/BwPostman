@@ -20,7 +20,7 @@ modules:
 # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
   config:
     WebDriver:
-      url: {{ item.webserver_ip }}
+      url: {{ item.value.webserver_ip }}
 
       browser: chrome
       port: 4445
@@ -37,7 +37,7 @@ modules:
 #        port: 4444
 
         Db:
-          dsn: 'mysql:host={{ item.db_ip }};dbname={{ BW_TEST_DB_NAME }}'
+          dsn: 'mysql:host={{ item.value.db_ip }};dbname={{ BW_TEST_DB_NAME }}'
           user: '{{ BW_TEST_DB_USER }}'
           password: '{{ BW_TEST_DB_PW }}'
           populate: false

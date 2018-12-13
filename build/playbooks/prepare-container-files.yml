@@ -7,7 +7,7 @@
 #    - vars/vault.yml
 
   tasks:
-    - name: Remove folders which are not needed
+    - name: Remove folders and files which are not needed
       file:
         path: "{{ project_base_dir }}/src/{{ item }}"
         state: absent
@@ -32,6 +32,7 @@
 #        dest: "{{ project_base_dir }}/container_files/files-1"
 #
     - name: copy checked out extension files from to webserver 1
+      become: yes
       copy:
         src: "{{ project_base_dir }}/src/*"
         dest: "{{ project_base_dir }}/container_files/files-1"

@@ -21,16 +21,16 @@
         - 2
         - 3
 
-    - name: copy database dump
-      copy:
-        src: "{{ web_dir }}/{{ project_name }}/backups/*"
-        dest: "{{ project_base_dir }}/container_files/backups"
-
-    - name: copy webserver files to webserver 1
-      copy:
-        src: "{{ web_dir }}/{{ project_name }}/files/*"
-        dest: "{{ project_base_dir }}/container_files/files-1"
-
+#    - name: copy database dump
+#      copy:
+#        src: "{{ web_dir }}/{{ project_name }}/backups/*"
+#        dest: "{{ project_base_dir }}/container_files/backups"
+#
+#    - name: copy webserver files to webserver 1
+#      copy:
+#        src: "{{ web_dir }}/{{ project_name }}/files/*"
+#        dest: "{{ project_base_dir }}/container_files/files-1"
+#
     - name: copy checked out extension files from to webserver 1
       copy:
         src: "{{ project_base_dir }}/src/*"

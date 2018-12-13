@@ -7,8 +7,8 @@ pipeline {
 	}
 
 	parameters {
-        string(name: "BWPM_VERSION_2", defaultValue: "220", description: "The new/next version number of the project.")
-        string(name: "JOOMLA_VERSION_2", defaultValue: "391", description: "Version of Joomla to test against")
+        string(name: "BWPM_VERSION", defaultValue: "220", description: "The new/next version number of the project.")
+        string(name: "JOOMLA_VERSION", defaultValue: "391", description: "Version of Joomla to test against")
         string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
     }
@@ -17,30 +17,30 @@ pipeline {
         stage('Prepare source files and log folders') {
             steps {
 				script {
-					PROJECT_NAME = "j${params.JOOMLA_VERSION_2}_bwpm${params.BWPM_VERSION_2}"
+					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
 				}
 
-//				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups"
-//				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups") {
-//					fileOperations([
-//						fileCopyOperation(
-//							excludes: '',
-//							flattenFiles: false,
-//							includes: "*.sql",
-//							targetLocation: "${WORKSPACE}/container_files/backups")
-//					])
-//				}
+				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups"
+				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+							flattenFiles: false,
+							includes: "*.sql",
+							targetLocation: "${WORKSPACE}/container_files/backups")
+					])
+				}
 
-				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}_1/files"
-//				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}_1/files") {
-//					fileOperations([
-//						fileCopyOperation(
-//							excludes: '',
-//							flattenFiles: false,
-//							includes: "**/*.*",
-//							targetLocation: "${WORKSPACE}/container_files/files-1")
-//					])
-//				}
+				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files"
+				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+							flattenFiles: false,
+							includes: "**/*.*",
+							targetLocation: "${WORKSPACE}/container_files/files-1")
+					])
+				}
 
 				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}'"
 
@@ -48,8 +48,8 @@ pipeline {
 				sh "mkdir -p ${WORKSPACE}/container_files/files-2"
 				sh "mkdir -p ${WORKSPACE}/container_files/files-3"
 
-				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}_1/backups/* ${WORKSPACE}/container_files/backups"
-				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}_1/files/* ${WORKSPACE}/container_files/files-1"
+				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/backups/* ${WORKSPACE}/container_files/backups"
+				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/files/* ${WORKSPACE}/container_files/files-1"
 				sh "sudo cp -rfpv ${WORKSPACE}/tests/* ${WORKSPACE}/container_files/files-1/tests"
 
 				sh "sudo cp -rfpv ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"

@@ -59,19 +59,17 @@
 
     - name: ensure log folder for test results exists
       file:
-        path: "{{ test_container_log_path }}"
+        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item }}/logs"
         state: directory
         mode: 0777
+      with_items: {{ test_suites_container.name }}
 
     - name: ensure video folder for test results exists
       file:
-        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suites_container }}/videos"
+        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item }}/videos"
         state: directory
         mode: 0777
-      with_items:
-        - Suite_1
-        - Suite_2
-        - Suite_3
+      with_items: {{ test_suites_container.name }}
 
     - name: Prepare manifest for codeception tests
       template:

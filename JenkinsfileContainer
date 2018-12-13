@@ -20,28 +20,6 @@ pipeline {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
 				}
 
-				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups"
-				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/backups") {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-							flattenFiles: false,
-							includes: "*.sql",
-							targetLocation: "${WORKSPACE}/container_files/backups")
-					])
-				}
-
-				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files"
-				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-							flattenFiles: false,
-							includes: "**/*.*",
-							targetLocation: "${WORKSPACE}/container_files/files-1")
-					])
-				}
-
 				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}'"
 
 //				sh "mkdir -p ${WORKSPACE}/container_files/files-1"

@@ -59,7 +59,7 @@
 
     - name: ensure log folder for test results exists
       file:
-        path: "{{ test_log_path }}"
+        path: "{{ test_container_log_path }}"
         state: directory
         mode: 0777
 

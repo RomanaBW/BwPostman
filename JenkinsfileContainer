@@ -88,21 +88,21 @@ pipeline {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME} up -d"
+						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-1 up -d"
 					}
 				}
 				stage('Infrastructure suite 2') {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-2.yml --verbose -p ${PROJECT_NAME} up -d"
+						sh "docker-compose -f build/docker/run-bwpm-2.yml --verbose -p ${PROJECT_NAME}-2 up -d"
 					}
 				}
 				stage('Infrastructure suite 3') {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-3.yml --verbose -p ${PROJECT_NAME} up -d"
+						sh "docker-compose -f build/docker/run-bwpm-3.yml --verbose -p ${PROJECT_NAME}-3 up -d"
 					}
 				}
 			}

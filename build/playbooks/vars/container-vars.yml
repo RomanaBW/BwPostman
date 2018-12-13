@@ -50,3 +50,99 @@ Suites:
     webserver_port: "8031"
 
 BW_TEST_DB_HOST: "mysqldbbwpm"
+
+test_file_container:
+  - suite: install
+    testsuite_file: Backend/TestInstallationCest
+  - suite: update
+    testsuite_file: Backend/TestUpdateCest
+  - suite: uninstall
+    testsuite_file: Backend/TestDeinstallationCest
+  - suite: options
+    testsuite_file: Backend/TestOptionsCest
+  - suite: lists
+    testsuite_file: Backend/Lists
+  - suite: maintenance
+    testsuite_file: Backend/TestMaintenanceCest
+  - suite: restore
+    testsuite_file: Backend/TestMaintenanceCest::restoreTablesNoZip
+  - suite: defaultOptions
+    testsuite_file: Backend/TestOptionsCest::saveDefaults
+  - suite: setPermissions
+    testsuite_file: Backend/TestOptionsCest::setPermissions
+  - suite: frontend
+    testsuite_file: Frontend
+  - suite: details
+    testsuite_file: Backend/Details
+  - suite: user2subscriber
+    testsuite_file: User2Subscriber
+  - suite: createUsers
+    testsuite_file: Backend/Access/TestInstallUsersCest
+  - suite: access1
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForListViewButtonsFromMainView
+  - suite: access2
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView
+  - suite: access3
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtons
+#  - personalize:
+#  - restore:
+#  - module_subs:
+#  - module_overview:
+
+test_suites_container:
+  - name: smoke
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - uninstall
+
+  - name: accept1
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - lists
+
+  - name: accept2
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - details
+
+  - name: accept3
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - maintenance
+      - frontend
+
+  - name: accept4
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - setPermissions
+      - createUsers
+      - access1
+      - access2
+
+  - name: accept5
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - setPermissions
+      - createUsers
+      - access3
+
+  - name: accept6
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - user2subscriber
+#  - personalize
+

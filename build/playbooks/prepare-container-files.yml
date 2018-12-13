@@ -1,0 +1,116 @@
+---
+- hosts: localhost
+  vars_files:
+    - vars/container-vars.yml
+    - vars/vars.yml
+    - vars/tests.yml
+#    - vars/vault.yml
+
+  tasks:
+    - name: set suite list variable
+      set_fact:
+        suite_vars: "{{ Suites[suite_set] }}"
+
+    - name: Remove folders which are not needed
+      file:
+        path: "{{ project_base_dir }}/src/{{ item }}"
+        state: absent
+      with_items: "{{ to_delete }}"
+
+    - name: create webserver files dir
+      file:
+        path: "{{ project_base_dir }}/container_files/files-{{ item }}"
+      with_items:
+        - 1
+        - 2
+        - 3
+
+    - name: copy database dump
+      copy:
+        src: "{{ web_dir }}/{{ project_name }}/backups/*"
+        dest: "{{ project_base_dir }}/container_files/backups"
+
+    - name: copy webserver files to webserver 1
+      copy:
+        src: "{{ web_dir }}/{{ project_name }}/files/*"
+        dest: "{{ project_base_dir }}/container_files/files-1"
+
+    - name: copy checked out extension files from to webserver 1
+      copy:
+        src: "{{ project_base_dir }}/src/*"
+        dest: "{{ project_base_dir }}/container_files/files-1"
+
+    - name: copy tests to webserver 1
+      copy:
+        src: "{{ web_dir }}/{{ project_name }}/tests/*"
+        dest: "{{ project_base_dir }}/container_files/files-1/tests"
+
+    - name: remove AcceptanceTesterActions.php
+      file:
+        path: "{{ project_base_dir }}/container_files/files-1/tests/_support/_generated/AcceptanceTesterActions.php"
+        state: absent
+
+    - name: copy webserver files from webserver 1 to webserver 2
+      copy:
+        src: "{{ project_base_dir }}/container_files/files-1/*"
+        dest: "{{ project_base_dir }}/container_files/files-2"
+
+    - name: copy webserver files from webserver 1 to webserver 3
+      copy:
+        src: "{{ project_base_dir }}/container_files/files-1/*"
+        dest: "{{ project_base_dir }}/container_files/files-3"
+
+    - name: ensure log folder for test results exists
+      become: true
+      become_user: root
+      file:
+        path: "{{ test_log_path }}"
+        state: directory
+        mode: 0777
+
+    - name: ensure video folder for test results exists
+      become: true
+      become_user: root
+      file:
+        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suite }}/videos"
+        state: directory
+        mode: 0777
+      with_items:
+        - Suite_1
+        - Suite_2
+        - Suite_3
+
+    - name: Prepare manifest for codeception tests
+      template:
+        src: "codeception.yml.j2"
+        dest: "{{ project_base_dir }}/container_files/files-{{ item }}/codeception.yml"
+      with_items:
+        - 1
+        - 2
+        - 3
+
+    - name: Prepare manifest for acceptance tests
+      become: true
+      become_user: root
+      template:
+        src: "acceptance.suite.yml.j2"
+        dest: "{{ project_base_dir }}/container_files/files-{{ item }}/tests/acceptance.suite.yml"
+      with_items:
+        - 1
+        - 2
+        - 3
+
+    - name: Create test script
+      template:
+        src: "do-container-tests.sh.j2"
+        dest: "{{ project_base_dir }}/container_files/files-{{ item }}/do-container-tests.sh"
+        mode: 0775
+      with_items:
+        - 1
+        - 2
+        - 3
+
+    #    sh "sudo chown -R romana ${WORKSPACE}/container_files/files-1"
+#    sh "sudo chgrp -R jenkins ${WORKSPACE}/container_files/files-1"
+#    sh "sudo chmod -R 0775 ${WORKSPACE}/container_files/files-1"
+

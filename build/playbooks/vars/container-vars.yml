@@ -86,13 +86,13 @@ Suites:
 
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
-test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.suite_name }}/logs"
-record_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.suite_name }}/videos"
+test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.value.suite_name }}/logs"
+record_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.value.suite_name }}/videos"
 
 codecept_path_tests: "tests"
 codecept_path_data: "repositories/artifacts/bwpostman/data"
 codecept_path_support: "tests/_support"
-codecept_path_output: "repositories/artifacts/bwpostman/{{ project_name }}/{{ item.suite_name }}/logs"
+codecept_path_output: "repositories/artifacts/bwpostman/{{ project_name }}/{{ item.value.suite_name }}/logs"
 codecept_failed_file: "{{ codecept_path_output }}/failed"
 
 screen_size: '1440x900'

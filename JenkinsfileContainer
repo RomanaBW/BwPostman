@@ -47,6 +47,7 @@ pipeline {
 				sh "mkdir -p ${WORKSPACE}/container_files/files-3"
 
 				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}_1/files/* ${WORKSPACE}/container_files/files-1"
+				sh "sudo cp -rfpv ${WORKSPACE}/tests/* ${WORKSPACE}/container_files/files-1/tests"
 
 				sh "sudo cp -rfpv ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
 				sh "sudo chown -R romana ${WORKSPACE}/container_files/files-1"

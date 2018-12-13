@@ -33,9 +33,10 @@
 #
     - name: copy checked out extension files from to webserver 1
       become: yes
+      become_user: root
       copy:
-        src: "../../src/*"
-        dest: "../../container_files/files-1"
+        src: "{{ project_base_dir }}/src/*"
+        dest: "{{ project_base_dir }}/container_files/files-1"
 
     - name: copy tests to webserver 1
       copy:

@@ -34,8 +34,8 @@
     - name: copy checked out extension files from to webserver 1
       become: yes
       copy:
-        src: "{{ project_base_dir }}/src/*"
-        dest: "{{ project_base_dir }}/container_files/files-1"
+        src: "../src/*"
+        dest: "../container_files/files-1"
 
     - name: copy tests to webserver 1
       copy:

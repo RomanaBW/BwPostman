@@ -44,21 +44,21 @@ pipeline {
 
 				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}'"
 
-				sh "mkdir -p ${WORKSPACE}/container_files/files-1"
-				sh "mkdir -p ${WORKSPACE}/container_files/files-2"
-				sh "mkdir -p ${WORKSPACE}/container_files/files-3"
+//				sh "mkdir -p ${WORKSPACE}/container_files/files-1"
+//				sh "mkdir -p ${WORKSPACE}/container_files/files-2"
+//				sh "mkdir -p ${WORKSPACE}/container_files/files-3"
 
-				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/backups/* ${WORKSPACE}/container_files/backups"
-				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/files/* ${WORKSPACE}/container_files/files-1"
-				sh "sudo cp -rfpv ${WORKSPACE}/tests/* ${WORKSPACE}/container_files/files-1/tests"
+//				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/backups/* ${WORKSPACE}/container_files/backups"
+//				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/files/* ${WORKSPACE}/container_files/files-1"
+//				sh "sudo cp -rfpv ${WORKSPACE}/tests/* ${WORKSPACE}/container_files/files-1/tests"
 
-				sh "sudo cp -rfpv ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
-				sh "sudo chown -R romana ${WORKSPACE}/container_files/files-1"
-				sh "sudo chgrp -R jenkins ${WORKSPACE}/container_files/files-1"
-				sh "sudo chmod -R 0775 ${WORKSPACE}/container_files/files-1"
+//				sh "sudo cp -rfpv ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
+//				sh "sudo chown -R romana ${WORKSPACE}/container_files/files-1"
+//				sh "sudo chgrp -R jenkins ${WORKSPACE}/container_files/files-1"
+//				sh "sudo chmod -R 0775 ${WORKSPACE}/container_files/files-1"
 
-				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
-				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"
+//				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
+//				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"
 
                 echo 'ToDo: Remove not needed files'
                 echo 'ToDo: ensure log folders are present'

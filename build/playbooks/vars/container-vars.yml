@@ -81,7 +81,8 @@ Suites:
 
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
-test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suites_container }}/logs"
+test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.name }}/logs"
+record_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.name }}/videos"
 
 codecept_path_tests: "tests"
 codecept_path_data: "repositories/artifacts/bwpostman/data"

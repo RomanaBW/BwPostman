@@ -33,7 +33,7 @@
 
     - name: copy tests to webserver 1
       synchronize:
-        src: "{{ web_dir }}/{{ project_name }}/tests"
+        src: "{{ project_base_dir }}/tests/"
         dest: "{{ project_base_dir }}/container_files/files-1/tests"
 
     - name: remove AcceptanceTesterActions.php

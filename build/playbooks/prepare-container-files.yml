@@ -12,7 +12,8 @@
 
     - name: Debug suites variable
       debug:
-        msg: "{{ Suites }}"
+        msg: "{{ item }}"
+      with_items: "{{ Suites }}"
 
     - name: create dirs for webserver files
       file:

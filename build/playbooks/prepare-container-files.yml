@@ -10,14 +10,11 @@
         state: absent
       with_items: "{{ to_delete }}"
 
-    - name: create webserver files dir
+    - name: create dirs for webserver files
       file:
-        path: "{{ project_base_dir }}/container_files/files-{{ item }}"
+        path: "{{ project_base_dir }}/container_files/files-{{ item.suite_number }}"
         state: directory
-      with_items:
-        - 1
-        - 2
-        - 3
+      with_items: "{{ Suites }}"
 
     - name: copy database dump
       synchronize:
@@ -46,12 +43,12 @@
 
     - name: copy webserver files from webserver 1 to webserver 2
       synchronize:
-        src: "{{ project_base_dir }}/container_files/files-1"
+        src: "{{ project_base_dir }}/container_files/files-1/"
         dest: "{{ project_base_dir }}/container_files/files-2"
 
     - name: copy webserver files from webserver 1 to webserver 3
       synchronize:
-        src: "{{ project_base_dir }}/container_files/files-1"
+        src: "{{ project_base_dir }}/container_files/files-1/"
         dest: "{{ project_base_dir }}/container_files/files-3"
 
     - name: ensure log folder for test results exists

@@ -16,7 +16,7 @@
     - name: create webserver files dir
       file:
         path: "{{ project_base_dir }}/container_files/files-{{ item }}"
-        state: present
+        state: directory
       with_items:
         - 1
         - 2

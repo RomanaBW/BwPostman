@@ -21,7 +21,7 @@ done
 printf '\n'
 
 # Start recording
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>/data{{ test_log_path }}/ffmpeg.log"
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ item.suite }}.mp4 2>/data{{ test_log_path }}/ffmpeg.log"
 
 # run tests
 cd /data
@@ -32,15 +32,15 @@ cd /data
 failed_check=0
 
 {% set selected_suite = '' %}
-{% for suite in test_suites_container if suite.name == test_suite %}
+{% for suite in test_suites_container if suite.name == item.suite %}
 {% set selected_suite = suite.tests %}
-{% for item in selected_suite %}
-{% for selected_file in test_file_container if selected_file.suite == item %}
+{% for item_inner in selected_suite %}
+{% for selected_file in test_file_container if selected_file.suite == item_inner %}
 if [ ${failed_check} = 0 ]; then
-  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item_inner }}.xml --html htmlreports/report_{{ item_inner }}.html
 fi
 if [ -f {{ codecept_failed_file }} ]; then
-  echo "Current test {{ item }} failed!"
+  echo "Current test {{ item_inner }} failed!"
   failed_check=1
 fi
 {% endfor %}

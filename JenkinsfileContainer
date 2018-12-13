@@ -31,8 +31,8 @@ pipeline {
 					])
 				}
 
-				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}/files"
-//				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}/files") {
+				echo "/vms/dockers/global_data/test_data/${PROJECT_NAME}_1/files"
+//				dir("/vms/dockers/global_data/test_data/${PROJECT_NAME}_1/files") {
 //					fileOperations([
 //						fileCopyOperation(
 //							excludes: '',
@@ -148,21 +148,21 @@ pipeline {
 				stage('Stop suite 1') {
 					steps {
 						echo 'Dummy '
-						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME} down"
+						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
 						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
 					}
 				}
 				stage('Stop suite 2') {
 					steps {
 						echo 'Dummy '
-						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME} down"
+						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
 						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
 					}
 				}
 				stage('Stop suite 3') {
 					steps {
 						echo 'Dummy '
-						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME} down"
+						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
 						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
 					}
 				}

@@ -49,8 +49,8 @@ pipeline {
 				sh "sudo cp -rfpv /vms/dockers/global_data/test_data/${PROJECT_NAME}/files/* ${WORKSPACE}/container_files/files-1"
 
 				sh "sudo cp -rfpv ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
-				sh "sudo chown -R jenkins ${WORKSPACE}/container_files/files-1"
-				sh "sudo chgrp -R jenkins ${WORKSPACE}/container_files/files-1"
+				sh "sudo chown -R www-data ${WORKSPACE}/container_files/files-1"
+				sh "sudo chgrp -R www-data ${WORKSPACE}/container_files/files-1"
 
 				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
 				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"

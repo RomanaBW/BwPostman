@@ -21,7 +21,7 @@ done
 printf '\n'
 
 # Start recording
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ item.suite }}.mp4 2>/data{{ test_container_log_path }}/ffmpeg.log"
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ item.suite_name }}.mp4 2>/data{{ test_container_log_path }}/ffmpeg.log"
 
 # run tests
 cd /data
@@ -32,7 +32,7 @@ cd /data
 failed_check=0
 
 {% set selected_suite = '' %}
-{% for suite in test_suites_container if suite.name == item.suite %}
+{% for suite in test_suites_container if suite.name == item.suite_name %}
 {% set selected_suite = suite.tests %}
 {% for item_inner in selected_suite %}
 {% for selected_file in test_file_container if selected_file.suite == item_inner %}

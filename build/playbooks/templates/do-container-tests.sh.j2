@@ -21,7 +21,7 @@ done
 printf '\n'
 
 # Start recording
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ item.suite }}.mp4 2>/data{{ test_log_path }}/ffmpeg.log"
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ item.suite }}.mp4 2>/data{{ test_container_log_path }}/ffmpeg.log"
 
 # run tests
 cd /data

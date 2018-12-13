@@ -23,7 +23,7 @@
 
     - name: copy database dump
       synchronize:
-        src: "{{ web_dir }}/{{ project_name }}/backups"
+        src: "{{ web_dir }}/{{ project_name }}/backups/"
         dest: "{{ project_base_dir }}/container_files/backups"
 
     - name: copy webserver files to webserver 1

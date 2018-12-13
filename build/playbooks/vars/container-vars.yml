@@ -93,58 +93,58 @@ test_file_container:
 
 test_suites_container:
   - name: smoke
-      tests:
-        - install
-        - defaultOptions
-        - restore
-        - uninstall
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - uninstall
 
   - name: accept1
-      tests:
-        - install
-        - defaultOptions
-        - restore
-        - lists
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - lists
 
   - name: accept2
-      tests:
-        - install
-        - defaultOptions
-        - restore
-        - details
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - details
 
   - name: accept3
-      tests:
-        - install
-        - defaultOptions
-        - restore
-        - maintenance
-        - frontend
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - maintenance
+      - frontend
 
   - name: accept4
-      tests:
-        - install
-        - defaultOptions
-        - restore
-        - setPermissions
-        - createUsers
-        - access1
-        - access2
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - setPermissions
+      - createUsers
+      - access1
+      - access2
 
   - name: accept5
-      tests:
-        - install
-        - defaultOptions
-        - restore
-        - setPermissions
-        - createUsers
-        - access3
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - setPermissions
+      - createUsers
+      - access3
 
   - name: accept6
-      tests:
-        - install
-        - defaultOptions
-        - restore
-        - user2subscriber
+    tests:
+      - install
+      - defaultOptions
+      - restore
+      - user2subscriber
 #  - personalize
 

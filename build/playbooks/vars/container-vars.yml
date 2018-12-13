@@ -51,7 +51,7 @@ Suites:
 
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
-test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suite }}/logs"
+test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suites_container }}/logs"
 
 test_file_container:
   - suite: install

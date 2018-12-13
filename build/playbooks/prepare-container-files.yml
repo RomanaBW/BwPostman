@@ -65,7 +65,7 @@
 
     - name: ensure video folder for test results exists
       file:
-        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suite }}/videos"
+        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suites_container }}/videos"
         state: directory
         mode: 0777
       with_items:

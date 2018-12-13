@@ -51,7 +51,7 @@ pipeline {
 				sh "sudo cp -rfpv ${WORKSPACE}/src/* ${WORKSPACE}/container_files/files-1"
 				sh "sudo chown -R romana ${WORKSPACE}/container_files/files-1"
 				sh "sudo chgrp -R jenkins ${WORKSPACE}/container_files/files-1"
-				sh "sudo mod -R 0775 ${WORKSPACE}/container_files/files-1"
+				sh "sudo chmod -R 0775 ${WORKSPACE}/container_files/files-1"
 
 				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-2"
 				sh "sudo cp -rfpv ${WORKSPACE}/container_files/files-1/* ${WORKSPACE}/container_files/files-3"

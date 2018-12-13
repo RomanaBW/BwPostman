@@ -1,4 +1,31 @@
 ---
+to_delete:
+  - index.php
+  - administrator/index.php
+  - administrator/language/de-DE/de-DE.plg_bwpostman_bwtimecontrol.ini
+  - administrator/language/de-DE/de-DE.plg_bwpostman_bwtimecontrol.sys.ini
+  - administrator/language/de-DE/de-DE.plg_bwpostman_demo.ini
+  - administrator/language/de-DE/de-DE.plg_bwpostman_demo.sys.ini
+  - administrator/language/de-DE/de-DE.plg_bwtests.ini
+  - administrator/language/de-DE/de-DE.plg_bwtests.sys.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.sys.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_demo.ini
+  - administrator/language/en-GB/en-GB.plg_bwpostman_demo.sys.ini
+  - administrator/language/en-GB/en-GB.plg_bwtests.ini
+  - administrator/language/en-GB/en-GB.plg_bwtests.sys.ini
+  - administrator/language/it-IT/it-IT.plg_bwpostman_demo.ini
+  - administrator/language/it-IT/it-IT.plg_bwpostman_demo.sys.ini
+  - plugins/attachments
+  - plugins/quickicon
+  - plugins/search
+  - plugins/vendor
+  - plugins/bwpostman/demo
+  - plugins/bwpostman/bwtimecontrol
+  - plugins/system/bwtests
+  - plugins/composer.json
+  - plugins/composer.lock
+
 network: "tester-net-bwpm"
 network_suffix: ".nil"
 
@@ -7,6 +34,8 @@ web_dir: "/vms/dockers/global_data/test_data"
 BW_TEST_DB_USER: "tester"
 BW_TEST_DB_PW: "barbamama"
 BW_TEST_DB_NAME: "joomlatest"
+test_db_host: "localhost"
+
 
 db:
   service: "mysqldbbwpm"
@@ -52,6 +81,18 @@ Suites:
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
 test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suites_container }}/logs"
+
+codecept_path_tests: "tests"
+codecept_path_data: "repositories/artifacts/bwpostman/data"
+codecept_path_support: "tests/_support"
+codecept_path_output: "repositories/artifacts/bwpostman/{{ project_name }}/{{ test_suites_container }}/logs"
+codecept_failed_file: "{{ codecept_path_output }}/failed"
+
+tester_url: "https://www{{ server_node }}.tester-net.nil"
+
+screen_size: '1440x900'
+display: ':45'
+
 
 test_file_container:
   - suite: install

@@ -1,0 +1,44 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+
+paths:
+  log: {{ codecept_path_output }}
+  data: {{ codecept_path_data }}
+
+modules:
+  enabled:
+    - \Helper\Acceptance
+    - WebDriver
+    - Db
+    - Asserts
+
+# Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
+  config:
+    WebDriver:
+      url: {{ item.webserver_ip }}
+
+      browser: chrome
+      port: 4445
+      capabilities:
+          chromeOptions:
+              args: ["--no-sandbox", "--window-size=1440,900"]
+
+      connection_timeout: 60
+      restart: false
+
+#        browser: phantomjs
+#        port: 4447
+#        browser: firefox
+#        port: 4444
+
+        Db:
+          dsn: 'mysql:host={{ item.db_ip }};dbname={{ BW_TEST_DB_NAME }}'
+          user: '{{ BW_TEST_DB_USER }}'
+          password: '{{ BW_TEST_DB_PW }}'
+          populate: false
+          cleanup: false

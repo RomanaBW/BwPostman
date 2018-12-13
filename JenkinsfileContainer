@@ -42,7 +42,7 @@ pipeline {
 //					])
 //				}
 
-				sh "ansible-playbook /build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}'"
+				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}'"
 
 				sh "mkdir -p ${WORKSPACE}/container_files/files-1"
 				sh "mkdir -p ${WORKSPACE}/container_files/files-2"

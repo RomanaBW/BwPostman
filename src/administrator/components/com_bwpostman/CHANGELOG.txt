@@ -6,10 +6,7 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 2.1.2 released (13-Dez-2018)----
-
-New
-+
+Version 2.1.2 released (14-Dez-2018)----
 
 Improvement
 ~ Output checked for valid HTML

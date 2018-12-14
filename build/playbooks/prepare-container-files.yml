@@ -15,6 +15,14 @@
         msg: "{{ item }}"
       with_items: "{{ Suites }}"
 
+    - name: set project name variable without dots
+      set_fact:
+        project_name_without_dots: "{{ project_name | replace('.', '') }}"
+
+    - name: set project name variable without dots and underline
+      set_fact:
+        project_name_shorted: "{{ project_name_without_dots | replace('_', '') }}"
+
     - name: create dirs for webserver files
       file:
         path: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}"
@@ -23,7 +31,7 @@
 
     - name: copy database dump
       synchronize:
-        src: "{{ web_dir }}/{{ project_name }}/backups/"
+        src: "{{ web_dir }}/{{ project_name_without_dots }}/backups/"
         dest: "{{ project_base_dir }}/container_files/backups"
 
     - name: copy webserver files to webserver 1

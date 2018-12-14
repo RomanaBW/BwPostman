@@ -16,3 +16,4 @@
       template:
         src: "run-bwpm.yml.j2"
         dest: "../docker/run-bwpm-{{ suite_vars['suite_number'] }}.yml"
+      with_item: "{{ suite_vars }}"

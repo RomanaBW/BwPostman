@@ -38,7 +38,7 @@ RUN zypper --non-interactive in xorg-x11-Xvnc
 # keep packages on newest state
 RUN zypper --non-interactive up
 
-RUN zypper --non-interactive dup --http://packman.jacobs-university.de/suse/openSUSE_Leap_42.3/
+#RUN zypper --non-interactive dup --http://packman.jacobs-university.de/suse/openSUSE_Leap_42.3/
 
 # keep packages on newest state
-RUN zypper --non-interactive up
+#RUN zypper --non-interactive up

@@ -277,7 +277,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_send_number  = '%s  of  %s  newsletters need to be sent.';
+	public static $success_send_number  = '%s of %s newsletters need to be sent.';
 
 	/**
 	 * @var string
@@ -285,6 +285,20 @@ class NewsletterEditPage
 	 * @since   2.0.0
 	 */
 	public static $success_send_number_id  = ".//*[@id='nl_modal_to_send_message']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $delay_message_id  = ".//*[@id='nl_modal_delay_message']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $delay_message_text  = 'The entered time delay of %s %s counts down…';
 
 	/**
 	 * @var integer
@@ -1148,7 +1162,7 @@ class NewsletterEditPage
 	}
 
 	/**
-	 * Test method to create copy newsletter and send to real recipients
+	 * Test method to send newsletter to real recipients
 	 *
 	 * @param   \AcceptanceTester   $I
 	 * @param   boolean             $sentToUnconfirmed
@@ -1231,6 +1245,87 @@ class NewsletterEditPage
 		$I->see(self::$success_send_ready);
 
 		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
+
+		$I->switchToIFrame();
+		$I->wait(8);
+
+		$I->see("Newsletters", Generals::$pageTitle);
+		$I->clickAndWait(NlManage::$tab2, 1);
+	}
+
+	/**
+	 * Test method to send newsletter to real recipients with modified step value
+	 *
+	 * @param   \AcceptanceTester   $I
+	 * @param   integer             $iframeTime         time to wait for the last iframe sendFrame appearance (chromium 66+ specific)
+	 * @param   integer             $stepSize           number of newsletters to send per step
+	 * @param   integer             $timeDelay          number of time units to wait
+	 * @param   string              $timeDelayUnit      time unit (seconds|minutes)
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public static function SendNewsletterOptionsCheck(\AcceptanceTester $I, $iframeTime = 20, $stepSize = 100, $timeDelay = 1, $timeDelayUnit = 'second')
+	{
+		$I->click(self::$mark_to_send);
+		$I->click(Generals::$toolbar['Send']);
+		$I->see(self::$tab5_legend1);
+
+		$nbrToSend  = self::$nbr_only_confirmed;
+
+		codecept_debug("Nbr to send: $nbrToSend");
+
+		$remainsToSend  = $nbrToSend - $stepSize;
+
+		$I->clickAndWait(self::$button_send, 1);
+		$I->seeInPopup(self::$popup_send_confirm);
+
+		$I->acceptPopup();
+
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		if ($user == 'jenkins')
+		{
+			$I->wait($iframeTime);
+		}
+
+		$I->waitForElement(self::$tab5_send_iframeId, 20);
+		$I->switchToIFrame(self::$tab5_send_iframe);
+
+		$I->waitForElementVisible(self::$success_send_number_id, 60);
+		$I->waitForText(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend), 60);
+
+		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
+
+		$I->waitForElementVisible(self::$delay_message_id, 60);
+		$I->see(sprintf(self::$delay_message_text, $timeDelay, $timeDelayUnit), self::$delay_message_id);
+
+		while ($remainsToSend > $stepSize)
+		{
+			$remainsToSend  -= $stepSize;
+
+			$I->waitForElementVisible(self::$success_send_number_id, 180);
+			$I->waitForText(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend), 180);
+
+			$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
+		}
+
+		$I->waitForElementVisible(self::$success_send_number_id, 180);
+		$I->waitForText(self::$success_send_ready, 180);
+
+		$I->see(sprintf(self::$success_send_number, 0, $nbrToSend));
 
 		$I->switchToIFrame();
 		$I->wait(8);

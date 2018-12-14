@@ -34,6 +34,8 @@ class TestCampaignsListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	public function _login(\Page\Login $loginPage)
 	{
@@ -132,6 +134,8 @@ class TestCampaignsListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	public function ListlimitCampaigns(AcceptanceTester $I)
 	{
@@ -153,6 +157,8 @@ class TestCampaignsListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	public function PaginationCampaigns(AcceptanceTester $I)
 	{
@@ -173,6 +179,8 @@ class TestCampaignsListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{

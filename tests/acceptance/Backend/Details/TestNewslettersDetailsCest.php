@@ -914,6 +914,8 @@ class TestNewslettersDetailsCest
 	 * @return void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	private function fillFormSimpleWithCampaign(\AcceptanceTester $I)
 	{

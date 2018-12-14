@@ -155,7 +155,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 				if ($ret == 1)
 				{   // There are more mails in the queue.
-					echo $delay_message;
+					echo '<div id="nl_modal_delay_message">' . $delay_message . '</div>';
 					echo '<script type="text/javascript">' . "\n";
 					echo "setTimeout('window.location.reload()'," . $delay . "); \n";
 					echo "</script>\n";

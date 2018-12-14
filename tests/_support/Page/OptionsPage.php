@@ -114,7 +114,28 @@ class OptionsPage
 	 *
 	 * @since 2.2.0
 	 */
-	public static $excludedCategories  = ".//*[@id='jform_excluded_categories_chzn']";
+	public static $excludedCategories  = ".//*[@id='jform_excluded_categories_chzn']/ul/li/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $excludedCategoriesListResult  = ".//*[@id='jform_excluded_categories_chzn']/div/ul/li";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $excludedCategoriesResult  = ".//*[@id='jform_excluded_categories_chzn']/ul/li[1]/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $excludedCategoriesEmptyResult  = ".//*[@id='jform_excluded_categories_chzn']/ul/li[1]/a";
 
 	/**
 	 * @var string
@@ -135,14 +156,14 @@ class OptionsPage
 	 *
 	 * @since 2.2.0
 	 */
-	public static $delayUnitSeconds  = ".//*[@id='jform_mails_per_pageload_delay_unit']/label[1]";
+	public static $delayUnitMinutes  = ".//*[@id='jform_mails_per_pageload_delay_unit']/label[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $delayUnitMinutes  = ".//*[@id='jform_mails_per_pageload_delay_unit']/label[2]";
+	public static $delayUnitSeconds  = ".//*[@id='jform_mails_per_pageload_delay_unit']/label[2]";
 
 	/**
 	 * @var string
@@ -227,6 +248,34 @@ class OptionsPage
 	 * @since 2.2.0
 	 */
 	public static $replyMailByOption  = "max.mayer@tester-net.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $newslettersPerStep  = 50;
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $newslettersPerStepDefault  = 100;
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $numberOfSeconds  = 5;
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $numberOfSecondsDefault  = 1;
 
 
 	/*
@@ -493,28 +542,322 @@ class OptionsPage
 	public static $SecurityAnswer  = ".//*[@id='jform_security_answer']";
 
 
+	/*
+	 * Tab activation
+	 */
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $titleForActivation  = ".//*[@id='jform_activation_salutation_text']";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $textForActivation  = ".//*[@id='jform_activation_text']";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $textAgreement  = ".//*[@id='jform_permission_text']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $activationToWebmasterNo  = ".//*[@id='jform_activation_to_webmaster']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $activationToWebmasterYes  = ".//*[@id='jform_activation_to_webmaster']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $activationSenderName  = ".//*[@id='jform_activation_from_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $activationSenderMail  = ".//*[@id='jform_activation_to_webmaster_email']";
+
+	/*
+	 * Tab unsubscription
+	 */
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionOneClickNo  = ".//*[@id='jform_del_sub_1_click']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionOneClickYes  = ".//*[@id='jform_del_sub_1_click']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionToWebmasterNo  = ".//*[@id='jform_deactivation_to_webmaster']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionToWebmasterYes  = ".//*[@id='jform_deactivation_to_webmaster']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionSenderName  = ".//*[@id='jform_deactivation_from_name']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionSenderMail  = ".//*[@id='jform_deactivation_to_webmaster_email']";
 
 
 	/*
 	 * Tab lists view
 	 */
 
-	// UI
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowSearchFieldShow  = ".//*[@id='jform_filter_field']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowSearchFieldHide  = ".//*[@id='jform_filter_field']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowDateFilterShow  = ".//*[@id='jform_date_filter_enable']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowDateFilterHide  = ".//*[@id='jform_date_filter_enable']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowMailinglistFilterShow  = ".//*[@id='jform_ml_filter_enable']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowMailinglistFilterHide  = ".//*[@id='jform_ml_filter_enable']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowCampaignFilterShow  = ".//*[@id='jform_cam_filter_enable']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowCampaignFilterHide  = ".//*[@id='jform_cam_filter_enable']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowUsergroupFilterShow  = ".//*[@id='jform_group_filter_enable']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsShowUsergroupFilterHide  = ".//*[@id='jform_group_filter_enable']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsEnableAttachmentShow  = ".//*[@id='jform_attachment_enable']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsEnableAttachmentHide  = ".//*[@id='jform_attachment_enable']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsCheckAccessYes  = ".//*[@id='jform_access_check']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $listsCheckAccessNo  = ".//*[@id='jform_access_check']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_list_id        = "jform_display_num_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_list           = ".//*[@id='jform_display_num_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_5              = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='5']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_10             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='10']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_15             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='15']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_20             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='20']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_25             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='25']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_30             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='30']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_50             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='05']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_100             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='100']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $limit_all             = ".//*[@id='jform_display_num_chzn']/div/ul/li[text()='all']";
+
+
 
 	/*
 	 * Tab single view
 	 */
 
-	// UI
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $detailsEnableAttachmentShow  = ".//*[@id='jform_attachment_single_enable']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $detailsEnableAttachmentHide  = ".//*[@id='jform_attachment_single_enable']/label[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $detailsSubjectAsTitleYes  = ".//*[@id='jform_subject_as_title']/label[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $detailsSubjectAsTitleNo  = ".//*[@id='jform_subject_as_title']/label[2]";
 
 	/*
 	 * Tab permissions
 	 */
-
-	// UI
 
 	/**
 	 * @var string

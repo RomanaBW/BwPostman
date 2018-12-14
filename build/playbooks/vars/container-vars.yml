@@ -63,6 +63,7 @@ Suites:
     mailer_ip: "172.18.0.26"
     webserver_ip: "172.18.0.28"
     webserver_port: "8011"
+    tester_ip: "172.18.0.29"
 
   Suite_2:
     suite_name: "Suite_2"
@@ -73,6 +74,7 @@ Suites:
     mailer_ip: "172.18.0.34"
     webserver_ip: "172.18.0.36"
     webserver_port: "8021"
+    tester_ip: "172.18.0.37"
 
   Suite_3:
     suite_name: "Suite_3"
@@ -83,16 +85,20 @@ Suites:
     mailer_ip: "172.18.0.42"
     webserver_ip: "172.18.0.44"
     webserver_port: "8031"
+    tester_ip: "172.18.0.45"
 
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
-test_container_log_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.value.suite_name }}/logs"
-record_path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.value.suite_name }}/videos"
+repository_base_path: "/repositories/artifacts/bwpostman"
+repository_project_path: "{{ repository_base_path }}/{{ project_name }}"
+repository_project_suite_path: "{{ repository_project_path }}/{{ item.value.suite_name }}"
+test_log_path: "{{ repository_project_suite_path }}/logs"
+test_record_path: "{{ repository_project_suite_path }}/videos"
 
 codecept_path_tests: "tests"
-codecept_path_data: "repositories/artifacts/bwpostman/data"
+codecept_path_data: "{{ repository_base_path }}/data"
 codecept_path_support: "tests/_support"
-codecept_path_output: "repositories/artifacts/bwpostman/{{ project_name }}/{{ item.value.suite_name }}/logs"
+codecept_path_output: "{{ test_log_path }}"
 codecept_failed_file: "{{ codecept_path_output }}/failed"
 
 screen_size: '1440x900'

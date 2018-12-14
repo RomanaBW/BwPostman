@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+    bwpm-tester:
+        container_name: "bwpm-tester"
+        image: romana/os-chromium-tester
+        volumes:
+            - {{  workspace  }}/container_files/logs/selenium-{{ suite_vars.suite_number }}:/var/log/apache2/
+        volumes:
+            - ${BW_TEST_CONTAINER_DIR}/testers/os-data:/data
+            - ${BW_BASE_DIR}/tests/job_scripts:/scripts
+            - ${BW_BASE_DIR}:/tests
+#        environment:
+#            - BW_TEST_PROJECT=${BW_TEST_PROJECT}
+#            - BW_TEST_NET_NAME=${BW_TEST_NET_NAME}
+#            - BW_TEST_JOOMLA_VERSION=${BW_TEST_JOOMLA_VERSION}
+#            - BW_TEST_BWPM_VERSION=${BW_TEST_BWPM_VERSION}
+#            - BW_TEST_VM_VERSION=${BW_TEST_VM_VERSION}
+#            - BW_TEST_BWPM_INSTALL=${BW_TEST_BWPM_INSTALL}
+#            - BW_TEST_CAT=${BW_TEST_CAT}
+#            - BW_TEST_DEBUG=${BW_TEST_DEBUG}
+#            - BW_TEST_RUNNER=${BW_TEST_RUNNER}
+        working_dir: /tests
+        entrypoint: /scripts/bwpm_tester_start.sh
+        networks:
+            {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
+               ipv4_address: {{ suite_vars.tester_ip }}
+
+networks:
+    {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
+        external:
+            name: ${BW_TEST_NET_NAME}_tester-net-bwpm.nil
+

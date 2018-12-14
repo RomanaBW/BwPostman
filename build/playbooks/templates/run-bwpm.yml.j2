@@ -55,5 +55,5 @@ services:
     ports:
       - "{{ suite_vars.webserver_port }}:80"
     volumes:
-      - {{  workspace  }}/container_files/logs/apache-{{ suite_vars.suite_number }}:/var/log/apache2/
-      - {{  workspace  }}/container_files/files-{{ suite_vars.suite_number }}:/var/www/html
+      - {{ test_log_path }}/others:/var/log/apache2/
+      - {{ workspace }}/container_files/files-{{ suite_vars.suite_number }}:/var/www/html

@@ -58,14 +58,14 @@
 
     - name: ensure log folder for test results exists
       file:
-        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.name }}/logs"
+        path: "{{ test_log_path}}/logs/others"
         state: directory
         mode: 0777
       with_items: "{{ test_suites_container }}"
 
     - name: ensure video folder for test results exists
       file:
-        path: "/repositories/artifacts/bwpostman/{{ project_name }}/{{ item.name }}/videos"
+        path: "{{ test_record_path }}/videos"
         state: directory
         mode: 0777
       with_items: "{{ test_suites_container }}"
@@ -88,8 +88,3 @@
         dest: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"
         mode: 0775
       with_dict: "{{ Suites }}"
-
-    #    sh "sudo chown -R romana ${WORKSPACE}/container_files/files-1"
-#    sh "sudo chgrp -R jenkins ${WORKSPACE}/container_files/files-1"
-#    sh "sudo chmod -R 0775 ${WORKSPACE}/container_files/files-1"
-

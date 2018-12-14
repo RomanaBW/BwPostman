@@ -144,52 +144,34 @@ test_suites_container:
       - restore
       - uninstall
 
-  - name: accept1
+  - name: Suite_1
     tests:
-      - install
-      - defaultOptions
-      - restore
       - lists
 
-  - name: accept2
+  - name: Suite_2
     tests:
-      - install
-      - defaultOptions
-      - restore
       - details
 
-  - name: accept3
+  - name: Suite_3
     tests:
-      - install
-      - defaultOptions
-      - restore
       - maintenance
       - frontend
 
-  - name: accept4
+  - name: Suite_4
     tests:
-      - install
-      - defaultOptions
-      - restore
       - setPermissions
       - createUsers
       - access1
       - access2
 
-  - name: accept5
+  - name: Suite_5
     tests:
-      - install
-      - defaultOptions
-      - restore
       - setPermissions
       - createUsers
       - access3
 
-  - name: accept6
+  - name: Suite_6
     tests:
-      - install
-      - defaultOptions
-      - restore
       - user2subscriber
 #  - personalize
 

@@ -38,7 +38,7 @@ RUN zypper --non-interactive in xorg-x11-Xvnc
 # keep packages on newest state
 RUN zypper --non-interactive up
 
-RUN zypper --non-interactive dup --http://packman.jacobs-university.de/suse/openSUSE_Tumbleweed/
+#RUN zypper --non-interactive dup --http://packman.jacobs-university.de/suse/openSUSE_Tumbleweed/
 
 # keep packages on newest state
-RUN zypper --non-interactive up
+#RUN zypper --non-interactive up

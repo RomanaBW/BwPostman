@@ -61,14 +61,14 @@
         path: "{{ test_log_path}}/logs/others"
         state: directory
         mode: 0777
-      with_items: "{{ test_suites_container }}"
+      with_dict: "{{ Suites }}"
 
     - name: ensure video folder for test results exists
       file:
         path: "{{ test_record_path }}/videos"
         state: directory
         mode: 0777
-      with_items: "{{ test_suites_container }}"
+      with_dict: "{{ Suites }}"
 
     - name: Prepare manifest for codeception tests
       template:

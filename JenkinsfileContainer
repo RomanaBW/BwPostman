@@ -42,6 +42,15 @@ pipeline {
 						sh "docker build -f ./build/docker/os_postfix/Dockerfile -t romana/os-postfix ./build/docker/os_postfix"
 					}
 				}
+				stage('build tester container') {
+					steps {
+						sh "docker build -f ./build/docker/os-tester/os-tester-base -t romana/os-tester-base ./build/docker/os-tester"
+						sh "docker build -f ./build/docker/os-tester/os-tester-headless-video -t romana/os-tester-headless-video ./build/docker/os-tester"
+						sh "docker build -f ./build/docker/os-tester/os-tester-php -t romana/os-tester-php ./build/docker/os-tester"
+						sh "docker build -f ./build/docker/os-tester/os-tester-acceptance -t romana/os-tester-acceptance ./build/docker/os-tester"
+						sh "docker build -f ./build/docker/os-chromium-tester/Dockerfile -t romana/os-chromium-tester ./build/docker/os-chromium-tester"
+					}
+				}
 			}
 		}
 
@@ -75,36 +84,73 @@ pipeline {
 			parallel {
 				stage('Fill suite 1') {
 					steps {
-						echo 'Copy project files to webserver'
 						echo 'Fill database'
 						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-						echo 'Stop initial infrastructure'
-						echo 'build image from webserver'
-						echo 'build image from database server'
 					}
 				}
 				stage('Fill suite 2') {
 					steps {
-						echo 'Copy project files to webserver'
 						echo 'Fill database'
 						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-						echo 'Stop initial infrastructure'
-						echo 'build image from webserver'
-						echo 'build image from database server'
 					}
 				}
 				stage('Fill suite 3') {
 					steps {
-						echo 'Copy project files to webserver'
 						echo 'Fill database'
 						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-						echo 'Stop initial infrastructure'
-						echo 'build image from webserver'
-						echo 'build image from database server'
 					}
 				}
 			}
 		}
+
+		stage('Create testers') {
+			parallel {
+				stage('Tester 1') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
+//						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
+//						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-1 up -d"
+					}
+				}
+				stage('Tester 2') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
+//						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
+//						sh "docker-compose -f build/docker/run-bwpm-2.yml --verbose -p ${PROJECT_NAME}-2 up -d"
+					}
+				}
+				stage('Tester 3') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
+//						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
+//						sh "docker-compose -f build/docker/run-bwpm-3.yml --verbose -p ${PROJECT_NAME}-3 up -d"
+					}
+				}
+			}
+		}
+
+//		stage('Run first test suites') {
+//			parallel {
+//				stage('Fill suite 1') {
+//					steps {
+//						echo 'Fill database'
+//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+//					}
+//				}
+//				stage('Fill suite 2') {
+//					steps {
+//						echo 'Fill database'
+//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+//					}
+//				}
+//				stage('Fill suite 3') {
+//					steps {
+//						echo 'Fill database'
+//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+//					}
+//				}
+//			}
+//		}
 
 //		stage('smoke') {
 //			parallel {

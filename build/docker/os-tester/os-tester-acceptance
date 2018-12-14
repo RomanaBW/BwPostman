@@ -1,0 +1,15 @@
+####################################################################
+# Dockerfile to build headless and ffmpeg container images
+# Based on romana/os-tester-php
+# Provides romana/os-tester-acceptance, perhaps later with version number
+####################################################################
+
+FROM romana/os-tester-php
+
+MAINTAINER Romana Boldt <info@boldt-webservice.de>
+
+#set some environment variables
+ENV DISPLAY=:99 COMPOSER_DIR=/opt/composer UOPZ_VERSION=5.0.2 XDEBUG_VERSION=2.5.3 SELENIUM_DIR=/opt/selenium SELENIUMSERVER_VERSION=3.5.3 GECKODRIVER_VERSION=v0.11.1 CHROMEDRIVER_VERSION=2.32
+
+COPY ./data /data
+RUN /data/installer.sh

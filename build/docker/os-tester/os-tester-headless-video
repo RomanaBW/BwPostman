@@ -9,8 +9,8 @@ FROM romana/os-tester-base
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 
 ## add repo for packman
-RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://packman.jacobs-university.de/suse/openSUSE_Leap_42.3/ Packman
-RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://opensuse-guide.org/repo/openSUSE_Leap_42.3/ dvd
+RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://packman.jacobs-university.de/suse/openSUSE_Leap_15.0/ Packman
+RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://opensuse-guide.org/repo/openSUSE_Leap_15.0/ dvd
 RUN zypper --non-interactive refresh
 
 ## install for acceptance testing additionally needed packages
@@ -38,7 +38,7 @@ RUN zypper --non-interactive in xorg-x11-Xvnc
 # keep packages on newest state
 RUN zypper --non-interactive up
 
-#RUN zypper --non-interactive dup --http://packman.jacobs-university.de/suse/openSUSE_Leap_42.3/
+RUN zypper --non-interactive dup --http://packman.jacobs-university.de/suse/openSUSE_Leap_15.0/
 
 # keep packages on newest state
-#RUN zypper --non-interactive up
+RUN zypper --non-interactive up

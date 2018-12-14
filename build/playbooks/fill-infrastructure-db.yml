@@ -8,5 +8,9 @@
       set_fact:
         suite_vars: "{{ Suites[suite_set] }}"
 
+    - name: set project name variable without dots
+      set_fact:
+        project_name_without_dots: "{{ project_name | replace('.', '') }}"
+
     - name: fill database
-      shell: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ suite_vars.db_ip }} {{ BW_TEST_DB_NAME }} < {{  workspace  }}/container_files/backups/{{ project_name }}.sql"
+      shell: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ suite_vars.db_ip }} {{ BW_TEST_DB_NAME }} < {{  workspace  }}/container_files/backups/{{ project_name_without_dots }}.sql"

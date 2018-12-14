@@ -73,7 +73,7 @@
 
     - name: ensure video folder for test results exists
       file:
-        path: "{{ test_record_path }}/videos"
+        path: "{{ test_record_path }}"
         state: directory
         mode: 0777
       with_dict: "{{ Suites }}"

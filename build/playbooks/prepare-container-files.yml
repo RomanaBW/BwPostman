@@ -36,7 +36,7 @@
 
     - name: copy webserver files to webserver 1
       synchronize:
-        src: "{{ web_dir }}/{{ project_name }}/files"
+        src: "{{ web_dir }}/{{ project_name_without_dots }}/files"
         dest: "{{ project_base_dir }}/container_files/files-1"
 
     - name: copy checked out extension files from to webserver 1

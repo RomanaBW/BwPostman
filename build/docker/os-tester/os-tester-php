@@ -9,7 +9,6 @@ FROM romana/os-tester-headless_video
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 
 ## add repo for php 7 and refresh
-RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://download.opensuse.org/repositories/devel:/languages:/php/openSUSE_Leap_42.3/devel:languages:php.repo
 RUN zypper --non-interactive refresh
 
 ## install for acceptance testing additionally needed packages

@@ -4,7 +4,7 @@
 # Provides romana/os-tester-base, perhaps later with version number
 ####################################################################
 
-FROM opensuse:15.0
+FROM opensuse:tumbletweed
 
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 

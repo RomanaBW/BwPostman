@@ -19,10 +19,6 @@
       set_fact:
         project_name_without_dots: "{{ project_name | replace('.', '') }}"
 
-    - name: set project name variable without dots and underline
-      set_fact:
-        project_name_shorted: "{{ project_name_without_dots | replace('_', '') }}"
-
     - name: create dirs for webserver files
       file:
         path: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}"

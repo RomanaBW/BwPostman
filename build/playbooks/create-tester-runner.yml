@@ -12,6 +12,14 @@
       debug:
         msg: "{{ suite_vars }}"
 
+    - name: set project name variable without dots
+      set_fact:
+        project_name_without_dots: "{{ project_name | replace('.', '') }}"
+
+    - name: set project name variable without dots and underline
+      set_fact:
+        project_name_shorted: "{{ project_name_without_dots | replace('_', '') }}"
+
     - name: create docker compose file for infrastructure
       template:
         src: "bwpm-tester.yml.j2"

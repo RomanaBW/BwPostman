@@ -11,7 +11,7 @@ export BWPM_VERSION_TO_TEST="${1}"
 /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
 export DISPLAY={{ display }}
 
-java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.logfile={{ test_log_path_alt }}/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >{{ test_log_path_alt }}/others/selenium.log 2>{{ test_log_path_alt }}/others/selenium.log &
+java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.logfile={{ test_log_path }}/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >{{ test_log_path }}/others/selenium.log 2>{{ test_log_path }}/others/selenium.log &
 
 # Loop until selenium server is available
 until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do
@@ -21,7 +21,7 @@ done
 printf '\n'
 
 # Start recording
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ test_record_path }}/{{ item.value.suite_name }}.mp4 2>{{ test_log_path_alt }}/others/ffmpeg.log"
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ test_record_path }}/{{ item.value.suite_name }}.mp4 2>{{ test_log_path }}/others/ffmpeg.log"
 
 # run tests
 cd /data

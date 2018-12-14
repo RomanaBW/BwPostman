@@ -17,7 +17,7 @@ services:
 #            - BW_TEST_DEBUG=${BW_TEST_DEBUG}
 #            - BW_TEST_RUNNER=${BW_TEST_RUNNER}
         working_dir: /
-        entrypoint: /bin/bash ls
+        entrypoint: /bin/bash ls > /data/dir.txt
 #        entrypoint: ./do-container-tests.sh
         networks:
             {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:

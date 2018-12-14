@@ -9,7 +9,7 @@ FROM romana/os-tester-base
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 
 ## add repo for packman
-RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://packman.inode.at/suse/openSUSE_Leap_42.3/ Packman
+RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://packman.jacobs-university.de/suse/openSUSE_Leap_42.3/ Packman
 RUN zypper --non-interactive ar -cfG -p 98 -t rpm-md http://opensuse-guide.org/repo/openSUSE_Leap_42.3/ dvd
 RUN zypper --non-interactive refresh
 
@@ -23,7 +23,7 @@ RUN zypper --non-interactive in ffmpeg \
 							    libdvdcss2 \
                                 ffx264 \
                                 free-ttf-fonts \
-                                libx264-148 \
+                                libx264-152 \
                                 x11vnc \
                                 xvfb-run \
                                 xorg-x11-fonts \

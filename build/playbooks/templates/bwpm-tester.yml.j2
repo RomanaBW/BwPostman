@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-    bwpm-tester:
-        container_name: "bwpm-tester"
+    bwpm-tester-{{ suite_vars.suite_number }}:
+        container_name: "bwpm-tester-{{ suite_vars.suite_number }}"
         image: romana/os-chromium-tester
         volumes:
             - {{ workspace }}/container_files/files-{{ suite_vars.suite_number }}:/data

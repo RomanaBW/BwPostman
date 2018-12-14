@@ -6,14 +6,13 @@
   tasks:
     - name: set suite list variable
       set_fact:
-        suite_vars: "{{ Suites[suite_set] }}"
+        item: "{{ Suites[suite_set] }}"
 
     - name: Debug suites variable
       debug:
-        msg: "{{ suite_vars }}"
+        msg: "{{ item }}"
 
     - name: create docker compose file for infrastructure
       template:
         src: "run-bwpm.yml.j2"
         dest: "../docker/run-bwpm-{{ suite_vars['suite_number'] }}.yml"
-      with_item: "{{ suite_vars }}"

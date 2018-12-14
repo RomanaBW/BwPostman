@@ -16,9 +16,8 @@ services:
 #            - BW_TEST_CAT=${BW_TEST_CAT}
 #            - BW_TEST_DEBUG=${BW_TEST_DEBUG}
 #            - BW_TEST_RUNNER=${BW_TEST_RUNNER}
-#        working_dir: /
-#        entrypoint: /bin/bash ls > /data/dir.txt
-#        entrypoint: ./do-container-tests.sh
+        working_dir: /data/tests
+        entrypoint: /data/do-container-tests.sh
         networks:
             {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
                ipv4_address: {{ suite_vars.tester_ip }}

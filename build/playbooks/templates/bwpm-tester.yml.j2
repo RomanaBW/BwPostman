@@ -17,7 +17,7 @@ services:
 #            - BW_TEST_DEBUG=${BW_TEST_DEBUG}
 #            - BW_TEST_RUNNER=${BW_TEST_RUNNER}
         working_dir: /
-        entrypoint: /scripts/do-container-tests.sh
+        entrypoint: /do-container-tests.sh
         networks:
             {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
                ipv4_address: {{ suite_vars.tester_ip }}

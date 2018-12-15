@@ -46,6 +46,8 @@
         dest: "{{ project_base_dir }}/container_files/files-1/tests"
 
     - name: remove AcceptanceTesterActions.php
+      become: yes
+      become_user: root
       file:
         path: "{{ project_base_dir }}/container_files/files-1/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent

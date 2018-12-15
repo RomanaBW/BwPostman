@@ -101,6 +101,30 @@
         dest: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"
       with_dict: "{{ Suites }}"
 
+    - name: remove webdriver log
+      become: yes
+      become_user: root
+      file:
+        path: "{{ test_log_path}}/others/chromedriver.log"
+        state: absent
+      with_dict: "{{ Suites }}"
+
+    - name: remove faulty tests images
+      become: yes
+      become_user: root
+      file:
+        path: "{{ test_log_path}}/*.png"
+        state: absent
+      with_dict: "{{ Suites }}"
+
+    - name: remove faulty tests html
+      become: yes
+      become_user: root
+      file:
+        path: "{{ test_log_path}}/*.html"
+        state: absent
+      with_dict: "{{ Suites }}"
+
     - name: Create test script
       template:
         src: "do-container-tests.sh.j2"

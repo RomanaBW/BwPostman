@@ -264,7 +264,7 @@ class MaintenancePage
 		$I->click(self::$restoreTablesButton);
 		$I->waitForElement(self::$headingRestoreFile, 30);
 
-		$filename = "BwPostman_2_1_0_Tables.xml";
+		$filename = "BwPostman_2_2_0_Tables.xml";
 
 		if ($compressed)
 		{

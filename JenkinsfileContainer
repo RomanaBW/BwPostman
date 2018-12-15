@@ -25,35 +25,35 @@ pipeline {
         }
 
 		// @ToDo: deactivate, when tester works, to prevent later problems because of updates
-		stage('Prepare infrastructure') {
-			parallel {
-				stage('build database container') {
-					steps {
-						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
-					}
-				}
-				stage('build webserver container') {
-					steps {
-						sh "docker build -f ./build/docker/apache/Dockerfile71 -t romana/apache_71 ./build/docker/apache"
-					}
-				}
-				stage('build mailserver container') {
-					steps {
-						sh "docker build -f ./build/docker/os_base/Dockerfile -t romana/os_base ./build/docker/os_base"
-						sh "docker build -f ./build/docker/os_postfix/Dockerfile -t romana/os-postfix ./build/docker/os_postfix"
-					}
-				}
-				stage('build tester container') {
-					steps {
-						sh "docker build -f ./build/docker/os-tester/os-tester-base -t romana/os-tester-base ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-tester/os-tester-headless-video -t romana/os-tester-headless-video ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-tester/os-tester-php -t romana/os-tester-php ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-tester/os-tester-acceptance -t romana/os-tester-acceptance ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-chromium-tester/Dockerfile -t romana/os-chromium-tester ./build/docker/os-chromium-tester"
-					}
-				}
-			}
-		}
+//		stage('Prepare infrastructure') {
+//			parallel {
+//				stage('build database container') {
+//					steps {
+//						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
+//					}
+//				}
+//				stage('build webserver container') {
+//					steps {
+//						sh "docker build -f ./build/docker/apache/Dockerfile71 -t romana/apache_71 ./build/docker/apache"
+//					}
+//				}
+//				stage('build mailserver container') {
+//					steps {
+//						sh "docker build -f ./build/docker/os_base/Dockerfile -t romana/os_base ./build/docker/os_base"
+//						sh "docker build -f ./build/docker/os_postfix/Dockerfile -t romana/os-postfix ./build/docker/os_postfix"
+//					}
+//				}
+//				stage('build tester container') {
+//					steps {
+//						sh "docker build -f ./build/docker/os-tester/os-tester-base -t romana/os-tester-base ./build/docker/os-tester"
+//						sh "docker build -f ./build/docker/os-tester/os-tester-headless-video -t romana/os-tester-headless-video ./build/docker/os-tester"
+//						sh "docker build -f ./build/docker/os-tester/os-tester-php -t romana/os-tester-php ./build/docker/os-tester"
+//						sh "docker build -f ./build/docker/os-tester/os-tester-acceptance -t romana/os-tester-acceptance ./build/docker/os-tester"
+//						sh "docker build -f ./build/docker/os-chromium-tester/Dockerfile -t romana/os-chromium-tester ./build/docker/os-chromium-tester"
+//					}
+//				}
+//			}
+//		}
 
 		stage('Create and run infrastructures') {
 			parallel {
@@ -104,7 +104,7 @@ pipeline {
 			}
 		}
 
-		stage('Run testers') {
+		stage('Create testers') {
 			parallel {
 				stage('Tester 1') {
 					steps {
@@ -128,12 +128,14 @@ pipeline {
 			parallel {
 				stage('Run tester 1') {
 					steps {
-						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
 					}
 				}
 				stage('Run tester 2') {
 					steps {
-						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
 					}
 				}
 				stage('Run tester 3') {
@@ -144,30 +146,24 @@ pipeline {
 			}
 		}
 
-//		stage('smoke') {
-//			parallel {
-//				stage('Stop suite 1') {
-//					steps {
-//						echo 'Dummy '
-//						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
-//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
-//					}
-//				}
-//				stage('Stop suite 2') {
-//					steps {
-//						echo 'Dummy '
-//						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
-//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
-//					}
-//				}
-//				stage('Stop suite 3') {
-//					steps {
-//						echo 'Dummy '
-//						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-//						//				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION_1)
-//					}
-//				}
-//			}
-//		}
+		stage('Stop infrastructure') {
+			parallel {
+				stage('Stop suite 1') {
+					steps {
+						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
+					}
+				}
+				stage('Stop suite 2') {
+					steps {
+						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
+					}
+				}
+				stage('Stop suite 3') {
+					steps {
+						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
+					}
+				}
+			}
+		}
 	}
 }

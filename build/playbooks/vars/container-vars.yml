@@ -117,7 +117,8 @@ test_file_container:
   - suite: options
     testsuite_file: Backend/TestOptionsCest
   - suite: lists
-    testsuite_file: Backend/Lists
+#    testsuite_file: Backend/Lists
+    testsuite_file: Frontend
   - suite: maintenance
     testsuite_file: Backend/TestMaintenanceCest
   - suite: restore

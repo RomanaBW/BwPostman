@@ -20,7 +20,7 @@ modules:
 # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
   config:
     WebDriver:
-      url: {{ item.value.webserver_ip }}
+      url: http://{{ item.value.webserver_ip }}
 
       browser: chrome
       port: 4445

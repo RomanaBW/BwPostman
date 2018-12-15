@@ -29,7 +29,7 @@ pipeline {
 			parallel {
 				stage('build database container') {
 					steps {
-						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql_j391_bwpm_220 ./build/docker/mysqldb"
+						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
 					}
 				}
 				stage('build webserver container') {

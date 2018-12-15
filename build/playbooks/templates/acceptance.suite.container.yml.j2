@@ -36,9 +36,9 @@ modules:
 #        browser: firefox
 #        port: 4444
 
-        Db:
-          dsn: 'mysql:host={{ item.value.db_ip }};dbname={{ BW_TEST_DB_NAME }}'
-          user: '{{ BW_TEST_DB_USER }}'
-          password: '{{ BW_TEST_DB_PW }}'
-          populate: false
-          cleanup: false
+    Db:
+      dsn: 'mysql:host={{ item.value.db_ip }};dbname={{ BW_TEST_DB_NAME }}'
+      user: '{{ BW_TEST_DB_USER }}'
+      password: '{{ BW_TEST_DB_PW }}'
+      populate: false
+      cleanup: false

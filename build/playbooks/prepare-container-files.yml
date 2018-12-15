@@ -109,21 +109,35 @@
         state: absent
       with_dict: "{{ Suites }}"
 
+    - name: Find faulty tests images to delete
+        find:
+          paths: "{{ test_log_path}}"
+          patterns: *.png
+        register: files_to_delete
+      with_dict: "{{ Suites }}"
+
     - name: remove faulty tests images
       become: yes
       become_user: root
       file:
-        path: "{{ test_log_path}}/*.png"
+        path: "{{ item.path }}"
         state: absent
+      with_items: "{{ files_to_delete }}"
+
+    - name: Find faulty tests html to delete
+        find:
+          paths: "{{ test_log_path}}"
+          patterns: *.html
+        register: files_to_delete
       with_dict: "{{ Suites }}"
 
     - name: remove faulty tests html
       become: yes
       become_user: root
       file:
-        path: "{{ test_log_path}}/*.html"
+        path: "{{ item.path }}"
         state: absent
-      with_dict: "{{ Suites }}"
+      with_items: "{{ files_to_delete }}"
 
     - name: Create test script
       template:

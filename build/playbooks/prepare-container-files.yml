@@ -118,7 +118,7 @@
 
     - name: debug found images
       debug:
-        msg: "{{ files_to_delete }}"
+        msg: "{{ files_to_delete.results }}"
 #      with_items: "{{ files_to_delete }}"
 
     - name: remove faulty tests images

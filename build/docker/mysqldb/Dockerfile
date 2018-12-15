@@ -1,1 +1,1 @@
-FROM mysql:5.6.34
+FROM romana/mysql_j391_bwpm_220

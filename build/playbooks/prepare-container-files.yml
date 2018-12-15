@@ -52,6 +52,13 @@
         path: "{{ project_base_dir }}/container_files/files-1/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent
 
+    - name: set permissions for webserver files
+      file:
+        dest: "{{ project_base_dir }}/container_files/files-1"
+        owner: wwwrun
+        group: jenkins
+        mode: u=rwx,g=rwx,o=rx
+
     - name: copy webserver files from webserver 1 to webserver 2
       synchronize:
         src: "{{ project_base_dir }}/container_files/files-1/"

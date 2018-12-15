@@ -53,6 +53,8 @@
         state: absent
 
     - name: set permissions for webserver files
+      become: yes
+      become_user: root
       file:
         dest: "{{ project_base_dir }}/container_files/files-1"
         owner: wwwrun

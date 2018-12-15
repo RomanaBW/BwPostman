@@ -62,11 +62,15 @@
         mode: u=rwx,g=rwx,o=rx
 
     - name: copy webserver files from webserver 1 to webserver 2
+      become: yes
+      become_user: root
       synchronize:
         src: "{{ project_base_dir }}/container_files/files-1/"
         dest: "{{ project_base_dir }}/container_files/files-2"
 
     - name: copy webserver files from webserver 1 to webserver 3
+      become: yes
+      become_user: root
       synchronize:
         src: "{{ project_base_dir }}/container_files/files-1/"
         dest: "{{ project_base_dir }}/container_files/files-3"

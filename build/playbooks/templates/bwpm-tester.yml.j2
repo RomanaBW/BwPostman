@@ -4,8 +4,12 @@ services:
     bwpm-tester-{{ suite_vars.suite_number }}:
         container_name: "bwpm-tester-{{ suite_vars.suite_number }}"
         image: romana/os-chromium-tester
+        stdin_open: true
+        tty: true
         volumes:
             - {{ workspace }}/container_files/files-{{ suite_vars.suite_number }}:/data
+            - {{ test_log_path_alt }}:/project_logs
+            - {{ test_record_path }}:/project_videos
 #        environment:
 #            - BW_TEST_PROJECT=${BW_TEST_PROJECT}
 #            - BW_TEST_NET_NAME=${BW_TEST_NET_NAME}
@@ -16,8 +20,8 @@ services:
 #            - BW_TEST_CAT=${BW_TEST_CAT}
 #            - BW_TEST_DEBUG=${BW_TEST_DEBUG}
 #            - BW_TEST_RUNNER=${BW_TEST_RUNNER}
-        working_dir: /data/tests
-        entrypoint: /data/do-container-tests.sh
+#        working_dir: /data/tests
+#        entrypoint: /data/do-container-tests.sh
         networks:
             {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
                ipv4_address: {{ suite_vars.tester_ip }}

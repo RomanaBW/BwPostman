@@ -99,8 +99,8 @@ test_record_path: "{{ repository_project_suite_path }}/videos"
 codecept_path_tests: "tests"
 codecept_path_data: "{{ repository_base_path }}/data"
 codecept_path_support: "tests/_support"
-codecept_path_output: "{{ test_log_path }}"
-codecept_failed_file: "{{ codecept_path_output }}/failed"
+codecept_path_output: "/project_logs"
+codecept_failed_file: "/project_logs/failed"
 
 screen_size: '1440x900'
 display: ':45'

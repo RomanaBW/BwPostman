@@ -128,17 +128,19 @@ pipeline {
 			parallel {
 				stage('Run tester 1') {
 					steps {
-						sh "docker-compose -f build/docker/bwpm-tester-1.yml --verbose -p ${PROJECT_NAME}-1 up"
+						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 up"
 					}
 				}
 				stage('Run tester 2') {
 					steps {
-						sh "docker-compose -f build/docker/bwpm-tester-2.yml --verbose -p ${PROJECT_NAME}-1 up -d"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-1 up"
 					}
 				}
 				stage('Run tester 3') {
 					steps {
-						sh "docker-compose -f build/docker/bwpm-tester-3.yml --verbose -p ${PROJECT_NAME}-1 up -d"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-3.yml --verbose -p ${PROJECT_NAME}-1 up"
 					}
 				}
 			}

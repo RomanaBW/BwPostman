@@ -110,10 +110,10 @@
       with_dict: "{{ Suites }}"
 
     - name: Find faulty tests images to delete
-        find:
-          paths: "{{ test_log_path}}"
-          patterns: *.png
-        register: files_to_delete
+      find:
+        paths: "{{ test_log_path}}"
+        patterns: *.png
+      register: files_to_delete
       with_dict: "{{ Suites }}"
 
     - name: remove faulty tests images
@@ -125,10 +125,10 @@
       with_items: "{{ files_to_delete }}"
 
     - name: Find faulty tests html to delete
-        find:
-          paths: "{{ test_log_path}}"
-          patterns: *.html
-        register: files_to_delete
+      find:
+        paths: "{{ test_log_path}}"
+        patterns: *.html
+      register: files_to_delete
       with_dict: "{{ Suites }}"
 
     - name: remove faulty tests html

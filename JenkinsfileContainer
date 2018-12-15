@@ -129,7 +129,7 @@ pipeline {
 				stage('Run tester 1') {
 					steps {
 						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 up -d"
-						sh "docker exec -it bwpm-tester-1 /bin/bash /data/do-container-tests.sh"
+						sh "docker exec bwpm-tester-1 /bin/bash /data/do-container-tests.sh"
 					}
 				}
 				stage('Run tester 2') {

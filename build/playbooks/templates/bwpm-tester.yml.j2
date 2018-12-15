@@ -4,12 +4,13 @@ services:
     bwpm-tester-{{ suite_vars.suite_number }}:
         container_name: "bwpm-tester-{{ suite_vars.suite_number }}"
         image: romana/os-chromium-tester
-        stdin_open: true
-        tty: true
+        stdout_open: true
         volumes:
             - {{ workspace }}/container_files/files-{{ suite_vars.suite_number }}:/data
             - {{ test_log_path_alt }}:/project_logs
             - {{ test_record_path_alt }}:/project_videos
+        working_dir: /data/tests
+        entrypoint: /data/do-container-tests.sh
         networks:
             {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
                ipv4_address: {{ suite_vars.tester_ip }}

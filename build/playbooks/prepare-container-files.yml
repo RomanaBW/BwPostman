@@ -116,6 +116,10 @@
       register: files_to_delete
       with_dict: "{{ Suites }}"
 
+    - name: debug found images
+      debug:
+        msg: "Images to delete: {{ files_to_delete }}"
+
     - name: remove faulty tests images
       become: yes
       become_user: root

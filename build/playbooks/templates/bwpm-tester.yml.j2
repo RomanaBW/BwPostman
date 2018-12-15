@@ -4,8 +4,8 @@ services:
     bwpm-tester-{{ suite_vars.suite_number }}:
         container_name: "bwpm-tester-{{ suite_vars.suite_number }}"
         image: romana/os-chromium-tester
-#        stdin_open: true
-#        tty: true
+        stdin_open: true
+        tty: true
         volumes:
             - {{ workspace }}/container_files/files-{{ suite_vars.suite_number }}:/data
             - {{ test_log_path_alt }}:/project_logs

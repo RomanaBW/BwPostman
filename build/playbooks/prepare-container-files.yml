@@ -112,7 +112,7 @@
     - name: Find faulty tests images to delete
       find:
         paths: "{{ test_log_path}}"
-        patterns: *.png
+        patterns: "*.png"
       register: files_to_delete
       with_dict: "{{ Suites }}"
 
@@ -127,7 +127,7 @@
     - name: Find faulty tests html to delete
       find:
         paths: "{{ test_log_path}}"
-        patterns: *.html
+        patterns: "*.html"
       register: files_to_delete
       with_dict: "{{ Suites }}"
 

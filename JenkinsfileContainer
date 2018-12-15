@@ -81,28 +81,28 @@ pipeline {
 			}
 		}
 
-//		stage('Fill infrastructure containers') {
-//			parallel {
-//				stage('Fill suite 1') {
-//					steps {
-//						echo 'Fill database'
-//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-//					}
-//				}
-//				stage('Fill suite 2') {
-//					steps {
-//						echo 'Fill database'
-//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-//					}
-//				}
-//				stage('Fill suite 3') {
-//					steps {
-//						echo 'Fill database'
-//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-//					}
-//				}
-//			}
-//		}
+		stage('Fill infrastructure containers') {
+			parallel {
+				stage('Fill suite 1') {
+					steps {
+						echo 'Fill database'
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+					}
+				}
+				stage('Fill suite 2') {
+					steps {
+						echo 'Fill database'
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+					}
+				}
+				stage('Fill suite 3') {
+					steps {
+						echo 'Fill database'
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+					}
+				}
+			}
+		}
 
 		stage('Run testers') {
 			parallel {

@@ -111,7 +111,7 @@
 
     - name: Find failure files to delete
       debug:
-        msg: "{{ lookup('fileglob', '{{ test_log_path }}/*fail*"
+        msg: "{{ lookup('fileglob', '{{ test_log_path }}/*fail*') }}"
       with_dict: "{{ Suites }}"
       register: raw_files_to_delete
 

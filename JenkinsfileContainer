@@ -18,7 +18,7 @@ pipeline {
             steps {
 				script {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
-					def artifactPath = "/repositories/artifacts/bwpostman/j${jVersion}_bwpm${bwpmVersion}/${suitename}"
+					artifactPath = "/repositories/artifacts/bwpostman/j${jVersion}_bwpm${bwpmVersion}/${suitename}"
 				}
 
 				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}'"

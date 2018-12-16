@@ -21,6 +21,9 @@ services:
       - "3306"
     ports:
       - "{{ suite_vars.db_port }}:3306"
+    volumes:
+      - {{ test_log_path_alt }}/others:/var/log/apache2/
+      - {{ workspace }}/container_files/database-{{ suite_vars.suite_number }}:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: barbapapa
       MYSQL_DATABASE: joomlatest

@@ -90,6 +90,7 @@ Suites:
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
 repository_base_path: "/repositories/artifacts/bwpostman"
+repository_database_path: "/repositories/artifacts/bwpostman/database/{{ project_name }}"
 repository_project_path: "{{ repository_base_path }}/{{ project_name }}"
 repository_project_suite_path: "{{ repository_project_path }}/{{ item.value.suite_name }}"
 repository_project_suite_path_alt: "{{ repository_project_path }}/{{ suite_vars.suite_name }}"
@@ -99,7 +100,7 @@ test_log_path_alt: "{{ repository_project_suite_path_alt }}/logs"
 test_record_path_alt: "{{ repository_project_suite_path_alt }}/videos"
 
 codecept_path_tests: "tests"
-codecept_path_data: "data"
+codecept_path_data: "project_data"
 codecept_path_support: "tests/_support"
 codecept_path_output: "/project_logs"
 codecept_failed_file: "/project_logs/failed"

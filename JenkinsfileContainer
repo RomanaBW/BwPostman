@@ -62,6 +62,7 @@ pipeline {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-1 up -d"
+						sleep 10
 					}
 				}
 				stage('Infrastructure suite 2') {
@@ -69,6 +70,7 @@ pipeline {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-2.yml --verbose -p ${PROJECT_NAME}-2 up -d"
+						sleep 10
 					}
 				}
 				stage('Infrastructure suite 3') {
@@ -76,33 +78,34 @@ pipeline {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-3.yml --verbose -p ${PROJECT_NAME}-3 up -d"
+						sleep 10
 					}
 				}
 			}
 		}
 
-		stage('Fill infrastructure containers') {
-			parallel {
-				stage('Fill suite 1') {
-					steps {
-						echo 'Fill database'
-						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-					}
-				}
-				stage('Fill suite 2') {
-					steps {
-						echo 'Fill database'
-						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-					}
-				}
-				stage('Fill suite 3') {
-					steps {
-						echo 'Fill database'
-						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
-					}
-				}
-			}
-		}
+//		stage('Fill infrastructure containers') {
+//			parallel {
+//				stage('Fill suite 1') {
+//					steps {
+//						echo 'Fill database'
+//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+//					}
+//				}
+//				stage('Fill suite 2') {
+//					steps {
+//						echo 'Fill database'
+//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_2 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+//					}
+//				}
+//				stage('Fill suite 3') {
+//					steps {
+//						echo 'Fill database'
+//						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_3 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+//					}
+//				}
+//			}
+//		}
 
 		stage('Create testers') {
 			parallel {
@@ -128,14 +131,14 @@ pipeline {
 			parallel {
 				stage('Run tester 1') {
 					steps {
-//						echo "Dummy"
-						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
 					}
 				}
 				stage('Run tester 2') {
 					steps {
-//						echo "Dummy"
-						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
 					}
 				}
 				stage('Run tester 3') {

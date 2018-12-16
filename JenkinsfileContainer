@@ -166,24 +166,24 @@ pipeline {
 			}
 		}
 
-		stage('Stop infrastructure') {
-			parallel {
-				stage('Stop suite 1') {
-					steps {
-						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
-					}
-				}
-				stage('Stop suite 2') {
-					steps {
-						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
-					}
-				}
-				stage('Stop suite 3') {
-					steps {
-						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-					}
-				}
-			}
-		}
+//		stage('Stop infrastructure') {
+//			parallel {
+//				stage('Stop suite 1') {
+//					steps {
+//						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
+//					}
+//				}
+//				stage('Stop suite 2') {
+//					steps {
+//						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
+//					}
+//				}
+//				stage('Stop suite 3') {
+//					steps {
+//						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
+//					}
+//				}
+//			}
+//		}
 	}
 }

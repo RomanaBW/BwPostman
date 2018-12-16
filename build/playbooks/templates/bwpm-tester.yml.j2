@@ -8,7 +8,7 @@ services:
             - {{ workspace }}/container_files/files-{{ suite_vars.suite_number }}:/data
             - {{ test_log_path_alt }}:/project_logs
             - {{ test_record_path_alt }}:/project_videos
-            - {{ repository_base_path }}:/project_data
+            - {{ repository_base_path }}:/repo_data
         working_dir: /data/tests
         entrypoint: /data/do-container-tests.sh
         networks:

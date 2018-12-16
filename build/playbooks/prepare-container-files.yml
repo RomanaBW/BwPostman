@@ -109,40 +109,27 @@
         state: absent
       with_dict: "{{ Suites }}"
 
-    - name: Find faulty tests images to delete
-      find:
-        paths: "{{ test_log_path}}"
-        patterns: "*.png"
-      register: files_to_delete
-      with_dict: "{{ Suites }}"
-
-    - name: debug found images
+    - name: Find failure files to delete
       debug:
-        msg: "{{ files_to_delete.results }}"
-#      with_items: "{{ files_to_delete }}"
+        msg: "{{ lookup('fileglob', '{{ test_log_path }}/*fail*"
+      with_dict: "{{ Suites }}"
+      register: raw_files_to_delete
+
+    - name: set fact files to delete
+      set_fact:
+        files_to_delete: "{{ raw_files_to_delete.results | list | map(attribute='msg') | list | join() }}"
+
+    - name: set fact files to delete list
+      set_fact:
+        files_to_delete_list: "{{ files_to_delete.split(',') }}"
 
     - name: remove faulty tests images
       become: yes
       become_user: root
       file:
-        path: "{{ item.path }}"
+        path: "{{ item }}"
         state: absent
-      with_items: "{{ files_to_delete }}"
-
-    - name: Find faulty tests html to delete
-      find:
-        paths: "{{ test_log_path}}"
-        patterns: "*.html"
-      register: files_to_delete
-      with_dict: "{{ Suites }}"
-
-    - name: remove faulty tests html
-      become: yes
-      become_user: root
-      file:
-        path: "{{ item.path }}"
-        state: absent
-      with_items: "{{ files_to_delete }}"
+      with_items: "{{ files_to_delete_list }}"
 
     - name: Create test script
       template:

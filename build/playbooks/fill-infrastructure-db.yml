@@ -14,10 +14,7 @@
 
     - name: wait for database
       wait_for:
-        host: "{{ suite_vars.db_ip }}"
-        port: "{{ suite_vars.db_port }}"
-        delay: 3
-        timeout: 30
+        timeout: 10
 
     - name: fill database
       shell: "mysql -u {{ BW_TEST_DB_USER }} -p{{ BW_TEST_DB_PW }} -h {{ suite_vars.db_ip }} {{ BW_TEST_DB_NAME }} < {{  workspace  }}/container_files/backups/{{ project_name_without_dots }}.sql"

@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  vars_files:
+    - vars/container-vars.yml
+
+  tasks:
+    - name: set suite list variable
+      set_fact:
+        suite_vars: "{{ Suites[suite_set] }}"
+
+    - name: wait for database
+      wait_for:
+        host: "{{ suite_vars.db_ip }}"
+        port: "{{ suite_vars.db_port }}"
+        delay: 3

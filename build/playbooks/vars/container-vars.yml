@@ -89,8 +89,8 @@ Suites:
 
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
-repository_base_path: "/repositories/artifacts/bwpostman"
-repository_project_path: "{{ repository_base_path }}/{{ project_name }}"
+repository_base_path: "repositories/artifacts/bwpostman"
+repository_project_path: "/{{ repository_base_path }}/{{ project_name }}"
 repository_project_suite_path: "{{ repository_project_path }}/{{ item.value.suite_name }}"
 repository_project_suite_path_alt: "{{ repository_project_path }}/{{ suite_vars.suite_name }}"
 test_log_path: "{{ repository_project_suite_path }}/logs"

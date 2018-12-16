@@ -62,7 +62,6 @@ pipeline {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-1 up -d"
-						sh "ansible-playbook ./build/playbooks/wait-for-database.yml --extra-vars 'suite_set=Suite_1'"
 					}
 				}
 				stage('Infrastructure suite 2') {
@@ -70,7 +69,6 @@ pipeline {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-2.yml --verbose -p ${PROJECT_NAME}-2 up -d"
-						sh "ansible-playbook ./build/playbooks/wait-for-database.yml --extra-vars 'suite_set=Suite_2'"
 					}
 				}
 				stage('Infrastructure suite 3') {
@@ -78,7 +76,6 @@ pipeline {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-3.yml --verbose -p ${PROJECT_NAME}-3 up -d"
-						sh "ansible-playbook ./build/playbooks/wait-for-database.yml --extra-vars 'suite_set=Suite_3'"
 					}
 				}
 			}
@@ -89,7 +86,7 @@ pipeline {
 				stage('Fill suite 1') {
 					steps {
 						echo 'Fill database'
-						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/fill-infrastructure-db.yml -v --extra-vars 'suite_set=Suite_1 project_name=${PROJECT_NAME} workspace=${WORKSPACE}'"
 					}
 				}
 				stage('Fill suite 2') {

@@ -60,7 +60,7 @@ pipeline {
 				stage('Infrastructure suite 1') {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_1 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml -v --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 up -d"
 						sleep 10
 					}

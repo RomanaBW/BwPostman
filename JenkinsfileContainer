@@ -112,38 +112,38 @@ pipeline {
 						echo "Dummy"
 //						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
 					}
-					post {
-						always {
-							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
-						}
-						failure {
-							emailext(
-								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "${artifactPath}/logs/${STAGE_NAME}/*.png",
-								subject:"BwPostman build failed at ${STAGE_NAME}",
-								to: 'info@boldt-webservice.de'
-							)
-						}
-					}
+//					post {
+//						always {
+//							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
+//						}
+//						failure {
+//							emailext(
+//								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+//								attachmentsPattern: "${artifactPath}/logs/${STAGE_NAME}/*.png",
+//								subject:"BwPostman build failed at ${STAGE_NAME}",
+//								to: 'info@boldt-webservice.de'
+//							)
+//						}
+//					}
 				}
 				stage('Run tester 2') {
 					steps {
 						echo "Dummy"
 //						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
 					}
-					post {
-						always {
-							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
-						}
-						failure {
-							emailext(
-								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "${artifactPath}/logs/${STAGE_NAME}/*.png",
-								subject:"BwPostman build failed at ${STAGE_NAME}",
-								to: 'info@boldt-webservice.de'
-							)
-						}
-					}
+//					post {
+//						always {
+//							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
+//						}
+//						failure {
+//							emailext(
+//								body: "<p>BwPostman build failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+//								attachmentsPattern: "${artifactPath}/logs/${STAGE_NAME}/*.png",
+//								subject:"BwPostman build failed at ${STAGE_NAME}",
+//								to: 'info@boldt-webservice.de'
+//							)
+//						}
+//					}
 				}
 				stage('Run tester 3') {
 					steps {
@@ -165,25 +165,5 @@ pipeline {
 				}
 			}
 		}
-
-//		stage('Stop infrastructure') {
-//			parallel {
-//				stage('Stop suite 1') {
-//					steps {
-//						sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
-//					}
-//				}
-//				stage('Stop suite 2') {
-//					steps {
-//						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
-//					}
-//				}
-//				stage('Stop suite 3') {
-//					steps {
-//						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-//					}
-//				}
-//			}
-//		}
 	}
 }

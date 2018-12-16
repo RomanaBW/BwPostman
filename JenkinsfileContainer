@@ -119,7 +119,7 @@ pipeline {
 						failure {
 							emailext(
 								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "../../../../../${artifactPath}/${STAGE_NAME}/logs/*.png",
+								attachmentsPattern: "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
 								to: 'info@boldt-webservice.de'
 							)
@@ -138,7 +138,7 @@ pipeline {
 						failure {
 							emailext(
 								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "${artifactPath}/${STAGE_NAME}/logs/*.png",
+								attachmentsPattern: "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
 								to: 'info@boldt-webservice.de'
 							)
@@ -157,7 +157,7 @@ pipeline {
 						echo "../../../../../${artifactPath}/${STAGE_NAME}/logs/*.png"
 							emailext(
 								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "../../../../../${artifactPath}/${STAGE_NAME}/logs/*.png",
+								attachmentsPattern: "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
 								to: 'info@boldt-webservice.de'
 							)

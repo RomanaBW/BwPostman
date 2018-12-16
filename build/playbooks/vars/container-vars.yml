@@ -100,7 +100,7 @@ test_log_path_alt: "{{ repository_project_suite_path_alt }}/logs"
 test_record_path_alt: "{{ repository_project_suite_path_alt }}/videos"
 
 codecept_path_tests: "tests"
-codecept_path_data: "/repo_data/data"
+codecept_path_data: "repo_data/data"
 codecept_path_support: "tests/_support"
 codecept_path_output: "/project_logs"
 codecept_failed_file: "/project_logs/failed"

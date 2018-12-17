@@ -312,7 +312,7 @@ pipeline {
 
 		stage('Dev-Upload') {
 			steps {
-				echo "Dummy"
+//				echo "Dummy"
 //				dir("/repositories/artifacts/bwpostman/data") {
 //					fileOperations([
 //						fileCopyOperation(
@@ -321,7 +321,7 @@ pipeline {
 //							includes: "pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip",
 //							targetLocation: "${WORKSPACE}/tests")
 //					])
-				}
+//				}
 
 //				dir("/repositories/artifacts/bwpostman/data") {
 //					fileOperations([

@@ -154,6 +154,8 @@
       with_items: "{{ files_to_delete_list }}"
 
     - name: Create test script
+      become: yes
+      become_user: root
       template:
         src: "do-container-tests.sh.j2"
         dest: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"

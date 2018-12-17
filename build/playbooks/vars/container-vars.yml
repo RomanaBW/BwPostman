@@ -87,6 +87,39 @@ Suites:
     webserver_port: "8031"
     tester_ip: "172.18.0.45"
 
+  Suite_4:
+    suite_name: "Suite_4"
+    suite_number: "4"
+    subnet: "172.18.0.48/29"
+    db_ip: "172.18.0.51"
+    db_port: "3339"
+    mailer_ip: "172.18.0.50"
+    webserver_ip: "172.18.0.52"
+    webserver_port: "8032"
+    tester_ip: "172.18.0.53"
+
+  Suite_5:
+    suite_name: "Suite_5"
+    suite_number: "5"
+    subnet: "172.18.0.56/29"
+    db_ip: "172.18.0.59"
+    db_port: "3340"
+    mailer_ip: "172.18.0.58"
+    webserver_ip: "172.18.0.60"
+    webserver_port: "8033"
+    tester_ip: "172.18.0.61"
+
+  Suite_6:
+    suite_name: "Suite_6"
+    suite_number: "6"
+    subnet: "172.18.0.64/29"
+    db_ip: "172.18.0.67"
+    db_port: "3341"
+    mailer_ip: "172.18.0.66"
+    webserver_ip: "172.18.0.68"
+    webserver_port: "8034"
+    tester_ip: "172.18.0.69"
+
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
 repository_base_path: "/repositories/artifacts/bwpostman"

@@ -105,12 +105,12 @@ pipeline {
 			}
 		}
 
-		stage('Run first test suites') {
+		stage('Run first level test suites') {
 			parallel {
 				stage('Suite_1') {
 					steps {
-//						echo "Dummy"
-						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run --rm bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run --rm bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -119,17 +119,17 @@ pipeline {
 						failure {
 							emailext(
 								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png",
+								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'info@boldt-webservice.de'
+								to: 'webmaster@boldt-webservice.de'
 							)
 						}
 					}
 				}
 				stage('Suite_2') {
 					steps {
-//						echo "Dummy"
-						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run --rm bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run --rm bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -138,16 +138,17 @@ pipeline {
 						failure {
 							emailext(
 								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png",
+								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'info@boldt-webservice.de'
+								to: 'webmaster@boldt-webservice.de'
 							)
 						}
 					}
 				}
 				stage('Suite_3') {
 					steps {
-						sh "docker-compose -f build/docker/bwpm-tester-3.yml -p ${PROJECT_NAME}-3 run --rm bwpm-tester-3 sh -c '/data/do-container-tests.sh'"
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-3.yml -p ${PROJECT_NAME}-3 run --rm bwpm-tester-3 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -159,12 +160,162 @@ pipeline {
 								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
 								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'info@boldt-webservice.de'
+								to: 'webmaster@boldt-webservice.de'
 							)
 						}
 					}
 				}
 			}
 		}
+
+		stage('Notification first level') {
+			emailext(
+				body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
+				attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+				subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
+				to: 'webmaster@boldt-webservice.de'
+			)
+		}
+
+		stage('Run second level test suites') {
+			parallel {
+				stage('Suite_4') {
+					steps {
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-4.yml -p ${PROJECT_NAME}-4 run --rm bwpm-tester-4 sh -c '/data/do-container-tests.sh'"
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
+						}
+						failure {
+							emailext(
+								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
+								to: 'webmaster@boldt-webservice.de'
+							)
+						}
+					}
+				}
+				stage('Suite_5') {
+					steps {
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-5.yml -p ${PROJECT_NAME}-5 run --rm bwpm-tester-5 sh -c '/data/do-container-tests.sh'"
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
+						}
+						failure {
+							emailext(
+								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
+								to: 'webmaster@boldt-webservice.de'
+							)
+						}
+					}
+				}
+				stage('Suite_6') {
+					steps {
+						echo "Dummy"
+//						sh "docker-compose -f build/docker/bwpm-tester-6.yml -p ${PROJECT_NAME}-6 run --rm bwpm-tester-6 sh -c '/data/do-container-tests.sh'"
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
+						}
+						failure {
+						echo "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png"
+							emailext(
+								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
+								to: 'webmaster@boldt-webservice.de'
+							)
+						}
+					}
+				}
+			}
+		}
+
+		stage('Notification second level') {
+			emailext(
+				body: "<p>Second level of BwPostman build ${currentBuild.number} successfully finished.</p>",
+				attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+				subject:"Second level of BwPostman build ${currentBuild.number} successfully finished",
+				to: 'webmaster@boldt-webservice.de'
+			)
+		}
+
+//		stage('Create intallation package') {
+//			steps {
+//				echo 'Create installation package'
+//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true'"
+//			}
+//		}
+
+//		stage('Dev-Upload') {
+//			steps {
+//				dir("/repositories/artifacts/bwpostman/data") {
+//					fileOperations([
+//						fileCopyOperation(
+//							excludes: '',
+//							flattenFiles: false,
+//							includes: "pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip",
+//							targetLocation: "${WORKSPACE}/tests")
+//					])
+//				}
+
+//				dir("/repositories/artifacts/bwpostman/data") {
+//					fileOperations([
+//						fileCopyOperation(
+//							excludes: '',
+//							flattenFiles: false,
+//							includes: "CHANGELOG",
+//							targetLocation: "${WORKSPACE}/tests")
+//					])
+//				}
+
+//				script {
+//					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+//				}
+
+//				echo "tests/pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip"
+//
+//				sshPublisher(
+//					publishers: [sshPublisherDesc(
+//					configName: 'Web Dev BwPostman',
+//					transfers: [sshTransfer(
+//						cleanRemote: false,
+//						excludes: '',
+//						execCommand: '',
+//						execTimeout: 120000,
+//						flatten: false,
+//						makeEmptyDirs: false,
+//						noDefaultExcludes: false,
+//						patternSeparator: '[, ]+',
+//						remoteDirectory: "${params.BWPM_VERSION}.${currentBuild.number}",
+//						remoteDirectorySDF: false,
+//						removePrefix: 'tests',
+//						sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip"
+//					)],
+//					usePromotionTimestamp: false,
+//						useWorkspaceInPromotion: false,
+//						verbose: false
+//					)]
+//				)
+
+//				emailext(
+//					body: "<p>BwPostman build ${currentBuild.number} has passed all acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+//					subject:"BwPostman build ${currentBuild.number} successful",
+//					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+//			)
+//				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+
+//			}
+//		}
+
 	}
 }

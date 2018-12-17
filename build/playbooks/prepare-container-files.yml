@@ -152,3 +152,9 @@
         dest: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"
         mode: 0775
       with_dict: "{{ Suites }}"
+
+    - name: Set symbolic link to repo folder
+      file:
+        src: "{{ repository_project_path }}"
+        dest: "{{ project_base_dir }}/repo_data"
+        state: link

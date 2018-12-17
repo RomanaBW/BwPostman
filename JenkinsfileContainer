@@ -154,7 +154,7 @@ pipeline {
 							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
 						}
 						failure {
-						echo "../../../../../${artifactPath}/${STAGE_NAME}/logs/*.png"
+						echo "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png"
 							emailext(
 								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
 								attachmentsPattern: "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png",

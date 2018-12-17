@@ -56,7 +56,7 @@ pipeline {
 //			}
 //		}
 
-		stage('Create and run infrastructures') {
+		stage('Create and run infrastructures level 1') {
 			parallel {
 				stage('Infrastructure suite 1') {
 					steps {
@@ -85,7 +85,7 @@ pipeline {
 			}
 		}
 
-		stage('Create testers') {
+		stage('Create testers level 1') {
 			parallel {
 				stage('Tester 1') {
 					steps {
@@ -105,7 +105,7 @@ pipeline {
 			}
 		}
 
-		stage('Run first level test suites') {
+		stage('Run test suites level 1') {
 			parallel {
 				stage('Suite_1') {
 					steps {
@@ -168,7 +168,7 @@ pipeline {
 			}
 		}
 
-		stage('Notification first level') {
+		stage('Notification level 1') {
 			steps {
 				emailext(
 					body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
@@ -179,7 +179,56 @@ pipeline {
 			}
 		}
 
-		stage('Run second level test suites') {
+		stage('Create and run infrastructures level 2') {
+			parallel {
+				stage('Infrastructure suite 4') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_4 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_4 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-4 up -d"
+						sleep 10
+					}
+				}
+				stage('Infrastructure suite 5') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_5 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-5 up -d"
+						sleep 10
+					}
+				}
+				stage('Infrastructure suite 6') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_6 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-6 up -d"
+						sleep 10
+					}
+				}
+			}
+		}
+
+		stage('Create testers level 2') {
+			parallel {
+				stage('Tester 4') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_4 workspace=${WORKSPACE}'"
+					}
+				}
+				stage('Tester 5') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
+					}
+				}
+				stage('Tester 6') {
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
+					}
+				}
+			}
+		}
+
+		stage('Run test suites level 2') {
 			parallel {
 				stage('Suite_4') {
 					steps {
@@ -242,7 +291,7 @@ pipeline {
 			}
 		}
 
-		stage('Notification second level') {
+		stage('Notification level 2') {
 			steps {
 				emailext(
 					body: "<p>Second level of BwPostman build ${currentBuild.number} successfully finished.</p>",
@@ -253,15 +302,17 @@ pipeline {
 			}
 		}
 
-//		stage('Create intallation package') {
-//			steps {
+		stage('Create intallation package') {
+			steps {
+				echo "Dummy"
 //				echo 'Create installation package'
 //				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true'"
-//			}
-//		}
+			}
+		}
 
-//		stage('Dev-Upload') {
-//			steps {
+		stage('Dev-Upload') {
+			steps {
+				echo "Dummy"
 //				dir("/repositories/artifacts/bwpostman/data") {
 //					fileOperations([
 //						fileCopyOperation(
@@ -270,7 +321,7 @@ pipeline {
 //							includes: "pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip",
 //							targetLocation: "${WORKSPACE}/tests")
 //					])
-//				}
+				}
 
 //				dir("/repositories/artifacts/bwpostman/data") {
 //					fileOperations([
@@ -311,11 +362,11 @@ pipeline {
 //					)]
 //				)
 
-//				emailext(
-//					body: "<p>BwPostman build ${currentBuild.number} has passed all acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-//					subject:"BwPostman build ${currentBuild.number} successful",
-//					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-//			)
+				emailext(
+					body: "<p>BwPostman build ${currentBuild.number} has passed all acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman build ${currentBuild.number} successful",
+					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+				)
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 
 //			}

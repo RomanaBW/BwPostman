@@ -109,8 +109,8 @@ pipeline {
 			parallel {
 				stage('Suite_1') {
 					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run --rm bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
+//						echo "Dummy"
+						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run --rm bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -128,8 +128,8 @@ pipeline {
 				}
 				stage('Suite_2') {
 					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run --rm bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
+//						echo "Dummy"
+						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run --rm bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {

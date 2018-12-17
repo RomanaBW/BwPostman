@@ -180,7 +180,7 @@ test_file_container:
 #  - module_overview:
 
 test_suites_container:
-  - name: smoke
+  - name: inststallation
     tests:
       - install
       - defaultOptions

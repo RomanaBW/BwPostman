@@ -10,11 +10,6 @@
         state: absent
       with_items: "{{ to_delete }}"
 
-    - name: Debug suites variable
-      debug:
-        msg: "{{ item }}"
-      with_items: "{{ Suites }}"
-
     - name: set project name variable without dots
       set_fact:
         project_name_without_dots: "{{ project_name | replace('.', '') }}"
@@ -63,11 +58,23 @@
     - name: set permissions for webserver files
       become: yes
       become_user: root
-      file:
-        dest: "{{ project_base_dir }}/container_files/files-1"
-        owner: wwwrun
-        group: jenkins
-        mode: u=rwx,g=rwx,o=rwx
+      command: "chmod -R 0777 {{ project_base_dir }}/container_files/files-1"
+
+    - name: set owner for webserver files
+      become: yes
+      become_user: root
+      command: "chown -R wwwrun {{ project_base_dir }}/container_files/files-1"
+
+    - name: set group for webserver files
+      become: yes
+      become_user: root
+      command: "chgrp -R jenkins {{ project_base_dir }}/container_files/files-1"
+
+#      file:
+#        dest: "{{ project_base_dir }}/container_files/files-1"
+#        owner: wwwrun
+#        group: jenkins
+#        mode: u=rwx,g=rwx,o=rwx
 
     - name: copy webserver files from webserver 1 to webserver 2 + 3
       become: yes

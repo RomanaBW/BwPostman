@@ -146,9 +146,7 @@ abstract class BwPostmanMaintenanceHelper
 		jimport('joomla.filesystem.file');
 		jimport('joomla.archive.archive');
 
-		$destFileName = str_replace('.zip', '.xml', $srcFileName);
-
-		$destPath	= JFactory::getConfig()->get('tmp_path');
+		$destPath	= JFactory::getConfig()->get('tmp_path') . "/bwpm_unzipped";
 
 		// Run the packager
 		$archive = new JArchive;
@@ -169,11 +167,10 @@ abstract class BwPostmanMaintenanceHelper
 		}
 		else
 		{
-			$unpackedSourceName = JFile::stripExt($packName);
+			$destFileName = JFolder::files($destPath);
 			JFile::delete($srcFileName);
-			JFile::move($destPath . '/' . $unpackedSourceName, $destPath . '/tmp_bwpostman_tablesav.xml');
 		}
 
-		return $destFileName;
+		return $destPath . "/" . $destFileName[0];
 	}
 }

@@ -155,7 +155,6 @@ pipeline {
 							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
 						}
 						failure {
-						echo "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png"
 							emailext(
 								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
 								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
@@ -185,7 +184,7 @@ pipeline {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_4 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_4 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-4 up -d"
+						sh "docker-compose -f build/docker/run-bwpm-4.yml --verbose -p ${PROJECT_NAME}-4 up -d"
 						sleep 10
 					}
 				}
@@ -193,7 +192,7 @@ pipeline {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_5 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-5 up -d"
+						sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 up -d"
 						sleep 10
 					}
 				}
@@ -201,7 +200,7 @@ pipeline {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_6 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-6 up -d"
+						sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 up -d"
 						sleep 10
 					}
 				}
@@ -232,8 +231,8 @@ pipeline {
 			parallel {
 				stage('Suite_4') {
 					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-4.yml -p ${PROJECT_NAME}-4 run --rm bwpm-tester-4 sh -c '/data/do-container-tests.sh'"
+//						echo "Dummy"
+						sh "docker-compose -f build/docker/bwpm-tester-4.yml -p ${PROJECT_NAME}-4 run --rm bwpm-tester-4 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -251,8 +250,8 @@ pipeline {
 				}
 				stage('Suite_5') {
 					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-5.yml -p ${PROJECT_NAME}-5 run --rm bwpm-tester-5 sh -c '/data/do-container-tests.sh'"
+//						echo "Dummy"
+						sh "docker-compose -f build/docker/bwpm-tester-5.yml -p ${PROJECT_NAME}-5 run --rm bwpm-tester-5 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -270,8 +269,8 @@ pipeline {
 				}
 				stage('Suite_6') {
 					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-6.yml -p ${PROJECT_NAME}-6 run --rm bwpm-tester-6 sh -c '/data/do-container-tests.sh'"
+//						echo "Dummy"
+						sh "docker-compose -f build/docker/bwpm-tester-6.yml -p ${PROJECT_NAME}-6 run --rm bwpm-tester-6 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {

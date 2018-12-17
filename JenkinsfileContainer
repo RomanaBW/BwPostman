@@ -169,12 +169,14 @@ pipeline {
 		}
 
 		stage('Notification first level') {
-			emailext(
-				body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
-				attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-				subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
-				to: 'webmaster@boldt-webservice.de'
-			)
+			steps {
+				emailext(
+					body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
+					attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+					subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
+					to: 'webmaster@boldt-webservice.de'
+				)
+			}
 		}
 
 		stage('Run second level test suites') {
@@ -241,12 +243,14 @@ pipeline {
 		}
 
 		stage('Notification second level') {
-			emailext(
-				body: "<p>Second level of BwPostman build ${currentBuild.number} successfully finished.</p>",
-				attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-				subject:"Second level of BwPostman build ${currentBuild.number} successfully finished",
-				to: 'webmaster@boldt-webservice.de'
-			)
+			steps {
+				emailext(
+					body: "<p>Second level of BwPostman build ${currentBuild.number} successfully finished.</p>",
+					attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+					subject:"Second level of BwPostman build ${currentBuild.number} successfully finished",
+					to: 'webmaster@boldt-webservice.de'
+				)
+			}
 		}
 
 //		stage('Create intallation package') {

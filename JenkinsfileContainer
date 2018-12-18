@@ -108,6 +108,29 @@ pipeline {
 							)
 						}
 					}
+					steps {
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 up -d"
+						sleep 10
+
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
+
+						sh "docker-compose -f build/docker/bwpm-tester-3.yml -p ${PROJECT_NAME}-3 run --rm bwpm-tester-3 sh -c '/data/do-container-tests.sh'"
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
+						}
+						failure {
+							emailext(
+								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
+								to: 'webmaster@boldt-webservice.de'
+							)
+						}
+					}
 				}
 				stage('Suite 3') {
 					steps {
@@ -184,10 +207,11 @@ pipeline {
 
 						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
 
-							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
+						sh "docker-compose -f build/docker/bwpm-tester-5.yml -p ${PROJECT_NAME}-5 run --rm bwpm-tester-5 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
+							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
 						}
 						failure {
 							emailext(

@@ -120,10 +120,22 @@ Suites:
     webserver_port: "8034"
     tester_ip: "172.18.0.69"
 
+  Suite_7:
+    suite_name: "Suite_7"
+    suite_number: "7"
+    subnet: "172.18.0.72/29"
+    db_ip: "172.18.0.75"
+    db_port: "3342"
+    mailer_ip: "172.18.0.74"
+    webserver_ip: "172.18.0.76"
+    webserver_port: "8035"
+    tester_ip: "172.18.0.77"
+
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
 repository_base_path: "/repositories/artifacts/bwpostman"
 repository_database_path: "/repositories/artifacts/bwpostman/database/{{ project_name }}"
+repository_joomla_database_path: "/repositories/artifacts/bwpostman/database/{{ joomla_name }}"
 repository_project_path: "{{ repository_base_path }}/{{ project_name }}"
 repository_project_suite_path: "{{ repository_project_path }}/{{ item.value.suite_name }}"
 repository_project_suite_path_alt: "{{ repository_project_path }}/{{ suite_vars.suite_name }}"
@@ -213,7 +225,7 @@ test_suites_container:
       - createUsers
       - access3
 
-  - name: installation
+  - name: Suite_7
     tests:
       - install
       - defaultOptions

@@ -14,67 +14,90 @@
       set_fact:
         project_name_without_dots: "{{ project_name | replace('.', '') }}"
 
+    - name: set joomla project name variable without dots
+      set_fact:
+        joomla_name_without_dots: "{{ joomla_name | replace('.', '') }}"
+
     - name: create dirs for webserver files
       file:
         path: "{{ project_base_dir }}/container_files/files-{{ item.value.suite_number }}"
         state: directory
       with_dict: "{{ Suites }}"
 
-    - name: copy database dump
-      become: yes
-      become_user: root
-      synchronize:
-        src: "{{ web_dir }}/{{ project_name_without_dots }}/backups/"
-        dest: "{{ project_base_dir }}/container_files/backups"
+#    - name: copy database dump
+#      become: yes
+#      become_user: root
+#      synchronize:
+#        src: "{{ web_dir }}/{{ project_name_without_dots }}/backups/"
+#        dest: "{{ project_base_dir }}/container_files/backups"
 
-    - name: copy webserver files to webserver 1
+    - name: copy webserver files with bwpm to webserver 1
       become: yes
       become_user: root
       synchronize:
         src: "{{ web_dir }}/{{ project_name_without_dots }}/files/"
         dest: "{{ project_base_dir }}/container_files/files-1"
 
-    - name: copy checked out extension files from to webserver 1
+    - name: copy webserver files without bwpm to webserver 7
+      become: yes
+      become_user: root
+      synchronize:
+        src: "{{ web_dir }}/{{ joomla_name_without_dots }}/files/"
+        dest: "{{ project_base_dir }}/container_files/files-7"
+
+    - name: copy checked out extension files from to webserver 1 and 7
       become: yes
       become_user: root
       synchronize:
         src: "{{ project_base_dir }}/src/"
-        dest: "{{ project_base_dir }}/container_files/files-1"
+        dest: "{{ project_base_dir }}/container_files/{{ item }}"
+      with_items:
+        - files-1
+        - files-7
 
-    - name: copy tests to webserver 1
+    - name: copy tests to webserver 1 + 7
       become: yes
       become_user: root
       synchronize:
         src: "{{ project_base_dir }}/tests/"
-        dest: "{{ project_base_dir }}/container_files/files-1/tests"
+        dest: "{{ project_base_dir }}/container_files/{{ item }}/tests"
+      with_items:
+        - files-1
+        - files-7
 
     - name: remove AcceptanceTesterActions.php
       become: yes
       become_user: root
       file:
-        path: "{{ project_base_dir }}/container_files/files-1/tests/_support/_generated/AcceptanceTesterActions.php"
+        path: "{{ project_base_dir }}/container_files/{{ item }}/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent
+      with_items:
+        - files-1
+        - files-7
 
     - name: set permissions for webserver files
       become: yes
       become_user: root
-      command: "chmod -R 0777 {{ project_base_dir }}/container_files/files-1"
+      command: "chmod -R 0777 {{ project_base_dir }}/container_files/{{ item }}"
+      with_items:
+        - files-1
+        - files-7
 
     - name: set owner for webserver files
       become: yes
       become_user: root
-      command: "chown -R wwwrun {{ project_base_dir }}/container_files/files-1"
+      command: "chown -R wwwrun {{ project_base_dir }}/container_files/{{ item }}"
+      with_items:
+        - files-1
+        - files-7
 
     - name: set group for webserver files
       become: yes
       become_user: root
-      command: "chgrp -R jenkins {{ project_base_dir }}/container_files/files-1"
-
-#      file:
-#        dest: "{{ project_base_dir }}/container_files/files-1"
-#        owner: wwwrun
-#        group: jenkins
-#        mode: u=rwx,g=rwx,o=rwx
+      command: "chgrp -R jenkins {{ project_base_dir }}/container_files/{{ item }}"
+      with_items:
+        - files-1
+        - files-7
 
     - name: copy webserver files from webserver 1 to webserver 2 - 6
       become: yes
@@ -102,6 +125,13 @@
         - 4
         - 5
         - 6
+
+    - name: copy database files from artifacts to database server 7
+      become: yes
+      become_user: root
+      synchronize:
+        src: "{{ repository_joomla_database_path }}/"
+        dest: "{{ project_base_dir }}/container_files/database-7"
 
     - name: ensure log folder for test results exists
       file:

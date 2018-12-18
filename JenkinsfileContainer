@@ -26,13 +26,13 @@ pipeline {
         }
 
 		// @ToDo: deactivate, when tester works, to prevent later problems because of updates
-//		stage('Prepare infrastructure') {
-//			parallel {
-//				stage('build database container') {
-//					steps {
-//						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
-//					}
-//				}
+		stage('Prepare infrastructure') {
+			parallel {
+				stage('build database container') {
+					steps {
+						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mariadb ./build/docker/mysqldb"
+					}
+				}
 //				stage('build webserver container') {
 //					steps {
 //						sh "docker build -f ./build/docker/apache/Dockerfile71 -t romana/apache_71 ./build/docker/apache"
@@ -53,8 +53,8 @@ pipeline {
 //						sh "docker build -f ./build/docker/os-chromium-tester/Dockerfile -t romana/os-chromium-tester ./build/docker/os-chromium-tester"
 //					}
 //				}
-//			}
-//		}
+			}
+		}
 
 //		stage('Run acceptance level 1') {
 //			parallel {

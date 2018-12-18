@@ -11,7 +11,7 @@ networks:
 services:
   {{ db.service }}-{{ suite_vars.suite_number }}:
     container_name: {{ db.container_name }}-{{ suite_vars.suite_number }}
-    image: romana/mysql
+    image: romana/mariadb
     hostname: {{ db.host_name }}-{{ suite_vars.suite_number }}
     domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     networks:

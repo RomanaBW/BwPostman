@@ -67,7 +67,7 @@ pipeline {
 							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_1", ""${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME})
 						}
 					}
 				}
@@ -80,7 +80,7 @@ pipeline {
 							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_2", ""${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME})
 						}
 					}
 				}
@@ -113,9 +113,9 @@ pipeline {
 							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_3", ""${PROJECT_NAME}")
-							bwpmAcceptFailureContainer ("Suite_4", ""${PROJECT_NAME}")
-							bwpmAcceptFailureContainer ("Suite_5", ""${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME})
+							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME})
+							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME})
 						}
 					}
 				}
@@ -128,7 +128,7 @@ pipeline {
 							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_6", ""${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME})
 						}
 					}
 				}

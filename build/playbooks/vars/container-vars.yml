@@ -180,7 +180,7 @@ test_file_container:
 #  - module_overview:
 
 test_suites_container:
-  - name: inststallation
+  - name: installation
     tests:
       - install
       - defaultOptions
@@ -190,6 +190,8 @@ test_suites_container:
   - name: Suite_1
     tests:
       - lists
+      - maintenance
+      - frontend
 
   - name: Suite_2
     tests:
@@ -202,6 +204,7 @@ test_suites_container:
 
   - name: Suite_4
     tests:
+      - user2subscriber
       - setPermissions
       - createUsers
       - access1

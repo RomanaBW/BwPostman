@@ -56,61 +56,18 @@ pipeline {
 //			}
 //		}
 
-		stage('Create and run infrastructures level 1') {
+		stage('Run acceptance level 1') {
 			parallel {
-				stage('Infrastructure suite 1') {
+				stage('Suite 1') {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-1 up -d"
 						sleep 10
-					}
-				}
-				stage('Infrastructure suite 2') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 up -d"
-						sleep 10
-					}
-				}
-				stage('Infrastructure suite 3') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 up -d"
-						sleep 10
-					}
-				}
-			}
-		}
 
-		stage('Create testers level 1') {
-			parallel {
-				stage('Tester 1') {
-					steps {
 						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_1 workspace=${WORKSPACE}'"
-					}
-				}
-				stage('Tester 2') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
-					}
-				}
-				stage('Tester 3') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
-					}
-				}
-			}
-		}
 
-		stage('Run test suites level 1') {
-			parallel {
-				stage('Suite_1') {
-					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run --rm bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
+						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run --rm bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -126,18 +83,25 @@ pipeline {
 						}
 					}
 				}
-				stage('Suite_2') {
+				stage('Suite 2') {
 					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run --rm bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 up -d"
+						sleep 10
+
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
+
+						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run --rm bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
+
 					}
 					post {
 						always {
-							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
+							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
 						}
 						failure {
 							emailext(
-								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
 								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
 								to: 'webmaster@boldt-webservice.de'
@@ -145,10 +109,16 @@ pipeline {
 						}
 					}
 				}
-				stage('Suite_3') {
+				stage('Suite 3') {
 					steps {
-						echo "Dummy"
-//						sh "docker-compose -f build/docker/bwpm-tester-3.yml -p ${PROJECT_NAME}-3 run --rm bwpm-tester-3 sh -c '/data/do-container-tests.sh'"
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 up -d"
+						sleep 10
+
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
+
+						sh "docker-compose -f build/docker/bwpm-tester-3.yml -p ${PROJECT_NAME}-3 run --rm bwpm-tester-3 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
 						always {
@@ -171,67 +141,24 @@ pipeline {
 			steps {
 				emailext(
 					body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
-					attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+					attachmentsPattern: "",
 					subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}
 		}
 
-		stage('Create and run infrastructures level 2') {
+		stage('Run acceptance level 2') {
 			parallel {
-				stage('Infrastructure suite 4') {
+				stage('Suite 4') {
 					steps {
 						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_4 workspace=${WORKSPACE}'"
 						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_4 workspace=${WORKSPACE}'"
 						sh "docker-compose -f build/docker/run-bwpm-4.yml --verbose -p ${PROJECT_NAME}-4 up -d"
 						sleep 10
-					}
-				}
-				stage('Infrastructure suite 5') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_5 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 up -d"
-						sleep 10
-					}
-				}
-				stage('Infrastructure suite 6') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_6 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 up -d"
-						sleep 10
-					}
-				}
-			}
-		}
 
-		stage('Create testers level 2') {
-			parallel {
-				stage('Tester 4') {
-					steps {
 						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_4 workspace=${WORKSPACE}'"
-					}
-				}
-				stage('Tester 5') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
-					}
-				}
-				stage('Tester 6') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
-					}
-				}
-			}
-		}
 
-		stage('Run test suites level 2') {
-			parallel {
-				stage('Suite_4') {
-					steps {
-//						echo "Dummy"
 						sh "docker-compose -f build/docker/bwpm-tester-4.yml -p ${PROJECT_NAME}-4 run --rm bwpm-tester-4 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
@@ -248,18 +175,23 @@ pipeline {
 						}
 					}
 				}
-				stage('Suite_5') {
+				stage('Suite 5') {
 					steps {
-//						echo "Dummy"
-						sh "docker-compose -f build/docker/bwpm-tester-5.yml -p ${PROJECT_NAME}-5 run --rm bwpm-tester-5 sh -c '/data/do-container-tests.sh'"
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_5 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 up -d"
+						sleep 10
+
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
+
+							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
 					}
 					post {
 						always {
-							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
 						}
 						failure {
 							emailext(
-								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
+								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
 								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
 								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
 								to: 'webmaster@boldt-webservice.de'
@@ -267,9 +199,15 @@ pipeline {
 						}
 					}
 				}
-				stage('Suite_6') {
+				stage('Suite 6') {
 					steps {
-//						echo "Dummy"
+						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
+						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_6 workspace=${WORKSPACE}'"
+						sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 up -d"
+						sleep 10
+
+						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
+
 						sh "docker-compose -f build/docker/bwpm-tester-6.yml -p ${PROJECT_NAME}-6 run --rm bwpm-tester-6 sh -c '/data/do-container-tests.sh'"
 					}
 					post {
@@ -277,7 +215,6 @@ pipeline {
 							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
 						}
 						failure {
-						echo "../../../../..${artifactPath}/${STAGE_NAME}/logs/*.png"
 							emailext(
 								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
 								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
@@ -294,7 +231,7 @@ pipeline {
 			steps {
 				emailext(
 					body: "<p>Second level of BwPostman build ${currentBuild.number} successfully finished.</p>",
-					attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
+					attachmentsPattern: "",
 					subject:"Second level of BwPostman build ${currentBuild.number} successfully finished",
 					to: 'webmaster@boldt-webservice.de'
 				)

@@ -60,7 +60,7 @@ pipeline {
 //			parallel {
 //				stage('Suite 1') {
 //					steps {
-//						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "1")
+//						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1")
 //					}
 //					post {
 //						always {
@@ -73,7 +73,7 @@ pipeline {
 //				}
 //				stage('Suite 2') {
 //					steps {
-//						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "2")
+//						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2")
 //					}
 //					post {
 //						always {
@@ -102,9 +102,9 @@ pipeline {
 //			parallel {
 //				stage('Suite 3 + 4 + 5') {
 //					steps {
-//						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "3")
-//						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "4")
-//						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "5")
+//						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3")
+//						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
+//						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
 //					}
 //					post {
 //						always {
@@ -121,7 +121,7 @@ pipeline {
 //				}
 //				stage('Suite 6') {
 //					steps {
-//						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "6")
+//						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6")
 //					}
 //					post {
 //						always {
@@ -155,7 +155,7 @@ pipeline {
 
 		stage('installation test') {
 			steps {
-				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "7")
+				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "${PROJECT_NAME}", "7")
 			}
 			post {
 				always {

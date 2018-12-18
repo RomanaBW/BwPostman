@@ -146,10 +146,10 @@ pipeline {
 			}
 		}
 
-		stage('Create intallation package') {
+		stage('Create installation package') {
 			steps {
-//				echo "Dummy"
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true'"
+				echo "Dummy"
+//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true'"
 			}
 		}
 

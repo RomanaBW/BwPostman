@@ -195,7 +195,8 @@ test_suites_container:
 
   - name: Suite_2
     tests:
-      - details
+      - user2subscriber
+  #  - personalize
 
   - name: Suite_3
     tests:
@@ -212,12 +213,11 @@ test_suites_container:
 
   - name: Suite_5
     tests:
-      - setPermissions
-      - createUsers
-      - access3
+      - details
 
   - name: Suite_6
     tests:
-      - user2subscriber
-#  - personalize
+      - setPermissions
+      - createUsers
+      - access3
 

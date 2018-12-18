@@ -60,100 +60,27 @@ pipeline {
 			parallel {
 				stage('Suite 1') {
 					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_1 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_1 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-1.yml --verbose -p ${PROJECT_NAME}-1 up -d"
-						sleep 10
-
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_1 workspace=${WORKSPACE}'"
-
-						sh "docker-compose -f build/docker/bwpm-tester-1.yml -p ${PROJECT_NAME}-1 run --rm bwpm-tester-1 sh -c '/data/do-container-tests.sh'"
+						bwpmAcceptContainer ("Suite_1", ""${PROJECT_NAME}", "1")
 					}
 					post {
 						always {
 							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
 						}
 						failure {
-							emailext(
-								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'webmaster@boldt-webservice.de'
-							)
+							bwpmAcceptFailureContainer ("Suite_1", ""${PROJECT_NAME}")
 						}
 					}
 				}
 				stage('Suite 2') {
 					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_2 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 up -d"
-						sleep 10
-
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_2 workspace=${WORKSPACE}'"
-
-						sh "docker-compose -f build/docker/bwpm-tester-2.yml -p ${PROJECT_NAME}-2 run --rm bwpm-tester-2 sh -c '/data/do-container-tests.sh'"
-
+						bwpmAcceptContainer ("Suite_2", ""${PROJECT_NAME}", "2")
 					}
 					post {
 						always {
-							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
+							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
 						}
 						failure {
-							emailext(
-								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'webmaster@boldt-webservice.de'
-							)
-						}
-					}
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 up -d"
-						sleep 10
-
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
-
-						sh "docker-compose -f build/docker/bwpm-tester-3.yml -p ${PROJECT_NAME}-3 run --rm bwpm-tester-3 sh -c '/data/do-container-tests.sh'"
-					}
-					post {
-						always {
-							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-						}
-						failure {
-							emailext(
-								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'webmaster@boldt-webservice.de'
-							)
-						}
-					}
-				}
-				stage('Suite 3') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_3 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 up -d"
-						sleep 10
-
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_3 workspace=${WORKSPACE}'"
-
-						sh "docker-compose -f build/docker/bwpm-tester-3.yml -p ${PROJECT_NAME}-3 run --rm bwpm-tester-3 sh -c '/data/do-container-tests.sh'"
-					}
-					post {
-						always {
-							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-						}
-						failure {
-							emailext(
-								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'webmaster@boldt-webservice.de'
-							)
+							bwpmAcceptFailureContainer ("Suite_2", ""${PROJECT_NAME}")
 						}
 					}
 				}
@@ -173,78 +100,35 @@ pipeline {
 
 		stage('Run acceptance level 2') {
 			parallel {
-				stage('Suite 4') {
+				stage('Suite 3 + 4 + 5') {
 					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_4 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_4 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-4.yml --verbose -p ${PROJECT_NAME}-4 up -d"
-						sleep 10
-
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_4 workspace=${WORKSPACE}'"
-
-						sh "docker-compose -f build/docker/bwpm-tester-4.yml -p ${PROJECT_NAME}-4 run --rm bwpm-tester-4 sh -c '/data/do-container-tests.sh'"
+						bwpmAcceptContainer ("Suite_3", ""${PROJECT_NAME}", "3")
+						bwpmAcceptContainer ("Suite_4", ""${PROJECT_NAME}", "4")
+						bwpmAcceptContainer ("Suite_5", ""${PROJECT_NAME}", "5")
 					}
 					post {
 						always {
+							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
 							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
-						}
-						failure {
-							emailext(
-								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'webmaster@boldt-webservice.de'
-							)
-						}
-					}
-				}
-				stage('Suite 5') {
-					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_5 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 up -d"
-						sleep 10
-
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_5 workspace=${WORKSPACE}'"
-
-						sh "docker-compose -f build/docker/bwpm-tester-5.yml -p ${PROJECT_NAME}-5 run --rm bwpm-tester-5 sh -c '/data/do-container-tests.sh'"
-					}
-					post {
-						always {
 							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
 						}
 						failure {
-							emailext(
-								body: "<p>BwPostman build ${currentBuild.number} failed at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'webmaster@boldt-webservice.de'
-							)
+							bwpmAcceptFailureContainer ("Suite_3", ""${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_4", ""${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_5", ""${PROJECT_NAME}")
 						}
 					}
 				}
 				stage('Suite 6') {
 					steps {
-						sh "ansible-playbook ./build/playbooks/create-infrastructure-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
-						sh "ansible-playbook ./build/playbooks/adjust-joomla-configuration.yml --extra-vars 'suite_set=Suite_6 workspace=${WORKSPACE}'"
-						sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 up -d"
-						sleep 10
-
-						sh "ansible-playbook ./build/playbooks/create-tester-runner.yml --extra-vars 'project_name=${PROJECT_NAME} suite_set=Suite_6 workspace=${WORKSPACE}'"
-
-						sh "docker-compose -f build/docker/bwpm-tester-6.yml -p ${PROJECT_NAME}-6 run --rm bwpm-tester-6 sh -c '/data/do-container-tests.sh'"
+						bwpmAcceptContainer ("Suite_6", ""${PROJECT_NAME}", "6")
 					}
 					post {
 						always {
 							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
 						}
 						failure {
-							emailext(
-								body: "<p>BwPostman build failed ${currentBuild.number} at ${STAGE_NAME},</p><br /><p>the video is at: <a href='file://${artifactPath}/${STAGE_NAME}/videos/${STAGE_NAME}.mp4'>${STAGE_NAME}.mp4</a></p>",
-								attachmentsPattern: "repo_data/${STAGE_NAME}/logs/*.png",
-								subject:"BwPostman build ${currentBuild.number} failed at ${STAGE_NAME}",
-								to: 'webmaster@boldt-webservice.de'
-							)
+							bwpmAcceptFailureContainer ("Suite_6", ""${PROJECT_NAME}")
 						}
 					}
 				}

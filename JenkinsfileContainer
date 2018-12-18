@@ -226,7 +226,6 @@ pipeline {
 					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 				)
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-
 			}
 		}
 

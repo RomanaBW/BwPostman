@@ -75,13 +75,13 @@
         - files-1
         - files-7
 
-    - name: set permissions for webserver files
-      become: yes
-      become_user: root
-      command: "chmod -R 0777 {{ project_base_dir }}/container_files/{{ item }}"
-      with_items:
-        - files-1
-        - files-7
+#    - name: set permissions for webserver files
+#      become: yes
+#      become_user: root
+#      command: "chmod -R 0777 {{ project_base_dir }}/container_files/{{ item }}"
+#      with_items:
+#        - files-1
+#        - files-7
 
     - name: copy webserver files from webserver 1 to webserver 2 - 6
       become: yes
@@ -109,10 +109,6 @@
         - 4
         - 5
         - 6
-
-    - name: show database path for Webserver 7
-      debug:
-        msg: "{{ repository_joomla_database_path }}/"
 
     - name: copy database files from artifacts to database server 7
       become: yes

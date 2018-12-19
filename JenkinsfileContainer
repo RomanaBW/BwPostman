@@ -155,6 +155,7 @@ pipeline {
 
 		stage('installation test') {
 			steps {
+				echo "Dummy"
 				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "${PROJECT_NAME}", "7")
 			}
 			post {

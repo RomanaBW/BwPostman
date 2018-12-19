@@ -10,11 +10,11 @@ pipeline {
 		string(name: "BWPM_VERSION", defaultValue: "2.2.0", description: "The new/next version number of the project.")
 		string(name: "JOOMLA_VERSION", defaultValue: "3.9.1", description: "Version of Joomla to test against")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
-    }
+	}
 
-    stages {
-        stage('Prepare source files and log folders') {
-            steps {
+	stages {
+		stage('Prepare source files and log folders') {
+			steps {
 				script {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
 					JOOMLA_NAME = "j${params.JOOMLA_VERSION}"
@@ -22,8 +22,8 @@ pipeline {
 				}
 
 				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME}'"
-            }
-        }
+			}
+		}
 
 		// @ToDo: deactivate, when tester works, to prevent later problems because of updates
 //		stage('Prepare infrastructure') {

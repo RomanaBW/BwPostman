@@ -131,6 +131,7 @@
         mode: 0777
       with_dict: "{{ Suites }}"
 
+
     - name: Prepare manifest for codeception tests
       template:
         src: "codeception.container.yml.j2"

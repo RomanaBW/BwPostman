@@ -83,22 +83,22 @@
         - files-1
         - files-7
 
-    - name: set owner for webserver files
-      become: yes
-      become_user: root
-      command: "chown -R www-data {{ project_base_dir }}/container_files/{{ item }}"
-      with_items:
-        - files-1
-        - files-7
-
-    - name: set group for webserver files
-      become: yes
-      become_user: root
-      command: "chgrp -R jenkins {{ project_base_dir }}/container_files/{{ item }}"
-      with_items:
-        - files-1
-        - files-7
-
+#    - name: set owner for webserver files
+#      become: yes
+#      become_user: root
+#      command: "chown -R www-data {{ project_base_dir }}/container_files/{{ item }}"
+#      with_items:
+#        - files-1
+#        - files-7
+#
+#    - name: set group for webserver files
+#      become: yes
+#      become_user: root
+#      command: "chgrp -R www-data {{ project_base_dir }}/container_files/{{ item }}"
+#      with_items:
+#        - files-1
+#        - files-7
+#
     - name: copy webserver files from webserver 1 to webserver 2 - 6
       become: yes
       become_user: root

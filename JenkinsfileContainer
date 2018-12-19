@@ -53,8 +53,8 @@ pipeline {
 //						sh "docker build -f ./build/docker/os-chromium-tester/Dockerfile -t romana/os-chromium-tester ./build/docker/os-chromium-tester"
 //					}
 //				}
-			}
-		}
+//			}
+//		}
 
 //		stage('Run acceptance level 1') {
 //			parallel {

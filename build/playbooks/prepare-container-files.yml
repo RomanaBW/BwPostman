@@ -24,12 +24,19 @@
         state: directory
       with_dict: "{{ Suites }}"
 
-#    - name: copy database dump
-#      become: yes
-#      become_user: root
-#      synchronize:
-#        src: "{{ web_dir }}/{{ project_name_without_dots }}/backups/"
-#        dest: "{{ project_base_dir }}/container_files/backups"
+    - name: copy database dump with bwpm
+      become: yes
+      become_user: root
+      synchronize:
+        src: "{{ web_dir }}/{{ project_name_without_dots }}/backups/"
+        dest: "{{ project_base_dir }}/container_files/backups"
+
+    - name: copy database dump without bwpm
+      become: yes
+      become_user: root
+      synchronize:
+        src: "{{ web_dir }}/{{ joomla_name_without_dots }}/backups/"
+        dest: "{{ project_base_dir }}/container_files/backups"
 
     - name: copy webserver files with bwpm to webserver 1
       become: yes

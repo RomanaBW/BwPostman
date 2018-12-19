@@ -126,6 +126,10 @@
         - 5
         - 6
 
+    - name: show database path for Webserver 7
+      debug:
+        msg: "{{ repository_joomla_database_path }}/"
+
     - name: copy database files from artifacts to database server 7
       become: yes
       become_user: root

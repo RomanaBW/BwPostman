@@ -1,4 +1,4 @@
----
+^---
 to_delete:
   - index.php
   - administrator/index.php
@@ -231,5 +231,3 @@ test_suites_container:
       - defaultOptions
       - restore
       - uninstall
-
-

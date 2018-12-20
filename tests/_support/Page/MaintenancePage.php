@@ -292,5 +292,8 @@ class MaintenancePage
 		$I->click(self::$checkBackButton);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(self::$heading, Generals::$pageTitle);
+
+		$I->amOnPage(MainView::$url);
+		$I->see("53", ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
 	}
 }

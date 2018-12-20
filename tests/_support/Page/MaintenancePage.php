@@ -236,6 +236,13 @@ class MaintenancePage
 	public static $step11SuccessMsg     = "Check: Check asset ids and user ids...";
 
 	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $statisticsUnsentNewsletters     = ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a";
+
+	/**
 	 * Test method to restore tables
 	 *
 	 * @param   \AcceptanceTester   $I
@@ -257,8 +264,8 @@ class MaintenancePage
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
 
-		$I->waitForElement(".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
-		$I->see("0", ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
+		$I->waitForElement(self::$statisticsUnsentNewsletters);
+		$I->see("0", self::$statisticsUnsentNewsletters);
 		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -297,7 +304,7 @@ class MaintenancePage
 		$I->see(self::$heading, Generals::$pageTitle);
 
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
-		$I->see("53", ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
+		$I->waitForElement(self::$statisticsUnsentNewsletters);
+		$I->see("53", self::$statisticsUnsentNewsletters);
 	}
 }

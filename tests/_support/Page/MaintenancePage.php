@@ -257,6 +257,7 @@ class MaintenancePage
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
 
+		$I->waitForElement(".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
 		$I->see("0", ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
 		$I->click(MainView::$maintenanceButton);
 
@@ -296,6 +297,7 @@ class MaintenancePage
 		$I->see(self::$heading, Generals::$pageTitle);
 
 		$I->amOnPage(MainView::$url);
+		$I->waitForElement(".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
 		$I->see("53", ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
 	}
 }

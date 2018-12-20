@@ -256,6 +256,8 @@ class MaintenancePage
 		$I->wantTo("Restore tables");
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
+
+		$I->see("0", ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a");
 		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);

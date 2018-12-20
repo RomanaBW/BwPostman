@@ -56,36 +56,36 @@ pipeline {
 //			}
 //		}
 
-//		stage('Run acceptance level 1') {
-//			parallel {
-//				stage('Suite 1') {
-//					steps {
-//						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1")
-//					}
-//					post {
-//						always {
-//							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
-//						}
-//					}
-//				}
-//				stage('Suite 2') {
-//					steps {
-//						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2")
-//					}
-//					post {
-//						always {
-//							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
-//						}
-//					}
-//				}
-//			}
-//		}
+		stage('Run acceptance level 1') {
+			parallel {
+				stage('Suite 1') {
+					steps {
+						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1")
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+						}
+					}
+				}
+				stage('Suite 2') {
+					steps {
+						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2")
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
+						}
+					}
+				}
+			}
+		}
 
 		stage('Notification level 1') {
 			steps {
@@ -98,42 +98,42 @@ pipeline {
 			}
 		}
 
-//		stage('Run acceptance level 2') {
-//			parallel {
-//				stage('Suite 3 + 4 + 5') {
-//					steps {
-//						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3")
-//						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
-//						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
-//					}
-//					post {
-//						always {
-//							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-//							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
-//							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
-//							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
-//							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
-//						}
-//					}
-//				}
-//				stage('Suite 6') {
-//					steps {
-//						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6")
-//					}
-//					post {
-//						always {
-//							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
-//						}
-//					}
-//				}
-//			}
-//		}
+		stage('Run acceptance level 2') {
+			parallel {
+				stage('Suite 3 + 4 + 5') {
+					steps {
+						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3")
+						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
+						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
+							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
+							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
+						}
+					}
+				}
+				stage('Suite 6') {
+					steps {
+						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6")
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
+						}
+					}
+				}
+			}
+		}
 
 		stage('Notification level 2') {
 			steps {
@@ -148,8 +148,8 @@ pipeline {
 
 		stage('Create installation package') {
 			steps {
-				echo "Dummy"
-//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true'"
+//				echo "Dummy"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true'"
 			}
 		}
 
@@ -160,7 +160,7 @@ pipeline {
 			}
 			post {
 				always {
-					echo "Dummy"
+//					echo "Dummy"
 					sh "docker-compose -f build/docker/run-bwpm-7.yml -p ${JOOMLA_NAME}-7 down"
 				}
 				failure {

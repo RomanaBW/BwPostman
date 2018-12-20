@@ -207,6 +207,7 @@ test_suites_container:
     tests:
       - maintenance
       - frontend
+      - options
 
   - name: Suite_4
     tests:

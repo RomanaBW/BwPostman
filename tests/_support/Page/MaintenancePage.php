@@ -264,8 +264,6 @@ class MaintenancePage
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
 
-		$I->waitForElementVisible(self::$statisticsUnsentNewsletters);
-		$I->see("0", self::$statisticsUnsentNewsletters);
 		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -304,6 +302,7 @@ class MaintenancePage
 		$I->see(self::$heading, Generals::$pageTitle);
 
 		$I->amOnPage(MainView::$url);
+
 		$I->waitForElementVisible(self::$statisticsUnsentNewsletters);
 		$I->see("53", self::$statisticsUnsentNewsletters);
 	}

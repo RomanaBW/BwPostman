@@ -252,29 +252,14 @@ class InstallationPage
 
 		self::doInstallation($I);
 
-		$heading = $I->grabTextFrom('#systewm-message-container div h4');
+		$heading = $I->grabTextFrom('#system-message-container div h4');
 
 		if ($heading == "Warning")
 		{
 			// @ToDo: Insert workaround for too fast container installation
-			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[1]/div/div[2]/div/ul/li[3]/a');
-			$I->waitForElement('html/body/header/div[2]/h1');
-			$I->see("Extensions: Manage", 'html/body/header/div[2]/h1');
-			$I->fillField('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[1]/div[1]/div[1]/div[1]/input', "bwpost");
-			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[1]/div[1]/div[1]/div[1]/button');
-			$I->wait(2);
-			$I->see("BwPostman", 'html/body/div[2]/section/div/div/div[2]/form/div[2]/table/tbody/tr[1]/td[3]/label/span');
-			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/table/thead/tr/th[1]/input');
-			$I->click(Generals::$toolbar['Uninstall']);
+			self::unInstallation($I);
 
-			$I->acceptPopup();
-
-			$I->waitForElement(Generals::$sys_message_container, 120);
-			$I->waitForElement(Generals::$alert_success, 30);
-			$I->see(self::$uninstallSuccessMsg, Generals::$alert_success);
-
-			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[1]/div/div[2]/div/ul/li[1]/a');
-
+			$I->amOnPage(self::$install_url);
 			$I->waitForElement(Generals::$pageTitle, 30);
 			$I->see(self::$headingInstall);
 

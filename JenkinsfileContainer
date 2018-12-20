@@ -161,7 +161,7 @@ pipeline {
 			post {
 				always {
 					echo "Dummy"
-//					sh "docker-compose -f build/docker/run-bwpm-7.yml -p ${JOOMLA_NAME}-7 down"
+					sh "docker-compose -f build/docker/run-bwpm-7.yml -p ${JOOMLA_NAME}-7 down"
 				}
 				failure {
 					bwpmAcceptFailureContainer ("Suite_7", "${JOOMLA_NAME}")

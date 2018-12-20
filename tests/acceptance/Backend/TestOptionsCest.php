@@ -87,7 +87,6 @@ class TestOptionsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
-
 		$I->clickAndWait(OptionsPage::$tab_permissions, 1);
 
 		// get rule names
@@ -158,6 +157,7 @@ class TestOptionsCest
 
 		$I->click(Generals::$toolbar['Options']);
 		$I->waitForElement("#config", 30);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->fillField(OptionsPage::$sendersName, OptionsPage::$sendersNameByOption);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -206,6 +206,7 @@ class TestOptionsCest
 
 		$I->click(Generals::$toolbar['Options']);
 		$I->waitForElement("#config", 30);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->fillField(OptionsPage::$sendersEmail, OptionsPage::$sendersMailByOption);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -253,6 +254,7 @@ class TestOptionsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->fillField(OptionsPage::$replyEmail, OptionsPage::$replyMailByOption);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -322,6 +324,8 @@ class TestOptionsCest
 
 		// Set excluded categories
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$excludedCategories, 0, -120);
 		$I->fillField(OptionsPage::$excludedCategories, " Animals");
 		$I->click(OptionsPage::$excludedCategoriesListResult);
@@ -345,6 +349,8 @@ class TestOptionsCest
 		// Reset excluded categories
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 
 		$I->scrollTo(OptionsPage::$excludedCategories, 0, -120);
 		$I->click(OptionsPage::$excludedCategoriesEmptyResult);
@@ -378,6 +384,8 @@ class TestOptionsCest
 
 		// Set new numbers per step
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$numberNlsToSend, 0, -120);
 		$I->fillField(OptionsPage::$numberNlsToSend, OptionsPage::$newslettersPerStep);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -395,6 +403,8 @@ class TestOptionsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$numberNlsToSend, 0, -120);
 		$I->fillField(OptionsPage::$numberNlsToSend, OptionsPage::$newslettersPerStepDefault);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -425,6 +435,8 @@ class TestOptionsCest
 
 		// Set new numbers of seconds for time delay
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$delayTime, 0, -120);
 		$I->fillField(OptionsPage::$delayTime, OptionsPage::$numberOfSeconds);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -442,6 +454,8 @@ class TestOptionsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$delayTime, 0, -120);
 		$I->fillField(OptionsPage::$delayTime, OptionsPage::$numberOfSecondsDefault);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -472,6 +486,8 @@ class TestOptionsCest
 
 		// Set unit of time delay
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$delayUnitMinutes, 0, -120);
 		$I->click(OptionsPage::$delayUnitMinutes);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -489,6 +505,8 @@ class TestOptionsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$delayTime, 0, -120);
 		$I->click(OptionsPage::$delayUnitSeconds);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -522,6 +540,8 @@ class TestOptionsCest
 
 		// Set default publish yes
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$publishNlsAtSendingYes, 0, -120);
 		$I->click(OptionsPage::$publishNlsAtSendingYes);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -537,6 +557,8 @@ class TestOptionsCest
 
 		// Set default publish yes
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$publishNlsAtSendingNo, 0, -120);
 		$I->click(OptionsPage::$publishNlsAtSendingNo);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -572,6 +594,8 @@ class TestOptionsCest
 
 		// Set default publish yes
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$compressBackupFileNo, 0, -120);
 		$I->click(OptionsPage::$compressBackupFileNo);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -587,6 +611,8 @@ class TestOptionsCest
 
 		// Set default publish yes
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$compressBackupFileYes, 0, -120);
 		$I->click(OptionsPage::$compressBackupFileYes);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -622,6 +648,8 @@ class TestOptionsCest
 
 		// Set show Boldt Webservice link no
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$showBwLinkNo, 0, -120);
 		$I->click(OptionsPage::$showBwLinkNo);
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -645,6 +673,8 @@ class TestOptionsCest
 
 		// Set show Boldt Webservice link no
 		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_basics, 1);
+
 		$I->scrollTo(OptionsPage::$showBwLinkYes, 0, -120);
 		$I->click(OptionsPage::$showBwLinkYes);
 		$I->click(Generals::$toolbar['Save & Close']);

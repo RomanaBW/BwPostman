@@ -66,64 +66,6 @@ class TestOptionsCest
 	}
 
 	/**
-	 * Test method to set permissions of BwPostman
-	 *
-	 * @param AcceptanceTester $I
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @throws \Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public function setPermissions(AcceptanceTester $I)
-	{
-		$I->wantTo("Set Permissions BwPostman");
-		$I->expectTo("see correct permissions set");
-		$I->amOnPage(MainView::$url);
-
-		$I->see(Generals::$extension, Generals::$pageTitle);
-
-		$I->clickAndWait(Generals::$toolbar['Options'], 1);
-		$I->clickAndWait(OptionsPage::$tab_permissions, 1);
-
-		// get rule names
-		$rules  = $I->getRuleNamesByComponentAsset('com_bwpostman');
-
-		foreach(OptionsPage::$bwpm_groups as $groupname => $values)
-		{
-			$actions  = $values['permissions'];
-			$group_id = $I->getGroupIdByName($groupname);
-			$slider   = $this->selectPermissionsSliderForUsergroup($I, $group_id);
-
-			// set permissions
-			for ($i = 0; $i < count($rules); $i++)
-			{
-				$this->setSinglePermission($I, $rules, $i, $group_id, $actions);
-			}
-
-			// apply
-			$I->clickAndWait(Generals::$toolbar['Save'], 1);
-
-			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
-
-			// select usergroup
-			$I->scrollTo($slider, 0, -100);
-
-			$I->click($slider);
-			$I->waitForElement($slider, 30);
-
-			// check success
-			foreach ($rules as $rule)
-			{
-				$this->checkSetPermissionsSuccess($I, $rule, $rules, $group_id, $groupname);
-			}
-		}
-	}
-
-	/**
 	 * Test method to check option sender name
 	 * basic settings
 	 *
@@ -328,6 +270,9 @@ class TestOptionsCest
 
 		$I->scrollTo(OptionsPage::$excludedCategories, 0, -120);
 		$I->fillField(OptionsPage::$excludedCategories, " Animals");
+		$I->moveMouseOver(OptionsPage::$excludedCategories, 200, 0);
+		$I->wait(2);
+
 		$I->click(OptionsPage::$excludedCategoriesListResult);
 		$I->click(Generals::$toolbar['Save']);
 
@@ -1773,6 +1718,64 @@ class TestOptionsCest
 		$I->amOnPage(MainView::$url);
 
 		// @ToDo: Fill with life
+	}
+
+	/**
+	 * Test method to set permissions of BwPostman
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function setPermissions(AcceptanceTester $I)
+	{
+		$I->wantTo("Set Permissions BwPostman");
+		$I->expectTo("see correct permissions set");
+		$I->amOnPage(MainView::$url);
+
+		$I->see(Generals::$extension, Generals::$pageTitle);
+
+		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_permissions, 1);
+
+		// get rule names
+		$rules  = $I->getRuleNamesByComponentAsset('com_bwpostman');
+
+		foreach(OptionsPage::$bwpm_groups as $groupname => $values)
+		{
+			$actions  = $values['permissions'];
+			$group_id = $I->getGroupIdByName($groupname);
+			$slider   = $this->selectPermissionsSliderForUsergroup($I, $group_id);
+
+			// set permissions
+			for ($i = 0; $i < count($rules); $i++)
+			{
+				$this->setSinglePermission($I, $rules, $i, $group_id, $actions);
+			}
+
+			// apply
+			$I->clickAndWait(Generals::$toolbar['Save'], 1);
+
+			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
+
+			// select usergroup
+			$I->scrollTo($slider, 0, -100);
+
+			$I->click($slider);
+			$I->waitForElement($slider, 30);
+
+			// check success
+			foreach ($rules as $rule)
+			{
+				$this->checkSetPermissionsSuccess($I, $rule, $rules, $group_id, $groupname);
+			}
+		}
 	}
 
 	/**

@@ -195,8 +195,6 @@ test_suites_container:
   - name: Suite_1
     tests:
       - lists
-      - maintenance
-      - frontend
 
   - name: Suite_2
     tests:
@@ -205,9 +203,7 @@ test_suites_container:
 
   - name: Suite_3
     tests:
-      - maintenance
-      - frontend
-      - options
+      - details
 
   - name: Suite_4
     tests:
@@ -218,7 +214,9 @@ test_suites_container:
 
   - name: Suite_5
     tests:
-      - details
+      - maintenance
+      - frontend
+      - options
 
   - name: Suite_6
     tests:

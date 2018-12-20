@@ -394,6 +394,7 @@ class Generals
 		'Reset sending trials' => ".//*[@id='toolbar-unpublish']/button",
 		'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",
 		'Clear queue'          => ".//*[@id='toolbar-delete']/button",
+		'Uninstall  '          => ".//*[@id='toolbar-delete']/button",
 	);
 
 	/**

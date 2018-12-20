@@ -250,7 +250,52 @@ class InstallationPage
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(self::$headingInstall);
 
-		$install_file   = self::$installFileComponent;
+		self::doInstallation($I);
+
+		$heading = $I->grabTextFrom('#systewm-message-container div h4');
+
+		if ($heading == "Warning")
+		{
+			// @ToDo: Insert workaround for too fast container installation
+			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[1]/div/div[2]/div/ul/li[3]/a');
+			$I->waitForElement('html/body/header/div[2]/h1');
+			$I->see("Extensions: Manage", 'html/body/header/div[2]/h1');
+			$I->fillField('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[1]/div[1]/div[1]/div[1]/input', "bwpost");
+			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[1]/div[1]/div[1]/div[1]/button');
+			$I->wait(2);
+			$I->see("BwPostman", 'html/body/div[2]/section/div/div/div[2]/form/div[2]/table/tbody/tr[1]/td[3]/label/span');
+			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/table/thead/tr/th[1]/input');
+			$I->click(Generals::$toolbar['Uninstall']);
+
+			$I->acceptPopup();
+
+			$I->waitForElement(Generals::$sys_message_container, 120);
+			$I->waitForElement(Generals::$alert_success, 30);
+			$I->see(self::$uninstallSuccessMsg, Generals::$alert_success);
+
+			$I->click('html/body/div[2]/section/div/div/div[2]/form/div[1]/div/div[2]/div/ul/li[1]/a');
+
+			$I->waitForElement(Generals::$pageTitle, 30);
+			$I->see(self::$headingInstall);
+
+			self::doInstallation($I);
+		}
+
+		$I->waitForElement(Generals::$alert_success, 30);
+		$I->see(self::$installSuccessMsg, Generals::$alert_success);
+		$I->dontSee("Error", Generals::$alert_heading);
+	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 *
+	 * @return void
+	 *
+	 * @since 2.2.0
+	 */
+	private static function doInstallation(\AcceptanceTester $I)
+	{
+		$install_file    = self::$installFileComponent;
 		$new_j_installer = true;
 
 		if ($new_j_installer)
@@ -272,8 +317,54 @@ class InstallationPage
 
 		$I->waitForElement(Generals::$sys_message_container, 120);
 
-		$I->waitForElement(Generals::$alert_success, 30);
-		$I->see(self::$installSuccessMsg, Generals::$alert_success);
-		$I->dontSee("Error", Generals::$alert_heading);
+		return;
+	}
+
+	/**
+	 * Test method to uninstall BwPostman
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public static function unInstallation(\AcceptanceTester $I)
+	{
+		$I->wantTo("uninstall BwPostman");
+		$I->expectTo("see success message and component not in menu");
+
+		$I->amOnPage(InstallPage::$extension_manage_url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(InstallPage::$headingManage);
+
+		$I->fillField(Generals::$search_field, Generals::$extension);
+		$I->click(Generals::$search_button);
+
+		$to_uninstall = $I->elementExists($I, ".//*[@id='manageList']");
+
+		if ($to_uninstall)
+		{
+			$I->checkOption(Generals::$check_all_button);
+			$I->click(InstallPage::$delete_button);
+			$I->acceptPopup();
+
+			$I->waitForElement(Generals::$sys_message_container, 180);
+			$I->waitForElement(Generals::$alert_success, 30);
+			$I->see(InstallPage::$uninstallSuccessMsg, Generals::$alert_success);
+
+			// @ToDo: reset auto increment at usergroups
+			$I->resetAutoIncrement('usergroups', 14);
+		}
+		else
+		{
+			$I->see(InstallPage::$search_no_match);
+		}
 	}
 }

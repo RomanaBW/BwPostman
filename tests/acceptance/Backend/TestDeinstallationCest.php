@@ -34,6 +34,8 @@ class TestDeinstallationCest
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -58,34 +60,7 @@ class TestDeinstallationCest
 	 */
 	public function uninstall(AcceptanceTester $I)
 	{
-		$I->wantTo("uninstall BwPostman");
-		$I->expectTo("see success message and component not in menu");
-		$I->amOnPage(InstallPage::$extension_manage_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(InstallPage::$headingManage);
-
-		$I->fillField(Generals::$search_field, Generals::$extension);
-		$I->click(Generals::$search_button);
-
-		$to_uninstall   = $I->elementExists($I, ".//*[@id='manageList']");
-
-		if ($to_uninstall)
-		{
-			$I->checkOption(Generals::$check_all_button);
-			$I->click(InstallPage::$delete_button);
-			$I->acceptPopup();
-
-			$I->waitForElement(Generals::$sys_message_container, 180);
-			$I->waitForElement(Generals::$alert_success, 30);
-			$I->see(InstallPage::$uninstallSuccessMsg, Generals::$alert_success);
-
-			// @ToDo: reset auto increment at usergroups
-			$I->resetAutoIncrement('usergroups', 14);
-		}
-		else
-		{
-			$I->see(InstallPage::$search_no_match);
-		}
+		InstallPage::unInstallation($I);
 	}
 
 	/**
@@ -95,6 +70,8 @@ class TestDeinstallationCest
 	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */

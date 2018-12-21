@@ -1,1 +1,1 @@
-FROM mariadb
+FROM mysql

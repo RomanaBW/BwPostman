@@ -30,7 +30,7 @@ pipeline {
 			parallel {
 				stage('build database container') {
 					steps {
-						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mariadb ./build/docker/mysqldb"
+						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
 					}
 				}
 //				stage('build webserver container') {

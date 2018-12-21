@@ -60,6 +60,7 @@ Suites:
     subnet: "172.18.0.24/29"
     db_ip: "172.18.0.27"
     db_port: "3318"
+    db_docker_image: "romana/mysql"
     mailer_ip: "172.18.0.26"
     webserver_ip: "172.18.0.28"
     webserver_port: "8011"
@@ -71,6 +72,7 @@ Suites:
     subnet: "172.18.0.32/29"
     db_ip: "172.18.0.35"
     db_port: "3328"
+    db_docker_image: "romana/mysql"
     mailer_ip: "172.18.0.34"
     webserver_ip: "172.18.0.36"
     webserver_port: "8021"
@@ -82,6 +84,7 @@ Suites:
     subnet: "172.18.0.40/29"
     db_ip: "172.18.0.43"
     db_port: "3338"
+    db_docker_image: "romana/mysql"
     mailer_ip: "172.18.0.42"
     webserver_ip: "172.18.0.44"
     webserver_port: "8031"
@@ -93,6 +96,7 @@ Suites:
     subnet: "172.18.0.48/29"
     db_ip: "172.18.0.51"
     db_port: "3339"
+    db_docker_image: "romana/mysql"
     mailer_ip: "172.18.0.50"
     webserver_ip: "172.18.0.52"
     webserver_port: "8032"
@@ -104,6 +108,7 @@ Suites:
     subnet: "172.18.0.56/29"
     db_ip: "172.18.0.59"
     db_port: "3340"
+    db_docker_image: "romana/mysql"
     mailer_ip: "172.18.0.58"
     webserver_ip: "172.18.0.60"
     webserver_port: "8033"
@@ -115,6 +120,7 @@ Suites:
     subnet: "172.18.0.64/29"
     db_ip: "172.18.0.67"
     db_port: "3341"
+    db_docker_image: "romana/mysql"
     mailer_ip: "172.18.0.66"
     webserver_ip: "172.18.0.68"
     webserver_port: "8034"
@@ -126,6 +132,7 @@ Suites:
     subnet: "172.18.0.72/29"
     db_ip: "172.18.0.75"
     db_port: "3342"
+    db_docker_image: "romana/mariadb"
     mailer_ip: "172.18.0.74"
     webserver_ip: "172.18.0.76"
     webserver_port: "8035"
@@ -198,12 +205,12 @@ test_suites_container:
 
   - name: Suite_2
     tests:
-      - user2subscriber
-  #  - personalize
+      - lists
 
   - name: Suite_3
     tests:
-      - lists
+      - user2subscriber
+  #  - personalize
 
   - name: Suite_4
     tests:

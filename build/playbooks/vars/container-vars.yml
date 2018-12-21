@@ -194,7 +194,7 @@ test_file_container:
 test_suites_container:
   - name: Suite_1
     tests:
-      - lists
+      - details
 
   - name: Suite_2
     tests:
@@ -203,7 +203,7 @@ test_suites_container:
 
   - name: Suite_3
     tests:
-      - details
+      - lists
 
   - name: Suite_4
     tests:

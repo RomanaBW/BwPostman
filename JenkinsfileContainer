@@ -234,6 +234,5 @@ pipeline {
 				echo "Push to github"
 			}
 		}
-
 	}
 }

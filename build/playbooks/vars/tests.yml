@@ -16,8 +16,8 @@ codecept_failed_file: "/data/{{ codecept_path_output }}/failed"
 
 test_db_host: "localhost"
 test_db_dbname: "joomlatest"
-test_db_user: "root"
-test_db_password: "{{ vault_test_db_password }}"
+test_db_user: "{{ vault_test_db_user_1 }}"
+test_db_password: "{{ vault_test_db_password_1 }}"
 
 screen_size: '1440x900'
 display: ':45'

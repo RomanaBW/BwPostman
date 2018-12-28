@@ -31,8 +31,8 @@ network_suffix: ".nil"
 
 web_dir: "/vms/dockers/global_data/test_data"
 
-BW_TEST_DB_USER: "tester"
-BW_TEST_DB_PW: "barbamama"
+BW_TEST_DB_USER: "{{ vault_test_db_user_2 }}"
+BW_TEST_DB_PW: "{{ vault_test_db_password_2 }}"
 BW_TEST_DB_NAME: "joomlatest"
 test_db_host: "localhost"
 

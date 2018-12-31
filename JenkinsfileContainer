@@ -22,10 +22,11 @@ pipeline {
 					JOOMLA_NAME = "j${params.JOOMLA_VERSION}"
 					artifactPath = "/repositories/artifacts/bwpostman/j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
 					vault_file = ".tester_vault"
+					vault_path = ".vault/${vault_file}"
 				}
 
 				sh "ansible-playbook ./build/playbooks/enable_vault.yml --extra-vars 'project_base_dir=${WORKSPACE} vault_file=${vault_file}'"
-				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_file}'"
+				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_path}'"
 			}
 		}
 

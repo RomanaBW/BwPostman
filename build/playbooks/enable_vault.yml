@@ -2,6 +2,11 @@
 - hosts: localhost
 
   tasks:
+    - name: create dir for vault
+      file:
+        path: "{{ project_base_dir }}/.vault"
+        state: directory
+
     - name: Copy vault file
       become: yes
       become_user: root

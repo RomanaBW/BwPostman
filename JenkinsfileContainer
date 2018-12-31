@@ -1,6 +1,8 @@
 #!groovy
 pipeline {
-	agent any
+	agent {
+		label "Bw-Pi2"
+	}
 
 	options {
 		disableConcurrentBuilds()
@@ -13,17 +15,17 @@ pipeline {
 	}
 
 	stages {
-		stage('Prepare source files and log folders') {
-			steps {
-				script {
-					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
-					JOOMLA_NAME = "j${params.JOOMLA_VERSION}"
-					artifactPath = "/repositories/artifacts/bwpostman/j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
-				}
-
-				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME}'"
-			}
-		}
+//		stage('Prepare source files and log folders') {
+//			steps {
+//				script {
+//					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
+//					JOOMLA_NAME = "j${params.JOOMLA_VERSION}"
+//					artifactPath = "/repositories/artifacts/bwpostman/j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
+//				}
+//
+//				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME}'"
+//			}
+//		}
 
 		// @ToDo: deactivate, when tester works, to prevent later problems because of updates
 //		stage('Prepare infrastructure') {
@@ -56,81 +58,85 @@ pipeline {
 //			}
 //		}
 
-		stage('Run acceptance level 1') {
-			parallel {
-				stage('Suite 1') {
-					steps {
-						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1")
-					}
-					post {
-						always {
-							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
-						}
-					}
-				}
-				stage('Suite 2') {
-					steps {
-						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2")
-					}
-					post {
-						always {
-							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
-						}
-					}
-				}
-			}
-		}
+//		stage('Run acceptance level 1') {
+//			parallel {
+//				stage('Suite 1') {
+//					agent {
+//						label "Bw-Pi2"
+//					}
+//					steps {
+//						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1")
+//					}
+//					post {
+//						always {
+//							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('Suite 2') {
+//					steps {
+//						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2")
+//					}
+//					post {
+//						always {
+//							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+/			}
+//		}
 
-		stage('Notification level 1') {
-			steps {
-				emailext(
-					body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
-					attachmentsPattern: "",
-					subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
-					to: 'webmaster@boldt-webservice.de'
-				)
-			}
-		}
+//		stage('Notification level 1') {
+//			steps {
+//				emailext(
+//					body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
+//					attachmentsPattern: "",
+//					subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
+//					to: 'webmaster@boldt-webservice.de'
+//				)
+//			}
+//		}
 
 		stage('Run acceptance level 2') {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
 					steps {
 						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3")
-						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
-						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
+//						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
+//						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
 					}
 					post {
 						always {
 							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
-							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
+//							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
+//							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
-							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
-							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
+//							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
+//							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
 						}
 					}
 				}
 				stage('Suite 6') {
 					steps {
-						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6")
+						echo "Dummy"
+//						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6")
 					}
-					post {
-						always {
-							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
-						}
-					}
+//					post {
+//						always {
+//							sh "docker-compose -f build/docker/run-bwpm-6.yml -p ${PROJECT_NAME}-6 down"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
+//						}
+//					}
 				}
 			}
 		}
@@ -155,85 +161,85 @@ pipeline {
 
 		stage('Installation test') {
 			steps {
-//				echo "Dummy"
-				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "${PROJECT_NAME}", "7")
+				echo "Dummy"
+//				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "${PROJECT_NAME}", "7")
 			}
-			post {
-				always {
+//			post {
+//				always {
 //					echo "Dummy"
-					sh "docker-compose -f build/docker/run-bwpm-7.yml -p ${JOOMLA_NAME}-7 down"
-				}
-				failure {
-					bwpmAcceptFailureContainer ("Suite_7", "${JOOMLA_NAME}")
-				}
-			}
+//					sh "docker-compose -f build/docker/run-bwpm-7.yml -p ${JOOMLA_NAME}-7 down"
+//				}
+//				failure {
+//					bwpmAcceptFailureContainer ("Suite_7", "${JOOMLA_NAME}")
+//				}
+//			}
 		}
 
-		stage('Dev-Upload') {
-			steps {
-				dir("/repositories/artifacts/bwpostman/data") {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-							flattenFiles: false,
-							includes: "pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip",
-							targetLocation: "${WORKSPACE}/tests")
-					])
-				}
-
-				dir("/repositories/artifacts/bwpostman/data") {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-							flattenFiles: false,
-							includes: "CHANGELOG",
-							targetLocation: "${WORKSPACE}/tests")
-					])
-				}
-
-				script {
-					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-				}
-
-				echo "tests/pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip"
-
-				sshPublisher(
-					publishers: [sshPublisherDesc(
-					configName: 'Web Dev BwPostman',
-					transfers: [sshTransfer(
-						cleanRemote: false,
-						excludes: '',
-						execCommand: '',
-						execTimeout: 120000,
-						flatten: false,
-						makeEmptyDirs: false,
-						noDefaultExcludes: false,
-						patternSeparator: '[, ]+',
-						remoteDirectory: "${params.BWPM_VERSION}.${currentBuild.number}",
-						remoteDirectorySDF: false,
-						removePrefix: 'tests',
-						sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip"
-					)],
-					usePromotionTimestamp: false,
-						useWorkspaceInPromotion: false,
-						verbose: false
-					)]
-				)
-
-				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed all acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman build ${currentBuild.number} successful",
-					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-				)
+//		stage('Dev-Upload') {
+//			steps {
+//				dir("/repositories/artifacts/bwpostman/data") {
+//					fileOperations([
+//						fileCopyOperation(
+//							excludes: '',
+//							flattenFiles: false,
+//							includes: "pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip",
+//							targetLocation: "${WORKSPACE}/tests")
+//					])
+//				}
+//
+//				dir("/repositories/artifacts/bwpostman/data") {
+//					fileOperations([
+//						fileCopyOperation(
+//							excludes: '',
+//							flattenFiles: false,
+//							includes: "CHANGELOG",
+//							targetLocation: "${WORKSPACE}/tests")
+//					])
+//				}
+//
+//				script {
+//					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+//				}
+//
+//				echo "tests/pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip"
+//
+//				sshPublisher(
+//					publishers: [sshPublisherDesc(
+//					configName: 'Web Dev BwPostman',
+//					transfers: [sshTransfer(
+//						cleanRemote: false,
+//						excludes: '',
+//						execCommand: '',
+//						execTimeout: 120000,
+//						flatten: false,
+//						makeEmptyDirs: false,
+//						noDefaultExcludes: false,
+//						patternSeparator: '[, ]+',
+//						remoteDirectory: "${params.BWPM_VERSION}.${currentBuild.number}",
+//						remoteDirectorySDF: false,
+//						removePrefix: 'tests',
+//						sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.BWPM_VERSION}.${currentBuild.number}.zip"
+//					)],
+//					usePromotionTimestamp: false,
+//						useWorkspaceInPromotion: false,
+//						verbose: false
+//					)]
+//				)
+//
+//				emailext(
+//					body: "<p>BwPostman build ${currentBuild.number} has passed all acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+//					subject:"BwPostman build ${currentBuild.number} successful",
+//					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+//				)
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-			}
-		}
+//			}
+//		}
 
-		stage('Push to github') {
-			steps {
-				echo "Push to github"
-			}
-		}
+//		stage('Push to github') {
+//			steps {
+//				echo "Push to github"
+//			}
+//		}
 
 	}
 }

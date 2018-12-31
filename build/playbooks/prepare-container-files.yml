@@ -2,6 +2,7 @@
 - hosts: localhost
   vars_files:
     - vars/container-vars.yml
+    - vars/vault.yml
 
   tasks:
     - name: Remove folders and files which are not needed
@@ -173,10 +174,3 @@
         src: "{{ repository_project_path }}"
         dest: "{{ project_base_dir }}/repo_data"
         state: link
-
-    - name: Copy vault file
-      become: yes
-      become_user: root
-      copy:
-        src: "/home/romana/.ansible/.vault/{{ vault_file }}"
-        dest: "{{ project_base_dir }}/.vault/{{ vault_file }}"

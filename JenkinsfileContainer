@@ -24,6 +24,15 @@ pipeline {
 					vault_file = ".tester_vault"
 				}
 
+				dir("/home/romana/.ansible/.vault") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+							flattenFiles: false,
+							includes: "${vault_file}",
+							targetLocation: "${WORKSPACE}/.vault")
+					])
+				}
 				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_file}'"
 			}
 		}

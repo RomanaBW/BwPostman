@@ -2,6 +2,7 @@
 - hosts: localhost
   vars_files:
     - vars/container-vars.yml
+    - vars/vault.yml
 
   tasks:
     - name: set suite list variable

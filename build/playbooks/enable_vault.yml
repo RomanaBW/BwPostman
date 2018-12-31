@@ -13,3 +13,6 @@
       copy:
         src: "/home/romana/.ansible/.vault/{{ vault_file }}"
         dest: "{{ project_base_dir }}/.vault/{{ vault_file }}"
+        owner: jenkins
+        group: jenkins
+        mode: 0644

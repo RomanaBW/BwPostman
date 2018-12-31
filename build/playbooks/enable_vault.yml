@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Copy vault file
+      become: yes
+      become_user: root
+      copy:
+        src: "/home/romana/.ansible/.vault/{{ vault_file }}"
+        dest: "{{ project_base_dir }}/.vault/{{ vault_file }}"

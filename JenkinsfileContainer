@@ -26,7 +26,7 @@ pipeline {
 				}
 
 				sh "ansible-playbook ./build/playbooks/enable_vault.yml --extra-vars 'project_base_dir=${WORKSPACE} vault_file=${vault_file}'"
-				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml -vvvv --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_path}'"
+				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_path}'"
 			}
 		}
 

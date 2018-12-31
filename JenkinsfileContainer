@@ -21,9 +21,10 @@ pipeline {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"
 					JOOMLA_NAME = "j${params.JOOMLA_VERSION}"
 					artifactPath = "/repositories/artifacts/bwpostman/j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
+					vault_file = ".tester_vault"
 				}
 
-//				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME}'"
+				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_file}'"
 			}
 		}
 
@@ -107,7 +108,7 @@ pipeline {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
 					steps {
-						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3")
+						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}")
 //						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
 //						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
 					}

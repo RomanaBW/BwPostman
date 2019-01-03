@@ -34,7 +34,7 @@ pipeline {
 				}
 
 //				sh "ansible-playbook ./build/playbooks/enable_vault.yml --extra-vars 'project_base_dir=${WORKSPACE} vault_file=${vault_file}'"
-				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_file} host=${params.Host_1}'"
+//				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_file} host=${params.Host_1}'"
 			}
 		}
 
@@ -45,7 +45,7 @@ pipeline {
 //						label "${params.Host_1}"
 //					}
 //					steps {
-//						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1")
+//						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1", "${vault_file}", "${params.Host_1}")
 //					}
 //					post {
 //						always {
@@ -57,8 +57,11 @@ pipeline {
 //					}
 //				}
 //				stage('Suite 2') {
+//					agent {
+//						label "${params.Host_2}"
+//					}
 //					steps {
-//						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2")
+//						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2", "${vault_file}", "${params.Host_2}")
 //					}
 //					post {
 //						always {
@@ -91,8 +94,8 @@ pipeline {
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "${params.Host_3}")
-//						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
-//						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
+//						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4", "${vault_file}", "${params.Host_3}")
+//						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5", "${vault_file}", "${params.Host_3}")
 					}
 					post {
 						always {
@@ -110,7 +113,7 @@ pipeline {
 				stage('Suite 6') {
 					steps {
 						echo "Dummy"
-//						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6")
+//						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6", "${vault_file}", "${params.Host_6}")
 					}
 //					post {
 //						always {
@@ -145,7 +148,7 @@ pipeline {
 		stage('Installation test') {
 			steps {
 				echo "Dummy"
-//				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "${PROJECT_NAME}", "7")
+//				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "${PROJECT_NAME}", "7", "${vault_file}", "${params.Host_7}")
 			}
 //			post {
 //				always {

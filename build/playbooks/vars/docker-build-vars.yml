@@ -1,0 +1,94 @@
+---
+private_docker_repo: "universe2:5000"
+
+suse_containers:
+  - os_base:
+    context: "../docker/os_base"
+    dockerfile: "Dockerfile"
+    tag: "romana/os_base"
+
+  - os-tester:
+    context: "../docker/os-tester"
+    dockerfile: "os-tester-base"
+    tag: "romana/os-tester-base"
+
+  - os-tester-headless-video:
+    context: "../docker/os-tester"
+    dockerfile: "os-tester-headless-video"
+    tag: "romana/os-tester-headless-video"
+
+  - os-tester-php:
+    context: "../docker/os-tester"
+    dockerfile: "os-tester-php"
+    tag: "romana/os-tester-php"
+
+  - os-tester-acceptance:
+    context: "../docker/os-tester"
+    dockerfile: "os-tester-acceptance"
+    tag: "romana/os-tester-acceptance"
+
+  - mysqldb:
+    context: "../docker/mysqldb"
+    dockerfile: "Dockerfile"
+    tag: "romana/mysqldb"
+
+  - apache:
+    context: "../docker/apache"
+    dockerfile: "Dockerfile71"
+    tag: "romana/apache_71"
+
+  - os_postfix:
+    context: "../docker/os_postfix"
+    dockerfile: "Dockerfile"
+    tag: "romana/os_postfix"
+
+  - os-chromium-tester:
+    context: "../docker/os-chromium-tester"
+    dockerfile: "Dockerfile"
+    tag: "romana/os-chromium-tester"
+
+debian_containers:
+  - mysqldb:
+    context: "/common/docker/mysqldb"
+    dockerfile: "Dockerfile"
+    tag: "romana/mysqldb"
+
+  - debian_base:
+    context: "/common/docker/debian_base"
+    dockerfile: "Dockerfile"
+    tag: "romana/debian_base"
+
+  - debian-tester-base:
+    context: "/common/docker/debian_base"
+    dockerfile: "DockerfileTester"
+    tag: "romana/debian-tester-base"
+
+  - debian-tester-headless-video:
+    context: "/common/docker/debian_base"
+    dockerfile: "DockerfileHeadless"
+    tag: "romana/debian-tester-headless-video"
+
+  - debian-tester-php:
+    context: "/common/docker/debian_base"
+    dockerfile: "DockerfilePhp"
+    tag: "romana/debian-tester-php"
+
+  - debian-tester-acceptance:
+    context: "/common/docker/debian_base"
+    dockerfile: "DockerfileAccept"
+    tag: "romana/debian-tester-acceptance"
+
+  - debian-apache:
+    context: "/common/docker/apache"
+    dockerfile: "Dockerfile71"
+    tag: "romana/debian-apache_71"
+
+  - debian-_postfix:
+    context: "/common/docker/os_postfix"
+    dockerfile: "DockerfilePi"
+    tag: "romana/debian_postfix"
+
+  - debian-chromium-tester:
+    context: "/common/docker/debian_base"
+    dockerfile: "DockerfileChromium"
+    tag: "romana/debian-chromium-tester"

@@ -1,0 +1,18 @@
+
+FROM universe2:5000/romana/debian_base
+
+MAINTAINER Romana Boldt <info@boldt-webservice.de>
+
+RUN apt-get update && apt-get install postfix
+
+# add mailtrap user
+RUN useradd mailtrap
+
+# first configuration of postfix
+RUN newaliases && \
+    postmap /etc/postfix/transport && \
+    /etc/postfix/system/config_postfix
+COPY data/config/etc/ /etc/
+COPY data/config/etc/minit/minit /sbin/minit
+ENTRYPOINT ["/sbin/minit"]
+

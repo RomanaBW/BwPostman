@@ -23,41 +23,11 @@ pipeline {
 					artifactPath = "/repositories/artifacts/bwpostman/j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
 					vault_file = ".tester_vault"
 					vault_path = "${WORKSPACE}/.vault/${vault_file}"
+					docker_repo_string = "universe2:5000"
 				}
 
 				sh "ansible-playbook ./build/playbooks/enable_vault.yml --extra-vars 'project_base_dir=${WORKSPACE} vault_file=${vault_file}'"
 				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_path}'"
-			}
-		}
-
-		// @ToDo: deactivate, when tester works, to prevent later problems because of updates
-		stage('Prepare infrastructure') {
-			parallel {
-				stage('build database container') {
-					steps {
-						sh "docker build -f ./build/docker/mysqldb/Dockerfile -t romana/mysql ./build/docker/mysqldb"
-					}
-				}
-				stage('build webserver container') {
-					steps {
-						sh "docker build -f ./build/docker/apache/Dockerfile71 -t romana/apache_71 ./build/docker/apache"
-					}
-				}
-				stage('build mailserver container') {
-					steps {
-						sh "docker build -f ./build/docker/os_base/Dockerfile -t romana/os_base ./build/docker/os_base"
-						sh "docker build -f ./build/docker/os_postfix/Dockerfile -t romana/os-postfix ./build/docker/os_postfix"
-					}
-				}
-				stage('build tester container') {
-					steps {
-						sh "docker build -f ./build/docker/os-tester/os-tester-base -t romana/os-tester-base ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-tester/os-tester-headless-video -t romana/os-tester-headless-video ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-tester/os-tester-php -t romana/os-tester-php ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-tester/os-tester-acceptance -t romana/os-tester-acceptance ./build/docker/os-tester"
-						sh "docker build -f ./build/docker/os-chromium-tester/Dockerfile -t romana/os-chromium-tester ./build/docker/os-chromium-tester"
-					}
-				}
 			}
 		}
 
@@ -109,8 +79,14 @@ pipeline {
 		stage('Run acceptance level 2') {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
+					script {
+						host = "pi"
+					}
+					agent {
+						label ${host}
+					}
 					steps {
-						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}")
+						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file} ${host}")
 //						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
 //						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
 					}

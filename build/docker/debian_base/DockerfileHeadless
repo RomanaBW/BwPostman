@@ -1,0 +1,8 @@
+
+FROM universe2:5000/romana/debian-tester-base
+
+MAINTAINER Romana Boldt <info@boldt-webservice.de>
+
+RUN apt-get update && apt-get -yq install	ffmpeg \
+											lame \
+											xvfb

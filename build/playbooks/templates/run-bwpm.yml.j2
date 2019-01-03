@@ -32,7 +32,7 @@ services:
 
   {{ mailer.service }}-{{ suite_vars.suite_number }}:
     container_name: {{ mailer.container_name }}-{{ suite_vars.suite_number }}
-    image: romana/os-postfix
+    image: {{ suite_vars.mailer_docker_image }}
     hostname: {{ mailer.host_name }}.{{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     expose:
@@ -43,7 +43,7 @@ services:
 
   {{ webserver.service }}-{{ suite_vars.suite_number }}:
     container_name: {{ webserver.container_name }}-{{ suite_vars.suite_number }}
-    image: romana/apache_71
+    image: {{ suite_vars.webserver_docker_image }}
     hostname: {{ webserver.host_name }}-{{ suite_vars.suite_number }}
     domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
     depends_on:

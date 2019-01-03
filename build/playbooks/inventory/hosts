@@ -18,3 +18,6 @@
 
 [accept6]
 192.168.2.136 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[Raspberry]
+192.168.2.52

@@ -1,0 +1,27 @@
+
+FROM debian
+
+MAINTAINER Romana Boldt <info@boldt-webservice.de>
+
+## install for basically needed packages
+RUN apt-get update && apt-get -yq install	software-properties-common \
+											apt-utils \
+											gnupg2 \
+											curl \
+											git \
+											gcc \
+											make \
+											mariadb-client \
+											mc \
+											sudo \
+											tar \
+											tmux \
+											unzip \
+											wget \
+											zlib1g-dev
+
+RUN add-apt-repository -y ppa:webupd8team/java && \
+	apt-key adv --no-tty --keyserver keyserver.ubuntu.com --recv-keys C2518248EEA14886 && \
+	echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
+	echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections
+RUN apt-get update && apt-get -yq install 	oracle-java8-installer

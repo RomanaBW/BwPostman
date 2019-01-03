@@ -1,0 +1,27 @@
+---
+- hosts: Raspberry
+  vars_files:
+    - vars/docker-build-vars.yml
+
+  tasks:
+    - name: Create container images and push Opensuse
+      with_items: "{{ suse_containers }}"
+      include_role:
+        name: build-push-containers
+      vars:
+        client: "{{ item }}"
+      when: ansible_os_family == 'Suse'
+
+    - name: Copy container build files to common
+      copy:
+        src: "/home/romana/PhpstormProjects/BwPostman/build/docker/debian_base/"
+        dest: "/common_server/docker/debian_base/"
+
+    - name: Create container images and push Debian
+      with_items: "{{ debian_containers }}"
+      include_role:
+        name: build-push-containers
+      vars:
+        client: "{{ item }}"
+      when: ansible_os_family == 'Debian'
+

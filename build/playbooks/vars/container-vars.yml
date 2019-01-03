@@ -40,7 +40,11 @@ private_docker_repo: "universe2:5000/"
 
 db_image:
   suse: "{{ private_docker_repo }}romana/mysql"
-  pi: "{{ private_docker_repo }}romana/mysql-pi"
+  pi: "{{ private_docker_repo }}romana/debian_mysql"
+
+db_image_maria:
+  suse: "{{ private_docker_repo }}romana/mariadb"
+  pi: "{{ private_docker_repo }}romana/debian_mariadb"
 
 mailer_image:
   suse: "{{ private_docker_repo }}romana/os_postfix"
@@ -159,7 +163,7 @@ Suites:
     suite_name: "Suite_7"
     suite_number: "7"
     subnet: "172.18.0.72/29"
-    db_docker_image: "romana/mariadb"
+    db_docker_image: "{{ db_image_maria[host] }}"
     db_ip: "172.18.0.75"
     db_port: "3342"
     mailer_docker_image: "{{ mailer_image[host] }}"

@@ -32,6 +32,11 @@ suse_containers:
     dockerfile: "Dockerfile"
     tag: "romana/mysqldb"
 
+  - mariadb:
+    context: "../docker/mysqldb"
+    dockerfile: "DockerfileMaria"
+    tag: "romana/mariadb"
+
   - apache:
     context: "../docker/apache"
     dockerfile: "Dockerfile71"
@@ -51,7 +56,12 @@ debian_containers:
   - mysqldb:
     context: "/common/docker/mysqldb"
     dockerfile: "Dockerfile"
-    tag: "romana/mysqldb"
+    tag: "romana/debian_mysqldb"
+
+  - mariadb:
+    context: "/common/docker/mysqldb"
+    dockerfile: "DockerfileMaria"
+    tag: "romana/debian_mariadb"
 
   - debian_base:
     context: "/common/docker/debian_base"

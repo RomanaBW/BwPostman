@@ -13,7 +13,7 @@
     - name: set default workspace
       set_fact:
         workspace: "{{ project_base_dir }}@2"
-      when: host == ''pi
+      when: host == 'pi'
 
     - name: Remove folders and files which are not needed
       file:

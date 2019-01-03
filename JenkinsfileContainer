@@ -76,12 +76,13 @@ pipeline {
 //			}
 //		}
 
+		script {
+			host = "pi"
+		}
+
 		stage('Run acceptance level 2') {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
-					script {
-						host = "pi"
-					}
 					agent {
 						label ${host}
 					}

@@ -18,5 +18,5 @@ services:
 networks:
     {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
         external:
-            name: {{ project_name_shorted }}{{ suite_vars.suite_number }}_tester-net-bwpm-{{ suite_vars.suite_number }}.nil
+            name: {{ project_name_without_dots }}-{{ suite_vars.suite_number }}_tester-net-bwpm-{{ suite_vars.suite_number }}.nil
 

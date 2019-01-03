@@ -3,7 +3,7 @@ version: '3'
 services:
     bwpm-tester-{{ suite_vars.suite_number }}:
         container_name: "bwpm-tester-{{ suite_vars.suite_number }}"
-        image: {{ suite_vars.tester_image }}
+        image: {{ tester_image[host] }}
         volumes:
             - {{ workspace }}/container_files/files-{{ suite_vars.suite_number }}:/data
             - {{ test_log_path_alt }}:/project_logs

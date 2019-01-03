@@ -78,15 +78,12 @@ pipeline {
 
 		stage('Run acceptance level 2') {
 			parallel {
-				script {
-					host = "pi"
-				}
 				stage('Suite 3 + 4 + 5') {
 					agent {
-						label ${host}
+						label "pi"
 					}
 					steps {
-						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file} ${host}")
+						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "pi")
 //						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
 //						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
 					}

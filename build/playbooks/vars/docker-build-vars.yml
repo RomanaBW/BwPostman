@@ -59,7 +59,7 @@ debian_containers:
     tag: "romana/debian_mysqldb"
 
   - mariadb:
-    context: "/common/docker/mysqldb"
+    context: "/common/docker/debian_base"
     dockerfile: "DockerfileMaria"
     tag: "romana/debian_mariadb"
 

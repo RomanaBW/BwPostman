@@ -39,8 +39,8 @@ test_db_host: "localhost"
 private_docker_repo: "universe2:5000/"
 
 db_image:
-  suse: "{{ private_docker_repo }}romana/mysql"
-  pi: "{{ private_docker_repo }}romana/debian_mysql"
+  suse: "{{ private_docker_repo }}romana/mysqldb"
+  pi: "{{ private_docker_repo }}romana/debian_mysqldb"
 
 db_image_maria:
   suse: "{{ private_docker_repo }}romana/mariadb"

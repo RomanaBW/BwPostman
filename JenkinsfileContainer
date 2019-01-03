@@ -12,6 +12,13 @@ pipeline {
 		string(name: "BWPM_VERSION", defaultValue: "2.2.0", description: "The new/next version number of the project.")
 		string(name: "JOOMLA_VERSION", defaultValue: "3.9.1", description: "Version of Joomla to test against")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
+		string(name: "Host_1", defaultValue: "pi")
+		string(name: "Host_2", defaultValue: "pi")
+		string(name: "Host_3", defaultValue: "pi")
+		string(name: "Host_4", defaultValue: "pi")
+		string(name: "Host_5", defaultValue: "pi")
+		string(name: "Host_6", defaultValue: "pi")
+		string(name: "Host_7", defaultValue: "pi")
 	}
 
 	stages {
@@ -27,7 +34,7 @@ pipeline {
 				}
 
 				sh "ansible-playbook ./build/playbooks/enable_vault.yml --extra-vars 'project_base_dir=${WORKSPACE} vault_file=${vault_file}'"
-				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_path}'"
+				sh "ansible-playbook ./build/playbooks/prepare-container-files.yml --extra-vars 'project_base_dir=${WORKSPACE} project_name=${PROJECT_NAME}  project_log_name=${PROJECT_NAME} joomla_name=${JOOMLA_NAME} vault_file=${vault_path} host=${params.Host_1}'"
 			}
 		}
 
@@ -35,7 +42,7 @@ pipeline {
 //			parallel {
 //				stage('Suite 1') {
 //					agent {
-//						label "Bw-Pi2"
+//						label "${params.Host_1}"
 //					}
 //					steps {
 //						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1")
@@ -80,10 +87,10 @@ pipeline {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
 					agent {
-						label "pi"
+						label "${params.Host_3}"
 					}
 					steps {
-						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "pi")
+						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "${params.Host_3}")
 //						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4")
 //						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5")
 					}

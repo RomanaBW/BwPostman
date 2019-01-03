@@ -16,4 +16,4 @@
     - name: adjust joomla configuration
       template:
         src: "configuration.php.j2"
-        dest: "../../container_files/files-{{ suite_vars['suite_number'] }}/configuration.php"
+        dest: "./container_files/files-{{ suite_vars['suite_number'] }}/configuration.php"

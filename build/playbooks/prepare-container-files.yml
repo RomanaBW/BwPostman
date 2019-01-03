@@ -6,14 +6,22 @@
     - vars/vault.yml
 
   tasks:
+    - name: debug project_base_dir var
+      debug:
+        msg: "{{ project_base_dir }}"
+
     - name: set default workspace
       set_fact:
         workspace: "{{ project_base_dir }}"
 
-    - name: set default workspace
-      set_fact:
-        workspace: "{{ project_base_dir }}@2"
-      when: host == 'pi'
+#    - name: set default workspace
+#      set_fact:
+#        workspace: "{{ project_base_dir }}@2"
+#      when: host == 'pi'
+#
+#    - name: debug workspace var
+#      debug:
+#        msg: "{{ workspace }}"
 
     - name: Remove folders and files which are not needed
       file:

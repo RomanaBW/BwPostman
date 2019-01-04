@@ -2,6 +2,7 @@
 - hosts: localhost
   gather_facts: no
   vars_files:
+    - vars/container-basics.yml
     - vars/container-vars.yml
 
   tasks:

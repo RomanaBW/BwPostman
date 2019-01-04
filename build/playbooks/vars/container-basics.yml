@@ -33,25 +33,28 @@ web_dir:
   server: "/vms-extern/dockers/global_data/test_data"
   master: "/vms/dockers/global_data/test_data"
 
-
 workspace_central: "/workspaces/{{ project_name }}"
 
 private_docker_repo: "universe2:5000/"
 
 db_image:
   suse: "{{ private_docker_repo }}romana/mysqldb"
+  server: "{{ private_docker_repo }}romana/mysqldb"
   pi: "{{ private_docker_repo }}romana/debian_mysqldb"
 
 db_image_maria:
   suse: "{{ private_docker_repo }}romana/mariadb"
+  server: "{{ private_docker_repo }}romana/mariadb"
   pi: "{{ private_docker_repo }}romana/debian_mariadb"
 
 mailer_image:
   suse: "{{ private_docker_repo }}romana/os_postfix"
+  server: "{{ private_docker_repo }}romana/os_postfix"
   pi: "{{ private_docker_repo }}romana/debian_postfix"
 
 apache_image:
   suse: "{{ private_docker_repo }}romana/apache_71"
+  server: "{{ private_docker_repo }}romana/apache_71"
   pi: "{{ private_docker_repo }}romana/debian-apache_71"
 
 tester_image:

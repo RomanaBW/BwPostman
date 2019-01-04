@@ -73,6 +73,7 @@
         - "{{ workspace_central }}/container_files/files-1"
         - "{{ workspace_central }}/container_files/files-7"
 
+    # @ToDo: Why copy to 7? That is the webserver for installation tests…
     - name: copy checked out extension files to webserver 1 and 7
       become: yes
       become_user: root
@@ -81,13 +82,13 @@
         dest: "{{ workspace_central }}/container_files/{{ item }}"
       with_items:
         - files-1
-        - files-7
+#        - files-7
 
     - name: copy tests to webserver 1 + 7
       become: yes
       become_user: root
       synchronize:
-        src: "{{ workspace_central }}/tests/"
+        src: "{{ project_base_dir }}/tests/"
         dest: "{{ workspace_central }}/container_files/{{ item }}/tests"
       with_items:
         - files-1

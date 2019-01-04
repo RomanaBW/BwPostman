@@ -139,6 +139,8 @@
         dest: "{{ workspace_central }}/container_files/database-7"
 
     - name: ensure log folder for test results exists
+      become: yes
+      become_user: root
       file:
         path: "{{ test_log_path}}/others"
         state: directory
@@ -146,6 +148,8 @@
       with_dict: "{{ Suites }}"
 
     - name: ensure video folder for test results exists
+      become: yes
+      become_user: root
       file:
         path: "{{ test_record_path }}"
         state: directory

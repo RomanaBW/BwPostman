@@ -6,14 +6,14 @@
     - vars/container-vars.yml
 
   tasks:
-    - name: Set symbolic link to repo folder
-      file:
-        src: "{{ repository_project_path }}"
-        dest: "{{ workspace }}/repo_data"
-        state: link
-
     - name: Set symbolic link to central workspace folder
       file:
         src: "{{ workspace_central }}/container_files"
         dest: "{{ workspace }}/container_files"
+        state: link
+
+    - name: Set symbolic link to repo folder
+      file:
+        src: "{{ repository_project_path }}"
+        dest: "{{ workspace }}/repo_data"
         state: link

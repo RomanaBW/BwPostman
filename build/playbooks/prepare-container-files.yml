@@ -39,14 +39,14 @@
       become: yes
       become_user: root
       synchronize:
-        src: "{{ web_dir }}/{{ project_name_without_dots }}/files/"
+        src: "{{ web_dir[host] }}/{{ project_name_without_dots }}/files/"
         dest: "{{ workspace_central }}/container_files/files-1"
 
     - name: copy webserver files without bwpm to webserver 7
       become: yes
       become_user: root
       synchronize:
-        src: "{{ web_dir }}/{{ joomla_name_without_dots }}/files/"
+        src: "{{ web_dir[host] }}/{{ joomla_name_without_dots }}/files/"
         dest: "{{ workspace_central }}/container_files/files-7"
 
     - name: set appropriate owner

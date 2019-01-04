@@ -29,7 +29,10 @@ to_delete:
 network: "tester-net-bwpm"
 network_suffix: ".nil"
 
-web_dir: "/vms/dockers/global_data/test_data"
+web_dir:
+  server: "/vms-extern/dockers/global_data/test_data"
+  master: "/vms/dockers/global_data/test_data"
+
 workspace_central: "/workspaces/{{ project_name }}"
 
 private_docker_repo: "universe2:5000/"

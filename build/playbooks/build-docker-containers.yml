@@ -2,6 +2,7 @@
 - hosts: Raspberry
   vars_files:
     - vars/docker-build-vars.yml
+    - vars/container-basics.yml
 
   tasks:
     - name: Create container images and push Opensuse

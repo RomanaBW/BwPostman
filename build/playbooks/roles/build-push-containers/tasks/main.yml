@@ -7,7 +7,7 @@
   shell: "docker build -f {{ client.context }}/{{ client.dockerfile }} -t {{ client.tag }} {{ client.context }}"
 
 - name: Tag container images
-  shell: "docker tag {{ client.tag }} {{ private_docker_repo }}/{{ client.tag }}"
+  shell: "docker tag {{ client.tag }} {{ private_docker_repo }}{{ client.tag }}"
 
 - name: Push container images
-  shell: "docker push {{ private_docker_repo }}/{{ client.tag }}"
+  shell: "docker push {{ private_docker_repo }}{{ client.tag }}"

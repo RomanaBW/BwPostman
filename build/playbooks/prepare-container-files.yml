@@ -2,6 +2,7 @@
 - hosts: localhost
   gather_facts: no
   vars_files:
+    - vars/container-basics.yml
     - vars/container-vars.yml
     - vars/vault.yml
 
@@ -25,7 +26,7 @@
 
     - name: Remove folders and files which are not needed
       file:
-        path: "{{ workspace }}/src/{{ item }}"
+        path: "{{ project_base_dir }}/src/{{ item }}"
         state: absent
       with_items: "{{ to_delete }}"
 
@@ -39,7 +40,7 @@
 
     - name: create dirs for webserver files
       file:
-        path: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}"
+        path: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}"
         state: directory
       with_dict: "{{ Suites }}"
 
@@ -48,21 +49,21 @@
       become_user: root
       synchronize:
         src: "{{ web_dir }}/{{ project_name_without_dots }}/files/"
-        dest: "{{ workspace }}/container_files/files-1"
+        dest: "{{ workspace_central }}/container_files/files-1"
 
     - name: copy webserver files without bwpm to webserver 7
       become: yes
       become_user: root
       synchronize:
         src: "{{ web_dir }}/{{ joomla_name_without_dots }}/files/"
-        dest: "{{ workspace }}/container_files/files-7"
+        dest: "{{ workspace_central }}/container_files/files-7"
 
     - name: copy checked out extension files from to webserver 1 and 7
       become: yes
       become_user: root
       synchronize:
-        src: "{{ workspace }}/src/"
-        dest: "{{ workspace }}/container_files/{{ item }}"
+        src: "{{ workspace_central }}/src/"
+        dest: "{{ workspace_central }}/container_files/{{ item }}"
       with_items:
         - files-1
         - files-7
@@ -71,8 +72,8 @@
       become: yes
       become_user: root
       synchronize:
-        src: "{{ workspace }}/tests/"
-        dest: "{{ workspace }}/container_files/{{ item }}/tests"
+        src: "{{ workspace_central }}/tests/"
+        dest: "{{ workspace_central }}/container_files/{{ item }}/tests"
       with_items:
         - files-1
         - files-7
@@ -81,7 +82,7 @@
       become: yes
       become_user: root
       file:
-        path: "{{ workspace }}/container_files/{{ item }}/tests/_support/_generated/AcceptanceTesterActions.php"
+        path: "{{ workspace_central }}/container_files/{{ item }}/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent
       with_items:
         - files-1
@@ -91,8 +92,8 @@
       become: yes
       become_user: root
       synchronize:
-        src: "{{ workspace }}/container_files/files-1/"
-        dest: "{{ workspace }}/container_files/files-{{ item }}"
+        src: "{{ workspace_central }}/container_files/files-1/"
+        dest: "{{ workspace_central }}/container_files/files-{{ item }}"
       with_items:
         - 2
         - 3
@@ -105,7 +106,7 @@
       become_user: root
       synchronize:
         src: "{{ repository_database_path }}/"
-        dest: "{{ workspace }}/container_files/database-{{ item }}"
+        dest: "{{ workspace_central }}/container_files/database-{{ item }}"
       with_items:
         - 1
         - 2
@@ -119,7 +120,7 @@
       become_user: root
       synchronize:
         src: "{{ repository_joomla_database_path }}/"
-        dest: "{{ workspace }}/container_files/database-7"
+        dest: "{{ workspace_central }}/container_files/database-7"
 
     - name: ensure log folder for test results exists
       file:
@@ -139,13 +140,13 @@
     - name: Prepare manifest for codeception tests
       template:
         src: "codeception.container.yml.j2"
-        dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/codeception.yml"
+        dest: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}/codeception.yml"
       with_dict: "{{ Suites }}"
 
     - name: Prepare manifest for acceptance tests
       template:
         src: "acceptance.suite.container.yml.j2"
-        dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"
+        dest: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"
       with_dict: "{{ Suites }}"
 
     - name: remove webdriver log
@@ -183,12 +184,6 @@
       become_user: root
       template:
         src: "do-container-tests.sh.j2"
-        dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"
+        dest: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"
         mode: 0775
       with_dict: "{{ Suites }}"
-
-    - name: Set symbolic link to repo folder
-      file:
-        src: "{{ repository_project_path }}"
-        dest: "{{ workspace }}/repo_data"
-        state: link

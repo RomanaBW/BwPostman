@@ -54,8 +54,8 @@ suse_containers:
 
 debian_containers:
   - mysqldb:
-    context: "/common/docker/mysqldb"
-    dockerfile: "Dockerfile"
+    context: "/common/docker/debian_base"
+    dockerfile: "DockerfileMySQL"
     tag: "romana/debian_mysqldb"
 
   - mariadb:

@@ -13,10 +13,10 @@
         client: "{{ item }}"
       when: ansible_os_family == 'Suse'
 
-    - name: Copy container build files to common
-      copy:
-        src: "/home/romana/PhpstormProjects/BwPostman/build/docker/debian_base/"
-        dest: "/common_server/docker/debian_base/"
+#    - name: Copy container build files to common
+#      copy:
+#        src: "/home/romana/PhpstormProjects/BwPostman/build/docker/"
+#        dest: "/common_server/docker"
 
     - name: Create container images and push Debian
       with_items: "{{ debian_containers }}"

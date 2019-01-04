@@ -138,6 +138,19 @@
         src: "{{ repository_joomla_database_path }}/"
         dest: "{{ workspace_central }}/container_files/database-7"
 
+    - name: set appropriate permissions
+      become: yes
+      become_user: root
+      command: "chmod -R 0777 {{ workspace_central }}/container_files/database-{{ item }}"
+      with_items:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+
     - name: ensure log folder for test results exists
       become: yes
       become_user: root

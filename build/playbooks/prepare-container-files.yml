@@ -62,7 +62,7 @@
       become: yes
       become_user: root
       synchronize:
-        src: "{{ workspace_central }}/src/"
+        src: "{{ project_base_dir }}/src/"
         dest: "{{ workspace_central }}/container_files/{{ item }}"
       with_items:
         - files-1

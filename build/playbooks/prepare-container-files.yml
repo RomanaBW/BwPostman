@@ -15,15 +15,6 @@
       set_fact:
         workspace: "{{ project_base_dir }}"
 
-#    - name: set default workspace
-#      set_fact:
-#        workspace: "{{ project_base_dir }}@2"
-#      when: host == 'pi'
-#
-#    - name: debug workspace var
-#      debug:
-#        msg: "{{ workspace }}"
-
     - name: Remove folders and files which are not needed
       file:
         path: "{{ project_base_dir }}/src/{{ item }}"
@@ -58,7 +49,31 @@
         src: "{{ web_dir }}/{{ joomla_name_without_dots }}/files/"
         dest: "{{ workspace_central }}/container_files/files-7"
 
-    - name: copy checked out extension files from to webserver 1 and 7
+    - name: set appropriate owner
+      become: yes
+      become_user: root
+      command: "chown -R jenkins {{ item }}"
+      with_items:
+        - "{{ workspace_central }}/container_files/files-1"
+        - "{{ workspace_central }}/container_files/files-7"
+
+    - name: set appropriate group
+      become: yes
+      become_user: root
+      command: "chgrp -R jenkins {{ item }}"
+      with_items:
+        - "{{ workspace_central }}/container_files/files-1"
+        - "{{ workspace_central }}/container_files/files-7"
+
+    - name: set appropriate permissions
+      become: yes
+      become_user: root
+      command: "chmod -R 0777 {{ item }}"
+      with_items:
+        - "{{ workspace_central }}/container_files/files-1"
+        - "{{ workspace_central }}/container_files/files-7"
+
+    - name: copy checked out extension files to webserver 1 and 7
       become: yes
       become_user: root
       synchronize:

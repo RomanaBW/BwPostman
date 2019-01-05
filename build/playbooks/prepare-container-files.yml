@@ -182,12 +182,14 @@
         dest: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"
       with_dict: "{{ Suites }}"
 
-    - name: remove webdriver log
+    - name: clear webdriver log
       become: yes
       become_user: root
-      file:
-        path: "{{ test_log_path}}/others/chromedriver.log"
-        state: absent
+      copy:
+        content: ""
+        dest: "{{ test_log_path}}/others/chromedriver.log"
+        force: yes
+        mode: 0666
       with_dict: "{{ Suites }}"
 
     - name: Find failure files to delete

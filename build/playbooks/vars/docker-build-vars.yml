@@ -93,12 +93,12 @@ debian_containers:
     dockerfile: "Dockerfile71"
     tag: "romana/debian-apache_71"
 
-  - debian-_postfix:
-    context: "/common/docker/os_postfix"
-    dockerfile: "DockerfilePi"
-    tag: "romana/debian_postfix"
-
   - debian-chromium-tester:
     context: "/common/docker/debian_base"
     dockerfile: "DockerfileChromium"
     tag: "romana/debian-chromium-tester"
+
+  - debian-_postfix:
+    context: "/common/docker/os_postfix"
+    dockerfile: "DockerfilePi"
+    tag: "romana/debian_postfix"

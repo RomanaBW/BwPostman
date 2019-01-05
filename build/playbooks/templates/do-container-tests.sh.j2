@@ -11,7 +11,8 @@ export BWPM_VERSION_TO_TEST="${1}"
 /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
 export DISPLAY={{ display }}
 
-java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.logfile=/project_logs/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+# java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.logfile=/project_logs/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
 
 # Loop until selenium server is available
 until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do

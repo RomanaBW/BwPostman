@@ -1,5 +1,7 @@
 #! /bin/bash
 
+service dbus restart
+
 # delete old failure file
 rm {{ codecept_failed_file }}
 
@@ -7,12 +9,18 @@ rm {{ codecept_failed_file }}
 export BW_TESTER_USER="root"
 export BWPM_VERSION_TO_TEST="${1}"
 
+# Version without xvfb-run
 # start x-server
 # /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
-export DISPLAY={{ display }}
+# export DISPLAY={{ display }}
 
 # java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+
+
+
+# Version with xvfb-run
 /usr/bin/xvfb-run -n {{ display }} --server-args="-screen 0 {{ screen_size }}x16" java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dwebdriver.chrome.logfile=/project_logs/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+export DISPLAY={{ display }}
 
 # Loop until selenium server is available
 until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do

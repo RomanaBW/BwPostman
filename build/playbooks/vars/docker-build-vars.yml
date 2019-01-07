@@ -53,36 +53,36 @@ suse_containers:
     tag: "romana/os-chromium-tester"
 
 debian_containers:
-  - mysqldb:
-    context: "/common/docker/debian_base"
-    dockerfile: "DockerfileMySQL"
-    tag: "romana/debian_mysqldb"
-
-  - mariadb:
-    context: "/common/docker/debian_base"
-    dockerfile: "DockerfileMaria"
-    tag: "romana/debian_mariadb"
-
-  - debian_base:
-    context: "/common/docker/debian_base"
-    dockerfile: "Dockerfile"
-    tag: "romana/debian_base"
-
-  - debian-tester-base:
-    context: "/common/docker/debian_base"
-    dockerfile: "DockerfileTester"
-    tag: "romana/debian-tester-base"
-
-  - debian-tester-headless-video:
-    context: "/common/docker/debian_base"
-    dockerfile: "DockerfileHeadless"
-    tag: "romana/debian-tester-headless-video"
-
-  - debian-tester-php:
-    context: "/common/docker/debian_base"
-    dockerfile: "DockerfilePhp"
-    tag: "romana/debian-tester-php"
-
+#  - mysqldb:
+#    context: "/common/docker/debian_base"
+#    dockerfile: "DockerfileMySQL"
+#    tag: "romana/debian_mysqldb"
+#
+#  - mariadb:
+#    context: "/common/docker/debian_base"
+#    dockerfile: "DockerfileMaria"
+#    tag: "romana/debian_mariadb"
+#
+#  - debian_base:
+#    context: "/common/docker/debian_base"
+#    dockerfile: "Dockerfile"
+#    tag: "romana/debian_base"
+#
+#  - debian-tester-base:
+#    context: "/common/docker/debian_base"
+#    dockerfile: "DockerfileTester"
+#    tag: "romana/debian-tester-base"
+#
+#  - debian-tester-headless-video:
+#    context: "/common/docker/debian_base"
+#    dockerfile: "DockerfileHeadless"
+#    tag: "romana/debian-tester-headless-video"
+#
+#  - debian-tester-php:
+#    context: "/common/docker/debian_base"
+#    dockerfile: "DockerfilePhp"
+#    tag: "romana/debian-tester-php"
+#
   - debian-tester-acceptance:
     context: "/common/docker/debian_base"
     dockerfile: "DockerfileAccept"
@@ -98,7 +98,7 @@ debian_containers:
     dockerfile: "DockerfileChromium"
     tag: "romana/debian-chromium-tester"
 
-  - debian-_postfix:
-    context: "/common/docker/os_postfix"
-    dockerfile: "DockerfilePi"
-    tag: "romana/debian_postfix"
+#  - debian-_postfix:
+#    context: "/common/docker/os_postfix"
+#    dockerfile: "DockerfilePi"
+#    tag: "romana/debian_postfix"

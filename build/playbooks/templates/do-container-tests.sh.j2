@@ -19,7 +19,7 @@ export BWPM_VERSION_TO_TEST="${1}"
 
 
 # Version with xvfb-run
-/usr/bin/xvfb-run -n {{ display }} --server-args="-screen 0 {{ screen_size }}x16" java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dwebdriver.chrome.logfile=/project_logs/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true -Dwebdriver.chrome.whitelisted-ips="" /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+/usr/bin/xvfb-run -n {{ display }} --server-args="-screen 0 {{ screen_size }}x16" java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dwebdriver.chrome.logfile=/project_logs/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true -Dwebdriver.chrome.whitelisted-ips="0.0.0.0" /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
 export DISPLAY={{ display }}
 
 # Loop until selenium server is available

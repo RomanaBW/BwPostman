@@ -83,15 +83,15 @@ debian_containers:
 #    dockerfile: "DockerfilePhp"
 #    tag: "romana/debian-tester-php"
 #
-  - debian-tester-acceptance:
-    context: "/common/docker/debian_base"
-    dockerfile: "DockerfileAccept"
-    tag: "romana/debian-tester-acceptance"
-
-  - debian-apache:
-    context: "/common/docker/apache"
-    dockerfile: "Dockerfile71"
-    tag: "romana/debian-apache_71"
+#  - debian-tester-acceptance:
+#    context: "/common/docker/debian_base"
+#    dockerfile: "DockerfileAccept"
+#    tag: "romana/debian-tester-acceptance"
+#
+#  - debian-apache:
+#    context: "/common/docker/apache"
+#    dockerfile: "Dockerfile71"
+#    tag: "romana/debian-apache_71"
 
   - debian-chromium-tester:
     context: "/common/docker/debian_base"

@@ -9,19 +9,17 @@ rm {{ codecept_failed_file }}
 export BW_TESTER_USER="root"
 export BWPM_VERSION_TO_TEST="${1}"
 
-# Version without xvfb-run
+# Version without xvfb-run, works with ffmpeg
 # start x-server
 /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
 export DISPLAY={{ display }}
 
 chromedriver --whitelisted-ips --log-file=/project_logs/others/chromedriver.log --verbose &
-
 java -jar /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+
 #  java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
 
-
-
-# Version with xvfb-run
+# Version with xvfb-run, unable to get it work with ffmpeg
 /usr/bin/xvfb-run -n {{ display }} --server-args="-screen 0 {{ screen_size }}x16" java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dwebdriver.chrome.logfile=/project_logs/others/chromedriver.log -Dwebdriver.chrome.verboseLogging=true -Dwebdriver.chrome.whitelisted-ips="0.0.0.0" /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
 export DISPLAY={{ display }}
 

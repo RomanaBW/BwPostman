@@ -11,10 +11,13 @@ export BWPM_VERSION_TO_TEST="${1}"
 
 # Version without xvfb-run
 # start x-server
-# /usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
-# export DISPLAY={{ display }}
+/usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
+export DISPLAY={{ display }}
 
-# java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+chromedriver --whitelisted-ips --log-file=/project_logs/others/chromedriver.log --verbose &
+
+java -jar /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
+#  java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver /opt/selenium/selenium-server-standalone-3.141.59.jar -port 4445 >/project_logs/others/selenium.log 2>/project_logs/others/selenium.log &
 
 
 
@@ -64,4 +67,9 @@ tmux send-keys -t BwPostmanRecording1 q
 
 # Wait for video to finish
 sleep 5
+
+CHROMEDRIVER_PID="$(pgrep -f chromedriver)"
+echo "PID2: ${CHROMEDRIVER_PID}"
+kill "${XVFB_PID}"
+
 exit ${failed_check}

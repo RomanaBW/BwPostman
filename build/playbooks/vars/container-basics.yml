@@ -85,5 +85,5 @@ codecept_path_output: "/project_logs"
 codecept_failed_file: "/project_logs/failed"
 
 screen_size: '1440x900'
-display: ':45'
+display: '45'
 

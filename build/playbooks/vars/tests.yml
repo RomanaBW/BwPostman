@@ -20,7 +20,7 @@ test_db_user: "{{ vault_test_db_user_1 }}"
 test_db_password: "{{ vault_test_db_password_1 }}"
 
 screen_size: '1440x900'
-display: '45'
+display: ':45'
 
 # runtime install ? min
 # runtime update ? min

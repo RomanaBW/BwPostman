@@ -85,6 +85,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$this->registerTask('publish_save', 'save');
 		$this->registerTask('save2new', 'save');
 		$this->registerTask('changeTab', 'changeTab');
+		$this->registerTask('changeIsTemplate', 'changeIsTemplate');
 
 		$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
 	}
@@ -423,6 +424,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$data	= ArrayHelper::fromObject($app->getUserState('com_bwpostman.edit.newsletter.data'));
 		$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 
+		if ($task == 'save2copy')
+		{
+			$data['is_template'] = '';
+		}
+
 		// Populate the row id from the session.
 		$data[$key] = $recordId;
 
@@ -759,9 +765,35 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				)
 			);
 		}
-		// form data are valid
+		//check for content template
+		elseif ($data['is_template'])
+		{
+			$app->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR"), 'error');
+
+			$this->setRedirect(
+				JRoute::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_item
+					. $this->getRedirectToItemAppend($recordId, 'id'),
+					false
+				)
+			);
+		}
+		// form data are valid and no content template
 		else
 		{
+			if ($data['is_template'])
+			{
+				$app->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR"), 'error');
+
+				$this->setRedirect(
+					JRoute::_(
+						'index.php?option=' . $this->option . '&view=' . $this->view_item
+						. $this->getRedirectToItemAppend($recordId, 'id'),
+						false
+					)
+				);
+
+			}
 			$task			= $this->input->get('task', 0);
 			$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
 			$startsending	= 0;
@@ -1033,6 +1065,73 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		return true;
+	}
+
+	/**
+	 * Changes the state of isTemplate switch
+	 *
+	 * @return	string		The arguments to append to the redirect URL.
+	 *
+	 * @throws \Exception
+	 *
+	 * @return 	void
+	 *
+	 * @since	2.2.0
+	 */
+	public function changeIsTemplate()
+	{
+		// Check for request forgeries
+		if (!JSession::checkToken())
+		{
+			jexit(JText::_('JINVALID_TOKEN'));
+		}
+
+		$cid = $this->input->get('cid', array(), 'array');
+
+		if (empty($cid))
+		{
+			\JLog::add(\JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
+		}
+		else
+		{
+			// Get the model.
+			$model = $this->getModel();
+
+			// Make sure the item ids are integers
+			$cid = ArrayHelper::toInteger($cid);
+
+			// Publish the items.
+			try
+			{
+				$result = $model->changeIsTemplate($cid[0]);
+				$errors = $model->getErrors();
+				$ntext = null;
+
+				if ($result === 0)
+				{
+					$ntext = 'COM_BWPOSTMAN_NLS_N_ITEMS_IS_TEMPLATE_0';
+				}
+				else
+				{
+					$ntext = 'COM_BWPOSTMAN_NLS_N_ITEMS_IS_TEMPLATE_1';
+				}
+
+				if ($ntext !== null)
+				{
+					$this->setMessage(\JText::_($ntext));
+				}
+			}
+			catch (\Exception $e)
+			{
+				$this->setMessage($e->getMessage(), 'error');
+			}
+		}
+
+		$extension = $this->input->get('extension');
+		$extensionURL = $extension ? '&extension=' . $extension : '';
+		$this->setRedirect(\JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $extensionURL, false));
+
+		return;
 	}
 
 	/**

@@ -174,7 +174,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											$i,
 											'template.',
 											BwPostmanHelper::canEditState('template', (int) $item->id) && $item->standard != '1'
-										);?></td>
+										);?>
+									</td>
 									<td class="center" align="center">
 										<?php echo JHtml::_(
 											'jgrid.published',

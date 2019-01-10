@@ -1,1 +1,1 @@
-/* Placeholder file for database changes for version 2.2.0 to satisfy Joomla!'s extensions installer */
+ALTER TABLE `#__bwpostman_newsletters` ADD `is_template` tinyint(1) unsigned NOT NULL default '0' AFTER `text_version`;

@@ -69,6 +69,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			submitform(pressbutton);
 		}
 	};
+
 /* ]]> */
 </script>
 
@@ -176,6 +177,9 @@ if ($task == "startsending")
 							<th width="100" nowrap="nowrap">
 								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
 							</th>
+							<th width="130" nowrap="nowrap">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_IS_TEMPLATE', 'is_template', $listDirn, $listOrder); ?>
+							</th>
 							<th width="30" nowrap="nowrap">
 								<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 							</th>
@@ -230,6 +234,24 @@ if ($task == "startsending")
 									</td>
 									<td><?php echo $item->authors; ?></td>
 									<td align="center"><?php echo $item->campaign_id; ?></td>
+									<td class="center" align="center">
+										<?php
+										echo BwPostmanHTMLHelper::switchGridValue(
+											$i,
+											$item->is_template,
+											'changeIsTemplate',
+											'newsletter.',
+											'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_UNSET_TITLE',
+											'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_SET_TITLE',
+											true,
+											'featured',
+											'unfeatured',
+											true, // translate
+											'cb', //checkbox
+											BwPostmanHelper::canEdit('newsletter', (int) $item->id)
+										);
+										?>
+									</td>
 									<td align="center"><?php echo $item->id; ?></td>
 								</tr><?php
 							endforeach;
@@ -238,7 +260,7 @@ if ($task == "startsending")
 						{
 							// if no data ?>
 							<tr class="row1">
-								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+								<td colspan="9"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 							</tr><?php
 						}
 						?>

@@ -129,6 +129,12 @@ Joomla.submitbutton = function (pressbutton)
 <div id="bwp_view_single">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm">
+		<?php
+		if ($this->item->is_template)
+		{
+			JFactory::$application->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
+		}
+		?>
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
@@ -151,7 +157,7 @@ Joomla.submitbutton = function (pressbutton)
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
-				<?php if (BwPostmanHelper::canSend((int) $this->item->id)) { ?>
+				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="open">
 						<button onclick="return changeTab('edit_send');" class="buttonAsLink_open">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>

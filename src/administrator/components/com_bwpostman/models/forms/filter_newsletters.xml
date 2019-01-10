@@ -39,6 +39,17 @@
 				onchange="this.form.submit();"
 				>
 			</field>
+			<field
+					name="is_template"
+					type="list"
+					label="COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_LBL"
+					description="COM_CONTENT_FILTER_IS_TEMPLATE_DESC"
+					onchange="this.form.submit();"
+			>
+				<option value="">COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE</option>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
 		</fields>
 
 		<fields name="list">

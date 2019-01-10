@@ -1166,6 +1166,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$newsletters_data_copy->archive_date 		= 0;
 				$newsletters_data_copy->hits 				= null;
 				$newsletters_data_copy->substitute_links	= null;
+				$newsletters_data_copy->is_template			= null;
 
 				$subQuery	= $_db->getQuery(true);
 
@@ -1287,6 +1288,55 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
+		return true;
+	}
+
+	/**
+	 * Changes the state of isTemplate
+	 *
+	 * @param   array    $id      A list of the primary keys to change.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   1.6
+	 */
+	public function changeIsTemplate($id)
+	{
+		$user = \JFactory::getUser();
+		$table = $this->getTable();
+
+		// Access checks.
+		if ($table->load($id))
+		{
+			if (!BwPostmanHelper::canEdit('newsletter', array('id' => $id)))
+			{
+				\JLog::add(\JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), \JLog::WARNING, 'jerror');
+
+				return false;
+			}
+
+			// If the table is checked out by another user, drop it and report to the user trying to change its state.
+			if (property_exists($table, 'checked_out') && $table->checked_out && ($table->checked_out != $user->id))
+			{
+				\JLog::add(\JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), \JLog::WARNING, 'jerror');
+
+				return false;
+			}
+		}
+
+		// Attempt to change the state of the record.
+		if (!$table->changeIsTemplate($id))
+		{
+			$this->setError($table->getError());
+
+			return false;
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
 
 		return true;
 	}

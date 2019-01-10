@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_newsletters` (
   `intro_text_text` TEXT NOT NULL,
   `html_version` LONGTEXT NOT NULL,
   `text_version` LONGTEXT NOT NULL,
+  `is_template` TINYINT(1) unsigned NOT NULL DEFAULT '0',
   `created_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` INT(10) unsigned NOT NULL DEFAULT '0',
   `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',

@@ -328,7 +328,6 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		$this->setRedirect($link);
 	}
 
-
 	/**
 	 * Method to add selected content items to the newsletter
 	 *

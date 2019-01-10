@@ -330,4 +330,81 @@ abstract class BwPostmanHTMLHelper {
 
 		return $link;
 	}
+
+	/**
+	 * Returns a switch action a grid
+	 * (switches between boolean values)
+	 *
+	 * @param   integer      $i              The row index
+	 * @param   boolean      $value          current value
+	 * @param   string       $task           The task to fire
+	 * @param   string|array $prefix         An optional task prefix or an array of options
+	 * @param   string       $active_title   An optional active tooltip to display if $enable is true
+	 * @param   string       $inactive_title An optional inactive tooltip to display if $enable is true
+	 * @param   boolean      $tip            An optional setting for tooltip
+	 * @param   string       $active_class   An optional active HTML class
+	 * @param   string       $inactive_class An optional inactive HTML class
+	 * @param   boolean      $translate      An optional setting for translation.
+	 * @param   string       $checkbox       An optional prefix for checkboxes.
+	 * @param   boolean      $access         An optional setting for access control on the action.
+	 *
+	 * @return  string  The HTML markup
+	 *
+	 * @see 	/libraries/cms/html/jgrid.php->action()
+
+	 * @since   2.2.0
+	 */
+	public static function switchGridValue($i, $value, $task, $prefix = '', $active_title = '', $inactive_title = '',
+		$tip = false, $active_class = '', $inactive_class = '', $translate = true, $checkbox = 'cb', $access = true)
+	{
+		if (is_array($prefix))
+		{
+			$options        = $prefix;
+			$active_title   = array_key_exists('active_title', $options) ? $options['active_title'] : $active_title;
+			$inactive_title = array_key_exists('inactive_title', $options) ? $options['inactive_title'] : $inactive_title;
+			$tip            = array_key_exists('tip', $options) ? $options['tip'] : $tip;
+			$active_class   = array_key_exists('active_class', $options) ? $options['active_class'] : $active_class;
+			$inactive_class = array_key_exists('inactive_class', $options) ? $options['inactive_class'] : $inactive_class;
+			$value          = array_key_exists('value', $options) ? $options['Value'] : $value;
+			$translate      = array_key_exists('translate', $options) ? $options['translate'] : $translate;
+			$checkbox       = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
+			$prefix         = array_key_exists('prefix', $options) ? $options['prefix'] : '';
+		}
+
+		if ($tip)
+		{
+			JHtml::_('bootstrap.tooltip');
+
+			$title = $value ? $active_title : $inactive_title;
+			$title = $translate ? JText::_($title) : $title;
+			$title = JHtml::_('tooltipText', $title, '', 0);
+		}
+
+		if ($value)
+		{
+			$html[] = '<a class="btn btn-micro ' . $active_class . ($tip ? ' hasTooltip' : '') . '"';
+			if ($access)
+			{
+				$html[] = ' href="javascript:void(0);" onclick="return Joomla.listItemTask(\'' . $checkbox . $i . '\',\'' . $prefix . $task . '\')"';
+			}
+			$html[] = $tip ? ' title="' . $title . '"' : '';
+			$html[] = '>';
+			$html[] = '<span class="icon-' . $active_class . '" aria-hidden="true"></span>';
+			$html[] = '</a>';
+		}
+		else
+		{
+			$html[] = '<a class="btn btn-micro jgrid' . ($tip ? ' hasTooltip' : '') . '"';
+			if ($access)
+			{
+				$html[] = ' href="javascript:void(0);" onclick="return Joomla.listItemTask(\'' . $checkbox . $i . '\',\'' . $prefix . $task . '\')"';
+			}
+			$html[] = $tip ? ' title="' . $title . '"' : '';
+			$html[] = '>';
+			$html[] = '<span class="icon-' . $inactive_class . '"></span>';
+			$html[] = '</a>';
+		}
+
+		return implode($html);
+	}
 }

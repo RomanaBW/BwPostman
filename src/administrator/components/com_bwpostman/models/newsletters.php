@@ -77,6 +77,7 @@ class BwPostmanModelNewsletters extends JModelList
 				'campaign_id', 'a.campaign_id',
 				'created_date', 'a.created_date',
 				'modified_time', 'a.modified_time',
+				'is_template', 'a.is_template',
 				'editor', 'a.editor',
 				'authors', 'a.authors',
 				'mailing_date', 'a.mailing_date',
@@ -145,6 +146,9 @@ class BwPostmanModelNewsletters extends JModelList
 		$mailinglist_id = $this->getUserStateFromRequest($this->context . '.filter.mailinglists', 'filter_mailinglists', '');
 		$this->setState('filter.mailinglists', $mailinglist_id);
 
+		$is_template= $this->getUserStateFromRequest($this->context . '.filter.is_template', 'filter_is_template', '');
+		$this->setState('filter.is_template', $is_template);
+
 		$usergroup_id = $this->getUserStateFromRequest($this->context . '.filter.usergroups', 'filter_usergroups', '');
 		$this->setState('filter.usergroups', $usergroup_id);
 
@@ -184,6 +188,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$id	.= ':' . $this->getState('filter.mailinglists');
 		$id	.= ':' . $this->getState('filter.usergroups');
 		$id	.= ':' . $this->getState('filter.description');
+		$id	.= ':' . $this->getState('filter.is_template');
 
 		return parent::getStoreId($id);
 	}
@@ -250,7 +255,8 @@ class BwPostmanModelNewsletters extends JModelList
 						$this->getState(
 							'list.select',
 							'a.id, a.subject, a.attachment, a.description, a.checked_out, a.checked_out_time' .
-							', a.published, a.publish_up, a.publish_down, a.created_date, a.created_by, a.modified_time'
+							', a.published, a.publish_up, a.publish_down, a.created_date, a.created_by, a.modified_time' .
+							', a.is_template'
 						)
 					);
 					$this->query->select($this->_db->quoteName('a.mailing_date'));
@@ -359,6 +365,7 @@ class BwPostmanModelNewsletters extends JModelList
 //		$this->getFilterByComponentPermissions();
 		$this->getFilterByCampaign($tab);
 		$this->getFilterByAuthor($tab);
+		$this->getFilterByIsTemplate($tab);
 		$this->getFilterBySearchword($tab);
 
 		if ($tab == 'sent' || $tab == 'unsent')
@@ -503,6 +510,30 @@ class BwPostmanModelNewsletters extends JModelList
 			else
 			{
 				$this->query->where('a.campaign_id = ' . (int) $campaign);
+			}
+		}
+	}
+
+	/**
+	 * Method to get the filter by selected campaign
+	 *
+	 * @access 	private
+	 *
+	 * @param   string  $tab
+	 *
+	 * @return 	void
+	 *
+	 * @since   2.0.0
+	 */
+	private function getFilterByIsTemplate($tab)
+	{
+		$isTemplate = $this->getState('filter.is_template');
+
+		if ($isTemplate !== "")
+		{
+			if ($tab == 'unsent')
+			{
+				$this->query->where('a.is_template = ' . (int) $isTemplate);
 			}
 		}
 	}

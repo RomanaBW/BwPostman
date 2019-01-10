@@ -180,6 +180,13 @@ class BwPostmanTableNewsletters extends JTable
 	public $text_version = null;
 
 	/**
+	 * @var int $is_template
+	 *
+	 * @since       2.2.0
+	 */
+	public $is_template = null;
+
+	/**
 	 * @var datetime creation date of the newsletter
 	 *
 	 * @since       0.9.1
@@ -516,7 +523,7 @@ class BwPostmanTableNewsletters extends JTable
 	}
 
 	/**
-	 * Function markAsSent
+	 * Function change isTemplate
 	 *
 	 * @param $id
 	 *
@@ -526,7 +533,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	public function markAsSent($id = null)
+	public function changeIsTemplate($id = null)
 	{
 		if ($id)
 		{
@@ -544,11 +551,13 @@ class BwPostmanTableNewsletters extends JTable
 			$nl_id = $this->id;
 		}
 
+		$newIsTemplate = ($this->is_template + 1) % 2;
+
 		$_db	= $this->getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName($this->_tbl));
-		$query->set($_db->quoteName('mailing_date') . " = NOW()");
+		$query->set($_db->quoteName('is_template') . " = " . $newIsTemplate);
 		$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
 
 		$_db->setQuery($query);
@@ -564,6 +573,7 @@ class BwPostmanTableNewsletters extends JTable
 
 		return true;
 	}
+
 
 	/**
 	 * Overridden JTable::store to set created/modified and user id.

@@ -202,7 +202,7 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
-		$I->seeElement(".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
+		$I->seeElement(".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -337,6 +337,8 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$tab3, 1);
 		$I->dontSeeElement(NlEdit::$tab5);
 		$I->clickAndWait(NlEdit::$tab4, 1);
+		$I->dontSeeElement(NlEdit::$tab5);
+		$I->clickAndWait(NlEdit::$tab1, 1);
 		$I->dontSeeElement(NlEdit::$tab5);
 
 		$I->see("Notice", Generals::$alert_info . ' ' . Generals::$alert_header );
@@ -609,7 +611,7 @@ class TestNewslettersDetailsCest
 	 */
 	public function CopyNewsletterTemplate(\AcceptanceTester $I)
 	{
-		NlEdit::copyNewsletter($I, Generals::$admin['author']);
+		NlEdit::copyNewsletter($I, Generals::$admin['author'], true, true);
 	}
 
 	/**

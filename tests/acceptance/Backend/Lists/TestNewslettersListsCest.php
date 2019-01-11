@@ -244,6 +244,8 @@ class TestNewslettersListsCest
 		$I->assertFilterResult(NlManage::$filter_is_template_yes_result);
 
 		// Filter content template no
+		$I->wait(1);
+		$I->waitForElementVisible(NlManage::$filter_is_template_list);
 		// select no
 		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_no, NlManage::$filter_is_template_list_id);
 

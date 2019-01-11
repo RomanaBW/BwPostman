@@ -338,28 +338,28 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list               = ".//*[@id='filter_is_template_list_chzn']/a";
+	public static $filter_is_template_list               = ".//*[@id='filter_is_template_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list_none          = ".//*[@id='filter_is_template_list_chzn']/div/ul/li[text()='- Content Template -']";
+	public static $filter_is_template_list_none          = ".//*[@id='filter_is_template_chzn']/div/ul/li[text()='- Content Template -']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list_yes           = ".//*[@id='filter_is_template_list_chzn']/div/ul/li[text()='Yes']";
+	public static $filter_is_template_list_yes           = ".//*[@id='filter_is_template_chzn']/div/ul/li[text()='Yes']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list_no           = ".//*[@id='filter_is_template_list_chzn']/div/ul/li[text()='No']";
+	public static $filter_is_template_list_no           = ".//*[@id='filter_is_template_chzn']/div/ul/li[text()='No']";
 
 	/**
 	 * @var array

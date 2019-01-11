@@ -123,7 +123,7 @@ class NewsletterManagerPage
 			'modified_time' => 'Last modified',
 			'authors'       => 'Author',
 			'campaign_id'   => 'Campaign',
-			'is_template'   => 'Content Template',
+			'is_template'   => 'Content template',
 			'id'            => 'ID',
 		),
 
@@ -134,7 +134,7 @@ class NewsletterManagerPage
 			'modified_time' => 'a.modified_time',
 			'authors'       => 'authors',
 			'campaign_id'   => 'campaign_id',
-			'is_template'   => 'Content Template',
+			'is_template'   => 'a.is_template',
 			'id'            => 'a.id',
 		),
 	);
@@ -492,10 +492,10 @@ class NewsletterManagerPage
 	 * @since 2.2.0
 	 */
 	public static $set_template_by_icon   = array(
-		'is_template_button'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a",
-		'is_template_result'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-featured')]",
-		'is_not_template_button' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a",
-		'is_not_template_result' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-unfeatured')]",
+		'is_template_button'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a",
+		'is_template_result'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-featured')]",
+		'is_not_template_button' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a",
+		'is_not_template_result' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-unfeatured')]",
 	);
 
 	/**

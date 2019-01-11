@@ -527,11 +527,11 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @param $id
 	 *
-	 * @return boolean True on success
+	 * @return boolean | int false on failure, on success set value
 	 *
 	 * @throws Exception
 	 *
-	 * @since       0.9.1
+	 * @since       2.2.0
 	 */
 	public function changeIsTemplate($id = null)
 	{
@@ -571,7 +571,7 @@ class BwPostmanTableNewsletters extends JTable
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return true;
+		return $newIsTemplate;
 	}
 
 

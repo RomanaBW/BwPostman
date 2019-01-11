@@ -601,6 +601,20 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
+	public static $template_yes_row          = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-featured')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $template_no_row        = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unfeatured')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $null_date            = '0000-00-00 00:00:00';
 
 	/**

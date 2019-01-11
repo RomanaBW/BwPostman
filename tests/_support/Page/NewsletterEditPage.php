@@ -1000,7 +1000,7 @@ class NewsletterEditPage
 		$I->see('Newsletters', Generals::$pageTitle);
 		if ($isTemplate)
 		{
-			$I->seeElement(".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
+			$I->seeElement(".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
 		}
 
 		$I->click(Generals::$first_list_entry);
@@ -1009,7 +1009,7 @@ class NewsletterEditPage
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
 		if ($isTemplate)
 		{
-			$I->seeElement(".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unfeatured')]");
+			$I->seeElement(".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unfeatured')]");
 		}
 
 		if ($withCleanup)

@@ -1328,7 +1328,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Attempt to change the state of the record.
-		if (!$table->changeIsTemplate($id))
+		$changeResult = $table->changeIsTemplate($id);
+		if ($changeResult === false)
 		{
 			$this->setError($table->getError());
 
@@ -1338,7 +1339,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Clear the component's cache
 		$this->cleanCache();
 
-		return true;
+		return $changeResult;
 	}
 
 	/**

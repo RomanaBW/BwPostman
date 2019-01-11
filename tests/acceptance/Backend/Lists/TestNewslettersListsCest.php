@@ -68,7 +68,7 @@ class TestNewslettersListsCest
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);
-		$I->loopFilterList($I, NlManage::$sort_data_array, 'header', $columns, 'newsletters AS `a`', 0, '', 9, 1);
+		$I->loopFilterList($I, NlManage::$sort_data_array, 'header', $columns, 'newsletters AS `a`', 0, '', 10, 1);
 	}
 
 	/**
@@ -95,7 +95,7 @@ class TestNewslettersListsCest
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$query_criteria);
-		$I->loopFilterList($I, NlManage::$sort_data_array, '', $columns, 'newsletters AS `a`', 0, '', 9, 1);
+		$I->loopFilterList($I, NlManage::$sort_data_array, '', $columns, 'newsletters AS `a`', 0, '', 10, 1);
 	}
 
 	/**

@@ -44,6 +44,8 @@ class DbHelper extends Module
 	 *
 	 * @return  array
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function grabFromDatabaseWithLimit($table_name, $columns, $archive, $status, $order_col, $order_dir, $limit, $criteria = array(), array $credentials, $tab = 1)

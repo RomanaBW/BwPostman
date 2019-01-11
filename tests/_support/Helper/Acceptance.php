@@ -729,6 +729,17 @@ class Acceptance extends Codeception\Module
 								//do nothing;
 							}
 							break;
+						case 'is_template':
+							$col = 8;
+							if ($needle == '1')
+							{
+								$I->seeElement(sprintf(Generals::$template_yes_row, ($k + 1), $col));
+							}
+							else
+							{
+								$I->seeElement(sprintf(Generals::$template_no_row, ($k + 1), $col));
+							}
+							break;
 						default:
 							if (!($key == 'user_id') || ($needle != '0'))
 							{

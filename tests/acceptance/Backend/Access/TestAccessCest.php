@@ -484,6 +484,7 @@ class TestAccessCest
 
 							// @ToDo: set publish/unpublish date
 							// @ToDo: handle queue
+							// @ToDo: set/unset content template
 						}
 						elseif ($button == 'Subscribers')
 						{

@@ -728,6 +728,13 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
+	public static $message_template     = 'This is a Content Template. If You want to send this newsletter, please work with a copy of this newsletter content template or unset Content Template.';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
 	public static $warn_save            = "A newsletter with subject '%s' already exists. Do You have an appropriate description?";
 
 	/**
@@ -822,6 +829,20 @@ class NewsletterEditPage
 	 * @since   2.0.0
 	 */
 	public static $published_published      = ".//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $is_template                = '#jform_is_template';
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $is_template_list_id         = '#jform_is_template';
 
 	/**
 	 * @var string
@@ -954,6 +975,7 @@ class NewsletterEditPage
 	 * @param   \AcceptanceTester $I
 	 * @param   string          $username
 	 * @param 	boolean			$withCleanup
+	 * @param   boolean         $isTemplate
 	 *
 	 * @return  void
 	 *
@@ -961,22 +983,34 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function CopyNewsletter(\AcceptanceTester $I, $username, $withCleanup = true)
+	public static function CopyNewsletter(\AcceptanceTester $I, $username, $withCleanup = true, $isTemplate = false)
 	{
 		$I->wantTo("Copy a newsletter");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 		self::fillFormSimple($I);
+		if ($isTemplate)
+		{
+			$I->selectOption(self::$is_template, 'Yes');
+		}
 
 		$I->click(self::$toolbar['Save & Close']);
 		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
+		if ($isTemplate)
+		{
+			$I->seeElement(".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
+		}
 
 		$I->click(Generals::$first_list_entry);
 		$I->clickAndWait(Generals::$toolbar['Duplicate'], 1);
 		$I->waitForText(self::$duplicate_prefix . self::$field_subject . "'", 30);
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
+		if ($isTemplate)
+		{
+			$I->seeElement(".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unfeatured')]");
+		}
 
 		if ($withCleanup)
 		{

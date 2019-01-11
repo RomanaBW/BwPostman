@@ -199,6 +199,13 @@ class Generals
 	/**
 	 * @var string
 	 *
+	 * @since 2.2.0
+	 */
+	public static $alert_info        = 'div.alert-info';
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $alert_warn       = 'div.alert-warning';

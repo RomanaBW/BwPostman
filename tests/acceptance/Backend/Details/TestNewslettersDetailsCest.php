@@ -174,6 +174,41 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
+	 * Test method to create a single Newsletter as content template from list view, save it and go back to list view
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneNewsletterCompleteListViewTemplate(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Newsletter as content template, archive and delete list view");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		NlEdit::fillFormSimple($I);
+		$I->selectOption(NlEdit::$is_template, 'Yes');
+
+		$I->click(NlEdit::$toolbar['Save & Close']);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		NlEdit::checkSuccess($I, Generals::$admin['author']);
+		$I->seeElement(".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single Newsletter from list view, save it and go back to list view
 	 *
 	 * @param   \AcceptanceTester                $I
@@ -253,6 +288,79 @@ class TestNewslettersDetailsCest
 		$I->see("Message", Generals::$alert_header);
 		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
+
+		// Grab ID of second newsletter
+		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_newsletters', 'id', array('subject' => NlEdit::$field_subject2));
+
+		$I->assertGreaterThan($id1[0], $id2[0]);
+
+		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a single Newsletter as template from list view, save it, modify and save as copy
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneNewsletterSaveCopyListViewTemplate(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create one newsletter as template, save, modify and save as copy");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		NlEdit::fillFormSimple($I);
+		$I->selectOption(NlEdit::$is_template, 'Yes');
+
+		$I->click(Generals::$toolbar['Save']);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+
+		$I->dontSeeElement(NlEdit::$tab5);
+		$I->clickAndWait(NlEdit::$tab2, 1);
+		$I->dontSeeElement(NlEdit::$tab5);
+		$I->clickAndWait(NlEdit::$tab3, 1);
+		$I->dontSeeElement(NlEdit::$tab5);
+		$I->clickAndWait(NlEdit::$tab4, 1);
+		$I->dontSeeElement(NlEdit::$tab5);
+
+		$I->see("Notice", Generals::$alert_info . ' ' . Generals::$alert_header );
+		$I->see(NlEdit::$message_template, Generals::$alert_info);
+
+		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject);
+
+		// Grab ID of first newsletter
+		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_newsletters', 'id', array('subject' => NlEdit::$field_subject));
+
+		$I->fillField(NlEdit::$subject, NlEdit::$field_subject2);
+
+		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Message", Generals::$alert_header);
+		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
+
+		$I->seeInField(NlEdit::$is_template, 'No');
+		$I->seeElement(NlEdit::$tab5);
+		$I->dontSee("Notice", Generals::$alert_info . ' ' . Generals::$alert_header );
+		$I->dontSee(NlEdit::$message_template, Generals::$alert_info);
+
 
 		// Grab ID of second newsletter
 		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_newsletters', 'id', array('subject' => NlEdit::$field_subject2));
@@ -480,6 +588,26 @@ class TestNewslettersDetailsCest
 	 * @since   2.0.0
 	 */
 	public function CopyNewsletter(\AcceptanceTester $I)
+	{
+		NlEdit::copyNewsletter($I, Generals::$admin['author']);
+	}
+
+	/**
+	 * Test method to copy a newsletter
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CopyNewsletterTemplate(\AcceptanceTester $I)
 	{
 		NlEdit::copyNewsletter($I, Generals::$admin['author']);
 	}

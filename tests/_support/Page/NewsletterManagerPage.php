@@ -112,6 +112,7 @@ class NewsletterManagerPage
 			'modified_time' => 'Last modification date',
 			'authors'       => 'Author',
 			'campaign_id'   => 'Campaign',
+			'is_template'   => 'Content Template',
 			'id'            => 'ID',
 		),
 
@@ -122,6 +123,7 @@ class NewsletterManagerPage
 			'modified_time' => 'Last modified',
 			'authors'       => 'Author',
 			'campaign_id'   => 'Campaign',
+			'is_template'   => 'Content Template',
 			'id'            => 'ID',
 		),
 
@@ -132,6 +134,7 @@ class NewsletterManagerPage
 			'modified_time' => 'a.modified_time',
 			'authors'       => 'authors',
 			'campaign_id'   => 'campaign_id',
+			'is_template'   => 'Content Template',
 			'id'            => 'a.id',
 		),
 	);
@@ -148,6 +151,7 @@ class NewsletterManagerPage
 		'subject'       => 'a.subject',
 		'description'   => 'a.description',
 		'modified_time' => 'a.modified_time',
+		'is_template'   => 'a.is_template',
 		'id'            => 'a.id',
 	);
 
@@ -319,6 +323,44 @@ class NewsletterManagerPage
 	 */
 	public static $filter_mailinglist_3_txt     = '02 Mailingliste 9 A';
 
+
+	// Filter content template
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $filter_is_template_list_id       = "filter_is_template_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $filter_is_template_list               = ".//*[@id='filter_is_template_list_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $filter_is_template_list_none          = ".//*[@id='filter_is_template_list_chzn']/div/ul/li[text()='- Content Template -']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $filter_is_template_list_yes           = ".//*[@id='filter_is_template_list_chzn']/div/ul/li[text()='Yes']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $filter_is_template_list_no           = ".//*[@id='filter_is_template_list_chzn']/div/ul/li[text()='No']";
+
 	/**
 	 * @var array
 	 *
@@ -402,6 +444,59 @@ class NewsletterManagerPage
 		"Test Newsletter 12.4.2015 10:32:6",
 	);
 
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.2.0
+	 */
+	public static $filter_is_template_yes_result   = array(
+		'Newsletter for testing 10',
+		'Newsletter for testing 3',
+		'Template Gedicht 3',
+	);
+
+
+	/**
+	 * @var array
+	 *
+	 * @since   2.2.0
+	 */
+	public static $filter_is_template_no_result = array(
+		'Newsletter for testing 1',
+		'Newsletter for testing 11',
+		'Newsletter for testing 12',
+		'Newsletter for testing 13',
+		'Newsletter for testing 14',
+		'Newsletter for testing 15',
+		'Newsletter for testing 16',
+		'Newsletter for testing 17',
+		'Newsletter for testing 18',
+		'Newsletter for testing 19',
+		'Newsletter for testing 2',
+		'Newsletter for testing 20',
+		'Newsletter for testing 21',
+		'Newsletter for testing 22',
+		'Newsletter for testing 23',
+		'Newsletter for testing 24',
+		'Newsletter for testing 25',
+		'Newsletter for testing 4',
+		'Newsletter for testing 5',
+		'Newsletter for testing 6',
+	);
+
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.2.0
+	 */
+	public static $set_template_by_icon   = array(
+		'is_template_button'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a",
+		'is_template_result'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-featured')]",
+		'is_not_template_button' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a",
+		'is_not_template_result' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-unfeatured')]",
+	);
 
 	/**
 	 * @var array

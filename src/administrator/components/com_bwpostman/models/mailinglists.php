@@ -338,11 +338,13 @@ class BwPostmanModelMailinglists extends JModelList
 	 *
 	 * @return 	void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	private function getFilterByComponentPermissions()
 	{
-		$allowed_items  = BwPostmanHelper::getAllowedRecords('mailinglist');
+		$allowed_items  = BwPostmanHelper::getAllowedRecords('mailinglist', 'edit');
 
 		if ($allowed_items != 'all')
 		{

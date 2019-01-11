@@ -99,6 +99,38 @@ class TestNewslettersListsCest
 	}
 
 	/**
+	 * Test method to set newsletter as template by icon
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function SetNewsletterIsTemplate(AcceptanceTester $I)
+	{
+
+		$I->wantTo("Set/Unset newsletters by icon");
+		$I->amOnPage(NlManage::$url);
+
+		// switch status by icon
+		$I->clickAndWait(NlManage::$set_template_by_icon['is_template_button'], 2);
+
+		$I->see("One newsletter set as content template!");
+
+		$I->seeElement(NlManage::$set_template_by_icon['is_template_result']);
+
+		$I->clickAndWait(NlManage::$set_template_by_icon['is_not_template_button'], 1);
+		$I->see("One newsletter unset as content template!");
+
+		$I->seeElement(NlManage::$set_template_by_icon['is_not_template_result']);
+	}
+
+	/**
 	 * Test method to filter newsletters by author
 	 *
 	 * @param   AcceptanceTester                $I
@@ -179,6 +211,43 @@ class TestNewslettersListsCest
 		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_without, NlManage::$filter_campaign_list_id);
 
 		$I->assertFilterResult(NlManage::$filter_nocam_result);
+	}
+
+	/**
+	 * Test method to filter newsletters by content template
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function FilterNewslettersByIsTemplate(AcceptanceTester $I)
+	{
+		$I->wantTo("Filter unsent newsletters by content template");
+		$I->amOnPage(NlManage::$url);
+		$I->wait(NlManage::$wait_db);
+
+		// Filter content template yes
+		// Get filter bar
+		$I->click(Generals::$filterbar_button);
+		$I->waitForElementVisible(NlManage::$filter_is_template_list);
+		// select yes
+		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_yes, NlManage::$filter_is_template_list_id);
+
+		$I->assertFilterResult(NlManage::$filter_is_template_yes_result);
+
+		// Filter content template no
+		// select no
+		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_no, NlManage::$filter_is_template_list_id);
+
+		$I->assertFilterResult(NlManage::$filter_is_template_no_result);
 	}
 
 	/**

@@ -406,6 +406,11 @@ class BwPostmanModelNewsletters extends JModelList
 			{
 				$orderCol = 'a.subject';
 			}
+
+			if ($orderCol == 'is_template')
+			{
+				$orderCol = 'a.is_template';
+			}
 		}
 		elseif ($tab == 'queue')
 		{

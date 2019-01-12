@@ -10,13 +10,13 @@ pipeline {
 		string(name: "BWPM_VERSION", defaultValue: "2.2.0", description: "The new/next version number of the project.")
 		string(name: "JOOMLA_VERSION", defaultValue: "3.9.1", description: "Version of Joomla to test against")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
-		string(name: "Host_1", defaultValue: "pi")
-		string(name: "Host_2", defaultValue: "pi")
-		string(name: "Host_3", defaultValue: "pi")
-		string(name: "Host_4", defaultValue: "pi")
-		string(name: "Host_5", defaultValue: "pi")
-		string(name: "Host_6", defaultValue: "pi")
-		string(name: "Host_7", defaultValue: "pi")
+		string(name: "Host_1", defaultValue: "Master")
+		string(name: "Host_2", defaultValue: "Master")
+		string(name: "Host_3", defaultValue: "Master")
+		string(name: "Host_4", defaultValue: "Master")
+		string(name: "Host_5", defaultValue: "Master")
+		string(name: "Host_6", defaultValue: "Master")
+		string(name: "Host_7", defaultValue: "Master")
 	}
 
 	stages {
@@ -39,53 +39,53 @@ pipeline {
 			}
 		}
 
-//		stage('Run acceptance level 1') {
-//			parallel {
-//				stage('Suite 1') {
-//					agent {
-//						label "${params.Host_1}"
-//					}
-//					steps {
-//						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1", "${vault_file}", "${params.Host_1}")
-//					}
-//					post {
-//						always {
-//							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
-//						}
-//					}
-//				}
-//				stage('Suite 2') {
-//					agent {
-//						label "${params.Host_2}"
-//					}
-//					steps {
-//						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2", "${vault_file}", "${params.Host_2}")
-//					}
-//					post {
-//						always {
-//							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
-//						}
-//					}
-//				}
-//			}
-//		}
+		stage('Run acceptance level 1') {
+			parallel {
+				stage('Suite 1') {
+					agent {
+						label "${params.Host_1}"
+					}
+					steps {
+						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1", "${vault_file}", "${params.Host_1}")
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-1.yml -p ${PROJECT_NAME}-1 down"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+						}
+					}
+				}
+				stage('Suite 2') {
+					agent {
+						label "${params.Host_2}"
+					}
+					steps {
+						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2", "${vault_file}", "${params.Host_2}")
+					}
+					post {
+						always {
+							sh "docker-compose -f build/docker/run-bwpm-2.yml -p ${PROJECT_NAME}-2 down"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
+						}
+					}
+				}
+			}
+		}
 
-//		stage('Notification level 1') {
-//			steps {
-//				emailext(
-//					body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
-//					attachmentsPattern: "",
-//					subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
-//					to: 'webmaster@boldt-webservice.de'
-//				)
-//			}
-//		}
+		stage('Notification level 1') {
+			steps {
+				emailext(
+					body: "<p>First level of BwPostman build ${currentBuild.number} successfully finished.</p>",
+					attachmentsPattern: "",
+					subject:"First level of BwPostman build ${currentBuild.number} successfully finished",
+					to: 'webmaster@boldt-webservice.de'
+				)
+			}
+		}
 
 		stage('Run acceptance level 2') {
 			parallel {
@@ -95,23 +95,26 @@ pipeline {
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "${params.Host_3}")
-//						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4", "${vault_file}", "${params.Host_3}")
-//						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5", "${vault_file}", "${params.Host_3}")
+						bwpmAcceptContainer ("Suite_4", "${PROJECT_NAME}", "${PROJECT_NAME}", "4", "${vault_file}", "${params.Host_3}")
+						bwpmAcceptContainer ("Suite_5", "${PROJECT_NAME}", "${PROJECT_NAME}", "5", "${vault_file}", "${params.Host_3}")
 					}
 					post {
 						always {
 							sh "docker-compose -f build/docker/run-bwpm-3.yml -p ${PROJECT_NAME}-3 down"
-//							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
-//							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
+							sh "docker-compose -f build/docker/run-bwpm-4.yml -p ${PROJECT_NAME}-4 down"
+							sh "docker-compose -f build/docker/run-bwpm-5.yml -p ${PROJECT_NAME}-5 down"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
-//							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
-//							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
 						}
 					}
 				}
 				stage('Suite 6') {
+					agent {
+						label "${params.Host_6}"
+					}
 					steps {
 						echo "Dummy"
 //						bwpmAcceptContainer ("Suite_6", "${PROJECT_NAME}", "${PROJECT_NAME}", "6", "${vault_file}", "${params.Host_6}")
@@ -147,6 +150,9 @@ pipeline {
 		}
 
 		stage('Installation test') {
+			agent {
+				label "${params.Host_7}"
+			}
 			steps {
 				echo "Dummy"
 //				bwpmAcceptContainer ("Suite_7", "${JOOMLA_NAME}", "${PROJECT_NAME}", "7", "${vault_file}", "${params.Host_7}")

@@ -1,6 +1,6 @@
 #!groovy
 pipeline {
-	agent none
+	agent master
 
 	options {
 		disableConcurrentBuilds()
@@ -10,13 +10,13 @@ pipeline {
 		string(name: "BWPM_VERSION", defaultValue: "2.2.0", description: "The new/next version number of the project.")
 		string(name: "JOOMLA_VERSION", defaultValue: "3.9.1", description: "Version of Joomla to test against")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
-		string(name: "Host_1", defaultValue: "Master")
-		string(name: "Host_2", defaultValue: "Master")
-		string(name: "Host_3", defaultValue: "Master")
-		string(name: "Host_4", defaultValue: "Master")
-		string(name: "Host_5", defaultValue: "Master")
-		string(name: "Host_6", defaultValue: "Master")
-		string(name: "Host_7", defaultValue: "Master")
+		string(name: "Host_1", defaultValue: "master")
+		string(name: "Host_2", defaultValue: "master")
+		string(name: "Host_3", defaultValue: "master")
+		string(name: "Host_4", defaultValue: "master")
+		string(name: "Host_5", defaultValue: "master")
+		string(name: "Host_6", defaultValue: "master")
+		string(name: "Host_7", defaultValue: "master")
 	}
 
 	stages {

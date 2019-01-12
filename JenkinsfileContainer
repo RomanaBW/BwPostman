@@ -25,7 +25,6 @@ pipeline {
 					vault_file = "tester_vault"
 					vault_path = "${WORKSPACE}/.vault/${vault_file}"
 					docker_repo_string = "universe2:5000"
-
 					Host_1 = "suse"
 					Host_2 = "suse"
 					Host_3 = "suse"

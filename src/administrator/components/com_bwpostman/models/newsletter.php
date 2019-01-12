@@ -534,10 +534,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
+		$recordId = JFactory::getApplication()->getUserState('com_bwpostman.newsletter.id');
+
+		// Check the session for previously entered form data for this record id.
 		$data	= JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
 
-		if (empty($data))
+		if (empty($data) || $recordId != $data->id)
 		{
 			$data = $this->getItem();
 		}
@@ -1744,6 +1746,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['text_version']		= $state_data->text_version;
 				$form_data['campaign_id']		= $state_data->campaign_id;
 				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['is_template']		= $state_data->is_template;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
 
@@ -1772,6 +1775,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['html_version']		= $state_data->html_version;
 				$form_data['campaign_id']		= $state_data->campaign_id;
 				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['is_template']		= $state_data->is_template;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
@@ -1800,6 +1804,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['text_version']		= $state_data->text_version;
 				$form_data['campaign_id']		= $state_data->campaign_id;
 				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['is_template']		= $state_data->is_template;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
@@ -1850,6 +1855,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['text_version']          = $state_data->text_version;
 				$form_data['campaign_id']           = $state_data->campaign_id;
 				$form_data['usergroups']            = $state_data->usergroups;
+				$form_data['is_template']		    = $state_data->is_template;
 				$form_data['template_id']           = $state_data->template_id;
 				$form_data['text_template_id']      = $state_data->text_template_id;
 
@@ -1903,6 +1909,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['text_version']		= $state_data->text_version;
 				$form_data['campaign_id']		= $state_data->campaign_id;
 				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['is_template']		= $state_data->is_template;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))

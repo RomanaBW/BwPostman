@@ -263,10 +263,12 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_bwpostman.mailinglist.edit.data', array());
+		$recordId = JFactory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.id');
 
-		if (empty($data))
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.data', array());
+
+		if (empty($data) || $recordId != $data->id)
 		{
 			$data = $this->getItem();
 		}

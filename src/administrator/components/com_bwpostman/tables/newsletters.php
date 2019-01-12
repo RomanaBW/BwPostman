@@ -523,6 +523,56 @@ class BwPostmanTableNewsletters extends JTable
 	}
 
 	/**
+	 * Function markAsSent
+	 *
+	 * @param $id
+	 *
+	 * @return boolean True on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function markAsSent($id = null)
+	{
+		if ($id)
+		{
+			// Take the given id
+			$nl_id = $id;
+		}
+		else
+		{
+			// Take the id loaded in this object
+			if (!$this->id)
+			{
+				return false;
+			}
+
+			$nl_id = $this->id;
+		}
+
+		$_db	= $this->getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->update($_db->quoteName($this->_tbl));
+		$query->set($_db->quoteName('mailing_date') . " = NOW()");
+		$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return true;
+	}
+
+	/**
 	 * Function change isTemplate
 	 *
 	 * @param $id

@@ -766,7 +766,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			);
 		}
 		//check for content template
-		elseif ($data['is_template'])
+		elseif ($data['is_template'] === "1")
 		{
 			$app->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR"), 'error');
 
@@ -781,19 +781,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// form data are valid and no content template
 		else
 		{
-			if ($data['is_template'])
-			{
-				$app->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR"), 'error');
-
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_item
-						. $this->getRedirectToItemAppend($recordId, 'id'),
-						false
-					)
-				);
-
-			}
 			$task			= $this->input->get('task', 0);
 			$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
 			$startsending	= 0;

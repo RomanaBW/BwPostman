@@ -346,11 +346,12 @@ class BwPostmanModelCampaign extends JModelAdmin
 	protected function loadFormData()
 	{
 		// @todo XML-file will not be processed
+		$recordId = JFactory::getApplication()->getUserState('com_bwpostman.edit.campaign.id');
 
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_bwpostman.campaign.edit.data', array());
+		$data = JFactory::getApplication()->getUserState('com_bwpostman.edit.campaign.data', array());
 
-		if (empty($data))
+		if (empty($data) || $recordId != $data->id)
 		{
 			$data = $this->getItem();
 		}

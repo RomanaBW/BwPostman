@@ -10,13 +10,13 @@ pipeline {
 		string(name: "BWPM_VERSION", defaultValue: "2.2.0", description: "The new/next version number of the project.")
 		string(name: "JOOMLA_VERSION", defaultValue: "3.9.1", description: "Version of Joomla to test against")
 		string(name: "GIT_MESSAGE", defaultValue: "not specified")
-		string(name: "Host_1", defaultValue: "master")
-		string(name: "Host_2", defaultValue: "master")
-		string(name: "Host_3", defaultValue: "master")
-		string(name: "Host_4", defaultValue: "master")
-		string(name: "Host_5", defaultValue: "master")
-		string(name: "Host_6", defaultValue: "master")
-		string(name: "Host_7", defaultValue: "master")
+		string(name: "Host_1", defaultValue: "suse")
+		string(name: "Host_2", defaultValue: "suse")
+		string(name: "Host_3", defaultValue: "suse")
+		string(name: "Host_4", defaultValue: "suse")
+		string(name: "Host_5", defaultValue: "suse")
+		string(name: "Host_6", defaultValue: "suse")
+		string(name: "Host_7", defaultValue: "suse")
 	}
 
 	stages {
@@ -43,7 +43,7 @@ pipeline {
 			parallel {
 				stage('Suite 1') {
 					agent {
-						label "suse"
+						label "master"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1", "${vault_file}", "${params.Host_1}")
@@ -59,7 +59,7 @@ pipeline {
 				}
 				stage('Suite 2') {
 					agent {
-						label "suse"
+						label "master"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2", "${vault_file}", "${params.Host_2}")
@@ -91,7 +91,7 @@ pipeline {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
 					agent {
-						label "suse"
+						label "master"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "${params.Host_3}")
@@ -113,7 +113,7 @@ pipeline {
 				}
 				stage('Suite 6') {
 					agent {
-						label "suse"
+						label "master"
 					}
 					steps {
 						echo "Dummy"
@@ -151,7 +151,7 @@ pipeline {
 
 		stage('Installation test') {
 			agent {
-				label "suse"
+				label "master"
 			}
 			steps {
 				echo "Dummy"

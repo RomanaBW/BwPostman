@@ -1,9 +1,6 @@
 #!groovy
 pipeline {
-	agent
-	{
-		label "master"
-	}
+	agent any
 
 	options {
 		disableConcurrentBuilds()
@@ -46,7 +43,7 @@ pipeline {
 			parallel {
 				stage('Suite 1') {
 					agent {
-						label "${params.Host_1}"
+						label "master"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1", "${vault_file}", "${params.Host_1}")
@@ -62,7 +59,7 @@ pipeline {
 				}
 				stage('Suite 2') {
 					agent {
-						label "${params.Host_2}"
+						label "server"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2", "${vault_file}", "${params.Host_2}")
@@ -94,7 +91,7 @@ pipeline {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
 					agent {
-						label "${params.Host_3}"
+						label "master"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "${params.Host_3}")
@@ -116,7 +113,7 @@ pipeline {
 				}
 				stage('Suite 6') {
 					agent {
-						label "${params.Host_6}"
+						label "server"
 					}
 					steps {
 						echo "Dummy"
@@ -154,7 +151,7 @@ pipeline {
 
 		stage('Installation test') {
 			agent {
-				label "${params.Host_7}"
+				label "master"
 			}
 			steps {
 				echo "Dummy"

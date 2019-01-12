@@ -43,7 +43,7 @@ pipeline {
 			parallel {
 				stage('Suite 1') {
 					agent {
-						label "master"
+						label "suse"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1", "${vault_file}", "${params.Host_1}")
@@ -59,7 +59,7 @@ pipeline {
 				}
 				stage('Suite 2') {
 					agent {
-						label "server"
+						label "suse"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_2", "${PROJECT_NAME}", "${PROJECT_NAME}", "2", "${vault_file}", "${params.Host_2}")
@@ -91,7 +91,7 @@ pipeline {
 			parallel {
 				stage('Suite 3 + 4 + 5') {
 					agent {
-						label "master"
+						label "suse"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_3", "${PROJECT_NAME}", "${PROJECT_NAME}", "3", "${vault_file}", "${params.Host_3}")
@@ -113,7 +113,7 @@ pipeline {
 				}
 				stage('Suite 6') {
 					agent {
-						label "server"
+						label "suse"
 					}
 					steps {
 						echo "Dummy"
@@ -151,7 +151,7 @@ pipeline {
 
 		stage('Installation test') {
 			agent {
-				label "master"
+				label "suse"
 			}
 			steps {
 				echo "Dummy"

@@ -14,9 +14,9 @@ pipeline {
 
 	stages {
 		stage('Prepare source files and log folders') {
-			agent {
-				label "server"
-			}
+//			agent {
+//				label "server"
+//			}
 			steps {
 				script {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"

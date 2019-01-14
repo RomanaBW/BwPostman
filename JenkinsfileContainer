@@ -3,7 +3,7 @@ pipeline {
 	agent {
 		label {
 			label ""
-			customWorkspace "/workspaces"
+			customWorkspace "/workspaces/BwPostman_master/"
 		}
 	}
 

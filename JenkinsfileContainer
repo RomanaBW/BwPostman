@@ -48,7 +48,7 @@ pipeline {
 			parallel {
 				stage('Suite 1') {
 					agent {
-						label "master"
+						label "server"
 					}
 					steps {
 						bwpmAcceptContainer ("Suite_1", "${PROJECT_NAME}", "${PROJECT_NAME}", "1", "${vault_file}", "${Host_1}")

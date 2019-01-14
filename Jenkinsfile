@@ -73,18 +73,18 @@ pipeline {
 				}
 				stage ('accept4') {
 					steps {
-//						echo 'Dummy'
-						sleep 60
-						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					post {
-						always {
-							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-						}
-						failure {
-							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					 }
+						echo 'Dummy'
+//						sleep 60
+//						bwpmAccept ("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					}
+//					post {
+//						always {
+//							bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+//						}
+//						failure {
+//							bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//						}
+//					 }
 				}
 			}
 		}
@@ -203,20 +203,20 @@ pipeline {
 			}
 		}
 
-		stage ('accept5') {
-			steps {
+//		stage ('accept5') {
+//			steps {
 //				echo 'Dummy'
-				bwpmAccept ("accept5", params.ACCEPT_5_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post {
-				always {
-					bwpmAcceptPostStepAlways ("accept5")
-				}
-				failure {
-					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
+//				bwpmAccept ("accept5", params.ACCEPT_5_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//			}
+//			post {
+//				always {
+//					bwpmAcceptPostStepAlways ("accept5")
+//				}
+//				failure {
+//					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//				}
+//			}
+//		}
 
 		stage('Pre-Release') {
 			steps {

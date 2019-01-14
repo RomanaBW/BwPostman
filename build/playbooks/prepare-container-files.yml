@@ -35,7 +35,7 @@
       become: yes
       become_user: root
       file:
-        path: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}"
+        path: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}"
         state: directory
       with_dict: "{{ Suites }}"
 
@@ -44,7 +44,7 @@
       become_user: root
       synchronize:
         src: "{{ web_dir[host] }}/{{ project_name_without_dots }}/files/"
-        dest: "{{ workspace_central }}/container_files/files-1"
+        dest: "{{ workspace }}/container_files/files-1"
 
     - name: copy webserver files without bwpm to webserver 7
       become: yes

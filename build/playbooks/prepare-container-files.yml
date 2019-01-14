@@ -51,31 +51,31 @@
       become_user: root
       synchronize:
         src: "{{ web_dir[host] }}/{{ joomla_name_without_dots }}/files/"
-        dest: "{{ workspace_central }}/container_files/files-7"
+        dest: "{{ workspace }}/container_files/files-7"
 
     - name: set appropriate owner
       become: yes
       become_user: root
       command: "chown -R jenkins {{ item }}"
       with_items:
-        - "{{ workspace_central }}/container_files/files-1"
-        - "{{ workspace_central }}/container_files/files-7"
+        - "{{ workspace }}/container_files/files-1"
+        - "{{ workspace }}/container_files/files-7"
 
     - name: set appropriate group
       become: yes
       become_user: root
       command: "chgrp -R jenkins {{ item }}"
       with_items:
-        - "{{ workspace_central }}/container_files/files-1"
-        - "{{ workspace_central }}/container_files/files-7"
+        - "{{ workspace }}/container_files/files-1"
+        - "{{ workspace }}/container_files/files-7"
 
     - name: set appropriate permissions
       become: yes
       become_user: root
       command: "chmod -R 0777 {{ item }}"
       with_items:
-        - "{{ workspace_central }}/container_files/files-1"
-        - "{{ workspace_central }}/container_files/files-7"
+        - "{{ workspace }}/container_files/files-1"
+        - "{{ workspace }}/container_files/files-7"
 
     # @ToDo: Why copy to 7? That is the webserver for installation tests…
     - name: copy checked out extension files to webserver 1 and 7
@@ -83,7 +83,7 @@
       become_user: root
       synchronize:
         src: "{{ project_base_dir }}/src/"
-        dest: "{{ workspace_central }}/container_files/{{ item }}"
+        dest: "{{ workspace }}/container_files/{{ item }}"
       with_items:
         - files-1
 #        - files-7
@@ -93,7 +93,7 @@
       become_user: root
       synchronize:
         src: "{{ project_base_dir }}/tests/"
-        dest: "{{ workspace_central }}/container_files/{{ item }}/tests"
+        dest: "{{ workspace }}/container_files/{{ item }}/tests"
       with_items:
         - files-1
         - files-7
@@ -102,7 +102,7 @@
       become: yes
       become_user: root
       file:
-        path: "{{ workspace_central }}/container_files/{{ item }}/tests/_support/_generated/AcceptanceTesterActions.php"
+        path: "{{ workspace }}/container_files/{{ item }}/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent
       with_items:
         - files-1
@@ -112,8 +112,8 @@
       become: yes
       become_user: root
       synchronize:
-        src: "{{ workspace_central }}/container_files/files-1/"
-        dest: "{{ workspace_central }}/container_files/files-{{ item }}"
+        src: "{{ workspace }}/container_files/files-1/"
+        dest: "{{ workspace }}/container_files/files-{{ item }}"
       with_items:
         - 2
         - 3
@@ -126,7 +126,7 @@
       become_user: root
       synchronize:
         src: "{{ repository_database_path }}/"
-        dest: "{{ workspace_central }}/container_files/database-{{ item }}"
+        dest: "{{ workspace }}/container_files/database-{{ item }}"
       with_items:
         - 1
         - 2
@@ -140,12 +140,12 @@
       become_user: root
       synchronize:
         src: "{{ repository_joomla_database_path }}/"
-        dest: "{{ workspace_central }}/container_files/database-7"
+        dest: "{{ workspace }}/container_files/database-7"
 
     - name: set appropriate permissions
       become: yes
       become_user: root
-      command: "chmod -R 0777 {{ workspace_central }}/container_files/database-{{ item }}"
+      command: "chmod -R 0777 {{ workspace }}/container_files/database-{{ item }}"
       with_items:
         - 1
         - 2
@@ -177,13 +177,13 @@
     - name: Prepare manifest for codeception tests
       template:
         src: "codeception.container.yml.j2"
-        dest: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}/codeception.yml"
+        dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/codeception.yml"
       with_dict: "{{ Suites }}"
 
     - name: Prepare manifest for acceptance tests
       template:
         src: "acceptance.suite.container.yml.j2"
-        dest: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"
+        dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"
       with_dict: "{{ Suites }}"
 
     - name: clear webdriver log
@@ -223,6 +223,6 @@
       become_user: root
       template:
         src: "do-container-tests.sh.j2"
-        dest: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"
+        dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/do-container-tests.sh"
         mode: 0775
       with_dict: "{{ Suites }}"

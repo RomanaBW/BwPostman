@@ -16,6 +16,8 @@
         workspace: "{{ project_base_dir }}"
 
     - name: Remove folders and files which are not needed
+      become: yes
+      become_user: root
       file:
         path: "{{ project_base_dir }}/src/{{ item }}"
         state: absent
@@ -30,6 +32,8 @@
         joomla_name_without_dots: "{{ joomla_name | replace('.', '') }}"
 
     - name: create dirs for webserver files
+      become: yes
+      become_user: root
       file:
         path: "{{ workspace_central }}/container_files/files-{{ item.value.suite_number }}"
         state: directory

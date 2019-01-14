@@ -1,10 +1,15 @@
 #!groovy
 pipeline {
-	agent any
-
-	options {
-		disableConcurrentBuilds()
+	agent {
+		label {
+			label ""
+			customWorkspace "/workspaces"
+		}
 	}
+
+//	options {
+//		disableConcurrentBuilds()
+//	}
 
 	parameters {
 		string(name: "BWPM_VERSION", defaultValue: "2.2.0", description: "The new/next version number of the project.")
@@ -14,9 +19,9 @@ pipeline {
 
 	stages {
 		stage('Prepare source files and log folders') {
-//			agent {
-//				label "server"
-//			}
+			agent {
+				label "server"
+			}
 			steps {
 				script {
 					PROJECT_NAME = "j${params.JOOMLA_VERSION}_bwpm${params.BWPM_VERSION}"

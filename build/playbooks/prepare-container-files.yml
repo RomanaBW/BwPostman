@@ -175,12 +175,16 @@
 
 
     - name: Prepare manifest for codeception tests
+      become: yes
+      become_user: root
       template:
         src: "codeception.container.yml.j2"
         dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/codeception.yml"
       with_dict: "{{ Suites }}"
 
     - name: Prepare manifest for acceptance tests
+      become: yes
+      become_user: root
       template:
         src: "acceptance.suite.container.yml.j2"
         dest: "{{ workspace }}/container_files/files-{{ item.value.suite_number }}/tests/acceptance.suite.yml"

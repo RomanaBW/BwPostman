@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-	options {
-		disableConcurrentBuilds()
-	}
+//	options {
+//		disableConcurrentBuilds()
+//	}
 
 	parameters {
         string(name: "VERSION_NUMBER", defaultValue: "2.2.0", description: "The new/next version number of the project.")

@@ -916,6 +916,41 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
+	 * Test method to send newsletter to real recipients, publish option set to no
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function SendNewsletterIsTemplate(\AcceptanceTester $I)
+	{
+		$I->wantTo("Send a newsletter which is template");
+		$I->expectTo("see error message");
+
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		$I->clickAndWait(NlEdit::$change_is_template, 2);
+
+		$I->click(NlEdit::$mark_to_send);
+		$I->click(Generals::$toolbar['Send']);
+
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see('Newsletters', Generals::$pageTitle);
+		$I->see("Error", Generals::$alert_header);
+		$I->see(NlEdit::$is_template_error, Generals::$alert_msg);
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to edit a sent newsletter
 	 *
 	 * @param   \AcceptanceTester                $I

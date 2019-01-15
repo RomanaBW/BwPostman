@@ -702,6 +702,20 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_WARNING_SENDING_ONLY_ONE_NL'), 'warning');
 		}
 
+		// check for is_template
+		$model	= $this->getModel('newsletter');
+		foreach ($cids as $cid)
+		{
+			if ($model->isTemplate($cid))
+			{
+				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR'), 'error');
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false)
+				);
+				return;
+			}
+		}
+
 		// set edit tab to send
 		$app->setUserState($this->context . '.tab' . $recordId, $tab);
 

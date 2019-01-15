@@ -847,9 +847,16 @@ class NewsletterEditPage
 	/**
 	 * @var string
 	 *
-	 * @since   2.0.0
+	 * @since   2.2.0
 	 */
+	public static $is_template_error    = "This is a Content Template. A Content Template cannot be sent. If You want to send this newsletter, please work with a copy of this newsletter content template or unset Content Template.";
 
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $change_is_template  = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a";
 
 	/**
 	 * @var array

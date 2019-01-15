@@ -548,6 +548,44 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
+	 * Method check if newsletter is content template
+	 *
+	 * @param   array  $id        ID of newsletter
+	 *
+	 * @return	boolean           state of is_template
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.2.0
+	 */
+	public function isTemplate($id)
+	{
+		$isTemplate = false;
+		$_db	= JFactory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->select($_db->quoteName('is_template'));
+		$query->from($_db->quoteName('#__bwpostman_newsletters'));
+		$query->where($_db->quoteName('id') . ' = ' . $_db->quote($id));
+
+		$_db->setQuery($query);
+		try
+		{
+			$isTemplate = $_db->loadResult();
+			if ($isTemplate === '1')
+			{
+				return true;
+			}
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication($e->getMessage(), 'error');
+		}
+
+		return false;
+	}
+
+	/**
 	 * Method to get the standard template.
 	 *
 	 * @param   string  $mode       HTML or text

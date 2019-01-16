@@ -54,7 +54,7 @@ pipeline {
 			}
 		}
 
-		stage('Acceptance Tests 1') {
+		stage('accept1') {
 			steps
 			{
 //				echo 'Dummy'

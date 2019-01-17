@@ -762,7 +762,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$mls	= array_intersect($mls, $acc_mls);
 		}
 
-		if ($title === true)
+		if ($title === true && count($mls))
 		{
 			$query	= $_db->getQuery(true);
 			$query->select('id');

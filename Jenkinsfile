@@ -204,12 +204,12 @@ pipeline {
 			}
 		}
 
-		stage('accept2')
+		stage('accept6')
 		{
 			steps
 			{
 //				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_6_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			post
 			{
@@ -224,12 +224,12 @@ pipeline {
 			}
 		}
 
-		stage('accept6')
+		stage('accept2')
 		{
 			steps
 			{
 //				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_6_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			post
 			{

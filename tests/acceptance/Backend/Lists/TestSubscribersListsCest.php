@@ -875,6 +875,19 @@ class TestSubscribersListsCest
 
 		$I->seeFileFound($filename, $exportPath);
 
+		// Check exported datasets
+		$I->openFile($downloadPath);
+		$I->seeInThisFile(SubsManage::$subs_c_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_a_f);
+
+		$I->seeInThisFile(SubsManage::$subs_c_na);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_a);
+		$I->deleteFile($downloadPath);
+
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 

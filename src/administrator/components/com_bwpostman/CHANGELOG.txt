@@ -6,6 +6,20 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+Version 2.2.0 released (25-Jan-2019)----
+
+New
++ Export subscribers only from selected mailing list
++ Content templates for newsletters
+
+Bugfix
+# SQL syntax error at newsletters list at front end
+# Restore of tables with zip file doesn't work
+
+Improvement
+~
+
+
 Version 2.1.2 released (14-Dez-2018)----
 
 Improvement

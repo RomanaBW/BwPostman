@@ -873,7 +873,173 @@ class TestSubscribersListsCest
 
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
 
-		$I->assertTrue(file_exists($downloadPath));
+		$I->seeFileFound($filename, $exportPath);
+
+		$I->click(Generals::$toolbar['Cancel']);
+	}
+
+	/**
+	 * Test method to export subscribers to CSV file with filtered by mailinglist, export only filtered
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function ExportSubscribersToCSVFilteredYes(AcceptanceTester $I)
+	{
+		$I->wantTo("export only filtered subscribers to CSV file");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		// Get filter bar, select 04 Mailingliste 14 A
+		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
+		$I->assertFilterResult(SubsManage::$filter_subs_result);
+
+		// Select yes in modal box
+		$I->clickAndWait(Generals::$toolbar['Export Popup'], 3);
+		$I->switchToIFrame('Export');
+		$I->waitForText("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
+//		$I->waitForElement(SubsManage::$export_popup_yes, 5);
+		$I->see("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
+		$I->clickAndWait(SubsManage::$export_popup_yes, 3);
+
+		// Come back to main window, proceed with export
+		$I->switchToIFrame();
+		$I->waitForElementVisible(SubsManage::$import_csv_button, 5);
+		$I->click(SubsManage::$import_csv_button);
+		$I->seeElement(SubsManage::$export_csv_confirmed);
+
+		$I->click(SubsManage::$export_csv_confirmed);
+		$I->click(SubsManage::$export_csv_unarchived);
+
+		$I->scrollTo(SubsManage::$export_legend_fields);
+
+		// Determine download path depending on user, which process the tests
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		codecept_debug("User: $user");
+
+		$exportPath     = Generals::$downloadFolder[$user];
+		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+
+		$downloadPath = $exportPath . $filename;
+
+		codecept_debug("Download path complete: $downloadPath");
+
+		// Download export file, check if it is there
+		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->seeFileFound($filename, $exportPath);
+
+		// Check exported datasets
+		$I->openFile($downloadPath);
+		$I->seeInThisFile(SubsManage::$subs_c_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_a_f);
+
+		$I->dontSeeInThisFile(SubsManage::$subs_c_na);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_a);
+		$I->deleteFile($downloadPath);
+
+		$I->click(Generals::$toolbar['Cancel']);
+	}
+
+	/**
+	 * Test method to export subscribers to CSV file with filtered by mailinglist, export all
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function ExportSubscribersToCSVFilteredNo(AcceptanceTester $I)
+	{
+		$I->wantTo("export all subscribers to CSV file when filtered by mailinglist");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		// Get filter bar, select 04 Mailingliste 14 A
+		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
+		$I->assertFilterResult(SubsManage::$filter_subs_result);
+
+		// Select yes in modal box
+		$I->clickAndWait(Generals::$toolbar['Export Popup'], 3);
+		$I->switchToIFrame('Export');
+		$I->waitForText("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
+//		$I->waitForElement(SubsManage::$export_popup_yes, 5);
+		$I->see("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
+		$I->clickAndWait(SubsManage::$export_popup_no, 3);
+
+		// Come back to main window, proceed with export
+		$I->switchToIFrame();
+		$I->waitForElementVisible(SubsManage::$import_csv_button, 5);
+		$I->click(SubsManage::$import_csv_button);
+		$I->seeElement(SubsManage::$export_csv_confirmed);
+
+		$I->click(SubsManage::$export_csv_confirmed);
+		$I->click(SubsManage::$export_csv_unarchived);
+
+		$I->scrollTo(SubsManage::$export_legend_fields);
+
+		// Determine download path depending on user, which process the tests
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		codecept_debug("User: $user");
+
+		$exportPath     = Generals::$downloadFolder[$user];
+		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+
+		$downloadPath = $exportPath . $filename;
+
+		codecept_debug("Download path complete: $downloadPath");
+
+		// Download export file, check if it is there
+		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->seeFileFound($filename, $exportPath);
+
+		// Check exported datasets
+		$I->openFile($downloadPath);
+		$I->seeInThisFile(SubsManage::$subs_c_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_a_f);
+
+		$I->seeInThisFile(SubsManage::$subs_c_na);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_a);
+		$I->deleteFile($downloadPath);
 
 		$I->click(Generals::$toolbar['Cancel']);
 	}
@@ -927,7 +1093,7 @@ class TestSubscribersListsCest
 
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
 
-		$I->assertTrue(file_exists($downloadPath));
+		$I->seeFileFound($filename, $exportPath);
 
 		$I->click(Generals::$toolbar['Cancel']);
 	}

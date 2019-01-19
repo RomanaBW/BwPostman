@@ -1119,10 +1119,10 @@ class NewsletterEditPage
 	{
 		$I->clickAndWait(self::$attachment_select_button, 1);
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElementVisible("iframe#imageframe");
+		$I->waitForElementVisible("iframe#imageframe", 5);
 
 		$I->switchToIFrame(Generals::$image_frame);
-		$I->waitForElementVisible("ul.manager");
+		$I->waitForElementVisible("ul.manager", 5);
 		$I->clickAndWait(self::$attachment_select, 1);
 
 		$I->switchToIFrame();

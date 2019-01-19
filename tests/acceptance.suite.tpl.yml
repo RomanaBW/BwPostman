@@ -16,6 +16,7 @@ modules:
       - WebDriver
       - Db
       - Asserts
+      - Filesystem
 
 # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
     config:

@@ -303,7 +303,7 @@ class MaintenancePage
 
 		$I->amOnPage(MainView::$url);
 
-		$I->waitForElementVisible(self::$statisticsUnsentNewsletters);
+		$I->waitForElementVisible(self::$statisticsUnsentNewsletters, 5);
 		$I->see("53", self::$statisticsUnsentNewsletters);
 	}
 }

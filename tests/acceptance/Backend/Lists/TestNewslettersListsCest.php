@@ -153,7 +153,7 @@ class TestNewslettersListsCest
 
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_authors_list);
+		$I->waitForElementVisible(NlManage::$filter_authors_list, 5);
 		// select author 1
 		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_1, NlManage::$filter_authors_list_id);
 
@@ -200,7 +200,7 @@ class TestNewslettersListsCest
 		// Filter single campaign
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_campaign_list);
+		$I->waitForElementVisible(NlManage::$filter_campaign_list, 5);
 		// select campaign
 		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_cam, NlManage::$filter_campaign_list_id);
 
@@ -237,7 +237,7 @@ class TestNewslettersListsCest
 		// Filter content template yes
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_is_template_list);
+		$I->waitForElementVisible(NlManage::$filter_is_template_list. 5);
 		// select yes
 		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_yes, NlManage::$filter_is_template_list_id);
 
@@ -245,7 +245,7 @@ class TestNewslettersListsCest
 
 		// Filter content template no
 		$I->wait(1);
-		$I->waitForElementVisible(NlManage::$filter_is_template_list);
+		$I->waitForElementVisible(NlManage::$filter_is_template_list, 5);
 		// select no
 		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_no, NlManage::$filter_is_template_list_id);
 
@@ -420,7 +420,7 @@ class TestNewslettersListsCest
 
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_authors_list);
+		$I->waitForElementVisible(NlManage::$filter_authors_list, 5);
 		// select author 1
 		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_1, NlManage::$filter_authors_list_id);
 		$I->wait(1);
@@ -473,7 +473,7 @@ class TestNewslettersListsCest
 		// Filter single campaign
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_campaign_list);
+		$I->waitForElementVisible(NlManage::$filter_campaign_list, 5);
 		// select campaign
 		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_cam, NlManage::$filter_campaign_list_id);
 
@@ -510,7 +510,7 @@ class TestNewslettersListsCest
 
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_mailinglist_list);
+		$I->waitForElementVisible(NlManage::$filter_mailinglist_list, 5);
 		// select mailinglist 1
 		$I->clickSelectList(NlManage::$filter_mailinglist_list, NlManage::$filter_mailinglist_1, NlManage::$filter_mailinglist_list_id);
 

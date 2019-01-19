@@ -79,15 +79,24 @@ $tab_options = array(
 
 <script type="text/javascript">
 /* <![CDATA[ */
+	function OnlyFiltered(onlyFiltered) // Get the selected value from modal box
+	{
+		if (onlyFiltered === '1') {
+			document.getElementById('mlToExport').value = <?php echo $this->filterMl; ?>;
+		}
+
+		Joomla.submitbutton('subscribers.exportSubscribers');
+	}
+
 	Joomla.submitbutton = function (pressbutton)
 	{
-
-		if (pressbutton == 'archive')
+		if (pressbutton == 'subscriber.archive')
 		{
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE', true); ?>");
 			if (ConfirmArchive == true)
 			{
 				submitform(pressbutton);
+				return;
 			}
 		}
 		else
@@ -161,6 +170,7 @@ $tab_options = array(
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" id="tab" name="tab" value="" />
+			<input type="hidden" id="mlToExport" name="mlToExport" value="" />
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>

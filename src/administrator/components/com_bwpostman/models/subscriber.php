@@ -1689,7 +1689,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		$export_fields = $data['export_fields'];
 
-		// Build the subQuery
+		// Build the main subQuery
 		$subQuery = $this->buildExportSubQuery(
 			isset($data['status0']) ? $data['status0'] : '0',
 			isset($data['status1']) ? $data['status1'] : '0',
@@ -1816,13 +1816,15 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @access	private
 	 *
-	 * @param 	int     $status0    Status = 0 --> account is not confirmed
-	 * @param 	int     $status1    Status = 1 --> account is confirmed
-	 * @param 	int     $status9    Status = 9 --> subscriber is test-recipient
-	 * @param 	int     $archive0   Archive_flag = 0 --> subscriber is not archived
-	 * @param 	int     $archive1   Archive_flag = 1 --> subscriber is archived
+	 * @param 	integer     $status0    Status = 0 --> account is not confirmed
+	 * @param 	integer     $status1    Status = 1 --> account is confirmed
+	 * @param 	integer     $status9    Status = 9 --> subscriber is test-recipient
+	 * @param 	integer     $archive0   Archive_flag = 0 --> subscriber is not archived
+	 * @param 	integer     $archive1   Archive_flag = 1 --> subscriber is archived
 	 *
 	 * @return 	String  $subQuery   WHERE-clause
+	 *
+	 * @throws \Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -1874,6 +1876,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			if ($where)
 			{
 				$subQuery .= " AND {$_db->quoteName('archive_flag')} = " . (int) 0;
+				$where = true;
 			}
 			else
 			{
@@ -1885,6 +1888,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			if ($where)
 			{
 				$subQuery .= " AND {$_db->quoteName('archive_flag')} = " . (int) 1;
+				$where = true;
 			}
 			else
 			{
@@ -1892,7 +1896,52 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 		}
 
+		$mlToExport = JFactory::getApplication()->getUserState('com_bwpostman.subscribers.mlToExport', '');
+
+		if ($mlToExport !== '')
+		{
+			$filteredSubscribers = $this->getSubscribersOfMailinglist((int)$mlToExport);
+
+			if ($where)
+			{
+				$subQuery .= " AND {$_db->quoteName('id')} IN (" . implode(',', $filteredSubscribers) . ")";
+			}
+			else
+			{
+				$subQuery .= " WHERE {$_db->quoteName('id')} IN (" . implode(',', $filteredSubscribers) . ")";
+			}
+		}
+
 		return $subQuery;
+	}
+
+	/**
+	 * Method to get the subscribers of a specific mailinglist
+	 *
+	 * @access	private
+	 *
+	 * @param 	integer $id id of mailinglist
+	 *
+	 * @return 	array       $subscribersOfMailinglist
+	 *
+	 * @throws \Exception
+	 *
+	 * @since       2.2.0
+	 */
+	private function getSubscribersOfMailinglist($id)
+	{
+		$db	= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('subscriber_id'));
+		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($db->quoteName('mailinglist_id') . ' = ' . $db->Quote($id));
+
+		$db->setQuery($query);
+
+		$subscribersOfMailinglist = $db->loadColumn();
+
+		return $subscribersOfMailinglist;
 	}
 
 	/**

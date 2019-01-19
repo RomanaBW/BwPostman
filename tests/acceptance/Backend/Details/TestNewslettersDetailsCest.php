@@ -399,8 +399,8 @@ class TestNewslettersDetailsCest
 
 		$I->clickAndWait(NlEdit::$attachment_select_button, 1);
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElementVisible("iframe#imageframe");
-		$I->waitForElementVisible("#upload-file");
+		$I->waitForElementVisible("iframe#imageframe", 5);
+		$I->waitForElementVisible("#upload-file", 5);
 
 		// Upload file
 		$I->attachFile(".//*[@id='upload-file']", "boldt-webservice.png");
@@ -409,7 +409,7 @@ class TestNewslettersDetailsCest
 
 		$I->wait(2);
 		$I->switchToIFrame(Generals::$image_frame);
-		$I->waitForElementVisible("ul.manager");
+		$I->waitForElementVisible("ul.manager", 5);
 		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -100);
 		$I->clickAndWait(NlEdit::$attachment_upload_file, 1);
 

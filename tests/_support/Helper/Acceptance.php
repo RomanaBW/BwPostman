@@ -764,7 +764,7 @@ class Acceptance extends Codeception\Module
 	{
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(Generals::$filter_bar_open);
+		$I->waitForElementVisible(Generals::$filter_bar_open, 5);
 		$I->wait(1);
 		// select published
 		$I->clickSelectList(Generals::$status_list, Generals::$status_published, Generals::$status_list_id);
@@ -1051,7 +1051,7 @@ class Acceptance extends Codeception\Module
 			{
 				// Get filter bar
 				$I->click(Generals::$filterbar_button);
-				$I->waitForElementVisible(Generals::$filter_bar_open);
+				$I->waitForElementVisible(Generals::$filter_bar_open, 5);
 				$I->wait(1);
 
 				// open 'search by' list, select 'search by' value
@@ -1118,7 +1118,7 @@ class Acceptance extends Codeception\Module
 		// select items to archive
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(Generals::$filter_bar_open);
+		$I->waitForElementVisible(Generals::$filter_bar_open, 5);
 		$I->wait(1);
 
 		$I->clickSelectList(Generals::$search_list, $edit_data['archive_identifier'], Generals::$search_list_id);
@@ -1685,7 +1685,7 @@ class Acceptance extends Codeception\Module
 	public function selectRegistrationPage(\AcceptanceTester $I, $registerUrl, $viewRegister)
 	{
 		$I->amOnPage($registerUrl);
-		$I->waitForElementVisible($viewRegister);
+		$I->waitForElementVisible($viewRegister, 5);
 		$I->seeElement($viewRegister);
 	}
 

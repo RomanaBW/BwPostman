@@ -724,6 +724,77 @@ class SubscriberManagerPage
 	public static $export_button_export = ".//*[@id='adminForm']/fieldset/div/table/tbody/tr[6]/td/input";
 
 	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $export_popup_yes = "html/body/form/fieldset/table/tbody/tr[2]/td/input[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $export_popup_no = "html/body/form/fieldset/table/tbody/tr[2]/td/input[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $subs_c_na_f = '"85";"1519";"0";"Otte";"Stephan";"s.otte@tester-net.nil"';
+
+		/**
+		 * @var string
+		 *
+		 * @since 2.2.0
+		 */
+
+	public static $subs_c_a_f = '"172";"1542";"0";"Zellner";"Janin";"janin.zellner@tester-net.nil"';
+		/**
+		 * @var string
+		 *
+		 * @since 2.2.0
+		 */
+	public static $subs_u_na_f = '"23";"1506";"0";"Junker";"Dustin";"d.junker@tester-net.nil"';
+
+		/**
+		 * @var string
+		 *
+		 * @since 2.2.0
+		 */
+	public static $subs_u_a_f = '"203";"1546";"0";"Steinmetz";"Bruno";"bruno.steinmetz@tester-net.nil"';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $subs_c_na = '"7";"1499";"0";"Barth";"Rafael";"r.barth@tester-net.nil"';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $subs_c_a = '"14";"1501";"0";"Yildiz";"Sebastian";"s.yildiz@tester-net.nil"';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $subs_u_na = '"13";"1500";"0";"Oppermann";"Cedric";"cedric.oppermann@tester-net.nil"';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $subs_u_a = '"119";"1529";"0";"Vogt";"Matthies";"m.vogt@tester-net.nil"';
+
+
+		/**
 	 * @param \AcceptanceTester $I
 	 * @param boolean           $activated
 	 *

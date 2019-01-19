@@ -397,6 +397,7 @@ class Generals
 		'Enable'               => ".//*[@id='toolbar-publish']/button",
 		'Import'               => ".//*[@id='toolbar-download']/button",
 		'Export'               => ".//*[@id='toolbar-upload']/button",
+		'Export Popup'         => ".//*[@id='toolbar-popup-upload']/button",
 		'Batch'                => ".//*[@id='toolbar-batch']/button",
 		'Reset sending trials' => ".//*[@id='toolbar-unpublish']/button",
 		'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",

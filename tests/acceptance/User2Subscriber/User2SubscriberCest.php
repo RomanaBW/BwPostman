@@ -1335,7 +1335,7 @@ class User2SubscriberCest
 	{
 		$I->scrollTo(".//*[@id='member-registration']");
 		$I->click(RegPage::$subs_identifier_subscribe_yes);
-		$I->waitForElementVisible(RegPage::$subs_identifier_name);
+		$I->waitForElementVisible(RegPage::$subs_identifier_name, 5);
 	}
 
 	/**
@@ -1750,7 +1750,7 @@ class User2SubscriberCest
 	protected function gotoUserManagement(AcceptanceTester $I)
 	{
 		$I->amOnPage(RegPage::$user_management_url);
-		$I->waitForElementVisible(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->see('Users', Generals::$pageTitle);
 	}
 
@@ -2043,7 +2043,7 @@ class User2SubscriberCest
 	protected function selectComponentPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(Generals::$url);
-		$I->waitForElementVisible(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 

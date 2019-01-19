@@ -146,6 +146,15 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	public $context;
 
 	/**
+	 * property to hold filtering mailinglist
+	 *
+	 * @var string  $filterMl
+	 *
+	 * @since       2.2.0
+	 */
+	public $filterMl;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -178,6 +187,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$this->total 			= $this->get('total');
 		$this->params           = JComponentHelper::getParams('com_bwpostman');
 		$this->context			= 'com_bwpostman.subscribers';
+		$this->filterMl         = $this->state->get('filter.mailinglist');
 
 		$this->addToolbar();
 
@@ -242,7 +252,18 @@ class BwPostmanViewSubscribers extends JViewLegacy
 
 				if ($this->permissions['subscriber']['edit'])
 				{
-					JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+					if ($this->filterMl !== '')
+					{
+						// Get popup with yes/no buttons
+						$bar = JToolbar::getInstance('toolbar');
+						$alt_export = JText::_('COM_BWPOSTMAN_SUB_EXPORT');
+						$link = 'index.php?option=com_bwpostman&amp;controller=subscribers&amp;tmpl=component&amp;view=subscribers&amp;layout=default_filteredexport';
+						$bar->appendButton('Popup', 'upload', $alt_export, $link, 500, 130);
+					}
+					else
+					{
+						JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+					}
 				}
 
 				if (BwPostmanHelper::canArchive('subscriber'))

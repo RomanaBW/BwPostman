@@ -660,6 +660,10 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 			return false;
 		}
 
+		// Set state for filtered mailinglist
+		$mlToExport = $jinput->get('mlToExport', '');
+		JFactory::getApplication()->setUserState('com_bwpostman.subscribers.mlToExport', $mlToExport);
+
 		$jinput->set('hidemainmenu', 1);
 		$jinput->set('view', 'subscriber');
 		$jinput->set('layout', 'export');
@@ -701,7 +705,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 				'export_fields' => 'array',
 				'task' => 'string',
 				'controller' => 'string',
-				'option' => 'string'
+				'option' => 'string',
+				'mlToExport' => 'string'
 			)
 		);
 

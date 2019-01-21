@@ -237,7 +237,7 @@ class TestNewslettersListsCest
 		// Filter content template yes
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_is_template_list. 5);
+		$I->waitForElementVisible(NlManage::$filter_is_template_list, 5);
 		// select yes
 		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_yes, NlManage::$filter_is_template_list_id);
 

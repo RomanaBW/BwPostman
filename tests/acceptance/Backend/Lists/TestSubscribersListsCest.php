@@ -825,7 +825,7 @@ class TestSubscribersListsCest
 	}
 
 	/**
-	 * Test method to export subscribers to CSV file
+	 * Test method to export subscribers to CSV file, which are confirmed and not archived
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -839,7 +839,7 @@ class TestSubscribersListsCest
 	 */
 	public function ExportSubscribersToCSV(AcceptanceTester $I)
 	{
-		$I->wantTo("export subscribers to CSV file");
+		$I->wantTo("export confirmed, unarchived subscribers to CSV file");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
@@ -862,14 +862,9 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		codecept_debug("User: $user");
-
 		$exportPath     = Generals::$downloadFolder[$user];
-		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
-
-		$downloadPath = $exportPath . $filename;
-
-		codecept_debug("Download path complete: $downloadPath");
+		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+		$downloadPath   = $exportPath . $filename;
 
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
 
@@ -886,6 +881,132 @@ class TestSubscribersListsCest
 		$I->dontSeeInThisFile(SubsManage::$subs_c_a);
 		$I->dontSeeInThisFile(SubsManage::$subs_u_na);
 		$I->dontSeeInThisFile(SubsManage::$subs_u_a);
+		$I->deleteFile($downloadPath);
+
+		$I->click(Generals::$toolbar['Cancel']);
+	}
+
+	/**
+	 * Test method to export subscribers to CSV file, which are unconfirmed and archived
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function ExportSubscribersToCSVUA(AcceptanceTester $I)
+	{
+		$I->wantTo("export unconfirmed archived subscribers to CSV file");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		$I->click(Generals::$toolbar['Export']);
+		$I->dontSeeElement(SubsManage::$import_search_button);
+
+		$I->click(SubsManage::$import_csv_button);
+		$I->seeElement(SubsManage::$export_csv_confirmed);
+
+		$I->click(SubsManage::$export_csv_unconfirmed);
+		$I->click(SubsManage::$export_csv_archived);
+
+		$I->scrollTo(SubsManage::$export_legend_fields);
+
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		$exportPath     = Generals::$downloadFolder[$user];
+		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+		$downloadPath   = $exportPath . $filename;
+
+		$I->clickAndWait(SubsManage::$export_button_export, 10);
+
+		$I->seeFileFound($filename, $exportPath);
+
+		// Check exported datasets
+		$I->openFile($downloadPath);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na_f);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a_f);
+		$I->seeInThisFile(SubsManage::$subs_u_a_f);
+
+		$I->dontSeeInThisFile(SubsManage::$subs_c_na);
+		$I->dontSeeInThisFile(SubsManage::$subs_c_a);
+		$I->dontSeeInThisFile(SubsManage::$subs_u_na);
+		$I->seeInThisFile(SubsManage::$subs_u_a);
+		$I->deleteFile($downloadPath);
+
+		$I->click(Generals::$toolbar['Cancel']);
+	}
+
+	/**
+	 * Test method to export subscribers to CSV file, which are unconfirmed and archived
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0.0
+	 */
+	public function ExportSubscribersToCSVAll(AcceptanceTester $I)
+	{
+		$I->wantTo("export all archived and unarchived subscribers to CSV file");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		$I->click(Generals::$toolbar['Export']);
+		$I->dontSeeElement(SubsManage::$import_search_button);
+
+		$I->click(SubsManage::$import_csv_button);
+		$I->seeElement(SubsManage::$export_csv_confirmed);
+
+		$I->click(SubsManage::$export_csv_confirmed);
+		$I->click(SubsManage::$export_csv_unconfirmed);
+		$I->click(SubsManage::$export_csv_archived);
+		$I->click(SubsManage::$export_csv_unarchived);
+
+		$I->scrollTo(SubsManage::$export_legend_fields);
+
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'root';
+		}
+
+		$exportPath     = Generals::$downloadFolder[$user];
+		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+		$downloadPath   = $exportPath . $filename;
+
+		$I->clickAndWait(SubsManage::$export_button_export, 10);
+
+		$I->seeFileFound($filename, $exportPath);
+
+		// Check exported datasets
+		$I->openFile($downloadPath);
+		$I->seeInThisFile(SubsManage::$subs_c_na_f);
+		$I->seeInThisFile(SubsManage::$subs_u_na_f);
+		$I->seeInThisFile(SubsManage::$subs_c_a_f);
+		$I->seeInThisFile(SubsManage::$subs_u_a_f);
+
+		$I->seeInThisFile(SubsManage::$subs_c_na);
+		$I->seeInThisFile(SubsManage::$subs_c_a);
+		$I->seeInThisFile(SubsManage::$subs_u_na);
+		$I->seeInThisFile(SubsManage::$subs_u_a);
 		$I->deleteFile($downloadPath);
 
 		$I->click(Generals::$toolbar['Cancel']);
@@ -945,14 +1066,9 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		codecept_debug("User: $user");
-
 		$exportPath     = Generals::$downloadFolder[$user];
-		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
-
-		$downloadPath = $exportPath . $filename;
-
-		codecept_debug("Download path complete: $downloadPath");
+		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+		$downloadPath   = $exportPath . $filename;
 
 		// Download export file, check if it is there
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
@@ -1028,14 +1144,9 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		codecept_debug("User: $user");
-
 		$exportPath     = Generals::$downloadFolder[$user];
-		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
-
-		$downloadPath = $exportPath . $filename;
-
-		codecept_debug("Download path complete: $downloadPath");
+		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
+		$downloadPath   = $exportPath . $filename;
 
 		// Download export file, check if it is there
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
@@ -1095,14 +1206,9 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		codecept_debug("User: $user");
-
 		$exportPath     = Generals::$downloadFolder[$user];
-		$filename = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
-
-		$downloadPath = $exportPath . $filename;
-
-		codecept_debug("Download path complete: $downloadPath");
+		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
+		$downloadPath   = $exportPath . $filename;
 
 		$I->clickAndWait(SubsManage::$export_button_export, 10);
 

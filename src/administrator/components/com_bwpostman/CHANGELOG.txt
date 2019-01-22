@@ -15,6 +15,7 @@ New
 Bugfix
 # SQL syntax error at newsletters list at front end
 # Restore of tables with zip file doesn't work
+# Export subscribers always exports all subscribers
 
 Improvement
 ~

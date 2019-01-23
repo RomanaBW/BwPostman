@@ -10,6 +10,7 @@ package_parts:
   - mod_bwpostman
   - mod_bwpostman_overview
   - plg_personalize
+  - plg_bw_libregister
   - plg_bwpm_user2subscriber
 
 languages:

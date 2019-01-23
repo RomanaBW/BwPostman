@@ -579,8 +579,13 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		JToolbarHelper::divider();
 		JToolbarHelper::spacer();
 
-		$link   = BwPostmanHTMLHelper::getForumLink();
+		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
+		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);
+		$manualLink = BwPostmanHTMLHelper::getManualLink('subscriber');
+		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+
+		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 	}
 }

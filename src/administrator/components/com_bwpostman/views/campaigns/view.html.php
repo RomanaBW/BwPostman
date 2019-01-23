@@ -237,8 +237,14 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		// trigger BwTimeControl event
 		$dispatcher->trigger('onBwPostmanCampaignsPrepareToolbar');
 
-		$link   = BwPostmanHTMLHelper::getForumLink();
-		JToolbarHelper::help(JText::_("COM_BWPOSTMAN_FORUM"), false, $link);
+		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
+		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+
+		$manualLink = BwPostmanHTMLHelper::getManualLink('campaigns');
+		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+
+		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 
 		JToolbarHelper::spacer();
 	}

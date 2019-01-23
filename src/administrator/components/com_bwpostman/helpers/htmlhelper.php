@@ -332,6 +332,99 @@ abstract class BwPostmanHTMLHelper {
 	}
 
 	/**
+	 *
+	 * @param string $section
+	 *
+	 * @return string
+	 *
+	 * @since 2.2.0
+	 */
+	static function getManualLink($section)
+	{
+		$lang = JFactory::getLanguage();
+		$sectionPart = "handbuch-zu-bwpostman.html";
+
+		$lang_ver		= substr($lang->getTag(), 0, 2);
+		if ($lang_ver != 'de')
+		{
+			$baseLink = "https://www.boldt-webservice.de/index.php/en/forum-en/manuals/";
+
+			switch ($section)
+			{
+				case 'bwpostman':
+					$sectionPart = "bwpostman-manual.html";
+					break;
+				case 'archive':
+					$sectionPart = "bwpostman-manual/69-bwpostman-manual-advanced-use.html";
+					break;
+				case 'maintenance':
+					$sectionPart = "bwpostman-manual/71-bwpostman-manual-maintenance.html";
+					break;
+				case 'campaign':
+				case 'campaigns':
+					$sectionPart = "bwpostman-manual/69-bwpostman-manual-advanced-use.html?start=1";
+					break;
+				case 'newsletter':
+				case 'newsletters':
+					$sectionPart = "bwpostman-manual/67-bwpostman-manual-the-back-end.html?start=3";
+					break;
+				case 'mailinglist':
+				case 'mailinglists':
+					$sectionPart = "bwpostman-manual/67-bwpostman-manual-the-back-end.html?start=1";
+					break;
+				case 'subscriber':
+				case 'subscribers':
+					$sectionPart = "bwpostman-manual/67-bwpostman-manual-the-back-end.html?start=2";
+					break;
+				case 'template':
+				case 'templates':
+					$sectionPart = "bwpostman-manual/83-templates-adjusting-the-appearance-of-a-newsletter.html";
+					break;
+			}
+		}
+		else
+		{
+			$baseLink = "https://www.boldt-webservice.de/index.php/de/forum/handb%C3%BCcher/";
+
+			switch ($section)
+			{
+				case 'bwpostman':
+					$sectionPart = "handbuch-zu-bwpostman.html";
+					break;
+				case 'archive':
+					$sectionPart = "handbuch-zu-bwpostman/56-bwpostman-handbuch-fortgeschrittene-benutzung.html?start=4";
+					break;
+				case 'maintenance':
+					$sectionPart = "handbuch-zu-bwpostman/58-bwpostman-handbuch-wartung.html";
+					break;
+				case 'campaign':
+				case 'campaigns':
+					$sectionPart = "/bwpostman-manual/69-bwpostman-manual-advanced-use.html?start=1";
+					break;
+				case 'newsletter':
+				case 'newsletters':
+					$sectionPart = "handbuch-zu-bwpostman/54-bwpostman-handbuch-das-backend.html?start=3";
+					break;
+				case 'mailinglist':
+				case 'mailinglists':
+					$sectionPart = "handbuch-zu-bwpostman/54-bwpostman-handbuch-das-backend.html?start=1";
+					break;
+				case 'subscriber':
+				case 'subscribers':
+					$sectionPart = "handbuch-zu-bwpostman/54-bwpostman-handbuch-das-backend.html?start=2";
+					break;
+				case 'template':
+				case 'templates':
+					$sectionPart = "handbuch-zu-bwpostman/82-templates-anpassen-des-erscheinungsbildes-der-newsletter.html";
+					break;
+			}
+		}
+		$link   = $baseLink . $sectionPart;
+
+		return $link;
+	}
+
+	/**
 	 * Returns a switch action a grid
 	 * (switches between boolean values)
 	 *

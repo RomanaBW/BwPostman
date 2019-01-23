@@ -102,6 +102,10 @@
 	content:			"\e00c";
 }
 
+#toolbar #toolbar-book, #toolbar #toolbar-users {
+	float: right;
+}
+
 span.icon_attachment {
 	background:     	url(../images/icon-16-attachment.png) no-repeat;
 	display:			inline-block;

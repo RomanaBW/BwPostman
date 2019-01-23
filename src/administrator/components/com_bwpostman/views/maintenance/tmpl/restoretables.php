@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.keepalive');
 ?>
 
 <script type="text/javascript">
@@ -62,7 +63,7 @@ JHtml::_('bootstrap.tooltip');
 	$jinput	= JFactory::getApplication()->input;
 	$image	= '<i class="icon-info"></i>';
 	$option	= $jinput->getCmd('option');
-?>
+	?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">

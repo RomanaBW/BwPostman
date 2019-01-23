@@ -11,6 +11,7 @@ Version 2.2.0 released (25-Jan-2019)----
 New
 + Export subscribers only from selected mailing list
 + Content templates for newsletters
++ Specific help links to online documentation at backend
 
 Bugfix
 # SQL syntax error at newsletters list at front end

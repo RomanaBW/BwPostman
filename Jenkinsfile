@@ -54,26 +54,6 @@ pipeline {
 			}
 		}
 
-		stage('accept1') {
-			steps
-			{
-//				echo 'Dummy'
-//				sleep 60
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
-
 		stage('accept3')
 		{
 			steps
@@ -201,6 +181,26 @@ pipeline {
 			)
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 
+			}
+		}
+
+		stage('accept1') {
+			steps
+			{
+//				echo 'Dummy'
+//				sleep 60
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
 			}
 		}
 

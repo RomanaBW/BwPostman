@@ -722,10 +722,10 @@ class TestNewslettersDetailsCest
 	 */
 	public function SendNewsletterToRealRecipientsPublishOptionNo(\AcceptanceTester $I)
 	{
-		$I->wantTo("Send a newsletter to real recipients with publish option no");
+		$I->wantTo("Send a newsletter with two attachments to real recipients with publish option no");
 		$I->expectTo("see unpublished sent newsletter");
 
-		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], false, true);
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
@@ -907,7 +907,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Send a newsletter to a real user group");
 
-		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 6);
 

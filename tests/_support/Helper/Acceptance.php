@@ -792,6 +792,7 @@ class Acceptance extends Codeception\Module
 	public function publishByIcon(\AcceptanceTester $I, $publish_by_icon, $item, $extra_click = '', $allowed = true)
 	{
 		// switch status by icon
+		$I->scrollTo($publish_by_icon['publish_button'], 0, -200);
 		$I->clickAndWait($publish_by_icon['publish_button'], 2);
 
 		if (!$allowed)
@@ -809,6 +810,7 @@ class Acceptance extends Codeception\Module
 
 		$I->seeElement($publish_by_icon['publish_result']);
 
+		$I->scrollTo($publish_by_icon['unpublish_button'], 0, -200);
 		$I->clickAndWait($publish_by_icon['unpublish_button'], 1);
 		$I->see("One " . $item . " unpublished!");
 		if ($item == 'newsletter')
@@ -841,6 +843,7 @@ class Acceptance extends Codeception\Module
 			return;
 		}
 
+		$I->scrollTo($publish_by_toolbar['publish_button'], 0, -200);
 		$I->click($publish_by_toolbar['publish_button']);
 		$I->clickAndWait(Generals::$toolbar['Publish'], 1);
 
@@ -853,6 +856,7 @@ class Acceptance extends Codeception\Module
 
 		$I->seeElement($publish_by_toolbar['publish_result']);
 
+		$I->scrollTo($publish_by_toolbar['unpublish_button'], 0, -200);
 		$I->click($publish_by_toolbar['unpublish_button']);
 		$I->clickAndWait(Generals::$toolbar['Unpublish'], 1);
 		$I->see("One " . $item . " unpublished!");

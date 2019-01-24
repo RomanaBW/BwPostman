@@ -405,16 +405,44 @@ class NewsletterEditPage
 	/**
 	 * @var string
 	 *
-	 * @since   2.0.0
+	 * @since   2.2.0
 	 */
-	public static $attachment_select_button     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/a[1]";
+	public static $attachments_add_button     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div/div/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $attachment_new_button      = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[1]/div/a[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $attachment_select_button1     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[2]/div[2]/div/a[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $attachment_select_button2     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[3]/div[2]/div[2]/div/a[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_select            = "html/body/ul/li/a[contains(@href,'joomla_black.png')]";
+	public static $attachment_select1            = "html/body/ul/li/a[contains(@href,'joomla_black.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $attachment_select2            = "html/body/ul/li/a[contains(@href,'powered_by.png')]";
 
 	/**
 	 * @var string
@@ -1067,6 +1095,7 @@ class NewsletterEditPage
 	 *
 	 * @param \AcceptanceTester $I
 	 * @param boolean           $toUsergroup
+	 * @param boolean           $withAttachment
 	 *
 	 * @return string   $content_title  title of content
 	 *
@@ -1074,7 +1103,7 @@ class NewsletterEditPage
 	 *
 	 * @throws \Exception
 	 */
-	public static function fillFormSimple(\AcceptanceTester $I, $toUsergroup = false)
+	public static function fillFormSimple(\AcceptanceTester $I, $toUsergroup = false, $withAttachment = false)
 	{
 		$I->fillField(self::$from_name, self::$field_from_name);
 		$I->fillField(self::$from_email, self::$field_from_email);
@@ -1082,8 +1111,12 @@ class NewsletterEditPage
 		$I->fillField(self::$subject, self::$field_subject);
 		$I->fillField(self::$description, self::$field_description);
 
-		//select attachment
-//		self::selectAttachment($I);
+		//select attachment if desired
+codecept_debug('With attachment? ' . $withAttachment);
+		if ($withAttachment)
+		{
+			self::selectAttachment($I);
+		}
 
 		// fill publish and unpublish
 		self::fillPublishedDate($I);
@@ -1117,13 +1150,35 @@ class NewsletterEditPage
 	 */
 	public static function selectAttachment(\AcceptanceTester $I)
 	{
-		$I->clickAndWait(self::$attachment_select_button, 1);
+		$I->clickAndWait(self::$attachments_add_button, 1);
+
+		//Select first attachment
+		$I->clickAndWait(self::$attachment_select_button1, 1);
+
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->waitForElementVisible("iframe#imageframe", 5);
 
 		$I->switchToIFrame(Generals::$image_frame);
 		$I->waitForElementVisible("ul.manager", 5);
-		$I->clickAndWait(self::$attachment_select, 1);
+		$I->scrollTo(self::$attachment_select1, 0, -100);
+		$I->clickAndWait(self::$attachment_select1, 1);
+
+		$I->switchToIFrame();
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->clickAndWait(self::$attachment_insert, 1);
+		$I->switchToIFrame();
+
+		//Select second attachment
+		$I->clickAndWait(self::$attachment_new_button, 1);
+		$I->clickAndWait(self::$attachment_select_button2, 1);
+
+		$I->switchToIFrame(Generals::$media_frame);
+		$I->waitForElementVisible("iframe#imageframe", 5);
+
+		$I->switchToIFrame(Generals::$image_frame);
+		$I->waitForElementVisible("ul.manager", 5);
+		$I->scrollTo(self::$attachment_select2, 0, -100);
+		$I->clickAndWait(self::$attachment_select2, 1);
 
 		$I->switchToIFrame();
 		$I->switchToIFrame(Generals::$media_frame);
@@ -1181,6 +1236,7 @@ class NewsletterEditPage
 	 * @param   \AcceptanceTester   $I
 	 * @param   string              $username
 	 * @param   boolean             $toUsergroup
+	 * @param   boolean             $withAttachment
 	 *
 	 * @return  void
 	 *
@@ -1188,14 +1244,16 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username, $toUsergroup = false)
+	public static function CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username, $toUsergroup = false, $withAttachment = false)
 	{
+codecept_debug('To usergroups?' . $toUsergroup);
+codecept_debug('With attachments?' . $withAttachment);
 		$I->wantTo("Create Newsletter without cleanup");
 		$I->amOnPage(NlManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		self::fillFormSimple($I, $toUsergroup);
+		self::fillFormSimple($I, $toUsergroup, $withAttachment);
 
 		$I->click(self::$toolbar['Save & Close']);
 		self::checkSuccess($I, $username);

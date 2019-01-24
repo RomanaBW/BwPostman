@@ -518,6 +518,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$form->setFieldAttribute('published', 'type', 'hidden');
 		}
 
+		// Convert attachment string to subform array
+		if ($form->getValue('attachment') != '')
+		{
+			$attachString = $form->getData()->get('attachment');
+			$baseArray = explode(';', $attachString);
+
+			for ($i = 0; $i < count($baseArray); $i++)
+			{
+				$key = 'attachment' . $i;
+				$attachmentArray[$key]['attachment'] = $baseArray[$i];
+			}
+
+			$form->setValue('attachments', '', $attachmentArray);
+		}
+
 		$form->setValue('title', '', $form->getValue('subject'));
 
 		return $form;
@@ -3235,7 +3250,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if ($tblSendMailContent->attachment)
 		{
-			$tblSendMailContent->attachment = JPATH_SITE . '/' . $tblSendMailContent->attachment;
+			$attachments = explode(';', $tblSendMailContent->attachment);
+			$fullAttachments = array();
+
+			foreach ($attachments as $attachment)
+			{
+				$fullAttachments[] = JPATH_SITE . '/' .$attachment;
+			}
+
+			$tblSendMailContent->attachment = $fullAttachments;
 		}
 
 		if (property_exists($tblSendMailContent, 'email'))

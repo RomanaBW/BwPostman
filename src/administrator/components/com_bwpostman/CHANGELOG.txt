@@ -12,6 +12,7 @@ New
 + Export subscribers only from selected mailing list
 + Content templates for newsletters
 + Specific help links to online documentation at backend
++ Up to 20 attachments possible
 
 Bugfix
 # SQL syntax error at newsletters list at front end
@@ -19,7 +20,8 @@ Bugfix
 # Export subscribers always exports all subscribers
 
 Improvement
-~
+~ Up to 20 attachments possible
+
 
 
 Version 2.1.2 released (14-Dez-2018)----

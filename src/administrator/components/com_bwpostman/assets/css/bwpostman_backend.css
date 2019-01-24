@@ -117,6 +117,13 @@ span.icon_attachment {
 	z-index:			2;
 }
 
+.form-horizontal .subform-repeatable-group-sr-0 .control-label {
+	width : 60px;
+}
+
+.form-horizontal .subform-repeatable-group-sr-0 .controls {
+	margin-left: 80px;
+}
 
 /*----------------------------------------------------------
 	Definition for tabs

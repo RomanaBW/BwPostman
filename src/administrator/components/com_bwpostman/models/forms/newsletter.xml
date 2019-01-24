@@ -50,14 +50,28 @@
 		<field
 			id="attachment"
 			name="attachment"
-			type="allmedia"
-			label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"
-			labelclass="control-label"
-			description="COM_BWPOSTMAN_ATTACHMENT_FIELD_DESC"
-			class="inputbox"
-			size="30"
-			directory=""
+			type="hidden"
 		/>
+
+		<field name="attachments"
+		       type="subform"
+		       icon="list"
+		       label="COM_BWPOSTMAN_ATTACHMENTS_FIELD_LABEL"
+		       labelclass="control-label"
+		       description="COM_BWPOSTMAN_ATTACHMENTS_FIELD_DESC"
+		       multiple="true"
+		       min="0"
+		       max="20"
+		       default=''>
+			<form>
+				<field name="attachment"
+				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"
+				       labelclass="control-label"
+				       size="50"
+				       type="allmedia" />
+			</form>
+		</field>
+
 		<field
 				name="title"
 				type="hidden"

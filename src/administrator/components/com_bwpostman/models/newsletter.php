@@ -519,6 +519,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Convert attachment string to subform array
+		// @ToDo: Make preview working on currently added attachments, see https://docs.joomla.org/Subform_form_field_type
 		if ($form->getValue('attachment') != '')
 		{
 			$attachString = $form->getData()->get('attachment');

@@ -1112,7 +1112,6 @@ class NewsletterEditPage
 		$I->fillField(self::$description, self::$field_description);
 
 		//select attachment if desired
-codecept_debug('With attachment? ' . $withAttachment);
 		if ($withAttachment)
 		{
 			self::selectAttachment($I);
@@ -1198,7 +1197,6 @@ codecept_debug('With attachment? ' . $withAttachment);
 	 */
 	public static function selectRecipients(\AcceptanceTester $I, $toUsergroup = false)
 	{
-		codecept_debug("To usergroup: $toUsergroup");
 		if (!$toUsergroup)
 		{
 			$I->scrollTo(self::$legend_recipients);
@@ -1246,8 +1244,6 @@ codecept_debug('With attachment? ' . $withAttachment);
 	 */
 	public static function CreateNewsletterWithoutCleanup(\AcceptanceTester $I, $username, $toUsergroup = false, $withAttachment = false)
 	{
-codecept_debug('To usergroups?' . $toUsergroup);
-codecept_debug('With attachments?' . $withAttachment);
 		$I->wantTo("Create Newsletter without cleanup");
 		$I->amOnPage(NlManage::$url);
 
@@ -1282,11 +1278,6 @@ codecept_debug('With attachments?' . $withAttachment);
 	 */
 	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20, $publish = false)
 	{
-		codecept_debug("unconfirmed: $sentToUnconfirmed");
-		codecept_debug("usergroup: $toUsergroup");
-		codecept_debug("Queue: $buildQueue");
-		codecept_debug("iFrame time: $iframeTime");
-
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(self::$tab5_legend1);
@@ -1303,7 +1294,6 @@ codecept_debug('With attachments?' . $withAttachment);
 		{
 			$nbrToSend = self::$nbr_usergroup;
 		}
-		codecept_debug("Nbr to send: $nbrToSend");
 
 		$remainsToSend  = '0';
 		if ($buildQueue)
@@ -1378,8 +1368,6 @@ codecept_debug('With attachments?' . $withAttachment);
 		$I->see(self::$tab5_legend1);
 
 		$nbrToSend  = self::$nbr_only_confirmed;
-
-		codecept_debug("Nbr to send: $nbrToSend");
 
 		$remainsToSend  = $nbrToSend - $stepSize;
 

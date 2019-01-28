@@ -260,7 +260,7 @@ class TestOptionsCest
 		$I->click(MainView::$addNewsletterButton);
 		$I->scrollTo(NlEditPage::$legend_content);
 		$availableContent1 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 2));
-		codecept_debug($availableContent1);
+
 		$I->assertEquals("sample-data-articles/park-site/photo-gallery/animals = Phyllopteryx", $availableContent1);
 		$I->clickAndWait(Generals::$toolbar['Back'], 1);
 
@@ -287,7 +287,7 @@ class TestOptionsCest
 		$I->click(MainView::$addNewsletterButton);
 		$I->scrollTo(NlEditPage::$legend_content);
 		$availableContent2 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 2));
-		codecept_debug($availableContent2);
+
 		$I->assertNotEquals("sample-data-articles/park-site/photo-gallery/animals = Phyllopteryx", $availableContent2);
 		$I->clickAndWait(Generals::$toolbar['Back'], 1);
 

@@ -280,10 +280,31 @@ class BwPostmanModelRegister extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
+		$params 	= JComponentHelper::getParams('com_bwpostman');
+		$send_mail	= $params->get('deactivation_to_webmaster');
+		$subscriber = null;
 
 		if ($pks)
 		{
+			if ($send_mail)
+			{
+				$query->select('*');
+				$query->from($_db->quoteName('#__bwpostman_subscribers'));
+				$query->where($_db->quoteName('id') . ' = ' . (int) $pks);
+
+				try
+				{
+					$_db->setQuery($query);
+					$subscriber = $_db->loadObject();
+				}
+				catch (RuntimeException $e)
+				{
+					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				}
+			}
+
 			// delete subscriber from subscribers table
+			$query	= $_db->getQuery(true);
 			$query->delete($_db->quoteName('#__bwpostman_subscribers'));
 			$query->where($_db->quoteName('id') . ' = ' . (int) $pks);
 			$_db->setQuery((string) $query);
@@ -299,6 +320,11 @@ class BwPostmanModelRegister extends JModelAdmin
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_DELETE_MAILINGLISTS'), 'warning');
 				return false;
 			}
+		}
+
+		if (is_object($subscriber))
+		{
+			$this->sendDeactivationNotification($subscriber);
 		}
 
 		return true;
@@ -448,6 +474,63 @@ class BwPostmanModelRegister extends JModelAdmin
 			$ret_err_msg = 'COM_BWPOSTMAN_ERROR_WRONGUNSUBCRIBECODE';
 			return false;
 		}
+	}
+
+	/**
+	 * Method to send an information to webmaster, when a subscriber delete the account
+	 *
+	 * @param 	int		$subscriber_id      subscriber id
+	 *
+	 * @return 	void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.0.3
+	 */
+	public function sendDeactivationNotification($subscriber)
+	{
+		$app	    = JFactory::getApplication();
+		$mail	    = JFactory::getMailer();
+		$params     = JComponentHelper::getParams('com_bwpostman');
+		$from	    = array();
+
+		// set recipient and reply-to
+		$from[0]	= JMailHelper::cleanAddress($params->get('default_from_email'));
+		$from[1]	= $params->get('default_from_name');
+		$mail->setSender($from);
+		$mail->addReplyTo($from[0], $from[1]);
+
+		// set recipient
+		$recipient_mail	= JMailHelper::cleanAddress($params->get('deactivation_to_webmaster_email'));
+		$recipient_name	= $params->get('deactivation_from_name');
+		if (!is_string($recipient_mail))
+		{
+			$recipient_mail = $from[0];
+		}
+
+		if (!is_string($recipient_name))
+		{
+			$recipient_name = $from[1];
+		}
+
+		$mail->addRecipient($recipient_mail, $recipient_name);
+
+		// set subject
+		$subject		= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
+		$mail->setSubject($subject);
+
+		// Set body
+		$body	= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT');
+		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_NAME') . $subscriber->name . "\n";
+		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_FIRSTNAME') . $subscriber->firstname . "\n\n";
+		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_EMAIL') . $subscriber->email . "\n\n";
+		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_REGISTRATION_DATE') . $subscriber->registration_date . "\n";
+		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
+
+		$mail->setBody($body);
+
+		// Send the email
+		$mail->Send();
 	}
 
 	/**

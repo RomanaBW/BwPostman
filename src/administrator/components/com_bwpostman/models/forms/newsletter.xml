@@ -55,14 +55,13 @@
 
 		<field name="attachments"
 		       type="subform"
-		       icon="list"
 		       label="COM_BWPOSTMAN_ATTACHMENTS_FIELD_LABEL"
 		       labelclass="control-label"
 		       description="COM_BWPOSTMAN_ATTACHMENTS_FIELD_DESC"
 		       multiple="true"
 		       min="0"
 		       max="20"
-		       default=''>
+		>
 			<form>
 				<field name="attachment"
 				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"

@@ -107,13 +107,13 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 							. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $inputclass . $onclick
 							. $onchange . $disabled . ' />';
 
-				$html[]	= '<div class="media-preview add-on fltlft">';
+				$html[]	= '<span class="media-preview add-on fltlft">';
 				$html[]	= '<span class="hasTipPreview" title="&lt;strong&gt;' . $option->description . '&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;'
 					. '&lt;div id=&quot;jform_[template_id]' . $option->value . '_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'
 					. $option->value . '_preview_img&quot; src=&quot;' . JUri::root()
 					. $option->thumbnail . '&quot; alt=&quot;' . $option->title . '&quot; class=&quot;media-preview&quot; ';
 				$html[]	= 'style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">' . $option->title . '</span>';
-				$html[]	= '</div>';
+				$html[]	= '</span>';
 				$html[]	= '</label>';
 			}
 		}

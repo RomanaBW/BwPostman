@@ -227,7 +227,7 @@ window.onload = function()
 							<ul class="adminformlist unstyled">
 								<?php foreach($this->form->getFieldset('basic_1') as $field): ?>
 									<?php if ($field->hidden): ?>
-										<?php echo $field->input; ?>
+										<li><?php echo $field->input; ?></li>
 									<?php else: ?>
 										<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 											<div class="controls"><?php echo $field->input; ?></div></li>
@@ -235,7 +235,7 @@ window.onload = function()
 								<?php endforeach; ?>
 								<?php foreach($this->form->getFieldset('campaigns') as $field): ?>
 									<?php if ($field->hidden): ?>
-										<?php echo $field->input; ?>
+										<li><?php echo $field->input; ?></li>
 									<?php else: ?>
 										<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 											<div class="controls"><?php echo $field->input; ?></div></li>
@@ -243,7 +243,7 @@ window.onload = function()
 								<?php endforeach; ?>
 								<?php foreach($this->form->getFieldset('edit_publish') as $field): ?>
 									<?php if ($field->hidden): ?>
-										<?php echo $field->input; ?>
+										<li><?php echo $field->input; ?></li>
 									<?php else: ?>
 										<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
 											<div class="controls"><?php echo $field->input; ?></div></li>
@@ -452,7 +452,6 @@ window.onload = function()
 			</fieldset>
 		</div>
 		<div class="clearfix"></div>
-</div>
 
 		<?php
 		foreach($this->form->getFieldset('html_version_hidden') as $field)

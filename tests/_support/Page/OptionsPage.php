@@ -59,23 +59,30 @@ class OptionsPage
 	/**
 	 * @var string
 	 *
-	 * @since 2.0.0
+	 * @since 2.2.1
 	 */
-	public static $tab_lists_view   = ".//*[@id='configTabs']/li[4]/a";
+	public static $tab_unsubscription   = ".//*[@id='configTabs']/li[4]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_single_view  = ".//*[@id='configTabs']/li[5]/a";
+	public static $tab_lists_view   = ".//*[@id='configTabs']/li[5]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_permissions  = ".//*[@id='configTabs']/li[7]/a";
+	public static $tab_single_view  = ".//*[@id='configTabs']/li[6]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $tab_permissions  = ".//*[@id='configTabs']/li[]/a";
 
 	/*
 	 * Tab basic settings
@@ -640,6 +647,20 @@ class OptionsPage
 	 * @since 2.2.0
 	 */
 	public static $unsubscriptionSenderMail  = ".//*[@id='jform_deactivation_to_webmaster_email']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionSenderNameValue  = "BwPostman Test Unsubscription";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.0
+	 */
+	public static $unsubscriptionSenderMailValue  = "webmaster@tester-net-bwpm.nil]";
 
 
 	/*

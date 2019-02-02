@@ -737,4 +737,99 @@ class SubscriberviewPage
 	 * @since 2.0.0
 	 */
 	public static $invalid_select_newsletter_132    = 'You have to select one newsletter.';
+
+	/**
+	 * Test method to subscribe to newsletter in front end by component
+	 *
+	 * @param \AcceptanceTester             $I
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.1
+	 */
+	public static function subscribeByComponent(\AcceptanceTester $I)
+	{
+		$options    = $I->getManifestOptions('com_bwpostman');
+
+		$I->amOnPage(self::$register_url);
+		$I->wait(1);
+		$I->seeElement(self::$view_register);
+
+		if ($options->show_gender)
+		{
+			$I->click(self::$gender_female);
+		}
+
+		if ($options->show_firstname_field || $options->firstname_field_obligation)
+		{
+			$I->fillField(self::$firstname, self::$firstname_fill);
+		}
+
+		if ($options->show_name_field || $options->name_field_obligation)
+		{
+			$I->fillField(self::$name, self::$lastname_fill);
+		}
+
+		$I->fillField(self::$mail, self::$mail_fill_1);
+
+		if ($options->show_emailformat)
+		{
+			$I->clickAndWait(self::$format_text, 1);
+		}
+
+		if ($options->show_special || $options->special_field_obligation)
+		{
+			$I->fillField(self::$special, self::$special_fill);
+		}
+
+		$I->checkOption(self::$ml1);
+
+		if ($options->disclaimer)
+		{
+			$I->checkOption(self::$disclaimer);
+		}
+
+		$I->click(self::$button_register);
+	}
+
+	/**
+	 * Test method to activate newsletter subscription
+	 *
+	 * @param \AcceptanceTester             $I
+	 * @param string                        $mailaddress
+	 * @param bool                          $good
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.1
+	 */
+	public static function activate(\AcceptanceTester $I, $mailaddress, $good = true)
+	{
+		$activation_code = $I->getActivationCode($mailaddress);
+		$I->amOnPage(self::$activation_link . $activation_code);
+		if ($good)
+		{
+			$I->see(self::$activation_completed_text, self::$activation_complete);
+		}
+	}
+
+	/**
+	 * Test method to unsubscribe from all newsletters
+	 *
+	 * @param \AcceptanceTester             $I
+	 * @param string                        $button
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.2.1
+	 */
+	public static function unsubscribe(\AcceptanceTester $I, $button)
+	{
+		$I->click($button);
+		$I->waitForElement(self::$view_edit, 30);
+		$I->seeElement(self::$view_edit);
+		$I->checkOption(self::$button_unsubscribe);
+		$I->click(self::$button_submitleave);
+		$I->dontSee(self::$mail_fill_1, self::$mail);
+	}
 }

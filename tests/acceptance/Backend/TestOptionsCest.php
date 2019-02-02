@@ -1,10 +1,10 @@
 <?php
-use Page\Generals as Generals;
-use Page\MainviewPage as MainView;
-use Page\OptionsPage as OptionsPage;
+use \Page\Generals as Generals;
+use \Page\MainviewPage as MainView;
+use \Page\OptionsPage as OptionsPage;
 use \Page\NewsletterEditPage as NlEditPage;
 use \Page\NewsletterManagerPage as NlManagePage;
-use Page\SubscriberviewPage as SubsView;
+use \Page\SubscriberviewPage as SubsView;
 
 /**
  * Class TestOptionsCest
@@ -1389,13 +1389,49 @@ class TestOptionsCest
 		$I->expect("not to get information mail at webmaster");
 		$I->amOnPage(MainView::$url);
 
+		// @ToDo: Fill with life
+
 		$I->wantTo("check option unsubscription also to webmaster yes");
 		$I->expectTo("get information mail at webmaster");
-		$I->amOnPage(MainView::$url);
 
+		// Set option values for mail at unsubscription
 		$I->amOnPage(MainView::$url);
+		$I->see(Generals::$extension, Generals::$pageTitle);
 
-		// @ToDo: Fill with life
+		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_unsubscription, 1);
+
+		$I->clickAndWait(OptionsPage::$unsubscriptionToWebmasterYes, 1);
+		$I->fillField(OptionsPage::$unsubscriptionSenderName, OptionsPage::$unsubscriptionSenderNameValue);
+		$I->fillField(OptionsPage::$unsubscriptionSenderMail, OptionsPage::$unsubscriptionSenderMailValue);
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
+		// Subscribe
+		SubsView::subscribeByComponent($I);
+		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
+
+		// Activate
+		SubsView::activate($I, SubsView::$mail_fill_1);
+
+		// Unsubscribe
+		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
+
+		// Check for mail to webmaster
+//		$I->seeInLastMail('Unsubscription of a subscriber');
+
+		// Set option values for mail at unsubscription
+		$I->amOnPage(MainView::$url);
+		$I->see(Generals::$extension, Generals::$pageTitle);
+
+		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(OptionsPage::$tab_unsubscription, 1);
+
+		$I->clickAndWait(OptionsPage::$unsubscriptionToWebmasterNo, 1);
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(MainView::$dashboard, 30);
+
 	}
 
 	/**

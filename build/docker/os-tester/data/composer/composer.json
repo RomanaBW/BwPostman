@@ -15,7 +15,8 @@
         "phpseclib/phpseclib": "2.0.*"
     },
     "require-dev": {
-        "mockery/mockery": "dev-master@dev"
+        "mockery/mockery": "dev-master@dev",
+        "captbaritone/mailcatcher-codeception-module": "1.*"
     },
     "config": {
         "bin-dir": "/usr/local/bin/"

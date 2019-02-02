@@ -277,7 +277,6 @@ class JFormFieldAvailableContent extends JFormFieldList
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		// @ToDo: must there not stand $options?
 		if(count($rows_list_uncat) > 0)
 		{
 			$options	= array_merge($rows_list, $rows_list_uncat);

@@ -47,23 +47,17 @@
 			required="true"
 		/>
 
-		<field
-			id="attachment"
-			name="attachment"
-			type="hidden"
-		/>
-
-		<field name="attachments"
+		<field name="attachment"
 		       type="subform"
-		       label="COM_BWPOSTMAN_ATTACHMENTS_FIELD_LABEL"
+		       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"
 		       labelclass="control-label"
-		       description="COM_BWPOSTMAN_ATTACHMENTS_FIELD_DESC"
+		       description="COM_BWPOSTMAN_ATTACHMENT_FIELD_DESC"
 		       multiple="true"
 		       min="0"
 		       max="20"
 		>
 			<form>
-				<field name="attachment"
+				<field name="single_attachment"
 				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"
 				       labelclass="control-label"
 				       size="50"

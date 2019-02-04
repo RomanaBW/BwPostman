@@ -534,7 +534,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label/div/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
+	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label[2]/span/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
 
 	/**
 	 * @var string
@@ -542,7 +542,7 @@ class NewsletterEditPage
 	 * @since   2.0.0
 	 */
 	public static $template_text
-		= ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label/div/span[contains(text(),'Standard TEXT Template 3')]";
+		= ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label[4]/span/span[contains(text(),'Standard TEXT Template 3')]";
 
 
 	/**
@@ -1278,6 +1278,12 @@ class NewsletterEditPage
 	 */
 	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20, $publish = false)
 	{
+		codecept_debug("unconfirmed: $sentToUnconfirmed");
+		codecept_debug("usergroup: $toUsergroup");
+		codecept_debug("Queue: $buildQueue");
+		codecept_debug("iFrame time: $iframeTime");
+		codecept_debug("Publish: $publish");
+
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
 		$I->see(self::$tab5_legend1);

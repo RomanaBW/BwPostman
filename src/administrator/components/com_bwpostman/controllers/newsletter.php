@@ -424,22 +424,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$data	= ArrayHelper::fromObject($app->getUserState('com_bwpostman.edit.newsletter.data'));
 		$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 
-		// Convert attachments array of subform to string
-		if (is_array($data['attachments']))
-		{
-			$tmpAttachments = $data['attachments'];
-			$reducedAttachments = array();
-			foreach ($tmpAttachments as $tmpAttachment)
-			{
-				foreach ($tmpAttachment as $attachKey => $value)
-				{
-					$reducedAttachments[] = $value;
-				}
-			}
-
-			$data['attachment'] = implode(';', $reducedAttachments);
-		}
-
 		if ($task == 'save2copy')
 		{
 			$data['is_template'] = '';

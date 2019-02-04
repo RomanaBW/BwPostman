@@ -409,6 +409,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 		}
 
+		//  convert attachment string to subform array
+		if ($item->attachment != '' && is_string($item->attachment))
+		{
+			$baseArray = explode(';', $item->attachment);
+
+			for ($i = 0; $i < count($baseArray); $i++)
+			{
+				$key = 'attachment' . $i;
+				$attachmentArray[$key]['single_attachment'] = $baseArray[$i];
+			}
+
+			$item->attachment = $attachmentArray;
+		}
+
 		return $item;
 	}
 
@@ -516,22 +530,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ($jinput->get('layout') == 'edit_basic')
 		{
 			$form->setFieldAttribute('published', 'type', 'hidden');
-		}
-
-		// Convert attachment string to subform array
-		// @ToDo: Make preview working on currently added attachments, see https://docs.joomla.org/Subform_form_field_type
-		if ($form->getValue('attachment') != '')
-		{
-			$attachString = $form->getData()->get('attachment');
-			$baseArray = explode(';', $attachString);
-
-			for ($i = 0; $i < count($baseArray); $i++)
-			{
-				$key = 'attachment' . $i;
-				$attachmentArray[$key]['attachment'] = $baseArray[$i];
-			}
-
-			$form->setValue('attachments', '', $attachmentArray);
 		}
 
 		$form->setValue('title', '', $form->getValue('subject'));
@@ -979,6 +977,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				$data['mailinglists'][] = '-' . $value;
 			}
+		}
+
+		// convert attachment array to string, to be able to save
+		if ($data['attachment'] != '' && is_array($data['attachment']))
+		{
+			foreach ($data['attachment'] as $k => $v)
+			{
+				if ($data['attachment'][$k]['single_attachment'] != '')
+				{
+					$fullAttachments[] = $data['attachment'][$k]['single_attachment'];
+				}
+			}
+			$data['attachment'] = implode(';', $fullAttachments);
 		}
 
 		$dispatcher = JEventDispatcher::getInstance();

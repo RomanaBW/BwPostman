@@ -397,7 +397,8 @@ class TestNewslettersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
-		$I->clickAndWait(NlEdit::$attachment_select_button, 1);
+		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
+		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->waitForElementVisible("iframe#imageframe", 5);
 		$I->waitForElementVisible("#upload-file", 5);
@@ -907,7 +908,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Send a newsletter to a real user group");
 
-		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
+		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], true);
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, true, false, 6);
 

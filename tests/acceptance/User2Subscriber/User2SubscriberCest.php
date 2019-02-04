@@ -1211,6 +1211,7 @@ class User2SubscriberCest
 		$I->assertEquals("0", $options->auto_delete_option);
 
 		// switch to yes
+		$I->scrollTo(RegPage::$plugin_auto_delete_yes, 0, -100);
 		$I->clickAndWait(RegPage::$plugin_auto_delete_yes, 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
 		$I->see(RegPage::$plugin_saved_success);

@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Package
  *
- * BwPostman installer.
+ * BwPostman package installer.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin

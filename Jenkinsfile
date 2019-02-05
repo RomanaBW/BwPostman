@@ -40,39 +40,39 @@ pipeline {
 		}
 
 
-		stage('smoke') {
-			steps {
-				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post {
-				always {
-					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-				}
-				failure {
-					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
+		// stage('smoke') {
+		// 	steps {
+		// 		bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+		// 	}
+		// 	post {
+		// 		always {
+		// 			bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+		// 		}
+		// 		failure {
+		// 			bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+		// 		}
+		// 	}
+		// }
 
-		stage('accept3')
-		{
-			steps
-			{
-//				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
+// 		stage('accept3')
+// 		{
+// 			steps
+// 			{
+// //				echo 'Dummy'
+// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 			}
+// 			post
+// 			{
+// 				always
+// 				{
+// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+// 				}
+// 				failure
+// 				{
+// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 				}
+// 			}
+// 		}
 
 		// stage ('Acceptance Tests 3') {
         // 	parallel
@@ -184,65 +184,65 @@ pipeline {
 			}
 		}
 
-		stage('accept1') {
-			steps
-			{
-//				echo 'Dummy'
-//				sleep 60
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
+// 		stage('accept1') {
+// 			steps
+// 			{
+// //				echo 'Dummy'
+// //				sleep 60
+// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 			}
+// 			post
+// 			{
+// 				always
+// 				{
+// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+// 				}
+// 				failure
+// 				{
+// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 				}
+// 			}
+// 		}
 
-		stage('accept6')
-		{
-			steps
-			{
-//				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_6_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
+// 		stage('accept6')
+// 		{
+// 			steps
+// 			{
+// //				echo 'Dummy'
+// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_6_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 			}
+// 			post
+// 			{
+// 				always
+// 				{
+// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+// 				}
+// 				failure
+// 				{
+// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 				}
+// 			}
+// 		}
 
-		stage('accept2')
-		{
-			steps
-			{
-//				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
+// 		stage('accept2')
+// 		{
+// 			steps
+// 			{
+// //				echo 'Dummy'
+// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 			}
+// 			post
+// 			{
+// 				always
+// 				{
+// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+// 				}
+// 				failure
+// 				{
+// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+// 				}
+// 			}
+// 		}
 
 		stage('Pre-Release') {
 			steps {

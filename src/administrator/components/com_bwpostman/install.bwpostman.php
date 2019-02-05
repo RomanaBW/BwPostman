@@ -326,15 +326,6 @@ class Com_BwPostmanInstallerScript
 			// Let Ajax client redirect
 			$modal = $this->getModal();
 			$app->enqueueMessage(JText::_('Installing BwPostman ... ') . $modal);
-
-			if (version_compare($oldRelease, '2.2.1', 'lt'))
-			{
-				// rebuild update servers
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_installer/models');
-				$groupModel = JModelLegacy::getInstance('Updatesites', 'InstallerModel');
-				$groupModel->rebuild();
-			}
-
 		}
 
 		return true;

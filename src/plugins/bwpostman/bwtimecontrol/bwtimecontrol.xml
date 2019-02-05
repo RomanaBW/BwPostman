@@ -55,7 +55,7 @@
 	</languages>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/plg_bwtimecontrol_update2.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_tc.xml</server>
 	</updateservers>
 
 	<config>

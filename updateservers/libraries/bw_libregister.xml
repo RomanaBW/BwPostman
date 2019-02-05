@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.2.0</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.2.2.0.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.[456789]" min_dev_level="0" php_minimum="5.3" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.2.0</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.2.2.0.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.3" min_dev_level="6" php_minimum="5.3" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.1.2</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.2.1.2.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.[456789]" min_dev_level="0" php_minimum="5.3" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.1.2</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.2.1.2.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.3" min_dev_level="6" php_minimum="5.3" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.1.1</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.2.1.1.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.[456789]" min_dev_level="0" php_minimum="5.3" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.1.1</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.2.1.1.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.3" min_dev_level="6" php_minimum="5.3" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.1.0</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.[456789]" min_dev_level="0" php_minimum="5.3" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>2.1.0</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="3.3" min_dev_level="6" php_minimum="5.3" />
+	</update>
+</updates>

@@ -26,7 +26,7 @@
 	</languages>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/plg_bwpostman_bw_libregister_update.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/libraries/bw_libregister.xml</server>
 	</updateservers>
 
 </extension>

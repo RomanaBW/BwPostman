@@ -125,7 +125,7 @@
 	</config>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/plg_bwpostman_bwpm_user2subscriber_update.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
 	</updateservers>
 
 </extension>

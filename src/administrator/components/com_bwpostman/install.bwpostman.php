@@ -216,18 +216,6 @@ class Com_BwPostmanInstallerScript
 
 			// delete existing files in frontend and backend to prevent conflicts with previous relicts
 			jimport('joomla.filesystem.folder');
-//			$admin_path	= JPATH_ADMINISTRATOR . '/components/com_bwpostman';
-//			$site_path	= JPATH_SITE . '/components/com_bwpostman';
-//
-//			if (JFolder::exists($admin_path) === true)
-//			{
-//				JFolder::delete($admin_path);
-//			}
-//
-//			if (JFolder::exists($site_path) === true)
-//			{
-//				JFolder::delete($site_path);
-//			}
 		}
 
 		$_db	= JFactory::getDbo();
@@ -338,6 +326,15 @@ class Com_BwPostmanInstallerScript
 			// Let Ajax client redirect
 			$modal = $this->getModal();
 			$app->enqueueMessage(JText::_('Installing BwPostman ... ') . $modal);
+
+			if (version_compare($oldRelease, '2.2.1', 'lt'))
+			{
+				// rebuild update servers
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_installer/models');
+				$groupModel = JModelLegacy::getInstance('Updatesites', 'InstallerModel');
+				$groupModel->rebuild();
+			}
+
 		}
 
 		return true;

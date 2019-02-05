@@ -17,6 +17,7 @@
 	<description>
 		<b>BwPostman component, modules and  plugins installed successfully</b>
 	</description>
+
 	<scriptfile>pkg_script.php</scriptfile>
 
 	<files folder="packages">

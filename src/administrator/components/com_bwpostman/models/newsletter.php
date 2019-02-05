@@ -553,7 +553,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Check the session for previously entered form data for this record id.
 		$data	= JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
 
-		if (empty($data) || $recordId != $data->id)
+		if (empty($data) || (is_object($data) && $recordId != $data->id))
 		{
 			$data = $this->getItem();
 		}

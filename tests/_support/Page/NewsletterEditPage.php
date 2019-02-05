@@ -392,7 +392,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment                   = ".//*[@id='jform_attachment']";
+	public static $attachment                   = ".//*[@id='jform_attachment__attachment0__single_attachment']";
 
 	/**
 	 * @var string

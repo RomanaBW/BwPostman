@@ -55,7 +55,7 @@ class Pkg_BwPostmanInstallerScript
 	{
 		$session	= JFactory::getSession();
 		$session->set('update', false, 'bwpostman');
-		$this->showFinished(false);
+//		$this->showFinished(false);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Pkg_BwPostmanInstallerScript
 	{
 		$session	= JFactory::getSession();
 		$session->set('update', true, 'bwpostman');
-		$this->showFinished(true);
+//		$this->showFinished(true);
 	}
 
 	/**
@@ -89,8 +89,7 @@ class Pkg_BwPostmanInstallerScript
 	{
 		if ($type == 'update')
 		{
-			$app 		= JFactory::getApplication();
-			$oldRelease	= $app->getUserState('com_bwpostman.update.oldRelease', '');
+			$oldRelease	= JFactory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
 
 			if (version_compare($oldRelease, '2.2.1', 'lt'))
 			{
@@ -99,7 +98,6 @@ class Pkg_BwPostmanInstallerScript
 				$installerModel = JModelLegacy::getInstance('Updatesites', 'InstallerModel');
 				$installerModel->rebuild();
 			}
-
 		}
 
 		return true;
@@ -116,7 +114,6 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	public function showFinished($update)
 	{
-
 		$lang = JFactory::getLanguage();
 		//Load first english files
 		$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
@@ -130,6 +127,7 @@ class Pkg_BwPostmanInstallerScript
 		$show_right		= false;
 		$release		= str_replace('.', '-', $this->release);
 		$lang_ver		= substr($lang->getTag(), 0, 2);
+
 		if ($lang_ver != 'de')
 		{
 			$lang_ver = 'en';

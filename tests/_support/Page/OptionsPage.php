@@ -82,7 +82,7 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_permissions  = ".//*[@id='configTabs']/li[]/a";
+	public static $tab_permissions  = ".//*[@id='configTabs']/li[7]/a";
 
 	/*
 	 * Tab basic settings

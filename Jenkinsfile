@@ -121,10 +121,8 @@ pipeline {
 		{
 			steps
 			{
-				echo
-				'Dummy'
-				sleep
-				60
+				// echo 'Dummy'
+				// sleep 60
 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			post
@@ -144,8 +142,7 @@ pipeline {
 				{
 					steps
 					{
-						echo
-						'Dummy'
+						echo 'Dummy'
 						bwpmAccept("accept5", params.ACCEPT_5_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 					}
 					post

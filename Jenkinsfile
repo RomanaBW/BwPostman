@@ -40,79 +40,79 @@ pipeline {
 		}
 
 
-// 		stage('smoke') {
-// 			steps {
-// 				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 			}
-// 			post {
-// 				always {
-// 					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
-// 				}
-// 				failure {
-// 					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 				}
-// 			}
-// 		}
-//
-// 		stage('accept3')
-// 		{
-// 			steps
-// 			{
-// //				echo 'Dummy'
-// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 			}
-// 			post
-// 			{
-// 				always
-// 				{
-// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-// 				}
-// 				failure
-// 				{
-// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 				}
-// 			}
-// 		}
-//
-// 		stage('accept1') {
-// 			steps
-// 			{
-// //				echo 'Dummy'
-// //				sleep 60
-// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 			}
-// 			post
-// 			{
-// 				always
-// 				{
-// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-// 				}
-// 				failure
-// 				{
-// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 				}
-// 			}
-// 		}
-//
-// 		stage('accept6')
-// 		{
-// 			steps
-// 			{
-// //				echo 'Dummy'
-// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_6_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 			}
-// 			post
-// 			{
-// 				always
-// 				{
-// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-// 				}
-// 				failure
-// 				{
-// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 				}
-// 			}
-// 		}
+		stage('smoke') {
+			steps {
+				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post {
+				always {
+					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
+				}
+				failure {
+					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
+		}
+
+		stage('accept3')
+		{
+			steps
+			{
+//				echo 'Dummy'
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
+		}
+
+		stage('accept1') {
+			steps
+			{
+//				echo 'Dummy'
+//				sleep 60
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
+		}
+
+		stage('accept6')
+		{
+			steps
+			{
+//				echo 'Dummy'
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_6_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
+		}
 
 		// stage ('Acceptance Tests 3') {
         // 	parallel
@@ -161,86 +161,25 @@ pipeline {
 		// 	}
 		// }
 
-// 		stage('Dev-Upload') {
-// 			steps {
-// 				dir("/repositories/artifacts/bwpostman/data") {
-// 					fileOperations([
-// 						fileCopyOperation(
-// 							excludes: '',
-// 						flattenFiles: false,
-// 						includes: "pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip",
-// 						targetLocation: "${WORKSPACE}/tests")
-// 				])
-// 				}
-//
-// 				dir("/repositories/artifacts/bwpostman/data") {
-// 					fileOperations([
-// 						fileCopyOperation(
-// 							excludes: '',
-// 						flattenFiles: false,
-// 						includes: "CHANGELOG",
-// 						targetLocation: "${WORKSPACE}/tests")
-// 				])
-// 				}
-//
-// 				script {
-// 					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-// 				}
-//
-// 				echo "tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
-//
-// 				sshPublisher(
-// 					publishers: [sshPublisherDesc(
-// 					configName: 'Web Dev BwPostman',
-// 					transfers: [sshTransfer(
-// 					cleanRemote: false,
-// 					excludes: '',
-// 					execCommand: '',
-// 					execTimeout: 120000,
-// 					flatten: false,
-// 					makeEmptyDirs: false,
-// 					noDefaultExcludes: false,
-// 					patternSeparator: '[, ]+',
-// 					remoteDirectory: "${params.VERSION_NUMBER}.${currentBuild.number}",
-// 					remoteDirectorySDF: false,
-// 					removePrefix: 'tests',
-// 					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
-// 			)],
-// 				usePromotionTimestamp: false,
-// 					useWorkspaceInPromotion: false,
-// 					verbose: false
-// 			)]
-// 			)
-//
-// 				emailext(
-// 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, first acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-// 					subject:"BwPostman build ${currentBuild.number} successful",
-// 					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-// 			)
-// //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-//
-// 			}
-// 		}
-//
-// 		stage('accept2')
-// 		{
-// 			steps
-// 			{
-// //				echo 'Dummy'
-// 				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 			}
-// 			post
-// 			{
-// 				always
-// 				{
-// 					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-// 				}
-// 				failure
-// 				{
-// 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-// 				}
-// 			}
-// 		}
+		stage('accept2')
+		{
+			steps
+			{
+//				echo 'Dummy'
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
+		}
 
 		stage('Pre-Release') {
 			steps {
@@ -253,6 +192,67 @@ pipeline {
 				echo 'Benutzeroberflaeche'
 				echo 'Worst-Case-Tests'
 				echo 'nicht-funktionale Tests (Datenschutz, Sicherheit, ...)'
+			}
+		}
+
+		stage('Dev-Upload') {
+			steps {
+				dir("/repositories/artifacts/bwpostman/data") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+						flattenFiles: false,
+						includes: "pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip",
+						targetLocation: "${WORKSPACE}/tests")
+				])
+				}
+
+				dir("/repositories/artifacts/bwpostman/data") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+						flattenFiles: false,
+						includes: "CHANGELOG",
+						targetLocation: "${WORKSPACE}/tests")
+				])
+				}
+
+				script {
+					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+				}
+
+				echo "tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
+
+				sshPublisher(
+					publishers: [sshPublisherDesc(
+					configName: 'Web Dev BwPostman',
+					transfers: [sshTransfer(
+					cleanRemote: false,
+					excludes: '',
+					execCommand: '',
+					execTimeout: 120000,
+					flatten: false,
+					makeEmptyDirs: false,
+					noDefaultExcludes: false,
+					patternSeparator: '[, ]+',
+					remoteDirectory: "${params.VERSION_NUMBER}.${currentBuild.number}",
+					remoteDirectorySDF: false,
+					removePrefix: 'tests',
+					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
+			)],
+				usePromotionTimestamp: false,
+					useWorkspaceInPromotion: false,
+					verbose: false
+			)]
+			)
+
+				emailext(
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, first acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman build ${currentBuild.number} successful",
+					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+			)
+//				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+
 			}
 		}
 

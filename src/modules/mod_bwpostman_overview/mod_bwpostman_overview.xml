@@ -29,6 +29,8 @@
 		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_bwpostman_overview.sys.ini</language>
 		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.sys.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.mod_bwpostman_overview.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.mod_bwpostman_overview.sys.ini</language>
 	</languages>
 
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_BWPOSTMAN_OVERVIEW" />

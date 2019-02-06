@@ -47,6 +47,7 @@
 		<language tag="de-DE">de-DE/de-DE.com_bwpostman.ini</language>
 		<language tag="ja-JP">ja-JP/ja-JP.com_bwpostman.ini</language>
 		<language tag="es-ES">es-ES/es-ES.com_bwpostman.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.com_bwpostman.ini</language>
 	</languages>
 
 	<media destination="bw_postman" folder="media">
@@ -112,6 +113,8 @@
 			<language tag="es-ES">es-ES/es-ES.com_bwpostman.sys.ini</language>
 			<language tag="ja-JP">ja-JP/ja-JP.com_bwpostman.ini</language>
 			<language tag="ja-JP">ja-JP/ja-JP.com_bwpostman.sys.ini</language>
+			<language tag="nl-NL">nl-NL/nl-NL.com_bwpostman.ini</language>
+			<language tag="nl-NL">nl-NL/nl-NL.com_bwpostman.sys.ini</language>
 		</languages>
 
 	</administration>

@@ -1789,6 +1789,9 @@ class TestOptionsCest
 			$group_id = $I->getGroupIdByName($groupname);
 			$slider   = $this->selectPermissionsSliderForUsergroup($I, $group_id);
 
+			codecept_debug("Groupname: $groupname");
+			codecept_debug("Group ID: $group_id");
+
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)
 			{
@@ -1850,8 +1853,12 @@ class TestOptionsCest
 		$identifier = sprintf(OptionsPage::$result_row, $group_id, $key_pos);
 		$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];
 
+		codecept_debug("Identifier: $identifier");
+		codecept_debug("Value: $value");
+
 		$scrollPos = './/*[@id="jform_rules_' . $rule . '_' . $group_id . '"]';
 		$I->scrollTo($scrollPos, 0, -150);
+		$I->waitForElementVisible($scrollPos);
 
 		$I->see($value, $identifier);
 	}

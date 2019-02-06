@@ -34,6 +34,8 @@
 		<language tag="es-ES">es-ES/es-ES.mod_bwpostman.sys.ini</language>
 		<language tag="ja-JP">ja-JP/ja-JP.mod_bwpostman.ini</language>
 		<language tag="ja-JP">ja-JP/ja-JP.mod_bwpostman.sys.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.mod_bwpostman.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.mod_bwpostman.sys.ini</language>
 	</languages>
 
 	<config>

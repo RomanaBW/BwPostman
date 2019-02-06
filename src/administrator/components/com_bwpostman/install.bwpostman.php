@@ -795,7 +795,7 @@ class Com_BwPostmanInstallerScript
 			// get group ID of public
 			$public_id = $this->getGroupId('Public');
 
-			// Create user group BwPostmanAdmin
+			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
 
 			if (!$groupExists)
@@ -813,19 +813,21 @@ class Com_BwPostmanInstallerScript
 			$admin_groupId = $this->getGroupId('BwPostmanAdmin');
 			$this->adminUsergroup = $admin_groupId;
 
-			// Create user group BwPostmanManager
-			$groupExists = $this->getGroupId('BwPostmanAdmin');
+			// Ensure user group BwPostmanManager exists
+			$manager_groupId = $this->getGroupId('BwPostmanManager');
 
-			if (!$groupExists)
+			if (!$manager_groupId)
 			{
-				$ret = $groupModel->save(array('id' => 0, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager'));
+				$manager_groupId = 0;
+			}
 
-				if (!$ret)
-				{
-					echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
-					throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
-						$ret));
-				}
+			$ret = $groupModel->save(array('id' => $manager_groupId, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager'));
+
+			if (!$ret)
+			{
+				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
+					$ret));
 			}
 
 			$manager_groupId = $this->getGroupId('BwPostmanManager');
@@ -836,16 +838,18 @@ class Com_BwPostmanInstallerScript
 				$parent_id  = $manager_groupId;
 				foreach ($groups as $item)
 				{
-					$groupExists = $this->getGroupId($item);
+					$groupId = $this->getGroupId($item);
 
-					if (!$groupExists)
+					if (!$groupId)
 					{
-						$ret = $groupModel->save(array('id' => 0, 'parent_id' => $parent_id, 'title' => $item));
+						$groupId = 0;
+					}
 
-						if (!$ret)
-						{
-							throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-						}
+					$ret = $groupModel->save(array('id' => $groupId, 'parent_id' => $parent_id, 'title' => $item));
+
+					if (!$ret)
+					{
+						throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
 					}
 
 					$parent_id = $this->getGroupId($item);

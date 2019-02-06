@@ -19,6 +19,7 @@ languages:
   - it-IT
   - ja-JP
   - es-ES
+  - nl-NL
 
 to_delete:
   - index.php

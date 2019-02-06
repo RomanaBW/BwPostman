@@ -403,6 +403,8 @@ class Generals
 		'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",
 		'Clear queue'          => ".//*[@id='toolbar-delete']/button",
 		'Uninstall  '          => ".//*[@id='toolbar-delete']/button",
+		'BwPostman Manual'     => ".//*[@id='toolbar-book']/button",
+		'BwPostman Forum'      => ".//*[@id='toolbar-users']/button",
 	);
 
 	/**

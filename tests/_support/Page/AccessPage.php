@@ -97,7 +97,7 @@ class AccessPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $help_button      = ".//*[@id='toolbar-help']/button";
+	public static $forum_button      = ".//*[@id='toolbar-users']/button";
 
 	/**
 	 * @var string
@@ -105,6 +105,13 @@ class AccessPage
 	 * @since 2.0.0
 	 */
 	public static $options_button   = ".//*[@id='toolbar-options']/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.2.1
+	 */
+	public static $manual_button       = ".//*[@id='toolbar-book']/button";
 
 	// statistics pane
 	/**

@@ -351,7 +351,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_bwpostman.edit.campaign.data', array());
 
-		if (empty($data) || $recordId != $data->id)
+		if (empty($data) || (is_object($data) && $recordId != $data->id))
 		{
 			$data = $this->getItem();
 		}

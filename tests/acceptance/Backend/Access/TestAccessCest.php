@@ -103,7 +103,8 @@ class TestAccessCest
 
 				$I->see('BwPostman', Generals::$submenu['BwPostman']);
 				$I->see('BwPostman Forum', AccessPage::$forum_icon);
-				$I->see('Help', AccessPage::$help_button);
+				$I->see('BwPostman Forum', AccessPage::$forum_button);
+				$I->see('BwPostman Manual', AccessPage::$manual_button);
 
 				if (!$allowed)
 				{
@@ -448,7 +449,8 @@ class TestAccessCest
 				$I->amOnPage(MainView::$url);
 				$I->waitForElement(Generals::$pageTitle, 30);
 				$I->see('BwPostman');
-				$I->seeElement(Generals::$toolbar['Help']);
+				$I->seeElement(Generals::$toolbar['BwPostman Forum']);
+				$I->seeElement(Generals::$toolbar['BwPostman Manual']);
 
 				if ($allowed)
 				{
@@ -770,6 +772,7 @@ class TestAccessCest
 
 			if ($button == 'Newsletters')
 			{
+				$I->scrollTo(NewsletterManagerPage::$tab1, 0, -100);
 				$I->click(NewsletterManagerPage::$tab1);// switch to tab unsent newsletters to finish
 				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
 			}

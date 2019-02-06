@@ -50,6 +50,6 @@ modules:
         reconnect: true
 
       MailCatcher:
-        url: 'http://127.0.0.1'
+        url: 'http://172.18.0.20'
         port: '1080'
 

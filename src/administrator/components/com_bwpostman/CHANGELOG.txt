@@ -8,6 +8,9 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 
 Version 2.2.1 released (7-Feb-2019)----
 
+New
++ Dutch language files
+
 Bugfix
 # Mail to webmaster at unsubscription doesn't work
 

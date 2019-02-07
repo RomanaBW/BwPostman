@@ -54,12 +54,12 @@ pipeline {
 			}
 		}
 
-		stage('accept3')
-		{
+		stage('accept1') {
 			steps
 			{
 //				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+//				sleep 60
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			post
 			{
@@ -74,12 +74,32 @@ pipeline {
 			}
 		}
 
-		stage('accept1') {
+		stage('accept2')
+		{
 			steps
 			{
 //				echo 'Dummy'
-//				sleep 60
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
+		}
+
+		stage('accept3')
+		{
+			steps
+			{
+//				echo 'Dummy'
+				bwpmAccept("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
 			}
 			post
 			{
@@ -161,26 +181,6 @@ pipeline {
 		// 	}
 		// }
 
-		stage('accept2')
-		{
-			steps
-			{
-//				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-				}
-			}
-		}
-
 		stage('Pre-Release') {
 			steps {
 				echo 'Upload auf Github Master-Branch'
@@ -247,7 +247,7 @@ pipeline {
 			)
 
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, first acceptance tests and is uploaded to Boldt Webservice for testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, all acceptance tests and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 			)

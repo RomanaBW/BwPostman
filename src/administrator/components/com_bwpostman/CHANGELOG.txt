@@ -13,6 +13,7 @@ New
 
 Bugfix
 # Mail to webmaster at unsubscription doesn't work
+# Wrong inheritance of sample user groups
 
 Improvement
 ~ Switch update server to package naming

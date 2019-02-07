@@ -134,9 +134,6 @@ pipeline {
 			}
 		}
 
-		// stage ('Acceptance Tests 3') {
-        // 	parallel
-		// 	{
 		stage('accept4')
 		{
 			steps
@@ -155,35 +152,6 @@ pipeline {
 				{
 					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
 				}
-			}
-		}
-
-			stage ('accept5')
-				{
-					steps
-					{
-						echo 'Dummy'
-						bwpmAccept("accept5", params.ACCEPT_5_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
-					}
-					post
-					{
-						always
-						{
-							bwpmAcceptPostStepAlways("accept5")
-						}
-						failure
-						{
-							bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
-						}
-					}
-				}
-
-		// 	}
-		// }
-
-		stage('Pre-Release') {
-			steps {
-				echo 'Upload auf Github Master-Branch'
 			}
 		}
 
@@ -256,6 +224,26 @@ pipeline {
 			}
 		}
 
+		stage ('accept5')
+		{
+			steps
+			{
+				echo 'Dummy'
+				bwpmAccept("accept5", params.ACCEPT_5_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("accept5")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				}
+			}
+		}
+
 		stage('Release') {
 			steps {
 				echo 'Upload auf Webserver'
@@ -265,13 +253,5 @@ pipeline {
 				echo 'Upload auf Github Release-Branch'
 			}
 		}
-
-		stage('Post-Release') {
-			steps {
-				echo 'Beschreibung auf Webseite aktualisieren'
-				echo 'Handbuch im Web aktualisieren'
-				echo 'PDF-Handbuch aktualisieren und Upload'
-			}
-        }
     }
 }

@@ -58,7 +58,7 @@
 
 	<administration>
 
-		<menu img="../administrator/components/com_bwpostman/assets/images/logo-bwpostman.png">COM_BWPOSTMAN_MENU_MAIN_ENTRY</menu>
+		<menu>COM_BWPOSTMAN_MENU_MAIN_ENTRY</menu>
 		<submenu>
 			<!--
 				Note that all & must be escaped to &amp; for the file to be valid

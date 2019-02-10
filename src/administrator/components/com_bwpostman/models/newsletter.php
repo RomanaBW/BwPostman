@@ -980,7 +980,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// convert attachment array to string, to be able to save
-		if ($data['attachment'] != '' && is_array($data['attachment']))
+		if (isset($data['attachment']) && $data['attachment'] != '' && is_array($data['attachment']))
 		{
 			foreach ($data['attachment'] as $k => $v)
 			{
@@ -1905,7 +1905,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['intro_text']            = $state_data->intro_text;
 				$form_data['intro_text_text']       = $state_data->intro_text_text;
 				$form_data['hits']                  = $state_data->hits;
-				$form_data['access']                = $state_data->access;
+				$form_data['access']                = property_exists($state_data, 'access') ? $state_data->access : 1;
 				$form_data['publish_up']            = $state_data->publish_up;
 				$form_data['publish_down']          = $state_data->publish_down;
 				$form_data['created_by']            = $state_data->created_by;

@@ -175,12 +175,12 @@ abstract class BWPM_User2SubscriberHelper
 			$query->set($_db->quoteName('special') . " = " . $_db->quote($subscriber_data['special']));
 		}
 
-		if ($subscriber_data['gender'] != '')
+		if (isset($subscriber_data['gender']) && $subscriber_data['gender'] != '')
 		{
 			$query->set($_db->quoteName('gender') . " = " . $_db->quote($subscriber_data['gender']));
 		}
 
-		if ($subscriber_data['mailformat'] != '')
+		if (isset($subscriber_data['mailformat']) && $subscriber_data['mailformat'] != '')
 		{
 			$query->set($_db->quoteName('mailformat') . " = " . $_db->quote($subscriber_data['mailformat']));
 		}

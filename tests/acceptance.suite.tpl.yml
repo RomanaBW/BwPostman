@@ -13,12 +13,12 @@ paths:
 modules:
     enabled:
       - \Helper\Acceptance
-      - \Helper\MailCatcher
+#      - \Helper\MailCatcher
       - WebDriver
       - Db
       - Asserts
       - Filesystem
-      - MailCatcher
+#      - MailCatcher
 
 # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
     config:
@@ -49,7 +49,7 @@ modules:
         cleanup: false
         reconnect: true
 
-      MailCatcher:
-        url: 'http://172.18.0.20'
-        port: '1080'
+#      MailCatcher:
+#        url: 'http://172.18.0.20'
+#        port: '1080'
 

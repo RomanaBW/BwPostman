@@ -530,7 +530,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$document->setTitle($title);
 
 				// Set toolbar title and items
-				$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+				$checkedOut = 0;
+				if (property_exists($this->item, 'checked_out'))
+				{
+					$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+				}
 
 				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 				// For new records, check the create permission.

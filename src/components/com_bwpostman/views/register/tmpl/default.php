@@ -270,7 +270,7 @@ jQuery(document).ready(function()
 
 		// Get the Iframe-Wrapper and set Iframe
 		var wrapper = document.getElementById('bwp_wrapper');
-		var html = '<iframe id="iFrame" name="iFrame" src="<?php echo $disclaimer_link ?>" frameborder="0" style="width:100%; height:100%;"></iframe>';
+		var html = '<iframe id="iFrame" name="iFrame" src="<?php echo isset($disclaimer_link) ? $disclaimer_link : ''; ?>" frameborder="0" style="width:100%; height:100%;"></iframe>';
 
 		// Get the button that opens the modal
 		var btnopen = document.getElementById("bwp_open");

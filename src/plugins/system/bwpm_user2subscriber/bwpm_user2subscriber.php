@@ -785,7 +785,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 				$update_subscriberdata_result = BWPM_User2SubscriberHelper::updateSubscriberData($subscriber_id, $subscriber_data);
 
-				$new_mailinglists       = json_decode($subscriber_data['mailinglists']);
+				$new_mailinglists       = $subscriber_data['mailinglists'];
 				$update_mailinglists    = BWPM_User2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
 
 				return ($update_mailinglists && $update_userid_result);

@@ -78,6 +78,16 @@
         bw_plugin_name: "bwpm_user2subscriber"
         bw_plugin_group: "system"
 
+#    - name: build mediaOverride plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bwpm_mediaoverride"
+        bw_plugin_group: "system"
+
 #    - name: pack complete package
     - include_role:
         name: romanabw.build-jpackage-package

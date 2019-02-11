@@ -397,16 +397,29 @@ class TestNewslettersDetailsCest
 
 		$I->click(Generals::$toolbar['New']);
 
+		// Ensure upload file doesn't exists
+		try
+		{
+			$I->deleteFile(NlEdit::$attachment_upload_path . NlEdit::$attachment_upload_file_raw);
+		}
+		catch (\Exception $e)
+		{
+			codecept_debug("No file to delete");
+		}
+
 		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
+		$I->waitForElementVisible("#imageModal_jform_attachment__attachmentX__single_attachment", 10);
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElementVisible("iframe#imageframe", 5);
+		$I->waitForElementVisible(".//*[@id='uploadForm']", 5);
+		$I->scrollTo(".//*[@id='uploadForm']", 0, -80);
 		$I->waitForElementVisible("#upload-file", 5);
 
 		// Upload file
-		$I->attachFile(".//*[@id='upload-file']", "boldt-webservice.png");
-		$I->click("html/body/form[2]/div/fieldset/div/div[2]/button");
-		$I->dontSeeElement(Generals::$alert_error);
+		$I->attachFile(".//*[@id='upload-file']", NlEdit::$attachment_upload_file_raw);
+		$I->click("html/body/div[2]/form[2]/div/fieldset/div/div[2]/button");
+		$I->seeElement(Generals::$alert_success);
+		$I->see(NlEdit::$attachment_upload_success . NlEdit::$attachment_upload_file_raw, Generals::$alert_success);
 
 		$I->wait(2);
 		$I->switchToIFrame(Generals::$image_frame);

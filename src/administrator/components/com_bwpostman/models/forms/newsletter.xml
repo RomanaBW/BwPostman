@@ -60,8 +60,9 @@
 				<field name="single_attachment"
 				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"
 				       labelclass="control-label"
-				       size="50"
-				       type="allmedia" />
+				       link="index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=com_bwpostman_nl&amp;author="
+				       size="30"
+				       type="media" />
 			</form>
 		</field>
 

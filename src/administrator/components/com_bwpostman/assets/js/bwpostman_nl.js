@@ -190,63 +190,6 @@ function checkSelectedRecipients (ml_available, ml_unavailable, ml_intern, userg
 }
 
 
-function addContentTag(type, field){
-
-	var tempval=eval("document.adminForm."+field+'_'+type);
-	var tempfield=eval("document.adminForm."+field);
-	var text = '';
-
-  	if(tempval.options[tempval.selectedIndex].value != 0) {
-    	if(type == 'content') {
-    		text = '[CONTENT id="' + tempval.options[tempval.selectedIndex].value + '"]';
-    	}
-    	if(type == 'bookmark') {
-    		text = '[BOOKMARK id="' + tempval.options[tempval.selectedIndex].value
-    					+ '" title="' + tempval.options[tempval.selectedIndex].text + '"]';
-    	}
-
-    	if(field == "html_message") {
-    		tinyMCE.execCommand('mceInsertContent', false, text);
-    	}
-    	if(field == 'message' || field == 'pdf_message' || field == 'nl_content'  ) {
-    		insertAtCursor(tempfield, text);
-    	}
-  	}
-}
-
-function addAttachmentTag(){
-  var form = document.adminForm;
-  var tempval=eval("document.adminForm.nl_attachments");
-  if(form.nl_attachments.options[form.nl_attachments.selectedIndex].value !== 0) {
-   var text = '[ATTACHMENT filename="' + form.nl_attachments.options[form.nl_attachments.selectedIndex].value + '"]';
-    alert('text');
-    insertAtCursor(form.nl_content, text);
-
-  }
-}
-
-
-function insertAtCursor(Field, myValue) {
-	var myField = document.getElementById(Field);
-
-  //IE support
-  if (document.selection) {
-    myField.focus();
-    var sel = document.selection.createRange();
-    sel.text = myValue;
-  }
-  //MOZILLA/NETSCAPE support
-  else if (myField.selectionStart || myField.selectionStart == '0') {
-    var startPos = myField.selectionStart;
-    var endPos = myField.selectionEnd;
-    myField.value = myField.value.substring(0, startPos)
-    + myValue
-    + myField.value.substring(endPos, myField.value.length);
-  } else {
-    myField.value += myValue;
-  }
-}
-
 //insert placeholder
 function buttonClick(text, editor) {
 	jInsertEditorText(text, editor);
@@ -288,37 +231,6 @@ function InsertAtCaret(myValue) {
 			this.focus();
 		}
 	})
-}
-
-
-function deselectAll(element) { // Method to deselect all selected options
-
-	for (var i=0; i<element.options.length; i++) {
-		var o = element.options[i];
-		o.selected = false;
-	}
-}
-
-
-function checkSelectedOption (selectbox) { // Method to check if "All subscribers" is selected --> if yes, deselect all other options
-
-	var count_selected = 0;
-	for (var i=0; i<selectbox.options.length; i++) {
-		var o = selectbox.options[i];
-		if (o.selected == true) {
-			count_selected++;
-		}
-	}
-
-	if ((selectbox.value == -1) && (count_selected > 1)) {
-		alert ("<?php echo JText::_('BWP_NL_ALL_SELECTED' , true); ?>");
-		for (i=0; i<selectbox.options.length; i++) {
-			o = selectbox.options[i];
-			if (o.value != -1) {
-				o.selected = false;
-			}
-		}
-	}
 }
 
 

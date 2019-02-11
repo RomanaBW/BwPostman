@@ -421,14 +421,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button1     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[2]/div[2]/div/a[1]";
+	public static $attachment_select_button1     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[2]/div[2]/div/div[2]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button2     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[3]/div[2]/div[2]/div/a[1]";
+	public static $attachment_select_button2     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[3]/div[2]/div[2]/div/div[2]/button[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.3.0
+	 */
+	public static $attachment_upload_path     = "/www_path/images/";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.3.0
+	 */
+	public static $attachment_upload_file_raw     = "boldt-webservice.png";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.3.0
+	 */
+	public static $attachment_upload_success     = "Upload Complete: /";
 
 	/**
 	 * @var string

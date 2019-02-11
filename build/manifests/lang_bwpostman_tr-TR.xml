@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="file" version="3.0" method="upgrade">
+	<name>BwPostman Turkish Language Pack</name>
+	<creationDate>%%creation_date%%</creationDate>
+	<author>Boldt Webservice (Dutch translation Joop Benningshof)</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>This component is released under the GNU/GPLv3 License or later</license>
+	<version>%%version_number%%</version>
+	<description></description>
+
+	<fileset>
+		<files folder="site" target="language/tr-TR">
+			<filename>tr-TR.com_bwpostman.ini</filename>
+			<filename>tr-TR.mod_bwpostman.ini</filename>
+			<filename>tr-TR.mod_bwpostman.sys.ini</filename>
+			<filename>tr-TR.mod_bwpostman_overview.ini</filename>
+			<filename>tr-TR.mod_bwpostman_overview.sys.ini</filename>
+		</files>
+
+		<files folder="admin" target="administrator/language/tr-TR">
+			<filename>tr-TR.com_bwpostman.ini</filename>
+			<filename>tr-TR.com_bwpostman.sys.ini</filename>
+			<filename>tr-TR.plg_bwpostman_personalize.ini</filename>
+			<filename>tr-TR.plg_bwpostman_personalize.sys.ini</filename>
+			<filename>tr-TR.plg_system_bwpm_user2subscriber.ini</filename>
+			<filename>tr-TR.plg_system_bwpm_user2subscriber.sys.ini</filename>
+		</files>
+	</fileset>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Language Updates tr-TR">https://www.boldt-webservice.de/lang_bwpostman_update_tr-TR.xml</server>
+	</updateservers>
+
+</extension>

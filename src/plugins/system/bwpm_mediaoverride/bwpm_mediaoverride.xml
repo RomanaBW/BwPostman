@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension group="system" method="upgrade" type="plugin" version="3.4">
+    <name>PLG_SYSTEM_BWPM_MEDIAOVERRIDE</name>
+	<version>%%version_number%%</version>
+	<creationDate>%%creation_date%%</creationDate>
+	<author>Boldt Webservice</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>GNU/GPLv3 or later</license>
+    <description>PLG_SYSTEM_BWPM_MEDIAOVERRIDE_DESC</description>
+
+	<scriptfile>install.bwpm_mediaoverride.php</scriptfile>
+
+    <files>
+        <filename plugin="bwpm_mediaoverride">bwpm_mediaoverride.php</filename>
+        <filename>install.bwpm_mediaoverride.php</filename>
+        <filename>index.html</filename>
+        <folder>language</folder>
+        <folder>code</folder>
+    </files>
+
+	<languages folder="language">
+		<language tag="de-DE">de-DE/de-DE.plg_system_bw_libregister.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_system_bw_libregister.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_bw_libregister.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_bw_libregister.sys.ini</language>
+	</languages>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/libraries/bw_mediaoverride.xml</server>
+	</updateservers>
+
+</extension>

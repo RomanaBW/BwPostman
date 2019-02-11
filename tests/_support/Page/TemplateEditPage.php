@@ -112,21 +112,21 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select_button     = './/*[@id=\'adminForm\']/fieldset/div/div[1]/div[1]/dd[1]/fieldset[1]/div/ul/li[3]/div/div/a[1]';
+	public static $thumb_select_button     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[1]/fieldset[1]/div/ul/li[3]/div/div/div[2]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select            = "html/body/ul/li/a[contains(@href,'powered_by.png')]";
+	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[contains(@id,'/powered_by.png')]/label/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
+	public static $thumb_insert            = ".//button[@id='insert']";
 
 	/**
 	 * @var string
@@ -531,15 +531,10 @@ class TemplateEditPage
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElement("#imageframe", 30);
+		$I->waitForElement("#browser-list", 30);
 
-		$I->switchToIFrame(Generals::$image_frame);
 		$I->clickAndWait(self::$thumb_select, 1);
 
-		$I->switchToIFrame();
-		$I->wait(1);
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->wait(1);
 		$I->clickAndWait(self::$thumb_insert, 1);
 		$I->switchToIFrame();
 	}

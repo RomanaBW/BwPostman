@@ -37,7 +37,7 @@
 		/>
 		<field
 			name="thumbnail"
-			type="allmedia"
+			type="media"
 			class="inputbox"
 			label="COM_BWPOSTMAN_TPL_THUMBNAIL_LABEL"
 			labelclass="control-label"
@@ -205,7 +205,7 @@
 			</field>
 			<field
 				name="logo_src"
-				type="allmedia"
+				type="media"
 				class="inputbox"
 				label="COM_BWPOSTMAN_LOGO_FIELD_LABEL"
 				labelclass="control-label"

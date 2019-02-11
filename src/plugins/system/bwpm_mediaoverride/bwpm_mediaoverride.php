@@ -1,14 +1,12 @@
 <?php
 /**
- * Boldt Webservice LibRegister Plugin
+ * BwPostman Mediaoverride Plugin
  *
- * Plugin to register own libraries
- *
- * Boldt Webservice LibRegister Plugin main file.
+ * BwPostman Mediaoverride Plugin main file for BwPostman.
  *
  * @version %%version_number%%
- * @package Boldt Webservice LibRegister Plugin
- * @author Romana Boldt
+ * @package BwPostman Mediaoverride Plugin
+ * @author Romana Boldt, Karl Klostermann
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
  * @license GNU/GPL v3, see LICENSE.txt
@@ -26,28 +24,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
-
-jimport('joomla.plugin.plugin');
-
 /**
- * Class LibRegister
+ * Class MediaOverride
  *
- * @since  2.0.0
+ * @since  2.3.0
  */
-class PlgSystemBW_Libregister extends JPlugin
-{
+class plgSystemBWPM_MediaOverride extends JPlugin {
 	/**
-	 * Event method onAfterInitialise
+	 * plgSystemBWPM_MediaOverride constructor.
 	 *
-	 * @return  void
+	 * @param object $subject
+	 * @param array  $config
 	 *
-	 * @throws Exception
-	 *
-	 * @since  2.0.0
+	 * @since   2.3.0
 	 */
-	public function onAfterInitialise()
-	{
-		JLoader::registerPrefix('J', JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/toolbar');
+	public function __construct(&$subject, $config = array()) {
+		parent::__construct($subject, $config);
+	}
+
+	/**
+	 * Method to set status of component activation property
+	 *
+	 * @return void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 2.3.0
+	 */
+	public function onAfterRoute() {
+		$app = JFactory::getApplication();
+		$jinput	= $app->input;
+
+		if($jinput->get('option') == 'com_media' && $jinput->get('asset') == 'com_bwpostman_nl' && $app->isAdmin())
+		{
+			require_once(dirname(__FILE__) . '/code/com_media/views/imageslist/view.html.php');
+		}
 	}
 }

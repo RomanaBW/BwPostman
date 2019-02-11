@@ -96,7 +96,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $media_frame              = "mediaFrame";
+	public static $media_frame              = "field-media-modal";
 
 	/**
 	 * @var string

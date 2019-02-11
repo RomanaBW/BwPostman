@@ -11,15 +11,19 @@ package_parts:
   - mod_bwpostman_overview
   - plg_personalize
   - plg_bw_libregister
+  - plg_bwpm_mediaoverride
   - plg_bwpm_user2subscriber
 
 languages:
   - de-DE
   - en-GB
+  - es-ES
+  - fr-FR
+  - hu-HU
   - it-IT
   - ja-JP
-  - es-ES
   - nl-NL
+  - tr-TR
 
 to_delete:
   - index.php

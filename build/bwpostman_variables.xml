@@ -19,7 +19,7 @@
 
 		<property name="upload" value="0" override="true" />
 
-		<property name="version" value="2.2.1" override="true" />
+		<property name="version" value="2.3.0" override="true" />
 		<property name="lib_version" value="0.9.1" override="true" />
 
 		<property name="home_dir" value="/home/romana/PhpstormProjects/BwPostman" override="true" />

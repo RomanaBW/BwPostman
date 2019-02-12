@@ -53,7 +53,6 @@
 	<media destination="bw_postman" folder="media">
 		<filename>index.html</filename>
 		<folder>images</folder>
-		<folder>js</folder>
 	</media>
 
 	<administration>

@@ -269,6 +269,7 @@ class InstallationPage
 		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see(self::$installSuccessMsg, Generals::$alert_success);
 		$I->dontSee("Error", Generals::$alert_heading);
+		$I->dontSee("Warning", Generals::$alert_heading);
 	}
 
 	/**

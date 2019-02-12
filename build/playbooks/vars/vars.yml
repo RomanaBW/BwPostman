@@ -18,12 +18,12 @@ languages:
   - de-DE
   - en-GB
   - es-ES
-  - fr-FR
-  - hu-HU
+#  - fr-FR
+#  - hu-HU
   - it-IT
   - ja-JP
   - nl-NL
-  - tr-TR
+#  - tr-TR
 
 to_delete:
   - index.php
@@ -58,7 +58,9 @@ manifest_list:
   - src/modules/mod_bwpostman_overview/mod_bwpostman_overview.xml
   - src/plugins/vmuserfield/bwpm_buyer2subscriber/bwpm_buyer2subscriber.xml
   - src/plugins/bwpostman/personalize/personalize.xml
+  - src/plugins/system/bwpm_mediaoverride/bwpm_mediaoverride.xml
   - src/plugins/system/bwpm_user2subscriber/bwpm_user2subscriber.xml
+  - src/plugins/system/bw_libregister/bw_libregister.xml
   - build/manifests/pkg_bwpostman.xml
   - build/manifests/lang_bwpostman_de-DE.xml
   - build/manifests/lang_bwpostman_en-GB.xml

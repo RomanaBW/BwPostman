@@ -418,7 +418,7 @@ class TestNewslettersDetailsCest
 		// Upload file
 		$I->attachFile(".//*[@id='upload-file']", NlEdit::$attachment_upload_file_raw);
 		$I->click("html/body/div[2]/form[2]/div/fieldset/div/div[2]/button");
-		$I->seeElement(Generals::$alert_success);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(NlEdit::$attachment_upload_success . NlEdit::$attachment_upload_file_raw, Generals::$alert_success);
 
 		$I->wait(2);

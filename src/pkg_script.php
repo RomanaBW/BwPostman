@@ -53,6 +53,7 @@ class Pkg_BwPostmanInstallerScript
 
 	public function install()
 	{
+		sleep(5);
 		$session	= JFactory::getSession();
 		$session->set('update', false, 'bwpostman');
 //		$this->showFinished(false);

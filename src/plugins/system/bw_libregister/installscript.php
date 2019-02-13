@@ -1,11 +1,11 @@
 <?php
 /**
- * BwPostman Personalize Plugin
+ * Boldt Webservice LibRegister Plugin
  *
- * BwPostman Personalize Plugin installer.
+ * Boldt Webservice LibRegister Plugin installer.
  *
  * @version %%version_number%%
- * @package BwPostman Personalize Plugin
+ * @package Boldt Webservice LibRegister Plugin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Script file of BwPostman module
  *
- * @since       2.0.0
+ * @since       2.3.0
  */
 class PlgSystemBW_LibregisterInstallerScript
 {
@@ -42,10 +42,11 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @return void
 	 *
-	 * @since       2.0.0
+	 * @since       2.3.0
 	 */
 	public function install($parent)
 	{
+		sleep(5);
 	}
 
 	/**
@@ -55,7 +56,7 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.0.0
+	 * @since       2.3.0
 	 */
 	public function uninstall()
 	{
@@ -68,7 +69,7 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @return void
 	 *
-	 * @since       2.0.0
+	 * @since       2.3.0
 	 */
 	public function update($parent)
 	{
@@ -81,7 +82,7 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @return void
 	 *
-	 * @since       2.0.0
+	 * @since       2.3.0
 	 */
 	public function postflight($type)
 	{

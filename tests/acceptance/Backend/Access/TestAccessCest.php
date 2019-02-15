@@ -425,7 +425,6 @@ class TestAccessCest
 				// @SpecialNote: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
 //					'Newsletters',
-//					'Subscribers',
 //					'Campaigns',
 //					'Mailinglists',
 //					'Templates',
@@ -1361,7 +1360,7 @@ class TestAccessCest
 				MailinglistEditPage::createMailinglistWithoutCleanup($I);
 				break;
 			case 'Templates':
-				TemplateEditPage::createTemplateWithoutCleanup($I);
+				TemplateEditPage::createTemplateWithoutCleanup($I, $user['user']);
 				break;
 		}
 

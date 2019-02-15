@@ -124,9 +124,23 @@ class TemplateEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.3.0
+	 */
+	public static $thumb_select_user       = ".//*/ul[contains(@class, 'manager')]/li[8]/a/div[1]/div/img[contains(@src,'/powered_by.png')]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $thumb_insert            = ".//button[@id='insert']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.0
+	 */
+	public static $thumb_insert_user       = ".//button[contains(@class, 'button-save-selected')]";
 
 	/**
 	 * @var string
@@ -457,6 +471,7 @@ class TemplateEditPage
 	 * Test method to create single Template without cleanup for testing restore permission
 	 *
 	 * @param   \AcceptanceTester   $I
+	 * @param   string              $user
 	 *
 	 * @return  void
 	 *
@@ -464,7 +479,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function CreateTemplateWithoutCleanup(\AcceptanceTester $I)
+	public static function CreateTemplateWithoutCleanup(\AcceptanceTester $I, $user)
 	{
 		$I->wantTo("Create Text template");
 		$I->amOnPage(TplManage::$url);
@@ -472,7 +487,7 @@ class TemplateEditPage
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
-		self::fillFormSimpleText($I);
+		self::fillFormSimpleText($I, $user);
 
 		$I->clickAndWait(self::$toolbar['Save & Close'], 1);
 
@@ -487,16 +502,17 @@ class TemplateEditPage
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param \AcceptanceTester $I
+	 * @param string            $user
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function fillFormSimpleText(\AcceptanceTester $I)
+	public static function fillFormSimpleText(\AcceptanceTester $I, $user)
 	{
 		self::fillRequired($I, 'Text');
 
-		self::selectThumbnail($I);
+		self::selectThumbnail($I, $user);
 
 		self::fillTextContent($I);
 	}
@@ -520,22 +536,39 @@ class TemplateEditPage
 	 * Method to select thumbnail for template
 	 *
 	 * @param \AcceptanceTester $I
+	 * @param $user
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function selectThumbnail(\AcceptanceTester $I)
+	public static function selectThumbnail(\AcceptanceTester $I, $user)
 	{
 
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElement("#browser-list", 30);
 
-		$I->clickAndWait(self::$thumb_select, 1);
+		if ($user === 'AdminTester' || $user === '')
+		{
+			$I->waitForElement("#browser-list", 30);
+			$I->clickAndWait(self::$thumb_select, 1);
 
-		$I->clickAndWait(self::$thumb_insert, 1);
+			$I->clickAndWait(self::$thumb_insert, 1);
+		}
+		else
+		{
+			$I->switchToIFrame(Generals::$image_frame);
+
+			$I->waitForElement(".//ul[contains(@class, 'manager')]", 30);
+			$I->clickAndWait(self::$thumb_select_user, 1);
+
+			$I->switchToIFrame();
+			$I->switchToIFrame(Generals::$media_frame);
+
+			$I->clickAndWait(self::$thumb_insert_user, 1);
+		}
+
 		$I->switchToIFrame();
 	}
 

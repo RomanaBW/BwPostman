@@ -119,7 +119,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[contains(@id,'/powered_by.png')]/label/input";
+	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[8]/a";
 
 	/**
 	 * @var string
@@ -508,7 +508,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function fillFormSimpleText(\AcceptanceTester $I, $user)
+	public static function fillFormSimpleText(\AcceptanceTester $I, $user = 'AdminTester')
 	{
 		self::fillRequired($I, 'Text');
 
@@ -551,7 +551,7 @@ class TemplateEditPage
 
 		if ($user === 'AdminTester' || $user === '')
 		{
-			$I->waitForElement("#browser-list", 30);
+			$I->waitForElement(".//*[@id='browser-list']", 30);
 			$I->clickAndWait(self::$thumb_select, 1);
 
 			$I->clickAndWait(self::$thumb_insert, 1);

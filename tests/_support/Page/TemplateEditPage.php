@@ -560,7 +560,7 @@ class TemplateEditPage
 		{
 			$I->switchToIFrame(Generals::$image_frame);
 
-			$I->waitForElement(".//ul[contains(@class, 'manager')]", 30);
+			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 30);
 			$I->clickAndWait(self::$thumb_select_user, 1);
 
 			$I->switchToIFrame();

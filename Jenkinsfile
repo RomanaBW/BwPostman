@@ -25,7 +25,7 @@ pipeline {
 				}
 
                 echo 'Create installation package'
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
             }
         }
 
@@ -43,14 +43,14 @@ pipeline {
 
 		stage('smoke') {
 			steps {
-				bwpmAccept ("${STAGE_NAME}", params.SMOKE_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept ("${STAGE_NAME}", "${SMOKE_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post {
 				always {
 					bwpmAcceptPostStepAlways ("${STAGE_NAME}")
 				}
 				failure {
-					bwpmAcceptFailure ("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					bwpmAcceptFailure ("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 				}
 			}
 		}
@@ -60,7 +60,7 @@ pipeline {
 			{
 //				echo 'Dummy'
 //				sleep 60
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_1_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", "${ACCEPT_1_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post
 			{
@@ -70,7 +70,7 @@ pipeline {
 				}
 				failure
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 				}
 			}
 		}
@@ -80,7 +80,7 @@ pipeline {
 			steps
 			{
 //				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_2_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", "${ACCEPT_2_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post
 			{
@@ -90,7 +90,7 @@ pipeline {
 				}
 				failure
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 				}
 			}
 		}
@@ -100,7 +100,7 @@ pipeline {
 			steps
 			{
 //				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_3_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", "${ACCEPT_3_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post
 			{
@@ -110,7 +110,7 @@ pipeline {
 				}
 				failure
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 				}
 			}
 		}
@@ -120,7 +120,7 @@ pipeline {
 			steps
 			{
 //				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_6_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", "${ACCEPT_6_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post
 			{
@@ -130,7 +130,7 @@ pipeline {
 				}
 				failure
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 				}
 			}
 		}
@@ -141,7 +141,7 @@ pipeline {
 			{
 				// echo 'Dummy'
 				// sleep 60
-				bwpmAccept("${STAGE_NAME}", params.ACCEPT_4_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("${STAGE_NAME}", "${ACCEPT_4_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post
 			{
@@ -151,7 +151,7 @@ pipeline {
 				}
 				failure
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 				}
 			}
 		}
@@ -171,7 +171,7 @@ pipeline {
 						fileCopyOperation(
 							excludes: '',
 						flattenFiles: false,
-						includes: "pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip",
+						includes: "pkg_bwpostman-${"${VERSION_NUMBER}"}.${currentBuild.number}.zip",
 						targetLocation: "${WORKSPACE}/tests")
 				])
 				}
@@ -190,7 +190,7 @@ pipeline {
 					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
 				}
 
-				echo "tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
+				echo "tests/pkg_bwpostman-${"${VERSION_NUMBER}"}.${currentBuild.number}.zip"
 
 				sshPublisher(
 					publishers: [sshPublisherDesc(
@@ -204,10 +204,10 @@ pipeline {
 					makeEmptyDirs: false,
 					noDefaultExcludes: false,
 					patternSeparator: '[, ]+',
-					remoteDirectory: "${params.VERSION_NUMBER}.${currentBuild.number}",
+					remoteDirectory: "${"${VERSION_NUMBER}"}.${currentBuild.number}",
 					remoteDirectorySDF: false,
 					removePrefix: 'tests',
-					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${params.VERSION_NUMBER}.${currentBuild.number}.zip"
+					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${"${VERSION_NUMBER}"}.${currentBuild.number}.zip"
 			)],
 				usePromotionTimestamp: false,
 					useWorkspaceInPromotion: false,
@@ -231,7 +231,7 @@ pipeline {
 			steps
 			{
 				echo 'Dummy'
-				bwpmAccept("accept5", params.ACCEPT_5_IP, params.VERSION_NUMBER, params.JOOMLA_VERSION)
+				bwpmAccept("accept5", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post
 			{
@@ -241,7 +241,7 @@ pipeline {
 				}
 				failure
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", params.VERSION_NUMBER, params.JOOMLA_VERSION)
+					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 				}
 			}
 		}

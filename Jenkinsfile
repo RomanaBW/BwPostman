@@ -22,9 +22,25 @@ pipeline {
 
     stages {
         stage('Build') {
-            steps {
+			steps {
+				script
+				{
+					VERSION_NUMBER = "2.3.0"
+					JOOMLA_VERSION = "3.9.3"
+					VAGRANT_DIR = "/vms-uni2/vagrant/infrastructure/farm1/J-Tester"
+					BW_ARTIFACTS_BASE = "/repositories/artifacts/bwpostman"
+					SMOKE_IP = "192.168.2.130"
+					ACCEPT_1_IP = "192.168.2.131"
+					ACCEPT_2_IP = "192.168.2.132"
+					ACCEPT_3_IP = "192.168.2.133"
+					ACCEPT_4_IP = "192.168.2.134"
+					ACCEPT_5_IP = "192.168.2.135"
+					ACCEPT_6_IP = "192.168.2.131"
+					GIT_MESSAGE = "not specified"
+				}
+
                 echo 'Create installation package'
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
             }
         }
 

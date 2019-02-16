@@ -20,7 +20,7 @@ pipeline {
 					ACCEPT_3_IP = "192.168.2.133"
 					ACCEPT_4_IP = "192.168.2.134"
 					ACCEPT_5_IP = "192.168.2.135"
-					ACCEPT_6_IP = "192.168.2.131"
+					ACCEPT_6_IP = "192.168.2.136"
 					GIT_MESSAGE = "not specified"
 				}
 

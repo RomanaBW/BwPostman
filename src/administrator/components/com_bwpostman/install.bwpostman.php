@@ -309,6 +309,11 @@ class Com_BwPostmanInstallerScript
 				$this->fillCamCrossTable();
 			}
 
+			if (version_compare($oldRelease, '2.3.0', 'lt'))
+			{
+				$this->removeOwnManagerFiles();
+			}
+
 			$this->installSampleUsergroups();
 
 			$this->repairRootAsset();
@@ -1154,6 +1159,37 @@ class Com_BwPostmanInstallerScript
 
 			return false;
 		}
+	}
+
+	/**
+	 * Remove files of own media manager. With version 2.3.0 not more needed
+	 *
+	 * @since 2.3.0
+	 */
+
+	private function removeOwnManagerFiles()
+	{
+		$removeFolders = array(
+			JPATH_ROOT . '/media/bw_postman/js',
+			JPATH_ROOT . '/administrator/components/com_bwpostman/views/media',
+			JPATH_ROOT . '/administrator/components/com_bwpostman/views/medialist');
+		// Remove views and js
+		foreach ($removeFolders as $folder)
+		{
+			if (JFolder::exists($folder))
+			{
+				JFolder::delete($folder);
+			}
+		}
+
+		if (JFile::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/models/fields/allmedia.php'))
+		{
+			JFile::delete(JPATH_ROOT . "/administrator/components/com_bwpostman/models/fields/allmedia.php");
+		}
+
+
+
+		// Remove field
 	}
 
 	/**

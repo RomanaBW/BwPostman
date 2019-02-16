@@ -5,21 +5,6 @@ pipeline {
 //		disableConcurrentBuilds()
 //	}
 
-	parameters {
-        string(name: "VERSION_NUMBER", defaultValue: "2.3.0", description: "The new/next version number of the project.")
-        string(name: "JOOMLA_VERSION", defaultValue: "3.9.3", description: "Version of Joomla to test against")
-        string(name: "VAGRANT_DIR", defaultValue: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester", description: "Path to the vagrant file")
-        string(name: "SMOKE_IP", defaultValue: "192.168.2.130", description: "Fix IP for smoke tester")
-        string(name: "ACCEPT_1_IP", defaultValue: "192.168.2.131", description: "Fix IP for acceptance tester 1")
-        string(name: "ACCEPT_2_IP", defaultValue: "192.168.2.132", description: "Fix IP for acceptance tester 2")
-        string(name: "ACCEPT_3_IP", defaultValue: "192.168.2.133", description: "Fix IP for acceptance tester 3")
-        string(name: "ACCEPT_4_IP", defaultValue: "192.168.2.134", description: "Fix IP for acceptance tester 4")
-        string(name: "ACCEPT_5_IP", defaultValue: "192.168.2.135", description: "Fix IP for acceptance tester 5")
-        string(name: "ACCEPT_6_IP", defaultValue: "192.168.2.136", description: "Fix IP for acceptance tester 6")
-        string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
-		string(name: "GIT_MESSAGE", defaultValue: "not specified")
-    }
-
     stages {
         stage('Build') {
 			steps {
@@ -40,7 +25,7 @@ pipeline {
 				}
 
                 echo 'Create installation package'
-//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${params.VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
             }
         }
 

@@ -62,8 +62,8 @@ manifest_list:
   - src/plugins/system/bwpm_user2subscriber/bwpm_user2subscriber.xml
   - src/plugins/system/bw_libregister/bw_libregister.xml
   - build/manifests/pkg_bwpostman.xml
-  - build/manifests/lang_bwpostman_de-DE.xml
-  - build/manifests/lang_bwpostman_en-GB.xml
-  - build/manifests/lang_bwpostman_it-IT.xml
-  - build/manifests/lang_bwpostman_es-ES.xml
-  - build/manifests/lang_bwpostman_ja-JP.xml
+#  - build/manifests/lang_bwpostman_de-DE.xml
+#  - build/manifests/lang_bwpostman_en-GB.xml
+#  - build/manifests/lang_bwpostman_it-IT.xml
+#  - build/manifests/lang_bwpostman_es-ES.xml
+#  - build/manifests/lang_bwpostman_ja-JP.xml

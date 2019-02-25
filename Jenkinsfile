@@ -218,7 +218,7 @@ pipeline {
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, all acceptance tests and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number} successful",
-					to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+					to: 'webmaster@boldt-webservice.de'
 			)
 //				NUR WENN ICH GANZ SICHER BIN!!!!!!!!
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'

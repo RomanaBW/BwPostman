@@ -23,6 +23,7 @@
 		<property name="target_base_translations_dir_es" value="${target_base_translations_dir}/es-ES" override="true" />
 		<property name="target_base_translations_dir_ja" value="${target_base_translations_dir}/ja-JP" override="true" />
 		<property name="target_base_translations_dir_it" value="${target_base_translations_dir}/it-IT" override="true" />
+		<property name="target_base_translations_dir_nl" value="${target_base_translations_dir}/nl-NL" override="true" />
 
 		<echo msg="Deleting target directory… " />
 		<delete dir="${target_base_translations_dir}" includeemptydirs="true" failonerror="false" />

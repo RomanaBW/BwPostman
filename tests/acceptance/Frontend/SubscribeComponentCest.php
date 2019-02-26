@@ -266,7 +266,7 @@ class SubscribeComponentCest
 	 *
 	 * @since   2.0.0
 	 */
-/*	public function SubscribeSimpleActivateChangeAndUnsubscribe(AcceptanceTester $I)
+	public function SubscribeSimpleActivateChangeAndUnsubscribe(AcceptanceTester $I)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
@@ -325,18 +325,15 @@ class SubscribeComponentCest
 
 		$I->fillField(SubsView::$mail, SubsView::$mail_fill_2);
 		$I->click(SubsView::$button_submit);
-		if (getenv('BWPM_VERSION') != '132')
-		{
-			$I->waitForElement(SubsView::$register_success, 30);
-			$I->see(SubsView::$msg_saved_changes);
-		}
+		$I->waitForElement(Generals::$alert_success, 30);
+		$I->see(SubsView::$msg_changed_mailaddress);
 
 		SubsView::activate($I, SubsView::$mail_fill_2);
 		$I->click(SubsView::$button_edit);
 
 		SubsView::unsubscribe($I, SubsView::$button_unsubscribe);
 	}
-*/
+
 	/**
 	 * Test method to get error message while activating a non existing subscription
 	 *

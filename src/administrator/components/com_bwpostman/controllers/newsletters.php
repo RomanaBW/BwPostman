@@ -360,6 +360,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 *
 	 * @return 	bool
 	 *
+	 * @throws \Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function clear_queue()
@@ -396,6 +398,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * Method to reset the count of delivery attempts in sendmailqueue back to 0.
 	 *
 	 * @return bool
+	 *
+	 * @throws \Exception
 	 *
 	 * @since       0.9.1
 	 */

@@ -37,6 +37,7 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 use Joomla\Registry\Registry as JRegistry;
 
 // Require helper class
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contentRenderer.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
@@ -199,7 +200,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		$app	= JFactory::getApplication();
-		$_db	= $this->_db;
 		$item   = new stdClass();
 
 		// Initialise variables.
@@ -242,13 +242,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$item->params = $registry->toArray();
 				}
 
-				//get associated mailinglists
-				$query = $_db->getQuery(true);
-				$query->select($_db->quoteName('mailinglist_id'));
-				$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-				$query->where($_db->quoteName('newsletter_id') . ' = ' . (int) $item->id);
-				$_db->setQuery($query);
-				$item->mailinglists = $_db->loadColumn();
+				// Get associated mailinglists
+				$item->mailinglists = $this->getAssociatedMailinglistsByNewsletter($item->id);
 
 				//extract associated usergroups
 				$usergroups = array();
@@ -268,120 +263,22 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				// get available mailinglists to predefine for state
-				$query = $_db->getQuery(true);
-				$query->select('id');
-				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-				$query->where($_db->quoteName('access') . ' = ' . (int) 1);
-
-				$_db->setQuery($query);
-
-				$mls_available = $_db->loadColumn();
-				$res_available = array_intersect($item->mailinglists, $mls_available);
-
-				if (count($res_available) > 0)
-				{
-					$item->ml_available = $res_available;
-				}
-				else
-				{
-					$item->ml_available = array();
-				}
+				$item->ml_available = $this->getMailinglistsByRestriction($item->mailinglists, 'available');
 
 				// get unavailable mailinglists to predefine for state
-				$query = $_db->getQuery(true);
-				$query->select('id');
-				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-				$query->where($_db->quoteName('access') . ' > ' . (int) 1);
-
-				$_db->setQuery($query);
-
-				$mls_unavailable = $_db->loadColumn();
-				$res_unavailable = array_intersect($item->mailinglists, $mls_unavailable);
-
-				if (count($res_unavailable) > 0)
-				{
-					$item->ml_unavailable = $res_unavailable;
-				}
-				else
-				{
-					$item->ml_unavailable = array();
-				}
+				$item->ml_unavailable = $this->getMailinglistsByRestriction($item->mailinglists, 'unavailable');
 
 				// get internal mailinglists to predefine for state
-				$query = $_db->getQuery(true);
-				$query->select('id');
-				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('published') . ' = ' . (int) 0);
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-				$_db->setQuery($query);
-
-				$mls_intern = $_db->loadColumn();
-				$res_intern = array_intersect($item->mailinglists, $mls_intern);
-
-				if (count($res_intern) > 0)
-				{
-					$item->ml_intern = $res_intern;
-				}
-				else
-				{
-					$item->ml_intern = array();
-				}
+				$item->ml_intern = $this->getMailinglistsByRestriction($item->mailinglists, 'internal');
 
 				// Preset template ids
 				// Old template for existing newsletters not set during update to 1.1.x, so we have to manage this here also
 
 				// preset HTML-Template for old newsletters
-				if ($item->id == 0)
-				{
-					$item->template_id = $this->getStandardTpl('html');
-				}
-				elseif ($item->template_id == 0)
-				{
-					$query = $_db->getQuery(true);
-					$query->select('id');
-					$query->from($_db->quoteName('#__bwpostman_templates'));
-					$query->where($_db->quoteName('id') . ' = ' . (int) -1);
-
-					$_db->setQuery($query);
-
-					$html_tpl = $_db->loadResult();
-
-					if (is_null($html_tpl))
-					{
-						$html_tpl = $this->getStandardTpl('html');
-					}
-
-					$item->template_id = $html_tpl;
-				}
+				$this->presetOldHTMLTemplate($item);
 
 				// preset Text-Template for old newsletters
-				if ($item->id == 0)
-				{
-					$item->text_template_id = $this->getStandardTpl('text');
-				}
-				elseif ($item->text_template_id == 0)
-				{
-					$query = $_db->getQuery(true);
-					$query->select('id');
-					$query->from($_db->quoteName('#__bwpostman_templates'));
-					$query->where($_db->quoteName('id') . ' = ' . (int) -2);
-
-					$_db->setQuery($query);
-
-					$text_tpl = $_db->loadResult();
-
-					if (is_null($text_tpl))
-					{
-						$text_tpl = $this->getStandardTpl('text');
-					}
-
-					$item->text_template_id = $text_tpl;
-				}
+				$this->presetOldTextTemplate($item);
 
 				// preset Old Template IDs
 				if ($item->id == 0)
@@ -413,6 +310,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ($item->attachment != '' && is_string($item->attachment))
 		{
 			$baseArray = explode(';', $item->attachment);
+			$attachmentArray = array();
 
 			for ($i = 0; $i < count($baseArray); $i++)
 			{
@@ -574,7 +472,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function isTemplate($id)
 	{
-		$isTemplate = false;
 		$_db	= JFactory::getDbo();
 		$query	= $_db->getQuery(true);
 
@@ -593,7 +490,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication($e->getMessage(), 'error');
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return false;
@@ -642,7 +539,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication($e->getMessage(), 'error');
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $tpl;
@@ -687,6 +584,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$item->text_template_id	= -2;
 		}
 
+		$renderer	= new contentRenderer();
+
 		if ($item->id == 0 && !empty($item->selected_content) && empty($item->html_version) && empty($item->text_version))
 		{
 			if (!is_array($item->selected_content))
@@ -694,7 +593,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$item->selected_content = explode(',', $item->selected_content);
 			}
 
-			$renderer	= new contentRenderer();
 			$content	= $renderer->getContent((array) $item->selected_content, $item->template_id, $item->text_template_id);
 			$item->html_version	= $content['html_version'];
 			$item->text_version	= $content['text_version'];
@@ -708,8 +606,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$item->text_formatted	= $item->text_version;
 
 		// add template data
-		$this->addTplTags($item->html_formatted, $item->template_id);
-		$this->addTextTpl($item->text_formatted, $item->text_template_id);
+		$renderer->addTplTags($item->html_formatted, $item->template_id);
+		$renderer->addTextTpl($item->text_formatted, $item->text_template_id);
 
 		// Replace the intro to provide the correct preview
 		if (!empty($item->intro_headline))
@@ -738,9 +636,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$item->html_formatted = $item->html_formatted . '[dummy]';
 		}
 
-		$this->replaceTplLinks($item->html_formatted);
-		$this->addHtmlTags($item->html_formatted, $item->template_id);
-		$this->addHTMLFooter($item->html_formatted, $item->template_id);
+		$renderer->replaceTplLinks($item->html_formatted);
+		$renderer->addHtmlTags($item->html_formatted, $item->template_id);
+		$renderer->addHTMLFooter($item->html_formatted, $item->template_id);
 
 		// only for old text templates
 		if ($item->text_template_id < 1)
@@ -748,12 +646,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$item->text_formatted = $item->text_formatted . '[dummy]';
 		}
 
-		$this->replaceTextTplLinks($item->text_formatted);
-		$this->addTextFooter($item->text_formatted, $item->text_template_id);
+		$renderer->replaceTextTplLinks($item->text_formatted);
+		$renderer->addTextFooter($item->text_formatted, $item->text_template_id);
 
 		// Replace the links to provide the correct preview
-		$this->replaceLinks($item->html_formatted);
-		$this->replaceLinks($item->text_formatted);
+		BwPostmanHelper::replaceLinks($item->html_formatted);
+		BwPostmanHelper::replaceLinks($item->text_formatted);
 
 		return $item;
 	}
@@ -769,11 +667,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function getSelectedContent()
+	public function getSelectedContentItems()
 	{
 		$_db	= $this->_db;
 
-		$selected_content = $this->selectedContent();
+		$selected_content = $this->getSelectedContentFromNewsletterTable();
 		$selected_content_void = array ();
 
 		if ($selected_content)
@@ -884,49 +782,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the language of an article
-	 *
-	 * @access	public
-	 *
-	 * @param	int		$id     article ID
-	 *
-	 * @return 	mixed	language string or 0
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.7
-	 */
-	public static function getArticleLanguage($id)
-	{
-		if (JLanguageMultilang::isEnabled())
-		{
-			$result = '';
-			$_db	= JFactory::getDbo();
-			$query	= $_db->getQuery(true);
-
-			$query->select($_db->quoteName('language'));
-			$query->from($_db->quoteName('#__content'));
-			$query->where($_db->quoteName('id') . ' = ' . (int) $id);
-
-			$_db->setQuery($query);
-			try
-			{
-				$result = $_db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			return $result;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-
-	/**
 	 * Method to store the newsletter data from the newsletters_tmp-table into the newsletters-table
 	 *
 	 * @access	public
@@ -982,6 +837,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// convert attachment array to string, to be able to save
 		if (isset($data['attachment']) && $data['attachment'] != '' && is_array($data['attachment']))
 		{
+			$fullAttachments = array();
+
 			foreach ($data['attachment'] as $k => $v)
 			{
 				if ($data['attachment'][$k]['single_attachment'] != '')
@@ -1235,22 +1092,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$newsletters_data_copy->substitute_links	= null;
 				$newsletters_data_copy->is_template			= null;
 
-				$subQuery	= $_db->getQuery(true);
-
-				$subQuery->select($_db->quoteName('mailinglist_id'));
-				$subQuery->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-				$subQuery->where($_db->quoteName('newsletter_id') . ' = ' . (int) $id);
-
-				$_db->setQuery($subQuery);
-
-				try
-				{
-					$newsletters_data_copy->mailinglists	= $_db->loadColumn();
-				}
-				catch (RuntimeException $e)
-				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				}
+				$newsletters_data_copy->mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $id);
 
 				if (!$this->save(ArrayHelper::fromObject($newsletters_data_copy, false)))
 				{
@@ -1524,30 +1366,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function checkRecipients(&$ret_msg, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
-		$_db	= $this->_db;
 
 		try
 		{
 			if ($cam_id != '-1')
 			{
 				// Check if there are assigned mailinglists or usergroups
-				$query = $_db->getQuery(true);
-				$query->select($_db->quoteName('mailinglist_id'));
-				$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
-				$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+				$mailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
 			}
 			else
 			{
 				// Check if there are assigned mailinglists or usergroups of the campaign
-				$query = $_db->getQuery(true);
-				$query->select($_db->quoteName('mailinglist_id'));
-				$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-				$query->where($_db->quoteName('newsletter_id') . ' = ' . (int) $nl_id);
+				$mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
 			}
-
-			$_db->setQuery($query);
-
-			$mailinglists = $_db->loadObjectList();
 
 			if (!$mailinglists)
 			{
@@ -1563,24 +1394,23 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			foreach ($mailinglists as $mailinglist)
 			{
-				$mailinglist_id = $mailinglist->mailinglist_id;
 				// Mailinglists
-				if ($mailinglist_id > 0)
+				if ($mailinglist > 0)
 				{
 					$check_subscribers = 1;
 				}
 
 				// All subscribers
-				if ($mailinglist_id == -1)
+				if ($mailinglist == -1)
 				{
 					$check_allsubscribers = 1;
 				}
 				else
 				{
 					// Usergroups
-					if ((int) $mailinglist_id < 0)
+					if ((int) $mailinglist < 0)
 					{
-						$usergroup[] = -(int) $mailinglist_id;
+						$usergroup[] = -(int) $mailinglist;
 					}
 				}
 			}
@@ -1598,37 +1428,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$status = '1';
 				}
 
-				$subQuery1 = $_db->getQuery(true);
-				$subQuery2 = $_db->getQuery(true);
-				$query     = $_db->getQuery(true);
-
 				if ($cam_id != '-1')
 				{
 					// Check if there are assigned mailinglists or usergroups
-					$subQuery2->select($_db->quoteName('mailinglist_id'));
-					$subQuery2->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
-					$subQuery2->where($_db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+					$associatedMailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
 				}
 				else
 				{
-					$subQuery2->select($_db->quoteName('mailinglist_id'));
-					$subQuery2->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-					$subQuery2->where($_db->quoteName('newsletter_id') . ' IN (' . (int) $nl_id . ')');
+					$associatedMailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
 				}
 
-				$subQuery1->select('DISTINCT' . $_db->quoteName('subscriber_id'));
-				$subQuery1->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-				$subQuery1->where($_db->quoteName('mailinglist_id') . ' IN (' . $subQuery2 . ')');
-
-				$query->select('COUNT(' . $_db->quoteName('id') . ')');
-				$query->from($_db->quoteName('#__bwpostman_subscribers'));
-				$query->where($_db->quoteName('id') . ' IN (' . $subQuery1 . ')');
-				$query->where($_db->quoteName('status') . ' IN (' . $status . ')');
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-				$_db->setQuery($query);
-
-				$count_subscribers = $_db->loadResult();
+				$count_subscribers = $this->countSubscribersOfNewsletter($associatedMailinglists, $status, false);
 			}
 			elseif ($check_allsubscribers)
 			{ // Check all subscribers (select option "All subscribers")
@@ -1641,36 +1451,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$status = '1,9';
 				}
 
-				$query = $_db->getQuery(true);
-
-				$query->select('COUNT(' . $_db->quoteName('id') . ')');
-				$query->from($_db->quoteName('#__bwpostman_subscribers'));
-				$query->where($_db->quoteName('status') . ' IN (' . $status . ')');
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-				$_db->setQuery($query);
-
-				$count_subscribers = $_db->loadResult();
+				$count_subscribers = $this->countSubscribersOfNewsletter(array(), $status, true);
 			}
 
 			// Checks if the selected usergroups contain users
 			if (is_array($usergroup) && count($usergroup))
 			{
-				$query     = $_db->getQuery(true);
-				$sub_query = $_db->getQuery(true);
-
-				$sub_query->select($_db->quoteName('g') . '.' . $_db->quoteName('user_id'));
-				$sub_query->from($_db->quoteName('#__user_usergroup_map') . ' AS ' . $_db->quoteName('g'));
-				$sub_query->where($_db->quoteName('g') . '.' . $_db->quoteName('group_id') . ' IN (' . implode(',', $usergroup) . ')');
-
-				$query->select('COUNT(' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ')');
-				$query->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
-				$query->where($_db->quoteName('u') . '.' . $_db->quoteName('block') . ' = ' . (int) 0);
-				$query->where($_db->quoteName('u') . '.' . $_db->quoteName('activation') . ' = ' . $_db->quote(''));
-				$query->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' IN (' . $sub_query . ')');
-
-				$_db->setQuery($query);
-				$count_users = $_db->loadResult();
+				$count_users = $this->countUsersOfNewsletter($usergroup);
 			}
 
 			// We return only false, if no subscribers AND no joomla users are selected.
@@ -2033,7 +1820,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				// add intro to form data
 				if ($sel_content != $form_data['selected_content'] || $old_template != $form_data['template_id'])
 				{
-					$tpl = self::getTemplate($form_data['template_id']);
+					$tpl = $renderer->getTemplate($form_data['template_id']);
 					if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
 					{
 						$form_data['intro_headline']	= $tpl->intro['intro_headline'];
@@ -2047,7 +1834,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				if ($sel_content != $form_data['selected_content'] || $old_text_template != $form_data['text_template_id'])
 				{
-					$tpl = self::getTemplate($form_data['text_template_id']);
+					$tpl = $renderer->getTemplate($form_data['text_template_id']);
 					if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
 					{
 						$form_data['intro_text_headline'] = $tpl->intro['intro_headline'];
@@ -2167,7 +1954,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function selectedContent()
+	public function getSelectedContentFromNewsletterTable()
 	{
 		$content_ids    = '';
 		$_db	        = $this->_db;
@@ -2193,525 +1980,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to replace the links in a newsletter to provide the correct preview
-	 *
-	 * @access	private
-	 *
-	 * @param 	string $text        HTML-/Text-version
-	 *
-	 * @return 	boolean
-	 *
-	 * @since
-	 *
-	 */
-	private static function replaceLinks(&$text)
-	{
-		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto|#)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
-		$text = preg_replace($search_str, ' ${1}="' . JUri::root() . '${2}"', $text);
-		return true;
-	}
-
-	/**
-	 * Method to get the template settings which are used to compose a newsletter
-	 *
-	 * @access	public
-	 *
-	 * @param   int    $template_id     template id
-	 *
-	 * @return	object
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.1.0
-	 */
-	public function getTemplate($template_id)
-	{
-		$tpl    = new stdClass();
-		$params = JComponentHelper::getParams('com_bwpostman');
-
-		if (is_null($template_id))
-		{
-			$template_id = '1';
-		}
-
-		$_db	= JFactory::getDbo();
-		$query	= $_db->getQuery(true);
-		$query->select($_db->quoteName('id'));
-		$query->select($_db->quoteName('tpl_html'));
-		$query->select($_db->quoteName('tpl_css'));
-		$query->select($_db->quoteName('tpl_article'));
-		$query->select($_db->quoteName('tpl_divider'));
-		$query->select($_db->quoteName('tpl_id'));
-		$query->select($_db->quoteName('basics'));
-		$query->select($_db->quoteName('article'));
-		$query->select($_db->quoteName('intro'));
-		$query->from($_db->quoteName('#__bwpostman_templates'));
-		$query->where($_db->quoteName('id') . ' = ' . $template_id);
-
-		$_db->setQuery($query);
-		try
-		{
-			$tpl = $_db->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if (is_string($tpl->basics))
-		{
-			$registry = new JRegistry;
-			$registry->loadString($tpl->basics);
-			$tpl->basics = $registry->toArray();
-		}
-
-		if (is_string($tpl->article))
-		{
-			$registry = new JRegistry;
-			$registry->loadString($tpl->article);
-			$tpl->article = $registry->toArray();
-		}
-
-		if (is_string($tpl->intro))
-		{
-			$registry = new JRegistry;
-			$registry->loadString($tpl->intro);
-			$tpl->intro = $registry->toArray();
-		}
-
-		// only for old templates
-		if (empty($tpl->article))
-		{
-			$tpl->article['show_createdate'] = $params->get('newsletter_show_createdate');
-			$tpl->article['show_author'] = $params->get('newsletter_show_author');
-			$tpl->article['show_readon'] = 1;
-		}
-
-		return $tpl;
-	}
-
-	/**
-	 * Method to get the template assets which are used to compose a newsletter
-	 *
-	 * @access	public
-	 *
-	 * @param   int    $template_id     template id
-	 *
-	 * @return	object
-	 *
-	 * @throws Exception
-	 *
-	 * @since	2.0.0
-	 */
-	public function getTemplateAssets($template_id)
-	{
-		$_db	= JFactory::getDbo();
-		$query	= $_db->getQuery(true);
-		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_templates_tags'));
-		$query->where($_db->quoteName('templates_table_id') . ' = ' . (int) $template_id);
-		$_db->setQuery($query);
-		try
-		{
-			$tpl_assets = $_db->loadAssoc();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $tpl_assets;
-	}
-
-	/**
-	 * Method to add the Template-Tags to the content
-	 *
-	 * @access	private
-	 *
-	 * @param   string  $text
-	 * @param   int     $id
-	 *
-	 * @return 	boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.1.0
-	 */
-	private function addTplTags(&$text, &$id)
-	{
-		$tpl = self::getTemplate($id);
-
-		$newtext	= $tpl->tpl_html . "\n";
-
-		// make sure that conditions be usable - some editors add space to conditions
-		$text		= str_replace('[%content%]', str_replace('<!-- [if', '<!--[if', $text), $newtext);
-
-		return true;
-	}
-
-	/**
-	 * Method to replace edit and unsubscribe link
-	 *
-	 * @access	private
-	 *
-	 * @param   string  $text
-	 *
-	 * @return 	boolean
-	 *
-	 * @since	1.1.0
-	 */
-	private function replaceTplLinks(&$text)
-	{
-		$params 			= JComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
-
-		// replace edit and unsubscribe link
-		if ($del_sub_1_click === '0')
-		{
-			$replace1	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
-		}
-		else
-		{
-			$replace1	= '<a href="[UNSUBSCRIBE_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
-		}
-		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
-		$text		= str_replace('[%edit_link%]', $replace2, $text);
-
-		return true;
-	}
-
-	/**
-	 * Method to add the HTML-Tags and the css to the HTML-Newsletter
-	 *
-	 * @access	private
-	 *
-	 * @param 	string  $text      HTML newsletter
-	 * @param   int     $id
-	 *
-	 * @return 	boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	private function addHtmlTags(&$text, &$id)
-	{
-		$params = JComponentHelper::getParams('com_bwpostman');
-		$tpl    = self::getTemplate($id);
-
-		// add template assets only for user-made templates
-		if ($tpl->tpl_id == '0')
-		{
-			$tpl_assets	= self::getTemplateAssets($id);
-			if (!empty($tpl_assets))
-			{
-				foreach ($tpl_assets as $key => $value)
-				{
-					$tpl->$key	= $value;
-				}
-			}
-		}
-
-		$newtext  = isset($tpl->tpl_tags_head) && $tpl->tpl_tags_head == 0 ? $tpl->tpl_tags_head_advanced : BwPostmanTplHelper::getHeadTag();
-		$newtext .= '   <style type="text/css">' . "\n";
-		$newtext .= '   ' . $tpl->tpl_css . "\n";
-			// only for old newsletters with template_id < 1
-		if ($id < 1 && $params->get('use_css_for_html_newsletter') == 1)
-		{
-			$params	= JComponentHelper::getParams('com_bwpostman');
-			$css	= $params->get('css_for_html_newsletter');
-			$newtext .= '   ' . $css . "\n";
-		}
-
-		if (isset($tpl->basics['custom_css']))
-		{
-			$newtext .= $tpl->basics['custom_css'] . "\n";
-		}
-
-		$newtext .= '   </style>' . "\n";
-		$newtext .= ' </head>' . "\n";
-
-		if (isset($tpl->basics['paper_bg']))
-		{
-			$newtext .= ' <body bgcolor="' . $tpl->basics['paper_bg'] .
-				'" emb-default-bgcolor="' . $tpl->basics['paper_bg'] . '" style="background-color:' . $tpl->basics['paper_bg'] .
-				';color:' . $tpl->basics['legal_color'] . ';">' . "\n";
-		}
-		else
-		{
-			$newtext .= isset($tpl->tpl_tags_body) && $tpl->tpl_tags_body == 0 ? $tpl->tpl_tags_body_advanced : BwPostmanTplHelper::getBodyTag();
-		}
-
-		$newtext .= $text . "\n";
-		$newtext .= ' </body>' . "\n";
-		$newtext .= '</html>' . "\n";
-
-		$text = $newtext;
-
-		return true;
-	}
-
-	/**
-	 * Method to add the HTML-footer to the HTML-Newsletter
-	 *
-	 * @access	private
-	 *
-	 * @param 	string  $text   HTML newsletter
-	 * @param   int     $id
-	 *
-	 * @return 	boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	private function addHTMLFooter(&$text, &$id)
-	{
-		$uri  				= JUri::getInstance();
-		$params 			= JComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= JText::_($params->get('legal_information_text'));
-		$impressum			= nl2br($impressum, true);
-		$sitelink           = $uri->root();
-
-		// get template assets if exists
-		$tpl_assets	= self::getTemplateAssets($id);
-
-		if (strpos($text, '[%impressum%]') !== false)
-		{
-			$unsubscribelink	= '';
-			$editlink			= '';
-
-			// Trigger Plugin "substitutelinks"
-			if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
-			{
-				JPluginHelper::importPlugin('bwpostman');
-				$dispatcher = JEventDispatcher::getInstance();
-				$dispatcher->trigger('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
-			}
-
-			if ($del_sub_1_click === '0')
-			{
-				$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . "<br /><br />" . $impressum;
-			}
-			else
-			{
-				$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . "<br /><br />" . $impressum;
-			}
-
-			$replace3  = isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
-				$tpl_assets['tpl_tags_legal_advanced_b'] :
-				BwPostmanTplHelper::getLegalTagBegin();
-			$replace3 .= $replace . "<br /><br />\n";
-			$replace3 .= isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
-				$tpl_assets['tpl_tags_legal_advanced_e'] :
-				BwPostmanTplHelper::getLegalTagEnd();
-
-			$text = str_replace('[%impressum%]', $replace3, $text);
-		}
-
-		// only for old newsletters with template_id < 1
-		if ($id < 1)
-		{
-			if ($del_sub_1_click === '0')
-			{
-				$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . $impressum;
-			}
-			else
-			{
-				$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . $impressum;
-			}
-			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to add the TEXT to the TEXT-Newsletter
-	 *
-	 * @access	private
-	 *
-	 * @param 	string  $text   Text newsletter
-	 * @param   int     $id     template id
-	 *
-	 * @return 	boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.1.0
-	 */
-	private function addTextTpl(&$text, &$id)
-	{
-		$tpl	= self::getTemplate($id);
-
-		$text	= str_replace('[%content%]', "\n" . $text, $tpl->tpl_html);
-
-		return true;
-	}
-
-	/**
-	 * Method to replace edit and unsubscribe link
-	 *
-	 * @access	private
-	 *
-	 * @param   string  $text
-	 *
-	 * @return 	boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.1.0
-	 */
-	private function replaceTextTplLinks(&$text)
-	{
-		$uri  				= JUri::getInstance();
-		$itemid_edit		= $this->getItemid('edit');
-		$itemid_unsubscribe	= $this->getItemid('register');
-		$params 			= JComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
-
-		if ($del_sub_1_click === '0')
-		{
-			$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
-				'&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
-		}
-		else
-		{
-			$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
-				'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
-		}
-
-		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
-		$sitelink			= '';
-
-		// Trigger Plugin "substitutelinks"
-		if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
-		{
-			JPluginHelper::importPlugin('bwpostman');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
-		}
-
-		// replace edit and unsubscribe link
-		$replace1	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $unsubscribelink;
-		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $editlink;
-		$text		= str_replace('[%edit_link%]', $replace2, $text);
-
-		return true;
-	}
-
-	/**
-	 * Method to add the footer Text-Newsletter
-	 *
-	 * @access	private
-	 *
-	 * @param 	string  $text   Text newsletter
-	 * @param   int     $id
-	 *
-	 * @return 	boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	private function addTextFooter(&$text, &$id)
-	{
-		$uri  				= JUri::getInstance();
-		$itemid_unsubscribe	= $this->getItemid('register');
-		$itemid_edit		= $this->getItemid('edit');
-		$params 			= JComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= "\n\n" . JText::_($params->get('legal_information_text')) . "\n\n";
-
-		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
-				'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
-		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
-		$sitelink			= $uri->root();
-
-		// Trigger Plugin "substitutelinks"
-		if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
-		{
-			JPluginHelper::importPlugin('bwpostman');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
-		}
-
-		if (strpos($text, '[%impressum%]') !== false)
-		{
-			// replace [%impressum%]
-			if ($del_sub_1_click === '0')
-			{
-				$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
-			}
-			else
-			{
-				$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
-			}
-			$text		= str_replace('[%impressum%]', $replace, $text);
-		}
-
-		// only for old newsletters with template_id < 1
-		if ($id < 1)
-		{
-			if ($del_sub_1_click === '0')
-			{
-				$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
-					JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
-			}
-			else
-			{
-				$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
-					JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
-			}
-			$text		= str_replace("[dummy]", $replace, $text);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to get ID of actual content ID of a newsletter from content table
-	 *
-	 * @access	private
-	 *
-	 * @param 	int 	$nl_id      newsletter ID
-	 *
-	 * @return 	int		content ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	private function getSingleContentId($nl_id)
-	{
-		$app	= JFactory::getApplication();
-		$result = '';
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_sendmailcontent'));
-		$query->where($_db->quoteName('nl_id') . ' = ' . (int) $nl_id);
-		$_db->setQuery($query);
-
-		try
-		{
-			$result = $_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $result;
-	}
-
-
-	/**
-	 * If a newsletter shall be sent, then it will inserted at table sendMailContent
+	 * If a newsletter shall be sent, then it will be inserted at table sendMailContent
 	 * as a manner of archive and process method completely with content,
 	 * subject & Co. in
 	 *
@@ -2727,6 +1996,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	private function addSendMailContent($nl_id)
 	{
+		$renderer	= new contentRenderer();
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 
@@ -2780,97 +2050,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Preprocess html version of the newsletter
-
-		// only for old text templates
-		if ($newsletters_data->template_id < 1)
-		{
-			$newsletters_data->html_version = $newsletters_data->html_version . '[dummy]';
-		}
-
-		// add template data
-		if (!$this->addTplTags($newsletters_data->html_version, $newsletters_data->template_id))
-		{
-			return false;
-		}
-
-		// Replace the intro at HTML part of the newsletter
-		$replace_html_intro_head  = '';
-		if (!empty($newsletters_data->intro_headline))
-		{
-			$replace_html_intro_head  = $newsletters_data->intro_headline;
-		}
-
-		$newsletters_data->html_version	= str_replace('[%intro_headline%]', $replace_html_intro_head, $newsletters_data->html_version);
-
-		$replace_html_intro_text  = '';
-		if (!empty($newsletters_data->intro_text))
-		{
-			$replace_html_intro_text   = nl2br($newsletters_data->intro_text, true);
-		}
-
-		$newsletters_data->html_version		= str_replace('[%intro_text%]', $replace_html_intro_text, $newsletters_data->html_version);
-
-		if (!$this->replaceTplLinks($newsletters_data->html_version))
-		{
-			return false;
-		}
-
-		if (!$this->addHtmlTags($newsletters_data->html_version, $newsletters_data->template_id))
-		{
-			return false;
-		}
-
-		if (!$this->addHTMLFooter($newsletters_data->html_version, $newsletters_data->template_id))
-		{
-			return false;
-		}
-
-		if (!$this->replaceLinks($newsletters_data->html_version))
+		if (!$this->preprocessHtmlVersion($newsletters_data))
 		{
 			return false;
 		}
 
 		// Preprocess text version of the newsletter
-		// only for old text templates
-		if ($newsletters_data->text_template_id < 1)
-		{
-			$newsletters_data->text_version = $newsletters_data->text_version . '[dummy]';
-		}
-
-		// add template data
-		if (!$this->addTextTpl($newsletters_data->text_version, $newsletters_data->text_template_id))
-		{
-			return false;
-		}
-
-		// Replace the intro at text part of the newsletter
-		$replace_text_intro_head  = '';
-		if (!empty($newsletters_data->intro_text_headline))
-		{
-			$replace_text_intro_head    = $newsletters_data->intro_text_headline;
-		}
-
-		$newsletters_data->text_version	= str_replace('[%intro_headline%]', $replace_text_intro_head, $newsletters_data->text_version);
-
-		$replace_text_intro_text  = '';
-		if (!empty($newsletters_data->intro_text_text))
-		{
-			$replace_text_intro_text    = $newsletters_data->intro_text_text;
-		}
-
-		$newsletters_data->text_version	= str_replace('[%intro_text%]', $replace_text_intro_text, $newsletters_data->text_version);
-
-		if (!$this->replaceTextTplLinks($newsletters_data->text_version))
-		{
-			return false;
-		}
-
-		if (!$this->addTextFooter($newsletters_data->text_version, $newsletters_data->text_template_id))
-		{
-			return false;
-		}
-
-		if (!$this->replaceLinks($newsletters_data->text_version))
+		if (!$this->preprocessTextVersion($newsletters_data))
 		{
 			return false;
 		}
@@ -2924,9 +2110,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	private function addSendMailQueue(&$ret_msg, $content_id, $recipients, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
 		if (!$content_id)
 		{
 			return false;
@@ -2938,8 +2121,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-		$mailinglists   = array();
-
 		switch ($recipients)
 		{
 			case "recipients": // Contain subscribers and joomla users
@@ -2947,26 +2128,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				if ($cam_id != '-1')
 				{
-					$query->select($_db->quoteName('mailinglist_id'));
-					$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
-					$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+					$mailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
 				}
 				else
 				{
-					$query->select($_db->quoteName('mailinglist_id'));
-					$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-					$query->where($_db->quoteName('newsletter_id') . ' = ' . (int) $nl_id);
-				}
-
-				$_db->setQuery($query);
-
-				try
-				{
-					$mailinglists = $_db->loadObjectList();
-				}
-				catch (RuntimeException $e)
-				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					$mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
 				}
 
 				if (!$mailinglists)
@@ -2981,24 +2147,23 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				foreach ($mailinglists as $mailinglist)
 				{
-					$mailinglist_id = $mailinglist->mailinglist_id;
 					// Mailinglists
-					if ($mailinglist_id > 0)
+					if ($mailinglist > 0)
 					{
 						$send_subscribers = 1;
 					}
 
 					// All subscribers
-					if ($mailinglist_id == -1)
+					if ($mailinglist == -1)
 					{
 						$send_to_all = 1;
 					}
 					else
 					{
 						// Usergroups
-						if ((int) $mailinglist_id < 0)
+						if ((int) $mailinglist < 0)
 						{
-							$users[] = -(int) $mailinglist_id;
+							$users[] = -(int) $mailinglist;
 						}
 					}
 				}
@@ -3202,13 +2367,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public function sendMail($fromComponent = false)
 	{
 		// initialize
+		$renderer	        = new contentRenderer();
+		$log_options        = array('test' => 'testtext');
+		$logger             = new BwLogger($log_options);
+
 		$app				= JFactory::getApplication();
 		$uri  				= JUri::getInstance();
 		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');
-
-		$log_options        = array('test' => 'testtext');
-		$logger             = new BwLogger($log_options);
 
 		JPluginHelper::importPlugin('bwpostman');
 		$dispatcher = JEventDispatcher::getInstance();
@@ -3328,8 +2494,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{ // HTML newsletter
 			if ($tblSendMailQueue->subscriber_id)
 			{ // Add footer only if it is a subscriber
-				$this->replaceTplLinks($body);
-				$this->addHTMLFooter($body, $footerid);
+				$renderer->replaceTplLinks($body);
+				$renderer->addHTMLFooter($body, $footerid);
 			}
 			else
 			{
@@ -3343,8 +2509,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{ // Text newsletter
 			if ($tblSendMailQueue->subscriber_id)
 			{	// Add footer only if it is a subscriber
-				$this->replaceTextTplLinks($body);
-				$this->addTextFooter($body, $footerid);
+				$renderer->replaceTextTplLinks($body);
+				$renderer->addTextFooter($body, $footerid);
 			}
 			else
 			{
@@ -3355,7 +2521,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 		}
 
-		$this->replaceLinks($body);
+		BwPostmanHelper::replaceLinks($body);
 
 		$fullname = '';
 		if ($tblSendMailQueue->firstname != '')
@@ -3541,942 +2707,450 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$this->arise_queue     = $params->arise_queue_option;
 		}
 	}
-}
 
-/**
- * Content Renderer Class
- * Provides methods render the selected contents from which the newsletters shall be generated
- * --> Referring to BwPostman 1.6 beta and Communicator 2.0.0rc1 (??)
- *
- * @package		BwPostman-Admin
- * @subpackage	Newsletters
- *
- * @since       0.9.1
- */
-class contentRenderer
-{
 	/**
-	 * Method to get the menu item ID for the content item
+	 * Method to get associated mailing lists by campaign
 	 *
-	 * @access	public
+	 * @param  integer   $id   newsletter id
 	 *
-	 * @param   string  $row
+	 * @return array
 	 *
-	 * @return 	int     $itemid     menu item ID
+	 * @throws \Exception
 	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
+	 * @since 2.3.0
 	 */
-	public function getItemid($row)
+	private function getAssociatedMailinglistsByCampaign($id)
 	{
-		$itemid = 0;
+		$_db	= $this->_db;
+		$mailinglists = array();
+
+		$query = $_db->getQuery(true);
+		$query->select($_db->quoteName('mailinglist_id'));
+		$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
+		$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $id);
+
+		$_db->setQuery($query);
+
 		try
 		{
-			$_db   = JFactory::getDbo();
-			$query = $_db->getQuery(true);
-
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=' . $row));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-			$_db->setQuery($query);
-
-			$itemid = $_db->loadResult();
-
-			if (empty($itemid))
-			{
-				$query = $_db->getQuery(true);
-
-				$query->select($_db->quoteName('id'));
-				$query->from($_db->quoteName('#__menu'));
-				$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-				$_db->setQuery($query);
-
-				$itemid = $_db->loadResult();
-			}
+			$mailinglists = $_db->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return $itemid;
+		return $mailinglists;
 	}
 
 	/**
-	 * This is the main function to render the content from an ID to HTML
+	 * Method to get associated mailing lists by newsletter
 	 *
-	 * @param array		$nl_content
-	 * @param int		$template_id
-	 * @param string	$text_template_id
+	 * @param  integer   $id   newsletter id
 	 *
-	 * @return array	content
+	 * @return array
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 *
-	 * @since       0.9.1
+	 * @since 2.3.0
 	 */
-	public function getContent($nl_content, $template_id, $text_template_id)
+	private function getAssociatedMailinglistsByNewsletter($id)
 	{
-		$param = JComponentHelper::getParams('com_bwpostman');
+		$_db	= $this->_db;
+		$mailinglists = array();
 
-		$model		= new BwPostmanModelNewsletter();
-		$tpl		= $model->getTemplate($template_id);
-		$text_tpl	= $model->getTemplate($text_template_id);
-
-		// add template assets only for user-made templates
-		if ($tpl->tpl_id == '0')
-		{
-			$tpl_assets	= $model->getTemplateAssets($template_id);
-			if (!empty($tpl_assets))
-			{
-				foreach ($tpl_assets as $key => $value)
-				{
-					$tpl->$key	= $value;
-				}
-			}
-		}
-
-		// only for old templates
-		if ($template_id < 1)
-		{
-			$content['html_version'] = '<div class="outer"><div class="header"><img class="logo" src="' .
-				JRoute::_(JUri::root() . $param->get('logo')) .
-				'" alt="" /></div><div class="content-outer"><div class="content"><div class="content-inner"><p class="nl-intro">&nbsp;</p>';
-		}
-		else
-		{
-			$content['html_version'] = '';
-		}
-
-		$content['text_version'] = '';
-
-		if ($nl_content == null)
-		{
-			$content['html_version'] .= '';
-			$content['text_version'] .= '';
-
-		}
-		else
-		{
-			foreach($nl_content as $content_id)
-			{
-				if ($tpl->tpl_id && $template_id > 0)
-				{
-					$content['html_version'] .= $this->replaceContentHtmlNew($content_id, $tpl);
-					if (($tpl->article['divider'] == 1) && ($content_id != end($nl_content)))
-					{
-						$content['html_version'] = $content['html_version'] . $tpl->tpl_divider;
-					}
-				}
-				else
-				{
-					$content['html_version'] .= $this->replaceContentHtml($content_id, $tpl);
-				}
-
-				if ($text_tpl->tpl_id && $text_tpl->tpl_id > '999')
-				{
-					$content['text_version'] .= $this->replaceContentTextNew($content_id, $text_tpl);
-					if (($text_tpl->article['divider'] == 1) && ($content_id != end($nl_content)))
-					{
-						$content['text_version'] = $content['text_version'] . $text_tpl->tpl_divider . "\n\n";
-					}
-				}
-				else
-				{
-					$content['text_version'] .= $this->replaceContentText($content_id, $text_tpl);
-				}
-			}
-		}
-
-			// only for old templates
-		if ($template_id < 1)
-		{
-			$content['html_version'] .= '</div></div></div></div>';
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Method to retrieve content
-	 *
-	 * @param int   $id
-	 *
-	 * @return mixed
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function retrieveContent($id)
-	{
-		$row    = new stdClass();
-		$app	= JFactory::getApplication();
-		$_db	= JFactory::getDbo();
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('a') . '.*');
-		$query->select('ROUND(v.rating_sum/v.rating_count) AS ' . $_db->quoteName('rating'));
-		$query->select($_db->quoteName('v') . '.' . $_db->quoteName('rating_count'));
-		$query->select($_db->quoteName('u') . '.' . $_db->quoteName('name') . ' AS ' . $_db->quoteName('author'));
-		$query->select($_db->quoteName('cc') . '.' . $_db->quoteName('title') . ' AS ' . $_db->quoteName('category'));
-		$query->select($_db->quoteName('s') . '.' . $_db->quoteName('title') . ' AS ' . $_db->quoteName('section'));
-		$query->select($_db->quoteName('g') . '.' . $_db->quoteName('title') . ' AS ' . $_db->quoteName('groups'));
-		$query->select($_db->quoteName('s') . '.' . $_db->quoteName('published') . ' AS ' . $_db->quoteName('sec_pub'));
-		$query->select($_db->quoteName('cc') . '.' . $_db->quoteName('published') . ' AS ' . $_db->quoteName('cat_pub'));
-		$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('a'));
-		$query->join(
-			'LEFT',
-			$_db->quoteName('#__categories') .
-			' AS ' . $_db->quoteName('cc') .
-			' ON ' . $_db->quoteName('cc') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('catid')
-		);
-		$query->join(
-			'LEFT',
-			$_db->quoteName('#__categories') .
-			' AS ' . $_db->quoteName('s') .
-			' ON ' . $_db->quoteName('s') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('cc') . '.' . $_db->quoteName('parent_id') .
-			' AND ' . $_db->quoteName('s') . '.' . $_db->quoteName('extension') . ' = ' . $_db->quote('com_content')
-		);
-		$query->join(
-			'LEFT',
-			$_db->quoteName('#__users') .
-			' AS ' . $_db->quoteName('u') .
-			' ON ' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('created_by')
-		);
-		$query->join(
-			'LEFT',
-			$_db->quoteName('#__content_rating') .
-			' AS ' . $_db->quoteName('v') .
-			' ON ' . $_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('v') . '.' . $_db->quoteName('content_id')
-		);
-		$query->join(
-			'LEFT',
-			$_db->quoteName('#__usergroups') .
-			' AS ' . $_db->quoteName('g') .
-			' ON ' . $_db->quoteName('a') . '.' . $_db->quoteName('access') . ' = ' . $_db->quoteName('g') . '.' . $_db->quoteName('id')
-		);
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . (int) $id);
+		$query = $_db->getQuery(true);
+		$query->select($_db->quoteName('mailinglist_id'));
+		$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
+		$query->where($_db->quoteName('newsletter_id') . ' = ' . (int) $id);
 
 		$_db->setQuery($query);
+
 		try
 		{
-			$row = $_db->loadObject();
+			$mailinglists = $_db->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if($row) {
-			$params = new JRegistry();
-			$params->loadString($row->attribs, 'JSON');
-
-			$params->def('link_titles',	$app->get('link_titles'));
-			$params->def('author', 		$params->get('newsletter_show_author'));
-			$params->def('createdate', 	$params->get('newsletter_show_createdate'));
-			$params->def('modifydate', 	!$app->get('hideModifyDate'));
-			$params->def('print', 		!$app->get('hidePrint'));
-			$params->def('pdf', 		!$app->get('hidePdf'));
-			$params->def('email', 		!$app->get('hideEmail'));
-			$params->def('rating', 		$app->get('vote'));
-			$params->def('icons', 		$app->get('icons'));
-			$params->def('readmore', 	$app->get('readmore'));
-			$params->def('item_title', 	1);
-
-			$params->set('intro_only', 	1);
-			$params->set('item_navigation', 0);
-
-			$params->def('back_button', 	0);
-			$params->def('image', 			1);
-
-			$row->params = $params;
-			$row->text = $row->introtext;
-		}
-		return $row;
+		return $mailinglists;
 	}
 
 	/**
-	 * Method to replace HTML content
+	 * Method to get mailing lists by restriction
 	 *
-	 * @param int       $id
-	 * @param object    $tpl
+	 * @param array     $mailinglists
+	 * @param string    $condition
 	 *
-	 * @return string
+	 * @return array
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 *
-	 * @since       0.9.1
+	 * @since 2.3.0
 	 */
-	public function replaceContentHtml($id, $tpl)
+	private function getMailinglistsByRestriction($mailinglists, $condition)
 	{
-		$content	= '';
+		$mls   = null;
+		$_db   = $this->_db;
 
-		if($id != 0)
+		$query = $_db->getQuery(true);
+		$query->select('id');
+		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+
+		switch ($condition)
 		{
-			// Editor user type check
-			$access          = new stdClass();
-			$access->canEdit = $access->canEditOwn = $access->canPublish = 0;
-
-			$row = $this->retrieveContent($id);
-
-			if ($row)
-			{
-				$params		= $row->params;
-				$model		= new BwPostmanModelNewsletter;
-				$lang		= $model->getArticleLanguage($row->id);
-				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link		= JRoute::_(JUri::base());
-				if ($_Itemid)
-				{
-					$link .= $_Itemid;
-				}
-
-				$intro_text = $row->text;
-
-				$html_content = new HTML_content();
-
-				if (key_exists('show_title', $tpl->article) && $tpl->article['show_title'] != 0)
-				{
-					ob_start();
-					// Displays Item Title
-					$html_content->Title($row, $params, $access);
-
-					$content .= ob_get_contents();
-					ob_end_clean();
-				}
-
-				$content .= '<div class="intro_text">';
-				// Displays Category article info
-
-				ob_start();
-
-				if ($tpl->article['show_createdate'] != 0 || $tpl->article['show_author'] != 0)
-				{
-					$html_content->ArticleInfoBegin();
-					// Displays Created Date
-					if ($tpl->article['show_createdate'] != 0)
-					{
-						$html_content->CreateDate($row, $params);
-					}
-
-					// Displays Author Name
-					if ($tpl->article['show_author'] != 0)
-					{
-						$html_content->Author($row, $params);
-						$html_content->ArticleInfoEnd();
-					}
-				}
-
-				// Displays Urls
-				$content .= ob_get_contents();
-				ob_end_clean();
-
-				$content .= $intro_text //(function_exists('ampReplace') ? ampReplace($intro_text) : $intro_text). '</td>'
-					. '</div>';
-
-
-				if ($tpl->article['show_readon'] != 0)
-				{
-					$tag_readon	 = isset($tpl->tpl_tags_readon) && $tpl->tpl_tags_readon == 0 ?
-						$tpl->tpl_tags_readon_advanced :
-						BwPostmanTplHelper::getReadonTag();
-					$link        = str_replace('administrator/', '', $link);
-
-					// Trigger Plugin "substitutelinks"
-					if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
-					{
-						JPluginHelper::importPlugin('bwpostman');
-						$dispatcher = JEventDispatcher::getInstance();
-						$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
-					}
-
-					$tag_readon	 = str_replace('[%readon_href%]', $link, $tag_readon);
-					$content	.= str_replace('[%readon_text%]', JText::_('READ_MORE'), $tag_readon);
-				}
-
-				// Set special article html if defined at the template
-				$tag_article_begin	= isset($tpl->tpl_tags_article) && $tpl->tpl_tags_article == 0 ?
-					$tpl->tpl_tags_article_advanced_b :
-					BwPostmanTplHelper::getArticleTagBegin();
-				$tag_article_end	= isset($tpl->tpl_tags_article) && $tpl->tpl_tags_article == 0 ?
-					$tpl->tpl_tags_article_advanced_e :
-					BwPostmanTplHelper::getArticleTagEnd();
-				$content 			= $tag_article_begin . $content . $tag_article_end;
-
-				return stripslashes($content);
-			}
+			case 'available':
+				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+				$query->where($_db->quoteName('access') . ' = ' . (int) 1);
+				break;
+			case 'unavailable':
+				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+				$query->where($_db->quoteName('access') . ' > ' . (int) 1);
+				break;
+			case 'internal':
+				$query->where($_db->quoteName('published') . ' = ' . (int) 0);
+				break;
 		}
 
-		return JText::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
-	}
+		$_db->setQuery($query);
 
-	/**
-	 * Method to replace HTML content (new)
-	 *
-	 * @param $id
-	 * @param $tpl
-	 *
-	 * @return string
-	 *
-	 * @throws Exception
-	 *
-	 * @since       1.1.0
-	 */
-	public function replaceContentHtmlNew($id, $tpl)
-	{
-		$content	    = '';
-		$create_date    = '';
-
-		if($id != 0){
-			// Editor user type check
-			$access          = new stdClass();
-			$access->canEdit = $access->canEditOwn = $access->canPublish = 0;
-
-			// $id = "-1" if no content is selected
-			if ($id == '-1')
-			{
-				$content	.= $tpl->tpl_article;
-				$content	= preg_replace("/<table id=\"readon\".*?<\/table>/is", "", $content);
-				$content	= isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
-					str_replace('[%content_title%]', '', $content) :
-					str_replace('[%content_title%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_TITLE'), $content);
-				$content	= str_replace('[%content_text%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT'), $content);
-				return stripslashes($content);
-			}
-
-			$row = $this->retrieveContent($id);
-
-			if ($row)
-			{
-				$model		= new BwPostmanModelNewsletter;
-				$lang		= $model->getArticleLanguage($row->id);
-				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link		= JRoute::_(JUri::base());
-				if ($_Itemid)
-				{
-					$link .= $_Itemid;
-				}
-
-				$intro_text = $row->text;
-
-				if (intval($row->created) != 0)
-				{
-					$create_date = JHtml::_('date', $row->created);
-				}
-
-				$link = str_replace('administrator/', '', $link);
-
-				$content		.= $tpl->tpl_article;
-				$content		= isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
-					str_replace('[%content_title%]', '', $content) :
-					str_replace('[%content_title%]', $row->title, $content);
-				$content_text	= '';
-				if (($tpl->article['show_createdate'] == 1) || ($tpl->article['show_author'] == 1))
-				{
-					$content_text .= '<p class="article-data">';
-					if ($tpl->article['show_createdate'] == 1)
-					{
-						$content_text .= '<span class="createdate"><small>';
-						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
-						$content_text .= '&nbsp;&nbsp;&nbsp;&nbsp;</small></span>';
-					}
-
-					if ($tpl->article['show_author'] == 1)
-					{
-						$content_text .= '<span class="created_by"><small>';
-						$content_text .= JText::sprintf(
-							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->author)
-						);
-						$content_text .= '</small></span>';
-					}
-
-					$content_text .= '</p>';
-				}
-
-				$content_text	.= $intro_text;
-				$content  		= str_replace('[%content_text%]', $content_text, $content);
-
-				// Trigger Plugin "substitutelinks"
-				if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
-				{
-					JPluginHelper::importPlugin('bwpostman');
-					$dispatcher = JEventDispatcher::getInstance();
-					$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
-				}
-
-				$content  		= str_replace('[%readon_href%]', $link, $content);
-				$content  		= str_replace('[%readon_text%]', JText::_('READ_MORE'), $content);
-
-				return stripslashes($content);
-			}
-		}
-
-		return JText::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
-	}
-
-	/**
-	 * Method to replace text content
-	 *
-	 * @param int       $id
-	 * @param object    $text_tpl
-	 *
-	 * @return string
-	 *
-	 * @throws Exception
-	 *
-	 * @since       1.1.0
-	 */
-	public function replaceContentTextNew($id, $text_tpl)
-	{
-		$create_date    = '';
-
-		if($id != 0)
+		try
 		{
-			$row = $this->retrieveContent($id);
-
-			if ($row)
-			{
-				$model		= new BwPostmanModelNewsletter;
-				$lang		= $model->getArticleLanguage($row->id);
-				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link		= JRoute::_(JUri::base());
-				if ($_Itemid)
-				{
-					$link .= $_Itemid;
-				}
-
-				$intro_text = $row->text;
-				$intro_text = strip_tags($intro_text);
-
-				$intro_text = $this->unHTMLSpecialCharsAll($intro_text);
-
-				if (intval($row->created) != 0)
-				{
-					$create_date = JHtml::_('date', $row->created);
-				}
-
-				$link = str_replace('administrator/', '', $link);
-
-				$content		= $text_tpl->tpl_article;
-				$content		= isset($text_tpl->article['show_title']) && $text_tpl->article['show_title'] == 0 ?
-					str_replace('[%content_title%]', '', $content) :
-					str_replace('[%content_title%]', $row->title, $content);
-				$content_text	= "\n";
-				if (($text_tpl->article['show_createdate'] == 1) || ($text_tpl->article['show_author'] == 1))
-				{
-					if ($text_tpl->article['show_createdate'] == 1)
-					{
-						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
-						$content_text .= '    ';
-					}
-
-					if ($text_tpl->article['show_author'] == 1)
-					{
-						$content_text .= JText::sprintf(
-							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->author)
-						);
-					}
-
-					$content_text .= "\n\n";
-				}
-
-				$content_text	.= $intro_text;
-				$content		= str_replace('[%content_text%]', $content_text . "\n", $content);
-
-				// Trigger Plugin "substitutelinks"
-				if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
-				{
-					JPluginHelper::importPlugin('bwpostman');
-					$dispatcher = JEventDispatcher::getInstance();
-					$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
-				}
-
-				$content		= str_replace('[%readon_href%]', $link . "\n", $content);
-				$content		= str_replace('[%readon_text%]', JText::_('READ_MORE'), $content);
-
-				return stripslashes($content);
-			}
+			$mls = $_db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return '';
+		$resultingMls = array_intersect($mailinglists, $mls);
+
+		if (count($resultingMls) > 0)
+		{
+			$restrictedMls = $resultingMls;
+		}
+		else
+		{
+			$restrictedMls = array();
+		}
+
+		return $restrictedMls;
 	}
 
 	/**
-	 * Method to replace text content
+	 * Method to preset HTML-Template for old newsletters
+
+	 * @param                 $item
 	 *
-	 * @param int       $id
-	 * @param object    $text_tpl
+	 * @return void
 	 *
-	 * @return string
+	 * @since 2.3.0
 	 *
 	 * @throws Exception
-	 *
-	 * @since       0.9.1
 	 */
-	public function replaceContentText($id, $text_tpl)
+	private function presetOldHTMLTemplate(&$item)
 	{
-		$create_date    = '';
+		$html_tpl = null;
+		$_db   = $this->_db;
 
-		if($id != 0)
+		if ($item->id == 0)
 		{
-			$row = $this->retrieveContent($id);
-
-			if ($row)
-			{
-				$model		= new BwPostmanModelNewsletter;
-				$lang		= $model->getArticleLanguage($row->id);
-				$_Itemid	= ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link		= JRoute::_(JUri::base());
-				if ($_Itemid)
-				{
-					$link .= $_Itemid;
-				}
-
-				$intro_text = $row->text;
-				$intro_text = strip_tags($intro_text);
-
-				$intro_text = $this->unHTMLSpecialCharsAll($intro_text);
-
-				if (intval($row->created) != 0)
-				{
-					$create_date = JHtml::_('date', $row->created);
-				}
-
-				$content = isset($text_tpl->article['show_title']) && $text_tpl->article['show_title'] == 0 ? "\n" : "\n" . $row->title;
-
-				$content_text = "";
-				if (($text_tpl->article['show_createdate'] == 1) || ($text_tpl->article['show_author'] == 1))
-				{
-					if ($text_tpl->article['show_createdate'] == 1)
-					{
-						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
-						$content_text .= '    ';
-					}
-
-					if ($text_tpl->article['show_author'] == 1)
-					{
-						$content_text .= JText::sprintf(
-							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->author)
-						);
-					}
-
-					$content_text .= "\n\n";
-				}
-
-				$intro_text = $content_text . $intro_text;
-
-				$content .= "\n\n" . $intro_text . "\n\n";
-				if ($text_tpl->article['show_readon'] == 1)
-				{
-					// Trigger Plugin "substitutelinks"
-					if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
-					{
-						JPluginHelper::importPlugin('bwpostman');
-						$dispatcher = JEventDispatcher::getInstance();
-						$dispatcher->trigger('onBwPostmanSubstituteReadon', array(&$link));
-					}
-
-					$content .= JText::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
-				}
-
-				return stripslashes($content);
-			}
+			$item->template_id = $this->getStandardTpl('html');
 		}
+		elseif ($item->template_id == 0)
+		{
+			$query = $_db->getQuery(true);
+			$query->select('id');
+			$query->from($_db->quoteName('#__bwpostman_templates'));
+			$query->where($_db->quoteName('id') . ' = ' . (int) -1);
 
-		return '';
+			$_db->setQuery($query);
+
+			try
+			{
+				$html_tpl = $_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+
+			if (is_null($html_tpl))
+			{
+				$html_tpl = $this->getStandardTpl('html');
+			}
+
+			$item->template_id = $html_tpl;
+		}
 	}
 
 	/**
-	 * Method to process special characters
+	 * Method to preset Text-Template for old newsletters
+
+	 * @param                 $item
 	 *
-	 * @param $text
+	 * @return void
+	 *
+	 * @since 2.3.0
+	 *
+	 * @throws Exception
+	 */
+	private function presetOldTextTemplate(&$item)
+	{
+		$text_tpl = null;
+		$_db   = $this->_db;
+
+		if ($item->id == 0)
+		{
+			$item->text_template_id = $this->getStandardTpl('text');
+		}
+		elseif ($item->text_template_id == 0)
+		{
+			$query = $_db->getQuery(true);
+			$query->select('id');
+			$query->from($_db->quoteName('#__bwpostman_templates'));
+			$query->where($_db->quoteName('id') . ' = ' . (int) -2);
+
+			$_db->setQuery($query);
+
+			try
+			{
+				$text_tpl = $_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+
+			if (is_null($text_tpl))
+			{
+				$text_tpl = $this->getStandardTpl('text');
+			}
+
+			$item->text_template_id = $text_tpl;
+		}
+	}
+
+	/**
+	 * @param array    $associatedMailinglists
+	 * @param string   $status
+	 * @param boolean  $allSubscribers
+	 *
+	 * @return integer
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 2.3.0
+	 */
+	private function countSubscribersOfNewsletter(array $associatedMailinglists, $status, $allSubscribers)
+	{
+		$count_subscribers = 0;
+		$_db       = $this->_db;
+		$query     = $_db->getQuery(true);
+
+		$query->select('COUNT(' . $_db->quoteName('id') . ')');
+		$query->from($_db->quoteName('#__bwpostman_subscribers'));
+
+		if (!$allSubscribers)
+		{
+			$subQuery1 = $_db->getQuery(true);
+			$subQuery1->select('DISTINCT' . $_db->quoteName('subscriber_id'));
+			$subQuery1->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
+			$subQuery1->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $associatedMailinglists) . ')');
+			$query->where($_db->quoteName('id') . ' IN (' . $subQuery1 . ')');
+		}
+
+		$query->where($_db->quoteName('status') . ' IN (' . $status . ')');
+		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$count_subscribers = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $count_subscribers;
+	}
+
+	/**
+	 * @param array $usergroup
 	 *
 	 * @return mixed
 	 *
-	 * @since       0.9.1
+	 * @throws \Exception
+	 *
+	 * @since 2.3.0
 	 */
-	private function unHTMLSpecialCharsAll($text)
+	private function countUsersOfNewsletter(array $usergroup)
 	{
-		$text = $this->deHTMLEntities($text);
+		$count_users = 0;
+		$_db       = $this->_db;
+		$query     = $_db->getQuery(true);
+		$sub_query = $_db->getQuery(true);
 
-		return $text;
-	}
+		$sub_query->select($_db->quoteName('g') . '.' . $_db->quoteName('user_id'));
+		$sub_query->from($_db->quoteName('#__user_usergroup_map') . ' AS ' . $_db->quoteName('g'));
+		$sub_query->where($_db->quoteName('g') . '.' . $_db->quoteName('group_id') . ' IN (' . implode(',',
+				$usergroup) . ')');
 
-	/**
-	 * convert html special entities to literal characters
-	 *
-	 * @param string    $text
-	 *
-	 * @return  string  $text
-	 *
-	 * @since       0.9.1
-	 */
-	private function deHTMLEntities($text)
-	{
-		$search = array(
-		"'&(quot|#34);'i",
-		"'&(amp|#38);'i",
-		"'&(lt|#60);'i",
-		"'&(gt|#62);'i",
-		"'&(nbsp|#160);'i",   "'&(iexcl|#161);'i",  "'&(cent|#162);'i",   "'&(pound|#163);'i",  "'&(curren|#164);'i",
-		"'&(yen|#165);'i",    "'&(brvbar|#166);'i", "'&(sect|#167);'i",   "'&(uml|#168);'i",    "'&(copy|#169);'i",
-		"'&(ordf|#170);'i",   "'&(laquo|#171);'i",  "'&(not|#172);'i",    "'&(shy|#173);'i",    "'&(reg|#174);'i",
-		"'&(macr|#175);'i",   "'&(neg|#176);'i",    "'&(plusmn|#177);'i", "'&(sup2|#178);'i",   "'&(sup3|#179);'i",
-		"'&(acute|#180);'i",  "'&(micro|#181);'i",  "'&(para|#182);'i",   "'&(middot|#183);'i", "'&(cedil|#184);'i",
-		"'&(supl|#185);'i",   "'&(ordm|#186);'i",   "'&(raquo|#187);'i",  "'&(frac14|#188);'i", "'&(frac12|#189);'i",
-		"'&(frac34|#190);'i", "'&(iquest|#191);'i", "'&(Agrave|#192);'",  "'&(Aacute|#193);'",  "'&(Acirc|#194);'",
-		"'&(Atilde|#195);'",  "'&(Auml|#196);'",    "'&(Aring|#197);'",   "'&(AElig|#198);'",   "'&(Ccedil|#199);'",
-		"'&(Egrave|#200);'",  "'&(Eacute|#201);'",  "'&(Ecirc|#202);'",   "'&(Euml|#203);'",    "'&(Igrave|#204);'",
-		"'&(Iacute|#205);'",  "'&(Icirc|#206);'",   "'&(Iuml|#207);'",    "'&(ETH|#208);'",     "'&(Ntilde|#209);'",
-		"'&(Ograve|#210);'",  "'&(Oacute|#211);'",  "'&(Ocirc|#212);'",   "'&(Otilde|#213);'",  "'&(Ouml|#214);'",
-		"'&(times|#215);'i",  "'&(Oslash|#216);'",  "'&(Ugrave|#217);'",  "'&(Uacute|#218);'",  "'&(Ucirc|#219);'",
-		"'&(Uuml|#220);'",    "'&(Yacute|#221);'",  "'&(THORN|#222);'",   "'&(szlig|#223);'",   "'&(agrave|#224);'",
-		"'&(aacute|#225);'",  "'&(acirc|#226);'",   "'&(atilde|#227);'",  "'&(auml|#228);'",    "'&(aring|#229);'",
-		"'&(aelig|#230);'",   "'&(ccedil|#231);'",  "'&(egrave|#232);'",  "'&(eacute|#233);'",  "'&(ecirc|#234);'",
-		"'&(euml|#235);'",    "'&(igrave|#236);'",  "'&(iacute|#237);'",  "'&(icirc|#238);'",   "'&(iuml|#239);'",
-		"'&(eth|#240);'",     "'&(ntilde|#241);'",  "'&(ograve|#242);'",  "'&(oacute|#243);'",  "'&(ocirc|#244);'",
-		"'&(otilde|#245);'",  "'&(ouml|#246);'",    "'&(divide|#247);'i", "'&(oslash|#248);'",  "'&(ugrave|#249);'",
-		"'&(uacute|#250);'",  "'&(ucirc|#251);'",   "'&(uuml|#252);'",    "'&(yacute|#253);'",  "'&(thorn|#254);'",
-		"'&(yuml|#255);'");
-		$replace = array(
-		"\"",
-		"&",
-		"<",
-		">",
-		" ",      chr(161), chr(162), chr(163), chr(164), chr(165), chr(166), chr(167), chr(168), chr(169),
-		chr(170), chr(171), chr(172), chr(173), chr(174), chr(175), chr(176), chr(177), chr(178), chr(179),
-		chr(180), chr(181), chr(182), chr(183), chr(184), chr(185), chr(186), chr(187), chr(188), chr(189),
-		chr(190), chr(191), chr(192), chr(193), chr(194), chr(195), chr(196), chr(197), chr(198), chr(199),
-		chr(200), chr(201), chr(202), chr(203), chr(204), chr(205), chr(206), chr(207), chr(208), chr(209),
-		chr(210), chr(211), chr(212), chr(213), chr(214), chr(215), chr(216), chr(217), chr(218), chr(219),
-		chr(220), chr(221), chr(222), chr(223), chr(224), chr(225), chr(226), chr(227), chr(228), chr(229),
-		chr(230), chr(231), chr(232), chr(233), chr(234), chr(235), chr(236), chr(237), chr(238), chr(239),
-		chr(240), chr(241), chr(242), chr(243), chr(244), chr(245), chr(246), chr(247), chr(248), chr(249),
-		chr(250), chr(251), chr(252), chr(253), chr(254), chr(255));
-		return $text = preg_replace($search, $replace, $text);
-	}
+		$query->select('COUNT(' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ')');
+		$query->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
+		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('block') . ' = ' . (int) 0);
+		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('activation') . ' = ' . $_db->quote(''));
+		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' IN (' . $sub_query . ')');
 
-}
+		$_db->setQuery($query);
 
-/**
- * Utility class for writing the HTML for content
- * --> Referring to Communicator 2.0.0rc1
- *
- * @package 		BwPostman-Admin
- * @subpackage 	Newsletters
- *
- * @since       0.9.1
- */
-class HTML_content
-{
-	/**
-	 * Writes Title
-	 *
-	 * @param   object  $row
-	 * @param   object  $params
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function Title(&$row, &$params)
-	{
-		if ($params->get('item_title'))
+		try
 		{
-			if ($params->get('link_titles') && $row->link_on != '')
-			{
-				?>
-				<h2>
-					<a href="<?php echo $row->link_on;?>" class="contentpagetitle<?php echo $params->get('pageclass_sfx'); ?>">
-						<?php echo $row->title;?>
-					</a>
-				</h2>
-				<?php
-			}
-			else
-			{
-				?>
-				<h2><?php echo $row->title;?></h2>
-				<?php
-			}
+			$count_users = $_db->loadResult();
 		}
-	}
-
-	/**
-	 * Writes Category
-	 *
-	 * @param   object  $row
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function Category(&$row)
-	{
-		?>
-		<span class="sc_category"><small> <?php
-		echo $row->category;
-		?></small></span>
-		<?php
-	}
-
-	/**
-	 * Writes p-tag for Author and CreateDate
-	 *
-	 * @return  void
-	 *
-	 * @since       2.0.0
-	 */
-	public function ArticleInfoBegin()
-	{
-		?>
-		<p class="article-info">
-		<?php
-	}
-
-	/**
-	 * Writes p-tag for Author and CreateDate
-	 *
-	 * @return  void
-	 *
-	 * @since       2.0.0
-	 */
-	public function ArticleInfoEnd()
-	{
-		?>
-		</p>
-		<?php
-	}
-
-	/**
-	 * Writes Author name
-	 *
-	 * @param   object  $row
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function Author(&$row)
-	{
-		?>
-		<span class="created_by">
-			<small>
-				<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', ($row->created_by_alias ? $row->created_by_alias : $row->author)); ?>
-			</small>
-		</span>
-		<?php
-	}
-
-
-	/**
-	 * Writes Create Date
-	 *
-	 * @param   object  $row
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function CreateDate(&$row)
-	{
-		$create_date = null;
-
-		if (intval($row->created) != 0)
+		catch (RuntimeException $e)
 		{
-			$create_date = JHtml::_('date', $row->created);
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		?>
-		<span class="createdate">
-			<small><?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date); ?>&nbsp;&nbsp;&nbsp;&nbsp;</small>
-		</span>
-		<?php
+		return $count_users;
 	}
 
 	/**
-	 * Writes URL's
+	 * Method to preprocess content of HTML version of the newsletter
 	 *
-	 * @param   object  $row
-	 * @param   object  $params
+	 * @param object $newsletters_data
 	 *
-	 * @return  void
+	 * @return mixed
 	 *
-	 * @since       0.9.1
+	 * @throws \Exception
+	 *
+	 * @since 2.3.0
 	 */
-	public function URL(&$row, &$params)
+	private function preprocessHtmlVersion($newsletters_data)
 	{
-		if ($params->get('url') && $row->urls)
+		$renderer = new contentRenderer();
+
+		// only for old text templates
+		if ($newsletters_data->template_id < 1)
 		{
-			?>
-			<p class="row_url">
-				<a href="http://<?php echo $row->urls; ?>" target="_blank"> <?php echo $row->urls; ?></a>
-			</p>
-			<?php
+			$newsletters_data->html_version = $newsletters_data->html_version . '[dummy]';
 		}
+
+		// add template data
+		if (!$renderer->addTplTags($newsletters_data->html_version, $newsletters_data->template_id))
+		{
+			return false;
+		}
+
+		// Replace the intro at HTML part of the newsletter
+		$replace_html_intro_head = '';
+		if (!empty($newsletters_data->intro_headline))
+		{
+			$replace_html_intro_head = $newsletters_data->intro_headline;
+		}
+
+		$newsletters_data->html_version = str_replace('[%intro_headline%]', $replace_html_intro_head,
+			$newsletters_data->html_version);
+
+		$replace_html_intro_text = '';
+		if (!empty($newsletters_data->intro_text))
+		{
+			$replace_html_intro_text = nl2br($newsletters_data->intro_text, true);
+		}
+
+		$newsletters_data->html_version = str_replace('[%intro_text%]', $replace_html_intro_text,
+			$newsletters_data->html_version);
+
+		if (!$renderer->replaceTplLinks($newsletters_data->html_version))
+		{
+			return false;
+		}
+
+		if (!$renderer->addHtmlTags($newsletters_data->html_version, $newsletters_data->template_id))
+		{
+			return false;
+		}
+
+		if (!$renderer->addHTMLFooter($newsletters_data->html_version, $newsletters_data->template_id))
+		{
+			return false;
+		}
+
+		if (!BwPostmanHelper::replaceLinks($newsletters_data->html_version))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
-	 * Writes Modified Date
+	 * Method to preprocess content of text version of the newsletter
 	 *
-	 * @param   object  $row
-	 * @param   object  $params
+	 * @param object $newsletters_data
 	 *
-	 * @return  void
+	 * @return mixed
 	 *
-	 * @since       0.9.1
+	 * @throws \Exception
+	 *
+	 * @since 2.3.0
 	 */
-	public function ModifiedDate(&$row, &$params)
+	private function preprocessTextVersion($newsletters_data)
 	{
-		$mod_date = null;
+		$renderer = new contentRenderer();
 
-		if (intval($row->modified) != 0)
+		// only for old text templates
+		if ($newsletters_data->text_template_id < 1)
 		{
-			$mod_date = JHtml::_('date', $row->modified);
+			$newsletters_data->text_version = $newsletters_data->text_version . '[dummy]';
 		}
 
-		if (($mod_date != '') && $params->get('modifydate'))
+	// add template data
+		if (!$renderer->addTextTpl($newsletters_data->text_version, $newsletters_data->text_template_id))
 		{
-			?>
-			<p class="modifydate">
-				<?php echo JText::_('LAST_UPDATED'); ?>
-				(<?php echo $mod_date; ?>)
-			</p>
-			<?php
+			return false;
 		}
-	}
 
-	/**
-	 * Writes read more button
-	 *
-	 * @param   object  $row
-	 * @param   object  $params
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function ReadMore(&$row, &$params)
-	{
-		if ($params->get('readmore'))
+	// Replace the intro at text part of the newsletter
+		$replace_text_intro_head = '';
+		if (!empty($newsletters_data->intro_text_headline))
 		{
-			if ($params->get('intro_only') && $row->link_text)
-			{
-				?>
-				<p class="link_on"><a href="<?php echo $row->link_on;?>"
-					class="readon<?php echo $params->get('pageclass_sfx'); ?>"> <?php echo $row->link_text;?></a>
-				</p>
-				<?php
-			}
+			$replace_text_intro_head = $newsletters_data->intro_text_headline;
 		}
+
+		$newsletters_data->text_version = str_replace('[%intro_headline%]', $replace_text_intro_head,
+			$newsletters_data->text_version);
+
+		$replace_text_intro_text = '';
+		if (!empty($newsletters_data->intro_text_text))
+		{
+			$replace_text_intro_text = $newsletters_data->intro_text_text;
+		}
+
+		$newsletters_data->text_version = str_replace('[%intro_text%]', $replace_text_intro_text,
+			$newsletters_data->text_version);
+
+		if (!$renderer->replaceTextTplLinks($newsletters_data->text_version))
+		{
+			return false;
+		}
+
+		if (!$renderer->addTextFooter($newsletters_data->text_version, $newsletters_data->text_template_id))
+		{
+			return false;
+		}
+
+		if (!BwPostmanHelper::replaceLinks($newsletters_data->text_version))
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -563,6 +563,13 @@ class SubscriberviewPage
 	 */
 	public static $msg_saved_changes            = "Data changed!";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.0
+	 */
+	public static $msg_changed_mailaddress  = "To ensure the change of the mail address";
+
 	// error message identifier
 
 	/**
@@ -672,7 +679,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $invalid_field_special_mod        = 'Please enter a value into the \"%s\" field!';
+	public static $invalid_field_special_mod        = 'Please enter a value into the %s field!';
 
 	/**
 	 * @var string
@@ -700,7 +707,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $popup_enter_special              = 'Please enter a value into the "%s" field!';
+	public static $popup_enter_special              = 'Please enter a value into the %s field!';
 
 	/**
 	 * @var string
@@ -828,6 +835,7 @@ class SubscriberviewPage
 		$I->click($button);
 		$I->waitForElement(self::$view_edit, 30);
 		$I->seeElement(self::$view_edit);
+		$I->scrollTo(self::$button_submitleave, 0, -150);
 		$I->checkOption(self::$button_unsubscribe);
 		$I->click(self::$button_submitleave);
 		$I->dontSee(self::$mail_fill_1, self::$mail);

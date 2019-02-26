@@ -6,6 +6,12 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+Version 2.3.0 released (2019-04-26)----
+
+New
++ Message new activation needed at front end, if subscriber changed mail address
+
+
 Version 2.2.1 released (7-Feb-2019)----
 
 New

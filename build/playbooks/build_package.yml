@@ -58,7 +58,7 @@
         bw_plugin_name: "personalize"
         bw_plugin_group: "bwpostman"
 
-#    - name: build personalize plugin package
+#    - name: build libregister plugin package
     - include_role:
         name: romanabw.build-jplugin-package
       vars:

@@ -196,7 +196,7 @@ abstract class BwPostmanHelper
 	 */
 	public static function replaceLinks(&$text)
 	{
-		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
+		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto|#)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
 		$text       = preg_replace($search_str, ' ${1}="' . JUri::root() . '${2}"', $text);
 
 		return true;

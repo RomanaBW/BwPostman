@@ -349,6 +349,8 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @return    boolean True on success | error object
 	 *
+	 * @throws \Exception
+	 *
 	 * @since       2.0.0 (here)
 	 */
 	public static function sendMail(&$subscriber, $type, $itemid = null)
@@ -460,6 +462,7 @@ class BwPostmanSubscriberHelper
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
 				}
+				JFactory::getApplication()->enqueueMessage(JText::_("COM_BWPOSTMAN_SEND_CONFIRM_SCREEN_MSG"));
 				break;
 		}
 

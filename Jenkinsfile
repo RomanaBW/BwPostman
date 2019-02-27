@@ -5,6 +5,14 @@ pipeline {
 //		disableConcurrentBuilds()
 //	}
 
+	parameters {
+		string(name: "VERSION_NUMBER", defaultValue: "2.3.0", description: "The new/next version number of the project.")
+		string(name: "JOOMLA_VERSION", defaultValue: "3.9.3", description: "Version of Joomla to test against")
+		string(name: "VAGRANT_DIR", defaultValue: "/vms-uni2/vagrant/infrastructure/farm1/J-Tester", description: "Path to the vagrant file")
+		string(name: "BW_ARTIFACTS_BASE", defaultValue: "/repositories/artifacts/bwpostman")
+		string(name: "GIT_MESSAGE", defaultValue: "not specified")
+	}
+
     stages {
         stage('Build') {
 			steps {

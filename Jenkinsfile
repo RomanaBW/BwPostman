@@ -63,103 +63,143 @@ pipeline {
 			}
 		}
 
-		stage('accept1') {
-			steps
+		stage('Run acceptance level 1')
+		{
+			parallel
 			{
-//				echo 'Dummy'
-//				sleep 60
-				bwpmAccept("${STAGE_NAME}", "${ACCEPT_1_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-			}
-			post
-			{
-				always
+				stage('accept1')
 				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+					steps
+					{
+						//				echo 'Dummy'
+						//				sleep 60
+						bwpmAccept("${STAGE_NAME}", "${ACCEPT_1_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("${STAGE_NAME}")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+						}
+					}
 				}
-				failure
+
+				stage('accept2')
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					steps
+					{
+						//				echo 'Dummy'
+						bwpmAccept("${STAGE_NAME}", "${ACCEPT_2_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("${STAGE_NAME}")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+						}
+					}
 				}
 			}
 		}
 
-		stage('accept2')
+		stage('Run acceptance level 2')
 		{
-			steps
+			parallel
 			{
-//				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", "${ACCEPT_2_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-			}
-			post
-			{
-				always
+				stage('accept3')
 				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+					steps
+					{
+						//				echo 'Dummy'
+						bwpmAccept("${STAGE_NAME}", "${ACCEPT_3_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("${STAGE_NAME}")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+						}
+					}
 				}
-				failure
+
+				stage('accept6')
 				{
-					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					steps
+					{
+						//				echo 'Dummy'
+						bwpmAccept("${STAGE_NAME}", "${ACCEPT_6_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("${STAGE_NAME}")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+						}
+					}
 				}
 			}
 		}
 
-		stage('accept3')
+		stage('Run acceptance level 3')
 		{
-			steps
+			parallel
 			{
-//				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", "${ACCEPT_3_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-			}
-			post
-			{
-				always
+				stage('accept4')
 				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+					steps
+					{
+						// echo 'Dummy'
+						// sleep 60
+						bwpmAccept("${STAGE_NAME}", "${ACCEPT_4_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("${STAGE_NAME}")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+						}
+					}
 				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-				}
-			}
-		}
 
-		stage('accept6')
-		{
-			steps
-			{
-//				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", "${ACCEPT_6_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-			}
-			post
-			{
-				always
+				stage('accept5')
 				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-				}
-			}
-		}
-
-		stage('accept4')
-		{
-			steps
-			{
-				// echo 'Dummy'
-				// sleep 60
-				bwpmAccept("${STAGE_NAME}", "${ACCEPT_4_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					steps
+					{
+						echo
+						'Dummy'
+						bwpmAccept("accept5", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+					}
+					post
+					{
+						always
+						{
+							bwpmAcceptPostStepAlways("accept5")
+						}
+						failure
+						{
+							bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+						}
+					}
 				}
 			}
 		}
@@ -231,26 +271,6 @@ pipeline {
 //				NUR WENN ICH GANZ SICHER BIN!!!!!!!!
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 
-			}
-		}
-
-		stage ('accept5')
-		{
-			steps
-			{
-				echo 'Dummy'
-				bwpmAccept("accept5", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("accept5")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-				}
 			}
 		}
 

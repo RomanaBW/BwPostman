@@ -185,8 +185,7 @@ pipeline {
 				{
 					steps
 					{
-						echo
-						'Dummy'
+						echo 'Dummy'
 						bwpmAccept("accept5", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 					}
 					post

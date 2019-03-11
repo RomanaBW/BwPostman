@@ -162,7 +162,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		$this->auto_nbr			= 0;
 
 		// trigger Plugin BwTimeControl event and get results
-		$this->auto_nbr	= $dispatcher->trigger('onBwPostmanCampaignsPrepare', array (&$this->items));
+//		$this->auto_nbr	= $dispatcher->trigger('onBwPostmanCampaignsPrepare', array (&$this->items));
 
 		$this->addToolbar();
 

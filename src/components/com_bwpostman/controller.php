@@ -67,4 +67,24 @@ class BwPostmanController extends JControllerLegacy
 
 		return $this;
 	}
+
+	/**
+	 * Method to do the cron loop
+	 *
+	 * @return boolean
+	 *
+	 * @throws  \Exception
+	 *
+	 * @since       2.3.0
+	 */
+	public function doCron()
+	{
+		require_once(JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php');
+
+		$bwpostmancron = new BwPostmanPhpCron();
+
+		$bwpostmancron->doCronJob();
+
+		return true;
+	}
 }

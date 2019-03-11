@@ -468,6 +468,10 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		// Test whether the data is valid.
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('bwpostman');
+		$dispatcher->trigger('onBwPostmanBeforeNewsletterControllerValidate', array(&$form));
+
 		$validData = $model->validate($form, $data);
 
 		// Check for validation errors.
@@ -749,6 +753,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('newsletter');
 		$error	= array();
+		$link   = '';
 
 		// Get record ID from list view
 		$ids    	= (int) $this->input->get('cid', 0, '');
@@ -760,10 +765,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$recordId	= $this->input->getInt('id', 0);
 		}
 
-		// Check the newsletter form
-		$data	= $model->checkForm($recordId, $error);
+		$data = $model->preSendChecks($error, $recordId);
 
-		// if checkForm fails redirect to edit
+		// If preSendChecks fails redirect to edit
 		if ($error)
 		{
 			for ($i = 0; $i <= count($error); $i++)
@@ -771,155 +775,123 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				$app->enqueueMessage($error[$i]['err_msg'], 'error');
 			}
 
-			$this->setRedirect(
-				JRoute::_(
-					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, 'id'),
-					false
-				)
+			$link = JRoute::_(
+				'index.php?option=' . $this->option . '&view=' . $this->view_item
+				. $this->getRedirectToItemAppend($recordId, 'id'),
+				false
 			);
-		}
-		//check for content template
-		elseif ($data['is_template'] === "1")
-		{
-			$app->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR"), 'error');
 
-			$this->setRedirect(
-				JRoute::_(
-					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, 'id'),
-					false
-				)
-			);
+			$this->setRedirect($link);
+
+			return false;
 		}
-		// form data are valid and no content template
+
+		// Sending is allowed, form data are valid, newsletter is no content template and saving was successful
+		$task			= $this->input->get('task', 0);
+		$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
+		$startsending	= 0;
+
+		// make sure, recordID matches data id (because we may come from list view or from a new newsletter)
+		$recordId	= $model->getState('newsletter.id');
+		$ret_msg    = '';
+
+		switch ($task)
+		{
+			case "sendmail":
+			case "sendmailandpublish":
+					// Check if there are assigned mailinglists or joomla user groups and if they contain subscribers/users
+				if (!$model->checkRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id']))
+				{
+					$app->enqueueMessage($ret_msg, 'error');
+					$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+					$link = JRoute::_(
+						'index.php?option=' . $this->option . '&view=' . $this->view_item
+						. $this->getRedirectToItemAppend($recordId, 'id'),
+						false
+					);
+				}
+				else
+				{
+					if (!$model->sendNewsletter($ret_msg, 'recipients', $recordId, $unconfirmed, $data['campaign_id']))
+					{
+						$app->enqueueMessage($ret_msg, 'error');
+						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+						$link = JRoute::_(
+							'index.php?option=' . $this->option . '&view=' . $this->view_item
+							. $this->getRedirectToItemAppend($recordId, 'id'),
+							false
+						);
+					}
+					else
+					{
+						$startsending = 1;
+						$model->checkin($recordId);
+						// set start tab 'basic'
+						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+					}
+				}
+				break;
+			case "sendtestmail":
+				// Check if there are test-recipients
+				if (!$model->checkTestrecipients())
+				{
+					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_TESTRECIPIENTS'), 'error');
+					$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+					$link = JRoute::_(
+						'index.php?option=' . $this->option . '&view=' . $this->view_item
+						. $this->getRedirectToItemAppend($recordId, 'id'),
+						false
+					);
+				}
+				else
+				{
+					if (!$model->sendNewsletter($ret_msg, 'testrecipients', $recordId, $unconfirmed, $data['campaign_id']))
+					{
+						$app->enqueueMessage($ret_msg, 'error');
+						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+						$link = JRoute::_(
+							'index.php?option=' . $this->option . '&view=' . $this->view_item
+							. $this->getRedirectToItemAppend($recordId, 'id'),
+							false
+						);
+					}
+					else
+					{
+						$startsending = 1;
+						$model->checkin($recordId);
+						// set start tab 'basic'
+						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+					}
+				}
+				break;
+		}
+
+		if ($startsending)
+		{
+			if ($task == "sendmailandpublish")
+			{
+				$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', 1);
+			}
+
+			$app->setUserState('com_bwpostman.edit.newsletter.data', null);
+			$app->setUserState('newsletter.id', null);
+			$app->setUserState('com_bwpostman.newsletters.publish_id', $recordId);
+			$app->setUserState('com_bwpostman.newsletters.mails_per_pageload', $this->input->get('mails_per_pageload'));
+			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&task=startsending&layout=queue', false);
+		}
 		else
 		{
-			$task			= $this->input->get('task', 0);
-			$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
-			$startsending	= 0;
+			$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+			$link = JRoute::_(
+				'index.php?option=' . $this->option . '&view=' . $this->view_item
+				. $this->getRedirectToItemAppend($recordId, 'id'),
+				false
+			);
+		}
 
-			// Access check.
-			if (!self::allowSend($data))
-			{
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED'), 'error');
-
-				$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_list
-						. $this->getRedirectToListAppend(),
-						false
-					)
-				);
-				return false;
-			}
-
-			// Store the newsletter into the newsletters-table
-			if ($model->save($data))
-			{ // save newsletter is ok
-				// make sure, recordID matches data id (because we may come from list view or form a new newsletter)
-				$recordId	= $model->getState('newsletter.id');
-				$ret_msg    = '';
-
-				switch ($task)
-				{
-					case "sendmail":
-					case "sendmailandpublish":
-							// Check if there are assigned mailinglists or joomla user groups and if they contain subscribers/users
-						if (!$model->checkRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id']))
-						{
-							$app->enqueueMessage($ret_msg, 'error');
-							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-							$link = JRoute::_(
-								'index.php?option=' . $this->option . '&view=' . $this->view_item
-								. $this->getRedirectToItemAppend($recordId, 'id'),
-								false
-							);
-							$this->setRedirect($link);
-						}
-						else
-						{
-							if (!$model->sendNewsletter($ret_msg, 'recipients', $recordId, $unconfirmed, $data['campaign_id']))
-							{
-								$app->enqueueMessage($ret_msg, 'error');
-								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-								$link = JRoute::_(
-									'index.php?option=' . $this->option . '&view=' . $this->view_item
-									. $this->getRedirectToItemAppend($recordId, 'id'),
-									false
-								);
-								$this->setRedirect($link);
-							}
-							else
-							{
-								$startsending = 1;
-								$model->checkin($recordId);
-								// set start tab 'basic'
-								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-							}
-						}
-						break;
-					case "sendtestmail":
-						// Check if there are test-recipients
-						if (!$model->checkTestrecipients())
-						{
-							$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_TESTRECIPIENTS'), 'error');
-							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-							$link = JRoute::_(
-								'index.php?option=' . $this->option . '&view=' . $this->view_item
-								. $this->getRedirectToItemAppend($recordId, 'id'),
-								false
-							);
-							$this->setRedirect($link);
-						}
-						else
-						{
-							if (!$model->sendNewsletter($ret_msg, 'testrecipients', $recordId, $unconfirmed, $data['campaign_id']))
-							{
-								$app->enqueueMessage($ret_msg, 'error');
-								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-								$link = JRoute::_(
-									'index.php?option=' . $this->option . '&view=' . $this->view_item
-									. $this->getRedirectToItemAppend($recordId, 'id'),
-									false
-								);
-								$this->setRedirect($link);
-							}
-							else
-							{
-								$startsending = 1;
-								$model->checkin($recordId);
-								// set start tab 'basic'
-								$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-							}
-						}
-						break;
-				}
-
-				if ($startsending){
-					if ($task == "sendmailandpublish")
-					{
-						$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', 1);
-					}
-
-					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
-					$app->setUserState('newsletter.id', null);
-					$app->setUserState('com_bwpostman.newsletters.publish_id', $recordId);
-					$app->setUserState('com_bwpostman.newsletters.mails_per_pageload', $this->input->get('mails_per_pageload'));
-					$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&task=startsending&layout=queue', false);
-					$this->setRedirect($link);
-				}
-			}
-			else
-			{
-				$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-				$link = JRoute::_(
-					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, 'id'),
-					false
-				);
-				$this->setRedirect($link);
-			}
+		if ($link !== '')
+		{
+			$this->setRedirect($link);
 		}
 
 		return true;

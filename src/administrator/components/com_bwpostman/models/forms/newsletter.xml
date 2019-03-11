@@ -158,14 +158,14 @@
 		/>
 
 		<field
-				name="is_template"
-				type="list"
-				label="COM_BWPOSTMAN_NL_FIELD_IS_TEMPLATE_LABEL"
-				labelclass="control-label"
-				description="COM_BWPOSTMAN_NL_FIELD_IS_TEMPLATE_DESC"
-				class="chzn-color-state"
-				filter="intval"
-				default="0"
+			name="is_template"
+			type="list"
+			label="COM_BWPOSTMAN_NL_FIELD_IS_TEMPLATE_LABEL"
+			labelclass="control-label"
+			description="COM_BWPOSTMAN_NL_FIELD_IS_TEMPLATE_DESC"
+			class="chzn-color-state"
+			filter="intval"
+			default="0"
 		>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>

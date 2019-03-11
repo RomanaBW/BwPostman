@@ -143,6 +143,9 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		JHtml::_('bootstrap.framework');
 		JHtml::_('jquery.framework');
 
+		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+
+		$this->dispatcher = JEventDispatcher::getInstance();
 		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['maintenance'])
@@ -158,7 +161,23 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-		$this->template	= $app->getTemplate();
+		if (JPluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
+		{
+			require_once JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php';
+			$cron = new BwPostmanPhpCron;
+			if (JFile::exists(JPATH_PLUGINS . $cron->startFile))
+			{
+				$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
+			}
+
+			// Create stop file
+			if (JFile::exists(JPATH_PLUGINS . $cron->stopFile))
+			{
+				$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
+			}
+		}
+
+			$this->template	= $app->getTemplate();
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
@@ -167,12 +186,12 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		// Set toolbar title
 		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
+		$bar	= JToolbar::getInstance('toolbar');
 
 		// Set toolbar items for the page
 		if ($layout == 'restoreTables')
 		{
 			$alt 	= "COM_BWPOSTMAN_BACK";
-			$bar	= JToolbar::getInstance('toolbar');
 			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
 			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
@@ -185,7 +204,6 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		if ($layout == 'doRestore')
 		{
 			$alt 	= "COM_BWPOSTMAN_BACK";
-			$bar	= JToolbar::getInstance('toolbar');
 			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
 			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
@@ -199,7 +217,6 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		{
 			JFactory::getApplication()->input->set('hidemainmenu', true);
 			$alt 	= "COM_BWPOSTMAN_BACK";
-			$bar	= JToolbar::getInstance('toolbar');
 			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
 			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
@@ -212,7 +229,6 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		if ($layout == 'updateCheckSave')
 		{
 			$alt 	= "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
-			$bar	= JToolbar::getInstance('toolbar');
 			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
 			$backlink 	= 'javascript:window.close()';
 			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');

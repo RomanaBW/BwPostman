@@ -169,6 +169,8 @@ Joomla.submitbutton = function (pressbutton)
 		<div class="clr clearfix"></div>
 
 		<div class="tab-wrapper-bwp">
+			<?php if (!property_exists($this->item, 'scheduled_date') || $this->item->scheduled_date === '' || $this->item->scheduled_date === null)
+				{ ?>
 			<fieldset class="adminform">
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_SENDMAIL'); ?></legend>
 				<div class="well well-small">
@@ -221,6 +223,7 @@ Joomla.submitbutton = function (pressbutton)
 					</table>
 				</div>
 			</fieldset>
+			<?php } ?>
 
 			<fieldset class="adminform">
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_SENDTESTMAIL'); ?></legend>

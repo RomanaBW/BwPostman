@@ -89,6 +89,9 @@ if ($this->queueEntries)
 									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', JText::_("COM_BWPOSTMAN_SETTINGS"), '', '');
 								}
 
+								// trigger BwTimeControl event
+								$this->dispatcher->trigger('onBwPostmanMaintenanceRenderLayout');
+
 								$link = BwPostmanHTMLHelper::getForumLink();
 								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', JText::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');
 								?>

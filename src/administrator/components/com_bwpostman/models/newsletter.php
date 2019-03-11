@@ -201,6 +201,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		$app	= JFactory::getApplication();
 		$item   = new stdClass();
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('bwpostman');
 
 		// Initialise variables.
 		$pk		= (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
@@ -233,6 +235,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				// Convert to the JObject before adding other data.
 				$properties = $table->getProperties(1);
+				$dispatcher->trigger('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
 				$item       = ArrayHelper::toObject($properties, 'JObject');
 
 				if (property_exists($item, 'params'))
@@ -298,7 +301,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 		}
 
-		JFactory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data', $item);
+		$app->setUserState('com_bwpostman.edit.newsletter.data', $item);
 
 		// if plugin "substitutelinks" is active and substitute_links == '1' -> setUserState
 		if (isset($item->substitute_links) && $item->substitute_links == '1')
@@ -1256,8 +1259,62 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @access	public
 	 *
+	 * @param	array	$error          errors
 	 * @param 	int		$recordId       Newsletter ID
+	 * @param   boolean $automation     do we come from plugin?
+	 *
+	 * @return	mixed
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.3.0
+	 */
+	public function preSendChecks( &$error, $recordId = 0, $automation = false)
+	{
+		// Access check.
+		if (!BwPostmanHelper::canSend($recordId))
+		{
+			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED');
+
+			return false;
+		}
+
+		// Check the newsletter form
+		$data	= $this->checkForm($error, $recordId, $automation);
+
+		// if checkForm fails redirect to edit
+		if ($error)
+		{
+			return false;
+		}
+
+		//check for content template
+		if ($data['is_template'] === "1")
+		{
+			$err[] = JText::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR');
+
+			return false;
+		}
+
+		// Store the newsletter into the newsletters-table
+		if (!$this->save($data))
+		{
+			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_GENERAL');
+
+			return false;
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Method to check and clean the input fields
+	 *
+	 * @access	public
+	 *
 	 * @param	array	$err            errors
+	 * @param 	int		$recordId       Newsletter ID
+	 * @param   boolean $automation     do we come from plugin?
 	 *
 	 * @return	mixed
 	 *
@@ -1265,16 +1322,22 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function checkForm($recordId = 0, &$err)
+	public function checkForm( &$err, $recordId = 0, $automation = false)
 	{
 		jimport('joomla.mail.helper');
 
-		// heal form data and get them
-		$this->changeTab();
-		$data	= ArrayHelper::fromObject(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data'));
+		if (!$automation)
+		{
+			// heal form data and get them
+			$this->changeTab();
+			$data	= ArrayHelper::fromObject(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data'));
 
-		$data['id']	= $recordId;
-		$i = 0;
+			$data['id']	= $recordId;
+		}
+		else
+		{
+			$data = ArrayHelper::fromObject($this->getItem($recordId));
+		}
 
 		//Remove all HTML tags from name, emails, subject and the text version
 		$filter                 = new JFilterInput(array(), array(), 0, 0);
@@ -1289,60 +1352,47 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Check for valid from_name
 		if (trim($data['from_name']) == '')
 		{
-			$err[$i]['err_code'] = 301;
-			$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_NAME');
-			$i++;
+			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_NAME');
 		}
 
 		// Check for valid from_email address
 		if (trim($data['from_email']) == '')
 		{
-			$err[$i]['err_code'] = 302;
-			$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL');
-			$i++;
+			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL');
 		}
 		else
 		{
 			// If there is a from_email address check if the address is valid
 			if (!JMailHelper::isEmailAddress(trim($data['from_email'])))
 			{
-				$err[$i]['err_code'] = 306;
-				$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL_INVALID');
-				$i++;
+				$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL_INVALID');
 			}
 		}
 
 		// Check for valid reply_email address
 		if (trim($data['reply_email']) == '')
 		{
-			$err[$i]['err_code'] = 303;
-			$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL');
-			$i++;
+			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL');
 		}
 		else
 		{
 			// If there is a from_email address check if the address is valid
 			if (!JMailHelper::isEmailAddress(trim($data['reply_email'])))
 			{
-				$err[$i]['err_code'] = 307;
-				$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL_INVALID');
-				$i++;
+				$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL_INVALID');
 			}
 		}
 
 		// Check for valid subject
 		if (trim($data['subject']) == '')
 		{
-			$err[$i]['err_code'] = 304;
-			$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_SUBJECT');
-			$i++;
+			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SUBJECT');
 		}
 
 		// Check for valid html or text version
 		if ((trim($data['html_version']) == '') && (trim($data['text_version']) == ''))
 		{
-			$err[$i]['err_code'] = 305;
-			$err[$i]['err_msg'] = JText::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
+			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
 		}
 
 		return $data;
@@ -1621,6 +1671,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
 				}
+
+				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				{
+					$form_data['scheduled_date']	= $state_data->scheduled_date;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				{
+					$form_data['ready_to_send']	= $state_data->ready_to_send;
+				}
 				break;
 			case 'edit_text':
 				$form_data['attachment']		= $state_data->attachment;
@@ -1648,6 +1708,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				{
+					$form_data['scheduled_date']	= $state_data->scheduled_date;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				{
+					$form_data['ready_to_send']	= $state_data->ready_to_send;
 				}
 				break;
 			case 'edit_preview':
@@ -1677,6 +1747,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				{
+					$form_data['scheduled_date']	= $state_data->scheduled_date;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				{
+					$form_data['ready_to_send']	= $state_data->ready_to_send;
 				}
 				break;
 			case 'edit_send':
@@ -1755,6 +1835,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$form_data['substitute_links']	= $state_data->substitute_links;
 				}
+
+				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				{
+					$form_data['scheduled_date']	= $state_data->scheduled_date;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				{
+					$form_data['ready_to_send']	= $state_data->ready_to_send;
+				}
 				break;
 			default:
 				$form_data['html_version']		= $state_data->html_version;
@@ -1777,6 +1867,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
 				{
 					$form_data['ml_intern']			= $state_data->ml_intern;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				{
+					$form_data['scheduled_date']	= $state_data->scheduled_date;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				{
+					$form_data['ready_to_send']	= $state_data->ready_to_send;
 				}
 				break;
 		}
@@ -2307,7 +2407,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @param int   $mailsPerStep     number mails to send
 	 *
-	 * @return int	0 -> queue is empty, 1 -> maximum reached
+	 * @return int	0 -> queue is empty, 1 -> maximum reached, 2 -> fatal error
 	 *
 	 * @throws Exception
 	 *

@@ -233,6 +233,18 @@ window.onload = function()
 											<div class="controls"><?php echo $field->input; ?></div></li>
 									<?php endif; ?>
 								<?php endforeach; ?>
+								<?php if (count($this->form->getFieldset('scheduled')))
+								{
+									foreach ($this->form->getFieldset('scheduled') as $field): ?>
+										<?php if ($field->hidden): ?>
+											<li><?php echo $field->input; ?></li>
+										<?php else: ?>
+											<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
+												<div class="controls"><?php echo $field->input; ?></div>
+											</li>
+										<?php endif; ?>
+									<?php endforeach;
+								}?>
 								<?php foreach($this->form->getFieldset('campaigns') as $field): ?>
 									<?php if ($field->hidden): ?>
 										<li><?php echo $field->input; ?></li>

@@ -1,10 +1,10 @@
 <?php
 /**
- * BwPostman Newsletter QuickTimeControl Plugin
+ * BwPostman Newsletter TimeControl Plugin
  *
  * BwPostman TimeControl Plugin main file for BwPostman.
  *
- * @version 2.0.0 bwplgtc
+ * @version %%version_number%%
  * @package BwPostman TimeControl Plugin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
@@ -27,15 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-// Require helper class
-require_once (JPATH_PLUGINS.'/bwpostman/bwtimecontrol/helpers/campaignhelper.php');
-
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
-
 /**
- * @package     ${NAMESPACE}
+ * @package     BwPostman TimeControl Plugin
  *
- * @since       2.0.0
+ * @since       2.3.0
  */
 class plgBwPostmanBwTimeControl extends JPlugin
 {
@@ -44,9 +39,90 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @var    bool Plugin enabled?
 	 *
-	 * @since       2.0.0
+	 * @since       2.3.0
 	 */
 	protected $_enabled;
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.0
+	 */
+	protected $min_bwpostman_version = '2.2.1';
+
+	/**
+	 * Property to hold form
+	 *
+	 * @var    object
+	 *
+	 * @since  2.3.0
+	 */
+	protected $form;
+
+	/**
+	 * Load the language file on instantiation
+	 *
+	 * @var    boolean
+	 *
+	 * @since  2.3.0
+	 */
+	protected $autoloadLanguage = true;
+
+	/**
+	 * Property to hold component enabled status
+	 *
+	 * @var    boolean
+	 *
+	 * @since  2.3.0
+	 */
+	protected $BwPostmanComponentEnabled = false;
+
+	/**
+	 * Property to hold component version
+	 *
+	 * @var    string
+	 *
+	 * @since  2.3.0
+	 */
+	protected $BwPostmanComponentVersion = '0.0.0';
+
+	/**
+	 * Property to hold logger
+	 *
+	 * @var    object
+	 *
+	 * @since  2.3.0
+	 */
+	private $logger;
+
+	/**
+	 * Property to hold log category
+	 *
+	 * @var    string
+	 *
+	 * @since  2.3.0
+	 */
+	private $log_cat  = 'BwPm_TC';
+
+	/**
+	 * Property to hold debug
+	 *
+	 * @var    boolean
+	 *
+	 * @since  2.3.0
+	 */
+	private $debug    = false;
+
+	/**
+	 * Definition of which contexts to allow in this plugin
+	 *
+	 * @var    array
+	 *
+	 * @since  2.3.0
+	 */
+	protected $allowedContext = array(
+		'com_bwpostman.newsletter',
+	);
 
 	/**
 	 * plgBwPostmanBwTimeControl constructor.
@@ -54,35 +130,131 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 * @param object $subject
 	 * @param array  $config
 	 *
-	 * @since       2.0.0
+	 * @since       2.3.0
 	 */
-	function __construct($subject, $config) {
+	function __construct($subject, $config)
+	{
+		parent::__construct($subject, $config);
 		$this->_enabled = false;
 
+		$log_options    = array('text_file' => 'bwpostman/BwPmTimecontrol.log');
+		$this->logger   = new BwLogger($log_options);
+		$this->debug    = false;
+
 		// Do not load if BwPostman version is not supported or BwPostman isn't detected
-		// TODO check licence!
-        if (JComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
-            return;
-        }
-        else {
-        	$this->_enabled = true;
-        }
-
-		parent::__construct ( $subject, $config );
-
-		$this->loadLanguage('plg_bwpostman_bwtimecontrol.sys');
+		$this->setBwPostmanComponentStatus();
+		$this->setBwPostmanComponentVersion();
+		$this->loadLanguage();
+		// @ToDo check licence!
 	}
 
 	/**
-	 * Method to send due mails
+	 * Method to set status of component activation property
 	 *
-	 * @access	public
+	 * @return void
 	 *
-	 * @return 	bool	true on success
-	 *
-	 * @since	1.2.0
+	 * @since 2.3.0
 	 */
-	public function onBwPostmanCampaignsTaskDueSend ()
+	protected function setBwPostmanComponentStatus()
+	{
+		$_db        = JFactory::getDbo();
+		$query      = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('enabled'));
+		$query->from($_db->quoteName('#__extensions'));
+		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$enabled                = $_db->loadResult();
+			$this->BwPostmanComponentEnabled = $enabled;
+			$this->_enabled = true;
+
+			if ($this->debug)
+			{
+				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), JLog::DEBUG, $this->log_cat));
+			}
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			$this->BwPostmanComponentEnabled = false;
+			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
+		}
+	}
+
+	/**
+	 * Method to set component version property
+	 *
+	 * @return void
+	 *
+	 * @since 2.3.0
+	 */
+	protected function setBwPostmanComponentVersion()
+	{
+		$_db        = JFactory::getDbo();
+		$query      = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('manifest_cache'));
+		$query->from($_db->quoteName('#__extensions'));
+		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
+		$_db->setQuery($query);
+
+		try
+		{
+			$manifest               = json_decode($_db->loadResult(), true);
+			$this->BwPostmanComponentVersion = $manifest['version'];
+
+			if ($this->debug)
+			{
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']), JLog::DEBUG, $this->log_cat));
+			}
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			$this->BwPostmanComponentVersion = '0.0.0';
+			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
+		}
+	}
+
+	/**
+	 * Method to load further language files
+	 *
+	 * @since 2.3.0
+	 */
+	protected function loadLanguageFiles()
+	{
+		$lang = JFactory::getLanguage();
+
+		//Load first english file of component
+		$lang->load('com_bwpostman', JPATH_SITE, 'en_GB', true);
+
+		//load specific language of component
+		$lang->load('com_bwpostman', JPATH_SITE, null, true);
+
+		//Load specified other language files in english
+		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR, 'en_GB', true);
+
+		// and other language
+		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR, null, true);
+	}
+
+	/**
+	 * Event method onContentPrepareForm
+	 *
+	 * @param   mixed  $form  JForm instance
+	 * @param   object $data  Form values
+	 *
+	 * @return bool
+	 *
+	 * @throws \Exception
+	 *
+	 * @since  2.3.0
+	 */
+	public function onContentPrepareForm($form, $data)
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
@@ -90,29 +262,172 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-
-		$controller	= JControllerLegacy::getInstance('BwPostman');
-
-		$ret	= BwPostmanCampaignHelper::sendDueNewsletters();
-
-		if ($ret == 0) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND_EMPTY_QUEUE');
-			$type	= 'message';
-		}
-		elseif ($ret === false) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ERROR_DUESEND');
-			$type	= 'error';
-		}
-		else {
-			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_SUCCESS_DUESEND', $ret);
-			$type	= 'message';
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry('onContentPrepareForm reached', JLog::DEBUG, $this->log_cat));
 		}
 
-		$link = 'index.php?option=com_bwpostman&view=campaigns';
+		if (!$this->prerequisitesFulfilled())
+		{
+			return false;
+		}
 
-		$controller->setRedirect($link, $msg, $type);
+		$context = $form->getName();
+
+		if ($this->debug)
+		{
+			$this->logger->addEntry(new JLogEntry(sprintf('Context is: %s', $context), JLog::DEBUG, $this->log_cat));
+		}
+
+		if (!in_array($context, $this->allowedContext))
+		{
+			return true;
+		}
+
+		$scheduledXml = $this->createFieldsetScheduled();
+		$form->setField($scheduledXml);
+
+		if (is_object($data) && property_exists($data, 'id'))
+		{
+			$scheduledData = $this->getItem((int)$data->id);
+
+			if (is_array($scheduledData))
+			{
+				$form->setValue('scheduled_date', 'scheduled', $scheduledData['scheduled_date']);
+				$form->setValue('ready_to_send', 'scheduled', $scheduledData['ready_to_send']);
+			}
+		}
+
 		return true;
 	}
+
+	/**
+	 * Method to check if prerequisites are fulfilled
+	 *
+	 * @return  bool
+	 *
+	 * @since   2.3.0
+	 */
+	protected function prerequisitesFulfilled()
+	{
+		if (!$this->BwPostmanComponentEnabled)
+		{
+			return false;
+		}
+
+		if (version_compare($this->BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
+		{
+			if ($this->debug)
+			{
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), JLog::ERROR, $this->log_cat));
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to manipulate form before validation
+	 *
+	 * @param 	object $form
+	 *
+	 * @return 	bool	true on success
+	 *
+	 * @since	2.3.0
+	 */
+	public function onBwPostmanBeforeNewsletterControllerValidate (&$form)
+	{
+		// Sanity check :)
+		if (!$this->_enabled)
+		{
+			return false;
+		}
+		$scheduledXml = $this->createFieldsetScheduled();
+		$form->setField($scheduledXml);
+
+		return true;
+	}
+
+	/**
+	 * Method to manipulate form before validation
+	 *
+	 * @param 	array $properties
+	 *
+	 * @return 	bool	true on success
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.3.0
+	 */
+	public function onBwPostmanAfterNewsletterModelGetProperties (&$properties)
+	{
+		// Sanity check :)
+		if (!$this->_enabled)
+		{
+			return false;
+		}
+		$scheduledDate = $this->getItem($properties['id']);
+		$properties['scheduled_date'] = $scheduledDate['scheduled_date'];
+		$properties['ready_to_send'] = $scheduledDate['ready_to_send'];
+
+		return true;
+	}
+
+	/**
+	 * Method to manipulate form before validation
+	 *
+	 * @throws \Exception
+	 *
+	 * @return 	bool	true on success
+	 *
+	 * @since	2.3.0
+	 */
+	public function onBwPostmanMaintenanceStartCron ()
+	{
+		// Sanity check :)
+		if (!$this->_enabled)
+		{
+			return false;
+		}
+
+		require_once(JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php');
+
+		$bwpostmancron = new BwPostmanPhpCron();
+
+		$bwpostmancron->runCronServer();
+
+		return true;
+	}
+
+
+	/**
+	 * Method to manipulate form before validation
+	 *
+	 * @throws \Exception
+	 *
+	 * @return 	bool	true on success
+	 *
+	 * @since	2.3.0
+	 */
+	public function onBwPostmanMaintenanceStopCron ()
+	{
+		// Sanity check :)
+		if (!$this->_enabled)
+		{
+			return false;
+		}
+
+		require_once(JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php');
+
+		$bwpostmancron = new BwPostmanPhpCron();
+
+		$bwpostmancron->stopCronServer();
+
+		return true;
+	}
+
 
 	/**
 	 * Method to  test automation
@@ -121,7 +436,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	boolean 	true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanCampaignsTaskAutoTest ()
 	{
@@ -131,55 +446,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		$app		= JFactory::getApplication();
-		$jinput		= JFactory::getApplication()->input;
-		$controller	= JControllerLegacy::getInstance('BwPostman');
-		$msg		= '';
-		$type       = '';
-		$link		= 'index.php?option=com_bwpostman&view=campaigns';
-
-		// Get the selected campaign(s)
-		$cids	= $jinput->get('cid', array(0), 'post');
-		ArrayHelper::toInteger($cids);
-
-		if (count($cids) > 1) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_ONLY_ONE_CAMPAIGN');
-			$type	= 'warning';
-			$app->enqueueMessage($msg, $type);
-		}
-		$id		= BwPostmanCampaignHelper::getTcIdFromCampaign($cids[0]);
-		$item	= BwPostmanCampaignHelper::getItem($id);
-
-		// Automailing check
-		if ($item->automailing != '1') {
-			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_NO_AUTO_CAMPAIGN', $cids[0]);
-			$type	= 'warning';
-			$controller->setRedirect($link, $msg, $type);
-			return false;
-		}
-
-		$ret	= BwPostmanCampaignHelper::HandleQueue($item->campaign_id, 0, 'test', 0);
-
-		if ($ret[1] == 0) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_EMPTY_QUEUE');
-			$type	= 'message';
-		}
-		elseif ($ret[1] === false) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_ERROR');
-			$type	= 'error';
-		}
-		elseif ($ret[1] > 0) {
-			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_SUCCESS_SEND', $ret[1]);
-			$type	= 'message';
-		}
-
-		if ($ret[0] === false) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST_ERROR_FILL_QUEUE');
-			$type	= 'error';
-		}
-		$controller->setRedirect($link, $msg, $type);
 		return true;
-
 	}
 
 	/**
@@ -189,7 +456,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	boolean 	true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanCampaignsTaskActivate ()
 	{
@@ -199,80 +466,19 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		$app		= JFactory::getApplication();
-		$jinput		= $app->input;
-		$controller	= JControllerLegacy::getInstance('BwPostman');
-		$msg		= '';
-		$type       = '';
-		$task		= 'activate';
-		$link		= 'index.php?option=com_bwpostman&view=campaigns';
-
-		// Get the selected campaign
-		$cids	= $jinput->get('cid', array(0), 'post');
-
-		if (count($cids) > 1) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_ONLY_ONE_CAMPAIGN');
-			$type	= 'warning';
-			$app->enqueueMessage($msg, $type);
-		}
-
-		$id		= BwPostmanCampaignHelper::getTcIdFromCampaign($cids[0]);
-
-		// Selected check
-		if ($id == '0') {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_NO_AUTO_CAMPAIGN_SELECTED');
-			$type	= 'error';
-			$controller->setRedirect($link, $msg, $type);
-			return false;
-		}
-
-		$item	= BwPostmanCampaignHelper::getItem($id);
-
-		// Automailing check
-		if ($item->automailing != '1') {
-			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_NO_AUTO_CAMPAIGN', $cids[0]);
-			$type	= 'error';
-			$controller->setRedirect($link, $msg, $type);
-			return false;
-		}
-
-		// task for deactivation?
-		if ($item->active) $task = 'deactivate';
-
-		$ret	= BwPostmanCampaignHelper::HandleQueue($item->campaign_id, 0, $task, 0);
-
-		if ($ret[1] == 0) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_EMPTY_QUEUE');
-			$type	= 'message';
-		}
-		elseif ($ret[1] === false) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_ERROR');
-			$type	= 'error';
-		}
-		elseif ($ret[1] > 0) {
-			$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_SUCCESS_SEND', $ret[1]);
-			$type	= 'message';
-		}
-
-		if ($ret[0] === false) {
-			$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE_ERROR_FILL_QUEUE');
-			$type	= 'error';
-		}
-
-		$controller->setRedirect($link, $msg, $type);
 		return true;
 	}
 
 	/**
-	 * Method to prepare toolbar buttons for BwTimeControl
+	 * Method to prepare toolbar buttons for BwTimeControl at campaigns
 	 *
 	 * @access	public
 	 *
-	 * @param   object      $canDo
-	 *
 	 * @return 	boolean 	true on success
 	 *
-	 * @since	1.2.0
+	 * @throws \Exception
+	 *
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanCampaignsPrepareToolbar ()
 	{
@@ -282,9 +488,54 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.autotest', 'question-circle', 'question-circle', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST'), true);
-		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
-		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
+//		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.autotest', 'question-circle', 'question-circle', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST'), true);
+//		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
+//		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
+
+		return true;
+	}
+
+	/**
+	 * Method to prepare toolbar buttons for BwTimeControl at campaigns
+	 *
+	 * @return 	boolean 	true on success
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.3.0
+	 */
+	public function onBwPostmanMaintenanceRenderLayout ()
+	{
+		// Sanity check :)
+		if (!$this->_enabled)
+		{
+			return false;
+		}
+
+		$permissions	= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+
+
+		if ($permissions['view']['maintenance'])
+		{
+			$link = 'index.php?option=com_bwpostman&view=maintenance&task=maintenance.startCron';
+			BwPostmanHTMLHelper::quickiconButton(
+				$link,
+				'icon-48-maintenance.png',
+				JText::_("PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_START_CRON"),
+				0,
+				0
+			);
+
+			$link = 'index.php?option=com_bwpostman&view=maintenance&task=maintenance.stopCron';
+			BwPostmanHTMLHelper::quickiconButton(
+				$link,
+				'icon-48-maintenance.png',
+				JText::_("PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_STOP_CRON"),
+				0,
+				0
+			);
+
+		}
 
 		return true;
 	}
@@ -300,7 +551,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	boolean	    true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanBeforeNewsletterSend (&$table_name, &$tblSendMailQueue, &$tblSendMailContent)
 	{
@@ -309,10 +560,6 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		{
 			return false;
 		}
-
-		$tblSendMailQueue	= BwPostmanCampaignHelper::getTable('tc_sendmailqueue', 'BwPostmanTable');
-		$tblSendMailContent	= BwPostmanCampaignHelper::getTable('tc_sendmailcontent', 'BwPostmanTable');
-		$table_name			= '#__bwpostman_tc_sendmailqueue';
 
 		return true;
 	}
@@ -326,7 +573,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return  boolean         true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanCampaignsPrepare (&$items)
 	{
@@ -337,22 +584,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		}
 
 		$k	= 0;
-		foreach ($items as $item) {
-			// Get TC-ID
-			$tc_id		= BwPostmanCampaignHelper::getTcIdFromCampaign($item->id);
-			if ($tc_id) {
-				// Set some values if campaign has automation
-				$tc_item		= BwPostmanCampaignHelper::getItem($tc_id);
-				$item->tc_id	= $tc_item->tc_id;
-				$item->auto		= $tc_item->automailing;
-				$item->active	= $tc_item->active;
-				$k++;
-			}
-			else {
-				$item->auto		= 0;
-				$item->active	= 0;
-			}
-		}
+
 		return $k;
 	}
 
@@ -367,7 +599,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	boolean 	true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanCampaignPrepare (&$cam_data, &$newsletters, &$document)
 	{
@@ -376,36 +608,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		{
 			return false;
 		}
-		JFactory::getApplication()->setUserState('bwtimecontrol.campaign_id', $cam_data->id);
-		$cam_data_nl_edit = JFactory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_edit', null);
 
-		// Get ID, item and initialize
-		$id			= BwPostmanCampaignHelper::getTcIdFromCampaign($cam_data->id);
-		$item		= BwPostmanCampaignHelper::getItem($id);
-
-		if (is_object($cam_data_nl_edit)) {
-			$item->automailing_values		= json_decode($cam_data_nl_edit->automailing_values);
-			$cam_data->automailing_values	= $cam_data_nl_edit->automailing_values;
-			$cam_data->chaining				= $cam_data_nl_edit->chaining;
-		}
-		else {
-			$item->automailing_values		= json_decode($item->automailing_values);
-			$cam_data->automailing_values	= $item->automailing_values;
-			$cam_data->chaining				= $item->chaining;
-		}
-
-		// get HTML code for autovalues tab
-		$cam_data->tc_mailing_data	= BwPostmanCampaignHelper::buildAutovaluesTab($item, $document, $this->params);
-
-		// get HTML code for autoqueue tab
-		$cam_data->queued_letters	= BwPostmanCampaignHelper::buildAutoqueueTab($cam_data->id);
-		$newsletters->sent			= BwPostmanCampaignHelper::getAutoletters($cam_data->id)->sent_queue;
-
-		// set state of campaign data before edit
-		JFactory::getApplication()->setUserState('bwtimecontrol.campaign.old_data', $cam_data);
-
-		// reset state
-		JFactory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_edit', null);
 		return true;
 	}
 
@@ -418,7 +621,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return  boolean     true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanCampaignTaskSuspendNewsletterFromSending (&$get_data)
 	{
@@ -428,44 +631,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		$id			= $get_data['id'];
-		$suspended	= $get_data['suspended'];
-
-		if (!$id) {
-			if ($suspended) {
-				$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_SUSPEND_REACTIVATE_NO_ID');
-			}
-			else {
-				$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_SUSPEND_SUSPEND_NO_ID');
-			}
-			$type	= 'error';
-			JFactory::getApplication()->enqueueMessage($msg, $type);
-			return false;
-		}
-
-		$res	= BwPostmanCampaignHelper::suspendNewsletterFromSending($id, $suspended);
-		if ($res) {
-			if ($suspended) {
-				$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_NEWSLETTER_SUSPEND_REACTIVATE_DONE', $id);
-			}
-			else {
-				$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_NEWSLETTER_SUSPEND_SUSPEND_DONE', $id);
-			}
-			$type	= 'message';
-			JFactory::getApplication()->enqueueMessage($msg, $type);
-			return false;
-		}
-		else {
-			if ($suspended) {
-				$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_NEWSLETTER_SUSPEND_REACTIVATE_FAILED', $id);
-			}
-			else {
-				$msg	= JText::sprintf('PLG_BWPOSTMAN_BWTIMECONTROL_NEWSLETTER_SUSPEND_SUSPEND_FAILED', $id);
-			}
-			$type	= 'error';
-			JFactory::getApplication()->enqueueMessage($msg, $type);
-			return false;
-		}
+		return true;
 	}
 
 	/**
@@ -477,7 +643,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	boolean 	true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanCampaignSave ($campaign_id)
 	{
@@ -487,95 +653,6 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		// get "old" campaign data before edit
-		$old_cam_data	= JFactory::getApplication()->getUserState('bwtimecontrol.campaign.old_data', null);
-
-		// get "new" data to save
-		$jinput	= JFactory::getApplication()->input;
-		$table	= BwPostmanCampaignHelper::getTable();
-
-		$data		= $jinput->get('jform', array(), 'array');
-		$am_values	= $jinput->get('automailing_values', array((array) 'day', (array) 'hour', (array) 'minute', (array) 'nl_id'), 'array');
-
-		if ($data['automailing'] == 1) {
-			// if automailing values exists
-			if ($am_values) {
-				// remove rows with empty newsletters from automailing values
-				foreach ($am_values['nl_id'] as $key => $value) {
-					if ($value == '0') {
-						unset ($am_values['day'][$key]);
-						unset ($am_values['hour'][$key]);
-						unset ($am_values['minute'][$key]);
-						unset ($am_values['nl_id'][$key]);
-					}
-				}
-				$am_values['day']		= array_merge($am_values['day']);
-				$am_values['hour']		= array_merge($am_values['hour']);
-				$am_values['minute']	= array_merge($am_values['minute']);
-				$am_values['nl_id']		= array_merge($am_values['nl_id']);
-
-				// Convert the automailing values to a JSON string.
-				$am_values = json_encode ($am_values);
-			}
-
-			// merge data to save
-			$plg_data	= array();
-			foreach ($data as $key => $value) {
-				switch ($key) {
-					case 'rules':
-					case 'description':
-					case 'title':
-					case 'asset_id':
-						break;
-					case 'id':				$plg_data['campaign_id'] = $value;
-						break;
-					case 'created_date':	$plg_data['created'] = $value;
-						break;
-					case 'modified_time':	$plg_data['modified'] = $value;
-						break;
-					case 'archive_time':	$plg_data['archive_date'] = $value;
-						break;
-					default:				$plg_data[$key]	= $value;
-				}
-			}
-			$plg_data['automailing_values']	= $am_values;
-
-			// Bind the data.
-			if (!$table->bind($plg_data))
-			{
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Check the data.
-			if (!$table->check())
-			{
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Store the data.
-			if (!$table->store())
-			{
-				$this->setError($table->getError());
-				return false;
-			}
-			BwPostmanCampaignHelper::getItem(BwPostmanCampaignHelper::getTcIdFromCampaign($campaign_id));
-
-			// Fill tc_sendmailcontent
-			if (!BwPostmanCampaignHelper::storeCampaign($plg_data)) {
-				return false;
-			}
-
-			// if we come from edit (not new) campaign, check for changes and process them if necessary
-			if (is_object($old_cam_data)) {
-				if ($old_cam_data->id != 0) {
-					BwPostmanCampaignHelper::processChanges($plg_data);
-				}
-			}
-
-
-		}
 		return true;
 	}
 
@@ -586,7 +663,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	boolean	    true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanAfterCampaignControllerSave ()
 	{
@@ -595,18 +672,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		{
 			return false;
 		}
-		BwPostmanCampaignHelper::processChangesOfNewsletterEdit();
-		$app		= JFactory::getApplication();
-		$controller	= JControllerLegacy::getInstance('BwPostman');
 
-		// get redirect states
-		$returnlink	= $app->getUserState('bwtimecontrol.newsletter.save.returnlink', null);
-
-		if ($returnlink) {
-			$controller->setRedirect($returnlink);
-		}
-		// unset redirect states
-		$app->setUserState('bwtimecontrol.newsletter.save.returnlink', null);
 		return true;
 	}
 
@@ -615,12 +681,12 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @access	public
 	 *
-	 * @param   object      $item
-	 * @param   string      $referrer
+	 * @param   object $item
+	 * @param   object      $referrer
 	 *
 	 * @return 	bool	    true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanBeforeNewsletterEdit (&$item, $referrer)
 	{
@@ -630,30 +696,48 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		// Set state for old NL-data only if calling from newsletters list view
-		if ($referrer == 'newsletters') {
-			JFactory::getApplication()->setUserState('bwtimecontrol.newsletter.old_data', $item);
-		}
+//		$this->injectFormField();
+
 		return true;
 	}
 
 	/**
-	 * Method to redirect to edit campaign, if newsletter changes his campaign at task save
+	 * Method to save scheduled date to table
 	 *
-	 * @access	public
+	 * @param array $data
 	 *
 	 * @return 	bool	true on success
 	 *
-	 * @since	1.2.0
+	 * @throws \Exception
+	 *
+	 * @since	2.3.0
 	 */
-	public function onBwPostmanAfterNewsletterSave ()
+	public function onBwPostmanAfterNewsletterModelSave (&$data)
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
 		{
 			return false;
 		}
-		BwPostmanCampaignHelper::processChangesOfNewsletterEdit();
+
+		if (!key_exists('scheduled_date', $data))
+		{
+			$data['scheduled_date'] = '';
+		}
+
+		if (!key_exists('ready_to_send', $data))
+		{
+			$data['ready_to_send'] = 0;
+		}
+
+		$scheduledData = array(
+			'newsletter_id' => $data['id'],
+			'scheduled_date' => $data['scheduled_date'],
+			'ready_to_send' => $data['ready_to_send'],
+			);
+
+		$this->saveItem($scheduledData);
+
 		return  true;
 	}
 
@@ -664,7 +748,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	bool	true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanAfterNewsletterCancel ()
 	{
@@ -673,7 +757,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		{
 			return false;
 		}
-		BwPostmanCampaignHelper::processChangesOfNewsletterEdit();
+
 		return true;
 	}
 
@@ -684,7 +768,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	bool	true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanAfterNewsletterCopy ()
 	{
@@ -693,7 +777,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		{
 			return false;
 		}
-		BwPostmanCampaignHelper::processChangesOfNewsletterEdit();
+
 		return true;
 	}
 
@@ -708,7 +792,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return boolean              true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	public function onBwPostmanBeforeNewsletterArchive (&$cid, &$msg, &$res)
 	{
@@ -718,19 +802,6 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		foreach ($cid as $id)
-		{
-			// get newsletter item
-			$nl_data	= BwPostmanCampaignHelper::getItem($id);
-
-			// get TC-ID of campaign
-			$tc_id	= BwPostmanCampaignHelper::getTcIdFromCampaign($nl_data->campaign_id);
-
-			if ($tc_id !== null) {
-				$res	= false;
-				$msg	= JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ERROR_ARCHIVING');
-			}
-		}
 		return true;
 	}
 
@@ -743,145 +814,161 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return 	bool	true on success
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
-	public function onBwPostmanAfterNewsletterModelSave (&$item)
+//	public function onBwPostmanAfterNewsletterModelSave (&$item)
+//	{
+//		// Sanity check :)
+//		if (!$this->_enabled)
+//		{
+//			return false;
+//		}
+//
+//		return true;
+//	}
+
+	/**
+	 * Method to get schedule data from table
+	 *
+	 * @param   integer  $nl_id
+	 *
+	 * @return 	array
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.3.0
+	 */
+	private function getItem ($nl_id)
 	{
-		// Sanity check :)
-		if (!$this->_enabled)
+		$scheduled_date = '0000-00-00 00:00:00';
+
+		if ($nl_id !== 0)
 		{
-			return false;
-		}
+			$db    = JFactory::getDbo();
+			$query = $db->getQuery(true);
 
-		// Set current newsletter data to 'new' state every time we come to edit newsletter
-		JFactory::getApplication()->setUserState('bwtimecontrol.newsletter.new_data', $item);
+			$query->select($db->quoteName('scheduled_date'));
+			$query->select($db->quoteName('ready_to_send'));
+			$query->from($db->quoteName('#__bwpostman_tc_schedule'));
+			$query->where($db->quoteName('newsletter_id') . ' = ' . $db->Quote($nl_id));
 
-		$nl_id			= $item['id'];
-		$campaign_id	= $item['campaign_id'];
+			$db->setQuery($query);
 
-		$app	= JFactory::getApplication();
-		$jinput	= $app->input;
-		$task	= $jinput->getString('task', null);
-
-		// reaction to changes in newsletter only if editing is finished
-		if ($task == 'save') {
-			$nl_data_old	= JFactory::getApplication()->getUserState('bwtimecontrol.newsletter.old_data');
-			$was_campaign	= $nl_data_old->campaign_id;
-			$controller		= JControllerLegacy::getInstance('BwPostman');
-			$tc_id_new		= BwPostmanCampaignHelper::getTcIdFromCampaign($campaign_id);
-			$tc_id_old		= BwPostmanCampaignHelper::getTcIdFromCampaign($was_campaign);
-
-			// if newsletter comes new to this campaign, redirect to edit campaign to insert new newsletter.
-			if (($campaign_id != $was_campaign) && $campaign_id > 0 && ($tc_id_new > 0)) {
-				$app->setUserState('bwtimecontrol.newsletter.save.link', 'index.php?option=com_bwpostman&task=campaign.edit&id=' . $campaign_id);
-				$app->setUserState('bwtimecontrol.newsletter.save.msg', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_REDIRECT_NEW_NEWSLETTER'));
-				$app->setUserState('bwtimecontrol.newsletter.save.type', 'warning');
-				$app->setUserState('bwtimecontrol.newsletter.save.returnlink', 'index.php?option=com_bwpostman&view=newsletters');
+			try
+			{
+				$scheduled_date = $db->loadAssoc();
 			}
-			// if newsletter goes out of old campaign, redirect to edit old campaign to delete going newsletter.
-			if (($campaign_id != $was_campaign) && $was_campaign > 0 && ($tc_id_old > 0)) {
-				$app->setUserState('bwtimecontrol.newsletter.save.link', 'index.php?option=com_bwpostman&task=campaign.edit&id=' . $was_campaign);
-				$app->setUserState('bwtimecontrol.newsletter.save.msg', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_REDIRECT_OLD_NEWSLETTER'));
-				$app->setUserState('bwtimecontrol.newsletter.save.type', 'warning');
-				$app->setUserState('bwtimecontrol.newsletter.save.returnlink', 'index.php?option=com_bwpostman&view=newsletters');
-			}
-			// if newsletter belongs to same campaign like before the editing and campaign has automation, check for changed properties of NL
-			if (($campaign_id == $was_campaign) && ($campaign_id > 0) && ($tc_id_new > 0))  {
-				$_db	= JFactory::getDbo();
-				$query	= $_db->getQuery(true);
-dump ($nl_data_old, 'old NL-Data');
-dump ($task, 'Task');
-
-				// check if campaign is already sent
-				// if so, update tc_sendmail_content. Handling depends on newsletter already sent or not
-
-				// get newsletter data from newsletters table
-				$query->select('*');
-				$query->from($_db->quoteName('#__bwpostman_newsletters'));
-				$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
-				$_db->setQuery($query);
-
-				$nl_data	= $_db->loadObject();
-dump ($nl_data, 'Event NL-Data');
-
-				// get tc_content_data list from tc_sendmail_content table
-				$query->clear();
-				$query->select($_db->quoteName('id'));
-				$query->select($_db->quoteName('sent'));
-				$query->select($_db->quoteName('attachment'));
-				$query->select($_db->quoteName('mode'));
-				$query->select($_db->quoteName('mail_number'));
-				$query->from($_db->quoteName('#__bwpostman_tc_sendmailcontent'));
-				$query->where($_db->quoteName('nl_id') . ' = ' . (int) $nl_data->id);
-				$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $nl_data->campaign_id);
-				$query->where($_db->quoteName('old') . ' = ' . (int) 0);
-				$query->order($_db->quoteName('mode') . ' ASC');
-				$_db->setQuery($query);
-
-				if (!$_db->query()) {
-					JError::raiseError(500, $_db->getErrorMsg());
-				}
-
-				$sent_list	= $_db->loadAssocList();
-dump ($sent_list, 'Sent List 1');
-				// check if sent is set
-				$sent		= 0;
-				foreach ($sent_list as $key) {
-					$sent += $key['sent'];
-				}
-
-				// if already sent...
-				if ($sent > 0) {
-					//...set flag "old" and for safety's sake flag "sent" (maybe there is only sent one of HTML or text)...
-					foreach ($sent_list as $key) {
-						$query	= $_db->getQuery(true);
-						$query->update($_db->quoteName('#__bwpostman_tc_sendmailcontent'));
-						$query->set($_db->quoteName('old').' = '. (int) 1);
-						$query->set($_db->quoteName('sent').' = '. (int) 1);
-						$query->where($_db->quoteName('id').' = '.(int) $key['id']);
-						$_db->setQuery($query);
-						if (!$_db->query()) {
-							JError::raiseError(500, $_db->getErrorMsg());
-						}
-						// set mail-id
-						$nl_data->mail_id = $key['mail_number'];
-					}
-					// ... and generate a new tc-entry
-					$ret = BwPostmanCampaignHelper::newTcContent($nl_data);
-				}
-				else {
-					//if not sent, only update this entries
-					foreach ($sent_list as $key) {
-						// Get Newsletter-Model
-						$nl_model	= $controller->getModel('newsletter');
-
-						// Preprocess html and text version of the newsletter
-						if (!BwPostmanHelper::replaceLinks($nl_data->text_version)) return false;
-						if (!BwPostmanHelper::replaceLinks($nl_data->html_version)) return false;
-						if (!$nl_model->_addHtmlTags($nl_data->text_version)) return false;
-
-//dump ($key, 'Key');
-						$query	= $_db->getQuery(true);
-						$query->update($_db->quoteName('#__bwpostman_tc_sendmailcontent'));
-						if ($key['id'] == 0) {
-							$query->set($_db->quoteName('body').' = '.$_db->quote($nl_data->text_version));
-						}
-						else {
-							$query->set($_db->quoteName('body').' = '.$_db->quote($nl_data->html_version));
-						}
-
-						$query->set($_db->quoteName('attachment').' = '.$_db->quote($nl_data->attachment));
-						$query->where($_db->quoteName('id').' = '. (int) $key['id']);
-						$_db->setQuery($query);
-						if (!$_db->query()) {
-							JError::raiseError(500, $_db->getErrorMsg());
-						}
-					}
-
-				}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
-		// ...else nothing to do
+
+		return $scheduled_date;
+	}
+
+	/**
+	 * Method to manipulate schedule data at table
+	 *
+	 * @param   array  $scheduledDate
+	 *
+	 * @return 	boolean
+	 *
+	 * @throws \Exception
+	 *
+	 * @since	2.3.0
+	 */
+	private function saveItem ($scheduledDate)
+	{
+		$savedDate = $this->getItem($scheduledDate['newsletter_id']);
+
+		if ($savedDate['scheduled_date'] === null && $scheduledDate['scheduled_date'] === '')
+		{
+			return true;
+		}
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// New scheduled date
+		if ($savedDate['scheduled_date'] === null && $scheduledDate['scheduled_date'] !== '')
+		{
+			$query->insert($db->quoteName('#__bwpostman_tc_schedule'));
+			$query->columns(array(
+				$db->quoteName('scheduled_date'),
+				$db->quoteName('newsletter_id'),
+				$db->quoteName('ready_to_send'),
+			));
+			$query->values(
+				$db->Quote($scheduledDate['scheduled_date']) . ',' .
+				$db->Quote($scheduledDate['newsletter_id']) . ',' .
+				$db->Quote($scheduledDate['ready_to_send'])
+			);
+		}
+		// Update scheduled date
+		elseif ($savedDate['scheduled_date'] !== null && $scheduledDate['scheduled_date'] !== '')
+		{
+			$query->update($db->quoteName('#__bwpostman_tc_schedule'));
+			$query->set($db->quoteName('scheduled_date') . " = " . $db->Quote($scheduledDate['scheduled_date']));
+			$query->set($db->quoteName('ready_to_send') . " = " . $db->Quote($scheduledDate['ready_to_send']));
+			$query->where($db->quoteName('newsletter_id') . ' = ' . $db->Quote($scheduledDate['newsletter_id']));
+		}
+		else
+		{
+			$query->delete($db->quoteName('#__bwpostman_tc_schedule'));
+			$query->where($db->quoteName('newsletter_id') . ' = ' . $db->Quote($scheduledDate['newsletter_id']));
+		}
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
 		return true;
+	}
+
+	/**
+	 *
+	 * @return SimpleXMLElement
+	 *
+	 * @since version
+	 */
+	private function createFieldsetScheduled()
+	{
+		$scheduledXml = new \SimpleXMLElement(
+			'<fieldset name="scheduled">
+				<field 
+				name="scheduled_date" 
+				type="calendar"
+				default=""
+				label="PLG_BWPOSTMAN_BWTIMECONTROL_SCHEDULE_DATE_LABEL"
+				labelclass="control-label"
+				description="PLG_BWPOSTMAN_BWTIMECONTROL_SCHEDULE_DATE_DESC"
+				format="%Y-%m-%d %H:%M:%S"
+				size="22"
+				filter="user_utc"
+				class="inputbox"
+				/>
+				<field 
+				name="ready_to_send" 
+				type="list"
+				default="0"
+				label="PLG_BWPOSTMAN_BWTIMECONTROL_READY_TO_SEND_LABEL"
+				labelclass="control-label"
+				description="PLG_BWPOSTMAN_BWTIMECONTROL_READY_TO_SEND_DESC"
+				class="chzn-color-state"
+				filter="intval"
+				>
+					<option value="1">COM_BWPOSTMAN_YES</option>
+					<option value="0">COM_BWPOSTMAN_NO</option>
+				</field>
+				</fieldset>');
+
+		return $scheduledXml;
 	}
 }

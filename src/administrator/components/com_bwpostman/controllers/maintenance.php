@@ -335,4 +335,53 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$this->setRedirect($link);
 		return true;
 	}
+
+	/**
+	 * Method to start cron server
+	 *
+	 * @return boolean
+	 *
+	 * @throws  \Exception
+	 *
+	 * @since       2.3.0
+	 */
+	public function startCron()
+	{
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
+
+		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_START_CRON'), 'message');
+
+		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onBwPostmanMaintenanceStartCron');
+
+		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+		$this->setRedirect($link);
+		return true;
+	}
+
+	/**
+	 * Method to stop cron server
+	 *
+	 * @return boolean
+	 * @throws \Exception
+	 *
+	 * @since       2.3.0
+	 */
+	public function stopCron()
+	{
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
+
+		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_STOP_CRON'), 'message');
+
+		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onBwPostmanMaintenanceStopCron');
+
+		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+		$this->setRedirect($link);
+		return true;
+	}
 }

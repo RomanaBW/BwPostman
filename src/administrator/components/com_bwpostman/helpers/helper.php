@@ -1280,22 +1280,56 @@ abstract class BwPostmanHelper
 	 */
 	public static function checkQueueEntries()
 	{
-		$_db   = JFactory::getDbo();
-		$query = $_db->getQuery(true);
+		$db   = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query->select('COUNT(' . $_db->quoteName('id') . ')');
-		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
+		$query->select('DISTINCT ' . $db->quoteName('content_id'));
+		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
-		if ($_db->loadResult() > 0)
-		{
-			return true;
-		}
-		else
+		$queueEntries = $db->loadColumn();
+
+		if (!count($queueEntries))
 		{
 			return false;
 		}
+
+		if (JPluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
+		{
+			// Get newsletter ids form sendmailcontent
+			$query	= $db->getQuery(true);
+
+			$query->select('DISTINCT ' . $db->quoteName('nl_id'));
+			$query->from($db->quoteName('#__bwpostman_sendmailcontent'));
+			$query->where($db->quoteName('id') . ' IN (' . implode (',', $queueEntries) . ')');
+
+			$db->setQuery($query);
+
+			$queuedNlIds = $db->loadColumn();
+
+			// Get newsletters ids from tc_schedule, which are in the queue
+			$query	= $db->getQuery(true);
+
+			$query->select($db->quoteName('newsletter_id'));
+			$query->from($db->quoteName('#__bwpostman_tc_schedule'));
+			$query->where($db->quoteName('sent') . ' = ' . $db->Quote('1'));
+			$query->where($db->quoteName('newsletter_id') . ' IN (' . implode (',', $queuedNlIds) . ')');
+
+			$db->setQuery($query);
+
+			$scheduledNls = $db->loadColumn();
+
+			// Get not scheduled newsletters
+			$notScheduledNls = array_diff($queuedNlIds, $scheduledNls);
+
+			if (!count($notScheduledNls))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

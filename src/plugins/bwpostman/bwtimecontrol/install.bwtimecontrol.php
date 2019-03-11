@@ -4,7 +4,7 @@
  *
  * TimeControl installer for plugin.
  *
- * @version 2.0.0 bwplgtc
+ * @version %%version_number%%
  * @package BwPostman TimeControl Plugin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
@@ -72,6 +72,8 @@ class plgBwpostmanBwtimecontrolInstallerScript
   *
   * @return void
    *
+   * @throws \Exception
+   *
    * @since       2.0.0
   */
   function uninstall()
@@ -98,6 +100,8 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	 * @param  string      $type       is the type of change (install, update or discover_install)
 	 *
 	 * @return     bool    true on success
+	 *
+	 * @throws \Exception
 	 *
 	 * @since       2.0.0
 	 */

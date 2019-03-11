@@ -1,10 +1,10 @@
 <?php
 /**
- * BwPostman Newsletter QuickTimeControl Plugin
+ * BwPostman Newsletter TimeControl Plugin
  *
  * BwPostman TimeControl Plugin cron handler for BwPostman.
  *
- * @version 2.0.0 bwplgtc
+ * @version %%version_number%%
  * @package BwPostman TimeControl Plugin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
@@ -29,7 +29,7 @@ use Joomla\Registry\Registry as Registry;
 /**
  * Cron handler
  *
- * @since  1.2.0
+ * @since  2.3.0
  */
 
 /* Get the Joomla framework */
@@ -90,21 +90,21 @@ $bwpostmancron->runCron();
  *
  * @package BwPostman
  *
- * @since	1.2.0
+ * @since	2.3.0
  */
 class BwPostmanCron {
 
 	/**
 	 * @var $basepath string the base of the installation
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	var $basepath = '';
 
 	/**
 	 * @var $_variables array of user set variables to override template settings
 	 *
-	 * @since	1.2.0
+	 * @since	2.3.0
 	 */
 	protected $_variables = array();
 
@@ -113,39 +113,24 @@ class BwPostmanCron {
 	 *
 	 * @copyright
 	 * @author 		Romana Boldt
-	 * @access 		public
 	 * @param
-	 * @return
-	 * @since 		1.2.0
+	 * @return void
+	 * @since 		2.3.0
 	 */
 	public function __construct() {
 
 
 		$this->CollectVariables();
 
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__users'));
-		$query->where($db->quoteName('Username') . ' = ' . $db->quote($this->_variables['username']));
-		$db->setQuery($query);
-		$uid	= $db->loadResult();
-
 		// Merge the default translation with the current translation
-		$lang		= JFactory::getLanguage();
-		$user		= JFactory::getUser($uid);
+		$lang = JFactory::getLanguage();
+		//Load first english files
+		$lang->load('plg_bwpostman_bwtimecontrol.sys',JPATH_ADMINISTRATOR,'en_GB',true);
+		$lang->load('plg_bwpostman_bwtimecontrol',JPATH_ADMINISTRATOR,'en_GB',true);
 
-		$user_lang	= $user->getParam('admin_language');
-		$user_lang	= $user->getParam('language');
-		if (($user_lang != NULL) && ($user_lang != '')) {
-			$def_lang	= $lang->setLanguage($user_lang);
-		}
-		else {
-			$def_lang	= $lang->setLanguage($lang->getTag());
-		}
-
-		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR, $lang->getTag(), true, true);
-		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR, $def_lang, true, true);
+		//load specific language
+		$lang->load('plg_bwpostman_bwtimecontrol.sys',JPATH_ADMINISTRATOR,null,true);
+		$lang->load('plg_bwpostman_bwtimecontrol',JPATH_ADMINISTRATOR,null,true);
 
 		// Get the domain name
 		$domainname = $this->_variables['domain'];
@@ -167,7 +152,7 @@ class BwPostmanCron {
 	/**
 	 * Initialise some settings
 	 *
-	 * @since  1.2.0
+	 * @since  2.3.0
 	 */
 	public function runCron() {
 		// Start the clock
@@ -205,7 +190,7 @@ class BwPostmanCron {
 	 * Running from the command line, values needed to run the functions to send due mails must be get from plugin options
 	 * Here we get them from options, put them in $this->_variables so that they are available to the script
 	 *
-	 * @since  1.2.0
+	 * @since  2.3.0
 	 */
 	private function CollectVariables() {
 		$plugin = JPluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
@@ -221,7 +206,7 @@ class BwPostmanCron {
 	/**
 	 * Check if the user exists
 	 *
-	 * @since  1.2.0
+	 * @since  2.3.0
 	 */
 	private function Login() {
 		global $app;
@@ -242,7 +227,7 @@ class BwPostmanCron {
 	/**
 	 * Process the requested job
 	 *
-	 * @since  1.2.0
+	 * @since  2.3.0
 	 */
 	private function ExecuteJob() {
 		$jinput = JFactory::getApplication()->input;
@@ -256,9 +241,9 @@ class BwPostmanCron {
 	}
 
 	/**
-	 * Log the user out
+	 * Log out the user
 	 *
-	 * @since  1.2.0
+	 * @since  2.3.0
 	 */
 	private function UserLogout() {
 		global $app;

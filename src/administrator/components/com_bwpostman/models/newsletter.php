@@ -1419,51 +1419,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		try
 		{
-			if ($cam_id != '-1')
-			{
-				// Check if there are assigned mailinglists or usergroups
-				$mailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
-			}
-			else
-			{
-				// Check if there are assigned mailinglists or usergroups of the campaign
-				$mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
-			}
+			$check_subscribers    = 0;
+			$check_allsubscribers = 0;
+			$usergroups           = array();
 
-			if (!$mailinglists)
+			$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
+
+			if (!$associatedMailinglists)
 			{
 				$ret_msg = JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_LISTS');
-
 				return false;
 			}
 
-			$check_subscribers    = 0;
-			$check_allsubscribers = 0;
-			$count_users          = 0;
-			$usergroup            = array();
-
-			foreach ($mailinglists as $mailinglist)
-			{
-				// Mailinglists
-				if ($mailinglist > 0)
-				{
-					$check_subscribers = 1;
-				}
-
-				// All subscribers
-				if ($mailinglist == -1)
-				{
-					$check_allsubscribers = 1;
-				}
-				else
-				{
-					// Usergroups
-					if ((int) $mailinglist < 0)
-					{
-						$usergroup[] = -(int) $mailinglist;
-					}
-				}
-			}
+			$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
 
 			// Check if the subscribers are confirmed and not archived
 			$count_subscribers  = 0;
@@ -1476,16 +1444,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				else
 				{
 					$status = '1';
-				}
-
-				if ($cam_id != '-1')
-				{
-					// Check if there are assigned mailinglists or usergroups
-					$associatedMailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
-				}
-				else
-				{
-					$associatedMailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
 				}
 
 				$count_subscribers = $this->countSubscribersOfNewsletter($associatedMailinglists, $status, false);
@@ -1505,9 +1463,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 
 			// Checks if the selected usergroups contain users
-			if (is_array($usergroup) && count($usergroup))
+			$count_users          = 0;
+
+			if (is_array($usergroups) && count($usergroups))
 			{
-				$count_users = $this->countUsersOfNewsletter($usergroup);
+				$count_users = $this->countUsersOfNewsletter($usergroups);
 			}
 
 			// We return only false, if no subscribers AND no joomla users are selected.
@@ -2226,49 +2186,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			case "recipients": // Contain subscribers and joomla users
 				$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
 
-				if ($cam_id != '-1')
-				{
-					$mailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
-				}
-				else
-				{
-					$mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
-				}
+				$check_subscribers = 0;
+				$check_allsubscribers = 0;
+				$usergroups = array();
 
-				if (!$mailinglists)
+				$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
+
+				if (!$associatedMailinglists)
 				{
-					$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NO_MAILINGLISTS');
+					$ret_msg = JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_LISTS');
 					return false;
 				}
 
-				$send_subscribers = 0;
-				$send_to_all = 0;
-				$users = array();
+				$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
 
-				foreach ($mailinglists as $mailinglist)
-				{
-					// Mailinglists
-					if ($mailinglist > 0)
-					{
-						$send_subscribers = 1;
-					}
-
-					// All subscribers
-					if ($mailinglist == -1)
-					{
-						$send_to_all = 1;
-					}
-					else
-					{
-						// Usergroups
-						if ((int) $mailinglist < 0)
-						{
-							$users[] = -(int) $mailinglist;
-						}
-					}
-				}
-
-				if ($send_to_all)
+				if ($check_allsubscribers)
 				{
 					if ($send_to_unconfirmed)
 					{
@@ -2286,17 +2218,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					}
 				}
 
-				if (count($users))
+				if (count($usergroups))
 				{
 					$params = JComponentHelper::getParams('com_bwpostman');
-					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $users, $params->get('default_emailformat')))
+					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $usergroups, $params->get('default_emailformat')))
 					{
 						$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 						return false;
 					}
 				}
 
-				if ($send_subscribers)
+				if ($check_subscribers)
 				{
 					if ($send_to_unconfirmed)
 					{
@@ -3249,6 +3181,74 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (!BwPostmanHelper::replaceLinks($newsletters_data->text_version))
 		{
 			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to get the associated mailinglists of a newsletter
+	 * @param integer  $nl_id
+	 * @param integer  $cam_id
+	 *
+	 * @return array
+	 *
+	 * @since 2.3.0
+	 *
+	 * @throws Exception
+	 */
+	private function getAssociatedMailinglists($nl_id, $cam_id)
+	{
+		if ($cam_id != '-1')
+		{
+			// Check if there are assigned mailinglists or usergroups
+			$mailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
+		}
+		else
+		{
+			// Check if there are assigned mailinglists or usergroups of the campaign
+			$mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
+		}
+
+		return $mailinglists;
+	}
+
+
+	/**
+	 * Method to get the associated mailinglists of a newsletter
+	 *
+	 * @param array    $mailinglists
+	 * @param boolean  $check_subscribers
+	 * @param boolean  $check_allsubscribers
+	 * @param array    $usergroups
+	 *
+	 * @return string|boolean
+	 *
+	 * @since 2.3.0
+	 */
+	private function getSubscriberChecks($mailinglists, &$check_subscribers, &$check_allsubscribers, &$usergroups)
+	{
+		foreach ($mailinglists as $mailinglist)
+		{
+			// Mailinglists
+			if ($mailinglist > 0)
+			{
+				$check_subscribers = 1;
+			}
+
+			// All subscribers
+			if ($mailinglist == -1)
+			{
+				$check_allsubscribers = 1;
+			}
+			else
+			{
+				// Usergroups
+				if ((int) $mailinglist < 0)
+				{
+					$usergroups[] = -(int) $mailinglist;
+				}
+			}
 		}
 
 		return true;

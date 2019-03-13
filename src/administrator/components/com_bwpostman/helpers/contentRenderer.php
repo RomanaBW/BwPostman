@@ -974,6 +974,10 @@ class contentRenderer
 		$impressum			= nl2br($impressum, true);
 		$sitelink           = $uri->root();
 
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('bwpostman');
+		$dispatcher->trigger('onBwPostmanBeforeObligatoryFooter', array(&$text, &$id));
+
 		// get template assets if exists
 		$tpl_assets	= self::getTemplateAssets($id);
 
@@ -1023,6 +1027,8 @@ class contentRenderer
 			}
 			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
 		}
+
+		$dispatcher->trigger('onBwPostmanAfterObligatoryFooter', array(&$text, &$id));
 
 		return true;
 	}

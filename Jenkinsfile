@@ -13,7 +13,6 @@ pipeline {
 	// 	string(name: "GIT_MESSAGE", defaultValue: "not specified")
 	// }
 
-
     stages {
         stage('Build') {
 			steps {

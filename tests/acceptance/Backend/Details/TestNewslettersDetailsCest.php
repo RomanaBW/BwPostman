@@ -603,7 +603,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CopyNewsletter(\AcceptanceTester $I)
+	public function CopyNewsletterOnly(\AcceptanceTester $I)
 	{
 		NlEdit::copyNewsletter($I, Generals::$admin['author']);
 	}

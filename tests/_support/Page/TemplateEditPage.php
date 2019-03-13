@@ -119,7 +119,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[8]/a";
+	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[7]/a";
 
 	/**
 	 * @var string

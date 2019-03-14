@@ -169,13 +169,13 @@ pipeline {
 			steps
 			{
 				echo 'Dummy'
-				bwpmAccept("accept5", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+				bwpmAccept("${STAGE_NAME}", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
 			}
 			post
 			{
 				always
 				{
-					bwpmAcceptPostStepAlways("accept5")
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
 				}
 				failure
 				{

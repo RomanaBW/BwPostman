@@ -119,14 +119,14 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[7]/a";
+	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[8]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.0
 	 */
-	public static $thumb_select_user       = ".//*/ul[contains(@class, 'manager')]/li[7]/a/div[1]/div/img[contains(@src,'/powered_by.png')]";
+	public static $thumb_select_user       = ".//*/ul[contains(@class, 'manager')]/li[8]/a/div[1]/div/img[contains(@src,'/powered_by.png')]";
 
 	/**
 	 * @var string
@@ -548,6 +548,7 @@ class TemplateEditPage
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
 		$I->switchToIFrame(Generals::$media_frame);
+		$I->wait(1);
 
 		if ($user === 'AdminTester' || $user === '')
 		{

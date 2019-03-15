@@ -143,7 +143,6 @@ pipeline {
 			}
 		}
 
-
 		stage('accept4')
 		{
 			steps

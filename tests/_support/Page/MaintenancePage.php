@@ -83,7 +83,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $forumButton          = ".//*[@id='cpanel']/div[7]/div/a";
+	public static $forumButton          = ".//*[@id='cpanel']/div[7]/div/a/span[contains(text(),'BwPostman Forum')]";
 
 	/**
 	 * @var string

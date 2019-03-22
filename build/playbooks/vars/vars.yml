@@ -13,6 +13,7 @@ package_parts:
   - plg_bw_libregister
   - plg_bwpm_mediaoverride
   - plg_bwpm_user2subscriber
+  - plg_footerusedmailinglists
 
 languages:
   - de-DE

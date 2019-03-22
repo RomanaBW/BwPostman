@@ -11,6 +11,7 @@ Version 2.3.0 released (2019-04-26)----
 New
 + Message at front end, that new activation needed, if subscriber changed mail address
 + Plugin to show mailinglists/usergroups and optionally number of recipients of a newsletter at the footer of the newsletter
++ Language files moved to Transifex and except english and german removed from installation package to save installation package space and installation time. Installation separately.
 
 Improvement
 ~ Trigger for events added for future use

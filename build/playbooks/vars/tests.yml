@@ -58,6 +58,8 @@ test_file:
     testsuite_file: Backend/Details
   - suite: user2subscriber
     testsuite_file: User2Subscriber
+  - suite: footerusedmailinglists
+    testsuite_file: FooterUsedMailinglists
   - suite: createUsers
     testsuite_file: Backend/Access/TestInstallUsersCest
   - suite: access1
@@ -126,5 +128,6 @@ test_suites:
     - defaultOptions
     - restore
     - user2subscriber
+    - footerusedmailinglists
 #  - personalize
 

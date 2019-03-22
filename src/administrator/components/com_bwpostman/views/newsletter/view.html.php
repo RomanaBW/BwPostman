@@ -166,6 +166,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// Initialize variables
 		$dispatcher = JEventDispatcher::getInstance();
 		$app		= JFactory::getApplication();
+		$app->setUserState('bwpostman.send.alsoUnconfirmed', false);
 
 		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 

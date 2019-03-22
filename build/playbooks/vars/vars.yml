@@ -17,12 +17,12 @@ package_parts:
 languages:
   - de-DE
   - en-GB
-  - es-ES
+#  - es-ES
 #  - fr-FR
 #  - hu-HU
-  - it-IT
-  - ja-JP
-  - nl-NL
+#  - it-IT
+#  - ja-JP
+#  - nl-NL
 #  - tr-TR
 
 to_delete:
@@ -40,8 +40,12 @@ to_delete:
   - administrator/language/en-GB/en-GB.plg_bwpostman_demo.sys.ini
   - administrator/language/en-GB/en-GB.plg_bwtests.ini
   - administrator/language/en-GB/en-GB.plg_bwtests.sys.ini
-  - administrator/language/it-IT/it-IT.plg_bwpostman_demo.ini
-  - administrator/language/it-IT/it-IT.plg_bwpostman_demo.sys.ini
+  - administrator/language/es-ES
+  - administrator/language/it-IT
+  - administrator/language/ja-JP
+  - language/es-ES
+  - language/it-IT
+  - language/ja-JP
   - plugins/attachments
   - plugins/quickicon
   - plugins/search
@@ -61,6 +65,7 @@ manifest_list:
   - src/plugins/system/bwpm_mediaoverride/bwpm_mediaoverride.xml
   - src/plugins/system/bwpm_user2subscriber/bwpm_user2subscriber.xml
   - src/plugins/system/bw_libregister/bw_libregister.xml
+  - src/plugins/bwpostman/footerusedmailinglists/footerusedmailinglists.xml
   - build/manifests/pkg_bwpostman.xml
 #  - build/manifests/lang_bwpostman_de-DE.xml
 #  - build/manifests/lang_bwpostman_en-GB.xml

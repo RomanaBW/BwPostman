@@ -9,8 +9,12 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 2.3.0 released (2019-04-26)----
 
 New
-+ Message new activation needed at front end, if subscriber changed mail address
++ Message at front end, that new activation needed, if subscriber changed mail address
++ Plugin to show mailinglists/usergroups and optionally number of recipients of a newsletter at the footer of the newsletter
 
+Improvement
+~ Trigger for events added for future use
+~ Tendering of newsletter before preview and sending modularized (internal work)
 
 Version 2.2.1 released (7-Feb-2019)----
 

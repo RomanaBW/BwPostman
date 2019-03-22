@@ -435,15 +435,6 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_page                      = "/administrator/index.php?option=com_plugins";
-
-	// com_users related
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
 	public static $user_edit_identifier             = ".//*[@id='userList']/tbody/*/td[2]/div[1]/a";
 
 	/**
@@ -628,13 +619,6 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $view_plugin                      = "Plugins";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
 	public static $plugin_name                      = "BwPostman Plugin User2Subscriber";
 
 	/**
@@ -785,28 +769,6 @@ class User2SubscriberPage
 	 * @since 2.0.0
 	 */
 	public static $config_save_success      = "Configuration saved.";
-
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $plugin_disabled_success  = 'Plugin successfully disabled';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $plugin_enabled_success   = 'Plugin successfully enabled';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $plugin_saved_success     = 'Plugin saved';
 
 
 	/**

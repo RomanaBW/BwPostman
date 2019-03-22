@@ -912,6 +912,47 @@ class Generals
 
 
 	/**
+	 * Plugin related
+	 * /
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $plugin_disabled_success  = 'Plugin successfully disabled';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $plugin_enabled_success   = 'Plugin successfully enabled';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $plugin_saved_success     = 'Plugin saved';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $plugin_page                      = "/administrator/index.php?option=com_plugins";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $view_plugin                      = "Plugins";
+
+
+
+	/**
 	 * Basic route example for your current URL
 	 * You can append any additional parameter to URL
 	 * and use it in tests like: Page\Edit::route('/123-post');

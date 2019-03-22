@@ -956,8 +956,8 @@ class contentRenderer
 	 *
 	 * @access	private
 	 *
-	 * @param 	string  $text   HTML newsletter
-	 * @param   int     $id
+	 * @param 	string $text        HTML newsletter
+	 * @param   integer $templateId template id
 	 *
 	 * @return 	boolean
 	 *
@@ -965,7 +965,7 @@ class contentRenderer
 	 *
 	 * @since 2.3.0 here (moved from newsletter model)
 	 */
-	public function addHTMLFooter(&$text, &$id)
+	public function addHTMLFooter(&$text, &$templateId)
 	{
 		$uri  				= JUri::getInstance();
 		$params 			= JComponentHelper::getParams('com_bwpostman');
@@ -976,10 +976,10 @@ class contentRenderer
 
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
-		$dispatcher->trigger('onBwPostmanBeforeObligatoryFooter', array(&$text, &$id));
+		$dispatcher->trigger('onBwPostmanBeforeObligatoryFooterHtml', array(&$text));
 
 		// get template assets if exists
-		$tpl_assets	= self::getTemplateAssets($id);
+		$tpl_assets	= self::getTemplateAssets($templateId);
 
 		if (strpos($text, '[%impressum%]') !== false)
 		{
@@ -1015,7 +1015,7 @@ class contentRenderer
 		}
 
 		// only for old newsletters with template_id < 1
-		if ($id < 1)
+		if ($templateId < 1)
 		{
 			if ($del_sub_1_click === '0')
 			{
@@ -1028,7 +1028,7 @@ class contentRenderer
 			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
 		}
 
-		$dispatcher->trigger('onBwPostmanAfterObligatoryFooter', array(&$text, &$id));
+		$dispatcher->trigger('onBwPostmanAfterObligatoryFooter', array(&$text, &$templateId));
 
 		return true;
 	}
@@ -1112,6 +1112,10 @@ class contentRenderer
 			'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
 		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
 		$sitelink			= $uri->root();
+
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('bwpostman');
+		$dispatcher->trigger('onBwPostmanBeforeObligatoryFooterText', array(&$text));
 
 		// Trigger Plugin "substitutelinks"
 		if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')

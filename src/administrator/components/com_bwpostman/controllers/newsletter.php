@@ -789,6 +789,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Sending is allowed, form data are valid, newsletter is no content template and saving was successful
 		$task			= $this->input->get('task', 0);
 		$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
+		$app->setUserState('bwpostman.send.alsoUnconfirmed', $unconfirmed);
 		$startsending	= 0;
 
 		// make sure, recordID matches data id (because we may come from list view or from a new newsletter)

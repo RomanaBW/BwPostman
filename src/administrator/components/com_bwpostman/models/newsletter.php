@@ -577,12 +577,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// if old newsletter, there are no template IDs, so lets set them to the old template
-		if ($item->template_id == '0')
+		if (property_exists($item, 'template_id') && $item->template_id == '0')
 		{
 			$item->template_id		= -1;
 		}
 
-		if ($item->text_template_id == '0')
+		if (property_exists($item, 'text_template_id') && $item->text_template_id == '0')
 		{
 			$item->text_template_id	= -2;
 		}

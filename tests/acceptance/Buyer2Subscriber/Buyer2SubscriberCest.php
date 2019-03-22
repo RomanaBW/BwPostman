@@ -485,7 +485,7 @@ class Buyer2SubscriberCest
 		// click checkbox for further mailinglist
 		$I->checkOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
-		$I->see(UserPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->seeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 6));
 
 		// getManifestOption
@@ -496,7 +496,7 @@ class Buyer2SubscriberCest
 		// deselect further mailinglist
 		$I->uncheckOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
-		$I->see(UserPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->dontSeeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 5));
 
 		// getManifestOption
@@ -540,7 +540,7 @@ class Buyer2SubscriberCest
 	{
 		$I->fillField(BuyerPage::$plugin_message_identifier, $message);
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
-		$I->see(UserPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->see($message, BuyerPage::$plugin_message_identifier);
 	}
 
@@ -902,9 +902,9 @@ class Buyer2SubscriberCest
 	 */
 	protected function selectPluginPage(AcceptanceTester $I)
 	{
-		$I->amOnPage(UserPage::$plugin_page);
+		$I->amOnPage(Generals::$plugin_page);
 		$I->wait(1);
-		$I->see(UserPage::$view_plugin, Generals::$pageTitle);
+		$I->see(Generals::$view_plugin, Generals::$pageTitle);
 	}
 
 	/**

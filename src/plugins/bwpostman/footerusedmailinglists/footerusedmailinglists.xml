@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension group="bwpostman" method="upgrade" type="plugin" version="3.4">
+	<name>PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS</name>
+	<version>%%version_number%%</version>
+	<creationDate>%%creation_date%%</creationDate>
+	<author>Boldt Webservice</author>
+	<authorEmail>forum@boldt-webservice.de</authorEmail>
+	<authorUrl>https://www.boldt-webservice.de</authorUrl>
+	<copyright>www.boldt-webservice.de</copyright>
+	<license>GNU/GPLv3 or later</license>
+	<description>PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_DESCRIPTION</description>
+
+	<scriptfile>installscript.php</scriptfile>
+
+	<files>
+		<filename plugin="footerusedmailinglists">footerusedmailinglists.php</filename>
+		<filename>footerusedmailinglists.xml</filename>
+		<filename >installscript.php</filename>
+		<filename >index.html</filename>
+	</files>
+
+	<languages folder="language">
+		<language tag="de-DE">de-DE/de-DE.plg_bwpostman_footerusedmailinglists.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_bwpostman_footerusedmailinglists.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_footerusedmailinglists.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_footerusedmailinglists.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+						name="show_mailinglists"
+						id="show_mailinglists"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						label="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_LABEL"
+						description="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_DESC"
+						default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>>
+				<field
+						name="show_mailinglists_recipients"
+						id="show_mailinglists_recipients"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						label="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS_LABEL"
+						description="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS_DESC"
+						default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>>
+				<field
+						name="show_usergroups"
+						id="show_usergroups"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						label="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_LABEL"
+						description="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_DESC"
+						default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>>
+				<field
+						name="show_usergroups_recipients"
+						id="show_usergroups_recipients"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						label="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS_LABEL"
+						description="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS_DESC"
+						default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>>
+				<field
+						name="show_all_recipients"
+						id="show_all_recipients"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						label="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_ALL_RECIPIENTS_LABEL"
+						description="PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_ALL_RECIPIENTS_DESC"
+						default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>>
+			</fieldset>
+		</fields>
+	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
+	</updateservers>
+
+</extension>

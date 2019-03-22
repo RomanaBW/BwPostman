@@ -176,7 +176,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_text            = "Preview of text newsletter";
+	public static $tab4_preview_text            = ".//*[@id='adminForm']/div[3]/fieldset[3]/div";
 
 	/**
 	 * @var string

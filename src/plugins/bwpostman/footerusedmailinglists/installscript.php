@@ -36,6 +36,34 @@ defined('_JEXEC') or die('Restricted access');
 class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 {
 	/**
+	 * @var string $minJoomlaRelease
+	 *
+	 * @since       2.3.0
+	 */
+	var $minJoomlaRelease;
+
+	/**
+	 * @var string $minPhpRelease
+	 *
+	 * @since       2.3.0
+	 */
+	var $minPhpRelease = '5.3.10';
+
+	/**
+	 * @var string minimum version of BwPostman
+	 *
+	 * @since       2.3.0
+	 */
+	var $bwpmMinRelease = '2.3.0';
+
+	/**
+	 * @var string release
+	 *
+	 * @since       2.3.0
+	 */
+	var $release = null;
+
+	/**
 	 * Method to install the extension
 	 *
 	 * @param object  $parent is the class calling this method
@@ -76,6 +104,72 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	}
 
 	/**
+	 * Method to run before an install/update/uninstall method
+	 *
+	 * @param  object      $parent     is the class calling this method
+	 * @param  string      $type       is the type of change (install, update or discover_install)
+	 *
+	 * @return     bool    true on success
+	 *
+	 * @throws \Exception
+	 *
+	 * @since       2.3.0
+	 */
+	function preflight($type, $parent)
+	{
+		$app 		= JFactory::getApplication ();
+		$jversion	= new JVersion();
+
+		// Get component manifest file version
+		$this->release = $parent->get("manifest")->version;
+
+		// Manifest file minimum Joomla version
+		$this->minJoomlaRelease = $parent->get("manifest")->attributes()->version;
+
+		// abort if the current Joomla release is older
+		if(version_compare($jversion->getShortVersion(), $this->minJoomlaRelease, 'lt'))
+		{
+			$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_INSTALL_ERROR_JVERSION', $this->minJoomlaRelease), 'error');
+			return false;
+		}
+
+		if(version_compare(phpversion(), $this->minPhpRelease, 'lt'))
+		{
+			$app->enqueueMessage(JText::_('BWPOSTMAN_USES_PHP5'), 'error');
+			return false;
+		}
+
+		// Abort if BwPostman is not installed or not at least version 2.3.0
+		if ($type == 'install')
+		{
+			$bwpmVersion = $this->getManifestVar('version', 'com_bwpostman');
+
+			if ($bwpmVersion === false)
+			{
+				$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_NOT_INSTALLED'), 'error');
+				return false;
+			}
+
+			if (version_compare( $this->bwpmMinRelease, $bwpmVersion, 'lt')) {
+				$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_MIN_VERSION', $this->bwpmMinRelease), 'error');
+				return false;
+			}
+		}
+
+		// Abort if the extension being installed is older than the currently installed version
+		if ($type == 'update')
+		{
+			$oldRelease = $this->getManifestVar('version', 'footerusedmailinglists');
+
+			if (version_compare( $this->release, $oldRelease, 'lt')) {
+				$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_OLD_VERSION', $oldRelease, $this->release), 'error');
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Method to run after an install/update/uninstall method
 	 *
 	 * @param string  $type       is the type of change (install, update or discover_install)
@@ -108,5 +202,39 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 			$db->setQuery($query);
 			$db->execute();
 		}
+	}
+
+	/**
+	 * Method to get a variable from the manifest file (actually, from the manifest cache).
+	 *
+	 * @param  string      $name
+	 * @param  string      $extension
+	 *
+	 * @return  bool|string
+	 *
+	 * @since       2.3.0
+	 */
+	private function getManifestVar($name, $extension)
+	{
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('manifest_cache'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . " = " . $db->quote($extension));
+		$db->setQuery($query);
+
+		try
+		{
+			$result = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			return false;
+		}
+
+		$manifest = json_decode($result, true);
+
+		return $manifest[$name];
 	}
 }

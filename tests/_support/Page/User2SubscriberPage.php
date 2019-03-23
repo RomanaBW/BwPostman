@@ -807,9 +807,9 @@ class User2SubscriberPage
 	 */
 	public static function selectPluginPage(\AcceptanceTester $I)
 	{
-		$I->amOnPage(self::$plugin_page);
+		$I->amOnPage(Generals::$plugin_page);
 		$I->wait(1);
-		$I->see(self::$view_plugin, Generals::$pageTitle);
+		$I->see(Generals::$view_plugin, Generals::$pageTitle);
 	}
 
 	/**

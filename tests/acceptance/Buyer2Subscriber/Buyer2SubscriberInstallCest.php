@@ -398,7 +398,7 @@ class Buyer2SubscriberInstallCest
 	 */
 	protected function selectPluginPage(AcceptanceTester $I)
 	{
-		$I->amOnPage(UserPage::$plugin_page);
+		$I->amOnPage(Generals::$plugin_page);
 		$I->wait(1);
 		$I->see(UserPage::$view_plugin, Generals::$pageTitle);
 	}

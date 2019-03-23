@@ -34,7 +34,7 @@ use Page\InstallationPage as InstallPage;
 class User2SubscriberCest
 {
 	/**
-	 * @var object  $tester AcceptanceTester
+	 * @var AcceptanceTester  $tester AcceptanceTester
 	 *
 	 * @since   2.0.0
 	 */

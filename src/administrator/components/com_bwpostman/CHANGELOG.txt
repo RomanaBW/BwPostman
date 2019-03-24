@@ -15,7 +15,8 @@ New
 
 Improvement
 ~ Trigger for events added for future use
-~ Tendering of newsletter before preview and sending modularized (internal work)
+~ Rendering of newsletter before preview and sending modularized (internal work)
+~ BwLibRegister library file moved from component folder to plugin folder
 
 Version 2.2.1 released (7-Feb-2019)----
 

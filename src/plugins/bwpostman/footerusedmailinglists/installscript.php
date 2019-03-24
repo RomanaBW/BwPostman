@@ -135,7 +135,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 
 		if(version_compare(phpversion(), $this->minPhpRelease, 'lt'))
 		{
-			$app->enqueueMessage(JText::_('BWPOSTMAN_USES_PHP5'), 'error');
+			$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_INSTALL_ERROR_PHP5'), 'error');
 			return false;
 		}
 

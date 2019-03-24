@@ -923,6 +923,10 @@ class contentRenderer
 			$newtext .= '   ' . $css . "\n";
 		}
 
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('bwpostman');
+		$dispatcher->trigger('onBwPostmanBeforeCustomCss', array(&$newtext));
+
 		if (isset($tpl->basics['custom_css']))
 		{
 			$newtext .= $tpl->basics['custom_css'] . "\n";

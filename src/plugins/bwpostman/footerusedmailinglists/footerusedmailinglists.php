@@ -123,7 +123,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		{
 			$nbrAllRecipients = $this->getNbrAllRecipients($usedMailinglists, $usedUsergroups);
 
-			$insertText .= "\t\t\t" . '<table id="show-all">' . "\n";
+			$insertText .= "\t\t\t" . '<table id="show-all" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . "<tr>" . "\n";
 			$insertText .= "\t\t\t\t\t" . "<td>";
 			$insertText .= JText::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_ALL_RECIPIENTS_TEXT', $nbrAllRecipients) . "\n";
@@ -134,13 +134,13 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		if ($insertText !== '')
 		{
-			$additionalFooter = "\n\t\t" . '<table class="show-subscribers">' . "\n";
+			$additionalFooter = "\n\t\t" . '<table class="show-subscribers" style="table-layout: fixed; width: 100%;" border="0" cellspacing="0" cellpadding="0">' . "\n";
 			$additionalFooter .= "\t\t\t" . "<tr>" . "\n";
 			$additionalFooter .= "\t\t\t\t" . "<td>";
 			$additionalFooter .= $insertText;
 			$additionalFooter .= "\t\t\t\t" . "</td>" . "\n";
 			$additionalFooter .= "\t\t\t" . "</tr>" . "\n";
-			$additionalFooter .= "\t\t" . "</<table>" . "\n";
+			$additionalFooter .= "\t\t" . "</table>" . "\n";
 		}
 
 		$text = str_replace('[%impressum%]', "\n" . $additionalFooter . '[%impressum%]', $text);
@@ -387,16 +387,19 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		if (is_array($usedMailinglists) && count($usedMailinglists))
 		{
-			$insertText .= "\t\t\t" . '<table id="show-mailinglists">' . "\n";
+			$insertText .= "\t\t\t" . '<table id="show-mailinglists" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . '<tr class="show-mailinglists-head">' . "\n";
 			$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
 			$insertText .= JText::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_TEXT');
 			$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
 			$insertText .= "\t\t\t\t" . "</tr>" . "\n";
 
+			$i = 0;
+
 			foreach ($usedMailinglists as $usedMailinglist)
 			{
-				$insertText .= "\t\t\t\t" . '<tr class="show-mailinglists-row">' . "\n";
+				$insertText .= "\t\t\t\t" . '<tr class="show-mailinglists-row row-' . $i % 2 . '">' . "\n";
+				$i++;
 				$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
 				$insertText .= $usedMailinglist['title'];
 
@@ -407,8 +410,9 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 				$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
 				$insertText .= "\t\t\t\t" . "</tr>" . "\n";
-				$insertText .= "\t\t\t" . '</table>' . "\n";
 			}
+
+			$insertText .= "\t\t\t" . '</table>' . "\n";
 		}
 
 		return $insertText;
@@ -465,16 +469,19 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		if (is_array($usedUsergroups) && count($usedUsergroups))
 		{
-			$insertText .= "\t\t\t" . '<table id="show-usergroups">' . "\n";
+			$insertText .= "\t\t\t" . '<table id="show-usergroups" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . '<tr class="show-usergroups-head">' . "\n";
 			$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
 			$insertText .= JText::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_TEXT');
 			$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
 			$insertText .= "\t\t\t\t" . "</tr>" . "\n";
 
+			$i = 0;
+
 			foreach ($usedUsergroups as $usedUsergroup)
 			{
-				$insertText .= "\t\t\t\t" . '<tr class="show-usergroups-row">' . "\n";
+				$insertText .= "\t\t\t\t" . '<tr class="show-usergroups-row row-' . $i % 2 . '">' . "\n";
+				$i++;
 				$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
 				$insertText .= $usedUsergroup['title'];
 
@@ -763,5 +770,54 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 
 		return $activeRecipients;
+	}
+
+	/**
+	 * Method to insert default css for the additional messages in the footer of the HTML newsletter
+	 *
+	 * @param string $text      html of the newsletter
+	 *
+	 * @return bool
+	 *
+	 * @throws \Exception
+	 *
+	 * @since       2.3.0
+	 */
+	public function onBwPostmanBeforeCustomCss(&$text)
+	{
+		$cssFile        = JPATH_PLUGINS . '/bwpostman/footerusedmailinglists/assets/css/default.css';
+		$fileContent    = array();
+		$cleanedContent = array();
+		$fh             = fopen($cssFile, 'r');
+
+		// Get default css from file at assets
+		if ($fh === false)
+		{
+			return true;
+		}
+
+		// get file content
+		while(!feof($fh))
+		{
+			$fileContent[] = fgets($fh);
+		}
+
+		fclose($fh);
+
+		// Remove unneeded rows (comments, empty lines)
+		foreach ($fileContent as $row)
+		{
+			if ((strpos($row, '/**') === false) && (stripos($row, ' *') === false) && (trim($row) != ''))
+			{
+				$cleanedContent[] = $row;
+			}
+		}
+
+		$cssFromFile = implode("", $cleanedContent);
+
+		// Add css to css of newsletter
+		$text .= $cssFromFile;
+
+		return true;
 	}
 }

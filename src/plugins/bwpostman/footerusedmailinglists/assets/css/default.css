@@ -1,0 +1,86 @@
+/**
+ * BwPostman  Plugin Footer Used Mailinglists
+ *
+ * BwPostman Plugin Footer Used Mailinglists default css for additional messages.
+ *
+ * @version %%version_number%%
+ * @package BwPostman Plugin Footer Used Mailinglists
+ * @author Romana Boldt
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#show-mailinglists {
+	margin-left: auto;
+	margin-right: auto;
+	width: 600px;
+}
+
+#show-mailinglists .show-mailinglists-head td {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 28px;
+	padding-top: 5%;
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+#show-mailinglists .show-mailinglists-row td {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 24px;
+	padding-left: 7%;
+	padding-right: 5%;
+}
+
+#show-usergroups {
+	margin-left: auto;
+	margin-right: auto;
+	width: 600px;
+}
+
+#show-usergroups .show-usergroups-head td {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 28px;
+	padding-top: 5%;
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+#show-usergroups .show-usergroups-row td {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 24px;
+	padding-left: 7%;
+	padding-right: 5%;
+}
+
+#show-all {
+	margin-left: auto;
+	margin-right: auto;
+	width: 600px;
+}
+
+#show-all td {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 24px;
+	padding-top: 5%;
+	padding-left: 5%;
+	padding-right: 5%;
+}
+

@@ -963,7 +963,7 @@ class User2SubscriberCest
 
 		$I->fillField(RegPage::$plugin_message_identifier, RegPage::$plugin_message_new);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->see(RegPage::$plugin_message_new, RegPage::$plugin_message_identifier);
 
 		// look at FE
@@ -979,7 +979,7 @@ class User2SubscriberCest
 
 		$I->fillField(RegPage::$plugin_message_identifier, RegPage::$plugin_message_old);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->see(RegPage::$plugin_message_old, RegPage::$plugin_message_identifier);
 
 		// look at FE
@@ -1159,7 +1159,7 @@ class User2SubscriberCest
 		// switch to Text
 		$I->clickAndWait(RegPage::$plugin_auto_update_no, 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->seeElement(RegPage::$plugin_auto_update_no, array('class' => Generals::$button_red));
 
 		// getManifestOption
@@ -1169,7 +1169,7 @@ class User2SubscriberCest
 		// switch to yes
 		$I->clickAndWait(RegPage::$plugin_auto_update_yes, 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->seeElement(RegPage::$plugin_auto_update_yes, array('class' => Generals::$button_green));
 
 		// getManifestOption
@@ -1203,7 +1203,7 @@ class User2SubscriberCest
 		// switch to Text
 		$I->clickAndWait(RegPage::$plugin_auto_delete_no, 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->seeElement(RegPage::$plugin_auto_delete_no, array('class' => Generals::$button_red));
 
 		// getManifestOption
@@ -1214,7 +1214,7 @@ class User2SubscriberCest
 		$I->scrollTo(RegPage::$plugin_auto_delete_yes, 0, -100);
 		$I->clickAndWait(RegPage::$plugin_auto_delete_yes, 1);
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->seeElement(RegPage::$plugin_auto_delete_yes, array('class' => Generals::$button_green));
 
 		// getManifestOption
@@ -1248,7 +1248,7 @@ class User2SubscriberCest
 		// click checkbox for further mailinglist
 		$I->checkOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 6));
 
 		// getManifestOption
@@ -1259,7 +1259,7 @@ class User2SubscriberCest
 		// deselect further mailinglist
 		$I->uncheckOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(RegPage::$toolbar_apply_button, 1);
-		$I->see(RegPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 5));
 
 		// getManifestOption

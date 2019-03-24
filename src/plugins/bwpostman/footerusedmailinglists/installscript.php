@@ -150,7 +150,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 				return false;
 			}
 
-			if (version_compare( $this->bwpmMinRelease, $bwpmVersion, 'lt')) {
+			if (version_compare($bwpmVersion, $this->bwpmMinRelease, 'lt')) {
 				$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_MIN_VERSION', $this->bwpmMinRelease), 'error');
 				return false;
 			}

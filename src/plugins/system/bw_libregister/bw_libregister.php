@@ -48,6 +48,6 @@ class PlgSystemBW_Libregister extends JPlugin
 	 */
 	public function onAfterInitialise()
 	{
-		JLoader::registerPrefix('J', JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/toolbar');
+		JLoader::registerPrefix('J', JPATH_PLUGINS . '/system/bw_libregister/libraries/toolbar');
 	}
 }

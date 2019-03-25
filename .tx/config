@@ -39,16 +39,16 @@ minimum_perc = 0
 source_file = src/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini
 source_lang = en_GB
 
-[bwpostman.admin-en-gb-plg-en-GB.plg-bwpostman-footerusedmailinglists]
-file_filter = src/administrator/language/<lang>/<lang>.en-GB.plg_bwpostman_footerusedmailinglists.ini
+[bwpostman.admin-en-gb-plg-bwpostman-footerusedmailinglists]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_footerusedmailinglists.ini
 minimum_perc = 0
-source_file = src/administrator/language/en-GB/en-GB.en-GB.plg_bwpostman_footerusedmailinglists.ini
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.ini
 source_lang = en_GB
 
-[bwpostman.admin-en-gb-plg-en-GB.plg-bwpostman-footerusedmailinglists-sys]
-file_filter = src/administrator/language/<lang>/<lang>.en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
+[bwpostman.admin-en-gb-plg-bwpostman-footerusedmailinglists-sys]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_footerusedmailinglists.sys.ini
 minimum_perc = 0
-source_file = src/administrator/language/en-GB/en-GB.en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
 source_lang = en_GB
 
 [bwpostman.site-en-gb-com-bwpostman]

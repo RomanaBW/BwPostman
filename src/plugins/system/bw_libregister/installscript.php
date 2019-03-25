@@ -86,6 +86,12 @@ class PlgSystemBW_LibregisterInstallerScript
 	 */
 	public function postflight($type)
 	{
+		$oldLibPath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/toolbar/';
+		if (JFolder::exists($oldLibPath))
+		{
+			JFolder::delete($oldLibPath);
+		}
+
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{

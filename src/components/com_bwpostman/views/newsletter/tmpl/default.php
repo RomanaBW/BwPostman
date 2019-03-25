@@ -88,13 +88,19 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JHtml::date($this->newsletter->mailing_date, JText::_('DATE_FORMAT_LC3'));  ?>
 			<?php
 			if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide')
-			{ ?>
-				<span class="btn" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
-					<a class="link-attachment" href="<?php echo JUri::base() . '/' . $this->newsletter->attachment; ?>" target="_blank">
-						<i class="icon_attachment"></i>
-					</a>
-				</span>
-			<?php
+			{
+				// Split attachment to array
+				$attachments = explode(';', $this->newsletter->attachment);
+				foreach ($attachments as $attachment)
+				{
+					?>
+					<span class="btn" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
+						<a class="link-attachment" href="<?php echo JUri::base() . '/' . $attachment; ?>" target="_blank">
+							<i class="icon_attachment"></i>
+						</a>
+					</span>
+					<?php
+				}
 			} ?>
 		</p>
 

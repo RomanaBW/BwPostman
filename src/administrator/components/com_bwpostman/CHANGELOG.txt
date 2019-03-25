@@ -13,11 +13,13 @@ New
 + Plugin to show mailinglists/usergroups and optionally number of recipients of a newsletter at the footer of the newsletter
 + Language files moved to Transifex and except english and german removed from installation package to save installation package space and installation time. Installation separately.
 
+Bugfix
+# Error after click on icon for multiple attachments at front end
+
 Improvement
 ~ Trigger for events added for future use
 ~ Rendering of newsletter before preview and sending modularized (internal work)
 ~ BwLibRegister library file moved from component folder to plugin folder
-
 
 
 Version 2.2.1 released (7-Feb-2019)----

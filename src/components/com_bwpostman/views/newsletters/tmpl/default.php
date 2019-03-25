@@ -147,7 +147,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				if (count($this->items) > 0)
 				{
 					foreach ($this->items as $i => $item)
-					{ ?>
+					{
+						// Split attachment to array
+						$attachments = explode(';', $item->attachment);
+						?>
 						<tr class="row<?php echo $i % 2; ?>">
 							<td class="date">
 								<?php $date = JHtml::date($item->mailing_date, JText::_('DATE_FORMAT_LC3'));
@@ -160,11 +163,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								</a>
 								<?php
 								if (!empty($item->attachment) && $this->params->get('attachment_enable') != 'hide')
-								{ ?>
-									<a class="link-attachment" href="<?php echo JUri::base() . '/' . $item->attachment; ?>" target="_blank">
-										<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
-									</a>
+								{
+									foreach ($attachments as $attachment)
+									{ ?>
+										<a class="link-attachment" href="<?php echo JUri::base() . '/' . $attachment; ?>" target="_blank">
+											<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+										</a>
 									<?php
+									}
 								} ?>
 							</td>
 							<td class="clicks"><?php echo $item->hits; ?></td>

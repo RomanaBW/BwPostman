@@ -4,10 +4,6 @@
     - vars/vars.yml
 
   tasks:
-    - name: Debug replace_vars
-      debug:
-        msg: "{{ replace_vars }}"
-
     - name: Remove folders which are not needed
       file:
         path: "{{ project_base_dir }}/src/{{ item }}"
@@ -22,7 +18,7 @@
         bw_build: "{{ build }}"
         bw_workspace: "{{ project_base_dir }}"
         bw_manifest_list: "{{ manifest_list }}"
-      when: replace_vars
+      when: replace_vars|bool
 
 #   build component package
     - include_role:
@@ -116,13 +112,13 @@
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
-      when: not replace_vars
+      when: not replace_vars|bool
 
     - name: copy package to test data folder without build and version number
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
-      when: replace_vars
+      when: replace_vars|bool
 
     - name: copy changelog to test data folder
       copy:

@@ -90,8 +90,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php
 							if ($this->auto_nbr)
 							{ ?>
-								<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOMATION'); ?></th>
-								<th nowrap="nowrap"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVE'); ?></th>
+								<th nowrap="nowrap"><?php echo JText::_('PLG_BWTIMECONTROL_AUTOMATION'); ?></th>
+								<th nowrap="nowrap"><?php echo JText::_('PLG_BWTIMECONTROL_ACTIVE'); ?></th>
 							<?php
 							}
 							?>

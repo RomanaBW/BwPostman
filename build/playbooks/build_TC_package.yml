@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - vars/tc_package_vars.yml
+
+  tasks:
+    - name: build TC plugin package
+      include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "{{ plugin_name }}"
+        bw_plugin_group: "bwpostman"
+
+    - name: copy package to test data folder with build and version number
+      copy:
+        src: "{{ target_base_path }}/{{ extension_name }}/plg_{{ plugin_name }}.zip"
+        dest: "{{ artifact_path }}/data/plg_{{ plugin_name }}-{{ version_number }}.{{ build }}.zip"
+
+    - name: copy package to test data folder without build and version number
+      copy:
+        src: "{{ target_base_path }}/{{ extension_name }}/plg_{{ plugin_name }}.zip"
+        dest: "{{ artifact_path }}/data/plg_{{ plugin_name }}.zip"

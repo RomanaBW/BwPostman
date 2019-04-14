@@ -34,7 +34,7 @@
 		<if>
 			<isfalse value="${bwpm_install}" />
 			<then>
-				<php expression="${project_name}_bwpm${bwpm_version}" returnProperty="project_name" />
+				<php expression="'${project_name}_bwpm${bwpm_version}'" returnProperty="project_name" />
 				<property name="infrastructure_config" value="run-bwpm.yml" override="true" />
 				<property name="test_runner" value="bwpm_test_runner.sh" override="true" />
 			</then>
@@ -56,7 +56,7 @@
 
 	<target name="create_net_name" depends="create_project_name"
 	        description="Creates the network name from project name to meet docker needs and export it">
-		<php expression="str_replace('_', '', ${project_name})" returnProperty="net_name" />
+		<php expression="str_replace('_', '', '${project_name}')" returnProperty="net_name" />
 		<php expression="putenv('BW_TEST_NET_NAME=${net_name}');" />
 	</target>
 

@@ -167,13 +167,13 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$cron = new BwPostmanPhpCron;
 			if (JFile::exists(JPATH_PLUGINS . $cron->startFile))
 			{
-				$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
+				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
 			}
 
 			// Create stop file
 			if (JFile::exists(JPATH_PLUGINS . $cron->stopFile))
 			{
-				$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
+				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
 			}
 		}
 

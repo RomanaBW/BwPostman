@@ -8,5 +8,5 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Versioning is according to component BwPostman
 
 
-Version 2.3.0 released (2019-04-26)----
+Version 2.3.0 released (2019-05-10)----
 

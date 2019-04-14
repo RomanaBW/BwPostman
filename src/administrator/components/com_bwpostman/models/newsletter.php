@@ -1274,7 +1274,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Access check.
 		if (!BwPostmanHelper::canSend($recordId))
 		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED');
+			$error[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED');
 
 			return false;
 		}
@@ -1291,18 +1291,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		//check for content template
 		if ($data['is_template'] === "1")
 		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR');
+			$error[] = JText::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR');
 
 			return false;
 		}
 
-		// Store the newsletter into the newsletters-table
-		if (!$this->save($data))
-		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_GENERAL');
+//		// Store the newsletter into the newsletters-table
+//		if (!$this->save($data))
+//		{
+//			$error[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_GENERAL');
+//
+//			return false;
+//		}
 
-			return false;
-		}
+		JFactory::getApplication()->setUserState('com_bwpostman.newsletter.idToSend', $recordId);
 
 		return $data;
 	}
@@ -1735,8 +1737,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['access']                = property_exists($state_data, 'access') ? $state_data->access : 1;
 				$form_data['publish_up']            = $state_data->publish_up;
 				$form_data['publish_down']          = $state_data->publish_down;
-				$form_data['created_by']            = $state_data->created_by;
-				$form_data['modified_by']           = $state_data->modified_by;
+				$form_data['created_by']            = property_exists($state_data, 'created_by;') ? $state_data->created_by : '0000-00-00 00:00:00';
+				$form_data['modified_by']           = property_exists($state_data, 'modified_by') ? $state_data->modified_by : '0000-00-00 00:00:00';
 				$form_data['archived_by']           = $state_data->archived_by;
 				$form_data['created_date']          = $state_data->created_date;
 				$form_data['modified_time']         = $state_data->modified_time;
@@ -2295,6 +2297,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$query->select('COUNT(' . $_db->quoteName('id') . ')');
 		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
 
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('bwpostman');
+
+		$dispatcher->trigger('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
+
 		$_db->setQuery($query);
 		try
 		{
@@ -2337,7 +2344,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Make partial send. Send only, say like 50 newsletters and the next 50 in a next call.
 	 *
-	 * @param int   $mailsPerStep     number mails to send
+	 * @param integer   $mailsPerStep     number mails to send
+	 * @param boolean   $fromComponent    do we come from component or from plugin?
 	 *
 	 * @return int	0 -> queue is empty, 1 -> maximum reached, 2 -> fatal error
 	 *
@@ -2345,7 +2353,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function sendMailsFromQueue($mailsPerStep = 100)
+	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true)
 	{
 		try
 		{
@@ -2356,7 +2364,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			while(1)
 			{
-				$ret = $this->sendMail(true);
+				$ret = $this->sendMail($fromComponent);
 				if ($ret == 0)
 				{                              // Queue is empty!
 					return 0;
@@ -2396,7 +2404,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function sendMail($fromComponent = false)
+	public function sendMail($fromComponent = true)
 	{
 		// initialize
 		$renderer	        = new contentRenderer();
@@ -2430,7 +2438,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Get first entry from sendmailqueue
 		// Nothing has been returned, so the queue should be empty
-		if (!$tblSendMailQueue->pop())
+		if (!$tblSendMailQueue->pop(2, $fromComponent))
 		{
 			return 0;
 		}
@@ -2682,17 +2690,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				echo JText::_('COM_BWPOSTMAN_NL_SENT_SUCCESSFULLY');
 			}
-			else
-			{
-				$app->enqueueMessage(sprintf('Error while sending: %s'), $res);
-				// Sendmail was successful, flag "sent" in table TcContent has to be set
-				$tblSendMailContent->setSent($tblSendMailContent->id);
-				// and test-entries may be deleted
-				if ($recipients_data->status == 9)
-				{
-					// @Todo: Delete entry in sendmailcontent-table?
-				}
-			}
+//			else
+//			{
+//				$app->enqueueMessage(sprintf('Error while sending: %s'), $res);
+//				// Sendmail was successful, flag "sent" in table TcContent has to be set
+//				$tblSendMailContent->setSent($tblSendMailContent->id);
+//				// and test-entries may be deleted
+//				if ($recipients_data->status == 9)
+//				{
+//					// @Todo: Delete entry in sendmailcontent-table?
+//				}
+//			}
 		}
 		else
 		{

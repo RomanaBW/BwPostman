@@ -1272,64 +1272,34 @@ abstract class BwPostmanHelper
 	}
 
 	/**
-	 * Check number of queue entries
+	 * Check number of queue entries, which could not be sent
 	 *
-	 * @return    bool    true if there are entries in the queue, otherwise false
+	 * @return    bool    true if there are unable to send entries in the queue, otherwise false
 	 *
 	 * @since    1.0.3
 	 */
 	public static function checkQueueEntries()
 	{
 		$db   = JFactory::getDbo();
+
+		// Get queue entries, which cannot be sent because sending trials have reached limit
 		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT ' . $db->quoteName('content_id'));
 		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
+		$query->where($db->quoteName('trial') . ' >= 2');
 
 		$db->setQuery($query);
 
-		$queueEntries = $db->loadColumn();
+		$queueEntriesAtLimit = $db->loadColumn();
 
-		if (!count($queueEntries))
+		// entries at limit, queue and problem
+		if (count($queueEntriesAtLimit))
 		{
-			return false;
+			return true;
 		}
 
-		if (JPluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
-		{
-			// Get newsletter ids form sendmailcontent
-			$query	= $db->getQuery(true);
-
-			$query->select('DISTINCT ' . $db->quoteName('nl_id'));
-			$query->from($db->quoteName('#__bwpostman_sendmailcontent'));
-			$query->where($db->quoteName('id') . ' IN (' . implode (',', $queueEntries) . ')');
-
-			$db->setQuery($query);
-
-			$queuedNlIds = $db->loadColumn();
-
-			// Get newsletters ids from tc_schedule, which are in the queue
-			$query	= $db->getQuery(true);
-
-			$query->select($db->quoteName('newsletter_id'));
-			$query->from($db->quoteName('#__bwpostman_tc_schedule'));
-			$query->where($db->quoteName('sent') . ' = ' . $db->Quote('1'));
-			$query->where($db->quoteName('newsletter_id') . ' IN (' . implode (',', $queuedNlIds) . ')');
-
-			$db->setQuery($query);
-
-			$scheduledNls = $db->loadColumn();
-
-			// Get not scheduled newsletters
-			$notScheduledNls = array_diff($queuedNlIds, $scheduledNls);
-
-			if (!count($notScheduledNls))
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return false;
 	}
 
 	/**

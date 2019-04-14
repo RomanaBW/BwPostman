@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.4" type="plugin" group="bwpostman" method="upgrade">
-	<name>PLG_BWPOSTMAN_BWTIMECONTROL</name>
+	<name>PLG_BWTIMECONTROL</name>
 	<version>%%version_number%%</version>
 	<creationDate>%%creation_date%%</creationDate>
 	<author>Boldt Webservice</author>
@@ -8,7 +8,7 @@
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
-	<description>PLG_BWPOSTMAN_BWTIMECONTROL_DESC</description>
+	<description>PLG_BWTIMECONTROL_DESC</description>
 
 	<scriptfile>install.bwtimecontrol.php</scriptfile>
 
@@ -19,10 +19,8 @@
 		<filename>install.bwtimecontrol.php</filename>
 		<filename>CHANGELOG.txt</filename>
 		<folder>assets</folder>
-		<folder>forms</folder>
 		<folder>helpers</folder>
 		<folder>language</folder>
-		<folder>log</folder>
 		<folder>sql</folder>
 		<folder>tables</folder>
 	</files>
@@ -52,43 +50,26 @@
 		<language tag="de-DE">de-DE/de-DE.plg_bwpostman_bwtimecontrol.ini</language>
 	</languages>
 
-	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_tc.xml</server>
-	</updateservers>
-
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field
-						name="bwtimecontrol_licence_code"
-						type="text"
-						size="50"
-						default=""
-						label="PLG_BWPOSTMAN_BWTIMECONTROL_LICENCE_CODE"
-						description="PLG_BWPOSTMAN_BWTIMECONTROL_LICENCE_CODE_NOTE"
-				/>
-				<field
-						name="bwtimecontrol_domain"
-						type="text" size="50"
-						default=""
-						label="PLG_BWPOSTMAN_BWTIMECONTROL_DOMAIN"
-						description="PLG_BWPOSTMAN_BWTIMECONTROL_DOMAIN_NOTE"
-				/>
 				<field
 						name="bwtimecontrol_username"
 						type="text"
 						size="50"
 						default=""
-						label="PLG_BWPOSTMAN_BWTIMECONTROL_USERNAME"
-						description="PLG_BWPOSTMAN_BWTIMECONTROL_USERNAME_NOTE"
+						label="PLG_BWTIMECONTROL_USERNAME"
+						description="PLG_BWTIMECONTROL_USERNAME_NOTE"
+						required="true"
 				/>
 				<field
 						name="bwtimecontrol_passwd"
 						type="password"
 						size="50"
 						default=""
-						label="PLG_BWPOSTMAN_BWTIMECONTROL_PASSWD"
-						description="PLG_BWPOSTMAN_BWTIMECONTROL_PASSWD_NOTE"
+						label="PLG_BWTIMECONTROL_PASSWD"
+						description="PLG_BWTIMECONTROL_PASSWD_NOTE"
+						required="true"
 				/>
 				<field
 						name="bwtimecontrol_cron_intval"
@@ -97,10 +78,23 @@
 						first="1"
 						last="1440"
 						step="1"
-						label="PLG_BWPOSTMAN_BWTIMECONTROL_CRON_INTVAL_LABEL"
-						description="PLG_BWPOSTMAN_BWTIMECONTROL_CRON_INTVAL_DESC"
+						label="PLG_BWTIMECONTROL_CRON_INTVAL_LABEL"
+						description="PLG_BWTIMECONTROL_CRON_INTVAL_DESC"
+				/>
+				<field
+						name="bwtimecontrol_licence_code"
+						type="text"
+						size="50"
+						default=""
+						label="PLG_BWTIMECONTROL_LICENCE_CODE"
+						description="PLG_BWTIMECONTROL_LICENCE_CODE_NOTE"
 				/>
 			</fieldset>
 		</fields>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_tc.xml</server>
+	</updateservers>
+
 </extension>

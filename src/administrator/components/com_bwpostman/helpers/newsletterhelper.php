@@ -45,7 +45,7 @@ abstract class BwPostmanNewsletterHelper {
 	 */
 	static public function getCampaignId($nlId)
 	{
-		$campaignId = 0;
+		$campaignId = -1;
 
 		$db	= JFactory::getDbo();
 		$query	= $db->getQuery(true);

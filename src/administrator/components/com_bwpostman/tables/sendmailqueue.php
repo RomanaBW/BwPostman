@@ -176,7 +176,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	/**
 	 * Method to get the first entry of this table
 	 *
-	 * @param   int     $trial  Only pop entries with < trial
+	 * @param   integer     $trial           Only pop entries with < trial
+	 * @param   boolean     $fromComponent   do we come from component or from plugin
 	 *
 	 * @return 	int --> 0 if nothing was selected
 	 *
@@ -184,7 +185,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	public function pop($trial = 2)
+	public function pop($trial = 2, $fromComponent = true)
 	{
 		$this->reset();
 		$_db	= $this->_db;
@@ -195,6 +196,11 @@ class BwPostmanTableSendmailqueue extends JTable
 		$query->from($_db->quoteName($this->_tbl));
 		$query->where($_db->quoteName('trial') . ' < ' . (int) $trial);
 		$query->order($_db->quoteName($this->_tbl_key) . ' ASC LIMIT 0,1');
+
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('bwpostman');
+
+		$dispatcher->trigger('onBwPostmanGetAdditionalQueueWhere', array(&$query, $fromComponent));
 
 		$_db->setQuery($query);
 

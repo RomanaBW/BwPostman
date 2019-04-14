@@ -147,7 +147,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
-					<?php if ($this->queueEntries && $this->permissions['newsletter']['send']) { ?>
+					<?php if ($this->count_queue && $this->permissions['newsletter']['send']) { ?>
 						<li class="closed">
 							<button onclick="return changeTab('queue');" class="buttonAsLink">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>

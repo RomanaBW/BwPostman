@@ -142,14 +142,14 @@ $tab_options = array(
 		if (property_exists($this->item, 'tc_mailing_data'))
 		{
 			// Start Tab autovalues
-			echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOVALUES_TITLE'), 'autovalues', '');
+			echo JHtmlBwTabs::panel(JText::_('PLG_BWTIMECONTROL_AUTOVALUES_TITLE'), 'autovalues', '');
 			echo $this->item->tc_mailing_data;
 		}
 
 		if (property_exists($this->item, 'queued_letters'))
 		{
 			// Start Tab automailing queue
-			echo JHtmlBwTabs::panel(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_TITLE'), 'autoqueue', '');
+			echo JHtmlBwTabs::panel(JText::_('PLG_BWTIMECONTROL_AUTOQUEUE_TITLE'), 'autoqueue', '');
 			echo $this->item->queued_letters;
 		}
 

@@ -18,6 +18,7 @@
         bw_build: "{{ build }}"
         bw_workspace: "{{ project_base_dir }}"
         bw_manifest_list: "{{ manifest_list }}"
+      when: replace_vars == true
 
 #   build component package
     - include_role:
@@ -111,11 +112,13 @@
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
+      when: replace_vars == false
 
     - name: copy package to test data folder without build and version number
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
+      when: replace_vars == true
 
     - name: copy changelog to test data folder
       copy:

@@ -33,7 +33,8 @@ pipeline {
 				}
 
                 echo 'Create installation package'
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true'"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${VERSION_NUMBER} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
             }
         }
 

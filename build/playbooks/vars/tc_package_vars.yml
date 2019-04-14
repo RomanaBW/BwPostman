@@ -1,0 +1,17 @@
+---
+extension_name: "bwpostman"
+plugin_name: "bwtimecontrol"
+version_number: "2.3.0"
+build: "0815"
+
+project_base_dir: "../.."
+target_base_path: "/repositories/artifacts"
+test_data_path: "/repositories/BwPostman/tests/data"
+artifact_path: "/repositories/artifacts/bwpostman"
+
+languages:
+  - de-DE
+  - en-GB
+
+manifest_list:
+  - src/plugins/bwpostman/bwtimecontrol/bwtimecontrol.xml

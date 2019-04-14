@@ -350,7 +350,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
-		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_START_CRON'), 'message');
+		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_START_CRON'), 'message');
 
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 		$dispatcher = JEventDispatcher::getInstance();
@@ -374,7 +374,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
-		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_STOP_CRON'), 'message');
+		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_STOP_CRON'), 'message');
 
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 		$dispatcher = JEventDispatcher::getInstance();

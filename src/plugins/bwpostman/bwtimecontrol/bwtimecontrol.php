@@ -48,7 +48,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @since 2.3.0
 	 */
-	protected $min_bwpostman_version = '2.2.1';
+	protected $minBwpostmanVersion = '2.2.1';
 
 	/**
 	 * Property to hold form
@@ -102,7 +102,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @since  2.3.0
 	 */
-	private $log_cat  = 'BwPm_TC';
+	private $log_cat = 'BwPm_TC';
 
 	/**
 	 * Property to hold debug
@@ -111,7 +111,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @since  2.3.0
 	 */
-	private $debug    = false;
+	private $debug = false;
 
 	/**
 	 * Definition of which contexts to allow in this plugin
@@ -137,9 +137,9 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		parent::__construct($subject, $config);
 		$this->_enabled = false;
 
-		$log_options    = array('text_file' => 'bwpostman/BwPmTimecontrol.log');
-		$this->logger   = new BwLogger($log_options);
-		$this->debug    = false;
+		$log_options  = array('text_file' => 'bwpostman/BwPmTimecontrol.log');
+		$this->logger = new BwLogger($log_options);
+		$this->debug  = false;
 
 		// Do not load if BwPostman version is not supported or BwPostman isn't detected
 		$this->setBwPostmanComponentStatus();
@@ -157,8 +157,8 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db        = JFactory::getDbo();
-		$query      = $_db->getQuery(true);
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
 		$query->from($_db->quoteName('#__extensions'));
@@ -168,20 +168,22 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		try
 		{
-			$enabled                = $_db->loadResult();
+			$enabled                         = $_db->loadResult();
 			$this->BwPostmanComponentEnabled = $enabled;
-			$this->_enabled = true;
+			$this->_enabled                  = true;
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), JLog::DEBUG,
+					$this->log_cat));
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
+			$message                         = 'Database error while getting component status, error message is ' . $e->getMessage();
+			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
 		}
 	}
 
@@ -194,8 +196,8 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db        = JFactory::getDbo();
-		$query      = $_db->getQuery(true);
+		$_db   = JFactory::getDbo();
+		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
 		$query->from($_db->quoteName('#__extensions'));
@@ -204,19 +206,21 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		try
 		{
-			$manifest               = json_decode($_db->loadResult(), true);
+			$manifest                        = json_decode($_db->loadResult(), true);
 			$this->BwPostmanComponentVersion = $manifest['version'];
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']),
+					JLog::DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentVersion = '0.0.0';
-			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
+			$message                         = 'Database error while getting component version, error message is ' . $e->getMessage();
+			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
 		}
 	}
 
@@ -245,12 +249,12 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	/**
 	 * Event method onContentPrepareForm
 	 *
-	 * @param   mixed  $form  JForm instance
-	 * @param   object $data  Form values
+	 * @param mixed  $form JForm instance
+	 * @param object $data Form values
 	 *
 	 * @return bool
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since  2.3.0
 	 */
@@ -289,7 +293,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if (is_object($data) && property_exists($data, 'id'))
 		{
-			$scheduledData = $this->getItem((int)$data->id);
+			$scheduledData = $this->getItem((int) $data->id);
 
 			if (is_array($scheduledData))
 			{
@@ -315,11 +319,12 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		if (version_compare($this->BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
+		if (version_compare($this->BwPostmanComponentVersion, $this->minBwpostmanVersion, 'lt'))
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), JLog::ERROR, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), JLog::ERROR,
+					$this->log_cat));
 			}
 
 			return false;
@@ -331,13 +336,13 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	/**
 	 * Method to manipulate form before validation
 	 *
-	 * @param 	object $form
+	 * @param object $form
 	 *
-	 * @return 	bool	true on success
+	 * @return    bool    true on success
 	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	public function onBwPostmanBeforeNewsletterControllerValidate (&$form)
+	public function onBwPostmanBeforeNewsletterControllerValidate(&$form)
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
@@ -353,24 +358,24 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	/**
 	 * Method to manipulate form before validation
 	 *
-	 * @param 	array $properties
+	 * @param array $properties
 	 *
-	 * @return 	bool	true on success
+	 * @return    bool    true on success
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	public function onBwPostmanAfterNewsletterModelGetProperties (&$properties)
+	public function onBwPostmanAfterNewsletterModelGetProperties(&$properties)
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
 		{
 			return false;
 		}
-		$scheduledDate = $this->getItem($properties['id']);
+		$scheduledDate                = $this->getItem($properties['id']);
 		$properties['scheduled_date'] = $scheduledDate['scheduled_date'];
-		$properties['ready_to_send'] = $scheduledDate['ready_to_send'];
+		$properties['ready_to_send']  = $scheduledDate['ready_to_send'];
 
 		return true;
 	}
@@ -378,13 +383,13 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	/**
 	 * Method to manipulate form before validation
 	 *
-	 * @throws \Exception
+	 * @return    bool    true on success
 	 *
-	 * @return 	bool	true on success
+	 * @throws Exception
 	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	public function onBwPostmanMaintenanceStartCron ()
+	public function onBwPostmanMaintenanceStartCron()
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
@@ -401,17 +406,16 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		return true;
 	}
 
-
 	/**
 	 * Method to manipulate form before validation
 	 *
-	 * @throws \Exception
+	 * @return    bool    true on success
 	 *
-	 * @return 	bool	true on success
+	 * @throws Exception
 	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	public function onBwPostmanMaintenanceStopCron ()
+	public function onBwPostmanMaintenanceStopCron()
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
@@ -428,59 +432,16 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		return true;
 	}
 
-
-	/**
-	 * Method to  test automation
-	 *
-	 * @access	public
-	 *
-	 * @return 	boolean 	true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanCampaignsTaskAutoTest ()
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to activate automated campaign
-	 *
-	 * @access	public
-	 *
-	 * @return 	boolean 	true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanCampaignsTaskActivate ()
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
 	/**
 	 * Method to prepare toolbar buttons for BwTimeControl at campaigns
 	 *
-	 * @access	public
+	 * @return    boolean    true on success
 	 *
-	 * @return 	boolean 	true on success
+	 * @throws Exception
 	 *
-	 * @throws \Exception
-	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	public function onBwPostmanCampaignsPrepareToolbar ()
+	public function onBwPostmanMaintenanceRenderLayout()
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
@@ -488,32 +449,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-//		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.autotest', 'question-circle', 'question-circle', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOTEST'), true);
-//		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.activate', 'publish', 'publish', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_ACTIVATE'), true);
-//		if (BwPostmanHelper::canEditState('campaign', 0))	JToolbarHelper::custom ('campaign.dueSend', 'broadcast', 'broadcast', JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_DUESEND'), false);
-
-		return true;
-	}
-
-	/**
-	 * Method to prepare toolbar buttons for BwTimeControl at campaigns
-	 *
-	 * @return 	boolean 	true on success
-	 *
-	 * @throws \Exception
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanMaintenanceRenderLayout ()
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		$permissions	= JFactory::getApplication()->getUserState('com_bwpm.permissions');
-
+		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if ($permissions['view']['maintenance'])
 		{
@@ -521,7 +457,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			BwPostmanHTMLHelper::quickiconButton(
 				$link,
 				'icon-48-maintenance.png',
-				JText::_("PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_START_CRON"),
+				JText::_("PLG_BWTIMECONTROL_MAINTENANCE_START_CRON"),
 				0,
 				0
 			);
@@ -530,173 +466,12 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			BwPostmanHTMLHelper::quickiconButton(
 				$link,
 				'icon-48-maintenance.png',
-				JText::_("PLG_BWPOSTMAN_BWTIMECONTROL_MAINTENANCE_STOP_CRON"),
+				JText::_("PLG_BWTIMECONTROL_MAINTENANCE_STOP_CRON"),
 				0,
 				0
 			);
 
 		}
-
-		return true;
-	}
-
-	/**
-	 * Method to switch content table and queue table to BwTimeControl-tables
-	 *
-	 * @access	public
-	 *
-	 * @param   object      $table_name
-	 * @param   object      $tblSendMailQueue
-	 * @param   object      $tblSendMailContent
-	 *
-	 * @return 	boolean	    true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanBeforeNewsletterSend (&$table_name, &$tblSendMailQueue, &$tblSendMailContent)
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to prepare content for listing BwTimeControl values
-	 *
-	 * @access	public
-	 *
-	 * @param 	object	$items  campaign list
-	 *
-	 * @return  boolean         true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanCampaignsPrepare (&$items)
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		$k	= 0;
-
-		return $k;
-	}
-
-	/**
-	 * Method to prepare content for editing BwTimeControl values
-	 *
-	 * @access	public
-	 *
-	 * @param 	object	$cam_data           campaign data
-	 * @param 	object	$newsletters        newsletters lists
-	 * @param 	object	$document           document
-	 *
-	 * @return 	boolean 	true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanCampaignPrepare (&$cam_data, &$newsletters, &$document)
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to suspend a queued newsletter from sending
-	 *
-	 * @access	public
-	 *
-	 * @param 	int		    $get_data
-	 *
-	 * @return  boolean     true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanCampaignTaskSuspendNewsletterFromSending (&$get_data)
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to save BwTimeControl data of a campaign
-	 *
-	 * @access	public
-	 *
-	 * @param 	int		$campaign_id
-	 *
-	 * @return 	boolean 	true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanCampaignSave ($campaign_id)
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to redirect back to newsletters list after editing campaign, if newsletter changed his campaign
-	 *
-	 * @access	public
-	 *
-	 * @return 	boolean	    true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanAfterCampaignControllerSave ()
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to set state with newsletter data before it is edited (old data)
-	 *
-	 * @access	public
-	 *
-	 * @param   object $item
-	 * @param   object      $referrer
-	 *
-	 * @return 	bool	    true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanBeforeNewsletterEdit (&$item, $referrer)
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-//		$this->injectFormField();
 
 		return true;
 	}
@@ -706,13 +481,13 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @param array $data
 	 *
-	 * @return 	bool	true on success
+	 * @return    bool    true on success
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	public function onBwPostmanAfterNewsletterModelSave (&$data)
+	public function onBwPostmanAfterNewsletterModelSave(&$data)
 	{
 		// Sanity check :)
 		if (!$this->_enabled)
@@ -731,114 +506,42 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		}
 
 		$scheduledData = array(
-			'newsletter_id' => $data['id'],
+			'newsletter_id'  => $data['id'],
 			'scheduled_date' => $data['scheduled_date'],
-			'ready_to_send' => $data['ready_to_send'],
-			);
+			'ready_to_send'  => $data['ready_to_send'],
+		);
+
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
+		$nlModel = JModelLegacy::getInstance('Newsletter', 'BwPostmanModel');
+		$error   = array();
+
+		$data = $nlModel->preSendChecks($error, $data['id'], true);
+
+		if (count($error))
+		{
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_PRE_CHECK',
+				$data['id']), 'error');
+
+			return false;
+		}
 
 		$this->saveItem($scheduledData);
 
-		return  true;
-	}
-
-	/**
-	 * Method to redirect to edit campaign, if newsletter changes his campaign at task cancel
-	 *
-	 * @access	public
-	 *
-	 * @return 	bool	true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanAfterNewsletterCancel ()
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
 		return true;
 	}
-
-	/**
-	 * Method to copy a newsletter that belongs to a timecontrolled campaign
-	 *
-	 * @access	public
-	 *
-	 * @return 	bool	true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanAfterNewsletterCopy ()
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to check, if archiving newsletters is possible. Newsletters of a timecontrolled campaign may not be archived
-	 *
-	 * @access	public
-	 *
-	 * @param 	array	$cid        Newsletter-IDs
-	 * @param	string	$msg        return message
-	 * @param 	bool	$res        result
-	 *
-	 * @return boolean              true on success
-	 *
-	 * @since	2.3.0
-	 */
-	public function onBwPostmanBeforeNewsletterArchive (&$cid, &$msg, &$res)
-	{
-		// Sanity check :)
-		if (!$this->_enabled)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to update table tc_sendmail_content after a newsletter is edited
-	 *
-	 * @access	public
-	 *
-	 * @param   object  $item
-	 *
-	 * @return 	bool	true on success
-	 *
-	 * @since	2.3.0
-	 */
-//	public function onBwPostmanAfterNewsletterModelSave (&$item)
-//	{
-//		// Sanity check :)
-//		if (!$this->_enabled)
-//		{
-//			return false;
-//		}
-//
-//		return true;
-//	}
 
 	/**
 	 * Method to get schedule data from table
 	 *
-	 * @param   integer  $nl_id
+	 * @param integer $nl_id
 	 *
-	 * @return 	array
+	 * @return    array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	private function getItem ($nl_id)
+	private function getItem($nl_id)
 	{
 		$scheduled_date = '0000-00-00 00:00:00';
 
@@ -860,7 +563,8 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				$message = 'Database error while getting itemId at TC, error message is ' . $e->getMessage();
+				JFactory::getApplication()->enqueueMessage($message, 'error');
 			}
 		}
 
@@ -870,15 +574,15 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	/**
 	 * Method to manipulate schedule data at table
 	 *
-	 * @param   array  $scheduledDate
+	 * @param array $scheduledDate
 	 *
-	 * @return 	boolean
+	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
-	 * @since	2.3.0
+	 * @since    2.3.0
 	 */
-	private function saveItem ($scheduledDate)
+	private function saveItem($scheduledDate)
 	{
 		$savedDate = $this->getItem($scheduledDate['newsletter_id']);
 
@@ -926,7 +630,8 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$message = 'Database error while saving item at TC, error message is ' . $e->getMessage();
+			JFactory::getApplication()->enqueueMessage($message, 'error');
 		}
 
 		return true;
@@ -936,19 +641,19 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @return SimpleXMLElement
 	 *
-	 * @since version
+	 * @since 2.3.0
 	 */
 	private function createFieldsetScheduled()
 	{
-		$scheduledXml = new \SimpleXMLElement(
+		$scheduledXml = new SimpleXMLElement(
 			'<fieldset name="scheduled">
 				<field 
 				name="scheduled_date" 
 				type="calendar"
 				default=""
-				label="PLG_BWPOSTMAN_BWTIMECONTROL_SCHEDULE_DATE_LABEL"
+				label="PLG_BWTIMECONTROL_SCHEDULE_DATE_LABEL"
 				labelclass="control-label"
-				description="PLG_BWPOSTMAN_BWTIMECONTROL_SCHEDULE_DATE_DESC"
+				description="PLG_BWTIMECONTROL_SCHEDULE_DATE_DESC"
 				format="%Y-%m-%d %H:%M:%S"
 				size="22"
 				filter="user_utc"
@@ -958,9 +663,9 @@ class plgBwPostmanBwTimeControl extends JPlugin
 				name="ready_to_send" 
 				type="list"
 				default="0"
-				label="PLG_BWPOSTMAN_BWTIMECONTROL_READY_TO_SEND_LABEL"
+				label="PLG_BWTIMECONTROL_READY_TO_SEND_LABEL"
 				labelclass="control-label"
-				description="PLG_BWPOSTMAN_BWTIMECONTROL_READY_TO_SEND_DESC"
+				description="PLG_BWTIMECONTROL_READY_TO_SEND_DESC"
 				class="chzn-color-state"
 				filter="intval"
 				>
@@ -970,5 +675,123 @@ class plgBwPostmanBwTimeControl extends JPlugin
 				</fieldset>');
 
 		return $scheduledXml;
+	}
+
+	/**
+	 * Enhance where clause of query to sendmailqueue to get only items of manual or automated sending
+	 *
+	 * This method will be used at sendmailqueue pop() to get the correct entries to send as also for counting number of
+	 * mails to send.
+	 *
+	 * @param   object      $query           query to manipulate
+	 * @param   boolean     $fromComponent   do we come from component or from plugin
+	 *
+	 * @return    bool    true on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since     2.3.0
+	 */
+	public function onBwPostmanGetAdditionalQueueWhere(&$query, $fromComponent)
+	{
+		JFactory::getApplication()->getUserState('com_bwpostman.newsletter.idToSend', 0);
+
+		// Get content ids of automated newsletters
+		$allAutomatedContentIds = $this->getAutomatedContentIds();
+
+		// If we come from component, content id **must not** be in list of automated content ids,
+		// if we come from automation, content id **must** be in this list
+		if (count($allAutomatedContentIds))
+		{
+			if ($fromComponent)
+			{
+				$query->where('content_id' . ' NOT IN (' . implode(',', $allAutomatedContentIds) . ')');
+			}
+			else
+			{
+				$query->where('content_id' . ' IN (' . implode(',', $allAutomatedContentIds) . ')');
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to get all ids fo newsletters, which are in the table tc_schedule
+	 *
+	 * @return    array
+	 *
+	 * @throws Exception
+	 *
+	 * @since     2.3.0
+	 */
+	public function getAutomatedNlIds()
+	{
+		$db	= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('newsletter_id'));
+		$query->from($db->quoteName('#__bwpostman_tc_schedule'));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$allAutomatedNlsIds = $db->loadColumn();
+
+			return $allAutomatedNlsIds;
+		}
+		catch (Exception $e)
+		{
+			$this->_subject->setError($e->getMessage());
+			$this->BwPostmanComponentEnabled = false;
+			$message                         = 'Database error while getting all automated nl ids, error message is ' . $e->getMessage();
+			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+		}
+
+		return array();
+	}
+
+	/**
+	 * Method to get all content ids for newsletters, which are in the table tc_schedule
+	 *
+	 * @return    array
+	 *
+	 * @throws Exception
+	 *
+	 * @since     2.3.0
+	 */
+	public function getAutomatedContentIds()
+	{
+		// Get ids of newsletters, which are marked as automated
+		$automatedNlIds = $this->getAutomatedNlIds();
+
+		if (count($automatedNlIds))
+		{
+			$db	= JFactory::getDbo();
+			$query	= $db->getQuery(true);
+
+			$query->select('DISTINCT ' . $db->quoteName('id'));
+			$query->from($db->quoteName('#__bwpostman_sendmailcontent'));
+			$query->where('nl_id' . ' IN ('  . implode(',', $automatedNlIds) . ')');
+
+			$db->setQuery($query);
+
+			try
+			{
+				$allAutomatedContentIds = $db->loadColumn();
+
+				return $allAutomatedContentIds;
+			}
+			catch (Exception $e)
+			{
+				$this->_subject->setError($e->getMessage());
+				$this->BwPostmanComponentEnabled = false;
+				$message                         = 'Database error while getting all automated nl ids, error message is ' . $e->getMessage();
+				$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			}
+		}
+
+		return array();
 	}
 }

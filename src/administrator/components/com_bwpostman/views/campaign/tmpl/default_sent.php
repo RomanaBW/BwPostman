@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 							<?php
 							if ($automation)
 							{
-								echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_MAIL_NUMBER');
+								echo JText::_('PLG_BWTIMECONTROL_MAIL_NUMBER');
 							}
 							else
 							{
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 							<?php
 							if ($automation)
 							{ ?>
-								<th width="150"><?php echo JText::_('PLG_BWPOSTMAN_BWTIMECONTROL_AUTOQUEUE_RECIPIENT'); ?></th>
+								<th width="150"><?php echo JText::_('PLG_BWTIMECONTROL_AUTOQUEUE_RECIPIENT'); ?></th>
 							<?php }
 							else
 							{ ?>

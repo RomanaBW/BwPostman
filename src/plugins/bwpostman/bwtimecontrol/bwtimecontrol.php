@@ -456,7 +456,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$link = 'index.php?option=com_bwpostman&view=maintenance&task=maintenance.startCron';
 			BwPostmanHTMLHelper::quickiconButton(
 				$link,
-				'icon-48-maintenance.png',
+				'icon-48-cron-start.png',
 				JText::_("PLG_BWTIMECONTROL_MAINTENANCE_START_CRON"),
 				0,
 				0
@@ -465,12 +465,11 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$link = 'index.php?option=com_bwpostman&view=maintenance&task=maintenance.stopCron';
 			BwPostmanHTMLHelper::quickiconButton(
 				$link,
-				'icon-48-maintenance.png',
+				'icon-48-cron-stop.png',
 				JText::_("PLG_BWTIMECONTROL_MAINTENANCE_STOP_CRON"),
 				0,
 				0
 			);
-
 		}
 
 		return true;

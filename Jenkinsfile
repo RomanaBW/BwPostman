@@ -166,34 +166,6 @@ pipeline {
 			}
 		}
 
-		stage ('accept5')
-		{
-			steps
-			{
-				echo 'Dummy'
-				bwpmAccept("${STAGE_NAME}", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-			}
-			post
-			{
-				always
-				{
-					bwpmAcceptPostStepAlways("${STAGE_NAME}")
-				}
-				failure
-				{
-					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
-				}
-			}
-		}
-
-		stage('Manual Tests') {
-			steps {
-				echo 'Benutzeroberflaeche'
-				echo 'Worst-Case-Tests'
-				echo 'nicht-funktionale Tests (Datenschutz, Sicherheit, ...)'
-			}
-		}
-
 		stage('Dev-Upload') {
 			steps {
 				dir("/repositories/artifacts/bwpostman/data") {
@@ -253,6 +225,34 @@ pipeline {
 //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 
+			}
+		}
+
+		stage ('accept5')
+		{
+			steps
+			{
+				echo 'Dummy'
+				bwpmAccept("${STAGE_NAME}", "${ACCEPT_5_IP}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+			}
+			post
+			{
+				always
+				{
+					bwpmAcceptPostStepAlways("${STAGE_NAME}")
+				}
+				failure
+				{
+					bwpmAcceptFailure("${STAGE_NAME}", "${VERSION_NUMBER}", "${JOOMLA_VERSION}")
+				}
+			}
+		}
+
+		stage('Manual Tests') {
+			steps {
+				echo 'Benutzeroberflaeche'
+				echo 'Worst-Case-Tests'
+				echo 'nicht-funktionale Tests (Datenschutz, Sicherheit, ...)'
 			}
 		}
 

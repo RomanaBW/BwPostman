@@ -91,15 +91,6 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	public $activeFilters;
 
 	/**
-	 * property to hold auto nbr
-	 *
-	 * @var string $auto_nbr
-	 *
-	 * @since       0.9.1
-	 */
-	public $auto_nbr;
-
-	/**
 	 * property to hold sidebar
 	 *
 	 * @var object  $sidebar
@@ -159,7 +150,6 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
-		$this->auto_nbr			= 0;
 
 		// trigger Plugin BwTimeControl event and get results
 //		$this->auto_nbr	= $dispatcher->trigger('onBwPostmanCampaignsPrepare', array (&$this->items));

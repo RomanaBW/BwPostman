@@ -87,14 +87,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<th nowrap="nowrap">
 								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?>
 							</th>
-							<?php
-							if ($this->auto_nbr)
-							{ ?>
-								<th nowrap="nowrap"><?php echo JText::_('PLG_BWTIMECONTROL_AUTOMATION'); ?></th>
-								<th nowrap="nowrap"><?php echo JText::_('PLG_BWTIMECONTROL_ACTIVE'); ?></th>
-							<?php
-							}
-							?>
 							<th width="30" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?></th>
 						</tr>
 					</thead>
@@ -135,42 +127,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									</td>
 									<td><?php echo $item->description; ?></td>
 									<td align="center"><?php echo $item->newsletters; ?></td>
-									<?php
-									if ($this->auto_nbr)
-									{
-										$checked = '';
-										if ($item->active)
-										{
-											$checked = 'checked="checked" ';
-										} ?>
-										<td align="center">
-											<?php
-											if ($item->auto)
-											{
-												echo JText::_('COM_BWPOSTMAN_YES');
-											}
-											?>
-										</td>
-										<td align="center">
-											<?php
-											if ($item->auto)
-											{
-												if ($item->active)
-												{ ?>
-													<a href="
-													<?php echo
-														JRoute::_(
-															'index.php?option=com_bwpostman&view=campaign&task=campaign.activate&cid[0]=' . $item->id
-														);
-														?>"
-														class="btn btn-micro active hasTooltip"><i class="icon-publish"></i>
-													</a>
-													<?php
-												}
-											} ?>
-										</td>
-										<?php
-									} ?>
 									<td align="center"><?php echo $item->id; ?></td>
 								</tr>
 							<?php

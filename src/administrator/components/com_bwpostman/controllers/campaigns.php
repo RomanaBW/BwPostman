@@ -135,26 +135,6 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 				$jinput->set('layout', 'form');
 				$jinput->set('view', 'campaign');
 				break;
-/*
-			case 'activate':
-				$jinput->set('hidemainmenu', 0);
-				$jinput->set('layout', 'default');
-				$jinput->set('view', 'campaigns');
-				break;
-
-			case 'autotest':
-				$jinput->set('hidemainmenu', 0);
-				$jinput->set('layout', 'default');
-				$jinput->set('view', 'campaigns');
-				break;
-
-			case 'dueSend':
-//echo "Test Task";
-				$jinput->set('hidemainmenu', 0);
-				$jinput->set('layout', 'default');
-				$jinput->set('view', 'campaigns');
-				break;
-*/
 			default:
 				$jinput->set('hidemainmenu', 0);
 				$jinput->set('view', 'campaigns');

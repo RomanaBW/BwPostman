@@ -1296,14 +1296,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-//		// Store the newsletter into the newsletters-table
-//		if (!$this->save($data))
-//		{
-//			$error[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_GENERAL');
-//
-//			return false;
-//		}
-
 		JFactory::getApplication()->setUserState('com_bwpostman.newsletter.idToSend', $recordId);
 
 		return $data;
@@ -2690,17 +2682,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				echo JText::_('COM_BWPOSTMAN_NL_SENT_SUCCESSFULLY');
 			}
-//			else
-//			{
-//				$app->enqueueMessage(sprintf('Error while sending: %s'), $res);
-//				// Sendmail was successful, flag "sent" in table TcContent has to be set
-//				$tblSendMailContent->setSent($tblSendMailContent->id);
-//				// and test-entries may be deleted
-//				if ($recipients_data->status == 9)
-//				{
-//					// @Todo: Delete entry in sendmailcontent-table?
-//				}
-//			}
 		}
 		else
 		{

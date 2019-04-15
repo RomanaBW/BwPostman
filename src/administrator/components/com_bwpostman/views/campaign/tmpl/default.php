@@ -128,30 +128,8 @@ $tab_options = array(
 
 		// Start Tab assigned/unsent newsletters
 		$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
-		if (property_exists($this->item, 'automailing_values'))
-		{
-			if ($this->item->automailing_values !== null)
-			{
-				$text	= JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
-			}
-		}
-
 		echo JHtmlBwTabs::panel($text, 'unsent', '');
 		echo $this->loadTemplate('unsent');
-
-		if (property_exists($this->item, 'tc_mailing_data'))
-		{
-			// Start Tab autovalues
-			echo JHtmlBwTabs::panel(JText::_('PLG_BWTIMECONTROL_AUTOVALUES_TITLE'), 'autovalues', '');
-			echo $this->item->tc_mailing_data;
-		}
-
-		if (property_exists($this->item, 'queued_letters'))
-		{
-			// Start Tab automailing queue
-			echo JHtmlBwTabs::panel(JText::_('PLG_BWTIMECONTROL_AUTOQUEUE_TITLE'), 'autoqueue', '');
-			echo $this->item->queued_letters;
-		}
 
 		// Start Tab sent newsletters
 		echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_NL_SENT'), 'sent', '');

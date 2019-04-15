@@ -48,7 +48,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 *
 	 * @since 2.3.0
 	 */
-	protected $minBwpostmanVersion = '2.2.1';
+	protected $minBwpostmanVersion = '2.3.0';
 
 	/**
 	 * Property to hold form

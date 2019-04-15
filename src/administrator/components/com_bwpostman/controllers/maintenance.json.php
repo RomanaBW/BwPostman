@@ -157,8 +157,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			// $appWeb    = new JApplicationWeb();
-			//$appWeb->setHeader('Content-Type', 'application/json', true);
 			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
@@ -557,8 +555,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			//$appWeb    = new JApplicationWeb();
-			//$appWeb->setHeader('Content-Type', 'application/json', true);
 			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
@@ -581,8 +577,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			//$appWeb    = new JApplicationWeb();
-			//$appWeb->setHeader('Content-Type', 'application/json', true);
 			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
@@ -605,8 +599,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			//$appWeb    = new JApplicationWeb();
-			//$appWeb->setHeader('Content-Type', 'application/json', true);
 			JResponse::setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();

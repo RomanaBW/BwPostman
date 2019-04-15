@@ -479,7 +479,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	/**
 	 * Method to send an information to webmaster, when a subscriber delete the account
 	 *
-	 * @param 	int		$subscriber_id      subscriber id
+	 * @param 	object		$subscriber      subscriber
 	 *
 	 * @return 	void
 	 *

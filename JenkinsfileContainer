@@ -16,15 +16,15 @@ pipeline {
             }
         }
 
-		stage('Create tester package') {
-			steps {
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
-			}
-		}
+//		stage('Create tester package') {
+//			steps {
+//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
+//			}
+//		}
 
 		stage('Smoke') {
 			steps {
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
 			}
 			post {
 				failure {

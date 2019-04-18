@@ -9,6 +9,7 @@
         path: "{{ project_base_dir }}/src/{{ item }}"
         state: absent
       with_items: "{{ to_delete }}"
+      ignore_errors: yes
 
 #   inject current variable values (version, build, copyright year)
     - include_role:

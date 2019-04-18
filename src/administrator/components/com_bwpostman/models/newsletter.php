@@ -3043,7 +3043,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$query->select('COUNT(' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ')');
 		$query->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
 		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('block') . ' = ' . (int) 0);
-		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('activation') . ' = ' . $_db->quote(''));
+		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('activation') . ' IS NOT NULL');
 		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' IN (' . $sub_query . ')');
 
 		$_db->setQuery($query);

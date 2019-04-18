@@ -1,5 +1,7 @@
 ---
 private_docker_repo: "universe2:5000"
+author: "Romana Boldt info@boldt-webservice.de"
+joomla_version: "3.9.4"
 
 suse_containers:
   - os_base:
@@ -39,8 +41,8 @@ suse_containers:
 
   - apache:
     context: "../docker/apache"
-    dockerfile: "Dockerfile71"
-    tag: "romana/apache_71"
+    dockerfile: "Dockerfile73"
+    tag: "romana/apache_73"
 
   - os_postfix:
     context: "../docker/os_postfix"

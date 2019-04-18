@@ -1,11 +1,11 @@
- 
+
 FROM opensuse
 
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 
 ## install for basically needed packages
 RUN zypper --non-interactive in openssh
-                                
+
 # keep packages on newest state
 RUN zypper --non-interactive up
 

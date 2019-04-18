@@ -2,10 +2,10 @@
 namespace Backend\Details;
 
 use Page\Generals as Generals;
+use Page\Login as LoginPage;
+use Page\MainviewPage as MainView;
 use Page\NewsletterEditPage as NlEdit;
 use Page\NewsletterManagerPage as NlManage;
-use Page\MainviewPage as MainView;
-use Page\Login as LoginPage;
 
 // @ToDo: Check "entered" values for publish_up/_down, set usable values (diff between both values) and check result in FE
 
@@ -411,7 +411,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
 		$I->waitForElementVisible("#imageModal_jform_attachment__attachmentX__single_attachment", 10);
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElementVisible(".//*[@id='uploadForm']", 5);
+		$I->waitForElementVisible("//*[@id='uploadForm']", 5);
 		$I->scrollTo(".//*[@id='uploadForm']", 0, -80);
 		$I->waitForElementVisible("#upload-file", 5);
 
@@ -693,7 +693,7 @@ class TestNewslettersDetailsCest
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -876,7 +876,7 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
-	 * Test method to create a newsletter and send to a real usergroup
+	 * Test method to create a newsletter and send also to a unconfirmed recipients
 	 *
 	 * @param   \AcceptanceTester                $I
 	 *

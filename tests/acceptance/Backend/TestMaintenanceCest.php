@@ -71,7 +71,7 @@ class TestMaintenanceCest
 
 		$versionToTest = $this->getVersionNumber($I);
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -117,7 +117,7 @@ class TestMaintenanceCest
 
 		$versionToTest = $this->getVersionNumber($I);
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{

@@ -2,6 +2,7 @@
 namespace Backend\Access;
 
 use Codeception\Codecept;
+use mysql_xdevapi\Exception;
 use Page\Generals as Generals;
 use Page\Login as LoginPage;
 
@@ -74,36 +75,58 @@ class TestInstallUsersCest
 		{
 			# Switch to user page
 			$I->amOnPage(UsersPage::$user_management_url);
+			codecept_debug('User:');
+			codecept_debug($user);
 
 			# Check for usergroup. If not exists, throw exception
 			$userName = $user['user'];
-			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $userName));
-
-			if (!$groupId[0])
+			try
 			{
-				$e = new \Exception();
-				throwException($e);
+				$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $userName));
+				codecept_debug('Group ID Try: ');
+				codecept_debug($groupId);
+
+				if (!$groupId[0])
+				{
+					$e = new \Exception();
+					throwException($e);
+				}
+			}
+			catch (\RuntimeException $e)
+			{
+				codecept_debug('Error while grabbing group ID!');
+				codecept_debug('Group ID Catch: ');
+				codecept_debug($groupId);
 			}
 
 			# Check for user. If exists, ensure checkbox is checked
-			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
-
-			if ($userId[0])
+			try
 			{
-				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
+				$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
 
-				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
-				$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId[0]));
-
-				if (!$groupMap)
+				if ($userId[0])
 				{
-					$I->insertRecordToTable('user_usergroup_map', "$userId[0], $groupId[0]");
+					$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
+
+					// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
+					$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId[0]));
+
+					if (!$groupMap)
+					{
+						$I->insertRecordToTable('user_usergroup_map', "$userId[0], $groupId[0]");
+					}
 				}
 			}
-			else {
+			catch (\RuntimeException $e)
+			{
+				codecept_debug('Error while grabbing user ID!');
+				codecept_debug('User ID: ');
+				codecept_debug($userId);
+
 				// Create user, if not exists
 				$I->click(Generals::$toolbar['New']);
 				$I->waitForElement(UsersPage::$registerName);
+				$I->click(UsersPage::$accountDetailsTab);
 
 				# Add user
 				$I->fillField(UsersPage::$registerName, $user['user']);
@@ -116,6 +139,7 @@ class TestInstallUsersCest
 				$I->waitForElement(UsersPage::$publicGroup);
 
 				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
+				$I->scrollTo($checkbox, 0, -100);
 				$I->click($checkbox);
 
 				$I->click(Generals::$toolbar['Save & Close']);

@@ -119,14 +119,14 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select            = ".//*[@id='browser-list']/ul/li[8]/a";
+	public static $thumb_select            = "//*[@id='browser-list']/ul/li[contains(@id, '/powered_by.png')]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.0
 	 */
-	public static $thumb_select_user       = ".//*/ul[contains(@class, 'manager')]/li[8]/a/div[1]/div/img[contains(@src,'/powered_by.png')]";
+	public static $thumb_select_user       = ".//*/ul[contains(@class, 'manager')]/li[contains(@id, '/powered_by.png')]/a";
 
 	/**
 	 * @var string

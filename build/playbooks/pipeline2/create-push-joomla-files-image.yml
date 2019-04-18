@@ -1,0 +1,70 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ../vars/container-basics.yml
+    - vars/tester-test-vars.yml
+    - vars/tester-image-vars.yml
+
+  tasks:
+    - name: Make the base image available locally
+      docker_image:
+        name: '{{ private_docker_repo }}/{{ bare_source.web_image_tag_source }}'
+
+    - name: Create the container
+      docker_container:
+        image: '{{ private_docker_repo }}/{{ bare_source.web_image_tag_source }}'
+        name: '{{ bare_source.web_container_name }}'
+        detach: yes
+
+- hosts: "{{ bare_source.web_container_name }}"
+  connection: docker
+
+  vars_files:
+    - vars/tester-test-vars.yml
+    - vars/tester-image-vars.yml
+
+  tasks:
+    - name: copy Joomla files from origin to apache container
+      include_role:
+        name: romanabw.copy-joomla-files-to-apache-container
+
+    - name: Set db host name
+      set_fact:
+        db_host: "{{ bare_source.db_container_name }}"
+
+    - name: copy joomla configuration in place
+      template:
+        src: "configuration.php.j2"
+        dest: "{{ tester_web_root }}configuration.php"
+        group: "{{ tester_www_user }}"
+        owner: "{{ tester_www_group }}"
+
+
+- hosts: localhost
+  connection: local
+  vars_files:
+    - vars/tester-test-vars.yml
+    - vars/tester-image-vars.yml
+
+  tasks:
+    - name: Commit the container
+      command: 'docker commit -a "{{ author }}" {{ bare_source.web_container_name }} {{ private_docker_repo }}/{{ bare_target.web_image_tag_target }}'
+
+    - name: Push container image to private registry
+      shell: "docker push {{ private_docker_repo }}/{{ bare_target.web_image_tag_target }}"
+
+    - name: Remove the container
+      docker_container:
+        name: '{{ bare_source.web_container_name }}'
+        state: absent
+
+    - name: Replace table prefix
+      replace:
+        path: "../files/joomla/{{ item }}"
+        regexp: '#__'
+        replace: "{{ tester_db_prefix }}"
+      with_items:
+        - "joomla.sql"
+        - "sample_learn.sql"
+

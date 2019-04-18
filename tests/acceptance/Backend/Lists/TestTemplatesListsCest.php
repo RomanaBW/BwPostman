@@ -380,7 +380,7 @@ class TestTemplatesListsCest
 
 		$tplId = $I->grabTextFrom(TplManage::$firstTableId);
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{

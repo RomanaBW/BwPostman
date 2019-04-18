@@ -1,0 +1,54 @@
+apache_build ansible_connection=docker
+mariadb_build ansible_connection=docker
+
+joomla_bare_db ansible_connection=docker
+joomla_bare_web ansible_connection=docker
+bwpm_bare_tester ansible_connection=docker
+
+joomla_jce_db ansible_connection=docker
+joomla_jce_web ansible_connection=docker
+bwpm_jce_tester ansible_connection=docker
+
+joomla_enh_db ansible_connection=docker
+joomla_enh_web ansible_connection=docker
+bwpm_enh_tester ansible_connection=docker
+
+joomla_files_build ansible_connection=docker
+joomla_tables_build ansible_connection=docker
+
+joomla_web ansible_connection=docker
+joomla_db ansible_connection=docker
+
+bwpm_tester ansible_connection=docker
+
+bwpm_final_db ansible_connection=docker
+bwpm_final_web ansible_connection=docker
+bwpm_final_tester ansible_connection=docker
+
+bwpm_accept1_db ansible_connection=docker
+bwpm_accept1_web ansible_connection=docker
+bwpm_accept1_tester ansible_connection=docker
+
+bwpm_accept2_db ansible_connection=docker
+bwpm_accept2_web ansible_connection=docker
+bwpm_accept2_tester ansible_connection=docker
+
+bwpm_accept3_db ansible_connection=docker
+bwpm_accept3_web ansible_connection=docker
+bwpm_accept3_tester ansible_connection=docker
+
+bwpm_accept4_db ansible_connection=docker
+bwpm_accept4_web ansible_connection=docker
+bwpm_accept4_tester ansible_connection=docker
+
+bwpm_accept5_db ansible_connection=docker
+bwpm_accept5_web ansible_connection=docker
+bwpm_accept5_tester ansible_connection=docker
+
+bwpm_accept6_db ansible_connection=docker
+bwpm_accept6_web ansible_connection=docker
+bwpm_accept6_tester ansible_connection=docker
+
+bwpm_accept7_db ansible_connection=docker
+bwpm_accept7_web ansible_connection=docker
+bwpm_accept7_tester ansible_connection=docker

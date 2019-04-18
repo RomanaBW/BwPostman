@@ -1,0 +1,144 @@
+---
+log_path: '/data/logs'
+record_path: "/data/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/videos"
+test_log_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/logs"
+
+acceptance_manifest_path: "/data/tests"
+codeception_manifest_path: "/data"
+
+tester_url: "https://www{{ server_node }}.tester-net.nil"
+
+codecept_path_tests: "tests"
+codecept_path_data: "repositories/artifacts/bwpostman/data"
+codecept_path_support: "tests/_support"
+codecept_path_output: "repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/logs"
+codecept_failed_file: "/data/{{ codecept_path_output }}/failed"
+
+test_db_host: "localhost"
+test_db_dbname: "joomlatest"
+test_db_user: "{{ vault_test_db_user_1 }}"
+test_db_password: "{{ vault_test_db_password_1 }}"
+
+screen_size: '1440x900'
+display: ':45'
+
+# runtime install ? min
+# runtime update ? min
+# runtime uninstall ? min
+# runtime options ? min
+# runtime lists 11 min
+# runtime maintenance 3 min
+# runtime frontend 2 min
+# runtime details 16 min
+# runtime user2subscriber 10 min
+# runtime access ?? min
+
+test_file:
+  - suite: installRequired
+    testsuite_file: Backend/Additional/InstallRequiredCest
+
+  - suite: install
+    testsuite_file: Backend/TestInstallationCest
+
+  - suite: update
+    testsuite_file: Backend/TestUpdateCest
+
+  - suite: uninstall
+    testsuite_file: Backend/TestDeinstallationCest
+
+  - suite: options
+    testsuite_file: Backend/TestOptionsCest
+
+  - suite: lists
+    testsuite_file: Backend/Lists/
+#    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
+
+  - suite: maintenance
+    testsuite_file: Backend/TestMaintenanceCest
+
+  - suite: restore
+    testsuite_file: Backend/TestMaintenanceCest::restoreTablesNoZip
+
+  - suite: defaultOptions
+    testsuite_file: Backend/TestOptionsCest::saveDefaults
+
+  - suite: setPermissions
+    testsuite_file: Backend/TestOptionsCest::setPermissions
+
+  - suite: frontend
+    testsuite_file: Frontend
+
+  - suite: details
+    testsuite_file: Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterWithFileUpload
+
+  - suite: user2subscriber
+    testsuite_file: User2Subscriber/User2SubscriberCest
+
+  - suite: footerusedmailinglists
+    testsuite_file: FooterUsedMailinglists
+
+  - suite: createUsers
+    testsuite_file: Backend/Access/TestInstallUsersCest
+
+  - suite: access1
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForListViewButtonsFromMainView
+
+  - suite: access2
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView
+
+  - suite: access3
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtons
+
+#  - personalize:
+
+#  - restore:
+
+#  - module_subs:
+
+#  - module_overview:
+
+test_suites:
+  - name: ext_install
+    tests:
+      - installRequired
+
+  - name: smoke
+    tests:
+      - install
+      - defaultOptions
+      - createUsers
+      - restore
+      - setPermissions
+
+  - name: uninstall
+    tests:
+      - uninstall
+
+  - name: accept1
+    tests:
+      - lists
+
+  - name: accept2
+    tests:
+      - details
+
+  - name: accept3
+    tests:
+      - maintenance
+      - frontend
+
+  - name: accept4
+    tests:
+      - user2subscriber
+      - footerusedmailinglists
+  #  - personalize
+
+  - name: accept5
+    tests:
+      - access1
+      - access2
+
+  - name: accept6
+    tests:
+    - access3
+

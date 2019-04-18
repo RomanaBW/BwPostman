@@ -855,7 +855,7 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -917,7 +917,7 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -981,7 +981,7 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -1059,7 +1059,7 @@ class TestSubscribersListsCest
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
 		// Determine download path depending on user, which process the tests
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -1137,7 +1137,7 @@ class TestSubscribersListsCest
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
 		// Determine download path depending on user, which process the tests
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -1199,7 +1199,7 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{

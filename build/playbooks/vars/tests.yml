@@ -34,6 +34,8 @@ display: ':45'
 # runtime access ?? min
 
 test_file:
+  - suite: installRequired
+    testsuite_file: Backend/Additional/InstallRequiredCest
   - suite: install
     testsuite_file: Backend/TestInstallationCest
   - suite: update
@@ -74,6 +76,10 @@ test_file:
 #  - module_overview:
 
 test_suites:
+  - name: ext_install
+    tests:
+      - installRequired
+
   - name: smoke
     tests:
       - install

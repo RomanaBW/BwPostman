@@ -1,0 +1,53 @@
+---
+- name: Create network
+  docker_network:
+    name: "{{ source.tester_network_name }}"
+
+- name: Create the database container
+  docker_container:
+    image: '{{ target.db_image }}'
+    name: '{{ source.db_container_name }}'
+    hostname: '{{ source.db_container_name }}'
+    detach: yes
+    networks:
+      - name: "{{ source.tester_network_name }}"
+
+- name: Create the webserver container
+  docker_container:
+    image: '{{ target.web_image }}'
+    name: '{{ source.web_container_name }}'
+    hostname: '{{ source.web_container_name }}'
+    working_dir: "{{ tester_web_root }}"
+    command: "apache2-foreground"
+    detach: yes
+    exposed_ports:
+      - 80
+    networks:
+      - name: "{{ source.tester_network_name }}"
+    volumes:
+      - /repositories:/repositories
+    etc_hosts: >
+      {
+        "localhost {{ source.web_container_name }}": "127.0.0.1"
+      }
+
+- name: Create the tester container
+  docker_container:
+    image: '{{ target.tester_image }}'
+    name: "{{ source.tester_container_name }}"
+    hostname: '{{ source.tester_container_name }}'
+    detach: yes
+    command: sleep infinity
+    networks:
+      - name: "{{ source.tester_network_name }}"
+    volumes:
+      - /repositories:/repositories
+
+- name: Get IP of webserver
+  shell: "docker inspect -f '{''{ .NetworkSettings.IPAddress }''}' {{ source.web_container_name }}"
+  register: raw_webserver_ip
+
+- name: Set IP of webserver as variable
+  set_fact:
+    web_container_ip: "{{ raw_webserver_ip.stdout }}"
+

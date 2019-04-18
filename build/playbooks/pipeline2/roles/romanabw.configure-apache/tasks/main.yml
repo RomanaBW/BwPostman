@@ -1,0 +1,35 @@
+---
+- name: copy webserver configuration in place
+  copy:
+    src: "files/apache2/"
+    dest: "/etc/apache2/"
+
+- name: copy php ini file
+  copy:
+    src: "files/php.ini"
+    dest: "/usr/local/etc/php/php.ini"
+
+- name: configure server name
+  shell: 'echo "ServerName {{ apache_host }}" >> /etc/apache2/sites-enabled/000-default.conf'
+
+- name: Add apache vhost configuration
+  template:
+    src: "templates/apache_conf.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ apache_host }}.nil.conf"
+
+- name: Symlink Joomla vhost to sites-enabled
+  file:
+    src: "/etc/apache2/sites-available/{{ apache_host }}.nil.conf"
+    dest: "/etc/apache2/sites-enabled/{{ apache_host }}.nil.conf"
+    state: link
+
+- name: remove default vhost configuration
+  file:
+    path: "/etc/apache2/sites-enabled/000-default.conf"
+    state: absent
+
+- name: set attributes for apache log
+  file:
+    dest: "/var/log/apache2/"
+    recurse: yes
+    mode: 0777

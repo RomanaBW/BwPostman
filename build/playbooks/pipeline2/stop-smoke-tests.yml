@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - vars/tester-image-vars.yml
+    - vars/tester-test-vars.yml
+
+  tasks:
+    - name: remove all test containers (db, webserver, tester) and network
+      include_role:
+        name: romanabw.remove-complete-infrastructure
+      vars:
+        source: "{{ smoke_source }}"
+        target: "{{ smoke_target }}"

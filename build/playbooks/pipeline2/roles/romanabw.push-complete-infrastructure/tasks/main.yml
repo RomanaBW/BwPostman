@@ -1,0 +1,21 @@
+---
+- name: Commit the tester container
+  command: 'docker commit -a "{{ author }}" {{ source.tester_container_name }} {{ private_docker_repo }}/{{ target.tester_image_tag_target }}'
+  when: push_tester == true
+
+- name: Push tester container image to private registry
+  shell: "docker push {{ private_docker_repo }}/{{ target.tester_image_tag_target }}"
+  when: push_tester == true
+
+- name: Commit the webserver container
+  command: 'docker commit -a "{{ author }}" {{ source.web_container_name }} {{ private_docker_repo }}/{{ target.web_image_tag_target }}'
+
+- name: Push webserver container image to private registry
+  shell: "docker push {{ private_docker_repo }}/{{ target.web_image_tag_target }}"
+
+- name: Commit the database container
+  command: 'docker commit -a "{{ author }}" {{ source.db_container_name }} {{ private_docker_repo }}/{{ target.db_image_tag_target }}'
+
+- name: Push database container image to private registry
+  shell: "docker push {{ private_docker_repo }}/{{ target.db_image_tag_target }}"
+

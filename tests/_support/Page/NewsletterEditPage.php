@@ -1341,7 +1341,7 @@ class NewsletterEditPage
 
 		$I->acceptPopup();
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{
@@ -1403,7 +1403,7 @@ class NewsletterEditPage
 
 		$I->acceptPopup();
 
-		$user = getenv('BW_TESTER_USER');
+		$user = getenv('USER');
 
 		if (!$user)
 		{

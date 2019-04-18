@@ -1,0 +1,21 @@
+---
+- name: Remove the tester container
+  docker_container:
+    name: '{{ source.tester_container_name }}'
+    state: absent
+
+- name: Remove the webserver container
+  docker_container:
+    name: '{{ source.web_container_name }}'
+    state: absent
+
+- name: Remove the database container
+  docker_container:
+    name: '{{ source.db_container_name }}'
+    state: absent
+
+- name: Remove network
+  docker_network:
+    name: "{{ source.tester_network_name }}"
+    state: absent
+

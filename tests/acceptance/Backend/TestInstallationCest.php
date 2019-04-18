@@ -5,7 +5,7 @@ use Page\InstallationPage as InstallPage;
 /**
  * Class TestInstallationCest
  *
- * This class contains all methods to test installation, update and deinstallation of BwPostman
+ * This class contains the method to test installation of BwPostman
  *
  * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html

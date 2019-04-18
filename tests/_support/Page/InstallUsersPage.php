@@ -37,36 +37,43 @@ class InstallUsersPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $registerName              = 'html/body/div[2]/section/div/div/form/fieldset/div/div[1]/div[1]/div[2]/input';
+	public static $registerName              = '//*[@id="jform_name"]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $registerLoginName              = 'html/body/div[2]/section/div/div/form/fieldset/div/div[1]/div[2]/div[2]/input';
+	public static $registerLoginName              = '//*[@id="jform_username"]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $registerPassword1            = 'html/body/div[2]/section/div/div/form/fieldset/div/div[1]/div[3]/div[2]/input';
+	public static $registerPassword1            = '//*[@id="jform_password"]';
+	//*[@id="jform_password"]
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $registerPassword2         = 'html/body/div[2]/section/div/div/form/fieldset/div/div[1]/div[4]/div[2]/input';
+	public static $registerPassword2         = '//*[@id="jform_password2"]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $registerEmail              = 'html/body/div[2]/section/div/div/form/fieldset/div/div[1]/div[5]/div[2]/input';
+	public static $registerEmail              = '//*[@id="jform_email"]';
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $accountDetailsTab              = '/html/body/div[2]/section/div/div/form/fieldset/ul/li[1]/a';
 	/**
 	 * @var string
 	 *
@@ -86,7 +93,7 @@ class InstallUsersPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $usergroupCheckbox              = ".//*/input[@id=lgroup_%s]";
+	public static $usergroupCheckbox              = '//*[@id="1group_%s"]';
 
 	/**
 	 * @var string

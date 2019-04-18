@@ -52,21 +52,21 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab1 = ".//*[@id='j-main-container']/div[2]/ul/li[1]/button";
+	public static $tab1 = "//*[@id='j-main-container']/div[2]/ul/li[1]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2 = ".//*[@id='j-main-container']/div[2]/ul/li[2]/button";
+	public static $tab2 = "//*[@id='j-main-container']/div[2]/ul/li[2]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3 = ".//*[@id='j-main-container']/div[2]/ul/li[3]/button";
+	public static $tab3 = "//*[@id='j-main-container']/div[2]/ul/li[3]/button";
 
 
 	/**
@@ -74,28 +74,28 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_list_link          = ".//*[@id='main-table']/tbody/tr[1]/td[3]/p[1]/a";
+	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[3]/p[1]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_line_unpublished   = ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-unpublish']";
+	public static $first_line_unpublished   = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-unpublish']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_line_published     = ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-publish']";
+	public static $first_line_published     = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-publish']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_list_entry_tab2    = ".//*[@id='ub0']";
+	public static $first_list_entry_tab2    = "//*[@id='ub0']";
 
 	/**
 	 * Array of sorting criteria values for unsent newsletters

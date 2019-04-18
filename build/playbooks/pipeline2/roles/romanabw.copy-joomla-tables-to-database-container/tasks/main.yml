@@ -1,0 +1,57 @@
+---
+- name: set base sql command
+  set_fact:
+    sql_base_cmd: "mysql -u {{ mariadb_user }} -p{{ mariadb_password }} {{ mariadb_database }}"
+
+- name: Copy joomla sql table files to container
+  copy:
+    src: "../files/joomla/{{ item }}"
+    dest: "{{ joomla_additional_files_folder }}"
+  with_items:
+    - "joomla.sql"
+    - "sample_learn.sql"
+
+- name: Copy configuring sql table files to container
+  copy:
+    src: "files/joomla/{{ item }}"
+    dest: "{{ joomla_additional_files_folder }}"
+  with_items:
+    - "add-joomla-users.sql"
+    - "enable-user-registration.sql"
+    - "update-uids-at-diverse-tables.sql"
+    - "set-utf8-conversion.sql"
+    - "reset-post-installation-messages.sql"
+    - "reset-update-notification.sql"
+    - "reset-sending-stats.sql"
+
+- name: insert Joomla data to database
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
+  with_items:
+    - "joomla.sql"
+    - "sample_learn.sql"
+
+- name: create Joomla admin user
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/add-joomla-users.sql"
+
+- name: enable user registration
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/enable-user-registration.sql"
+
+- name: change owner of diverse table entries to UID of admin
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/update-uids-at-diverse-tables.sql"
+
+- name: set UTF8 conversion to 2
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/set-utf8-conversion.sql"
+
+- name: switch off post installation messages
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/reset-post-installation-messages.sql"
+
+- name: switch off update notification
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/reset-update-notification.sql"
+
+- name: switch off sending stats
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/reset-sending-stats.sql"
+
+#- name: install JCE
+#
+#- name: install test mode plugin
+#

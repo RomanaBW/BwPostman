@@ -10,7 +10,7 @@
       become: true
       become_user: root
       file:
-        path: "{{ test_log_path }}"
+        path: "{{ test_log_path }}/joomla_logs"
         state: directory
         mode: 0777
         owner: romana

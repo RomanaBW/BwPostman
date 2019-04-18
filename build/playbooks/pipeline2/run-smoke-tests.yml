@@ -10,7 +10,7 @@
       become: true
       become_user: root
       file:
-        path: "{{ test_log_path }}"
+        path: "{{ test_log_path }}/joomla_logs"
         state: directory
         mode: 0777
         owner: romana
@@ -132,34 +132,3 @@
         src: "do-tests.sh.j2"
         dest: "/data/do-tests.sh"
         mode: 0775
-
-#    - name: Do tests
-#      shell: "/data/do-tests.sh"
-#      args:
-#        chdir: "/data/tests"
-#
-#    - name: Show IP of webserver
-#      debug:
-#        msg: "{{ web_container_ip }}"
-#
-#- hosts: localhost
-#  connection: local
-#  vars_files:
-#    - vars/tester-image-vars.yml
-#    - vars/tester-test-vars.yml
-#
-#  tasks:
-#    - name: stop all test containers (db, webserver, tester)
-#      include_role:
-#        name: romanabw.push-complete-infrastructure
-#      vars:
-#        source: "{{ smoke_source }}"
-#        target: "{{ smoke_target }}"
-#        push_tester: true
-#
-#    - name: remove all test containers (db, webserver, tester) and network
-#      include_role:
-#        name: romanabw.remove-complete-infrastructure
-#      vars:
-#        source: "{{ smoke_source }}"
-#        target: "{{ smoke_target }}"

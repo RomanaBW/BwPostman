@@ -24,13 +24,15 @@ pipeline {
 
 		stage('Smoke') {
 			steps {
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
-				sh "docker exec -t bwpm_enh_tester /data/do-tests.sh"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
+				echo "Dummy Smoke"
+//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
+//				sh "docker exec -t bwpm_enh_tester /data/do-tests.sh"
+//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
 			}
 			post {
 				always {
-					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
+					echo "Dummy Smoke ALWAYS"
+//					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
 				}
 				failure {
 					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
@@ -68,7 +70,7 @@ pipeline {
 //							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
 						}
 					}
 				}
@@ -89,7 +91,7 @@ pipeline {
 							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
 						}
 					}
 				}
@@ -105,7 +107,23 @@ pipeline {
 							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
+						}
+					}
+				}
+				stage('Suite 7') {
+					steps {
+//						echo "Dummy 7"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept7'"
+						sh "docker exec -t bwpm_accept7_tester /data/do-tests.sh"
+					}
+					post {
+						always {
+//							echo "Dummy 7 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept7'"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_7", "${PROJECT_NAME}")
 						}
 					}
 				}
@@ -126,7 +144,7 @@ pipeline {
 //							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
 						}
 					}
 				}
@@ -142,7 +160,7 @@ pipeline {
 //							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept6'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
 						}
 					}
 				}

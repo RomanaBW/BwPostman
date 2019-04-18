@@ -117,6 +117,15 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public $permissions;
 
 	/**
+	 * property to hold logger
+	 *
+	 * @var object $logger
+	 *
+	 * @since       2.3.0
+	 */
+	public $logger;
+
+	/**
 	 * Constructor
 	 * Determines the newsletter ID
 	 *
@@ -135,6 +144,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$this->setId((int) $array[0]);
 
 		$this->processTestMode();
+
+		$log_options    = array();
+		$this->logger   = new BwLogger($log_options);
 	}
 
 	/**
@@ -1410,6 +1422,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function checkRecipients(&$ret_msg, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
+		$this->logger->addEntry(new JLogEntry('Line 1425 - NL-ID: ' . $nl_id, JLog::DEBUG, 'BwPostman'));
 
 		try
 		{
@@ -1418,6 +1431,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$usergroups           = array();
 
 			$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
+			$this->logger->addEntry(new JLogEntry('Line 1433 - Associated MLs: ' . implode(',', $associatedMailinglists), JLog::DEBUG, 'BwPostman'));
 
 			if (!$associatedMailinglists)
 			{
@@ -1426,6 +1440,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 
 			$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
+			$this->logger->addEntry(new JLogEntry('Line 1442 - Check subscribers: ' . $check_subscribers, JLog::DEBUG, 'BwPostman'));
+			$this->logger->addEntry(new JLogEntry('Line 1442 - Check all subscribers: ' . $check_allsubscribers, JLog::DEBUG, 'BwPostman'));
+			$this->logger->addEntry(new JLogEntry('Line 1442 - Usergroups: ' . implode(',', $usergroups), JLog::DEBUG, 'BwPostman'));
 
 			// Check if the subscribers are confirmed and not archived
 			$count_subscribers  = 0;

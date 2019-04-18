@@ -119,7 +119,6 @@
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
-      when: replace_vars|bool
 
     - name: copy changelog to test data folder
       copy:

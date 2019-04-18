@@ -9,9 +9,9 @@ joomla_jce_db ansible_connection=docker
 joomla_jce_web ansible_connection=docker
 bwpm_jce_tester ansible_connection=docker
 
-joomla_enh_db ansible_connection=docker
-joomla_enh_web ansible_connection=docker
-bwpm_enh_tester ansible_connection=docker
+joomla_enh_db ansible_connection=docker ansible_user=root
+joomla_enh_web ansible_connection=docker ansible_user=root
+bwpm_enh_tester ansible_connection=docker ansible_user=root
 
 joomla_files_build ansible_connection=docker
 joomla_tables_build ansible_connection=docker

@@ -22,6 +22,7 @@ pipeline {
 					steps {
 						sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
 					}
+				}
 				stage('Create full package') {
 					steps {
 						sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"

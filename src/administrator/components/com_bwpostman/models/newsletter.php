@@ -1422,8 +1422,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function checkRecipients(&$ret_msg, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
-		$this->logger->addEntry(new JLogEntry('Line 1425 - NL-ID: ' . $nl_id, JLog::DEBUG, 'BwPostman'));
-
 		try
 		{
 			$check_subscribers    = 0;
@@ -1431,7 +1429,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$usergroups           = array();
 
 			$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
-			$this->logger->addEntry(new JLogEntry('Line 1433 - Associated MLs: ' . implode(',', $associatedMailinglists), JLog::DEBUG, 'BwPostman'));
 
 			if (!$associatedMailinglists)
 			{
@@ -1440,9 +1437,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 
 			$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
-			$this->logger->addEntry(new JLogEntry('Line 1442 - Check subscribers: ' . $check_subscribers, JLog::DEBUG, 'BwPostman'));
-			$this->logger->addEntry(new JLogEntry('Line 1442 - Check all subscribers: ' . $check_allsubscribers, JLog::DEBUG, 'BwPostman'));
-			$this->logger->addEntry(new JLogEntry('Line 1442 - Usergroups: ' . implode(',', $usergroups), JLog::DEBUG, 'BwPostman'));
 
 			// Check if the subscribers are confirmed and not archived
 			$count_subscribers  = 0;
@@ -1478,7 +1472,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (is_array($usergroups) && count($usergroups))
 			{
-				$this->logger->addEntry(new JLogEntry('Line 1479 - Usergroups is an array and counts something ', JLog::DEBUG, 'BwPostman'));
 				$count_users = $this->countUsersOfNewsletter($usergroups);
 			}
 
@@ -3043,17 +3036,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$query->select('COUNT(' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ')');
 		$query->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
 		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('block') . ' = ' . (int) 0);
-		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('activation') . ' IS NOT NULL');
+		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('activation') . ' = ' . $_db->quote(''));
 		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' IN (' . $sub_query . ')');
 
 		$_db->setQuery($query);
-		$this->logger->addEntry(new JLogEntry('Line 3040 - Count Usergroups users subquery: ' . (string)$sub_query, JLog::DEBUG, 'BwPostman'));
-		$this->logger->addEntry(new JLogEntry('Line 3049 - Count Usergroups users query: ' . (string)$query, JLog::DEBUG, 'BwPostman'));
 
 		try
 		{
 			$count_users = $_db->loadResult();
-			$this->logger->addEntry(new JLogEntry('Line 3055 - Result of Count Usergroups users query: ' . $count_users, JLog::DEBUG, 'BwPostman'));
 		}
 		catch (RuntimeException $e)
 		{

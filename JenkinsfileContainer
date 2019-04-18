@@ -16,19 +16,19 @@ pipeline {
             }
         }
 
-		stage('Create full package') {
+		stage('Create tester package') {
 			steps {
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
 			}
 		}
 
 		stage('Smoke') {
 			steps {
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-test.yml"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
 			}
 			post {
 				failure {
-					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-test.yml"
+					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
 					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
 				}
 			}
@@ -121,9 +121,9 @@ pipeline {
 			}
 		}
 
-		stage('Create tester package') {
+		stage('Create full package') {
 			steps {
-				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
 			}
 		}
 

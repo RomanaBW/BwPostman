@@ -1478,6 +1478,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (is_array($usergroups) && count($usergroups))
 			{
+				$this->logger->addEntry(new JLogEntry('Line 1479 - Usergroups is an array and counts something ', JLog::DEBUG, 'BwPostman'));
 				$count_users = $this->countUsersOfNewsletter($usergroups);
 			}
 
@@ -3046,10 +3047,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' IN (' . $sub_query . ')');
 
 		$_db->setQuery($query);
+		$this->logger->addEntry(new JLogEntry('Line 3040 - Count Usergroups users subquery: ' . (string)$sub_query, JLog::DEBUG, 'BwPostman'));
+		$this->logger->addEntry(new JLogEntry('Line 3049 - Count Usergroups users query: ' . (string)$query, JLog::DEBUG, 'BwPostman'));
 
 		try
 		{
 			$count_users = $_db->loadResult();
+			$this->logger->addEntry(new JLogEntry('Line 3055 - Result of Count Usergroups users query: ' . $count_users, JLog::DEBUG, 'BwPostman'));
 		}
 		catch (RuntimeException $e)
 		{

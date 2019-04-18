@@ -25,7 +25,7 @@ pipeline {
 		stage('Smoke') {
 			steps {
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
-				sh "docker exec -it bwpm_enh_tester /data/do-tests.sh"
+				sh "docker exec bwpm_enh_tester /data/do-tests.sh"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-tests.yml"
 			}
 			post {

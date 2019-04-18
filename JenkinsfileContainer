@@ -16,11 +16,11 @@ pipeline {
             }
         }
 
-//		stage('Create tester package') {
-//			steps {
-//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
-//			}
-//		}
+		stage('Create full package') {
+			steps {
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
+			}
+		}
 
 		stage('Smoke') {
 			steps {
@@ -39,11 +39,11 @@ pipeline {
 				stage('Suite 1') {
 					steps {
 						echo "Dummy 1"
-//						sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept1'"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept1'"
 					}
 					post {
 						failure {
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept1'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept1'"
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
 						}
 					}
@@ -51,11 +51,11 @@ pipeline {
 				stage('Suite 2') {
 					steps {
 						echo "Dummy 2"
-//						sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept2'"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept2'"
 					}
 					post {
 						failure {
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept2'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept2'"
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
 						}
 					}
@@ -68,11 +68,11 @@ pipeline {
 				stage('Suite 3') {
 					steps {
 						echo "Dummy 3"
-//						sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept3'"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept3'"
 					}
 					post {
 						failure {
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept3'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept3'"
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
 						}
 					}
@@ -80,11 +80,11 @@ pipeline {
 				stage('Suite 4') {
 					steps {
 						echo "Dummy 4"
-//						sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept4'"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept4'"
 					}
 					post {
 						failure {
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept4'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept4'"
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
 						}
 					}
@@ -97,11 +97,11 @@ pipeline {
 				stage('Suite 5') {
 					steps {
 						echo "Dummy 5"
-//						sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept5'"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept5'"
 					}
 					post {
 						failure {
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept5'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept5'"
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
 						}
 					}
@@ -109,11 +109,11 @@ pipeline {
 				stage('Suite 6') {
 					steps {
 						echo "Dummy 6"
-//						sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept6'"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-test.yml --extra-vars 'test_suite=accept6'"
 					}
 					post {
 						failure {
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept6'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-test.yml --extra-vars 'test_suite=accept6'"
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
 						}
 					}
@@ -121,9 +121,9 @@ pipeline {
 			}
 		}
 
-//		stage('Create full package') {
+//		stage('Create tester package') {
 //			steps {
-//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
+//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
 //			}
 //		}
 

@@ -111,22 +111,6 @@ pipeline {
 						}
 					}
 				}
-				stage('Suite 7') {
-					steps {
-//						echo "Dummy 7"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept7'"
-						sh "docker exec -t bwpm_accept7_tester /data/do-tests.sh"
-					}
-					post {
-						always {
-//							echo "Dummy 7 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept7'"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_7", "${PROJECT_NAME}")
-						}
-					}
-				}
 			}
 		}
 

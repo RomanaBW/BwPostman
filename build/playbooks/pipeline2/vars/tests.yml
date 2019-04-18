@@ -126,6 +126,7 @@ test_suites:
     tests:
       - maintenance
       - frontend
+      - footerusedmailinglists
 
   - name: accept4
     tests:
@@ -143,4 +144,3 @@ test_suites:
 
   - name: accept7
     tests:
-      - footerusedmailinglists

@@ -20,7 +20,6 @@ pipeline {
             }
         }
 
-	stages {
 		stage('Smoke') {
 			steps {
 				sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-test.yml"
@@ -30,6 +29,7 @@ pipeline {
 					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-test.yml"
 					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
 				}
+			}
 		}
 
 		stage('Run acceptance level 1') {
@@ -174,7 +174,7 @@ pipeline {
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, all acceptance tests and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
-			)
+				)
 //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 

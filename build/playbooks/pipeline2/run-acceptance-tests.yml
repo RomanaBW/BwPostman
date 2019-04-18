@@ -131,25 +131,25 @@
         dest: "/data/do-tests.sh"
         mode: 0775
 
-    - name: Do tests
-      shell: "/data/do-tests.sh"
-      args:
-        chdir: "/data/tests"
-
-    - name: Show IP of webserver
-      debug:
-        msg: "{{ web_container_ip }}"
-
-- hosts: localhost
-  connection: local
-  vars_files:
-    - vars/tester-image-vars.yml
-    - vars/tester-test-vars.yml
-
-  tasks:
-    - name: remove all test containers (db, webserver, tester) and network
-      include_role:
-        name: romanabw.remove-complete-infrastructure
-      vars:
-        source: "{{ acceptance_source }}"
-        target: "{{ acceptance_target }}"
+#    - name: Do tests
+#      shell: "/data/do-tests.sh"
+#      args:
+#        chdir: "/data/tests"
+#
+#    - name: Show IP of webserver
+#      debug:
+#        msg: "{{ web_container_ip }}"
+#
+#- hosts: localhost
+#  connection: local
+#  vars_files:
+#    - vars/tester-image-vars.yml
+#    - vars/tester-test-vars.yml
+#
+#  tasks:
+#    - name: remove all test containers (db, webserver, tester) and network
+#      include_role:
+#        name: romanabw.remove-complete-infrastructure
+#      vars:
+#        source: "{{ acceptance_source }}"
+#        target: "{{ acceptance_target }}"

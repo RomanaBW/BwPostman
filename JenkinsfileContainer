@@ -87,9 +87,9 @@ pipeline {
 					}
 					post {
 						always {
-							echo "Dummy 3 always"
+//							echo "Dummy 3 always"
 							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3'"
-//						}
+						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
 						}

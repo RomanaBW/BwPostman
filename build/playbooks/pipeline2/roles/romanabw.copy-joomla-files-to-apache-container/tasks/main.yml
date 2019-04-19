@@ -1,15 +1,13 @@
 ---
-- name: Replace dots with hyphen at Joomla version
+- name: Set archive source for Joomla 3
   set_fact:
-    j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
+    archive_source: "{{ archive_source_j3 }}"
+  when: j_master_version == '3'
 
-- name: Get Joomla main version
+- name: Set archive source for Joomla 4
   set_fact:
-    j_main_version: "{{ joomla_version[0] }}"
-
-- name: Set archive source
-  set_fact:
-    archive_source: "https://downloads.joomla.org/cms/joomla{{ j_main_version }}/{{ j_version_hyphen }}/Joomla_{{ j_version_hyphen }}-Stable-Full_Package.tar.bz2"
+    archive_source: "{{ archive_source_j4 }}"
+  when: j_master_version == '4'
 
 - name: unpack Joomla files to document root
   unarchive:
@@ -19,23 +17,6 @@
     group: "{{ tester_www_user }}"
     owner: "{{ tester_www_group }}"
 
-#- name: copy other needed images to joomla document root
-#  copy:
-#    src: "../../files/joomla/{{ item }}"
-#    dest: "{{ tester_web_root }}images"
-#    owner: "{{ tester_www_user }}"
-#    group: "{{ tester_www_group }}"
-#  with_items:
-#    - joomla_black.gif
-#    - boldt-webservice.png
-
-- name: copy cli installation script to joomla cli folder
-  copy:
-    src: "../../files/joomla/cli-extension-installation.php"
-    dest: "{{ tester_web_root }}/cli/cli-extension-installation.php"
-    owner: "{{ tester_www_user }}"
-    group: "{{ tester_www_group }}"
-
 - name: get Joomla SQL files to fill into database
   fetch:
     src: "{{ tester_web_root }}installation/sql/mysql/{{ item }}"
@@ -44,11 +25,6 @@
   with_items:
     - "joomla.sql"
     - "sample_learn.sql"
-
-- name: Copy cli installer to container
-  copy:
-    src: "files/joomla/cli-extension-installation.php"
-    dest: "{{ tester_web_root }}/cli/cli-extension-installation.php"
 
 - name: remove Joomla installation folder
   file:

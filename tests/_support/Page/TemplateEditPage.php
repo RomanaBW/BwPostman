@@ -126,7 +126,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.3.0
 	 */
-	public static $thumb_select_user       = ".//*/ul[contains(@class, 'manager')]/li[contains(@id, '/powered_by.png')]/a";
+	public static $thumb_select_user       = "//*/ul[contains(@class, 'manager')]/li/a/div/div/img[contains(@alt, 'powered_by.png')]";
 
 	/**
 	 * @var string

@@ -69,7 +69,7 @@ test_file:
     testsuite_file: Frontend
 
   - suite: details
-    testsuite_file: Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealUsergroup
+    testsuite_file: Backend/Details/TestTemplatesDetailsCest
 
   - suite: user2subscriber
     testsuite_file: User2Subscriber/User2SubscriberCest

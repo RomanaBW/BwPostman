@@ -135,8 +135,8 @@ test_suites:
 
   - name: accept5
     tests:
-      - access1
-#      - access2
+#      - access1
+      - access2
 
   - name: accept6
     tests:

@@ -44,14 +44,14 @@ pipeline {
 			parallel {
 				stage('Suite 1') {
 					steps {
-						echo "Dummy 1"
-//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
-//						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh"
+//						echo "Dummy 1"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
+						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh"
 					}
 					post {
 						always {
-							echo "Dummy 1 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
+//							echo "Dummy 1 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
@@ -60,14 +60,14 @@ pipeline {
 				}
 				stage('Suite 2') {
 					steps {
-//						echo "Dummy 2"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2'"
-						sh "docker exec -t bwpm_accept2_tester /data/do-tests.sh"
+						echo "Dummy 2"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2'"
+//						sh "docker exec -t bwpm_accept2_tester /data/do-tests.sh"
 					}
 					post {
 						always {
-//							echo "Dummy 2 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2'"
+							echo "Dummy 2 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")

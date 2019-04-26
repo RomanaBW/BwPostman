@@ -1,7 +1,7 @@
 ---
 extension_name: "bwpostman"
 plugin_name: "bwtimecontrol"
-version_number: "2.3.0"
+version_number: "0.9.0"
 build: "0815"
 
 project_base_dir: "../.."

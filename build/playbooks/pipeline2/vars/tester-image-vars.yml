@@ -1,7 +1,16 @@
 ---
 # Fast changing variables
-bwpm_version: "2.3.0"
+bwpm_version: "2.4.0"
 joomla_version: "3.9.5"
+
+# Default value: Joomla3, if Joomla4 is wanted, --extra-vars is needed
+j_master_version: "3"
+
+j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
+j_main_version: "{{ joomla_version[0] }}"
+archive_source_j3: "https://downloads.joomla.org/cms/joomla{{ j_main_version }}/{{ j_version_hyphen }}/Joomla_{{ j_version_hyphen }}-Stable-Full_Package.tar.bz2"
+
+archive_source_j4: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-alpha6/Joomla_4.0.0-alpha6-Alpha-Full_Package.tar.bz2"
 
 # Additional extensions to install, raw file names without version
 additional_extensions:

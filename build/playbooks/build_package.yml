@@ -49,6 +49,7 @@
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
         bw_module_name: "mod_bwpostman_overview"
+        bw_external_lang: true
 
 #    - name: build personalize plugin package
     - include_role:
@@ -59,6 +60,7 @@
         bw_languages: "{{ languages }}"
         bw_plugin_name: "personalize"
         bw_plugin_group: "bwpostman"
+        bw_external_lang: true
 
 #    - name: build libregister plugin package
     - include_role:
@@ -69,6 +71,7 @@
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bw_libregister"
         bw_plugin_group: "system"
+        bw_external_lang: true
 
 #    - name: build u2s plugin package
     - include_role:
@@ -79,6 +82,7 @@
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bwpm_user2subscriber"
         bw_plugin_group: "system"
+        bw_external_lang: true
 
 #    - name: build mediaOverride plugin package
     - include_role:
@@ -89,6 +93,7 @@
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bwpm_mediaoverride"
         bw_plugin_group: "system"
+        bw_external_lang: true
 
 #    - name: build footerusedmailinglists plugin package
     - include_role:
@@ -99,6 +104,7 @@
         bw_languages: "{{ languages }}"
         bw_plugin_name: "footerusedmailinglists"
         bw_plugin_group: "bwpostman"
+        bw_external_lang: true
 
     #    - name: pack complete package
     - include_role:

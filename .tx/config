@@ -1,6 +1,6 @@
 [main]
 host = https://www.transifex.com
-lang_map = en_GB: en-GB, de_DE: de-DE, nl_NL: nl-NL, fr_FR: fr-FR, hu_HU: hu-HU, it_IT: it-IT, ja_JP: ja-JP, es_ES: es-ES, tr_TR: tr-TR
+lang_map = en_GB: en-GB, de_DE: de-DE
 type = INI
 
 [bwpostman.admin-en-gb-com-bwpostman]
@@ -49,18 +49,6 @@ source_lang = en_GB
 file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_footerusedmailinglists.sys.ini
 minimum_perc = 0
 source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
-source_lang = en_GB
-
-[bwpostman.admin-en-gb-plg-bwpostman-bwtimecontrol]
-file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_bwtimecontrol.ini
-minimum_perc = 0
-source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.ini
-source_lang = en_GB
-
-[bwpostman.admin-en-gb-plg-bwpostman-bwtimecontrol-sys]
-file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_bwtimecontrol.sys.ini
-minimum_perc = 0
-source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.sys.ini
 source_lang = en_GB
 
 [bwpostman.site-en-gb-com-bwpostman]

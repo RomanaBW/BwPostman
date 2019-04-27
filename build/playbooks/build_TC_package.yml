@@ -5,6 +5,23 @@
     - vars/tc_package_vars.yml
 
   tasks:
+    - name: Remove folders which are not needed
+      file:
+        path: "{{ project_base_dir }}/src/{{ item }}"
+        state: absent
+      with_items: "{{ to_delete }}"
+      ignore_errors: yes
+
+    #   inject current variable values (version, build, copyright year)
+    - include_role:
+        name: romanabw.inject-current-build-variables
+      vars:
+        bw_version: "{{ version_number }}"
+        bw_build: "{{ build }}"
+        bw_workspace: "{{ project_base_dir }}"
+        bw_manifest_list: "{{ manifest_list }}"
+      when: replace_vars|bool
+
     - name: build TC plugin package
       include_role:
         name: romanabw.build-jplugin-package
@@ -19,6 +36,7 @@
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/plg_{{ plugin_name }}.zip"
         dest: "{{ artifact_path }}/data/plg_{{ plugin_name }}-{{ version_number }}.{{ build }}.zip"
+      when: not replace_vars|bool
 
     - name: copy package to test data folder without build and version number
       copy:

@@ -23,6 +23,22 @@
     dest: "/etc/apache2/sites-enabled/{{ apache_host }}.nil.conf"
     state: link
 
+- name: Symlink mod_rewrite to mods-enabled
+  file:
+    src: "/etc/apache2/mods-available/rewrite.load"
+    dest: "/etc/apache2/mods-enabled/rewrite.load"
+    state: link
+
+- name: Symlink ssl to mods-enabled
+  file:
+    src: "/etc/apache2/mods-available/{{ item }}"
+    dest: "/etc/apache2/mods-enabled/{{ item }}"
+    state: link
+  with_items:
+    - ssl.load
+    - ssl.conf
+    - socache_shmcb.load
+
 - name: remove default vhost configuration
   file:
     path: "/etc/apache2/sites-enabled/000-default.conf"
@@ -33,3 +49,14 @@
     dest: "/var/log/apache2/"
     recurse: yes
     mode: 0777
+
+#- name: enable mod_rewrite and ssl for apache
+#  command: "a2enmod {{ item }}"
+#  with_items:
+#    - ssl
+#    - rewrite
+#
+#- name: Restart apache
+#  service:
+#    name: apache2
+#    state: restarted

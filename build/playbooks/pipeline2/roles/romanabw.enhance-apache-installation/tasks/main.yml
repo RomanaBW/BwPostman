@@ -16,6 +16,8 @@
       - libpng-dev
       - unzip
       - iputils-ping
+      - apache2-bin
+      - libssh2-1-dev
 
 - name: install additional packages
   become: yes
@@ -36,4 +38,11 @@
 
 - name: install php gd
   shell: "docker-php-ext-install -j$(nproc) gd"
+
+- name: pecl install uopz and xdebug
+  command: "pecl install {{ item }}"
+  with_items:
+    - uopz
+    - xdebug
+  ignore_errors: yes
 

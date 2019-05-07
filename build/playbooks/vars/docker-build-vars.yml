@@ -1,5 +1,5 @@
 ---
-private_docker_repo: "universe2:5000"
+private_docker_repo: "universe3:5000"
 author: "Romana Boldt info@boldt-webservice.de"
 joomla_version: "3.9.4"
 

@@ -29,7 +29,7 @@ Step 6 and 7 are again simple Jenkinsfile tasks.
 
 ## Groundwork: Tester container creation
 
-There are ansible playbooks for these jobs. The images are stored at local docker registry **universe2:5000**.
+There are ansible playbooks for these jobs. The images are stored at local docker registry **universe3:5000**.
 
 All manually changing variables should be kept (beneath other variables) at the variable file **vars/tester-image-vars.yml**. 
 Changing variables sounds crazy, I know, but most variables are build on some manually entered values. These are automated 
@@ -38,11 +38,11 @@ ansible makes no difference…
 
 There are some containers, which have to be build successively:
 1. Create base images for web server and database and store them at local docker registry
-	1. **create-push-apache-image.yml**, currently based on php:7.3.3-apache-stretch and locally stored at **universe2:5000/romana/apache:7.3.3-apache-stretch**.
-	2. **create-push-mariadb-image.yml**, currently based on bitnami/mariadb:10.2-debian-9 and locally stored at **universe2:5000/romana/mariadb:10.2-debian-9**
+	1. **create-push-apache-image.yml**, currently based on php:7.3.4-apache-stretch and locally stored at **universe3:5000/romana/apache:7.3.4-apache-stretch**.
+	2. **create-push-mariadb-image.yml**, currently based on bitnami/mariadb:10.2-debian-9 and locally stored at **universe3:5000/romana/mariadb:10.2-debian-9**
 2. Install Joomla to previously created images. The playbooks and the images are
-	1. **create-push-joomla-files-image.yml**, image is **universe2:5000/romana/joomla-bare-files:{{ joomla_version }}**
-	2. **create-push-joomla-tables-image.yml**, image is **universe2:5000/romana/joomla-bare-tables:{{ joomla_version }}**
+	1. **create-push-joomla-files-image.yml**, image is **universe3:5000/romana/joomla-bare-files:{{ joomla_version }}**
+	2. **create-push-joomla-tables-image.yml**, image is **universe3:5000/romana/joomla-bare-tables:{{ joomla_version }}**
 	This task do a little bit more. All changes to the tables are also settled here, as there are
 		1. Install all tables of joomla
 		2. Add needed Users, assign them to desired user groups
@@ -54,8 +54,8 @@ There are some containers, which have to be build successively:
 		8. Disable sending statistics 
 3. Install needed extensions (JCE and the plugin Testmode) to previously created images
 	1. **install-required-extensions-push.yml**, the images are
-		1. **universe2:5000/romana/joomla-jce-files:{{ joomla_version }}**
-		2. **universe2:5000/romana/joomla-jce-tables:{{ joomla_version }}**
+		1. **universe3:5000/romana/joomla-jce-files:{{ joomla_version }}**
+		2. **universe3:5000/romana/joomla-jce-tables:{{ joomla_version }}**
 	2. optionally install VirtueMart with sample products, needed for testing plugin B2S 
 		
 Step 1 is only to do, if one want to change web server or database version.
@@ -86,9 +86,9 @@ with test values, set permissions. Because the following tests needs an installe
 is created, if the smoke is successful, to fasten these following tests.
 
 The used playbook is **run-smoke-tests.yml**. The resulting images are
- * **universe2:5000/romana/joomla-bwpm-files:{{ joomla_version }}_{{ bwpm_version }}**
- * **universe2:5000/romana/joomla-bwpm-tables:{{ joomla_version }}_{{ bwpm_version }}**
- * **universe2:5000/romana/joomla-bwpm-tester:{{ joomla_version }}_{{ bwpm_version }}**
+ * **universe3:5000/romana/joomla-bwpm-files:{{ joomla_version }}_{{ bwpm_version }}**
+ * **universe3:5000/romana/joomla-bwpm-tables:{{ joomla_version }}_{{ bwpm_version }}**
+ * **universe3:5000/romana/joomla-bwpm-tester:{{ joomla_version }}_{{ bwpm_version }}**
 
 Here also the tests are copied to the tester container. Because later I want to parallelize the tests, it is a good thing 
 to copy the tests to the image. All is in place. 

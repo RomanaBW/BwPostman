@@ -1,5 +1,5 @@
 
-FROM universe2:5000/romana/debian-tester-base
+FROM universe3:5000/romana/debian-tester-base
 
 MAINTAINER Romana Boldt <info@boldt-webservice.de>
 

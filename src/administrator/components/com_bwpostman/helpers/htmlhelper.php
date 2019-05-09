@@ -399,7 +399,7 @@ abstract class BwPostmanHTMLHelper {
 					break;
 				case 'campaign':
 				case 'campaigns':
-					$sectionPart = "/bwpostman-manual/69-bwpostman-manual-advanced-use.html?start=1";
+					$sectionPart = "handbuch-zu-bwpostman/56-bwpostman-handbuch-das-backend.html?start=1";
 					break;
 				case 'newsletter':
 				case 'newsletters':

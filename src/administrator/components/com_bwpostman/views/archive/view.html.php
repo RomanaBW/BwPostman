@@ -305,6 +305,8 @@ class BwPostmanViewArchive extends JViewLegacy
 			return 'redirect';
 		}
 
+		$this->request_url = $uriShort;
+
 		return true;
 	}
 

@@ -82,7 +82,7 @@ $tab_options = array(
 	function OnlyFiltered(onlyFiltered) // Get the selected value from modal box
 	{
 		if (onlyFiltered === '1') {
-			document.getElementById('mlToExport').value = <?php echo $this->filterMl; ?>;
+			document.getElementById('mlToExport').value = '<?php echo $this->filterMl; ?>';
 		}
 
 		Joomla.submitbutton('subscribers.exportSubscribers');

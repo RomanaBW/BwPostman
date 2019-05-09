@@ -36,6 +36,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		if(framefenster.contentWindow.document.body)
 		{
+			var legal = framefenster.contentWindow.document.getElementById('legal');
+			legal.remove();
 			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
 			if(document.all && !window.opera)
 			{

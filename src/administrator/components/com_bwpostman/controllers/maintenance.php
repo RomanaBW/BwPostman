@@ -354,7 +354,19 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onBwPostmanMaintenanceStartCron');
+		$results = $dispatcher->trigger('onBwPostmanMaintenanceStartCron');
+
+		if ($results[0] !== true)
+		{
+			$error = '';
+			foreach ($results as $result)
+			{
+				$error .= $result . '<br />';
+			}
+
+			$error .= JText::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON');
+			JFactory::getApplication()->enqueueMessage($error, 'error');
+		}
 
 		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 		$this->setRedirect($link);

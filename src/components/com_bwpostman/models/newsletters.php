@@ -197,10 +197,10 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		$mergedParams = clone $menuParams;
-		$mergedParams->merge($params);
+		$params->merge($mergedParams);
 
-		$this->setState('params', $mergedParams);
-		$app->setUserState('com_bwpostman.newsletters.params', $mergedParams);
+		$this->setState('params', $params);
+		$app->setUserState('com_bwpostman.newsletters.params', $params);
 
 		// Set module ID
 		$this->setState('module.id', $app->input->getInt('mid'));

@@ -173,3 +173,4 @@ JHtml::_('formbehavior.chosen', 'select');
 		<?php echo JHtml::_('form.token'); ?>
 
 	</form>
+</div>

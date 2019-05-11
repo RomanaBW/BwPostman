@@ -38,7 +38,7 @@ ansible makes no difference…
 
 There are some containers, which have to be build successively:
 1. Create base images for web server and database and store them at local docker registry
-	1. **create-push-apache-image.yml**, currently based on php:7.3.4-apache-stretch and locally stored at **universe3:5000/romana/apache:7.3.4-apache-stretch**.
+	1. **create-push-apache-image.yml**, currently based on php:7.3.4-apache-stretch and locally stored at **universe3:5000/romana/php:7.3.4-apache-stretch**.
 	2. **create-push-mariadb-image.yml**, currently based on bitnami/mariadb:10.2-debian-9 and locally stored at **universe3:5000/romana/mariadb:10.2-debian-9**
 2. Install Joomla to previously created images. The playbooks and the images are
 	1. **create-push-joomla-files-image.yml**, image is **universe3:5000/romana/joomla-bare-files:{{ joomla_version }}**

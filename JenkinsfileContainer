@@ -6,8 +6,8 @@ pipeline {
 			steps {
 				script
 				{
-					BWPM_VERSION = "2.3.0"
-					JOOMLA_VERSION = "3.9.4"
+					BWPM_VERSION = "2.3.1"
+					JOOMLA_VERSION = "3.9.6"
 					VAGRANT_DIR = "/vms-uni2/vagrant/infrastructure/farm1/J-Tester"
 					BW_ARTIFACTS_BASE = "/repositories/artifacts/bwpostman"
 					GIT_MESSAGE = "not specified"

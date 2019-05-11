@@ -1,4 +1,12 @@
 ---
+- name: copy ca files
+  copy:
+    src: "files/certs/ca-chain2.cert.pem"
+    dest: "/usr/local/share/ca-certificates/ca-chain2.cert.crt"
+
+- name: update ca certificates
+  command: "update-ca-certificates"
+
 - name: copy webserver configuration in place
   copy:
     src: "files/apache2/"
@@ -50,13 +58,13 @@
     recurse: yes
     mode: 0777
 
-#- name: enable mod_rewrite and ssl for apache
-#  command: "a2enmod {{ item }}"
-#  with_items:
-#    - ssl
-#    - rewrite
-#
-#- name: Restart apache
-#  service:
-#    name: apache2
-#    state: restarted
+- name: enable mod_rewrite and ssl for apache
+  command: "a2enmod {{ item }}"
+  with_items:
+    - ssl
+    - rewrite
+
+- name: Restart apache
+  service:
+    name: apache2
+    state: restarted

@@ -16,9 +16,13 @@
         name: '{{ base_source.web_container_name }}'
         command: sleep infinity
         volumes:
-          - /repositories:/repositories
+          - "/repositories:/repositories"
+        etc_hosts: >
+          {
+            "universe3.bet2.nil" : "192.168.2.100",
+          }
 
-    - name: Udate apt at container
+    - name: Update apt at container
       become: yes
       shell: "docker exec -t {{ base_source.web_container_name }} apt-get update"
 
@@ -40,6 +44,10 @@
     - name: Run the role configure apache
       include_role:
         name: romanabw.configure-apache
+
+    - name: Run the role configure sendmail
+      include_role:
+        name: romanabw.configure-sendmail
 
 - hosts: localhost
   connection: local

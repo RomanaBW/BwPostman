@@ -114,6 +114,7 @@
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_extension: "{{ extension_name }}"
         bw_package_parts: "{{ package_parts }}"
+        bw_with_script: "true"
 
     - name: copy package to test data folder with build and version number
       copy:

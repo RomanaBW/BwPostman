@@ -272,7 +272,10 @@ class MaintenancePage
 		$I->click(self::$restoreTablesButton);
 		$I->waitForElement(self::$headingRestoreFile, 30);
 
-		$filename = "BwPostman_2_3_0_Tables.xml";
+		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
+		$bwpm_version_underline = $bwpm_version[0] . '_' . $bwpm_version[1] . '_' . $bwpm_version[2];
+
+		$filename = 'BwPostman_' . $bwpm_version_underline . '_Tables.xml';
 
 		if ($compressed)
 		{

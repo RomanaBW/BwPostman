@@ -55,49 +55,49 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkTablesButton    = ".//*[@id='cpanel']/div[1]/div/a";
+	public static $checkTablesButton    = "//*[@id='cpanel']/div[1]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $saveTablesButton     = ".//*[@id='cpanel']/div[2]/div/a/img";
+	public static $saveTablesButton     = "//*[@id='cpanel']/div[2]/div/a/img";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $restoreTablesButton  = ".//*[@id='cpanel']/div[3]/div/a";
+	public static $restoreTablesButton  = "//*[@id='cpanel']/div[3]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $settingsButton       = ".//*[@id='cpanel']/div[4]/div/a";
+	public static $settingsButton       = "//*[@id='cpanel']/div[4]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $forumButton          = ".//*[@id='cpanel']/div/div/a/span[contains(text(),'BwPostman Forum')]";
+	public static $forumButton          = "//*[@id='cpanel']/div/div/a/span[contains(text(),'BwPostman Forum')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkBackButton      = ".//*[@id='toolbar-arrow-left']/button";
+	public static $checkBackButton      = "//*[@id='toolbar-arrow-left']/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $cancelSettingsButton = ".//*[@id='toolbar-cancel']/button";
+	public static $cancelSettingsButton = "//*[@id='toolbar-cancel']/button";
 
 
 	/**
@@ -119,7 +119,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $headingRestoreFile   = ".//*[@id='adminForm']/fieldset/legend";
+	public static $headingRestoreFile   = "//*[@id='adminForm']/fieldset/legend";
 
 	/**
 	 * @var string
@@ -134,77 +134,77 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step1Field           = ".//*[@id='step1'][contains(@class, 'alert-success')]";
+	public static $step1Field           = "//*[@id='step1'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step2Field           = ".//*[@id='step2'][contains(@class, 'alert-success')]";
+	public static $step2Field           = "//*[@id='step2'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step3Field           = ".//*[@id='step3'][contains(@class, 'alert-success')]";
+	public static $step3Field           = "//*[@id='step3'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step4Field           = ".//*[@id='step4'][contains(@class, 'alert-success')]";
+	public static $step4Field           = "//*[@id='step4'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step5Field           = ".//*[@id='step5'][contains(@class, 'alert-success')]";
+	public static $step5Field           = "//*[@id='step5'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step6Field           = ".//*[@id='step6'][contains(@class, 'alert-success')]";
+	public static $step6Field           = "//*[@id='step6'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step7Field           = ".//*[@id='step7'][contains(@class, 'alert-success')]";
+	public static $step7Field           = "//*[@id='step7'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step8Field           = ".//*[@id='step8'][contains(@class, 'alert-success')]";
+	public static $step8Field           = "//*[@id='step8'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step9Field           = ".//*[@id='step9'][contains(@class, 'alert-success')]";
+	public static $step9Field           = "//*[@id='step9'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step10Field          = ".//*[@id='step10'][contains(@class, 'alert-success')]";
+	public static $step10Field          = "//*[@id='step10'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step11Field          = ".//*[@id='step11'][contains(@class, 'alert-success')]";
+	public static $step11Field          = "//*[@id='step11'][contains(@class, 'alert-success')]";
 
 
 	/**
@@ -212,14 +212,14 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step5SuccessClass    = ".//*[@id='step5'][contains(@class, 'alert-success')]";
+	public static $step5SuccessClass    = "//*[@id='step5'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step11SuccessClass   = ".//*[@id='step11'][contains(@class, 'alert-success')]";
+	public static $step11SuccessClass   = "//*[@id='step11'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
@@ -240,7 +240,7 @@ class MaintenancePage
 	 *
 	 * @since 2.2.0
 	 */
-	public static $statisticsUnsentNewsletters     = ".//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a";
+	public static $statisticsUnsentNewsletters     = "//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a";
 
 	/**
 	 * Test method to restore tables
@@ -282,9 +282,9 @@ class MaintenancePage
 			$filename .= ".zip";
 		}
 
-		$I->attachFile(".//*[@id='restorefile']", $filename);
+		$I->attachFile("//*[@id='restorefile']", $filename);
 
-		$I->click(".//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
+		$I->click("//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
 		$I->dontSeeElement(Generals::$alert_error);
 
 		$I->waitForElementVisible(self::$step1Field, 30);

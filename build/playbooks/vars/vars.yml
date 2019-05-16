@@ -9,11 +9,11 @@ package_parts:
   - com_bwpostman
   - mod_bwpostman
   - mod_bwpostman_overview
-  - plg_personalize
-  - plg_bw_libregister
-  - plg_bwpm_mediaoverride
-  - plg_bwpm_user2subscriber
-  - plg_footerusedmailinglists
+  - plg_bwpostman_personalize
+  - plg_system_bw_libregister
+  - plg_system_bwpm_mediaoverride
+  - plg_system_bwpm_user2subscriber
+  - plg_bwpostman_footerusedmailinglists
 
 languages:
   - de-DE

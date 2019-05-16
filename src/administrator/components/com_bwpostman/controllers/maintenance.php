@@ -348,29 +348,45 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function startCron()
 	{
 		$lang = JFactory::getLanguage();
-		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
+		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
 
-		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_START_CRON'), 'message');
+		$plugin = JPluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+		$pluginParams = new JRegistry();
+		$pluginParams->loadString($plugin->params);
+		$pluginUser = $pluginParams->get('bwtimecontrol_username',null);
+		$pluginPw   = $pluginParams->get('bwtimecontrol_passwd', null);
 
-		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-		$dispatcher = JEventDispatcher::getInstance();
-		$results = $dispatcher->trigger('onBwPostmanMaintenanceStartCron');
-
-		if ($results[0] !== true)
+		if ($pluginUser === null || $pluginPw === null)
 		{
-			$error = '';
-			foreach ($results as $result)
+			JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_NO_CREDENTIALS'), 'error');
+
+			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
+
+			return false;
+		}
+		else
+		{
+			JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+			$dispatcher = JEventDispatcher::getInstance();
+			$results = $dispatcher->trigger('onBwPostmanMaintenanceStartCron');
+
+			if ($results[0] !== true)
 			{
-				$error .= $result . '<br />';
+				$error = '';
+				foreach ($results as $result)
+				{
+					$error .= $result . '<br />';
+				}
+
+				$error .= JText::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON');
+				JFactory::getApplication()->enqueueMessage($error, 'error');
 			}
 
-			$error .= JText::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON');
-			JFactory::getApplication()->enqueueMessage($error, 'error');
+			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
+			return true;
 		}
-
-		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
-		$this->setRedirect($link);
-		return true;
 	}
 
 	/**
@@ -385,8 +401,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
-
-		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_STOP_CRON'), 'message');
 
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 		$dispatcher = JEventDispatcher::getInstance();

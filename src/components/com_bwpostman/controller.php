@@ -79,6 +79,17 @@ class BwPostmanController extends JControllerLegacy
 	 */
 	public function doCron()
 	{
+		$plugin = JPluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+		$pluginParams = new JRegistry();
+		$pluginParams->loadString($plugin->params);
+		$pluginPw   = (int) $pluginParams->get('bwtimecontrol_passwd');
+		$pluginUser = (int) $pluginParams->get('bwtimecontrol_username');
+
+		if ($pluginUser === "" || $pluginPw === "")
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_TC_NO_CREDENTIALS'), 'error');
+		}
+
 		require_once(JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php');
 
 		$bwpostmancron = new BwPostmanPhpCron();

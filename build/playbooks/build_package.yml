@@ -115,6 +115,7 @@
         bw_extension: "{{ extension_name }}"
         bw_package_parts: "{{ package_parts }}"
         bw_with_script: "true"
+        bw_script_name: "pkg_script.php"
 
     - name: copy package to test data folder with build and version number
       copy:

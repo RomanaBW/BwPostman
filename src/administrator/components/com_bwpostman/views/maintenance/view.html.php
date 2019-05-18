@@ -169,6 +169,15 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			// Check for start file
 			if (JFile::exists(JPATH_PLUGINS . $cron->startFile))
 			{
+				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
+				echo '<meta http-equiv="refresh" content="10; URL=' . $url . '">';
+
+				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON'), 'Info');
+			}
+
+			// Check for started file
+			if (JFile::exists(JPATH_PLUGINS . $cron->startedFile))
+			{
 				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
 			}
 

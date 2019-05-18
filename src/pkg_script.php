@@ -43,36 +43,36 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	private $release = null;
 
-	/**
+  /**
 	 * Called on installation
-	 *
-	 * @return  void
-	 *
+  *
+  * @return void
+   *
 	 * @since       2.2.1
-	 */
+  */
 
 	public function install()
-	{
+  {
 		sleep(5);
 		$session	= JFactory::getSession();
 		$session->set('update', false, 'bwpostman');
 //		$this->showFinished(false);
-	}
+  }
 
-	/**
+  /**
 	 * Called on update
-	 *
-	 * @return  void
-	 *
+  *
+  * @return void
+  *
 	 * @since   2.2.1
-	 */
+  */
 
 	public function update()
-	{
+  {
 		$session	= JFactory::getSession();
 		$session->set('update', true, 'bwpostman');
 //		$this->showFinished(true);
-	}
+  }
 
 	/**
 	 * Called after any type of action
@@ -88,8 +88,8 @@ class Pkg_BwPostmanInstallerScript
 
 	public function postflight($type)
 	{
-		if ($type == 'update')
-		{
+	if ($type == 'update')
+	{
 			$oldRelease	= JFactory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
 
 			if (version_compare($oldRelease, '2.2.1', 'lt'))
@@ -98,11 +98,10 @@ class Pkg_BwPostmanInstallerScript
 				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_installer/models');
 				$installerModel = JModelLegacy::getInstance('Updatesites', 'InstallerModel');
 				$installerModel->rebuild();
-			}
 		}
-
-		return true;
 	}
+	return true;
+  }
 
 	/**
 	 * shows the HTML after installation/update
@@ -114,7 +113,7 @@ class Pkg_BwPostmanInstallerScript
 	 * @since
 	 */
 	public function showFinished($update)
-	{
+		{
 		$lang = JFactory::getLanguage();
 		//Load first english files
 		$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
@@ -128,18 +127,18 @@ class Pkg_BwPostmanInstallerScript
 		$show_right		= false;
 		$release		= str_replace('.', '-', $this->release);
 		$lang_ver		= substr($lang->getTag(), 0, 2);
-
 		if ($lang_ver != 'de')
 		{
 			$lang_ver = 'en';
 			$forum	= "https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html";
+			$manual	= "https://www.boldt-webservice.de/en/forum-en/manuals/bwpostman-manual.html";
 		}
 		else
 		{
-			$forum	= "https://www.boldt-webservice.de/de/forum/bwpostman.html";
+			$forum	= "https://www.boldt-webservice.de/de/forum/forum/bwpostman.html";
+			$manual	= "https://www.boldt-webservice.de/index.php/de/forum/handb%C3%BCcher/handbuch-zu-bwpostman.html";
 		}
 
-		$manual	= "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
 
 		if ($update)
 		{
@@ -158,7 +157,6 @@ class Pkg_BwPostmanInstallerScript
 		{
 			$show_update	= true;
 		}
-
 		if ($show_update || $string_special != '')
 		{
 			$show_right	= true;
@@ -185,8 +183,7 @@ class Pkg_BwPostmanInstallerScript
 		<div class="com_bwp_install_finished">
 			<h2>
 			<?php
-			if($update)
-			{
+			if($update){
 				echo JText::sprintf('COM_BWPOSTMAN_UPGRADE_SUCCESSFUL', $this->release);
 				echo '<br />' . JText::_('COM_BWPOSTMAN_EXTENSION_UPGRADE_REMIND');
 			}
@@ -197,9 +194,7 @@ class Pkg_BwPostmanInstallerScript
 			?>
 			</h2>
 		</div>
-		<?php
-		if ($show_right)
-		{ ?>
+		<?php if ($show_right) { ?>
 			<div class="cpanel">
 				<div class="icon" >
 					<a href="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>">
@@ -234,7 +229,7 @@ class Pkg_BwPostmanInstallerScript
 			</div>
 		<?php
 		} ?>
-	</div>
+					</div>
 
 	<div id="com_bwp_install_right">
 		<?php
@@ -249,8 +244,7 @@ class Pkg_BwPostmanInstallerScript
 			<?php
 			}?>
 
-			<?php
-			if ($show_update)
+			<?php if ($show_update)
 			{ ?>
 				<div class="com_bwp_install_updateinfo">
 					<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
@@ -258,15 +252,20 @@ class Pkg_BwPostmanInstallerScript
 					<?php if ($string_new != '') { ?>
 						<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
 						<p><?php echo $string_new; ?></p>
-					<?php }?>
-					<?php if ($string_improvement != '') { ?>
+					<?php
+					}?>
+					<?php if ($string_improvement != '')
+					{ ?>
 					<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
 						<p><?php echo $string_improvement; ?></p>
-					<?php }?>
-					<?php if ($string_bugfix != '') { ?>
+					<?php
+					}?>
+					<?php if ($string_bugfix != '')
+					{ ?>
 						<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
 						<p><?php echo $string_bugfix; ?></p>
-					<?php }?>
+					<?php
+					}?>
 				</div>
 			<?php
 			}

@@ -505,19 +505,9 @@
 		/>
 
 		<field
-			name="created_by"
-			type="hidden"
-		/>
-
-		<field
 			name="created_date"
 			type="hidden"
 			filter="user_utc"
-		/>
-
-		<field
-			name="modified_by"
-			type="hidden"
 		/>
 
 		<field

@@ -314,6 +314,10 @@ class contentRenderer
 	 */
 	public function replaceContentHtml($id, $tpl)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
+
 		$content = '';
 
 		if ($id != 0)
@@ -427,6 +431,10 @@ class contentRenderer
 	 */
 	public function replaceContentHtmlNew($id, $tpl)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
+
 		$content     = '';
 		$create_date = '';
 
@@ -620,6 +628,10 @@ class contentRenderer
 	 */
 	public function replaceContentText($id, $text_tpl)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
+
 		$create_date = '';
 
 		if ($id != 0)
@@ -861,6 +873,10 @@ class contentRenderer
 	 */
 	public function replaceTplLinks(&$text)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
+
 		$params 			= JComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
 
@@ -971,6 +987,10 @@ class contentRenderer
 	 */
 	public function addHTMLFooter(&$text, &$templateId)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
+
 		$uri  				= JUri::getInstance();
 		$params 			= JComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
@@ -1052,6 +1072,10 @@ class contentRenderer
 	 */
 	public function replaceTextTplLinks(&$text)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
+
 		$uri  				= JUri::getInstance();
 		$itemid_edit		= $this->getItemid('edit');
 		$itemid_unsubscribe	= $this->getItemid('register');
@@ -1105,6 +1129,10 @@ class contentRenderer
 	 */
 	public function addTextFooter(&$text, &$id)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
+		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
+
 		$uri  				= JUri::getInstance();
 		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');

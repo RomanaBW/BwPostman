@@ -197,7 +197,7 @@ pipeline {
 					makeEmptyDirs: false,
 					noDefaultExcludes: false,
 					patternSeparator: '[, ]+',
-					remoteDirectory: "${"${BWPM_VERSION}"}.${currentBuild.number}",
+					remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
 					remoteDirectorySDF: false,
 					removePrefix: 'tests',
 					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"

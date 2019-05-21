@@ -1740,8 +1740,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['access']                = property_exists($state_data, 'access') ? $state_data->access : 1;
 				$form_data['publish_up']            = $state_data->publish_up;
 				$form_data['publish_down']          = $state_data->publish_down;
-				$form_data['created_by']            = property_exists($state_data, 'created_by;') ? $state_data->created_by : '0000-00-00 00:00:00';
-				$form_data['modified_by']           = property_exists($state_data, 'modified_by') ? $state_data->modified_by : '0000-00-00 00:00:00';
 				$form_data['archived_by']           = $state_data->archived_by;
 				$form_data['created_date']          = $state_data->created_date;
 				$form_data['modified_time']         = $state_data->modified_time;
@@ -1764,16 +1762,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if (is_object($state_data) && property_exists($state_data, 'text_template_old_id'))
 				{
 					$form_data['text_template_old_id'] = $state_data->text_template_old_id;
-				}
-
-				if (is_object($state_data) && property_exists($state_data, 'created_by'))
-				{
-					$form_data['created_by'] = $state_data->created_by;
-				}
-
-				if (is_object($state_data) && property_exists($state_data, 'modified_by'))
-				{
-					$form_data['modified_by'] = $state_data->modified_by;
 				}
 
 				if (is_object($state_data) && property_exists($state_data, 'access'))
@@ -1844,6 +1832,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ready_to_send']	= $state_data->ready_to_send;
 				}
 				break;
+		}
+
+		// created_by an modified_by needed on every tab
+		if (is_object($state_data) && property_exists($state_data, 'created_by'))
+		{
+			$form_data['created_by'] = $state_data->created_by;
+		}
+
+		if (is_object($state_data) && property_exists($state_data, 'modified_by'))
+		{
+			$form_data['modified_by'] = $state_data->modified_by;
 		}
 
 		if (array_key_exists('selected_content', $form_data) !== true)

@@ -291,6 +291,7 @@ class MaintenancePage
 		$filename = 'BwPostman_' . '2_3_1' . '_Tables.xml';
 		codecept_debug("Filename 2: " . $filename);
 
+
 		if ($compressed)
 		{
 			$filename .= ".zip";

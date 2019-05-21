@@ -37,7 +37,7 @@ failed_check=0
 {% for item in selected_suite %}
 {% for selected_file in test_file if selected_file.suite == item %}
 if [ ${failed_check} = 0 ]; then
-  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --debug --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --debug -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 fi
 if [ -f {{ codecept_failed_file }} ]; then
   echo "Current test {{ item }} failed!"

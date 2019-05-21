@@ -273,7 +273,14 @@ class MaintenancePage
 		$I->waitForElement(self::$headingRestoreFile, 30);
 
 		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
-		$bwpm_version_underline = $bwpm_version[0] . '_' . $bwpm_version[1] . '_' . $bwpm_version[2];
+		if ($bwpm_version[1] === '.')
+		{
+			$bwpm_version_underline = str_replace('.', '_', $bwpm_version);
+		}
+		else
+		{
+			$bwpm_version_underline = $bwpm_version[0] . '_' . $bwpm_version[1] . '_' . $bwpm_version[2];
+		}
 
 		$filename = 'BwPostman_' . $bwpm_version_underline . '_Tables.xml';
 

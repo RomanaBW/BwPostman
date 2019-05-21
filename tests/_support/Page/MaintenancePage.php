@@ -273,7 +273,8 @@ class MaintenancePage
 		$I->waitForElement(self::$headingRestoreFile, 30);
 
 		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
-		if ($bwpm_version[1] === '.')
+		codecept_debug('BwPm-Version: ' . $bwpm_version);
+		if ($bwpm_version[1] === ".")
 		{
 			$bwpm_version_underline = str_replace('.', '_', $bwpm_version);
 		}

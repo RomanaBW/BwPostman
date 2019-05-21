@@ -275,7 +275,7 @@ class MaintenancePage
 		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
 codecept_debug('BwPm-Version: ');
 codecept_debug($bwpm_version);
-		if ($bwpm_version[1] == ".")
+		if (substr_count($bwpm_version,  ".") > 0)
 		{
 			$bwpm_version_underline = str_replace('.', '_', $bwpm_version);
 		}

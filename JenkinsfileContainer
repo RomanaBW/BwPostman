@@ -32,7 +32,7 @@ pipeline {
 			steps {
 //				echo "Dummy Smoke"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
-				sh "docker exec -t -e BWPM_VERSION_TO_TEST=BWPM_VERSION bwpm_enh_tester /data/do-tests.sh"
+				sh "docker exec -t -e BWPM_VERSION_TO_TEST=${BWPM_VERSION} bwpm_enh_tester /data/do-tests.sh"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
 			}
 			post {

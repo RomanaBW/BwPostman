@@ -287,7 +287,9 @@ class MaintenancePage
 		}
 
 		$filename = 'BwPostman_' . $bwpm_version_underline . '_Tables.xml';
+		codecept_debug("Filename 1: " . $filename);
 		$filename = 'BwPostman_' . '2_3_1' . '_Tables.xml';
+		codecept_debug("Filename 2: " . $filename);
 
 		if ($compressed)
 		{

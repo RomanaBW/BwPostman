@@ -264,11 +264,6 @@ class MaintenancePage
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
 
-		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
-
-		codecept_debug("BwPm-Version: ");
-		codecept_debug($bwpm_version);
-
 		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -276,6 +271,11 @@ class MaintenancePage
 
 		$I->click(self::$restoreTablesButton);
 		$I->waitForElement(self::$headingRestoreFile, 30);
+
+		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
+
+		codecept_debug("BwPm-Version: ");
+		codecept_debug($bwpm_version);
 
 		if (substr_count($bwpm_version,  ".") == 0)
 		{
@@ -287,6 +287,7 @@ class MaintenancePage
 		}
 
 		$filename = 'BwPostman_' . $bwpm_version_underline . '_Tables.xml';
+		$filename = 'BwPostman_' . '2_3_1' . '_Tables.xml';
 
 		if ($compressed)
 		{

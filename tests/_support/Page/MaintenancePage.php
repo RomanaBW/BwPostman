@@ -274,9 +274,6 @@ class MaintenancePage
 
 		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
 
-		codecept_debug("BwPm-Version: ");
-		codecept_debug($bwpm_version);
-
 		if (substr_count($bwpm_version,  ".") == 0)
 		{
 			$bwpm_version_underline = $bwpm_version[0] . '_' . $bwpm_version[1] . '_' . $bwpm_version[2];
@@ -287,10 +284,6 @@ class MaintenancePage
 		}
 
 		$filename = 'BwPostman_' . $bwpm_version_underline . '_Tables.xml';
-		codecept_debug("Filename 1: " . $filename);
-		$filename = 'BwPostman_' . '2_3_1' . '_Tables.xml';
-		codecept_debug("Filename 2: " . $filename);
-
 
 		if ($compressed)
 		{

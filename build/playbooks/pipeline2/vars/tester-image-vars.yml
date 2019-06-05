@@ -2,6 +2,8 @@
 # Fast changing variables
 bwpm_version: "2.3.1"
 joomla_version: "3.9.6"
+vm_version: "3.4.2.9966"
+tcpdf_version: "1.0.5"
 
 # Default value: Joomla3, if Joomla4 is wanted, --extra-vars is needed
 j_master_version: "3"
@@ -16,6 +18,9 @@ archive_source_j4: "https://github.com/joomla/joomla-cms/releases/download/4.0.0
 additional_extensions:
   - pkg_jce.zip
   - plg_bwtestmode.zip
+  - com_tcpdf.zip
+  - com_virtuemart.zip
+  - com_virtuemart_ext_aio.zip
 
 
 # Commit values

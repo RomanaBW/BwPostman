@@ -326,7 +326,7 @@ class Buyer2SubscriberCest
 
 				$this->cleanup($I);
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
 				$this->handleException($I, $e);
 			}
@@ -373,7 +373,7 @@ class Buyer2SubscriberCest
 				$this->checkForSubscriptionProcessed($I);
 				$this->cleanup($I);
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
 				$this->handleException($I, $e);
 			}
@@ -422,6 +422,8 @@ class Buyer2SubscriberCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function Buyer2SubscriberOptionsMessage(AcceptanceTester $I)
@@ -436,10 +438,11 @@ class Buyer2SubscriberCest
 
 		// look at FE
 		$user = $I->haveFriend('User1');
+		$that = $this;
 		$user->does(
-			function (AcceptanceTester $I)
+			function (AcceptanceTester $I) use ($that)
 			{
-				$this->doOrderUntilAddressEditPage($I);
+				$that->doOrderUntilAddressEditPage($I);
 
 				$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
 			}
@@ -451,9 +454,9 @@ class Buyer2SubscriberCest
 		// look at FE
 		$user = $I->haveFriend('User2');
 		$user->does(
-			function (AcceptanceTester $I)
+			function (AcceptanceTester $I) use ($that)
 			{
-				$this->doOrderUntilAddressEditPage($I);
+				$that->doOrderUntilAddressEditPage($I);
 
 				$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
 			}
@@ -462,7 +465,9 @@ class Buyer2SubscriberCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I);
+		$login = new LoginPage($I);
+
+		$login->logoutFromBackend($I);
 	}
 
 	/**
@@ -471,6 +476,8 @@ class Buyer2SubscriberCest
 	 * @param   AcceptanceTester $I
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -505,11 +512,15 @@ class Buyer2SubscriberCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I);
+		$login = new LoginPage($I);
+
+		$login->logoutFromBackend($I);
 	}
 
 	/**
 	 * @param   AcceptanceTester    $I
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -633,6 +644,8 @@ class Buyer2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function checkForMissingRequired($I)
@@ -641,7 +654,7 @@ class Buyer2SubscriberCest
 		$I->acceptPopup();
 
 		$I->scrollTo(Generals::$sys_message_container, 0, 100);
-		$I->see(BuyerPage::$error_alert_missing_additional, \Page\Buyer2SubscriberPage::$alert_error_div);
+		$I->see(BuyerPage::$error_alert_missing_additional, BuyerPage::$alert_error_div);
 	}
 
 	/**
@@ -881,12 +894,16 @@ class Buyer2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
 	protected function editPluginOptions(AcceptanceTester $I)
 	{
 		$this->tester = $I;
-		LoginPage::logIntoBackend(Generals::$admin);
+		$login = new LoginPage($I);
+
+		$login->logIntoBackend(Generals::$admin);
 
 		$this->selectPluginPage($I);
 
@@ -921,6 +938,7 @@ class Buyer2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -934,7 +952,7 @@ class Buyer2SubscriberCest
 
 	/**
 	 * @param AcceptanceTester $I
-	 * @param \RuntimeException $e
+	 * @param RuntimeException $e
 	 *
 	 * @throws Exception
 	 *

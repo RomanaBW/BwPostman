@@ -37,21 +37,21 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $link_to_product          = "/index.php/en/shop/headpiece/cap-baseball-detail";
+	public static $link_to_product          = "/index.php/shop/headpiece/cap-baseball-detail";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $link_to_cart             = "/index.php/en/shop/cart";
+	public static $link_to_cart             = "/index.php/shop/cart";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $link_to_editAddress      = "/index.php/en/shop/user/editaddresscartBT";
+	public static $link_to_editAddress      = "/index.php/shop/user/editaddresscartBT";
 
 	/**
 	 * @var string

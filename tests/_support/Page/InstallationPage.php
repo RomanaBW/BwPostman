@@ -48,6 +48,344 @@ class InstallationPage
 	 */
 	public static $plugin_manage_url    = "/administrator/index.php?option=com_plugins&view=plugins";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_url    = "/administrator/index.php?option=com_virtuemart&view=config";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_editshop_url    = "/administrator/index.php?option=com_virtuemart&view=user&task=editshop";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_advanced    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/div[1]/fieldset[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_enable_db_tools    = '//*[@id="dangeroustools"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_setup_url    = "/administrator/index.php?option=com_virtuemart&view=updatesmigration";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_tools_db_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/div/div/ul/li[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_sample_data_button    = "/html/body/div[2]/section/div/div/div[2]/div[3]/div/div/div[1]/table[2]/tbody/tr[2]/td[2]/div/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_sample_data_popup_text    = "This deletes all tables of VirtueMart and makes a demo install (no files). Are you sure?";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_shop_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_template_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[4]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_save_path_field    = '//*[@id="forSale_path"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_save_path_value    = '/var/www/vmfiles/';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_vendor_tab    = '/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[1]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_vendor_field    = '//*[@id="vendor_name"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_vendor_value    = 'BwPostman AutoTests';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_name_field    = '//*[@id="vendor_store_name"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_name_value    = 'BwPostman AutoTests';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_url_field    = '//*[@id="vendor_url"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_url_value    = 'http://172.17.0.3';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_currency_id    = 'vendor_currency_chzn';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_currency_field    = '//*[@id="vendor_currency_chzn"]/a';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_currency_value    = '//*[@id="vendor_currency_chzn"]/div/ul/li[text()="Euro"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_accepted_currency_id    = 'vendor_accepted_currencies_chzn';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_accepted_currency_field    = '//*[@id="vendor_accepted_currencies_chzn"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_accepted_currency_value    = '//*[@id="vendor_accepted_currencies_chzn"]/div/ul/li[text()="Euro"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_shopper_tab    = '/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[3]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_shopper_billto    = '/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/div[3]/fieldset[4]/legend';
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_firstname_field    = '//*[@id="first_name_field"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_firstname_value    = 'Admin';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_lastname_field    = '//*[@id="last_name_field"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_lastname_value    = 'Tester';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_address_field    = '//*[@id="address_1_field"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_address_value    = 'Nichtswieweg 1';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_zip_field    = '//*[@id="zip_field"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_zip_value    = '0815';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_city_field    = '//*[@id="city_field"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_city_value    = 'Irgendwo';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_country_id    = 'virtuemart_country_id_field_chzn';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_country_field    = '//*[@id="virtuemart_country_id_field_chzn"]/a';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shopper_country_value    = '//*[@id="virtuemart_country_id_field_chzn"]/div/ul/li[text()="Germany"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_url    = '/administrator/index.php?option=com_menus&view=items&menutype=top';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_title_field    = '//*[@id="jform_title"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_title_value    = 'Shop';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_item_field    = '//*[@id="jform_type"]';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_button    = '/html/body/div[2]/section/div/div/form/div[2]/div/div[1]/div/div[1]/div[1]/div[2]/span/button';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_iframe_name    = 'Menu Item Type';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_iframe_virtuemart    = '/html/body/div[2]/div[11]/div[1]/strong/a';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_iframe_virtuemart_category    = '/html/body/div[2]/div[11]/div[2]/div/ul/li[2]/a';
+
+
 	/*
 	 * Declare UI map for this page here. CSS or XPath allowed.
 	 * public static $usernameField = '#username';
@@ -60,21 +398,21 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installField      = ".//*[@id='install_package']";
+	public static $installField      = "//*[@id='install_package']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installButton     = ".//*[@id='installbutton_package']";
+	public static $installButton     = "//*[@id='installbutton_package']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installButton37   = ".//*[@id='select-file-button']";
+	public static $installButton37   = "//*[@id='select-file-button']";
 
 
 	/**
@@ -96,7 +434,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installFileB2S       = "plg_bwpostman_bwpm_buyer2subscriber.zip";
+	public static $installFileB2S       = "plg_bwpm_buyer2subscriber.zip";
 
 
 	/**
@@ -134,7 +472,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $delete_button        = ".//*[@id='toolbar-delete']/button";
+	public static $delete_button        = "//*[@id='toolbar-delete']/button";
 
 
 	/**
@@ -225,7 +563,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_published       = ".//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'icon-publish')]";
+	public static $icon_published       = "//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'icon-publish')]";
 
 	/**
 	 * Test method to install BwPostman
@@ -276,6 +614,8 @@ class InstallationPage
 	 * @param \AcceptanceTester $I
 	 *
 	 * @return void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.2.0
 	 */
@@ -333,7 +673,7 @@ class InstallationPage
 		$I->fillField(Generals::$search_field, Generals::$extension);
 		$I->click(Generals::$search_button);
 
-		$to_uninstall = $I->elementExists($I, ".//*[@id='manageList']");
+		$to_uninstall = $I->elementExists($I, "//*[@id='manageList']");
 
 		if ($to_uninstall)
 		{

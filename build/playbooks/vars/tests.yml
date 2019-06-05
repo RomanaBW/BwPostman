@@ -70,6 +70,10 @@ test_file:
     testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView
   - suite: access3
     testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtons
+  - suite: installB2S
+    testsuite_file: Buyer2Subscriber/Buyer2SubscriberInstallCest
+  - suite: B2S
+    testsuite_file: Buyer2Subscriber/Buyer2SubscriberCest
 #  - personalize:
 #  - restore:
 #  - module_subs:
@@ -137,3 +141,7 @@ test_suites:
     - footerusedmailinglists
 #  - personalize
 
+  - name: acceptB2S
+    tests:
+      - installB2S
+      - B2S

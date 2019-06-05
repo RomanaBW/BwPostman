@@ -45,15 +45,15 @@ class Buyer2SubscriberInstallCest
 	/**
 	 * Test method to login into backend
 	 *
-	 * @param   \Page\Login     $loginPage
+	 * @param   LoginPage     $loginPage
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function _login(\Page\Login $loginPage)
+	public function _login(LoginPage $loginPage)
 	{
 		$loginPage->logIntoBackend(Generals::$admin);
 	}
@@ -73,23 +73,23 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function installWithoutInstalledComponent(AcceptanceTester $I)
-	{
-		$I->wantTo("Install plugin without installed component");
-		$I->expectTo("see error message and no installed plugin Buyer2Subscriber");
-
-		$this->installPlugin($I);
-
-		$I->waitForElement(Generals::$alert_error, 30);
-		$I->see(InstallPage::$installB2SErrorComMsg, Generals::$alert_error);
-		$I->dontSee("Success", Generals::$alert_heading);
-
-		UserPage::selectPluginPage($I);
-
-		UserPage::filterForPlugin($I, BuyerPage::$plugin_name);
-
-		$I->see(BuyerPage::$plugin_not_installed);
-	}
+//	public function installWithoutInstalledComponent(AcceptanceTester $I)
+//	{
+//		$I->wantTo("Install plugin without installed component");
+//		$I->expectTo("see error message and no installed plugin Buyer2Subscriber");
+//
+//		$this->installPlugin($I);
+//
+//		$I->waitForElement(Generals::$alert_error, 30);
+//		$I->see(InstallPage::$installB2SErrorComMsg, Generals::$alert_error);
+//		$I->dontSee("Success", Generals::$alert_heading);
+//
+//		UserPage::selectPluginPage($I);
+//
+//		UserPage::filterForPlugin($I, BuyerPage::$plugin_name);
+//
+//		$I->see(BuyerPage::$plugin_not_installed);
+//	}
 
 	/**
 	 * Test method to install plugin with installed component
@@ -111,7 +111,7 @@ class Buyer2SubscriberInstallCest
 		$I->wantTo("Install plugin after installing package");
 		$I->expectTo("see success message and installed plugin");
 
-		InstallPage::installation($I);
+//		InstallPage::installation($I);
 
 		$this->installPlugin($I);
 
@@ -127,9 +127,9 @@ class Buyer2SubscriberInstallCest
 
 		$this->checkForPluginFieldsAtVM($I);
 
-		Options::saveDefaults($I);
+//		Options::saveDefaults($I);
 
-		Restore::restoreTables($I);
+//		Restore::restoreTables($I);
 	}
 
 	/**
@@ -197,7 +197,7 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -213,10 +213,11 @@ class Buyer2SubscriberInstallCest
 
 		// look at FE
 		$user = $I->haveFriend('User1');
+		$that = $this;
 		$user->does(
-			function (AcceptanceTester $I)
+			function (AcceptanceTester $I) use ($that)
 			{
-				$this->gotoAddressEditPage($I);
+				$that->gotoAddressEditPage($I);
 
 				$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
 			}
@@ -228,9 +229,9 @@ class Buyer2SubscriberInstallCest
 		// look at FE
 		$user = $I->haveFriend('User2');
 		$user->does(
-			function (AcceptanceTester $I)
+			function (AcceptanceTester $I) use ($that)
 			{
-				$this->gotoAddressEditPage($I);
+				$that->gotoAddressEditPage($I);
 
 				$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
 			}
@@ -239,7 +240,8 @@ class Buyer2SubscriberInstallCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I);
+		$login = new LoginPage($I);
+		$login->logoutFromBackend($I);
 	}
 
 	/**
@@ -254,7 +256,7 @@ class Buyer2SubscriberInstallCest
 	{
 		$I->fillField(BuyerPage::$plugin_message_identifier, $message);
 		$I->clickAndWait(Generals::$toolbar['save'], 1);
-		$I->see(UserPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->see($message, BuyerPage::$plugin_message_identifier);
 	}
 
@@ -269,7 +271,7 @@ class Buyer2SubscriberInstallCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -284,7 +286,7 @@ class Buyer2SubscriberInstallCest
 		// click checkbox for further mailinglist
 		$I->checkOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(Generals::$toolbar['save'], 1);
-		$I->see(UserPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->seeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 6));
 
 		// getManifestOption
@@ -295,7 +297,7 @@ class Buyer2SubscriberInstallCest
 		// deselect further mailinglist
 		$I->uncheckOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(Generals::$toolbar['save'], 1);
-		$I->see(UserPage::$plugin_saved_success);
+		$I->see(Generals::$plugin_saved_success);
 		$I->dontSeeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 5));
 
 		// getManifestOption
@@ -304,7 +306,8 @@ class Buyer2SubscriberInstallCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I);
+		$login = new LoginPage($I);
+		$login->logoutFromBackend($I);
 	}
 
 	/**
@@ -375,14 +378,15 @@ class Buyer2SubscriberInstallCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
 	protected function editPluginOptions(AcceptanceTester $I)
 	{
 		$this->tester = $I;
-		LoginPage::logIntoBackend(Generals::$admin);
+		$login = new LoginPage($I);
+		$login->logIntoBackend(Generals::$admin);
 
 		$this->selectPluginPage($I);
 
@@ -400,7 +404,7 @@ class Buyer2SubscriberInstallCest
 	{
 		$I->amOnPage(Generals::$plugin_page);
 		$I->wait(1);
-		$I->see(UserPage::$view_plugin, Generals::$pageTitle);
+		$I->see(Generals::$view_plugin, Generals::$pageTitle);
 	}
 
 	/**
@@ -427,8 +431,25 @@ class Buyer2SubscriberInstallCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingInstall);
 
+		$new_j_installer = true;
+
+		if ($new_j_installer)
+		{
+			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: visible');");
+		}
+
 		$I->attachFile(InstallPage::$installField, InstallPage::$installFileB2S);
-		$I->click(InstallPage::$installButton);
+
+		if (!$new_j_installer)
+		{
+			$I->click(InstallPage::$installButton);
+		}
+
+		if ($new_j_installer)
+		{
+			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
+		}
+
 		$I->waitForElement(Generals::$sys_message_container, 30);
 	}
 
@@ -436,15 +457,15 @@ class Buyer2SubscriberInstallCest
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I
-	 * @param   \Page\Login             $loginPage
+	 * @param   LoginPage             $loginPage
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
+	public function _logout(AcceptanceTester $I, LoginPage $loginPage)
 	{
 		$loginPage->logoutFromBackend($I);
 	}

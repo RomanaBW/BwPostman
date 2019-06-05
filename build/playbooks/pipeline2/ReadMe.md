@@ -52,7 +52,7 @@ There are some containers, which have to be build successively:
 		6. Reset post installation messages
 		7. Disable update notification
 		8. Disable sending statistics 
-3. Install needed extensions (JCE and the plugin Testmode) to previously created images
+3. Install needed extensions (JCE, the plugin Testmode and VirtueMart) to previously created images
 	1. **install-required-extensions-push.yml**, the images are
 		1. **universe3:5000/romana/joomla-jce-files:{{ joomla_version }}**
 		2. **universe3:5000/romana/joomla-jce-tables:{{ joomla_version }}**

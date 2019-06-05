@@ -425,6 +425,7 @@ class TestAccessCest
 				// @SpecialNote: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
 //					'Newsletters',
+//					'Subscribers',
 //					'Campaigns',
 //					'Mailinglists',
 //					'Templates',

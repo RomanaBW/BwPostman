@@ -81,17 +81,10 @@ class InstallRequiredCest
 		$I->see(InstallPage::$headingInstall);
 
 		$envInstallFiles = getenv('ADDITIONAL_EXTENSIONS');
-		$vmToInstall = false;
-
-		codecept_debug($envInstallFiles);
 		$installFiles = explode(' ', $envInstallFiles);
-		codecept_debug($installFiles);
+
 		foreach ($installFiles as $installFile)
 		{
-			if ($installFile === 'com_virtuemart.zip')
-			{
-				$vmToInstall = true;
-			}
 			self::doInstallation($I, $installFile);
 
 			$heading = $I->grabTextFrom('#system-message-container div h4');
@@ -106,11 +99,6 @@ class InstallRequiredCest
 			$I->see(self::$installSuccessMsg2, Generals::$alert_success);
 			$I->dontSee("Error", Generals::$alert_heading);
 			$I->dontSee("Warning", Generals::$alert_heading);
-		}
-
-		if ($vmToInstall)
-		{
-			$this->configureVirtuemart($I);
 		}
 	}
 
@@ -148,140 +136,6 @@ class InstallRequiredCest
 		$I->waitForElement(Generals::$sys_message_container, 120);
 
 		return;
-	}
-
-	/**
-	 * @param AcceptanceTester  $I
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.1
-	 */
-	private function configureVirtuemart(AcceptanceTester $I)
-	{
-		$this->configureSafePath($I);
-		$this->configureVendor($I);
-		$this->configureShopper($I);
-		$this->addSampleData($I);
-		$this->addShopMenuItem($I);
-	}
-
-	/**
-	 * @param AcceptanceTester  $I
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.1
-	 */
-	private function configureSafePath(AcceptanceTester $I)
-	{
-		$I->amOnPage(InstallPage::$virtuemart_config_url);
-		$I->clickAndWait(InstallPage::$virtuemart_config_template_tab, 1);
-		$I->fillField(InstallPage::$virtuemart_config_save_path_field, InstallPage::$virtuemart_config_save_path_value);
-		$I->clickAndWait(Generals::$toolbar['Save'], 1);
-	}
-
-	/**
-	 * @param AcceptanceTester  $I
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.1
-	 */
-	private function configureVendor(AcceptanceTester $I)
-	{
-		$I->amOnPage(InstallPage::$virtuemart_editshop_url);
-		$I->clickAndWait(InstallPage::$virtuemart_shop_vendor_tab, 1);
-		$I->fillField(InstallPage::$virtuemart_shop_vendor_field, InstallPage::$virtuemart_shop_vendor_value);
-		$I->fillField(InstallPage::$virtuemart_shop_name_field, InstallPage::$virtuemart_shop_name_value);
-		$I->fillField(InstallPage::$virtuemart_shop_url_field, InstallPage::$virtuemart_shop_url_value);
-
-		$I->clickSelectList(InstallPage::$virtuemart_shop_currency_field, InstallPage::$virtuemart_shop_currency_value, InstallPage::$virtuemart_shop_currency_id);
-		$I->clickSelectList(InstallPage::$virtuemart_shop_accepted_currency_field, InstallPage::$virtuemart_shop_accepted_currency_value, InstallPage::$virtuemart_shop_accepted_currency_id);
-//		$I->clickAndWait(Generals::$toolbar['Save'], 1);
-	}
-
-	/**
-	 * @param AcceptanceTester  $I
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.1
-	 */
-	private function configureShopper(AcceptanceTester $I)
-	{
-//		$I->amOnPage(InstallPage::$virtuemart_editshop_url);
-		$I->clickAndWait(InstallPage::$virtuemart_shop_shopper_tab, 1);
-		$I->scrollTo(InstallPage::$virtuemart_shop_shopper_billto, 0, -50);
-
-		$I->fillField(InstallPage::$virtuemart_shopper_firstname_field, InstallPage::$virtuemart_shopper_firstname_value);
-		$I->fillField(InstallPage::$virtuemart_shopper_lastname_field, InstallPage::$virtuemart_shopper_lastname_value);
-		$I->fillField(InstallPage::$virtuemart_shopper_address_field, InstallPage::$virtuemart_shopper_address_value);
-		$I->fillField(InstallPage::$virtuemart_shopper_zip_field, InstallPage::$virtuemart_shopper_zip_value);
-		$I->fillField(InstallPage::$virtuemart_shopper_city_field, InstallPage::$virtuemart_shopper_city_value);
-
-		$I->clickSelectList(InstallPage::$virtuemart_shopper_country_field, InstallPage::$virtuemart_shopper_country_value, InstallPage::$virtuemart_shopper_country_id);
-		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
-	}
-
-	/**
-	 * @param AcceptanceTester  $I
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.1
-	 */
-	private function addSampleData(AcceptanceTester $I)
-	{
-		$I->amOnPage(InstallPage::$virtuemart_config_url);
-		$I->clickAndWait(InstallPage::$virtuemart_config_shop_tab, 1);
-		$I->scrollTo(InstallPage::$virtuemart_config_advanced, 0, -50);
-		$I->click(InstallPage::$virtuemart_config_enable_db_tools);
-		$I->click(Generals::$toolbar['Save']);
-
-		$I->amOnPage(InstallPage::$virtuemart_setup_url);
-		$I->clickAndWait(InstallPage::$virtuemart_tools_db_tab, 1);
-		$I->scrollTo(InstallPage::$virtuemart_sample_data_button, 0, -50);
-		$I->click(InstallPage::$virtuemart_sample_data_button);
-		$I->seeInPopup(InstallPage::$virtuemart_sample_data_popup_text);
-		$I->acceptPopup();
-		$I->waitForElementVisible(Generals::$alert_success, 120);
-	}
-
-	/**
-	 * @param AcceptanceTester  $I
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.1
-	 */
-	private function addShopMenuItem(AcceptanceTester $I)
-	{
-		$I->amOnPage(InstallPage::$joomla_topmenu_url);
-		$I->clickAndWait(Generals::$toolbar['New'], 1);
-
-		$I->fillField(InstallPage::$joomla_topmenu_shop_title_field, InstallPage::$joomla_topmenu_shop_title_value);
-
-		$I->clickAndWait(InstallPage::$joomla_topmenu_shop_button, 1);
-		$I->switchToIFrame(InstallPage::$joomla_topmenu_shop_iframe_name);
-		$I->click(InstallPage::$joomla_topmenu_shop_iframe_virtuemart);
-		$I->clickAndWait(InstallPage::$joomla_topmenu_shop_iframe_virtuemart_category, 1);
-		$I->switchToIFrame();
-
-		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
-		$I->waitForElementVisible(Generals::$alert_success);
 	}
 
 		/**

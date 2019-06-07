@@ -65,10 +65,6 @@
       include_role:
         name: romanabw.get-test-mode-plugin-package
 
-    - name: get virtuemart installation package
-      include_role:
-        name: romanabw.get-virtuemart-package
-
 - hosts: "{{ required_source.web_container_name }}"
   connection: docker
   vars_files:
@@ -187,22 +183,6 @@
     - name: Show IP of webserver
       debug:
         msg: "{{ web_container_ip }}"
-
-
-- hosts: "{{ required_source.web_container_name }}"
-  connection: docker
-  vars_files:
-    - ../vars/tests.yml
-    - vars/tester-image-vars.yml
-    - vars/tester-test-vars.yml
-
-  tasks:
-    - name: copy virtuemart configuration in place
-      copy:
-        src: "files/joomla/virtuemart.cfg"
-        dest: "{{ tester_web_root }}administrator/components/com_virtuemart/virtuemart.cfg"
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
 
 
 - hosts: localhost

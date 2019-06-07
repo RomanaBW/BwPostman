@@ -18,6 +18,8 @@ archive_source_j4: "https://github.com/joomla/joomla-cms/releases/download/4.0.0
 additional_extensions:
   - pkg_jce.zip
   - plg_bwtestmode.zip
+
+virtuemart_extensions:
   - com_tcpdf.zip
   - com_virtuemart.zip
   - com_virtuemart_ext_aio.zip

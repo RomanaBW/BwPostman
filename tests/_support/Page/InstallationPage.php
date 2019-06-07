@@ -123,6 +123,13 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
+	public static $virtuemart_config_checkout_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[6]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
 	public static $virtuemart_config_save_path_field    = '//*[@id="forSale_path"]';
 
 	/**
@@ -131,6 +138,13 @@ class InstallationPage
 	 * @since 2.3.1
 	 */
 	public static $virtuemart_config_save_path_value    = '/var/www/vmfiles/';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_config_checkout_register_field    = '//*[@id="oncheckout_show_register"]';
 
 	/**
 	 * @var string
@@ -555,7 +569,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $pluginEnableSuccessMsg = "Plugin successfully enabled.";
+	public static $pluginEnableSuccessMsg = "Plugin enabled.";
 
 
 	/**

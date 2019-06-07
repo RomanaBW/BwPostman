@@ -162,15 +162,15 @@ class User2SubscriberCest
 	/**
 	 * Test method to login into backend
 	 *
-	 * @param   \Page\Login     $loginPage
+	 * @param   Page\Login     $loginPage
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function _login(\Page\Login $loginPage)
+	public function _login(Page\Login $loginPage)
 	{
 		$loginPage->logIntoBackend(Generals::$admin, $this->tester);
 	}
@@ -186,7 +186,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -231,7 +231,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -260,7 +260,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -291,7 +291,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -323,7 +323,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -361,7 +361,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -406,7 +406,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -450,7 +450,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -487,7 +487,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -524,7 +524,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -559,7 +559,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -596,7 +596,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -633,7 +633,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -670,7 +670,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -731,7 +731,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -767,7 +767,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -801,7 +801,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -842,7 +842,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -886,7 +886,7 @@ class User2SubscriberCest
 				{
 					$user_id    = $I->grabTextFrom(RegPage::$user_id_identifier);
 				}
-				catch (\Codeception\Exception\ElementNotFound $e)
+				catch (\CodeceptionException\ElementNotFound $e)
 				{
 					LoginPage::logoutFromBackend($I, false);
 					return false;
@@ -924,7 +924,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -949,7 +949,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1005,7 +1005,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1071,7 +1071,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1144,7 +1144,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1188,7 +1188,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1233,7 +1233,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1274,7 +1274,7 @@ class User2SubscriberCest
 	/**
 	 * @param   AcceptanceTester    $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1313,7 +1313,7 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1328,7 +1328,7 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1344,7 +1344,7 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1404,7 +1404,7 @@ class User2SubscriberCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1467,7 +1467,7 @@ class User2SubscriberCest
 	 * @param AcceptanceTester	$I
 	 * @param boolean			$withMl
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1521,7 +1521,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1562,7 +1562,7 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1682,7 +1682,7 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1715,7 +1715,7 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1744,7 +1744,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1778,7 +1778,7 @@ class User2SubscriberCest
 		{
 			$user_found = $I->grabTextFrom(RegPage::$user_edit_identifier);
 		}
-		catch (\Codeception\Exception\ElementNotFound $e)
+		catch (\CodeceptionException\ElementNotFound $e)
 		{
 			return false;
 		}
@@ -1885,7 +1885,7 @@ class User2SubscriberCest
 	 *
 	 * @param \AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -2001,7 +2001,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -2020,7 +2020,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -2037,7 +2037,7 @@ class User2SubscriberCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -2056,7 +2056,7 @@ class User2SubscriberCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */

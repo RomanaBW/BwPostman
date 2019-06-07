@@ -886,7 +886,7 @@ class User2SubscriberCest
 				{
 					$user_id    = $I->grabTextFrom(RegPage::$user_id_identifier);
 				}
-				catch (\CodeceptionException\ElementNotFound $e)
+				catch (Exception $e)
 				{
 					LoginPage::logoutFromBackend($I, false);
 					return false;

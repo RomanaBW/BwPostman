@@ -37,6 +37,9 @@ test_file:
   - suite: installRequired
     testsuite_file: Backend/Additional/InstallRequiredCest
 
+  - suite: installVirtuemart
+    testsuite_file: Backend/Additional/InstallVirtuemartCest
+
   - suite: install
     testsuite_file: Backend/TestInstallationCest
 
@@ -106,6 +109,10 @@ test_suites:
   - name: ext_install
     tests:
       - installRequired
+
+  - name: vm_install
+    tests:
+      - installVirtuemart
 
   - name: smoke
     tests:

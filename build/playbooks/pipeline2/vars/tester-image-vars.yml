@@ -112,6 +112,27 @@ required_target:
 #  tester_image_tag_target: "romana/os-chromium-tester"
 
 
+# Settings for creating joomla containers with installed VirtueMart
+virtuemart_source:
+  db_container_name: joomla_vm_db
+  db_image_tag_source: "romana/joomla-jce-tables:{{ joomla_version }}"
+  web_container_name: joomla_vm_web
+  web_image_tag_source: "romana/joomla-jce-files:{{ joomla_version }}"
+  tester_container_name: bwpm_vm_tester
+  tester_image_tag_source: "romana/os-chromium-tester:latest"
+
+  tester_network_name: "bwpm_network-{{ test_suite }}"
+
+virtuemart_target:
+  db_image: "{{ private_docker_repo }}/{{ virtuemart_source.db_image_tag_source }}"
+  db_image_tag_target: "romana/joomla-vm-tables:{{ joomla_version }}"
+  web_image: "{{ private_docker_repo }}/{{ virtuemart_source.web_image_tag_source }}"
+  web_image_tag_target: "romana/joomla-vm-files:{{ joomla_version }}"
+  tester_image: "{{ private_docker_repo }}/{{ virtuemart_source.tester_image_tag_source }}"
+#   At this point there is no need to push the tester!
+#  tester_image_tag_target: "romana/os-chromium-tester"
+
+
 # Settings for creating smoke tests container
 smoke_source:
   db_container_name: joomla_enh_db

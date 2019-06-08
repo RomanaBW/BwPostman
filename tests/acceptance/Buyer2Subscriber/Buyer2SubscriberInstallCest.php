@@ -156,6 +156,10 @@ class Buyer2SubscriberInstallCest
 
 		UserPage::selectPluginPage($I);
 
+		// Ensure plugin U2S is activated
+		$I->setExtensionStatus('bwpm_user2subscriber', 1);
+
+		// Activate plugin B2S
 		UserPage::filterForPlugin($I, BuyerPage::$plugin_name);
 
 		$I->see(BuyerPage::$plugin_name);
@@ -217,6 +221,8 @@ class Buyer2SubscriberInstallCest
 		$user->does(
 			function (AcceptanceTester $I) use ($that)
 			{
+				$I->amOnPage('/index.php?option=com_virtuemart&view=cart');
+				$I->waitForElementVisible("/html/body/div/div/div/main/div[1]/div/p/img");
 				$that->gotoAddressEditPage($I);
 
 				$I->see(UserPage::$plugin_message_new, BuyerPage::$message_identifier);
@@ -231,6 +237,8 @@ class Buyer2SubscriberInstallCest
 		$user->does(
 			function (AcceptanceTester $I) use ($that)
 			{
+				$I->amOnPage('/index.php?option=com_virtuemart&view=cart');
+				$I->waitForElementVisible("/html/body/div/div/div/main/div[1]/div/p/img");
 				$that->gotoAddressEditPage($I);
 
 				$I->see(UserPage::$plugin_message_old, BuyerPage::$message_identifier);
@@ -240,8 +248,8 @@ class Buyer2SubscriberInstallCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		$login = new LoginPage($I);
-		$login->logoutFromBackend($I);
+//		$login = new LoginPage($I);
+//		$login->logoutFromBackend($I);
 	}
 
 	/**
@@ -255,7 +263,7 @@ class Buyer2SubscriberInstallCest
 	private function switchPluginMessage(AcceptanceTester $I, $message)
 	{
 		$I->fillField(BuyerPage::$plugin_message_identifier, $message);
-		$I->clickAndWait(Generals::$toolbar['save'], 1);
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
 		$I->see($message, BuyerPage::$plugin_message_identifier);
 	}
@@ -285,29 +293,29 @@ class Buyer2SubscriberInstallCest
 
 		// click checkbox for further mailinglist
 		$I->checkOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
-		$I->clickAndWait(Generals::$toolbar['save'], 1);
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
-		$I->seeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 6));
+		$I->seeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 9));
 
 		// getManifestOption
 		$options = $I->getManifestOptions('bwpm_buyer2subscriber');
 		$I->assertEquals("1", $options->ml_available[0]);
-		$I->assertEquals("4", $options->ml_available[1]);
+		$I->assertEquals("24", $options->ml_available[1]);
 
 		// deselect further mailinglist
 		$I->uncheckOption(sprintf(UserPage::$plugin_checkbox_mailinglist, 0));
-		$I->clickAndWait(Generals::$toolbar['save'], 1);
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
 		$I->dontSeeCheckboxIsChecked(sprintf(UserPage::$plugin_checkbox_mailinglist, 5));
 
 		// getManifestOption
 		$options = $I->getManifestOptions('bwpm_buyer2subscriber');
-		$I->assertEquals("4", $options->ml_available[0]);
+		$I->assertEquals("24", $options->ml_available[0]);
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		$login = new LoginPage($I);
-		$login->logoutFromBackend($I);
+//		$login = new LoginPage($I);
+//		$login->logoutFromBackend($I);
 	}
 
 	/**
@@ -324,11 +332,11 @@ class Buyer2SubscriberInstallCest
 		$I->fillField(BuyerPage::$filter_field, BuyerPage::$filter_search_value);
 		$I->click(BuyerPage::$filter_go_button);
 
-		$I->see(BuyerPage::$shopper_field_message, BuyerPage::$shopper_field_title);
-		$I->see(BuyerPage::$shopper_field_subscription, BuyerPage::$shopper_field_title);
-		$I->see(BuyerPage::$shopper_field_format, BuyerPage::$shopper_field_title);
-		$I->see(BuyerPage::$shopper_field_gender, BuyerPage::$shopper_field_title);
-		$I->see(BuyerPage::$shopper_field_special, BuyerPage::$shopper_field_title);
+		$I->see(BuyerPage::$shopper_field_message, sprintf(BuyerPage::$shopper_field_title, 1));
+		$I->see(BuyerPage::$shopper_field_subscription, sprintf(BuyerPage::$shopper_field_title, 2));
+		$I->see(BuyerPage::$shopper_field_format, sprintf(BuyerPage::$shopper_field_title, 3));
+		$I->see(BuyerPage::$shopper_field_gender, sprintf(BuyerPage::$shopper_field_title, 4));
+		$I->see(BuyerPage::$shopper_field_special, sprintf(BuyerPage::$shopper_field_title, 5));
 
 		$I->canSeeNumberOfElements(BuyerPage::$shopper_field_published, 5);
 	}
@@ -344,7 +352,7 @@ class Buyer2SubscriberInstallCest
 	{
 		$I->amOnPage(BuyerPage::$link_to_shopper_fields);
 		$I->waitForElement(BuyerPage::$userfield_page_identifier, 30);
-		$I->see(BuyerPage::$product_page_header_text);
+		$I->see(BuyerPage::$userfield_page_header_text);
 	}
 
 	/**
@@ -357,6 +365,7 @@ class Buyer2SubscriberInstallCest
 	private function gotoAddressEditPage(AcceptanceTester $I)
 	{
 		$I->click(BuyerPage::$button_enter_address);
+		$I->scrollTo('//*[@id="userForm"]');
 		$I->waitForElement(BuyerPage::$header_account_details);
 		$I->see(BuyerPage::$header_account_details_text);
 	}
@@ -385,8 +394,8 @@ class Buyer2SubscriberInstallCest
 	protected function editPluginOptions(AcceptanceTester $I)
 	{
 		$this->tester = $I;
-		$login = new LoginPage($I);
-		$login->logIntoBackend(Generals::$admin);
+//		$login = new LoginPage($I);
+//		$login->logIntoBackend(Generals::$admin);
 
 		$this->selectPluginPage($I);
 

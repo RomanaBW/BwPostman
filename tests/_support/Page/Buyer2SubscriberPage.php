@@ -58,28 +58,28 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_add_to_cart       = ".//*[@id='content']/div[3]/div[4]/div[2]/div/div[5]/form/div[2]/span[3]/input";
+	public static $button_add_to_cart       = "/html/body/div[1]/div/div/main/div[3]/div[5]/div[2]/div/div[4]/form/div[2]/span[3]/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_tos               = ".//*[@id='tos']";
+	public static $button_tos               = "//*[@id='tos']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_check_out_now     = ".//*[@id='checkoutFormSubmit']";
+	public static $button_check_out_now     = "//*[@id='checkoutFormSubmit']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_enter_address     = ".//*[@id='checkoutForm']/div[1]/div[1]/a";
+	public static $button_enter_address     = "//*[@id='checkoutForm']/div[1]/div[1]/a";
 
 
 	/**
@@ -122,7 +122,7 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $product_page_header_text     = "Cap \"Baseball\"";
+	public static $product_page_header_text     = 'Cap "Baseball"';
 
 	/**
 	 * @var string
@@ -159,7 +159,7 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error_div  = ".//*[@id='system-message-container']/div/div";
+	public static $alert_error_div  = "//*[@id='system-message-container']/div/div";
 
 
 	/**
@@ -167,35 +167,35 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $link_in_popup_show_cart   = ".//*[@id='fancybox-content']/div/a[2]";
+	public static $link_in_popup_show_cart   = "//*[@id='fancybox-content']/div/a[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $header_cart_identifier    = ".//*[@id='content']/div[3]/div[1]/h1";
+	public static $header_cart_identifier    = "//*[@id='content']/div[3]/div[1]/h1";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $sku_identifier            = ".//*[@id='checkoutForm']/fieldset[1]/table/tbody/tr[2]/td[2]";
+	public static $sku_identifier            = "//*[@id='checkoutForm']/fieldset[1]/table/tbody/tr[2]/td[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $header_account_details    = ".//*[@id='content']/h1";
+	public static $header_account_details    = "//*[@id='content']/h1";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $product_page_identifier   = ".//*[@id='content']/div[3]/h1";
+	public static $product_page_identifier   = "//*[@id='content']/div[3]/h1";
 
 	// billto field identifiers
 
@@ -204,70 +204,70 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_email           = ".//*[@id='email_field']";
+	public static $billto_identifier_email           = "//*[@id='email_field']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_firstname       = ".//*[@id='first_name_field']";
+	public static $billto_identifier_firstname       = "//*[@id='first_name_field']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_lastname        = ".//*[@id='last_name_field']";
+	public static $billto_identifier_lastname        = "//*[@id='last_name_field']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_street          = ".//*[@id='address_1_field']";
+	public static $billto_identifier_street          = "//*[@id='address_1_field']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_zip_code        = ".//*[@id='zip_field']";
+	public static $billto_identifier_zip_code        = "//*[@id='zip_field']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_city            = ".//*[@id='city_field']";
+	public static $billto_identifier_city            = "//*[@id='city_field']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_country_id      = ".//*[@id='virtuemart_country_id_field_chzn']";
+	public static $billto_identifier_country_id      = "//*[@id='virtuemart_country_id_field_chzn']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_country_select  = ".//*[@id='virtuemart_country_id_field_chzn']/a";
+	public static $billto_identifier_country_select  = "//*[@id='virtuemart_country_id_field_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_country_value   = ".//*[@id='virtuemart_country_id_field_chzn_o_81']";
+	public static $billto_identifier_country_value   = "//*[@id='virtuemart_country_id_field_chzn_o_81']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $billto_identifier_save            = ".//*[@id='userForm']/div/button[1]";
+	public static $billto_identifier_save            = "//*[@id='userForm']/div/button[2]";
 
 
 	/**
@@ -275,7 +275,7 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $message_identifier       = ".//*[@id='userForm']/fieldset/fieldset/legend[contains(.,'newsletter message')]";
+	public static $message_identifier       = "//*[@id='userForm']/fieldset/fieldset/legend[contains(.,'newsletter message')]";
 
 
 	/**
@@ -290,21 +290,21 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscription_list        = ".//*[@id='bw_newsletter_subscription_chzn']/a";
+	public static $subscription_list        = "//*[@id='bw_newsletter_subscription_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscription_no          = ".//*[@id='bw_newsletter_subscription_chzn_o_1']";
+	public static $subscription_no          = "//*[@id='bw_newsletter_subscription_chzn_o_1']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscription_yes         = ".//*[@id='bw_newsletter_subscription_chzn_o_2']";
+	public static $subscription_yes         = "//*[@id='bw_newsletter_subscription_chzn_o_2']";
 
 
 	/**
@@ -319,21 +319,21 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_list              = ".//*[@id='bw_newsletter_format_chzn']/a";
+	public static $format_list              = "//*[@id='bw_newsletter_format_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_list_value        = ".//*[@id='bw_newsletter_format_chzn_o_%s']";
+	public static $format_list_value        = "//*[@id='bw_newsletter_format_chzn_o_%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $additional_identifier    = ".//*[@id='bw_newsletter_additional_field']";
+	public static $additional_identifier    = "//*[@id='bw_newsletter_additional_field']";
 
 	/**
 	 * @var string
@@ -347,14 +347,14 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender_list              = ".//*[@id='bw_gender_chzn']/a";
+	public static $gender_list              = "//*[@id='bw_gender_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender_value             = ".//*[@id='bw_gender_chzn_o_%s']";
+	public static $gender_value             = "//*[@id='bw_gender_chzn_o_%s']";
 
 	// buyer field values
 
@@ -428,7 +428,7 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $order_number_field       = ".//*[@id='content']/div[3]/div[2]";
+	public static $order_number_field       = "//*[@id='content']/div[3]/div[2]";
 
 
 	/**
@@ -1328,7 +1328,7 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $userfield_published_col  = ".//*[@id='editcell']/table/tbody/tr/td[6]";
+	public static $userfield_published_col  = "//*[@id='editcell']/table/tbody/tr/td[6]";
 
 
 	/**
@@ -1336,21 +1336,21 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $filter_field             = ".//*[@id='search']";
+	public static $filter_field             = "//*[@id='search']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $filter_go_button         = ".//*[@id='filterbox']/table/tbody/tr/td/button[1]";
+	public static $filter_go_button         = "//*[@id='filterbox']/table/tbody/tr/td/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $filter_reset_button      = ".//*[@id='filterbox']/table/tbody/tr/td/button[2]";
+	public static $filter_reset_button      = "//*[@id='filterbox']/table/tbody/tr/td/button[2]";
 
 
 	/**
@@ -1365,14 +1365,14 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $shopper_field_title          = ".//*[@id='editcell']/table/tbody/tr[%s]/td[2]/a";
+	public static $shopper_field_title          = "//*[@id='editcell']/table/tbody/tr[%s]/td[2]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $shopper_field_published      = ".//*[@id='editcell']/table/tbody/tr[%s]/td[6]/a/span[contains(@class, 'icon-publish')]";
+	public static $shopper_field_published      = "//*/td[6]/a/span[contains(@class, 'icon-publish')]";
 
 
 	/**
@@ -1442,19 +1442,19 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_tab_options               = ".//*[@id='myTabTabs']/li/a[text()='Options']";
+	public static $plugin_tab_options               = "//*[@id='myTabTabs']/li/a[text()='Options']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_tab_mailinglists          = ".//*[@id='myTabTabs']/li/a[text()='Mailinglists']";
+	public static $plugin_tab_mailinglists          = "//*[@id='myTabTabs']/li/a[text()='Mailinglists']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_message_identifier        = ".//*[@id='jform_params_bw_register_message_option']";
+	public static $plugin_message_identifier        = "//*[@id='jform_params_bw_register_message_option']";
 }

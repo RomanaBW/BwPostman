@@ -97,6 +97,9 @@ test_file:
 
   - suite: B2S
     testsuite_file: Buyer2Subscriber/Buyer2SubscriberCest
+
+  - suite: TC
+    testsuite_file: TimeControl/TimeControlCest
 #  - personalize:
 
 #  - restore:
@@ -161,3 +164,7 @@ test_suites:
     tests:
       - installB2S
       - B2S
+
+  - name: acceptTC
+    tests:
+      - TC

@@ -60,3 +60,8 @@ bwpm_accept7_tester ansible_connection=docker
 bwpm_acceptB2S_db ansible_connection=docker
 bwpm_acceptB2S_web ansible_connection=docker
 bwpm_acceptB2S_tester ansible_connection=docker
+
+bwpm_acceptTC_db ansible_connection=docker
+bwpm_acceptTC_web ansible_connection=docker
+bwpm_acceptTC_tester ansible_connection=docker
+

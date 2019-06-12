@@ -1,7 +1,7 @@
 ---
 - name: Set archive source
   set_fact:
-    archive_source: "https://dev.virtuemart.net/attachments/download/1144"
+    archive_source: "http://dev.virtuemart.net/attachments/download/1144"
 
 - name: Set archive file
   set_fact:

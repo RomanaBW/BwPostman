@@ -116,6 +116,24 @@ class Com_BwPostmanInstallerScript
 	private $adminUsergroup = null;
 
 	/**
+	 * Property to hold logger
+	 *
+	 * @var    object
+	 *
+	 * @since  2.4.0
+	 */
+	private $logger;
+
+	/**
+	 * Property to hold log category
+	 *
+	 * @var    string
+	 *
+	 * @since  2.4.0
+	 */
+	private $log_cat = 'Installer';
+
+	/**
 	 * Executes additional installation processes
 	 *
 	 * @since       0.9.6.3
@@ -278,6 +296,14 @@ class Com_BwPostmanInstallerScript
 		if ($m_params->get('image_path', 'images') != 'images')
 		{
 			$this->copyTemplateImagesToImages();
+		}
+
+		if ($type == 'install' || $type == 'update')
+		{
+			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+
+			$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
+			$this->logger = new BwLogger($log_options);
 		}
 
 		if ($type == 'install')
@@ -802,12 +828,14 @@ class Com_BwPostmanInstallerScript
 			// get the model for user groups
 			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
 			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			$this->logger->addEntry(new JLogEntry('GroupModel: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
 
 			// get group ID of public
 			$public_id = $this->getGroupId('Public');
 
 			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
+			$this->logger->addEntry(new JLogEntry('Group BwPostmanAdmin exists: ' . $groupExists, JLog::DEBUG, $this->log_cat));
 
 //			if (!$groupExists)
 //			{
@@ -858,10 +886,10 @@ class Com_BwPostmanInstallerScript
 
 //					$ret = $groupModel->save(array('id' => $groupId, 'parent_id' => $parent_id, 'title' => $item));
 
-					if (!$ret)
-					{
-						throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-					}
+//					if (!$ret)
+//					{
+//						throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+//					}
 
 					$parent_id = $this->getGroupId($item);
 				}

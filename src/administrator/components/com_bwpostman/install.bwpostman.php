@@ -809,17 +809,17 @@ class Com_BwPostmanInstallerScript
 			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
 
-			if (!$groupExists)
-			{
-				$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
-
-				if (!$ret)
-				{
-					echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
-					throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
-						$ret));
-				}
-			}
+//			if (!$groupExists)
+//			{
+//				$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
+//
+//				if (!$ret)
+//				{
+//					echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+//					throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
+//						$ret));
+//				}
+//			}
 
 			$admin_groupId = $this->getGroupId('BwPostmanAdmin');
 			$this->adminUsergroup = $admin_groupId;
@@ -827,19 +827,19 @@ class Com_BwPostmanInstallerScript
 			// Ensure user group BwPostmanManager exists
 			$manager_groupId = $this->getGroupId('BwPostmanManager');
 
-			if (!$manager_groupId)
-			{
-				$manager_groupId = 0;
-			}
-
-			$ret = $groupModel->save(array('id' => $manager_groupId, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager'));
-
-			if (!$ret)
-			{
-				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
-				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
-					$ret));
-			}
+//			if (!$manager_groupId)
+//			{
+//				$manager_groupId = 0;
+//			}
+//
+//			$ret = $groupModel->save(array('id' => $manager_groupId, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager'));
+//
+//			if (!$ret)
+//			{
+//				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+//				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
+//					$ret));
+//			}
 
 			$manager_groupId = $this->getGroupId('BwPostmanManager');
 
@@ -856,7 +856,7 @@ class Com_BwPostmanInstallerScript
 						$groupId = 0;
 					}
 
-					$ret = $groupModel->save(array('id' => $groupId, 'parent_id' => $parent_id, 'title' => $item));
+//					$ret = $groupModel->save(array('id' => $groupId, 'parent_id' => $parent_id, 'title' => $item));
 
 					if (!$ret)
 					{

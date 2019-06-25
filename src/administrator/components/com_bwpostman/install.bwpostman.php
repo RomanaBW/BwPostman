@@ -240,12 +240,7 @@ class Com_BwPostmanInstallerScript
 
 		// Check if utf8mb4 is supported; if so, copy utf8mb4 file as sql installation file
 		jimport('joomla.filesystem.file');
-		$tmp_path   = $this->parentInstaller->getPath('source');
-
-		if(version_compare($jversion->getShortVersion(), '4', 'lt'))
-		{
-			$tmp_path .= '/admin';
-		}
+		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
 		require_once($tmp_path . '/helpers/installhelper.php');
 

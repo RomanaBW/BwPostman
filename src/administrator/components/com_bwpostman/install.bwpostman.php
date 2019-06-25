@@ -797,8 +797,18 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			// get the model for user groups
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			$jversion	= new JVersion();
+			if(version_compare($jversion->getShortVersion(), '4.0.0', 'lt'))
+			{
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			}
+			else
+			{
+				JModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+				$groupModel = JModel::getInstance('Group', 'UsersModel');
+			}
+
 
 			// get group ID of public
 			$public_id = $this->getGroupId('Public');
@@ -1294,16 +1304,16 @@ class Com_BwPostmanInstallerScript
 	protected function installSampleUsergroups()
 	{
 		$this->createSampleUsergroups();
-		$this->addBwPmAdminToViewlevel();
-		$this->addBwPmAdminToRootAsset();
-		/*
-		 * Rewrite section assets
-		 *
-		 */
-		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-		$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
-
-		$maintenanceModel->createBaseAssets();
+//		$this->addBwPmAdminToViewlevel();
+//		$this->addBwPmAdminToRootAsset();
+//		/*
+//		 * Rewrite section assets
+//		 *
+//		 */
+//		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+//		$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
+//
+//		$maintenanceModel->createBaseAssets();
 	}
 
 	/**

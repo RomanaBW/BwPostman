@@ -215,6 +215,13 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
+	public static $alert_nothing       = 'div.alert-';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $alert_error      = 'div.alert-error';
 
 	/**

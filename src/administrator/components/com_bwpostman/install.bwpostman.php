@@ -160,8 +160,8 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Called before any type of action
 	 *
-	 * @param   string  			$type		Which action is happening (install|uninstall|discover_install|update)
-	 * @param   JAdapterInstance	$parent		The object responsible for running this script
+	 * @param   string  			                    $type		Which action is happening (install|uninstall|discover_install|update)
+	 * @param   Joomla\CMS\Installer\InstallerAdapter	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -170,7 +170,7 @@ class Com_BwPostmanInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function preflight($type, JAdapterInstance $parent)
+	public function preflight($type, Joomla\CMS\Installer\InstallerAdapter $parent)
 	{
 		$app 		= JFactory::getApplication();
 		$session	= JFactory::getSession();
@@ -182,12 +182,14 @@ class Com_BwPostmanInstallerScript
 		}
 
 		$this->parentInstaller	= $parent->getParent();
+		$manifest = $parent->getManifest();
+
 		// Get component manifest file version
-		$this->release	= $parent->get("manifest")->version;
+		$this->release	= $manifest->version;
 		$session->set('release', $this->release->__toString(), 'bwpostman');
 
 		// Manifest file minimum Joomla version
-		$this->minimum_joomla_release = $parent->get("manifest")->attributes()->version;
+		$this->minimum_joomla_release = $manifest->attributes()->version;
 
 		// abort if the current Joomla release is older
 		if(version_compare($jversion->getShortVersion(), $this->minimum_joomla_release, 'lt'))

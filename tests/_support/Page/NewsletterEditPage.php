@@ -1,6 +1,7 @@
 <?php
 namespace Page;
 
+use Mockery\Exception;
 use Page\NewsletterManagerPage as NlManage;
 use Page\Generals as Generals;
 
@@ -1237,6 +1238,8 @@ class NewsletterEditPage
 	 * @param \AcceptanceTester $I
 	 *
 	 * @return void
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */

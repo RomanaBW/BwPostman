@@ -537,6 +537,13 @@ class InstallationPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.3.1
+	 */
+	public static $installPackageSuccessMsg    = "Installation of the package was successful.";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $installB2SErrorComMsg   = "BwPostman Plugin Buyer2Subscriber requires an installed BwPostman ";

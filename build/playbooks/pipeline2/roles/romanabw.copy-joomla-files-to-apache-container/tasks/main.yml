@@ -9,6 +9,14 @@
     archive_source: "{{ archive_source_j4 }}"
   when: j_master_version == '4'
 
+- name: Debug Joomla master version
+  debug:
+    msg: "{{ j_master_version }}"
+
+- name: Debug archive source
+  debug:
+    msg: "{{ archive_source }}"
+
 - name: unpack Joomla files to document root
   unarchive:
     src: "{{ archive_source }}"

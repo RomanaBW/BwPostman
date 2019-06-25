@@ -282,7 +282,7 @@ class Com_BwPostmanInstallerScript
 			$this->setDefaultParams();
 
 			// Create sample user groups, set viewlevel
-//			$this->installSampleUsergroups();
+			$this->installSampleUsergroups();
 		}
 
 		// check if sample templates exists

@@ -44,8 +44,8 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	/**
 	 * Called before any type of action
 	 *
-	 * @param   string  			$type		Which action is happening (install|uninstall|discover_install|update)
-	 * @param   JAdapterInstance	$parent		The object responsible for running this script
+	 * @param   string  			                    $type		Which action is happening (install|uninstall|discover_install|update)
+	 * @param   Joomla\CMS\Installer\InstallerAdapter	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -54,7 +54,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function preflight($type, JAdapterInstance $parent)
+	public function preflight($type, Joomla\CMS\Installer\InstallerAdapter $parent)
 	{
 		if ($type == 'install')
 		{

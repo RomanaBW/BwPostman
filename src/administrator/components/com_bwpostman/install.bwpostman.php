@@ -238,16 +238,19 @@ class Com_BwPostmanInstallerScript
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		// Check if utf8mb4 is supported; if so, copy utf8mb4 file as sql installation file
-		jimport('joomla.filesystem.file');
-		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
-
-		require_once($tmp_path . '/helpers/installhelper.php');
-
-		$name = $_db->getName();
-		if (BwPostmanInstallHelper::serverClaimsUtf8mb4Support($name))
+		if ($type !== 'uninstall')
 		{
-			copy($tmp_path . '/sql/utf8mb4conversion/utf8mb4-install.sql', $tmp_path . '/sql/install.sql');
+			// Check if utf8mb4 is supported; if so, copy utf8mb4 file as sql installation file
+			jimport('joomla.filesystem.file');
+			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
+
+			require_once($tmp_path . '/helpers/installhelper.php');
+
+			$name = $_db->getName();
+			if (BwPostmanInstallHelper::serverClaimsUtf8mb4Support($name))
+			{
+				copy($tmp_path . '/sql/utf8mb4conversion/utf8mb4-install.sql', $tmp_path . '/sql/install.sql');
+			}
 		}
 
 		return true;
@@ -384,9 +387,9 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
-		$this->deleteBwPmAdminFromRootAsset();
-		$this->deleteBwPmAdminFromViewlevels();
-		$this->deleteSampleUsergroups();
+//		$this->deleteBwPmAdminFromRootAsset();
+//		$this->deleteBwPmAdminFromViewlevels();
+//		$this->deleteSampleUsergroups();
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
@@ -797,18 +800,8 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			// get the model for user groups
-			$jversion	= new JVersion();
-			if(version_compare($jversion->getShortVersion(), '4.0.0', 'lt'))
-			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
-			}
-			else
-			{
-				JModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$groupModel = JModel::getInstance('Group', 'UsersModel');
-			}
-
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
 			// get group ID of public
 			$public_id = $this->getGroupId('Public');

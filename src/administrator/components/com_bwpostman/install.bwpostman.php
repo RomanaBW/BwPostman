@@ -282,14 +282,14 @@ class Com_BwPostmanInstallerScript
 			$this->setDefaultParams();
 
 			// Create sample user groups, set viewlevel
-			$this->installSampleUsergroups();
+//			$this->installSampleUsergroups();
 		}
 
 		// check if sample templates exists
-		$this->checkSampleTemplates();
+//		$this->checkSampleTemplates();
 
 		// update/complete component rules
-		$this->updateRules();
+//		$this->updateRules();
 
 		if ($type == 'update')
 		{
@@ -316,7 +316,7 @@ class Com_BwPostmanInstallerScript
 				$this->removeOwnManagerFiles();
 			}
 
-			$this->installSampleUsergroups();
+//			$this->installSampleUsergroups();
 
 			$this->repairRootAsset();
 

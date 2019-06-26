@@ -833,13 +833,13 @@ class Com_BwPostmanInstallerScript
 			if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
 			{
 				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
-				$this->logger->addEntry(new JLogEntry('GroupModel 1: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry('GroupModel 1: ' . print_r($groupModel, true), JLog::DEBUG, $this->log_cat));
 			}
 			else
 			{
 				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
 				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
-				$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . print_r($groupModel, true), JLog::DEBUG, $this->log_cat));
 			}
 
 			// get group ID of public
@@ -853,7 +853,7 @@ class Com_BwPostmanInstallerScript
 			{
 				if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
 				{
-					$this->logger->addEntry(new JLogEntry('GroupModel 3: ' . var_dump(Joomla\Component\Users\Administrator\Model\GroupModel), JLog::DEBUG, $this->log_cat));
+					$this->logger->addEntry(new JLogEntry('GroupModel 3: ' . print_r(Joomla\Component\Users\Administrator\Model\GroupModel(), true), JLog::DEBUG, $this->log_cat));
 
 					$ret = GroupModel::save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
 				}

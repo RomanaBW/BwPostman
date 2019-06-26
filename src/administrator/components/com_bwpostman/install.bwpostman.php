@@ -828,7 +828,7 @@ class Com_BwPostmanInstallerScript
 		{
 			// get the model for user groups
 			$jversion = new JVersion();
-			if(version_compare($jversion->getShortVersion(), $this->minimum_joomla_release, 'lt'))
+			if(version_compare($jversion->getShortVersion(), '4.0.0', 'lt'))
 			{
 				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
 				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');

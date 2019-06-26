@@ -828,9 +828,11 @@ class Com_BwPostmanInstallerScript
 		{
 			// get the model for user groups
 			$jversion = new JVersion();
+			$this->logger->addEntry(new JLogEntry('Short Version: ' . $jversion->getShortVersion(), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('J-Version: ' . version_compare($jversion->getShortVersion(), '4.0.0', 'ge'), JLog::DEBUG, $this->log_cat));
 			if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
 			{
-				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel;
+				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
 			}
 			else
 			{
@@ -846,7 +848,6 @@ class Com_BwPostmanInstallerScript
 			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
 			$this->logger->addEntry(new JLogEntry('Group BwPostmanAdmin exists: ' . $groupExists, JLog::DEBUG, $this->log_cat));
-			$this->logger->addEntry(new JLogEntry('J-Version: ' . version_compare($jversion->getShortVersion(), '4.0.0', 'ge'), JLog::DEBUG, $this->log_cat));
 
 			if (!$groupExists)
 			{

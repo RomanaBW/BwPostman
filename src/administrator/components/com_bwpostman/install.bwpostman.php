@@ -347,7 +347,7 @@ class Com_BwPostmanInstallerScript
 				$this->removeOwnManagerFiles();
 			}
 
-//			$this->installSampleUsergroups();
+			$this->installSampleUsergroups();
 
 			$this->repairRootAsset();
 
@@ -835,7 +835,7 @@ class Com_BwPostmanInstallerScript
 			}
 			else
 			{
-				$groupModel = new GroupModel();
+				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
 			}
 
 			$this->logger->addEntry(new JLogEntry('GroupModel: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));

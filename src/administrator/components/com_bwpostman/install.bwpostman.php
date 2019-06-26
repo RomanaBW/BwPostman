@@ -29,6 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Component\Users\Administrator\Model\Group;
 /**
  * Class Com_BwPostmanInstallerScript
  *
@@ -826,8 +827,17 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			// get the model for user groups
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			$jversion = new JVersion();
+			if(version_compare($jversion->getShortVersion(), $this->minimum_joomla_release, 'lt'))
+			{
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			}
+			else
+			{
+				$groupModel = new GroupModel();
+			}
+
 			$this->logger->addEntry(new JLogEntry('GroupModel: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
 
 			// get group ID of public

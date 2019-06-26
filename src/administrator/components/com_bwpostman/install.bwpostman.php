@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Component\Users\Administrator\Model\Group;
+use Joomla\Component\Users\Administrator\Model\GroupModel as GroupModel;
 /**
  * Class Com_BwPostmanInstallerScript
  *
@@ -835,7 +835,7 @@ class Com_BwPostmanInstallerScript
 			}
 			else
 			{
-				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
+				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel;
 			}
 
 			$this->logger->addEntry(new JLogEntry('GroupModel: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
@@ -847,17 +847,24 @@ class Com_BwPostmanInstallerScript
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
 			$this->logger->addEntry(new JLogEntry('Group BwPostmanAdmin exists: ' . $groupExists, JLog::DEBUG, $this->log_cat));
 
-//			if (!$groupExists)
-//			{
-//				$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
-//
-//				if (!$ret)
-//				{
-//					echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
-//					throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
-//						$ret));
-//				}
-//			}
+			if (!$groupExists)
+			{
+				if(version_compare($jversion->getShortVersion(), '4.0.0', 'lt'))
+				{
+					$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
+				}
+				else
+				{
+					$ret = GroupModel::save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
+				}
+
+				if (!$ret)
+				{
+					echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+					throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
+						$ret));
+				}
+			}
 
 			$admin_groupId = $this->getGroupId('BwPostmanAdmin');
 			$this->adminUsergroup = $admin_groupId;

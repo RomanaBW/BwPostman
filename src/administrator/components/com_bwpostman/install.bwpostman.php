@@ -1375,15 +1375,15 @@ class Com_BwPostmanInstallerScript
 		 * Rewrite section assets
 		 *
 		 */
-		if($this->isJ4)
-		{
-			$maintenanceModel = new Joomla\Component\BwPostman\Administrator\models\maintenance();
-		}
-		else
-		{
+//		if($this->isJ4)
+//		{
+//			$maintenanceModel = new Joomla\Component\BwPostman\Administrator\models\maintenance();
+//		}
+//		else
+//		{
 			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
 			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
-		}
+//		}
 
 		$maintenanceModel->createBaseAssets();
 	}

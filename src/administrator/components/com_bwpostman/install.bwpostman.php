@@ -838,7 +838,7 @@ class Com_BwPostmanInstallerScript
 				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel;
 			}
 
-			$this->logger->addEntry(new JLogEntry('GroupModel: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('GroupModel 1: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
 
 			// get group ID of public
 			$public_id = $this->getGroupId('Public');
@@ -855,6 +855,8 @@ class Com_BwPostmanInstallerScript
 				}
 				else
 				{
+					$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . var_dump(Joomla\Component\Users\Administrator\Model\GroupModel), JLog::DEBUG, $this->log_cat));
+
 					$ret = GroupModel::save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
 				}
 

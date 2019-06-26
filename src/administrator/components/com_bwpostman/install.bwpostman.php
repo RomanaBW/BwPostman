@@ -828,14 +828,14 @@ class Com_BwPostmanInstallerScript
 		{
 			// get the model for user groups
 			$jversion = new JVersion();
-			if(version_compare($jversion->getShortVersion(), '4.0.0', 'lt'))
+			if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
 			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel;
 			}
 			else
 			{
-				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel;
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 			}
 
 			$this->logger->addEntry(new JLogEntry('GroupModel 1: ' . var_dump($groupModel), JLog::DEBUG, $this->log_cat));
@@ -846,19 +846,19 @@ class Com_BwPostmanInstallerScript
 			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
 			$this->logger->addEntry(new JLogEntry('Group BwPostmanAdmin exists: ' . $groupExists, JLog::DEBUG, $this->log_cat));
-			$this->logger->addEntry(new JLogEntry('J-Version: ' . version_compare($jversion->getShortVersion(), '4.0.0', 'lt'), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('J-Version: ' . version_compare($jversion->getShortVersion(), '4.0.0', 'ge'), JLog::DEBUG, $this->log_cat));
 
 			if (!$groupExists)
 			{
-				if(version_compare($jversion->getShortVersion(), '4.0.0', 'lt'))
-				{
-					$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
-				}
-				else
+				if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
 				{
 					$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . var_dump(Joomla\Component\Users\Administrator\Model\GroupModel), JLog::DEBUG, $this->log_cat));
 
 					$ret = GroupModel::save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
+				}
+				else
+				{
+					$ret = $groupModel->save(array('id' => 0, 'parent_id' => $public_id, 'title' => 'BwPostmanAdmin'));
 				}
 
 				if (!$ret)

@@ -135,6 +135,15 @@ class Com_BwPostmanInstallerScript
 	private $log_cat = 'Installer';
 
 	/**
+	 * Do we install on Joomla 4?
+	 *
+	 * @var    string
+	 *
+	 * @since  2.4.0
+	 */
+	private $isJ4 = false;
+
+	/**
 	 * Executes additional installation processes
 	 *
 	 * @since       0.9.6.3
@@ -305,6 +314,13 @@ class Com_BwPostmanInstallerScript
 
 			$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
 			$this->logger = new BwLogger($log_options);
+
+			$jversion = new JVersion();
+			if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
+			{
+				$this->isJ4 = true;
+			}
+
 		}
 
 		if ($type == 'install')
@@ -317,10 +333,10 @@ class Com_BwPostmanInstallerScript
 		}
 
 		// check if sample templates exists
-//		$this->checkSampleTemplates();
+		$this->checkSampleTemplates();
 
 		// update/complete component rules
-//		$this->updateRules();
+		$this->updateRules();
 
 		if ($type == 'update')
 		{
@@ -414,9 +430,9 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
-//		$this->deleteBwPmAdminFromRootAsset();
-//		$this->deleteBwPmAdminFromViewlevels();
-//		$this->deleteSampleUsergroups();
+		$this->deleteBwPmAdminFromRootAsset();
+		$this->deleteBwPmAdminFromViewlevels();
+		$this->deleteSampleUsergroups();
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 		//  notice that folder image/bw_postman is not removed
@@ -827,27 +843,22 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			// get the model for user groups
-			$jversion = new JVersion();
-			$this->logger->addEntry(new JLogEntry('Short Version: ' . $jversion->getShortVersion(), JLog::DEBUG, $this->log_cat));
-			$this->logger->addEntry(new JLogEntry('J-Version: ' . version_compare($jversion->getShortVersion(), '4.0.0', 'ge'), JLog::DEBUG, $this->log_cat));
-			if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
+			if($this->isJ4)
 			{
 				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
-//				$this->logger->addEntry(new JLogEntry('GroupModel 1: ' . print_r($groupModel, true), JLog::DEBUG, $this->log_cat));
 			}
 			else
 			{
 				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
 				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
-//				$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . print_r($groupModel, true), JLog::DEBUG, $this->log_cat));
 			}
+//			$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . print_r($groupModel, true), JLog::DEBUG, $this->log_cat));
 
 			// get group ID of public
 			$public_id = $this->getGroupId('Public');
 
 			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
-			$this->logger->addEntry(new JLogEntry('Group BwPostmanAdmin exists: ' . $groupExists, JLog::DEBUG, $this->log_cat));
 
 			if (!$groupExists)
 			{
@@ -867,19 +878,19 @@ class Com_BwPostmanInstallerScript
 			// Ensure user group BwPostmanManager exists
 			$manager_groupId = $this->getGroupId('BwPostmanManager');
 
-//			if (!$manager_groupId)
-//			{
-//				$manager_groupId = 0;
-//			}
-//
-//			$ret = $groupModel->save(array('id' => $manager_groupId, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager'));
-//
-//			if (!$ret)
-//			{
-//				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
-//				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
-//					$ret));
-//			}
+			if (!$manager_groupId)
+			{
+				$manager_groupId = 0;
+			}
+
+			$ret = $groupModel->save(array('id' => $manager_groupId, 'parent_id' => $admin_groupId, 'title' => 'BwPostmanManager'));
+
+			if (!$ret)
+			{
+				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+				throw new Exception(JText::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
+					$ret));
+			}
 
 			$manager_groupId = $this->getGroupId('BwPostmanManager');
 
@@ -896,12 +907,12 @@ class Com_BwPostmanInstallerScript
 						$groupId = 0;
 					}
 
-//					$ret = $groupModel->save(array('id' => $groupId, 'parent_id' => $parent_id, 'title' => $item));
+					$ret = $groupModel->save(array('id' => $groupId, 'parent_id' => $parent_id, 'title' => $item));
 
-//					if (!$ret)
-//					{
-//						throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
-//					}
+					if (!$ret)
+					{
+						throw new Exception(JText::_('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS'));
+					}
 
 					$parent_id = $this->getGroupId($item);
 				}
@@ -935,8 +946,15 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get the model for viewlevels
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-			$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+			if($this->isJ4)
+			{
+				$viewlevelModel = new Joomla\Component\Users\Administrator\Model\LevelModel();
+			}
+			else
+			{
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+				$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+			}
 
 			// Get viewlevel special
 			$specialLevel = $viewlevelModel->getItem(3);
@@ -1091,8 +1109,15 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get the model for user groups
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models', 'UsersModel');
-			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			if($this->isJ4)
+			{
+				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
+			}
+			else
+			{
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models', 'UsersModel');
+				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			}
 
 			JAccess::clearStatics();
 
@@ -1136,8 +1161,15 @@ class Com_BwPostmanInstallerScript
 			try
 			{
 				// get the model for viewlevels
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+				if($this->isJ4)
+				{
+					$viewlevelModel = new Joomla\Component\Users\Administrator\Model\LevelModel();
+				}
+				else
+				{
+					JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+					$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+				}
 
 				// Get viewlevel special
 				$specialLevel = $viewlevelModel->getItem(3);
@@ -1337,16 +1369,23 @@ class Com_BwPostmanInstallerScript
 	protected function installSampleUsergroups()
 	{
 		$this->createSampleUsergroups();
-//		$this->addBwPmAdminToViewlevel();
-//		$this->addBwPmAdminToRootAsset();
-//		/*
-//		 * Rewrite section assets
-//		 *
-//		 */
-//		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-//		$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
-//
-//		$maintenanceModel->createBaseAssets();
+		$this->addBwPmAdminToViewlevel();
+		$this->addBwPmAdminToRootAsset();
+		/*
+		 * Rewrite section assets
+		 *
+		 */
+		if($this->isJ4)
+		{
+			$maintenanceModel = new Joomla\Component\BwPostman\Administrator\models\maintenance();
+		}
+		else
+		{
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
+		}
+
+		$maintenanceModel->createBaseAssets();
 	}
 
 	/**

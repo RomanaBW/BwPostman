@@ -846,6 +846,7 @@ class Com_BwPostmanInstallerScript
 			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
 			$this->logger->addEntry(new JLogEntry('Group BwPostmanAdmin exists: ' . $groupExists, JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('J-Version: ' . $jversion->getShortVersion(), JLog::DEBUG, $this->log_cat));
 
 			if (!$groupExists)
 			{

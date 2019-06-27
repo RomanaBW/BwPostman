@@ -1387,11 +1387,11 @@ class Com_BwPostmanInstallerScript
 //		}
 //		else
 //		{
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
+//			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+//			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
 //		}
 
-		$maintenanceModel->createBaseAssets();
+//		$maintenanceModel->createBaseAssets();
 	}
 
 	/**

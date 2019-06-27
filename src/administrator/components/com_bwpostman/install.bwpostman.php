@@ -430,6 +430,12 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
+		$jversion = new JVersion();
+		if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
+		{
+			$this->isJ4 = true;
+		}
+
 		$this->deleteBwPmAdminFromRootAsset();
 		$this->deleteBwPmAdminFromViewlevels();
 		$this->deleteSampleUsergroups();

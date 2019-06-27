@@ -213,7 +213,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		$app	= JFactory::getApplication();
 		$item   = new stdClass();
-//		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
 
 		// Initialise variables.
@@ -248,8 +247,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				// Convert to the JObject before adding other data.
 				$properties = $table->getProperties(1);
 
-//				$dispatcher->trigger('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
-				JFactory::getApplication()->triggerEvent('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
+				$app->triggerEvent('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
 				$item       = ArrayHelper::toObject($properties, 'JObject');
 
 				if (property_exists($item, 'params'))
@@ -866,7 +864,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$data['attachment'] = implode(';', $fullAttachments);
 		}
 
-//		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
 
 		// if saving a new newsletter before changing tab, we have to look, if there is a content selected and set html- and text-version
@@ -2301,7 +2298,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$query->select('COUNT(' . $_db->quoteName('id') . ')');
 		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
 
-//		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
 
 		JFactory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
@@ -2421,7 +2417,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$itemid_edit		= $this->getItemid('edit');
 
 		JPluginHelper::importPlugin('bwpostman');
-//		$dispatcher = JEventDispatcher::getInstance();
 
 		$res				= false;
 		$_db				= $this->_db;
@@ -2437,7 +2432,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// needed for changing table objects for queue and content, show/hide messages, ...
 		if (!$fromComponent)
 		{
-			JFactory::getApplication()->triggerEvent('onBwPostmanBeforeNewsletterSend', array(&$table_name, &$tblSendMailQueue, &$tblSendMailContent));
+			$app->triggerEvent('onBwPostmanBeforeNewsletterSend', array(&$table_name, &$tblSendMailQueue, &$tblSendMailContent));
 		}
 
 		// Get first entry from sendmailqueue
@@ -2593,7 +2588,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				// Trigger Plugin "substitutelinks"
 				if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1' || $tblSendMailContent->substitute_links == '1')
 				{
-					JFactory::getApplication()->triggerEvent('onBwPostmanSubstituteBody', array(&$body, &$itemid_edit, &$itemid_unsubscribe));
+					$app->triggerEvent('onBwPostmanSubstituteBody', array(&$body, &$itemid_edit, &$itemid_unsubscribe));
 				}
 				else
 				{
@@ -2617,7 +2612,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Fire the onBwPostmanPersonalize event.
 		if(JPluginHelper::isEnabled('bwpostman', 'personalize')
-			&& !JFactory::getApplication()->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
+			&& !$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
 		{
 			$error_msg_plugin   = JText::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
 			$app->enqueueMessage($error_msg_plugin, 'error');

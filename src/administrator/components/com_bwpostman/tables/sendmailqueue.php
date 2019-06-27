@@ -197,10 +197,9 @@ class BwPostmanTableSendmailqueue extends JTable
 		$query->where($_db->quoteName('trial') . ' < ' . (int) $trial);
 		$query->order($_db->quoteName($this->_tbl_key) . ' ASC LIMIT 0,1');
 
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
 
-		$dispatcher->trigger('onBwPostmanGetAdditionalQueueWhere', array(&$query, $fromComponent));
+		JFactory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, $fromComponent));
 
 		$_db->setQuery($query);
 

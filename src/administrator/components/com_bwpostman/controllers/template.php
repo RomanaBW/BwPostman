@@ -314,10 +314,9 @@ class BwPostmanControllerTemplate extends JControllerForm
 	{
 
 		parent::save();
-		$dispatcher = JEventDispatcher::getInstance();
 
 		JPluginHelper::importPlugin('bwpostman');
-		$dispatcher->trigger('onBwPostmanAfterTemplateControllerSave', array());
+		JFactory::getApplication()->triggerEvent('onBwPostmanAfterTemplateControllerSave', array());
 
 		$task	= $this->getTask();
 

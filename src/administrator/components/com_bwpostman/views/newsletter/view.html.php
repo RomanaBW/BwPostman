@@ -164,7 +164,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	public function display($tpl=null)
 	{
 		// Initialize variables
-		$dispatcher = JEventDispatcher::getInstance();
 		$app		= JFactory::getApplication();
 		$app->setUserState('bwpostman.send.alsoUnconfirmed', false);
 
@@ -195,7 +194,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->template = $app->getTemplate();
 		$this->params   = JComponentHelper::getParams('com_bwpostman');
 
-		$dispatcher->trigger('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
+		$app->triggerEvent('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
 
 		// set some needed flags
 		// flag, if rendered content exists or not

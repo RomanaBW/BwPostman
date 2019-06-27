@@ -368,8 +368,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		else
 		{
 			JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-			$dispatcher = JEventDispatcher::getInstance();
-			$results = $dispatcher->trigger('onBwPostmanMaintenanceStartCron');
+			$results = JFactory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron');
 
 			if ($results[0] !== true)
 			{
@@ -403,8 +402,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onBwPostmanMaintenanceStopCron');
+		JFactory::getApplication()->triggerEvent('onBwPostmanMaintenanceStopCron');
 
 		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
 		$this->setRedirect($link);

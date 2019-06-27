@@ -273,10 +273,9 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	{
 
 		parent::save();
-		$dispatcher = JEventDispatcher::getInstance();
 
 		JPluginHelper::importPlugin('bwpostman');
-		$dispatcher->trigger('onBwPostmanAfterMailinglistControllerSave', array());
+		JFactory::getApplication()->triggerEvent('onBwPostmanAfterMailinglistControllerSave', array());
 	}
 
 	/**

@@ -124,7 +124,6 @@ class BwPostmanViewCampaign extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
 		$app->setUserState('com_bwpostman.edit.campaign.id', $app->input->getInt('id', 0));
@@ -140,7 +139,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$this->newsletters = $this->get('Newsletters');
 
 		// trigger Plugin BwTimeControl event and get results
-		$dispatcher->trigger('onBwPostmanCampaignPrepare', array (&$this->item, &$this->newsletters, &$document));
+		$app->triggerEvent('onBwPostmanCampaignPrepare', array (&$this->item, &$this->newsletters, &$document));
 
 		$this->addToolbar();
 		// Call parent display

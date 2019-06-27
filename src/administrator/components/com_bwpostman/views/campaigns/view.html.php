@@ -140,7 +140,6 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
 		// Get data from the model
@@ -152,7 +151,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		$this->total			= $this->get('total');
 
 		// trigger Plugin BwTimeControl event and get results
-//		$this->auto_nbr	= $dispatcher->trigger('onBwPostmanCampaignsPrepare', array (&$this->items));
+//		$this->auto_nbr	= JFactory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
 
 		$this->addToolbar();
 
@@ -175,7 +174,6 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	protected function addToolbar()
 	{
 
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
 
 		// Get document object, set document title and add css
@@ -225,7 +223,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		}
 
 		// trigger BwTimeControl event
-		$dispatcher->trigger('onBwPostmanCampaignsPrepareToolbar');
+		JFactory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar');
 
 		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
 		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');

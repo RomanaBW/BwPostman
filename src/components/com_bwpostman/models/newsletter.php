@@ -72,10 +72,9 @@ class BwPostmanModelNewsletter extends JModelItem
 
 		// Get the dispatcher and include bwpostman plugins
 		JPluginHelper::importPlugin('bwpostman');
-		$dispatcher = JEventDispatcher::getInstance();
 
 		// Fire the onBwPostmanPersonalize event.
-		$dispatcher->trigger('onBwPostmanPersonalize', array('com_bwpostman.view', &$newsletter, $user->id));
+		JFactory::getApplication()->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.view', &$newsletter, $user->id));
 
 		return $newsletter;
 	}

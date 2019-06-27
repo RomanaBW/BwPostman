@@ -657,11 +657,9 @@ class BwPostmanModelCampaign extends JModelAdmin
 					}
 				}
 
-				$dispatcher = JEventDispatcher::getInstance();
-
 				JPluginHelper::importPlugin('bwpostman');
 
-				$dispatcher->trigger('onBwPostmanCampaignSave', array ($data));
+				JFactory::getApplication()->triggerEvent('onBwPostmanCampaignSave', array ($data));
 			}
 		}
 		else

@@ -335,8 +335,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$app->setUserState($context . '.data', null);
 		$app->setUserState('com_bwpostman.edit.newsletter.data', null);
 
-		$dispatcher = JEventDispatcher::getInstance();
-
 		JPluginHelper::importPlugin('bwpostman');
 
 		$this->setRedirect(
@@ -468,9 +466,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		// Test whether the data is valid.
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('bwpostman');
-		$dispatcher->trigger('onBwPostmanBeforeNewsletterControllerValidate', array(&$form));
+		$app->triggerEvent('onBwPostmanBeforeNewsletterControllerValidate', array(&$form));
 
 		$validData = $model->validate($form, $data);
 
@@ -629,10 +626,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					$app->setUserState($context . '.data', null);
 					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
 
-					$dispatcher = JEventDispatcher::getInstance();
-
 					JPluginHelper::importPlugin('bwpostman');
-					$dispatcher->trigger('onBwPostmanAfterNewsletterSave', array());
+					$app->triggerEvent('onBwPostmanAfterNewsletterSave', array());
 
 					// Redirect to the list screen.
 					$this->setRedirect(
@@ -947,10 +942,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 				if ($res === true)
 				{
-					$dispatcher = JEventDispatcher::getInstance();
-
 					JPluginHelper::importPlugin('bwpostman');
-					$dispatcher->trigger('onBwPostmanAfterNewsletterCopy', array());
+					$app->triggerEvent('onBwPostmanAfterNewsletterCopy', array());
 				}
 			}
 		}
@@ -982,8 +975,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$res		= true;
 		$msg		= '';
 
-		$dispatcher = JEventDispatcher::getInstance();
-
 		// Which tab are we in?
 		$layout	= $this->input->get('tab', 'unsent');
 
@@ -1008,7 +999,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		JPluginHelper::importPlugin('bwpostman');
-		$dispatcher->trigger('onBwPostmanBeforeNewsletterArchive', array(&$cid, &$msg, &$res));
+		JFactory::getApplication()->triggerEvent('onBwPostmanBeforeNewsletterArchive', array(&$cid, &$msg, &$res));
 
 		if ($res === false)
 		{

@@ -108,7 +108,6 @@ class Mod_BwPostman_OverviewInstallerScript
 	public function preflight($type, Joomla\CMS\Installer\InstallerAdapter $parent)
 	{
 		$app 		= JFactory::getApplication();
-		$jversion	= new JVersion();
 
 		// Get component manifest file version
 		$manifest = $parent->getManifest();
@@ -118,7 +117,7 @@ class Mod_BwPostman_OverviewInstallerScript
 		$this->minimum_joomla_release = $manifest->attributes()->version;
 
 		// abort if the current Joomla release is older
-		if(version_compare($jversion->getShortVersion(), $this->minimum_joomla_release, 'lt'))
+		if(version_compare(JVERSION, $this->minimum_joomla_release, 'lt'))
 		{
 			$app->enqueueMessage(JText::sprintf('MOD_BWPOSTMAN_OVERVIEW_INSTALL_ERROR_JVERSION', $this->minimum_joomla_release), 'error');
 			return false;

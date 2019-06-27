@@ -202,7 +202,6 @@ class Com_BwPostmanInstallerScript
 	{
 		$app 		= JFactory::getApplication();
 		$session	= JFactory::getSession();
-		$jversion	= new JVersion();
 
 		if (function_exists('set_time_limit'))
 		{
@@ -220,7 +219,7 @@ class Com_BwPostmanInstallerScript
 //		$this->minimum_joomla_release = $manifest->attributes()->version;
 
 		// abort if the current Joomla release is older
-		if(version_compare($jversion->getShortVersion(), $this->minimum_joomla_release, 'lt'))
+		if(version_compare(JVERSION, $this->minimum_joomla_release, 'lt'))
 		{
 			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_INSTALL_ERROR_JVERSION', $this->minimum_joomla_release), 'error');
 			return false;
@@ -315,8 +314,7 @@ class Com_BwPostmanInstallerScript
 			$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
 			$this->logger = new BwLogger($log_options);
 
-			$jversion = new JVersion();
-			if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
+			if(version_compare(JVERSION, '3.99', 'ge'))
 			{
 				$this->isJ4 = true;
 			}
@@ -430,8 +428,7 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
-		$jversion = new JVersion();
-		if(version_compare($jversion->getShortVersion(), '3.99', 'ge'))
+		if(version_compare(JVERSION, '3.99', 'ge'))
 		{
 			$this->isJ4 = true;
 		}

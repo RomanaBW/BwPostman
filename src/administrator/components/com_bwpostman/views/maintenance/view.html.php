@@ -145,7 +145,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
-		$this->dispatcher = JEventDispatcher::getInstance();
+//		$this->dispatcher = JEventDispatcher::getInstance();
 		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['maintenance'])

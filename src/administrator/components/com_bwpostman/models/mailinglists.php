@@ -319,7 +319,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getFilterByViewLevel()
 	{
-		if (JFactory::getApplication()->isSite())
+		if (JFactory::getApplication()->isClient('site'))
 		{
 			$user = JFactory::getUser();
 

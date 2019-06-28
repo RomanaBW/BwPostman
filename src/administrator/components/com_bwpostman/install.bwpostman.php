@@ -1387,7 +1387,7 @@ class Com_BwPostmanInstallerScript
 //			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
 //			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
 //		}
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/maintenance.php');
 		$maintenanceModel = new BwPostmanModelMaintenance();
 
 		$maintenanceModel->createBaseAssets();

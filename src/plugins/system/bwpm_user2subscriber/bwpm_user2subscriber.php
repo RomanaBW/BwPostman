@@ -716,7 +716,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$subscriber_id                = BWPM_User2SubscriberHelper::hasSubscription($user_mail);
 		$subscriber_is_to_activate    = BWPM_User2SubscriberHelper::isToActivate($user_mail);
 
-		if (($task == 'registration.activate' && $token == $activation) || (JFactory::getApplication()->isAdmin() && $activation != ''))
+		if (($task == 'registration.activate' && $token == $activation) || (JFactory::getApplication()->isClient('administrator') && $activation != ''))
 		{
 			if ($subscriber_is_to_activate)
 			{

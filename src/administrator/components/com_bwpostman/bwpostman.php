@@ -54,12 +54,15 @@ try
 	BwPostmanHelper::setPermissionsState();
 
 	// Get an instance of the controller
-	require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/controller.php');
-	$controller = new BwPostmanController();
+	$controller = JControllerLegacy::getInstance('BwPostman');
+
+//	require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/controller.php');
+//	$controller2 = new BwPostmanController();
 
 	// Perform the Request task
 	$jinput = JFactory::getApplication()->input;
-	$controller->execute($jinput->getCmd('task'));
+	$task = $jinput->getCmd('task');
+	$controller->execute($task);
 
 	// Redirect if set by the controller
 	$controller->redirect();

@@ -1122,7 +1122,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// make preview
 		// first get templates tpls
 		$tpl_id		= $item->tpl_id;
-		$tpl_model	= JModelLegacy::getInstance('templates_tpl', 'BwPostmanModel');
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
+		$tpl_model = new BwPostmanModelTemplates_Tpl();
 		$tpl		= $tpl_model->getItem($tpl_id);
 
 		// make html preview data
@@ -1249,7 +1250,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	public function makePreviewText($item)
 	{
-		$model				= JModelLegacy::getInstance('newsletter', 'BwPostmanModel');
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
+		$model = new BwPostmanModelNewsletter();
 		$itemid_unsubscribe	= $model->getItemid('register');
 		$itemid_edit		= $model->getItemid('edit');
 
@@ -1337,14 +1339,16 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	public function makePreviewTextStd($item)
 	{
-		$model				= JModelLegacy::getInstance('newsletter', 'BwPostmanModel');
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
+		$model = new BwPostmanModelNewsletter();
 		$itemid_unsubscribe	= $model->getItemid('register');
 		$itemid_edit		= $model->getItemid('edit');
 
 		// make preview
 		// first get templates tpls
 		$tpl_id		= $item->tpl_id;
-		$tpl_model	= JModelLegacy::getInstance('templates_tpl', 'BwPostmanModel');
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
+		$tpl_model = new BwPostmanModelTemplates_Tpl();
 		$tpl		= $tpl_model->getItem($tpl_id);
 
 		// make text preview data

@@ -3135,9 +3135,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			if (!$result)
 			{
 				// insert new user group
-				jimport('joomla.application.component.model');
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$userModel = JModelLegacy::getInstance('Group', 'UsersModel');
+				require_once(JPATH_ADMINISTRATOR . '/components/com_users/models/group.php');
+				$userModel = new UsersModelGroup();
 
 				$data['id']        = 0;
 				$data['title']     = $item['title'];

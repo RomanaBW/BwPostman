@@ -89,9 +89,6 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getItems(&$params)
 	{
-		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-		$nlModel = JModelLegacy::getInstance('Newsletters', 'BwPostmanModel');
-
 		// Get conditions
 		$menuItemId		= $params->get('menu_item');
 

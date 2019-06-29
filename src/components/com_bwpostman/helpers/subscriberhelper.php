@@ -187,7 +187,8 @@ class BwPostmanSubscriberHelper
 				$jinput->set('layout', 'error_accountnotactivated');
 				break;
 			case 407: // Subscriber account already exists
-				$model         = JModelLegacy::getInstance('edit', 'BwpostmanModel');
+				require_once(JPATH_SITE . '/components/com_bwpostman/models/edit.php');
+				$model = new BwPostmanModelEdit();
 				$itemid        = $model->getItemid(); // Itemid from edit-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
@@ -201,7 +202,8 @@ class BwPostmanSubscriberHelper
 				$jinput->set('layout', 'error_accountgeneral');
 				break;
 			case 408: // Email doesn't exist
-				$model         = JModelLegacy::getInstance('register', 'BwpostmanModel');
+				require_once(JPATH_SITE . '/components/com_bwpostman/models/register.php');
+				$model = new BwPostmanModelRegister();
 				$itemid        = $model->getItemid(); // Itemid from register-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
@@ -274,7 +276,8 @@ class BwPostmanSubscriberHelper
 	public static function errorUnsubscribe($err_msg)
 	{
 		$jinput  = JFactory::getApplication()->input;
-		$model   = JModelLegacy::getInstance('edit', 'BwpostmanModel');
+		require_once(JPATH_SITE . '/components/com_bwpostman/models/edit.php');
+		$model = new BwPostmanModelEdit();
 		$itemid  = $model->getItemid(); // Itemid from edit-view
 		$session = JFactory::getSession();
 

@@ -54,7 +54,8 @@ try
 	BwPostmanHelper::setPermissionsState();
 
 	// Get an instance of the controller
-	$controller = JControllerLegacy::getInstance('BwPostman');
+	require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/controller.php');
+	$controller = new BwPostmanController();
 
 	// Perform the Request task
 	$jinput = JFactory::getApplication()->input;

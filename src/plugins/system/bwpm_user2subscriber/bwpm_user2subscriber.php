@@ -910,7 +910,9 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			// @ToDo: How could I get here with no object $this->stored_subscriber_data
 			if ($send_mail && $res && $subscriber_id)
 			{
-				$model  = JModelLegacy::getInstance('Register', 'BwPostmanModel');
+				require_once(JPATH_SITE . '/components/com_bwpostman/models/register.php');
+				$model = new BwPostmanModelRegister();
+
 				$model->sendActivationNotification($this->stored_subscriber_data['id']);
 			}
 		}

@@ -1642,6 +1642,8 @@ abstract class BwPostmanHelper
 	 *
 	 * @return  int     $ownerId
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	private static function getOwnerId($view, $recordId, $createdBy)
@@ -1659,8 +1661,31 @@ abstract class BwPostmanHelper
 		{
 			// Need to do a lookup from the model.
 			// get the model for user groups
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-			$model  = JModelLegacy::getInstance(ucfirst($view), 'BwPostmanModel');
+			switch ($view)
+			{
+				case 'campaign':
+					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/campaign.php');
+					$model = new BwPostmanModelCampaign();
+					break;
+				case 'mailinglist':
+					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/mailinglist.php');
+					$model = new BwPostmanModelMailinglist();
+					break;
+				case 'newsletter':
+					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
+					$model = new BwPostmanModelNewsletter();
+					break;
+				case 'subscriber':
+					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
+					$model = new BwPostmanModelSubscriber();
+					break;
+				case 'template':
+					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/template.php');
+					$model = new BwPostmanModelTemplate();
+					break;
+			}
+
+
 			$record = $model->getItem($recordId);
 
 			if (!is_object($record) || !property_exists($record, $createdPropertyName))

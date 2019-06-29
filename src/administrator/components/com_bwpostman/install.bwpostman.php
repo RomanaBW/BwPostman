@@ -846,15 +846,8 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			// get the model for user groups
-			if($this->isJ4)
-			{
-				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
-			}
-			else
-			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
-			}
+			require_once(JPATH_ADMINISTRATOR . '/components/com_users/models/group.php');
+			$groupModel = new UsersModelGroup();
 //			$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . print_r($groupModel, true), JLog::DEBUG, $this->log_cat));
 
 			// get group ID of public
@@ -949,15 +942,8 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get the model for viewlevels
-			if($this->isJ4)
-			{
-				$viewlevelModel = new Joomla\Component\Users\Administrator\Model\LevelModel();
-			}
-			else
-			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
-			}
+			require_once(JPATH_ADMINISTRATOR . '/components/com_users/models/level.php');
+			$viewlevelModel = new UsersModelLevel();
 
 			// Get viewlevel special
 			$specialLevel = $viewlevelModel->getItem(3);
@@ -1112,15 +1098,8 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get the model for user groups
-			if($this->isJ4)
-			{
-				$groupModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
-			}
-			else
-			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models', 'UsersModel');
-				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
-			}
+			require_once(JPATH_ADMINISTRATOR . '/components/com_users/models/group.php');
+			$groupModel = new UsersModelGroup();
 
 			JAccess::clearStatics();
 
@@ -1164,15 +1143,8 @@ class Com_BwPostmanInstallerScript
 			try
 			{
 				// get the model for viewlevels
-				if($this->isJ4)
-				{
-					$viewlevelModel = new Joomla\Component\Users\Administrator\Model\LevelModel();
-				}
-				else
-				{
-					JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-					$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
-				}
+				require_once(JPATH_ADMINISTRATOR . '/components/com_users/models/level.php');
+				$viewlevelModel = new UsersModelLevel();
 
 				// Get viewlevel special
 				$specialLevel = $viewlevelModel->getItem(3);
@@ -1378,15 +1350,6 @@ class Com_BwPostmanInstallerScript
 		 * Rewrite section assets
 		 *
 		 */
-//		if($this->isJ4)
-//		{
-//			$maintenanceModel = new Joomla\Component\BwPostman\Administrator\models\maintenance();
-//		}
-//		else
-//		{
-//			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models');
-//			$maintenanceModel = JModelLegacy::getInstance('Maintenance', 'BwPostmanModel');
-//		}
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/maintenance.php');
 		$maintenanceModel = new BwPostmanModelMaintenance();
 

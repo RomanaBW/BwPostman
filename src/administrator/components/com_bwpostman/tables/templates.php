@@ -464,11 +464,13 @@ class BwPostmanTableTemplates extends JTable
 		{
 			// first get templates tpls
 			$tpl_id		= $item->tpl_id;
-			$tpl_model	= JModelLegacy::getInstance('templates_tpl', 'BwPostmanModel');
+			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
+			$tpl_model = new BwPostmanModelTemplates_Tpl();
 			$tpl		= $tpl_model->getItem($tpl_id);
 
 			// get template model
-			$model		= JModelLegacy::getInstance('template', 'BwPostmanModel');
+			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templatel.php');
+			$model = new BwPostmanModelTemplate();
 			// make html template data
 			$this->tpl_html	= $model->makeTexttemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1)
@@ -494,11 +496,13 @@ class BwPostmanTableTemplates extends JTable
 		{
 			// first get templates tpls
 			$tpl_id		= $item->tpl_id;
-			$tpl_model	= JModelLegacy::getInstance('templates_tpl', 'BwPostmanModel');
+			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
+			$tpl_model = new BwPostmanModelTemplates_Tpl();
 			$tpl		= $tpl_model->getItem($tpl_id);
 
 			// get template model
-			$model		= JModelLegacy::getInstance('template', 'BwPostmanModel');
+			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/template.php');
+			$model = new BwPostmanModelTemplate();
 			// make html template data
 			$this->tpl_html = $model->makeTemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1)

@@ -95,8 +95,8 @@ class Pkg_BwPostmanInstallerScript
 			if (version_compare($oldRelease, '2.2.1', 'lt'))
 			{
 				// rebuild update servers
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_installer/models');
-				$installerModel = JModelLegacy::getInstance('Updatesites', 'InstallerModel');
+				require_once(JPATH_ADMINISTRATOR . '/components/com_installer/models/updatesites.php');
+				$installerModel = new InstallerModelUpdatesites();
 				$installerModel->rebuild();
 		}
 	}

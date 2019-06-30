@@ -3135,8 +3135,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			if (!$result)
 			{
 				// insert new user group
-				require_once(JPATH_ADMINISTRATOR . '/components/com_users/models/group.php');
-				$userModel = new UsersModelGroup();
+				if($this->isJ4)
+				{
+					$userModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
+				}
+				else
+				{
+					JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+					$userModel = JModelLegacy::getInstance('Group', 'UsersModel');
+				}
 
 				$data['id']        = 0;
 				$data['title']     = $item['title'];

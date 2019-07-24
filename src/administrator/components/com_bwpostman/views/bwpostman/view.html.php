@@ -147,12 +147,15 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('bwpostman');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 
 		JToolbarHelper::spacer();
 
-		BwPostmanHelper::addSubmenu('bwpostman');
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			BwPostmanHelper::addSubmenu('bwpostman');
+		}
 
 		$this->sidebar = JHtmlSidebar::render();
 

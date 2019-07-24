@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 // Import VIEW object class
 jimport('joomla.application.component.view');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
 
 //use Joomla\Filesystem\File as JFile;
 
@@ -91,7 +92,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			jimport('joomla.environment.browser');
 			$browser		= JBrowser::getInstance();
 			$user_browser	= $browser->getBrowser();
-			$appWeb         = new JApplicationWeb();
+			$appWeb         = new BwWebApp();
 
 			$appWeb->clearHeaders();
 

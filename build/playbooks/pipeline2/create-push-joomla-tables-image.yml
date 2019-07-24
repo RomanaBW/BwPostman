@@ -9,6 +9,7 @@
     - name: Make the base image available locally
       docker_image:
         name: '{{ private_docker_repo }}/{{ bare_source.db_image_tag_source }}'
+        source: pull
 
     - name: Create the container
       docker_container:
@@ -29,6 +30,8 @@
         name: romanabw.copy-joomla-tables-to-database-container
 
 - hosts: localhost
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local
   vars_files:
     - vars/tester-test-vars.yml

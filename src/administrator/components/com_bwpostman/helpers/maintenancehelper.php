@@ -98,8 +98,6 @@ abstract class BwPostmanMaintenanceHelper
 	 */
 	public static function compressByZip($compressedFile, $fileName, $fileData)
 	{
-		jimport('joomla.archive.archive');
-
 		$files = array(
 			'track' => array(
 				'name' => $fileName,
@@ -109,7 +107,7 @@ abstract class BwPostmanMaintenanceHelper
 		);
 
 		// Run the packager
-		$archive = new JArchive;
+		$archive = new Joomla\Archive\Archive();
 
 		if (!$packager = $archive->getAdapter('zip'))
 		{
@@ -149,7 +147,7 @@ abstract class BwPostmanMaintenanceHelper
 		$destPath	= JFactory::getConfig()->get('tmp_path') . "/bwpm_unzipped";
 
 		// Run the packager
-		$archive = new JArchive;
+		$archive = new Joomla\Archive\Archive;
 
 		if (!$packager = $archive->getAdapter('zip'))
 		{

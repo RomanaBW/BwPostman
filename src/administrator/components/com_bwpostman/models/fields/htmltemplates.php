@@ -76,7 +76,7 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 		}
 
 		// Start the radio field output.
-		$html[]	= '<div class="controls">';
+//		$html[]	= '<div class="controls">';
 
 		// note for old templates
 		if ($selected < 1)
@@ -123,7 +123,7 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 		}
 
 		// End the radio field output.
-		$html[]	= '</div>';
+//		$html[]	= '</div>';
 
 		return implode($html);
 	}

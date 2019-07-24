@@ -245,8 +245,8 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('mailinglist');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 
 		JToolbarHelper::spacer();
 	}

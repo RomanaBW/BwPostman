@@ -5,11 +5,12 @@
 
 - name: Copy joomla sql table files to container
   copy:
-    src: "../files/joomla/{{ item }}"
+    src: "../files/joomla/{{ item.name }}"
     dest: "{{ joomla_additional_files_folder }}"
   with_items:
-    - "joomla.sql"
-    - "sample_learn.sql"
+    - { name: joomla.sql }
+    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
+  when: item.is_j3 | default(True) | bool
 
 - name: Copy configuring sql table files to container
   copy:
@@ -23,12 +24,14 @@
     - "reset-post-installation-messages.sql"
     - "reset-update-notification.sql"
     - "reset-sending-stats.sql"
+    - "change-install-plugins-order.sql"
 
 - name: insert Joomla data to database
-  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item.name }}"
   with_items:
-    - "joomla.sql"
-    - "sample_learn.sql"
+    - { name: joomla.sql }
+    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
+  when: item.is_j3 | default(True) | bool
 
 - name: create Joomla admin user
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/add-joomla-users.sql"
@@ -50,6 +53,9 @@
 
 - name: switch off sending stats
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/reset-sending-stats.sql"
+
+- name: change order of installer plugins
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/change-install-plugins-order.sql"
 
 #- name: install JCE
 #

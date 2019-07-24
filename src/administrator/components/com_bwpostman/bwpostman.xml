@@ -60,6 +60,8 @@
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
+			<menu link="option=com_bwpostman&amp;view=bwpostman" view="bwpostman" img="../administrator/components/com_bwpostman/assets/images/logo-bwpostman.png"
+			      alt="BwPostman/Dashboard">COM_BWPOSTMAN_MENU_MAIN_ENTRY_DASH</menu>
 			<menu link="option=com_bwpostman&amp;view=newsletters" view="newsletters" img="../administrator/components/com_bwpostman/assets/images/icon-16-newsletters.png"
 				alt="BwPostman/Newsletters">COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS</menu>
 			<menu link="option=com_bwpostman&amp;view=subscribers" view="subscribers" img="../administrator/components/com_bwpostman/assets/images/icon-16-subscribers.png"

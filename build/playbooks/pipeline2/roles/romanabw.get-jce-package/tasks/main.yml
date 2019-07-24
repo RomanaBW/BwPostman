@@ -6,7 +6,7 @@
 - name: get JCE installation package
   get_url:
     url: "{{ archive_source }}"
-    dest: "{{ codecept_path_data  }}"
+    dest: "{{ codecept_path_data }}"
 
 - name: Find downloaded file name
   find:

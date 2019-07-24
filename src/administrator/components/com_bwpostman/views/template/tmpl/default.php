@@ -138,7 +138,7 @@ $options = array(
 			writeStore("inputs", 0);
 			writeStore("jpanetabs_template_tabs", 0);
 			writeStore("jpanetabs_buttons", 0);
-			submitform(pressbutton);
+			Joomla.submitform(pressbutton, form);
 			return;
 		}
 
@@ -153,7 +153,7 @@ $options = array(
 		}
 		else
 		{
-			submitform(pressbutton);
+			Joomla.submitform(pressbutton, form);
 		}
 	};
 

@@ -55,28 +55,28 @@ Joomla.submitbutton = function (pressbutton)
 	var form = document.adminForm;
 	if (pressbutton == 'newsletter.cancel')
 	{
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, form);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.back')
 	{
 		form.task.value = 'back';
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, form);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.apply')
 	{
 		document.adminForm.task.setAttribute('value','newsletter.apply');
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, form);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
 	{
 		document.adminForm.task.setAttribute('value','newsletter.save');
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, form);
 	}
 };
 /* ]]> */

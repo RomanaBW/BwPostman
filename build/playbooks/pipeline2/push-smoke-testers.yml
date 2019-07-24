@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local
   vars_files:
     - vars/tester-image-vars.yml

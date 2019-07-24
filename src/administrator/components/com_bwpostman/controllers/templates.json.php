@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
 
 /**
  * BwPostman Templates Controller
@@ -61,7 +62,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		}
 
 		$app	= JFactory::getApplication();
-		$appWeb = new JApplicationWeb();
+		$appWeb = new BwWebApp();
 		$jinput	= $app->input;
 
 		$step       = $jinput->get('step', 1);

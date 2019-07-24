@@ -85,14 +85,14 @@ Joomla.submitbutton = function (pressbutton)
 	var form = document.adminForm;
 	if (pressbutton == 'newsletter.cancel')
 	{
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, form);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.back')
 	{
 		form.task.value = 'back';
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, form);
 		return;
 	}
 
@@ -110,13 +110,13 @@ Joomla.submitbutton = function (pressbutton)
 				}
 				else
 				{
-					submitform(pressbutton);
+					Joomla.submitform(pressbutton, form);
 					return true;
 				}
 			}
 			else
 			{
-				submitform(pressbutton);
+				Joomla.submitform(pressbutton, form);
 				return true;
 			}
 		}
@@ -136,13 +136,13 @@ Joomla.submitbutton = function (pressbutton)
 				}
 				else
 				{
-					submitform(pressbutton);
+					Joomla.submitform(pressbutton, form);
 					return true;
 				}
 			}
 			else
 			{
-				submitform(pressbutton);
+				Joomla.submitform(pressbutton, form);
 				return true;
 			}
 		}

@@ -50,7 +50,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		var form = document.adminForm;
 		if (pressbutton == 'subscriber.cancel')
 		{
-			submitform(pressbutton);
+			Joomla.submitform(pressbutton, form);
 			return;
 		}
 		else
@@ -73,7 +73,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 
 			if (isValid)
 			{
-				submitform(pressbutton);
+				Joomla.submitform(pressbutton, form);
 				return true;
 			}
 		}
@@ -110,10 +110,10 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal form-validate">
 		<div class="tab-wrapper-bwp">
-			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+			<?php echo JHtml::_('bootstrap.startTabSet', 'subscriber_tabs', array('active' => 'details')); ?>
 			<?php echo JHtml::_(
 				'bootstrap.addTab',
-				'myTab',
+				'subscriber_tabs',
 				'details',
 				is_null($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_SUB') : JText::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id)
 			); ?>
@@ -331,7 +331,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php
 			if (BwPostmanHelper::canAdmin('subscriber')): ?>
-				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_BWPOSTMAN_SUBS_FIELDSET_RULES')); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'subscriber_tabs', 'permissions', JText::_('COM_BWPOSTMAN_SUBS_FIELDSET_RULES')); ?>
 				<div class="well well-small">
 					<fieldset class="adminform">
 						<?php echo $this->form->getInput('rules'); ?>

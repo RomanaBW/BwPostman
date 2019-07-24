@@ -164,7 +164,10 @@ class BwPostmanViewTemplates extends JViewLegacy
 
 		$this->addToolbar();
 
-		BwPostmanHelper::addSubmenu('templates');
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			BwPostmanHelper::addSubmenu('bwpostman');
+		}
 
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -280,8 +283,8 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('templates');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 
 		JToolbarHelper::spacer();
 	}

@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/maintenance.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
 
 /**
  * BwPostman Campaigns Controller
@@ -157,7 +158,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			JResponse::setHeader('Content-Type', 'application/json', true);
+			$appWeb = new BwWebApp();
+			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}
@@ -555,7 +557,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			JResponse::setHeader('Content-Type', 'application/json', true);
+			$appWeb = new BwWebApp();
+			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}
@@ -577,7 +580,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			JResponse::setHeader('Content-Type', 'application/json', true);
+			$appWeb = new BwWebApp();
+			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}
@@ -599,7 +603,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			);
 
 			// ajax response
-			JResponse::setHeader('Content-Type', 'application/json', true);
+			$appWeb = new BwWebApp();
+			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
 			$app->close();
 		}

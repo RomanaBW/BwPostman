@@ -27,12 +27,13 @@
 
 - name: get Joomla SQL files to fill into database
   fetch:
-    src: "{{ tester_web_root }}installation/sql/mysql/{{ item }}"
-    dest: "../files/joomla/{{ item }}"
+    src: "{{ tester_web_root }}installation/sql/mysql/{{ item.name }}"
+    dest: "../files/joomla/{{ item.name }}"
     flat: yes
   with_items:
-    - "joomla.sql"
-    - "sample_learn.sql"
+    - { name: joomla.sql }
+    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
+  when: item.is_j3 | default(True) | bool
 
 - name: remove Joomla installation folder
   file:

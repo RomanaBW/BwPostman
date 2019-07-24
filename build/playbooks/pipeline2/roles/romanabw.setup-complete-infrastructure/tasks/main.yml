@@ -21,7 +21,7 @@
     command: "apache2-foreground"
     detach: yes
     exposed_ports:
-      - 80
+      - "80"
     networks:
       - name: "{{ source.tester_network_name }}"
     volumes:

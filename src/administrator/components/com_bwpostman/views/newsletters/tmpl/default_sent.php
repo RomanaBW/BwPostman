@@ -98,12 +98,12 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>");
 			if (ConfirmArchive == true)
 			{
-				submitform(pressbutton);
+				Joomla.submitform(pressbutton, form);
 			}
 		}
 		else
 		{
-			submitform(pressbutton);
+			Joomla.submitform(pressbutton, form);
 		}
 	};
 /* ]]> */

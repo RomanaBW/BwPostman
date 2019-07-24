@@ -81,8 +81,9 @@ abstract class BwPostmanHTMLHelper {
 		?>
 		<div class="btn text-center" style="float:<?php echo ($lang->isRtl()) ? 'right' : 'left'; ?>;">
 			<div class="icon" >
-				<a href="<?php echo $link; ?>" <?php if ($target != '') echo 'target="' . $target . '"'; ?> <?php if ($onclick != '') echo 'onclick="' . $onclick . '"'; ?> <?php echo $modal_text; ?>> <?php echo JHtml::_('image', 'administrator/components/com_bwpostman/assets/images/'.$image, $text); ?>
-					<span><?php echo $text; ?></span>
+				<a href="<?php echo $link; ?>" <?php if ($target != '') echo 'target="' . $target . '"'; ?> <?php if ($onclick != '') echo 'onclick="' . $onclick . '"'; ?> <?php echo $modal_text; ?>>
+					<span class="icon"><?php echo JHtml::_('image', 'administrator/components/com_bwpostman/assets/images/'.$image, $text); ?></span>
+					<span class="linktext"><?php echo $text; ?></span>
 				</a>
 			</div>
 		</div>

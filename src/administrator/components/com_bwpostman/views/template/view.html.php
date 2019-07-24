@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use \Joomla\CMS\HTML\HTMLHelper;
+
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
@@ -171,12 +173,13 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		HTMLHelper::_('jquery.framework');
 		$app		= JFactory::getApplication();
 		$template	= $app->getTemplate();
 		$uri		= JUri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['template'])
 		{
@@ -227,7 +230,9 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$this->legalTagEnd     = BwPostmanTplHelper::getLegalTagEnd();
 
 		// Call parent display
-		return parent::display($tpl);
+		parent::display($tpl);
+
+		return;
 	}
 
 	/**
@@ -328,8 +333,8 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('template');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 
 		JToolbarHelper::spacer();
 	}

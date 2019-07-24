@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local
   vars_files:
     - vars/tester-image-vars.yml
@@ -62,6 +64,8 @@
         name: romanabw.get-virtuemart-package
 
 - hosts: "{{ virtuemart_source.web_container_name }}"
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: docker
   vars_files:
     - ../vars/tests.yml
@@ -105,6 +109,8 @@
 
 
 - hosts: "{{ virtuemart_source.tester_container_name }}"
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: docker
   vars_files:
     - vars/tests.yml
@@ -198,7 +204,9 @@
 
 
 - hosts: localhost
-  connection: local
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
+connection: local
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml

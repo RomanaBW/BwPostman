@@ -27,6 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -155,6 +161,15 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	public $filterMl;
 
 	/**
+	 * Are we at Joomla 4?
+	 *
+	 * @var    string
+	 *
+	 * @since  2.4.0
+	 */
+	public $isJ4 = false;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -189,11 +204,22 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$this->context			= 'com_bwpostman.subscribers';
 		$this->filterMl         = $this->state->get('filter.mailinglist');
 
-		$this->addToolbar();
+		if(version_compare(JVERSION, '3.99', 'ge'))
+		{
+			$this->isJ4 = true;
+		}
 
-		BwPostmanHelper::addSubmenu('subscribers');
+		if(!$this->isJ4)
+		{
+			$this->addToolbarLegacy();
+			BwPostmanHelper::addSubmenu('bwpostman');
+		}
+		else
+		{
+			$this->addToolbar();
 
-		$this->sidebar = JHtmlSidebar::render();
+			$this->sidebar = JHtmlSidebar::render();
+		}
 
 		// Call parent display
 		parent::display($tpl);
@@ -209,13 +235,13 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
+	protected function addToolbarLegacy()
 	{
 		$app	= JFactory::getApplication();
 		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');
 
 		// Get the toolbar object instance
-		$bar = JToolbar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
 		$document = JFactory::getDocument();
@@ -223,7 +249,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB'), 'users');
+		ToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB'), 'users');
 
 		// Set toolbar items for the page
 		switch ($tab)
@@ -233,21 +259,21 @@ class BwPostmanViewSubscribers extends JViewLegacy
 			case "unconfirmed":
 				if ($this->permissions['subscriber']['create'])
 				{
-					JToolbarHelper::addNew('subscriber.add');
+					ToolbarHelper::addNew('subscriber.add');
 				}
 
 				if (BwPostmanHelper::canEdit('subscriber'))
 				{
-					JToolbarHelper::editList('subscriber.edit');
+					ToolbarHelper::editList('subscriber.edit');
 				}
 
-				JToolbarHelper::spacer();
-				JToolbarHelper::divider();
-				JToolbarHelper::spacer();
+				ToolbarHelper::spacer();
+				ToolbarHelper::divider();
+				ToolbarHelper::spacer();
 
 				if ($this->permissions['subscriber']['create'])
 				{
-					JToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
+					ToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
 				}
 
 				if ($this->permissions['subscriber']['edit'])
@@ -262,15 +288,15 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					}
 					else
 					{
-						JToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+						ToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
 					}
 				}
 
 				if (BwPostmanHelper::canArchive('subscriber'))
 				{
-					JToolbarHelper::divider();
-					JToolbarHelper::spacer();
-					JToolbarHelper::archiveList('subscriber.archive');
+					ToolbarHelper::divider();
+					ToolbarHelper::spacer();
+					ToolbarHelper::archiveList('subscriber.archive');
 				}
 
 				// Add a batch button
@@ -289,29 +315,29 @@ class BwPostmanViewSubscribers extends JViewLegacy
 			case "testrecipients":
 				if ($this->permissions['subscriber']['create'])
 				{
-					JToolbarHelper::addNew('subscriber.add_test');
+					ToolbarHelper::addNew('subscriber.add_test');
 				}
 
 				if (BwPostmanHelper::canEdit('subscriber'))
 				{
-					JToolbarHelper::editList('subscriber.edit');
+					ToolbarHelper::editList('subscriber.edit');
 				}
 
-				JToolbarHelper::spacer();
-				JToolbarHelper::divider();
+				ToolbarHelper::spacer();
+				ToolbarHelper::divider();
 				if (BwPostmanHelper::canArchive('subscriber'))
 				{
-					JToolbarHelper::archiveList('subscriber.archive');
+					ToolbarHelper::archiveList('subscriber.archive');
 				}
 				break;
 		}
 
-		JToolbarHelper::divider();
-		JToolbarHelper::spacer();
+		ToolbarHelper::divider();
+		ToolbarHelper::spacer();
 		if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
 		{
-			JToolbarHelper::checkin('subscribers.checkin');
-			JToolbarHelper::divider();
+			ToolbarHelper::checkin('subscribers.checkin');
+			ToolbarHelper::divider();
 		}
 
 		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
@@ -320,7 +346,170 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('subscribers');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+	}
+
+	/**
+	 * Add the page title and toolbar for Joomla 4.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	protected function addToolbar()
+	{
+		$app	= JFactory::getApplication();
+		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');
+
+		// Get the toolbar object instance
+		$bar = JToolbar::getInstance('toolbar');
+
+		// Get document object, set document title and add css
+		$document = JFactory::getDocument();
+		$document->setTitle(JText::_('COM_BWPOSTMAN_CAMS'));
+		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
+		// Set toolbar title
+		ToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB'), 'users');
+
+
+		// Set toolbar items for the page
+		switch ($tab)
+		{ // The layout-variable tells us which tab we are in
+			default:
+			case "confirmed":
+			case "unconfirmed":
+				if ($this->permissions['subscriber']['create'])
+				{
+					$bar->addNew('subscriber.add');
+					$bar->addNew('mailinglist.add');
+			}
+
+				if (BwPostmanHelper::canEdit('subscriber'))
+				{
+					$bar->edit('subscriber.edit');
+				}
+
+				if ($this->permissions['subscriber']['create'])
+				{
+					ToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
+				}
+
+				if ($this->permissions['subscriber']['edit'])
+				{
+					if ($this->filterMl !== '')
+					{
+						// Get popup with yes/no buttons
+						$alt_export = \JText::_('COM_BWPOSTMAN_SUB_EXPORT');
+						$link = 'index.php?option=com_bwpostman&amp;controller=subscribers&amp;tmpl=component&amp;view=subscribers&amp;layout=default_filteredexport';
+						$bar->appendButton('Popup', 'upload', $alt_export, $link, 500, 130);
+					}
+					else
+					{
+						ToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
+					}
+				}
+
+				if (BwPostmanHelper::canArchive('subscriber'))
+				{
+					ToolbarHelper::archiveList('subscriber.archive');
+				}
+
+				// Add a batch button
+				if ($this->permissions['subscriber']['create'] || BwPostmanHelper::canEdit('subscriber'))
+				{
+					HtmlHelper::_('bootstrap.renderModal', 'collapseModal');
+					$title = JText::_('JTOOLBAR_BATCH');
+
+					// Instantiate a new JLayoutFile instance and render the batch button
+					$layout = new JLayoutFile('joomla.toolbar.batch');
+
+					$dhtml = $layout->render(array('title' => $title));
+					$bar->appendButton('Custom', $dhtml, 'batch');
+				}
+				break;
+			case "testrecipients":
+				if ($this->permissions['subscriber']['create'])
+				{
+					$bar->addNew('subscriber.add_test');
+				}
+
+				if (BwPostmanHelper::canEdit('subscriber'))
+				{
+					ToolbarHelper::editList('subscriber.edit');
+				}
+
+				if (BwPostmanHelper::canArchive('subscriber'))
+				{
+					ToolbarHelper::archiveList('subscriber.archive');
+				}
+				break;
+		}
+
+		ToolbarHelper::divider();
+		ToolbarHelper::spacer();
+		if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
+		{
+			ToolbarHelper::checkin('subscribers.checkin');
+			ToolbarHelper::divider();
+		}
+
+		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
+		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+
+		$manualLink = BwPostmanHTMLHelper::getManualLink('subscribers');
+		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+
+//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+
+
+
+
+
+
+		// Set toolbar items for the page
+		if ($this->permissions['mailinglist']['create'])
+		{
+			$bar->addNew('mailinglist.add');
+		}
+
+		if (BwPostmanHelper::canEdit('mailinglist'))
+		{
+			$bar->edit('mailinglist.edit');
+		}
+
+		if (BwPostmanHelper::canEditState('mailinglist'))
+		{
+			$dropdown = $bar->dropdownButton('status-group')
+				->text('JTOOLBAR_CHANGE_STATUS')
+				->toggleSplit(false)
+				->icon('fa fa-globe')
+				->buttonClass('btn btn-info')
+				->listCheck(true);
+
+			$childBar = $dropdown->getChildToolbar();
+			$childBar->publish('mailinglists.publish')->listCheck(true);
+			$childBar->unpublish('mailinglists.unpublish')->listCheck(true);
+
+			if (BwPostmanHelper::canArchive('mailinglist'))
+			{
+				$childBar->archive('mailinglist.archive')->listCheck(true);
+			}
+
+			if (BwPostmanHelper::canEdit('mailinglist', 0) || BwPostmanHelper::canEditState('mailinglist', 0))
+			{
+				$childBar->checkin('mailinglists.checkin')->listCheck(true);
+			}
+		}
+
+		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+
+//		$manualLink = BwPostmanHTMLHelper::getManualLink('mailinglists');
+//		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+
+//		$bar->appendButton('ExtLink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$bar->appendButton('ExtLink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 	}
 }

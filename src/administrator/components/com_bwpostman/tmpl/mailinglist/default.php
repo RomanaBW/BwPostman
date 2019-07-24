@@ -1,0 +1,195 @@
+<?php
+/**
+ * BwPostman Newsletter Component
+ *
+ * BwPostman single mailinglist form template for backend.
+ *
+ * @version %%version_number%%
+ * @package BwPostman-Admin
+ * @author Romana Boldt
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+// Load the tooltip behavior for the notes
+HtmlHelper::_('behavior.tooltip');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('formbehavior.chosen', 'select');
+HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom'));
+
+?>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+	Joomla.submitbutton = function (pressbutton)
+	{
+
+		var form = document.adminForm;
+
+		if (pressbutton == 'mailinglist.cancel')
+		{
+			Joomla.submitform(pressbutton, form);
+			return;
+		}
+
+		// Validate input fields
+		if (form.jform_title.value == "")
+		{
+			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");
+		}
+		else if (form.jform_description.value== "")
+		{
+			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");
+		}
+		else
+		{
+			Joomla.submitform(pressbutton, form);
+		}
+	};
+/* ]]> */
+</script>
+
+<div id="bwp_editform">
+	<?php
+	if ($this->queueEntries)
+	{
+		\JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
+	?>
+	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
+			method="post" name="adminForm" id="item-form" class="form-validate">
+		<div class="tab-wrapper-bwp">
+			<?php echo JHtml::_('uitab.startTabSet', 'mailinglist_tabs', array('active' => 'details')); ?>
+			<?php echo JHtml::_(
+				'uitab.addTab',
+				'mailinglist_tabs',
+				'details',
+				empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id)
+			); ?>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="control-group">
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('title'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('title'); ?>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('description'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('description'); ?>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('access'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('access'); ?>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('published'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('published'); ?>
+								</div>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('campaign_id'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('campaign_id'); ?>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('created_date'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('created_date'); ?>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('created_by'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('created_by'); ?>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('modified_by'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('modified_by'); ?>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('modified_time'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('modified_time'); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+				</div>
+			<?php echo JHtml::_('uitab.endTab'); ?>
+
+			<?php
+			if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist']): ?>
+				<?php echo JHtml::_('uitab.addTab', 'mailinglist_tabs', 'rules', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
+			<?php echo $this->form->getInput('rules'); ?>
+			<?php endif;
+				echo JHtml::_('uitab.endTab');
+			?>
+			<div class="clearfix"></div>
+			<?php echo JHtml::_('uitab.endTabSet'); ?>
+		</div>
+
+		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+
+		<?php echo $this->form->getInput('id'); ?>
+		<?php echo $this->form->getInput('asset_id'); ?>
+		<?php echo $this->form->getInput('checked_out'); ?>
+		<?php echo $this->form->getInput('archive_flag'); ?>
+		<?php echo $this->form->getInput('archive_time'); ?>
+		<?php echo JHtml::_('form.token'); ?>
+
+	</form>
+</div>
+<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

@@ -420,7 +420,7 @@ class Generals
 		'Default'              => ".//*[@id='toolbar-default']/button",
 		'Check-In'             => ".//*[@id='toolbar-checkin']/button",
 		'Install-Template'     => ".//*[@id='toolbar-custom']/a",
-		'Options'              => "a#toolbar-options",
+		'Options'              => ".//*[@id='toolbar-options']/button",
 		'Save'                 => ".//*[@id='toolbar-apply']/button",
 		'Save & Close'         => ".//*[@id='toolbar-save']/button",
 		'Save & New'           => ".//*[@id='toolbar-save-new']/button",

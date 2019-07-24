@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- @ToDo: Update WIKI entry -->
+
+<project name="BuildBwPostmanTestEnvAndRunTests" description="Build test environment for BwPostman and run tests" default="stop_infrastructure">
+
+	<property name="os-user" value="romana" override="true" />
+	<property name="os-group" value="users" override="true" />
+
+	<property name="base_dir" value="/vhosts/dev/joomla-cms" override="true" />
+	<property name="test_dir" value="${base_dir}/tests" override="true" />
+
+	<property name="src_dir" value="/home/romana/PhpstormProjects/BwPostman/src" override="true" />
+
+	<property name="container_base" value="/vms/dockers" override="true" />
+	<property name="container_dir" value="${container_base}/containers" override="true" />
+	<property name="web_dir" value="${container_base}/global_data/test_data" override="true" />
+
+	<property name="joomla_version" value="${BW_TEST_JOOMLA_VERSION}" override="true" />
+	<property name="bwpm_version" value="${BW_TEST_BWPM_VERSION}" override="true" />
+	<property name="bwpm_install" value="${BW_TEST_BWPM_INSTALL}" override="true" />
+	<property name="vm_version" value="${BW_TEST_VM_VERSION}" override="true" />
+	<property name="rebase" value="${BW_TEST_REBASE_DB}" override="true" />
+	<property name="debug" value=" ${BW_TEST_DEBUG}" override="true" />
+	<property name="test_cat" value="${BW_TEST_CAT}" override="true" />
+	<property name="php_version" value="${BW_TEST_PHP_VERSION}" override="true" />
+	<property name="infrastructure_config" value="run-joomla.yml" override="true" />
+	<property name="test_runner" value="bwpm_install_test_runner.sh" override="true" />
+	<property name="failed" value="false" override="true" />
+
+	<target name="create_project_name"
+	        description="Creates the project name from given environment variables and export it">
+		<property name="project_name" value="j${joomla_version}" override="true" />
+
+		<if>
+			<isfalse value="${bwpm_install}" />
+			<then>
+				<php expression="'${project_name}_bwpm${bwpm_version}'" returnProperty="project_name" />
+				<property name="infrastructure_config" value="run-bwpm.yml" override="true" />
+				<property name="test_runner" value="bwpm_test_runner.sh" override="true" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${vm_version}" arg2="" />
+			<else>
+				<php expression="${project_name}_vm${vm_version}" returnProperty="project_name" />
+			</else>
+		</if>
+
+		<echo message="Project-Name: ${project_name}" />
+
+		<property file="${web_dir}/${project_name}/bwpm-env.properties" />
+
+		<php expression="putenv('BW_TEST_PROJECT=${project_name}');" />
+	</target>
+
+	<target name="create_net_name" depends="create_project_name"
+	        description="Creates the network name from project name to meet docker needs and export it">
+		<php expression="str_replace('_', '', '${project_name}')" returnProperty="net_name" />
+		<php expression="putenv('BW_TEST_NET_NAME=${net_name}');" />
+	</target>
+
+	<target name="set_folder_names" depends="create_net_name"
+	        description="set folder names needed by containers and for rebase and output folders">
+		<php expression="putenv('BW_BASE_DIR=${base_dir}');" />
+		<php expression="putenv('BW_TEST_DIR=${test_dir}');" />
+
+		<php expression="putenv('BW_TEST_SRC_DIR=${test_dir}');" />
+
+		<php expression="putenv('BW_TEST_CONTAINER_DIR=${container_dir}');" />
+		<php expression="putenv('BW_TEST_WEB_BASE_DIR=${web_dir}');" />
+	</target>
+
+	<target name="create_output_folders" depends="set_folder_names"
+	        description="create output folders and set their user and group">
+
+		<if>
+			<available file="${test_dir}/_output/${project_name}/videos" type="dir" property="dir_exists" value="true"/>
+				<else>
+					<mkdir dir="${test_dir}/_output/${project_name}/videos" mode="0777" />
+<!--					<chown file="${test_dir}/_output/${project_name}/videos" user="${os-user}" group="${os-group}" />-->
+				</else>
+		</if>
+
+		<if>
+			<available file="${test_dir}/_output/${project_name}/htmlreports" type="dir" property="dir_exists" />
+			<else>
+				<mkdir dir="${test_dir}/_output/${project_name}/htmlreports" mode="0777" />
+<!--				<chown file="${test_dir}/_output/${project_name}/htmlreports" user="${os-user}" group="${os-group}" />-->
+			</else>
+		</if>
+
+		<if>
+			<available file="${test_dir}/_output/${project_name}/xmlreports" type="dir" property="dir_exists" />
+			<else>
+				<mkdir dir="${test_dir}/_output/${project_name}/xmlreports" mode="0777" />
+<!--				<chown file="${test_dir}/_output/${project_name}/xmlreports" user="${os-user}" group="${os-group}" />-->
+			</else>
+		</if>
+	</target>
+
+	<target name="prepare_codecept_variables" depends="create_output_folders"
+	        description="import project specific values for Logging, test url and test database and set as env">
+		<php expression="putenv('BW_TEST_LOG_PATH=${BW_TEST_LOG_PATH}');" />
+		<php expression="putenv('BW_TEST_URL=${BW_TEST_URL}');" />
+		<php expression="putenv('BW_TEST_DB_HOST=${BW_TEST_DB_HOST}');" />
+		<php expression="putenv('BW_TEST_DB_NAME=${BW_TEST_DB_NAME}');" />
+		<php expression="putenv('BW_TEST_DB_USER=${BW_TEST_DB_USER}');" />
+		<php expression="putenv('BW_TEST_DB_PW=${BW_TEST_DB_PW}');" />
+		<php expression="putenv('BW_TEST_VM_VERSION=${BW_TEST_VM_VERSION}');" />
+		<php expression="putenv('BW_TEST_RUNNER=${test_runner}');" />
+	</target>
+
+	<target name="set_rebase" depends="prepare_codecept_variables"
+	        description="set rebase, needed while testing failed, testing installation/update or manual desire">
+
+		<available file="${test_dir}/_output/${project_name}/failed" property="failed" value="true"/>
+		<if>
+			<equals arg1="${failed}" arg2="1"/>
+			<then>
+				<property name="rebase" value="true" override="true" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${bwpm_install}" arg2="1"/>
+			<then>
+				<property name="rebase" value="true" override="true" />
+			</then>
+		</if>
+	</target>
+
+	<target name="start_infrastructure" depends="set_rebase" description="start test infrastructure">
+		<echo message="Start infrastructure with: docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d"/>
+		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d" passthru="true" />
+	</target>
+
+	<target name="do_rebase" depends="start_infrastructure"
+	        description="sync dev files and rebase database if needed or delete all BwPostman related stuff">
+		<if>
+			<equals arg1="${bwpm_install}" arg2=""/>
+				<then>
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/administrator/components/"
+							destinationDir="${web_dir}/${project_name}/files/administrator/components" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/administrator/language/"
+							destinationDir="${web_dir}/${project_name}/files/administrator/language" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/components/"
+							destinationDir="${web_dir}/${project_name}/files/components" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/images/"
+							destinationDir="${web_dir}/${project_name}/files/images" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/language/"
+							destinationDir="${web_dir}/${project_name}/files/language" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/media/"
+							destinationDir="${web_dir}/${project_name}/files/media" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/modules/"
+							destinationDir="${web_dir}/${project_name}/files/modules" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/plugins/bwpostman/"
+							destinationDir="${web_dir}/${project_name}/files/plugins/bwpostman" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/plugins/quickicon/"
+							destinationDir="${web_dir}/${project_name}/files/plugins/quickicon" />
+					<filesync
+							rsyncPath="/usr/bin/rsync"
+							options="-rlqc"
+							sourceDir="${src_dir}/plugins/system/"
+							destinationDir="${web_dir}/${project_name}/files/plugins/system" />
+					<if>
+						<equals arg1="${vm_version}" arg2="" />
+						<else>
+							<filesync
+									rsyncPath="/usr/bin/rsync"
+									options="-rlqc"
+									sourceDir="${src_dir}/plugins/vmfields/"
+									destinationDir="${web_dir}/${project_name}/files/plugins/vmfields" />
+						</else>
+					</if>
+				</then>
+			<else>
+				<delete>
+					<fileset dir="${web_dir}/${project_name}/files" >
+						<include name="**/**"/>
+						<contains text="bwpostman" casesensitive="false" />
+					</fileset>
+				</delete>
+			</else>
+		</if>
+
+		<if>
+			<equals arg1="${rebase}" arg2="1"/>
+			<then>
+				<echo message="Do Rebase erkannt: ${rebase}" />
+				<exec command="mysql -u ${BW_TEST_DB_USER} -p${BW_TEST_DB_PW} -h ${BW_TEST_DB_HOST} ${BW_TEST_DB_NAME} &lt; ${web_dir}/${project_name}/backups/${project_name}.sql" passthru="true" />
+			</then>
+		</if>
+	</target>
+
+	<target name="prepare_acceptance_suite" depends="do_rebase"
+	        description="start test container, do tests">
+		<copy file="${base_dir}/codeception.tpl.yml" tofile="${base_dir}/codeception.yml" overwrite="true">
+			<filterchain>
+				<replacetokens begintoken="@" endtoken="@">
+					<token key="BW_TEST_PROJECT" value="${project_name}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+		<copy file="${test_dir}/acceptance.suite.tpl.yml" tofile="${test_dir}/acceptance.suite.yml" overwrite="true">
+			<filterchain>
+				<replacetokens begintoken="@" endtoken="@">
+					<token key="BW_TEST_PROJECT" value="${project_name}" />
+					<token key="BW_TEST_URL" value="${BW_TEST_URL}" />
+					<token key="BW_TEST_DB_HOST" value="${BW_TEST_DB_HOST}" />
+					<token key="BW_TEST_DB_NAME" value="${BW_TEST_DB_NAME}" />
+					<token key="BW_TEST_DB_USER" value="${BW_TEST_DB_USER}" />
+					<token key="BW_TEST_DB_PW" value="${BW_TEST_DB_PW}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+	</target>
+
+	<target name="start_test_container" depends="prepare_acceptance_suite"
+	        description="start test container, do tests" logskipped="true">
+		<exec command="docker-compose -f ${container_dir}/testers/bwpm-tester.yml up" passthru="true" />
+	</target>
+
+	<target name="remove_test_container" depends="start_test_container"
+	        description="remove test container">
+		<exec command="docker rm bwpm-tester" passthru="true" checkreturn="true"/>
+	</target>
+
+	<target name="stop_infrastructure" depends="remove_test_container" description="stop test infrastructure">
+		<!--<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} down" passthru="true" />-->
+	</target>
+
+</project>
+
+

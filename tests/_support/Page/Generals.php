@@ -166,7 +166,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_header     = 'h4.alert-heading';
+	public static $alert_header     = '//*/joomla-alert/h4';
 
 	/**
 	 * @var string

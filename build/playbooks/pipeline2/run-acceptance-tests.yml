@@ -112,11 +112,12 @@
       set_fact:
         db_host: "{{ acceptance_source.db_container_name }}"
 
+
     - name: copy tests
       become: true
       become_user: root
       synchronize:
-        src: "{{ test_files_source }}/"
+        src: "{{ test_files_source }}"
         dest: "/data/tests"
         delete: yes
         recursive: yes

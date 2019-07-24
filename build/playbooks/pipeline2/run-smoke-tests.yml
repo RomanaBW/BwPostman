@@ -103,11 +103,15 @@
         state: directory
         mode: 0777
 
+    - name: Show test source path
+      debug:
+        msg: "{{ test_files_source }}"
+
     - name: copy tests
       become: true
       become_user: root
       synchronize:
-        src: "{{ test_files_source }}/tests/"
+        src: "{{ test_files_source }}"
         dest: "/data/tests"
         delete: yes
         recursive: yes

@@ -2239,9 +2239,9 @@ class OptionsPage
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
-		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Options'], 1);
 
-		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->see("Message", Generals::$alert_header);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_success);

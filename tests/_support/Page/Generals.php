@@ -420,7 +420,7 @@ class Generals
 		'Default'              => ".//*[@id='toolbar-default']/button",
 		'Check-In'             => ".//*[@id='toolbar-checkin']/button",
 		'Install-Template'     => ".//*[@id='toolbar-custom']/a",
-		'Options'              => ".//*[@id='toolbar-options']/button",
+		'Options'              => "a#toolbar-options",
 		'Save'                 => ".//*[@id='toolbar-apply']/button",
 		'Save & Close'         => ".//*[@id='toolbar-save']/button",
 		'Save & New'           => ".//*[@id='toolbar-save-new']/button",
@@ -440,6 +440,49 @@ class Generals
 		'Uninstall  '          => ".//*[@id='toolbar-delete']/button",
 		'BwPostman Manual'     => ".//*[@id='toolbar-book']/button",
 		'BwPostman Forum'      => ".//*[@id='toolbar-users']/button",
+	);
+
+	/**
+	 * Array of toolbar id values for list page
+	 *
+	 * @var    array
+	 *
+	 * @since  2.0.0
+	 */
+	public static $toolbar4 = array (
+		'New'                  => "a#toolbar-new",
+		'Edit'                 => "a#toolbar-edit",
+		'Publish'              => "a#toolbar-publish",
+		'Unpublish'            => "a#toolbar-unpublish",
+		'Archive'              => "a#toolbar-archive",
+		'Help'                 => "a#toolbar-help",
+		'Duplicate'            => "a#toolbar-copy",
+		'Send'                 => "a#toolbar-envelope",
+		'Add HTML-Template'    => "a#toolbar-calendar",
+		'Add Text-Template'    => "a#toolbar-new",
+		'Default'              => "a#toolbar-default",
+		'Check-In'             => "a#toolbar-checkin",
+		'Install-Template'     => "a#toolbar-custom']/a",
+		'Options'              => "a#toolbar-options",
+		'Save'                 => "a#toolbar-apply",
+		'Save & Close'         => "a#toolbar-save",
+		'Save & New'           => "a#toolbar-save-new",
+		'Save as Copy'         => "a#toolbar-save-copy",
+		'Cancel'               => "a#toolbar-cancel",
+		'Back'                 => "a#toolbar-back",
+		'Delete'               => "a#toolbar-delete",
+		'Restore'              => "a#toolbar-unarchive",
+		'Enable'               => "a#toolbar-publish",
+		'Import'               => "a#toolbar-download",
+		'Export'               => "a#toolbar-upload",
+		'Export Popup'         => "a#toolbar-popup-upload",
+		'Batch'                => "a#toolbar-batch",
+		'Reset sending trials' => "a#toolbar-unpublish",
+		'Continue sending'     => "a#toolbar-popup-envelope",
+		'Clear queue'          => "a#toolbar-delete",
+		'Uninstall  '          => "a#toolbar-delete",
+		'BwPostman Manual'     => "a#toolbar-book",
+		'BwPostman Forum'      => "a#toolbar-users",
 	);
 
 	/**

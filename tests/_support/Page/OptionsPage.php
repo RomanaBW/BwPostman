@@ -2229,6 +2229,8 @@ class OptionsPage
 	 *
 	 * @return  void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function saveDefaults(\AcceptanceTester $I)
@@ -2243,6 +2245,7 @@ class OptionsPage
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
+		$I->waitForElementVisible(Generals::$alert_header);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_success);
 	}

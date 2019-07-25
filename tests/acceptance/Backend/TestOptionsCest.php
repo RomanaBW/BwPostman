@@ -38,7 +38,7 @@ class TestOptionsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -58,6 +58,8 @@ class TestOptionsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function saveDefaults(AcceptanceTester $I)
@@ -75,7 +77,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -124,7 +126,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -173,7 +175,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -221,7 +223,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -244,7 +246,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -315,7 +317,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -366,7 +368,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -417,7 +419,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -471,7 +473,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -525,7 +527,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -579,7 +581,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -649,7 +651,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -673,7 +675,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -700,7 +702,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -731,7 +733,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -762,7 +764,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -793,7 +795,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -824,7 +826,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -855,7 +857,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -886,7 +888,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -909,7 +911,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -932,7 +934,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -959,7 +961,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1001,7 +1003,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1028,7 +1030,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1055,7 +1057,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1082,7 +1084,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1113,7 +1115,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1140,7 +1142,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1167,7 +1169,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1206,7 +1208,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1229,7 +1231,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1252,7 +1254,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1275,7 +1277,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1302,7 +1304,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1325,7 +1327,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1348,7 +1350,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1379,7 +1381,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1444,7 +1446,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1467,7 +1469,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1490,7 +1492,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1518,7 +1520,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1546,7 +1548,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1574,7 +1576,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1602,7 +1604,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1630,7 +1632,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1657,7 +1659,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1684,7 +1686,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1712,7 +1714,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1739,7 +1741,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -1765,7 +1767,7 @@ class TestOptionsCest
 	 *
 	 * @after   _logout
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1825,7 +1827,7 @@ class TestOptionsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */

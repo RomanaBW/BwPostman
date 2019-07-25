@@ -37,8 +37,8 @@ pipeline {
 			}
 			post {
 				always {
-//					echo "Dummy Smoke ALWAYS"
-					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
+					echo "Dummy Smoke ALWAYS"
+//					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
 				}
 				failure {
 					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")

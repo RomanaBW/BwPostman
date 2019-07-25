@@ -263,6 +263,7 @@ class MaintenancePage
 		$I->wantTo("Restore tables");
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
+		$I->wait(20);
 
 		$I->click(MainView::$maintenanceButton);
 

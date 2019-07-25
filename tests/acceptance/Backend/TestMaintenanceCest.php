@@ -155,7 +155,6 @@ class TestMaintenanceCest
 		$I->wantTo("Check tables");
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
-		$I->wait(20);
 		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);

@@ -1,6 +1,7 @@
 <?php
 namespace Page;
 
+use Exception;
 use Page\MainviewPage as MainView;
 
 /**
@@ -254,7 +255,7 @@ class MaintenancePage
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -262,10 +263,10 @@ class MaintenancePage
 	{
 		$I->wantTo("Restore tables");
 		$I->expectTo("see 'Result check okay'");
-		$I->amOnPage(MainView::$url);
-		$I->wait(20);
-
-		$I->click(MainView::$maintenanceButton);
+		$I->amOnPage(MaintenancePage::$url);
+//		$I->wait(20);
+//
+//		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(self::$heading);

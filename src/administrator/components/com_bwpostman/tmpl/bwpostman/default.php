@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
 // Load the modal behavior for the campaign preview
-JHtml::_('behavior.modal', 'a.popup');
+//JHtml::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the statistics
 jimport('joomla.html.html.sliders');

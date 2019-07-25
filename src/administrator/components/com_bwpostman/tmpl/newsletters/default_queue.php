@@ -32,7 +32,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
-JHtml::_('behavior.modal', 'a.popup');
+//JHtml::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the Tabs
 jimport('joomla.html.html.tabs');

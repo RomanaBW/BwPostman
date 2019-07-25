@@ -39,7 +39,7 @@ JHtml::_('behavior.formvalidator');
 $image = '<i class="icon-info"></i>';
 
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.modal');
+//JHtml::_('behavior.modal');
 JHtml::_('behavior.keepalive');
 
 $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);

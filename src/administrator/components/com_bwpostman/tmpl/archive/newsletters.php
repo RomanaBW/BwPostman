@@ -33,7 +33,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 JHtml::_('behavior.tooltip');
 
 // Load the modal behavior for the newsletter preview
-JHtml::_('behavior.modal');
+//JHtml::_('behavior.modal');
 JHtml::_('formbehavior.chosen', 'select');
 
 $user		= JFactory::getUser();

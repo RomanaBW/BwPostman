@@ -79,7 +79,7 @@ class JFormFieldbuttons extends JFormField
 		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp;field=' . $fieldName;
 		$doc->addScriptDeclaration($js);
 
-		JHtml::_('behavior.modal', 'a.modal');
+//		JHtml::_('behavior.modal', 'a.modal');
 
 		// The active newsletter id field.
 		if (0 == (int) $this->value)

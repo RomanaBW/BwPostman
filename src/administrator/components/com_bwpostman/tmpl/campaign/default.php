@@ -37,7 +37,7 @@ JHtml::_('formbehavior.chosen', 'select');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/bwtabs.php');
 
 // Load the modal behavior for the newsletter preview
-JHtml::_('behavior.modal', 'a.popup');
+//JHtml::_('behavior.modal', 'a.popup');
 
 $tab_options = array(
 	'onActive' => 'function(title, description){

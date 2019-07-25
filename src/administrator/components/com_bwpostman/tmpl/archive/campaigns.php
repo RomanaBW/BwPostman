@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 
 // Load the modal behavior for the campaign preview
-JHtml::_('behavior.modal');
+//JHtml::_('behavior.modal');
 JHtml::_('formbehavior.chosen', 'select');
 
 $user		= JFactory::getUser();

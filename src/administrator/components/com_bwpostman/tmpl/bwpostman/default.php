@@ -43,7 +43,7 @@ if ($this->queueEntries) {
 	$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 }
 
-$app->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAGE'), 'message');
+//$app->enqueueMessage(JText::_('COM_BWPOSTMAN_REVIEW_MESSAGE'), 'message');
 ?>
 
 <div id="view_bwpostman">

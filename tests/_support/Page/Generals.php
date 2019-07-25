@@ -33,7 +33,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $url          = '/administrator/index.php?option=com_bwpostman';
+	public static $url          = '/administrator/index.php?option=com_bwpostman&view=bwpostman';
 
 	/**
 	 * @var string

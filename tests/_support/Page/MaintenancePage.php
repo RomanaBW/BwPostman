@@ -56,35 +56,35 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkTablesButton    = "//*[@id='cpanel']/div[1]/div/a";
+	public static $checkTablesButton    = '//*/div[contains(@class,"bw-icons")]/div[1]/div/a';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $saveTablesButton     = "//*[@id='cpanel']/div[2]/div/a/img";
+	public static $saveTablesButton     = '//*/div[contains(@class,"bw-icons")]/div[2]/div/a';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $restoreTablesButton  = "//*[@id='cpanel']/div[3]/div/a";
+	public static $restoreTablesButton  = '//*/div[contains(@class,"bw-icons")]/div[3]/div/a';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $settingsButton       = "//*[@id='cpanel']/div[4]/div/a";
+	public static $settingsButton       = '//*/div[contains(@class,"bw-icons")]/div[4]/div/a';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $forumButton          = "//*[@id='cpanel']/div/div/a/span[contains(text(),'BwPostman Forum')]";
+	public static $forumButton          = "//*/div/a/span[contains(text(),'BwPostman Forum')]";
 
 	/**
 	 * @var string

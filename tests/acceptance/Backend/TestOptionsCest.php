@@ -1779,7 +1779,7 @@ class TestOptionsCest
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
-		$I->clickAndWait(Generals::$toolbar['Options'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Options'], 1);
 		$I->clickAndWait(OptionsPage::$tab_permissions, 1);
 
 		// get rule names
@@ -1801,7 +1801,7 @@ class TestOptionsCest
 			}
 
 			// apply
-			$I->clickAndWait(Generals::$toolbar['Save'], 1);
+			$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
 

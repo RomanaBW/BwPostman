@@ -239,9 +239,16 @@ class MaintenancePage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $statisticsPaneGenerals     = "//*[@id='bwpostman_statistic-pane']/div/a[contains(text(),'General statistics')]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.2.0
 	 */
-	public static $statisticsUnsentNewsletters     = "//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a";
+	public static $statisticsUnsentNewsletters     = "//*[@id='bwpostman_statistic-pane']/div/div/div/table/tbody/tr[1]/td[2]/b/a";
 
 	/**
 	 * Test method to restore tables
@@ -315,6 +322,8 @@ class MaintenancePage
 
 		$I->amOnPage(MainView::$url);
 
+		$I->waitForElementVisible(self::$statisticsPaneGenerals, 5);
+		$I->click(self::$statisticsPaneGenerals);
 		$I->waitForElementVisible(self::$statisticsUnsentNewsletters, 5);
 		$I->see("53", self::$statisticsUnsentNewsletters);
 	}

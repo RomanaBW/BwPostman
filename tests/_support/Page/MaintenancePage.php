@@ -91,7 +91,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkBackButton      = "//*[@id='toolbar-arrow-left']/button";
+	public static $checkBackButton      = "//*[@id='toolbar-arrow-left']";
 
 	/**
 	 * @var string

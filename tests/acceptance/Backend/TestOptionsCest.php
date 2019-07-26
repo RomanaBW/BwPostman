@@ -1801,7 +1801,7 @@ class TestOptionsCest
 			}
 
 			// apply
-			$I->clickAndWait(Generals::$toolbar4['Save'], 1);
+			$I->clickAndWait(Generals::$toolbar['Save'], 1);
 
 			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
 

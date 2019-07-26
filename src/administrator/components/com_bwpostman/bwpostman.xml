@@ -79,27 +79,38 @@
 		</submenu>
 
 		<files folder="admin">
+<!--	common-->
 			<filename>access.xml</filename>
-			<filename>bwpostman.php</filename>
-			<filename>install.bwpostman.php</filename>
 			<filename>CHANGELOG.txt</filename>
-			<filename>controller.php</filename>
 			<filename>config.xml</filename>
 			<filename>index.html</filename>
 			<filename>LICENSE.txt</filename>
 			<filename>import_demo.csv</filename>
 			<filename>import_demo.xml</filename>
 			<folder>assets</folder>
-			<folder>classes</folder>
-			<folder>controllers</folder>
-			<folder>elements</folder>
 			<folder>helpers</folder>
-			<folder>layouts</folder>
 			<folder>libraries</folder>
+			<folder>elements</folder>
+			<folder>layouts</folder>
+			<folder>classes</folder>
+<!--	J3 stuff-->
+			<filename>install.bwpostman.php</filename>
+			<filename>controller.php</filename>
+			<filename>bwpostman.php</filename>
+			<folder>controllers</folder>
 			<folder>models</folder>
 			<folder>sql</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
+<!--	J4 stuff-->
+			<filename>dispatcher.php</filename>
+			<folder>Controller</folder>
+			<folder>Field</folder>
+			<folder>Helper</folder>
+			<folder>Model</folder>
+			<folder>Table</folder>
+			<folder>tmpl</folder>
+			<folder>View</folder>
 		</files>
 
 		<languages folder="admin/language">

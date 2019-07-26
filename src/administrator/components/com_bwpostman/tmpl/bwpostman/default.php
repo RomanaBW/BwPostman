@@ -192,16 +192,9 @@ if ($this->queueEntries) {
 			?>
 		</div>
 		<div class="bw-generals col-md-3 module-wrapper">
-			<?php echo HTMLHelper::_('bootstrap.startAccordion', 'bwpostman_statistic-pane', array('active' => 'generals')); ?>
-			<?php echo HTMLHelper::_(
-				'bootstrap.addSlide',
-				'generals',
-				JText::_('COM_BWPOSTMAN_GENERAL_STATS'),
-				'collapse0'
-			); ?>
-			<div class="row">
-				<div class="col-md-12">
-					<table class="adminlist">
+			<?php echo HTMLHelper::_('bootstrap.startAccordion', 'bwpostman_statistic-pane', array('active' => 'collapse0')); ?>
+			<?php echo HTMLHelper::_('bootstrap.addSlide', 'bwpostman_statistic-pane', JText::_('COM_BWPOSTMAN_GENERAL_STATS'), 'collapse0'); ?>
+			<table class="adminlist">
 						<?php
 						if ($this->permissions['com']['admin']
 							|| $this->permissions['view']['maintenance']
@@ -331,18 +324,9 @@ if ($this->queueEntries) {
 							</tr>
 						<?php } ?>
 					</table>
-				</div>
-			</div>
 			<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
-			<?php echo HTMLHelper::_(
-				'bootstrap.addSlide',
-				'archive',
-				JText::_('COM_BWPOSTMAN_ARC_STATS'),
-				'collapse1'
-			); ?>
-			<div class="row">
-				<div class="col-md-12">
-					<table class="adminlist">
+			<?php echo HTMLHelper::_('bootstrap.addSlide', 'bwpostman_statistic-pane', JText::_('COM_BWPOSTMAN_ARC_STATS'), 'collapse1'); ?>
+			<table class="adminlist">
 						<?php
 						if ($this->permissions['com']['admin']
 							|| $this->permissions['view']['maintenance']
@@ -450,11 +434,7 @@ if ($this->queueEntries) {
 							</tr>
 						<?php } ?>
 					</table>
-					<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
-					<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
-
-
-			</div>
+			<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
 		</div>
 	</div>
 	<div class="clr clearfix"></div>

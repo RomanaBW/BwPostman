@@ -31,8 +31,8 @@ $model		= $this->getModel();
 $token      = JSession::getFormToken();
 ?>
 
-<div id="restoreResult" class="row-fluid">
-	<div class="span6 inner well">
+<div id="restoreResult" class="row">
+	<div class="col-md-6 inner well">
 		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES'); ?></h2>
 		<p id="step1" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STEP_1'); ?></p>
 		<p id="step2" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STEP_2'); ?></p>
@@ -46,7 +46,7 @@ $token      = JSession::getFormToken();
 		<p id="step10" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STEP_10'); ?></p>
 		<p id="step11" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STEP_11'); ?></p>
 	</div>
-	<div class="span6 well well-small resultSet">
+	<div class="col-md-6 well well-small resultSet">
 		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESULT'); ?></h2>
 		<div id="loading2"></div>
 		<div id="error"></div>

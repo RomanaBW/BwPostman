@@ -1883,13 +1883,16 @@ class TestOptionsCest
 		$identifier = './/*[@id="jform_rules_' . $rules[$i] . '_' . $group_id . '"]';
 		$value      = $actions[$rules[$i]];
 
+		codecept_debug('Identifier:' . $identifier);
+		codecept_debug('Value: ' . $value);
+
 		$I->scrollTo($identifier, 0, -150);
 		$I->waitForElementVisible($identifier, 30);
 
-		$selector = '#jform_rules_' . $rules[$i] . '_' . $group_id;
-		$I->removeSelectedAttribute($selector);
-
-		$I->click($identifier);
+//		$selector = '#jform_rules_' . $rules[$i] . '_' . $group_id;
+//		$I->removeSelectedAttribute($selector);
+//
+//		$I->click($identifier);
 		$I->selectOption($identifier, $value);
 //		$I->wait(1);
 	}

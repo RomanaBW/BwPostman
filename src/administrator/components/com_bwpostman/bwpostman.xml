@@ -93,17 +93,17 @@
 			<folder>elements</folder>
 			<folder>layouts</folder>
 			<folder>classes</folder>
+			<folder>sql</folder>
 <!--	J3 stuff-->
 			<filename>install.bwpostman.php</filename>
 			<filename>controller.php</filename>
 			<filename>bwpostman.php</filename>
 			<folder>controllers</folder>
 			<folder>models</folder>
-			<folder>sql</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
 <!--	J4 stuff-->
-			<filename>dispatcher.php</filename>
+<!--			<filename>dispatcher.php</filename>-->
 			<folder>Controller</folder>
 			<folder>Field</folder>
 			<folder>Helper</folder>

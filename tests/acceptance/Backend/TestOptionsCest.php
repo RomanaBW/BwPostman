@@ -1892,9 +1892,9 @@ class TestOptionsCest
 //		$selector = '#jform_rules_' . $rules[$i] . '_' . $group_id;
 //		$I->removeSelectedAttribute($selector);
 //
-//		$I->click($identifier);
+		$I->click($identifier);
 		$I->selectOption($identifier, $value);
-//		$I->wait(1);
+		$I->wait(1);
 	}
 
 	/**

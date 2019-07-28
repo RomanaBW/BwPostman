@@ -89,7 +89,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $sys_message_container    = ".//*[@id='system-message-container']";
+	public static $sys_message_container    = "//*[@id='system-message-container']";
 
 	/**
 	 * @var string
@@ -110,7 +110,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $back_button  = ".//*[@id='toolbar-back']/button";
+	public static $back_button  = "//*[@id='toolbar-back']/button";
 
 	/**
 	 * @var object  $tester AcceptanceTester
@@ -146,7 +146,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $first_list_entry     = ".//*[@id='cb0']";
+	public static $first_list_entry     = "//*[@id='cb0']";
 
 	/*
 	 * Declare UI map for this page here. CSS or XPath allowed.
@@ -285,7 +285,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $check_all_button = ".//*[@name='checkall-toggle']";
+	public static $check_all_button = "//*[@name='checkall-toggle']";
 
 	/**
 	 * @var    string
@@ -382,14 +382,14 @@ class Generals
 	 * @since  2.0.0
 	 */
 	public static $submenu = array (
-		'BwPostman'     => ".//*[@id='submenu']/li/a[contains(text(), 'BwPostman')]",
-		'Newsletters'   => ".//*[@id='submenu']/li/a[contains(text(), 'Newsletters')]",
-		'Subscribers'   => ".//*[@id='submenu']/li/a[contains(text(), 'Subscribers')]",
-		'Campaigns'     => ".//*[@id='submenu']/li/a[contains(text(), 'Campaigns')]",
-		'Mailinglists'  => ".//*[@id='submenu']/li/a[contains(text(), 'Mailinglists')]",
-		'Templates'     => ".//*[@id='submenu']/li/a[contains(text(), 'Templates')]",
-		'Archive'       => ".//*[@id='submenu']/li/a[contains(text(), 'Archive')]",
-		'Maintenance'   => ".//*[@id='submenu']/li/a[contains(text(), 'Maintenance')]",
+		'BwPostman'     => "//*[@id='submenu']/li/a[contains(text(), 'BwPostman')]",
+		'Newsletters'   => "//*[@id='submenu']/li/a[contains(text(), 'Newsletters')]",
+		'Subscribers'   => "//*[@id='submenu']/li/a[contains(text(), 'Subscribers')]",
+		'Campaigns'     => "//*[@id='submenu']/li/a[contains(text(), 'Campaigns')]",
+		'Mailinglists'  => "//*[@id='submenu']/li/a[contains(text(), 'Mailinglists')]",
+		'Templates'     => "//*[@id='submenu']/li/a[contains(text(), 'Templates')]",
+		'Archive'       => "//*[@id='submenu']/li/a[contains(text(), 'Archive')]",
+		'Maintenance'   => "//*[@id='submenu']/li/a[contains(text(), 'Maintenance')]",
 	);
 
 	/**
@@ -397,7 +397,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $submenu_toggle_button  = ".//*[@id='j-toggle-sidebar-icon']";
+	public static $submenu_toggle_button  = "//*[@id='j-toggle-sidebar-icon']";
 
 	/**
 	 * Array of toolbar id values for list page
@@ -407,39 +407,39 @@ class Generals
 	 * @since  2.0.0
 	 */
 	public static $toolbar = array (
-		'New'                  => ".//*[@id='toolbar-new']/button",
-		'Edit'                 => ".//*[@id='toolbar-edit']/button",
-		'Publish'              => ".//*[@id='toolbar-publish']/button",
-		'Unpublish'            => ".//*[@id='toolbar-unpublish']/button",
-		'Archive'              => ".//*[@id='toolbar-archive']/button",
-		'Help'                 => ".//*[@id='toolbar-help']/button",
-		'Duplicate'            => ".//*[@id='toolbar-copy']/button",
-		'Send'                 => ".//*[@id='toolbar-envelope']/button",
-		'Add HTML-Template'    => ".//*[@id='toolbar-calendar']/button",
-		'Add Text-Template'    => ".//*[@id='toolbar-new']/button",
-		'Default'              => ".//*[@id='toolbar-default']/button",
-		'Check-In'             => ".//*[@id='toolbar-checkin']/button",
-		'Install-Template'     => ".//*[@id='toolbar-custom']/a",
-		'Options'              => ".//*[@id='toolbar-options']/button",
-		'Save'                 => ".//*[@id='toolbar-apply']/button",
-		'Save & Close'         => ".//*[@id='toolbar-save']/button",
-		'Save & New'           => ".//*[@id='toolbar-save-new']/button",
-		'Save as Copy'         => ".//*[@id='toolbar-save-copy']/button",
-		'Cancel'               => ".//*[@id='toolbar-cancel']/button",
-		'Back'                 => ".//*[@id='toolbar-back']/button",
-		'Delete'               => ".//*[@id='toolbar-delete']/button",
-		'Restore'              => ".//*[@id='toolbar-unarchive']/button",
-		'Enable'               => ".//*[@id='toolbar-publish']/button",
-		'Import'               => ".//*[@id='toolbar-download']/button",
-		'Export'               => ".//*[@id='toolbar-upload']/button",
-		'Export Popup'         => ".//*[@id='toolbar-popup-upload']/button",
-		'Batch'                => ".//*[@id='toolbar-batch']/button",
-		'Reset sending trials' => ".//*[@id='toolbar-unpublish']/button",
-		'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",
-		'Clear queue'          => ".//*[@id='toolbar-delete']/button",
-		'Uninstall  '          => ".//*[@id='toolbar-delete']/button",
-		'BwPostman Manual'     => ".//*[@id='toolbar-book']/button",
-		'BwPostman Forum'      => ".//*[@id='toolbar-users']/button",
+		'New'                  => "//*[@id='toolbar-new']/button",
+		'Edit'                 => "//*[@id='toolbar-edit']/button",
+		'Publish'              => "//*[@id='toolbar-publish']/button",
+		'Unpublish'            => "//*[@id='toolbar-unpublish']/button",
+		'Archive'              => "//*[@id='toolbar-archive']/button",
+		'Help'                 => "//*[@id='toolbar-help']/button",
+		'Duplicate'            => "//*[@id='toolbar-copy']/button",
+		'Send'                 => "//*[@id='toolbar-envelope']/button",
+		'Add HTML-Template'    => "//*[@id='toolbar-calendar']/button",
+		'Add Text-Template'    => "//*[@id='toolbar-new']/button",
+		'Default'              => "//*[@id='toolbar-default']/button",
+		'Check-In'             => "//*[@id='toolbar-checkin']/button",
+		'Install-Template'     => "//*[@id='toolbar-custom']/a",
+		'Options'              => "//*[@id='toolbar-options']/button",
+		'Save'                 => "//*[@id='toolbar-apply']/button",
+		'Save & Close'         => "//*[@id='toolbar-save']/button",
+		'Save & New'           => "//*[@id='toolbar-save-new']/button",
+		'Save as Copy'         => "//*[@id='toolbar-save-copy']/button",
+		'Cancel'               => "//*[@id='toolbar-cancel']/button",
+		'Back'                 => "//*[@id='toolbar-back']/button",
+		'Delete'               => "//*[@id='toolbar-delete']/button",
+		'Restore'              => "//*[@id='toolbar-unarchive']/button",
+		'Enable'               => "//*[@id='toolbar-publish']/button",
+		'Import'               => "//*[@id='toolbar-download']/button",
+		'Export'               => "//*[@id='toolbar-upload']/button",
+		'Export Popup'         => "//*[@id='toolbar-popup-upload']/button",
+		'Batch'                => "//*[@id='toolbar-batch']/button",
+		'Reset sending trials' => "//*[@id='toolbar-unpublish']/button",
+		'Continue sending'     => "//*[@id='toolbar-popup-envelope']/button",
+		'Clear queue'          => "//*[@id='toolbar-delete']/button",
+		'Uninstall  '          => "//*[@id='toolbar-delete']/button",
+		'BwPostman Manual'     => "//*[@id='toolbar-book']/button",
+		'BwPostman Forum'      => "//*[@id='toolbar-users']/button",
 	);
 
 	/**
@@ -504,14 +504,14 @@ class Generals
 	 *
 	 * @since   2.0.0
 	 */
-	public static $select_list_selected_location = ".//*[@id='%s']/a/span";
+	public static $select_list_selected_location = "//*[@id='%s']/option[contains(text(), '%s')][@selected='selected']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $select_list_open              = ".//*[@id='%s']/div";
+	public static $select_list_open              = "//*[@id='%s']";
 
 	/**
 	 * Location of table column
@@ -520,7 +520,7 @@ class Generals
 	 *
 	 * @since   2.0.0
 	 */
-	public static $table_headcol_link_location = ".//*[@id='main-table']/thead/tr/th/a[@data-name = '%s']";
+	public static $table_headcol_link_location = "//*[@id='main-table']/thead/tr/th/a/span[text()[contains(.,'%s')]]";
 
 	/**
 	 * Location of main table and arrow column
@@ -529,14 +529,14 @@ class Generals
 	 *
 	 * @since   2.0.0
 	 */
-	public static $main_table                   = ".//*[@id='main-table']";
+	public static $main_table                   = "//*[@id='main-table']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $table_headcol_arrow_location = ".//*/table/thead/tr/th[%s]/a/span";
+	public static $table_headcol_arrow_location = "//*/table/thead/tr/th[%s]/a/span";
 
 	/**
 	 * @var string
@@ -550,21 +550,21 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $search_field         = ".//*[@id='filter_search']";
+	public static $search_field         = "//*[@id='filter_search']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $search_list          = ".//*[@id='filter_search_filter_chzn']/a";
+	public static $search_list          = "//*[@id='filter_search_filter_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $search_button        = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[1]/button";
+	public static $search_button        = "//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[1]/button";
 
 	// Filter bar
 
@@ -573,28 +573,28 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $filterbar_button     = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[2]/button";
+	public static $filterbar_button     = "//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[2]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $filter_bar_open      = ".//*[@id='j-main-container']/div[1]/div[2]";
+	public static $filter_bar_open      = "//*[@id='j-main-container']/div[1]/div[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $clear_button         = ".//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[3]/button";
+	public static $clear_button         = "//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[3]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $null_row             = ".//*/table/tbody/tr/td";
+	public static $null_row             = "//*/table/tbody/tr/td";
 
 	/**
 	 * @var string
@@ -617,42 +617,42 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $status_list          = ".//*[@id='filter_published_chzn']/a";
+	public static $status_list          = "//*[@id='filter_published_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $status_none          = ".//*[@id='filter_published_chzn']/div/ul/li[text()='- Select Status -']";
+	public static $status_none          = "//*[@id='filter_published_chzn']/div/ul/li[text()='- Select Status -']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $status_unpublished   = ".//*[@id='filter_published_chzn']/div/ul/li[text()='unpublished']";
+	public static $status_unpublished   = "//*[@id='filter_published_chzn']/div/ul/li[text()='unpublished']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $status_published     = ".//*[@id='filter_published_chzn']/div/ul/li[text()='published']";
+	public static $status_published     = "//*[@id='filter_published_chzn']/div/ul/li[text()='published']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_unpublished     = ".//*[@id='j-main-container']/*/span[contains(@class, 'icon-unpublish')]";
+	public static $icon_unpublished     = "//*[@id='j-main-container']/*/span[contains(@class, 'icon-unpublish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_published       = ".//*[@id='j-main-container']/*/span[contains(@class, 'icon-publish')]";
+	public static $icon_published       = "//*[@id='j-main-container']/*/span[contains(@class, 'icon-publish')]";
 
 	// filter identifiers
 
@@ -661,35 +661,35 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $publish_row          = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
+	public static $publish_row          = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $unpublish_row        = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
+	public static $unpublish_row        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $attachment_row       = ".//*[@id='main-table']/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
+	public static $attachment_row       = "//*[@id='main-table']/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $template_yes_row          = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-featured')]";
+	public static $template_yes_row          = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-featured')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $template_no_row        = ".//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unfeatured')]";
+	public static $template_no_row        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unfeatured')]";
 
 	/**
 	 * @var string
@@ -703,7 +703,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $table_header         = ".//*/thead";
+	public static $table_header         = "//*/thead";
 
 	/**
 	 * @var string
@@ -719,7 +719,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_column        = ".//*/td[5]";
+	public static $access_column        = "//*/td[5]";
 
 	/**
 	 * @var string
@@ -733,72 +733,85 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list          = ".//*[@id='filter_access_chzn']/a";
+	public static $access_list          = "//*[@id='filter_access_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_none          = ".//*[@id='filter_access_chzn']/div/ul/li[text()='- Select Access -']";
+	public static $access_none          = "//*[@id='filter_access_chzn']/div/ul/li[text()='- Select Access -']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_public        = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Public']";
+	public static $access_public        = "//*[@id='filter_access_chzn']/div/ul/li[text()='Public']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_guest         = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Guest']";
+	public static $access_guest         = "//*[@id='filter_access_chzn']/div/ul/li[text()='Guest']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_registered    = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Registered']";
+	public static $access_registered    = "//*[@id='filter_access_chzn']/div/ul/li[text()='Registered']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_special       = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Special']";
+	public static $access_special       = "//*[@id='filter_access_chzn']/div/ul/li[text()='Special']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_super         = ".//*[@id='filter_access_chzn']/div/ul/li[text()='Super Users']";
+	public static $access_super         = "//*[@id='filter_access_chzn']/div/ul/li[text()='Super Users']";
 
-	// list ordering
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $filterOptionsSwitcher        = "//*[@class='js-stools-container-bar']/div/div/button[contains(@class,'js-stools-btn-filter')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $filterOptionsPopup        = "//*/div[contains(@class,'js-stools-container-filters')]";
+
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $ordering_list        = ".//*[@id='list_fullordering_chzn']/a";
+	public static $ordering_list        = "//*[@id='list_fullordering']";
+//*[@id="list_fullordering"]
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $ordering_value       = "//*[@id='list_fullordering']/option[text()='";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $ordering_value       = ".//*[@id='list_fullordering_chzn']/div/ul/li[text()='";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $ordering_id          = "list_fullordering_chzn";
+	public static $ordering_id          = "list_fullordering";
 
 	// list limit
 
@@ -814,49 +827,49 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_list           = ".//*[@id='list_limit_chzn']/a";
+	public static $limit_list           = "//*[@id='list_limit_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_5              = ".//*[@id='list_limit_chzn']/div/ul/li[text()='5']";
+	public static $limit_5              = "//*[@id='list_limit_chzn']/div/ul/li[text()='5']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_10             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='10']";
+	public static $limit_10             = "//*[@id='list_limit_chzn']/div/ul/li[text()='10']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_15             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='15']";
+	public static $limit_15             = "//*[@id='list_limit_chzn']/div/ul/li[text()='15']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_20             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='20']";
+	public static $limit_20             = "//*[@id='list_limit_chzn']/div/ul/li[text()='20']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_25             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='25']";
+	public static $limit_25             = "//*[@id='list_limit_chzn']/div/ul/li[text()='25']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_30             = ".//*[@id='list_limit_chzn']/div/ul/li[text()='30']";
+	public static $limit_30             = "//*[@id='list_limit_chzn']/div/ul/li[text()='30']";
 
 	// Pagination
 	/**
@@ -864,56 +877,56 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $first_page           = ".//*/a/span[contains(@class, 'icon-first')]";
+	public static $first_page           = "//*/a/span[contains(@class, 'icon-first')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $prev_page            = ".//*/a/span[contains(@class, 'icon-previous')]";
+	public static $prev_page            = "//*/a/span[contains(@class, 'icon-previous')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $next_page            = ".//*/a/span[contains(@class, 'icon-next')]";
+	public static $next_page            = "//*/a/span[contains(@class, 'icon-next')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $last_page            = ".//*/a/span[contains(@class, 'icon-last')]";
+	public static $last_page            = "//*/a/span[contains(@class, 'icon-last')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $page_1               = ".//*/div/nav/ul/li/a[contains(text(), '1')]";
+	public static $page_1               = "//*/div/nav/ul/li/a[contains(text(), '1')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $page_2               = ".//*/div/nav/ul/li/a[contains(text(), '2')]";
+	public static $page_2               = "//*/div/nav/ul/li/a[contains(text(), '2')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $page_3               = ".//*/div/nav/ul/li/a[contains(text(), '3')]";
+	public static $page_3               = "//*/div/nav/ul/li/a[contains(text(), '3')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $last_page_identifier = ".//*/ul[contains(@class, 'pagination-list')]/li[contains(@class, 'active')]/span";
+	public static $last_page_identifier = "//*/ul[contains(@class, 'pagination-list')]/li[contains(@class, 'active')]/span";
 
 
 	// buttons
@@ -954,28 +967,28 @@ class Generals
 	 *
 	 * @since  2.0.0
 	 */
-	public static $mls_accessible       = ".//*[@id='jform_ml_available_%s']";
+	public static $mls_accessible       = "//*[@id='jform_ml_available_%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_nonaccessible    = ".//*[@id='jform_ml_unavailable_%s']";
+	public static $mls_nonaccessible    = "//*[@id='jform_ml_unavailable_%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal         = ".//*[@id='jform_ml_intern_%s']";
+	public static $mls_internal         = "//*[@id='jform_ml_intern_%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_usergroup        = ".//*[@id='1group_2']";
+	public static $mls_usergroup        = "//*[@id='1group_2']";
 
 	/**
 	 * General messages

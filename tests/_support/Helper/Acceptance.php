@@ -662,21 +662,23 @@ class Acceptance extends Codeception\Module
 				}
 				else
 				{
-					$I->clickSelectList(
-						Generals::$ordering_list,
-						Generals::$ordering_value . $sort_data_array['sort_criteria_select'][$key] . " " . $order . "']",
-						Generals::$ordering_id
-					);
+					$I->click(Generals::$filterOptionsSwitcher);
+					$I->click(Generals::$ordering_list);
+					$I->selectOption(Generals::$ordering_list, $sort_data_array['sort_criteria_select'][$key] . " " . $order);
+					$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 				}
 
 				$I->expectTo('see arrow ' . $arrow . ' at ' . $criterion);
 				$I->waitForElement(sprintf(Generals::$table_headcol_arrow_location, $i), 30);
 				$I->seeElement(sprintf(Generals::$table_headcol_arrow_location, $i), array('class' => Generals::$sort_arrows[$arrow]));
 				$I->expectTo('see text ' . $sort_data_array['sort_criteria_select'][$key] . ' ' . $order);
+				$I->click(Generals::$filterOptionsSwitcher);
+				$orderingText = $sort_data_array['sort_criteria_select'][$key] . ' ' . $order;
 				$I->see(
-					$sort_data_array['sort_criteria_select'][$key] . ' ' . $order,
-					sprintf(Generals::$select_list_selected_location, Generals::$ordering_id)
+					$orderingText,
+					sprintf(Generals::$select_list_selected_location, Generals::$ordering_id, $orderingText)
 				);
+				$I->click(Generals::$filterOptionsSwitcher);
 
 				// loop over column values
 				$row_values_actual = self::GetTableRows($I);
@@ -1059,7 +1061,13 @@ class Acceptance extends Codeception\Module
 				$I->wait(1);
 
 				// open 'search by' list, select 'search by' value
-				$I->clickSelectList(Generals::$search_list, $search_data_array['search_by'][$i], Generals::$search_list_id);
+				$I->click(Generals::$filterOptionsSwitcher);
+				$I->click(Generals::$ordering_list);
+				$I->selectOption(Generals::$ordering_list, $search_data_array['search_by'][$i]);
+				$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+
+
+//				$I->clickSelectList(Generals::$search_list, $search_data_array['search_by'][$i], Generals::$search_list_id);
 				// click search button
 				$I->click(Generals::$search_button);
 				$I->waitForElement(Generals::$main_table);

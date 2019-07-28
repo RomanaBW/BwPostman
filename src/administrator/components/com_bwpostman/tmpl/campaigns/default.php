@@ -27,8 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 $user		= JFactory::getUser();
@@ -67,21 +68,24 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					?>
 
 					<table id="main-table" class="table">
+						<caption id="captionTable" class="sr-only">
+							<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+						</caption>
 						<thead>
 							<tr>
-								<th style="width: 1%;" class="text-center">
+								<th scope="col" style="width: 1%;" class="text-center">
 									<input type="checkbox" name="checkall-toggle" value=""
 											title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 								</th>
-								<th class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+								<th scope="col" class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
 									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-								<th class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+								<th scope="col" class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
 									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 								</th>
-								<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+								<th scope="col" class="d-none d-md-table-cell" style="width: 10%;" scope="col">
 									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?>
 								</th>
-								<th class="d-none d-md-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
+								<th scope="col" class="d-none d-md-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
 									<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 								</th>
 							</tr>

@@ -26,11 +26,13 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
 //JHtml::_('behavior.modal');
 JHtml::_('behavior.multiselect');
 
 JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
@@ -122,12 +124,12 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			<div class="col-md-12">
 				<div id="j-main-container" class="j-main-container">
 					<?php
-						// Search tools bar
-						echo JLayoutHelper::render(
-							'default',
-							array('view' => $this, 'tab' => 'sent'),
-							$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-						);
+					// Search tools bar
+					echo JLayoutHelper::render(
+						'tabbed',
+						array('view' => $this, 'tab' => 'sent'),
+						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+					);
 					?>
 
 					<div class="form-horizontal">
@@ -155,6 +157,9 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 
 					<div class="current">
 						<table id="main-table" class="table">
+							<caption id="captionTable" class="sr-only">
+								<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+							</caption>
 							<thead>
 								<tr>
 									<th style="width: 1%;" class="text-center">

@@ -208,7 +208,7 @@ window.onload = function()
 		<div class="clr clearfix"></div>
 
 		<div class="tab-wrapper-bwp">
-			<div class="well row">
+			<div class="well row nl-generals">
 				<legend>
 					<?php
 					$title = JText::_('COM_BWPOSTMAN_NL_GENERAL');

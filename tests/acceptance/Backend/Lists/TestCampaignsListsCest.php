@@ -33,9 +33,10 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 *
-	 * @throws \Exception
 	 */
 	public function _login(\Page\Login $loginPage)
 	{
@@ -53,7 +54,7 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -80,7 +81,7 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -107,7 +108,7 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -133,9 +134,10 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0
+	 * @throws Exception
 	 *
-	 * @throws \Exception
+	 *@since   2.0.0
+	 *
 	 */
 	public function ListlimitCampaigns(AcceptanceTester $I)
 	{
@@ -156,16 +158,20 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0
+	 * @throws Exception
+	 *@since   2.0.0
 	 *
-	 * @throws \Exception
 	 */
 	public function PaginationCampaigns(AcceptanceTester $I)
 	{
 		$I->wantTo("test pagination at campaigns");
 		$I->amOnPage(CamManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5, Generals::$limit_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$limit_list_id);
+		$I->selectOption(Generals::$limit_list_id, Generals::$limit_5);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+		$I->assertEquals(5, count($I->GetTableRows($I)));
 
 		$I->checkPagination($I, CamManage::$pagination_data_array, 5);
 	}
@@ -178,9 +184,9 @@ class TestCampaignsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0
+	 * @throws Exception
+	 *@since   2.0.0
 	 *
-	 * @throws \Exception
 	 */
 	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
 	{

@@ -105,10 +105,10 @@ class TemplateManagerPage
 	 * @since 2.0.0
 	 */
 	public static $publish_by_icon   = array(
-		'publish_button'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
-		'publish_result'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
-		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => "//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+		'publish_result'    => "//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => "//*[@id='main-table']/tbody/tr[4]/td[6]/a",
+		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	// publish by toolbar
@@ -119,10 +119,10 @@ class TemplateManagerPage
 	 * @since 2.0.0
 	 */
 	public static $publish_by_toolbar   = array(
-		'publish_button'    => ".//*[@id='cb3']",
-		'publish_result'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  => ".//*[@id='cb3']",
-		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => "//*[@id='cb3']",
+		'publish_result'    => "//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => "//*[@id='cb3']",
+		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 
@@ -131,21 +131,21 @@ class TemplateManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_button1      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a";
+	public static $default_button1      = "//*[@id='main-table']/tbody/tr[3]/td[5]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_result1      = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $default_result1      = "//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $no_default_result1   = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $no_default_result1   = "//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 
 	/**
@@ -153,21 +153,21 @@ class TemplateManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_button2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a";
+	public static $default_button2      = "//*[@id='main-table']/tbody/tr[1]/td[5]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_result2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $default_result2      = "//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $no_default_result2   = ".//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $no_default_result2   = "//*[@id='main-table']/tbody/tr[3]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	// Filter mail format
 
@@ -176,42 +176,42 @@ class TemplateManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_list_id       = "filter_tpl_id_chzn";
+	public static $format_list_id       = "//*[@id='filter_tpl_id']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_list          = ".//*[@id='filter_tpl_id_chzn']/a";
+	public static $format_list          = "//*[@id='filter_tpl_id_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_none          = ".//*[@id='filter_tpl_id_chzn']/div/ul/li[text()='Select email format']";
+	public static $format_none          = "//*[@id='filter_tpl_id_chzn']/div/ul/li[text()='Select email format']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_text          = ".//*/li[text()='Text']";
+	public static $format_text          = "Text";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_html          = ".//*/li[text()='HTML']";
+	public static $format_html          = "HTML";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_text_column   = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[4]";
+	public static $format_text_column   = "//*[@id='main-table']/tbody/*/td[4]";
 
 	/**
 	 * @var string
@@ -236,10 +236,10 @@ class TemplateManagerPage
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
-												".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-												".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-												".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-												),
+				"Description",
+				"Title & Description",
+				"Title",
+				),
 
 		'search_val'           => array("Sample for an own", "Blue"),
 		// array of arrays: outer array per search value, inner arrays per 'search by'
@@ -260,29 +260,29 @@ class TemplateManagerPage
 	 */
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "Boldt Webservice",
-		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
+		'p1_field1'            => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p1_val_last'          => "Standard Deep Blue",
-		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
+		'p1_field_last'        => "//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p2_val1'              => "Standard Soft Blue",
-		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
+		'p2_field1'            => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p2_val_last'          => "Template for Test 01",
-		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
+		'p2_field_last'        => "//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p_prev_val1'          => "Z Standard Soft Blue",
-		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
+		'p_prev_field1'        => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_prev_val_last'      => "Z Template for Test 01",
-		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
+		'p_prev_field_last'    => "//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p3_val1'              => "Z Boldt Webservice",
-		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
+		'p3_field1'            => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p3_val3'              => "Z Standard Deep Blue",
-		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[5]/td[2]",
+		'p3_field3'            => "//*[@id='main-table']/tbody/tr[5]/td[2]",
 
 		'p_last_val1'          => "Z2 Boldt Webservice",
-		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[2]",
+		'p_last_field1'        => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_last_val_last'      => "Z2 Template for Test 01",
-		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[2]/td[2]",
+		'p_last_field_last'    => "//*[@id='main-table']/tbody/tr[2]/td[2]",
 	);
 
 
@@ -323,14 +323,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $import_button      = "html/body/div[1]/div/div/div[2]/div/div/div[9]/a";
+	public static $import_button      = "//*/a[@id='toolbar-install-template']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importPageTitleField      = "html/body/div[2]/section/div/div/form/fieldset/legend";
+	public static $importPageTitleField      = "//*/section[@id='content']/div/div/main/form/fieldset/legend";
 
 	/**
 	 * @var string
@@ -344,14 +344,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importField      = "html/body/div[2]/section/div/div/form/fieldset/div[2]/div/table/tbody/tr[1]/td[2]/input";
+	public static $importField      = "//*/table[contains(@class, 'uploadtpl')]/tbody/tr[1]/td[2]/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $startImport_button      = "html/body/div[2]/section/div/div/form/fieldset/div[2]/div/table/tbody/tr[2]/td/input";
+	public static $startImport_button      = "//*/table[contains(@class, 'uploadtpl')]/tbody/tr[2]/td/input";
 
 	/**
 	 * @var string
@@ -394,21 +394,21 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $tableHeaderId      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/thead/tr/th[8]/a";
+	public static $tableHeaderId      = "//*[@id='main-table']/thead/tr/th[8]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $tableHeaderIdArrow      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/thead/tr/th[8]/a/span";
+	public static $tableHeaderIdArrow      = "//*[@id='main-table']/thead/tr/th[8]/a/span";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $firstTableTitle      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[1]/td[2]/a";
+	public static $firstTableTitle      = "//*[@id='main-table']/tbody/tr[1]/td[2]/a";
 
 	/**
 	 * @var string
@@ -422,14 +422,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $firstTableCheckbox      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[1]/td[1]/input";
+	public static $firstTableCheckbox      = "//*[@id='main-table']/tbody/tr[1]/td[1]/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $firstTableId      = "html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[1]/td[8]";
+	public static $firstTableId      = "//*[@id='main-table']/tbody/tr[1]/td[8]";
 
 
 	/**
@@ -437,7 +437,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $export_button      = "html/body/div[1]/div/div/div[2]/div/div/div[10]/button";
+	public static $export_button      = "//*/button[contains(@class, 'button-download')]";
 
 	/**
 	 * @var string
@@ -468,16 +468,16 @@ class TemplateManagerPage
 	 */
 	public static $arc_del_array_import     = array(
 		'field_title'          => "Standard Basic Import",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
-		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_tab'          => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
+		'archive_identifier'   => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'archive_title_col'    => "//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
 		'archive_confirm'      => 'Do you wish to archive the selected template(s)?',
 		'archive_success_msg'  => 'The selected template has been archived.',
 		'archive_success2_msg' => 'The selected templates have been archived.',
 
-		'delete_button'        => ".//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[2]",
+		'delete_button'        => "//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'delete_title_col'     => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[2]",
 		'remove_confirm'       => 'Do you wish to remove the selected template(s)?',
 		'success_remove'       => 'The selected template has been removed.',
 		'success_remove2'      => 'The selected templates have been removed.',

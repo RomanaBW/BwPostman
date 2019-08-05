@@ -38,7 +38,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $colNum = 7;
 ?>
 
-<table id="main-table" class="adminlist table table-striped">
+<table id="main-table-bw-testrecipients" class="table bw-testrecipients">
 	<thead>
 		<tr>
 			<th style="width: 1%;" class="text-center">

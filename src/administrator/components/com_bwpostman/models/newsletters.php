@@ -772,14 +772,12 @@ class BwPostmanModelNewsletters extends JModelList
 		switch ($tab)
 		{
 			case ("unsent"):
+			case ("queue"):
 			default:
 				$tab_int	= ' = ';
 				break;
 			case ("sent"):
 				$tab_int	= ' <> ';
-				break;
-			case ("queue"):
-				$tab_int	= ' = ';
 				break;
 		}
 

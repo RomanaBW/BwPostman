@@ -114,7 +114,7 @@ class TestNewslettersListsCest
 	public function SetNewsletterIsTemplate(AcceptanceTester $I)
 	{
 
-		$I->wantTo("Set/Unset newsletters by icon");
+		$I->wantTo("Set/Unset newsletter is template by icon");
 		$I->amOnPage(NlManage::$url);
 
 		// switch status by icon
@@ -152,24 +152,39 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 
 		// Get filter bar
-		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_authors_list, 5);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$limit_list_id);
+		$I->selectOption(Generals::$limit_list_id, Generals::$limit_10);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+
 		// select author 1
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_1, NlManage::$filter_authors_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_authors_list_id);
+		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_1);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 2
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_2, NlManage::$filter_authors_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_authors_list_id);
+		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_2);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 3
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_3, NlManage::$filter_authors_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_authors_list_id);
+		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_3);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
@@ -198,17 +213,23 @@ class TestNewslettersListsCest
 		$I->wait(NlManage::$wait_db);
 
 		// Filter single campaign
-		// Get filter bar
-		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_campaign_list, 5);
+
 		// select campaign
-		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_cam, NlManage::$filter_campaign_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_campaign_list_id);
+		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_cam);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_cam_result);
 
 		// Filter without campaign
 		// select campaign
-		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_without, NlManage::$filter_campaign_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_campaign_list_id);
+		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_without);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_nocam_result);
 	}
@@ -235,19 +256,24 @@ class TestNewslettersListsCest
 		$I->wait(NlManage::$wait_db);
 
 		// Filter content template yes
-		// Get filter bar
-		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_is_template_list, 5);
 		// select yes
-		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_yes, NlManage::$filter_is_template_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_is_template_list_id);
+		$I->selectOption(NlManage::$filter_is_template_list_id, NlManage::$filter_is_template_list_yes);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_is_template_yes_result);
 
 		// Filter content template no
-		$I->wait(1);
-		$I->waitForElementVisible(NlManage::$filter_is_template_list, 5);
+//		$I->wait(1);
+//		$I->waitForElementVisible(NlManage::$filter_is_template_list, 5);
 		// select no
-		$I->clickSelectList(NlManage::$filter_is_template_list, NlManage::$filter_is_template_list_no, NlManage::$filter_is_template_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_is_template_list_id);
+		$I->selectOption(NlManage::$filter_is_template_list_id, NlManage::$filter_is_template_list_no);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_is_template_no_result);
 	}
@@ -322,7 +348,10 @@ class TestNewslettersListsCest
 		$I->wantTo("test pagination at unsent newsletters");
 		$I->amOnPage(NlManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$limit_list_id);
+		$I->selectOption(Generals::$limit_list_id, Generals::$limit_10);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->checkPagination($I, NlManage::$pagination_data_array, 10);
 	}
@@ -348,7 +377,6 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$sent_query_criteria);
@@ -357,8 +385,6 @@ class TestNewslettersListsCest
 		$loop_counts    = count($sort_data['select_criteria']) + 1;
 
 		$I->loopFilterList($I, $sort_data, 'header', $columns, 'newsletters AS `a`', 0, '', $loop_counts, 2);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -383,7 +409,6 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// loop over sorting criterion
 		$columns    = implode(', ', NlManage::$sent_query_criteria);
@@ -392,8 +417,6 @@ class TestNewslettersListsCest
 		$loop_counts    = count($sort_data['select_criteria']) + 1;
 
 			$I->loopFilterList($I, $sort_data, '', $columns, 'newsletters AS `a`', 0, '', $loop_counts, 2);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -416,36 +439,40 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by author");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
-		// Get filter bar
-		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_authors_list, 5);
 		// select author 1
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_1, NlManage::$filter_authors_list_id);
-		$I->wait(1);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_authors_list_id);
+		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_1);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 2
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_2, NlManage::$filter_authors_list_id);
-		$I->wait(1);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_authors_list_id);
+		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_2);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+
 
 		$I->see(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 3
-		$I->clickSelectList(NlManage::$filter_authors_list, NlManage::$filter_author_3, NlManage::$filter_authors_list_id);
-		$I->wait(1);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_authors_list_id);
+		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_3);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -468,28 +495,30 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by campaign");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// Filter single campaign
-		// Get filter bar
-		$I->click(Generals::$filterbar_button);
-		$I->waitForElementVisible(NlManage::$filter_campaign_list, 5);
 		// select campaign
-		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_cam, NlManage::$filter_campaign_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_campaign_list_id);
+		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_cam);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_sent_cam_result);
 
 		// Filter without campaign
 		// select campaign
-		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_without, NlManage::$filter_campaign_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(NlManage::$filter_campaign_list_id);
+		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_without);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(Generals::$null_msg, Generals::$null_row);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
-	 * Test method to filter newsletters by campaign
+	 * Test method to filter newsletters by mailinglist
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -506,7 +535,6 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by mailinglist");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		// Get filter bar
 		$I->click(Generals::$filterbar_button);
@@ -531,8 +559,6 @@ class TestNewslettersListsCest
 		$I->see(NlManage::$filter_mailinglist_3_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_mailinglist_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_mailinglist_2_txt, NlManage::$authors_col);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 */
 	/**
@@ -555,11 +581,8 @@ class TestNewslettersListsCest
 		$I->wantTo("Filter sent newsletters by status");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->filterByStatus($I);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -583,14 +606,11 @@ class TestNewslettersListsCest
 		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->searchLoop($I, NlManage::$search_sent_data_array, false);
 
 		$I->click(Generals::$clear_button);
 		$I->see(NlManage::$search_sent_clear_val);
-
-		// $I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -613,11 +633,8 @@ class TestNewslettersListsCest
 		$I->wantTo("test list limit at sent newsletters");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->checkListlimit($I);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -640,15 +657,15 @@ class TestNewslettersListsCest
 		$I->wantTo("test pagination at sent newsletters");
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$limit_list_id);
+		$I->selectOption(Generals::$limit_list_id, Generals::$limit_10);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->checkPagination($I, NlManage::$pagination_sent_data_array, 10);
 
 		$I->scrollTo(Generals::$pageTitle);
-
-		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -674,11 +691,8 @@ class TestNewslettersListsCest
 		$this->buildQueue($I);
 
 		$I->clickAndWait(NlManage::$tab3, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->checkListlimit($I);
-
-		$I->click(Generals::$submenu_toggle_button);
 
 		$this->cleanupQueue($I);
 
@@ -711,7 +725,6 @@ class TestNewslettersListsCest
 		$this->buildQueue($I);
 
 		$I->clickAndWait(NlManage::$tab3, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 		$I->clickAndWait(NlManage::$queue_list_id, 1);
@@ -719,8 +732,6 @@ class TestNewslettersListsCest
 		$I->checkPagination($I, NlManage::$pagination_queue_data_array, 10);
 
 		$I->scrollTo(Generals::$pageTitle);
-
-		$I->click(Generals::$submenu_toggle_button);
 
 		$this->cleanupQueue($I);
 
@@ -753,7 +764,6 @@ class TestNewslettersListsCest
 		$this->buildQueue($I);
 
 		$I->clickAndWait(NlManage::$tab3, 1);
-		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
 		$I->assertNotEquals(0, intval($trial_value));

@@ -32,7 +32,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 //jimport ('joomla.html.html.bootstrap');
 
 JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 //Load tabs behavior for the Tabs
@@ -117,33 +116,30 @@ $tab_options = array(
 				<div id="j-main-container" class="j-main-container">
 					<?php
 					// Search tools bar
-					echo LayoutHelper::render(
-						'joomla.searchtools.default',
-						array('view' => $this, 'tab' => $tab),
-						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-					);
+					echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
-					// @ToDo: give tables a unique identifier for tests
-					echo JHtml::_('uitab.startTabSet', 'subscribers_tabs', $tab_options);
+					echo JHtml::_('uitab.startTabSet', 'bwpostman_subscribers_tabs', $tab_options);
 					echo JHtml::_(
 						'uitab.addTab',
-						'mailinglist_tabs',
+						'bwpostman_subscribers_tabs',
 						'confirmed',
 						\JText::_('COM_BWPOSTMAN_SUB_CONFIRMED')
 						);
 					echo $this->loadTemplate('confirmed');
+					echo JHtml::_('uitab.endTab');
 
 					echo JHtml::_(
 							'uitab.addTab',
-							'mailinglist_tabs',
+							'bwpostman_subscribers_tabs',
 							'unconfirmed',
 							\JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED')
 						);
 					echo $this->loadTemplate('unconfirmed');
+					echo JHtml::_('uitab.endTab');
 
 					echo JHtml::_(
 						'uitab.addTab',
-						'mailinglist_tabs',
+						'bwpostman_subscribers_tabs',
 						'testrecipients',
 						\JText::_('COM_BWPOSTMAN_TEST')
 					);

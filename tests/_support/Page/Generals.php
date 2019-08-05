@@ -96,7 +96,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $media_frame              = "field-media-modal";
+	public static $media_frame              = "Change Image";
 
 	/**
 	 * @var string
@@ -173,7 +173,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_heading    = "//*[@id='system-message-container']/div[1]/h4";
+	public static $alert_heading    = "//*[@id='system-message-container']/div[1]/joomla-alert/h4";
 
 	/**
 	 * @var string
@@ -187,7 +187,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_success    = '//*[@id="system-message"]/joomla-alert[@type="success"]';
+	public static $alert_success    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div/div';
 
 	/**
 	 * @var string
@@ -201,14 +201,14 @@ class Generals
 	 *
 	 * @since 2.2.0
 	 */
-	public static $alert_info        = '//*[@id="system-message"]/joomla-alert[@type="info"]';
+	public static $alert_info        = '//*[@id="system-message"]/joomla-alert[@type="info"]/div/div';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_warn       = '//*[@id="system-message"]/joomla-alert[@type="warning"]';
+	public static $alert_warn       = '//*[@id="system-message"]/joomla-alert[@type="warning"]/div/div';
 
 	/**
 	 * @var string
@@ -244,6 +244,13 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $alert_msg_txt        = 'Message';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $alert_info_txt        = 'Info';
 
 	/**
 	 * @var string
@@ -462,7 +469,7 @@ class Generals
 		'Add Text-Template'    => "a#toolbar-new",
 		'Default'              => "a#toolbar-default",
 		'Check-In'             => "a#toolbar-checkin",
-		'Install-Template'     => "a#toolbar-custom']/a",
+		'Install-Template'     => "a#toolbar-install-template",
 		'Options'              => "a#toolbar-options",
 		'Save'                 => "a#toolbar-apply",
 		'Save & Close'         => "a#toolbar-save",
@@ -543,7 +550,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $search_list_id       = "filter_search_filter_chzn";
+	public static $search_list_id       = "filter_search_filter";
 
 	/**
 	 * @var string
@@ -557,14 +564,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $search_list          = "//*[@id='filter_search_filter_chzn']/a";
+	public static $search_list          = "//*[@id='filter_search_filter']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $search_button        = "//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[1]/button";
+	public static $search_button        = "//*[@class='js-stools-container-bar']/div[1]/div[1]/div[1]/span/button";
 
 	// Filter bar
 
@@ -587,7 +594,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $clear_button         = "//*[@id='j-main-container']/div[1]/div[1]/div[1]/div[3]/button";
+	public static $clear_button         = "//*[@class='js-stools-container-bar']/div[1]/button";
 
 	/**
 	 * @var string
@@ -610,7 +617,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $status_list_id       = "filter_published_chzn";
+	public static $status_list_id       = "//*[@id='filter_published']";
 
 	/**
 	 * @var string
@@ -631,28 +638,28 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $status_unpublished   = "//*[@id='filter_published_chzn']/div/ul/li[text()='unpublished']";
+	public static $status_unpublished   = "unpublished";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $status_published     = "//*[@id='filter_published_chzn']/div/ul/li[text()='published']";
+	public static $status_published     = "published";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_unpublished     = "//*[@id='j-main-container']/*/span[contains(@class, 'icon-unpublish')]";
+	public static $icon_unpublished     = "//*/a/span[contains(@class, 'icon-unpublish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_published       = "//*[@id='j-main-container']/*/span[contains(@class, 'icon-publish')]";
+	public static $icon_published       = "//*/a/span[contains(@class, 'icon-publish')]";
 
 	// filter identifiers
 
@@ -726,7 +733,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list_id       = "filter_access_chzn";
+	public static $access_list_id       = "//*[@id='filter_access']";
 
 	/**
 	 * @var string
@@ -747,35 +754,35 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_public        = "//*[@id='filter_access_chzn']/div/ul/li[text()='Public']";
+	public static $access_public        = "Public";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_guest         = "//*[@id='filter_access_chzn']/div/ul/li[text()='Guest']";
+	public static $access_guest         = "Guest";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_registered    = "//*[@id='filter_access_chzn']/div/ul/li[text()='Registered']";
+	public static $access_registered    = "Registered";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_special       = "//*[@id='filter_access_chzn']/div/ul/li[text()='Special']";
+	public static $access_special       = "Special";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_super         = "//*[@id='filter_access_chzn']/div/ul/li[text()='Super Users']";
+	public static $access_super         = "Super Users";
 
 	/**
 	 * @var string
@@ -820,56 +827,56 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_list_id        = "list_limit_chzn";
+	public static $limit_list_id        = "//*[@id='list_limit']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_list           = "//*[@id='list_limit_chzn']/a";
+	public static $limit_list           = "//*[@class='js-stools-container-bar']/div[1]/div[1]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_5              = "//*[@id='list_limit_chzn']/div/ul/li[text()='5']";
+	public static $limit_5              = "5";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_10             = "//*[@id='list_limit_chzn']/div/ul/li[text()='10']";
+	public static $limit_10             = "10";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_15             = "//*[@id='list_limit_chzn']/div/ul/li[text()='15']";
+	public static $limit_15             = "15";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_20             = "//*[@id='list_limit_chzn']/div/ul/li[text()='20']";
+	public static $limit_20             = "20";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_25             = "//*[@id='list_limit_chzn']/div/ul/li[text()='25']";
+	public static $limit_25             = "25";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $limit_30             = "//*[@id='list_limit_chzn']/div/ul/li[text()='30']";
+	public static $limit_30             = "30";
 
 	// Pagination
 	/**
@@ -877,49 +884,49 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $first_page           = "//*/a/span[contains(@class, 'icon-first')]";
+	public static $first_page           = "//*/a[contains(@aria-label, 'Go to start page')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $prev_page            = "//*/a/span[contains(@class, 'icon-previous')]";
+	public static $prev_page            = "//*/a[contains(@aria-label, 'Go to previous page')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $next_page            = "//*/a/span[contains(@class, 'icon-next')]";
+	public static $next_page            = "//*/a[contains(@aria-label, 'Go to next page')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $last_page            = "//*/a/span[contains(@class, 'icon-last')]";
+	public static $last_page            = "//*/a[contains(@aria-label, 'Go to end page')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $page_1               = "//*/div/nav/ul/li/a[contains(text(), '1')]";
+	public static $page_1               = "//*/a[contains(@aria-label, 'Go to page 1')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $page_2               = "//*/div/nav/ul/li/a[contains(text(), '2')]";
+	public static $page_2               = "//*/a[contains(@aria-label, 'Go to page 2')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $page_3               = "//*/div/nav/ul/li/a[contains(text(), '3')]";
+	public static $page_3               = "//*/a[contains(@aria-label, 'Go to page 3')]";
 
 	/**
 	 * @var string
@@ -935,14 +942,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_red   = 'btn active btn-danger';
+	public static $button_red   = 'btn btn-outline-danger';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_green = 'btn active btn-success';
+	public static $button_green = 'btn btn-outline-success';
 
 	/**
 	 * @var string
@@ -999,7 +1006,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $invalidField        = "Invalid field:  	";
+	public static $invalidField        = "Field required: ";
 
 
 	/**

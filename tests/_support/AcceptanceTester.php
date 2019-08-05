@@ -161,7 +161,7 @@ class AcceptanceTester extends \Codeception\Actor
 		$set_visible .= "};";
 		$set_invisible = "var radio_buttons = document.getElementsByName('$radio_id');";
 		$set_invisible .= "for (var i = 0; i < document.getElementsByName('$radio_id').length; i++) {";
-		$set_invisible .= "document.getElementsByName('$radio_id')[i].setAttribute('style', 'display: one');";
+		$set_invisible .= "document.getElementsByName('$radio_id')[i].setAttribute('style', 'display: none');";
 		$set_invisible .= "};";
 		$this->executeJS($set_visible);
 		$this->wait(10);
@@ -348,4 +348,19 @@ class AcceptanceTester extends \Codeception\Actor
 
 		return $last_page;
 	}
+
+	/**
+	 * Method to set the name attribute of an iframe (only one iframe on page!)
+	 *
+	 * @param   string            $iframeName   name the iframe should get
+	 *
+	 * @return  void
+	 *
+	 * @since   2.4.0
+	 */
+	public function setIframeName($iframeName)
+	{
+		$this->executeJS("document.getElementsByTagName('iframe')[0].setAttribute('name', '" . $iframeName . "');");
+	}
+
 }

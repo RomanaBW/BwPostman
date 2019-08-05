@@ -70,4 +70,5 @@ try
 catch (Exception $exception)
 {
 	JText::_('JERROR_AN_ERROR_HAS_OCCURRED');
+	$app->enqueueMessage($exception->getMessage());
 }

@@ -48,70 +48,70 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $edit_form	= ".//*[@id='adminForm']/div[1]/fieldset/legend";
+	public static $edit_form	= "//*[@id='adminForm']/div[1]/fieldset/legend";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $firstname    = ".//*[@id='jform_firstname']";
+	public static $firstname    = "//*[@id='jform_firstname']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $name         = ".//*[@id='jform_name']";
+	public static $name         = "//*[@id='jform_name']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $email        = ".//*[@id='jform_email']";
+	public static $email        = "//*[@id='jform_email']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $special      = ".//*[@id='jform_special']";
+	public static $special      = "//*[@id='jform_special']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender       = ".//*[@id='jform_gender_chzn']/a";
+	public static $gender       = "//*[@id='jform_gender_chosen']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailformat   = ".//*[@id='jform_emailformat_chzn']/a";
+	public static $mailformat   = "//*[@id='jform_emailformat_chosen']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $confirm      = ".//*[@id='jform_status_chzn']/a";
+	public static $confirm      = "//*[@id='jform_status_chosen']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $unconfirmed  = ".//*[@id='jform_status_chzn']/div/ul/li[2]";
+	public static $unconfirmed  = "//*[@id='jform_status_chosen']/div/ul/li[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $confirmed    = ".//*[@id='jform_status_chzn']/div/ul/li[1]";
+	public static $confirmed    = "//*[@id='jform_status_chosen']/div/ul/li[1]";
 
 
 	/**
@@ -224,6 +224,20 @@ class SubscriberEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $firstNameMissing          = "You have to enter a first name for the subscriber.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $lastNameMissing          = "You have to enter a name for the subscriber.";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $emailTitle          = "Email ";
@@ -242,17 +256,18 @@ class SubscriberEditPage
 	 * @since 2.0.0
 	 */
 	public static $arc_del_array     = array(
+		'mainTableId'          => "//*[@id='main-table-bw-confirmed']",
 		'field_title'          => "sam.sample",
-		'archive_tab'          => ".//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
-		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[%s]",
+		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived subscribers')]",
+		'archive_identifier'   => "Name & Email",
+		'archive_title_col'    => "//*[@id='main-table-bw-confirmed']/tbody/*/td[%s]",
 		'archive_confirm'      => 'Do you wish to archive the selected subscriber(s)?',
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
 		'archive_success2_msg' => 'The selected subscribers have been archived.',
 
-		'delete_button'        => ".//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-		'delete_title_col'     => ".//*[@id='main-table']/tbody/tr/td/div/table/tbody/*/td[4]",
+		'delete_button'        => "//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => "Name & Email",
+		'delete_title_col'     => "//*[@id='main-table']/tbody/tr/td/div/table/tbody/*/td[4]",
 		'remove_confirm'       => 'Do you wish to remove the selected subscriber(s)/test-recipient(s)?',
 		'success_remove'       => 'The selected subscriber/test-recipient has been removed.',
 		'success_remove2'      => 'The selected subscribers/test-recipients have been removed.',
@@ -268,11 +283,11 @@ class SubscriberEditPage
 	 * @since  2.0.0
 	 */
 	public static $toolbar = array (
-		'Save & Close' => ".//*[@id='toolbar-save']/button",
-		'Save'         => ".//*[@id='toolbar-apply']/button",
-		'Cancel'       => ".//*[@id='toolbar-cancel']/button",
-		'Back'         => ".//*[@id='toolbar-back']/button",
-		'Help'         => ".//*[@id='toolbar-help']/button",
+		'Save & Close' => "//*[@id='toolbar-save']/button",
+		'Save'         => "//*[@id='toolbar-apply']/button",
+		'Cancel'       => "//*[@id='toolbar-cancel']/button",
+		'Back'         => "//*[@id='toolbar-back']/button",
+		'Help'         => "//*[@id='toolbar-help']/button",
 	);
 
 	/**
@@ -288,14 +303,14 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $female   = ".//*[@id='jform_gender_chzn']/div/ul/li[2]";
+	public static $female   = "//*[@id='jform_gender_chosen']/div/ul/li[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $male     = ".//*[@id='jform_gender_chzn']/div/ul/li[3]";
+	public static $male     = "//*[@id='jform_gender_chosen']/div/ul/li[3]";
 
 	/**
 	 * Variables for selecting mailinglists
@@ -305,28 +320,28 @@ class SubscriberEditPage
 	 *
 	 * @since  2.0.0
 	 */
-	public static $firstSubscriber       = ".//*/dd[1]/table/tbody/tr[1]/td[2]/a";
+	public static $firstSubscriber       = "//*/table[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_accessible       = ".//*[@id='details']/div/fieldset/div[1]/div/fieldset/div/p[%s]/label";
+	public static $mls_accessible       = "//*[@id='ml_available']/fieldset/div/p[%s]/label";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_nonaccessible    = ".//*[@id='details']/div/fieldset/div[2]/div/fieldset/div/p[%s]/label";
+	public static $mls_nonaccessible    = "//*[@id='ml_unavailable']/fieldset/div/p[%s]/label";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal         = ".//*[@id='details']/div/fieldset/div[3]/div/fieldset/div/p[%s]/label";
+	public static $mls_internal         = "//*[@id='ml_intern']/fieldset/div/p[%s]/label";
 
 
 	/**
@@ -334,7 +349,7 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal_label   = ".//*[@id='details']/div/fieldset/div[3]/div/fieldset/legend";
+	public static $mls_internal_label   = "//*[@id='ml_intern']/fieldset/legend";
 
 	/**
 	 * Test method to create single Subscriber without cleanup for testing restore permission

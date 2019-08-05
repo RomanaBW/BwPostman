@@ -27,7 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
+//require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 // Import MODEL and Helper object class
@@ -1398,6 +1398,20 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ((trim($data['html_version']) == '') && (trim($data['text_version']) == ''))
 		{
 			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
+		}
+
+		$nullDate = $db	= JFactory::getDbo()->getNullDate();
+
+		// Check for valid publish_up values
+		if (!$data['publish_up'])
+		{
+			$data['publish_up'] = $nullDate;
+		}
+
+		// Check for valid publish_down values
+		if (!$data['publish_down'])
+		{
+			$data['publish_down'] = $nullDate;
 		}
 
 		return $data;

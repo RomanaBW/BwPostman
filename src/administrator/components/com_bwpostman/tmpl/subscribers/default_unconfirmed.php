@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -67,7 +69,10 @@ $colNum = 8;
 	};
 </script>
 
-<table id="main-table" class="table">
+<table id="main-table-bw-unconfirmed" class="table bw-unconfirmed">
+	<caption id="captionTable" class="sr-only">
+		<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+	</caption>
 	<thead>
 		<tr>
 			<th style="width: 1%;" class="text-center">

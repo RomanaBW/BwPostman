@@ -105,11 +105,11 @@ class TestTemplatesListsCest
 		$I->amOnPage(TplManage::$url);
 		$I->wait(1);
 
-		$sidebarToggle = $I->grabAttributeFrom(".//div[@id='j-sidebar-container']", 'class');
-		if (strpos($sidebarToggle, 'j-sidebar-hidden') !== false)
-		{
-			$I->click(Generals::$submenu_toggle_button);
-		}
+//		$sidebarToggle = $I->grabAttributeFrom(".//div[@id='j-sidebar-container']", 'class');
+//		if (strpos($sidebarToggle, 'j-sidebar-hidden') !== false)
+//		{
+//			$I->click(Generals::$submenu_toggle_button);
+//		}
 
 		// loop over sorting criterion
 		$columns    = implode(', ', TplManage::$query_criteria);
@@ -188,17 +188,25 @@ class TestTemplatesListsCest
 		$I->amOnPage(TplManage::$url);
 		$I->wait(1);
 
-		// Get filter bar
-		$I->clickAndWait(Generals::$filterbar_button, 1);
-		// select published
-		$I->clickSelectList(TplManage::$format_list, TplManage::$format_text, TplManage::$format_list_id);
+		// select text
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(TplManage::$format_list_id);
+		$I->selectOption(TplManage::$format_list_id, TplManage::$format_text);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
-		$I->dontSee(TplManage::$format_text_text, TplManage::$format_text_column);
+		$I->see(TplManage::$format_text_text, TplManage::$format_text_column);
+		$I->dontSee(TplManage::$format_text_html, TplManage::$format_text_column);
 
 		// select unpublished
-		$I->clickSelectList(TplManage::$format_list, TplManage::$format_html, TplManage::$format_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(TplManage::$format_list_id);
+		$I->selectOption(TplManage::$format_list_id, TplManage::$format_html);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
-		$I->dontSee(TplManage::$format_text_html, TplManage::$format_text_column);
+		$I->see(TplManage::$format_text_html, TplManage::$format_text_column);
+		$I->dontSee(TplManage::$format_text_text, TplManage::$format_text_column);
 	}
 
 	/**
@@ -268,7 +276,10 @@ class TestTemplatesListsCest
 		$I->wantTo("test pagination at templates");
 		$I->amOnPage(TplManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5, Generals::$limit_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$limit_list_id);
+		$I->selectOption(Generals::$limit_list_id, Generals::$limit_5);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->checkPagination($I, TplManage::$pagination_data_array, 5);
 	}

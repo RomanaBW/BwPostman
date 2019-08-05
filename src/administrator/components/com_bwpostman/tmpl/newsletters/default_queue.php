@@ -27,8 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
@@ -69,12 +70,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<div class="col-md-12">
 				<div id="j-main-container" class="j-main-container">
 					<?php
-						// Search tools bar
-						echo JLayoutHelper::render(
-							'default',
-							array('view' => $this, 'tab' => 'queue'),
-							$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-						);
+					// Search tools bar
+					echo JLayoutHelper::render(
+						'tabbed',
+						array('view' => $this, 'tab' => 'queue'),
+						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+					);
 					?>
 
 					<div class="form-horizontal">
@@ -102,6 +103,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 					<div class="current">
 						<table id="main-table" class="table">
+							<caption id="captionTable" class="sr-only">
+								<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+							</caption>
 						<thead>
 							<tr>
 								<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">

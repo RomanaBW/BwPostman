@@ -27,8 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
+
 JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
@@ -74,19 +78,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 </script>
 
 <?php
-// Open modalbox if task == startsending --> we will show the sending process in the modalbox
-$jinput	= JFactory::getApplication()->input;
-$task	= $jinput->get->get('task');
-
-if ($task == "startsending")
-{
-	echo '<script type="text/javascript">' . "\n";
-	echo "window.addEvent('load', function() {\n";
-	// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
-	echo "SqueezeBox.open('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', {handler: 'iframe', size: { x: 600, y: 450 }, closable: false, closeBtn: false, iframeOptions: {id: 'sendFrame', name: 'sendFrame'}}); \n";
-	echo "});\n";
-	echo "</script>\n";
-}
+//	echo '<script type="text/javascript">' . "\n";
+//	echo "window.addEvent('load', function() {\n";
+//	// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
+//	echo "SqueezeBox.open('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending', {handler: 'iframe', size: { x: 600, y: 450 }, closable: false, closeBtn: false, iframeOptions: {id: 'sendFrame', name: 'sendFrame'}}); \n";
+//	echo "});\n";
+//	echo "</script>\n";
 ?>
 
 <div id="bwp_view_lists">
@@ -102,6 +99,12 @@ if ($task == "startsending")
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 		}
 	}
+
+	// Open modalbox if task == startsending --> we will show the sending process in the modalbox
+//	if ($task == "startsending")
+//	{
+//	}
+
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
 			method="post" name="adminForm" id="adminForm">
@@ -111,10 +114,10 @@ if ($task == "startsending")
 					<?php
 					// Search tools bar
 					echo JLayoutHelper::render(
-						'default',
-						array('view' => $this, 'tab' => 'unsent'),
-						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-						);
+							'tabbed',
+							array('view' => $this, 'tab' => 'unsent'),
+							$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+					);
 					?>
 
 					<div class="form-horizontal">
@@ -142,6 +145,9 @@ if ($task == "startsending")
 
 					<div class="current">
 						<table id="main-table" class="table">
+							<caption id="captionTable" class="sr-only">
+								<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+							</caption>
 						<thead>
 							<tr>
 								<th style="width: 1%;" class="text-center">
@@ -274,6 +280,25 @@ if ($task == "startsending")
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
+		<?php
+		//		$link                  = Route::_('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending');
+		//		$link                  = Route::_('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending&tmpl=component');
+		$selector              = 'sendFrame';
+		$params                = array();
+		$params['title']       = 'Send newsletters';
+		$params['backdrop']    = 'static';
+		$params['keyboard']    = false;
+		$params['closeButton'] = false;
+		$params['animation']   = true;
+		$params['footer']      = 'Send newsletter footer';
+		//		$params['url']         = $link;
+		$params['height']      = '450';
+		$params['width']       = '600';
+
+		HTMLHelper::_('bootstrap.renderModal', 'collapseModal', $params,
+			$this->loadTemplate('modal'));
+
+		?>
 	</form>
 </div>
 

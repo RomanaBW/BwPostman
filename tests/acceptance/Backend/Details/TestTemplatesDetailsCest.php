@@ -74,7 +74,7 @@ class TestTemplatesDetailsCest
 
 		$this->fillFormExtendedHtml($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -108,7 +108,7 @@ class TestTemplatesDetailsCest
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 3);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		// check if preview is visible at template list
@@ -177,7 +177,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
@@ -210,7 +210,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
@@ -252,7 +252,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
@@ -267,7 +267,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
@@ -313,7 +313,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template', Generals::$pageTitle);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
@@ -397,7 +397,7 @@ class TestTemplatesDetailsCest
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		// check if preview is visible at template list
@@ -468,7 +468,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
@@ -501,7 +501,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
 
@@ -540,7 +540,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
 
@@ -555,7 +555,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
@@ -598,7 +598,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		$I->HelperArchiveItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
@@ -641,7 +641,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template', Generals::$pageTitle);
 
@@ -685,7 +685,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
@@ -729,7 +729,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 		$I->see('Header', TplEdit::$tpl_tab2);
 
@@ -860,41 +860,35 @@ class TestTemplatesDetailsCest
 		//show author
 		// switch no
 		$I->click(TplEdit::$show_author_no);
-		$I->seeElement(TplEdit::$show_author_no, array('class' => Generals::$button_red));
-		$I->dontSeeElement(TplEdit::$show_author_yes, array('class' => Generals::$button_green));
-		$I->seeElement(TplEdit::$show_author_yes, array('class' => Generals::$button_grey));
+		$I->seeElement(TplEdit::$show_author_no_active);
+		$I->dontSeeElement(TplEdit::$show_author_yes_active);
 
 		// switch yes
 		$I->click(TplEdit::$show_author_yes);
-		$I->dontSeeElement(TplEdit::$show_author_no, array('class' => Generals::$button_red));
-		$I->seeElement(TplEdit::$show_author_yes, array('class' => Generals::$button_green));
-		$I->seeElement(TplEdit::$show_author_no, array('class' => Generals::$button_grey));
+		$I->dontSeeElement(TplEdit::$show_author_no_active);
+		$I->seeElement(TplEdit::$show_author_yes_active);
 
 		// show created date
 		// switch no
 		$I->click(TplEdit::$show_created_no);
-		$I->seeElement(TplEdit::$show_created_no, array('class' => Generals::$button_red));
-		$I->dontSeeElement(TplEdit::$show_created_yes, array('class' => Generals::$button_green));
-		$I->seeElement(TplEdit::$show_created_yes, array('class' => Generals::$button_grey));
+		$I->seeElement(TplEdit::$show_created_no_active);
+		$I->dontSeeElement(TplEdit::$show_created_yes_active);
 
 		// switch yes
 		$I->click(TplEdit::$show_created_yes);
-		$I->dontSeeElement(TplEdit::$show_created_no, array('class' => Generals::$button_red));
-		$I->seeElement(TplEdit::$show_created_yes, array('class' => Generals::$button_green));
-		$I->seeElement(TplEdit::$show_created_no, array('class' => Generals::$button_grey));
+		$I->dontSeeElement(TplEdit::$show_created_no_active);
+		$I->seeElement(TplEdit::$show_created_yes_active);
 
 		// show readon button
 		// switch no
 		$I->click(TplEdit::$show_readon_no);
-		$I->seeElement(TplEdit::$show_readon_no, array('class' => Generals::$button_red));
-		$I->dontSeeElement(TplEdit::$show_readon_yes, array('class' => Generals::$button_green));
-		$I->seeElement(TplEdit::$show_readon_yes, array('class' => Generals::$button_grey));
+		$I->seeElement(TplEdit::$show_readon_no_active);
+		$I->dontSeeElement(TplEdit::$show_readon_yes_active);
 
 		// switch yes
 		$I->click(TplEdit::$show_readon_yes);
-		$I->dontSeeElement(TplEdit::$show_readon_no, array('class' => Generals::$button_red));
-		$I->seeElement(TplEdit::$show_readon_yes, array('class' => Generals::$button_green));
-		$I->seeElement(TplEdit::$show_readon_no, array('class' => Generals::$button_grey));
+		$I->dontSeeElement(TplEdit::$show_readon_no_active);
+		$I->seeElement(TplEdit::$show_readon_yes_active);
 	}
 
 	/**

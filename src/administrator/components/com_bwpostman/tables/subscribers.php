@@ -391,7 +391,7 @@ class BwPostmanTableSubscribers extends JTable
 		$xtest	= $app->getUserState('com_bwpostman.subscriber.new_test', $this->status);
 		$data	= $app->getUserState('com_bwpostman.subscriber.register.data', array());
 
-		if ($app->isSite() && !empty($data['mod_id']))
+		if ($app->isClient('site') && !empty($data['mod_id']))
 		{
 			// if data from module, we need module params
 			// we can't use JoomlaModuleHelper, because module isn't shown on frontend
@@ -476,7 +476,7 @@ class BwPostmanTableSubscribers extends JTable
 			$fault	= true;
 		}
 
-		if ($app->isSite() && !$this->id)
+		if ($app->isClient('site') && !$this->id)
 		{
 			// Check if any mailinglist is checked
 			if(!$data['mailinglists'])

@@ -32,7 +32,7 @@ JHtml::_('behavior.tooltip');
 
 // Load the modal behavior for the mailinglist preview
 //JHtml::_('behavior.modal');
-JHtml::_('formbehavior.chosen', 'select');
+//JHtml::_('formbehavior.chosen', 'select');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
@@ -57,12 +57,12 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 			<div class="col-md-12">
 				<div id="j-main-container" class="j-main-container">
 					<?php
-						// Search tools bar
-						echo JLayoutHelper::render(
-							'default',
-							array('view' => $this, 'tab' => $tab),
-							$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-						);
+					// Search tools bar
+					echo JLayoutHelper::render(
+						'tabbed',
+						array('view' => $this, 'tab' => $tab),
+						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+					);
 					?>
 
 					<div class="form-horizontal">
@@ -200,18 +200,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'mail
 											<tr class="row<?php echo $i % 2; ?>">
 												<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 												<td>
-													<span class="editlinktip hasTip" title="
-													<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_ML');?>::
-													<?php echo $this->escape($item->title); ?>">
-														<a class="modal" href="
-															<?php echo JRoute::_(
-																'index.php?option=com_bwpostman&view=archive&format=raw&layout=mailinglist_modal&ml_id='
-																. $item->id
-															);
-															?>" rel="{handler: 'iframe', size: {x: 650, y: 450}}">
-															<?php echo $item->title;?>
-														</a>&nbsp;
-													</span>
+													<?php echo $item->title;?>
 												</td>
 												<td>
 													<?php echo $item->description; ?>

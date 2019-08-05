@@ -48,35 +48,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab1             = ".//*[@id='adminForm']/div[1]/ul/li[1]/button";
+	public static $tab1             = "//*[@id='adminForm']/div[1]/ul/li[1]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2             = ".//*[@id='adminForm']/div[1]/ul/li[2]/button";
+	public static $tab2             = "//*[@id='adminForm']/div[1]/ul/li[2]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3             = ".//*[@id='adminForm']/div[1]/ul/li[3]/button";
+	public static $tab3             = "//*[@id='adminForm']/div[1]/ul/li[3]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4             = ".//*[@id='adminForm']/div[1]/ul/li[4]/button";
+	public static $tab4             = "//*[@id='adminForm']/div[1]/ul/li[4]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab5             = ".//*[@id='adminForm']/div[1]/ul/li[5]/button";
+	public static $tab5             = "//*[@id='adminForm']/div[1]/ul/li[5]/button";
 
 	/**
 	 * @var string
@@ -119,7 +119,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2_editor      = ".//*[@id='tinymce']";
+	public static $tab2_editor      = "//*[@id='tinymce']";
 
 	/**
 	 * @var string
@@ -141,7 +141,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3_editor      = ".//*[@id='jform_text_version']";
+	public static $tab3_editor      = "//*[@id='jform_text_version']";
 
 
 	/**
@@ -156,7 +156,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_html            = ".//*[@id='adminForm']/div[3]/fieldset[2]/div";
+	public static $tab4_preview_html            = "//*[@id='adminForm']/div[3]/fieldset[2]/div";
 
 	/**
 	 * @var string
@@ -177,7 +177,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_text            = ".//*[@id='adminForm']/div[3]/fieldset[3]/div";
+	public static $tab4_preview_text            = "//*[@id='adminForm']/div[3]/fieldset[3]/div";
 
 	/**
 	 * @var string
@@ -192,14 +192,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $preview_html      = ".//*/table[2]/tbody/tr[1]/td/h1";
+	public static $preview_html      = "//*/table[2]/tbody/tr[1]/td/h1";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $preview_text      = ".//*[@id='preview_text']/textarea";
+	public static $preview_text      = "//*[@id='preview_text']/textarea";
 
 
 	/**
@@ -236,28 +236,28 @@ class NewsletterEditPage
 	 * @since   2.0.0
 	 */
 
-	public static $checkbox_unconfirmed = ".//*[@id='send_to_unconfirmed']";
+	public static $checkbox_unconfirmed = "//*[@id='send_to_unconfirmed']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $button_send          = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/table/tbody/tr[5]/td[2]/input[1]";
+	public static $button_send          = "//*/input[contains(@value, 'Send newsletter')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $button_send_publish  = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/table/tbody/tr[5]/td[2]/input[2]";
+	public static $button_send_publish  = "//*/input[contains(@value, 'Send newsletter and publish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $button_send_test     = ".//*[@id='adminForm']/div[3]/fieldset[2]/div/table/tbody/tr[2]/td[2]/input";
+	public static $button_send_test     = "//*/input[contains(@value, 'Send test newsletter')]";
 
 	/**
 	 * @var string
@@ -285,14 +285,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_send_number_id  = ".//*[@id='nl_modal_to_send_message']";
+	public static $success_send_number_id  = "//*[@id='nl_modal_to_send_message']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $delay_message_id  = ".//*[@id='nl_modal_delay_message']";
+	public static $delay_message_id  = "//*[@id='nl_modal_delay_message']";
 
 	/**
 	 * @var string
@@ -328,7 +328,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $mark_to_send         = ".//*[@id='cb0']";
+	public static $mark_to_send         = "//*[@id='cb0']";
 
 	/**
 	 * @var string
@@ -343,35 +343,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $from_name            = ".//*[@id='jform_from_name']";
+	public static $from_name            = "//*[@id='jform_from_name']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $from_email           = ".//*[@id='jform_from_email']";
+	public static $from_email           = "//*[@id='jform_from_email']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $reply_email          = ".//*[@id='jform_reply_email']";
+	public static $reply_email          = "//*[@id='jform_reply_email']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $subject              = ".//*[@id='jform_subject']";
+	public static $subject              = "//*[@id='jform_subject']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $campaign             = ".//*[@id='jform_campaign_id']";
+	public static $campaign             = "//*[@id='jform_campaign_id']";
 
 	/**
 	 * @var string
@@ -385,7 +385,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $description          = ".//*[@id='jform_description']";
+	public static $description          = "//*[@id='jform_description']";
 
 
 	/**
@@ -393,7 +393,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment                   = ".//*[@id='jform_attachment__attachment0__single_attachment']";
+	public static $attachment                   = "//*[@id='jform_attachment__attachment0__single_attachment']";
 
 	/**
 	 * @var string
@@ -408,28 +408,28 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachments_add_button     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div/div/a";
+	public static $attachments_add_button     = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_new_button      = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[1]/div/a[1]";
+	public static $attachment_new_button      = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[1]/div/a[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button1     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[2]/div[2]/div/div[2]/button[1]";
+	public static $attachment_select_button1     = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[2]/div[2]/div/div[2]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button2     = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[3]/div[2]/div[2]/div/div[2]/button[1]";
+	public static $attachment_select_button2     = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[3]/div[2]/div[2]/div/div[2]/button[1]";
 
 	/**
 	 * @var string
@@ -478,21 +478,21 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
+	public static $attachment_insert            = "//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_cancel            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[2]";
+	public static $attachment_cancel            = "//*[@id='imageForm']/div[2]/div/div[2]/button[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_media_url_field   = ".//*[@id='f_url']";
+	public static $attachment_media_url_field   = "//*[@id='f_url']";
 
 	/**
 	 * @var string
@@ -513,35 +513,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $publish_up           = ".//*[@id='jform_publish_up']";
+	public static $publish_up           = "//*[@id='jform_publish_up']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $publish_up_button    = ".//*[@id='jform_publish_up_img']";
+	public static $publish_up_button    = "//*[@id='jform_publish_up_img']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $publish_down         = ".//*[@id='jform_publish_down']";
+	public static $publish_down         = "//*[@id='jform_publish_down']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $publish_down_button  = ".//*[@id='jform_publish_down_img']";
+	public static $publish_down_button  = "//*[@id='jform_publish_down_img']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $today_up             = ".//*[@class='calendar']/table/thead/tr[2]/td[3]/div[contains(text(), 'Today')]";
+	public static $today_up             = "//*[@class='calendar']/table/thead/tr[2]/td[3]/div[contains(text(), 'Today')]";
 
 	/**
 	 * @var string
@@ -556,15 +556,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label[2]/span/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
+	public static $template_html    = "//*/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_text
-		= ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label[4]/span/span[contains(text(),'Standard TEXT Template 3')]";
+	public static $template_text		= "//*/span[contains(text(),'Standard TEXT Template 3')]";
 
 
 	/**
@@ -699,35 +698,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_general       = ".//*[@id='adminForm']/div[3]/div[1]/fieldset/legend";
+	public static $legend_general       = "//*/div[contains(@class, 'nl-generals')]/legend";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_templates     = ".//*[@id='adminForm']/div[3]/fieldset[1]/legend";
+	public static $legend_templates     = "//*/div[contains(@class, 'nl-templates')]/legend";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_recipients    = ".//*[@id='recipients']/div/div[1]/div/fieldset/legend";
+	public static $legend_recipients    = "//*/div[contains(@class, 'nl-recipients')]/legend";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $usergroup_recipients = ".//*[@id='recipients']/div/div[2]/div/fieldset/div[24]/div/label";
+	public static $usergroup_recipients = "//*/div[contains(@class, 'nl-usergroups')]/div/legend";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_content       = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/legend";
+	public static $legend_content       = "//*/div[contains(@class, 'nl-contents')]/legend";
 
 
 	/**
@@ -813,21 +812,21 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_inList_subject   = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
+	public static $success_inList_subject   = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_inList_desc      = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]";
+	public static $success_inList_desc      = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_inList_author    = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[6]";
+	public static $success_inList_author    = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[6]";
 
 
 	/**
@@ -857,28 +856,28 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_list           = ".//*[@id='jform_published_chzn']/a";
+	public static $published_list           = "//*[@id='jform_published_chzn']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_list_text      = ".//*[@id='jform_published_chzn']/a/span";
+	public static $published_list_text      = "//*[@id='jform_published_chzn']/a/span";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_unpublished    = ".//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";
+	public static $published_unpublished    = "//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_published      = ".//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
+	public static $published_published      = "//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
 
 	/**
 	 * @var string
@@ -906,7 +905,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $change_is_template  = ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a";
+	public static $change_is_template  = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a";
 
 	/**
 	 * @var array
@@ -915,15 +914,15 @@ class NewsletterEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "1. Simple Single Test Newsletter",
-		'archive_tab'          => ".//.//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
-		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'archive_tab'          => "////*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
+		'archive_identifier'   => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'archive_title_col'    => "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
 		'archive_success_msg'  => 'The selected newsletter has been archived.',
 		'archive_success2_msg' => 'The selected newsletters have been archived.',
 
-		'delete_button'        => ".//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-		'delete_title_col'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'delete_button'        => "//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => "//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
+		'delete_title_col'     => "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
 		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
 		'success_remove'       => 'The selected newsletter has been removed.',
 		'success_remove2'      => 'The selected newsletters have been removed.',
@@ -939,11 +938,11 @@ class NewsletterEditPage
 	 * @since  2.0.0
 	 */
 	public static $toolbar = array (
-		'Save & Close' => ".//*[@id='toolbar-save']/button",
-		'Save'         => ".//*[@id='toolbar-apply']/button",
-		'Cancel'       => ".//*[@id='toolbar-cancel']/button",
-		'Help'         => ".//*[@id='toolbar-help']/button",
-		'Back'         => ".//*[@id='toolbar-back']/button",
+		'Save & Close' => "//*[@id='toolbar-save']/button",
+		'Save'         => "//*[@id='toolbar-apply']/button",
+		'Cancel'       => "//*[@id='toolbar-cancel']/button",
+		'Help'         => "//*[@id='toolbar-help']/button",
+		'Back'         => "//*[@id='toolbar-back']/button",
 	);
 
 
@@ -952,14 +951,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $female   = ".//*[@id='jform_gender_chzn']/div/ul/li[2]";
+	public static $female   = "//*[@id='jform_gender_chzn']/div/ul/li[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $male     = ".//*[@id='jform_gender_chzn']/div/ul/li[3]";
+	public static $male     = "//*[@id='jform_gender_chzn']/div/ul/li[3]";
 
 
 	/**
@@ -967,42 +966,42 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $available_content_list   = ".//*[@id='jform_available_content']";
+	public static $available_content_list   = "//*[@id='jform_available_content']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $selected_content_list    = ".//*[@id='jform_selected_content']";
+	public static $selected_content_list    = "//*[@id='jform_selected_content']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $available_content        = ".//*[@id='jform_available_content']/option[%s]";
+	public static $available_content        = "//*[@id='jform_available_content']/option[%s]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $selected_content         = ".//*[@id='jform_selected_content']/option[%s]";
+	public static $selected_content         = "//*[@id='jform_selected_content']/option[%s]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $add_content              = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[1]";
+	public static $add_content              = "//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $remove_content           = ".//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[2]";
+	public static $remove_content           = "//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[2]";
 
 
 	/**
@@ -1057,7 +1056,7 @@ class NewsletterEditPage
 		$I->see('Newsletters', Generals::$pageTitle);
 		if ($isTemplate)
 		{
-			$I->seeElement(".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
+			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
 		}
 
 		$I->click(Generals::$first_list_entry);
@@ -1066,7 +1065,7 @@ class NewsletterEditPage
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
 		if ($isTemplate)
 		{
-			$I->seeElement(".//*[@id='j-main-container']/div[4]/table/tbody/tr[2]/td[8]/a/span[contains(@class, 'icon-unfeatured')]");
+			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[2]/td[8]/a/span[contains(@class, 'icon-unfeatured')]");
 		}
 
 		if ($withCleanup)
@@ -1104,11 +1103,12 @@ class NewsletterEditPage
 	{
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(self::$success_saved, Generals::$alert_msg);
+		$I->see(self::$success_saved, Generals::$alert_success);
 
 		$I->see(self::$field_subject, self::$success_inList_subject);
 		$I->see(self::$field_description, self::$success_inList_desc);
 		$I->see($username, self::$success_inList_author);
+		$I->click(Generals::$systemMessageClose);
 	}
 
 	/**

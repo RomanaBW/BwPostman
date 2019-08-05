@@ -54,7 +54,7 @@ class PlgQuickiconBwPostman extends JPlugin
 	{
 		$app	= JFactory::getApplication();
 		// Do not load if BwPostman version is not supported or BwPostmanNewsletter isn't detected
-		if ($app->isSite() || JComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
+		if ($app->isClient('site') || JComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
 			return;
 		}
 

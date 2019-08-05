@@ -29,10 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the modal behavior for the subscriber preview
 JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
+//JHtml::_('formbehavior.chosen', 'select');
 //jimport ('joomla.html.html.bootstrap');
 //JHtml::_('behavior.modal');
-JHtml::_('behavior.multiselect');
+//JHtml::_('behavior.multiselect');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
@@ -56,14 +56,14 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'subs
 		<div class="row">
 			<div class="col-md-12">
 				<div id="j-main-container" class="j-main-container">
-				<?php
+					<?php
 					// Search tools bar
 					echo JLayoutHelper::render(
-						'default',
+						'tabbed',
 						array('view' => $this, 'tab' => $tab),
 						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
 					);
-				?>
+					?>
 
 				<div class="form-horizontal">
 					<ul class="bwp_tabs">

@@ -61,63 +61,63 @@ class MailinglistEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access               = '#jform_access';
+	public static $access               = '#jform_access_chosen';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list_id       = "jform_access_chzn";
+	public static $access_list_id       = "//*[@id='jform_access_chosen']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list          = ".//*[@id='jform_access_chzn']/a";
+	public static $access_list          = "//*[@id='jform_access_chosen']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list_text     = ".//*[@id='jform_access_chzn']/a/span";
+	public static $access_list_text     = "//*[@id='jform_access_chosen']/a/span";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_public        = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Public']";
+	public static $access_public        = "//*[@id='jform_access_chosen']/div/ul/li[text()='Public']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_guest         = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Guest']";
+	public static $access_guest         = "//*[@id='jform_access_chosen']/div/ul/li[text()='Guest']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_registered    = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Registered']";
+	public static $access_registered    = "//*[@id='jform_access_chosen']/div/ul/li[text()='Registered']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_special       = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Special']";
+	public static $access_special       = "//*[@id='jform_access_chosen']/div/ul/li[text()='Special']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_super         = ".//*[@id='jform_access_chzn']/div/ul/li[text()='Super Users']";
+	public static $access_super         = "//*[@id='jform_access_chosen']/div/ul/li[text()='Super Users']";
 
 
 	/**
@@ -125,42 +125,42 @@ class MailinglistEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published                = '#jform_published';
+	public static $published                = '#jform_published_chosen';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_list_id        = "jform_published_chzn";
+	public static $published_list_id        = "jform_published_chosen";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_list           = ".//*[@id='jform_published_chzn']/a";
+	public static $published_list           = "//*[@id='jform_published_chosen']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_list_text      = ".//*[@id='jform_published_chzn']/a/span";
+	public static $published_list_text      = "//*[@id='jform_published_chosen']/a/span";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_unpublished    = ".//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";
+	public static $published_unpublished    = "//*[@id='jform_published_chosen']/div/ul/li[text()='unpublished']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_published      = ".//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
+	public static $published_published      = "//*[@id='jform_published_chosen']/div/ul/li[text()='published']";
 
 
 	/**
@@ -222,15 +222,15 @@ class MailinglistEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 General mailing list",
-		'archive_tab'          => ".//.//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived mailinglists')]",
-		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => ".//*[@id='main-table']/tbody/*/td[2]",
+		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived mailinglists')]",
+		'archive_identifier'   => "Title",
+		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected mailing list has been archived.',
 		'archive_success2_msg' => 'The selected mailing lists have been archived.',
 
-		'delete_button'        => ".//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'delete_title_col'     => ".//*[@id='main-table']/tbody/*/td[2]",
+		'delete_button'        => "//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => "Title",
+		'delete_title_col'     => "//*[@id='main-table']/tbody/*/td[2]",
 		'remove_confirm'       => 'Do you wish to remove the selected mailinglist(s)?',
 		'success_remove'       => 'The selected mailinglist has been removed.',
 		'success_remove2'      => 'The selected mailinglists have been removed.',
@@ -246,11 +246,11 @@ class MailinglistEditPage
 	 * @since  2.0.0
 	 */
 	public static $toolbar = array (
-		'Save & Close'  => ".//*[@id='toolbar-save']/button",
-		'Save'          => ".//*[@id='toolbar-apply']/button",
-		'Cancel'        => ".//*[@id='toolbar-cancel']/button",
-		'Back'          => ".//*[@id='toolbar-back']/button",
-		'Help'          => ".//*[@id='toolbar-help']/button",
+		'Save & Close'  => "//*[@id='toolbar-save']/button",
+		'Save'          => "//*[@id='toolbar-apply']/button",
+		'Cancel'        => "//*[@id='toolbar-cancel']/button",
+		'Back'          => "//*[@id='toolbar-back']/button",
+		'Help'          => "//*[@id='toolbar-help']/button",
 	);
 
 	/**

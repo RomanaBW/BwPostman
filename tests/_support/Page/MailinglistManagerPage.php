@@ -108,10 +108,10 @@ class MailinglistManagerPage
 	 * @since 2.0.0
 	 */
 	public static $publish_by_icon   = array(
-		'publish_button'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
-		'publish_result'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a",
-		'unpublish_result'  => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a",
+		'publish_result'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a",
+		'unpublish_result'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 
@@ -121,10 +121,10 @@ class MailinglistManagerPage
 	 * @since 2.0.0
 	 */
 	public static $publish_by_toolbar   = array(
-		'publish_button'    => ".//*[@id='cb5']",
-		'publish_result'    => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  => ".//*[@id='cb5']",
-		'unpublish_result'  => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => "//*[@id='cb5']",
+		'publish_result'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => "//*[@id='cb5']",
+		'unpublish_result'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 
@@ -136,9 +136,9 @@ class MailinglistManagerPage
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by' => array(
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+			"Description",
+			"Title & Description",
+			"Title",
 		),
 		'search_val' => array("xx", "liste 2 weit"),
 		// array of arrays: outer array per search value, inner arrays per 'search by'
@@ -161,29 +161,30 @@ class MailinglistManagerPage
 	 */
 	public static $pagination_data_array  = array(
 		'p1_val1' => "01 Mailingliste 2 A",
-		'p1_field1' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p1_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
+
 		'p1_val_last' => "02 Mailingliste 6 B",
-		'p1_field_last' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[10]/td[2]",
+		'p1_field_last' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
 		'p2_val1' => "02 Mailingliste 7 A",
-		'p2_field1' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p2_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p2_val_last' => "03 Mailingliste 12 B",
-		'p2_field_last' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[10]/td[2]",
+		'p2_field_last' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
 		'p_prev_val1' => "03 Mailingliste 13 A",
-		'p_prev_field1' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_prev_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_prev_val_last' => "04 Mailingliste 17 B",
-		'p_prev_field_last' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[10]/td[2]",
+		'p_prev_field_last' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
 		'p3_val1' => "03 Mailingliste 13 A",
-		'p3_field1' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p3_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p3_val3' => "04 Mailingliste 17 B",
-		'p3_field3' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[10]/td[2]",
+		'p3_field3' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
 		'p_last_val1' => "05 Mailingliste 18 A",
-		'p_last_field1' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[2]",
+		'p_last_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_last_val_last' => "05 Mailingliste 20 B",
-		'p_last_field_last' => ".//*[@id='j-main-container']/div[2]/table/tbody/tr[6]/td[2]",
+		'p_last_field_last' => "//*[@id='main-table']/tbody/tr[6]/td[2]",
 	);
 
 

@@ -46,21 +46,21 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tpl_tab1     = ".//*[@id='template_tabs']/dt[2]/span/h3/a";
+	public static $tpl_tab1     = "//*/a[@id='tab-panel1']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tpl_tab2     = ".//*[@id='template_tabs']/dt[3]/span/h3/a";
+	public static $tpl_tab2     = "//*/a[@id='tab-panel2']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tpl_tab3     = ".//*[@id='template_tabs']/dt[4]/span/h3/a";
+	public static $tpl_tab3     = "//*/a[@id='tab-panel3']";
 
 
 	/**
@@ -83,14 +83,14 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumbnail               = ".//*[@id='jform_thumbnail']";
+	public static $thumbnail               = "//*[@id='jform_thumbnail']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumbnail_list_pos      = ".//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[3]/a/img[@src='%s']";
+	public static $thumbnail_list_pos      = "//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[3]/a/img[@src='%s']";
 
 	/**
 	 * @var string
@@ -112,7 +112,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select_button     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[1]/fieldset[1]/div/ul/li[3]/div/div/div[2]/button[1]";
+	public static $thumb_select_button     = "//*/joomla-field-media/div/div[@class='input-group-append']/button[1]";
 
 	/**
 	 * @var string
@@ -133,21 +133,28 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_insert            = ".//button[@id='insert']";
+	public static $thumb_insert            = "//button[@id='insert']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $thumb_cancel            = "//button[@id='cancel']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.0
 	 */
-	public static $thumb_insert_user       = ".//button[contains(@class, 'button-save-selected')]";
+	public static $thumb_insert_user       = "//button[contains(@class, 'button-save-selected')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_media_url_field   = ".//*[@id='f_url']";
+	public static $thumb_media_url_field   = "//*[@id='f_url']";
 
 	/**
 	 * @var string
@@ -162,43 +169,85 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_author_no   = ".//*[@id='jform_article_show_author']/label[1]";
+	public static $show_author_no   = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-danger')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_author_no_active   = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-danger') and contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_author_yes  = ".//*[@id='jform_article_show_author']/label[2]";
+	public static $show_author_yes  = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_author_yes_active   = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-success') and contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_created_no   = ".//*[@id='jform_article_show_createdate']/label[1]";
+	public static $show_created_no   = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-danger')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_created_no_active   = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-danger') and contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_created_yes  = ".//*[@id='jform_article_show_createdate']/label[2]";
+	public static $show_created_yes  = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-success')]";
 
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_created_yes_active   = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-success') and contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_readon_no   = ".//*[@id='jform_article_show_readon']/label[1]";
+	public static $show_readon_no   = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-danger')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_readon_no_active   = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-danger') and contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_readon_yes  = ".//*[@id='jform_article_show_readon']/label[2]";
+	public static $show_readon_yes  = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_readon_yes_active   = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-success') and contains(@class, 'active')]";
 
 
 	/**
@@ -251,21 +300,21 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $css_style        = ".//*[@id='jform_tpl_css']";
+	public static $css_style        = "//*[@id='jform_tpl_css']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $html_style       = ".//*[@id='jform_tpl_html']";
+	public static $html_style       = "//*[@id='jform_tpl_html']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $text_style       = ".//*[@id='jform_tpl_html']";
+	public static $text_style       = "//*[@id='jform_tpl_html']";
 
 	//buttons
 
@@ -274,63 +323,63 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_editor_toggle     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/div/div[1]/ul/li[2]/a";
+	public static $button_editor_toggle     = "//a[contains(text(), 'Code')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_refresh_preview   = ".//*[@id='email_preview']/p/button";
+	public static $button_refresh_preview   = "//*[@id='email_preview']/p/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_first_name        = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[1]";
+	public static $button_first_name        = "//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_last_name         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[2]";
+	public static $button_last_name         = "//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_full_name         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[3]";
+	public static $button_full_name         = "//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_content           = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[4]";
+	public static $button_content           = "//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[4]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_unsubscribe       = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[5]";
+	public static $button_unsubscribe       = "//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[5]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_editlink          = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[6]";
+	public static $button_editlink          = "//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[6]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_impressum         = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[7]";
+	public static $button_impressum         = "//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/a[7]";
 
 
 	/**
@@ -378,16 +427,16 @@ class TemplateEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 Test Template",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
-		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_tab'          => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
+		'archive_identifier'   => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'archive_title_col'    => "//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
 		'archive_confirm'      => 'Do you wish to archive the selected template(s)?',
 		'archive_success_msg'  => 'The selected template has been archived.',
 		'archive_success2_msg' => 'The selected templates have been archived.',
 
-		'delete_button'        => ".//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[2]",
+		'delete_button'        => "//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+		'delete_title_col'     => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[2]",
 		'remove_confirm'       => 'Do you wish to remove the selected template(s)?',
 		'success_remove'       => 'The selected template has been removed.',
 		'success_remove2'      => 'The selected templates have been removed.',
@@ -403,11 +452,11 @@ class TemplateEditPage
 	 * @since  2.0.0
 	 */
 	public static $toolbar = array (
-		'Save & Close'  => ".//*[@id='toolbar-save']/button",
-		'Save'          => ".//*[@id='toolbar-apply']/button",
-		'Cancel'        => ".//*[@id='toolbar-cancel']/button",
-		'Back'          => ".//*[@id='toolbar-back']/button",
-		'Help'          => ".//*[@id='toolbar-help']/button",
+		'Save & Close'  => "//*[@id='toolbar-save']/button",
+		'Save'          => "//*[@id='toolbar-apply']/button",
+		'Cancel'        => "//*[@id='toolbar-cancel']/button",
+		'Back'          => "//*[@id='toolbar-back']/button",
+		'Help'          => "//*[@id='toolbar-help']/button",
 	);
 
 
@@ -552,7 +601,7 @@ class TemplateEditPage
 
 		if ($user === 'AdminTester' || $user === '')
 		{
-			$I->waitForElement(".//*[@id='browser-list']", 30);
+			$I->waitForElement("//*[@id='browser-list']", 30);
 			$I->clickAndWait(self::$thumb_select, 1);
 
 			$I->clickAndWait(self::$thumb_insert, 1);
@@ -561,7 +610,7 @@ class TemplateEditPage
 		{
 			$I->switchToIFrame(Generals::$image_frame);
 
-			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 30);
+			$I->waitForElementVisible("//ul[contains(@class, 'manager')]", 30);
 			$I->clickAndWait(self::$thumb_select_user, 1);
 
 			$I->switchToIFrame();
@@ -569,6 +618,8 @@ class TemplateEditPage
 
 			$I->clickAndWait(self::$thumb_insert_user, 1);
 		}
+
+		$I->clickAndWait(self::$thumb_cancel, 1);
 
 		$I->switchToIFrame();
 	}

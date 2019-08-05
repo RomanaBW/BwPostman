@@ -128,7 +128,7 @@ class CampaignEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $title_col            = ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]";
+	public static $title_col            = "//*[@id='j-main-container']/table/tbody/*/td[2]";
 
 
 	/**
@@ -138,20 +138,20 @@ class CampaignEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 new campaign for tests",
-		'archive_button'       => ".//*[@id='toolbar-popup-archive']/button",
-		'archive_tab'          => ".//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived campaigns')]",
-		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_button'       => "//*[@id='toolbar-popup-archive']/button",
+		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived campaigns')]",
+		'archive_identifier'   => "Title",
+		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected campaign has been archived.',
 		'archive_success2_msg' => 'The selected campaigns have been archived.',
 
-		'delete_button'        => ".//*[@id='toolbar-popup-delete']/button",
-		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'delete_title_col'     => ".//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'delete_button'        => "//*[@id='toolbar-delete']/button",
+		'delete_identifier'    => "Title",
+		'delete_title_col'     => "//*[@id='main-table']/tbody/*/td[2]",
 		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
 		'success_remove'       => 'The selected campaign has been removed.',
 		'success_remove2'      => 'The selected campaigns have been removed.',
-		'restore_button'       => ".//*[@id='toolbar-popup-unarchive']/button",
+		'restore_button'       => "//*[@id='toolbar-unarchive']/button",
 		'restore_confirm'       => 'Do you wish to restore the selected newsletter(s)?',
 		'success_restore'       => 'The selected campaign has been restored.',
 		'success_restore2'      => 'The selected campaigns have been restored.',
@@ -165,11 +165,11 @@ class CampaignEditPage
 	 * @since  2.0.0
 	 */
 	public static $toolbar = array (
-		'Save & Close'  => ".//*[@id='toolbar-save']/button",
-		'Save'          => ".//*[@id='toolbar-apply']/button",
-		'Cancel'        => ".//*[@id='toolbar-cancel']/button",
-		'Back'          => ".//*[@id='toolbar-back']/button",
-		'Help'          => ".//*[@id='toolbar-help']/button",
+		'Save & Close'  => "//*[@id='toolbar-save']/button",
+		'Save'          => "//*[@id='toolbar-apply']/button",
+		'Cancel'        => "//*[@id='toolbar-cancel']/button",
+		'Back'          => "//*[@id='toolbar-back']/button",
+		'Help'          => "//*[@id='toolbar-help']/button",
 	);
 
 	/**

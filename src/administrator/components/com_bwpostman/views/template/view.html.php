@@ -316,7 +316,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$siteURL 	= $uri->base();
 
 		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL . 'index.php?option=com_bwpostman')
+		if ($backlink == $siteURL . 'index.php?option=com_bwpostman&view=bwpostman')
 		{
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();

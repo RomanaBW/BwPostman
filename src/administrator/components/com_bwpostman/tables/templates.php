@@ -603,7 +603,7 @@ class BwPostmanTableTemplates extends JTable
 		}
 		else
 		{
-			// New mailing list
+			// New template
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
 		}

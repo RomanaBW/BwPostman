@@ -75,7 +75,7 @@ class TestCampaignsDetailsCest
 
 		CamEdit::fillFormSimple($I);
 
-		$I->clickAndWait(CamEdit::$toolbar['Back'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -108,7 +108,7 @@ class TestCampaignsDetailsCest
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_success, 30);
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
 		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
@@ -137,6 +137,7 @@ class TestCampaignsDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		$this->fillFormExtended($I);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->click(CamEdit::$toolbar['Cancel']);
 		$I->see("Campaigns", Generals::$pageTitle);
@@ -166,7 +167,7 @@ class TestCampaignsDetailsCest
 		CamEdit::fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->see(CamEdit::$field_title, CamEdit::$title_col);
 
@@ -202,9 +203,10 @@ class TestCampaignsDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->see('', CamEdit::$title);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->click(Generals::$toolbar['Cancel']);
 		$I->see("Campaigns", Generals::$pageTitle);
@@ -241,9 +243,10 @@ class TestCampaignsDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(CamEdit::$title, CamEdit::$field_title);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// Grab ID of first campaign
 		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_campaigns', 'id', array('title' => CamEdit::$field_title));
@@ -253,9 +256,10 @@ class TestCampaignsDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(CamEdit::$success_save, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(CamEdit::$title, CamEdit::$field_title2);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// Grab ID of second campaign
 		$id2 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_campaigns', 'id', array('title' => CamEdit::$field_title2));
@@ -293,7 +297,7 @@ class TestCampaignsDetailsCest
 		CamEdit::fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->see(CamEdit::$field_title, CamEdit::$title_col);
 
@@ -334,17 +338,19 @@ class TestCampaignsDetailsCest
 
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->see("Message", Generals::$alert_header);
+		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
 		$I->see('Campaigns', Generals::$pageTitle);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar['New']);
 
 		CamEdit::fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->see("Error", Generals::$alert_header);
+		$I->see("Error", Generals::$alert_heading);
 		$I->see(CamEdit::$error_save, Generals::$alert_error);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(CamEdit::$toolbar['Cancel']);
 		$I->see("Campaigns", Generals::$pageTitle);
 
@@ -399,8 +405,8 @@ class TestCampaignsDetailsCest
 //		$I->seeInPopup(CamEdit::$popup_no_recipients);
 //		$I->acceptPopup();
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Warning", Generals::$alert_header);
-		$I->see(CamEdit::$warning_no_title, Generals::$alert);
+		$I->see("Warning", Generals::$alert_heading);
+		$I->see(CamEdit::$warning_no_title, Generals::$alert_warn);
 
 		// fill title and description
 		$I->fillField(CamEdit::$title, CamEdit::$field_title);

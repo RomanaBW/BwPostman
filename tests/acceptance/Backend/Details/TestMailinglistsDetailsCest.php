@@ -63,14 +63,13 @@ class TestMailinglistsDetailsCest
 	{
 		$I->wantTo("Create one mailinglist and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->wait(5);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addMailinglistButton);
 
 		MlEdit::fillFormSimple($I);
 
-		$I->clickAndWait(MlEdit::$toolbar['Back'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -102,7 +101,7 @@ class TestMailinglistsDetailsCest
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see(MlEdit::$success_save, Generals::$alert_success);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -159,7 +158,7 @@ class TestMailinglistsDetailsCest
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see(MlEdit::$success_save, Generals::$alert_success);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -191,9 +190,10 @@ class TestMailinglistsDetailsCest
 		$I->click(Generals::$toolbar['Save & New']);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->see('', MlEdit::$title);
 
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
@@ -239,7 +239,7 @@ class TestMailinglistsDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(MlEdit::$title, MlEdit::$field_title2);
 
 		// Grab ID of second mailinglist
@@ -247,6 +247,7 @@ class TestMailinglistsDetailsCest
 
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
@@ -278,8 +279,8 @@ class TestMailinglistsDetailsCest
 		$I->click(MlEdit::$toolbar['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
+		$I->see(MlEdit::$success_save, Generals::$alert_success);
 
 		$I->HelperArchiveItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
 
@@ -318,8 +319,8 @@ class TestMailinglistsDetailsCest
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_msg);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
+		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->see('Mailinglists', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);
@@ -327,8 +328,9 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
-		$I->see("Error", Generals::$alert_header);
+		$I->see(Generals::$alert_error_txt, Generals::$alert_heading);
 		$I->see(MlEdit::$error_save, Generals::$alert_error);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(MlEdit::$toolbar['Cancel']);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see("Mailinglists", Generals::$pageTitle);

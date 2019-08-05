@@ -100,9 +100,9 @@ class CampaignManagerPage
 	 */
 	public static $search_data_array  = array(
 		'search_by'            => array(
-											".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-											".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-											".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+											"Description",
+											"Title & Description",
+											"Title",
 											),
 	'search_val'           => array("Test", "12 A Test"),
 	// array of arrays: outer array per search value, inner arrays per 'search by'

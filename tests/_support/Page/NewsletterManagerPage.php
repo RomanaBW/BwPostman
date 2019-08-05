@@ -74,7 +74,7 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[3]/p[1]/a";
+	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[3]/a";
 
 	/**
 	 * @var string
@@ -162,42 +162,42 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $authors_col                  = ".//*[@id='main-table']/tbody/*/td[6]";
+	public static $authors_col                  = "//*[@id='main-table']/tbody/*/td[6]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_authors_list_id       = "filter_authors_chzn";
+	public static $filter_authors_list_id       = "//*[@id='filter_authors']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_authors_list          = ".//*[@id='filter_authors_chzn']/a";
+	public static $filter_authors_list          = ".//*[@id='filter_authors']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_author_1              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BwPostmanAdmin')]";
+	public static $filter_author_1              = "BwPostmanAdmin";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_author_2              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'BwPostmanEditor')]";
+	public static $filter_author_2              = "BwPostmanEditor";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_author_3              = ".//*[@id='filter_authors_chzn']/div/ul/li[contains(text(),'AdminTester')]";
+	public static $filter_author_3              = "AdminTester";
 
 
 	/**
@@ -234,7 +234,7 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_campaign_list_id       = "filter_campaign_id_chzn";
+	public static $filter_campaign_list_id       = "//*[@id='filter_campaign_id']";
 
 	/**
 	 * @var string
@@ -248,21 +248,21 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_campaign_none          = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[text()='- Select campaign -']";
+	public static $filter_campaign_none          = "- Select campaign -";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_campaign_without       = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[text()='- Without campaign -']";
+	public static $filter_campaign_without       = "- Without campaign -";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_campaign_cam           = ".//*[@id='filter_campaign_id_chzn']/div/ul/li[3]";
+	public static $filter_campaign_cam           = "01 Kampagne 2 A";
 
 	// Filter mailinglist
 
@@ -271,7 +271,7 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_mailinglist_list_id   = "filter_mailinglists_chzn";
+	public static $filter_mailinglist_list_id   = "//*[@id='filter_mailinglists']";
 
 	/**
 	 * @var string
@@ -285,21 +285,21 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_mailinglist_1         = ".//*[@id='filter_mailinglists_chzn']/div/ul/li[text()='01 Mailingliste 3 A']";
+	public static $filter_mailinglist_1         = "01 Mailingliste 3 A";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_mailinglist_2         = ".//*[@id='filter_mailinglists_chzn']/div/ul/li[text()='02 Mailingliste 6 A']";
+	public static $filter_mailinglist_2         = "02 Mailingliste 6 A";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $filter_mailinglist_3         = ".//*[@id='filter_mailinglists_chzn']/div/ul/li[text()='02 Mailingliste 9 A']";
+	public static $filter_mailinglist_3         = "02 Mailingliste 9 A";
 
 
 	/**
@@ -331,7 +331,7 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list_id       = "filter_is_template_chzn";
+	public static $filter_is_template_list_id       = "//*[@id='filter_is_template']";
 
 	/**
 	 * @var string
@@ -345,21 +345,21 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list_none          = ".//*[@id='filter_is_template_chzn']/div/ul/li[text()='- Content Template -']";
+	public static $filter_is_template_list_none          = "- Content Template -";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list_yes           = ".//*[@id='filter_is_template_chzn']/div/ul/li[text()='Yes']";
+	public static $filter_is_template_list_yes           = "Yes";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $filter_is_template_list_no           = ".//*[@id='filter_is_template_chzn']/div/ul/li[text()='No']";
+	public static $filter_is_template_list_no           = "No";
 
 	/**
 	 * @var array
@@ -370,12 +370,12 @@ class NewsletterManagerPage
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[4]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[6]",
+			"Subject",
+			"Description",
+			"Subject & Description",
+			"Search phrase in HTML version",
+			"Search phrase in text version",
+			"Search phrase in HTML version & text version",
 		),
 		'search_val'           => array("Test Newsletter single 1", "15", "About your home page"),
 		// array of arrays: outer array per search value, inner arrays results per 'search by'
@@ -506,12 +506,12 @@ class NewsletterManagerPage
 	public static $search_sent_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[4]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[6]",
+			"Subject",
+			"Description",
+			"Subject & Description",
+			"Search phrase in HTML version",
+			"Search phrase in text version",
+			"Search phrase in HTML version & text version",
 		),
 		'search_val'           => array("Kopie von", "3", "Die blaue Meise"),
 		// array of arrays: outer array per search value, inner arrays results per 'search by'

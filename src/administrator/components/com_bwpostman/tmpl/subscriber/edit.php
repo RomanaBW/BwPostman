@@ -110,7 +110,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 	}
 	?>
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>"
-			method="post" name="adminForm" id="adminForm" class="form-horizontal">
+			method="post" name="adminForm" id="adminForm">
 		<div class="tab-wrapper-bwp">
 			<?php echo JHtml::_('uitab.startTabSet', 'subscriber_tabs', array('active' => 'details')); ?>
 			<?php echo JHtml::_(
@@ -119,7 +119,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 				'details',
 				is_null($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_SUB') : JText::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id)
 			); ?>
-			<div class="row">
+			<div class="row well">
 				<div class="col-md-6">
 					<div class="control-group">
 						<div class="control-label">
@@ -268,17 +268,18 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 				<div class="clr clearfix"></div>
 				<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 			</div>
+			</div>
 
 			<?php if ($new_test != '9') : ?>
-				<div class="row">
+				<div class="row well subs-mailinglists">
 					<legend>
 						<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
 							<?php echo $image; ?>
 						</span>
 						<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE'); ?></span>
 					</legend>
-					<div class="col-md-4">
-						<div class="well well-small">
+					<div class="col-md-4 subs-mailinglists well-white">
+						<div class="well-small" id="ml_available">
 							<fieldset class="adminform">
 								<legend>
 									<span class="editlinktip hasTip hasTooltip"
@@ -309,8 +310,8 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 						</div>
 					</div>
 
-					<div class="col-md-4">
-						<div class="well well-small">
+					<div class="col-md-4 subs-mailinglists well-white">
+						<div class="well-small" id="ml_unavailable">
 							<fieldset class="adminform">
 								<legend>
 									<span class="editlinktip hasTip hasTooltip"
@@ -341,8 +342,8 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 						</div>
 					</div>
 
-					<div class="col-md-4">
-						<div class="well well-small">
+					<div class="col-md-4 subs-mailinglists well-white">
+						<div class="well-small" id="ml_intern">
 							<fieldset class="adminform">
 								<legend>
 									<span class="editlinktip hasTip hasTooltip"
@@ -406,6 +407,5 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 			<input type="hidden" id="jform_title" name="jform[title]" value="<?php echo $this->form->getValue('title') ?>">
 			<?php echo $this->form->getInput('asset_id'); ?>
 			<?php echo JHtml::_('form.token'); ?>
-		</div>
 	</form>
 </div>

@@ -27,8 +27,41 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\LayoutHelper;
+
+$published = $this->state->get('filter.published');
+
 // We need this layout for the modal box ... it will be filled while proceeding the sending
 
 ?>
 
 <div id="sendFrame" class="modal"></div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="form-group col-md-6">
+			<div class="controls">
+				<?php echo LayoutHelper::render('joomla.html.batch.language', []); ?>
+			</div>
+		</div>
+		<div class="form-group col-md-6">
+			<div class="controls">
+				<?php echo LayoutHelper::render('joomla.html.batch.access', []); ?>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<?php if ($published >= 0) : ?>
+			<div class="form-group col-md-6">
+				<div class="controls">
+					<?php echo LayoutHelper::render('joomla.html.batch.item', ['extension' => 'com_newsfeeds']); ?>
+				</div>
+			</div>
+		<?php endif; ?>
+		<div class="form-group col-md-6">
+			<div class="controls">
+				<?php echo LayoutHelper::render('joomla.html.batch.tag', []); ?>
+			</div>
+		</div>
+	</div>
+</div>

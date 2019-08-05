@@ -33,6 +33,8 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function _login(\Page\Login $loginPage)
@@ -95,7 +97,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -122,7 +124,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -172,6 +174,8 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function FilterMailinglistsByAccess(AcceptanceTester $I)
@@ -193,7 +197,7 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -219,6 +223,8 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function ListlimitMailinglists(AcceptanceTester $I)
@@ -240,6 +246,8 @@ class TestMailinglistsListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function PaginationMailinglists(AcceptanceTester $I)
@@ -247,7 +255,11 @@ class TestMailinglistsListsCest
 		$I->wantTo("test pagination at mailinglists");
 		$I->amOnPage(MlManage::$url);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$limit_list_id);
+		$I->selectOption(Generals::$limit_list_id, Generals::$limit_10);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+		$I->assertEquals(10, count($I->GetTableRows($I)));
 
 		$I->checkPagination($I, MlManage::$pagination_data_array, 10);
 	}
@@ -259,6 +271,8 @@ class TestMailinglistsListsCest
 	 * @param   \Page\Login             $loginPage
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */

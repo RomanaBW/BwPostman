@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman single newsletter modal queue template for backend.
+ * BwPostman filter tool layout.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin
@@ -24,11 +24,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('JPATH_BASE') or die;
 
-// We need this layout for the modal box ... it will be filled while proceeding the sending
+$data	= $displayData;
+$layout	= $data['tab'];
+
+// Load the form filters
+$groupFilters = $data['view']->filterForm->getGroup('filter');
+
+// Load the form list fields
+$fieldset	= $data['view']->filterForm->getFieldset($layout);
+$filters = array();
+
+foreach ($fieldset as $fieldName => $field)
+{
+	if (strpos($fieldName,  'filter_') !== false)
+	{
+		$filters[$fieldName] = $field;
+	}
+}
+
 
 ?>
+<?php if ($filters) : ?>
+	<?php foreach ($filters as $fieldName => $field) : ?>
+		<?php if (($fieldName != 'filter_search') && (stripos($fieldName, 'filter_') !== false)) : ?>
+			<div class="js-stools-field-filter">
+				<?php echo $field->input; ?>
+			</div>
+		<?php endif; ?>
+	<?php endforeach; ?>
+<?php endif; ?>
 
-<div id="sendFrame" class="modal"></div>

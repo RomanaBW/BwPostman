@@ -27,9 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.multiselect');
+use Joomla\CMS\Language\Text;
+
+//JHtml::_('bootstrap.tooltip');
+//JHtml::_('behavior.multiselect');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
@@ -64,12 +65,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<div class="row">
 			<div class="col-md-12">
 				<div id="j-main-container" class="j-main-container">
-				<?php
+					<?php
 					// Search tools bar
 					echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-				?>
+					?>
 
 				<table id="main-table" class="table">
+					<caption id="captionTable" class="sr-only">
+						<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+					</caption>
 					<thead>
 						<tr>
 							<th style="width: 1%;" class="text-center">

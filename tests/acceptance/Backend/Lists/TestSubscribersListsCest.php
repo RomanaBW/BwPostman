@@ -66,7 +66,7 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
-		$I->click(Generals::$submenu_toggle_button);
+//		$I->click(Generals::$submenu_toggle_button);
 
 		$sort_array     = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -83,7 +83,7 @@ class TestSubscribersListsCest
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
 
-		$I->click(Generals::$submenu_toggle_button);
+//		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**
@@ -337,7 +337,7 @@ class TestSubscribersListsCest
 
 		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
 
-		$I->click(Generals::$submenu_toggle_button);
+//		$I->click(Generals::$submenu_toggle_button);
 
 		$sort_array = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -514,7 +514,7 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
-		$I->click(Generals::$submenu_toggle_button);
+//		$I->click(Generals::$submenu_toggle_button);
 
 		$sort_array     = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -532,7 +532,7 @@ class TestSubscribersListsCest
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
 
-		$I->click(Generals::$submenu_toggle_button);
+//		$I->click(Generals::$submenu_toggle_button);
 	}
 
 	/**

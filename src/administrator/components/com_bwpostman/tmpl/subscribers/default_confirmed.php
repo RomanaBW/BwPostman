@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
@@ -40,7 +42,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $colNum = 8;
 ?>
 
-<table id="main-table" class="table">
+<table id="main-table-bw-confirmed" class="table bw-confirmed">
+	<caption id="captionTable" class="sr-only">
+		<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+	</caption>
 	<thead>
 		<tr>
 			<th style="width: 1%;" class="text-center">

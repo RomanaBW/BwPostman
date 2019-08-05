@@ -91,6 +91,13 @@ class OptionsPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $config_save_success      = "Configuration saved.";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.2.0
 	 */
 	public static $sendersName  = ".//*[@id='jform_default_from_name']";
@@ -2246,7 +2253,7 @@ class OptionsPage
 		$I->click(Generals::$toolbar['Save']);
 		$I->waitForElementVisible(Generals::$alert_header, 15);
 		$I->see("Message", Generals::$alert_header);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_success);
+		$I->see(self::$config_save_success, Generals::$alert_success);
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 	}

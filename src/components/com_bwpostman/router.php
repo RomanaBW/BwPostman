@@ -73,7 +73,7 @@ function BwPostmanBuildRoute(&$query)
  *
  * @since
  */
-function BwPostmanParseRoute($segments)
+function BwPostmanParseRoute(&$segments)
 {
 	$vars = array();
 

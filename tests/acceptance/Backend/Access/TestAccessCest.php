@@ -85,6 +85,12 @@ class TestAccessCest
 		{
 			$this->_login($loginPage, $user);
 
+			$I->clickAndWait(AccessPage::$j_menu_components, 1);
+			$I->see('BwPostman', AccessPage::$j_menu_bwpostman);
+
+			$I->click(AccessPage::$j_menu_bwpostman);
+			$I->waitForElementVisible(AccessPage::$j_menu_bwpostman_sub, 10);
+
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
 				$permission_array   = '_main_list_permissions';
@@ -101,7 +107,7 @@ class TestAccessCest
 				$I->waitForElement(Generals::$pageTitle, 30);
 				$I->see('BwPostman');
 
-				$I->see('BwPostman', Generals::$submenu['BwPostman']);
+//				$I->see('BwPostman', Generals::$submenu['BwPostman']);
 				$I->see('BwPostman Forum', AccessPage::$forum_icon);
 				$I->see('BwPostman Forum', AccessPage::$forum_button);
 				$I->see('BwPostman Manual', AccessPage::$manual_button);
@@ -113,32 +119,25 @@ class TestAccessCest
 					$this->checkVisibilityOfGeneralStatistics($I, $button, false);
 
 					$this->checkVisibilityOfArchiveStatistics($I, $button, $archive_allowed, false);
-
-					$this->checkVisibilityOfSubmenuItems($I, $button, $archive_allowed, false);
+					$I->wait(1);
 
 					if ($button == 'Basic settings')
 					{
-						$I->dontSee('Options', AccessPage::$options_button);
+						$I->dontSee('Options', Generals::$toolbar4['Options']);
 					}
 				}
 				else
 				{
-					$text_to_see    = $button;
-
 					if ($button == 'Basic settings')
 					{
 						$text_to_see    = 'BwPostman Configuration';
-						$I->see('Options', AccessPage::$options_button);
+						$I->see('Options', Generals::$toolbar4['Options']);
 					}
 
 					$this->checkVisibilityOfGeneralStatistics($I, $button, true);
 
 					$this->checkVisibilityOfArchiveStatistics($I, $button, $archive_allowed, true);
-
-					$this->checkVisibilityOfSubmenuItems($I, $button, $archive_allowed, true);
-
-					$I->clickAndWait($link, 1);
-					$I->see($text_to_see, Generals::$pageTitle);
+					$I->wait(1);
 				}
 			}
 
@@ -176,14 +175,8 @@ class TestAccessCest
 	{
 		if ($button != 'Basic settings')
 		{
-			$I->clickAndWait(AccessPage::$j_menu_components, 1);
-			$I->see('BwPostman', AccessPage::$j_menu_bwpostman);
-
-			$I->moveMouseOver(AccessPage::$j_menu_bwpostman);
-			$I->waitForElementVisible(AccessPage::$j_menu_bwpostman_sub, 10);
 			$I->see($button, sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button));
 
-			$I->moveMouseOver(sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button));
 			$I->clickAndWait(sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button), 1);
 
 			if ($allowed)
@@ -213,7 +206,8 @@ class TestAccessCest
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
-			$I->waitForElementVisible(AccessPage::$table_statistics_general, 30);
+			$I->click(AccessPage::$link_statistics_general);
+			$I->waitForElementVisible(AccessPage::$table_statistics_general, 5);
 			$I->wait(1);
 
 			foreach (AccessPage::$statistics_general[$button] as $statistics_general_text)
@@ -227,39 +221,9 @@ class TestAccessCest
 					$I->dontSeeElement($statistics_general_text);
 				}
 			}
-		}
-	}
-
-	/**
-	 * @param \AcceptanceTester $I
-	 * @param string           $button
-	 * @param string           $archive_allowed
-	 * @param string           $visible
-	 *
-	 *
-	 * @since 2.0.0
-	 */
-	private function checkVisibilityOfArchiveStatistics(\AcceptanceTester $I, $button, $archive_allowed, $visible)
-	{
-		if ($button != 'Basic settings')
-		{
-			if ($archive_allowed)
-			{
-				$I->see('Archive', Generals::$submenu['Archive']);
-
-				if ($visible)
-				{
-					$I->see($button, Generals::$submenu[$button]);
-				}
-				else
-				{
-					$I->dontSee($button, Generals::$submenu[$button]);
-				}
-			}
-			else
-			{
-				$I->dontSee('Archive', Generals::$submenu['Archive']);
-			}
+			$I->wait(1);
+			$I->click(AccessPage::$link_statistics_general);
+			$I->waitForElementNotVisible(AccessPage::$table_statistics_general, 5);
 		}
 	}
 
@@ -273,17 +237,14 @@ class TestAccessCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkVisibilityOfSubmenuItems(\AcceptanceTester $I, $button, $archive_allowed, $visible)
+	private function checkVisibilityOfArchiveStatistics(\AcceptanceTester $I, $button, $archive_allowed, $visible)
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
 			if ($archive_allowed)
 			{
-				$I->waitForElementVisible(AccessPage::$link_statistics_archive, 30);
-				$I->wait(1);
-
 				$I->click(AccessPage::$link_statistics_archive);
-				$I->waitForElementVisible(AccessPage::$table_statistics_archive, 30);
+				$I->waitForElementVisible(AccessPage::$table_statistics_archive, 5);
 				$I->wait(1);
 
 				foreach (AccessPage::$statistics_archive[$button] as $statistics_archive_text)
@@ -298,7 +259,9 @@ class TestAccessCest
 					}
 				}
 
-				$I->clickAndWait(AccessPage::$link_statistics_general, 1);
+				$I->wait(1);
+				$I->click(AccessPage::$link_statistics_archive);
+				$I->waitForElementVisible(AccessPage::$link_statistics_archive, 5);
 			}
 			else
 			{
@@ -351,7 +314,7 @@ class TestAccessCest
 
 					$I->clickAndWait($link, 1);
 					$I->see($text_to_see, Generals::$pageTitle);
-					$I->click(Generals::$back_button);
+					$I->click(Generals::$toolbar4['Back']);
 				}
 				else
 				{
@@ -430,7 +393,7 @@ class TestAccessCest
 //					'Mailinglists',
 //					'Templates',
 //					'Archive',
-//					'Basic settings',
+					'Basic settings',
 //					'Maintenance',
 					);
 
@@ -482,7 +445,7 @@ class TestAccessCest
 						{
 							$this->duplicateNewsletter($I, $user, $item_permission_array);
 
-							$this->sendNewsletter($I, $user, $item_permission_array);
+//							$this->sendNewsletter($I, $user, $item_permission_array);
 
 							// @ToDo: set publish/unpublish date
 							// @ToDo: handle queue
@@ -496,7 +459,7 @@ class TestAccessCest
 						}
 						elseif ($button == 'Templates')
 						{
-							$this->setDefaultTemplate($I, $item_permission_array);
+//							$this->setDefaultTemplate($I, $item_permission_array);
 
 							// @ToDo: import template
 						}
@@ -510,10 +473,10 @@ class TestAccessCest
 					{
 						$I->see('BwPostman Configuration', Generals::$pageTitle);
 						$I->click(Generals::$toolbar['Save & Close']);
-						$I->waitForElement(Generals::$pageTitle, 30);
+						$I->waitForElement(Generals::$pageTitle, 10);
 						$I->see('BwPostman');
 
-						$I->seeElement(Generals::$toolbar['Options']);
+						$I->seeElement(Generals::$toolbar4['Options']);
 					}
 					elseif ($button == 'Maintenance')
 					{
@@ -649,7 +612,12 @@ class TestAccessCest
 		}
 
 		// find page and row for desired item
-		$item_found  = $I->findPageWithItemAndScrollToItem($check_content);
+		$tableId = 'main-table';
+		if ($button == 'Subscribers')
+		{
+			$tableId = 'main-table-bw-confirmed';
+		}
+		$item_found  = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
 		$I->assertEquals(true, $item_found);
 
 		// by link
@@ -667,12 +635,12 @@ class TestAccessCest
 		}
 
 		// find page and row for desired item
-		$item_found  = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found  = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
 		// by checkbox
-		$checkbox       = $this->getCheckbox($I, $check_content);
+		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Edit']);
@@ -702,6 +670,17 @@ class TestAccessCest
 	{
 		if ($allowed)
 		{
+			try
+			{
+				// Click off message that a content template wants to be edited
+				$I->clickAndWait(Generals::$systemMessageClose, 1);
+
+			}
+			catch(\RuntimeException $e)
+			{
+				// Do nothing, if there is no content template
+			}
+
 			$title_to_see = $this->getTitleToSee($button, '[ Edit ]', $check_content);
 
 			$I->see($title_to_see, Generals::$pageTitle);
@@ -715,20 +694,27 @@ class TestAccessCest
 		}
 
 		$I->click(Generals::$toolbar['Cancel']);
+
+		if ($button === "Templates")
+		{
+			$I->acceptPopup();
+		}
+
 		$I->waitForElement(Generals::$pageTitle, 30);
 	}
 
 	/**
 	 * @param \AcceptanceTester  $I
 	 * @param string            $title_content
+	 * @param string            $tableId
 	 *
 	 * @return string
 	 *
 	 * @since 2.0.0
 	 */
-	private function getCheckbox($I, $title_content)
+	private function getCheckbox($I, $title_content, $tableId = 'main-table')
 	{
-		$checkbox_nbr  = $I->getTableRowIdBySearchValue($title_content);
+		$checkbox_nbr  = $I->getTableRowIdBySearchValue($title_content, $tableId);
 		$checkbox = sprintf(AccessPage::$checkbox_identifier, $checkbox_nbr - 1);
 
 		return $checkbox;
@@ -881,32 +867,43 @@ class TestAccessCest
 		$check_link     = $permission_array[$button]['check link'];
 		$item_link      = sprintf($check_link, $check_content);
 		$col_nbr        = 2;
+		$tableId        = 'main-table';
+
+		if ($button == 'Subscribers')
+		{
+			$tableId = 'main-table-bw-confirmed';
+		}
 
 		if ($button == 'Newsletters')
 		{
 			$col_nbr++;
 		}
 
-		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
-		$row_nbr    = $I->getTableRowIdBySearchValue($check_content);
+		$row_nbr    = $I->getTableRowIdBySearchValue($check_content, $tableId);
 		$lock_icon  = sprintf(AccessPage::$checkout_icon, $row_nbr, $col_nbr);
 
-		// by icon
+		if ($button == 'Subscribers')
+		{
+			$lock_icon = str_replace('main-table', 'main-table-bw-confirmed', $lock_icon);
+		}
+
+			// by icon
 		$I->seeElement($lock_icon);
 		$I->click($lock_icon);
-		$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
+		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 
-		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		// see lock icon
 		$I->seeElement($lock_icon);
 
 		// by toolbar
-		$checkbox       = $this->getCheckbox($I, $check_content);
+		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Check-In']);
-		$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
+		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 	}
 
 	/**
@@ -915,14 +912,15 @@ class TestAccessCest
 	 * @param $link
 	 * @param $check_content
 	 * @param $item_link
+	 * @param string        $tableId
 	 *
 	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link)
+	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link, $tableId)
 	{
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
@@ -939,7 +937,7 @@ class TestAccessCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see($button, Generals::$pageTitle);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 	}
@@ -949,6 +947,7 @@ class TestAccessCest
 	 * @param $check_content
 	 * @param $lock_icon
 	 * @param $button
+	 * @param string     $tableId
 	 *
 	 * @return void
 	 *
@@ -956,7 +955,7 @@ class TestAccessCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button)
+	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button, $tableId)
 	{
 		$I->scrollTo(Generals::$sys_message_container, 0, 100);
 
@@ -967,7 +966,7 @@ class TestAccessCest
 
 		$I->see(sprintf(AccessPage::$checkin_success_text, $item), Generals::$alert_success);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
@@ -1001,17 +1000,24 @@ class TestAccessCest
 		$check_link     = $next_permission_array[$button]['check link'];
 		$item_link      = sprintf($check_link, $check_content);
 		$col_nbr        = 2;
+		$tableId        = 'main-table';
+
+		if ($button === 'Subscribers')
+		{
+			$tableId = 'main-table-bw-confirmed';
+		}
+
 
 		if ($button == 'Newsletters')
 		{
 			$col_nbr++;
 		}
 
-		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		$this->switchLoggedInUser($I, $current_user);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
 
 		if ($item_found !== true)
 		{
@@ -1024,7 +1030,7 @@ class TestAccessCest
 		}
 		else
 		{
-			$row_nbr    = $I->getTableRowIdBySearchValue($check_content);
+			$row_nbr    = $I->getTableRowIdBySearchValue($check_content, $tableId);
 			$lock_icon  = sprintf(AccessPage::$checkout_icon, $row_nbr, $col_nbr);
 
 			$I->seeElement($lock_icon);
@@ -1032,7 +1038,7 @@ class TestAccessCest
 
 			if ($current_user['name'] == 'BwPostmanAdmin')
 			{
-				$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
+				$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 			}
 			else
 			{
@@ -1279,7 +1285,7 @@ class TestAccessCest
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
 		$I->seeElement(Generals::$toolbar['Send']);
-		NewsletterEditPage::SendNewsletterToRealRecipients($I, $user['user'], false, false, 20);
+		NewsletterEditPage::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
 		$this->switchLoggedInUser($I, Generals::$admin);
 
@@ -1296,17 +1302,22 @@ class TestAccessCest
 	 *
 	 * @return void
 	 *
+	 * @throws \Exception
+	 *
 	 * @since 2.0.0
 	 */
 	private function setDefaultTemplate(\AcceptanceTester $I, $item_permission_array)
 	{
+		$I->amOnPage(TemplateManagerPage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->wantTo("check setting default template by permissions");
 
 		$set_default_allowed = $item_permission_array['Templates']['permissions']['ModifyState'];
 
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
-		$I->clickAndWait(Generals::$clear_button, 1);
+		$I->clickAndWait(Generals::$clear_button, 2);
 
+		codecept_debug('Scroll to pagination');
 		$I->scrollTo(Generals::$pagination_bar);
 
 		$linkToFirstPage    = count($I->grabMultiple(Generals::$first_page));

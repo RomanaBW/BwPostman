@@ -390,11 +390,15 @@ class TestMailinglistsDetailsCest
 		$I->fillField(MlEdit::$title, MlEdit::$field_title);
 
 		// select access
-		$I->clickSelectList(MlEdit::$access_list, MlEdit::$access_registered, MlEdit::$access_list_id);
-		$I->see("Registered", MlEdit::$access_list_text);
+		$I->click(MlEdit::$access_list_id);
+		$I->selectOption(MlEdit::$access_list_id, MlEdit::$access_registered);
+		$I->wait(1);
+		$I->waitForText("Registered", 5);
 
 		//select status
-		$I->clickSelectList(MlEdit::$published_list, MlEdit::$published_published, MlEdit::$published_list_id);
-		$I->see("published", MlEdit::$published_list_text);
+		$I->click(MlEdit::$published_list_id);
+		$I->selectOption(MlEdit::$published_list_id, MlEdit::$published_published);
+		$I->wait(1);
+		$I->waitForText("published", 5);
 	}
 }

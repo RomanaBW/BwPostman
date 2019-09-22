@@ -63,21 +63,21 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_confirmed   = ".//*[@id='bwpostman_subscribers_tabs']/dt[2]";
+	public static $tab_confirmed   = "//*[@id='tab-confirmed']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_unconfirmed = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
+	public static $tab_unconfirmed = "//*[@id='tab-unconfirmed']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_testers     = ".//*[@id='bwpostman_subscribers_tabs']/dt[3]";
+	public static $tab_testers     = "//*[@id='tab-testrecipients']";
 
 
 	/**

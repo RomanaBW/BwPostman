@@ -568,15 +568,21 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				}
 
 				$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-				$siteURL 	= $uri->base();
+			$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
 
-				// If we came from the cover page we will show a back-button
-				if ($backlink == $siteURL . 'index.php?option=com_bwpostman&view=bwpostman') {
-					JToolbarHelper::spacer();
-					JToolbarHelper::divider();
-					JToolbarHelper::spacer();
-					JToolbarHelper::back();
-				}
+			if(version_compare(JVERSION, '3.99', 'ge'))
+			{
+				$siteURL .= '&view=bwpostman';
+			}
+
+			// If we came from the cover page we will show a back-button
+			if ($backlink == $siteURL)
+			{
+				JToolbarHelper::spacer();
+				JToolbarHelper::divider();
+				JToolbarHelper::spacer();
+				JToolbarHelper::back();
+			}
 		}
 
 		JToolbarHelper::spacer();
@@ -589,7 +595,21 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('subscriber');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		}
+		else
+		{
+			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
+			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
+
+			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
+
+			$bar->appendButton($manualButton);
+			$bar->appendButton($forumButton);
+		}
 	}
 }

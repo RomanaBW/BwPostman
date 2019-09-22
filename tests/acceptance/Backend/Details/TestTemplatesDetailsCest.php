@@ -109,7 +109,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 3);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 
 		// check if preview is visible at template list
 		$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
@@ -178,7 +178,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -211,7 +211,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
@@ -253,8 +253,9 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title);
@@ -268,8 +269,9 @@ class TestTemplatesDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
 		// Grab ID of second template
@@ -314,8 +316,10 @@ class TestTemplatesDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template', Generals::$pageTitle);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
@@ -325,6 +329,8 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->click(TplEdit::$toolbar['Cancel']);
 
 		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
@@ -362,7 +368,7 @@ class TestTemplatesDetailsCest
 
 		$this->fillFormExtendedText($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
@@ -398,7 +404,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 
 		// check if preview is visible at template list
 		$I->seeElement(sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url));
@@ -469,7 +475,7 @@ class TestTemplatesDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -502,13 +508,16 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
 		$I->see('', TplEdit::$title);
 		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -531,7 +540,7 @@ class TestTemplatesDetailsCest
 	 */
 	public function CreateOneTextTemplateSaveCopyListView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Text template, save and get new record list view");
+		$I->wantTo("Create one Text template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->click(Generals::$toolbar['Add Text-Template']);
@@ -541,8 +550,9 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title);
@@ -556,8 +566,9 @@ class TestTemplatesDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
 
 		// Grab ID of second template
@@ -566,6 +577,9 @@ class TestTemplatesDetailsCest
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
 		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -599,7 +613,7 @@ class TestTemplatesDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 
 		$I->HelperArchiveItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 
@@ -642,7 +656,7 @@ class TestTemplatesDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
@@ -653,7 +667,12 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->click(TplEdit::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
 
 		$I->see("Template", Generals::$pageTitle);
 
@@ -681,12 +700,13 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Edit default template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[4]/td[2]/a');
+		$I->click(TplManage::$tableRowForDefault);
+		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
@@ -720,7 +740,8 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Edit default template, save as copy");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->click('html/body/div[2]/section/div/div/div[2]/form/div[2]/div[2]/table/tbody/tr[4]/td[2]/a');
+		$I->click(TplManage::$tableRowForDefault);
+		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 
 		// Grab ID of first template
 		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_templates', 'id', array('title' => 'Standard Creme'));
@@ -730,7 +751,9 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
-		$I->see(TplEdit::$success_save, Generals::$alert_msg);
+		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->see('Header', TplEdit::$tpl_tab2);
 
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title);
@@ -741,6 +764,9 @@ class TestTemplatesDetailsCest
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
 		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -907,6 +933,7 @@ class TestTemplatesDetailsCest
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 		$I->clickAndWait(TplEdit::$toolbar['Save'], 1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 	}
 
 	/**

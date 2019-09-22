@@ -86,6 +86,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 * @return void
 	 *
 	 * @since       2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

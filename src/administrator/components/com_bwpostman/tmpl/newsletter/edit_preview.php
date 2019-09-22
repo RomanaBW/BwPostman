@@ -25,98 +25,58 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
-$image = JHtml::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image = HTMLHelper::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', Text::_('COM_BWPOSTMAN_NOTES'));
+
+$currentTab = 'edit_preview';
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-function changeTab(tab)
-{
-	if (tab != 'edit_preview')
-	{
-		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel')
-	{
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.back')
-	{
-		form.task.value = 'back';
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.apply')
-	{
-		document.adminForm.task.setAttribute('value','newsletter.apply');
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
-	{
-		document.adminForm.task.setAttribute('value','newsletter.save');
-		Joomla.submitform(pressbutton, form);
-	}
-};
-/* ]]> */
-</script>
-
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
-			method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="item-form">
 		<?php
 		if ($this->item->is_template)
 		{
-			JFactory::$application->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
+			Factory::$application->enqueueMessage(Text::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
 		}
 		?>
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
-					<button onclick="return changeTab('edit_basic');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
+					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_html');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
+					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_text');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
+					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="open">
-					<button onclick="return changeTab('edit_preview');" class="buttonAsLink_open">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
+					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="closed">
-						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
+						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+							<?php echo Text::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>
 				<?php } ?>
@@ -126,14 +86,14 @@ Joomla.submitbutton = function (pressbutton)
 
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_HEADER'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_HEADER'); ?></legend>
 				<div class="row">
 					<div class="col-md-12">
 						<table class="admintable">
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME');
+									echo Text::_('COM_BWPOSTMAN_NL_FROM_NAME');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -141,7 +101,7 @@ Joomla.submitbutton = function (pressbutton)
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
+									echo Text::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -150,7 +110,7 @@ Joomla.submitbutton = function (pressbutton)
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
+									echo Text::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -163,7 +123,7 @@ Joomla.submitbutton = function (pressbutton)
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_SUBJECT');
+									echo Text::_('COM_BWPOSTMAN_NL_SUBJECT');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -174,7 +134,7 @@ Joomla.submitbutton = function (pressbutton)
 				</div>
 			</fieldset>
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
 				<div class="row">
 					<div class="col-md-12">
 						<iframe name="myIframeHtml"
@@ -187,7 +147,7 @@ Joomla.submitbutton = function (pressbutton)
 			</fieldset>
 
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
 				<div class="row">
 					<div class="col-md-12">
 						<iframe name="myIframeText"
@@ -220,7 +180,7 @@ Joomla.submitbutton = function (pressbutton)
 		}
 		?>
 
-		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
@@ -231,6 +191,39 @@ Joomla.submitbutton = function (pressbutton)
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 </div>
+
+<script type="text/javascript">
+	/* <![CDATA[ */
+	window.onload = function() {
+		Joomla = window.Joomla || {};
+
+		Joomla.submitbutton = function (pressbutton) {
+			var form = document.adminForm;
+			if (pressbutton === 'newsletter.cancel') {
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
+
+			if (pressbutton === 'newsletter.back') {
+				form.task.value = 'back';
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
+
+			if (pressbutton === 'newsletter.apply') {
+				document.adminForm.task.setAttribute('value', 'newsletter.apply');
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
+
+			if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy') {
+				document.adminForm.task.setAttribute('value', 'newsletter.save');
+				Joomla.submitform(pressbutton, form);
+			}
+		};
+	}
+	/* ]]> */
+</script>

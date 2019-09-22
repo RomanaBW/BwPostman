@@ -25,24 +25,28 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Session\Session;
+
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div id="checkResult" class="row-fluid">
-	<div class="span6 inner well">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL'); ?></h2>
-		<p id="step1" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_1'); ?></p>
-		<p id="step2" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_2'); ?></p>
-		<p id="step3" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_3'); ?></p>
-		<p id="step4" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
-		<p id="step5" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
+<div id="checkResult" class="row">
+	<div class="col-md-6 inner well">
+		<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL'); ?></h2>
+		<p id="step1" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_1'); ?></p>
+		<p id="step2" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_2'); ?></p>
+		<p id="step3" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_3'); ?></p>
+		<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
+		<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
 	</div>
-	<div class="span6 well well-small resultSet">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
+	<div class="col-md-6 well well-small resultSet">
+		<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
 		<div id="result"></div>
 	</div>
 </div>
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 <script type="text/javascript">
 	function doAjax(data, successCallback)
@@ -104,7 +108,7 @@ defined('_JEXEC') or die('Restricted access');
 		});
 	}
 	jQuery('div#toolbar').find('button').attr("disabled","disabled");
-	var starturl = 'index.php?option=com_bwpostman&task=templates.installtpl&format=json&<?php echo JSession::getFormToken(); ?>=1';
+	var starturl = 'index.php?option=com_bwpostman&task=templates.installtpl&format=json&<?php echo Session::getFormToken(); ?>=1';
 	var data = {step: "1"};
 	processUpdateStep(data);
 </script>

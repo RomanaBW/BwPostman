@@ -43,9 +43,11 @@ $lists      = $displayData['lists'];
 
 	<?php // Show editlink only if the user is not logged in
 	if (JFactory::getUser()->get('guest'))
-	{ ?>
+	{
+		$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+		?>
 		<p class="user_edit">
-			<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&amp;view=edit'); ?>">
+			<a href="<?php echo $link; ?>">
 				<?php echo JText::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
 			</a>
 		</p><?php

@@ -28,7 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
-
+JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
 /**
 * Content Renderer Class

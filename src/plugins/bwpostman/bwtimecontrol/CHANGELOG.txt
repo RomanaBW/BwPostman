@@ -1,0 +1,33 @@
+******************************************
+Changelog for BwPostman Timecontrol Plugin
+******************************************
+
+This is a changelog for the Joomla!3.3plugin BwPostman BwTimeControl
+Many thanks to all those people who have contributed bug reports and code fixes.
+
+
+Version 0.9.3 released (2019-05-28)----
+
+New
+* Use of licence code added
+
+
+Version 0.9.2 released (2019-05-15)----
+
+Improvement
+~ Password of cron user encrypted
+~ Cron interval now read at each iteration of the loop
+~ Cron server will be stopped if plugin state changes to disabled
+
+
+Version 0.9.1 released (2019-05-11)----
+
+Improvement
+~ Error messages from cURL passed through to maintenance screen
+
+
+Version 0.9.0 released (2019-04-30)----
+
+First alpha version
+
+

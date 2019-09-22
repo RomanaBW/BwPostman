@@ -90,7 +90,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumbnail_list_pos      = "//*[@id='j-main-container']/div[2]/table/tbody/tr[1]/td[3]/a/img[@src='%s']";
+	public static $thumbnail_list_pos      = "//*/table[@id='main-table']/tbody/tr[1]/td[3]/a/img[@src='%s']";
 
 	/**
 	 * @var string
@@ -427,16 +427,16 @@ class TemplateEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 Test Template",
-		'archive_tab'          => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
-		'archive_identifier'   => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => "//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived templates')]",
+		'archive_identifier'   => "Title",
+		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_confirm'      => 'Do you wish to archive the selected template(s)?',
 		'archive_success_msg'  => 'The selected template has been archived.',
 		'archive_success2_msg' => 'The selected templates have been archived.',
 
 		'delete_button'        => "//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'delete_title_col'     => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[2]",
+		'delete_identifier'    => "Title",
+		'delete_title_col'     => "//*[@id='main-table']/tbody/tr/td/div/table/tbody/*/td[2]",
 		'remove_confirm'       => 'Do you wish to remove the selected template(s)?',
 		'success_remove'       => 'The selected template has been removed.',
 		'success_remove2'      => 'The selected templates have been removed.',
@@ -541,8 +541,8 @@ class TemplateEditPage
 		$I->clickAndWait(self::$toolbar['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(self::$success_save, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(self::$success_save, Generals::$alert_success);
 		$I->see('Template', Generals::$pageTitle);
 	}
 
@@ -561,7 +561,11 @@ class TemplateEditPage
 	{
 		self::fillRequired($I, 'Text');
 
-		self::selectThumbnail($I, $user);
+		// @ToDo: This is a workaround for the access tests because J4 doesn't show any images
+		if ($user == 'AdminTester')
+		{
+			self::selectThumbnail($I, $user);
+		}
 
 		self::fillTextContent($I);
 	}
@@ -577,6 +581,8 @@ class TemplateEditPage
 	 */
 	public static function fillRequired(\AcceptanceTester $I, $type)
 	{
+		$I->clickAndWait(self::$tpl_tab1, 1);
+
 		$I->fillField(self::$title, self::$field_title);
 		$I->fillField(self::$description, sprintf(self::$field_description, $type));
 	}
@@ -610,7 +616,7 @@ class TemplateEditPage
 		{
 			$I->switchToIFrame(Generals::$image_frame);
 
-			$I->waitForElementVisible("//ul[contains(@class, 'manager')]", 30);
+			$I->waitForElementVisible("//div[contains(@class, 'media-browser-items')]", 30);
 			$I->clickAndWait(self::$thumb_select_user, 1);
 
 			$I->switchToIFrame();

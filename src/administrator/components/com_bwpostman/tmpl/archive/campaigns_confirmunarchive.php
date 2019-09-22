@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 ?>
 
 <script type="text/javascript">
@@ -40,19 +41,19 @@ defined('_JEXEC') or die('Restricted access');
 			htmlText += '			<tr>';
 			if(window.parent.document.adminForm.boxchecked.value === 0)
 			{
-				htmlText += '				<th height="30" align="center"><?php echo JText::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';
+				htmlText += '				<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';
 			}
 			else
 			{
 				htmlText += '				<th height="30" align="center">';
-				htmlText += '<?php echo JText::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?></th>';
+				htmlText += '<?php echo Text::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?></th>';
 				htmlText += '			</tr>';
 				htmlText += '			<tr>';
 				htmlText += '				<td height="30" align="center">';
 				htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'1\');"';
-				htmlText += ' value="<?php echo JText::_("COM_BWPOSTMAN_YES");?>" />';
+				htmlText += ' value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />';
 				htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'0\');"';
-				htmlText += ' value="<?php echo JText::_("COM_BWPOSTMAN_NO");?>" />';
+				htmlText += ' value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />';
 				htmlText += '				</td>';
 			}
 			htmlText += '			</tr>';

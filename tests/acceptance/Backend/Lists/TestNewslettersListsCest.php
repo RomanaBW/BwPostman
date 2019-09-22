@@ -689,8 +689,10 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 
 		$this->buildQueue($I);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(NlManage::$tab3, 1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->checkListlimit($I);
 
@@ -723,11 +725,21 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 
 		$this->buildQueue($I);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(NlManage::$tab3, 1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
-		$I->clickAndWait(NlManage::$queue_list_id, 1);
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$limit_list_id);
+		$I->selectOption(Generals::$limit_list_id, Generals::$limit_10);
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+
+		//Sort table by recipient
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$ordering_list);
+		$I->selectOption(Generals::$ordering_list, "Recipient ascending");
+		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->checkPagination($I, NlManage::$pagination_queue_data_array, 10);
 
@@ -776,7 +788,8 @@ class TestNewslettersListsCest
 		$I->setExtensionStatus('bwtestmode', 0);
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
 
-		$I->clickAndWait(Generals::$toolbar['Continue sending'], 1);
+//		$I->clickAndWait(Generals::$toolbar4['Continue sending'], 1);
+		$I->clickAndWait("//*/button[contains(@class,'button-envelope')]", 1);
 
 		//        $I->switchToIFrame('iframe');
 		//        $I->waitForText(NlEdit::$success_send_ready, 300);
@@ -874,6 +887,7 @@ class TestNewslettersListsCest
 		$I->setExtensionStatus('bwtestmode', 0);
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
 
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->clickAndWait(Generals::$toolbar['Clear queue'], 1);
 
 		$I->see(NlManage::$queue_cleared_msg);

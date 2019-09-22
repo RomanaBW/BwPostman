@@ -143,7 +143,7 @@ JHtml::_('behavior.formvalidator');
 		<?php endif; ?>
 
 		<div class="content_inner">
-			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=save'); ?>" method="post" id="bwp_com_form"
+			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 					name="bwp_com_form" class="form-validate form-inline">
 				<?php
 				echo JLayoutHelper::render(

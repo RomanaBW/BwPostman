@@ -742,7 +742,7 @@ class BwAccess
 	 * @since   11.1
 	 * @note    The non preloading code will be removed in 4.0. All asset rules should use asset preloading.
 	 */
-	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = true, $preload = true)
+	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = false, $preload = true)
 	{
 		// Auto preload the components assets and root asset (if chosen).
 		if ($preload)
@@ -797,17 +797,38 @@ class BwAccess
 		// Almost all calls can take advantage of preloading.
 		if ($assetId && isset(self::$preloadedAssets[$assetId]))
 		{
-			!JDEBUG ?: \JProfiler::getInstance('Application')->mark('Before Access::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
+			!JDEBUG ?: \JProfiler::getInstance('Application')->mark('Before BwAccess::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
 
 			// Collects permissions for each asset
 			$collected = array();
 
-			// If not in any recursive mode. We only want the asset rules.
+			// If not in any recursive mode. We only want the asset rules of item.
 			if (!$recursive && !$recursiveParentAsset)
 			{
-				$collected = array(self::getSectionAsset($assetName));
+				$collected = array(self::$assetPermissionsParentIdMapping[$extensionName][$assetId]->rules);
 			}
-			// If there is any type of recursive mode.
+			// If not in parent recursive mode. We want the asset rules of item and section.
+			elseif ($recursive && !$recursiveParentAsset)
+			{
+				$sectionName   = '';
+
+				$assetNameParts = explode('.', $assetName);
+				$numberOfDots   = substr_count($assetName, '.');
+
+				$extensionName = $assetNameParts[0];
+
+				if ($numberOfDots === 2 || count($assetNameParts) ===2)
+				{
+					$sectionName   = $assetNameParts[0] . '.' . $assetNameParts[1];
+				};
+
+
+				$collectedItem = json_decode(self::$assetPermissionsParentIdMapping[$extensionName][$assetId]->rules, true);
+				$collectedSection = json_decode(self::getSectionAsset($sectionName), true);
+				$collectedMerge = array_merge($collectedSection, $collectedItem);
+				$collected = array(json_encode($collectedMerge));
+			}
+			// If there is parent type of recursive mode.
 			else
 			{
 				$ancestors = array_reverse(self::getAssetAncestors($extensionName, $assetId));

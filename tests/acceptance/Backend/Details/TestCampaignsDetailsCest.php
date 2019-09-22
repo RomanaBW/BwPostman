@@ -137,7 +137,7 @@ class TestCampaignsDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		$this->fillFormExtended($I);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->click(CamEdit::$toolbar['Cancel']);
 		$I->see("Campaigns", Generals::$pageTitle);
@@ -402,11 +402,11 @@ class TestCampaignsDetailsCest
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		// check for title
-//		$I->seeInPopup(CamEdit::$popup_no_recipients);
-//		$I->acceptPopup();
-		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Warning", Generals::$alert_heading);
-		$I->see(CamEdit::$warning_no_title, Generals::$alert_warn);
+		$I->seeInPopup(CamEdit::$popup_title);
+		$I->acceptPopup();
+//		$I->waitForElement(Generals::$alert_header, 30);
+//		$I->see("Warning", Generals::$alert_heading);
+//		$I->see(CamEdit::$warning_no_title, Generals::$alert_warn);
 
 		// fill title and description
 		$I->fillField(CamEdit::$title, CamEdit::$field_title);

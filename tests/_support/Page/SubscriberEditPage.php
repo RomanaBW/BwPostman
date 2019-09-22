@@ -83,35 +83,49 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender       = "//*[@id='jform_gender_chosen']/a";
+	public static $gender       = "//*[@id='jform_gender']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailformat   = "//*[@id='jform_emailformat_chosen']/a";
+	public static $mailformat   = "//*[@id='jform_emailformat']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $confirm      = "//*[@id='jform_status_chosen']/a";
+	public static $format_text          = "Text";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $unconfirmed  = "//*[@id='jform_status_chosen']/div/ul/li[2]";
+	public static $format_html          = "HTML";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $confirmed    = "//*[@id='jform_status_chosen']/div/ul/li[1]";
+	public static $confirm      = "//*[@id='jform_status']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $unconfirmed  = "unconfirmed";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $confirmed    = "confirmed";
 
 
 	/**
@@ -293,9 +307,23 @@ class SubscriberEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $printSubsDataText   = "Print subscriber data";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
-	public static $printSubsDataButton   = "html/body/div[2]/section/div/div/div[2]/form/div/div[1]/div[1]/fieldset/div/div[2]/ul/li[1]/a";
+	public static $printSubsDataButton   = "//*/button[contains(text(), '%s')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $printSubsDataClose   = "//*/button[@aria-label='Close']";
 
 
 	/**
@@ -373,8 +401,8 @@ class SubscriberEditPage
 
 		$I->click(self::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(self::$success_saved, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(self::$success_saved, Generals::$alert_success);
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
@@ -412,8 +440,10 @@ class SubscriberEditPage
 
 		if ($options->show_emailformat)
 		{
-			$I->clickAndWait(self::$mailformat, 1);
-			$I->clickAndWait(SubManage::$format_text, 1);
+			$I->click(self::$mailformat);
+			$I->selectOption(self::$mailformat, self::$format_text);
+			$I->wait(1);
+			$I->waitForText("Text", 5);
 		}
 
 		if ($options->show_special || $options->special_field_obligation)
@@ -421,8 +451,10 @@ class SubscriberEditPage
 			$I->fillField(self::$special, self::$field_special);
 		}
 
-		$I->clickAndWait(self::$confirm, 1);
-		$I->clickAndWait(self::$confirmed, 1);
+		$I->click(self::$confirm);
+		$I->selectOption(self::$confirm, self::$confirmed);
+		$I->wait(1);
+		$I->waitForText("confirmed", 5);
 
 		$I->click(sprintf(self::$mls_accessible, 2));
 		$I->click(sprintf(self::$mls_nonaccessible, 3));

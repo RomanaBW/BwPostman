@@ -49,6 +49,8 @@ class BwPostmanController extends JControllerLegacy
 	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
 	 *
 	 * @since       0.9.1
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

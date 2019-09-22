@@ -32,6 +32,7 @@ jimport('joomla.application.component.controlleradmin');
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman Templates Controller
@@ -74,6 +75,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$file = $app->getUserState('com_bwpostman.templates.uploadfile', '');
 
 		$model	= $this->getModel('templates');
+
+		$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
+		$logger      = new BwLogger($log_options);
 
 		try
 		{

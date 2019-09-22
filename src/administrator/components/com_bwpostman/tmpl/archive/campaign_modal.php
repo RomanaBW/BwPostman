@@ -27,12 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 ?>
 
 <table class="admintable">
 	<tr>
-		<td><img src="<?php echo JUri::base() . 'components/com_bwpostman/assets/images/icon-48-campaigns.png'; ?>" /></td>
-		<td><strong><?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_CAM') ?></strong></td>
+		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-campaigns.png'; ?>" /></td>
+		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') ?></strong></td>
 	</tr>
 </table>
 
@@ -41,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_TITLE');
+					<?php echo Text::_('COM_BWPOSTMAN_TITLE');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -50,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_DESC');
+					<?php echo Text::_('COM_BWPOSTMAN_DESC');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -62,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 <fieldset class="adminform">
 	<table>
 		<tr>
-			<td><strong><?php echo JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL'); ?></strong></td>
+			<td><strong><?php echo Text::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL'); ?></strong></td>
 		</tr>
 		<tr>
 			<td><?php
@@ -78,14 +80,14 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					else
 					{
-						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id}, " . JText::_('COM_BWPOSTMAN_ARC_NL') . ")</li>";
+						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id}, " . Text::_('COM_BWPOSTMAN_ARC_NL') . ")</li>";
 					}
 				}
 
 				echo "</ul>";
 			}
 			else {
-				echo JText::_('COM_BWPOSTMAN_ARC_CAM_NO_ASSIGNED_NL');
+				echo Text::_('COM_BWPOSTMAN_ARC_CAM_NO_ASSIGNED_NL');
 			}
 			?></td>
 		</tr>

@@ -180,6 +180,8 @@ class CampaignEditPage
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
 	public static function CreateCampaignWithoutCleanup(\AcceptanceTester $I)
 	{
@@ -191,6 +193,7 @@ class CampaignEditPage
 
 		$I->click(self::$toolbar['Save & Close']);
 
+		$I->waitForElementVisible(Generals::$alert_header, 10);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(self::$success_save, Generals::$alert_success);
 

@@ -63,6 +63,9 @@ class TestMaintenanceCest
 	{
 		$I->wantTo("Save tables zipped");
 		$I->expectTo("see zip file in download directory");
+
+		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
+
 		$I->amOnPage(MainView::$url);
 		$I->click(MainView::$maintenanceButton);
 

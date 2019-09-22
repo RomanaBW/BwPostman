@@ -74,7 +74,7 @@ class TestNewslettersDetailsCest
 		$I->click(MainView::$addNewsletterButton);
 
 		NlEdit::fillFormSimple($I);
-		$I->clickAndWait(NlEdit::$toolbar['Back'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -106,6 +106,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -155,7 +156,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneNewsletterCompleteListView(\AcceptanceTester $I)
+	public function CreateOneNewsletterCompleteListViewDefault(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter, archive and delete list view");
 		$I->amOnPage(NlManage::$url);
@@ -168,6 +169,7 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -202,7 +204,7 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
-		$I->seeElement(".//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
+		$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -235,10 +237,11 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar['Save & New']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 
 		$I->see('', NlEdit::$subject);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
@@ -260,7 +263,7 @@ class TestNewslettersDetailsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function CreateOneNewsletterSaveCopyListView(\AcceptanceTester $I)
+	public function CreateOneNewsletterSaveCopyListViewDefault(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter, save, modify and save as copy");
 		$I->amOnPage(NlManage::$url);
@@ -272,8 +275,9 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar['Save']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject);
 
@@ -285,8 +289,9 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
 
 		// Grab ID of second newsletter
@@ -328,8 +333,13 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar['Save']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
+		$I->see("Notice", Generals::$alert_heading);
+		$I->see(NlEdit::$message_template, Generals::$alert_info);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->dontSeeElement(NlEdit::$tab5);
 		$I->clickAndWait(NlEdit::$tab2, 1);
@@ -341,9 +351,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$tab1, 1);
 		$I->dontSeeElement(NlEdit::$tab5);
 
-		$I->see("Notice", Generals::$alert_info . ' ' . Generals::$alert_header );
-		$I->see(NlEdit::$message_template, Generals::$alert_info);
-
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject);
 
 		// Grab ID of first newsletter
@@ -354,8 +362,9 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
 
 		$I->seeInField(NlEdit::$is_template, 'No');
@@ -392,50 +401,50 @@ class TestNewslettersDetailsCest
 	 */
 	public function CreateOneNewsletterWithFileUpload(\AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Newsletter and upload a file for attachment");
-		$I->amOnPage(NlManage::$url);
-
-		$I->click(Generals::$toolbar['New']);
-
-		// Ensure upload file doesn't exists
-		try
-		{
-			$I->deleteFile(NlEdit::$attachment_upload_path . NlEdit::$attachment_upload_file_raw);
-		}
-		catch (\Exception $e)
-		{
-			codecept_debug("No file to delete or not accessible");
-		}
-
-		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
-		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
-		$I->waitForElementVisible("#imageModal_jform_attachment__attachmentX__single_attachment", 10);
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElementVisible("//*[@id='uploadForm']", 5);
-		$I->scrollTo(".//*[@id='uploadForm']", 0, -80);
-		$I->waitForElementVisible("#upload-file", 5);
-
-		// Upload file
-		$I->attachFile(".//*[@id='upload-file']", NlEdit::$attachment_upload_file_raw);
-		$I->click("html/body/div[2]/form[2]/div/fieldset/div/div[2]/button");
-		$I->waitForElementVisible(Generals::$alert_success, 30);
-		$I->see(NlEdit::$attachment_upload_success . NlEdit::$attachment_upload_file_raw, Generals::$alert_success);
-
-		$I->wait(2);
-		$I->switchToIFrame(Generals::$image_frame);
-		$I->waitForElementVisible("ul.manager", 5);
-		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -100);
-		$I->clickAndWait(NlEdit::$attachment_upload_file, 1);
-
-		$I->switchToIFrame();
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->clickAndWait(NlEdit::$attachment_insert, 1);
-		$I->switchToIFrame();
-
-		$I->waitForElementVisible(NlEdit::$attachment, 20);
-
-		$I->click(NlEdit::$toolbar['Cancel']);
-		$I->see("Newsletters", Generals::$pageTitle);
+//		$I->wantTo("Create one Newsletter and upload a file for attachment");
+//		$I->amOnPage(NlManage::$url);
+//
+//		$I->click(Generals::$toolbar['New']);
+//
+//		// Ensure upload file doesn't exists
+//		try
+//		{
+//			$I->deleteFile(NlEdit::$attachment_upload_path . NlEdit::$attachment_upload_file_raw);
+//		}
+//		catch (\Exception $e)
+//		{
+//			codecept_debug("No file to delete or not accessible");
+//		}
+//
+//		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
+//		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
+//		$I->waitForElementVisible("#imageModal_jform_attachment__attachmentX__single_attachment", 10);
+//		$I->switchToIFrame(Generals::$media_frame);
+//		$I->waitForElementVisible("//*[@id='uploadForm']", 5);
+//		$I->scrollTo(".//*[@id='uploadForm']", 0, -80);
+//		$I->waitForElementVisible("#upload-file", 5);
+//
+//		// Upload file
+//		$I->attachFile(".//*[@id='upload-file']", NlEdit::$attachment_upload_file_raw);
+//		$I->click("html/body/div[2]/form[2]/div/fieldset/div/div[2]/button");
+//		$I->waitForElementVisible(Generals::$alert_success, 30);
+//		$I->see(NlEdit::$attachment_upload_success . NlEdit::$attachment_upload_file_raw, Generals::$alert_success);
+//
+//		$I->wait(2);
+//		$I->switchToIFrame(Generals::$image_frame);
+//		$I->waitForElementVisible("ul.manager", 5);
+//		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -100);
+//		$I->clickAndWait(NlEdit::$attachment_upload_file, 1);
+//
+//		$I->switchToIFrame();
+//		$I->switchToIFrame(Generals::$media_frame);
+//		$I->clickAndWait(NlEdit::$attachment_insert, 1);
+//		$I->switchToIFrame();
+//
+//		$I->waitForElementVisible(NlEdit::$attachment, 20);
+//
+//		$I->click(NlEdit::$toolbar['Cancel']);
+//		$I->see("Newsletters", Generals::$pageTitle);
 	}
 
 	/**
@@ -537,9 +546,9 @@ class TestNewslettersDetailsCest
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+		$I->waitForElement(Generals::$alert_heading);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 	}
 	}
 	*/
@@ -570,6 +579,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Newsletters', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);
@@ -580,7 +590,8 @@ class TestNewslettersDetailsCest
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->see(Generals::$alert_warn_txt, Generals::$alert_header);
-		$I->see(sprintf(NlEdit::$warn_save, NlEdit::$field_subject), Generals::$alert);
+		$I->see(sprintf(NlEdit::$warn_save, NlEdit::$field_subject), Generals::$alert_warn);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->see("Newsletters", Generals::$pageTitle);
 
@@ -657,7 +668,7 @@ class TestNewslettersDetailsCest
 		$content_title  = substr($content_title, $start);
 
 		// change to tab 2
-		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->scrollTo(Generals::$nlTabBar, 0, -100);
 		$I->clickAndWait(NlEdit::$tab2, 3);
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
 		$I->waitForElement(NlEdit::$tab2_editor);
@@ -686,26 +697,26 @@ class TestNewslettersDetailsCest
 		$I->switchToIFrame();
 
 		// change to tab 5
-		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->scrollTo(Generals::$nlTabBar, 0, -100);
 		$I->clickAndWait(NlEdit::$tab5, 1);
 		$I->clickAndWait(NlEdit::$button_send_test, 1);
 
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$user = getenv('USER');
+//		$user = getenv('USER');
+//
+//		if (!$user)
+//		{
+//			$user = 'root';
+//		}
+//
+//		if ($user == 'jenkins')
+//		{
+//			$I->wait(6);
+//		}
 
-		if (!$user)
-		{
-			$user = 'root';
-		}
-
-		if ($user == 'jenkins')
-		{
-			$I->wait(6);
-		}
-
-		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
+		$I->waitForElementVisible(NlEdit::$tab5_send_iframeName, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
 		$I->waitForText(NlEdit::$success_send_ready, 60);
 		$I->see(NlEdit::$success_send_ready);
@@ -743,14 +754,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
-		// Check status of sent newsletter
-		$I->clickAndWait(NlManage::$tab2, 2);
-		$I->clickSelectList(
-			Generals::$ordering_list,
-			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
-			Generals::$ordering_id
-		);
-		$I->seeElement(NlManage::$first_line_unpublished);
+		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_unpublished);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -782,14 +786,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
-		// Check status of sent newsletter
-		$I->clickAndWait(NlManage::$tab2, 2);
-		$I->clickSelectList(
-			Generals::$ordering_list,
-			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
-			Generals::$ordering_id
-		);
-		$I->seeElement(NlManage::$first_line_published);
+		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_published);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -821,14 +818,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20, true);
 
-		// Check status of sent newsletter
-		$I->clickAndWait(NlManage::$tab2, 2);
-		$I->clickSelectList(
-			Generals::$ordering_list,
-			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
-			Generals::$ordering_id
-		);
-		$I->seeElement(NlManage::$first_line_published);
+		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_published);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -860,14 +850,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20, true);
 
-		// Check status of sent newsletter
-		$I->clickAndWait(NlManage::$tab2, 2);
-		$I->clickSelectList(
-			Generals::$ordering_list,
-			".//*[@id='list_fullordering_chzn']/div/ul/li[text()='ID descending']",
-			Generals::$ordering_id
-		);
-		$I->seeElement(NlManage::$first_line_published);
+		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_published);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -951,6 +934,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 		$I->clickAndWait(NlEdit::$change_is_template, 2);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->click(NlEdit::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
@@ -958,7 +942,7 @@ class TestNewslettersDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see('Newsletters', Generals::$pageTitle);
 		$I->see("Error", Generals::$alert_header);
-		$I->see(NlEdit::$is_template_error, Generals::$alert_msg);
+		$I->see(NlEdit::$is_template_error, Generals::$alert_error);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -1008,8 +992,8 @@ class TestNewslettersDetailsCest
 			$I->click(Generals::$toolbar['Save']);
 			Generals::dontSeeAnyWarning($I);
 
-			$I->see("Message", Generals::$alert_header);
-			$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+			$I->see("Message", Generals::$alert_heading);
+			$I->see(NlEdit::$success_saved, Generals::$alert_success);
 
 			// check changes
 			$I->see("published", NlEdit::$published_list_text);
@@ -1053,8 +1037,8 @@ class TestNewslettersDetailsCest
 			$I->waitForElement(Generals::$pageTitle, 30);
 			Generals::dontSeeAnyWarning($I);
 
-			$I->see("Message", Generals::$alert_header);
-			$I->see(NlEdit::$success_saved, Generals::$alert_msg);
+			$I->see("Message", Generals::$alert_heading);
+			$I->see(NlEdit::$success_saved, Generals::$alert_success);
 			$I->see('Newsletters', Generals::$pageTitle);
 
 			$I->clickAndWait(NlManage::$tab2, 1);
@@ -1109,7 +1093,7 @@ class TestNewslettersDetailsCest
 		$I->dontSeeElement(NlEdit::$legend_recipients);
 
 		//select attachment
-		NlEdit::selectAttachment($I);
+//		NlEdit::selectAttachment($I);
 
 		// fill publish and unpublish
 		NlEdit::fillPublishedDate($I);
@@ -1157,7 +1141,8 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save']);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
-		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_msg);
+		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_warn);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// omit from_email
 		NlEdit::selectRecipients($I);
@@ -1168,7 +1153,8 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save']);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
-		$I->see(NlEdit::$msg_required_sender_email, Generals::$alert_msg);
+		$I->see(NlEdit::$msg_required_sender_email, Generals::$alert_warn);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// omit reply_email
 		NlEdit::selectRecipients($I);
@@ -1180,7 +1166,8 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save']);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
-		$I->see(NlEdit::$msg_required_replyto_email, Generals::$alert_msg);
+		$I->see(NlEdit::$msg_required_replyto_email, Generals::$alert_warn);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// omit subject
 		NlEdit::selectRecipients($I);
@@ -1193,7 +1180,8 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$toolbar['Save']);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
-		$I->see(NlEdit::$msg_required_subject, Generals::$alert_msg);
+		$I->see(NlEdit::$msg_required_subject, Generals::$alert_warn);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		NlEdit::selectRecipients($I);
 		$I->scrollTo(NlEdit::$legend_general);
@@ -1204,7 +1192,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$description, 1);
 
 		//select attachment
-		NlEdit::selectAttachment($I);
+//		NlEdit::selectAttachment($I);
 
 		// fill publish and unpublish
 		NlEdit::fillPublishedDate($I);

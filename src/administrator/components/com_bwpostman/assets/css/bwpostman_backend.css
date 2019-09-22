@@ -112,7 +112,9 @@
 	text-align: center;
 	background: var(--white);
 	box-shadow: 0 1px 2px rgba(0,0,0,.25);
-	transition: all .25s ease;}
+	transition: all .25s ease;
+	font-size: 0.9rem;
+}
 
 .bw-icons a span.icon {
 	width: 140px;
@@ -124,6 +126,7 @@
 	width: 140px;
 	height: 60px;
 	padding-top: 20px;
+	line-height: 1.3;
 }
 
 #toolbar #toolbar-book, #toolbar #toolbar-users {
@@ -495,9 +498,14 @@ fieldset p.mllabel {
 	display:			block;
 	height:				100%;
 }
+
 #cpanel .icon span {
 	display:			block;
 	font-size:			11px;
+}
+
+#cpanel .icon span.icon {
+	height: 55px;
 }
 
 .pane-toggler span {
@@ -942,3 +950,6 @@ td.bwptable label.radiobtn {
 	margin-top: 10em;
 }
 
+.bwpm-footer {
+	text-align: center;
+}

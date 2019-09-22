@@ -64,6 +64,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	{
 		$app 	= JFactory::getApplication();
 		$jinput	= JFactory::getApplication()->input;
+		$log_options    = array();
+		$logger   = new BwLogger($log_options);
 
 		if (!BwPostmanHelper::canView('newsletter'))
 		{
@@ -77,6 +79,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$sendandpublish	= $app->getUserState('com_bwpostman.newsletters.sendmailandpublish', 0);
 		$id				= $app->getUserState('com_bwpostman.newsletters.publish_id', 0);
 		$delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
+		$logger->addEntry(new JLogEntry('View raw delay: ' . $delay));
 
 		$defaultPublish	= (int) $app->getUserState('com_bwpostman.newsletters.publish_nl_by_default', $params->get('publish_nl_by_default'));
 

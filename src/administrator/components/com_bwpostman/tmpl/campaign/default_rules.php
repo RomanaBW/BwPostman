@@ -25,11 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div class="row">
-	<div class="col-md-12">
+<fieldset id="fieldset-rules" class="options-grid-form options-grid-form-full">
+	<legend><?php echo Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?></legend>
+	<div>
 		<?php echo $this->form->getInput('rules'); ?>
 	</div>
-</div>
+</fieldset>

@@ -74,7 +74,7 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[3]/a";
+	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[3]/p/a";
 
 	/**
 	 * @var string
@@ -492,10 +492,10 @@ class NewsletterManagerPage
 	 * @since 2.2.0
 	 */
 	public static $set_template_by_icon   = array(
-		'is_template_button'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a",
-		'is_template_result'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-featured')]",
-		'is_not_template_button' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a",
-		'is_not_template_result' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/a/span[contains(@class, 'icon-unfeatured')]",
+		'is_template_button'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button",
+		'is_template_result'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-featured')]",
+		'is_not_template_button' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button",
+		'is_not_template_result' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-unfeatured')]",
 	);
 
 	/**
@@ -740,29 +740,29 @@ class NewsletterManagerPage
 	 * @since   2.0.0
 	 */
 	public static $pagination_queue_data_array  = array(
-		'p1_val1'              => "r.barth@tester-net.nil",
+		'p1_val1'              => "a.kellner@tester-net.nil",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p1_val_last'          => "heidi.brockhaus@tester-net.nil",
+		'p1_val_last'          => "astrid.diehl@tester-net.nil",
 		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p2_val1'              => "juri.ehrenberg@tester-net.nil",
+		'p2_val1'              => "b.imhof@tester-net.nil",
 		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p2_val_last'          => "h.burkhardt@tester-net.nil",
+		'p2_val_last'          => "claus.kuntz@tester-net.nil",
 		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p3_val1'              => "lilian.holloway@tester-net.nil",
+		'p3_val1'              => "d.bernd@tester-net.nil",
 		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p3_val3'              => " ian.wolters@tester-net.nil",
+		'p3_val3'              => " f.jacobi@tester-net.nil",
 		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p_prev_val1'          => "finn.kaczmarek@tester-net.nil",
+		'p_prev_val1'          => "riccardo.fritzsche@tester-net.nil",
 		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p_prev_val_last'      => "n.hammond@tester-net.nil",
+		'p_prev_val_last'      => "sascha.brueck@tester-net.nil",
 		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p_last_val1'          => "maya.eich@tester-net.nil",
+		'p_last_val1'          => "smilla.nestler@tester-net.nil",
 		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p_last_val_last'      => "info@boldt-coaching.de",
+		'p_last_val_last'      => "vincent.zabel@tester-net.nil",
 		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[4]",
 	);
 }

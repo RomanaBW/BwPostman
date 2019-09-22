@@ -1721,6 +1721,7 @@ class Com_BwPostmanInstallerScript
 					$query = trim($query);
 					if ($query != '' && $query{0} != '#')
 					{
+						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
 						$_db->setQuery($query);
 
 						try

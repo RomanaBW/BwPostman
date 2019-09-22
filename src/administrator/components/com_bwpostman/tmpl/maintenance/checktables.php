@@ -25,86 +25,88 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+
 defined('_JEXEC') or die('Restricted access');
 
-//JHtml::_('behavior.modal');
-JHtml::_('behavior.framework', true);
-$uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHtml::_('script', 'system/modal' . $uncompressed . '.js', true, true);
-JHtml::_('stylesheet', 'media/system/css/modal.css');
+$uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
+HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', true, true);
+HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
 
 $model		= $this->getModel();
 ?>
 
 <div id="checkResult" class="row">
 	<div class="col-md-6 well">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
-		<p id="step1" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
-		<p id="step2" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
-		<p id="step3" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
-		<p id="step4" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
-		<p id="step5" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
+		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
+		<p id="step1" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
+		<p id="step2" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
+		<p id="step3" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
+		<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
+		<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
 	</div>
 	<div class="col-md-6 well well-small">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
+		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
 		<div id="loading2"></div>
 		<div id="result"></div>
 	</div>
 </div>
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 <?php
-$uri = JUri::root();
+$uri = Uri::root();
 ?>
 
 <script type="text/javascript">
-function doAjax(data, successCallback)
-{
-	var structure =
-	{
-		success: function(data)
-		{
-			// Call the callback function
-			successCallback(data);
-		},
-		error: function(req) {
-			var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
-			jQuery('div#loading2').css({display:'none'});
-			jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
-			jQuery('div#result').html(message);
-			jQuery('div#toolbar').find('button').removeAttr('disabled');
-		}
-	};
+	window.onload = function() {
+		function doAjax(data, successCallback) {
+			var structure =
+				{
+					success: function (data) {
+						// Call the callback function
+						successCallback(data);
+					},
+					error  : function (req) {
+						var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
+						jQuery('div#loading2').css({display: 'none'});
+						jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
+						jQuery('div#result').html(message);
+						jQuery('div#toolbar').find('button').removeAttr('disabled');
+					}
+				};
 
-	structure.url = starturl;
-	structure.data = data;
-	structure.type = 'POST';
-	structure.dataType = 'json';
-	jQuery.ajax(structure);
-}
+			structure.url = starturl;
+			structure.data = data;
+			structure.type = 'POST';
+			structure.dataType = 'json';
+			jQuery.ajax(structure);
+		}
 
-function processUpdateStep(data)
-{
-	jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert-'+data.aClass);
-	jQuery('p#step'+data.step).addClass('alert alert-info');
-	// Do AJAX post
-	post = {step : 'step'+data.step};
-	doAjax(post, function(data){
-		if(data.ready != "1")
-		{
-			processUpdateStep(data);
+		function processUpdateStep(data) {
+			jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
+			jQuery('p#step' + data.step).addClass('alert alert-info');
+			// Do AJAX post
+			post = {step: 'step' + data.step};
+			doAjax(post, function (data) {
+				if (data.ready != "1") {
+					processUpdateStep(data);
+				} else {
+					jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
+					jQuery('div#loading2').css({display: 'none'});
+					jQuery('div#result').html(data.result);
+					jQuery('div#toolbar').find('button').removeAttr('disabled');
+				}
+			});
 		}
-		else
-		{
-			jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
-			jQuery('div#loading2').css({display:'none'});
-			jQuery('div#result').html(data.result);
-			jQuery('div#toolbar').find('button').removeAttr('disabled');
-		}
-	});
-}
-jQuery('div#toolbar').find('button').attr("disabled","disabled");
-var starturl = 'index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo JSession::getFormToken(); ?>=1';
-var data = {step: "1"};
-processUpdateStep(data);
+
+		jQuery('div#toolbar').find('button').attr("disabled", "disabled");
+		var starturl = 'index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1';
+		var data = {step: "1"};
+		processUpdateStep(data);
+	}
 </script>

@@ -25,6 +25,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 defined('_JEXEC') or die('Restricted access');
 
 ?>
@@ -33,60 +36,60 @@ defined('_JEXEC') or die('Restricted access');
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de-de" lang="de-de" dir="ltr">
 	<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT'); ?></title>
+	<title><?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT'); ?></title>
 	</head>
 
 	<body id="preview_html">
 		<table>
 			<tr>
 				<td>
-					<img src="<?php echo JUri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png'; ?>"
-							alt="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?>" />
+					<img src="<?php echo Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png'; ?>"
+							alt="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?>" />
 				</td>
-				<td><strong><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT') ?></strong></td>
+				<td><strong><?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT') ?></strong></td>
 			</tr>
 		</table>
 
 		<fieldset>
-			<table border="0">
-				<tr>
-					<td align="right">
-						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME');
-							echo ':'; ?>
-						</strong>
-					</td>
-					<td><?php echo $this->item->from_name;?></td>
-				</tr>
-				<tr>
-					<td align="right">
-						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
-							echo ':'; ?>
-						</strong>
-					</td>
-					<td><?php echo $this->item->from_email;?></td>
-				</tr>
-				<tr>
-					<td align="right">
-						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
-							echo ':'; ?>
-						</strong>
-					</td>
-					<td><?php echo $this->item->reply_email;?></td>
-				</tr>
-				<tr>
-					<td align="right">
-						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_SUBJECT');
-							echo ':'; ?>
-						</strong>
-					</td>
-					<td><?php echo $this->item->subject;?></td>
-				</tr>
-			</table>
-		</fieldset>
+					<table border="0">
+						<tr>
+							<td align="right">
+								<strong><?php
+									echo Text::_('COM_BWPOSTMAN_NL_FROM_NAME');
+									echo ':'; ?>
+								</strong>
+							</td>
+							<td><?php echo $this->item->from_name;?></td>
+						</tr>
+						<tr>
+							<td align="right">
+								<strong><?php
+									echo Text::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
+									echo ':'; ?>
+								</strong>
+							</td>
+							<td><?php echo $this->item->from_email;?></td>
+						</tr>
+						<tr>
+							<td align="right">
+								<strong><?php
+									echo Text::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
+									echo ':'; ?>
+								</strong>
+							</td>
+							<td><?php echo $this->item->reply_email;?></td>
+						</tr>
+						<tr>
+							<td align="right">
+								<strong><?php
+									echo Text::_('COM_BWPOSTMAN_NL_SUBJECT');
+									echo ':'; ?>
+								</strong>
+							</td>
+							<td><?php echo $this->item->subject;?></td>
+						</tr>
+					</table>
+				</fieldset>
 
 		<fieldset>
 			<table width="100%" border="0">

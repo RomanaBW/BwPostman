@@ -94,6 +94,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * @return  BwPostmanControllerNewsletters		This object to support chaining.
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
@@ -249,7 +251,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		}
 
 		// Which tab are we in?
-		$layout = $jinput->get('tab', 'sent');
+		$tab = $jinput->get('tab', 'sent');
 
 		// From which view do we come?
 		$view = $jinput->get('view', 'newsletters');
@@ -262,7 +264,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		}
 		else
 		{
-			$this->setRedirect('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout);
+			$this->setRedirect('index.php?option=com_bwpostman&view=newsletters&tab=' . $tab);
 		}
 
 		return true;

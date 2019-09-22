@@ -572,7 +572,7 @@ class MenuEntriesManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $menu_entry_identifier_nl_list    = "//*[@id=\"bwp_newsletters_table\"]/tbody/tr[2]/td[2]";
+	public static $menu_entry_identifier_nl_list    = "//*[@id='bwp_newsletters_table']/tbody/tr[2]/td[2]";
 
 	/**
 	 * @var string

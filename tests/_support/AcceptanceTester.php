@@ -175,13 +175,14 @@ class AcceptanceTester extends \Codeception\Actor
 	 *
 	 * @param string            $search_value
 	 * @param int               $expected_nbr
+	 * @param string            $tableIdentifier
 	 *
 	 * @since   2.0.0
 	 */
 
-	public function assertTableSearchResult($search_value, $expected_nbr)
+	public function assertTableSearchResult($search_value, $expected_nbr, $tableIdentifier = "//*[@id='main-table']")
 	{
-		$row_values_actual = $this->GetTableRows($this);
+		$row_values_actual = $this->GetTableRows($this, $tableIdentifier);
 		$res_nbr           = count($row_values_actual);
 		$this->assertEquals($expected_nbr, $res_nbr);
 		// assert that all rows contain search value
@@ -195,13 +196,14 @@ class AcceptanceTester extends \Codeception\Actor
 	 * Method to assert, that all filter results are present
 	 *
 	 * @param array             $filter_values
+	 * @param string            $tableIdentifier
 	 *
 	 * @since   2.0.0
 	 */
 
-	public function assertFilterResult($filter_values)
+	public function assertFilterResult($filter_values, $tableIdentifier = "//table[@id='main-table']")
 	{
-		$row_values_actual = $this->GetTableRows($this);
+		$row_values_actual = $this->GetTableRows($this, $tableIdentifier);
 		$res_nbr           = count($row_values_actual);
 		$this->assertEquals(count($filter_values), $res_nbr);
 		// assert that all rows contain filtered values
@@ -215,16 +217,18 @@ class AcceptanceTester extends \Codeception\Actor
 	 * Method to get the number of a table row for a specific search value at a given column
 	 *
 	 * @param string            $search_value
+	 * @param string            $tableId
 	 *
 	 * @return int              $id
 	 *
 	 * @since   2.0.0
 	 */
 
-	public function getTableRowIdBySearchValue($search_value)
+	public function getTableRowIdBySearchValue($search_value, $tableId = 'main-table')
 	{
 		$id             = 0;
-		$row_values     = $this->GetTableRows($this);
+		$tableIdentifier = "//table[@id='" . $tableId . "']";
+		$row_values     = $this->GetTableRows($this, $tableIdentifier);
 
 		for ($i = 0; $i < count($row_values); $i++)
 		{
@@ -244,6 +248,7 @@ class AcceptanceTester extends \Codeception\Actor
 	 * Method to
 	 *
 	 * @param string            $search_value
+	 * @param string            $tableId
 	 *
 	 * @return boolean
 	 *
@@ -252,7 +257,7 @@ class AcceptanceTester extends \Codeception\Actor
 	 * @since   2.0.0
 	 */
 
-	public function findPageWithItemAndScrollToItem($search_value)
+	public function findPageWithItemAndScrollToItem($search_value, $tableId = 'main-table')
 	{
 		$found      = false;
 		$count      = 1;
@@ -260,11 +265,11 @@ class AcceptanceTester extends \Codeception\Actor
 
 		while (!$found)
 		{
-			$table_search_result  = $this->getTableRowIdBySearchValue($search_value);
+			$table_search_result  = $this->getTableRowIdBySearchValue($search_value, $tableId);
 
 			if ($table_search_result > 0)
 			{
-				$position   = sprintf(".//*[@id='main-table']/tbody/tr[%s]", $table_search_result);
+				$position   = sprintf("//*[@id='" . $tableId . "']/tbody/tr[%s]", $table_search_result);
 				$this->scrollTo($position, 0, -100);
 				$found  = true;
 			}
@@ -340,6 +345,7 @@ class AcceptanceTester extends \Codeception\Actor
 		if ($pagination_accessible > 0)
 		{
 			$this->click(Generals::$last_page);
+			$this->scrollTo(Generals::$pagination_bar);
 			$last_page = $this->grabTextFrom(Generals::$last_page_identifier);
 
 			$this->scrollTo(Generals::$pagination_bar);

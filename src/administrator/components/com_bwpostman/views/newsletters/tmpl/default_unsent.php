@@ -61,12 +61,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>");
 			if (ConfirmArchive == true)
 			{
-				Joomla.submitform(pressbutton, form);
+				submitform(pressbutton);
 			}
 		}
 		else
 		{
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 		}
 	};
 

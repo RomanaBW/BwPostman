@@ -31,6 +31,7 @@ use Joomla\Archive\Archive;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman templates model
@@ -96,6 +97,13 @@ class BwPostmanModelTemplates extends JModelList
 	protected $exportId;
 
 	/**
+	 * @var	object
+	 *
+	 * @since       2.4.0
+	 */
+	protected $logger;
+
+	/**
 	 * Constructor
 	 * --> handles the pagination and set the Templates key
 	 *
@@ -117,6 +125,9 @@ class BwPostmanModelTemplates extends JModelList
 				'created_by', 'a.created_by'
 			);
 		}
+
+		$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
+		$this->logger = new BwLogger($log_options);
 
 		parent::__construct($config);
 	}
@@ -535,6 +546,10 @@ class BwPostmanModelTemplates extends JModelList
 		// If the file isn't okay, redirect to templates
 		if ($file['error'] > 0)
 		{
+			$this->logger->addEntry(new JLogEntry('tmp filename if template to import: ' . $src));
+			$this->logger->addEntry(new JLogEntry('archive name if template to import: ' . $archivename));
+			$this->logger->addEntry(new JLogEntry('file array: ' . print_r($file, true)));
+
 			//http://de.php.net/features.file-upload.errors
 			$msg = JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD');
 
@@ -648,11 +663,13 @@ class BwPostmanModelTemplates extends JModelList
 			if (count($queries) != 0)
 			{
 				// Process each query in the $queries array (split out of sql file).
+				// @ToDo: Check for existing title! If so, append suffix, also check this enhanced title! Title must be unique!
 				foreach ($queries as $this->query)
 				{
 					$this->query = trim($this->query);
 					if ($this->query != '' && $this->query{0} != '#')
 					{
+						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
 						$db->setQuery($this->query);
 
 						try
@@ -868,17 +885,21 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	private function delMessage()
 	{
-		$app = JFactory::getApplication();
-		$appReflection = new ReflectionClass(get_class($app));
-		$_messageQueue = $appReflection->getProperty('_messageQueue');
-		$_messageQueue->setAccessible(true);
-		$messages = $_messageQueue->getValue($app);
-		foreach ($messages as $key => $message)
+		// @ToDo: What is this method good for?
+		if(version_compare(JVERSION, '3.99', 'le'))
 		{
-			unset($messages[$key]);
-		}
+			$app = JFactory::getApplication();
+			$appReflection = new ReflectionClass(get_class($app));
+			$_messageQueue = $appReflection->getProperty('_messageQueue');
+			$_messageQueue->setAccessible(true);
+			$messages = $_messageQueue->getValue($app);
+			foreach ($messages as $key => $message)
+			{
+				unset($messages[$key]);
+			}
 
-		$_messageQueue->setValue($app, $messages);
+			$_messageQueue->setValue($app, $messages);
+		}
 	}
 
 	/**
@@ -939,7 +960,19 @@ class BwPostmanModelTemplates extends JModelList
 					'where1' =>  'id',
 					'where2'    =>  'id',
 					'insert'    =>  'INSERT IGNORE',
-					'nums'      =>  array(0,1,2,10,21,22,24,26,27,29,31),
+					'nums'      =>  array(
+						'id',
+						'asset_id',
+						'standard',
+						'tpl_id',
+						'access',
+						'published',
+						'created_by',
+						'modified_by',
+						'checked_out',
+						'archive_flag',
+						'archived_by',
+					),
 					'j'         =>  1
 				),
 				array
@@ -948,7 +981,7 @@ class BwPostmanModelTemplates extends JModelList
 					'where1' =>  'id',
 					'where2'    =>  'tpl_id',
 					'insert'    =>  'REPLACE',
-					'nums'      =>  array(0),
+					'nums'      =>  array('id'),
 					'j'         =>  0
 				),
 				array
@@ -957,7 +990,14 @@ class BwPostmanModelTemplates extends JModelList
 					'where1' =>  'templates_table_id',
 					'where2'    =>  'id',
 					'insert'    =>  'INSERT IGNORE',
-					'nums'      =>  array(0,1,3,5,8,10),
+					'nums'      =>  array(
+						'templates_table_id',
+						'tpl_tags_head',
+						'tpl_tags_body',
+						'tpl_tags_article',
+						'tpl_tags_readon',
+						'tpl_tags_legal',
+					),
 					'j'         =>  0
 				)
 			);
@@ -977,7 +1017,8 @@ class BwPostmanModelTemplates extends JModelList
 				$_db->setQuery($query);
 				try
 				{
-					$res = $_db->execute();
+//					$res = $_db->execute();
+					$res = $_db->loadAssoc();
 				}
 				catch (RuntimeException $e)
 				{
@@ -986,53 +1027,61 @@ class BwPostmanModelTemplates extends JModelList
 				}
 
 				// Load values
-				$row = $res->fetch_row();
+//				$row = $res->fetch_row();
 
-				if (!empty($row))
+				if (!empty($res))
 				{
 					// Count fields in row
-					$num_fields = $res->field_count;
+//					$num_fields = $res->field_count;
+					$num_fields = count($res);
 
 					// Field names
-					$fields_meta = $res->fetch_fields();
+//					$fields_meta = $res->fetch_fields();
 
-					$field_set = array();
-					for ($j = $setting['j']; $j < $num_fields; $j++) {
-						$quote = "`";
-						$field_set[$j] = $quote . $fields_meta[$j]->name . $quote;;
+					$quote = "`";
+					$fields_quoted = array();
+					$field_set = array_keys($res);
+					foreach ($field_set as $field)
+					{
+						$fields_quoted[] = $quote . $field . $quote;
 					}
-					$fields = implode(', ', $field_set);
+
+					$fields = implode(', ', $fields_quoted);
 					$this->content .= $setting['insert'] . ' INTO `#__' . $setting['table'] . '`  (' . $fields . ') VALUES' . "\n";
 
 					// Set tpl_id, path to thumbnail
 					if ($setting['table'] == 'bwpostman_templates')
 					{
-						$tpl_id        = $row[10];
-						$this->imgPath = $row[5];
+						$tpl_id        = $res['tpl_id'];
+						$this->imgPath = $res['thumbnail'];
 					}
 
 					// Values
 					$values = array();
-					for ($j = $setting['j']; $j < $num_fields; $j++) {
+					foreach ($res as $key => $value) {
 
-						if (!isset($row[$j]) || is_null($row[$j]))	// NULL
+						if (!isset($value) || is_null($value))	// NULL
 						{
 							$values[] = 'NULL';
 						}
-						elseif (in_array($j, $setting['nums']))     // INT
+						elseif (in_array($key, $setting['nums']))     // INT
 						{
-							$values[] = $row[$j];
+							$values[] = $value;
 						}
 						else                                         // STRING
 						{
 							$values[] = '\''
-								. $_db->escape($row[$j])
+								. $_db->escape($value)
 								. '\'';
 						}
 					}
 					// Set standard template to 0
 					if ($setting['table'] == 'bwpostman_templates')
 					{
+						// If we don't reset id of exported template, a template with an id, which exists on target can't be imported
+						// So we let the database manage the id
+						$values[0] = 0;
+						// asset_id always depends on current system state, so we can't use the exported one
 						$values[1] = 0;
 					}
 					// We need the last insert id from 'bwpostman_templates'
@@ -1044,7 +1093,7 @@ class BwPostmanModelTemplates extends JModelList
 				}
 			}
 
-			$this->dummy = '/* Dummy SQL-Query */' . "\n" . 'SELECT id FROM `#__bwpostman_templates_tpl` WHERE `title` = `DUMMY`';
+			$this->dummy = '/* Dummy SQL-Query */' . "\n" . "SELECT id FROM `#__bwpostman_templates_tpl` WHERE `title` = 'DUMMY'";
 
 			$zip_created = $this->createZip();
 		}
@@ -1087,7 +1136,9 @@ class BwPostmanModelTemplates extends JModelList
 		$thumbnail = JPATH_ROOT . '/' . $this->imgPath;
 		if (JFile::exists($thumbnail))
 		{
-			$img = JFile::getName($thumbnail);
+			$lastSlash = strrpos($thumbnail, '/');
+			$img = substr($thumbnail, $lastSlash + 1);
+//			$img = JFile::getName($thumbnail);
 			if (!JFolder::exists($this->tmp_path . 'images'))
 			{
 				JFolder::create($this->tmp_path . 'images');

@@ -7,7 +7,7 @@ use Page\InstallationPage as InstallPage;
  *
  * This class contains the method to install required extensions for testing BwPostman
  *
- * @copyright (C) 2019 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -88,18 +88,18 @@ class InstallRequiredCest
 		{
 			self::doInstallation($I, $installFile);
 
-			$heading = $I->grabTextFrom('#system-message-container div h4');
+			$heading = $I->grabTextFrom(Generals::$alert_heading4);
 
 			if ($heading == "Warning")
 			{
 				continue;
 			}
 
-			$I->waitForElementVisible(Generals::$alert_success, 30);
-			$I->see(self::$installSuccessMsg1, Generals::$alert_success);
-			$I->see(self::$installSuccessMsg2, Generals::$alert_success);
-			$I->dontSee("Error", Generals::$alert_heading);
-			$I->dontSee("Warning", Generals::$alert_heading);
+			$I->waitForElementVisible(Generals::$alert_success4, 30);
+			$I->see(self::$installSuccessMsg1, Generals::$alert_success4);
+			$I->see(self::$installSuccessMsg2, Generals::$alert_success4);
+			$I->dontSee("Error", Generals::$alert_heading4);
+			$I->dontSee("Warning", Generals::$alert_heading4);
 			$I->waitForElementVisible(Generals::$systemMessageClose, 30);
 			$I->click(Generals::$systemMessageClose);
 		}
@@ -162,6 +162,7 @@ class InstallRequiredCest
 		$I->expectTo("see success messages");
 
 		$I->waitForText(InstallPage::$sampleDataText, 30);
+		$I->scrollTo(InstallPage::$sampleDataInstallButton, 0, -100);
 		$I->click(InstallPage::$sampleDataInstallButton);
 		$I->acceptPopup();
 		$I->waitForElementVisible(InstallPage::$sampleDataSuccessStep4, 120);

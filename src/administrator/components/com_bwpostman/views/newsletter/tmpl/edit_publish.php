@@ -42,20 +42,20 @@ Joomla.submitbutton = function (pressbutton)
 	var form = document.adminForm;
 	if (pressbutton == 'newsletter.cancel')
 	{
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.publish_save')
 	{
 		form.task.setAttribute('value','newsletter.publish_save');
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 	}
 
 	if (pressbutton == 'newsletter.publish_apply')
 	{
 		form.task.setAttribute('value','newsletter.publish_apply');
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 	}
 };
 /* ]]> */

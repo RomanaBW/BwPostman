@@ -15,7 +15,7 @@ use Page\NewsletterManagerPage as NlManage;
  *
  * @package BwPostman Plugin TimeControl
  * @subpackage Installation and Plugin Options
- * @copyright (C) 2019 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

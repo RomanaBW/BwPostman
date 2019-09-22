@@ -25,20 +25,23 @@
  */
 
 // No direct access.
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
 $i = 1;
 
 echo '  <div class="clr clearfix"></div>';
-echo JHtml::_('uitab.startTabSet', 'buttons', array('startOffset' => 0));
+echo HTMLHelper::_('uitab.startTabSet', 'buttons', array('startOffset' => 0));
 
 while ($i <= 5) :
 	$fieldSets = $this->form->getFieldsets('button' . $i);
 	foreach ($fieldSets as $name => $fieldSet) :
-		echo JHtml::_('uitab.addTab', 'buttons', 'bpanel' . $i, JText::_($fieldSet->label) . ' ' . $i);
+		echo HTMLHelper::_('uitab.addTab', 'buttons', 'bpanel' . $i, Text::_($fieldSet->label) . ' ' . $i);
 		?>
 		<fieldset class="panelform">
-			<legend><?php echo $this->escape(JText::_($fieldSet->label)) . ' ' . $i; ?></legend>
+			<legend><?php echo $this->escape(Text::_($fieldSet->label)) . ' ' . $i; ?></legend>
 			<div class="well well-small">
 				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 					<div class="control-group">
@@ -53,11 +56,11 @@ while ($i <= 5) :
 			</div>
 		</fieldset>
 	<?php
-		echo JHtml::_('uitab.endTab');
+		echo HTMLHelper::_('uitab.endTab');
 	endforeach;
 	$i++;
 endwhile;
 
-echo JHtml::_('uitab.endTabSet');
+echo HTMLHelper::_('uitab.endTabSet');
 
 

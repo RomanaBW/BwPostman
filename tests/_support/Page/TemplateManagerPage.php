@@ -356,16 +356,44 @@ class TemplateManagerPage
 	/**
 	 * @var string
 	 *
-	 * @since 2.1.0
+	 * @since 2.4.0
 	 */
-	public static $step5Field      = "html/body/div[2]/section/div/div/div[2]/div[1]/p[5]";
+	public static $step1Field      = "//*/p[@id='step1' and contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $step2Field      = "//*/p[@id='step2' and contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.0
+	 */
+	public static $step3Field      = "//*/p[@id='step3' and contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $step4Field      = "//*/p[@id='step4' and contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importSuccessField      = "html/body/div[2]/section/div/div/div[2]/div[2]/div/h3";
+	public static $step5Field      = "//*/p[@id='step5' and contains(@class, 'alert-success')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public static $importSuccessField      = "//*/h3[@class='bw_tablecheck_ok']";
 
 	/**
 	 * @var string
@@ -380,7 +408,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importBackButton      = "html/body/div[1]/div/div/div[2]/div/div/div[1]/button";
+	public static $importBackButton      = "//*/a[@id='toolbar-arrow-left']";
 
 	/**
 	 * @var string
@@ -437,6 +465,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
+	public static $tableRowForDefault      = "//*[@id='main-table']/tbody/tr[4]/td[2]/a";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
 	public static $export_button      = "//*/button[contains(@class, 'button-download')]";
 
 	/**
@@ -459,7 +495,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $exportDownloadButton = "html/body/div[2]/section/div/div/div[1]/div/div/a";
+	public static $exportDownloadButton    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div/div/a';
 
 	/**
 	 * @var array
@@ -468,16 +504,16 @@ class TemplateManagerPage
 	 */
 	public static $arc_del_array_import     = array(
 		'field_title'          => "Standard Basic Import",
-		'archive_tab'          => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/ul/li/button[contains(text(),'Archived templates')]",
-		'archive_identifier'   => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => "//*[@id='j-main-container']/div[2]/table/tbody/*/td[2]",
+		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived templates')]",
+		'archive_identifier'   => "Title",
+		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_confirm'      => 'Do you wish to archive the selected template(s)?',
 		'archive_success_msg'  => 'The selected template has been archived.',
 		'archive_success2_msg' => 'The selected templates have been archived.',
 
 		'delete_button'        => "//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'delete_title_col'     => "//*[@id='j-main-container']/div[2]/table/tbody/tr/td/div/table/tbody/*/td[2]",
+		'delete_identifier'    => "Title",
+		'delete_title_col'     => "//*[@id='main-table']/tbody/tr/td/div/table/tbody/*/td[2]",
 		'remove_confirm'       => 'Do you wish to remove the selected template(s)?',
 		'success_remove'       => 'The selected template has been removed.',
 		'success_remove2'      => 'The selected templates have been removed.',

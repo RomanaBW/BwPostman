@@ -1465,19 +1465,100 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			// Shortcut
 			$tableNameGeneric	= $table['tableNameGeneric'];
+			$section			= strtolower($table['tableNameUC']);
 			$hasAsset 			= $this->checkForAsset($tableNameGeneric);
 
 			if ($hasAsset)
 			{
-				// Get items without real asset id (=0)
-				$itemsWithoutAsset = $this->getItemsWithoutAssetId($tableNameGeneric);
+				// Get all item ids and entered asset_id
+				$itemAssetList = $this->getItemAssetList($tableNameGeneric);
 
-				if (is_array($itemsWithoutAsset))
+				// The following array $itemIdsWithoutAssets holds ids of items, where the asset_id does not exists at
+				// section table or assets table or where an existing asset_id does not match the asset name, build by
+				// component.section.item_id.
+				// But be careful! This array also contains items, for which an appropriate asset name exists, but with
+				// wrong asset_id at items table. The assets for these items cannot be inserted at assets table, because
+				// they exists. So there is a counter-check necessary at the end of this check.
+				$itemIdsWithoutAssets = array();
+
+				foreach ($itemAssetList as $item)
 				{
-					$mapOldAssetIdsToNew = $this->insertAssets($itemsWithoutAsset, $table);
+					$assetName = 'com_bwpostman.' . $section . '.' . $item->id;
+					// Check if asset_id is 0 or null
+					if ($item->asset_id === 0 || $item->asset_id === null)
+					{
+						// If so, we need a new asset (add to array $itemIdsWithoutAssets)
+						$itemIdsWithoutAssets[] = $item->id;
+					}
+					else
+					{
+						// Else check if asset_id exists at assets table
+						$assetExists = $this->checkAssetIdExists($item->asset_id);
 
-					$this->insertItems($itemsWithoutAsset, $table['tableNameGeneric'], $mapOldAssetIdsToNew);
+						if ($assetExists)
+						{
+							// If so, check, if asset name fits component, section and item id
+							$assetNameFits = $this->checkAssetNameFits($item->asset_id, $assetName);
+
+							// If asset name not fits, we need a nes asset (add to array $itemIdsWithoutAssets)
+							if (!$assetNameFits)
+							{
+								$itemIdsWithoutAssets[] = $item->id;
+							}
+						}
+						else
+						{
+							// Else add to array
+							$itemIdsWithoutAssets[] = $item->id;
+						}
+					}
 				}
+
+				// Counter check: See, if assets with an asset name matching item exists. If so, collect them to update
+				// items table and remove it from list to insert
+				$assetIdsByName = array();
+				$nbrItemIdsWithoutAssets = count($itemIdsWithoutAssets);
+				for ($i = 0; $i <= $nbrItemIdsWithoutAssets; $i++)
+				{
+					$item = $itemIdsWithoutAssets[$i];
+					$assetName = 'com_bwpostman.' . $section . '.' . $item;
+
+					$assetId = $this->getAssetIdFromName($assetName);
+
+					if (is_integer($assetId))
+					{
+						unset($itemIdsWithoutAssets[$i]);
+						$assetIdsByName[$item] = $assetId;
+					}
+				}
+
+				// Get complete table items, where assets are to heal (collected above) and heal them
+//				$itemsWithoutAsset = $this->getItemsWithoutAssetId($tableNameGeneric);
+				if (is_array($itemIdsWithoutAssets) && count($itemIdsWithoutAssets) > 0)
+				{
+					$itemsWithoutAsset = $this->getCompleteItemsWithoutAssetId($tableNameGeneric, $itemIdsWithoutAssets);
+
+					if (is_array($itemsWithoutAsset) && count($itemsWithoutAsset) > 0)
+					{
+						for ($i= 0; $i < count($itemsWithoutAsset); $i++)
+						{
+							$itemsWithoutAsset[$i]['asset_id'] = 0;
+						}
+
+						$mapOldAssetIdsToNew = $this->insertAssets($itemsWithoutAsset, $table);
+
+						$this->insertItems($itemsWithoutAsset, $table['tableNameGeneric'], $mapOldAssetIdsToNew);
+					}
+				}
+
+
+				// Correct asset_id at items table, where asset_id does not match an appropriate asset, but an appropriate
+				// asset name is found at assets table
+				if (is_array($assetIdsByName) && count($assetIdsByName) > 0)
+				{
+					$this->healAssetsAtItemsTable($tableNameGeneric, $assetIdsByName);
+				}
+
 
 				echo '<p class="bw_tablecheck_ok">' .
 					JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $tableNameGeneric) .
@@ -4945,6 +5026,240 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->select('*');
 		$query->from($_db->quoteName($tableNameGeneric));
 		$query->where($_db->quoteName('asset_id') . ' = ' . (int) 0);
+
+		$_db->setQuery($query);
+		try
+		{
+			$items = $_db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Method to get all ids and asset_ids of a table with assets of BwPostman
+	 *
+	 * @param $tableNameGeneric
+	 *
+	 * @return array
+	 *
+	 * @since 2.4.0
+	 *
+	 * @throws Exception
+	 */
+	private function getItemAssetList($tableNameGeneric)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$items = array();
+
+		$query = $_db->getQuery(true);
+		$query->select('id');
+		$query->select('asset_id');
+		$query->from($_db->quoteName($tableNameGeneric));
+
+		$_db->setQuery($query);
+		try
+		{
+			$items = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Method to check if an asset_id exists at assets table
+	 *
+	 * @param $assetId
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.4.0
+	 *
+	 * @throws Exception
+	 */
+	private function checkAssetIdExists($assetId)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$res = null;
+
+		$query = $_db->getQuery(true);
+		$query->select('id');
+		$query->from($_db->quoteName('#__assets'));
+		$query->where($_db->quoteName('id') . ' = ' . (int) $assetId);
+
+		$_db->setQuery($query);
+		try
+		{
+			$res = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if ($res === $assetId)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
+	 * but not present at asset table.
+	 *
+	 * @param $assetId
+	 * @param $assetName
+	 *
+	 * @return boolean
+	 *
+	 * @since 2.4.0
+	 *
+	 * @throws Exception
+	 */
+	private function checkAssetNameFits($assetId, $assetName)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$res = null;
+
+		$query = $_db->getQuery(true);
+		$query->select('name');
+		$query->from($_db->quoteName('#__assets'));
+		$query->where($_db->quoteName('id') . ' = ' . (int) $assetId);
+
+		$_db->setQuery($query);
+		try
+		{
+			$res = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if ($res === $assetName)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Method to get an asset id by an asset name. If the name exists returns the asset id, else false
+	 *
+	 * @param $assetName
+	 *
+	 * @return integer|boolean
+	 *
+	 * @since 2.4.0
+	 *
+	 * @throws Exception
+	 */
+	private function getAssetIdFromName($assetName)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$db   = JFactory::getDbo();
+		$assetId = null;
+
+		$query = $db->getQuery(true);
+		$query->select('id');
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('name') . ' = ' . $db->quote($assetName));
+
+		$db->setQuery($query);
+		try
+		{
+			$assetId = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if ($assetId !== null)
+		{
+			return $assetId;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Method to get an asset id by an asset name. If the name exists returns the asset id, else false
+	 *
+	 * @param string	$tableNameGeneric
+	 * @param array		$assetIdsByName		itemId|assetId
+	 *
+	 * @return void
+	 *
+	 * @since 2.4.0
+	 *
+	 * @throws Exception
+	 */
+	private function healAssetsAtItemsTable($tableNameGeneric, $assetIdsByName)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$db   = JFactory::getDbo();
+
+		// Here a simple foreach loop is used because it is expected, that there are less entries at the array. Perhaps
+		// a more speed-friendly version with a bunch of updates at the same time is needed
+		foreach ($assetIdsByName as $id => $assetId)
+		{
+			$query = $db->getQuery(true);
+			$query->update($db->quoteName($tableNameGeneric));
+			$query->set($db->quoteName('asset_id') . " = " . $db->Quote($assetId));
+			$query->where($db->quoteName('id') . ' = ' . $db->Quote($id));
+
+			$db->setQuery($query);
+
+
+			try
+			{
+				$db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+		}
+	}
+
+	/**
+	 * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
+	 * but not present at asset table.
+	 *
+	 * @param string	$tableNameGeneric
+	 * @param array		$itemIds
+	 *
+	 * @return array
+	 *
+	 * @since 2.4.0
+	 *
+	 * @throws Exception
+	 */
+	private function getCompleteItemsWithoutAssetId($tableNameGeneric, $itemIds)
+	{
+		// @ToDo: Check if exceptions are handled correctly
+		$_db   = JFactory::getDbo();
+		$items = array();
+
+		$query = $_db->getQuery(true);
+		$query->select('*');
+		$query->from($_db->quoteName($tableNameGeneric));
+		$query->where($_db->quoteName('id') . ' IN (' . implode (',', $itemIds) . ')');
 
 		$_db->setQuery($query);
 		try

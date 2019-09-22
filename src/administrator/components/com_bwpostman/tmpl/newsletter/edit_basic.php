@@ -25,181 +25,65 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('behavior.keepalive');
-//JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.multiselect');
+HTMLHelper::_('behavior.keepalive');
 
 $image = '<i class="icon-info"></i>';
 
-$checkContentArgs	 = "document.adminForm['jform_selected_content'], ";
-$checkContentArgs	.= "document.getElementById('selected_content_old'), ";
-$checkContentArgs	.= "document.getElementById('content_exists'), ";
-$checkContentArgs	.= "document.getElementsByName('jform[template_id]'), ";
-$checkContentArgs	.= "document.getElementsByName('jform[text_template_id]'), ";
-$checkContentArgs	.= "document.getElementById('template_id_old'), ";
-$checkContentArgs	.= "document.getElementById('text_template_id_old'),";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEMPLATE_ID', true) . "', ";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true) . "'";
+$checkContentArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_TEMPLATE_ID', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NO_HTML_TEMPLATE_SELECTED', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NO_TEXT_TEMPLATE_SELECTED', true) . "'";
 
-$checkRecipientArgs	 = "document.getElementById('jform[campaign_id'), ";
-$checkRecipientArgs	 = "document.getElementsByName('jform[ml_available][]'), ";
-$checkRecipientArgs	.= "document.getElementsByName('jform[ml_unavailable][]'), ";
-$checkRecipientArgs	.= "document.getElementsByName('jform[ml_intern][]'), ";
-$checkRecipientArgs	.= "document.getElementsByName('jform[usergroups][]'), ";
-$checkRecipientArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
+$checkRecipientArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
+
+$currentTab = 'edit_basic';
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-var $j	= jQuery.noConflict();
-
-function changeTab(tab)
-{
-	if (tab != 'edit_basic')
-	{
-		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');
-		checkSelectedContent(<?php echo $checkContentArgs; ?>);
-		if ($j("#jform_campaign_id option:selected").val() == '-1')
-		{
-			res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-			return res;
-		}
-		else
-		{
-			return true;
-		}
-	}
-	else
-	{
-		return false;
-	}
-}
-
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel')
-	{
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.back')
-	{
-		form.task.value = 'back';
-		Joomla.submitform(pressbutton, document.adminForm);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.apply' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
-	{
-		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
-		{
-			document.adminForm.task.setAttribute('value',pressbutton);
-			if ($j("#jform_campaign_id option:selected").val() == '-1')
-			{
-				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-				if (res == false)
-				{
-					return false;
-				}
-				else
-				{
-					Joomla.submitform(pressbutton, document.adminForm);
-					return true;
-				}
-			}
-			else
-			{
-				Joomla.submitform(pressbutton, document.adminForm);
-				return true;
-			}
-		}
-	}
-
-	if (pressbutton == 'newsletter.save')
-	{
-		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
-		{
-			document.adminForm.task.setAttribute('value',pressbutton);
-			if ($j("#jform_campaign_id option:selected").val() == '-1')
-			{
-				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-				if (res == false)
-				{
-					return false;
-				}
-				else
-				{
-					Joomla.submitform(pressbutton, document.adminForm);
-					return true;
-				}
-			}
-			else
-			{
-				Joomla.submitform(pressbutton, document.adminForm);
-				return true;
-			}
-		}
-	}
-};
-<?php if (isset($this->substitute) && $this->substitute === true): ?>
-window.onload = function()
-{
-	var substitute =  document.getElementsByName("jform[substitute_links]");
-	for (var i=0; i < substitute.length; i++)
-	{
-		substitute[i].onclick = function()
-		{
-			document.getElementById("add_content").value = "1";
-			document.getElementById("template_id_old").value = "";
-		};
-	}
-};
-
-<?php endif; ?>
-/* ]]> */
-</script>
-
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="item-form">
 		<?php
 			if ($this->item->is_template)
 			{
-				JFactory::$application->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
+				Factory::$application->enqueueMessage(Text::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
 			}
 		?>
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="open">
-					<button onclick="return changeTab('edit_basic');" class="buttonAsLink_open">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
+					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink_open">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_html');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
+					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_text');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
+					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_preview');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
+					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="closed">
-						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
+						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
+							<?php echo Text::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>
 				<?php } ?>
@@ -211,11 +95,11 @@ window.onload = function()
 			<div class="well row nl-generals">
 				<legend>
 					<?php
-					$title = JText::_('COM_BWPOSTMAN_NL_GENERAL');
+					$title = Text::_('COM_BWPOSTMAN_NL_GENERAL');
 
 					if ($this->item->id)
 					{
-						$title = JText::sprintf('COM_BWPOSTMAN_NL_GENERAL_EDIT', $this->item->id);
+						$title = Text::sprintf('COM_BWPOSTMAN_NL_GENERAL_EDIT', $this->item->id);
 					}
 
 					echo $title;
@@ -308,16 +192,16 @@ window.onload = function()
 				</div>
 				<div class="clr clearfix"></div>
 				<p>
-					<span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span>
+					<span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span>
 				</p>
 			</div>
 
 			<div class="row well nl-templates">
 				<legend>
-					<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>">
+					<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>">
 						<?php echo $image; ?>
 					</span>
-					<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?></span>
+					<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?></span>
 				</legend>
 				<?php foreach($this->form->getFieldset('templates') as $field): ?>
 					<?php if ($field->hidden): ?>
@@ -333,20 +217,20 @@ window.onload = function()
 			</div>
 			<div class="clr clearfix"></div>
 
-			<div class="row well nl-recipients">
+			<div id="recipients" class="row well nl-recipients">
 				<legend class="required">
-					<?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
+					<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
 				</legend>
 				<div class="col-md-9 nl-mailinglists">
 					<div class="well-white well-small">
 						<legend>
 							<span class="editlinktip hasTip hasTooltip"
-									title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+									title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 							<span class="editlinktip hasTip hasTooltip"
-									title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
-								<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
+									title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+								<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
 							</span>
 						</legend>
 						<div class="row">
@@ -359,11 +243,11 @@ window.onload = function()
 										<fieldset>
 											<legend>
 												<span class="editlinktip hasTip hasTooltip"
-														title="<?php echo JText::_($field->description); ?>">
+														title="<?php echo Text::_($field->description); ?>">
 													<?php echo $image; ?>
 												</span>
 												<span class="editlinktip hasTip hasTooltip"
-														title="<?php echo JText::_($field->description); ?>">
+														title="<?php echo Text::_($field->description); ?>">
 													<?php echo $field->label; ?>
 												</span>
 											</legend>
@@ -378,7 +262,7 @@ window.onload = function()
 												{
 													echo '<div class="width-50 fltlft col-md-6">
 																<label class="mailinglist_label noclear checkbox">' .
-																	JText::_('COM_BWPOSTMAN_NO_DATA') .
+																	Text::_('COM_BWPOSTMAN_NO_DATA') .
 																'</label>
 															</div>';
 												}
@@ -397,10 +281,10 @@ window.onload = function()
 					<div class="well-white well-small">
 						<legend>
 							<span class="editlinktip hasTip hasTooltip"
-									title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+									title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
 								<?php echo $image; ?>
 							</span>
-							<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
+							<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 						</legend>
 						<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
 							<?php echo $field->input; ?>
@@ -412,10 +296,10 @@ window.onload = function()
 
 			<div class="row well nl-contents">
 				<legend>
-					<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
+					<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
 						<?php echo $image; ?>
 					</span>
-					<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
+					<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
 				</legend>
 				<div class="col-md-5">
 					<?php foreach($this->form->getFieldset('selected_content') as $field): ?>
@@ -442,11 +326,9 @@ window.onload = function()
 						<div class="controls">
 
 							<input style="width: 50px;" type="button" name="left" class="btn-left" value="&lt;"
-								onclick="moveSelectedOptions(document.adminForm['jform_available_content'],
-								document.adminForm['jform_selected_content'])" />
+								onclick="moveSelectedOptions(form['jform_available_content'], form['jform_selected_content'])" />
 							<input style="width: 50px;" type="button" name="right" class="btn-right" value="&gt;"
-								onclick="moveSelectedOptions(document.adminForm['jform_selected_content'],
-								document.adminForm['jform_available_content'])" />
+								onclick="moveSelectedOptions(form['jform_selected_content'], form['jform_available_content'])" />
 						</div>
 					</div>
 				</div>
@@ -473,7 +355,7 @@ window.onload = function()
 			<div class="row well">
 				<div class="col-md-12">
 					<section id="rules" name="Newsletters permissions" aria-labelledby="tab-rules" role="tabpanel" active="">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?></legend>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?></legend>
 						<?php
 						if ($this->permissions['com']['admin'] || $this->permissions['admin']['newsletter']): ?>
 							<?php echo $this->form->getInput('rules'); ?>
@@ -497,7 +379,7 @@ window.onload = function()
 			}
 		}
 		?>
-		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
@@ -508,37 +390,81 @@ window.onload = function()
 		<input type="hidden" id="add_content" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 		</div>
 </div>
 
 <script type="text/javascript">
-/* <![CDATA[ */
-var $j	= jQuery.noConflict();
+	/* <![CDATA[ */
+	window.onload = function() {
+		var Joomla = window.Joomla || {};
+		var selectedCampaign = document.getElementById("jform_campaign_id");
+		var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
 
-$j(document).ready(function()
-{
-	if ($j("#jform_campaign_id option:selected").val() != '-1')
-	{
-		$j( "#recipients" ).hide();
-	}
-	else
-	{
-		$j( "#recipients" ).show();
-	}
-});
+		Joomla.submitbutton = function (pressbutton)
+		{
+			var form = document.adminForm;
+			if (pressbutton === 'newsletter.cancel')
+			{
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
 
-$j("#jform_campaign_id").on("change", function()
-{
-	if ($j("#jform_campaign_id option:selected").val() != '-1')
-	{
-		$j( "#recipients" ).hide();
-	}
-	else
-	{
-		$j( "#recipients" ).show();
-	}
-});
-/* ]]> */
+			if (pressbutton === 'newsletter.back')
+			{
+				form.task.value = 'back';
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
+
+			if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.apply' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy')
+			{
+				var selectedCampaign = document.getElementById("jform_campaign_id");
+				var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+				if (checkSelectedContent(<?php echo $checkContentArgs; ?>) === true)
+				{
+					form.task.setAttribute('value',pressbutton);
+					if (selectedCampaignValue === '-1')
+					{
+						res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
+						if (res === false)
+						{
+							return false;
+						}
+						else
+						{
+							Joomla.submitform(pressbutton, form);
+							return true;
+						}
+					}
+					else
+					{
+						Joomla.submitform(pressbutton, form);
+						return true;
+					}
+				}
+			}
+		};
+
+		<?php if (isset($this->substitute) && $this->substitute === true): ?>
+			var substitute =  document.getElementsByName("jform[substitute_links]");
+			for (var i=0; i < substitute.length; i++)
+			{
+				substitute[i].onclick = function()
+				{
+					document.getElementById("add_content").value = "1";
+					document.getElementById("template_id_old").value = "";
+				};
+			}
+		<?php endif; ?>
+
+		var recipients = document.getElementById('recipients');
+		if (selectedCampaignValue !== '-1') {
+			recipients.style.display = "none";
+		} else {
+			recipients.style.display = "flex";
+		}
+	};
+	/* ]]> */
 </script>

@@ -91,7 +91,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	public function GetTableRows(\AcceptanceTester $I, $tableIdentifier = ".//table[@id='main-table']")
+	public function GetTableRows(\AcceptanceTester $I, $tableIdentifier = "//table[@id='main-table']")
 	{
 		$rowsIdentifier = $tableIdentifier . '/tbody/tr';
 
@@ -120,7 +120,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @since   2.0.0
 	 */
-	public function GetListLength(\AcceptanceTester $I, $tableIdentifier = ".//table[@id='main-table']")
+	public function GetListLength(\AcceptanceTester $I, $tableIdentifier = "//table[@id='main-table']")
 	{
 		$rows = $I->GetTableRows($I, $tableIdentifier);
 		$row_count   = count($rows);
@@ -567,6 +567,8 @@ class Acceptance extends Codeception\Module
 	 */
 	public function loopFilterList(\AcceptanceTester $I, $sort_data_array, $manner, $columns, $table, $archive, $status, $loop_counts  = 0, $tab = 1)
 	{
+		$section = 'default';
+
 		// Get list length
 		$list_length = $I->GetListLength($I);
 
@@ -580,6 +582,11 @@ class Acceptance extends Codeception\Module
 		if (strpos($table, 'templates') !== false)
 		{
 			$i = 3;
+		}
+
+		if (strpos($table, 'subscribers') !== false)
+		{
+			$section = 'subscribers';
 		}
 
 		foreach ($sort_data_array['sort_criteria'] as $key => $criterion)
@@ -657,8 +664,20 @@ class Acceptance extends Codeception\Module
 
 				if ($manner == 'header')
 				{
-					$I->click(sprintf(Generals::$table_headcol_link_location, $criterion));
-					$I->waitForElement(sprintf(Generals::$table_headcol_link_location, $criterion), 30);
+					$tableHeadcolLinkLocation = sprintf(Generals::$table_headcol_link_location, $criterion);
+					if ($section === 'subscribers')
+					{
+						if ($tab === 1)
+						{
+							$tableHeadcolLinkLocation = str_replace('main-table', 'main-table-bw-confirmed', $tableHeadcolLinkLocation);
+						}
+						if ($tab === 2)
+						{
+							$tableHeadcolLinkLocation = str_replace('main-table', 'main-table-bw-unconfirmed', $tableHeadcolLinkLocation);
+						}
+					}
+					$I->click($tableHeadcolLinkLocation);
+					$I->waitForElement($tableHeadcolLinkLocation, 30);
 				}
 				else
 				{
@@ -679,6 +698,7 @@ class Acceptance extends Codeception\Module
 					sprintf(Generals::$select_list_selected_location, Generals::$ordering_id, $orderingText)
 				);
 				$I->click(Generals::$filterOptionsSwitcher);
+				$I->waitForElementNotVisible(Generals::$filterOptionsPopup);
 
 				// loop over column values
 				$row_values_actual = self::GetTableRows($I);
@@ -814,7 +834,7 @@ class Acceptance extends Codeception\Module
 
 		if ($item == 'newsletter')
 		{
-			$I->clickAndWait($extra_click, 2);
+			$I->clickAndWait($extra_click, 1);
 		}
 
 		$I->seeElement($publish_by_icon['publish_result']);
@@ -824,13 +844,16 @@ class Acceptance extends Codeception\Module
 		$I->see("One " . $item . " unpublished!");
 		if ($item == 'newsletter')
 		{
-			$I->clickAndWait($extra_click, 2);
+			$I->clickAndWait($extra_click, 1);
 		}
 
 		$I->seeElement($publish_by_icon['unpublish_result']);
 
 		// Confirm success message
-		$I->click(Generals::$systemMessageClose);
+		if ($extra_click === '')
+		{
+			$I->click(Generals::$systemMessageClose);
+		}
 	}
 
 	/**
@@ -849,7 +872,7 @@ class Acceptance extends Codeception\Module
 	public function publishByToolbar(\AcceptanceTester $I, $publish_by_toolbar, $item, $extra_click = '', $allowed = true)
 	{
 		// switch status by toolbar
-		$I->wait(2);
+		$I->wait(1);
 		if (!$allowed)
 		{
 			$I->dontSeeElement(Generals::$toolbar['Publish']);
@@ -865,17 +888,17 @@ class Acceptance extends Codeception\Module
 
 		// Confirm success message
 		$I->click(Generals::$systemMessageClose);
-		$I->waitForElementVisible($publish_by_toolbar['unpublish_button'], 10);
 
 		if ($item == 'newsletter')
 		{
 			$I->clickAndWait($extra_click, 2);
 		}
 
+//		$I->waitForElementVisible($publish_by_toolbar['unpublish_button'], 10);
 		$I->seeElement($publish_by_toolbar['publish_result']);
 
 		$I->scrollTo($publish_by_toolbar['unpublish_button'], 0, -200);
-		$I->click($publish_by_toolbar['unpublish_button']);
+		$I->clickAndWait($publish_by_toolbar['unpublish_button'], 1);
 		$I->clickAndWait(Generals::$toolbar['Unpublish'], 1);
 		$I->see("One " . $item . " unpublished!");
 
@@ -896,14 +919,15 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param array             $pagination_data_array
 	 * @param int               $listlenght
+	 * @param string            $tableIdentifier
 	 *
 	 * @since   2.0.0
 	 */
-	public function checkPagination(\AcceptanceTester $I, $pagination_data_array, $listlenght)
+	public function checkPagination(\AcceptanceTester $I, $pagination_data_array, $listlenght, $tableIdentifier = "//table[@id='main-table']")
 	{
 		if (isset($pagination_data_array['p1_val1']))
 		{
-			$I->assertEquals($listlenght, count(self::GetTableRows($I)));
+			$I->assertEquals($listlenght, count(self::GetTableRows($I, $tableIdentifier)));
 			$this->browsePages(
 				$I,
 				$pagination_data_array['p1_val1'],
@@ -978,38 +1002,39 @@ class Acceptance extends Codeception\Module
 	 * Helper method to check list limit
 	 *
 	 * @param \AcceptanceTester $I
+	 * @param string            $tableIdentifier
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function checkListlimit(\AcceptanceTester $I)
+	public function checkListlimit(\AcceptanceTester $I, $tableIdentifier = "//table[@id='main-table']")
 	{
-		$I->assertEquals(20, count($I->GetTableRows($I)));
+		$I->assertEquals(20, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$limit_list_id);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_5);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
-		$I->assertEquals(5, count($I->GetTableRows($I)));
+		$I->assertEquals(5, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$limit_list_id);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_15);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
-		$I->assertEquals(15, count($I->GetTableRows($I)));
+		$I->assertEquals(15, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$limit_list_id);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_20);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
-		$I->assertEquals(20, count($I->GetTableRows($I)));
+		$I->assertEquals(20, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$limit_list_id);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_10);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
-		$I->assertEquals(10, count($I->GetTableRows($I)));
+		$I->assertEquals(10, count($I->GetTableRows($I, $tableIdentifier)));
 	}
 
 	/**
@@ -1090,12 +1115,13 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param array             $search_data_array
 	 * @param bool              $exact
+	 * @param string            $mainTable
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true)
+	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true, $mainTable = "//*[@id='main-table']")
 	{
 		// loop search value
 		for ($j = 0; $j < count($search_data_array['search_val']); $j++)
@@ -1111,7 +1137,7 @@ class Acceptance extends Codeception\Module
 
 				// click search button
 				$I->click(Generals::$search_button);
-				$I->waitForElement(Generals::$main_table);
+				$I->waitForElement($mainTable);
 				// check result
 				if ((int) $search_data_array['search_res'][$j][$i] == 0)
 				{
@@ -1119,7 +1145,7 @@ class Acceptance extends Codeception\Module
 				}
 				elseif ($exact)
 				{
-					$I->assertTableSearchResult($search_data_array['search_val'][$j], (int) $search_data_array['search_res'][$j][$i]);
+					$I->assertTableSearchResult($search_data_array['search_val'][$j], (int) $search_data_array['search_res'][$j][$i], $mainTable);
 				}
 			}
 		}

@@ -83,6 +83,27 @@ class SubscriberManagerPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $confirmedMainTable   = "//table[@id='main-table-bw-confirmed']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $unconfirmedMainTable   = "//table[@id='main-table-bw-unconfirmed']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $testersMainTable   = "//table[@id='main-table-bw-testrecipients']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[2]/a";
@@ -186,15 +207,34 @@ class SubscriberManagerPage
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
-			"//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-			"//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
-			"//*[@id='filter_search_filter_chzn']/div/ul/li[4]",
-			"//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-			"//*[@id='filter_search_filter_chzn']/div/ul/li[6]",
+			"Last name",
+			"First name",
+			"First name and last name",
+			"Email",
+			"Name & Email",
 		),
 		'search_val'           => array("xx", "Andreas"),
 		// array of arrays: outer array per search value, inner arrays per 'search by'
 		'search_res'           => array(array(0, 0, 0, 0, 0), array(2, 1, 3, 3, 3)),
+	);
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.4.0
+	 */
+	public static $search_data_array_unconfirmed  = array(
+		// enter default 'search by' as last array element
+		'search_by'            => array(
+			"Last name",
+			"First name",
+			"First name and last name",
+			"Email",
+			"Name & Email",
+		),
+		'search_val'           => array("xx", "Tristan"),
+		// array of arrays: outer array per search value, inner arrays per 'search by'
+		'search_res'           => array(array(0, 0, 0, 0, 0), array(0, 2, 2, 1, 1)),
 	);
 
 	/**
@@ -204,6 +244,13 @@ class SubscriberManagerPage
 	 */
 	public static $search_clear_val     = 'Abbott';
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $search_clear_val_unconfirmed     = 'Atkins';
+
 	// Filter mail format
 
 	/**
@@ -211,35 +258,35 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_list_id       = "filter_emailformat_chzn";
+	public static $format_list_id       = "//*[@id='filter_emailformat']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_list          = "//*[@id='filter_emailformat_chzn']/a";
+	public static $format_list          = "//*[@id='filter_emailformat']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_none          = "//*[@id='filter_emailformat_chzn']/div/ul/li[text()='Select email format']";
+	public static $format_none          = "Select email format";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_text          = "//*/li[text()='Text']";
+	public static $format_text          = "Text";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_html          = "//*/li[text()='HTML']";
+	public static $format_html          = "HTML";
 
 	/**
 	 * @var string
@@ -269,23 +316,21 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $ml_list_id       = "filter_mailinglist_chzn";
+	public static $ml_list_id       = "//*[@id='filter_mailinglist']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $ml_list          = "//*[@id='filter_mailinglist_chzn']/a";
+	public static $ml_list          = "//*[@id='filter_mailinglist']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $ml_select        = "//*/li[text()='04 Mailingliste 14 A']";
-
-
+	public static $ml_select        = "04 Mailingliste 14 A";
 
 	/**
 	 * @var array
@@ -304,6 +349,33 @@ class SubscriberManagerPage
 											'lili.zech@tester-net.nil'
 										);
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $ml_select_unconfirmed        = "01 Mailingliste 3 A";
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.4.0
+	 */
+	public static $filter_subs_unconfirmed_result   = array(
+		'm.augustin@tester-net.nil',
+		'm.bailey@tester-net.nil',
+		'katharina.euler@tester-net.nil',
+		'n.halle@tester-net.nil',
+		'mona.jaschke@tester-net.nil',
+		'enrico.noetzel@tester-net.nil',
+		'p.ochs@tester-net.nil',
+		'jaqueline.roesler@tester-net.nil',
+		'maren.tran@tester-net.nil',
+		'lewin.underwood@tester-net.nil',
+		'rebekka.vasquez@tester-net.nil',
+		'v.zabel@tester-net.nil',
+	);
+
 
 	/**
 	 * @var array
@@ -312,29 +384,61 @@ class SubscriberManagerPage
 	 */
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "Abbott",
-		'p1_field1'            => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p1_field1'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p1_val_last'          => "Alexander",
-		'p1_field_last'        => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p1_field_last'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p2_val1'              => "Altmann",
-		'p2_field1'            => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p2_field1'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p2_val_last'          => "Atkins",
-		'p2_field_last'        => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p2_field_last'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p3_val1'              => "Auer",
-		'p3_field1'            => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p3_field1'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p3_val3'              => "Barrenbruegge",
-		'p3_field3'            => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p3_field3'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p_prev_val1'          => "Willis",
-		'p_prev_field1'        => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p_prev_field1'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p_prev_val_last'      => "Zabel",
-		'p_prev_field_last'    => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p_prev_field_last'    => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p_last_val1'          => "Zauner",
-		'p_last_field1'        => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p_last_field1'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p_last_val_last'      => "Zuschuss",
-		'p_last_field_last'    => "//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[8]/td[2]",
+		'p_last_field_last'    => "//*[@id='main-table-bw-confirmed']/tbody/tr[8]/td[2]",
+	);
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.4.0
+	 */
+	public static $pagination_data_array_unconfirmed  = array(
+		'p1_val1'              => "Atkins",
+		'p1_field1'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p1_val_last'          => "Baierl",
+		'p1_field_last'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p2_val1'              => "Baierl",
+		'p2_field1'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p2_val_last'          => "Bartl",
+		'p2_field_last'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p3_val1'              => "Barton",
+		'p3_field1'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p3_val3'              => "Beier",
+		'p3_field3'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p_prev_val1'          => "Vasquez",
+		'p_prev_field1'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p_prev_val_last'      => "Waechter",
+		'p_prev_field_last'    => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p_last_val1'          => "Wagener",
+		'p_last_field1'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p_last_val_last'      => "Zabel",
+		'p_last_field_last'    => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[5]/td[2]",
 	);
 
 	/**
@@ -465,6 +569,13 @@ class SubscriberManagerPage
 	 * @since 2.0.0
 	 */
 	public static $import_cb_confirm_subs = "//*[@id='confirm']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $import_success_container = "//*[@id='import-success']";
 
 
 	/**

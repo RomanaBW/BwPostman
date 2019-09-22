@@ -612,21 +612,23 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// Reset the standard fields for the templates.
 		if ($template->tpl_id < 988)
 		{
-			$db->setQuery(
-				'UPDATE #__bwpostman_templates' .
-				' SET standard = \'0\'' .
-				' WHERE tpl_id < \'988\'' .
-				' AND standard = \'1\''
-			);
+			$query = $db->getQuery(true);
+			$query->update($db->quoteName('#__bwpostman_templates'));
+			$query->set($db->quoteName('standard') . " = " . $db->Quote(0));
+			$query->where($db->quoteName('tpl_id') . ' < ' . $db->Quote(988));
+			$query->where($db->quoteName('standard') . ' = ' . $db->Quote(1));
+
+			$db->setQuery($query);
 		}
 		else
 		{
-			$db->setQuery(
-				'UPDATE #__bwpostman_templates' .
-				' SET standard = \'0\'' .
-				' WHERE tpl_id > \'987\'' .
-				' AND standard = \'1\''
-			);
+			$query = $db->getQuery(true);
+			$query->update($db->quoteName('#__bwpostman_templates'));
+			$query->set($db->quoteName('standard') . " = " . $db->Quote(0));
+			$query->where($db->quoteName('tpl_id') . ' > ' . $db->Quote(987));
+			$query->where($db->quoteName('standard') . ' = ' . $db->Quote(1));
+
+			$db->setQuery($query);
 		}
 
 		try
@@ -639,11 +641,14 @@ class BwPostmanModelTemplate extends JModelAdmin
 		}
 
 		// Set the new home style.
-		$db->setQuery(
-			'UPDATE #__bwpostman_templates' .
-			' SET standard = \'1\'' .
-			' WHERE id = ' . (int) $id
-		);
+		$query = $db->getQuery(true);
+		$query->update($db->quoteName('#__bwpostman_templates'));
+		$query->set($db->quoteName('standard') . " = " . $db->Quote(1));
+		$query->set($db->quoteName('published') . " = " . $db->Quote(1));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$id));
+
+		$db->setQuery($query);
+
 		try
 		{
 			$db->execute();

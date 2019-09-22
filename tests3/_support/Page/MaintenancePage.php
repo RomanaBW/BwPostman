@@ -62,7 +62,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $saveTablesButton     = "//*[@id='cpanel']/div[2]/div/a/img";
+	public static $saveTablesButton     = "//*[@id='cpanel']/div[2]/div/a/span/img";
 
 	/**
 	 * @var string

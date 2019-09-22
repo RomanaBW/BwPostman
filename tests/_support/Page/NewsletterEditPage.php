@@ -48,35 +48,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab1             = "//*[@id='adminForm']/div[1]/ul/li[1]/button";
+	public static $tab1             = "//*[@id='item-form']/div[1]/ul/li[1]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2             = "//*[@id='adminForm']/div[1]/ul/li[2]/button";
+	public static $tab2             = "//*[@id='item-form']/div[1]/ul/li[2]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3             = "//*[@id='adminForm']/div[1]/ul/li[3]/button";
+	public static $tab3             = "//*[@id='item-form']/div[1]/ul/li[3]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4             = "//*[@id='adminForm']/div[1]/ul/li[4]/button";
+	public static $tab4             = "//*[@id='item-form']/div[1]/ul/li[4]/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab5             = "//*[@id='adminForm']/div[1]/ul/li[5]/button";
+	public static $tab5             = "//*[@id='item-form']/div[1]/ul/li[5]/button";
 
 	/**
 	 * @var string
@@ -156,7 +156,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_html            = "//*[@id='adminForm']/div[3]/fieldset[2]/div";
+	public static $tab4_preview_html            = "//*[@id='item-form']/div[3]/fieldset[2]/div";
 
 	/**
 	 * @var string
@@ -177,7 +177,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_text            = "//*[@id='adminForm']/div[3]/fieldset[3]/div";
+	public static $tab4_preview_text            = "//*[@id='item-form']/div[3]/fieldset[3]/div";
 
 	/**
 	 * @var string
@@ -221,14 +221,21 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab5_send_iframe  = "sendFrame";
+	public static $tab5_send_iframe  = "Send newsletter";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab5_send_iframeId  = "#sendFrame";
+	public static $tab5_send_iframeId  = "//*[@id='Send newsletter']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.4.0
+	 */
+	public static $tab5_send_iframeName  = "//*/iframe[@name='Send newsletter']";
 
 	/**
 	 * @var string
@@ -408,28 +415,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachments_add_button     = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div/div/a";
+	public static $attachments_add_button     = "//*/joomla-field-subform[@name='jform\[attachment\]']/div/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_new_button      = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[1]/div/a[1]";
+	public static $attachment_new_button1      = "//*/div[@data-group='attachment0']/div[1]/div/a[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.4.0
+	 */
+	public static $attachment_new_button2      = "//*/div[@data-group='attachment1']/div[1]/div/a[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button1     = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[2]/div[2]/div[2]/div/div[2]/button[1]";
+	public static $attachment_select_button1     = "//*/div[@data-group='attachment0']/div[2]/div[2]/joomla-field-media/div[3]/div/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button2     = "//*[@id='adminForm']/div[3]/div[1]/fieldset/div/div[1]/ul/li[5]/div/div/div/div/div[3]/div[2]/div[2]/div/div[2]/button[1]";
+	public static $attachment_select_button2     = "//*/div[@data-group='attachment1']/div[2]/div[2]/joomla-field-media/div[3]/div/button[1]";
 
 	/**
 	 * @var string
@@ -856,28 +870,28 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_list           = "//*[@id='jform_published_chzn']/a";
+	public static $published_list           = "//*[@id='jform_published_chosen']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_list_text      = "//*[@id='jform_published_chzn']/a/span";
+	public static $published_list_text      = "//*[@id='jform_published_chosen']/a/span";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_unpublished    = "//*[@id='jform_published_chzn']/div/ul/li[text()='unpublished']";
+	public static $published_unpublished    = "//*[@id='jform_published_chosen']/div/ul/li[text()='unpublished']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $published_published      = "//*[@id='jform_published_chzn']/div/ul/li[text()='published']";
+	public static $published_published      = "//*[@id='jform_published_chosen']/div/ul/li[text()='published']";
 
 	/**
 	 * @var string
@@ -914,15 +928,15 @@ class NewsletterEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "1. Simple Single Test Newsletter",
-		'archive_tab'          => "////*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived newsletters')]",
-		'archive_identifier'   => "//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
-		'archive_title_col'    => "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived newsletters')]",
+		'archive_identifier'   => "Subject",
+		'archive_title_col'    => "//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'archive_success_msg'  => 'The selected newsletter has been archived.',
 		'archive_success2_msg' => 'The selected newsletters have been archived.',
 
 		'delete_button'        => "//*[@id='toolbar-delete']/button",
-		'delete_identifier'    => "//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
-		'delete_title_col'     => "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]",
+		'delete_identifier'    => "Subject",
+		'delete_title_col'     => "//*[@id='main-table']/tbody/tr/td/div/table/tbody/tr[1]/td[3]",
 		'remove_confirm'       => 'Do you wish to remove the selected newsletter(s)?',
 		'success_remove'       => 'The selected newsletter has been removed.',
 		'success_remove2'      => 'The selected newsletters have been removed.',
@@ -994,14 +1008,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $add_content              = "//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[1]";
+	public static $add_content              = "//*/div[contains(@class, 'nl-content-mover')]/div/div[2]/input[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $remove_content           = "//*[@id='adminForm']/div[3]/fieldset[2]/div[2]/div/fieldset/div/div[2]/input[2]";
+	public static $remove_content           = "//*/div[contains(@class, 'nl-content-mover')]/div/div[2]/input[2]";
 
 
 	/**
@@ -1056,7 +1070,7 @@ class NewsletterEditPage
 		$I->see('Newsletters', Generals::$pageTitle);
 		if ($isTemplate)
 		{
-			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-featured')]");
+			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
 		}
 
 		$I->click(Generals::$first_list_entry);
@@ -1065,7 +1079,7 @@ class NewsletterEditPage
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
 		if ($isTemplate)
 		{
-			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[2]/td[8]/a/span[contains(@class, 'icon-unfeatured')]");
+			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[2]/td[8]/button/span[contains(@class, 'icon-unfeatured')]");
 		}
 
 		if ($withCleanup)
@@ -1136,7 +1150,7 @@ class NewsletterEditPage
 		//select attachment if desired
 		if ($withAttachment)
 		{
-			self::selectAttachment($I);
+//			self::selectAttachment($I);
 		}
 
 		// fill publish and unpublish
@@ -1174,6 +1188,7 @@ class NewsletterEditPage
 		$I->clickAndWait(self::$attachments_add_button, 1);
 
 		//Select first attachment
+		$I->clickAndWait(self::$attachment_new_button1, 1);
 		$I->clickAndWait(self::$attachment_select_button1, 1);
 
 		$I->switchToIFrame(Generals::$media_frame);
@@ -1190,7 +1205,7 @@ class NewsletterEditPage
 		$I->switchToIFrame();
 
 		//Select second attachment
-		$I->clickAndWait(self::$attachment_new_button, 1);
+		$I->clickAndWait(self::$attachment_new_button2, 1);
 		$I->clickAndWait(self::$attachment_select_button2, 1);
 
 		$I->switchToIFrame(Generals::$media_frame);
@@ -1278,6 +1293,15 @@ class NewsletterEditPage
 		$I->click(self::$toolbar['Save & Close']);
 		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
+
+		try
+		{
+			$I->clickAndWait(Generals::$systemMessageClose, 1);
+		}
+		catch (\Exception $e)
+		{
+			// Do nothing
+		}
 	}
 
 	/**
@@ -1302,9 +1326,9 @@ class NewsletterEditPage
 	 */
 	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20, $publish = false)
 	{
-		codecept_debug("unconfirmed: $sentToUnconfirmed");
-		codecept_debug("usergroup: $toUsergroup");
-		codecept_debug("Queue: $buildQueue");
+		codecept_debug("toUnconfirmed: $sentToUnconfirmed");
+		codecept_debug("toUsergroup: $toUsergroup");
+		codecept_debug("buildQueue: $buildQueue");
 		codecept_debug("iFrame time: $iframeTime");
 		codecept_debug("Publish: $publish");
 
@@ -1344,19 +1368,19 @@ class NewsletterEditPage
 
 		$I->acceptPopup();
 
-		$user = getenv('USER');
+//		$user = getenv('USER');
+//
+//		if (!$user)
+//		{
+//			$user = 'root';
+//		}
+//
+//		if ($user == 'jenkins')
+//		{
+//			$I->wait($iframeTime);
+//		}
 
-		if (!$user)
-		{
-			$user = 'root';
-		}
-
-		if ($user == 'jenkins')
-		{
-			$I->wait($iframeTime);
-		}
-
-		$I->waitForElement(self::$tab5_send_iframeId, 20);
+		$I->waitForElement(self::$tab5_send_iframeName, 20);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 
 		$I->waitForElementVisible(self::$success_send_number_id, 180);
@@ -1370,6 +1394,30 @@ class NewsletterEditPage
 
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->clickAndWait(NlManage::$tab2, 1);
+	}
+
+	/**
+	 * Test method to send newsletter to real recipients
+	 *
+	 * @param   \AcceptanceTester   $I
+	 * @param   string              $published
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public static function checkStatusOfSentNewsletter(\AcceptanceTester $I, $published)
+	{
+		$I->clickAndWait(NlManage::$tab2, 2);
+		$I->clickAndWait(Generals::$filterbar_button, 2);
+		$I->clickSelectList(Generals::$ordering_list, 'ID descending', Generals::$ordering_id);
+		$I->seeElement($published);
 	}
 
 	/**

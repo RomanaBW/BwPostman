@@ -25,11 +25,19 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.keepalive');
 
 
 $image = '<i class="icon-info"></i>';
@@ -49,157 +57,126 @@ $options = array(
 ?>
 
 <script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-		var form = document.adminForm;
+	/* <![CDATA[ */
+	window.onload = function() {
+		Joomla = window.Joomla || {};
 
-		if (pressbutton == 'template.save')
-		{
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons" ,0);
-		}
+		Joomla.submitbutton = function (pressbutton) {
+			var form = document.adminForm;
 
-		if (pressbutton == 'template.apply')
-		{
-			writeStore("inputs", 0);
-		}
-
-		if (pressbutton == 'template.save2copy')
-		{
-			writeStore("inputs", 0);
-		}
-
-		if (pressbutton == 'template.cancel')
-		{
-			// check if form field values has changed
-			var inputs_old = readStore("inputs");
-			inputs = checkValues(1);
-			if (inputs_old === inputs)
-			{
+			if (pressbutton === 'template.save') {
+				writeStore("inputs", 0);
+				writeStore("jpanetabs_template_tabs", 0);
+				writeStore("jpanetabs_buttons", 0);
 			}
-			else
-			{
-			// confirm if cancel or not
-				confirmCancel =confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
-				if (confirmCancel == false)
-				{
-					return;
+
+			if (pressbutton === 'template.apply') {
+				writeStore("inputs", 0);
+			}
+
+			if (pressbutton === 'template.save2copy') {
+				writeStore("inputs", 0);
+			}
+
+			if (pressbutton === 'template.cancel') {
+				// check if form field values has changed
+				var inputs_old = readStore("inputs");
+				inputs = checkValues(1);
+				if (inputs_old === inputs) {
+				} else {
+					// confirm if cancel or not
+					confirmCancel = confirm("<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
+					if (confirmCancel === false) {
+						return;
+					}
 				}
+				writeStore("inputs", 0);
+				writeStore("jpanetabs_template_tabs", 0);
+				writeStore("jpanetabs_buttons", 0);
+				Joomla.submitform(pressbutton, form);
+				return;
 			}
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
 
-		// Validate input fields
-		if (form.jform_title.value == "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
-		}
-		else if (form.jform_description.value== "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, form);
-		}
-	};
+			// Validate input fields
+			if (form.jform_title.value == "") {
+				alert("<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
+			} else if (form.jform_description.value == "") {
+				alert("<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
+			} else {
+				Joomla.submitform(pressbutton, form);
+			}
+		};
 
 		// insert placeholder
-		function buttonClick(text, editor)
-		{
+		function buttonClick(text, editor) {
 			jInsertEditorText(text, editor);
 		}
 
 		// check form field values
-		function checkValues(turn)
-		{
+		function checkValues(turn) {
 			var inputs = '';
 			var elements = document.adminForm.elements;
-			for (var i=0; i<elements.length; i++)
-			{
-				if (elements[i].getAttribute('id') == 'jform_tpl_css')
-				{
+			for (var i = 0; i < elements.length; i++) {
+				if (elements[i].getAttribute('id') === 'jform_tpl_css') {
 					var fieldValue = elements[i].value.length;
-				}
-				else if (elements[i].getAttribute('id') == 'jform_tpl_html')
-				{
-				}
-				else
-					{
+				} else if (elements[i].getAttribute('id') === 'jform_tpl_html') {
+				} else {
 					var fieldValue = elements[i].value;
 				}
-				if (elements[i].getAttribute('checked') != false)
-				{
+				if (elements[i].getAttribute('checked') !== false) {
 					var fieldChecked = elements[i].getAttribute('checked');
 				}
 				inputs += fieldValue + fieldChecked;
 			}
-			if (turn == 0)
-			{
+			if (turn === 0) {
 				writeStore("inputs", inputs);
-			}
-			else
-			{
+			} else {
 				return inputs;
 			}
 		}
 
 		// write to storage
-		function writeStore(item, value)
-		{
+		function writeStore(item, value) {
 			var test = 'test';
 			try {
 				localStorage.setItem(test, test);
 				localStorage.removeItem(test);
 				localStorage[item] = value;
-			}
-			catch (e)
-			{
+			} catch (e) {
 				Cookie.write(item, value);
 			}
 		}
 
 		// read storage
-		function readStore(item)
-		{
+		function readStore(item) {
 			var test = 'test';
 			try {
 				localStorage.setItem(test, test);
 				localStorage.removeItem(test);
 				itemValue = localStorage[item];
-			}
-			catch (e)
-			{
+			} catch (e) {
 				itemValue = Cookie.read(item);
 			}
 			return itemValue;
 		}
 
-		window.onload = function() {
-		var framefenster = document.getElementById("myIframe");
+		window.onload = function () {
+			var framefenster = document.getElementById("myIframe");
 
-		if(framefenster.contentWindow.document.body)
-		{
-			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
-			if(document.all && !window.opera)
-			{
-				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
+			if (framefenster.contentWindow.document.body) {
+				var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
+				if (document.all && !window.opera) {
+					framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
+				}
+				framefenster.style.height = framefenster_size + 'px';
 			}
-			framefenster.style.height = framefenster_size + 'px';
-		}
-		// check if store is empty or 0
-		var store = readStore("inputs");
-		if (store == 0 || store === undefined || store === null)
-		{
-			checkValues(0);
-		}
-	};
+			// check if store is empty or 0
+			var store = readStore("inputs");
+			if (store == 0 || store === undefined || store === null) {
+				checkValues(0);
+			}
+		};
+	}
 /* ]]> */
 </script>
 
@@ -207,25 +184,25 @@ $options = array(
 	<?php
 	if ($this->queueEntries)
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default_html&id=' . (int) $this->item->id); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=template&layout=default_html&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<fieldset class="adminform">
 			<legend>
-				<?php echo JText::_(
-					empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_TPL_HTML') : JText::sprintf('COM_BWPOSTMAN_EDIT_TPL_HTML', $this->item->id)
+				<?php echo Text::_(
+					empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_TPL_HTML') : Text::sprintf('COM_BWPOSTMAN_EDIT_TPL_HTML', $this->item->id)
 				); ?>
 			</legend>
 			<div class="row">
 				<div class="col-md-5">
 					<?php
-						echo JHtml::_('uitab.startTabSet', 'template_tabs', $options);
-						echo JHtml::_('uitab.addTab', 'template_tabs', 'panel1', JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'));
+						echo HTMLHelper::_('uitab.startTabSet', 'template_tabs', $options);
+						echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel1', Text::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'));
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
 						<div class="well well-small">
 							<div class="control-group">
 								<div class="control-label">
@@ -257,7 +234,7 @@ $options = array(
 					</fieldset>
 
 					<fieldset class="panelform">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
 						<div class="well well-small">
 							<?php
 							foreach ($this->form->getFieldset('jarticle') as $field) :
@@ -281,29 +258,29 @@ $options = array(
 							endforeach; ?>
 						</div>
 					</fieldset>
-					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+					<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 					<?php
-					echo JHtml::_('uitab.endTab');
+					echo HTMLHelper::_('uitab.endTab');
 
-					echo JHtml::_('uitab.addTab', 'template_tabs', 'panel2', JText::_('COM_BWPOSTMAN_TPL_CSS_LABEL'));
+					echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel2', Text::_('COM_BWPOSTMAN_TPL_CSS_LABEL'));
 					?>
 					<fieldset class="panelform">
-						<?php echo JText::_('COM_BWPOSTMAN_TPL_CSS_DESC'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_TPL_CSS_DESC'); ?>
 						<?php echo $this->form->getInput('tpl_css'); ?>
 					</fieldset>
 					<?php
-					echo JHtml::_('uitab.endTab');
+					echo HTMLHelper::_('uitab.endTab');
 
-					echo JHtml::_('uitab.addTab', 'template_tabs', 'panel3', JText::_('COM_BWPOSTMAN_TPL_HTML_LABEL'));
+					echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel3', Text::_('COM_BWPOSTMAN_TPL_HTML_LABEL'));
 					?>
 					<fieldset class="panelform">
-						<?php echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_TPL_HTML_DESC'); ?>
 							<div class="well well-small">
 								<?php echo $this->form->getInput('tpl_html'); ?>
 								<?php
-								$link = JUri::base() . '#';
-								if(JPluginHelper::isEnabled('bwpostman', 'personalize')) {
-									$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+								$link = Uri::base() . '#';
+								if(PluginHelper::isEnabled('bwpostman', 'personalize')) {
+									$button_text = Text::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
 									$linktexts = array(
 										'PERS' => $button_text,
 										'[FIRSTNAME]',
@@ -332,33 +309,33 @@ $options = array(
 									echo "                    <a class=\"btn btn-info btn-small pull-left\"
 										onclick=\"buttonClick('" . $linktext . "','jform_tpl_html');
 										return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
-									echo '                     <p>&nbsp;' . JText::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
+									echo '                     <p>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
 								}
 
-								if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+								if(PluginHelper::isEnabled('bwpostman', 'personalize'))
 								{
-									echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+									echo Text::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
 								}
 								?>
 							</div>
 						<div class="clr clearfix"></div>
 					</fieldset>
 					<?php
-					echo JHtml::_('uitab.endTab');
+					echo HTMLHelper::_('uitab.endTab');
 
-					echo JHtml::_('uitab.addTab', 'template_tabs', 'panel4', JText::_('COM_BWPOSTMAN_TPL_TAGS_LABEL'));
+					echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel4', Text::_('COM_BWPOSTMAN_TPL_TAGS_LABEL'));
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_LABEL'); ?></legend>
-						<div><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_DESC'); ?></div>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LABEL'); ?></legend>
+						<div><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_DESC'); ?></div>
 						<?php echo $this->loadTemplate('tpl_tags'); ?>
 					</fieldset>
 					<?php
-					echo JHtml::_('uitab.endTab');
+					echo HTMLHelper::_('uitab.endTab');
 
 					if ($this->permissions['com']['admin'] || $this->permissions['admin']['template'])
 					{
-						echo JHtml::_('uitab.addTab', 'template_tabs', 'panel5', JText::_('COM_BWPOSTMAN_TPL_FIELDSET_RULES'));
+						echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel5', Text::_('COM_BWPOSTMAN_TPL_FIELDSET_RULES'));
 						?>
 						<div class="row">
 							<div class="col-md-12">
@@ -368,20 +345,20 @@ $options = array(
 							</div>
 						</div>
 						<?php
-						echo JHtml::_('uitab.endTab');
+						echo HTMLHelper::_('uitab.endTab');
 					}
 
-					echo JHtml::_('uitab.endTabSet');
+					echo HTMLHelper::_('uitab.endTabSet');
 					?>
 					<div class="clr clearfix"></div>
-					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
+					<div class="well-note well-small"><?php echo Text::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
 
 				<div class="col-md-7">
 					<div id="email_preview">
 						<p>
 							<button class="btn btn-large btn-block btn-primary" type="submit">
-								<?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?>
+								<?php echo Text::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?>
 							</button>&nbsp;
 						</p>
 						<iframe id="myIframe" name="myIframeHtml"
@@ -403,7 +380,7 @@ $options = array(
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
 		<?php echo $this->form->getInput('templates_table_id'); ?>
-		<?php echo JHtml::_('form.token'); ?>
-		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+		<?php echo HTMLHelper::_('form.token'); ?>
+		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 	</form>
 </div>

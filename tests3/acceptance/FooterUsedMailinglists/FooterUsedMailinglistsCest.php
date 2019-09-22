@@ -11,7 +11,7 @@ use Page\NewsletterManagerPage as NlManagePage;
  * This class contains all methods to test adding used mailing lists and user groups to footer of newsletter
  *
  * @package Plugin FooterUsedMailinglists
- * @copyright (C) 2019 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

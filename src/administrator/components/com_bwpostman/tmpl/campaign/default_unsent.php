@@ -25,16 +25,26 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die('Restricted access');
 
-$text	= \JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
+$text	= Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
 if (property_exists($this->item, 'automailing_values'))
 {
 	if ($this->item->automailing_values !== null) {
-		$text	= \JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
+		$text	= Text::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
 	}
 }
 
+$modalParams = array();
+$modalParams['modalWidth'] = 80;
+$modalParams['bodyHeight'] = 70;
+
+$title_html = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
+$title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 ?>
 
 	<legend><?php echo $text; ?></legend>
@@ -47,7 +57,7 @@ if (property_exists($this->item, 'automailing_values'))
 				//Show no tabs if there is no newsletter assigned
 				if (empty($this->newsletters->unsent))
 				{
-					echo \JText::_('COM_BWPOSTMAN_CAM_NO_ASSIGNED_NL');
+					echo Text::_('COM_BWPOSTMAN_CAM_NO_ASSIGNED_NL');
 					//Show tabs
 				}
 				else
@@ -56,16 +66,16 @@ if (property_exists($this->item, 'automailing_values'))
 						<thead>
 							<tr>
 								<th style="width: 2%; text-align: right; padding-right: 5px;">
-									<?php echo \JText::_('NUM'); ?>
+									<?php echo Text::_('NUM'); ?>
 								</th>
 								<th style="min-width: 200px;">
-									<?php echo \JText::_('SUBJECT'); ?>
+									<?php echo Text::_('SUBJECT'); ?>
 								</th>
 								<th style="width: 13%; text-align: center;">
-									<?php echo \JText::_('COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE'); ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE'); ?>
 								</th>
 								<th style="width: 13%; text-align: center;">
-									<?php echo \JText::_('AUTHOR'); ?>
+									<?php echo Text::_('AUTHOR'); ?>
 								</th>
 							</tr>
 						</thead>
@@ -78,24 +88,43 @@ if (property_exists($this->item, 'automailing_values'))
 						{
 							$item = &$newsletters_unsent[$i];
 
-							$link_html = 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_html_modal&amp;task=insideModal&amp;nl_id='. $item->id;
-							$link_text = 'index.php?option=com_bwpostman&amp;view=newsletter&amp;format=raw&amp;layout=newsletter_text_modal&amp;task=insideModal&amp;nl_id='. $item->id;
+							$link_html = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id=' . $item->id);
+							$link_text = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
+
+							$frameHtml = "htmlFrameUnsent" . $item->id;
+							$frameText = "textFrameUnsent" . $item->id;
 							?>
 							<tr class="<?php echo "item$k"; ?>">
 								<td style="text-align: right; padding-right: 5px;"><?php echo $i + 1; ?></td>
-								<td><?php echo $item->subject; ?>&nbsp;&nbsp; <span
-									class="cam_preview"> <span class="editlinktip hasTip"
-									title="<?php echo \JText::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
+								<td><?php echo $item->subject; ?>&nbsp;&nbsp;
+									<span class="cam_preview">
+								<span class="hasTip"
+										title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
 									<?php
-									echo '<a class="popup" href="' . $link_html . '"
-									 rel="{handler: \'iframe\', size: {x: 600, y: 450}}">' . \JText::_('COM_BWPOSTMAN_HTML_NL') . '</a>'; ?>&nbsp;
-								</span> <span class="editlinktip hasTip"
-									title="<?php echo \JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
+									$modalParams['url'] = $link_html;
+									$modalParams['title'] = $title_html;
+									?>
+
+									<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info" data-toggle="modal">
+										<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
+									</button>
+									<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
+								</span>
+								<span class="hasTip"
+										title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
 									<?php
-									echo '<a class="popup" href="' . $link_text . '"
-									 rel="{handler: \'iframe\', size: {x: 600, y: 450}}">' . \JText::_('COM_BWPOSTMAN_TEXT_NL') . '</a>'; ?>
-								</span> </span></td>
-								<td style="text-align: center;"><?php echo JHtml::date($item->modified_time, \JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+									$modalParams['url'] = $link_text;
+									$modalParams['title'] = $title_text;
+									?>
+
+									<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info" data-toggle="modal">
+										<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
+									</button>
+									<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
+								</span>
+							</span>
+								</td>
+								<td style="text-align: center;"><?php echo HTMLHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
 								<td style="text-align: center;"><?php echo $item->author; ?></td>
 							</tr>
 							<?php

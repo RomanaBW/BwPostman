@@ -25,13 +25,18 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+
 defined('_JEXEC') or die('Restricted access');
 
 // Keep session alive while editing
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
-$jinput	= JFactory::getApplication()->input;
+$jinput	= Factory::getApplication()->input;
 
 // Split the result array into three arrays which contains errors and warnings which occurred during the import process
 if (isset($this->result['mail_err']))
@@ -50,15 +55,15 @@ if (isset($this->result['import_warn']))
 }
 
 $option			= $jinput->getCmd('option');
-$fileformat		= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat');
+$fileformat		= Factory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat');
 
 if ($fileformat == 'xml')
 {
-	$row_text 	= JText::_('COM_BWPOSTMAN_XML_ROW');
+	$row_text 	= Text::_('COM_BWPOSTMAN_XML_ROW');
 }
 else
 {
-	$row_text 	= JText::_('COM_BWPOSTMAN_CSV_ROW');
+	$row_text 	= Text::_('COM_BWPOSTMAN_CSV_ROW');
 }
 ?>
 
@@ -66,19 +71,19 @@ else
 	<?php
 	if ((empty($mail_err)) && (empty($import_err)) && (empty($import_warn)))
 	{
-		echo '<div class="alert alert-success">' . JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS') . '</div>';
+		echo '<div id="import-success" class="alert alert-success">' . Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS') . '</div>';
 	}
 
 	if (!empty($mail_err))
 	{ // The subscribers were imported but the confirmation email couldn't be sent ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR_CONFIRMEMAIL'); ?></legend>
+			<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR_CONFIRMEMAIL'); ?></legend>
 			<table class="adminlist table table-bordered">
 				<thead>
 					<tr>
 						<th width="40"><?php echo $row_text; ?></th>
-						<th width="200"><?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?></th>
-						<th><?php echo JText::_('COM_BWPOSTMAN_ERROR_MSG'); ?></th>
+						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+						<th><?php echo Text::_('COM_BWPOSTMAN_ERROR_MSG'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -102,13 +107,13 @@ else
 	{
 		// Subscriber couldn't be imported ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR'); ?></legend>
+			<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR'); ?></legend>
 			<table class="adminlist table table-bordered">
 				<thead>
 					<tr>
 						<th width="40"><?php echo $row_text; ?></th>
-						<th width="200"><?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?></th>
-						<th><?php echo JText::_('COM_BWPOSTMAN_ERROR_MSG'); ?></th>
+						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+						<th><?php echo Text::_('COM_BWPOSTMAN_ERROR_MSG'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -137,13 +142,13 @@ else
 	if (!empty($import_warn))
 	{
 		// The subscriber was imported but some data were changed ?>
-		<fieldset class="adminform"><legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_WARNING'); ?></legend>
+		<fieldset class="adminform"><legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_WARNING'); ?></legend>
 			<table class="adminlist">
 				<thead>
 					<tr>
 						<th width="40"><?php echo $row_text; ?></th>
-						<th width="200"><?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?></th>
-						<th><?php echo JText::_('COM_BWPOSTMAN_NOTES'); ?></th>
+						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+						<th><?php echo Text::_('COM_BWPOSTMAN_NOTES'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -167,7 +172,7 @@ else
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

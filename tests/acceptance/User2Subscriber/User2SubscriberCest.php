@@ -204,18 +204,18 @@ class User2SubscriberCest
 		$I->fillField(Generals::$search_field, Generals::$plugin_u2s);
 		$I->click(Generals::$search_button);
 
-		$I->click(".//*[@id='pluginList']/tbody/tr/td[4]/a");
+		$I->click(RegPage::$plugin_edit_identifier);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingPlugins . ": " . Generals::$plugin_u2s);
 
 		// set mailinglist
-		$I->click(".//*[@id='myTabTabs']/li[3]/a");
-		$I->waitForElement(".//*[@id='jform_params_ml_available']/div", 30);
+		$I->click(RegPage::$plugin_tab_mailinglists);
+		$I->waitForElement("//*[@id='jform_params_ml_available']/div", 30);
 
-		$checked    = $I->grabAttributeFrom(".//*[@id='mb6']", "checked");
+		$checked    = $I->grabAttributeFrom(sprintf(RegPage::$plugin_checkbox_mailinglist, 6), "checked");
 		if (!$checked)
 		{
-			$I->click(".//*[@id='mb6']");
+			$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 6));
 		}
 
 		$I->click(Generals::$toolbar['Save & Close']);
@@ -1365,21 +1365,21 @@ class User2SubscriberCest
 	 */
 	protected function fillJoomlaPartAtRegisterForm(AcceptanceTester $I, $run   = 1)
 	{
-		$I->scrollTo(".//*[@id='member-registration']");
+		$I->scrollTo("//*[@id='member-registration']");
 
 		if (self::$visitor == 1)
 		{
 			$I->fillField(RegPage::$login_identifier_name, RegPage::$login_value_name);
 			$I->fillField(RegPage::$login_identifier_username, RegPage::$login_value_username);
 			$I->fillField(RegPage::$login_identifier_email1, RegPage::$login_value_email);
-			$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value_email);
+//			$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value_email);
 		}
 		elseif (self::$visitor == 2)
 		{
 			$I->fillField(RegPage::$login_identifier_name, RegPage::$login_value2_name);
 			$I->fillField(RegPage::$login_identifier_username, RegPage::$login_value2_username);
 			$I->fillField(RegPage::$login_identifier_email1, RegPage::$login_value2_email);
-			$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value2_email);
+//			$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value2_email);
 		}
 
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);

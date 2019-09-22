@@ -24,10 +24,19 @@
  */
 
 //Method to check and compare the selected content from the database and the selected content from the form
-function checkSelectedContent(selected_content_new, selected_content_old, content_exists, template_id, text_template_id, template_id_old, text_template_id_old, text_confirm_content, text_confirm_template, text_confirm_text_template) {
+function checkSelectedContent(text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template) {
 	// Get the selected content from the database and split the string into an array but only if there is not the content ''
+
+	var selected_content_new = document.adminForm['jform_selected_content'];
+	var selected_content_old = document.getElementById('selected_content_old');
+	var content_exists = document.getElementById('content_exists');
+	var template_ids = document.getElementsByName('jform[template_id]');
+	var text_template_ids = document.getElementsByName('jform[text_template_id]');
+	var template_id_old = document.getElementById('template_id_old');
+	var text_template_id_old = document.getElementById('text_template_id_old');
+
 	var selected_content_oldArray = [];
-	if (selected_content_old.value != '') {
+	if (selected_content_old.value !== '') {
 		selected_content_oldArray = selected_content_old.value.split(",");
 	}
 
@@ -41,18 +50,23 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 	}
 
     // Get template_id
-    var template_ids = template_id;
     var length = template_ids.length;
-      for (i = 0; i < length; i++)
-      {
+	var template_id = '';
+	for (i = 0; i < length; i++) {
         if (template_ids[i].checked) {
-          template_id = template_ids[i].value;
+	        template_id = template_ids[i].value;
         }
       }
 
-    // Get text_template_id
-    var text_template_ids = text_template_id;
+	if (template_id === '')
+	{
+		alert(no_html_template);
+		return false;
+	}
+
+	// Get text_template_id
     length = text_template_ids.length;
+	var text_template_id = '';
       for (i = 0; i < length; i++)
       {
         if (text_template_ids[i].checked) {
@@ -60,14 +74,20 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
         }
       }
 
+	if (text_template_id === '')
+	{
+		alert(no_text_template);
+		return false;
+	}
+
 	// Check the selected content from the database and the selected content from the form only if there is already a html- or text-version of the newsletter
-	if (content_exists.value == 1) {
+	if (content_exists.value === '1') {
 
 		// Check the number of entries and compare them
-		if (selected_content_newArray.length != selected_content_oldArray.length) { // The lengths of the arrays are not equal
+		if (selected_content_newArray.length !== selected_content_oldArray.length) { // The lengths of the arrays are not equal
 			var confirmAddContent = confirm(text_confirm_content);
-			if (confirmAddContent == true) {
-				if (selected_content_new.options.length == 0) {
+			if (confirmAddContent === true) {
+				if (selected_content_new.options.length === 0) {
 					// content changed but no content selected
 					document.adminForm.add_content.value = -1;
 				}
@@ -84,10 +104,10 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 		else { // The lengths of the arrays are equal
 
 			// Method to check if template_id changed
-			if (template_id != template_id_old.value) { // The values are not equal
+			if (template_id !== template_id_old.value) { // The values are not equal
 				var confirmTemplateId = confirm(text_confirm_template);
-				if (confirmTemplateId == true) {
-					if (selected_content_new.options.length == 0) {
+				if (confirmTemplateId === true) {
+					if (selected_content_new.options.length === 0) {
 						// template changed but no content selected
 						document.adminForm.add_content.value = -1;
 					}
@@ -102,10 +122,10 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 				}
 			}
 			// Method to check if text_template_id changed
-			if (text_template_id != text_template_id_old.value) { // The values are not equal
+			if (text_template_id !== text_template_id_old.value) { // The values are not equal
 				var confirmTexttemplateId = confirm(text_confirm_text_template);
-				if (confirmTexttemplateId == true) {
-					if (selected_content_new.options.length == 0) {
+				if (confirmTexttemplateId === true) {
+					if (selected_content_new.options.length === 0) {
 						// template changed but no content selected
 						document.adminForm.add_content.value = -1;
 					}
@@ -122,10 +142,9 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 
 			// Compare the entries of the arrays
 			for (var j=0; j<selected_content_newArray.length; j++) {
-
-				if (selected_content_newArray[j] != selected_content_oldArray[j]) { // The values are not equal
+				if (selected_content_newArray[j] !== selected_content_oldArray[j]) { // The values are not equal
 					confirmAddContent = confirm(text_confirm_content);
-					if (confirmAddContent == true) {
+					if (confirmAddContent === true) {
 						document.adminForm.add_content.value = 1;
 						return true;
 					}
@@ -136,7 +155,7 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 				}
 			}
 			// The values of both arrays are equal, so we doesn't have to do anything
-			if (selected_content_new.options.length == 0) {
+			if (selected_content_new.options.length === 0) {
 				// content exists but no content selected
 				document.adminForm.add_content.value = -1;
 			}
@@ -154,35 +173,40 @@ function checkSelectedContent(selected_content_new, selected_content_old, conten
 }
 
 
-function checkSelectedRecipients (ml_available, ml_unavailable, ml_intern, usergroups, message) { // Method to check if some recipients are selected
+function checkSelectedRecipients (message) { // Method to check if some recipients are selected
 
 	var count_selected = 0;
+	var campaign_id = document.getElementById('jform[campaign_id');
+	var ml_available = document.getElementsByName('jform[ml_available][]');
+	var ml_unavailable = document.getElementsByName('jform[ml_unavailable][]');
+	var ml_intern = document.getElementsByName('jform[ml_intern][]');
+	var usergroups = document.getElementsByName('jform[usergroups][]');
 
 	for (var i=0; i<ml_available.length; i++) {
-		if (ml_available[i].checked == true) {
+		if (ml_available[i].checked === true) {
 			count_selected++;
 		}
 	}
 
 	for (i=0; i<ml_unavailable.length; i++) {
-		if (ml_unavailable[i].checked == true) {
+		if (ml_unavailable[i].checked === true) {
 			count_selected++;
 		}
 	}
 
 	for (i=0; i<ml_intern.length; i++) {
-		if (ml_intern[i].checked == true) {
+		if (ml_intern[i].checked === true) {
 			count_selected++;
 		}
 	}
 
 	for (i=0; i<usergroups.length; i++) {
-		if (usergroups[i].checked == true) {
+		if (usergroups[i].checked === true) {
 			count_selected++;
 		}
 	}
 
-	if (count_selected == 0) {
+	if (count_selected === 0) {
 		alert (message);
 		return false;
 	}
@@ -255,4 +279,54 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 	}
 	from.selectedIndex = -1;
 	to.selectedIndex = -1;
+}
+
+function hasCampaign() {
+	var selectedCampaign = document.getElementById("jform_campaign_id");
+	var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+	var hasCampaign = false;
+	if (selectedCampaignValue !== '-1') {
+		hasCampaign = true;
+	}
+
+	return hasCampaign;
+}
+
+function changeTab(newTab, currentTab, text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template, checkRecipientMessage) {
+	if (newTab !== currentTab) {
+		if (currentTab === 'edit_basic') {
+			var selectedContentOkay = checkSelectedContent(text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template);
+
+			if (selectedContentOkay === false) {
+				return;
+			}
+
+			var hasCampaign = window.hasCampaign();
+
+			if (hasCampaign) {
+				var campaignRecipientsOkay = checkSelectedRecipients(checkRecipientMessage);
+			}
+
+			if (campaignRecipientsOkay === false) {
+				return;
+			}
+		}
+
+		document.adminForm.tab.setAttribute('value', newTab);
+		document.adminForm.task.setAttribute('value', 'newsletter.changeTab');
+	} else {
+		return false;
+	}
+}
+
+function switchRecipients() {
+	var selectedCampaign = document.getElementById("jform_campaign_id");
+	var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+	var recipients = document.getElementById('recipients');
+
+	if (selectedCampaignValue !== '-1') {
+		recipients.style.display = "none";
+	} else {
+		recipients.style.display = "flex";
+	}
 }

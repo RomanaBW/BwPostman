@@ -92,6 +92,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @return  BwPostmanControllerSubscriber		This object to support chaining.
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
@@ -114,6 +116,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @return	boolean
 	 *
 	 * @since	1.0.1
+	 *
+	 * @throws Exception
 	 */
 	protected function allowAdd($data = array())
 	{
@@ -129,6 +133,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @return	boolean
 	 *
 	 * @since	1.0.1
+	 *
+	 * @throws Exception
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
@@ -143,6 +149,8 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @return	boolean
 	 *
 	 * @since	2.0.0
+	 *
+	 * @throws Exception
 	 */
 	protected function allowArchive($recordIds = array())
 	{

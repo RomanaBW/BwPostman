@@ -25,22 +25,26 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Session\Session;
+
 defined('_JEXEC') or die('Restricted access');
 
-//JHtml::_('behavior.framework',true);
-//JHtml::_('behavior.modal');
-JHtml::_('behavior.framework', true);
-$uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHtml::_('script', 'system/modal' . $uncompressed . '.js', true, true);
-JHtml::_('stylesheet', 'media/system/css/modal.css');
+HTMLHelper::_('behavior.framework', true);
+$uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
+HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', true, true);
+HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
 
 $model		= $this->getModel();
 
-$session	= JFactory::getSession();
+$session	= Factory::getSession();
 $update		= $session->get('update', false, 'bwpostman');
 $release	= $session->get('release', null, 'bwpostman');
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 //Load first english files
 $lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
 $lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
@@ -58,15 +62,15 @@ $manual	= "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostm
 
 if ($update)
 {
-	$string_special		= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_SPECIAL_NOTE_DESC');
+	$string_special		= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_SPECIAL_NOTE_DESC');
 }
 else
 {
-	$string_special		= JText::_('COM_BWPOSTMAN_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
+	$string_special		= Text::_('COM_BWPOSTMAN_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
 }
-$string_new			= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_DESC');
-$string_improvement	= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
-$string_bugfix		= JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_DESC');
+$string_new			= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_DESC');
+$string_improvement	= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
+$string_bugfix		= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_DESC');
 
 if (($string_bugfix != '' || $string_improvement != '' || $string_new != '') && $update)
 {
@@ -88,24 +92,24 @@ if ($show_update || $string_special != '')
 <div id="com_bwp_install_outer">
 </div>
 <div id="checkResult" class="row-fluid">
-	<div class="alert"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?></div>
+	<div class="alert"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?></div>
 	<div class="span6 inner well">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
-		<p id="step0" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>
-		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
-		<p id="step1" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
-		<p id="step2" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
-		<p id="step3" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
-		<p id="step4" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
-		<p id="step5" class="well"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
+		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
+		<p id="step0" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>
+		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
+		<p id="step1" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
+		<p id="step2" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
+		<p id="step3" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
+		<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
+		<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
 	</div>
 	<div class="span5 well well-small">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
+		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
 		<div id="loading2"></div>
 		<div id="result"></div>
 </div>
 </div>
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 <script type="text/javascript">
 function doAjax(data, successCallback)
@@ -167,7 +171,7 @@ function processUpdateStep(data)
 	});
 }
 jQuery('div#toolbar').find('button').attr("disabled","disabled");
-var starturl = 'index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo JSession::getFormToken(); ?>=1';
+var starturl = 'index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1';
 var data = {step: "0"};
 processUpdateStep(data);
 </script>

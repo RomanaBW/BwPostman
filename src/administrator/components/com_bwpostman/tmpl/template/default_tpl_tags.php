@@ -25,12 +25,15 @@
  */
 
 // No direct access.
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
-echo JHtml::_('uitab.startTabSet', 'tpl_tags', array('startOffset' => 0));
-echo JHtml::_('uitab.addTab', 'tpl_tags', 'tpl_tag1', JText::_('COM_BWPOSTMAN_TPL_TAGS_HEAD_LABEL'));
+echo HTMLHelper::_('uitab.startTabSet', 'tpl_tags', array('startOffset' => 0));
+echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag1', Text::_('COM_BWPOSTMAN_TPL_TAGS_HEAD_LABEL'));
 
-echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
+echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 ?>
 <fieldset class="panelform">
 	<div class="row">
@@ -47,7 +50,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 			<div class="control-group">
 				<p>
 					<label>
-						<?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 					</label>
 				</p>
 				<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->headTag)); ?></div>
@@ -61,10 +64,10 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 	</div>
 </fieldset>
 <?php
-echo JHtml::_('uitab.endTab');
+echo HTMLHelper::_('uitab.endTab');
 
-echo JHtml::_('uitab.addTab', 'tpl_tags', 'tpl_tag2', JText::_('COM_BWPOSTMAN_TPL_TAGS_BODY_LABEL'));
-echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
+echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag2', Text::_('COM_BWPOSTMAN_TPL_TAGS_BODY_LABEL'));
+echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 ?>
 <fieldset class="panelform">
 	<div class="row">
@@ -81,7 +84,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 			<div class="control-group">
 				<p>
 					<label>
-						<?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 					</label>
 				</p>
 				<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->bodyTag)); ?></div>
@@ -95,10 +98,10 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 	</div>
 </fieldset>
 <?php
-echo JHtml::_('uitab.endTab');
+echo HTMLHelper::_('uitab.endTab');
 
-echo JHtml::_('uitab.addTab', 'tpl_tags', 'tpl_tag3', JText::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_LABEL'));
-echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
+echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag3', Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_LABEL'));
+echo Text::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 ?>
 <fieldset class="panelform">
 	<div class="row">
@@ -115,14 +118,14 @@ echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 			<div class="control-group">
 				<p>
 					<label>
-						<?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 					</label>
 				</p>
 				<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articleTagBegin)); ?></div>
 			</div>
 
 			<div class="control-group">
-				<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
+				<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
 				<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articleTagEnd)); ?></div>
 			</div>
 
@@ -132,17 +135,17 @@ echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 			</div>
 
 			<div class="control-group">
-				<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
+				<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
 				<?php echo $this->form->getInput('tpl_tags_article_advanced_e'); ?>
 			</div>
 		</div>
 	</div>
 </fieldset>
 <?php
-echo JHtml::_('uitab.endTab');
+echo HTMLHelper::_('uitab.endTab');
 
-echo JHtml::_('uitab.addTab', 'tpl_tags', 'tpl_tag4', JText::_('COM_BWPOSTMAN_TPL_TAGS_READON_LABEL'));
-echo JText::_('COM_BWPOSTMAN_TPL_READON_DESC');
+echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag4', Text::_('COM_BWPOSTMAN_TPL_TAGS_READON_LABEL'));
+echo Text::_('COM_BWPOSTMAN_TPL_READON_DESC');
 ?>
 <fieldset class="panelform">
 	<div class="row">
@@ -159,7 +162,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_READON_DESC');
 			<div class="control-group">
 				<p>
 					<label>
-						<?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 					</label>
 				</p>
 				<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->readonTag)); ?></div>
@@ -173,10 +176,10 @@ echo JText::_('COM_BWPOSTMAN_TPL_READON_DESC');
 	</div>
 </fieldset>
 <?php
-echo JHtml::_('uitab.endTab');
+echo HTMLHelper::_('uitab.endTab');
 
-echo JHtml::_('uitab.addTab', 'tpl_tags', 'tpl_tag5', JText::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_LABEL'));
-echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
+echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag5', Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_LABEL'));
+echo Text::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 ?>
 	<fieldset class="panelform">
 		<div class="row">
@@ -193,14 +196,14 @@ echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 				<div class="control-group">
 					<p>
 						<label>
-							<?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 						</label>
 					</p>
 					<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legalTagBegin)); ?></div>
 				</div>
 
 				<div class="control-group">
-					<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
+					<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
 					<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legalTagEnd)); ?></div>
 				</div>
 
@@ -210,7 +213,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 				</div>
 
 				<div class="control-group">
-					<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
+					<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
 					<?php echo $this->form->getInput('tpl_tags_legal_advanced_e'); ?>
 				</div>
 			</div>
@@ -218,8 +221,8 @@ echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 	</fieldset>
 
 <?php
-echo JHtml::_('uitab.endTab');
+echo HTMLHelper::_('uitab.endTab');
 
-echo JHtml::_('uitab.endTabSet');
+echo HTMLHelper::_('uitab.endTabSet');
 
 

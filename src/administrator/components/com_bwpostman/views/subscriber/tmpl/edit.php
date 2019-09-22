@@ -50,7 +50,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		var form = document.adminForm;
 		if (pressbutton == 'subscriber.cancel')
 		{
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 			return;
 		}
 		else
@@ -73,7 +73,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 
 			if (isValid)
 			{
-				Joomla.submitform(pressbutton, form);
+				submitform(pressbutton);
 				return true;
 			}
 		}

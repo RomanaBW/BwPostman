@@ -74,7 +74,7 @@ the basis, on which the pipeline is based on.**
 	The versions of JCE and plugin Testmode aren't really important, as long as there are no errors concerning these 
 	both extensions. 
 	The new version of JCE has not to be known, there is a general URI to download the latest version.
-	The plugin Testmode isn't really changing. By all means I cant't imagine, there is a change on this plugin. Perhaps 
+	The plugin Testmode isn't really changing. By all means I can't imagine, there is a change on this plugin. Perhaps 
 	a new feature, but this plugin does not do much except existing.
 	Really important seems the version of Virtuemart, because this is something, that really concerns the functionality 
 	of the plugin B2S.
@@ -82,8 +82,8 @@ the basis, on which the pipeline is based on.**
 ## First tests (smoke)
 
 The first tests are installation tests and configure the extension, such as set default options, create users, fill tables 
-with test values, set permissions. Because the following tests needs an installed and configured BwPostman, here a further set of containers 
-is created, if the smoke is successful, to fasten these following tests.
+with test values, set permissions. Because the following tests needs an installed and configured BwPostman, here a further
+set of containers is created, if the smoke is successful, to fasten these following tests.
 
 The used playbook is **run-smoke-tests.yml**. The resulting images are
  * **universe3:5000/romana/joomla-bwpm-files:{{ joomla_version }}_{{ bwpm_version }}**

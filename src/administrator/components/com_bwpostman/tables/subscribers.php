@@ -734,11 +734,14 @@ class BwPostmanTableSubscribers extends JTable
 				// Account already exists
 				if (($subscriber->status == 1) && ($subscriber->archive_flag != 1))
 				{
+					$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+					//@ToDo: With the following routing with SEO activated don't work
+//					$link = JRoute::_('index.php?option=com_bwpostman&view=edit');
 					$err['err_code'] = 407;
 					$err['err_msg'] = JText::sprintf(
 						'COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS',
 						$this->email,
-						JRoute::_('index.php?option=com_bwpostman&view=edit')
+						$link
 					);
 					$err['err_id'] = $xid;
 					$err['err_email']	= $this->email;
@@ -747,7 +750,7 @@ class BwPostmanTableSubscribers extends JTable
 						JText::sprintf(
 							'COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS',
 							$this->email,
-							JRoute::_('index.php?option=com_bwpostman&view=edit')
+							$link
 						),
 						'error'
 					);
@@ -826,7 +829,18 @@ class BwPostmanTableSubscribers extends JTable
 			$this->modified_by = $user->get('id');
 		}
 
+		if ($this->confirmation_date == (int)0)
+		{
+			$this->confirmation_date = "0000-00-00 00:00:00";
+		}
+
 		$res	= parent::store($updateNulls);
+
+		if ($res !== true)
+		{
+			$app->enqueueMessage($this->getError());
+		}
+
 		$app->setUserState('com_bwpostman.subscriber.id', $this->id);
 
 		return $res;

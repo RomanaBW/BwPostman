@@ -144,6 +144,7 @@ class BwPostmanModelSubscribers extends JModelList
 		$id	.= ':' . $this->getState('filter.search_filter');
 		$id	.= ':' . $this->getState('filter.emailformat');
 		$id	.= ':' . $this->getState('filter.mailinglist');
+		$id	.= ':' . JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
 
 		return parent::getStoreId($id);
 	}
@@ -324,6 +325,8 @@ class BwPostmanModelSubscribers extends JModelList
 	 * @return 	void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	private function getFilterByComponentPermissions()
 	{
@@ -349,12 +352,13 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	private function getFilterBySubscriberState()
 	{
-		$tab	    = JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
-		$tab_int    = 1;
+		//Get the tab in which we are for correct query
+		$tab	= JFactory::getApplication()->input->get('tab', 'confirmed');
 
 		switch ($tab)
 		{
 			case ("confirmed"):
+			default:
 				$tab_int	= 1;
 				break;
 			case ("unconfirmed"):
@@ -365,7 +369,7 @@ class BwPostmanModelSubscribers extends JModelList
 				break;
 		}
 
-		$this->query->where('a.status = ' . (int) $tab_int);
+		$this->query->where("a.status = '" . (int) $tab_int . "'");
 	}
 
 	/**

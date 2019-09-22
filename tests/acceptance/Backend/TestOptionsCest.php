@@ -1880,7 +1880,7 @@ class TestOptionsCest
 	 */
 	protected function setSinglePermission(AcceptanceTester $I, $rules, $i, $group_id, $actions)
 	{
-		$identifier = './/*[@id="jform_rules_' . $rules[$i] . '_' . $group_id . '"]';
+		$identifier = "//*[@id='jform_rules_" . $rules[$i] . "_" . $group_id . "']";
 		$value      = $actions[$rules[$i]];
 
 		codecept_debug('Identifier:' . $identifier);

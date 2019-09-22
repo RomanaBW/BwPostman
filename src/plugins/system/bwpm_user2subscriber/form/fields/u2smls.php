@@ -91,9 +91,9 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 		$options = $_db->loadObjectList();
 
 		// Check for a database error.
-		if ($_db->getErrorNum()) {
-			$app->enqueueMessage($_db->getErrorMsg(), 'error');
-		}
+//		if ($_db->getErrorNum()) {
+//			$app->enqueueMessage($_db->getErrorMsg(), 'error');
+//		}
 
 		// Prepare needed options properties test and checked
 		$modified_options	= array();

@@ -198,7 +198,7 @@ class HtmlView extends BaseHtmlView
 		$manualLink = \BwPostmanHTMLHelper::getManualLink('mailinglists');
 		$forumLink  = \BwPostmanHTMLHelper::getForumLink();
 
-		$toolbar->appendButton('ExtLink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$toolbar->appendButton('ExtLink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+//		$toolbar->appendButton('ExtLink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//		$toolbar->appendButton('ExtLink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 	}
 }

@@ -46,119 +46,119 @@ class MainviewPage
 	 *
 	 * @since 2.2.0
 	 */
-	public static $dashboard    = ".//*[@id='view_bwpostman']";
+	public static $dashboard    = "//*[@id='view_bwpostman']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $newslettersButton        = './/*[@id=\'cpanel\']/div[1]/div/a';
+	public static $newslettersButton        = "//*[@id='cpanel']/div[1]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addNewsletterButton      = './/*[@id=\'cpanel\']/div[2]/div/a';
+	public static $addNewsletterButton      = "//*[@id='cpanel']/div[2]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscribersButton        = './/*[@id=\'cpanel\']/div[3]/div/a';
+	public static $subscribersButton        = "//*[@id='cpanel']/div[3]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addSubscriberButton      = './/*[@id=\'cpanel\']/div[4]/div/a';
+	public static $addSubscriberButton      = "//*[@id='cpanel']/div[4]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addTestRecipientButton   = './/*[@id=\'cpanel\']/div[5]/div/a';
+	public static $addTestRecipientButton   = "//*[@id='cpanel']/div[5]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $campaignsButton          = './/*[@id=\'cpanel\']/div[6]/div/a';
+	public static $campaignsButton          = "//*[@id='cpanel']/div[6]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addCampaignButton        = './/*[@id=\'cpanel\']/div[7]/div/a';
+	public static $addCampaignButton        = "//*[@id='cpanel']/div[7]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailinglistsButton       = './/*[@id=\'cpanel\']/div[8]/div/a';
+	public static $mailinglistsButton       = "//*[@id='cpanel']/div[8]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addMailinglistButton     = './/*[@id=\'cpanel\']/div[9]/div/a';
+	public static $addMailinglistButton     = "//*[@id='cpanel']/div[9]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $templatesButton          = './/*[@id=\'cpanel\']/div[10]/div/a';
+	public static $templatesButton          = "//*[@id='cpanel']/div[10]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addHtmlTemplateButton    = './/*[@id=\'cpanel\']/div[11]/div/a';
+	public static $addHtmlTemplateButton    = "//*[@id='cpanel']/div[11]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addTextTemplateButton    = './/*[@id=\'cpanel\']/div[12]/div/a';
+	public static $addTextTemplateButton    = "//*[@id='cpanel']/div[12]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $archiveButton            = './/*[@id=\'cpanel\']/div[12]/div/a';
+	public static $archiveButton            = "//*[@id='cpanel']/div[12]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $settingsButton           = './/*[@id=\'cpanel\']/div[14]/div/a';
+	public static $settingsButton           = "//*[@id='cpanel']/div[14]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $maintenanceButton        = './/*[@id=\'cpanel\']/div[15]/div/a';
+	public static $maintenanceButton        = "//*[@id='cpanel']/div[15]/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $forumButton              = './/*[@id=\'cpanel\']/div[16]/div/a';
+	public static $forumButton              = "//*[@id='cpanel']/div[16]/div/a";
 
 	/**
 	 * @var object  AcceptanceTester

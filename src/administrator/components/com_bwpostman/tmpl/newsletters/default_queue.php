@@ -27,18 +27,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-
-// Load the modal behavior for the newsletter preview
-//JHtml::_('behavior.modal', 'a.popup');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.multiselect');
 
 //Load tabs behavior for the Tabs
 jimport('joomla.html.html.tabs');
 
-$user	= JFactory::getUser();
+$user	= Factory::getUser();
 $userId	= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -49,7 +50,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 /* <![CDATA[ */
 	function changeTab(tab)
 	{
-		if (tab != 'default_unsent')
+		if (tab !== 'default_unsent')
 		{
 			document.adminForm.tab.setAttribute('value',tab);
 		}
@@ -61,17 +62,17 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<?php
 	if ($this->queueEntries)
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<div class="row">
 			<div class="col-md-12">
 				<div id="j-main-container" class="j-main-container">
 					<?php
 					// Search tools bar
-					echo JLayoutHelper::render(
+					echo LayoutHelper::render(
 						'tabbed',
 						array('view' => $this, 'tab' => 'queue'),
 						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
@@ -82,18 +83,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<ul class="bwp_tabs">
 							<li class="closed">
 								<button onclick="return changeTab('unsent');" class="buttonAsLink">
-									<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 								</button>
 							</li>
 							<li class="closed">
 								<button onclick="return changeTab('sent');" class="buttonAsLink">
-									<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
 								</button>
 							</li>
 							<?php if (($this->count_queue> 0) && $this->permissions['newsletter']['send']) { ?>
 								<li class="open">
 									<button onclick="return changeTab('queue');" class="buttonAsLink_open">
-										<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
+										<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
 									</button>
 								</li>
 							<?php } ?>
@@ -104,27 +105,27 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<div class="current">
 						<table id="main-table" class="table">
 							<caption id="captionTable" class="sr-only">
-								<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+								<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
 							</caption>
 						<thead>
 							<tr>
 								<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
 								</th>
 								<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
 								</th>
 								<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
 								</th>
 								<th class="d-none d-md-table-cell" style="      min-width: 150px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
 								</th>
 								<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
 								</th>
 								<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
 								</th>
 							</tr>
 						</thead>
@@ -148,7 +149,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						{
 							// if no data ?>
 							<tr class="row1">
-								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
+								<td colspan="8"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
 							</tr><?php
 						}
 						?>
@@ -158,14 +159,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</div>
 			</div>
 			<div class="pagination"><?php echo $this->queuePagination->getListFooter(); ?></div>
-			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+			<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="tab" value="queue" />
 			<input type="hidden" name="layout" value="default" />
 			<input type="hidden" name="tpl" value="queue" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HTMLHelper::_('form.token'); ?>
 		</div>
 	</form>
 </div>

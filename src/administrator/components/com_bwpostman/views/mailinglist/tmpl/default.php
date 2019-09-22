@@ -43,7 +43,7 @@ JHtml::_('formbehavior.chosen', 'select');
 
 		if (pressbutton == 'mailinglist.cancel')
 		{
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 			return;
 		}
 
@@ -58,7 +58,7 @@ JHtml::_('formbehavior.chosen', 'select');
 		}
 		else
 		{
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 		}
 	};
 /* ]]> */

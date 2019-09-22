@@ -405,6 +405,7 @@ class TestNewslettersDetailsCest
 		catch (\Exception $e)
 		{
 			codecept_debug("No file to delete or not accessible");
+			codecept_debug($e->getMessage());
 		}
 
 		$I->clickAndWait(NlEdit::$attachments_add_button, 1);

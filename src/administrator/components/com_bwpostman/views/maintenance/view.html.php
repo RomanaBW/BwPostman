@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+//JHtml::_('jquery.framework', true, null, true);
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -277,10 +279,22 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('maintenance');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-//		$bar->appendButton('ExtLink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-//		$bar->appendButton('ExtLink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		}
+		else
+		{
+			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual');
+			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
 
-		JToolbarHelper::spacer();
+			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
+
+			$bar->appendButton($manualButton);
+			$bar->appendButton($forumButton);
+		}
 
 		if(version_compare(JVERSION, '3.99', 'le'))
 		{

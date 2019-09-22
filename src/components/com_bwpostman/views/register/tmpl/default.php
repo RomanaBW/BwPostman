@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
@@ -34,8 +36,6 @@ JHtml::_('formbehavior.chosen', 'select');
 
 // Depends on jQuery UI
 JHtml::_('jquery.ui', array('core'));
-
-require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
 
 $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>
@@ -52,7 +52,7 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 			<?php endif; ?>
 
 		<div class="content_inner">
-			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=register.save'); ?>" method="post"
+			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post"
 					id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>
 				<p class="user_hightlight">

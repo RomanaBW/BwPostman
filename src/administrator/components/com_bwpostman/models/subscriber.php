@@ -671,6 +671,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					//				$data['confirmed_by']		= $user->get('id');
 					//				$data['activation']			= '';
 				}
+
+				if ($data['status'] == '0')
+				{
+					// Unconfirmed subscribers do not have a confirmed_by value
+					$data['confirmed_by']		= 0;
+				}
 			}
 
 			if (parent::save($data))
@@ -1338,16 +1344,18 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				JFactory::getApplication()->setUserState('com_bwpostman.subscriber.fileformat', 'xml');
 
 				// Parse the XML
-				$parser	= JFactory::getXml($dest);
+				$parser	= new \SimpleXMLElement($dest, null, true);
 
-				if ($parser->name() != "subscribers")
+				if ($parser->getName() != "subscribers")
 				{
 					// TODO: There is no bwpostman xml file! Perhaps one may proceed if there are appropriate fields
 				}
 
 				// Get all fields from the xml file for listing and selecting by the user
+				$addresses = $parser->xpath("subscriber");
+
 				$subscribers    = array();
-				foreach ($parser->subscriber as $subscriber)
+				foreach ($addresses as $subscriber)
 				{
 					$subscribers[]	= $subscriber;
 				}

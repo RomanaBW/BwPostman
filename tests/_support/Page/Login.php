@@ -56,7 +56,7 @@ class Login
 	 *
 	 * @since       2.0.0
 	 */
-	public static $loginButton   = 'button';
+	public static $loginButton   = "//*[@id='btn-login-submit']";
 
 	/**
 	 * @var string  $form

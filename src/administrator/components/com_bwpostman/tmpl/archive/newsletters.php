@@ -27,23 +27,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
-// Load the modal behavior for the newsletter preview
-//JHtml::_('behavior.modal');
-//JHtml::_('formbehavior.chosen', 'select');
-
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
 //Set context and layout state for filters
 $this->context	= 'archive.newsletters';
-$tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
+$tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
 //
 /**
  * BwPostman Archived Newsletters Layout
@@ -54,13 +54,13 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 ?>
 
 <div id="bwp_view_lists">
-	<form action="<?php echo JRoute::_($this->request_url); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_($this->request_url); ?>" method="post" name="adminForm" id="adminForm">
 		<div class="row">
 			<div class="col-md-12">
 				<div id="j-main-container" class="j-main-container">
 					<?php
 					// Search tools bar
-					echo JLayoutHelper::render(
+					echo LayoutHelper::render(
 						'tabbed',
 						array('view' => $this, 'tab' => $tab),
 						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
@@ -75,7 +75,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 							?>
 								<li class="open"><!-- We need to use the setAttribute-function because of the IE -->
 									<button onclick="layout.setAttribute('value','newsletters');this.form.submit();"
-											class="buttonAsLink_open"><?php echo JText::_('COM_BWPOSTMAN_ARC_NLS'); ?>
+											class="buttonAsLink_open"><?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>
 									</button>
 								</li>
 								<?php
@@ -86,7 +86,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 							?>
 								<li class="closed">
 									<button onclick="layout.setAttribute('value','subscribers');this.form.submit();"
-											class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
+											class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
 									</button>
 								</li>
 								<?php
@@ -97,7 +97,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 							?>
 								<li class="closed">
 									<button onclick="layout.setAttribute('value','campaigns');this.form.submit();"
-											class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
+											class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
 									</button>
 								</li>
 								<?php
@@ -108,7 +108,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 							?>
 								<li class="closed">
 									<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();"
-											class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_MLS'); ?>
+											class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_MLS'); ?>
 									</button>
 								</li>
 								<?php
@@ -119,7 +119,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 							?>
 								<li class="closed">
 									<button onclick="layout.setAttribute('value','templates');
-										this.form.submit();" class="buttonAsLink"><?php echo JText::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
+										this.form.submit();" class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
 									</button>
 								</li>
 								<?php
@@ -133,14 +133,14 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 									<tr>
 										<th style="width: 1%;" class="text-center">
 											<input type="checkbox" name="checkall-toggle" value=""
-													title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
+													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
 													onclick="Joomla.checkAll(this)" />
 										</th>
 										<th>
 											<?php echo HTMLHelper::_('searchtools.sort',  'Subject', 'a.subject', $listDirn, $listOrder); ?>
 										</th>
 										<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-											<?php echo JHtml::_(
+											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_DESCRIPTION',
 												'a.description',
@@ -161,7 +161,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<?php echo HTMLHelper::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?>
 										</th>
 										<th width="100" nowrap="nowrap">
-											<?php echo JHtml::_(
+											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_CAM_NAME',
 												'campaigns',
@@ -220,7 +220,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 									foreach ($this->items as $i => $item) :
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
-											<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+											<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 											<td>
 												<?php
 												echo $item->subject;
@@ -228,26 +228,26 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 												{ ?>&nbsp;&nbsp;
 													<span class="cam_preview">
 														<span class="editlinktip hasTip"
-																title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
+																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
 																<?php echo $this->escape($item->subject); ?>">
 															<a class="modal" href="
-															<?php echo JRoute::_(
+															<?php echo Route::_(
 																'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id
 															);
 															?>"
 																	rel="{handler: 'iframe', size: {x: 650, y: 450}}">
-																<?php echo JText::_('COM_BWPOSTMAN_HTML_NL');?>
+																<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
 															</a>&nbsp;
 														</span>
 														<span class="editlinktip hasTip" title="
-														<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
+														<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
 														<?php echo $this->escape($item->subject); ?>">
 															<a class="modal" href="
-															<?php echo JRoute::_(
+															<?php echo Route::_(
 																'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id='. $item->id
 															);?>"
 																	rel="{handler: 'iframe', size: {x: 650, y: 450}}">
-																<?php echo JText::_('COM_BWPOSTMAN_TEXT_NL');?>
+																<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
 															</a>&nbsp;
 														</span>
 													</span>
@@ -258,7 +258,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 												<?php
 												if ($item->mailing_date != '0000-00-00 00:00:00')
 												{
-													echo JHtml::date($item->mailing_date, JText::_('BW_DATE_FORMAT_LC5'));
+													echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5'));
 												}
 												?>&nbsp;
 											</td>
@@ -268,12 +268,12 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 												<?php echo $item->campaigns;
 												if ($item->campaign_archive_flag)
 												{
-													echo " (" . JText::_('ARCHIVED') . ")";
+													echo " (" . Text::_('ARCHIVED') . ")";
 												}
 												?>
 											</td>
 											<td align="center">
-												<?php echo JHtml::_(
+												<?php echo HTMLHelper::_(
 													'jgrid.published',
 													$item->published,
 													$i,
@@ -284,17 +284,17 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 											<td align="center">
 												<p style="text-align: center;">
 													<?php echo ($item->publish_up != '0000-00-00 00:00:00')
-														? JHtml::date($item->publish_up, JText::_('BW_DATE_FORMAT_LC5'))
+														? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 													<br /></p>
 												<p style="text-align: center;">
 													<?php echo ($item->publish_down != '0000-00-00 00:00:00')
-														? JHtml::date($item->publish_down, JText::_('BW_DATE_FORMAT_LC5'))
+														? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 												</p>
 											</td>
 											<td align="center">
-												<?php echo JHtml::date($item->archive_date, JText::_('BW_DATE_FORMAT_LC5')); ?>
+												<?php echo HTMLHelper::date($item->archive_date, Text::_('BW_DATE_FORMAT_LC5')); ?>
 											</td>
 											<td align="center"><?php echo $item->id; ?></td>
 										</tr>
@@ -302,7 +302,7 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 								}
 								else { ?>
 									<tr class="row1">
-										<td colspan="10"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+										<td colspan="10"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 									</tr><?php
 								}
 								?>
@@ -315,9 +315,9 @@ $tab			= JFactory::getApplication()->setUserState($this->context . '.tab', 'news
 					<input type="hidden" name="layout" value="newsletters" /><!-- value can change if one clicks on another tab -->
 					<input type="hidden" name="tab" value="newsletters" /><!-- value never changes -->
 					<input type="hidden" name="view" value="archive" />
-					<?php echo JHtml::_('form.token'); ?>
+					<?php echo HTMLHelper::_('form.token'); ?>
 				</div>
-				<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+				<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 			</div>
 		</div>
 	</form>

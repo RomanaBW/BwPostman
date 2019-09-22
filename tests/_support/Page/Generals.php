@@ -68,7 +68,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $nav_user_menu_logout = "//*[@class='dropdown-item'][contains(text(), 'Log out')]";
+	public static $nav_user_menu_logout = "//*[@class='dropdown-item']/a[normalize-space() = 'Log out']";
 
 	/**
 	 * @var string
@@ -90,6 +90,20 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $sys_message_container    = "//*[@id='system-message-container']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $joomlaMenuCollapse    = "//*/a[@id='menu-collapse']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $nlTabBar    = "//*[@class='tab-wrapper-bwp']";
 
 	/**
 	 * @var string
@@ -178,6 +192,13 @@ class Generals
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $alert_heading4    = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $alert            = 'div.alert';
@@ -188,6 +209,13 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $alert_success    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div/div';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $alert_success4    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div/p';
 
 	/**
 	 * @var string
@@ -222,14 +250,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error      = '//*[@id="system-message"]/joomla-alert[@type="danger"]';
+	public static $alert_error      = '//*[@id="system-message"]/joomla-alert[@type="danger"]/div/div';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $systemMessageClose      = '//*[@id="system-message"]/joomla-alert/button';
+	public static $systemMessageClose      = "//*[@id='system-message']/joomla-alert/button";
 
 	/**
 	 * @var string
@@ -445,8 +473,8 @@ class Generals
 		'Continue sending'     => "//*[@id='toolbar-popup-envelope']/button",
 		'Clear queue'          => "//*[@id='toolbar-delete']/button",
 		'Uninstall  '          => "//*[@id='toolbar-delete']/button",
-		'BwPostman Manual'     => "//*[@id='toolbar-book']/button",
-		'BwPostman Forum'      => "//*[@id='toolbar-users']/button",
+		'BwPostman Manual'     => "//*[@id='toolbar-manual']/button",
+		'BwPostman Forum'      => "//*[@id='toolbar-forum']/button",
 	);
 
 	/**
@@ -527,7 +555,7 @@ class Generals
 	 *
 	 * @since   2.0.0
 	 */
-	public static $table_headcol_link_location = "//*[@id='main-table']/thead/tr/th/a/span[text()[contains(.,'%s')]]";
+	public static $table_headcol_link_location = "//*[@id='main-table']/thead/tr/th/a/span[normalize-space(text()) = '%s']";
 
 	/**
 	 * Location of main table and arrow column
@@ -689,14 +717,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $template_yes_row          = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-featured')]";
+	public static $template_yes_row          = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/button/span[contains(@class, 'icon-featured')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $template_no_row        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unfeatured')]";
+	public static $template_no_row        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/button/span[contains(@class, 'icon-unfeatured')]";
 
 	/**
 	 * @var string
@@ -717,7 +745,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $pagination_bar       = '.pagination.pagination-toolbar';
+	public static $pagination_bar       = "//*/div[contains(@class, 'pagination pagination-toolbar')]";
 
 		// Filter access
 
@@ -805,7 +833,7 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $ordering_list        = "//*[@id='list_fullordering']";
-//*[@id="list_fullordering"]
+
 	/**
 	 * @var string
 	 *
@@ -933,7 +961,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $last_page_identifier = "//*/ul[contains(@class, 'pagination-list')]/li[contains(@class, 'active')]/span";
+	public static $last_page_identifier = "//*/li[contains(@class, 'page-link') and contains(@class, 'current')]/span";
 
 
 	// buttons

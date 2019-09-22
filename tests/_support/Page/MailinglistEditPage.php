@@ -61,63 +61,63 @@ class MailinglistEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access               = '#jform_access_chosen';
+	public static $access               = '#jform_access';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list_id       = "//*[@id='jform_access_chosen']";
+	public static $access_list_id       = "//*[@id='jform_access']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list          = "//*[@id='jform_access_chosen']/a";
+	public static $access_list          = "//*[@id='jform_access']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_list_text     = "//*[@id='jform_access_chosen']/a/span";
+	public static $access_list_text     = "//*[@id='jform_access']/option[@selected='selected']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_public        = "//*[@id='jform_access_chosen']/div/ul/li[text()='Public']";
+	public static $access_public        = "Public";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_guest         = "//*[@id='jform_access_chosen']/div/ul/li[text()='Guest']";
+	public static $access_guest         = "Guest";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_registered    = "//*[@id='jform_access_chosen']/div/ul/li[text()='Registered']";
+	public static $access_registered    = "Registered";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_special       = "//*[@id='jform_access_chosen']/div/ul/li[text()='Special']";
+	public static $access_special       = "Special";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $access_super         = "//*[@id='jform_access_chosen']/div/ul/li[text()='Super Users']";
+	public static $access_super         = "Super Users";
 
 
 	/**
@@ -125,42 +125,42 @@ class MailinglistEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published                = '#jform_published_chosen';
+	public static $published                = '#jform_published';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_list_id        = "jform_published_chosen";
+	public static $published_list_id        = "//*[@id='jform_published']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_list           = "//*[@id='jform_published_chosen']/a";
+	public static $published_list           = "//*[@id='jform_published']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_list_text      = "//*[@id='jform_published_chosen']/a/span";
+	public static $published_list_text      = "//*[@id='jform_published']/a/span";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_unpublished    = "//*[@id='jform_published_chosen']/div/ul/li[text()='unpublished']";
+	public static $published_unpublished    = "unpublished";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $published_published      = "//*[@id='jform_published_chosen']/div/ul/li[text()='published']";
+	public static $published_published      = "published";
 
 
 	/**
@@ -288,8 +288,8 @@ class MailinglistEditPage
 
 		$I->click(self::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(self::$success_save, Generals::$alert_msg);
+		$I->see("Message", Generals::$alert_heading);
+		$I->see(self::$success_save, Generals::$alert_success);
 		$I->see('Mailinglists', Generals::$pageTitle);
 	}
 }

@@ -25,6 +25,8 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Layout\LayoutHelper;
+
 defined('_JEXEC') or die('Restricted access');
 
 ?>
@@ -43,4 +45,4 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

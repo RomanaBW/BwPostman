@@ -25,98 +25,60 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
-$image = JHtml::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image = HTMLHelper::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', Text::_('COM_BWPOSTMAN_NOTES'));
+
+$currentTab = 'edit_text';
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-function changeTab(tab)
-{
-	if (tab != 'edit_text')
-	{
-		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel')
-	{
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.back')
-	{
-		form.task.value = 'back';
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.apply')
-	{
-		document.adminForm.task.setAttribute('value','newsletter.apply');
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
-	{
-		document.adminForm.task.setAttribute('value','newsletter.save');
-		Joomla.submitform(pressbutton, form);
-	}
-};
-/* ]]> */
-</script>
-
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
-			method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
+			method="post" name="adminForm" id="item-form">
 		<?php
 		if ($this->item->is_template)
 		{
-			JFactory::$application->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
+			Factory::$application->enqueueMessage(Text::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
 		}
 		?>
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
-					<button onclick="return changeTab('edit_basic');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
+					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_html');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
+					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="open">
-					<button onclick="return changeTab('edit_text');" class="buttonAsLink_open">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
+					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_preview');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
+					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="closed">
-						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
+						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>');" class="buttonAsLink">
+							<?php echo Text::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>
 				<?php } ?>
@@ -126,10 +88,10 @@ Joomla.submitbutton = function (pressbutton)
 
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform form-horizontal">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_TEXT'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_TEXT'); ?></legend>
 				<div class="row">
 					<div class="col-md-12">
-						<?php echo '<div>' . JText::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE') . '</div>'; ?>
+						<?php echo '<div>' . Text::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE') . '</div>'; ?>
 						<?php
 						foreach($this->form->getFieldset('text_version') as $field):
 							// if old template - show no intro fields
@@ -153,10 +115,10 @@ Joomla.submitbutton = function (pressbutton)
 											<div class="col-md-12">
 												<br />
 												<?php
-												$link = JUri::base() . '#';
-												if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+												$link = Uri::base() . '#';
+												if(PluginHelper::isEnabled('bwpostman', 'personalize'))
 												{
-													$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+													$button_text = Text::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
 													$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
 												}
 												else
@@ -167,12 +129,12 @@ Joomla.submitbutton = function (pressbutton)
 												foreach ($linktexts as $key => $linktext) {
 													echo "                    <a class=\"btn btn-info btn-small pull-left\"
 													 onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</a>";
-													echo '                     <p>&nbsp;' . JText::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
+													echo '                     <p>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
 												}
 
-												if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+												if(PluginHelper::isEnabled('bwpostman', 'personalize'))
 												{
-													echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+													echo Text::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
 												}
 												?>
 											</div>
@@ -195,7 +157,7 @@ Joomla.submitbutton = function (pressbutton)
 							endif;
 						endforeach; ?>
 					</div>
-					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+					<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
 				<div class="clr clearfix"></div>
 
@@ -220,7 +182,7 @@ Joomla.submitbutton = function (pressbutton)
 
 			</fieldset>
 		</div>
-		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
@@ -231,6 +193,39 @@ Joomla.submitbutton = function (pressbutton)
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 </div>
+
+<script type="text/javascript">
+	/* <![CDATA[ */
+	window.onload = function() {
+		Joomla = window.Joomla || {};
+
+		Joomla.submitbutton = function (pressbutton) {
+			var form = document.adminForm;
+			if (pressbutton === 'newsletter.cancel') {
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
+
+			if (pressbutton === 'newsletter.back') {
+				form.task.value = 'back';
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
+
+			if (pressbutton === 'newsletter.apply') {
+				document.adminForm.task.setAttribute('value', 'newsletter.apply');
+				Joomla.submitform(pressbutton, form);
+				return;
+			}
+
+			if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy') {
+				document.adminForm.task.setAttribute('value', 'newsletter.save');
+				Joomla.submitform(pressbutton, form);
+			}
+		};
+	}
+	/* ]]> */
+</script>

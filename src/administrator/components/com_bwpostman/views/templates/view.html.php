@@ -25,6 +25,8 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die('Restricted access');
 
 // Import VIEW object class
@@ -263,12 +265,24 @@ class BwPostmanViewTemplates extends JViewLegacy
 				if (BwPostmanHelper::canAdd('template'))
 				{
 					$bar = JToolbar::getInstance('toolbar');
-//					JHtml::_('behavior.modal');
-					$html = '<a id="toolbar-install-template" class="btn btn-small" href="' . JUri::root(true) .
-								'/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl"
+					if(version_compare(JVERSION, '3.99', 'le'))
+					{
+						$html = '<a id="toolbar-install-template" class="btn btn-small" href="' . JUri::root(true) .
+							'/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl"
 									rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}" >
-								<span class="icon-upload"></span>' . JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL') .
+								<span class="icon-download"></span>' . JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL') .
 							'</a>';
+					}
+					else
+					{
+						$installLink = Route::_('index.php?option=com_bwpostman&view=templates&layout=uploadtpl');
+						$html = '<joomla-toolbar-button id="toolbar-upload">';
+						$html .= '<a id="toolbar-install-template" class="button-upload btn btn-sm btn-primary" href="' . $installLink . '" rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}">';
+						$html .= '<span class="icon-upload"></span>';
+						$html .= JText::_('COM_BWPOSTMAN_TPL_INSTALLTPL');
+						$html .= '</a>';
+						$html .= '</joomla-toolbar-button>';
+					}
 					$bar->appendButton('Custom', $html);
 
 				JToolbarHelper::custom('templates.exportTpl', 'download', '', 'COM_BWPOSTMAN_TPL_EXPORTTPL', true);
@@ -283,9 +297,21 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('templates');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		}
+		else
+		{
+			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
+			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
 
-		JToolbarHelper::spacer();
+			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
+
+			$bar->appendButton($manualButton);
+			$bar->appendButton($forumButton);
+		}
 	}
 }

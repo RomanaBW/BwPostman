@@ -25,14 +25,18 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+
 defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.tooltip');
-//JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('behavior.tooltip');
 
 // Keep session alive while editing
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.keepalive');
 ?>
 
 <script type="text/javascript">
@@ -59,9 +63,9 @@ JHtml::_('behavior.keepalive');
 		for(i=selectbox.options.length-1;i>=0;i--)
 		{
 			if(selectbox.options[i].selected){
-				if (selectbox.options[i].text == 'email')
+				if (selectbox.options[i].text === 'email')
 				{
-					alert ("<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_REMOVING_EMAIL', true); ?>");
+					alert ("<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_REMOVING_EMAIL', true); ?>");
 				} else
 				{
 				selectbox.remove(i);
@@ -77,9 +81,9 @@ JHtml::_('behavior.keepalive');
 	{
 		for(i = 0; i < element.options.length; i++)
 		{
-			if(element.options[i].selected == true)
+			if(element.options[i].selected === true)
 			{
-				if(i != 0)
+				if(i !== 0)
 				{
 					var temp = new Option(element.options[i-1].text,element.options[i-1].value);
 					var temp2 = new Option(element.options[i].text,element.options[i].value);
@@ -115,8 +119,8 @@ JHtml::_('behavior.keepalive');
 
 		var count_import_fields = document.getElementById('import_fields').length;
 
-		if (count_db_fields != count_import_fields) {
-		alert ("<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_MATCH_FIELDS', true); ?>");
+		if (count_db_fields !== count_import_fields) {
+		alert ("<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_MATCH_FIELDS', true); ?>");
 		return 0;
 		}
 		return 1;
@@ -125,19 +129,19 @@ JHtml::_('behavior.keepalive');
 </script>
 
 <?php
-	JHtml::_('bootstrap.tooltip');
-	$jinput	= JFactory::getApplication()->input;
+	HTMLHelper::_('bootstrap.tooltip');
+	$jinput	= Factory::getApplication()->input;
 	$image	= '<i class="icon-info"></i>';
 	$option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_STP1'); ?></legend>
+		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP1'); ?></legend>
 		<div class="well well-small">
 		  <table class="admintable bwptable import">
 				<tr>
-					<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></td>
+					<td width="250" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></td>
 					<td><?php echo $this->import['filename']; ?></td>
 				</tr>
 
@@ -146,7 +150,7 @@ JHtml::_('behavior.keepalive');
 					// Show delimiter, enclosure and caption
 					?>
 					<tr>
-						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></td>
+						<td align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></td>
 						<td>
 							<?php
 							if ($this->import['delimiter'] == '\t')
@@ -163,12 +167,12 @@ JHtml::_('behavior.keepalive');
 							} ?></td>
 					</tr>
 					<tr>
-						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></td>
+						<td align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></td>
 						<td>
 							<?php
 							if ($this->import['enclosure'] == '')
 							{
-								echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION');
+								echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION');
 							}
 							else
 							{
@@ -177,16 +181,16 @@ JHtml::_('behavior.keepalive');
 						</td>
 					</tr>
 					<tr>
-						<td align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></td>
+						<td align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></td>
 						<td>
 							<?php
 							if (empty($this->import['caption']))
 							{
-								echo JText::_('COM_BWPOSTMAN_NO');
+								echo Text::_('COM_BWPOSTMAN_NO');
 							}
 							else
 							{
-								echo JText::_('COM_BWPOSTMAN_YES');
+								echo Text::_('COM_BWPOSTMAN_YES');
 							} ?>
 						</td>
 					</tr>
@@ -199,30 +203,30 @@ JHtml::_('behavior.keepalive');
 	</fieldset>
 
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_STP2'); ?></legend>
+		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP2'); ?></legend>
 			<div class="well well-small">
 				<div class="well well-small">
 					<table class="admintable import">
 						<tr>
-							<td width="150" align="right" class="key" rowspan="2"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS'); ?>
+							<td width="150" align="right" class="key" rowspan="2"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS'); ?>
 								<br />
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>">
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
 							</td>
-							<td><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
+							<td><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
 								&nbsp;
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>">
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
 							</td>
 							<td>&nbsp;</td>
-							<td><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS'); ?>
+							<td><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS'); ?>
 								&nbsp;
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?>">
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
 							</td>
@@ -231,28 +235,28 @@ JHtml::_('behavior.keepalive');
 						</tr>
 						<tr>
 							<td valign="top" width="180"><?php echo $this->lists['db_fields']; ?>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
 								<input class="btn btn-small" type="button" onclick="removeOptions(db_fields);"
-										value="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
+										value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
 								</span>
 							</td>
 							<td width="20" align="center"><strong>=</strong></td>
 							<td valign="top" width="280"><?php echo $this->lists['import_fields']; ?>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
 									<input class="btn btn-small" type="button" onclick="moveUp(document.getElementById('import_fields'));"
-											value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
+											value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
 								</span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
 									<input class="btn btn-small" type="button" onclick="moveDown(document.getElementById('import_fields'));"
-											value="<?php echo JText::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
+											value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
 								</span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
 									<input class="btn btn-small" type="button" onclick="removeOptions(import_fields);"
-											value="<?php echo JText::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
+											value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
 								</span>
 							</td>
 							<td>&nbsp;</td>
-							<td valign="top"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_ANNOTATION'); ?></td>
+							<td valign="top"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_ANNOTATION'); ?></td>
 						</tr>
 					</table>
 				</div>
@@ -264,7 +268,7 @@ JHtml::_('behavior.keepalive');
 								<fieldset class="adminform">
 									<legend>
 										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
+												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
 											<?php echo $image; ?>
 										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
@@ -280,7 +284,7 @@ JHtml::_('behavior.keepalive');
 										{ ?>
 											<div class="width-50 fltlft span6">
 												<label class="mailinglist_label noclear checkbox">
-													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
 												</label>
 											</div><?php
 										}
@@ -295,7 +299,7 @@ JHtml::_('behavior.keepalive');
 								<fieldset class="adminform">
 									<legend>
 										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
+												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
 											<?php echo $image; ?>
 										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
@@ -312,7 +316,7 @@ JHtml::_('behavior.keepalive');
 										{ ?>
 											<div class="width-50 fltlft span6">
 												<label class="mailinglist_label noclear checkbox">
-													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+													<?php echo Text::_('COM_BWPOSTMAN_NO_DATA') ?>
 												</label>
 											</div><?php
 										}
@@ -327,7 +331,7 @@ JHtml::_('behavior.keepalive');
 								<fieldset class="adminform">
 									<legend>
 										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
 											<?php echo $image; ?>
 										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
@@ -343,7 +347,7 @@ JHtml::_('behavior.keepalive');
 										{ ?>
 											<div class="width-50 fltlft span6">
 												<label class="mailinglist_label noclear checkbox">
-													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+													<?php echo Text::_('COM_BWPOSTMAN_NO_DATA') ?>
 												</label>
 											</div><?php
 										}
@@ -358,9 +362,9 @@ JHtml::_('behavior.keepalive');
 				<div class="well well-small">
 					<table class="admintable bwptable import">
 						<tr>
-							<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT'); ?>
+							<td width="250" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT'); ?>
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE');?>">
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE');?>">
 									<?php echo $image; ?>
 								</span>
 							</td>
@@ -369,9 +373,9 @@ JHtml::_('behavior.keepalive');
 					</table>
 					<table class="admintable bwptable import">
 						<tr>
-							<td width="250" align="right" class="key"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
+							<td width="250" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>">
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>">
 									<?php echo $image; ?>
 								</span>
 							</td>
@@ -389,7 +393,7 @@ JHtml::_('behavior.keepalive');
 							selectAllOptions(document.adminForm['import_fields[]']);
 							Joomla.submitbutton('subscribers.import');
 						}"
-						 value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON1'); ?>" />
+						 value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON1'); ?>" />
 					</td>
 				</tr>
 			</table>
@@ -400,7 +404,7 @@ JHtml::_('behavior.keepalive');
 	<input type="hidden" name="task" value="import" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

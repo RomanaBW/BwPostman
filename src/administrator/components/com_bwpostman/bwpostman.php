@@ -56,9 +56,6 @@ try
 	// Get an instance of the controller
 	$controller = JControllerLegacy::getInstance('BwPostman');
 
-//	require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/controller.php');
-//	$controller2 = new BwPostmanController();
-
 	// Perform the Request task
 	$jinput = JFactory::getApplication()->input;
 	$task = $jinput->getCmd('task');
@@ -70,5 +67,4 @@ try
 catch (Exception $exception)
 {
 	JText::_('JERROR_AN_ERROR_HAS_OCCURRED');
-	$app->enqueueMessage($exception->getMessage());
 }

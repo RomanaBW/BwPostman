@@ -93,6 +93,8 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @return  BwPostmanControllerSubscribers		This object to support chaining.
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
@@ -444,26 +446,34 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 						else
 						{ // XML file
 							// Parse the XML
-							$parser	= JFactory::getXml($dest);
+							$parser = new \SimpleXMLElement($dest, null, true);
 
 							// Get the name of the paling element
-							echo "NAME: '{$parser->name()}' <br>\n";
+							echo "NAME: '{$parser->getName()}' <br>\n";
 
-							if ($parser->name() != "subscribers")
+							if ($parser->getName() != "subscribers")
 							{
 								// TODO: es ist kein bwpostman xml file! koennen trotzdem fortfahren, falls geeignete felder drin sind
 							}
 
 							// Get all fields from the xml file for listing and selecting by the user
-							$xml_fields_keys	= array_keys(get_object_vars($parser->subscriber));
+							$addresses = $parser->xpath("subscriber");
+							$elements = $addresses[0]->children();
+							$elementNames = array();
+
+							foreach ($elements as $element)
+							{
+								$elementNames[] = $element->getName();
+							}
+
 							$import_fields		= array();
 
-							for ($i = 0; $i < count($xml_fields_keys); $i++)
+							for ($i = 0; $i < count($elementNames); $i++)
 							{
 								$import_fields[] 	= JHtml::_(
 									'select.option',
-									"$xml_fields_keys[$i]",
-									JText::_('COM_BWPOSTMAN_SUB_IMPORT_FIELD') . "$i ({$xml_fields_keys[$i]})"
+									"$elementNames[$i]",
+									JText::_('COM_BWPOSTMAN_SUB_IMPORT_FIELD') . "$i ({$elementNames[$i]})"
 								);
 							}
 

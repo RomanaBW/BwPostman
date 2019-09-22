@@ -146,7 +146,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
 	 *
-	 * @param object $subject
+	 * @param Joomla\Event\DispatcherInterface $subject
 	 * @param array  $config
 	 *
 	 * @since   2.0.0
@@ -575,7 +575,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			// Disclaimer article and target_blank or not
 			if ($com_params->get('disclaimer_selection') == 1 && $com_params->get('article_id') > 0)
 			{
-				require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
+				JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 				$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($com_params->get('article_id'))) . $tpl_com;
 			}
 			// Disclaimer menu item and target_blank or not

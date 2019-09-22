@@ -53,6 +53,7 @@
 		       labelclass="control-label"
 		       description="COM_BWPOSTMAN_ATTACHMENT_FIELD_DESC"
 		       multiple="true"
+		       role="dialog"
 		       min="0"
 		       max="20"
 		>
@@ -62,6 +63,7 @@
 				       labelclass="control-label"
 				       link="index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=com_bwpostman_nl&amp;author="
 				       size="30"
+				       role="dialog"
 				       type="media" />
 			</form>
 		</field>
@@ -254,6 +256,7 @@
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_CAMPAIGN_ID_DESC"
 			class="chzn-state"
+			onchange="switchRecipients();"
 		/>
 	</fieldset>
 

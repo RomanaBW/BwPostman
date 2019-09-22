@@ -88,10 +88,17 @@ class JFormFieldBwRules extends JFormFieldRules
 		JHtml::_('bootstrap.tooltip');
 
 		// Add Javascript for permission change
-		HTMLHelper::_('form.csrf');
-		HTMLHelper::_('webcomponent', 'system/fields/joomla-field-permissions.min.js',
+		if (version_compare(JVERSION, '3.99', 'le'))
+		{
+			JHtml::_('script', 'system/permissions.js', array('version' => 'auto', 'relative' => true));
+		}
+		else
+		{
+			HTMLHelper::_('form.csrf');
+			HTMLHelper::_('webcomponent', 'system/fields/joomla-field-permissions.min.js',
 				['version' => 'auto', 'relative' => true]);
-		HTMLHelper::_('webcomponent', 'vendor/joomla-custom-elements/joomla-tab.min.js', ['version' => 'auto', 'relative' => true]);
+			HTMLHelper::_('webcomponent', 'vendor/joomla-custom-elements/joomla-tab.min.js', ['version' => 'auto', 'relative' => true]);
+		}
 
 		// Load JavaScript message titles
 		JText::script('ERROR');
@@ -130,11 +137,25 @@ class JFormFieldBwRules extends JFormFieldRules
 			}
 		}
 
+		// Remove action create, at item level not needed
+		for ($i = 0; $i <= count($actions); $i++)
+		{
+			$action = $actions[$i];
+			$actionParts = explode('.', $action->name);
+			if ($actionParts[2] === 'create')
+			{
+				unset($actions[$i]);
+			}
+		}
+
+
 		// Get the asset id.
 		// Note that for global configuration, com_config injects asset_id = 1 into the form.
 		$assetId       = $this->form->getValue($assetField);
 		$newItem       = empty($assetId) && $isGlobalConfig === false && $section !== 'component';
 		$parentAssetId = null;
+
+		$assetId = $this->checkAssetId($assetId);
 
 		// If the asset id is empty (component or new item).
 		if (empty($assetId))
@@ -164,7 +185,7 @@ class JFormFieldBwRules extends JFormFieldRules
 		// If not in global config we need the parent_id asset to calculate permissions.
 		if (!$isGlobalConfig)
 		{
-			// In this case we need to get the component rules too.
+			// In this case we need to get the section rules too.
 			$db = JFactory::getDbo();
 
 			$query = $db->getQuery(true)
@@ -179,8 +200,8 @@ class JFormFieldBwRules extends JFormFieldRules
 
 		// Full width format.
 
-		// Get the rules for just this asset (non-recursive).
-		$assetRules = BwAccess::getAssetRules($assetId, false, false);
+		// Get the rules for this asset (recursive only for section).
+		$assetRules = BwAccess::getAssetRules($assetId, true, false);
 
 		// Get the available user groups.
 		$groups = $this->getUserGroups();
@@ -191,9 +212,6 @@ class JFormFieldBwRules extends JFormFieldRules
 		// Prepare output
 		$html = array();
 
-		// Description
-		$html[] = '<p class="rule-desc">' . JText::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
-
 		// Begin tabs
 		if (version_compare(JVERSION, '3.99', 'le'))
 		{
@@ -203,25 +221,53 @@ class JFormFieldBwRules extends JFormFieldRules
 			$html[] = '</div></div>';
 			$html[] = '<div class="clr"></div>';
 			$html[] = '<div class="alert">';
+
+			$html[] = '<div class="rule-notes">';
+
+			if ($section === 'component' || !$section)
+			{
+				$html[] = JText::_('JLIB_RULES_SETTING_NOTES');
+			}
+			else
+			{
+				$html[] = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
+			}
+
+			$html[] = '</div>';
 		}
 		else
 		{
+			if ($section === 'component' || !$section)
+			{
+				$rulesText = JText::_('JLIB_RULES_SETTING_NOTES');
+			}
+			else
+			{
+				$rulesText = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
+			}
+
+			// Description
+			$html[] = '<details>';
+			$html[] = '	<summary class="rule-notes">';
+			$html[] = Text::_('JLIB_RULES_SETTINGS_DESC');
+			$html[] = '	</summary>';
+			$html[] = '	<div class="rule-notes">';
+
+			if ($section === 'component' || !$section)
+			{
+				$html[] = Text::_('JLIB_RULES_SETTING_NOTES');
+			}
+			else
+			{
+				$html[] = Text::_('JLIB_RULES_SETTING_NOTES_ITEM');
+			}
+			$html[] = '	</div>';
+			$html[] = '</details>';
+
 			$html = $this->getTabsJ4($ajaxUri, $html, $groups, $actions, $newItem, $assetRules, $isGlobalConfig, $assetId,
 				$parentAssetId);
 		}
 
-		$html[] = '<div class="rule-notes">';
-
-		if ($section === 'component' || !$section)
-		{
-			$html[] = JText::_('JLIB_RULES_SETTING_NOTES');
-		}
-		else
-		{
-			$html[] = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
-		}
-
-		$html[] = '</div>';
 
 		return implode("\n", $html);
 	}
@@ -506,12 +552,14 @@ class JFormFieldBwRules extends JFormFieldRules
 								$description = ' class="hasTooltip" title="' . HTMLHelper::_('tooltipText', $action->title, $action->description) . '"';
 							}
 			$html[] = '				<tr>';
+// Action column
 			$html[] = '					<td headers="actions-th' . $group->value . '">';
 			$html[] = '						<label for="' . $this->id . '_' . $action->name . '_' . $group->value . '" ' . $description . '>' .
 										Text::_($action->title) .
 						'			        </label>';
 			$html[] = '					</td>';
 
+// Select list column
 			$html[] = '					<td headers="settings-th' . $group->value . '">';
 			$html[] = '						<div class="d-flex align-items-center">';
 			$html[] = '							<select data-onchange-task="permissions.apply"
@@ -538,6 +586,7 @@ class JFormFieldBwRules extends JFormFieldRules
 											}
 			$html[] = '								<option value="" ' . $selected . '>';
 			$html[] = 								Text::_(empty($group->parent_id) && $isGlobalConfig ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
+											$selected = '';
 
 											if ($assetRule === true)
 											{
@@ -545,12 +594,13 @@ class JFormFieldBwRules extends JFormFieldRules
 											}
 			$html[] = '								<option value="1" ' . $selected . '>';
 			$html[] =								Text::_('JLIB_RULES_ALLOWED') . '</option>';
+											$selected = '';
 
 											if ($assetRule === false)
 											{
 												$selected = ' selected="selected"';
 											}
-			$html[] = '								<option value="" ' . $selected . '>';
+			$html[] = '								<option value="0" ' . $selected . '>';
 			$html[] =								Text::_('JLIB_RULES_DENIED') . '</option>';
 
 			$html[] = '							</select>&#160;';
@@ -558,6 +608,7 @@ class JFormFieldBwRules extends JFormFieldRules
 			$html[] = '						</div>';
 			$html[] = '					</td>';
 
+// calculated column
 			$html[] = '					<td headers="aclaction-th<?php echo $group->value; ?>">';
 									$result = array();
 									// Get the group, group parent id, and group global config recursive calculated permission for the chosen action.
@@ -645,5 +696,35 @@ class JFormFieldBwRules extends JFormFieldRules
 	$html[] = '</joomla-field-permissions>';
 
 		return $html;
+	}
+
+	/**
+	 *
+	 * Method to check, if current asset id exists in asset table
+	 * @param integer          $assetId
+	 *
+	 * @return integer|null
+	 *
+	 * @since 2.4.0
+	 */
+	private function checkAssetId($assetId)
+	{
+		$db	= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote($assetId));
+
+		$db->setQuery($query);
+
+		$res = $db->loadAssoc();
+
+		if (is_array($res))
+		{
+			return $res['id'];
+		}
+
+		return null;
 	}
 }

@@ -12,6 +12,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Toolbar\ToolbarButton;
+use Joomla\CMS\Language\Text;
 
 // require_once JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar';
 
@@ -68,7 +69,14 @@ class JButtonExtlink extends ToolbarButton
 	 */
 	public function fetchId($type = 'Extlink', $name = '')
 	{
-		return $this->_parent->getName() . '-' . $name;
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			return $this->_parent->getName() . '-' . $name;
+		}
+		else
+		{
+			return $this->parent->getName() . '-' . $name;
+		}
 	}
 
 	/**
@@ -84,4 +92,92 @@ class JButtonExtlink extends ToolbarButton
 	{
 		return $url;
 	}
+
+	/**
+	 * Prepare options for this button.
+	 *
+	 * @param   array  &$options  The options about this button.
+	 *
+	 * @return  void
+	 *
+	 * @since  2.4.0
+	 */
+	protected function prepareOptions(array &$options)
+	{
+		$options['name']  = $this->getName();
+		$options['text']  = Text::_($this->getText());
+		$options['class'] = $this->getIcon() ?: $this->fetchIconClass($this->getName());
+		$options['id']    = $this->ensureUniqueId($this->fetchId('Extlink', $options['idName']));
+
+		if (!empty($options['is_child']))
+		{
+			$options['tagName'] = 'button';
+			$options['btnClass'] = ($options['button_class'] ?? '') . ' dropdown-item';
+			$options['attributes']['type'] = 'button';
+		}
+		else
+		{
+			$options['tagName'] = 'button';
+			$options['btnClass'] = ($options['button_class'] ?? 'btn btn-primary');
+			$options['attributes']['type'] = 'button';
+		}
+	}
+
+	/**
+	 * Get the HTML to render the button
+	 *
+	 * @param   array  &$definition  Parameters to be passed
+	 *
+	 * @return  string
+	 *
+	 * @since   2.4.0
+	 *
+	 * @throws \Exception
+	 */
+	public function render(&$definition = null)
+	{
+		if ($definition === null)
+		{
+			$action = $this->renderButton($this->options);
+		}
+		// For B/C
+		elseif (is_array($definition))
+		{
+			$action = $this->fetchButton(...$definition);
+		}
+		else
+		{
+			throw new \InvalidArgumentException('Wrong argument: $definition, should be NULL or array.');
+		}
+
+		// Build the HTML Button
+		$layout = new FileLayout('toolbar.extlink', JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts');
+
+		return $layout->render(
+			[
+				'action' => $action,
+				'options' => $this->options
+			]
+		);
+	}
+
+	/**
+	 * Method to get the CSS class name for an icon identifier
+	 *
+	 * Can be redefined in the final class
+	 *
+	 * @param   string  $identifier  Icon identification string
+	 *
+	 * @return  string  CSS class name
+	 *
+	 * @since   3.0
+	 */
+	public function fetchIconClass($identifier)
+	{
+		// It's an ugly hack, but this allows templates to define the icon classes for the toolbar
+		$layout = new FileLayout('joomla.toolbar.iconclass');
+
+		return $layout->render(array('icon' => $identifier));
+	}
+
 }

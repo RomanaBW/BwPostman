@@ -392,13 +392,13 @@ class TestSubscribersDetailsCest
 		$I->amOnPage(SubManage::$url);
 		$I->clickAndWait(SubEdit::$firstSubscriber, 1);
 
-		$I->clickAndWait(SubEdit::$printSubsDataButton, 3);
+		$I->clickAndWait(sprintf(SubEdit::$printSubsDataButton, SubEdit::$printSubsDataText), 3);
 
-		$I->switchToIFrame("subsData");
+		$I->switchToIFrame(SubEdit::$printSubsDataText);
 		$I->see(" l.abbott@tester-net.nil ", "html/body/table[1]/tbody/tr[4]/td[2]");
 
 		$I->switchToIFrame();
-		$I->clickAndWait("html/body/div[5]/a", 1);
+		$I->clickAndWait(SubEdit::$printSubsDataClose, 2);
 		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
 
 		$I->see('Subscribers', Generals::$pageTitle);
@@ -513,12 +513,17 @@ class TestSubscribersDetailsCest
 
 		if ($options->show_emailformat)
 		{
-			$I->clickAndWait(SubEdit::$mailformat, 1);
-			$I->clickAndWait(SubManage::$format_text, 1);
+			$I->click(SubEdit::$mailformat);
+			$I->selectOption(SubEdit::$mailformat, SubEdit::$format_text);
+			$I->wait(1);
+			$I->waitForText("Text", 5);
 		}
 
-		$I->clickAndWait(SubEdit::$confirm, 1);
-		$I->clickAndWait(SubEdit::$confirmed, 1);
+		$I->click(SubEdit::$confirm);
+		$I->selectOption(SubEdit::$confirm, SubEdit::$confirmed);
+		$I->wait(1);
+		$I->waitForText("confirmed", 5);
+
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);

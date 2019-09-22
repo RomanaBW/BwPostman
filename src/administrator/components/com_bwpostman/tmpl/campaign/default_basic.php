@@ -25,16 +25,18 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die('Restricted access');
 
 $image = '<i class="icon-info"></i>';
 ?>
 
-<div class="row">
-	<legend>
-		<?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
-	</legend>
+<div class="row well">
 	<div class="col-md-6">
+		<legend>
+			<?php echo empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_CAM') : Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
+		</legend>
 		<?php
 		if (isset($this->item->err_code))
 		{
@@ -142,24 +144,24 @@ $image = '<i class="icon-info"></i>';
 			</div>
 		</div>
 	</div>
-	<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+	<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 	<div class="clearfix"></div>
 </div>
 
 <div class="row well cam-recipients">
-	<legend class="required">
-		<?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
-	</legend>
 	<div class="col-md-9 nl-mailinglists">
+		<legend class="required">
+			<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
+		</legend>
 		<div class="well-white well-small">
 			<legend>
 				<span class="editlinktip hasTip hasTooltip"
-						title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+						title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
 					<?php echo $image; ?>
 				</span>
 				<span class="editlinktip hasTip hasTooltip"
-						title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
-								<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
+						title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+								<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
 				</span>
 			</legend>
 			<div class="row">
@@ -172,11 +174,11 @@ $image = '<i class="icon-info"></i>';
 								<fieldset>
 									<legend>
 												<span class="editlinktip hasTip hasTooltip"
-														title="<?php echo JText::_($field->description); ?>">
+														title="<?php echo Text::_($field->description); ?>">
 													<?php echo $image; ?>
 												</span>
 										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo JText::_($field->description); ?>">
+												title="<?php echo Text::_($field->description); ?>">
 													<?php echo $field->label; ?>
 												</span>
 									</legend>
@@ -191,7 +193,7 @@ $image = '<i class="icon-info"></i>';
 										{
 											echo '<div class="width-50 fltlft col-md-6">
 																<label class="mailinglist_label noclear checkbox">' .
-												JText::_('COM_BWPOSTMAN_NO_DATA') .
+												Text::_('COM_BWPOSTMAN_NO_DATA') .
 												'</label>
 															</div>';
 										}
@@ -210,10 +212,10 @@ $image = '<i class="icon-info"></i>';
 		<div class="well-white well-small">
 			<legend>
 				<span class="editlinktip hasTip hasTooltip"
-						title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+						title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
 					<?php echo $image; ?>
 				</span>
-				<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
+				<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 			</legend>
 			<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
 				<?php echo $field->input; ?>
@@ -223,35 +225,4 @@ $image = '<i class="icon-info"></i>';
 	<div class="clr clearfix"></div>
 </div>
 
-
-
-<script type="text/javascript">
-/* <![CDATA[ */
-var $j	= jQuery.noConflict();
-
-Joomla.submitbutton = function (pressbutton)
-{
-	if (pressbutton == 'campaign.cancel')
-	{
-		Joomla.submitform(pressbutton, document.adminForm);
-		return;
-	}
-
-	if ((pressbutton == 'campaign.apply') || (pressbutton == 'campaign.save') || (pressbutton == 'campaign.save2new') || (pressbutton == 'campaign.save2copy'))
-	{
-		if ($j("input[type=checkbox]:checked").length)
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-			return true;
-		}
-		else
-		{
-			alert('<?php echo JText::_("COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED"); ?>');
-			return false;
-		}
-	}
-};
-
-/* ]]> */
-</script>
 

@@ -124,7 +124,8 @@ class BwPostmanViewCampaign extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+//		$dispatcher = JEventDispatcher::getInstance();
+//		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
 		$app->setUserState('com_bwpostman.edit.campaign.id', $app->input->getInt('id', 0));
 
@@ -139,7 +140,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$this->newsletters = $this->get('Newsletters');
 
 		// trigger Plugin BwTimeControl event and get results
-		$app->triggerEvent('onBwPostmanCampaignPrepare', array (&$this->item, &$this->newsletters, &$document));
+//		$dispatcher->trigger('onBwPostmanCampaignPrepare', array (&$this->item, &$this->newsletters, &$document));
 
 		$this->addToolbar();
 		// Call parent display
@@ -224,10 +225,15 @@ class BwPostmanViewCampaign extends JViewLegacy
 
 		JFactory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
 		$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-		$siteURL 	= $uri->base();
+		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
 
-		// If we came from the main page we will show a back-button
-		if ($backlink == $siteURL . 'index.php?option=com_bwpostman&view=bwpostman')
+		if(version_compare(JVERSION, '3.99', 'ge'))
+		{
+			$siteURL .= '&view=bwpostman';
+		}
+
+		// If we came from the cover page we will show a back-button
+		if ($backlink == $siteURL)
 		{
 			JToolbarHelper::spacer();
 			JToolbarHelper::divider();
@@ -245,9 +251,21 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('campaign');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		}
+		else
+		{
+			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
+			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
 
-		JToolbarHelper::spacer();
+			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
+
+			$bar->appendButton($manualButton);
+			$bar->appendButton($forumButton);
+		}
 	}
 }

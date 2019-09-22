@@ -25,30 +25,35 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+
 defined('_JEXEC') or die('Restricted access');
 
 	// Keep session alive while editing
-	JHtml::_('behavior.keepalive');
+	HTMLHelper::_('behavior.keepalive');
 ?>
 
 <?php
-$jinput	= JFactory::getApplication()->input;
-$image_pos = JHtml::_('image', 'administrator/images/tick.png', JText::_('COM_BWPOSTMAN_NOTES'));
-$image_neg = JHtml::_('image', 'administrator/images/publish_x.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$jinput	= Factory::getApplication()->input;
+$image_pos = HTMLHelper::_('image', 'administrator/images/tick.png', Text::_('COM_BWPOSTMAN_NOTES'));
+$image_neg = HTMLHelper::_('image', 'administrator/images/publish_x.png', Text::_('COM_BWPOSTMAN_NOTES'));
 $option = $jinput->getCmd('option');
 
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'); ?></legend>
+		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'); ?></legend>
 		<table class="adminlist">
 			<tr>
-				<th width="30" align="center"><?php echo JText::_('ID'); ?></th>
-				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_SUB_NAME'); ?></th>
-				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_SUB_FIRSTNAME'); ?></th>
-				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?></th>
-				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT_TEXT'); ?></th>
+				<th width="30" align="center"><?php echo Text::_('ID'); ?></th>
+				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_SUB_NAME'); ?></th>
+				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_SUB_FIRSTNAME'); ?></th>
+				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT_TEXT'); ?></th>
 			</tr>
 			<?php foreach ($this->item AS $res_row) {?>
 			<tr>
@@ -77,7 +82,7 @@ $option = $jinput->getCmd('option');
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<input type="hidden" name="task" value="finishValidation" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

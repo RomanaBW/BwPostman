@@ -69,28 +69,28 @@ Joomla.submitbutton = function (pressbutton)
 	var form = document.adminForm;
 	if (pressbutton == 'newsletter.cancel')
 	{
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.back')
 	{
 		form.task.value = 'back';
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.apply')
 	{
 		form.task.setAttribute('value','newsletter.apply');
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 		return;
 	}
 
 	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.apply' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
 	{
 		form.task.setAttribute('value',pressbutton);
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 		return;
 	}
 
@@ -100,7 +100,7 @@ Joomla.submitbutton = function (pressbutton)
 		if (confirmSendNl == true)
 		{
 			form.task.setAttribute('value','newsletter.sendmail');
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 		}
 	}
 
@@ -110,7 +110,7 @@ Joomla.submitbutton = function (pressbutton)
 		if (confirmSendNl == true)
 		{
 			form.task.setAttribute('value','newsletter.sendmail');
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 		}
 	}
 
@@ -119,7 +119,7 @@ Joomla.submitbutton = function (pressbutton)
 		confirmSendNl = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING', true); ?>");
 		if (confirmSendNl == true) {
 			form.task.setAttribute('value','newsletter.sendmail');
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 		}
 	}
 };

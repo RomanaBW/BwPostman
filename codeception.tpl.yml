@@ -1,9 +1,9 @@
 actor: Tester
 paths:
-    tests: tests
+    tests: @BW_TEST_SRC_DIR@
     log: tests/_output/@BW_TEST_PROJECT@
     data: tests/_data
-    support: tests/_support
+    support: @BW_TEST_SRC_DIR@/_support
 #    envs: tests/_envs
 settings:
     bootstrap: _bootstrap.php

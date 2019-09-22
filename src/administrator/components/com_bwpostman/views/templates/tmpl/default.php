@@ -47,12 +47,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE' , true); ?>");
 			if (ConfirmArchive == true)
 			{
-				Joomla.submitform(pressbutton, form);
+				Joomla.submitform(pressbutton, document.adminForm);
 			}
 		}
 		else
 		{
-			Joomla.submitform(pressbutton, form);
+			Joomla.submitform(pressbutton, document.adminForm);
 		}
 	};
 /* ]]> */

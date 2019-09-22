@@ -33,7 +33,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -75,6 +75,8 @@ class TestTemplatesListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function PublishTemplatesByToolbar(AcceptanceTester $I)
 	{
@@ -95,7 +97,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -128,7 +130,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -155,7 +157,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -178,7 +180,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -220,7 +222,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -247,6 +249,8 @@ class TestTemplatesListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function ListlimitTemplates(AcceptanceTester $I)
 	{
@@ -267,7 +271,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -316,7 +320,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -336,6 +340,10 @@ class TestTemplatesListsCest
 		$I->click(TplManage::$startImport_button);
 		$I->dontSeeElement(Generals::$alert_error);
 
+		$I->waitForElementVisible(TplManage::$step1Field, 60);
+		$I->waitForElementVisible(TplManage::$step2Field, 60);
+		$I->waitForElementVisible(TplManage::$step3Field, 60);
+		$I->waitForElementVisible(TplManage::$step4Field, 60);
 		$I->waitForElementVisible(TplManage::$step5Field, 60);
 		$I->waitForElementVisible(TplManage::$importSuccessField, 60);
 		$I->see(TplManage::$importSuccessText, TplManage::$importSuccessField);
@@ -369,7 +377,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -405,7 +413,7 @@ class TestTemplatesListsCest
 		$I->click(TplManage::$firstTableCheckbox);
 		$I->click(TplManage::$export_button);
 		$I->waitForElementVisible(TplManage::$exportDownloadButton, 10);
-		$I->see(TplManage::$exportPackSuccess, TplManage::$exportPackSuccessField);
+		$I->see(TplManage::$exportPackSuccess, Generals::$alert_success);
 
 		$I->clickAndWait(TplManage::$exportDownloadButton, 3);
 
@@ -422,7 +430,7 @@ class TestTemplatesListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */

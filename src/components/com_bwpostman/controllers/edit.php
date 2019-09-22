@@ -161,13 +161,14 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		}
 		else
 		{ // Guest with unknown subscriber id (not stored in the session)
+			$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register&layout=error_geteditlink';
 			if (is_null($editlink))
 			{
 			}
 			elseif (empty($editlink))
 			{
 				BwPostmanSubscriberHelper::errorEditlink();
-				$this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=register&layout=error_geteditlink', false));
+				$this->setRedirect($link);
 			}
 			else
 			{
@@ -176,7 +177,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				if (!$subscriberid)
 				{
 					BwPostmanSubscriberHelper::errorEditlink();
-					$this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=register&layout=error_geteditlink', false));
+					$this->setRedirect($link);
 				}
 				else
 				{
@@ -307,20 +308,24 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		if (isset($post['unsubscribe']))
 		{
 			$this->unsubscribe($post['id']);
-			$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
+			$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register';
+			//@ToDo: With the following routing with SEO activated don't work
+//			$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 		}
 		else
 		{
 			$model  = $this->getModel('edit');
 			$itemid = $model->getItemid();
-			$link   = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid, false);
+			$link   = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid;
+			//@ToDo: With the following routing with SEO activated don't work
+//			$link   = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid, false);
 
 			// Email address has changed
 			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id'])))
 			{
 				$newEmail					= true;
 				$post['status'] 			= 0;
-				$post['confirmation_date'] 	= 0;
+				$post['confirmation_date'] 	= "0000-00-00 00:00:00";
 				$post['confirmed_by'] 		= '-1';
 				$post['activation']			= $model->getActivation();
 			}
@@ -382,7 +387,9 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 
 					$jinput->set('view', 'register');
-					$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
+					$link   = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register';
+					//@ToDo: With the following routing with SEO activated don't work
+//					$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 				}
 				else
 				{
@@ -403,7 +410,9 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 						$jinput->set('view', 'register');
 						$app->setUserState('subscriber.id', 0);
-						$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
+						$link   = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register';
+						//@ToDo: With the following routing with SEO activated don't work
+//						$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
 					}
 					else
 					{

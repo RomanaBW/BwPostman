@@ -27,12 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Language\Text;
 
-JHtml::_('bootstrap.tooltip');
-//JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.multiselect');
+HTMLHelper::_('bootstrap.tooltip');
+//HTMLHelper::_('formbehavior.chosen', 'select');
+HTMLHelper::_('behavior.multiselect');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
@@ -43,11 +44,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
+Joomla = window.Joomla || {};
+
+Joomla.submitbutton = function (pressbutton)
 	{
 		if (pressbutton == 'archive')
 		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_ML_CONFIRM_ARCHIVE' , true); ?>");
+			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_ML_CONFIRM_ARCHIVE' , true); ?>");
 			if (ConfirmArchive == true)
 			{
 				Joomla.submitform(pressbutton, document.adminForm);
@@ -74,31 +77,31 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 					<table id="main-table" class="table">
 						<caption id="captionTable" class="sr-only">
-							<?php echo Text::_('COM_CSP_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_ML_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
 						</caption>
 						<thead>
 							<tr>
 								<th scope="col" style="width: 1%;" class="text-center">
 									<input class="hasTooltip" type="checkbox" name="checkall-toggle" value=""
-											title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+											title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 								</th>
 								<th scope="col" class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?>
 								</th>
 								<th scope="col" class="d-none d-md-table-cell" style="min-width: 250px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 								</th>
 								<th scope="col" class="d-none d-md-table-cell" style="width: 10%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
 								</th>
 								<th scope="col" class="d-none d-md-table-cell" style="width: 10%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?>
 								</th>
 								<th scope="col" class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?>
 								</th>
 								<th scope="col" class="d-none d-md-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
-									<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+									<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 								</th>
 							</tr>
 						</thead>
@@ -108,10 +111,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								foreach ($this->items as $i => $item) :
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+									<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 									<td>
 										<?php if ($item->checked_out) : ?>
-											<?php echo JHtml::_(
+											<?php echo HTMLHelper::_(
 												'jgrid.checkedout',
 												$i,
 												$item->editor,
@@ -130,7 +133,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									</td>
 									<td><?php echo $item->description; ?></td>
 									<td align="center">
-										<?php echo JHtml::_(
+										<?php echo HTMLHelper::_(
 											'jgrid.published',
 											$item->published,
 											$i,
@@ -147,7 +150,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							}
 							else { ?>
 								<tr class="row1">
-									<td colspan="7"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+									<td colspan="7"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 								</tr><?php
 							}
 							?>
@@ -157,10 +160,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
-				<?php echo JHtml::_('form.token'); ?>
+				<?php echo HTMLHelper::_('form.token'); ?>
 			</div>
 			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
-			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+			<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 		</div>
 	</form>
 </div>

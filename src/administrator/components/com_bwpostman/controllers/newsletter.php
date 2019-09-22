@@ -34,6 +34,7 @@ use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman Newsletter Controller
@@ -62,6 +63,15 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	public $permissions;
 
 	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.4.0
+	 */
+	public $logger;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
@@ -75,6 +85,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
+
+		$log_options  = array();
+		$this->logger = new BwLogger($log_options);
 
 		//register extra tasks
 		$this->registerTask('setContent', 'setContent');
@@ -99,6 +112,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @return  BwPostmanControllerNewsletter		This object to support chaining.
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
@@ -136,6 +151,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @return	boolean
 	 *
 	 * @since	1.0.1
+	 *
+	 * @throws Exception
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
@@ -150,6 +167,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @return	boolean
 	 *
 	 * @since	2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public static function allowSend($data = array())
 	{
@@ -164,6 +183,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @return	boolean
 	 *
 	 * @since	2.0.0
+	 *
+	 * @throws Exception
 	 */
 	protected function allowArchive($recordIds = array())
 	{
@@ -424,7 +445,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 		if ($task == 'save2copy')
 		{
-			$data['is_template'] = '';
+			$data['is_template'] = 0;
 		}
 
 		// Populate the row id from the session.
@@ -749,6 +770,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$model	= $this->getModel('newsletter');
 		$error	= array();
 		$link   = '';
+		$this->logger->addEntry(new JLogEntry('NL controller sendmail reached'));
 
 		// Get record ID from list view
 		$ids    	= (int) $this->input->get('cid', 0, '');
@@ -761,6 +783,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		$data = $model->preSendChecks($error, $recordId);
+		$this->logger->addEntry(new JLogEntry('NL controller preSendChecks finished'));
 
 		// If preSendChecks fails redirect to edit
 		if ($error)
@@ -793,6 +816,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			// make sure, recordID matches data id (because we may come from list view or from a new newsletter)
 			$recordId = $model->getState('newsletter.id');
 			$ret_msg  = '';
+			$this->logger->addEntry(new JLogEntry('NL controller model save finished'));
 
 			switch ($task)
 			{
@@ -869,6 +893,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 			if ($startsending)
 			{
+				$this->logger->addEntry(new JLogEntry('NL controller start sending reached'));
 				if ($task == "sendmailandpublish")
 				{
 					$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', 1);

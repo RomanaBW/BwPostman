@@ -43,7 +43,7 @@ JHtml::_('behavior.formvalidator');
 			</h1>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=sendEditlink'); ?>" method="post"
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post"
 				id="bwp_com_form" name="bwp_com_form" class="form-validate">
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink_text">

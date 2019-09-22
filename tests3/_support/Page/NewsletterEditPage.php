@@ -436,7 +436,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.3.0
 	 */
-	public static $attachment_upload_path     = "/www_path/images/";
+	public static $attachment_upload_path     = "../www_path/images/";
 
 	/**
 	 * @var string
@@ -478,14 +478,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
+	public static $attachment_insert            = ".//*[@id='imageForm']/div[2]/div/div[2]/div/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_cancel            = ".//*[@id='imageForm']/div[2]/div/div[2]/button[2]";
+	public static $attachment_cancel            = ".//*[@id='imageForm']/div[2]/div/div[2]/div/button[2]";
 
 	/**
 	 * @var string
@@ -556,7 +556,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/div/label[2]/span/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
+	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/label[2]/span/span[contains(text(),'Standard Basic')]";
 
 	/**
 	 * @var string
@@ -564,7 +564,7 @@ class NewsletterEditPage
 	 * @since   2.0.0
 	 */
 	public static $template_text
-		= ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/div/label[4]/span/span[contains(text(),'Standard TEXT Template 3')]";
+		= ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/label[4]/span/span[contains(text(),'Standard TEXT Template 3')]";
 
 
 	/**

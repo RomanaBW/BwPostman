@@ -27,65 +27,38 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
 // Load the tooltip behavior for the notes
 HtmlHelper::_('behavior.tooltip');
 HtmlHelper::_('behavior.keepalive');
-HtmlHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom'));
 
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-
-		var form = document.adminForm;
-
-		if (pressbutton == 'mailinglist.cancel')
-		{
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
-
-		// Validate input fields
-		if (form.jform_title.value == "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");
-		}
-		else if (form.jform_description.value== "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, form);
-		}
-	};
-/* ]]> */
-</script>
 
 <div id="bwp_editform">
 	<?php
 	if ($this->queueEntries)
 	{
-		\JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
 			method="post" name="adminForm" id="item-form" class="form-validate">
 		<div class="tab-wrapper-bwp">
-			<?php echo JHtml::_('uitab.startTabSet', 'mailinglist_tabs', array('active' => 'details')); ?>
-			<?php echo JHtml::_(
+			<?php echo HTMLHelper::_('uitab.startTabSet', 'mailinglist_tabs', array('active' => 'details')); ?>
+			<?php echo HTMLHelper::_(
 				'uitab.addTab',
 				'mailinglist_tabs',
 				'details',
-				empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id)
+				empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_ML') : Text::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id)
 			); ?>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<div class="control-group">
 							<div class="control-group">
 								<div class="control-label">
@@ -120,7 +93,9 @@ HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom')
 								</div>
 							</div>
 						</div>
+					</div>
 
+					<div class="col-md-6">
 						<div class="control-group">
 							<div class="control-group">
 								<div class="control-label">
@@ -165,19 +140,19 @@ HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom')
 						</div>
 					</div>
 					<div class="clearfix"></div>
-					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+					<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
-			<?php echo JHtml::_('uitab.endTab'); ?>
+			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 			<?php
 			if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist']): ?>
-				<?php echo JHtml::_('uitab.addTab', 'mailinglist_tabs', 'rules', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
+				<?php echo HTMLHelper::_('uitab.addTab', 'mailinglist_tabs', 'rules', Text::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
 			<?php echo $this->form->getInput('rules'); ?>
 			<?php endif;
-				echo JHtml::_('uitab.endTab');
+				echo HTMLHelper::_('uitab.endTab');
 			?>
 			<div class="clearfix"></div>
-			<?php echo JHtml::_('uitab.endTabSet'); ?>
+			<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 		</div>
 
 		<input type="hidden" name="task" value="" />
@@ -188,8 +163,40 @@ HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom')
 		<?php echo $this->form->getInput('checked_out'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 
 	</form>
 </div>
-<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+
+<script type="text/javascript">
+	/* <![CDATA[ */
+	Joomla = window.Joomla || {};
+
+	Joomla.submitbutton = function (pressbutton)
+	{
+
+		var form = document.adminForm;
+
+		if (pressbutton === 'mailinglist.cancel')
+		{
+			Joomla.submitform(pressbutton, form);
+			return;
+		}
+
+		// Validate input fields
+		if (form.jform_title.value === "")
+		{
+			alert("<?php echo Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");
+		}
+		else if (form.jform_description.value=== "")
+		{
+			alert("<?php echo Text::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");
+		}
+		else
+		{
+			Joomla.submitform(pressbutton, form);
+		}
+	};
+	/* ]]> */
+</script>

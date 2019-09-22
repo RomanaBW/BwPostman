@@ -498,7 +498,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		try
 		{
 			$isTemplate = $_db->loadResult();
-			if ($isTemplate === '1')
+			if ($isTemplate === 1)
 			{
 				return true;
 			}
@@ -1104,7 +1104,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$newsletters_data_copy->archive_date 		= 0;
 				$newsletters_data_copy->hits 				= null;
 				$newsletters_data_copy->substitute_links	= null;
-				$newsletters_data_copy->is_template			= null;
+				$newsletters_data_copy->is_template			= 0;
 
 				$newsletters_data_copy->mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $id);
 
@@ -1858,6 +1858,27 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$form_data['modified_by'] = $state_data->modified_by;
 		}
 
+		// Publish up and down, checked out need correct null date
+		if (is_object($state_data) && property_exists($state_data, 'publish_up'))
+		{
+			$form_data['publish_up'] = $state_data->publish_up;
+		}
+
+		if (is_object($state_data) && property_exists($state_data, 'publish_down'))
+		{
+			$form_data['publish_down'] = $state_data->publish_up;
+		}
+
+		if (is_object($state_data) && property_exists($state_data, 'checked_out_time'))
+		{
+			$form_data['checked_out_time'] = $state_data->checked_out_time;
+		}
+
+		if (is_object($state_data) && property_exists($state_data, 'checked_out'))
+		{
+			$form_data['checked_out'] = $state_data->checked_out;
+		}
+
 		if (array_key_exists('selected_content', $form_data) !== true)
 		{
 			$form_data['selected_content'] = array();
@@ -2369,6 +2390,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true)
 	{
+		$this->logger->addEntry(new JLogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep));
+
 		try
 		{
 			$sendMailCounter = 0;
@@ -2422,8 +2445,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		// initialize
 		$renderer	        = new contentRenderer();
-		$log_options        = array('test' => 'testtext');
-		$logger             = new BwLogger($log_options);
 
 		$app				= JFactory::getApplication();
 		$uri  				= JUri::getInstance();
@@ -2630,7 +2651,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$error_msg_plugin   = JText::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
 			$app->enqueueMessage($error_msg_plugin, 'error');
-			$logger->addEntry(new JLogEntry($error_msg_plugin));
+			$this->logger->addEntry(new JLogEntry($error_msg_plugin));
 
 			$tblSendMailQueue->push(
 				$tblSendMailQueue->content_id,
@@ -2692,9 +2713,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if (!$this->arise_queue)
 		{
+			$this->logger->addEntry(new JLogEntry('Before sending'));
+			$this->logger->addEntry(new JLogEntry('Mailer data: ' . print_r($mailer, true)));
 			$res = $mailer->Send();
 			// @ToDo: $res may be boolean of JException object!
-			$logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res)));
+			$this->logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res)));
 		}
 
 		if ($res === true)

@@ -24,20 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('behavior.formvalidator');
 
-//Load tabs behavior for the Tabs
-//jimport('joomla.html.html.tabs');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/bwtabs.php');
-
-// Load the modal behavior for the newsletter preview
-//JHtml::_('behavior.modal', 'a.popup');
 
 $tab_options = array(
 	'onActive' => 'function(title, description){
@@ -61,67 +61,28 @@ $tab_options = array(
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton == 'campaign.cancel')
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-			return;
-		}
-
-		// Validate input fields
-		if (document.adminForm.jform_title.value == "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>");
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-
-		<?php if (property_exists($this, 'autocam_values'))
-		{ ?>
-		if (pressbutton == 'delete')
-		{
-			Joomla.submitform('campaign.apply');
-			return;
-		}
-		<?php } ?>
-
-		<?php
-		if (property_exists($this->item, 'tc_mailing_data'))
-		{ ?>
-			return checkReasonableTimes(pressbutton);
-			<?php
-		}
-		?>
-	};
-/* ]]> */
-</script>
-
-<div id="bwp_view_single">
 	<?php
 	if ($this->queueEntries)
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
-			method="post" name="adminForm" id="adminForm">
-		<div class="row">
-			<div class="col-md-12">
-				<?php echo JHtml::_('uitab.startTabSet', 'campaign_tabs', array('active' => 'basic'));
+	<div id="bwp_view_single">
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
+				method="post" name="adminForm" id="item-form">
+			<div class="row title-alias form-vertical form-no-margin mb-3">
+			</div>
+			<div>
+				<?php echo HTMLHelper::_('uitab.startTabSet', 'campaign_tabs', array('active' => 'basic'));
 				// Start Tab basic
-				$title = JText::_('COM_BWPOSTMAN_NEW_CAM');
+				$title = Text::_('COM_BWPOSTMAN_NEW_CAM');
 
 				if ($this->item->id)
 				{
-					$title = JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id);
+					$title = Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id);
 				}
 
-				echo JHtml::_(
+				echo HTMLHelper::_(
 					'uitab.addTab',
 					'campaign_tabs',
 					'basic',
@@ -129,11 +90,11 @@ $tab_options = array(
 				);
 
 				echo $this->loadTemplate('basic');
-				echo JHtml::_('uitab.endTab');
+				echo HTMLHelper::_('uitab.endTab');
 
 				// Start Tab assigned/unsent newsletters
-				$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
-				echo JHtml::_(
+				$text	= Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
+				echo HTMLHelper::_(
 					'uitab.addTab',
 					'campaign_tabs',
 					'unsent',
@@ -141,11 +102,11 @@ $tab_options = array(
 				);
 
 				echo $this->loadTemplate('unsent');
-				echo JHtml::_('uitab.endTab');
+				echo HTMLHelper::_('uitab.endTab');
 
 				// Start Tab sent newsletters
-				$text	= JText::_('COM_BWPOSTMAN_NL_SENT');
-				echo JHtml::_(
+				$text	= Text::_('COM_BWPOSTMAN_NL_SENT');
+				echo HTMLHelper::_(
 					'uitab.addTab',
 					'campaign_tabs',
 					'sent',
@@ -153,18 +114,18 @@ $tab_options = array(
 				);
 
 				echo $this->loadTemplate('sent');
-				echo JHtml::_('uitab.endTab');
+				echo HTMLHelper::_('uitab.endTab');
 
 				// Start Tab permissions
 				if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
 				{
-					echo JHtml::_('uitab.addTab', 'campaign_tabs', 'permissions',
-						JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'));
+					echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'permissions',
+						Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'));
 					echo $this->loadTemplate('rules');
+					echo HTMLHelper::_('uitab.endTab');
 				}
 
-				echo JHtml::_('uitab.endTab');
-				echo JHtml::_('uitab.endTabSet'); ?>
+				echo HTMLHelper::_('uitab.endTabSet'); ?>
 
 				<input type="hidden" name="task" value="" />
 
@@ -173,10 +134,53 @@ $tab_options = array(
 				<?php echo $this->form->getInput('checked_out'); ?>
 				<?php echo $this->form->getInput('archive_flag'); ?>
 				<?php echo $this->form->getInput('archive_time'); ?>
-				<?php echo JHtml::_('form.token'); ?>
+				<?php echo HTMLHelper::_('form.token'); ?>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 
-	<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
-</div>
+	<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+window.onload = function() {
+	var Joomla = window.Joomla || {};
+
+	Joomla.submitbutton = function (pressbutton) {
+		var form = document.adminForm;
+		if (pressbutton === 'campaign.cancel') {
+			Joomla.submitform(pressbutton, form);
+			return;
+		}
+
+		if ((pressbutton === 'campaign.apply') || (pressbutton === 'campaign.save') || (pressbutton === 'campaign.save2new') || (pressbutton === 'campaign.save2copy')) {
+			var errors = 0;
+			var title = form.jform_title.value;
+			var inputs = document.getElementsByTagName('input');
+			var recipients = 0;
+
+			for (var i = 0; i < inputs.length; i++) {
+				if (inputs[i].type.toLowerCase() === 'checkbox' && inputs[i].checked === true) {
+					recipients++;
+				}
+			}
+
+			if (title === '') {
+				alert("<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>");
+				errors++;
+			}
+
+			if (!recipients) {
+				alert("<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>");
+				errors++;
+			}
+
+			if (errors > 0) {
+				return false;
+			}
+			Joomla.submitform(pressbutton, form);
+		}
+	}
+}
+/* ]]> */
+</script>

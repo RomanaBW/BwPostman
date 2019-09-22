@@ -123,6 +123,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @return	boolean	True if allowed to change state of the record.
 	 *
 	 * @since	1.0.1
+	 *
+	 * @throws Exception
 	 */
 	protected function canEditState($record)
 	{
@@ -302,6 +304,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @return	mixed	A JForm object on success, false on failure
 	 *
 	 * @since	1.6
+	 *
+	 * @throws Exception
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{

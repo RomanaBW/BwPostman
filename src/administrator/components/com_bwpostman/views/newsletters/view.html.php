@@ -285,7 +285,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 				{
 					JToolbarHelper::custom(
 						'newsletters.resetSendAttempts',
-						'unpublish.png',
+						'checkin.png',
 						'unpublish_f2.png',
 						'COM_BWPOSTMAN_NL_RESET_TRIAL',
 						false
@@ -298,7 +298,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 						600,
 						600
 					);
-					JToolbarHelper::custom('newsletters.clear_queue', 'delete.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
+					JToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
 				}
 				break;
 			case "unsent":
@@ -349,9 +349,21 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('newsletters');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-//		$bar->appendButton('extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-//		$bar->appendButton('extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		if(version_compare(JVERSION, '3.99', 'le'))
+		{
+			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		}
+		else
+		{
+			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
+			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
 
-		JToolbarHelper::spacer();
+			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
+
+			$bar->appendButton($manualButton);
+			$bar->appendButton($forumButton);
+		}
 	}
 }

@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
@@ -34,8 +36,6 @@ JHtml::_('formbehavior.chosen', 'select');
 
 // Depends on jQuery UI
 JHtml::_('jquery.ui', array('core'));
-
-require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
 
 $n	= count($mailinglists);
 

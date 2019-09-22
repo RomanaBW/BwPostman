@@ -802,6 +802,11 @@ class BwPostmanSubscriberHelper
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
+		if (is_null($user_id))
+		{
+			$user_id = 0;
+		}
+
 		return $user_id;
 	}
 

@@ -60,6 +60,8 @@ class BwPostmanController extends JControllerLegacy
 	 * @return object       $this
 	 *
 	 * @since       0.9.1
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

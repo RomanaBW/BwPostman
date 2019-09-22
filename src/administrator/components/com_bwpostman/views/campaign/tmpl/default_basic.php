@@ -206,7 +206,7 @@ Joomla.submitbutton = function (pressbutton)
 {
 	if (pressbutton == 'campaign.cancel')
 	{
-		Joomla.submitform(pressbutton, form);
+		submitform(pressbutton);
 		return;
 	}
 
@@ -214,7 +214,7 @@ Joomla.submitbutton = function (pressbutton)
 	{
 		if ($j("input[type=checkbox]:checked").length)
 		{
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 			return true;
 		}
 		else

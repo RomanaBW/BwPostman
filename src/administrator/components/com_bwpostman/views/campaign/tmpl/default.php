@@ -69,7 +69,7 @@ $tab_options = array(
 
 		if (pressbutton == 'campaign.cancel')
 		{
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 			return;
 		}
 
@@ -80,14 +80,14 @@ $tab_options = array(
 		}
 		else
 		{
-			Joomla.submitform(pressbutton, form);
+			submitform(pressbutton);
 		}
 
 		<?php if (property_exists($this, 'autocam_values'))
 		{ ?>
 		if (pressbutton == 'delete')
 		{
-			Joomla.submitform('campaign.apply');
+			submitform('campaign.apply');
 			return;
 		}
 		<?php } ?>

@@ -647,7 +647,7 @@ class InstallationPage
 
 		self::doInstallation($I);
 
-		$heading = $I->grabTextFrom('#system-message-container div h4');
+		$heading = $I->grabTextFrom(Generals::$alert_heading4);
 
 		if ($heading == "Warning")
 		{
@@ -663,8 +663,8 @@ class InstallationPage
 
 		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see(self::$installSuccessMsg, Generals::$alert_success);
-		$I->dontSee("Error", Generals::$alert_heading);
-		$I->dontSee("Warning", Generals::$alert_heading);
+		$I->dontSee("Error", Generals::$alert_heading4);
+		$I->dontSee("Warning", Generals::$alert_heading4);
 	}
 
 	/**

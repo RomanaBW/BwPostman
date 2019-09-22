@@ -2251,9 +2251,10 @@ class OptionsPage
 		$I->clickAndWait(Generals::$toolbar4['Options'], 1);
 
 		$I->click(Generals::$toolbar['Save']);
-		$I->waitForElementVisible(Generals::$alert_header, 15);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(self::$config_save_success, Generals::$alert_success);
+
+		$I->waitForElementVisible(Generals::$alert_success4, 15);
+		$I->see("Message", Generals::$alert_success4);
+		$I->see(self::$config_save_success, Generals::$alert_success4);
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 	}

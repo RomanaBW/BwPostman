@@ -30,15 +30,15 @@ pipeline {
 
 		stage('Smoke') {
 			steps {
-//				echo "Dummy Smoke"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
-				sh "docker exec -t bwpm_enh_tester /data/do-tests.sh ${BWPM_VERSION}"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
+				echo "Dummy Smoke"
+//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
+//				sh "docker exec -t bwpm_enh_tester /data/do-tests.sh ${BWPM_VERSION}"
+//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
 			}
 			post {
 				always {
-					echo "Dummy Smoke ALWAYS"
-//					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
+//					echo "Dummy Smoke ALWAYS"
+					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
 				}
 				failure {
 					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
@@ -52,12 +52,12 @@ pipeline {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
-						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh ${BWPM_VERSION}"
+//						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
-//							echo "Dummy 1 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
+							echo "Dummy 1 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")

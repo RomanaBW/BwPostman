@@ -395,6 +395,19 @@ div#bwp_mod_form_listsfield {
 
 }
 
+#bwp_mod_form_disclaimer span {
+	font-weight:		bold;
+}
+
+#bwp_mod_form_disclaimer span a:hover {
+	text-decoration: underline;
+}
+
+#bwp_mod_form_disclaimer span a {
+	cursor: pointer;
+}
+
+
 /*------------- Captcha/Safety question ------------------*/
 #mod_bwpostman div.captcha {
 	margin-bottom:		15px;

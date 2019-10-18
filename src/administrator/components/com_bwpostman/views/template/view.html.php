@@ -315,7 +315,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
 		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
 
-		if(version_compare(JVERSION, '3.99', 'ge'))
+		if(version_compare(JVERSION, '3.999.999', 'ge'))
 		{
 			$siteURL .= '&view=bwpostman';
 		}
@@ -338,7 +338,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('template');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);

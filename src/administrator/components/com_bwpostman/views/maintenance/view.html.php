@@ -279,7 +279,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('maintenance');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
@@ -296,7 +296,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$bar->appendButton($forumButton);
 		}
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			BwPostmanHelper::addSubmenu('bwpostman');
 		}

@@ -163,7 +163,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
 
-		if(version_compare(JVERSION, '3.99', 'ge'))
+		if(version_compare(JVERSION, '3.999.999', 'ge'))
 		{
 			$this->isJ4 = true;
 		}
@@ -242,7 +242,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('mailinglists');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
@@ -320,7 +320,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('mailinglists');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);

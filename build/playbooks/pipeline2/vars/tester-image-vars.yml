@@ -4,7 +4,7 @@ joomla_version: "4.0.0a11"
 #joomla_version: "3.9.10"
 
 bwpm_version: "2.4.0"
-j_alpha_version: "alpha11"
+j_alpha_version: "alpha12"
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"
 

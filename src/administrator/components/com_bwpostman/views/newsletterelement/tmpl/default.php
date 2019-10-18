@@ -99,7 +99,7 @@ JHtml::_('behavior.tooltip');
 					<td align="center" style="text-align:center;"><?php echo JHtml::_('grid.published', $item, $i); ?></td>
 					<td align="center" style="text-align:center;">
 						<?php
-						$archived = ($item->archive_flag == 0) ? '<i class="icon-archive"></i>' : '';
+						$archived = ($item->archive_flag === 1) ? '<i class="icon-archive"></i>' : '';
 						echo $archived; ?>
 					</td>
 				</tr>

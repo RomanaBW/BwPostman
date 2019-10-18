@@ -219,8 +219,6 @@
 				<option value="a.emailformat DESC">COM_BWPOSTMAN_EMAILFORMAT_DESC</option>
 				<option value="a.user_id ASC">COM_BWPOSTMAN_JOOMLA_USERID_ASC</option>
 				<option value="a.user_id DESC">COM_BWPOSTMAN_JOOMLA_USERID_DESC</option>
-				<option value="mailinglists ASC" class="confirmed unconfirmed">COM_BWPOSTMAN_ML_NBR_ASC</option>
-				<option value="mailinglists DESC" class="confirmed unconfirmed">COM_BWPOSTMAN_ML_NBR_DESC</option>
 				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 			</field>

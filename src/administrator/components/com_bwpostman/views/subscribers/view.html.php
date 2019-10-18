@@ -219,7 +219,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		if(version_compare(JVERSION, '3.99', 'ge'))
+		if(version_compare(JVERSION, '3.999.999', 'ge'))
 		{
 			$this->isJ4 = true;
 		}
@@ -249,7 +249,14 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		}
 
 		// Show the layout depending on the tab
-		$tpl = JFactory::getApplication()->input->get('tab', 'confirmed');
+		$tpl = JFactory::getApplication()->input->get('tab', '');
+
+		if ($tpl === '')
+		{
+			$tpl = $app->getUserState('com_bwpostman.subscribers.layout', 'confirmed');
+		}
+
+		$app->setUserState('com_bwpostman.subscribers.layout', $tpl);
 
 		// Call parent display
 		parent::display($tpl);
@@ -375,10 +382,10 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('subscribers');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
-			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+//			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+//			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 		}
 		else
 		{
@@ -497,7 +504,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('subscribers');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);

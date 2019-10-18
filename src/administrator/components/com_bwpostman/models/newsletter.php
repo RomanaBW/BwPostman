@@ -1812,6 +1812,41 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$form_data['ready_to_send']	= $state_data->ready_to_send;
 				}
 				break;
+			case 'edit_publish':
+				$state_data->publish_up		= $form_data['publish_up'];
+				$state_data->publish_down	= $form_data['publish_down'];
+				$form_data['html_version']		= $state_data->html_version;
+				$form_data['text_version']		= $state_data->text_version;
+				$form_data['campaign_id']		= $state_data->campaign_id;
+				$form_data['usergroups']		= $state_data->usergroups;
+				$form_data['is_template']		= $state_data->is_template;
+				$form_data['template_id']		= $state_data->template_id;
+				$form_data['text_template_id']	= $state_data->text_template_id;
+				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				{
+					$form_data['ml_available']		= $state_data->ml_available;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				{
+					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				{
+					$form_data['ml_intern']			= $state_data->ml_intern;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				{
+					$form_data['scheduled_date']	= $state_data->scheduled_date;
+				}
+
+				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				{
+					$form_data['ready_to_send']	= $state_data->ready_to_send;
+				}
+				break;
 			default:
 				$form_data['html_version']		= $state_data->html_version;
 				$form_data['text_version']		= $state_data->text_version;
@@ -1866,7 +1901,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if (is_object($state_data) && property_exists($state_data, 'publish_down'))
 		{
-			$form_data['publish_down'] = $state_data->publish_up;
+			$form_data['publish_down'] = $state_data->publish_down;
 		}
 
 		if (is_object($state_data) && property_exists($state_data, 'checked_out_time'))

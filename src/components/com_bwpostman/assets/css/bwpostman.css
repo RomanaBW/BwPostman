@@ -1111,15 +1111,18 @@
 }
 
 #bwp_com_register .agree_check {
-
 }
 
 #bwp_com_register .agree_check span {
 	font-weight:		bold;
 }
 
-#bwp_com_register .agree_check span a{
+#bwp_com_register .agree_check span a:hover {
+	text-decoration: underline;
+}
 
+#bwp_com_register .agree_check span a {
+cursor: pointer;
 }
 
 #bwp_com_register .captcha {

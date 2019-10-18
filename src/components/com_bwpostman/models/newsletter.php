@@ -78,4 +78,25 @@ class BwPostmanModelNewsletter extends JModelItem
 
 		return $newsletter;
 	}
+
+	/**
+	 * Method to get an item.
+	 *
+	 * @param   integer  $pk  The id of the item
+	 *
+	 * @return  object
+	 *
+	 * @since 4.0.0
+	 * @throws \Exception
+	 */
+	public function getItem($pk = null)
+	{
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
+		$model = new BwPostmanModelNewsletter();
+
+		$item = $model->getItem($pk);
+
+		return $item;
+	}
+
 }

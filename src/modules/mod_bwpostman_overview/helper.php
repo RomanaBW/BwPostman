@@ -26,6 +26,8 @@
 
 defined('_JEXEC') or die;
 
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+
 /**
  * Class modBwPostmanOverviewHelper
  *
@@ -58,7 +60,7 @@ class ModBwPostmanOverviewHelper
 		{
 			$date = JFactory::getDate($row->mailing_date);
 
-			$sent_month	= $date->format('n');
+			$sent_month	= $date->format('m');
 			$sent_year	= $date->format('Y');
 
 			$sent_year_cal	= JHtml::_('date', $row->mailing_date, 'Y');

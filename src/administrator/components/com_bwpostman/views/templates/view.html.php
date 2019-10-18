@@ -166,7 +166,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 
 		$this->addToolbar();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			BwPostmanHelper::addSubmenu('bwpostman');
 		}
@@ -265,7 +265,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 				if (BwPostmanHelper::canAdd('template'))
 				{
 					$bar = JToolbar::getInstance('toolbar');
-					if(version_compare(JVERSION, '3.99', 'le'))
+					if(version_compare(JVERSION, '3.999.999', 'le'))
 					{
 						$html = '<a id="toolbar-install-template" class="btn btn-small" href="' . JUri::root(true) .
 							'/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl"
@@ -297,7 +297,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('templates');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);

@@ -88,7 +88,7 @@ class JFormFieldBwRules extends JFormFieldRules
 		JHtml::_('bootstrap.tooltip');
 
 		// Add Javascript for permission change
-		if (version_compare(JVERSION, '3.99', 'le'))
+		if (version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			JHtml::_('script', 'system/permissions.js', array('version' => 'auto', 'relative' => true));
 		}
@@ -213,7 +213,7 @@ class JFormFieldBwRules extends JFormFieldRules
 		$html = array();
 
 		// Begin tabs
-		if (version_compare(JVERSION, '3.99', 'le'))
+		if (version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$html = $this->getTabsJ3($ajaxUri, $html, $groups, $actions, $newItem, $assetRules, $isGlobalConfig, $assetId,
 				$parentAssetId);

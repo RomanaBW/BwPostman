@@ -43,23 +43,20 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-Joomla = window.Joomla || {};
+window.onload = function() {
+	Joomla = window.Joomla || {};
 
-Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton === 'template.archive')
-		{
-			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive === true)
-			{
+	Joomla.submitbutton = function (pressbutton) {
+		if (pressbutton === 'template.archive') {
+			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE', true); ?>");
+			if (ConfirmArchive === true) {
 				Joomla.submitform(pressbutton, document.adminForm);
 			}
-		}
-		else
-		{
+		} else {
 			Joomla.submitform(pressbutton, document.adminForm);
 		}
 	};
+}
 /* ]]> */
 </script>
 

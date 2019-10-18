@@ -208,6 +208,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->mailinglists		= $this->get('AccessibleMailinglists');
 		$this->campaigns		= $this->get('AccessibleCampaigns');
 		$this->usergroups		= $this->get('AccessibleUsergroups');
+		$this->Itemid			= $this->get('Itemid');
 
 		if (is_array($this->mailinglists))
 		{

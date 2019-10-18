@@ -49,66 +49,60 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 <script type="text/javascript">
-	function doAjax(data, successCallback)
-	{
-		var structure =
-		{
-			success: function(data)
-			{
-				// Call the callback function
-				successCallback(data);
-			},
-			error: function(req)
-			{
-				var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
-				jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
-				jQuery('div#result').html(message);
-				jQuery('div.resultSet').css('background-color', '#f2dede');
-				jQuery('div.resultSet').css('border-color', '#eed3d7');
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-			}
-		};
+/* <![CDATA[ */
+	window.onload = function() {
+		function doAjax(data, successCallback) {
+			var structure =
+				{
+					success: function (data) {
+						// Call the callback function
+						successCallback(data);
+					},
+					error  : function (req) {
+						var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
+						jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
+						jQuery('div#result').html(message);
+						jQuery('div.resultSet').css('background-color', '#f2dede');
+						jQuery('div.resultSet').css('border-color', '#eed3d7');
+						jQuery('div#toolbar').find('button').removeAttr('disabled');
+					}
+				};
 
-		structure.url = starturl;
-		structure.data = data;
-		structure.type = 'POST';
+			structure.url = starturl;
+			structure.data = data;
+			structure.type = 'POST';
 			structure.dataType = 'json';
 			jQuery.ajax(structure);
-	}
+		}
 
-	function processUpdateStep(data)
-	{
-		jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert-'+data.aClass);
-		jQuery('p#step'+data.step).addClass('alert alert-info');
-		// Do AJAX post
-		post = {step : 'step'+data.step};
-		doAjax(post, function(data)
-		{
-			if(data.ready != "1")
-			{
-				jQuery('div#result').append(data.result);
-				processUpdateStep(data);
-			}
-			else
-			{
-				jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
-				jQuery('div#result').append(data.result);
-				if (data.aClass != 'error')
-				{
-					jQuery('div.resultSet').css('background-color', '#dff0d8');
-					jQuery('div.resultSet').css('border-color', '#d6e9c6');
+		function processUpdateStep(data) {
+			jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
+			jQuery('p#step' + data.step).addClass('alert alert-info');
+			// Do AJAX post
+			post = {step: 'step' + data.step};
+			doAjax(post, function (data) {
+				if (data.ready != "1") {
+					jQuery('div#result').append(data.result);
+					processUpdateStep(data);
+				} else {
+					jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
+					jQuery('div#result').append(data.result);
+					if (data.aClass != 'error') {
+						jQuery('div.resultSet').css('background-color', '#dff0d8');
+						jQuery('div.resultSet').css('border-color', '#d6e9c6');
+					} else {
+						jQuery('div.resultSet').css('background-color', '#f2dede');
+						jQuery('div.resultSet').css('border-color', '#eed3d7');
+					}
+					jQuery('div#toolbar').find('button').removeAttr('disabled');
 				}
-				else
-				{
-					jQuery('div.resultSet').css('background-color', '#f2dede');
-					jQuery('div.resultSet').css('border-color', '#eed3d7');
-				}
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-			}
-		});
+			});
+		}
+
+		jQuery('div#toolbar').find('button').attr("disabled", "disabled");
+		var starturl = 'index.php?option=com_bwpostman&task=templates.installtpl&format=json&<?php echo Session::getFormToken(); ?>=1';
+		var data = {step: "1"};
+		processUpdateStep(data);
 	}
-	jQuery('div#toolbar').find('button').attr("disabled","disabled");
-	var starturl = 'index.php?option=com_bwpostman&task=templates.installtpl&format=json&<?php echo Session::getFormToken(); ?>=1';
-	var data = {step: "1"};
-	processUpdateStep(data);
+/* ]]> */
 </script>

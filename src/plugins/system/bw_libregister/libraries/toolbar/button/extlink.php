@@ -50,6 +50,7 @@ class JButtonExtlink extends ToolbarButton
 		$options['text'] = \JText::_($text);
 		$options['class'] = $this->fetchIconClass($name);
 		$options['doTask'] = $this->_getCommand($url);
+		$this->options = $options;
 
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new FileLayout('layouts.toolbar.extlink', JPATH_COMPONENT_ADMINISTRATOR );
@@ -69,7 +70,7 @@ class JButtonExtlink extends ToolbarButton
 	 */
 	public function fetchId($type = 'Extlink', $name = '')
 	{
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			return $this->_parent->getName() . '-' . $name;
 		}
@@ -155,7 +156,7 @@ class JButtonExtlink extends ToolbarButton
 
 		return $layout->render(
 			[
-				'action' => $action,
+				'action'  => $action,
 				'options' => $this->options
 			]
 		);
@@ -170,7 +171,7 @@ class JButtonExtlink extends ToolbarButton
 	 *
 	 * @return  string  CSS class name
 	 *
-	 * @since   3.0
+	 * @since   2.4.0
 	 */
 	public function fetchIconClass($identifier)
 	{

@@ -37,7 +37,17 @@
 			<fieldset name="ml_available" label="MOD_BWPOSTMAN_ML_AVAILABLE_FIELDSET_LABEL" addfieldpath="/modules/mod_bwpostman/elements">
 				<field type="asset" />
 				<field name="spacer0_1" type="spacer" label="MOD_BWPOSTMAN_NO_ML_CHECKED_LABEL" />
-				<field name="mod_ml_available" type="modml" label="MOD_BWPOSTMAN_ML_AVAILABLE_LABEL" labelclass="control-label" description="MOD_BWPOSTMAN_ML_AVAILABLE_DESC" multiple="true" size="5" default="" class="inputbox mailinglists" />
+				<field
+						name="mod_ml_available"
+						type="modml"
+						label="MOD_BWPOSTMAN_ML_AVAILABLE_LABEL"
+						labelclass="control-label"
+						description="MOD_BWPOSTMAN_ML_AVAILABLE_DESC"
+						multiple="true"
+						size="5"
+						default=""
+						class="inputbox mailinglists"
+				/>
 				<field name="spacer0_2" type="spacer" hr="true" />
 				<field name="show_desc" type="radio" class="btn-group btn-group-yesno" default="1" label="MOD_BWPOSTMAN_SHOW_DESC" description="MOD_BWPOSTMAN_SHOW_DESC_NOTE">
 					<option value="0">JNO</option>
@@ -46,7 +56,8 @@
 				<field name="desc_length" type="text" default="50" label="MOD_BWPOSTMAN_DESC_LENGTH" description="MOD_BWPOSTMAN_DESC_LENGTH_NOTE" />
 			</fieldset>
 
-			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_content/models/fields">
+			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL">
+<!--			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_content/models/fields">-->
 				<field name="spacer1_1" type="spacer" label="MOD_BWPOSTMAN_REG_SETTINGS_LABEL" />
 				<field name="com_params" type="radio" class="btn-group btn-group-yesno" default="1" label="MOD_BWPOSTMAN_USE_COM_PARAMS" description="MOD_BWPOSTMAN_USE_COM_PARAMS_NOTE">
 					<option value="0" onclick="display_yes_no();">JNO</option>
@@ -141,7 +152,7 @@
 					<option value="1">MOD_BWPOSTMAN_DISCLAIMER_ARTICLE</option>
 					<option value="2">MOD_BWPOSTMAN_DISCLAIMER_MENUITEM</option>
 				</field>
-				<field name="disclaimer_link" size="50" type="text" class="mod_set" labelclass="mod_set" default="http://www.disclaimer.de/disclaimer.htm" label="MOD_BWPOSTMAN_LINK_TO_DISCLAIMER" description="MOD_BWPOSTMAN_LINK_TO_DISCLAIMER_NOTE" />
+				<field name="disclaimer_link" size="50" type="text" class="mod_set" labelclass="mod_set" default="https://www.disclaimer.de/disclaimer.htm" label="MOD_BWPOSTMAN_LINK_TO_DISCLAIMER" description="MOD_BWPOSTMAN_LINK_TO_DISCLAIMER_NOTE" />
 				<field name="article_id" type="modal_article" class="mod_set" labelclass="mod_set" default="" label="MOD_BWPOSTMAN_DISCLAIMER_ARTICLE" description="MOD_BWPOSTMAN_DISCLAIMER_ARTICLE_NOTE" />
 				<field name="disclaimer_menuitem" type="menuitem" labelclass="mod_set" default="" label="MOD_BWPOSTMAN_DISCLAIMER_MENUITEM" description="MOD_BWPOSTMAN_DISCLAIMER_MENUITEM_NOTE">
 					<option value="">JSELECT</option>

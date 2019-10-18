@@ -42,42 +42,37 @@ $colNum = 8;
 ?>
 
 <script type="text/javascript">
-	/* <![CDATA[ */
+/* <![CDATA[ */
+function changeTab(tab) {
+	if (tab !== 'default_unconfirmed') {
+		document.adminForm.tab.setAttribute('value', tab);
+	}
+}
+
+window.onload = function() {
 	Joomla = window.Joomla || {};
 
-	function changeTab(tab)
-	{
-		if (tab !== 'default_unconfirmed')
-		{
-			document.adminForm.tab.setAttribute('value',tab);
-		}
-	}
-
-	function OnlyFiltered(onlyFiltered) // Get the selected value from modal box
+	window.OnlyFiltered = function (onlyFiltered) // Get the selected value from modal box
 	{
 		if (onlyFiltered === '1') {
 			document.getElementById('mlToExport').value = '<?php echo $this->filterMl; ?>';
 		}
 
 		Joomla.submitbutton('subscribers.exportSubscribers', document.adminForm);
-	}
+	};
 
-	Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton === 'subscriber.archive')
-		{
+	Joomla.submitbutton = function (pressbutton) {
+		if (pressbutton === 'subscriber.archive') {
 			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE', true); ?>");
-			if (ConfirmArchive === true)
-			{
+			if (ConfirmArchive === true) {
 				Joomla.submitform(pressbutton, document.adminForm);
 			}
-		}
-		else
-		{
+		} else {
 			Joomla.submitform(pressbutton, document.adminForm);
 		}
 	};
-	/* ]]> */
+}
+/* ]]> */
 </script>
 
 <div id="bwp_view_lists">
@@ -197,11 +192,11 @@ $colNum = 8;
 											$colNum = 9; ?>
 											<td>
 												<?php
-												if ($item->gender === '1')
+												if ($item->gender === 1)
 												{
 													echo Text::_('COM_BWPOSTMAN_FEMALE');
 												}
-												elseif ($item->gender === '0')
+												elseif ($item->gender === 0)
 												{
 													echo Text::_('COM_BWPOSTMAN_MALE');
 												}

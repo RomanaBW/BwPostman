@@ -886,7 +886,7 @@ class BwPostmanModelTemplates extends JModelList
 	private function delMessage()
 	{
 		// @ToDo: What is this method good for?
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$app = JFactory::getApplication();
 			$appReflection = new ReflectionClass(get_class($app));

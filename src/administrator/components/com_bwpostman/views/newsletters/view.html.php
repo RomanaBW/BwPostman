@@ -201,7 +201,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		$this->addToolbar();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			BwPostmanHelper::addSubmenu('bwpostman');
 		}
@@ -209,7 +209,14 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->sidebar = JHtmlSidebar::render();
 
 		// Show the layout depending on the tab
-		$tpl = $jinput->get('tab', 'unsent');
+		$tpl = $jinput->get('tab', '');
+
+		if ($tpl === '')
+		{
+			$tpl = $app->getUserState('com_bwpostman.newsletters.layout', 'unsent');
+		}
+
+		$app->setUserState('com_bwpostman.newsletters.layout', $tpl);
 
 		// Call parent display
 		parent::display($tpl);
@@ -290,14 +297,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 						'COM_BWPOSTMAN_NL_RESET_TRIAL',
 						false
 					);
-					$bar->appendButton(
-						'Popup',
-						'envelope',
-						$alt,
-						'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending',
-						600,
-						600
-					);
+					$link = 'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending';
+					$bar->appendButton('Popup', 'envelope', $alt, $link, 600, 600);
 					JToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
 				}
 				break;
@@ -349,7 +350,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$manualLink = BwPostmanHTMLHelper::getManualLink('newsletters');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.99', 'le'))
+		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);

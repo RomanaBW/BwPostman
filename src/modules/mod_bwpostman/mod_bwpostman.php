@@ -82,7 +82,7 @@ else
 	{
 		// Get the parameters of the component
 		// --> we need these parameters because we have to ensure that both the component and the module will work with the same settings
-		$paramsComponent = $app->getPageParameters('com_bwpostman');
+		$paramsComponent = \Joomla\CMS\Component\ComponentHelper::getParams('com_bwpostman');
 		$module_id   = '';
 	}
 

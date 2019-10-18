@@ -139,104 +139,87 @@ $option	= $jinput->getCmd('option');
 
 <script type="text/javascript">
 /* <![CDATA[ */
-var $j	= jQuery.noConflict();
+window.onload = function() {
+	var $j = jQuery.noConflict();
 
-function extCheck()
-{
-	// get the file name, possibly with path (depends on browser)
-	var filename	= $j("#importfile").val();
-	var format		= $j("input[name='fileformat']:checked").val();
+	function extCheck() {
+		// get the file name, possibly with path (depends on browser)
+		var filename = $j("#importfile").val();
+		var format = $j("input[name='fileformat']:checked").val();
 
 
-	// Use a regular expression to trim everything before final dot
-	var extension = filename.replace(/^.*\./, '');
+		// Use a regular expression to trim everything before final dot
+		var extension = filename.replace(/^.*\./, '');
 
-	// If there is no dot anywhere in filename, we would have extension == filename,
-	// so we account for this possibility now
-	if (extension == filename)
-	{
-		extension = '';
-	}
-	else
-	{
-		// if there is an extension, we convert to lower case
-		// (N.B. this conversion will not effect the value of the extension
-		// on the file upload.)
-		extension = extension.toLowerCase();
-	}
-	switch (extension)
-	{
-		case 'xml':
-				if (format == 'xml')
-				{
-					$j( ".button" ).show();
+		// If there is no dot anywhere in filename, we would have extension == filename,
+		// so we account for this possibility now
+		if (extension == filename) {
+			extension = '';
+		} else {
+			// if there is an extension, we convert to lower case
+			// (N.B. this conversion will not effect the value of the extension
+			// on the file upload.)
+			extension = extension.toLowerCase();
+		}
+		switch (extension) {
+			case 'xml':
+				if (format == 'xml') {
+					$j(".button").show();
+				} else {
+					alert('<?php echo Text::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
+					$j("#importfile").val('');
 				}
-				else
-				{
-					alert ('<?php echo Text::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
-					$j( "#importfile" ).val('');
+				break;
+			case 'csv':
+				if (format == 'csv') {
+					$j(".button").show();
+					$j(".delimiter").show();
+					$j(".enclosure").show();
+					$j(".caption").show();
+				} else {
+					alert('<?php echo Text::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
+					$j("#importfile").val('');
 				}
-			break;
-		case 'csv':
-			if (format == 'csv')
-			{
-				$j( ".button" ).show();
-				$j( ".delimiter" ).show();
-				$j( ".enclosure" ).show();
-				$j( ".caption" ).show();
-			}
-			else
-			{
-				alert ('<?php echo Text::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
-				$j( "#importfile" ).val('');
-			}
-			break;
-		default:
-			alert ('<?php echo Text::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
-		$j( "#importfile" ).val('');
-		break;
-	}
-}
-
-$j(document).ready(function()
-{
-	var format	= $j("input[name='fileformat']:checked").val();
-
-	$j( ".delimiter" ).hide();
-	$j( ".enclosure" ).hide();
-	$j( ".caption" ).hide();
-	$j( ".button" ).hide();
-
-	if (typeof (format) == 'undefined')
-	{
-		$j( ".importfile" ).hide();
-	}
-	else
-	{
-		$j( ".importfile" ).show();
-		if ($j( "#importfile" ).val() != '')
-		{
-			extCheck();
+				break;
+			default:
+				alert('<?php echo Text::_("COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT"); ?>');
+				$j("#importfile").val('');
+				break;
 		}
 	}
-});
 
-$j("input[name='fileformat']").on("change", function()
-{
-	$j( ".importfile" ).show();
-	$j( ".delimiter" ).hide();
-	$j( ".enclosure" ).hide();
-	$j( ".caption" ).hide();
-	$j( ".button" ).hide();
-	$j( "#importfile" ).val('');
-});
+	$j(document).ready(function () {
+		var format = $j("input[name='fileformat']:checked").val();
 
-$j("#importfile").on("change", function()
-{
-	if ($j( "#importfile" ).val() != '')
-	{
-		extCheck();
-	}
-});
+		$j(".delimiter").hide();
+		$j(".enclosure").hide();
+		$j(".caption").hide();
+		$j(".button").hide();
+
+		if (typeof (format) == 'undefined') {
+			$j(".importfile").hide();
+		} else {
+			$j(".importfile").show();
+			if ($j("#importfile").val() != '') {
+				extCheck();
+			}
+		}
+	});
+
+	$j("input[name='fileformat']").on("change", function () {
+		$j(".importfile").show();
+		$j(".delimiter").hide();
+		$j(".enclosure").hide();
+		$j(".caption").hide();
+		$j(".button").hide();
+		$j("#importfile").val('');
+	});
+
+	$j("#importfile").on("change", function () {
+		if ($j("#importfile").val() != '') {
+			extCheck();
+		}
+	});
+}
 /* ]]> */
 </script>

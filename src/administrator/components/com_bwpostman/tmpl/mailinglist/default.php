@@ -170,33 +170,28 @@ HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom')
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 <script type="text/javascript">
-	/* <![CDATA[ */
+/* <![CDATA[ */
+window.onload = function() {
 	Joomla = window.Joomla || {};
 
-	Joomla.submitbutton = function (pressbutton)
-	{
+	Joomla.submitbutton = function (pressbutton) {
 
 		var form = document.adminForm;
 
-		if (pressbutton === 'mailinglist.cancel')
-		{
+		if (pressbutton === 'mailinglist.cancel') {
 			Joomla.submitform(pressbutton, form);
 			return;
 		}
 
 		// Validate input fields
-		if (form.jform_title.value === "")
-		{
+		if (form.jform_title.value === "") {
 			alert("<?php echo Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");
-		}
-		else if (form.jform_description.value=== "")
-		{
+		} else if (form.jform_description.value === "") {
 			alert("<?php echo Text::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");
-		}
-		else
-		{
+		} else {
 			Joomla.submitform(pressbutton, form);
 		}
 	};
+}
 	/* ]]> */
 </script>

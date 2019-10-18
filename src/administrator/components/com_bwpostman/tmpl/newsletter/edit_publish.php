@@ -42,27 +42,27 @@ $image = '<i class="icon-info"></i>';
 
 <script type="text/javascript">
 /* <![CDATA[ */
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton === 'newsletter.cancel')
-	{
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
+window.onload = function() {
+	Joomla = window.Joomla || {};
 
-	if (pressbutton === 'newsletter.publish_save')
-	{
-		form.task.setAttribute('value','newsletter.publish_save');
-		Joomla.submitform(pressbutton, form);
-	}
+	Joomla.submitbutton = function (pressbutton) {
+		var form = document.adminForm;
+		if (pressbutton === 'newsletter.cancel') {
+			Joomla.submitform(pressbutton, form);
+			return;
+		}
 
-	if (pressbutton === 'newsletter.publish_apply')
-	{
-		form.task.setAttribute('value','newsletter.publish_apply');
-		Joomla.submitform(pressbutton, form);
-	}
-};
+		if (pressbutton === 'newsletter.publish_save') {
+			form.task.setAttribute('value', 'newsletter.publish_save');
+			Joomla.submitform(pressbutton, form);
+		}
+
+		if (pressbutton === 'newsletter.publish_apply') {
+			form.task.setAttribute('value', 'newsletter.publish_apply');
+			Joomla.submitform(pressbutton, form);
+		}
+	};
+}
 /* ]]> */
 </script>
 

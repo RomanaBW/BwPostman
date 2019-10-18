@@ -130,7 +130,7 @@ $currentTab = 'edit_html';
 												foreach ($linktexts as $key => $linktext)
 												{
 													echo "                    <a class=\"btn btn-info btn-small pull-left\" 
-													onclick=\"buttonClick('" . $linktext . "','jform_html_version');return false;\" 
+													onclick=\"buttonClick4('" . $linktext . "','jform_html_version');return false;\" 
 													href=\"" . $link . "\">" . $linktext . "</a>";
 													echo '                     <p>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
 												}

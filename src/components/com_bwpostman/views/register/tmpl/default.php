@@ -25,6 +25,11 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die('Restricted access');
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
@@ -37,7 +42,7 @@ JHtml::_('formbehavior.chosen', 'select');
 // Depends on jQuery UI
 JHtml::_('jquery.ui', array('core'));
 
-$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>
 
 <div id="bwpostman">
@@ -52,13 +57,13 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 			<?php endif; ?>
 
 		<div class="content_inner">
-			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post"
+			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"
 					id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>
 				<p class="user_hightlight">
-					<label for="falle"><strong><?php echo addslashes(JText::_('COM_BWPOSTMAN_SPAMCHECK')); ?></strong></label>
+					<label for="falle"><strong><?php echo addslashes(Text::_('COM_BWPOSTMAN_SPAMCHECK')); ?></strong></label>
 					<input type="text" name="falle" id="falle" size="20"
-							title="<?php echo addslashes(JText::_('COM_BWPOSTMAN_SPAMCHECK')); ?>" maxlength="50" />
+							title="<?php echo addslashes(Text::_('COM_BWPOSTMAN_SPAMCHECK')); ?>" maxlength="50" />
 				</p>
 				<?php // End Spamcheck
 
@@ -71,10 +76,10 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 				<?php // Question
 				if ($this->params->get('use_captcha') == 1) : ?>
 					<div class="question">
-						<p class="question-text"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl"><?php echo JText::_($this->params->get('security_question')); ?></p>
+						<p class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
+						<p class="security_question_lbl"><?php echo Text::_($this->params->get('security_question')); ?></p>
 						<p class="question-result input-append">
-							<label id="question" for="stringQuestion"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+							<label id="question" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" />
 							<span class="append-area"><i class="icon-star"></i></span>
 						</p>
@@ -87,12 +92,12 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 					?>
 
 					<div class="captcha">
-						<p class="captcha-text"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
+						<p class="captcha-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
 						<p class="security_question_lbl">
 							<img src="<?php echo JUri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 						</p>
 						<p class="captcha-result input-append">
-							<label id="captcha" for="stringCaptcha"><?php echo JText::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+							<label id="captcha" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringCaptcha" id="stringCaptcha" size="40" maxlength="50" />
 							<span class="append-area"><i class="icon-star"></i></span>
 						</p>
@@ -107,17 +112,15 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 						<p class="agree_check">
 							<input title="agreecheck" type="checkbox" id="agreecheck" name="agreecheck" />
 							<?php
-							// Extends the disclaimer link with '&tmpl=component' to see only the content
-							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
 							// Disclaimer article and target_blank or not
 							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
 							{
-								$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id'))) . $tpl_com;
+								$disclaimer_link = Route::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id')));
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
 							{
-								$disclaimer_link = JRoute::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem')) . $tpl_com;
+								$disclaimer_link = Route::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem'));
 							}
 							// Disclaimer url and target_blank or not
 							else
@@ -130,7 +133,17 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)
 								{
-									echo '<a id="bwp_open"';
+									$modalParams = array();
+									$modalParams['modalWidth'] = 80;
+									$modalParams['bodyHeight'] = 70;
+									$modalParams['url'] = $disclaimer_link;
+									$modalParams['title'] = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
+
+									echo '<a id="bwp_open" data-target="#DisclaimerModal" data-toggle="modal">';
+									echo Text::_('COM_BWPOSTMAN_DISCLAIMER');
+									echo '</a> <i class="icon-star"></i>';
+									echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModal', $modalParams);
+
 								}
 								// Show not in modalbox
 								else
@@ -140,18 +153,19 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 									{
 										echo ' target="_blank"';
 									};
-								}
-								echo '>' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
+								echo '>';
+								echo Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>';
+								}?>
 							</span>
 						</p>
 					<?php endif; // Show disclaimer ?>
 					<p class="show_disclaimer">
-						<?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
 					</p>
 				</div>
 
 				<p class="button-register text-right">
-					<button class="button validate btn text-right" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
+					<button class="button validate btn text-right" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
 				</p>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
@@ -183,7 +197,7 @@ $remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', 
 		}
 		else
 		{
-			echo JText::_('COM_BWPOSTMAN_MESSAGE_NO_AVAILIBLE_MAILINGLIST');
+			echo Text::_('COM_BWPOSTMAN_MESSAGE_NO_AVAILIBLE_MAILINGLIST');
 		}
 
 		if ($this->params->get('show_boldt_link') === '1')
@@ -239,64 +253,64 @@ jQuery(document).ready(function()
 		}
 	});
 	<?php
-	if ($this->params->get('showinmodal') == 1)
+	if ($this->params->get('disclaimer') == 1 && $this->params->get('showinmodal') == 1)
 	{
 	?>
-	function setModal() {
-		// Set the modal height and width 90%
-		if (typeof window.innerWidth != 'undefined')
-		{
-			viewportwidth = window.innerWidth,
-				viewportheight = window.innerHeight
-		}
-		else if (typeof document.documentElement != 'undefined'
-			&& typeof document.documentElement.clientWidth !=
-			'undefined' && document.documentElement.clientWidth != 0)
-		{
-			viewportwidth = document.documentElement.clientWidth,
-				viewportheight = document.documentElement.clientHeight
-		}
-		else
-		{
-			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-				viewportheight = document.getElementsByTagName('body')[0].clientHeight
-		}
-		var modalcontent = document.getElementById('bwp_modal-content');
-		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
-		modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
-
-		// Get the modal
-		var modal = document.getElementById('bwp_Modal');
-
-		// Get the Iframe-Wrapper and set Iframe
-		var wrapper = document.getElementById('bwp_wrapper');
-		var html = '<iframe id="iFrame" name="iFrame" src="<?php echo isset($disclaimer_link) ? $disclaimer_link : ''; ?>" frameborder="0" style="width:100%; height:100%;"></iframe>';
-
-		// Get the button that opens the modal
-		var btnopen = document.getElementById("bwp_open");
-
-		// Get the <span> element that closes the modal
-		var btnclose = document.getElementsByClassName("bwp_close")[0];
-
-		// When the user clicks the button, open the modal
-		btnopen.onclick = function() {
-			wrapper.innerHTML = html;
-			modal.style.display = "block";
-		}
-
-		// When the user clicks on <span> (x), close the modal
-		btnclose.onclick = function() {
-			modal.style.display = "none";
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-			if (event.target == modal) {
-				modal.style.display = "none";
-			}
-		}
-	}
-	setModal();
+	//function setModal() {
+	//	// Set the modal height and width 90%
+	//	if (typeof window.innerWidth != 'undefined')
+	//	{
+	//		viewportwidth = window.innerWidth;
+	//		viewportheight = window.innerHeight
+	//	}
+	//	else if (typeof document.documentElement != 'undefined'
+	//		&& typeof document.documentElement.clientWidth !=
+	//		'undefined' && document.documentElement.clientWidth !== 0)
+	//	{
+	//		viewportwidth = document.documentElement.clientWidth;
+	//		viewportheight = document.documentElement.clientHeight
+	//	}
+	//	else
+	//	{
+	//		viewportwidth = document.getElementsByTagName('body')[0].clientWidth;
+	//		viewportheight = document.getElementsByTagName('body')[0].clientHeight
+	//	}
+	//	var modalcontent = document.getElementById('bwp_modal-content');
+	//	modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
+	//	modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+	//
+	//	// Get the modal
+	//	var modal = document.getElementById('bwp_Modal');
+	//
+	//	// Get the Iframe-Wrapper and set Iframe
+	//	var wrapper = document.getElementById('bwp_wrapper');
+	//	var html = '<iframe id="iFrame" name="iFrame" src="<?php //echo isset($disclaimer_link) ? $disclaimer_link : ''; ?>//" frameborder="0" style="width:100%; height:100%;"></iframe>';
+	//
+	//	// Get the button that opens the modal
+	//	var btnopen = document.getElementById("bwp_open");
+	//
+	//	// Get the <span> element that closes the modal
+	//	var btnclose = document.getElementsByClassName("bwp_close")[0];
+	//
+	//	// When the user clicks the button, open the modal
+	//	btnopen.onclick = function() {
+	//		wrapper.innerHTML = html;
+	//		modal.style.display = "block";
+	//	};
+	//
+	//	// When the user clicks on <span> (x), close the modal
+	//	btnclose.onclick = function() {
+	//		modal.style.display = "none";
+	//	};
+	//
+	//	// When the user clicks anywhere outside of the modal, close it
+	//	window.onclick = function(event) {
+	//		if (event.target === modal) {
+	//			modal.style.display = "none";
+	//		}
+	//	}
+	//}
+	//setModal();
 	<?php
 	}
 	?>

@@ -25,6 +25,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
@@ -70,37 +74,104 @@ class JFormFieldsinglenews extends JFormField
 			$newsletter->subject = JText::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');
 		}
 
-		$js = "
-		function SelectNewsletter(id, subject) {
-			document.getElementById('a_id').value = id;
-			document.getElementById('a_name').value = subject;
-			var btn = window.parent.document.getElementById('sbox-btn-close');
-			btn.fireEvent('click');
-		}";
-
-		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component';
-		$doc->addScriptDeclaration($js);
-
-//		JHtml::_('behavior.modal', 'a.modal');
-
 		// The active newsletter id field.
-		if (0 == (int)$this->value) {
-			$value = '';
-		}
-		else {
+		if ((int)$this->value > 0)
+		{
 			$value = (int)$this->value;
 		}
-
-		// class='required' for client side validation
-		$class = '';
-		if ($this->required) {
-			$class = ' class="required modal-value"';
+		else
+		{
+			$value = '';
 		}
 
-		$html  = '<span class="input-append">';
-		$html .= '<input type="text" class="input-medium" id="a_name" value="' . $newsletter->subject . '" disabled="disabled" size="35" />';
-		$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_NEWSLETTER') . '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}, iframeOptions: {id: \'nlsFrame\'}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
-		$html .= "\n<input type=\"hidden\" id=\"a_id\" $class name=\"$fieldName\" value=\"$value\" />";
+		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component';
+
+		if (version_compare(JVERSION, '3.999.999', 'le'))
+		{
+			$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component';
+			JHtml::_('behavior.modal', 'a.modal');
+
+			$js = "
+				function SelectNewsletter(id, subject) {
+					document.getElementById('a_id').value = id;
+					document.getElementById('a_name').value = subject;
+					var btn = window.parent.document.getElementById('sbox-btn-close');
+					btn.fireEvent('click');
+				};";
+
+
+			// class='required' for client side validation
+			$class = '';
+			if ($this->required) {
+				$class = ' class="required modal-value"';
+			}
+
+			$html  = '<span class="input-append">';
+			$html .= '<input type="text" class="input-medium" id="a_name" value="' . $newsletter->subject . '" disabled="disabled" size="35" />';
+			$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_NEWSLETTER') . '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}, iframeOptions: {id: \'nlsFrame\'}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+			$html .= "\n<input type=\"hidden\" id=\"a_id\" $class name=\"$fieldName\" value=\"$value\" />";
+		}
+		else
+		{
+			// Create the modal id.
+			$modalId = 'Newsletter_' . $this->id;
+			$modalTitle = Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');
+
+			// Add the modal field script to the document head.
+			HTMLHelper::_('script', 'system/fields/modal-fields.min.js', array('version' => 'auto', 'relative' => true));
+
+			$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp' . Session::getFormToken() . '=1';
+			$urlSelect = $link . '&amp;function=jSelectNewsletter_' . $this->id;
+
+			$js = "
+				window.SelectNewsletter = function (id, subject) {
+				window.processModalSelect('Newsletter', '" . $this->id . "', id, subject, '', '', '', '')
+				};
+				";
+
+			$title = empty($newsletter->subject) ? Text::_('COM_CONTENT_SELECT_AN_ARTICLE') : htmlspecialchars($newsletter->subject, ENT_QUOTES, 'UTF-8');
+
+			$html = '';
+			$html .= '<span class="input-group">';
+			$html .= '<input class="form-control" id="' . $this->id . '_name" type="text" value="' . $title . '" readonly size="35">';
+			$html  .= '<span class="input-group-append">';
+
+			// Select newsletter button
+			$html .= '<button'
+				. ' class="btn btn-primary"'
+				. ' id="' . $this->id . '_select"'
+				. ' data-toggle="modal"'
+				. ' type="button"'
+				. ' data-target="#ModalSelect' . $modalId . '">'
+				. '<span class="icon-file" aria-hidden="true"></span> ' . Text::_('JSELECT')
+				. '</button>';
+
+			$html .= '</span></span>';
+
+			// Select article modal
+			$html .= HTMLHelper::_(
+				'bootstrap.renderModal',
+				'ModalSelect' . $modalId,
+				array(
+					'title'       => $modalTitle,
+					'url'         => $urlSelect,
+					'height'      => '400px',
+					'width'       => '800px',
+					'bodyHeight'  => 70,
+					'modalWidth'  => 80,
+					'footer'      => '<button type="button" class="btn btn-secondary" data-dismiss="modal">'
+						. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
+				)
+			);
+
+		// Note: class='required' for client side validation.
+		$class = $this->required ? ' class="required modal-value"' : '';
+
+		$html .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name
+			. '" data-text="' . htmlspecialchars(Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER', true), ENT_COMPAT, 'UTF-8') . '" value="' . $value . '">';
+		}
+
+		$doc->addScriptDeclaration($js);
 		return $html;
 	}
 }

@@ -170,9 +170,9 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 		$options = $_db->loadObjectList();
 
 		// Check for a database error.
-		if ($_db->getErrorNum()) {
-			$app->enqueueMessage($_db->getErrorMsg(), 'error');
-		}
+//		if ($_db->getErrorNum()) {
+//			$app->enqueueMessage($_db->getErrorMsg(), 'error');
+//		}
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

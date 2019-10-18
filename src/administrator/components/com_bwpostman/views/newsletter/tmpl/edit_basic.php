@@ -34,23 +34,15 @@ JHtml::_('behavior.keepalive');
 
 $image = '<i class="icon-info"></i>';
 
-$checkContentArgs	 = "document.adminForm['jform_selected_content'], ";
-$checkContentArgs	.= "document.getElementById('selected_content_old'), ";
-$checkContentArgs	.= "document.getElementById('content_exists'), ";
-$checkContentArgs	.= "document.getElementsByName('jform[template_id]'), ";
-$checkContentArgs	.= "document.getElementsByName('jform[text_template_id]'), ";
-$checkContentArgs	.= "document.getElementById('template_id_old'), ";
-$checkContentArgs	.= "document.getElementById('text_template_id_old'),";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
+$checkContentArgs	= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
 $checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEMPLATE_ID', true) . "', ";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true) . "'";
+$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true) . "', ";
+$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NO_HTML_TEMPLATE_SELECTED', true) . "', ";
+$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NO_TEXT_TEMPLATE_SELECTED', true) . "'";
 
-$checkRecipientArgs	 = "document.getElementById('jform[campaign_id'), ";
-$checkRecipientArgs	 = "document.getElementsByName('jform[ml_available][]'), ";
-$checkRecipientArgs	.= "document.getElementsByName('jform[ml_unavailable][]'), ";
-$checkRecipientArgs	.= "document.getElementsByName('jform[ml_intern][]'), ";
-$checkRecipientArgs	.= "document.getElementsByName('jform[usergroups][]'), ";
-$checkRecipientArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
+$checkRecipientArgs	= "'" . JText::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
+
+$currentTab = 'edit_basic';
 ?>
 
 <script type="text/javascript">

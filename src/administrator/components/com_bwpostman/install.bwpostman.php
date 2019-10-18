@@ -314,7 +314,7 @@ class Com_BwPostmanInstallerScript
 			$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
 			$this->logger = new BwLogger($log_options);
 
-			if(version_compare(JVERSION, '3.99', 'ge'))
+			if(version_compare(JVERSION, '3.999.999', 'ge'))
 			{
 				$this->isJ4 = true;
 			}
@@ -434,7 +434,7 @@ class Com_BwPostmanInstallerScript
 
 	public function uninstall()
 	{
-		if(version_compare(JVERSION, '3.99', 'ge'))
+		if(version_compare(JVERSION, '3.999.999', 'ge'))
 		{
 			$this->isJ4 = true;
 		}
@@ -1013,6 +1013,7 @@ class Com_BwPostmanInstallerScript
 
 			$tmpRules['core.login.site'][$adminGroup]  = 1;
 			$tmpRules['core.login.admin'][$adminGroup] = 1;
+//			$tmpRules['core.manage'][$adminGroup]      = 1;
 			$tmpRules['core.create'][$adminGroup]      = 1;
 			$tmpRules['core.delete'][$adminGroup]      = 1;
 			$tmpRules['core.edit'][$adminGroup]        = 1;
@@ -1840,7 +1841,7 @@ class Com_BwPostmanInstallerScript
 		$params_default['show_emailformat']				= "1";
 		$params_default['default_emailformat']			= "1";
 		$params_default['disclaimer']					= "0";
-		$params_default['disclaimer_link']				= "http://www.disclaimer.de/disclaimer.htm";
+		$params_default['disclaimer_link']				= "https://www.disclaimer.de/disclaimer.htm";
 		$params_default['disclaimer_target']			= "0";
 		$params_default['use_captcha']					= "0";
 		$params_default['pretext']						= "";

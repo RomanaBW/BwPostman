@@ -206,7 +206,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->setState('module.id', $app->input->getInt('mid'));
 
 		// Filter on month, year
-		$this->setState('filter.month', $app->input->getInt('month'));
+		$this->setState('filter.month', $app->input->getString('month'));
 		$this->setState('filter.year', $app->input->getInt('year'));
 
 		// Optional filter text
@@ -238,10 +238,10 @@ class BwPostmanModelNewsletters extends JModelList
 		$limit = (int) $app->getUserStateFromRequest('com_bwpostman.newsletters.list.limit', 'limit', $params->get('display_num'), 'uint');
 		$this->setState('list.limit', $limit);
 
-		$limitstart = $app->input->get->get->get('start');
+		$limitstart = $app->input->get('start');
 		if ($limitstart === null)
 		{
-			$limitstart = $app->input->get->get->get('limitstart');
+			$limitstart = $app->input->get('limitstart');
 		}
 
 		$this->setState('list.start', $limitstart);
@@ -437,15 +437,7 @@ class BwPostmanModelNewsletters extends JModelList
 		// Define null and now dates, get params
 		$nullDate	= $_db->quote($_db->getNullDate());
 		$nowDate	= $_db->quote(JFactory::getDate()->toSql());
-		$params		= $this->state->params;
-		$menuId		= $params->get('menu_item');
-		$mod_id		= $this->getState('module.id');
-
-		if (empty($menuId) && !empty($mod_id))
-		{
-			$module = $this->getModuleById($mod_id);
-			$params	= new JRegistry($module->params);
-		}
+		$params      = $this->getAppropriateParams();
 
 		// get accessible mailing lists
 		$mls	= $this->getAccessibleMailinglists('false');
@@ -611,6 +603,62 @@ class BwPostmanModelNewsletters extends JModelList
 	}
 
 	/**
+	 * Method to get the params from selected menu item
+	 *
+	 * @param integer $menuItem
+	 *
+	 * @return 	\Joomla\Registry\Registry
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	public function getParamsFromSelectedMenuEntry($menuItem)
+	{
+		$menu	= JFactory::getApplication()->getMenu();
+		$params	= $menu->getParams($menuItem);
+
+		return $params;
+	}
+
+	/**
+	 * Method to get the menu item ID which will be needed for some links
+	 *
+	 * @return 	int menu item ID
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	public function getItemid()
+	{
+		$itemid = JFactory::getApplication()->getUserState('com_bwpostman.newsletters.itemid', null);
+
+		if ($itemid === null)
+		{
+			$_db   = $this->_db;
+			$query = $_db->getQuery(true);
+
+			$query->select($_db->quoteName('id'));
+			$query->from($_db->quoteName('#__menu'));
+			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=newsletters'));
+			$query->where($_db->quoteName('client_id') . ' = ' . (int) 0);
+			$_db->setQuery((string) $query);
+
+			try
+			{
+				$itemid = $_db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+		}
+
+		return $itemid;
+	}
+
+	/**
 	 * Method to get all published mailing lists which the user is authorized to see
 	 *
 	 * @return 	array	ID and title of allowed mailinglists
@@ -667,18 +715,10 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$_db		    = $this->_db;
 		$query		    = $_db->getQuery(true);
-		$params		    = $this->state->params;
-		$menuId		    = $params->get('menu_item');
-		$mod_id		    = $this->getState('module.id');
 		$res_mls        = null;
 		$acc_levels     = null;
 		$mailinglists   = null;
-
-		if (empty($menuId) && !empty($mod_id))
-		{
-			$module = $this->getModuleById($mod_id);
-			$params	= new JRegistry($module->params);
-		}
+		$params      = $this->getAppropriateParams();
 
 		$check		= $params->get('access-check');
 
@@ -803,20 +843,12 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
-		$params		= $this->state->params;
-		$menuId		= $params->get('menu_item');
-		$mod_id		= $this->getState('module.id');
 		$res_cams   = null;
 		$res_mls    = null;
 		$acc_levels = null;
 		$acc_cams   = null;
 		$campaigns  = null;
-
-		if (empty($menuId) && !empty($mod_id))
-		{
-			$module = $this->getModuleById($mod_id);
-			$params	= new JRegistry($module->params);
-		}
+		$params      = $this->getAppropriateParams();
 
 		$check		= $params->get('access-check');
 
@@ -851,7 +883,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		// if no cam is left, make array
-		if (count($cams) == 0)
+		if (!is_array($cams) || count($cams) === 0)
 		{
 			$cams[]	= 0;
 		}
@@ -969,17 +1001,9 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
-		$params		= $this->state->params;
-		$menuId		= $params->get('menu_item');
-		$mod_id		= $this->getState('module.id');
 		$res_groups = null;
 		$groups     = null;
-
-		if (empty($menuId) && !empty($mod_id))
-		{
-			$module = $this->getModuleById($mod_id);
-			$params	= new JRegistry($module->params);
-		}
+		$params      = $this->getAppropriateParams();
 
 		$check		= $params->get('access-check');
 
@@ -1122,5 +1146,37 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		return $module;
+	}
+
+	/**
+	 * Method to get appropriate params. If we come directly from menu item, take the params from state.
+	 * If we come from a module and there is set to take the params from a menu item, take them. If no menu item is
+	 * selected, take the module params.
+	 *
+	 * @return JRegistry
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	protected function getAppropriateParams(): JRegistry
+	{
+		$params = $this->state->params;
+		$mod_id = $this->getState('module.id', null);
+
+		if (!is_null($mod_id))
+		{
+			$module = $this->getModuleById($mod_id);
+			$params = new JRegistry($module->params);
+
+			$menuItem = $params->get('menu_item', '');
+
+			if ($menuItem !== '')
+			{
+				$params = $this->getParamsFromSelectedMenuEntry($menuItem);
+			}
+		}
+
+		return $params;
 	}
 }

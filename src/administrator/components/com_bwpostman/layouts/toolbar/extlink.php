@@ -9,11 +9,20 @@
 
 defined('JPATH_BASE') or die;
 
-if(version_compare(JVERSION, '3.99', 'le'))
+if(version_compare(JVERSION, '3.999.999', 'le'))
 {
-	$doTask = $displayData['doTask'];
-	$class  = $displayData['class'];
-	$text   = $displayData['text'];
+	if (isset($displayData['options']))
+	{
+		$doTask = $displayData['options']['doTask'];
+		$class  = $displayData['options']['class'];
+		$text   = $displayData['options']['text'];
+	}
+	else
+	{
+		$doTask = $displayData['doTask'];
+		$class  = $displayData['class'];
+		$text   = $displayData['text'];
+	}
 
 	?>
 	<button onclick="window.open('<?php echo $doTask; ?>', '_blank', '');" class="btn btn-small">

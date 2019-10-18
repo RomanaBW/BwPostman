@@ -53,7 +53,6 @@
 		       labelclass="control-label"
 		       description="COM_BWPOSTMAN_ATTACHMENT_FIELD_DESC"
 		       multiple="true"
-		       role="dialog"
 		       min="0"
 		       max="20"
 		>

@@ -214,9 +214,22 @@ function checkSelectedRecipients (message) { // Method to check if some recipien
 }
 
 
-//insert placeholder
+//insert placeholder Joomla 3
 function buttonClick(text, editor) {
 	jInsertEditorText(text, editor);
+}
+
+//insert placeholder Joomla 4
+function buttonClick4(text, editor) {
+	// jInsertEditorText(text, editor);
+
+	var content = window.Joomla.editors.instances[editor].getValue();
+
+	if (content) {
+		Joomla.editors.instances[editor].replaceSelection(text);
+	}
+
+	return true;
 }
 
 // insert placeholder at cursor position
@@ -239,7 +252,7 @@ function InsertAtCaret(myValue) {
 			sel.text = myValue;
 			this.focus();
 		}
-		else if (this.selectionStart || this.selectionStart == '0') {
+		else if (this.selectionStart || this.selectionStart === 0) {
 			//For browsers like Firefox and Webkit based
 			var startPos = this.selectionStart;
 			var endPos = this.selectionEnd;

@@ -290,7 +290,7 @@
 		<field name="disclaimer_link"
 			size="50"
 			type="text"
-			default="http://www.disclaimer.de/disclaimer.htm"
+			default="https://www.disclaimer.de/disclaimer.htm"
 			label="COM_BWPOSTMAN_LINK_TO_DISCLAIMER"
 			description="COM_BWPOSTMAN_LINK_TO_DISCLAIMER_NOTE"
 		/>

@@ -39,6 +39,15 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$limitstart	= $this->escape($this->state->get('list.start'));
+$moduleId	= $this->escape($this->state->get('module.id', null));
+
+$actionSuffix = 'Itemid=' . $this->Itemid;
+
+if ($moduleId !== null && $moduleId !== '')
+{
+	$actionSuffix = 'mid=' . $moduleId;
+}
 
 ?>
 
@@ -50,7 +59,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</h1>
 		<?php endif; ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>" method="post"
+		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
 				name="adminForm" id="adminForm" class="form-inline form-horizontal">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
 				<div class="clearfix">
@@ -82,7 +91,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<div class="js-stools-field-filter filter_year"><?php echo $this->form->yearField; ?></div>
 						<?php endif; ?>
 						<div class="js-stools-field-filter filter_list"><?php echo $this->form->limitField; ?></div><br />
-						<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2) : ?>
+						<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
+						{ ?>
 							<div class="js-stools-field-filter filter_mls">
 								<?php echo JHtml::_(
 									'select.genericlist',
@@ -95,7 +105,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									'filter.mailinglist'
 								); ?>
 							</div>
-						<?php endif; ?>
+						<?php
+						}
+						else
+						{
+//							$this->state->set('filter.mailinglist', '');
+						} ?>
 						<?php if ($this->params->get('groups_filter_enable') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
 							<div class="js-stools-field-filter filter_groups">
 								<?php echo JHtml::_(
@@ -200,6 +215,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+			<input type="hidden" name="limitstart" value="<?php echo $limitstart; ?>" />
 			<input type="hidden" name="id" value="<?php //echo $this->items->id; ?>" />
 			<?php echo JHtml::_('form.token'); ?>
 		</form>

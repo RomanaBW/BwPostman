@@ -853,7 +853,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_c_na_f = '"85";"1519";"0";"Otte";"Stephan";"s.otte@tester-net.nil"';
+	public static $subs_c_na_f = '"85";"0";"Otte";"Stephan";"s.otte@tester-net.nil"';
 
 		/**
 		 * @var string
@@ -861,51 +861,72 @@ class SubscriberManagerPage
 		 * @since 2.2.0
 		 */
 
-	public static $subs_c_a_f = '"172";"1542";"0";"Zellner";"Janin";"janin.zellner@tester-net.nil"';
+	public static $subs_c_a_f = '"172";"0";"Zellner";"Janin";"janin.zellner@tester-net.nil"';
 		/**
 		 * @var string
 		 *
 		 * @since 2.2.0
 		 */
-	public static $subs_u_na_f = '"23";"1506";"0";"Junker";"Dustin";"d.junker@tester-net.nil"';
+	public static $subs_u_na_f = '"23";"0";"Junker";"Dustin";"d.junker@tester-net.nil"';
 
 		/**
 		 * @var string
 		 *
 		 * @since 2.2.0
 		 */
-	public static $subs_u_a_f = '"203";"1546";"0";"Steinmetz";"Bruno";"bruno.steinmetz@tester-net.nil"';
+	public static $subs_u_a_f = '"203";"0";"Steinmetz";"Bruno";"bruno.steinmetz@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_c_na = '"7";"1499";"0";"Barth";"Rafael";"r.barth@tester-net.nil"';
+	public static $subs_c_na = '"7";"0";"Barth";"Rafael";"r.barth@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_c_a = '"14";"1501";"0";"Yildiz";"Sebastian";"s.yildiz@tester-net.nil"';
+	public static $subs_c_a = '"14";"0";"Yildiz";"Sebastian";"s.yildiz@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_u_na = '"13";"1500";"0";"Oppermann";"Cedric";"cedric.oppermann@tester-net.nil"';
+	public static $subs_u_na = '"13";"0";"Oppermann";"Cedric";"cedric.oppermann@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_u_a = '"119";"1529";"0";"Vogt";"Matthies";"m.vogt@tester-net.nil"';
+	public static $subs_u_a = '"119";"0";"Vogt";"Matthies";"m.vogt@tester-net.nil"';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $exportFieldList = "//*[@id='export_fields']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $exportFieldAssetId = "asset_id";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $exportFieldRemoveButton = "//*[@name='removebutton']";
 
 
-		/**
+	/**
 	 * @param \AcceptanceTester $I
 	 * @param boolean           $activated
 	 *

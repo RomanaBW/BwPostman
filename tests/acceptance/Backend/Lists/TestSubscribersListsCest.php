@@ -873,6 +873,8 @@ class TestSubscribersListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function ExportSubscribersToCSVCA(AcceptanceTester $I)
 	{
@@ -889,6 +891,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -935,6 +939,8 @@ class TestSubscribersListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function ExportSubscribersToCSVUA(AcceptanceTester $I)
 	{
@@ -951,6 +957,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_unconfirmed);
 		$I->click(SubsManage::$export_csv_archived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -997,6 +1005,8 @@ class TestSubscribersListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function ExportSubscribersToCSVAll(AcceptanceTester $I)
 	{
@@ -1015,6 +1025,8 @@ class TestSubscribersListsCest
 		$I->click(SubsManage::$export_csv_unconfirmed);
 		$I->click(SubsManage::$export_csv_archived);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -1096,6 +1108,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -1179,6 +1193,8 @@ class TestSubscribersListsCest
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
 
+		$this->removeAssetIdFromFields($I);
+
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
 		// Determine download path depending on user, which process the tests
@@ -1225,6 +1241,8 @@ class TestSubscribersListsCest
 	 * @return  void
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function ExportSubscribersToXML(AcceptanceTester $I)
 	{
@@ -1241,6 +1259,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -1359,4 +1379,20 @@ class TestSubscribersListsCest
 			$I->see('Subscribers', Generals::$pageTitle);
 		}
 	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 * @return void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 2.4.0
+	 */
+	private function removeAssetIdFromFields(AcceptanceTester $I)
+	{
+		$I->selectOption(SubsManage::$exportFieldList, SubsManage::$exportFieldAssetId);
+		$I->clickAndWait(SubsManage::$exportFieldRemoveButton, 1);
+	}
 }
+

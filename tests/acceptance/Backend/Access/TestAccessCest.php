@@ -348,7 +348,6 @@ class TestAccessCest
 		// Loop over all users
 		for ($i = 0; $i < count(AccessPage::$all_users); $i++)
 		{
-			// @ToDo: Consider, that some webmaster may set user permissions e.g. to send newsletter but not to create or edit one
 			// Shortcut for user variable
 			$user   = AccessPage::$all_users[$i];
 
@@ -387,13 +386,13 @@ class TestAccessCest
 			{
 				// @SpecialNote: This is a workaround to debug tests. Comment tests which are wanted
 				$unwanted_section    = array(
-//					'Newsletters',
-//					'Subscribers',
-//					'Campaigns',
-//					'Mailinglists',
-//					'Templates',
-//					'Archive',
-					'Basic settings',
+					'Newsletters',
+					'Subscribers',
+					'Campaigns',
+					'Mailinglists',
+					'Templates',
+					'Archive',
+//					'Basic settings',
 //					'Maintenance',
 					);
 
@@ -445,7 +444,7 @@ class TestAccessCest
 						{
 							$this->duplicateNewsletter($I, $user, $item_permission_array);
 
-//							$this->sendNewsletter($I, $user, $item_permission_array);
+							$this->sendNewsletter($I, $user, $item_permission_array);
 
 							// @ToDo: set publish/unpublish date
 							// @ToDo: handle queue
@@ -459,7 +458,7 @@ class TestAccessCest
 						}
 						elseif ($button == 'Templates')
 						{
-//							$this->setDefaultTemplate($I, $item_permission_array);
+							$this->setDefaultTemplate($I, $item_permission_array);
 
 							// @ToDo: import template
 						}
@@ -583,6 +582,7 @@ class TestAccessCest
 		}
 
 		$title_to_see .= $add_text;
+		$title_to_see = substr($title_to_see, 0, 44);
 
 		return $title_to_see;
 	}
@@ -617,7 +617,7 @@ class TestAccessCest
 		{
 			$tableId = 'main-table-bw-confirmed';
 		}
-		$item_found  = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
+		$item_found  = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 		$I->assertEquals(true, $item_found);
 
 		// by link
@@ -635,7 +635,7 @@ class TestAccessCest
 		}
 
 		// find page and row for desired item
-		$item_found  = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
+		$item_found  = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
@@ -681,7 +681,9 @@ class TestAccessCest
 				// Do nothing, if there is no content template
 			}
 
-			$title_to_see = $this->getTitleToSee($button, '[ Edit ]', $check_content);
+			$addText = '[ Edit ]';
+
+			$title_to_see = $this->getTitleToSee($button, $addText, $check_content);
 
 			$I->see($title_to_see, Generals::$pageTitle);
 			$I->seeInField($check_locator, $check_content);
@@ -753,7 +755,9 @@ class TestAccessCest
 				$item_text = 'mailing list';
 			}
 
+			codecept_debug("Publish by Icon");
 			$I->publishByIcon($I, $permission_array[$button]['publish_by_icon'], $item_text, $extraClick, $allowed);
+			codecept_debug("Publish by Toolbar");
 			$I->publishByToolbar($I, $permission_array[$button]['publish_by_toolbar'], $item_text, $extraClick, $allowed);
 
 			if ($button == 'Newsletters')
@@ -889,7 +893,7 @@ class TestAccessCest
 			$lock_icon = str_replace('main-table', 'main-table-bw-confirmed', $lock_icon);
 		}
 
-			// by icon
+		// by icon
 		$I->seeElement($lock_icon);
 		$I->click($lock_icon);
 		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
@@ -920,7 +924,7 @@ class TestAccessCest
 	 */
 	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link, $tableId)
 	{
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
@@ -937,7 +941,7 @@ class TestAccessCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see($button, Generals::$pageTitle);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 	}
@@ -966,7 +970,7 @@ class TestAccessCest
 
 		$I->see(sprintf(AccessPage::$checkin_success_text, $item), Generals::$alert_success);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
@@ -1017,7 +1021,7 @@ class TestAccessCest
 
 		$this->switchLoggedInUser($I, $current_user);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content, $tableId);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		if ($item_found !== true)
 		{
@@ -1314,7 +1318,8 @@ class TestAccessCest
 
 		$set_default_allowed = $item_permission_array['Templates']['permissions']['ModifyState'];
 
-		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->scrollTo(Generals::$filter_toolbar, 0, -100);
+		$I->waitForElementVisible(Generals::$clear_button, 2);
 		$I->clickAndWait(Generals::$clear_button, 2);
 
 		codecept_debug('Scroll to pagination');
@@ -1327,7 +1332,7 @@ class TestAccessCest
 			$I->click(Generals::$first_page);
 		}
 
-		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->scrollTo(TemplateManagerPage::$default_button1, 0, -250);
 		TemplateManagerPage::setDefaultTemplates($I, $set_default_allowed);
 	}
 

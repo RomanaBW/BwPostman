@@ -110,6 +110,7 @@ class TestCampaignsDetailsCest
 		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
 		$I->see('Campaigns', Generals::$pageTitle);
@@ -170,6 +171,7 @@ class TestCampaignsDetailsCest
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->see(CamEdit::$field_title, CamEdit::$title_col);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
 		$I->see('Campaigns', Generals::$pageTitle);
@@ -301,6 +303,8 @@ class TestCampaignsDetailsCest
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->see(CamEdit::$field_title, CamEdit::$title_col);
 
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->HelperArchiveItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array);
 
 		$I->switchToArchive($I, CamEdit::$arc_del_array['archive_tab']);
@@ -338,6 +342,7 @@ class TestCampaignsDetailsCest
 
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
+		$I->waitForElementVisible(Generals::$alert_success4, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 

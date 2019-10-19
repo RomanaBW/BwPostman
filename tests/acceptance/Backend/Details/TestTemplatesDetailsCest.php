@@ -110,6 +110,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// check if preview is visible at template list
 		$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
@@ -179,6 +180,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -213,6 +215,7 @@ class TestTemplatesDetailsCest
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
@@ -405,6 +408,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// check if preview is visible at template list
 		$I->seeElement(sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url));
@@ -476,6 +480,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -510,6 +515,7 @@ class TestTemplatesDetailsCest
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
@@ -614,6 +620,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArchiveItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array);
 
@@ -657,6 +664,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
@@ -707,6 +715,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);

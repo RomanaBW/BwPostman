@@ -240,6 +240,13 @@ class NewsletterEditPage
 	/**
 	 * @var string
 	 *
+	 * @since   2.4.0
+	 */
+	public static $queue_send_iframeName  = "//*/iframe[@class='iframe']";
+
+	/**
+	 * @var string
+	 *
 	 * @since   2.0.0
 	 */
 
@@ -919,7 +926,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $change_is_template  = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/a";
+	public static $change_is_template  = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button";
 
 	/**
 	 * @var array
@@ -1334,6 +1341,7 @@ class NewsletterEditPage
 
 		$I->click(self::$mark_to_send);
 		$I->click(Generals::$toolbar['Send']);
+		$I->waitForElementVisible(self::$tab5);
 		$I->see(self::$tab5_legend1);
 
 		$nbrToSend  = self::$nbr_only_confirmed;

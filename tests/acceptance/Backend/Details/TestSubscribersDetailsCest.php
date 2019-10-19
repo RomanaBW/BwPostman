@@ -105,6 +105,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
@@ -170,6 +171,7 @@ class TestSubscribersDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
@@ -306,6 +308,7 @@ class TestSubscribersDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
@@ -349,6 +352,7 @@ class TestSubscribersDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Subscribers', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);

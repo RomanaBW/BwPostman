@@ -287,7 +287,7 @@ class SubscribeComponentCest
 		{
 			$I->fillField(SubsView::$firstname, "Charles");
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(SubsView::$edit_saved_successfully, 30);
+			$I->waitForElement(Generals::$alert_heading, 30);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$firstname, SubsView::$firstname_fill);
 			$I->seeInField(SubsView::$firstname, 'Charles');
@@ -297,7 +297,7 @@ class SubscribeComponentCest
 		{
 			$I->fillField(SubsView::$name, "Crackerbarrel");
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(SubsView::$edit_saved_successfully, 30);
+			$I->waitForElement(Generals::$alert_heading, 30);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$name, SubsView::$lastname_fill);
 			$I->seeInField(SubsView::$name, 'Crackerbarrel');
@@ -307,7 +307,7 @@ class SubscribeComponentCest
 		{
 			$I->fillField(SubsView::$special, "4711");
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(SubsView::$edit_saved_successfully, 30);
+			$I->waitForElement(Generals::$alert_heading, 30);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$special, SubsView::$special_fill);
 			$I->seeInField(SubsView::$special, '4711');
@@ -315,7 +315,7 @@ class SubscribeComponentCest
 
 		$I->checkOption(SubsView::$ml2);
 		$I->click(SubsView::$button_submit);
-		$I->waitForElement(SubsView::$edit_saved_successfully, 30);
+		$I->waitForElement(Generals::$alert_heading, 30);
 		$I->see(SubsView::$msg_saved_successfully);
 		$I->waitForElement(SubsView::$view_edit, 30);
 		$I-> seeCheckboxIsChecked(SubsView::$ml2);
@@ -325,7 +325,7 @@ class SubscribeComponentCest
 
 		$I->fillField(SubsView::$mail, SubsView::$mail_fill_2);
 		$I->click(SubsView::$button_submit);
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElement(Generals::$alert_info, 30);
 		$I->see(SubsView::$msg_changed_mailaddress);
 
 		SubsView::activate($I, SubsView::$mail_fill_2);

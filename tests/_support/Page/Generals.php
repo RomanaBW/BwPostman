@@ -94,6 +94,12 @@ class Generals
 	/**
 	 * @var string
 	 *
+	 * @since 2.0.0
+	 */
+	public static $filter_toolbar    = "//*[@class='js-stools-container-bar']";
+	/**
+	 * @var string
+	 *
 	 * @since 2.4.0
 	 */
 	public static $joomlaMenuCollapse    = "//*/a[@id='menu-collapse']";
@@ -180,14 +186,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_header     = '//*/joomla-alert/h4';
+	public static $alert_header     = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_heading    = "//*[@id='system-message-container']/div[1]/joomla-alert/h4";
+	public static $alert_heading    = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
 
 	/**
 	 * @var string
@@ -208,7 +214,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_success    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div/div';
+	public static $alert_success    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div/p';
 
 	/**
 	 * @var string
@@ -229,14 +235,14 @@ class Generals
 	 *
 	 * @since 2.2.0
 	 */
-	public static $alert_info        = '//*[@id="system-message"]/joomla-alert[@type="info"]/div/div';
+	public static $alert_info        = '//*[@id="system-message"]/joomla-alert[@type="info"]/div[2]/p';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_warn       = '//*[@id="system-message"]/joomla-alert[@type="warning"]/div/div';
+	public static $alert_warn       = '//*[@id="system-message"]/joomla-alert[@type="warning"]/div[2]/p';
 
 	/**
 	 * @var string
@@ -250,7 +256,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error      = '//*[@id="system-message"]/joomla-alert[@type="danger"]/div/div';
+	public static $alert_error      = '//*[@id="system-message"]/joomla-alert[@type="danger"]/div[2]/p';
 
 	/**
 	 * @var string
@@ -469,9 +475,9 @@ class Generals
 		'Export'               => "//*[@id='toolbar-upload']/button",
 		'Export Popup'         => "//*[@id='toolbar-popup-upload']/button",
 		'Batch'                => "//*[@id='toolbar-batch']/button",
-		'Reset sending trials' => "//*[@id='toolbar-unpublish']/button",
-		'Continue sending'     => "//*[@id='toolbar-popup-envelope']/button",
-		'Clear queue'          => "//*[@id='toolbar-delete']/button",
+		'Reset sending trials' => "//*[@id='toolbar-checkin']/button",
+		'Continue sending'     => "//*[@id='toolbar-envelope']/button",
+		'Clear queue'          => "//*[@id='toolbar-trash']/button",
 		'Uninstall  '          => "//*[@id='toolbar-delete']/button",
 		'BwPostman Manual'     => "//*[@id='toolbar-manual']/button",
 		'BwPostman Forum'      => "//*[@id='toolbar-forum']/button",
@@ -622,7 +628,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $clear_button         = "//*[@class='js-stools-container-bar']/div[1]/button";
+	public static $clear_button         = "//*/button[contains(@class, 'js-stools-btn-clear')]";
 
 	/**
 	 * @var string

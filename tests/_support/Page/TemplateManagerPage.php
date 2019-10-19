@@ -495,7 +495,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $exportDownloadButton    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div/div/a';
+	public static $exportDownloadButton    = "//*[@id='system-message-container']/div[1]/joomla-alert/div[2]/p/a";
 
 	/**
 	 * @var array

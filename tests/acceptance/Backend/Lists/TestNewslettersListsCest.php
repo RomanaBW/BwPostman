@@ -776,6 +776,7 @@ class TestNewslettersListsCest
 		$this->buildQueue($I);
 
 		$I->clickAndWait(NlManage::$tab3, 1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
 		$I->assertNotEquals(0, intval($trial_value));
@@ -788,17 +789,18 @@ class TestNewslettersListsCest
 		$I->setExtensionStatus('bwtestmode', 0);
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
 
-//		$I->clickAndWait(Generals::$toolbar4['Continue sending'], 1);
 		$I->clickAndWait("//*/button[contains(@class,'button-envelope')]", 1);
 
-		//        $I->switchToIFrame('iframe');
-		//        $I->waitForText(NlEdit::$success_send_ready, 300);
-		//        $I->see(NlEdit::$success_send_ready);
+//		$I->wait(5);
+//		$I->waitForElementVisible(NlEdit::$queue_send_iframeName, 20);
+//		$I->switchToIFrame(NlEdit::$queue_send_iframeName);
+//		$I->waitForText(NlEdit::$success_send_ready, 300);
+//		$I->see(NlEdit::$success_send_ready);
 
-		//        $I->see(sprintf(NlEdit::$success_send_number, NlEdit::$nbr_only_confirmed));
+//		$I->switchToIFrame();
+//		$I->wait(5);
 
-		//        $I->switchToIFrame();
-		$I->wait(80);
+		$I->wait(30);
 
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->clickAndWait(NlManage::$tab2, 1);

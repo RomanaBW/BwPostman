@@ -247,6 +247,7 @@ class AcceptanceTester extends \Codeception\Actor
 	/**
 	 * Method to
 	 *
+	 * @param string            $button
 	 * @param string            $search_value
 	 * @param string            $tableId
 	 *
@@ -257,11 +258,15 @@ class AcceptanceTester extends \Codeception\Actor
 	 * @since   2.0.0
 	 */
 
-	public function findPageWithItemAndScrollToItem($search_value, $tableId = 'main-table')
+	public function findPageWithItemAndScrollToItem($button, $search_value, $tableId = 'main-table')
 	{
 		$found      = false;
 		$count      = 1;
 		$last_page  = $this->getLastPageNumber();
+		$yOffset    = -100;
+
+		if ($button === 'Templates')
+			$yOffset = -250;
 
 		while (!$found)
 		{
@@ -270,7 +275,7 @@ class AcceptanceTester extends \Codeception\Actor
 			if ($table_search_result > 0)
 			{
 				$position   = sprintf("//*[@id='" . $tableId . "']/tbody/tr[%s]", $table_search_result);
-				$this->scrollTo($position, 0, -100);
+				$this->scrollTo($position, 0, $yOffset);
 				$found  = true;
 			}
 			else

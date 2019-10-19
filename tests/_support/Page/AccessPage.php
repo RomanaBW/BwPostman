@@ -198,28 +198,28 @@ class AccessPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $j_menu_components     = "//*[@id='menu']/li/a/span[contains(text(), 'Components')]";
+	public static $j_menu_components     = "//*[@id='sidebarmenu']/nav/ul/li/a/span[contains(text(), 'Components')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $j_menu_bwpostman      = "//*[@id='menu']/li/ul/li/a/span[contains(text(), 'BwPostman')]";
+	public static $j_menu_bwpostman      = "//*[@id='sidebarmenu']/nav/ul/li/ul/li/a/span[contains(text(), 'BwPostman')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $j_menu_bwpostman_sub         = "//*[@id='menu']/li/ul/li/ul/li/a/span[contains(text(), 'Dashboard')]";
+	public static $j_menu_bwpostman_sub         = "//*[@id='sidebarmenu']/nav/ul/li/ul/li/ul/li/a/span[contains(text(), 'Dashboard')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $j_menu_bwpostman_sub_item    = "//*[@id='menu']/li/ul/li/ul/li/a/span[contains(text(), '%s')]";
+	public static $j_menu_bwpostman_sub_item    = "//*[@id='sidebarmenu']/nav/ul/li/ul/li/ul/li/a/span[contains(text(), '%s')]";
 
 	/**
 	 * @var string

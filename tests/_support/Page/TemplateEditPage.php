@@ -543,6 +543,7 @@ class TemplateEditPage
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(self::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template', Generals::$pageTitle);
 	}
 

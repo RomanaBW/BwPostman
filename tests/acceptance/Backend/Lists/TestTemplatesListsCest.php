@@ -412,8 +412,8 @@ class TestTemplatesListsCest
 
 		$I->click(TplManage::$firstTableCheckbox);
 		$I->click(TplManage::$export_button);
-		$I->waitForElementVisible(TplManage::$exportDownloadButton, 10);
-		$I->see(TplManage::$exportPackSuccess, Generals::$alert_success);
+		$I->waitForElementVisible(Generals::$alert_heading4, 10);
+		$I->see(TplManage::$exportPackSuccess, Generals::$alert_success4);
 
 		$I->clickAndWait(TplManage::$exportDownloadButton, 3);
 

@@ -102,6 +102,7 @@ class TestMailinglistsDetailsCest
 		$I->click(MlEdit::$toolbar['Save & Close']);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -159,6 +160,7 @@ class TestMailinglistsDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -281,6 +283,7 @@ class TestMailinglistsDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArchiveItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
 

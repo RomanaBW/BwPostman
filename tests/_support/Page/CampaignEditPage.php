@@ -196,6 +196,7 @@ class CampaignEditPage
 		$I->waitForElementVisible(Generals::$alert_header, 10);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(self::$success_save, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->see('Campaigns', Generals::$pageTitle);
 	}

@@ -1242,15 +1242,15 @@ class Acceptance extends Codeception\Module
 		}
 
 		// see message archived
-		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
+		$I->waitForElementVisible(Generals::$alert_heading4, 30);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading4);
 		if ($count == '1')
 		{
-			$I->see($edit_data['archive_success_msg'], Generals::$alert_success);
+			$I->see($edit_data['archive_success_msg'], Generals::$alert_success4);
 		}
 		else
 		{
-			$I->see($edit_data['archive_success2_msg'], Generals::$alert_success);
+			$I->see($edit_data['archive_success2_msg'], Generals::$alert_success4);
 		}
 	}
 
@@ -1301,16 +1301,16 @@ class Acceptance extends Codeception\Module
 		}
 
 		// see message deleted
-		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
+		$I->waitForElementVisible(Generals::$alert_heading4, 30);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading4);
 
 		if ($count == '1')
 		{
-			$I->see($edit_data['success_remove'], Generals::$alert_success);
+			$I->see($edit_data['success_remove'], Generals::$alert_success4);
 		}
 		else
 		{
-			$I->see($edit_data['success_remove2'], Generals::$alert_success);
+			$I->see($edit_data['success_remove2'], Generals::$alert_success4);
 		}
 
 		$I->dontSee($edit_data['field_title']);
@@ -1362,8 +1362,8 @@ class Acceptance extends Codeception\Module
 		}
 
 		// see message restored
-		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see(Generals::$alert_info_txt, Generals::$alert_heading);
+		$I->waitForElementVisible(Generals::$alert_heading4, 30);
+		$I->see(Generals::$alert_info_txt, Generals::$alert_heading4);
 		if ($count == '1')
 		{
 			$I->see($edit_data['success_restore'], Generals::$alert_info);

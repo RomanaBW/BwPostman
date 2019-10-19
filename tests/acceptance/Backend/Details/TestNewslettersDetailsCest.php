@@ -205,6 +205,7 @@ class TestNewslettersDetailsCest
 		$I->waitForElement(Generals::$alert_header, 30);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 		$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -343,15 +344,21 @@ class TestNewslettersDetailsCest
 
 		$I->dontSeeElement(NlEdit::$tab5);
 		$I->clickAndWait(NlEdit::$tab2, 1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->dontSeeElement(NlEdit::$tab5);
 		$I->clickAndWait(NlEdit::$tab3, 1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->dontSeeElement(NlEdit::$tab5);
 		$I->clickAndWait(NlEdit::$tab4, 1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
 		$I->dontSeeElement(NlEdit::$tab5);
 		$I->clickAndWait(NlEdit::$tab1, 1);
-		$I->dontSeeElement(NlEdit::$tab5);
-
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
+		$I->dontSeeElement(NlEdit::$tab5);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject);
 
 		// Grab ID of first newsletter
@@ -587,11 +594,11 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
-		NlEdit::checkSuccess($I, Generals::$admin['author']);
-
 		$I->see(Generals::$alert_warn_txt, Generals::$alert_header);
 		$I->see(sprintf(NlEdit::$warn_save, NlEdit::$field_subject), Generals::$alert_warn);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
+		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->see("Newsletters", Generals::$pageTitle);
 
@@ -943,6 +950,7 @@ class TestNewslettersDetailsCest
 		$I->see('Newsletters', Generals::$pageTitle);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(NlEdit::$is_template_error, Generals::$alert_error);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

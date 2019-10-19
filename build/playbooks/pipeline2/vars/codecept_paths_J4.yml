@@ -6,5 +6,5 @@ codecept_path_output: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_b
 codecept_failed_file: "{{ codecept_path_output }}/failed"
 
 test_files_source: "/home/romana/PhpstormProjects/BwPostman_J4/tests/"
-joomla_version: "4.0.0a11"
+joomla_version: "4.0.0a12"
 

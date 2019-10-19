@@ -30,11 +30,11 @@
     public $ftp_enable = '0';
     public $offset = 'UTC';
     public $mailonline = '1';
-    public $mailer = 'sendmail';
+    public $mailer = 'smtp';
     public $mailfrom = '{{ tester_mail_from }}';
     public $fromname = '{{ tester_mail_from_name }}';
     public $sendmail = '/usr/sbin/sendmail';
-    public $smtpauth = '0';
+    public $smtpauth = false;
     public $smtpuser = '{{ tester_smtp_user }}';
     public $smtppass = '{{ tester_smtp_password }}';
     public $smtphost = '{{ tester_smtp_host }}';

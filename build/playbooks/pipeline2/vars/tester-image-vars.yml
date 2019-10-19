@@ -1,6 +1,6 @@
 ---
 # Fast changing variables
-joomla_version: "4.0.0a11"
+joomla_version: "4.0.0a12"
 #joomla_version: "3.9.10"
 
 bwpm_version: "2.4.0"
@@ -55,7 +55,7 @@ tester_mail_from_name: "Joomla-Test"
 # SMTP configuration is not really needed
 tester_smtp_user: "info@boldt-webservice.de"
 tester_smtp_password: "@Miriam02#"
-tester_smtp_host: "172.18.0.18"
+tester_smtp_host: "192.168.2.100"
 
 
 # Settings for creating base LAMP containers

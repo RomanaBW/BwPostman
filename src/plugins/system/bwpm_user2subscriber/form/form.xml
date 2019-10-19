@@ -170,8 +170,7 @@
 		>
 		</field>
 
-			<field name="spacer2_4" type="spacer" hr="true" class="bwpm-u2s-fields-toggle spacer-lbl" />
+		<field name="spacer2_4" type="spacer" hr="true" class="bwpm-u2s-fields-toggle spacer-lbl" />
 
-		</fieldset>
-	</fields>
+	</fieldset>
 </form>

@@ -13,7 +13,7 @@ pipeline {
 					GIT_MESSAGE = "not specified"
 					PROJECT_NAME = "j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
 				}
-            }
+			}
         }
 
 //		stage('Create tester package') {

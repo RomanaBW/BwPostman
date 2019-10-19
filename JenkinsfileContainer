@@ -52,12 +52,12 @@ pipeline {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
-//						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh ${BWPM_VERSION}"
+						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
-							echo "Dummy 1 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
+//							echo "Dummy 1 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
@@ -157,66 +157,66 @@ pipeline {
 			}
 		}
 
-//		stage('Dev-Upload') {
-//			steps {
-//				dir("/repositories/artifacts/bwpostman/data") {
-//					fileOperations([
-//						fileCopyOperation(
-//							excludes: '',
-//						flattenFiles: false,
-//						includes: "pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip",
-//						targetLocation: "${WORKSPACE}/tests")
-//				])
-//				}
+		stage('Dev-Upload') {
+			steps {
+				dir("/repositories/artifacts/bwpostman/data") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+						flattenFiles: false,
+						includes: "pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip",
+						targetLocation: "${WORKSPACE}/tests")
+				])
+				}
 
-//				dir("/repositories/artifacts/bwpostman/data") {
-//					fileOperations([
-//						fileCopyOperation(
-//							excludes: '',
-//						flattenFiles: false,
-//						includes: "CHANGELOG",
-//						targetLocation: "${WORKSPACE}/tests")
-//				])
-//				}
+				dir("/repositories/artifacts/bwpostman/data") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+						flattenFiles: false,
+						includes: "CHANGELOG",
+						targetLocation: "${WORKSPACE}/tests")
+				])
+				}
 
-//				script {
-//					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-//				}
+				script {
+					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+				}
 
-//				echo "tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+				echo "tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
 
-//				sshPublisher(
-//					publishers: [sshPublisherDesc(
-//					configName: 'Web Dev BwPostman',
-//					transfers: [sshTransfer(
-//					cleanRemote: false,
-//					excludes: '',
-//					execCommand: '',
-//					execTimeout: 120000,
-//					flatten: false,
-//					makeEmptyDirs: false,
-//					noDefaultExcludes: false,
-//					patternSeparator: '[, ]+',
-//					remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
-//					remoteDirectorySDF: false,
-//					removePrefix: 'tests',
-//					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
-//			)],
-//				usePromotionTimestamp: false,
-//					useWorkspaceInPromotion: false,
-//					verbose: false
-//			)]
-//			)
+				sshPublisher(
+					publishers: [sshPublisherDesc(
+					configName: 'Web Dev BwPostman',
+					transfers: [sshTransfer(
+					cleanRemote: false,
+					excludes: '',
+					execCommand: '',
+					execTimeout: 120000,
+					flatten: false,
+					makeEmptyDirs: false,
+					noDefaultExcludes: false,
+					patternSeparator: '[, ]+',
+					remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
+					remoteDirectorySDF: false,
+					removePrefix: 'tests',
+					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+			)],
+				usePromotionTimestamp: false,
+					useWorkspaceInPromotion: false,
+					verbose: false
+			)]
+			)
 
-//				emailext(
-//					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, all acceptance tests and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-//					subject:"BwPostman build ${currentBuild.number} successful",
-//					to: 'webmaster@boldt-webservice.de'
-//				)
-////				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
-////				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-//			}
-//		}
+				emailext(
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test, all acceptance tests and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman build ${currentBuild.number} successful",
+					to: 'webmaster@boldt-webservice.de'
+				)
+//				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
+//				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+			}
+		}
 
 //		stage('Push to github') {
 //			steps {

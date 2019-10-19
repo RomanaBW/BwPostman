@@ -815,6 +815,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 
+		// Correct empty publishing dates
+		if (isset($data['publish_up']) &&  $data['publish_up'] === "")
+		{
+			$data['publish_up'] = "0000-00-00 00:00:00";
+		}
+
+		if (isset($data['publish_down']) &&  $data['publish_down'] === "")
+		{
+			$data['publish_down'] = "0000-00-00 00:00:00";
+		}
+
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
 		if (isset($data['ml_available']))
 		{

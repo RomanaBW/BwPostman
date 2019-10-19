@@ -997,10 +997,15 @@ class Com_BwPostmanInstallerScript
 	{
 		try
 		{
-			// Get group ID of BwPostmanAdmin
-			$adminGroup = $this->getGroupId('BwPostmanAdmin');
+			// Get group ID of BwPostmanAdmin and section admins
+			$adminGroup             = $this->getGroupId('BwPostmanAdmin');
+			$campaignAdminGroup     = $this->getGroupId('BwPostmanCampaignAdmin');
+			$mailinglistAdminGroup  = $this->getGroupId('BwPostmanMailinglistAdmin');
+			$newsletterAdminGroup   = $this->getGroupId('BwPostmanNewsletterAdmin');
+			$subscriberAdminGroup   = $this->getGroupId('BwPostmanSubscriberAdmin');
+			$templateAdminGroup     = $this->getGroupId('BwPostmanTemplateAdmin');
 
-			if (!$adminGroup)
+			if (!$adminGroup || !$campaignAdminGroup || !$mailinglistAdminGroup || !$newsletterAdminGroup || !$subscriberAdminGroup || !$templateAdminGroup)
 			{
 				return false;
 			}
@@ -1011,14 +1016,23 @@ class Com_BwPostmanInstallerScript
 			// Insert BwPostmanAdmin to root asset
 			$tmpRules   = json_decode($rootRules, true);
 
+			// @ToDo: J4 only grants access to component options with core.manage, but with this permission is a lot possible.
+			// Better would be to only grant core.options, but this needs core change as suggested at issue #26606.
 			$tmpRules['core.login.site'][$adminGroup]  = 1;
 			$tmpRules['core.login.admin'][$adminGroup] = 1;
-//			$tmpRules['core.manage'][$adminGroup]      = 1;
+			$tmpRules['core.manage'][$adminGroup]      = 1;
+			$tmpRules['core.options'][$adminGroup]     = 1;
 			$tmpRules['core.create'][$adminGroup]      = 1;
 			$tmpRules['core.delete'][$adminGroup]      = 1;
 			$tmpRules['core.edit'][$adminGroup]        = 1;
 			$tmpRules['core.edit.own'][$adminGroup]    = 1;
 			$tmpRules['core.edit.state'][$adminGroup]  = 1;
+
+//			$tmpRules['core.manage'][$campaignAdminGroup]     = 0;
+//			$tmpRules['core.manage'][$mailinglistAdminGroup]  = 0;
+//			$tmpRules['core.manage'][$newsletterAdminGroup]   = 0;
+//			$tmpRules['core.manage'][$subscriberAdminGroup]   = 0;
+//			$tmpRules['core.manage'][$templateAdminGroup]     = 0;
 
 			$newRootRules = json_encode($tmpRules);
 

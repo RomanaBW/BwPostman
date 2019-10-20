@@ -231,6 +231,7 @@
 			<equals arg1="${rebase}" arg2="1"/>
 			<then>
 				<echo message="Do Rebase erkannt: ${rebase}" />
+<!--				<echo message="Befehl: mysql -u ${BW_TEST_DB_USER} -p${BW_TEST_DB_PW} -h ${BW_TEST_DB_HOST} ${BW_TEST_DB_NAME} &lt; ${web_dir}/${project_name}/backups/${project_name}.sql" />-->
 				<exec command="mysql -u ${BW_TEST_DB_USER} -p${BW_TEST_DB_PW} -h ${BW_TEST_DB_HOST} ${BW_TEST_DB_NAME} &lt; ${web_dir}/${project_name}/backups/${project_name}.sql" passthru="true" />
 			</then>
 		</if>

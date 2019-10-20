@@ -1122,14 +1122,15 @@ class NewsletterEditPage
 	 */
 	public static function checkSuccess(\AcceptanceTester $I, $username)
 	{
+		$I->waitForElementVisible(Generals::$systemMessageClose, 30);
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(self::$success_saved, Generals::$alert_success);
+		$I->click(Generals::$systemMessageClose);
 
 		$I->see(self::$field_subject, self::$success_inList_subject);
 		$I->see(self::$field_description, self::$success_inList_desc);
 		$I->see($username, self::$success_inList_author);
-		$I->click(Generals::$systemMessageClose);
 	}
 
 	/**

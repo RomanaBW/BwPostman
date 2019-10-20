@@ -871,6 +871,7 @@ class TestTemplatesDetailsCest
 	 */
 	private function fillRequiredExtended(AcceptanceTester $I, $type)
 	{
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 		$I->seeInPopup(TplEdit::$popup_description);

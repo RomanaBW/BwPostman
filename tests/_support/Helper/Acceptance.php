@@ -1582,7 +1582,7 @@ class Acceptance extends Codeception\Module
 	{
 		$I->scrollTo(Generals::$table_header);
 		$I->see($top_val, $top_val_field);
-		$I->scrollTo(Generals::$pagination_bar);
+		$I->scrollTo(Generals::$pagination_bar, 0, -150);
 		$I->see($last_val, $last_val_field);
 	}
 

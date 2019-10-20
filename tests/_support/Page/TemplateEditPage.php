@@ -609,6 +609,7 @@ class TemplateEditPage
 		if ($user === 'AdminTester' || $user === '')
 		{
 			$I->waitForElement("//*[@id='browser-list']", 30);
+			$I->waitForElement(self::$thumb_select, 30);
 			$I->clickAndWait(self::$thumb_select, 1);
 
 			$I->clickAndWait(self::$thumb_insert, 1);
@@ -618,6 +619,7 @@ class TemplateEditPage
 			$I->switchToIFrame(Generals::$image_frame);
 
 			$I->waitForElementVisible("//div[contains(@class, 'media-browser-items')]", 30);
+			$I->waitForElementVisible(self::$thumb_select_user, 30);
 			$I->clickAndWait(self::$thumb_select_user, 1);
 
 			$I->switchToIFrame();

@@ -103,6 +103,7 @@ class TestSubscribersDetailsCest
 		SubEdit::fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -168,7 +169,7 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -205,7 +206,7 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->see('', SubEdit::$name);
@@ -245,7 +246,7 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -259,7 +260,7 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -305,7 +306,7 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -349,7 +350,7 @@ class TestSubscribersDetailsCest
 		SubEdit::fillFormSimple($I);
 
 		$I->click(SubEdit::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -360,6 +361,7 @@ class TestSubscribersDetailsCest
 		SubEdit::fillFormSimple($I);
 
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(SubEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

@@ -107,7 +107,7 @@ class TestTemplatesDetailsCest
 
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 3);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -139,7 +139,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template cancel list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
 		$this->fillFormExtendedHtml($I);
@@ -171,13 +171,13 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -205,13 +205,13 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
@@ -248,13 +248,13 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
@@ -270,7 +270,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
@@ -310,14 +310,14 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create HTML template twice list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template', Generals::$pageTitle);
@@ -329,7 +329,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -364,7 +364,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(MainView::$addTextTemplateButton);
@@ -373,7 +373,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
@@ -396,7 +396,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(MainView::$addTextTemplateButton);
@@ -405,7 +405,7 @@ class TestTemplatesDetailsCest
 
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -438,7 +438,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template cancel list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
 		$this->fillFormExtendedText($I);
@@ -470,14 +470,14 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -505,13 +505,13 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
@@ -548,13 +548,13 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
@@ -570,7 +570,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
@@ -610,14 +610,14 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template list view, archive and restore");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -653,7 +653,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create Text template twice list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
@@ -661,7 +661,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -672,7 +672,7 @@ class TestTemplatesDetailsCest
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -707,12 +707,12 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Edit default template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(TplManage::$tableRowForDefault);
 		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -748,7 +748,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Edit default template, save as copy");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(TplManage::$tableRowForDefault);
 		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 
@@ -758,7 +758,7 @@ class TestTemplatesDetailsCest
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
 
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

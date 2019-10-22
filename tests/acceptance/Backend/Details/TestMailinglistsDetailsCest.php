@@ -191,7 +191,7 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar['Save & New']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->see('', MlEdit::$title);
@@ -227,7 +227,7 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar['Save']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
@@ -281,7 +281,7 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 		$I->click(MlEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -322,7 +322,7 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(MlEdit::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->see('Mailinglists', Generals::$pageTitle);

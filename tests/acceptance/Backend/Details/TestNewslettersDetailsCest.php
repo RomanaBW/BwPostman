@@ -105,6 +105,7 @@ class TestNewslettersDetailsCest
 		$this->fillFormSimpleWithCampaign($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_header, 5);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
@@ -166,7 +167,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
@@ -200,7 +201,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 		$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
 
@@ -234,7 +235,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(Generals::$toolbar['Save & New']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->click(Generals::$systemMessageClose);
@@ -273,7 +274,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(Generals::$toolbar['Save']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -287,7 +288,7 @@ class TestNewslettersDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -331,7 +332,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(Generals::$toolbar['Save']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -366,7 +367,7 @@ class TestNewslettersDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -477,6 +478,7 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_header, 5);
 
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
@@ -583,6 +585,7 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_header, 5);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 		$I->see('Newsletters', Generals::$pageTitle);
 
@@ -591,6 +594,7 @@ class TestNewslettersDetailsCest
 		NlEdit::fillFormSimple($I);
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see(Generals::$alert_warn_txt, Generals::$alert_header);
 		$I->see(sprintf(NlEdit::$warn_save, NlEdit::$field_subject), Generals::$alert_warn);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

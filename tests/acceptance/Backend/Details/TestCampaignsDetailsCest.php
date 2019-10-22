@@ -107,7 +107,7 @@ class TestCampaignsDetailsCest
 		$this->fillFormExtended($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -167,6 +167,7 @@ class TestCampaignsDetailsCest
 
 		CamEdit::fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -204,6 +205,7 @@ class TestCampaignsDetailsCest
 		CamEdit::fillFormSimple($I);
 
 		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->waitForElement(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -244,6 +246,7 @@ class TestCampaignsDetailsCest
 		CamEdit::fillFormSimple($I);
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+		$I->waitForElement(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -298,6 +301,7 @@ class TestCampaignsDetailsCest
 
 		CamEdit::fillFormSimple($I);
 		$I->click(CamEdit::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -342,7 +346,7 @@ class TestCampaignsDetailsCest
 
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
-		$I->waitForElementVisible(Generals::$alert_success4, 30);
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 

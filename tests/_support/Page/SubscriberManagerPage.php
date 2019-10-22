@@ -951,15 +951,20 @@ class SubscriberManagerPage
 	/**
 	 * @param \AcceptanceTester $I
 	 * @param string            $search_value
-	 * @param string            $search_for_value
+	 * @param string            $search_for
+	 *
+	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	public static function filterForSubscriber(\AcceptanceTester $I, $search_value, $search_for_value)
+	public static function filterForSubscriber(\AcceptanceTester $I, $search_value, $search_for)
 	{
 		$I->fillField(Generals::$search_field, $search_value);
-		$I->clickAndWait(Generals::$filterbar_button, 1);
-		$I->clickSelectList(Generals::$search_list, $search_for_value, self::$search_for_list_id);
+
+		$I->click(Generals::$filterOptionsSwitcher);
+		$I->click(Generals::$search_list);
+		$I->selectOption(Generals::$search_list, $search_for);
+
 		$I->clickAndWait(Generals::$search_button, 1);
 	}
 }

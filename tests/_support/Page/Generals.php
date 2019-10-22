@@ -484,6 +484,13 @@ class Generals
 	);
 
 	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $toolbarActions  = "//*/joomla-toolbar-button[@id='toolbar-status-group']";
+
+	/**
 	 * Array of toolbar id values for list page
 	 *
 	 * @var    array
@@ -504,14 +511,14 @@ class Generals
 		'Default'              => "a#toolbar-default",
 		'Check-In'             => "a#toolbar-checkin",
 		'Install-Template'     => "a#toolbar-install-template",
-		'Options'              => "a#toolbar-options",
-		'Save'                 => "a#toolbar-apply",
-		'Save & Close'         => "a#toolbar-save",
+		'Options'              => "//*/joomla-toolbar-button/a[@id='toolbar-options']",
+		'Save'                 => "//*/joomla-toolbar-button[@id='toolbar-apply']",
+		'Save & Close'         => "//*/joomla-toolbar-button[@id='save-group-children-save']",
 		'Save & New'           => "a#toolbar-save-new",
 		'Save as Copy'         => "a#toolbar-save-copy",
 		'Cancel'               => "a#toolbar-cancel",
 		'Back'                 => "a#toolbar-back",
-		'Delete'               => "a#toolbar-delete",
+		'Delete'               => "//*/joomla-toolbar-button[@id='status-group-children-delete']",
 		'Restore'              => "a#toolbar-unarchive",
 		'Enable'               => "a#toolbar-publish",
 		'Import'               => "a#toolbar-download",
@@ -976,14 +983,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_red   = 'btn btn-outline-danger';
+	public static $button_red   = 'btn-outline-danger';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_green = 'btn btn-outline-success';
+	public static $button_green = 'btn-outline-success';
 
 	/**
 	 * @var string

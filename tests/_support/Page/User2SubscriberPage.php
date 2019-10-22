@@ -205,14 +205,14 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_subscribe_no     = "//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[1]";
+	public static $subs_identifier_subscribe_no     = "//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber0']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_subscribe_yes    = "//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber']/label[2]";
+	public static $subs_identifier_subscribe_yes    = "//*[@id='jform_bwpm_user2subscriber_bwpm_user2subscriber1']";
 
 	/**
 	 * @var string
@@ -259,9 +259,51 @@ class User2SubscriberPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $login_label_name            = "Last Name";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $login_label_name_identifier            = "//*[@id='jform_bwpm_user2subscriber_name-lbl'][contains(@class, 'invalid')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $login_label_name_missing            = "//*[@id='jform_bwpm_user2subscriber_name-lbl'][contains(@class, 'invalid')]/span[2]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $subs_identifier_firstname        = "//*[@id='jform_bwpm_user2subscriber_firstname']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $login_label_firstname            = "First Name";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $login_label_firstname_identifier            = "//*[@id='jform_bwpm_user2subscriber_firstname-lbl'][contains(@class, 'invalid')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $login_label_firstname_missing            = "//*[@id='jform_bwpm_user2subscriber_firstname-lbl'][contains(@class, 'invalid')]/span[2]";
 
 	/**
 	 * @var string
@@ -275,21 +317,21 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_format_text      = "//*[@id='jform_bwpm_user2subscriber_emailformat']/label[1]";
+	public static $subs_identifier_format_text      = "//*[@id='jform_bwpm_user2subscriber_emailformat0']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_format_html      = "//*[@id='jform_bwpm_user2subscriber_emailformat']/label[2]";
+	public static $subs_identifier_format_html      = "//*[@id='jform_bwpm_user2subscriber_emailformat1']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_mailinglists    = "//*[@id='jform_bwpm_user2subscriber_mailinglists']/label[1]/input";
+	public static $subs_identifier_mailinglists    = "//*[@id='jform_bwpm_user2subscriber_mailinglists0']";
 
 
 	// subscriber field values
@@ -367,14 +409,14 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $success_heading_identifier   = "//*[@id='system-message']/div/h4";
+	public static $success_heading_identifier   = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $success_message_identifier   = "//*[@id='system-message']/div/div/div";
+	public static $success_message_identifier   = "//*[@id='system-message']/joomla-alert[@type='success']/div/p";
 
 	/**
 	 * @var string
@@ -392,6 +434,13 @@ class User2SubscriberPage
 	public static $activation_complete          = "//*[@id='system-message']/div/div/div";
 
 	// error message identifiers
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $error_message_missing               = "Please fill in this field";
 
 	/**
 	 * @var string
@@ -435,7 +484,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $user_edit_identifier             = "//*[@id='userList']/tbody/*/td[2]/div[1]/a";
+	public static $user_edit_identifier             = "//*[@id='userList']/tbody/*/th/div[1]/a";
 
 	/**
 	 * @var string
@@ -465,42 +514,42 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscriber_email_col_identifier  = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
+	public static $subscriber_email_col_identifier  = "//*/table[@id='%s']/tbody/*/td[5]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscriber_format_col_identifier = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[6]";
+	public static $subscriber_format_col_identifier = "//*/table[@id='%s']/tbody/*/td[6]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscriber_email_col_ident_no_gender  = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[4]";
+	public static $subscriber_email_col_ident_no_gender  = "//*/table[@id='%s']/tbody/*/td[4]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscriber_format_col_ident_no_gender = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[5]";
+	public static $subscriber_format_col_ident_no_gender = "//*/table[@id='%s']/tbody/*/td[5]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscriber_filter_col_identifier = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
+	public static $subscriber_filter_col_identifier = "//*/table[@id='%s']/tbody/*/td[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscriber_edit_link             = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]/a";
+	public static $subscriber_edit_link             = "//*/table[@id='%s']/tbody/*/td[2]/a";
 
 
 	/**
@@ -508,21 +557,21 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subslist_identifier_name         = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]";
+	public static $subslist_identifier_name         = "//*/table[@id='%s']/tbody/*/td[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subslist_identifier_firstname    = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[3]";
+	public static $subslist_identifier_firstname    = "//*/table[@id='%s']/tbody/*/td[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subslist_identifier_gender       = "//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[4]";
+	public static $subslist_identifier_gender       = "//*/table[@id='%s']/tbody/*/td[4]";
 
 	/**
 	 * @var string
@@ -552,7 +601,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailinglist_fieldset_identifier  = "//*[@id='adminForm']/div/div[1]/div[1]/div/fieldset/legend/span[2]";
+	public static $mailinglist_fieldset_identifier  = "//*/section[@id='details']/div[2]/legend/span[2]";
 
 	/**
 	 * @var string
@@ -589,14 +638,14 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailformat_identifier            = "//*[@id='jform_show_emailformat-lbl']";
+	public static $mailformat_identifier            = "//*/label[@for='jform_default_emailformat0']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailformat_button_identifier     = "//*[@id='jform_default_emailformat']/label[%s]";
+	public static $mailformat_button_identifier     = "//*/label[@for='jform_default_emailformat%s']";
 
 	/**
 	 * @var string
@@ -610,7 +659,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_show_button_identifier    = "//*[@id='jform_show_emailformat']/label[%s]";
+	public static $format_show_button_identifier    = "//*/label[@for='jform_show_emailformat%s']";
 
 	// com_plugin related
 
@@ -643,7 +692,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_tab_options               = "//*[@id='myTabTabs']/li[2]/a";
+	public static $plugin_tab_options               = "//*[@id='myTab']/ul/li[2]/a";
 
 	/**
 	 * @var string
@@ -671,42 +720,42 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_format_html               = "//*[@id='jform_params_predefined_mailformat_option']/label[2]";
+	public static $plugin_format_html               = "//*/label[@for='jform_params_predefined_mailformat_option1']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_format_text               = "//*[@id='jform_params_predefined_mailformat_option']/label[1]";
+	public static $plugin_format_text               = "//*/label[@for[@id='jform_params_predefined_mailformat_option0']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_auto_update_yes           = "//*[@id='jform_params_auto_update_email_option']/label[2]";
+	public static $plugin_auto_update_yes           = "//*/label[@for='jform_params_auto_update_email_option1']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_auto_update_no            = "//*[@id='jform_params_auto_update_email_option']/label[1]";
+	public static $plugin_auto_update_no            = "//*/label[@for='jform_params_auto_update_email_option0']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_auto_delete_yes           = "//*[@id='jform_params_register_subscribe_option']/label[2]";
+	public static $plugin_auto_delete_yes           = "//*/label[@for='jform_params_register_subscribe_option1']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_auto_delete_no            = "//*[@id='jform_params_register_subscribe_option']/label[1]";
+	public static $plugin_auto_delete_no            = "//*/label[@for='jform_params_register_subscribe_option0']";
 
 
 	/**
@@ -754,7 +803,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $delete_success           = "1 user deleted.";
+	public static $delete_success           = "User deleted.";
 
 	/**
 	 * @var string

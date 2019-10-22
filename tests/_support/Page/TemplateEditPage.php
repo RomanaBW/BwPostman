@@ -540,7 +540,7 @@ class TemplateEditPage
 
 		$I->clickAndWait(self::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(self::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

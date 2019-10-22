@@ -1518,17 +1518,21 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				// items table and remove it from list to insert
 				$assetIdsByName = array();
 				$nbrItemIdsWithoutAssets = count($itemIdsWithoutAssets);
-				for ($i = 0; $i <= $nbrItemIdsWithoutAssets; $i++)
+
+				if ($nbrItemIdsWithoutAssets > 0)
 				{
-					$item = $itemIdsWithoutAssets[$i];
-					$assetName = 'com_bwpostman.' . $section . '.' . $item;
-
-					$assetId = $this->getAssetIdFromName($assetName);
-
-					if (is_integer($assetId))
+					for ($i = 0; $i <= $nbrItemIdsWithoutAssets; $i++)
 					{
-						unset($itemIdsWithoutAssets[$i]);
-						$assetIdsByName[$item] = $assetId;
+						$item = $itemIdsWithoutAssets[$i];
+						$assetName = 'com_bwpostman.' . $section . '.' . $item;
+
+						$assetId = $this->getAssetIdFromName($assetName);
+
+						if (is_integer($assetId))
+						{
+							unset($itemIdsWithoutAssets[$i]);
+							$assetIdsByName[$item] = $assetId;
+						}
 					}
 				}
 

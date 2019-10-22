@@ -1719,7 +1719,7 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $noticeToClose = array(
-		'BwPostmanPublisher' => 'core.manage',
+//		'BwPostmanPublisher' => 'core.manage',
 		'BwPostmanCampaignAdmin' => 'core.admin',
 		'BwPostmanMailinglistAdmin' => 'core.admin',
 		'BwPostmanNewsletterAdmin' => 'core.admin',

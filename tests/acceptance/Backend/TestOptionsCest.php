@@ -1895,14 +1895,14 @@ class TestOptionsCest
 		$I->click($identifier);
 		$I->selectOption($identifier, $value);
 
-//		if (array_key_exists($groupname, OptionsPage::$noticeToClose))
-//		{
-//			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
-//			{
-//				$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
-//				$I->clickAndWait(Generals::$alertNoticeClose, 1);
-//			}
-//		}
+		if (array_key_exists($groupname, OptionsPage::$noticeToClose))
+		{
+			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
+			{
+				$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
+				$I->clickAndWait(Generals::$alertNoticeClose, 1);
+			}
+		}
 	}
 
 	/**

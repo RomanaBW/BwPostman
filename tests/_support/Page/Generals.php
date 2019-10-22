@@ -263,6 +263,13 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
+	public static $alertNoticeClose      = "//*[@id='system-message-container']/joomla-alert[@type='info']/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $systemMessageClose      = "//*[@id='system-message']/joomla-alert/button";
 
 	/**

@@ -1797,11 +1797,13 @@ class TestOptionsCest
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)
 			{
-				$this->setSinglePermission($I, $rules, $i, $group_id, $actions);
+				$this->setSinglePermission($I, $rules, $i, $groupname, $group_id, $actions);
 			}
 
 			// apply
 			$I->clickAndWait(Generals::$toolbar['Save'], 1);
+			$I->waitForElementVisible(Generals::$alert_header, 5);
+			$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
 
@@ -1814,7 +1816,7 @@ class TestOptionsCest
 			// check success
 			foreach ($rules as $rule)
 			{
-				$this->checkSetPermissionsSuccess($I, $rule, $rules, $group_id, $groupname);
+				$this->checkSetPermissionsSuccess($I, $rule, $group_id, $groupname);
 			}
 		}
 	}
@@ -1841,24 +1843,24 @@ class TestOptionsCest
 	 *
 	 * @param AcceptanceTester $I
 	 * @param                  $rule
-	 * @param                  $rules
 	 * @param                  $group_id
 	 * @param                  $groupname
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.2.0
 	 */
-	protected function checkSetPermissionsSuccess(AcceptanceTester $I, $rule, $rules, $group_id, $groupname)
+	protected function checkSetPermissionsSuccess(AcceptanceTester $I, $rule, $group_id, $groupname)
 	{
-		$key_pos    = array_search($rule, $rules) + 1;
-		$identifier = sprintf(OptionsPage::$result_row, $group_id, $key_pos);
 		$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];
 
+		$scrollPos = "//*[@id='jform_rules_" . $rule . "_" . $group_id . "']";
+		$identifier = $scrollPos . "/../../../td[3]/output/span";
 		codecept_debug("Identifier: $identifier");
 		codecept_debug("Value: $value");
 
-		$scrollPos = './/*[@id="jform_rules_' . $rule . '_' . $group_id . '"]';
 		$I->scrollTo($scrollPos, 0, -150);
 		$I->waitForElementVisible($scrollPos);
 
@@ -1871,6 +1873,7 @@ class TestOptionsCest
 	 * @param AcceptanceTester $I
 	 * @param                  $rules
 	 * @param                  $i
+	 * @param                  $groupname
 	 * @param                  $group_id
 	 * @param                  $actions
 	 *
@@ -1878,7 +1881,7 @@ class TestOptionsCest
 	 *
 	 * @throws Exception
 	 */
-	protected function setSinglePermission(AcceptanceTester $I, $rules, $i, $group_id, $actions)
+	protected function setSinglePermission(AcceptanceTester $I, $rules, $i, $groupname, $group_id, $actions)
 	{
 		$identifier = "//*[@id='jform_rules_" . $rules[$i] . "_" . $group_id . "']";
 		$value      = $actions[$rules[$i]];
@@ -1889,12 +1892,17 @@ class TestOptionsCest
 		$I->scrollTo($identifier, 0, -150);
 		$I->waitForElementVisible($identifier, 30);
 
-//		$selector = '#jform_rules_' . $rules[$i] . '_' . $group_id;
-//		$I->removeSelectedAttribute($selector);
-//
 		$I->click($identifier);
 		$I->selectOption($identifier, $value);
-		$I->wait(1);
+
+		if (array_key_exists($groupname, OptionsPage::$noticeToClose))
+		{
+			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
+			{
+				$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
+				$I->clickAndWait(Generals::$alertNoticeClose, 1);
+			}
+		}
 	}
 
 	/**

@@ -27,6 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Button\PopupButton;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -133,13 +140,13 @@ class BwPostmanViewArchive extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['archive'])
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_ARC')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
@@ -154,7 +161,7 @@ class BwPostmanViewArchive extends JViewLegacy
 
 		if ($request_result === false)
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_ARC')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
@@ -163,11 +170,14 @@ class BwPostmanViewArchive extends JViewLegacy
 			$app->redirect($this->request_url);
 		}
 
-		$this->addToolbar();
-
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			BwPostmanHelper::addSubmenu('bwpostman');
+			$this->addToolbarLegacy();
+		}
+		else
+		{
+			$this->addToolbar();
 		}
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -177,23 +187,26 @@ class BwPostmanViewArchive extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title, submenu and toolbar.
+	 * Add the page title and toolbar for Joomla 4.
 	 *
 	 * @throws Exception
 	 *
-	 * @since       0.9.1
+	 * @since       2.4.0
 	 */
 	protected function addToolbar()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_BWPOSTMAN_ARC'));
-		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document = Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN_ARC'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar title
-		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_ARC'), 'list');
+		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');
 
 		// Set toolbar items for the page (depending on the tab which we are in)
 		$layout = $jinput->get('layout', 'newsletters');
@@ -202,29 +215,147 @@ class BwPostmanViewArchive extends JViewLegacy
 			case "newsletters":
 				if (BwPostmanHelper::canRestore('newsletter', 0))
 				{
-					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
 				if (BwPostmanHelper::canDelete('newsletter', 0))
 				{
-					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL')->listCheck(true);
 				}
 				break;
 			case "subscribers":
 				if (BwPostmanHelper::canRestore('subscriber', 0))
 				{
-					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
 				if (BwPostmanHelper::canDelete('subscriber', 0))
 				{
-					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB')->listCheck(true);
 				}
 				break;
 			case "campaigns":
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
-				$bar = JToolbar::getInstance('toolbar');
-				$alt_archive = JText::_('COM_BWPOSTMAN_UNARCHIVE');
+				$alt_archive = Text::_('COM_BWPOSTMAN_UNARCHIVE');
+				if (BwPostmanHelper::canRestore('campaign', 0))
+				{
+					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive";
+					$options['icon'] = "icon-unarchive";
+					$options['text'] = "COM_BWPOSTMAN_UNARCHIVE";
+					$options['bodyHeight'] = 50;
+					$options['name'] = 'unarchive';
+
+					$button = new PopupButton('unarchive');
+					$button->setOptions($options);
+					$button->listCheck(true);
+
+					$toolbar->AppendButton($button);
+				}
+
+				if (BwPostmanHelper::canDelete('campaign', 0))
+				{
+					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete";
+					$options['icon'] = "icon-delete";
+					$options['text'] = "delete";
+					$options['bodyHeight'] = 50;
+					$options['name'] = 'delete';
+
+					$button = new PopupButton('delete');
+					$button->setOptions($options);
+					$button->listCheck(true);
+
+					$toolbar->AppendButton($button);
+				}
+				break;
+			case "mailinglists":
+				if (BwPostmanHelper::canRestore('mailinglist', 0))
+				{
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
+				}
+
+				if (BwPostmanHelper::canDelete('mailinglist', 0))
+				{
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML')->listCheck(true);
+				}
+				break;
+			case "templates":
+				if (BwPostmanHelper::canRestore('template', 0))
+				{
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
+				}
+
+				if (BwPostmanHelper::canDelete('template', 0))
+				{
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL')->listCheck(true);
+				}
+				break;
+		}
+
+
+		$manualButton = BwPostmanHTMLHelper::getManualButton('archive');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
+	}
+
+	/**
+	 * Add the page title, submenu and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbarLegacy()
+	{
+		$jinput	= Factory::getApplication()->input;
+
+		// Get document object, set document title and add css
+		$document = Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN_ARC'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
+		// Set toolbar title
+		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');
+
+		// Set toolbar items for the page (depending on the tab which we are in)
+		$layout = $jinput->get('layout', 'newsletters');
+		switch ($layout)
+		{ // Which tab are we in?
+			case "newsletters":
+				if (BwPostmanHelper::canRestore('newsletter', 0))
+				{
+					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
+				}
+
+				if (BwPostmanHelper::canDelete('newsletter', 0))
+				{
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
+				}
+				break;
+			case "subscribers":
+				if (BwPostmanHelper::canRestore('subscriber', 0))
+				{
+					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
+				}
+
+				if (BwPostmanHelper::canDelete('subscriber', 0))
+				{
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
+				}
+				break;
+			case "campaigns":
+				// Special unarchive and delete button because we need a confirm dialog with 3 options
+				$bar = Toolbar::getInstance('toolbar');
+				$alt_archive = Text::_('COM_BWPOSTMAN_UNARCHIVE');
 				if (BwPostmanHelper::canRestore('campaign', 0))
 				{
 					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive';
@@ -241,53 +372,39 @@ class BwPostmanViewArchive extends JViewLegacy
 			case "mailinglists":
 				if (BwPostmanHelper::canRestore('mailinglist', 0))
 				{
-					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
 				if (BwPostmanHelper::canDelete('mailinglist', 0))
 				{
-					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
 				}
 				break;
 			case "templates":
 				if (BwPostmanHelper::canRestore('template', 0))
 				{
-					JToolbarHelper::unarchiveList('archive.unarchive', JText::_('COM_BWPOSTMAN_UNARCHIVE'));
+					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
 				}
 
 				if (BwPostmanHelper::canDelete('template', 0))
 				{
-					JToolbarHelper::deleteList(JText::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
+					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
 				}
 				break;
 		}
 
-		JToolbarHelper::spacer();
-		JToolbarHelper::divider();
-		JToolbarHelper::spacer();
+		ToolbarHelper::spacer();
+		ToolbarHelper::divider();
+		ToolbarHelper::spacer();
 
-		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualLink = BwPostmanHTMLHelper::getManualLink('archive');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
-		}
-		else
-		{
-			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
-			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
-
-			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
-			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
-
-			$bar->appendButton($manualButton);
-			$bar->appendButton($forumButton);
-		}
+		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 	}
 
 	/**
@@ -297,7 +414,7 @@ class BwPostmanViewArchive extends JViewLegacy
 	 */
 	private function checkForAllowedTabs()
 	{
-		$uri        = JUri::getInstance('SERVER');
+		$uri        = Uri::getInstance('SERVER');
 		$uriString = $uri->toString();
 		$uriShort  = substr($uriString, strrpos($uriString, '/') + 1, strlen($uriString));
 

@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -63,14 +66,14 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$jinput	= $app->input;
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['subscriber'])
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUB')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_SUB')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 

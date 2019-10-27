@@ -389,7 +389,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		{ // Cleared queue successfully
 			$msg = JText::_('COM_BWPOSTMAN_NL_CLEARED_QUEUE');
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters', false);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent', false);
 			$this->setRedirect($link, $msg);
 		}
 

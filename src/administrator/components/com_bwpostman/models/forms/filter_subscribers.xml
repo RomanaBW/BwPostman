@@ -15,7 +15,6 @@
 				description="COM_BWPOSTMAN_SUB_FILTER_EMAILFORMAT_DESC"
 				onchange="this.form.submit();"
 				>
-				<option value="">COM_BWPOSTMAN_FILTER_SEARCH_FOR</option>
 				<option value="name">COM_BWPOSTMAN_SUB_FILTER_SEARCH_NAME</option>
 				<option value="firstname">COM_BWPOSTMAN_SUB_FILTER_SEARCH_FIRSTNAME</option>
 				<option value="fullname">COM_BWPOSTMAN_SUB_FILTER_SEARCH_FULLNAME</option>

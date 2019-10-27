@@ -73,7 +73,9 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 		}
 	}
 
-	Joomla.submitbutton = function (pressbutton)
+Joomla = window.Joomla || {};
+
+Joomla.submitbutton = function (pressbutton)
 	{
 		if (pressbutton === 'newsletters.archive')
 		{
@@ -144,7 +146,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 								<tr>
 									<th style="width: 1%;" class="text-center">
 										<input type="checkbox" name="checkall-toggle" value=""
-												title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this, 'ub')" />
+												title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 									</th>
 									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
@@ -193,7 +195,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 
 									?>
 									<tr class="row<?php echo $i % 2; ?>">
-										<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id, 0, 'cid', 'ub'); ?></td>
+										<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 										<td>
 											<?php if (!empty($item->attachment)) { ?>
 												<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
@@ -209,8 +211,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 													$item->editor,
 													$item->checked_out_time,
 													'newsletters.',
-													BwPostmanHelper::canCheckin('newsletter', $item->checked_out),
-													'ub'
+													BwPostmanHelper::canCheckin('newsletter', $item->checked_out)
 												);
 											} ?>
 											<?php
@@ -268,8 +269,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 												$item->published,
 												$i,
 												'newsletters.',
-												BwPostmanHelper::canEditState('newsletter', (int) $item->id),
-												'ub'
+												BwPostmanHelper::canEditState('newsletter', (int) $item->id)
 											); ?>
 										</td>
 										<td align="center">

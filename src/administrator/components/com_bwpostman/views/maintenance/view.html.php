@@ -27,7 +27,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//JHtml::_('jquery.framework', true, null, true);
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Button\LinkButton;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
+
+//HTMLHelper::_('jquery.framework', true, null, true);
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -141,160 +151,75 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
-		JHtml::_('bootstrap.framework');
-		JHtml::_('jquery.framework');
+		$app	= Factory::getApplication();
+		HTMLHelper::_('bootstrap.framework');
+		HTMLHelper::_('jquery.framework');
 
-		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['maintenance'])
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$jinput		= JFactory::getApplication()->input;
+		$jinput		= Factory::getApplication()->input;
 		$model		= $this->getModel();
 		$layout		= $jinput->getCmd('layout', '');
 
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-		if (JPluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
+		if (PluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
 		{
 			require_once JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php';
 			$cron = new BwPostmanPhpCron;
 
 			// Check for start file
-			if (JFile::exists(JPATH_PLUGINS . $cron->startFile))
+			if (File::exists(JPATH_PLUGINS . $cron->startFile))
 			{
 				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
 				echo '<meta http-equiv="refresh" content="10; URL=' . $url . '">';
 
-				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON'), 'Info');
+				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON'), 'Info');
 			}
 
 			// Check for started file
-			if (JFile::exists(JPATH_PLUGINS . $cron->startedFile))
+			if (File::exists(JPATH_PLUGINS . $cron->startedFile))
 			{
-				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
+				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
 			}
 
 			// Check for stop file
-			if (JFile::exists(JPATH_PLUGINS . $cron->stopFile))
+			if (File::exists(JPATH_PLUGINS . $cron->stopFile))
 			{
 				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
 				echo '<meta http-equiv="refresh" content="10; URL=' . $url . '">';
 
-				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_STOPPING_CRON'), '');
+				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STOPPING_CRON'), '');
 			}
 
 			// Check for stopped file
-			if (JFile::exists(JPATH_PLUGINS . $cron->stoppedFile))
+			if (File::exists(JPATH_PLUGINS . $cron->stoppedFile))
 			{
-				$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
+				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
 			}
 		}
 
-			$this->template	= $app->getTemplate();
-
-		// Get document object, set document title and add css
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_BWPOSTMAN'));
-		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-
-		// Set toolbar title
-		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
-		$bar	= JToolbar::getInstance('toolbar');
-
-		// Set toolbar items for the page
-		if ($layout == 'restoreTables')
-		{
-			$alt 	= "COM_BWPOSTMAN_BACK";
-			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
-			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
-			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-			JToolbarHelper::spacer();
-			JToolbarHelper::divider();
-			JToolbarHelper::spacer();
-		}
-
-		if ($layout == 'doRestore')
-		{
-			$alt 	= "COM_BWPOSTMAN_BACK";
-			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
-			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
-			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-			JToolbarHelper::spacer();
-			JToolbarHelper::divider();
-			JToolbarHelper::spacer();
-		}
-
-		if ($layout == 'checkTables')
-		{
-			JFactory::getApplication()->input->set('hidemainmenu', true);
-			$alt 	= "COM_BWPOSTMAN_BACK";
-			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
-			$backlink 	= 'index.php?option=com_bwpostman&view=maintenance';
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
-			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-			JToolbarHelper::spacer();
-			JToolbarHelper::divider();
-			JToolbarHelper::spacer();
-		}
-
-		if ($layout == 'updateCheckSave')
-		{
-			$alt 	= "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
-			$document->setTitle(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
-			$backlink 	= 'javascript:window.close()';
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
-			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-			JToolbarHelper::spacer();
-			JToolbarHelper::divider();
-			JToolbarHelper::spacer();
-			$style	= '.layout-updateCheckSave .navbar {display:none;}'
-					. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
-					. 'body {padding-top:0;}';
-			$document->addStyleDeclaration($style);
-			$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
-		}
-
-		if ($this->permissions['com']['admin'])
-		{
-			JToolbarHelper::preferences('com_bwpostman', '500', '900');
-		}
-
-		JToolbarHelper::spacer();
-		JToolbarHelper::divider();
-		JToolbarHelper::spacer();
-
-		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualLink = BwPostmanHTMLHelper::getManualLink('maintenance');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+		$this->template	= $app->getTemplate();
 
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
-			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+			BwPostmanHelper::addSubmenu('bwpostman');
+			$this->addToolbarLegacy();
 		}
 		else
 		{
-			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual');
-			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
-
-			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
-			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
-
-			$bar->appendButton($manualButton);
-			$bar->appendButton($forumButton);
+			$this->addToolbar();
 		}
+
 
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
@@ -325,5 +250,195 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		parent::display($tpl);
 
 		return $this;
+	}
+
+	/**
+	 * Add the page title and toolbar for Joomla 4.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	protected function addToolbar()
+	{
+		$layout		= Factory::getApplication()->input->getCmd('layout', '');
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
+		// Get document object, set document title and add css
+		$document = Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
+		// Set toolbar title
+		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
+
+		$options['text'] = "COM_BWPOSTMAN_BACK";
+		$options['name'] = 'back';
+		$options['url'] = "index.php?option=com_bwpostman&view=maintenance";
+		$options['icon'] = "icon-arrow-left";
+
+		$button = new LinkButton('back');
+
+		// Set toolbar items for the page
+		if ($layout == 'restoreTables')
+		{
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
+
+			$button->setOptions($options);
+
+			$toolbar->appendButton($button);
+		}
+
+		if ($layout == 'doRestore')
+		{
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
+
+			$button->setOptions($options);
+
+			$toolbar->appendButton($button);
+		}
+
+		if ($layout == 'checkTables')
+		{
+			Factory::getApplication()->input->set('hidemainmenu', true);
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
+
+			$button->setOptions($options);
+
+			$toolbar->appendButton($button);
+		}
+
+		if ($layout == 'updateCheckSave')
+		{
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
+
+			$options['text'] = "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
+			$options['name'] = 'back';
+			$options['url'] = "javascript:window.close()";
+			$options['icon'] = "icon-arrow-left";
+
+			$button->setOptions($options);
+
+			$toolbar->appendButton($button);
+
+			$style = '.layout-updateCheckSave .navbar {display:none;}'
+				. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
+				. 'body {padding-top:0;}';
+			$document->addStyleDeclaration($style);
+			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
+		}
+
+		if ($this->permissions['com']['admin'])
+		{
+			ToolbarHelper::preferences('com_bwpostman', '500', '900');
+		}
+
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+
+		$manualButton = BwPostmanHTMLHelper::getManualButton('maintenance');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
+	}
+
+	/**
+	 * Add the page title and toolbar for Joomla 3.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	protected function addToolbarLegacy()
+	{
+		$layout		= Factory::getApplication()->input->getCmd('layout', '');
+
+		// Get document object, set document title and add css
+		$document = Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
+		// Set toolbar title
+		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
+		$bar = Toolbar::getInstance('toolbar');
+
+		// Set toolbar items for the page
+		if ($layout == 'restoreTables')
+		{
+			$alt = "COM_BWPOSTMAN_BACK";
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
+			$backlink = 'index.php?option=com_bwpostman&view=maintenance';
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+			ToolbarHelper::spacer();
+			ToolbarHelper::divider();
+			ToolbarHelper::spacer();
+		}
+
+		if ($layout == 'doRestore')
+		{
+			$alt = "COM_BWPOSTMAN_BACK";
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
+			$backlink = 'index.php?option=com_bwpostman&view=maintenance';
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+			ToolbarHelper::spacer();
+			ToolbarHelper::divider();
+			ToolbarHelper::spacer();
+		}
+
+		if ($layout == 'checkTables')
+		{
+			Factory::getApplication()->input->set('hidemainmenu', true);
+			$alt = "COM_BWPOSTMAN_BACK";
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
+			$backlink = 'index.php?option=com_bwpostman&view=maintenance';
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+			ToolbarHelper::spacer();
+			ToolbarHelper::divider();
+			ToolbarHelper::spacer();
+		}
+
+		if ($layout == 'updateCheckSave')
+		{
+			$alt = "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
+			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
+			$backlink = 'javascript:window.close()';
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+			ToolbarHelper::spacer();
+			ToolbarHelper::divider();
+			ToolbarHelper::spacer();
+			$style = '.layout-updateCheckSave .navbar {display:none;}'
+				. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
+				. 'body {padding-top:0;}';
+			$document->addStyleDeclaration($style);
+			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
+		}
+
+		if ($this->permissions['com']['admin'])
+		{
+			ToolbarHelper::preferences('com_bwpostman', '500', '900');
+		}
+
+		ToolbarHelper::spacer();
+		ToolbarHelper::divider();
+		ToolbarHelper::spacer();
+
+		$bar = Toolbar::getInstance('toolbar');
+		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+
+		$manualLink = BwPostmanHTMLHelper::getManualLink('maintenance');
+		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+
+		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 	}
 }

@@ -139,22 +139,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									<td><?php echo $this->escape($item->subject); ?></td>
 									<td><?php echo $this->escape($item->description); ?></td>
 									<td><?php echo $item->authors; ?></td>
-									<td>
-										<?php
-										if (property_exists($item, 'recipients'))
-										{
-											echo $item->recipient;
-										}
-										?>
-									</td>
-									<td>
-										<?php
-										if (property_exists($item, 'trial'))
-										{
-											echo $item->trial;
-										}
-										?>
-									</td>
+									<td><?php echo $item->recipient; ?></td>
+									<td><?php echo $item->trial; ?></td>
 									<td align="center"><?php echo $item->id; ?></td>
 								</tr><?php
 							endforeach;

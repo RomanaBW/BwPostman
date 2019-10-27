@@ -27,6 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Environment\Browser;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
@@ -64,7 +68,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app 	= JFactory::getApplication();
+		$app 	= Factory::getApplication();
 		$jinput	= $app->input;
 		$task	= $jinput->get('task', 'export');
 
@@ -81,11 +85,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		}
 		else
 		{
-			$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+			$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 			if (!$this->permissions['view']['subscriber'])
 			{
-				$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUBS')),
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_SUBS')),
 					'error');
 				$app->redirect('index.php?option=com_bwpostman');
 			}
@@ -102,12 +106,12 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$mime_type = "application/xml";
 			}
 
-			$date     = JFactory::getDate();
+			$date     = Factory::getDate();
 			$filename = "BackupList_BwPostman_from_" . $date->format("Y-m-d");
 
 			// Maybe we need other headers depending on browser type...
 			jimport('joomla.environment.browser');
-			$browser      = JBrowser::getInstance();
+			$browser      = Browser::getInstance();
 			$user_browser = $browser->getBrowser();
 			$appWeb       = new BwWebApp();
 
@@ -133,7 +137,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 			}
 
 			// Joomla overwrites content-type, we can't use $appWeb->setHeader()
-			$document = JFactory::getDocument();
+			$document = Factory::getDocument();
 			$document->setMimeEncoding($mime_type);
 
 			@ob_end_clean();

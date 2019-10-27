@@ -27,6 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\LogEntry;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -62,24 +67,24 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app 	= JFactory::getApplication();
-		$jinput	= JFactory::getApplication()->input;
+		$app 	= Factory::getApplication();
+		$jinput	= Factory::getApplication()->input;
 		$log_options    = array();
 		$logger   = new BwLogger($log_options);
 
 		if (!BwPostmanHelper::canView('newsletter'))
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_NLS')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
 		// Get the params
-		$params			= JComponentHelper::getParams('com_bwpostman');
+		$params			= ComponentHelper::getParams('com_bwpostman');
 		$mails_per_step	= (int) $app->getUserState('com_bwpostman.newsletters.mails_per_pageload', $params->get('default_mails_per_pageload'));
 		$sendandpublish	= $app->getUserState('com_bwpostman.newsletters.sendmailandpublish', 0);
 		$id				= $app->getUserState('com_bwpostman.newsletters.publish_id', 0);
 		$delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
-		$logger->addEntry(new JLogEntry('View raw delay: ' . $delay));
+		$logger->addEntry(new LogEntry('View raw delay: ' . $delay));
 
 		$defaultPublish	= (int) $app->getUserState('com_bwpostman.newsletters.publish_nl_by_default', $params->get('publish_nl_by_default'));
 
@@ -93,16 +98,16 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		{
 			if ((int) $params->get('mails_per_pageload_delay') == 1)
 			{
-				$delay_message	= JText::sprintf(
+				$delay_message	= Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS', $delay / 1000)
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS', $delay / 1000)
 				);
 			}
 			else
 			{
-				$delay_message	= JText::sprintf(
+				$delay_message	= Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS', $delay / 1000)
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS', $delay / 1000)
 				);
 			}
 		}
@@ -110,16 +115,16 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		{
 			if ((int) $params->get('mails_per_pageload_delay') == 1)
 			{
-				$delay_message	= JText::sprintf(
+				$delay_message	= Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES', $delay / 1000)
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES', $delay / 1000)
 				);
 			}
 			else
 			{
-				$delay_message	= JText::sprintf(
+				$delay_message	= Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					JText::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $delay / 1000)
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $delay / 1000)
 				);
 			}
 		}
@@ -154,7 +159,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				echo '<div id="progress" style="border: 1px solid silver; width: 98%; line-height: 30px; padding: 2px;">
 						<span style="position: absolute; left: 48%;"><b>' . $percent . ' %</b></span>
 						<div style="background-color: green; width: ' . $percent . '%; height: 30px;"></div>
-						</div><br /><div id="nl_modal_to_send_message">' . JText::sprintf('COM_BWPOSTMAN_NL_SENT_MESSAGE', $entries, $sumentries) . '</div><br />';
+						</div><br /><div id="nl_modal_to_send_message">' . Text::sprintf('COM_BWPOSTMAN_NL_SENT_MESSAGE', $entries, $sumentries) . '</div><br />';
 
 				if ($ret == 1)
 				{   // There are more mails in the queue.
@@ -168,7 +173,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				{   // No more mails to send.
 					// reset number of queue entries before start sending
 					$app->setUserState('com_bwpostman.newsletters.entries', null);
-					echo '<div id="nl_modal_to_send_message">' . JText::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED') . "</div>";
+					echo '<div id="nl_modal_to_send_message">' . Text::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED') . "</div>";
 					ob_flush();
 					flush();
 					echo '<script type="text/javascript">' . "\n";
@@ -180,11 +185,11 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					{
 						if ($model->publish($id, 1) === true)
 						{
-							echo "<br /><br /><span style='color: #008000;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1') . "</span>";
+							echo "<br /><br /><span style='color: #008000;'>" . Text::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1') . "</span>";
 						}
 						else
 						{
-							echo "<br /><br /><span style='color: #ff0000;'>" . JText::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_0') . "</span>";
+							echo "<br /><br /><span style='color: #ff0000;'>" . Text::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_0') . "</span>";
 						}
 					}
 
@@ -195,8 +200,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 				if ($ret == 2)
 				{   // There are fatal errors.
-					echo "<br /><span id='nl_modal_to_send_message_error' style='color: #ff0000;'>" . JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . "</span>";
-					echo JText::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE');
+					echo "<br /><span id='nl_modal_to_send_message_error' style='color: #ff0000;'>" . Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . "</span>";
+					echo Text::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE');
 					echo '<script type="text/javascript">' . "\n";
 					// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
 					echo "function goBackToQueue(){window.parent.location.href = 'index.php?option=com_bwpostman&view=newsletters&layout=queue';} \n";
@@ -208,8 +213,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			{
 				// reset number of queue entries before start sending
 				$app->setUserState('com_bwpostman.newsletters.entries', null);
-				echo JText::_('COM_BWPOSTMAN_NL_SENDING_NO_QUEUE_ENTRIES_TO_SEND');
-				echo JText::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE');
+				echo Text::_('COM_BWPOSTMAN_NL_SENDING_NO_QUEUE_ENTRIES_TO_SEND');
+				echo Text::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE');
 				echo '<script type="text/javascript">' . "\n";
 				// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
 				echo "function goBackToQueue(){window.parent.location.href = 'index.php?option=com_bwpostman&view=newsletters&layout=queue';} \n";

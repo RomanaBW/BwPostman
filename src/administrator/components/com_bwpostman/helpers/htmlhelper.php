@@ -336,6 +336,38 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @param string $section
 	 *
+	 * @return JButtonExtlink
+	 *
+	 * @since 2.4.0
+	 */
+	static function getManualButton($section)
+	{
+		$manualLink = self::getManualLink($section);
+		$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
+		$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+
+		return $manualButton;
+	}
+
+	/**
+	 *
+	 * @return JButtonExtlink
+	 *
+	 * @since 2.4.0
+	 */
+	static function getForumButton()
+	{
+		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+		$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
+		$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
+
+		return $forumButton;
+	}
+
+	/**
+	 *
+	 * @param string $section
+	 *
 	 * @return string
 	 *
 	 * @since 2.2.0

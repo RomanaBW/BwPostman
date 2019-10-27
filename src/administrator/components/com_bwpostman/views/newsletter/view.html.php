@@ -27,7 +27,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('jquery.framework');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('jquery.framework');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -166,22 +175,22 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	public function display($tpl=null)
 	{
 		// Initialize variables
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$app->setUserState('bwpostman.send.alsoUnconfirmed', false);
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['newsletter'])
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_NLS')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
 		//check for queue entries
 		$this->queueEntries = BwPostmanHelper::checkQueueEntries();
 
-		JPluginHelper::importPlugin('bwpostman');
-		if (JPluginHelper::isEnabled('bwpostman', 'substitutelinks'))
+		PluginHelper::importPlugin('bwpostman');
+		if (PluginHelper::isEnabled('bwpostman', 'substitutelinks'))
 		{
 			$this->substitute = true;
 		}
@@ -194,7 +203,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->item     = $this->get('Item');
 		$this->state    = $this->get('State');
 		$this->template = $app->getTemplate();
-		$this->params   = JComponentHelper::getParams('com_bwpostman');
+		$this->params   = ComponentHelper::getParams('com_bwpostman');
 
 		$app->triggerEvent('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
 
@@ -227,34 +236,45 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->template_id_old      = $this->item->template_id_old;
 		$this->text_template_id_old = $this->item->text_template_id_old;
 
-		$this->addToolbar();
+		if(version_compare(JVERSION, '3.999.999', 'le'))
+		{
+			$this->addToolbarLegacy();
+		}
+		else
+		{
+			$this->addToolbar();
+		}
 
 		// reset temporary state
 		$app->setUserState('com_bwpostman.edit.newsletter.changeTab', false);
 
 		// Call parent display
-		return parent::display($tpl);
+		parent::display($tpl);
+		return $this;
 	}
 
 	/**
-	 * Add the page title, styles and toolbar.
+	 * Add the page title, styles and toolbar for Joomla 4.
 	 *
 	 * @throws Exception
 	 *
-	 * @since       0.9.1
+	 * @since       2.4.0
 	 */
 	protected function addToolbar()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$userId		= JFactory::getUser()->get('id');
-		$layout		= JFactory::getApplication()->input->get('layout', '');
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$userId		= Factory::getUser()->get('id');
+		$layout		= Factory::getApplication()->input->get('layout', '');
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document	= JFactory::getDocument();
-		$document->setTitle('COM_BWPOSTMAN_NL_DETAILS');
-		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		JHtml::_('jquery.framework');
-		$document->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
+		$document	= Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		HTMLHelper::_('jquery.framework');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
 
 		// Set toolbar title and items
 		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
@@ -264,32 +284,138 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// If we come from sent newsletters, we have to do other stuff than normal
 		if ($layout == 'edit_publish')
 		{
-			JToolbarHelper::save('newsletter.publish_save');
-			JToolbarHelper::apply('newsletter.publish_apply');
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
 
-			JToolbarHelper::cancel('newsletter.cancel');
-			JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
+			$toolbar->apply('newsletter.publish_apply');
+			$toolbar->save('newsletter.publish_save');
+
+			$toolbar->cancel('newsletter.cancel');
 		}
 		else
 		{
 			// For new records, check the create permission.
 			if ($isNew && $this->permissions['newsletter']['create'])
 			{
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
-				JToolbarHelper::save('newsletter.save');
-				JToolbarHelper::apply('newsletter.apply');
-				JToolbarHelper::save2new('newsletter.save2new');
-				JToolbarHelper::save2copy('newsletter.save2copy');
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 
-				$task		= JFactory::getApplication()->input->get('task', '', 'string');
+				$toolbar->apply('newsletter.apply');
+
+				$saveGroup = $toolbar->dropdownButton('save-group');
+
+				$saveGroup->configure(
+					function (Toolbar $childBar)
+					{
+						$childBar->save('newsletter.save');
+						$childBar->save2new('newsletter.save2new');
+					}
+				);
+
+				$task		= Factory::getApplication()->input->get('task', '', 'string');
 				// If we came from the main page we will show a back button
 				if ($task == 'add')
 				{
-					JToolbarHelper::back();
+					$toolbar->back();
 				}
 				else
 				{
-					JToolbarHelper::cancel('newsletter.cancel');
+					$toolbar->cancel('newsletter.cancel', 'JTOOLBAR_CANCEL');
+				}
+			}
+			else
+			{
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+				// Can't save the record if it's checked out.
+				if (!$checkedOut)
+				{
+					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+					if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
+					{
+						$toolbar->apply('newsletter.apply');
+
+						if ($this->permissions['newsletter']['create'])
+						{
+							$saveGroup = $toolbar->dropdownButton('save-group');
+
+							$saveGroup->configure(
+								function (Toolbar $childBar)
+								{
+									$childBar->save('newsletter.save');
+									$childBar->save2new('newsletter.save2new');
+									$childBar->save2copy('newsletter.save2copy');
+								}
+							);
+						}
+					}
+				}
+
+				// Rename the cancel button for existing items
+				$toolbar->cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
+			}
+		}
+
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+
+		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
+	}
+
+	/**
+	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbarLegacy()
+	{
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$userId		= Factory::getUser()->get('id');
+		$layout		= Factory::getApplication()->input->get('layout', '');
+
+		// Get document object, set document title and add css
+		$document	= Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		HTMLHelper::_('jquery.framework');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
+
+		// Set toolbar title and items
+		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+
+		$isNew = ($this->item->id == 0);
+
+		// If we come from sent newsletters, we have to do other stuff than normal
+		if ($layout == 'edit_publish')
+		{
+			ToolbarHelper::save('newsletter.publish_save');
+			ToolbarHelper::apply('newsletter.publish_apply');
+
+			ToolbarHelper::cancel('newsletter.cancel');
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+		}
+		else
+		{
+			// For new records, check the create permission.
+			if ($isNew && $this->permissions['newsletter']['create'])
+			{
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+				ToolbarHelper::save('newsletter.save');
+				ToolbarHelper::apply('newsletter.apply');
+				ToolbarHelper::save2new('newsletter.save2new');
+				ToolbarHelper::save2copy('newsletter.save2copy');
+
+				$task		= Factory::getApplication()->input->get('task', '', 'string');
+				// If we came from the main page we will show a back button
+				if ($task == 'add')
+				{
+					ToolbarHelper::back();
+				}
+				else
+				{
+					ToolbarHelper::cancel('newsletter.cancel');
 				}
 			}
 			else
@@ -300,47 +426,33 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 					if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
 					{
-						JToolbarHelper::save('newsletter.save');
-						JToolbarHelper::apply('newsletter.apply');
+						ToolbarHelper::save('newsletter.save');
+						ToolbarHelper::apply('newsletter.apply');
 
 						if ($this->permissions['newsletter']['create'])
 						{
-							JToolbarHelper::save2new('newsletter.save2new');
-							JToolbarHelper::save2copy('newsletter.save2copy');
+							ToolbarHelper::save2new('newsletter.save2new');
+							ToolbarHelper::save2copy('newsletter.save2copy');
 						}
 					}
 				}
 
 				// Rename the cancel button for existing items
-				JToolbarHelper::cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
+				ToolbarHelper::cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 			}
 		}
 
-		JToolbarHelper::divider();
-		JToolbarHelper::spacer();
+		ToolbarHelper::divider();
+		ToolbarHelper::spacer();
 
-		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualLink = BwPostmanHTMLHelper::getManualLink('newsletter');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
-		}
-		else
-		{
-			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
-			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
-
-			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
-			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
-
-			$bar->appendButton($manualButton);
-			$bar->appendButton($forumButton);
-		}
+		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 	}
 }

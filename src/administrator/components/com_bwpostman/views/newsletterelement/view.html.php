@@ -29,7 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-use Joomla\String\StringHelper as JStringHelper;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 /**
  * Class BwPostmanViewNewsletterelement
@@ -96,10 +99,10 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
-		$user		= JFactory::getUser();
-		$uri		= JUri::getInstance();
+		$user		= Factory::getUser();
+		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		// Build the key for the userState
@@ -109,12 +112,12 @@ class BwPostmanViewNewsletterelement extends JViewLegacy
 		$filter_order 		= $app->getUserStateFromRequest($key . '_filter_order', 'filter_order', 'a.subject', 'cmd');
 		$filter_order_Dir 	= $app->getUserStateFromRequest($key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
 		$search				= $app->getUserStateFromRequest($key . '_search', 'search', '', 'string');
-		$search				= JStringHelper::strtolower($search);
+		$search				= StringHelper::strtolower($search);
 
 		// Get document object, set document title and add css
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_BWPOSTMAN_SELECTNEWSLETTER'));
-		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document = Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN_SELECTNEWSLETTER'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get data from the model
 		$items 		= $this->get('data');

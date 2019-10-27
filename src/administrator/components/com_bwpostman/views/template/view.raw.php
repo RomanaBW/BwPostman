@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
@@ -75,23 +78,23 @@ class BwPostmanViewTemplate extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['template'])
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_TPLS')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_TPLS')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
 		// load template data and decode object
-		$pre = JFactory::getApplication()->getUserState('com_bwpostman.edit.template.tpldata');
+		$pre = Factory::getApplication()->getUserState('com_bwpostman.edit.template.tpldata');
 
 		$this->pre	= $pre;
 
 		// clear preview data
-		JFactory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', null);
+		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', null);
 
 		// Call parent display
 		parent::display($tpl);

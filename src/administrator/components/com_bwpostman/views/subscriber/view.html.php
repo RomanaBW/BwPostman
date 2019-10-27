@@ -27,6 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Button\LinkButton;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -175,15 +184,15 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 */
 	public function display($tpl=null)
 	{
-		$app	= JFactory::getApplication();
-		$jinput	= JFactory::getApplication()->input;
-		$params = JComponentHelper::getParams('com_bwpostman');
+		$app	= Factory::getApplication();
+		$jinput	= Factory::getApplication()->input;
+		$params = ComponentHelper::getParams('com_bwpostman');
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['subscriber'])
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', JText::_('COM_BWPOSTMAN_SUB')), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_SUB')), 'error');
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
@@ -252,7 +261,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$this->obligation['name']		    = $params->get('name_field_obligation');
 				$this->obligation['firstname']  	= $params->get('firstname_field_obligation');
 				$this->obligation['special']	    = $params->get('special_field_obligation');
-				$this->obligation['special_label']	= JText::_($params->get('special_label'));
+				$this->obligation['special_label']	= Text::_($params->get('special_label'));
 				if ($params->get('name_field_obligation'))
 				{
 					$this->form->setFieldAttribute('name', 'required', 'true');
@@ -271,15 +280,22 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				// Set label and description/tooltip for additional field
 				if ($params->get('special_desc') != '')
 				{
-					$this->form->setFieldAttribute('special', 'description', JText::_($params->get('special_desc')));
+					$this->form->setFieldAttribute('special', 'description', Text::_($params->get('special_desc')));
 				}
 
 				if ($params->get('special_label') != '')
 				{
-					$this->form->setFieldAttribute('special', 'label', JText::_($params->get('special_label')));
+					$this->form->setFieldAttribute('special', 'label', Text::_($params->get('special_label')));
 				}
 
+			if(version_compare(JVERSION, '3.999.999', 'le'))
+			{
+				$this->addToolbarLegacy();
+			}
+			else
+			{
 				$this->addToolbar();
+			}
 		}
 
 		parent::display($tpl);
@@ -296,11 +312,11 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 */
 	private function displayImportForm()
 	{
-		$app		= JFactory::getApplication();
-		$params 	= JComponentHelper::getParams('com_bwpostman');
-		$session 	= JFactory::getSession();
+		$app		= Factory::getApplication();
+		$params 	= ComponentHelper::getParams('com_bwpostman');
+		$session 	= Factory::getSession();
 		$template	= $app->getTemplate();
-		$uri		= JUri::getInstance();
+		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		$import					= array();
@@ -350,7 +366,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$import_fields = $session->get('import_fields');
 		if (isset($import_fields))
 		{
-			$lists['import_fields']	= JHtml::_(
+			$lists['import_fields']	= HTMLHelper::_(
 				'select.genericlist',
 				$import_fields,
 				'import_fields[]',
@@ -388,10 +404,10 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 */
 	private function displayExportForm()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$template	= $app->getTemplate();
-		$uri		= JUri::getInstance();
+		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
 		// Get the select lists for the export_fields, file format, delimiter, enclosure
@@ -422,8 +438,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 */
 	private function displayValidationForm($tpl)
 	{
-		$session 	= JFactory::getSession();
-		$uri		= JUri::getInstance();
+		$session 	= Factory::getSession();
+		$uri		= Uri::getInstance();
 		$uri_string	= $uri->toString();
 
 		// Get the result data from the session
@@ -442,16 +458,192 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$this->row          = $row;
 
 		// Get document object, set document title and add css
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'));
-		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document = Factory::getDocument();
+		$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'));
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Set toolbar items
-		JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'), 'subscribers');
-		JToolbarHelper::cancel('subscriber.finishValidation', 'COM_BWPOSTMAN_SUB_VALIDATION_FINISH');
+		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'), 'subscribers');
+		ToolbarHelper::cancel('subscriber.finishValidation', 'COM_BWPOSTMAN_SUB_VALIDATION_FINISH');
 
 		// Set parent display
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add the page title, styles and toolbar for Joomla 4.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	protected function addToolbar()
+	{
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$uri		= Uri::getInstance();
+		$userId		= Factory::getUser()->get('id');
+		$layout		= Factory::getApplication()->input->get('layout', '');
+		$tester		= false;
+		$status 	= 1;
+
+		if (is_object($this->item)) {
+			$status	= $this->item->status;
+		}
+
+		if (Factory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $status) == '9') {
+			$tester	= true;
+		}
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
+		// Get document object, set document title and add css
+		$document	= Factory::getDocument();
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+
+		$alt 	= "COM_BWPOSTMAN_BACK";
+
+		switch ($layout)
+		{
+			case 'export':
+				// Get document object, set document title and add css
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'));
+
+				// Set toolbar items
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
+
+				$toolbar->cancel('subscriber.cancel');
+				break;
+
+			case 'import':
+				// Set toolbar items
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
+
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+
+				$toolbar->cancel('subscriber.cancel');
+				break;
+
+			case 'import1':
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
+
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+
+				$options['text'] = "COM_BWPOSTMAN_BACK";
+				$options['name'] = 'back';
+				$options['url'] = "index.php?option=com_bwpostman&view=subscriber&layout=import";
+				$options['icon'] = "icon-arrow-left";
+
+				$button = new LinkButton('back');
+				$button->setOptions($options);
+
+				$toolbar->appendButton($button);
+				$toolbar->cancel('subscriber.cancel');
+				break;
+
+			case 'import2':
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'));
+
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
+
+				$options['text'] = "COM_BWPOSTMAN_BACK";
+				$options['name'] = 'back';
+				$options['url'] = "index.php?option=com_bwpostman&view=subscriber&layout=import1";
+				$options['icon'] = "icon-arrow-left";
+
+				$button = new LinkButton('back');
+				$button->setOptions($options);
+
+				$toolbar->appendButton($button);
+				$toolbar->cancel('subscriber.cancel');
+				break;
+
+			case 'edit':
+			default:
+				if ($tester) {
+					$title	= (Text::_('COM_BWPOSTMAN_TEST_DETAILS'));
+				}
+				else {
+					$title	= (Text::_('COM_BWPOSTMAN_SUB_DETAILS'));
+				}
+
+				$document->setTitle($title);
+
+				// Set toolbar title and items
+				$checkedOut = 0;
+				if (property_exists($this->item, 'checked_out'))
+				{
+					$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+				}
+
+				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
+				// For new records, check the create permission.
+				if ($this->item->id < 1 && $this->permissions['subscriber']['create'])
+				{
+					ToolbarHelper::title($title . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+
+					$toolbar->apply('subscriber.apply');
+
+					$saveGroup = $toolbar->dropdownButton('save-group');
+
+					$saveGroup->configure(
+						function (Toolbar $childBar)
+						{
+							$childBar->save('subscriber.save');
+							$childBar->save2new('subscriber.save2new');
+							$childBar->save2copy('subscriber.save2copy');
+						}
+					);
+
+					$toolbar->cancel('subscriber.cancel');
+				}
+				else {
+					// Can't save the record if it's checked out.
+					if (!$checkedOut) {
+						ToolbarHelper::title($title . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+
+						// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+						if (BwPostmanHelper::canEdit('subscriber', $this->item))
+						{
+							$toolbar->apply('subscriber.apply');
+
+							if ($this->permissions['subscriber']['create'])
+							{
+								$saveGroup = $toolbar->dropdownButton('save-group');
+
+								$saveGroup->configure(
+									function (Toolbar $childBar)
+									{
+										$childBar->save('subscriber.save');
+										$childBar->save2new('subscriber.save2new');
+										$childBar->save2copy('subscriber.save2copy');
+									}
+								);
+							}
+						}
+					}
+
+					// Rename the cancel button for existing items
+					$toolbar->cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
+				}
+
+			$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
+			$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
+
+			// If we came from the cover page we will show a back-button
+			if ($backlink == $siteURL)
+			{
+				$toolbar->back();
+			}
+		}
+
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+
+		$manualButton = BwPostmanHTMLHelper::getManualButton('subscriber');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 
 	/**
@@ -461,12 +653,12 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
+	protected function addToolbarLegacy()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= JUri::getInstance();
-		$userId		= JFactory::getUser()->get('id');
-		$layout		= JFactory::getApplication()->input->get('layout', '');
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$uri		= Uri::getInstance();
+		$userId		= Factory::getUser()->get('id');
+		$layout		= Factory::getApplication()->input->get('layout', '');
 		$tester		= false;
 		$status 	= 1;
 
@@ -474,57 +666,57 @@ class BwPostmanViewSubscriber extends JViewLegacy
 			$status	= $this->item->status;
 		}
 
-		if (JFactory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $status) == '9') {
+		if (Factory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $status) == '9') {
 			$tester	= true;
 		}
 
 		// Get document object, set document title and add css
-		$document	= JFactory::getDocument();
-		$document->addStyleSheet(JUri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document	= Factory::getDocument();
+		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		$alt 	= "COM_BWPOSTMAN_BACK";
-		$bar	= JToolbar::getInstance('toolbar');
+		$bar	= Toolbar::getInstance('toolbar');
 
 		switch ($layout) {
 			case 'export':
 				// Get document object, set document title and add css
-				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'));
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'));
 
 				// Set toolbar items
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
-				JToolbarHelper::cancel('subscriber.cancel');
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
+				ToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'import':
 				// Set toolbar items
-				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
-				JToolbarHelper::cancel('subscriber.cancel');
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+				ToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'import1':
-				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
 				$backlink 	= 'index.php?option=com_bwpostman&view=subscriber&layout=import';
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::cancel('subscriber.cancel');
+				ToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'import2':
-				$document->setTitle(JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'));
+				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'));
 				$backlink = 'index.php?option=com_bwpostman&view=subscriber&layout=import1';
-				JToolbarHelper::title(JText::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
 				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				JToolbarHelper::cancel('subscriber.cancel');
+				ToolbarHelper::cancel('subscriber.cancel');
 				break;
 
 			case 'edit':
 			default:
 				if ($tester) {
-					$title	= (JText::_('COM_BWPOSTMAN_TEST_DETAILS'));
+					$title	= (Text::_('COM_BWPOSTMAN_TEST_DETAILS'));
 				}
 				else {
-					$title	= (JText::_('COM_BWPOSTMAN_SUB_DETAILS'));
+					$title	= (Text::_('COM_BWPOSTMAN_SUB_DETAILS'));
 				}
 
 				$document->setTitle($title);
@@ -539,77 +731,58 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 				// For new records, check the create permission.
 				if ($this->item->id < 1 && $this->permissions['subscriber']['create']) {
-					JToolbarHelper::save('subscriber.save');
-					JToolbarHelper::apply('subscriber.apply');
-					JToolbarHelper::save2new('subscriber.save2new');
-					JToolbarHelper::save2copy('subscriber.save2copy');
-					JToolbarHelper::cancel('subscriber.cancel');
-					JToolbarHelper::title($title . ': <small>[ ' . JText::_('NEW') . ' ]</small>', 'plus');
+					ToolbarHelper::save('subscriber.save');
+					ToolbarHelper::apply('subscriber.apply');
+					ToolbarHelper::save2new('subscriber.save2new');
+					ToolbarHelper::save2copy('subscriber.save2copy');
+					ToolbarHelper::cancel('subscriber.cancel');
+					ToolbarHelper::title($title . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
 				}
 				else {
 					// Can't save the record if it's checked out.
 					if (!$checkedOut) {
 						// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 						if (BwPostmanHelper::canEdit('subscriber', $this->item)) {
-							JToolbarHelper::save('subscriber.save');
-							JToolbarHelper::apply('subscriber.apply');
+							ToolbarHelper::save('subscriber.save');
+							ToolbarHelper::apply('subscriber.apply');
 
 							if ($this->permissions['subscriber']['create'])
 							{
-								JToolbarHelper::save2new('subscriber.save2new');
-								JToolbarHelper::save2copy('subscriber.save2copy');
+								ToolbarHelper::save2new('subscriber.save2new');
+								ToolbarHelper::save2copy('subscriber.save2copy');
 							}
 						}
 					}
 
 					// Rename the cancel button for existing items
-					JToolbarHelper::cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
-					JToolbarHelper::title($title . ': <small>[ ' . JText::_('EDIT') . ' ]</small>', 'edit');
+					ToolbarHelper::cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
+					ToolbarHelper::title($title . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 				}
 
-				$backlink 	= JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-			$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
+				$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
+				$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
 
-			if(version_compare(JVERSION, '3.999.999', 'ge'))
-			{
-				$siteURL .= '&view=bwpostman';
-			}
-
-			// If we came from the cover page we will show a back-button
-			if ($backlink == $siteURL)
-			{
-				JToolbarHelper::spacer();
-				JToolbarHelper::divider();
-				JToolbarHelper::spacer();
-				JToolbarHelper::back();
-			}
+				// If we came from the cover page we will show a back-button
+				if ($backlink == $siteURL)
+				{
+					ToolbarHelper::spacer();
+					ToolbarHelper::divider();
+					ToolbarHelper::spacer();
+					ToolbarHelper::back();
+				}
 		}
 
-		JToolbarHelper::spacer();
-		JToolbarHelper::divider();
-		JToolbarHelper::spacer();
+		ToolbarHelper::spacer();
+		ToolbarHelper::divider();
+		ToolbarHelper::spacer();
 
-		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualLink = BwPostmanHTMLHelper::getManualLink('subscriber');
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$bar->appendButton('Extlink', 'users', JText::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-			$bar->appendButton('Extlink', 'book', JText::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
-		}
-		else
-		{
-			$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
-			$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
-
-			$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
-			$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
-
-			$bar->appendButton($manualButton);
-			$bar->appendButton($forumButton);
-		}
+		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
+		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
 	}
 }

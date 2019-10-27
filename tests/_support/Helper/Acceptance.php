@@ -830,7 +830,7 @@ class Acceptance extends Codeception\Module
 		$I->see("One " . $item . " published!");
 
 		// Confirm success message
-		$I->click(Generals::$systemMessageClose);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		if ($item == 'newsletter')
 		{
@@ -875,18 +875,23 @@ class Acceptance extends Codeception\Module
 		$I->wait(1);
 		if (!$allowed)
 		{
-			$I->dontSeeElement(Generals::$toolbar['Publish']);
-			$I->dontSeeElement(Generals::$toolbar['Unpublish']);
+			$I->scrollTo(Generals::$first_list_entry, 0, -200);
+			$I->click(Generals::$first_list_entry);
+			$I->clickAndWait(Generals::$toolbarActions, 1);
+			$I->dontSeeElement(Generals::$toolbar4['Publish']);
+			$I->dontSeeElement(Generals::$toolbar4['Unpublish']);
 			return;
 		}
 
 		$I->scrollTo($publish_by_toolbar['publish_button'], 0, -200);
 		$I->click($publish_by_toolbar['publish_button']);
-		$I->clickAndWait(Generals::$toolbar['Publish'], 1);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Publish'], 1);
 
 		$I->see("One " . $item . " published!");
 
 		// Confirm success message
+		$I->waitForElementVisible(Generals::$systemMessageClose, 5);
 		$I->click(Generals::$systemMessageClose);
 
 		if ($item == 'newsletter')
@@ -899,10 +904,12 @@ class Acceptance extends Codeception\Module
 
 		$I->scrollTo($publish_by_toolbar['unpublish_button'], 0, -200);
 		$I->clickAndWait($publish_by_toolbar['unpublish_button'], 1);
-		$I->clickAndWait(Generals::$toolbar['Unpublish'], 1);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Unpublish'], 1);
 		$I->see("One " . $item . " unpublished!");
 
 		// Confirm success message
+		$I->waitForElementVisible(Generals::$systemMessageClose);
 		$I->click(Generals::$systemMessageClose);
 
 		if ($item == 'newsletter')
@@ -1214,13 +1221,14 @@ class Acceptance extends Codeception\Module
 		$count = $I->GetListLength($I, $mainTableId);
 
 		// archive items
-		$archive_button = Generals::$toolbar['Archive'];
+		$archive_button = Generals::$toolbar4['Archive'];
 //		if ($manage_data['section'] == 'campaigns')
 //		{
 //			$archive_button = $edit_data['archive_button'];
 //		}
 
 		$I->checkOption(Generals::$check_all_button);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait($archive_button, 1);
 
 		if ($manage_data['section'] == 'template' || $manage_data['section'] == 'subscriber')
@@ -1341,7 +1349,7 @@ class Acceptance extends Codeception\Module
 
 		$I->checkOption(Generals::$check_all_button);
 
-		$restore_button = Generals::$toolbar['Restore'];
+		$restore_button = Generals::$toolbar4['Restore'];
 
 		if ($manage_data['section'] == 'campaigns')
 		{

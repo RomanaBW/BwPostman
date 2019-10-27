@@ -411,6 +411,7 @@ class TestTemplatesListsCest
 		$downloadPath = $path . $filename;
 
 		$I->click(TplManage::$firstTableCheckbox);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(TplManage::$export_button);
 		$I->waitForElementVisible(Generals::$alert_heading4, 10);
 		$I->see(TplManage::$exportPackSuccess, Generals::$alert_success4);

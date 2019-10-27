@@ -172,7 +172,7 @@ class TestMaintenanceCest
 		$I->waitForElement(MaintenancePage::$step5Field, 30);
 		$I->waitForElement(MaintenancePage::$step5SuccessClass, 30);
 		$I->see(MaintenancePage::$step5SuccessMsg, MaintenancePage::$step5SuccessClass);
-		$I->click(MaintenancePage::$checkBackButton);
+		$I->clickAndWait(MaintenancePage::$checkBackButton, 1);
 	}
 
 	/**

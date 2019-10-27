@@ -392,7 +392,7 @@ class TestAccessCest
 //					'Mailinglists',
 //					'Templates',
 //					'Archive',
-////					'Basic settings',
+//					'Basic settings',
 //					'Maintenance',
 					);
 
@@ -411,8 +411,8 @@ class TestAccessCest
 				$I->amOnPage(MainView::$url);
 				$I->waitForElement(Generals::$pageTitle, 30);
 				$I->see('BwPostman');
-				$I->seeElement(Generals::$toolbar['BwPostman Forum']);
-				$I->seeElement(Generals::$toolbar['BwPostman Manual']);
+				$I->seeElement(Generals::$toolbar4['BwPostman Forum']);
+				$I->seeElement(Generals::$toolbar4['BwPostman Manual']);
 
 				if ($allowed)
 				{
@@ -425,25 +425,35 @@ class TestAccessCest
 
 						$item_permission_array = AccessPage::${$user['user'] . '_item_permissions'};
 
+						codecept_debug('Create new item ' . $button);
 						$this->createNewItem($I, $button, $item_permission_array);
 
+						codecept_debug('Edit own item ' . $button);
 						$this->editItem($I, $button, 'own', $item_permission_array); // own item
+
+						codecept_debug('Edit other item ' . $button);
 						$this->editItem($I, $button, 'other', $item_permission_array); // other item
 
+						codecept_debug('Change state of item ' . $button);
 						$this->changeStateItem($I, $button, $item_permission_array); //own item
 
+						codecept_debug('Checkin item ' . $button);
 						$this->checkinOwnItem($I, $button, $link, $item_permission_array);
 						// @ToDo: Use other user to lock. Question: How to determine other user?
 						// Workaround: If BwPostmanAdmin, then other user BwPostmanPublisher, else other user BwPostmanAdmin
 						// $this->_checkinOtherItem($I, $i, $button, $link);
 
+						codecept_debug('Restore item ' . $button);
 						$this->restoreArchivedItem($I, $button, $user, $item_permission_array); // own item
+						codecept_debug('Delete item ' . $button);
 						$this->deleteArchivedItem($I, $button, $user, $item_permission_array); // own item
 
 						if ($button == 'Newsletters')
 						{
+							codecept_debug('Duplicate newsletter');
 							$this->duplicateNewsletter($I, $user, $item_permission_array);
 
+							codecept_debug('Send newsletter');
 							$this->sendNewsletter($I, $user, $item_permission_array);
 
 							// @ToDo: set publish/unpublish date
@@ -458,6 +468,7 @@ class TestAccessCest
 						}
 						elseif ($button == 'Templates')
 						{
+							codecept_debug('Set default template');
 							$this->setDefaultTemplate($I, $item_permission_array);
 
 							// @ToDo: import template
@@ -471,6 +482,7 @@ class TestAccessCest
 					elseif ($button == 'Basic settings')
 					{
 						$I->see('BwPostman Configuration', Generals::$pageTitle);
+						$I->waitForElementVisible(Generals::$toolbar['Save & Close'], 5);
 						$I->click(Generals::$toolbar['Save & Close']);
 						$I->waitForElement(Generals::$pageTitle, 10);
 						$I->see('BwPostman');
@@ -536,7 +548,7 @@ class TestAccessCest
 
 			$I->see($title_to_see, Generals::$pageTitle);
 
-			$I->click(Generals::$toolbar['Cancel']);
+			$I->click(Generals::$toolbar4['Cancel']);
 			if ($button === 'Templates')
 			{
 				try
@@ -643,16 +655,19 @@ class TestAccessCest
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 
 		$I->click($checkbox);
-		$I->click(Generals::$toolbar['Edit']);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->click(Generals::$toolbar4['Edit']);
 
-		if ($allowed)
-		{
+//		if ($allowed)
+//		{
 			$this->checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
-		}
-		else
-		{
-			$I->see($button, Generals::$pageTitle);
-		}
+//		}
+//		else
+//		{
+//			$I->waitForElementVisible(Generals::$alert_heading4, 30);
+//			$I->see(Generals::$alert_msg_txt, Generals::$alert_heading4);
+//			$I->see($button, Generals::$pageTitle);
+//		}
 	}
 
 	/**
@@ -687,19 +702,27 @@ class TestAccessCest
 
 			$I->see($title_to_see, Generals::$pageTitle);
 			$I->seeInField($check_locator, $check_content);
+
+			$I->click(Generals::$toolbar4['Cancel']);
 		}
 		else
 		{
 			$I->see($button, Generals::$pageTitle);
 			// for button tests I may only get here at edit other owners items!
-			$I->see('No permission edit this item!', Generals::$alert_error);
+			$I->see('No permission to edit this item!', Generals::$alert_error);
+			$I->clickAndWait(Generals::$systemMessageClose, 1);
 		}
-
-		$I->click(Generals::$toolbar['Cancel']);
 
 		if ($button === "Templates")
 		{
-			$I->acceptPopup();
+			try
+			{
+				$I->acceptPopup();
+			}
+			catch (\Exception $e)
+			{
+				codecept_debug('Popup Templates not found');
+			}
 		}
 
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -788,7 +811,8 @@ class TestAccessCest
 
 		if (!$archive_allowed)
 		{
-//			$I->dontSeeElement(Generals::$toolbar['Archive']);
+			$I->clickAndWait(Generals::$toolbarActions, 1);
+			$I->dontSeeElement(Generals::$toolbar4['Archive']);
 			return;
 		}
 
@@ -800,9 +824,9 @@ class TestAccessCest
 		if (!$restore_allowed)
 		{
 			// @ToDo: Check for visibility of tabs
-//			$I->switchToArchive($I, $edit_data['archive_tab']);
-//			$I->dontSeeElement(Generals::$toolbar['Restore']);
-//			$I->switchToSection($I, $manage_data);
+			$I->clickAndWait(Generals::$toolbarActions, 1);
+			$I->switchToArchive($I, $edit_data['archive_tab']);
+			$I->dontSeeElement(Generals::$toolbar4['Restore']);
 			return;
 		}
 
@@ -837,7 +861,8 @@ class TestAccessCest
 
 		if (!$archive_allowed)
 		{
-//			$I->dontSeeElement(Generals::$toolbar['Archive']);
+			$I->clickAndWait(Generals::$toolbarActions, 1);
+			$I->dontSeeElement(Generals::$toolbar4['Archive']);
 			return;
 		}
 
@@ -906,7 +931,8 @@ class TestAccessCest
 		// by toolbar
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 		$I->click($checkbox);
-		$I->click(Generals::$toolbar['Check-In']);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->click(Generals::$toolbar4['Check-In']);
 		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 	}
 
@@ -1243,7 +1269,8 @@ class TestAccessCest
 
 		if (!$create_allowed)
 		{
-			$I->dontSeeElement(Generals::$toolbar['Duplicate']);
+			$I->clickAndWait(Generals::$toolbarActions, 1);
+			$I->dontSeeElement(Generals::$toolbar4['Duplicate']);
 			return;
 		}
 
@@ -1277,7 +1304,8 @@ class TestAccessCest
 
 		if (!$send_allowed)
 		{
-			$I->dontSeeElement(Generals::$toolbar['Send']);
+			$I->clickAndWait(Generals::$toolbarActions, 1);
+			$I->dontSeeElement(Generals::$toolbar4['Send']);
 			return;
 		}
 
@@ -1288,7 +1316,8 @@ class TestAccessCest
 		$this->switchLoggedInUser($I, $user);
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
-		$I->seeElement(Generals::$toolbar['Send']);
+//		$I->clickAndWait(Generals::$toolbarActions, 1);
+//		$I->seeElement(Generals::$toolbar4['Send']);
 		NewsletterEditPage::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
 		$this->switchLoggedInUser($I, Generals::$admin);
@@ -1446,7 +1475,7 @@ class TestAccessCest
 		// HelperArcDelItems
 		if (!$delete_allowed)
 		{
-			$I->dontSeeElement(Generals::$toolbar['Delete']);
+			$I->dontSeeElement(Generals::$toolbar4['Delete']);
 
 			$this->switchLoggedInUser($I, 'BwPostmanAdmin');
 			$I->HelperArcDelItems($I, $manage_data, $edit_data, true);

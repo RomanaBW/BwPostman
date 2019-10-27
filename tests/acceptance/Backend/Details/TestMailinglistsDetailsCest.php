@@ -99,7 +99,7 @@ class TestMailinglistsDetailsCest
 
 		$this->fillFormExtended($I);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
@@ -130,7 +130,7 @@ class TestMailinglistsDetailsCest
 
 		MlEdit::fillFormSimple($I);
 
-		$I->clickAndWait(MlEdit::$toolbar['Cancel'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 		$I->see("Mailinglists", Generals::$pageTitle);
 	}
 
@@ -157,7 +157,7 @@ class TestMailinglistsDetailsCest
 
 		$this->fillFormExtended($I);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
@@ -190,14 +190,15 @@ class TestMailinglistsDetailsCest
 
 		MlEdit::fillFormSimple($I);
 
-		$I->click(Generals::$toolbar['Save & New']);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->click(Generals::$toolbar4['Save & New']);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->see('', MlEdit::$title);
 
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -226,7 +227,7 @@ class TestMailinglistsDetailsCest
 
 		MlEdit::fillFormSimple($I);
 
-		$I->click(Generals::$toolbar['Save']);
+		$I->click(Generals::$toolbar4['Save']);
 		$I->waitForElement(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_header);
@@ -238,7 +239,8 @@ class TestMailinglistsDetailsCest
 
 		$I->fillField(MlEdit::$title, MlEdit::$field_title2);
 
-		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_header);
@@ -251,7 +253,7 @@ class TestMailinglistsDetailsCest
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -279,7 +281,7 @@ class TestMailinglistsDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		MlEdit::fillFormSimple($I);
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
@@ -321,7 +323,7 @@ class TestMailinglistsDetailsCest
 
 		MlEdit::fillFormSimple($I);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
@@ -331,11 +333,11 @@ class TestMailinglistsDetailsCest
 
 		MlEdit::fillFormSimple($I);
 
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->see(Generals::$alert_error_txt, Generals::$alert_heading);
 		$I->see(MlEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
-		$I->click(MlEdit::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see("Mailinglists", Generals::$pageTitle);
 
@@ -375,7 +377,7 @@ class TestMailinglistsDetailsCest
 	{
 		// fill title, omit description
 		$I->fillField(MlEdit::$title, MlEdit::$field_title);
-		$I->clickAndWait(MlEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// check for description filled
 		$I->seeInPopup(MlEdit::$popup_description);
@@ -384,7 +386,7 @@ class TestMailinglistsDetailsCest
 		// fill description, omit title
 		$I->fillField(MlEdit::$title, "");
 		$I->fillField(MlEdit::$description, MlEdit::$field_description);
-		$I->click(MlEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 
 		// check for title filled
 		$I->seeInPopup(MlEdit::$popup_title);

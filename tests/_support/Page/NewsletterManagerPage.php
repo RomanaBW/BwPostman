@@ -95,7 +95,7 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_list_entry_tab2    = "//*[@id='ub0']";
+	public static $first_list_entry_tab2    = "//*[@id='cb0']";
 
 	/**
 	 * Array of sorting criteria values for unsent newsletters

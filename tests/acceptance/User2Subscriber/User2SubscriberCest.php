@@ -1976,7 +1976,7 @@ class User2SubscriberCest
 					$I->dontSeeCheckboxIsChecked($ml);
 				}
 
-				$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+				$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 				LoginPage::logoutFromBackend($I, false);
 			}

@@ -106,7 +106,7 @@ class TestTemplatesDetailsCest
 		$this->fillFormSimpleHtml($I);
 
 		// check if save and close is successful
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 3);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 3);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -140,11 +140,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one HTML template cancel list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add HTML-Template']);
+		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormExtendedHtml($I);
 
-		$I->click(TplEdit::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$msg_cancel);
 		$I->acceptPopup();
@@ -172,11 +172,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one HTML template list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add HTML-Template']);
+		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -206,11 +206,12 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one HTML template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add HTML-Template']);
+		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
-		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -220,7 +221,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
 		$I->see('', TplEdit::$title);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$msg_cancel);
 		$I->acceptPopup();
@@ -249,11 +250,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one HTML template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add HTML-Template']);
+		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
-		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -268,7 +269,8 @@ class TestTemplatesDetailsCest
 
 		$I->fillField(TplEdit::$title, TplEdit::$field_title2);
 
-		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -282,7 +284,7 @@ class TestTemplatesDetailsCest
 
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$msg_cancel);
 		$I->acceptPopup();
@@ -311,11 +313,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create HTML template twice list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add HTML-Template']);
+		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -323,18 +325,18 @@ class TestTemplatesDetailsCest
 		$I->see('Template', Generals::$pageTitle);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->click(Generals::$toolbar['Add HTML-Template']);
+		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->click(TplEdit::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
 		$I->acceptPopup();
@@ -404,7 +406,7 @@ class TestTemplatesDetailsCest
 		TplEdit::fillFormSimpleText($I);
 
 		// check if save and close is successful
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -439,11 +441,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one Text template cancel list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		$this->fillFormExtendedText($I);
 
-		$I->click(TplEdit::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$msg_cancel);
 		$I->acceptPopup();
@@ -471,11 +473,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one Text template list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -506,11 +508,12 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one Text template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
-		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -520,7 +523,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
 		$I->see('', TplEdit::$title);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
 		$I->acceptPopup();
@@ -549,11 +552,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one Text template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
-		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -568,7 +571,8 @@ class TestTemplatesDetailsCest
 
 		$I->fillField(TplEdit::$title, TplEdit::$field_title2);
 
-		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -582,7 +586,7 @@ class TestTemplatesDetailsCest
 
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
 		$I->acceptPopup();
@@ -611,11 +615,11 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one Text template list view, archive and restore");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -655,11 +659,11 @@ class TestTemplatesDetailsCest
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElement(Generals::$pageTitle, 5);
 
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -667,17 +671,17 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template', Generals::$pageTitle);
 
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
 
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->click(TplEdit::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
 		$I->acceptPopup();
@@ -711,7 +715,8 @@ class TestTemplatesDetailsCest
 		$I->click(TplManage::$tableRowForDefault);
 		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 
-		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -721,7 +726,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
 		$I->see('', TplEdit::$title);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
 		$I->acceptPopup();
@@ -757,7 +762,8 @@ class TestTemplatesDetailsCest
 
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
 
-		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
@@ -772,7 +778,7 @@ class TestTemplatesDetailsCest
 
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
 		$I->acceptPopup();
@@ -873,13 +879,13 @@ class TestTemplatesDetailsCest
 	{
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->seeInPopup(TplEdit::$popup_description);
 		$I->acceptPopup();
 
 		$I->fillField(TplEdit::$title, "");
 		$I->fillField(TplEdit::$description, sprintf(TplEdit::$field_description, $type));
-		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->seeInPopup(TplEdit::$popup_title);
 		$I->acceptPopup();
 
@@ -942,7 +948,7 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
-		$I->clickAndWait(TplEdit::$toolbar['Save'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 	}
 

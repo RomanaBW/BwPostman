@@ -538,7 +538,7 @@ class TemplateEditPage
 
 		self::fillFormSimpleText($I, $user);
 
-		$I->clickAndWait(self::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);

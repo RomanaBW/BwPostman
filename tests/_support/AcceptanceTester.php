@@ -265,8 +265,8 @@ class AcceptanceTester extends \Codeception\Actor
 		$last_page  = $this->getLastPageNumber();
 		$yOffset    = -100;
 
-		if ($button === 'Templates')
-			$yOffset = -250;
+//		if ($button === 'Templates')
+//			$yOffset = -250;
 
 		while (!$found)
 		{

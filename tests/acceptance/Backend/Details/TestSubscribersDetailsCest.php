@@ -102,7 +102,7 @@ class TestSubscribersDetailsCest
 
 		SubEdit::fillFormSimple($I);
 
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
@@ -139,7 +139,7 @@ class TestSubscribersDetailsCest
 		$this->fillFormExtended($I);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 		$I->see("Subscribers", Generals::$pageTitle);
 	}
 
@@ -167,7 +167,7 @@ class TestSubscribersDetailsCest
 
 		SubEdit::fillFormSimple($I);
 
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -204,7 +204,8 @@ class TestSubscribersDetailsCest
 
 		SubEdit::fillFormSimple($I);
 
-		$I->clickAndWait(Generals::$toolbar['Save & New'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -212,7 +213,7 @@ class TestSubscribersDetailsCest
 		$I->see('', SubEdit::$name);
 
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
@@ -244,7 +245,7 @@ class TestSubscribersDetailsCest
 
 		SubEdit::fillFormSimple($I);
 
-		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -258,7 +259,8 @@ class TestSubscribersDetailsCest
 
 		$I->fillField(SubEdit::$email, SubEdit::$field_email2);
 
-		$I->clickAndWait(Generals::$toolbar['Save as Copy'], 1);
+		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -272,7 +274,7 @@ class TestSubscribersDetailsCest
 
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
@@ -304,7 +306,7 @@ class TestSubscribersDetailsCest
 
 		SubEdit::fillFormSimple($I);
 
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
@@ -349,7 +351,7 @@ class TestSubscribersDetailsCest
 
 		SubEdit::fillFormSimple($I);
 
-		$I->click(SubEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
@@ -360,13 +362,13 @@ class TestSubscribersDetailsCest
 
 		SubEdit::fillFormSimple($I);
 
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(SubEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->click(SubEdit::$toolbar['Cancel']);
+		$I->click(Generals::$toolbar4['Cancel']);
 		$I->see("Subscribers", Generals::$pageTitle);
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
@@ -405,7 +407,7 @@ class TestSubscribersDetailsCest
 
 		$I->switchToIFrame();
 		$I->clickAndWait(SubEdit::$printSubsDataClose, 2);
-		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
@@ -455,7 +457,7 @@ class TestSubscribersDetailsCest
 			$I->fillField(SubEdit::$email, SubEdit::$field_email);
 			if ($options->firstname_field_obligation)
 			{
-				$I->clickAndWait(SubEdit::$toolbar['Save'], 1);
+				$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 				if ($options->firstname_field_obligation)
 				{
@@ -475,7 +477,7 @@ class TestSubscribersDetailsCest
 			$I->fillField(SubEdit::$email, SubEdit::$field_email);
 			if ($options->name_field_obligation)
 			{
-				$I->click(SubEdit::$toolbar['Save']);
+				$I->click(Generals::$toolbar4['Save']);
 
 				if ($options->name_field_obligation)
 				{
@@ -496,7 +498,7 @@ class TestSubscribersDetailsCest
 				$I->fillField(SubEdit::$special, "");
 				if ($options->special_field_obligation)
 				{
-					$I->click(SubEdit::$toolbar['Save']);
+					$I->click(Generals::$toolbar4['Save']);
 
 					$I->waitForElement(Generals::$alert_header, 30);
 					$I->see("Warning", Generals::$alert_heading);
@@ -509,7 +511,7 @@ class TestSubscribersDetailsCest
 
 		// omit email address
 		$I->fillField(SubEdit::$email, '');
-		$I->click(SubEdit::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Warning", Generals::$alert_heading);

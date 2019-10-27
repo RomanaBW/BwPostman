@@ -789,7 +789,7 @@ class TestNewslettersListsCest
 		$I->setExtensionStatus('bwtestmode', 0);
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
 
-		$I->clickAndWait("//*/button[contains(@class,'button-envelope')]", 1);
+		$I->clickAndWait(Generals::$toolbar4['Continue sending'], 1);
 
 //		$I->wait(5);
 //		$I->waitForElementVisible(NlEdit::$queue_send_iframeName, 20);

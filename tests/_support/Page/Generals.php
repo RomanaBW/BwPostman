@@ -498,6 +498,13 @@ class Generals
 	public static $toolbarActions  = "//*/joomla-toolbar-button[@id='toolbar-status-group']";
 
 	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $toolbarSaveActions  = "//*/button[@data-target='#toolbar-dropdown-save-group']";
+
+	/**
 	 * Array of toolbar id values for list page
 	 *
 	 * @var    array
@@ -506,38 +513,38 @@ class Generals
 	 */
 	public static $toolbar4 = array (
 		'New'                  => "a#toolbar-new",
-		'Edit'                 => "a#toolbar-edit",
-		'Publish'              => "a#toolbar-publish",
-		'Unpublish'            => "a#toolbar-unpublish",
-		'Archive'              => "a#toolbar-archive",
+		'Edit'                 => "//*/joomla-toolbar-button[@id='status-group-children-edit']",
+		'Publish'              => "//*/joomla-toolbar-button[@id='status-group-children-publish']",
+		'Unpublish'            => "//*/joomla-toolbar-button[@id='status-group-children-unpublish']",
+		'Archive'              => "//*/joomla-toolbar-button[@id='status-group-children-archive']",
 		'Help'                 => "a#toolbar-help",
-		'Duplicate'            => "a#toolbar-copy",
-		'Send'                 => "a#toolbar-envelope",
-		'Add HTML-Template'    => "a#toolbar-calendar",
-		'Add Text-Template'    => "a#toolbar-new",
-		'Default'              => "a#toolbar-default",
-		'Check-In'             => "a#toolbar-checkin",
-		'Install-Template'     => "a#toolbar-install-template",
+		'Duplicate'            => "//*/joomla-toolbar-button[@id='status-group-children-duplicate']",
+		'Send'                 => "//*/joomla-toolbar-button[@id='status-group-children-send']",
+		'Add HTML-Template'    => "//*/joomla-toolbar-button[@id='toolbar-calendar']",
+		'Add Text-Template'    => "//*/joomla-toolbar-button[@id='toolbar-new']",
+		'Default'              => "//*/joomla-toolbar-button[@id='status-group-children-default']",
+		'Check-In'             => "//*/joomla-toolbar-button[@id='status-group-children-checkin']",
+		'Install-Template'     => "//*/joomla-toolbar-button[@id='toolbar-upload']",
 		'Options'              => "//*/joomla-toolbar-button/a[@id='toolbar-options']",
 		'Save'                 => "//*/joomla-toolbar-button[@id='toolbar-apply']",
 		'Save & Close'         => "//*/joomla-toolbar-button[@id='save-group-children-save']",
-		'Save & New'           => "a#toolbar-save-new",
-		'Save as Copy'         => "a#toolbar-save-copy",
-		'Cancel'               => "a#toolbar-cancel",
-		'Back'                 => "a#toolbar-back",
+		'Save & New'           => "//*/joomla-toolbar-button[@id='save-group-children-save-new']",
+		'Save as Copy'         => "//*/joomla-toolbar-button[@id='save-group-children-save-copy']",
+		'Cancel'               => "//*/joomla-toolbar-button[@id='toolbar-cancel']",
+		'Back'                 => "a#toolbar-link",
 		'Delete'               => "//*/joomla-toolbar-button[@id='status-group-children-delete']",
-		'Restore'              => "a#toolbar-unarchive",
+		'Restore'              => "//*/joomla-toolbar-button[@id='toolbar-unarchive']",
 		'Enable'               => "a#toolbar-publish",
 		'Import'               => "a#toolbar-download",
-		'Export'               => "a#toolbar-upload",
+		'Export'               => "//*/joomla-toolbar-button[@id='status-group-children-export']",
 		'Export Popup'         => "a#toolbar-popup-upload",
 		'Batch'                => "a#toolbar-batch",
 		'Reset sending trials' => "a#toolbar-unpublish",
-		'Continue sending'     => "a#toolbar-popup-envelope",
+		'Continue sending'     => "//*/joomla-toolbar-button[@id='toolbar-continue_sending']",
 		'Clear queue'          => "a#toolbar-delete",
 		'Uninstall  '          => "a#toolbar-delete",
-		'BwPostman Manual'     => "a#toolbar-book",
-		'BwPostman Forum'      => "a#toolbar-users",
+		'BwPostman Manual'     => "//*/joomla-toolbar-button[@id='toolbar-manual']",
+		'BwPostman Forum'      => "//*/joomla-toolbar-button[@id='toolbar-forum']",
 	);
 
 	/**

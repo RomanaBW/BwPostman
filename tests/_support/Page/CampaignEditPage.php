@@ -191,7 +191,7 @@ class CampaignEditPage
 
 		self::fillFormSimple($I);
 
-		$I->click(self::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 10);
 		$I->see("Message", Generals::$alert_header);

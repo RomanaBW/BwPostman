@@ -1072,7 +1072,7 @@ class NewsletterEditPage
 			$I->selectOption(self::$is_template, 'Yes');
 		}
 
-		$I->click(self::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
 		if ($isTemplate)
@@ -1081,7 +1081,8 @@ class NewsletterEditPage
 		}
 
 		$I->click(Generals::$first_list_entry);
-		$I->clickAndWait(Generals::$toolbar['Duplicate'], 1);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->clickAndWait(Generals::$toolbar4['Duplicate'], 1);
 		$I->waitForText(self::$duplicate_prefix . self::$field_subject . "'", 30);
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
 		if ($isTemplate)
@@ -1298,7 +1299,7 @@ class NewsletterEditPage
 
 		self::fillFormSimple($I, $toUsergroup, $withAttachment);
 
-		$I->click(self::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
 
@@ -1341,7 +1342,8 @@ class NewsletterEditPage
 		codecept_debug("Publish: $publish");
 
 		$I->click(self::$mark_to_send);
-		$I->click(Generals::$toolbar['Send']);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->click(Generals::$toolbar4['Send']);
 		$I->waitForElementVisible(self::$tab5);
 		$I->see(self::$tab5_legend1);
 

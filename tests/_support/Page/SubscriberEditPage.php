@@ -399,7 +399,7 @@ class SubscriberEditPage
 
 		self::fillFormSimple($I);
 
-		$I->click(self::$toolbar['Save & Close']);
+		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(self::$success_saved, Generals::$alert_success);

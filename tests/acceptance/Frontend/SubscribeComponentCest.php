@@ -185,6 +185,7 @@ class SubscribeComponentCest
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
 		{
 			$I->click(SubsView::$button_register);
+			$I->scrollTo(Generals::$sys_message_container, 0, -100);
 			$I->seeElement(Generals::$alert_error);
 			if ($bwpm_version == '132')
 			{
@@ -202,6 +203,7 @@ class SubscribeComponentCest
 		if ($options->show_name_field || $options->name_field_obligation)
 		{
 			$I->click(SubsView::$button_register);
+			$I->scrollTo(Generals::$sys_message_container, 0, -100);
 			$I->seeElement(Generals::$alert_error);
 			if ($bwpm_version == '132')
 			{
@@ -219,6 +221,7 @@ class SubscribeComponentCest
 
 		//omit mailinglist selection
 		$I->clickAndWait(SubsView::$button_register, 1);
+		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 
 		$I->see(SubsView::$invalid_select_newsletter_132);
 
@@ -234,7 +237,12 @@ class SubscribeComponentCest
 		// omit additional field
 		if ($options->show_special || $options->special_field_obligation)
 		{
+			if ($options->special_label === '')
+			{
+				$options->special_label = 'Additional Field';
+			}
 			$I->click(SubsView::$button_register);
+			$I->scrollTo(Generals::$sys_message_container, 0, -100);
 			$I->see(sprintf(SubsView::$popup_enter_special, $options->special_label));
 			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
 			$I->fillField(SubsView::$name, SubsView::$lastname_fill);
@@ -246,6 +254,7 @@ class SubscribeComponentCest
 		if ($options->disclaimer)
 		{
 			$I->click(SubsView::$button_register);
+			$I->scrollTo(Generals::$sys_message_container, 0, -100);
 			$I->see(SubsView::$popup_accept_disclaimer);
 			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
 			$I->fillField(SubsView::$name, SubsView::$lastname_fill);

@@ -91,7 +91,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkBackButton      = "//*[@id='toolbar-arrow-left']";
+	public static $checkBackButton      = "//*/a[@id='toolbar-back']";
 
 	/**
 	 * @var string
@@ -316,7 +316,7 @@ class MaintenancePage
 		$I->waitForElementVisible(self::$step11Field, 30);
 		$I->waitForElementVisible(self::$step11SuccessClass, 30);
 		$I->see(self::$step11SuccessMsg, self::$step11SuccessClass);
-		$I->click(self::$checkBackButton);
+		$I->clickAndWait(self::$checkBackButton, 1);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(self::$heading, Generals::$pageTitle);
 

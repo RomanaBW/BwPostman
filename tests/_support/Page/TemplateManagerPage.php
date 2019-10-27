@@ -408,7 +408,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importBackButton      = "//*/a[@id='toolbar-arrow-left']";
+	public static $importBackButton      = "//*/a[@id='toolbar-back']";
 
 	/**
 	 * @var string

@@ -7,7 +7,7 @@ pipeline {
 				script
 				{
 					BWPM_VERSION = "2.4.0"
-					JOOMLA_VERSION = "3.9.10"
+					JOOMLA_VERSION = "3.9.12"
 //					BWPM_VERSION = "2.4.0"
 //					JOOMLA_VERSION = "4.0.0a12"
 					VAGRANT_DIR = "/vms-uni2/vagrant/infrastructure/farm1/J-Tester"

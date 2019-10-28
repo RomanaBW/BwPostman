@@ -7,7 +7,9 @@ pipeline {
 				script
 				{
 					BWPM_VERSION = "2.4.0"
-					JOOMLA_VERSION = "4.0.0a12"
+					JOOMLA_VERSION = "3.9.10"
+//					BWPM_VERSION = "2.4.0"
+//					JOOMLA_VERSION = "4.0.0a12"
 					VAGRANT_DIR = "/vms-uni2/vagrant/infrastructure/farm1/J-Tester"
 					BW_ARTIFACTS_BASE = "/repositories/artifacts/bwpostman"
 					GIT_MESSAGE = "not specified"
@@ -16,35 +18,35 @@ pipeline {
 			}
         }
 
-//		stage('Create tester package') {
-//			steps {
-//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
-//			}
-//		}
+		stage('Create tester package') {
+			steps {
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
+			}
+		}
 
-//		stage('Create full package') {
-//			steps {
-//				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
-//			}
-//		}
+		stage('Create full package') {
+			steps {
+				sh "ansible-playbook ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
+			}
+		}
 
-//		stage('Smoke') {
-//			steps {
+		stage('Smoke') {
+			steps {
 //				echo "Dummy Smoke"
-//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
-//				sh "docker exec -t bwpm_enh_tester /data/do-tests.sh ${BWPM_VERSION}"
-//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
-//			}
-//			post {
-//				always {
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml"
+				sh "docker exec -t bwpm_enh_tester /data/do-tests.sh ${BWPM_VERSION}"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
+			}
+			post {
+				always {
 //					echo "Dummy Smoke ALWAYS"
-//					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
-//				}
-//				failure {
-//					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
-//				}
-//			}
-//		}
+					sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml"
+				}
+				failure {
+					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
+				}
+			}
+		}
 
 		stage('Run acceptance level 1') {
 			parallel {

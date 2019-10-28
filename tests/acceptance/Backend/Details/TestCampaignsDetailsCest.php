@@ -107,7 +107,7 @@ class TestCampaignsDetailsCest
 		$this->fillFormExtended($I);
 		$I->click(Generals::$toolbar4['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -167,7 +167,7 @@ class TestCampaignsDetailsCest
 
 		CamEdit::fillFormSimple($I);
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -206,7 +206,7 @@ class TestCampaignsDetailsCest
 
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -247,7 +247,7 @@ class TestCampaignsDetailsCest
 		CamEdit::fillFormSimple($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -303,7 +303,7 @@ class TestCampaignsDetailsCest
 
 		CamEdit::fillFormSimple($I);
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -348,7 +348,7 @@ class TestCampaignsDetailsCest
 
 		$I->click(Generals::$toolbar4['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
@@ -358,6 +358,7 @@ class TestCampaignsDetailsCest
 
 		CamEdit::fillFormSimple($I);
 		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see("Error", Generals::$alert_heading);
 		$I->see(CamEdit::$error_save, Generals::$alert_error);

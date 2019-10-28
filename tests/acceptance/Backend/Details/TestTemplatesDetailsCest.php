@@ -107,7 +107,7 @@ class TestTemplatesDetailsCest
 
 		// check if save and close is successful
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 3);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -177,7 +177,7 @@ class TestTemplatesDetailsCest
 		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -212,7 +212,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
@@ -255,7 +255,7 @@ class TestTemplatesDetailsCest
 		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
@@ -272,7 +272,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
@@ -319,7 +319,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template', Generals::$pageTitle);
@@ -331,7 +331,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -407,7 +407,7 @@ class TestTemplatesDetailsCest
 
 		// check if save and close is successful
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -479,7 +479,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -514,7 +514,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
@@ -557,7 +557,7 @@ class TestTemplatesDetailsCest
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
@@ -574,7 +574,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
@@ -621,7 +621,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -665,7 +665,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -676,7 +676,7 @@ class TestTemplatesDetailsCest
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Error", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -717,7 +717,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -764,7 +764,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
-		$I->waitForElement(Generals::$alert_header, 5);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

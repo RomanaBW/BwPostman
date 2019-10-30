@@ -519,33 +519,33 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SortTestRecipientsByTableHeader(AcceptanceTester $I)
-	{
-		// @Todo: ensure UTF-8 characters are recognized; only testing problem
-		$I->wantTo("Sort test recipients by table header");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-		$I->wait(1);
-		$I->click(Generals::$submenu_toggle_button);
-
-		$sort_array     = $this->prepareSortArray($I);
-		$loop_counts    = 10;
-
-		$options    = $I->getManifestOptions('com_bwpostman');
-
-		if (!$options->show_gender)
-		{
-			$loop_counts    = 9;
-		}
-
-
-		// loop over sorting criterion
-		$columns    = implode(', ', SubsManage::$query_criteria);
-		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
-
-		$I->click(Generals::$submenu_toggle_button);
-	}
+//	public function SortTestRecipientsByTableHeader(AcceptanceTester $I)
+//	{
+//		// @Todo: ensure UTF-8 characters are recognized; only testing problem
+//		$I->wantTo("Sort test recipients by table header");
+//		SubsManage::$wait_db;
+//		$I->amOnPage(SubsManage::$url);
+//		$I->wait(1);
+//		$I->click(Generals::$submenu_toggle_button);
+//
+//		$sort_array     = $this->prepareSortArray($I);
+//		$loop_counts    = 10;
+//
+//		$options    = $I->getManifestOptions('com_bwpostman');
+//
+//		if (!$options->show_gender)
+//		{
+//			$loop_counts    = 9;
+//		}
+//
+//
+//		// loop over sorting criterion
+//		$columns    = implode(', ', SubsManage::$query_criteria);
+//		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+//		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
+//
+//		$I->click(Generals::$submenu_toggle_button);
+//	}
 
 	/**
 	 * Test method sorting subscribers by selection at select list
@@ -562,29 +562,29 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SortTestRecipientsBySelectList(AcceptanceTester $I)
-	{
-		// @Todo: ensure UTF-8 characters are recognized
-		$I->wantTo("Sort test recipients by select list");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-		$I->wait(1);
-
-		$sort_array = $this->prepareSortArray($I);
-		$loop_counts    = 10;
-
-		$options    = $I->getManifestOptions('com_bwpostman');
-
-		if (!$options->show_gender)
-		{
-			$loop_counts    = 9;
-		}
-
-		// loop over sorting criterion
-		$columns    = implode(', ', SubsManage::$query_criteria);
-		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-		$I->loopFilterList($I, $sort_array, '', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
-	}
+//	public function SortTestRecipientsBySelectList(AcceptanceTester $I)
+//	{
+//		// @Todo: ensure UTF-8 characters are recognized
+//		$I->wantTo("Sort test recipients by select list");
+//		SubsManage::$wait_db;
+//		$I->amOnPage(SubsManage::$url);
+//		$I->wait(1);
+//
+//		$sort_array = $this->prepareSortArray($I);
+//		$loop_counts    = 10;
+//
+//		$options    = $I->getManifestOptions('com_bwpostman');
+//
+//		if (!$options->show_gender)
+//		{
+//			$loop_counts    = 9;
+//		}
+//
+//		// loop over sorting criterion
+//		$columns    = implode(', ', SubsManage::$query_criteria);
+//		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+//		$I->loopFilterList($I, $sort_array, '', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
+//	}
 
 	/**
 	 * Test method to filter subscribers by status
@@ -601,24 +601,24 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function FilterTestRecipientsByMailformat(AcceptanceTester $I)
-	{
-		$I->wantTo("Filter test recipients by email format");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-
-		// Get filter bar
-		$I->clickAndWait(Generals::$filterbar_button, 1);
-		// select published
-		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_text, SubsManage::$format_list_id);
-
-		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
-
-		// select unpublished
-		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_html, SubsManage::$format_list_id);
-
-		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
-	}
+//	public function FilterTestRecipientsByMailformat(AcceptanceTester $I)
+//	{
+//		$I->wantTo("Filter test recipients by email format");
+//		SubsManage::$wait_db;
+//		$I->amOnPage(SubsManage::$url);
+//
+//		// Get filter bar
+//		$I->clickAndWait(Generals::$filterbar_button, 1);
+//		// select published
+//		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_text, SubsManage::$format_list_id);
+//
+//		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
+//
+//		// select unpublished
+//		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_html, SubsManage::$format_list_id);
+//
+//		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
+//	}
 
 	/**
 	 * Test method to filter subscribers by access
@@ -635,19 +635,19 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function FilterTestRecipientsByMailinglist(AcceptanceTester $I)
-	{
-		$I->wantTo("Filter test recipients by mailing list");
-		$I->amOnPage(SubsManage::$url);
-		$I->wait(SubsManage::$wait_db);
-
-		// Get filter bar
-		$I->clickAndWait(Generals::$filterbar_button, 1);
-		// select 04 Mailingliste 14 A
-		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
-
-		$I->assertFilterResult(SubsManage::$filter_subs_result);
-	}
+//	public function FilterTestRecipientsByMailinglist(AcceptanceTester $I)
+//	{
+//		$I->wantTo("Filter test recipients by mailing list");
+//		$I->amOnPage(SubsManage::$url);
+//		$I->wait(SubsManage::$wait_db);
+//
+//		// Get filter bar
+//		$I->clickAndWait(Generals::$filterbar_button, 1);
+//		// select 04 Mailingliste 14 A
+//		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
+//
+//		$I->assertFilterResult(SubsManage::$filter_subs_result);
+//	}
 
 	/**
 	 * Test method to search subscribers
@@ -689,13 +689,13 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function ListlimitTestRecipients(AcceptanceTester $I)
-	{
-		$I->wantTo("test list limit at test recipients");
-		$I->amOnPage(SubsManage::$url);
-
-		$I->checkListlimit($I);
-	}
+//	public function ListlimitTestRecipients(AcceptanceTester $I)
+//	{
+//		$I->wantTo("test list limit at test recipients");
+//		$I->amOnPage(SubsManage::$url);
+//
+//		$I->checkListlimit($I);
+//	}
 
 	/**
 	 * Test method to check pagination of subscribers
@@ -712,15 +712,15 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function PaginationTestRecipients(AcceptanceTester $I)
-	{
-		$I->wantTo("test pagination at test recipients");
-		$I->amOnPage(SubsManage::$url);
-
-		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
-
-		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
-	}
+//	public function PaginationTestRecipients(AcceptanceTester $I)
+//	{
+//		$I->wantTo("test pagination at test recipients");
+//		$I->amOnPage(SubsManage::$url);
+//
+//		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
+//
+//		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
+//	}
 
 	/**
 	 * Test method to import subscribers by CSV file

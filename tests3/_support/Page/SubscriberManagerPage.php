@@ -83,6 +83,27 @@ class SubscriberManagerPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $confirmedMainTable   = "//table[@id='main-table-bw-confirmed']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $unconfirmedMainTable   = "//table[@id='main-table-bw-unconfirmed']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $testersMainTable   = "//table[@id='main-table-bw-testrecipients']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $first_list_link          = ".//*[@id='main-table']/tbody/tr[1]/td[2]/a";
@@ -186,15 +207,34 @@ class SubscriberManagerPage
 	public static $search_data_array  = array(
 		// enter default 'search by' as last array element
 		'search_by'            => array(
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
 			".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
 			".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
 			".//*[@id='filter_search_filter_chzn']/div/ul/li[4]",
 			".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-			".//*[@id='filter_search_filter_chzn']/div/ul/li[6]",
 		),
 		'search_val'           => array("xx", "Andreas"),
 		// array of arrays: outer array per search value, inner arrays per 'search by'
 		'search_res'           => array(array(0, 0, 0, 0, 0), array(2, 1, 3, 3, 3)),
+	);
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.4.0
+	 */
+	public static $search_data_array_unconfirmed  = array(
+		// enter default 'search by' as last array element
+		'search_by'            => array(
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[1]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[2]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[3]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[4]",
+			".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
+		),
+		'search_val'           => array("xx", "Tristan"),
+		// array of arrays: outer array per search value, inner arrays per 'search by'
+		'search_res'           => array(array(0, 0, 0, 0, 0), array(0, 2, 2, 1, 1)),
 	);
 
 	/**
@@ -203,6 +243,13 @@ class SubscriberManagerPage
 	 * @since 2.0.0
 	 */
 	public static $search_clear_val     = 'Abbott';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $search_clear_val_unconfirmed     = 'Atkins';
 
 	// Filter mail format
 
@@ -304,6 +351,33 @@ class SubscriberManagerPage
 											'lili.zech@tester-net.nil'
 										);
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $ml_select_unconfirmed        = ".//*/li[text()='01 Mailingliste 3 A']";
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.4.0
+	 */
+	public static $filter_subs_unconfirmed_result   = array(
+		'm.augustin@tester-net.nil',
+		'm.bailey@tester-net.nil',
+		'katharina.euler@tester-net.nil',
+		'n.halle@tester-net.nil',
+		'mona.jaschke@tester-net.nil',
+		'enrico.noetzel@tester-net.nil',
+		'p.ochs@tester-net.nil',
+		'jaqueline.roesler@tester-net.nil',
+		'maren.tran@tester-net.nil',
+		'lewin.underwood@tester-net.nil',
+		'rebekka.vasquez@tester-net.nil',
+		'v.zabel@tester-net.nil',
+	);
+
 
 	/**
 	 * @var array
@@ -312,29 +386,61 @@ class SubscriberManagerPage
 	 */
 	public static $pagination_data_array  = array(
 		'p1_val1'              => "Abbott",
-		'p1_field1'            => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p1_field1'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p1_val_last'          => "Alexander",
-		'p1_field_last'        => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p1_field_last'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p2_val1'              => "Altmann",
-		'p2_field1'            => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p2_field1'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p2_val_last'          => "Atkins",
-		'p2_field_last'        => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p2_field_last'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p3_val1'              => "Auer",
-		'p3_field1'            => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p3_field1'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p3_val3'              => "Barrenbruegge",
-		'p3_field3'            => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p3_field3'            => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p_prev_val1'          => "Willis",
-		'p_prev_field1'        => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p_prev_field1'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p_prev_val_last'      => "Zabel",
-		'p_prev_field_last'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[10]/td[2]",
+		'p_prev_field_last'    => "//*[@id='main-table-bw-confirmed']/tbody/tr[10]/td[2]",
 
 		'p_last_val1'          => "Zauner",
-		'p_last_field1'        => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[1]/td[2]",
+		'p_last_field1'        => "//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]",
 		'p_last_val_last'      => "Zuschuss",
-		'p_last_field_last'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr[8]/td[2]",
+		'p_last_field_last'    => "//*[@id='main-table-bw-confirmed']/tbody/tr[8]/td[2]",
+	);
+
+	/**
+	 * @var array
+	 *
+	 * @since 2.4.0
+	 */
+	public static $pagination_data_array_unconfirmed  = array(
+		'p1_val1'              => "Atkins",
+		'p1_field1'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p1_val_last'          => "Baierl",
+		'p1_field_last'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p2_val1'              => "Baierl",
+		'p2_field1'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p2_val_last'          => "Bartl",
+		'p2_field_last'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p3_val1'              => "Barton",
+		'p3_field1'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p3_val3'              => "Beier",
+		'p3_field3'            => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p_prev_val1'          => "Vasquez",
+		'p_prev_field1'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p_prev_val_last'      => "Waechter",
+		'p_prev_field_last'    => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[10]/td[2]",
+
+		'p_last_val1'          => "Wagener",
+		'p_last_field1'        => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[1]/td[2]",
+		'p_last_val_last'      => "Zabel",
+		'p_last_field_last'    => "//*[@id='main-table-bw-unconfirmed']/tbody/tr[5]/td[2]",
 	);
 
 	/**
@@ -742,7 +848,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_c_na_f = '"85";"1519";"0";"Otte";"Stephan";"s.otte@tester-net.nil"';
+	public static $subs_c_na_f = '"85";"0";"Otte";"Stephan";"s.otte@tester-net.nil"';
 
 		/**
 		 * @var string
@@ -750,51 +856,72 @@ class SubscriberManagerPage
 		 * @since 2.2.0
 		 */
 
-	public static $subs_c_a_f = '"172";"1542";"0";"Zellner";"Janin";"janin.zellner@tester-net.nil"';
+	public static $subs_c_a_f = '"172";"0";"Zellner";"Janin";"janin.zellner@tester-net.nil"';
 		/**
 		 * @var string
 		 *
 		 * @since 2.2.0
 		 */
-	public static $subs_u_na_f = '"23";"1506";"0";"Junker";"Dustin";"d.junker@tester-net.nil"';
+	public static $subs_u_na_f = '"23";"0";"Junker";"Dustin";"d.junker@tester-net.nil"';
 
 		/**
 		 * @var string
 		 *
 		 * @since 2.2.0
 		 */
-	public static $subs_u_a_f = '"203";"1546";"0";"Steinmetz";"Bruno";"bruno.steinmetz@tester-net.nil"';
+	public static $subs_u_a_f = '"203";"0";"Steinmetz";"Bruno";"bruno.steinmetz@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_c_na = '"7";"1499";"0";"Barth";"Rafael";"r.barth@tester-net.nil"';
+	public static $subs_c_na = '"7";"0";"Barth";"Rafael";"r.barth@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_c_a = '"14";"1501";"0";"Yildiz";"Sebastian";"s.yildiz@tester-net.nil"';
+	public static $subs_c_a = '"14";"0";"Yildiz";"Sebastian";"s.yildiz@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_u_na = '"13";"1500";"0";"Oppermann";"Cedric";"cedric.oppermann@tester-net.nil"';
+	public static $subs_u_na = '"13";"0";"Oppermann";"Cedric";"cedric.oppermann@tester-net.nil"';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $subs_u_a = '"119";"1529";"0";"Vogt";"Matthies";"m.vogt@tester-net.nil"';
+	public static $subs_u_a = '"119";"0";"Vogt";"Matthies";"m.vogt@tester-net.nil"';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $exportFieldList = "//*[@id='export_fields']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $exportFieldAssetId = "asset_id";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $exportFieldRemoveButton = "//*[@name='removebutton']";
 
 
-		/**
+	/**
 	 * @param \AcceptanceTester $I
 	 * @param boolean           $activated
 	 *

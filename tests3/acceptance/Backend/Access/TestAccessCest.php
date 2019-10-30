@@ -391,8 +391,8 @@ class TestAccessCest
 
 			//@SpecialNote: This is a workaround to debug tests. Comment out usergroups/users which are not wanted
 			$wanted_users = array(
-				'BwPostmanAdmin',
-				'BwPostmanManager',
+//				'BwPostmanAdmin',
+//				'BwPostmanManager',
 				'BwPostmanPublisher',
 				'BwPostmanEditor',
 				'BwPostmanCampaignAdmin',
@@ -649,7 +649,12 @@ class TestAccessCest
 		}
 
 		// find page and row for desired item
-		$item_found  = $I->findPageWithItemAndScrollToItem($check_content);
+		$tableId = 'main-table';
+		if ($button == 'Subscribers')
+		{
+			$tableId = 'main-table-bw-confirmed';
+		}
+		$item_found  = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 		$I->assertEquals(true, $item_found);
 
 		// by link
@@ -667,12 +672,12 @@ class TestAccessCest
 		}
 
 		// find page and row for desired item
-		$item_found  = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found  = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
 		// by checkbox
-		$checkbox       = $this->getCheckbox($I, $check_content);
+		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Edit']);
@@ -721,14 +726,15 @@ class TestAccessCest
 	/**
 	 * @param \AcceptanceTester  $I
 	 * @param string            $title_content
+	 * @param string            $tableId
 	 *
 	 * @return string
 	 *
 	 * @since 2.0.0
 	 */
-	private function getCheckbox($I, $title_content)
+	private function getCheckbox($I, $title_content, $tableId = 'main-table')
 	{
-		$checkbox_nbr  = $I->getTableRowIdBySearchValue($title_content);
+		$checkbox_nbr  = $I->getTableRowIdBySearchValue($title_content, $tableId);
 		$checkbox = sprintf(AccessPage::$checkbox_identifier, $checkbox_nbr - 1);
 
 		return $checkbox;
@@ -881,32 +887,43 @@ class TestAccessCest
 		$check_link     = $permission_array[$button]['check link'];
 		$item_link      = sprintf($check_link, $check_content);
 		$col_nbr        = 2;
+		$tableId        = 'main-table';
+
+		if ($button == 'Subscribers')
+		{
+			$tableId = 'main-table-bw-confirmed';
+		}
 
 		if ($button == 'Newsletters')
 		{
 			$col_nbr++;
 		}
 
-		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
-		$row_nbr    = $I->getTableRowIdBySearchValue($check_content);
+		$row_nbr    = $I->getTableRowIdBySearchValue($check_content, $tableId);
 		$lock_icon  = sprintf(AccessPage::$checkout_icon, $row_nbr, $col_nbr);
+
+		if ($button == 'Subscribers')
+		{
+			$lock_icon = str_replace('main-table', 'main-table-bw-confirmed', $lock_icon);
+		}
 
 		// by icon
 		$I->seeElement($lock_icon);
 		$I->click($lock_icon);
-		$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
+		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 
-		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		// see lock icon
 		$I->seeElement($lock_icon);
 
 		// by toolbar
-		$checkbox       = $this->getCheckbox($I, $check_content);
+		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 		$I->click($checkbox);
 		$I->click(Generals::$toolbar['Check-In']);
-		$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
+		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 	}
 
 	/**
@@ -915,14 +932,15 @@ class TestAccessCest
 	 * @param $link
 	 * @param $check_content
 	 * @param $item_link
+	 * @param string        $tableId
 	 *
 	 * @throws \Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link)
+	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link, $tableId)
 	{
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
@@ -939,7 +957,7 @@ class TestAccessCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see($button, Generals::$pageTitle);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 	}
@@ -949,6 +967,7 @@ class TestAccessCest
 	 * @param $check_content
 	 * @param $lock_icon
 	 * @param $button
+	 * @param string        $tableId
 	 *
 	 * @return void
 	 *
@@ -956,7 +975,7 @@ class TestAccessCest
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button)
+	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button, $tableId)
 	{
 		$I->scrollTo(Generals::$sys_message_container, 0, 100);
 
@@ -967,7 +986,7 @@ class TestAccessCest
 
 		$I->see(sprintf(AccessPage::$checkin_success_text, $item), Generals::$alert_success);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		$I->assertEquals(true, $item_found);
 
@@ -1007,11 +1026,17 @@ class TestAccessCest
 			$col_nbr++;
 		}
 
-		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link);
+		$tableId        = 'main-table';
+
+		if ($button === 'Subscribers')
+		{
+			$tableId = 'main-table-bw-confirmed';
+		}
+		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		$this->switchLoggedInUser($I, $current_user);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($check_content);
+		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 
 		if ($item_found !== true)
 		{
@@ -1032,7 +1057,7 @@ class TestAccessCest
 
 			if ($current_user['name'] == 'BwPostmanAdmin')
 			{
-				$this->checkCheckinResult($I, $check_content, $lock_icon, $button);
+				$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 			}
 			else
 			{

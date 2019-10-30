@@ -500,7 +500,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscriber_edit_link             = ".//*[@id='j-main-container']/div[2]/div/dd[%s]/table/tbody/*/td[2]/a";
+	public static $subscriber_edit_link             = "//*[@id='main-table-bw-confirmed']/tbody/*/td[2]/a";
 
 
 	/**
@@ -568,7 +568,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $user_id_identifier               = ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/tr/td[7]";
+	public static $user_id_identifier               = "//*/table[@id='main-table-bw-confirmed']/tbody/tr[1]/td[7]";
 
 	/**
 	 * @var string

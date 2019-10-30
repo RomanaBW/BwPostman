@@ -242,10 +242,11 @@ class SubscriberEditPage
 	 * @since 2.0.0
 	 */
 	public static $arc_del_array     = array(
+		'mainTableId'          => "//*[@id='main-table-bw-confirmed']",
 		'field_title'          => "sam.sample",
 		'archive_tab'          => ".//*[@id='main-table']/tbody/tr/td/ul/li/button[contains(text(),'Archived subscribers')]",
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
-		'archive_title_col'    => ".//*[@id='j-main-container']/div[2]/div/dd[1]/table/tbody/*/td[%s]",
+		'archive_title_col'    => "//*[@id='main-table-bw-confirmed']/tbody/*/td[%s]",
 		'archive_confirm'      => 'Do you wish to archive the selected subscriber(s)?',
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
 		'archive_success2_msg' => 'The selected subscribers have been archived.',
@@ -305,7 +306,7 @@ class SubscriberEditPage
 	 *
 	 * @since  2.0.0
 	 */
-	public static $firstSubscriber       = ".//*/dd[1]/table/tbody/tr[1]/td[2]/a";
+	public static $firstSubscriber       = "//*/table[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]/a";
 
 	/**
 	 * @var string

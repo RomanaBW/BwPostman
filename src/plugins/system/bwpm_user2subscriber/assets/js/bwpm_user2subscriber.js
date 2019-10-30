@@ -189,7 +189,7 @@ function setPlgModal() {
 	}
 	else if (typeof document.documentElement != 'undefined'
 		&& typeof document.documentElement.clientWidth !=
-		'undefined' && document.documentElement.clientWidth !== 0)
+		'undefined' && document.documentElement.clientWidth != 0)
 	{
 		viewportwidth = document.documentElement.clientWidth,
 			viewportheight = document.documentElement.clientHeight
@@ -200,40 +200,37 @@ function setPlgModal() {
 			viewportheight = document.getElementsByTagName('body')[0].clientHeight
 	}
 	var modalcontent = document.getElementById('bwp_plg_modal-content');
+	modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
+	modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
 
-	if (modalcontent !== null) {
-		modalcontent.style.height = viewportheight - (viewportheight * 0.10) + 'px';
-		modalcontent.style.width = viewportwidth - (viewportwidth * 0.10) + 'px';
+	// Get the modal
+	var modal = document.getElementById('bwp_plg_Modal');
 
-		// Get the modal
-		var modal = document.getElementById('bwp_plg_Modal');
+	// Get the Iframe-Wrapper and set Iframe
+	var wrapper = document.getElementById('bwp_plg_wrapper');
+	var html = '<iframe id="iFrame" name="iFrame" src="'+dc_src+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
 
-		// Get the Iframe-Wrapper and set Iframe
-		var wrapper = document.getElementById('bwp_plg_wrapper');
-		var html = '<iframe id="iFrame" name="iFrame" src="' + dc_src + '" frameborder="0" style="width:100%; height:100%;"></iframe>';
+	// Get the button that opens the modal
+	var btnopen = document.getElementById("bwp_plg_open");
 
-		// Get the button that opens the modal
-		var btnopen = document.getElementById("bwp_plg_open");
+	// Get the <span> element that closes the modal
+	var btnclose = document.getElementsByClassName("bwp_plg_close")[0];
 
-		// Get the <span> element that closes the modal
-		var btnclose = document.getElementsByClassName("bwp_plg_close")[0];
+	// When the user clicks the button, open the modal
+	btnopen.onclick = function() {
+		wrapper.innerHTML = html;
+		modal.style.display = "block";
+	}
 
-		// When the user clicks the button, open the modal
-		btnopen.onclick = function () {
-			wrapper.innerHTML = html;
-			modal.style.display = "block";
-		};
+	// When the user clicks on <span> (x), close the modal
+	btnclose.onclick = function() {
+		modal.style.display = "none";
+	}
 
-		// When the user clicks on <span> (x), close the modal
-		btnclose.onclick = function () {
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if (event.target == modal) {
 			modal.style.display = "none";
-		};
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function (event) {
-			if (event.target === modal) {
-				modal.style.display = "none";
-			}
 		}
 	}
 }

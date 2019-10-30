@@ -567,6 +567,8 @@ class Acceptance extends Codeception\Module
 	 */
 	public function loopFilterList(\AcceptanceTester $I, $sort_data_array, $manner, $columns, $table, $archive, $status, $loop_counts  = 0, $tab = 1)
 	{
+		$section = 'default';
+
 		// Get list length
 		$list_length = $I->GetListLength($I);
 
@@ -580,6 +582,11 @@ class Acceptance extends Codeception\Module
 		if (strpos($table, 'templates') !== false)
 		{
 			$i = 3;
+		}
+
+		if (strpos($table, 'subscribers') !== false)
+		{
+			$section = 'subscribers';
 		}
 
 		foreach ($sort_data_array['sort_criteria'] as $key => $criterion)
@@ -657,8 +664,19 @@ class Acceptance extends Codeception\Module
 
 				if ($manner == 'header')
 				{
-					$I->click(sprintf(Generals::$table_headcol_link_location, $criterion));
-					$I->waitForElement(sprintf(Generals::$table_headcol_link_location, $criterion), 30);
+					$tableHeadcolLinkLocation = sprintf(Generals::$table_headcol_link_location, $criterion);
+					if ($section === 'subscribers')
+					{
+						if ($tab === 1)
+						{
+							$tableHeadcolLinkLocation = str_replace('main-table', 'main-table-bw-confirmed', $tableHeadcolLinkLocation);
+						}
+						if ($tab === 2)
+						{
+							$tableHeadcolLinkLocation = str_replace('main-table', 'main-table-bw-unconfirmed', $tableHeadcolLinkLocation);
+						}
+					}
+					$I->click($tableHeadcolLinkLocation);
 				}
 				else
 				{
@@ -670,7 +688,7 @@ class Acceptance extends Codeception\Module
 				}
 
 				$I->expectTo('see arrow ' . $arrow . ' at ' . $criterion);
-				$I->waitForElement(sprintf(Generals::$table_headcol_arrow_location, $i), 30);
+				$I->waitForElementVisible(sprintf(Generals::$table_headcol_arrow_location, $i), 10);
 				$I->seeElement(sprintf(Generals::$table_headcol_arrow_location, $i), array('class' => Generals::$sort_arrows[$arrow]));
 				$I->expectTo('see text ' . $sort_data_array['sort_criteria_select'][$key] . ' ' . $order);
 				$I->see(
@@ -875,14 +893,15 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param array             $pagination_data_array
 	 * @param int               $listlenght
+	 * @param string            $tableIdentifier
 	 *
 	 * @since   2.0.0
 	 */
-	public function checkPagination(\AcceptanceTester $I, $pagination_data_array, $listlenght)
+	public function checkPagination(\AcceptanceTester $I, $pagination_data_array, $listlenght, $tableIdentifier = "//table[@id='main-table']")
 	{
 		if (isset($pagination_data_array['p1_val1']))
 		{
-			$I->assertEquals($listlenght, count(self::GetTableRows($I)));
+			$I->assertEquals($listlenght, count(self::GetTableRows($I, $tableIdentifier)));
 			$this->browsePages(
 				$I,
 				$pagination_data_array['p1_val1'],
@@ -957,26 +976,27 @@ class Acceptance extends Codeception\Module
 	 * Helper method to check list limit
 	 *
 	 * @param \AcceptanceTester $I
+	 * @param string            $tableIdentifier
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function checkListlimit(\AcceptanceTester $I)
+	public function checkListlimit(\AcceptanceTester $I, $tableIdentifier = "//table[@id='main-table']")
 	{
-		$I->assertEquals(20, count($I->GetTableRows($I)));
+		$I->assertEquals(20, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_5, Generals::$limit_list_id);
-		$I->assertEquals(5, count($I->GetTableRows($I)));
+		$I->assertEquals(5, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_15, Generals::$limit_list_id);
-		$I->assertEquals(15, count($I->GetTableRows($I)));
+		$I->assertEquals(15, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_20, Generals::$limit_list_id);
-		$I->assertEquals(20, count($I->GetTableRows($I)));
+		$I->assertEquals(20, count($I->GetTableRows($I, $tableIdentifier)));
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
-		$I->assertEquals(10, count($I->GetTableRows($I)));
+		$I->assertEquals(10, count($I->GetTableRows($I, $tableIdentifier)));
 	}
 
 	/**
@@ -1039,12 +1059,13 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param array             $search_data_array
 	 * @param bool              $exact
+	 * @param string            $mainTable
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true)
+	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true, $mainTable = "//*[@id='main-table']")
 	{
 		// loop search value
 		for ($j = 0; $j < count($search_data_array['search_val']); $j++)
@@ -1062,7 +1083,7 @@ class Acceptance extends Codeception\Module
 				$I->clickSelectList(Generals::$search_list, $search_data_array['search_by'][$i], Generals::$search_list_id);
 				// click search button
 				$I->click(Generals::$search_button);
-				$I->waitForElement(Generals::$main_table);
+				$I->waitForElement($mainTable);
 				// check result
 				if ((int) $search_data_array['search_res'][$j][$i] == 0)
 				{
@@ -1070,7 +1091,7 @@ class Acceptance extends Codeception\Module
 				}
 				elseif ($exact)
 				{
-					$I->assertTableSearchResult($search_data_array['search_val'][$j], (int) $search_data_array['search_res'][$j][$i]);
+					$I->assertTableSearchResult($search_data_array['search_val'][$j], (int) $search_data_array['search_res'][$j][$i], $mainTable);
 				}
 			}
 		}
@@ -1130,8 +1151,16 @@ class Acceptance extends Codeception\Module
 		$I->clickAndWait(Generals::$search_button, 1);
 		$I->see($edit_data['field_title'], $edit_data['archive_title_col']);
 
+		$mainTableId = Generals::$main_table;
+		if (isset($edit_data['mainTableId']))
+		{
+			$mainTableId = $edit_data['mainTableId'];
+		}
+		$I->waitForElement($mainTableId);
+		$I->see($edit_data['field_title'], $edit_data['archive_title_col']);
+
 		//count items
-		$count = $I->GetListLength($I);
+		$count = $I->GetListLength($I, $mainTableId);
 
 		// archive items
 		$archive_button = Generals::$toolbar['Archive'];

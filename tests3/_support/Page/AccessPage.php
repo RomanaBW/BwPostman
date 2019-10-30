@@ -97,7 +97,7 @@ class AccessPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $forum_button      = ".//*[@id='toolbar-users']/button";
+	public static $forum_button      = ".//*[@id='toolbar-forum']/button";
 
 	/**
 	 * @var string
@@ -111,7 +111,7 @@ class AccessPage
 	 *
 	 * @since 2.2.1
 	 */
-	public static $manual_button       = ".//*[@id='toolbar-book']/button";
+	public static $manual_button       = ".//*[@id='toolbar-manual']/button";
 
 	// statistics pane
 	/**
@@ -233,7 +233,7 @@ class AccessPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkbox_identifier  = ".//*[@id='cb%s']";
+	public static $checkbox_identifier  = "//*[@id='cb%s']";
 	/**
 	 * @var string
 	 *
@@ -909,8 +909,8 @@ class AccessPage
 						'check content' => "Andres",
 					),
 				'check column'  => "Last name",
-				'check locator' => ".//*[@id='jform_name']",
-				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+				'check locator' => "//*[@id='jform_name']",
+				'check link'    => "//*[@id='main-table-bw-confirmed']/tbody/tr/td/a[contains(text(), '%s')]",
 			),
 
 		'Campaigns'         =>
@@ -1104,7 +1104,7 @@ class AccessPage
 					),
 				'check column'  => "Last name",
 				'check locator' => ".//*[@id='jform_name']",
-				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+				'check link'    => ".//*[@id='main-table-bw-confirmed']/tbody/tr/td/a[contains(text(), '%s')]",
 			),
 
 		'Campaigns'         =>
@@ -1298,7 +1298,7 @@ class AccessPage
 					),
 				'check column'  => "Last name",
 				'check locator' => ".//*[@id='jform_name']",
-				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+				'check link'    => ".//*[@id='main-table-bw-confirmed']/tbody/tr/td/a[contains(text(), '%s')]",
 			),
 
 		'Campaigns'         =>
@@ -1492,7 +1492,7 @@ class AccessPage
 					),
 				'check column'  => "Last name",
 				'check locator' => ".//*[@id='jform_name']",
-				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+				'check link'    => ".//*[@id='main-table-bw-confirmed']/tbody/tr/td/a[contains(text(), '%s')]",
 			),
 
 		'Campaigns'         =>
@@ -2053,7 +2053,7 @@ class AccessPage
 					),
 				'check column'  => "Last name",
 				'check locator' => ".//*[@id='jform_name']",
-				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+				'check link'    => ".//*[@id='main-table-bw-confirmed']/tbody/tr/td/a[contains(text(), '%s')]",
 			),
 
 		'Archive'           => true,
@@ -2090,7 +2090,7 @@ class AccessPage
 					),
 				'check column'  => "Last name",
 				'check locator' => ".//*[@id='jform_name']",
-				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+				'check link'    => ".//*[@id='main-table-bw-confirmed']/tbody/tr/td/a[contains(text(), '%s')]",
 			),
 
 		'Archive'           => true,
@@ -2127,7 +2127,7 @@ class AccessPage
 					),
 				'check column'  => "Last name",
 				'check locator' => ".//*[@id='jform_name']",
-				'check link'    => ".//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
+				'check link'    => ".//*[@id='main-table-bw-confirmed']/tbody/tr/td/a[contains(text(), '%s')]",
 			),
 
 		'Archive'           => true,

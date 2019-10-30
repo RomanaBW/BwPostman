@@ -35,7 +35,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -55,7 +55,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -66,7 +66,7 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
-		$I->click(Generals::$submenu_toggle_button);
+		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$sort_array     = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -97,7 +97,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -126,7 +126,7 @@ class TestSubscribersListsCest
 	}
 
 	/**
-	 * Test method to filter subscribers by status
+	 * Test method to filter subscribers by mail format
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -136,7 +136,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -148,19 +148,19 @@ class TestSubscribersListsCest
 
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);
-		// select published
+		// select format text
 		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_text, SubsManage::$format_list_id);
 
 		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
 
-		// select unpublished
+		// select format HTML
 		$I->clickSelectList(SubsManage::$format_list, SubsManage::$format_html, SubsManage::$format_list_id);
 
 		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 	}
 
 	/**
-	 * Test method to filter subscribers by access
+	 * Test method to filter subscribers by mailing list
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -170,7 +170,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -185,7 +185,7 @@ class TestSubscribersListsCest
 		// select 04 Mailingliste 14 A
 		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
 
-		$I->assertFilterResult(SubsManage::$filter_subs_result);
+		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 	}
 
 	/**
@@ -199,7 +199,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -209,7 +209,7 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
-		$I->searchLoop($I, SubsManage::$search_data_array, true);
+		$I->searchLoop($I, SubsManage::$search_data_array, true, SubsManage::$confirmedMainTable);
 
 		$I->click(Generals::$clear_button);
 		$I->see(SubsManage::$search_clear_val);
@@ -233,7 +233,7 @@ class TestSubscribersListsCest
 		$I->wantTo("test list limit at confirmed subscribers");
 		$I->amOnPage(SubsManage::$url);
 
-		$I->checkListlimit($I);
+		$I->checkListlimit($I, SubsManage::$confirmedMainTable);
 	}
 
 	/**
@@ -247,7 +247,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -258,7 +258,7 @@ class TestSubscribersListsCest
 
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 
-		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
+		$I->checkPagination($I, SubsManage::$pagination_data_array, 10, SubsManage::$confirmedMainTable);
 	}
 
 	/**
@@ -272,42 +272,42 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-//	public function SortUnconfirmedSubscribersByTableHeader(AcceptanceTester $I)
-//		{
-//			// @Todo: ensure UTF-8 characters are recognized; only testing problem
-//			$I->wantTo("Sort unconfirmed subscribers by table header");
-//			SubsManage::$wait_db;
-//			$I->amOnPage(SubsManage::$url);
-//			$I->wait(1);
-//
-//			$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
-//
-//			$I->click(Generals::$submenu_toggle_button);
-//
-//			$sort_array     = $this->prepareSortArray($I);
-//			$loop_counts    = 10;
-//
-//			$options    = $I->getManifestOptions('com_bwpostman');
-//
-//			if (!$options->show_gender)
-//			{
-//				$loop_counts    = 9;
-//			}
-//
-//
-//			// loop over sorting criterion
-//			// @ToDo: Codeception catches first appearance of element, but that is at confirmed subscribers and not visible!
-//			// Conclusion: Needs an specific identifier for tables!
-//			$columns    = implode(', ', SubsManage::$query_criteria);
-//			$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-//			$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
-//
-//			$I->click(Generals::$submenu_toggle_button);
-//		}
+	public function SortUnconfirmedSubscribersByTableHeader(AcceptanceTester $I)
+		{
+			// @Todo: ensure UTF-8 characters are recognized; only testing problem
+			$I->wantTo("Sort unconfirmed subscribers by table header");
+			SubsManage::$wait_db;
+			$I->amOnPage(SubsManage::$url);
+			$I->wait(1);
+
+			$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
+			$I->clickAndWait(Generals::$submenu_toggle_button, 1);
+
+			$sort_array     = $this->prepareSortArray($I);
+			$loop_counts    = 10;
+
+			$options    = $I->getManifestOptions('com_bwpostman');
+
+			if (!$options->show_gender)
+			{
+				$loop_counts    = 9;
+			}
+
+
+			// loop over sorting criterion
+			// @ToDo: Codeception catches first appearance of element, but that is at confirmed subscribers and not visible!
+			// Conclusion: Needs an specific identifier for tables!
+			$columns    = implode(', ', SubsManage::$query_criteria);
+			$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+			$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
+
+			$I->click(Generals::$submenu_toggle_button);
+		}
 
 	// @ToDo: Next tests with Chromium switches unpredictably to first tab, so correct check is not possible
 	// Would be better if I switch to tabs like at newsletters?
@@ -323,7 +323,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -337,7 +337,7 @@ class TestSubscribersListsCest
 
 		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
 
-		$I->click(Generals::$submenu_toggle_button);
+		$I->clickAndWait(Generals::$submenu_toggle_button, 1);
 
 		$sort_array = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -356,7 +356,7 @@ class TestSubscribersListsCest
 	}
 
 	/**
-	 * Test method to filter subscribers by status
+	 * Test method to filter subscribers by mail format
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -366,7 +366,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -375,6 +375,8 @@ class TestSubscribersListsCest
 		$I->wantTo("Filter unconfirmed subscribers by email format");
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
+
+		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
 
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);
@@ -391,7 +393,7 @@ class TestSubscribersListsCest
 	}
 
 	/**
-	 * Test method to filter subscribers by access
+	 * Test method to filter subscribers by mailing list
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -401,7 +403,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -411,12 +413,14 @@ class TestSubscribersListsCest
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(SubsManage::$wait_db);
 
+		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
 		// Get filter bar
 		$I->clickAndWait(Generals::$filterbar_button, 1);
-		// select 04 Mailingliste 14 A
-		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
+		// select 01 Mailingliste 3 A
+		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select_unconfirmed, SubsManage::$ml_list_id);
 
-		$I->assertFilterResult(SubsManage::$filter_subs_result);
+		$I->assertFilterResult(SubsManage::$filter_subs_unconfirmed_result, SubsManage::$unconfirmedMainTable);
 	}
 
 	/**
@@ -430,7 +434,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -440,10 +444,12 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
-		$I->searchLoop($I, SubsManage::$search_data_array, true);
+		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
+		$I->searchLoop($I, SubsManage::$search_data_array_unconfirmed, true, SubsManage::$unconfirmedMainTable);
 
 		$I->click(Generals::$clear_button);
-		$I->see(SubsManage::$search_clear_val);
+		$I->see(SubsManage::$search_clear_val_unconfirmed);
 	}
 
 	/**
@@ -457,6 +463,8 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function ListlimitUnconfirmedSubscribers(AcceptanceTester $I)
@@ -464,7 +472,9 @@ class TestSubscribersListsCest
 		$I->wantTo("test list limit at unconfirmed subscribers");
 		$I->amOnPage(SubsManage::$url);
 
-		$I->checkListlimit($I);
+		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
+		$I->checkListlimit($I, SubsManage::$unconfirmedMainTable);
 	}
 
 	/**
@@ -478,7 +488,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -487,9 +497,11 @@ class TestSubscribersListsCest
 		$I->wantTo("test pagination at unconfirmed subscribers");
 		$I->amOnPage(SubsManage::$url);
 
+		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
 		$I->clickSelectList(Generals::$limit_list, Generals::$limit_10, Generals::$limit_list_id);
 
-		$I->checkPagination($I, SubsManage::$pagination_data_array, 10);
+		$I->checkPagination($I, SubsManage::$pagination_data_array_unconfirmed, 10, SubsManage::$unconfirmedMainTable);
 	}
 
 	/**
@@ -503,7 +515,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -546,7 +558,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -585,7 +597,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -619,7 +631,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -648,7 +660,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -696,7 +708,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -721,7 +733,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -780,7 +792,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -835,9 +847,11 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function ExportSubscribersToCSV(AcceptanceTester $I)
+	public function ExportSubscribersToCSVCA(AcceptanceTester $I)
 	{
 		$I->wantTo("export confirmed, unarchived subscribers to CSV file");
 		SubsManage::$wait_db;
@@ -852,6 +866,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -897,6 +913,8 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function ExportSubscribersToCSVUA(AcceptanceTester $I)
@@ -914,6 +932,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_unconfirmed);
 		$I->click(SubsManage::$export_csv_archived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -959,6 +979,8 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function ExportSubscribersToCSVAll(AcceptanceTester $I)
@@ -978,6 +1000,8 @@ class TestSubscribersListsCest
 		$I->click(SubsManage::$export_csv_unconfirmed);
 		$I->click(SubsManage::$export_csv_archived);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -1023,7 +1047,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1037,7 +1061,7 @@ class TestSubscribersListsCest
 		// Get filter bar, select 04 Mailingliste 14 A
 		$I->clickAndWait(Generals::$filterbar_button, 1);
 		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
-		$I->assertFilterResult(SubsManage::$filter_subs_result);
+		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 
 		// Select yes in modal box
 		$I->clickAndWait(Generals::$toolbar['Export Popup'], 3);
@@ -1055,6 +1079,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -1101,7 +1127,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1115,7 +1141,7 @@ class TestSubscribersListsCest
 		// Get filter bar, select 04 Mailingliste 14 A
 		$I->clickAndWait(Generals::$filterbar_button, 1);
 		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select, SubsManage::$ml_list_id);
-		$I->assertFilterResult(SubsManage::$filter_subs_result);
+		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 
 		// Select yes in modal box
 		$I->clickAndWait(Generals::$toolbar['Export Popup'], 3);
@@ -1133,6 +1159,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -1179,6 +1207,8 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function ExportSubscribersToXML(AcceptanceTester $I)
@@ -1196,6 +1226,8 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$export_csv_confirmed);
 		$I->click(SubsManage::$export_csv_unarchived);
+
+		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
@@ -1226,7 +1258,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1240,7 +1272,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1265,7 +1297,7 @@ class TestSubscribersListsCest
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1291,9 +1323,9 @@ class TestSubscribersListsCest
 				$I->click(SubsManage::$tab_unconfirmed);
 			}
 
-			$I->searchLoop($I, $search_data_array, true);
+			$I->searchLoop($I, $search_data_array, true, SubsManage::$confirmedMainTable);
+			$table_identifier = ".//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td";
 
-			$table_identifier = ".//*[@id='main-table']/tbody/tr[1]/td";
 			$I->see($subscriber['name'], $table_identifier . '[2]');
 			$I->see($subscriber['firstname'], $table_identifier . '[3]');
 			$I->see($subscriber['email'], $table_identifier . '[4]');
@@ -1314,5 +1346,21 @@ class TestSubscribersListsCest
 			$I->HelperArcDelItems($I, SubsManage::$arc_del_array, $edit_arc_del_array, true);
 			$I->see('Subscribers', Generals::$pageTitle);
 		}
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 *
+	 * @return void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 2.4.0
+	 */
+	private function removeAssetIdFromFields(AcceptanceTester $I)
+	{
+		$I->selectOption(SubsManage::$exportFieldList, SubsManage::$exportFieldAssetId);
+		$I->scrollTo(SubsManage::$exportFieldRemoveButton, 0, -100);
+		$I->clickAndWait(SubsManage::$exportFieldRemoveButton, 1);
 	}
 }

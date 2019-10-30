@@ -406,12 +406,12 @@ class Generals
 		'Export'               => ".//*[@id='toolbar-upload']/button",
 		'Export Popup'         => ".//*[@id='toolbar-popup-upload']/button",
 		'Batch'                => ".//*[@id='toolbar-batch']/button",
-		'Reset sending trials' => ".//*[@id='toolbar-unpublish']/button",
+		'Reset sending trials' => ".//*[@id='toolbar-checkin']/button",
 		'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",
-		'Clear queue'          => ".//*[@id='toolbar-delete']/button",
+		'Clear queue'          => ".//*[@id='toolbar-trash']/button",
 		'Uninstall  '          => ".//*[@id='toolbar-delete']/button",
-		'BwPostman Manual'     => ".//*[@id='toolbar-book']/button",
-		'BwPostman Forum'      => ".//*[@id='toolbar-users']/button",
+		'BwPostman Manual'     => ".//*[@id='toolbar-forum']/button",
+		'BwPostman Forum'      => ".//*[@id='toolbar-manual']/button",
 	);
 
 	/**

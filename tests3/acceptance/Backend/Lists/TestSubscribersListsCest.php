@@ -664,17 +664,17 @@ class TestSubscribersListsCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SearchTestRecipients(AcceptanceTester $I)
-	{
-		$I->wantTo("Search test recipients");
-		SubsManage::$wait_db;
-		$I->amOnPage(SubsManage::$url);
-
-		$I->searchLoop($I, SubsManage::$search_data_array, true);
-
-		$I->click(Generals::$clear_button);
-		$I->see(SubsManage::$search_clear_val);
-	}
+//	public function SearchTestRecipients(AcceptanceTester $I)
+//	{
+//		$I->wantTo("Search test recipients");
+//		SubsManage::$wait_db;
+//		$I->amOnPage(SubsManage::$url);
+//
+//		$I->searchLoop($I, SubsManage::$search_data_array, true);
+//
+//		$I->click(Generals::$clear_button);
+//		$I->see(SubsManage::$search_clear_val);
+//	}
 
 	/**
 	 * Test method to check list limit of subscribers

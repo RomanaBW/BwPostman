@@ -30,7 +30,6 @@ pipeline {
 //			}
 //		}
 
-
 		stage('Smoke') {
 			steps {
 //				echo "Dummy Smoke"

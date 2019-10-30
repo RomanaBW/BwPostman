@@ -549,6 +549,7 @@ class TemplateEditPage
 
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->wait(1);
+		codecept_debug('User: ' . $user);
 
 		if ($user === 'AdminTester' || $user === '')
 		{

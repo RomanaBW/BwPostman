@@ -551,18 +551,18 @@ class TemplateEditPage
 		$I->wait(1);
 		codecept_debug('User: ' . $user);
 
-		if ($user === 'AdminTester' || $user === '')
+		try
 		{
-			$I->waitForElement(".//*[@id='browser-list']", 30);
+			$I->waitForElement(".//*[@id='browser-list']", 5);
 			$I->clickAndWait(self::$thumb_select, 1);
 
 			$I->clickAndWait(self::$thumb_insert, 1);
 		}
-		else
+		catch (\Exception $e)
 		{
 			$I->switchToIFrame(Generals::$image_frame);
 
-			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 30);
+			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 5);
 			$I->clickAndWait(self::$thumb_select_user, 1);
 
 			$I->switchToIFrame();

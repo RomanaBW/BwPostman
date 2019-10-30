@@ -32,6 +32,8 @@ use Joomla\CMS\Language\Text;
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
+JHtml::_('bootstrap.tooltip');
+JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 
 $user		= JFactory::getUser();
@@ -90,156 +92,153 @@ $colNum = 8;
 		</div>
 		<div id="j-main-container" class="span10">
 			<?php else :  ?>
-			<div id="j-main-container">
-				<?php endif; ?>
-				<?php
-				// Search tools bar
-				echo JLayoutHelper::render(
-					'default',
-					array('view' => $this, 'tab' => 'confirmed'),
-					$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-				);
-				?>
+		<div id="j-main-container">
+			<?php endif; ?>
+			<?php
+			// Search tools bar
+			echo JLayoutHelper::render(
+				'default',
+				array('view' => $this, 'tab' => 'confirmed'),
+				$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+			);
+			?>
 
-				<div class="row-fluid">
-					<div class="form-horizontal">
-						<ul class="bwp_tabs">
-							<li class="open">
-								<button onclick="return changeTab('confirmed');" class="buttonAsLink_open" id="tab-confirmed">
-									<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'); ?>
-								</button>
-							</li>
-							<li class="closed">
-								<button onclick="return changeTab('unconfirmed');" class="buttonAsLink" id="tab-unconfirmed">
-									<?php echo JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'); ?>
-								</button>
-							</li>
-							<li class="closed">
-								<button onclick="return changeTab('testrecipients');" class="buttonAsLink" id="tab-testrecipients">
-									<?php echo JText::_('COM_BWPOSTMAN_TEST'); ?>
-								</button>
-							</li>
-						</ul>
-					</div>
-					<div class="clr clearfix"></div>
+			<div class="form-horizontal">
+				<ul class="bwp_tabs">
+					<li class="open">
+						<button onclick="return changeTab('confirmed');" class="buttonAsLink_open" id="tab-confirmed">
+							<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'); ?>
+						</button>
+					</li>
+					<li class="closed">
+						<button onclick="return changeTab('unconfirmed');" class="buttonAsLink" id="tab-unconfirmed">
+							<?php echo JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'); ?>
+						</button>
+					</li>
+					<li class="closed">
+						<button onclick="return changeTab('testrecipients');" class="buttonAsLink" id="tab-testrecipients">
+							<?php echo JText::_('COM_BWPOSTMAN_TEST'); ?>
+						</button>
+					</li>
+				</ul>
+			</div>
+			<div class="clr clearfix"></div>
 
-					<div class="current">
-						<table id="main-table-bw-confirmed" class="table bw-confirmed">
-							<thead>
-							<tr>
-								<th style="width: 1%;" class="text-center">
-									<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
-											onclick="Joomla.checkAll(this)" />
-								</th>
-								<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="min-width: 80px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?>
-								</th>
-								<?php
-								if($this->params->get('show_gender'))
-								{ ?>
-									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-										<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_GENDER', 'a.gender', $listDirn, $listOrder); ?>
-									</th>
-									<?php
-								} ?>
-								<th class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
-									<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_JOOMLA_USERID', 'a.user_id', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
-									<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
-								</th>
-							</tr>
-							</thead>
-							<tbody>
+			<div class="row-fluid current">
+				<table id="main-table-bw-confirmed" class="table bw-confirmed">
+					<thead>
+					<tr>
+						<th style="width: 1%;" class="text-center">
+							<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
+									onclick="Joomla.checkAll(this)" />
+						</th>
+						<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
+							<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?>
+						</th>
+						<th class="d-none d-md-table-cell" style="min-width: 80px;" scope="col">
+							<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?>
+						</th>
+						<?php
+						if($this->params->get('show_gender'))
+						{ ?>
+							<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_GENDER', 'a.gender', $listDirn, $listOrder); ?>
+							</th>
 							<?php
-							if (count($this->items))
-							{
-								foreach ($this->items as $i => $item) :
-									$name	= ($item->name) ? $item->name : JText::_('COM_BWPOSTMAN_SUB_NONAME');
-									?>
-								<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id, 0, 'cid', 'cb'); ?></td>
-									<td>
-										<?php
-										if ($item->checked_out) :
-											echo JHtml::_(
-												'jgrid.checkedout',
-												$i,
-												$item->editor,
-												$item->checked_out_time,
-												'subscribers.',
-												BwPostmanHelper::canCheckin('subscriber', $item->checked_out),
-												'cb'
-											); ?>
-										<?php
-										endif; ?>
-										<?php
-										if (BwPostmanHelper::canEdit('subscriber', $item))
-										{ ?>
-											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=subscriber.edit&id=' . $item->id); ?>">
-												<?php echo $this->escape($name); ?>
-											</a>
-											<?php
-										}
-										else
-										{
-											echo $this->escape($name);
-										} ?>
-									</td>
-									<td><?php echo $item->firstname; ?></td>
-									<?php if($this->params->get('show_gender'))
-									{
-										$colNum = 9;
-										?>
-										<td>
-											<?php
-											if ($item->gender === '1')
-											{
-												echo JText::_('COM_BWPOSTMAN_FEMALE');
-											}
-											elseif ($item->gender === '0')
-											{
-												echo JText::_('COM_BWPOSTMAN_MALE');
-											}
-											else
-											{
-												echo JText::_('COM_BWPOSTMAN_NO_GENDER');
-											}
-											?>
-										</td>
-									<?php } ?>
-									<td><?php echo $item->email; ?></td>
-									<td align="center"><?php echo ($item->emailformat) ? JText::_('COM_BWPOSTMAN_HTML') : JText::_('COM_BWPOSTMAN_TEXT')?></td>
-									<td align="center"><?php echo ($item->user_id) ? $item->user_id : ''; ?></td>
-									<td align="center"><?php echo $item->mailinglists; ?></td>
-									<td align="center"><?php echo $item->id; ?></td>
-									</tr><?php
-								endforeach;
-							}
-							else
-							{
-								// if no data ?>
-								<tr class="row1">
-								<td colspan="<?php echo $colNum; ?>"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-								</tr><?php
-							}
+						} ?>
+						<th class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+							<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?>
+						</th>
+						<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+							<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?>
+						</th>
+						<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+							<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_JOOMLA_USERID', 'a.user_id', $listDirn, $listOrder); ?>
+						</th>
+						<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+							<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?>
+						</th>
+						<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
+							<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+						</th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php
+					if (count($this->items))
+					{
+						foreach ($this->items as $i => $item) :
+							$name	= ($item->name) ? $item->name : JText::_('COM_BWPOSTMAN_SUB_NONAME');
 							?>
-							</tbody>
-						</table>
-					</div>
-				</div>
+						<tr class="row<?php echo $i % 2; ?>">
+							<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id, 0, 'cid', 'cb'); ?></td>
+							<td>
+								<?php
+								if ($item->checked_out) :
+									echo JHtml::_(
+										'jgrid.checkedout',
+										$i,
+										$item->editor,
+										$item->checked_out_time,
+										'subscribers.',
+										BwPostmanHelper::canCheckin('subscriber', $item->checked_out),
+										'cb'
+									); ?>
+								<?php
+								endif; ?>
+								<?php
+								if (BwPostmanHelper::canEdit('subscriber', $item))
+								{ ?>
+									<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=subscriber.edit&id=' . $item->id); ?>">
+										<?php echo $this->escape($name); ?>
+									</a>
+									<?php
+								}
+								else
+								{
+									echo $this->escape($name);
+								} ?>
+							</td>
+							<td><?php echo $item->firstname; ?></td>
+							<?php if($this->params->get('show_gender'))
+							{
+								$colNum = 9;
+								?>
+								<td>
+									<?php
+									if ($item->gender === '1')
+									{
+										echo JText::_('COM_BWPOSTMAN_FEMALE');
+									}
+									elseif ($item->gender === '0')
+									{
+										echo JText::_('COM_BWPOSTMAN_MALE');
+									}
+									else
+									{
+										echo JText::_('COM_BWPOSTMAN_NO_GENDER');
+									}
+									?>
+								</td>
+							<?php } ?>
+							<td><?php echo $item->email; ?></td>
+							<td align="center"><?php echo ($item->emailformat) ? JText::_('COM_BWPOSTMAN_HTML') : JText::_('COM_BWPOSTMAN_TEXT')?></td>
+							<td align="center"><?php echo ($item->user_id) ? $item->user_id : ''; ?></td>
+							<td align="center"><?php echo $item->mailinglists; ?></td>
+							<td align="center"><?php echo $item->id; ?></td>
+							</tr><?php
+						endforeach;
+					}
+					else
+					{
+						// if no data ?>
+						<tr class="row1">
+						<td colspan="<?php echo $colNum; ?>"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+						</tr><?php
+					}
+					?>
+					</tbody>
+				</table>
 			</div>
 			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
 			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

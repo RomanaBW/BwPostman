@@ -64,8 +64,7 @@ class JFormFieldDisclaimer extends JFormFieldCheckbox
 	protected function getInput()
 	{
 		// Extends the checkbox with the disclaimer link and modalbox
-		$ext	=	"\n\t" . '<a id="bwp_plg_open">' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a>';
-		$ext	.=	"\n" . '</label>' . "\n";
+		$ext	=	"\n" . '<a id="bwp_plg_open">' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a></label>' . "\n";
 		$ext	.=	'<div id="bwp_plg_Modal" class="bwp_plg_modal">' . "\n";
 		$ext	.=	'	<div id="bwp_plg_modal-content">' . "\n";
 		$ext	.=	'		<span class="bwp_plg_close">&times;</span>' . "\n";
@@ -74,7 +73,7 @@ class JFormFieldDisclaimer extends JFormFieldCheckbox
 		$ext	.=	'</div>' . "\n";
 
 		// Initialize some field attributes.
-		$class     = !empty($this->class) ? 'class="' . $this->class . '"' : '';
+		$class     = !empty($this->class) ? ' class="' . $this->class . '"' : '';
 		$disabled  = $this->disabled ? ' disabled' : '';
 		$value     = !empty($this->default) ? $this->default : '1';
 		$required  = $this->required ? ' required aria-required="true"' : '';
@@ -89,11 +88,8 @@ class JFormFieldDisclaimer extends JFormFieldCheckbox
 		JHtml::_('jquery.framework');
 		JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
 
-		$html = '<label class="disclaimer">';
-		$html .="\n\t" . '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '" value="'
-			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" ' . $class . $checked . $disabled . $onclick . $onchange
+		return '<label class="checkbox disclaimer"><input type="checkbox" name="' . $this->name . '" id="' . $this->id . '" value="'
+			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . $onchange
 			. $required . $autofocus . ' />' . $ext;
-
-		return $html;
 	}
 }

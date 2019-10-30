@@ -392,7 +392,14 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$this->result       = $result;
 		$this->template     = $template;
 
-		$this->addToolbar();
+		if(version_compare(JVERSION, '3.999.999', 'le'))
+		{
+			$this->addToolbarLegacy();
+		}
+		else
+		{
+			$this->addToolbar();
+		}
 	}
 
 	/**
@@ -424,7 +431,14 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$this->request_url_raw  = $uri_string;
 		$this->template         = $template;
 
-		$this->addToolbar();
+		if(version_compare(JVERSION, '3.999.999', 'le'))
+		{
+			$this->addToolbarLegacy();
+		}
+		else
+		{
+			$this->addToolbar();
+		}
 	}
 
 	/**

@@ -497,7 +497,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$_db->setQuery($query);
 		try
 		{
-			$isTemplate = $_db->loadResult();
+			$isTemplate = (integer)$_db->loadResult();
 			if ($isTemplate === 1)
 			{
 				return true;

@@ -221,11 +221,6 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		}
 
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			BwPostmanHelper::addSubmenu('bwpostman');
-		}
-
 		switch ($layout)
 		{
 			case 'updateCheckSave':

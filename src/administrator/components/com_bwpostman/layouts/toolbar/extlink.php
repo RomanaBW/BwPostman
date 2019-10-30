@@ -24,11 +24,20 @@ if(version_compare(JVERSION, '3.999.999', 'le'))
 		$text   = $displayData['text'];
 	}
 
+	$id = 'toolbar-manual';
+
+	if ($class === 'icon-users')
+	{
+		$id = 'toolbar-forum';
+}
+
 	?>
-	<button onclick="window.open('<?php echo $doTask; ?>', '_blank', '');" class="btn btn-small">
-		<span class="<?php echo $class; ?>" aria-hidden="true"></span>
-		<?php echo $text; ?>
-	</button>
+	<div id="<?php echo $id; ?>" class="btn-wrapper">
+		<button onclick="window.open('<?php echo $doTask; ?>', '_blank', '');" class="btn btn-small">
+			<span class="<?php echo $class; ?>" aria-hidden="true"></span>
+			<?php echo $text; ?>
+		</button>
+	</div>
 	<?php
 	}
 else

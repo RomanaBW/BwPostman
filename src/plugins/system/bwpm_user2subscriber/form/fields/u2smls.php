@@ -70,18 +70,10 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 	protected function getOptions()
 	{
 		// Initialize variables.
+		$app	= JFactory::getApplication();
 		$session	= JFactory::getSession();
-		$availableMailinglists = array();
 
 		$mailinglists	= $session->get('plg_bwpm_user2subscriber.ml_available', array());
-
-		if (!is_array($mailinglists))
-		{
-			$availableMailinglists[] = $mailinglists;
-		}
-		else {
-			$availableMailinglists = $mailinglists;
-		}
 
 		// prepare query
 		$_db		= JFactory::getDbo();
@@ -90,9 +82,9 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 		$query->select("a.id AS value, a.title AS title, a.description as description");
 		$query->from('#__bwpostman_mailinglists AS a');
 		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
-		if (count($availableMailinglists))
+		if (count($mailinglists))
 		{
-			$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $availableMailinglists) . ')');
+			$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $mailinglists) . ')');
 		}
 
 		$_db->setQuery($query);

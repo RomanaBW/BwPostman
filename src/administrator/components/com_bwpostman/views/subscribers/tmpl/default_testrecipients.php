@@ -32,6 +32,10 @@ use Joomla\CMS\Language\Text;
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
+JHtml::_('bootstrap.tooltip');
+JHtml::_('formbehavior.chosen', 'select');
+JHtml::_('behavior.multiselect');
+
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -87,41 +91,40 @@ $colNum = 7;
 		</div>
 		<div id="j-main-container" class="span10">
 			<?php else :  ?>
-			<div id="j-main-container">
-				<?php endif; ?>
-				<?php
-				// Search tools bar
-				echo JLayoutHelper::render(
-					'default',
-					array('view' => $this, 'tab' => 'unconfirmed'),
-					$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-				);
-				?>
+		<div id="j-main-container">
+			<?php endif; ?>
+			<?php
+			// Search tools bar
+			echo JLayoutHelper::render(
+				'default',
+				array('view' => $this, 'tab' => 'unconfirmed'),
+				$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
+			);
+			?>
 
-				<div class="row-fluid">
-					<div class="form-horizontal">
-						<ul class="bwp_tabs">
-							<li class="closed">
-								<button onclick="return changeTab('confirmed');" class="buttonAsLink" id="tab-confirmed">
-									<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'); ?>
-								</button>
-							</li>
-							<li class="closed">
-								<button onclick="return changeTab('unconfirmed');" class="buttonAsLink" id="tab-unconfirmed">
-									<?php echo JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'); ?>
-								</button>
-							</li>
-							<li class="open">
-								<button onclick="return changeTab('testrecipients');" class="buttonAsLink_open" id="tab-testrecipients">
-									<?php echo JText::_('COM_BWPOSTMAN_TEST'); ?>
-								</button>
-							</li>
-						</ul>
-					</div>
-					<div class="clr clearfix"></div>
+			<div class="form-horizontal">
+				<ul class="bwp_tabs">
+					<li class="closed">
+						<button onclick="return changeTab('confirmed');" class="buttonAsLink" id="tab-confirmed">
+							<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMED'); ?>
+						</button>
+					</li>
+					<li class="closed">
+						<button onclick="return changeTab('unconfirmed');" class="buttonAsLink" id="tab-unconfirmed">
+							<?php echo JText::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'); ?>
+						</button>
+					</li>
+					<li class="open">
+						<button onclick="return changeTab('testrecipients');" class="buttonAsLink_open" id="tab-testrecipients">
+							<?php echo JText::_('COM_BWPOSTMAN_TEST'); ?>
+						</button>
+					</li>
+				</ul>
+			</div>
+			<div class="clr clearfix"></div>
 
-					<div class="current">
-						<table id="main-table-bw-testrecipients" class="table bw-testrecipients">
+			<div class="row-fluid current">
+				<table id="main-table-bw-testrecipients" class="table bw-testrecipients">
 							<thead>
 							<tr>
 								<th style="width: 1%;" class="text-center">
@@ -227,8 +230,6 @@ $colNum = 7;
 							?>
 							</tbody>
 						</table>
-					</div>
-				</div>
 			</div>
 			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
 			<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

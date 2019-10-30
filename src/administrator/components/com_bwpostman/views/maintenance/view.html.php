@@ -178,7 +178,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$cron = new BwPostmanPhpCron;
 
 			// Check for start file
-			if (File::exists(JPATH_PLUGINS . $cron->startFile))
+			// Check for start file
+			if (property_exists($cron, 'startFile') && File::exists(JPATH_PLUGINS . $cron->startFile))
 			{
 				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
 				echo '<meta http-equiv="refresh" content="10; URL=' . $url . '">';
@@ -187,13 +188,13 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			}
 
 			// Check for started file
-			if (File::exists(JPATH_PLUGINS . $cron->startedFile))
+			if (property_exists($cron, 'startedFile') && File::exists(JPATH_PLUGINS . $cron->startedFile))
 			{
 				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
 			}
 
 			// Check for stop file
-			if (File::exists(JPATH_PLUGINS . $cron->stopFile))
+			if (property_exists($cron, 'stopFile') && File::exists(JPATH_PLUGINS . $cron->stopFile))
 			{
 				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
 				echo '<meta http-equiv="refresh" content="10; URL=' . $url . '">';
@@ -202,7 +203,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			}
 
 			// Check for stopped file
-			if (File::exists(JPATH_PLUGINS . $cron->stoppedFile))
+			if (property_exists($cron, 'stoppedFile') && File::exists(JPATH_PLUGINS . $cron->stoppedFile))
 			{
 				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
 			}

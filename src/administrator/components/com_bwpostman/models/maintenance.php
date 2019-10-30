@@ -1500,7 +1500,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							// If so, check, if asset name fits component, section and item id
 							$assetNameFits = $this->checkAssetNameFits($item->asset_id, $assetName);
 
-							// If asset name not fits, we need a nes asset (add to array $itemIdsWithoutAssets)
+							// If asset name not fits, we need a new asset (add to array $itemIdsWithoutAssets)
 							if (!$assetNameFits)
 							{
 								$itemIdsWithoutAssets[] = $item->id;
@@ -1521,7 +1521,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if ($nbrItemIdsWithoutAssets > 0)
 				{
-					for ($i = 0; $i <= $nbrItemIdsWithoutAssets; $i++)
+					for ($i = 0; $i < $nbrItemIdsWithoutAssets; $i++)
 					{
 						$item = $itemIdsWithoutAssets[$i];
 						$assetName = 'com_bwpostman.' . $section . '.' . $item;
@@ -5186,7 +5186,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$db->setQuery($query);
 		try
 		{
-			$assetId = $db->loadResult();
+			$assetId = (integer)$db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{

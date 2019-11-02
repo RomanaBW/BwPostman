@@ -28,6 +28,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
+
 jimport('joomla.plugin.plugin');
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
@@ -260,13 +262,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$lang->load('com_bwpostman', JPATH_SITE, 'en-GB', true);
 
 		//load specific language of component
-//		$lang->load('com_bwpostman', JPATH_SITE, null, true);
+		$lang->load('com_bwpostman', JPATH_SITE, null, true);
 
 		//Load specified other language files in english
-//		$lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, 'en-GB', true);
+		$lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, 'en-GB', true);
 
 		// and other language
-//		$lang->load('plg_vmuserfield_bwpm_buyer2subscriber', JPATH_ADMINISTRATOR, null, true);
+		$lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, null, true);
 	}
 
 	/**
@@ -303,6 +305,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return true;
 		}
 
+		$this->loadLanguageFiles();
+
 		$mailinglists   = $this->params->get('ml_available', array());
 		$session = JFactory::getSession();
 		$session->set('plg_bwpm_user2subscriber.ml_available', $mailinglists);
@@ -331,7 +335,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->logger->addEntry(new JLogEntry(sprintf('Array is empty: %s', !empty($data_helper)), JLog::DEBUG, $this->log_cat));
 		}
 
-		if (version_compare(JVERSION, '3.99', 'le') && !empty($data_helper))
+		if (version_compare(JVERSION, '3.999.999', 'le') && !empty($data_helper))
 		{
 			$this->logger->addEntry(new JLogEntry('Array is not okay'));
 			return true;
@@ -341,16 +345,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		JForm::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
 
-		if (version_compare(JVERSION, '3.99', 'le'))
-		{
-			$this->form->loadFile('form3', false);
-			$this->group = 'bwpm_user2subscriber';
-		}
-		else
-		{
-			$this->form->loadFile('form', false);
-			$this->group = null;
-		}
+		$this->form->loadFile('form', false);
+		$this->group = null;
 
 		if (!($this->form instanceof JForm))
 		{
@@ -569,7 +565,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processCaptchaField()
 	{
-		$this->form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . BwPostmanHelper::getCaptcha(1), $this->group);
+		$captcha = BwPostmanHelper::getCaptcha(1);
+		$this->form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . $captcha, $this->group);
+
+		$session = JFactory::getSession();
+		$session->set('plg_bwpm_user2subscriber.captcha', $captcha);
 	}
 
 	/**
@@ -711,9 +711,27 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 
 		// Get and sanitize data
-		$user_mail              = ArrayHelper::getValue($data, 'email', '', 'string');
-		$user_id                = ArrayHelper::getValue($data, 'id', 0, 'int');
-		$subscriber_data        = ArrayHelper::getValue($data, 'bwpm_user2subscriber', array(), 'array');
+		$captcha = $session->get('plg_bwpm_user2subscriber.captcha', '');
+
+		$user_mail = ArrayHelper::getValue($data, 'email', '', 'string');
+		$user_id   = ArrayHelper::getValue($data, 'id', 0, 'int');
+
+		$subscriber_data = array();
+		$subscriber_data['bwpm_user2subscriber']	= ArrayHelper::getValue($data, 'bwpm_user2subscriber', 0, 'int');
+		$subscriber_data['gender']					= ArrayHelper::getValue($data, 'gender', 2, 'int');
+		$subscriber_data['name']					= ArrayHelper::getValue($data, 'bwpm_name', '', 'string');
+		$subscriber_data['firstname']				= ArrayHelper::getValue($data, 'firstname', '', 'string');
+		$subscriber_data['special']					= ArrayHelper::getValue($data, 'special', '', 'string');
+		$subscriber_data['emailformat']				= ArrayHelper::getValue($data, 'emailformat', 1, 'int');
+		$subscriber_data['mailinglists']			= ArrayHelper::getValue($data, 'mailinglists', array(), 'array');
+		$subscriber_data['bwpmdisclaimer']			= ArrayHelper::getValue($data, 'bwpmdisclaimer', 0, 'int');
+		$subscriber_data['bwpm-' . $captcha]		= ArrayHelper::getValue($data, 'bwpm-' . $captcha, '', 'string');
+		$subscriber_data['name_required']			= ArrayHelper::getValue($data, 'name_required', '', 'string');
+		$subscriber_data['firstname_required']		= ArrayHelper::getValue($data, 'firstname_required', '', 'string');
+		$subscriber_data['emailformat_required']	= ArrayHelper::getValue($data, 'emailformat_required', '', 'string');
+		$subscriber_data['mailinglists_required']	= ArrayHelper::getValue($data, 'mailinglists_required', '', 'string');
+		$subscriber_data['additional_required']		= ArrayHelper::getValue($data, 'additional_required', '', 'string');
+		$subscriber_data['bwpmdisclaimer_required']	= ArrayHelper::getValue($data, 'bwpmdisclaimer_required', '', 'string');
 
 		if ($isNew)
 		{

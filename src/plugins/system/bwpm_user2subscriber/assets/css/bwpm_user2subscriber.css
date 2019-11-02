@@ -25,6 +25,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+label.disclaimer
+{
+	font-weight: bold;
+}
+
+label.disclaimer a:hover
+{
+	text-decoration: underline!important;
+}
+
+label.disclaimer a
+{
+	cursor: pointer;
+	margin-left: 7px;
+	padding-top: 3px;
+	display: inline-block;
+}
+
 .bwp_plg_modal {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */

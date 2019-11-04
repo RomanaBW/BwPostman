@@ -349,13 +349,13 @@ fi
 if [[ "${BW_TEST_CAT}" == maintenance_single ]]
 then
 # single tests for maintenance
-#codecept run acceptance Backend/TestMaintenanceCest::saveTablesZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_save_tables_zip.xml --html htmlreports/report_maintenance_save_tables_zip.html
-#codecept run acceptance Backend/TestMaintenanceCest::saveTablesNoZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_save_tables.xml --html htmlreports/report_maintenance_save_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::saveTablesZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_save_tables_zip.xml --html htmlreports/report_maintenance_save_tables_zip.html
+codecept run acceptance Backend/TestMaintenanceCest::saveTablesNoZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_save_tables.xml --html htmlreports/report_maintenance_save_tables.html
 codecept run acceptance Backend/TestMaintenanceCest::checkTables ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_check_tables.xml --html htmlreports/report_maintenance_check_tables.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesNoZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_restore_tables.xml --html htmlreports/report_maintenance_restore_tables.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_restore_tables_zip.xml --html htmlreports/report_maintenance_restore_tables_zip.html
-#codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_basic_settings.xml --html htmlreports/report_maintenance_basic_settings.html
-#codecept run acceptance Backend/TestMaintenanceCest::testForumLink ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_forum_link.xml --html htmlreports/report_maintenance_forum_link.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesNoZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_restore_tables.xml --html htmlreports/report_maintenance_restore_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesZip ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_restore_tables_zip.xml --html htmlreports/report_maintenance_restore_tables_zip.html
+codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_basic_settings.xml --html htmlreports/report_maintenance_basic_settings.html
+codecept run acceptance Backend/TestMaintenanceCest::testForumLink ${BW_TEST_DEBUG} --xml xmlreports/report_maintenance_forum_link.xml --html htmlreports/report_maintenance_forum_link.html
 fi
 
 ###############################
@@ -471,7 +471,8 @@ then
 # single tests for permissions
 #codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForListViewButtonsFromMainView ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_main_buttons_list.xml --html htmlreports/report_acceptance_main_buttons_list.html
 #codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_main_buttons_add.xml --html htmlreports/report_acceptance_main_buttons_add.html
-codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtons ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_list_action_buttons.xml --html htmlreports/report_list_action_buttons.html
+codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart1 ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_list_action_buttons1.xml --html htmlreports/report_list_action_buttons1.html
+#codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart2 ${BW_TEST_DEBUG} --xml xmlreports/report_acceptance_list_action_buttons2.xml --html htmlreports/report_list_action_buttons2.html
 fi
 
 ######################################

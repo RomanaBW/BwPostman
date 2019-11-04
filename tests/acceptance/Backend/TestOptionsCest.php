@@ -1779,8 +1779,10 @@ class TestOptionsCest
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
-		$I->clickAndWait(Generals::$toolbar4['Options'], 1);
-		$I->clickAndWait(OptionsPage::$tab_permissions, 1);
+		$I->click(Generals::$toolbar4['Options']);
+		$I->waitForElementVisible(OptionsPage::$tab_permissions, 3);
+		$I->click(OptionsPage::$tab_permissions);
+		$I->waitForElementVisible(OptionsPage::$permissions_fieldset, 3);
 
 		// get rule names
 		$rules  = $I->getRuleNamesByComponentAsset('com_bwpostman');
@@ -1791,8 +1793,8 @@ class TestOptionsCest
 			$group_id = $I->getGroupIdByName($groupname);
 			$slider   = $this->selectPermissionsSliderForUsergroup($I, $group_id);
 
-			codecept_debug("Groupname: $groupname");
-			codecept_debug("Group ID: $group_id");
+//			codecept_debug("Groupname: $groupname");
+//			codecept_debug("Group ID: $group_id");
 
 			// set permissions
 			for ($i = 0; $i < count($rules); $i++)
@@ -1801,11 +1803,13 @@ class TestOptionsCest
 			}
 
 			// apply
-			$I->clickAndWait(Generals::$toolbar['Save'], 1);
+			$I->click(Generals::$toolbar['Save']);
 			$I->waitForElementVisible(Generals::$alert_header, 5);
-			$I->clickAndWait(Generals::$systemMessageClose, 1);
+			$I->click(Generals::$systemMessageClose);
+			$I->waitForElementNotVisible(Generals::$systemMessageClose, 3);
 
-			$I->clickAndWait(OptionsPage::$tab_permissions, 1);
+			$I->click(OptionsPage::$tab_permissions);
+			$I->waitForElementVisible(OptionsPage::$permissions_fieldset, 3);
 
 			// select usergroup
 			$I->scrollTo($slider, 0, -100);
@@ -1858,8 +1862,8 @@ class TestOptionsCest
 
 		$scrollPos = "//*[@id='jform_rules_" . $rule . "_" . $group_id . "']";
 		$identifier = $scrollPos . "/../../../td[3]/output/span";
-		codecept_debug("Identifier: $identifier");
-		codecept_debug("Value: $value");
+//		codecept_debug("Identifier: $identifier");
+//		codecept_debug("Value: $value");
 
 		$I->scrollTo($scrollPos, 0, -150);
 		$I->waitForElementVisible($scrollPos);
@@ -1886,8 +1890,8 @@ class TestOptionsCest
 		$identifier = "//*[@id='jform_rules_" . $rules[$i] . "_" . $group_id . "']";
 		$value      = $actions[$rules[$i]];
 
-		codecept_debug('Identifier:' . $identifier);
-		codecept_debug('Value: ' . $value);
+//		codecept_debug('Identifier:' . $identifier);
+//		codecept_debug('Value: ' . $value);
 
 		$I->scrollTo($identifier, 0, -150);
 		$I->waitForElementVisible($identifier, 30);
@@ -1900,7 +1904,8 @@ class TestOptionsCest
 			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
 			{
 				$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
-				$I->clickAndWait(Generals::$alertNoticeClose, 1);
+				$I->click(Generals::$alertNoticeClose);
+				$I->waitForElementNotVisible(Generals::$alertNoticeClose, 3);
 			}
 		}
 	}

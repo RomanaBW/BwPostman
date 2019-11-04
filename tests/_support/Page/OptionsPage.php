@@ -84,6 +84,13 @@ class OptionsPage
 	 */
 	public static $tab_permissions  = ".//*[@id='configTabs']/li[7]/a";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $permissions_fieldset  = "//*[@id='fieldset-permissions']";
+
 	/*
 	 * Tab basic settings
 	 */
@@ -1719,12 +1726,13 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $noticeToClose = array(
-//		'BwPostmanPublisher' => 'core.manage',
 		'BwPostmanCampaignAdmin' => 'core.admin',
 		'BwPostmanMailinglistAdmin' => 'core.admin',
 		'BwPostmanNewsletterAdmin' => 'core.admin',
 		'BwPostmanSubscriberAdmin' => 'core.admin',
 		'BwPostmanTemplateAdmin' => 'core.admin',
+
+//		'BwPostmanPublisher' => 'core.manage',
 	);
 
 	/**

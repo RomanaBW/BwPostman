@@ -85,11 +85,12 @@ class TestAccessCest
 		{
 			$this->_login($loginPage, $user);
 
-			$I->clickAndWait(AccessPage::$j_menu_components, 1);
+			$I->click(AccessPage::$j_menu_components);
+			$I->waitForElementVisible(AccessPage::$j_menu_tags, 3);
 			$I->see('BwPostman', AccessPage::$j_menu_bwpostman);
 
 			$I->click(AccessPage::$j_menu_bwpostman);
-			$I->waitForElementVisible(AccessPage::$j_menu_bwpostman_sub, 10);
+			$I->waitForElementVisible(sprintf(AccessPage::$j_menu_bwpostman_sub_item, 'Maintenance'), 3);
 
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
@@ -104,7 +105,7 @@ class TestAccessCest
 				$this->checkAccessByJoomlaMenu($I, $button, $allowed);
 
 				$I->amOnPage(MainView::$url);
-				$I->waitForElement(Generals::$pageTitle, 30);
+				$I->waitForElementVisible(Generals::$pageTitle, 30);
 				$I->see('BwPostman');
 
 //				$I->see('BwPostman', Generals::$submenu['BwPostman']);
@@ -177,16 +178,16 @@ class TestAccessCest
 		{
 			$I->see($button, sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button));
 
-			$I->clickAndWait(sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button), 1);
+			$I->click(sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button));
 
 			if ($allowed)
 			{
-				$I->waitForElement(Generals::$pageTitle, 30);
+				$I->waitForElementVisible(Generals::$pageTitle, 5);
 				$I->see($button, Generals::$pageTitle);
 			}
 			else
 			{
-				$I->seeElement(Generals::$alert_error);
+				$I->waitForElementVisible(Generals::$alert_error, 5);
 				$I->see(sprintf(AccessPage::$list_view_no_permission, $button));
 				$I->see(Generals::$extension, Generals::$pageTitle);
 			}
@@ -221,7 +222,6 @@ class TestAccessCest
 					$I->dontSeeElement($statistics_general_text);
 				}
 			}
-			$I->wait(1);
 			$I->click(AccessPage::$link_statistics_general);
 			$I->waitForElementNotVisible(AccessPage::$table_statistics_general, 5);
 		}
@@ -259,7 +259,6 @@ class TestAccessCest
 					}
 				}
 
-				$I->wait(1);
 				$I->click(AccessPage::$link_statistics_archive);
 				$I->waitForElementVisible(AccessPage::$link_statistics_archive, 5);
 			}
@@ -298,7 +297,7 @@ class TestAccessCest
 				$allowed          = $this->getAllowedByUser($user, $button, $permission_array);
 
 				$I->amOnPage(MainView::$url);
-				$I->waitForElement(Generals::$pageTitle, 30);
+				$I->waitForElementVisible(Generals::$pageTitle, 30);
 				$I->see('BwPostman');
 
 				// click to icon
@@ -312,7 +311,8 @@ class TestAccessCest
 						$text_to_see    = 'Template details:';
 					}
 
-					$I->clickAndWait($link, 1);
+					$I->click($link);
+					$I->waitForElementVisible(Generals::$pageTitle, 3);
 					$I->see($text_to_see, Generals::$pageTitle);
 					$I->click(Generals::$toolbar4['Back']);
 				}
@@ -328,7 +328,7 @@ class TestAccessCest
 
 	/**
 	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
-	 * loop over all list views
+	 * loop over all list views, loop over first half of user groups
 	 *
 	 * @param   \AcceptanceTester            $I
 	 *
@@ -336,9 +336,70 @@ class TestAccessCest
 	 *
 	 * @throws \Exception
 	 *
+	 * @since   2.4.0
+	 */
+	public function TestAccessRightsForActionsInListsByButtonsPart1(\AcceptanceTester $I)
+	{
+		$I->wantTo("check permissions for single list by buttons");
+		$I->expectTo("see appropriate messages");
+
+		$partiallyUsers = array();
+
+		foreach (AccessPage::$all_users as $user)
+		{
+			if ($user['half'] === 1)
+			{
+				$partiallyUsers[] = $user;
+			}
+		}
+
+		$this->TestAccessRightsForActionsInListsByButtons($I, $partiallyUsers);
+	}
+
+	/**
+	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
+	 * loop over all list views, loop over second half of user groups
+	 *
+	 * @param   \AcceptanceTester            $I
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.4.0
+	 */
+	public function TestAccessRightsForActionsInListsByButtonsPart2(\AcceptanceTester $I)
+	{
+		$I->wantTo("check permissions for single list by buttons");
+		$I->expectTo("see appropriate messages");
+
+		$partiallyUsers = array();
+
+		foreach (AccessPage::$all_users as $user)
+		{
+			if ($user['half'] === 2)
+			{
+				$partiallyUsers[] = $user;
+			}
+		}
+
+		$this->TestAccessRightsForActionsInListsByButtons($I, $partiallyUsers);
+	}
+
+	/**
+	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
+	 * loop over all list views
+	 *
+	 * @param   \AcceptanceTester            $I
+	 * @param   array                        $users
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function TestAccessRightsForActionsInListsByButtons(\AcceptanceTester $I)
+	protected function TestAccessRightsForActionsInListsByButtons(\AcceptanceTester $I, $users)
 	{
 		$I->wantTo("check permissions for single list by buttons");
 		$I->expectTo("see appropriate messages");
@@ -346,10 +407,10 @@ class TestAccessCest
 		$loginPage = new LoginPage($I);
 
 		// Loop over all users
-		for ($i = 0; $i < count(AccessPage::$all_users); $i++)
+		for ($i = 0; $i < count($users); $i++)
 		{
 			// Shortcut for user variable
-			$user   = AccessPage::$all_users[$i];
+			$user   = $users[$i];
 
 			//@SpecialNote: This is a workaround to debug tests. Comment out usergroups/users which are not wanted
 			$wanted_users = array(
@@ -655,7 +716,8 @@ class TestAccessCest
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 
 		$I->click($checkbox);
-		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->click(Generals::$toolbarActions);
+		$I->waitForElementVisible(Generals::$toolbar4['Edit'], 3);
 		$I->click(Generals::$toolbar4['Edit']);
 
 //		if ($allowed)
@@ -688,7 +750,8 @@ class TestAccessCest
 			try
 			{
 				// Click off message that a content template wants to be edited
-				$I->clickAndWait(Generals::$systemMessageClose, 1);
+				$I->click(Generals::$systemMessageClose);
+				$I->waitForElementNotVisible(Generals::$systemMessageClose, 3);
 
 			}
 			catch(\RuntimeException $e)
@@ -710,7 +773,8 @@ class TestAccessCest
 			$I->see($button, Generals::$pageTitle);
 			// for button tests I may only get here at edit other owners items!
 			$I->see('No permission to edit this item!', Generals::$alert_error);
-			$I->clickAndWait(Generals::$systemMessageClose, 1);
+			$I->click(Generals::$systemMessageClose);
+			$I->waitForElementNotVisible(Generals::$systemMessageClose, 3);
 		}
 
 		if ($button === "Templates")
@@ -1316,8 +1380,6 @@ class TestAccessCest
 		$this->switchLoggedInUser($I, $user);
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
-//		$I->clickAndWait(Generals::$toolbarActions, 1);
-//		$I->seeElement(Generals::$toolbar4['Send']);
 		NewsletterEditPage::SendNewsletterToRealRecipients($I, false, false, false, 20);
 
 		$this->switchLoggedInUser($I, Generals::$admin);

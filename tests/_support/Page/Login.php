@@ -114,7 +114,7 @@ class Login
 		$I->fillField(self::$usernameField, $user['user']);
 		$I->fillField(self::$passwordField, $user['password']);
 		$I->click(self::$loginButton);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$control_panel, Generals::$pageTitle);
 
 		return;

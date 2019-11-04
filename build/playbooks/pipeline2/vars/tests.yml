@@ -90,7 +90,10 @@ test_file:
     testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView
 
   - suite: access3
-    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtons
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart1
+
+  - suite: access4
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart2
 
   - suite: installB2S
     testsuite_file: Buyer2Subscriber/Buyer2SubscriberInstallCest
@@ -152,10 +155,11 @@ test_suites:
     tests:
       - access1
       - access2
+      - access3
 
   - name: accept6
     tests:
-    - access3
+    - access4
 
   - name: accept7
     tests:

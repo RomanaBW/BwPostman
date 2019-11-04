@@ -154,12 +154,12 @@ test_suites:
   - name: accept5
     tests:
       - access1
-      - access2
       - access3
 
   - name: accept6
     tests:
-    - access4
+      - access2
+      - access4
 
   - name: accept7
     tests:

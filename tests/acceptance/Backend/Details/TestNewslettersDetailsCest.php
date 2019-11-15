@@ -242,7 +242,7 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$systemMessageClose);
 
 		$I->see('', NlEdit::$subject);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);

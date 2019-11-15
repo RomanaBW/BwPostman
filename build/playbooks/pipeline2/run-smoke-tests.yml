@@ -103,6 +103,10 @@
         state: directory
         mode: 0777
 
+    - name: Set project dir variable
+      set_fact:
+        bw_project_base_dir: "{{ project_base_dir }}"
+
     - name: Show test source path
       debug:
         msg: "{{ test_files_source }}"

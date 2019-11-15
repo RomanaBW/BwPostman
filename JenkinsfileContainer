@@ -82,6 +82,22 @@ pipeline {
 						}
 					}
 				}
+				stage('Suite 5') {
+					steps {
+//						echo "Dummy 5"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5'"
+						sh "docker exec -t bwpm_accept5_tester /data/do-tests.sh ${BWPM_VERSION}"
+					}
+					post {
+						always {
+//							echo "Dummy 5 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5'"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
+						}
+					}
+				}
 			}
 		}
 
@@ -124,22 +140,6 @@ pipeline {
 
 		stage('Run acceptance level 3') {
 			parallel {
-				stage('Suite 5') {
-					steps {
-//						echo "Dummy 5"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5'"
-						sh "docker exec -t bwpm_accept5_tester /data/do-tests.sh ${BWPM_VERSION}"
-					}
-					post {
-						always {
-//							echo "Dummy 5 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5'"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
-						}
-					}
-				}
 				stage('Suite 6') {
 					steps {
 //						echo "Dummy 6"

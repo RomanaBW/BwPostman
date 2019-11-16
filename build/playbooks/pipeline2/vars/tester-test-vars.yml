@@ -15,4 +15,4 @@ test_db_user: "tester"
 test_db_password: "barbamama"
 
 screen_size: '1440x900'
-display: ':45'
+display: '45'

@@ -18,7 +18,7 @@ pipeline {
 					DO_RECORD_1 = "false";
 					DO_RECORD_2 = "false";
 					DO_RECORD_3 = "false";
-					DO_RECORD_4 = "false";
+					DO_RECORD_4 = "true"; // has always to be true, because this suite uses codeception "friend", which does not work with "moving screens"
 					DO_RECORD_5 = "false";
 					DO_RECORD_6 = "false";
 					DO_RECORD_7 = "false";

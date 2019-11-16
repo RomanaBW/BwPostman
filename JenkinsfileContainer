@@ -14,7 +14,7 @@ pipeline {
 					BW_ARTIFACTS_BASE = "/repositories/artifacts/bwpostman"
 					GIT_MESSAGE = "not specified"
 					PROJECT_NAME = "j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
-					DO_RECORD_SMOKE = "false";
+					DO_RECORD_SMOKE = "true";
 					DO_RECORD_1 = "false";
 					DO_RECORD_2 = "false";
 					DO_RECORD_3 = "false";

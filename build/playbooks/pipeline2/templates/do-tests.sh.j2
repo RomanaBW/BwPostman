@@ -6,12 +6,12 @@ rm -f {{ codecept_failed_file }}
 # export sudo user
 export BW_TESTER_USER="jenkins"
 export BWPM_VERSION_TO_TEST="${1}"
+export DISPLAY=:{{ display }}
 
 # start x-server
 echo "Display {{ display }}"
 if [ {{ do_record }} = "true" ]; then
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
-  export DISPLAY=:{{ display }}
 fi
 PIDOF_XVFB="$(pidof Xvfb)"
 echo "Pid of Xvfb: ${PIDOF_XVFB}"

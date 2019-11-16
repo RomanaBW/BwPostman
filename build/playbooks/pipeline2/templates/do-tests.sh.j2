@@ -45,13 +45,26 @@ failed_check=0
 {% for item in selected_suite %}
 {% for selected_file in test_file if selected_file.suite == item %}
 
-/usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
-echo "PID of Xvfb before test: $(pidof Xvfb)"
+# Start x-server anew, if recording no is selected
+if [ {{ do_record }} != "true" ]; then
+  /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
+  echo "PID of Xvfb before test: $(pidof Xvfb)"
+fi
 
 if [ ${failed_check} = 0 ]; then
   /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --debug -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 fi
-echo "PID of Xvfb after test: $(pidof Xvfb)"
+
+PIDOF_XVFB="$(pidof Xvfb)"
+echo "PID of Xvfb after test: ${PIDOF_XVFB}"
+# Kill Xvfb
+if [ {{ do_record }} != "true" ]; then
+  if [ -z "$PIDOF_XVFB" ]; then
+    echo "Xvfb is to kill"
+    kill ${PIDOF_XVFB}
+  fi
+fi
+
 if [ -f {{ codecept_failed_file }} ]; then
   echo "Current test {{ item }} failed!"
   failed_check=1

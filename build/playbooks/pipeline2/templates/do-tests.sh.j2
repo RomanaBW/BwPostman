@@ -22,7 +22,7 @@ printf '\n'
 
 # Start recording
 echo "Do record: {{ do_record }}"
-if [ {{ do_record }} == "true" ]
+if [ {{ do_record }} == "true" ]; then
   tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>{{ test_log_path }}/ffmpeg.log"
 fi
 

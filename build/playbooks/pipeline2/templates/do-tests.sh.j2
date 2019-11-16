@@ -9,7 +9,7 @@ export BWPM_VERSION_TO_TEST="${1}"
 
 # start x-server
 echo "Display {{ display }}"
-if [ ! -f '/tmp/.X{{ display }}-lock' ]; then
+if [ ${do_record} = "true" ]; then
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
   export DISPLAY=:{{ display }}
 fi

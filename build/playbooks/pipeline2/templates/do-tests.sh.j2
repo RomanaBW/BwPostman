@@ -59,7 +59,8 @@ PIDOF_XVFB="$(pidof Xvfb)"
 echo "PID of Xvfb after test: ${PIDOF_XVFB}"
 # Kill Xvfb
 if [ {{ do_record }} != "true" ]; then
-  if [ -z "$PIDOF_XVFB" ]; then
+  echo "PID of Xvfb after test 2: ${PIDOF_XVFB}"
+  if [ -z "${PIDOF_XVFB}" ]; then
     echo "Xvfb is to kill"
     kill ${PIDOF_XVFB}
   fi

@@ -21,7 +21,10 @@ done
 printf '\n'
 
 # Start recording
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>{{ test_log_path }}/ffmpeg.log"
+echo "Do record: {{ do_record }}"
+if [ {{ do_record }} == "true" ]
+  tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>{{ test_log_path }}/ffmpeg.log"
+fi
 
 # run tests
 cd /data
@@ -51,6 +54,8 @@ fi
 sleep 1
 
 # Stop recording
-tmux send-keys -t BwPostmanRecording1 q
+if [ {{ do_record }} == "true" ]
+  tmux send-keys -t BwPostmanRecording1 q
+fi
 
 exit ${failed_check}

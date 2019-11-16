@@ -49,20 +49,20 @@ failed_check=0
 if [ {{ do_record }} != "true" ]; then
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
   echo "PID of Xvfb before test: $(pidof Xvfb)"
+  PIDOF_XVFB="$(pidof Xvfb)"
 fi
 
 if [ ${failed_check} = 0 ]; then
   /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --debug -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 fi
 
-PIDOF_XVFB="$(pidof Xvfb)"
 echo "PID of Xvfb after test: ${PIDOF_XVFB}"
 # Kill Xvfb
 if [ {{ do_record }} != "true" ]; then
   echo "PID of Xvfb after test 2: ${PIDOF_XVFB}"
   if [ ! -z "${PIDOF_XVFB}" ]; then
     echo "Xvfb is to kill"
-    kill ${PIDOF_XVFB}
+    echo $PIDOF_XVFB | XARGS kill -9
   fi
 fi
 

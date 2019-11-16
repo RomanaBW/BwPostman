@@ -13,6 +13,7 @@ if [ ! -f '/tmp/.X{{ display }}-lock' ]; then
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
   export DISPLAY=:{{ display }}
 fi
+echo "Pid of " pidof Xvfb
 
 java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.logfile={{ test_log_path }}/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >{{ test_log_path }}/selenium.log 2>{{ test_log_path }}/selenium.log &
 

@@ -41,7 +41,7 @@ pipeline {
 		stage('Smoke') {
 			steps {
 //				echo "Dummy Smoke"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE}' do_record=${DO_RECORD_SMOKE}'"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE}' 'do_record=${DO_RECORD_SMOKE}'"
 				sh "docker exec -t bwpm_enh_tester /data/do-tests.sh ${BWPM_VERSION}"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml"
 			}
@@ -61,7 +61,7 @@ pipeline {
 				stage('Suite 1') {
 					steps {
 //						echo "Dummy 1"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1' do_record=${DO_RECORD_1}'"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1' 'do_record=${DO_RECORD_1}'"
 						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
@@ -77,7 +77,7 @@ pipeline {
 				stage('Suite 2') {
 					steps {
 //						echo "Dummy 2"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2' do_record=${DO_RECORD_2}'"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2' 'do_record=${DO_RECORD_2}'"
 						sh "docker exec -t bwpm_accept2_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
@@ -93,7 +93,7 @@ pipeline {
 				stage('Suite 5') {
 					steps {
 //						echo "Dummy 5"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5' do_record=${DO_RECORD_5}'"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5' 'do_record=${DO_RECORD_5}'"
 						sh "docker exec -t bwpm_accept5_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
@@ -109,7 +109,7 @@ pipeline {
 				stage('Suite 6') {
 					steps {
 //						echo "Dummy 6"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept6' do_record=${DO_RECORD_6}'"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept6' 'do_record=${DO_RECORD_6}'"
 						sh "docker exec -t bwpm_accept6_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
@@ -130,7 +130,7 @@ pipeline {
 				stage('Suite 3') {
 					steps {
 //						echo "Dummy 3"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3' do_record=${DO_RECORD_3}'"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3' 'do_record=${DO_RECORD_3}'"
 						sh "docker exec -t bwpm_accept3_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
@@ -146,7 +146,7 @@ pipeline {
 				stage('Suite 4') {
 					steps {
 //						echo "Dummy 4"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4' do_record=${DO_RECORD_4}'"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4' 'do_record=${DO_RECORD_4}'"
 						sh "docker exec -t bwpm_accept4_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {

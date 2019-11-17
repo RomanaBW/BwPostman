@@ -68,7 +68,7 @@ official_mariadb_short: mariadb:10.2-debian-9
 official_apache: php:7.3.4-apache-stretch
 official_apache_short: php:7.3.4-apache-stretch
 official_tester: romana/os-chromium-tester:latest
-official_tester_short: "os-phantomjs-tester:{{ phantom_version }}"
+official_tester_short: os-phantomjs-tester:latest
 
 base_source:
   db_container_name: mariadb_build

@@ -1,0 +1,41 @@
+#! /bin/bash
+
+# delete old failure file
+rm -f {{ codecept_failed_file }}
+
+# export sudo user
+export BW_TESTER_USER="jenkins"
+export BWPM_VERSION_TO_TEST="${1}"
+
+/opt/phantomJS/phantomjs --webdriver=4447
+
+# run tests
+cd /data
+
+/usr/local/bin/codecept build
+
+# initialize failed check variable
+failed_check=0
+
+{% set selected_suite = '' %}
+{% for suite in test_suites if suite.name == test_suite %}
+{% set selected_suite = suite.tests %}
+{% for item in selected_suite %}
+{% for selected_file in test_file if selected_file.suite == item %}
+
+if [ ${failed_check} = 0 ]; then
+  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --debug -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+fi
+
+if [ -f {{ codecept_failed_file }} ]; then
+  echo "Current test {{ item }} failed!"
+  failed_check=1
+fi
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
+# Wait for browser to close
+sleep 1
+
+exit ${failed_check}

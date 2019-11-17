@@ -1,7 +1,5 @@
 ---
 - hosts: localhost
-#  pre_tasks:
-#    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local
   vars_files:
     - vars/tester-image-vars.yml
@@ -59,8 +57,6 @@
 
 
 - hosts: "{{ acceptance_source.web_container_name }}"
-#  pre_tasks:
-#    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: docker
   vars_files:
     - vars/tests.yml
@@ -97,8 +93,6 @@
 
 
 - hosts: "{{ acceptance_source.tester_container_name }}"
-#  pre_tasks:
-#    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: docker
   vars_files:
     - vars/tests.yml
@@ -128,6 +122,7 @@
           - "--exclude=_output"
       when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
 
+# Following is same as at run-smoke-tests and could be moved to a role
     - name: remove AcceptanceTesterActions.php
       become: true
       become_user: root
@@ -140,38 +135,32 @@
         src: "codeception.yml.j2"
         dest: "/data/codeception.yml"
 
-    - name: Prepare manifest for acceptance tests
+    - name: Prepare manifest for acceptance tests with chromium
       become: true
       become_user: root
       template:
         src: "acceptance.suite.yml.j2"
         dest: "/data/tests/acceptance.suite.yml"
+      when: do_record == "true"
 
-    - name: Create test script
+    - name: Prepare manifest for acceptance tests with phantomJS
+      become: true
+      become_user: root
+      template:
+        src: "acceptance-phantom.suite.yml.j2"
+        dest: "/data/tests/acceptance.suite.yml"
+      when: do_record == "false"
+
+    - name: Create test script for chromium
       template:
         src: "do-tests.sh.j2"
         dest: "/data/do-tests.sh"
         mode: 0775
+      when: do_record == "true"
 
-#    - name: Do tests
-#      shell: "/data/do-tests.sh"
-#      args:
-#        chdir: "/data/tests"
-#
-#    - name: Show IP of webserver
-#      debug:
-#        msg: "{{ web_container_ip }}"
-#
-#- hosts: localhost
-#  connection: local
-#  vars_files:
-#    - vars/tester-image-vars.yml
-#    - vars/tester-test-vars.yml
-#
-#  tasks:
-#    - name: remove all test containers (db, webserver, tester) and network
-#      include_role:
-#        name: romanabw.remove-complete-infrastructure
-#      vars:
-#        source: "{{ acceptance_source }}"
-#        target: "{{ acceptance_target }}"
+    - name: Create test script for phantomJS
+      template:
+        src: "do-tests.sh.j2"
+        dest: "/data/do-tests-phantom.sh"
+        mode: 0775
+      when: do_record == "false"

@@ -23,18 +23,12 @@ modules:
     WebDriver:
       url: http://{{ web_container_ip }}
 
-      browser: chrome
-      port: 4445
-      capabilities:
-          chromeOptions:
-              args: ["--no-sandbox", "--window-size=1440,900"]
+      browser: phantomjs
+      port: 4447
 
       connection_timeout: 60
       restart: false
       log_js_errors: true
-
-#        browser: firefox
-#        port: 4444
 
     Db:
       dsn: 'mysql:host={{ db_host }};dbname={{ test_db_dbname }}'

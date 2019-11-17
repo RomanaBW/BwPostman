@@ -7,7 +7,7 @@ rm -f {{ codecept_failed_file }}
 export BW_TESTER_USER="jenkins"
 export BWPM_VERSION_TO_TEST="${1}"
 
-/opt/phantomJS/phantomjs --webdriver=4447 >{{ test_log_path }}/phantomJS.log 2>{{ test_log_path }}/phantomJS.log  &
+phantomjs --webdriver=4447 >{{ test_log_path }}/phantomJS.log 2>{{ test_log_path }}/phantomJS.log  &
 
 # run tests
 cd /data

@@ -59,22 +59,29 @@ tester_smtp_user: "info@boldt-webservice.de"
 tester_smtp_password: "@Miriam02#"
 tester_smtp_host: "192.168.2.100"
 
+phantom_dir: "/opt/phantomJS"
+phantom_version: "2.1.1"
 
 # Settings for creating base LAMP containers
 official_mariadb: bitnami/mariadb:10.2-debian-9
 official_mariadb_short: mariadb:10.2-debian-9
 official_apache: php:7.3.4-apache-stretch
 official_apache_short: php:7.3.4-apache-stretch
+official_tester: romana/os-chromium-tester:latest
+official_tester_short: "os-phantomjs-tester:{{ phantom_version }}"
 
 base_source:
   db_container_name: mariadb_build
   db_image_tag_source: "{{ official_mariadb }}"
   web_container_name: apache_build
   web_image_tag_source: "{{ official_apache }}"
+  tester_container_name: tester_build
+  tester_image_tag_source: "{{ official_tester }}"
 
 base_target:
   db_image_tag_target: "romana/{{ official_mariadb_short }}"
   web_image_tag_target: "romana/{{ official_apache_short }}"
+  tester_image_tag_target: "romana/{{ official_tester_short }}"
 
 
 # Settings for creating bare Joomla containers
@@ -145,7 +152,7 @@ smoke_source:
   web_container_name: joomla_enh_web
   web_image_tag_source: "{{ private_docker_repo }}/romana/joomla-jce-files:{{ joomla_version }}"
   tester_container_name: bwpm_enh_tester
-  tester_image_tag_source: "{{ private_docker_repo }}/romana/os-chromium-tester"
+  tester_image_tag_source: "{{ private_docker_repo }}/{{ official_tester_short }}"
   tester_network_name: "bwpm_network-{{ test_suite }}"
 
 smoke_target:

@@ -100,7 +100,7 @@ bare_target:
   db_image_tag_target: "romana/joomla-bare-tables:{{ joomla_version }}"
   web_image: "{{ private_docker_repo }}/{{ bare_source.web_image_tag_source }}"
   web_image_tag_target: "romana/joomla-bare-files:{{ joomla_version }}"
-  tester_image: "{{ private_docker_repo }}/{{ bare_source.tester_image_tag_source }}"
+  tester_image: "romana/{{ bare_source.tester_image_tag_source }}"
 
 
 # Settings for creating enhanced joomla containers (JCE, test mode plugin,…)

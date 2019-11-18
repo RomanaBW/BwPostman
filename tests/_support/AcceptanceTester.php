@@ -374,4 +374,23 @@ class AcceptanceTester extends \Codeception\Actor
 		$this->executeJS("document.getElementsByTagName('iframe')[0].setAttribute('name', '" . $iframeName . "');");
 	}
 
+	/**
+	 * @param $table
+	 * @param $criteria
+	 *
+	 * @since 2.0.0
+	 */
+	public function seeInMyDatabase($table, $criteria)
+	{
+		try
+		{
+			$this->seeInDatabase($table, $criteria);
+		}
+		catch (\RuntimeException $e)
+		{
+			codecept_debug('Error check ' . $table , ':');
+			codecept_debug($e->getMessage());
+			$this->assertEquals(0, 1);
+		}
+	}
 }

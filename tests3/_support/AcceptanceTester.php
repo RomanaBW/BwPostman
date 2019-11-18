@@ -356,7 +356,6 @@ class AcceptanceTester extends \Codeception\Actor
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
 	 * @param $table
 	 * @param $criteria
 	 *
@@ -372,7 +371,7 @@ class AcceptanceTester extends \Codeception\Actor
 		{
 			codecept_debug('Error check ' . $table , ':');
 			codecept_debug($e->getMessage());
-			$I->assertEquals(0, 1);
+			$this->assertEquals(0, 1);
 		}
 	}
 }

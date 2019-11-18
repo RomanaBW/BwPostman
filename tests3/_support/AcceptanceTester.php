@@ -369,7 +369,7 @@ class AcceptanceTester extends \Codeception\Actor
 		}
 		catch (\RuntimeException $e)
 		{
-			codecept_debug('Error check ' . $table , ':');
+			codecept_debug('Error on ' . $table , ':');
 			codecept_debug($e->getMessage());
 			$this->assertEquals(0, 1);
 		}

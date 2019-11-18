@@ -1637,7 +1637,18 @@ class User2SubscriberCest
 				}
 			}
 
-			$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $result);
+			try
+			{
+				$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $result);
+			}
+			catch (\RuntimeException $e)
+			{
+				codecept_debug('Error check subscriber at table');
+				codecept_debug('Error: Message, Code, Trace as string');
+				codecept_debug($e->getMessage());
+				codecept_debug($e->getCode());
+				codecept_debug($e->getTraceAsString());
+			}
 		}
 		else
 		{
@@ -1649,6 +1660,8 @@ class User2SubscriberCest
 	 * @param AcceptanceTester $I
 	 *
 	 * @since 2.0.0
+	 *
+	 * @throws Exception
 	 */
 	protected function filterForSubscriber(AcceptanceTester $I)
 	{

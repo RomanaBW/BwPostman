@@ -365,7 +365,7 @@ class TestAccessCest
 
 	/**
 	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
-	 * loop over all list views
+	 * loop over all list views, loop over first half of user groups
 	 *
 	 * @param   \AcceptanceTester            $I
 	 *
@@ -373,9 +373,70 @@ class TestAccessCest
 	 *
 	 * @throws \Exception
 	 *
+	 * @since   2.4.0
+	 */
+	public function TestAccessRightsForActionsInListsByButtonsPart1(\AcceptanceTester $I)
+	{
+		$I->wantTo("check permissions for single list by buttons");
+		$I->expectTo("see appropriate messages");
+
+		$partiallyUsers = array();
+
+		foreach (AccessPage::$all_users as $user)
+		{
+			if ($user['half'] === 1)
+			{
+				$partiallyUsers[] = $user;
+			}
+		}
+
+		$this->TestAccessRightsForActionsInListsByButtons($I, $partiallyUsers);
+	}
+
+	/**
+	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
+	 * loop over all list views, loop over second half of user groups
+	 *
+	 * @param   \AcceptanceTester            $I
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.4.0
+	 */
+	public function TestAccessRightsForActionsInListsByButtonsPart2(\AcceptanceTester $I)
+	{
+		$I->wantTo("check permissions for single list by buttons");
+		$I->expectTo("see appropriate messages");
+
+		$partiallyUsers = array();
+
+		foreach (AccessPage::$all_users as $user)
+		{
+			if ($user['half'] === 2)
+			{
+				$partiallyUsers[] = $user;
+			}
+		}
+
+		$this->TestAccessRightsForActionsInListsByButtons($I, $partiallyUsers);
+	}
+
+	/**
+	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
+	 * loop over all list views
+	 *
+	 * @param   \AcceptanceTester            $I
+	 * @param   array                        $users
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
-	public function TestAccessRightsForActionsInListsByButtons(\AcceptanceTester $I)
+	public function TestAccessRightsForActionsInListsByButtons(\AcceptanceTester $I, $users)
 	{
 		$I->wantTo("check permissions for single list by buttons");
 		$I->expectTo("see appropriate messages");
@@ -383,16 +444,15 @@ class TestAccessCest
 		$loginPage = new LoginPage($I);
 
 		// Loop over all users
-		for ($i = 0; $i < count(AccessPage::$all_users); $i++)
+		for ($i = 0; $i < count($users); $i++)
 		{
-			// @ToDo: Consider, that some webmaster may set user permissions e.g. to send newsletter but not to create or edit one
 			// Shortcut for user variable
-			$user   = AccessPage::$all_users[$i];
+			$user   = $users[$i];
 
 			//@SpecialNote: This is a workaround to debug tests. Comment out usergroups/users which are not wanted
 			$wanted_users = array(
-//				'BwPostmanAdmin',
-//				'BwPostmanManager',
+				'BwPostmanAdmin',
+				'BwPostmanManager',
 				'BwPostmanPublisher',
 				'BwPostmanEditor',
 				'BwPostmanCampaignAdmin',
@@ -463,25 +523,35 @@ class TestAccessCest
 
 						$item_permission_array = AccessPage::${$user['user'] . '_item_permissions'};
 
+						codecept_debug('Create new item ' . $button);
 						$this->createNewItem($I, $button, $item_permission_array);
 
+						codecept_debug('Edit own item ' . $button);
 						$this->editItem($I, $button, 'own', $item_permission_array); // own item
+
+						codecept_debug('Edit other item ' . $button);
 						$this->editItem($I, $button, 'other', $item_permission_array); // other item
 
+						codecept_debug('Change state of item ' . $button);
 						$this->changeStateItem($I, $button, $item_permission_array); //own item
 
+						codecept_debug('Checkin item ' . $button);
 						$this->checkinOwnItem($I, $button, $link, $item_permission_array);
 						// @ToDo: Use other user to lock. Question: How to determine other user?
 						// Workaround: If BwPostmanAdmin, then other user BwPostmanPublisher, else other user BwPostmanAdmin
 						// $this->_checkinOtherItem($I, $i, $button, $link);
 
+						codecept_debug('Restore item ' . $button);
 						$this->restoreArchivedItem($I, $button, $user, $item_permission_array); // own item
+						codecept_debug('Delete item ' . $button);
 						$this->deleteArchivedItem($I, $button, $user, $item_permission_array); // own item
 
 						if ($button == 'Newsletters')
 						{
+							codecept_debug('Duplicate newsletter');
 							$this->duplicateNewsletter($I, $user, $item_permission_array);
 
+							codecept_debug('Send newsletter');
 							$this->sendNewsletter($I, $user, $item_permission_array);
 
 							// @ToDo: set publish/unpublish date
@@ -496,6 +566,7 @@ class TestAccessCest
 						}
 						elseif ($button == 'Templates')
 						{
+							codecept_debug('Set default template');
 							$this->setDefaultTemplate($I, $item_permission_array);
 
 							// @ToDo: import template

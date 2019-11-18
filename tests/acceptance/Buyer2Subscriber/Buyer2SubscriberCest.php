@@ -674,8 +674,8 @@ class Buyer2SubscriberCest
 
 			$data_mls    = array('subscriber_id' => $subs_id, 'mailinglist_id'   => 4);
 
-			$I->seeInDatabase($table_subs, $data_subs);
-			$I->seeInDatabase($table_mls, $data_mls);
+			$I->seeInMyDatabase($table_subs, $data_subs);
+			$I->seeInMyDatabase($table_mls, $data_mls);
 		}
 		elseif (array_key_exists('email', $this->existing_data))
 		{
@@ -683,8 +683,8 @@ class Buyer2SubscriberCest
 			$data_subs   = $this->prepareSubsData($this->result_data);
 			$data_mls    = array('subscriber_id' => $subs_id, 'mailinglist_id'   => 4);
 
-			$I->seeInDatabase($table_subs, $data_subs);
-			$I->seeInDatabase($table_mls, $data_mls);
+			$I->seeInMyDatabase($table_subs, $data_subs);
+			$I->seeInMyDatabase($table_mls, $data_mls);
 		}
 		else
 		{
@@ -888,7 +888,7 @@ class Buyer2SubscriberCest
 		$table  = Generals::$db_prefix . BuyerPage::$vm_order_table;
 		$data   = array('order_number' => $this->order_number);
 
-		$I->seeInDatabase($table, $data);
+		$I->seeInMyDatabase($table, $data);
 	}
 
 	/**

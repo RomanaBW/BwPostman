@@ -1642,7 +1642,7 @@ class User2SubscriberCest
 				}
 			}
 
-			$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $result);
+			$I->seeInMyDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $result);
 		}
 		else
 		{
@@ -1880,7 +1880,7 @@ class User2SubscriberCest
 
 		if ($this->auto_update)
 		{
-			$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $search_values);
+			$I->seeInMyDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $search_values);
 		}
 		else
 		{

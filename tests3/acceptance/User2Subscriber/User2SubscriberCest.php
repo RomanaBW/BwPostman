@@ -1637,18 +1637,8 @@ class User2SubscriberCest
 				}
 			}
 
-			try
-			{
-				$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $result);
-			}
-			catch (\RuntimeException $e)
-			{
-				codecept_debug('Error check subscriber at table');
-				codecept_debug('Error: Message, Code, Trace as string');
-				codecept_debug($e->getMessage());
-				codecept_debug($e->getCode());
-				codecept_debug($e->getTraceAsString());
-			}
+			$I->seeInMyDatabase( Generals::$db_prefix . 'bwpostman_subscribers', $result);
+
 		}
 		else
 		{
@@ -1815,7 +1805,7 @@ class User2SubscriberCest
 	{
 		if (self::$auto_delete)
 		{
-			$I->dontSeeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', array('email' => self::$current_mail_address));
+			$I->seeInMyDatabase(Generals::$db_prefix . 'bwpostman_subscribers', array('email' => self::$current_mail_address));
 		}
 	}
 
@@ -1886,7 +1876,7 @@ class User2SubscriberCest
 
 		if ($this->auto_update)
 		{
-			$I->seeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $search_values);
+			$I->seeInMyDatabase(Generals::$db_prefix . 'bwpostman_subscribers', $search_values);
 		}
 		else
 		{

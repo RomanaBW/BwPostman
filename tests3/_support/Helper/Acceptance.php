@@ -1721,5 +1721,4 @@ class Acceptance extends Codeception\Module
 		$I->waitForElementVisible($viewRegister, 5);
 		$I->seeElement($viewRegister);
 	}
-
 }

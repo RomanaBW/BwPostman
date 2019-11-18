@@ -354,4 +354,25 @@ class AcceptanceTester extends \Codeception\Actor
 
 		return $last_page;
 	}
+
+	/**
+	 * @param \AcceptanceTester $I
+	 * @param $table
+	 * @param $criteria
+	 *
+	 * @since 2.0.0
+	 */
+	public function seeInMyDatabase($table, $criteria)
+	{
+		try
+		{
+			$this->seeInDatabase($table, $criteria);
+		}
+		catch (\RuntimeException $e)
+		{
+			codecept_debug('Error check ' . $table , ':');
+			codecept_debug($e->getMessage());
+			$I->assertEquals(0, 1);
+		}
+	}
 }

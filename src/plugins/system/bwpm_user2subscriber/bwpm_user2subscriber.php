@@ -345,8 +345,16 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		JForm::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
 
-		$this->form->loadFile('form', false);
-		$this->group = null;
+		if (version_compare(JVERSION, '3.99', 'le'))
+		{
+			$this->form->loadFile('form3', false);
+			$this->group = 'bwpm_user2subscriber';
+		}
+		else
+		{
+			$this->form->loadFile('form', false);
+			$this->group = null;
+		}
 
 		if (!($this->form instanceof JForm))
 		{

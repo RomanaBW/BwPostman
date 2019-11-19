@@ -878,7 +878,7 @@ class User2SubscriberCest
 
 				self::deleteJoomlaUserByDb($I);
 
-				self::checkForSubscriptionSuccess($I);
+				$I->assertEquals(true, self::checkForSubscriptionSuccess($I));
 				self::deleteJoomlaUserByDb($I);
 
 				// assert subscription is there without Joomla user ID
@@ -1562,6 +1562,8 @@ class User2SubscriberCest
 	 *
 	 * @param   AcceptanceTester    $I
 	 *
+	 * @return boolean
+	 *
 	 * @throws Exception
 	 *
 	 * @since 2.0.0
@@ -1640,11 +1642,12 @@ class User2SubscriberCest
 
 			$hasSubscriber = $I->seeInMyDatabase( Generals::$db_prefix . 'bwpostman_subscribers', $result);
 
-			$I->assertEquals(true, $hasSubscriber);
+			return $hasSubscriber;
 		}
 		else
 		{
 			$I->dontSeeInDatabase(Generals::$db_prefix . 'bwpostman_subscribers', array('email' => RegPage::$login_value_email));
+			return true;
 		}
 	}
 

@@ -725,21 +725,29 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$user_id   = ArrayHelper::getValue($data, 'id', 0, 'int');
 
 		$subscriber_data = array();
-		$subscriber_data['bwpm_user2subscriber']	= ArrayHelper::getValue($data, 'bwpm_user2subscriber', 0, 'int');
-		$subscriber_data['gender']					= ArrayHelper::getValue($data, 'gender', 2, 'int');
-		$subscriber_data['name']					= ArrayHelper::getValue($data, 'bwpm_name', '', 'string');
-		$subscriber_data['firstname']				= ArrayHelper::getValue($data, 'firstname', '', 'string');
-		$subscriber_data['special']					= ArrayHelper::getValue($data, 'special', '', 'string');
-		$subscriber_data['emailformat']				= ArrayHelper::getValue($data, 'emailformat', 1, 'int');
-		$subscriber_data['mailinglists']			= ArrayHelper::getValue($data, 'mailinglists', array(), 'array');
-		$subscriber_data['bwpmdisclaimer']			= ArrayHelper::getValue($data, 'bwpmdisclaimer', 0, 'int');
-		$subscriber_data['bwpm-' . $captcha]		= ArrayHelper::getValue($data, 'bwpm-' . $captcha, '', 'string');
-		$subscriber_data['name_required']			= ArrayHelper::getValue($data, 'name_required', '', 'string');
-		$subscriber_data['firstname_required']		= ArrayHelper::getValue($data, 'firstname_required', '', 'string');
-		$subscriber_data['emailformat_required']	= ArrayHelper::getValue($data, 'emailformat_required', '', 'string');
-		$subscriber_data['mailinglists_required']	= ArrayHelper::getValue($data, 'mailinglists_required', '', 'string');
-		$subscriber_data['additional_required']		= ArrayHelper::getValue($data, 'additional_required', '', 'string');
-		$subscriber_data['bwpmdisclaimer_required']	= ArrayHelper::getValue($data, 'bwpmdisclaimer_required', '', 'string');
+		if (isset($data['bwpm_user2subscriber']) && count($data['bwpm_user2subscriber']) > 0)
+		{
+			$dataRaw = $data['bwpm_user2subscriber'];
+		}
+		else
+		{
+			$dataRaw = $data;
+		}
+		$subscriber_data['bwpm_user2subscriber']	= ArrayHelper::getValue($dataRaw, 'bwpm_user2subscriber', 0, 'int');
+		$subscriber_data['gender']					= ArrayHelper::getValue($dataRaw, 'gender', 2, 'int');
+		$subscriber_data['name']					= ArrayHelper::getValue($dataRaw, 'bwpm_name', '', 'string');
+		$subscriber_data['firstname']				= ArrayHelper::getValue($dataRaw, 'firstname', '', 'string');
+		$subscriber_data['special']					= ArrayHelper::getValue($dataRaw, 'special', '', 'string');
+		$subscriber_data['emailformat']				= ArrayHelper::getValue($dataRaw, 'emailformat', 1, 'int');
+		$subscriber_data['mailinglists']			= ArrayHelper::getValue($dataRaw, 'mailinglists', array(), 'array');
+		$subscriber_data['bwpmdisclaimer']			= ArrayHelper::getValue($dataRaw, 'bwpmdisclaimer', 0, 'int');
+		$subscriber_data['bwpm-' . $captcha]		= ArrayHelper::getValue($dataRaw, 'bwpm-' . $captcha, '', 'string');
+		$subscriber_data['name_required']			= ArrayHelper::getValue($dataRaw, 'name_required', '', 'string');
+		$subscriber_data['firstname_required']		= ArrayHelper::getValue($dataRaw, 'firstname_required', '', 'string');
+		$subscriber_data['emailformat_required']	= ArrayHelper::getValue($dataRaw, 'emailformat_required', '', 'string');
+		$subscriber_data['mailinglists_required']	= ArrayHelper::getValue($dataRaw, 'mailinglists_required', '', 'string');
+		$subscriber_data['additional_required']		= ArrayHelper::getValue($dataRaw, 'additional_required', '', 'string');
+		$subscriber_data['bwpmdisclaimer_required']	= ArrayHelper::getValue($dataRaw, 'bwpmdisclaimer_required', '', 'string');
 
 		if ($isNew)
 		{

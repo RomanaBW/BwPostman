@@ -1444,8 +1444,8 @@ class User2SubscriberCest
 			// click wanted value
 			$I->click(RegPage::$subs_identifier_female);
 
-
-//			$I->clickSelectList(RegPage::$gender_list, RegPage::$subs_identifier_female, RegPage::$gender_list_id);
+// @ToDo: Switch for Joomla version?
+			$I->clickSelectList(RegPage::$gender_list, RegPage::$subs_identifier_female, RegPage::$gender_list_id);
 
 			self::$check_gender     = true;
 			self::$gender_selected  = 'female';

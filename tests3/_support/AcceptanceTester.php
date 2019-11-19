@@ -359,6 +359,8 @@ class AcceptanceTester extends \Codeception\Actor
 	 * @param $table
 	 * @param $criteria
 	 *
+	 * @return boolean
+	 *
 	 * @since 2.0.0
 	 */
 	public function seeInMyDatabase($table, $criteria)
@@ -369,9 +371,11 @@ class AcceptanceTester extends \Codeception\Actor
 		}
 		catch (\RuntimeException $e)
 		{
-			codecept_debug('Error on ' . $table , ':');
+			codecept_debug('Error at ' . $table , ':');
 			codecept_debug($e->getMessage());
-			$this->assertEquals(0, 1);
+
+			return false;
 		}
+		return true;
 	}
 }

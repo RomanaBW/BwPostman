@@ -1570,7 +1570,8 @@ class User2SubscriberCest
 	{
 		if (self::$subscription_selected || (self::$auto_delete !== true))
 		{
-			$result      = array();
+			$result        = array();
+			$hasSubscriber = true;
 
 			$result['email']    = self::$current_mail_address;
 			if (self::$subscription_only)
@@ -1637,8 +1638,9 @@ class User2SubscriberCest
 				}
 			}
 
-			$I->seeInMyDatabase( Generals::$db_prefix . 'bwpostman_subscribers', $result);
+			$hasSubscriber = $I->seeInMyDatabase( Generals::$db_prefix . 'bwpostman_subscribers', $result);
 
+			$I->assertEquals(true, $hasSubscriber);
 		}
 		else
 		{

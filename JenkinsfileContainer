@@ -56,89 +56,89 @@ pipeline {
 			}
 		}
 
-		stage('Run acceptance level 1') {
-			parallel {
-				stage('Suite 1') {
-					steps {
-//						echo "Dummy 1"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR}'"
-						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh ${BWPM_VERSION}"
-					}
-					post {
-						always {
-//							echo "Dummy 1 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR}'"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
-						}
-					}
-				}
-				stage('Suite 2') {
-					steps {
-						retry (2) {
-//							echo "Dummy 2"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR}'"
-							sh "docker exec -t bwpm_accept2_tester /data/do-tests.sh ${BWPM_VERSION}"
-						}
-					}
-					post {
-						always {
-//							echo "Dummy 2 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR}'"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
-						}
-					}
-				}
-				stage('Suite 5') {
-					steps {
-//						echo "Dummy 5"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR}'"
-						sh "docker exec -t bwpm_accept5_tester /data/do-tests.sh ${BWPM_VERSION}"
-					}
-					post {
-						always {
-//							echo "Dummy 5 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR}'"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
-						}
-					}
-				}
-				stage('Suite 6') {
-					steps {
-//						echo "Dummy 6"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept6 do_record=${DO_RECORD_6} ${VERSIONS_EXTRA_VAR}'"
-						sh "docker exec -t bwpm_accept6_tester /data/do-tests.sh ${BWPM_VERSION}"
-					}
-					post {
-						always {
-//							echo "Dummy 6 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept6 ${VERSIONS_EXTRA_VAR}'"
-						}
-						failure {
-							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
-						}
-					}
-				}
-			}
-		}
+//		stage('Run acceptance level 1') {
+//			parallel {
+//				stage('Suite 1') {
+//					steps {
+////						echo "Dummy 1"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR}'"
+//						sh "docker exec -t bwpm_accept1_tester /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 1 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('Suite 2') {
+//					steps {
+//						retry (2) {
+////							echo "Dummy 2"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR}'"
+//							sh "docker exec -t bwpm_accept2_tester /data/do-tests.sh ${BWPM_VERSION}"
+//						}
+//					}
+//					post {
+//						always {
+////							echo "Dummy 2 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('Suite 5') {
+//					steps {
+////						echo "Dummy 5"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR}'"
+//						sh "docker exec -t bwpm_accept5_tester /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 5 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('Suite 6') {
+//					steps {
+////						echo "Dummy 6"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept6 do_record=${DO_RECORD_6} ${VERSIONS_EXTRA_VAR}'"
+//						sh "docker exec -t bwpm_accept6_tester /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 6 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept6 ${VERSIONS_EXTRA_VAR}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//			}
+//		}
 
 		stage('Run acceptance level 2') {
 			parallel {
 				stage('Suite 3') {
 					steps {
-//						echo "Dummy 3"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR}'"
-						sh "docker exec -t bwpm_accept3_tester /data/do-tests.sh ${BWPM_VERSION}"
+						echo "Dummy 3"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR}'"
+//						sh "docker exec -t bwpm_accept3_tester /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
-//							echo "Dummy 3 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR}'"
+							echo "Dummy 3 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")

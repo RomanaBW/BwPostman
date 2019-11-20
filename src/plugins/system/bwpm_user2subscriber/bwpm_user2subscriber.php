@@ -728,6 +728,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if (isset($data['bwpm_user2subscriber']) && count($data['bwpm_user2subscriber']) > 0)
 		{
 			$dataRaw = $data['bwpm_user2subscriber'];
+			$dataRaw['bwpm_name'] = $dataRaw['name'];
 		}
 		else
 		{

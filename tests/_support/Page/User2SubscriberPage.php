@@ -886,7 +886,7 @@ class User2SubscriberPage
 		$subs_id   = $I->grabFromDatabase($table_subs, 'id', array('email' => self::$login_value_email));
 		foreach ($mls_to_subscribe as $mls)
 		{
-			$I->seeInMyDatabase($table_mls, array('subscriber_id' => $subs_id, 'mailinglist_id' => $mls));
+			$I->seeInDatabase($table_mls, array('subscriber_id' => $subs_id, 'mailinglist_id' => $mls));
 		}
 	}
 }

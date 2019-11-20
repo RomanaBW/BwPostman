@@ -140,6 +140,8 @@ pipeline {
 						}
 					}
 				}
+			}
+		}
 
 		stage('Dev-Upload') {
 			steps {

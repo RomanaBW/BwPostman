@@ -135,7 +135,7 @@ test_suites:
   - name: accept1
     tests:
       - lists
-      - maintenance
+      - access2
 
   - name: accept2
     tests:
@@ -143,23 +143,23 @@ test_suites:
 
   - name: accept3
     tests:
-      - frontend
-      - footerusedmailinglists
+      - maintenance
+      - access4
 
   - name: accept4
     tests:
+      - footerusedmailinglists
       - user2subscriber
-  #  - personalize
+      - access1
 
   - name: accept5
     tests:
-      - access1
+      - frontend
       - access3
 
   - name: accept6
     tests:
-      - access2
-      - access4
+  #  - personalize
 
   - name: accept7
     tests:

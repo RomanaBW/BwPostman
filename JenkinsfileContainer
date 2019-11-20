@@ -155,7 +155,7 @@ pipeline {
 //							bwpmAcceptFailureContainer ("Suite_6", "${PROJECT_NAME}")
 //						}
 //					}
-				}
+//				}
 //			}
 //		}
 

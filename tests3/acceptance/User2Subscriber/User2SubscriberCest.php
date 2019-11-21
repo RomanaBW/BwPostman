@@ -198,19 +198,19 @@ class User2SubscriberCest
 		$I->setExtensionStatus('bwpm_user2subscriber', 1);
 
 		$I->amOnPage(InstallPage::$plugin_manage_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingPlugins);
 
 		$I->fillField(Generals::$search_field, Generals::$plugin_u2s);
 		$I->click(Generals::$search_button);
 
 		$I->click(".//*[@id='pluginList']/tbody/tr/td[4]/a");
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingPlugins . ": " . Generals::$plugin_u2s);
 
 		// set mailinglist
 		$I->click(".//*[@id='myTabTabs']/li[3]/a");
-		$I->waitForElement(".//*[@id='jform_params_ml_available']/div", 30);
+		$I->waitForElementVisible(".//*[@id='jform_params_ml_available']/div", 30);
 
 		$checked    = $I->grabAttributeFrom(".//*[@id='mb6']", "checked");
 		if (!$checked)
@@ -219,7 +219,7 @@ class User2SubscriberCest
 		}
 
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(InstallPage::$pluginSavedSuccess, Generals::$alert_success);
 	}
 

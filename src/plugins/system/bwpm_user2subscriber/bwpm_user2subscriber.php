@@ -155,15 +155,6 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	private $debug    = false;
 
 	/**
-	 * Property to error message
-	 *
-	 * @var    string
-	 *
-	 * @since  2.4.0
-	 */
-	private $_subject    = '';
-
-	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
 	 *
 	 * @param Joomla\Event\DispatcherInterface $subject

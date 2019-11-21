@@ -58,7 +58,7 @@ pipeline {
 
 		stage('Run acceptance Joomla4') {
 			parallel {
-				stage('Lists + P2') {
+				stage('1: Lists + P2') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR}'"
@@ -74,7 +74,7 @@ pipeline {
 						}
 					}
 				}
-				stage('Details') {
+				stage('2: Details') {
 					steps {
 						retry (2) {
 //							echo "Dummy 2"
@@ -92,7 +92,7 @@ pipeline {
 						}
 					}
 				}
-				stage('Maintenance + P4') {
+				stage('3: Maintenance + P4') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR}'"
@@ -108,7 +108,7 @@ pipeline {
 						}
 					}
 				}
-				stage('FUM + U2S + P1') {
+				stage('4: FUM + U2S + P1') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR}'"
@@ -124,7 +124,7 @@ pipeline {
 						}
 					}
 				}
-				stage('FE + P3') {
+				stage('5: FE + P3') {
 					steps {
 //						echo "Dummy 5"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR}'"

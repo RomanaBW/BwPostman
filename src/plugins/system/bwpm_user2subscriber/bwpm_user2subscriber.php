@@ -155,6 +155,15 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	private $debug    = false;
 
 	/**
+	 * Property to error message
+	 *
+	 * @var    string
+	 *
+	 * @since  2.4.0
+	 */
+	private $_subject    = '';
+
+	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
 	 *
 	 * @param Joomla\Event\DispatcherInterface $subject
@@ -332,7 +341,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry(sprintf('Array is empty: %s', !empty($data_helper)), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), JLog::DEBUG, $this->log_cat));
 		}
 
 		if (version_compare(JVERSION, '3.999.999', 'le') && !empty($data_helper))
@@ -561,9 +570,10 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$this->form->setValue('mailinglists_required', $this->group, 1);
 		$mailinglists = $this->form->getInput('mailinglists');
-		$this->form->setValue('mailinglists', $this->group, $this->form->getInput('mailinglists'));
+		$this->form->setValue('mailinglists', $this->group, $mailinglists);
 
-		$this->form->setFieldAttribute('bwpm_user2subscriber_mailinglists', 'required', 'true', $this->group);
+		// bwpm_user2subscriber_mailinglists is not the name but the id
+		$this->form->setFieldAttribute('mailinglists', 'required', 'false', $this->group);
 	}
 
 	/**
@@ -725,7 +735,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$user_id   = ArrayHelper::getValue($data, 'id', 0, 'int');
 
 		$subscriber_data = array();
-		if (isset($data['bwpm_user2subscriber']) && count($data['bwpm_user2subscriber']) > 0)
+		if (isset($data['bwpm_user2subscriber']) && is_array($data['bwpm_user2subscriber']))
 		{
 			$dataRaw = $data['bwpm_user2subscriber'];
 			$dataRaw['bwpm_name'] = $dataRaw['name'];
@@ -779,6 +789,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if (!$subscriber_is_to_activate)
 		{
+//			$new_mailinglists       = json_decode($subscriber_data['mailinglists']);
 			$new_mailinglists           = $this->params->get('ml_available', array());
 			$updateMailinglists_result  = BWPM_User2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
 
@@ -903,7 +914,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			$this->_subject->setError($e->getMessage());
+			$this->_subject->$e->getMessage();
 			return false;
 		}
 

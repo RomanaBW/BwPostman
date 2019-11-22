@@ -153,7 +153,7 @@ smoke_source:
   web_image_tag_source: "{{ private_docker_repo }}/romana/joomla-jce-files:{{ joomla_version }}"
   tester_container_name: bwpm_enh_tester
   tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
-  tester_network_name: "bwpm_network-{{ test_suite }}"
+  tester_network_name: "bwpm_network-{{ test_suite }}-{{ j_main_version }}"
 
 smoke_target:
   db_image: "{{ smoke_source.db_image_tag_source }}"

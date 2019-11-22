@@ -13,9 +13,13 @@ joomla_vm_db ansible_connection=docker
 joomla_vm_web ansible_connection=docker
 bwpm_vm_tester ansible_connection=docker
 
-joomla_enh_db ansible_connection=docker ansible_user=root
-joomla_enh_web ansible_connection=docker ansible_user=root
-bwpm_enh_tester ansible_connection=docker ansible_user=root
+joomla_enh_db-3 ansible_connection=docker ansible_user=root
+joomla_enh_web-3 ansible_connection=docker ansible_user=root
+bwpm_enh_tester-3 ansible_connection=docker ansible_user=root
+
+joomla_enh_db-4 ansible_connection=docker ansible_user=root
+joomla_enh_web-4 ansible_connection=docker ansible_user=root
+bwpm_enh_tester-4 ansible_connection=docker ansible_user=root
 
 joomla_files_build ansible_connection=docker
 joomla_tables_build ansible_connection=docker

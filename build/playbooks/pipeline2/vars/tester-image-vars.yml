@@ -174,7 +174,7 @@ acceptance_source:
   tester_network_name: "bwpm_network-{{ test_suite }}-{{ j_main_version }}"
 
 acceptance_target:
-  db_image: "{{ acceptance_source.db_image_tag_source }}-{{ j_main_version }}"
-  web_image: "{{ acceptance_source.web_image_tag_source }}-{{ j_main_version }}"
-  tester_image: "{{ acceptance_source.tester_image_tag_source }}-{{ j_main_version }}"
+  db_image: "{{ acceptance_source.db_image_tag_source }}"
+  web_image: "{{ acceptance_source.web_image_tag_source }}"
+  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
 

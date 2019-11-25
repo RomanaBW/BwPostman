@@ -33,39 +33,75 @@ bwpm_final_db ansible_connection=docker
 bwpm_final_web ansible_connection=docker
 bwpm_final_tester ansible_connection=docker
 
-bwpm_accept1_db ansible_connection=docker
-bwpm_accept1_web ansible_connection=docker
-bwpm_accept1_tester ansible_connection=docker
+bwpm_accept1_db-3 ansible_connection=docker
+bwpm_accept1_web-3 ansible_connection=docker
+bwpm_accept1_tester-3 ansible_connection=docker
 
-bwpm_accept2_db ansible_connection=docker
-bwpm_accept2_web ansible_connection=docker
-bwpm_accept2_tester ansible_connection=docker
+bwpm_accept2_db-3 ansible_connection=docker
+bwpm_accept2_web-3 ansible_connection=docker
+bwpm_accept2_tester-3 ansible_connection=docker
 
-bwpm_accept3_db ansible_connection=docker
-bwpm_accept3_web ansible_connection=docker
-bwpm_accept3_tester ansible_connection=docker
+bwpm_accept3_db-3 ansible_connection=docker
+bwpm_accept3_web-3 ansible_connection=docker
+bwpm_accept3_tester-3 ansible_connection=docker
 
-bwpm_accept4_db ansible_connection=docker
-bwpm_accept4_web ansible_connection=docker
-bwpm_accept4_tester ansible_connection=docker
+bwpm_accept4_db-3 ansible_connection=docker
+bwpm_accept4_web-3 ansible_connection=docker
+bwpm_accept4_tester-3 ansible_connection=docker
 
-bwpm_accept5_db ansible_connection=docker
-bwpm_accept5_web ansible_connection=docker
-bwpm_accept5_tester ansible_connection=docker
+bwpm_accept5_db-3 ansible_connection=docker
+bwpm_accept5_web-3 ansible_connection=docker
+bwpm_accept5_tester-3 ansible_connection=docker
 
-bwpm_accept6_db ansible_connection=docker
-bwpm_accept6_web ansible_connection=docker
-bwpm_accept6_tester ansible_connection=docker
+bwpm_accept6_db-3 ansible_connection=docker
+bwpm_accept6_web-3 ansible_connection=docker
+bwpm_accept6_tester-3 ansible_connection=docker
 
-bwpm_accept7_db ansible_connection=docker
-bwpm_accept7_web ansible_connection=docker
-bwpm_accept7_tester ansible_connection=docker
+bwpm_accept7_db-3 ansible_connection=docker
+bwpm_accept7_web-3 ansible_connection=docker
+bwpm_accept7_tester-3 ansible_connection=docker
 
-bwpm_acceptB2S_db ansible_connection=docker
-bwpm_acceptB2S_web ansible_connection=docker
-bwpm_acceptB2S_tester ansible_connection=docker
+bwpm_accept1_db-4 ansible_connection=docker
+bwpm_accept1_web-4 ansible_connection=docker
+bwpm_accept1_tester-4 ansible_connection=docker
 
-bwpm_acceptTC_db ansible_connection=docker
-bwpm_acceptTC_web ansible_connection=docker
-bwpm_acceptTC_tester ansible_connection=docker
+bwpm_accept2_db-4 ansible_connection=docker
+bwpm_accept2_web-4 ansible_connection=docker
+bwpm_accept2_tester-4 ansible_connection=docker
+
+bwpm_accept3_db-4 ansible_connection=docker
+bwpm_accept3_web-4 ansible_connection=docker
+bwpm_accept3_tester-4 ansible_connection=docker
+
+bwpm_accept4_db-4 ansible_connection=docker
+bwpm_accept4_web-4 ansible_connection=docker
+bwpm_accept4_tester-4 ansible_connection=docker
+
+bwpm_accept5_db-4 ansible_connection=docker
+bwpm_accept5_web-4 ansible_connection=docker
+bwpm_accept5_tester-4 ansible_connection=docker
+
+bwpm_accept6_db-4 ansible_connection=docker
+bwpm_accept6_web-4 ansible_connection=docker
+bwpm_accept6_tester-4 ansible_connection=docker
+
+bwpm_accept7_db-4 ansible_connection=docker
+bwpm_accept7_web-4 ansible_connection=docker
+bwpm_accept7_tester-4 ansible_connection=docker
+
+bwpm_acceptB2S_db-3 ansible_connection=docker
+bwpm_acceptB2S_web-3 ansible_connection=docker
+bwpm_acceptB2S_tester-3 ansible_connection=docker
+
+bwpm_acceptTC_db-3 ansible_connection=docker
+bwpm_acceptTC_web-3 ansible_connection=docker
+bwpm_acceptTC_tester-3 ansible_connection=docker
+
+bwpm_acceptB2S_db-4 ansible_connection=docker
+bwpm_acceptB2S_web-4 ansible_connection=docker
+bwpm_acceptB2S_tester-4 ansible_connection=docker
+
+bwpm_acceptTC_db-4 ansible_connection=docker
+bwpm_acceptTC_web-4 ansible_connection=docker
+bwpm_acceptTC_tester-4 ansible_connection=docker
 

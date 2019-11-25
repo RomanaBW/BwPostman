@@ -61,7 +61,7 @@ pipeline {
 					post {
 						always {
 //							echo "Dummy Smoke ALWAYS"
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_4}")
@@ -79,7 +79,7 @@ pipeline {
 					post {
 						always {
 //							echo "Dummy Smoke ALWAYS"
-							sh "ansible-playbook ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_3}'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_3}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_3}")

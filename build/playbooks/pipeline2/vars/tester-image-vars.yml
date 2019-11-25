@@ -165,16 +165,16 @@ smoke_target:
 
 # Settings for creating acceptance tests container
 acceptance_source:
-  db_container_name: "bwpm_{{ test_suite }}_db"
+  db_container_name: "bwpm_{{ test_suite }}_db-{{ j_main_version }}"
   db_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.db_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
-  web_container_name: "bwpm_{{ test_suite }}_web"
+  web_container_name: "bwpm_{{ test_suite }}_web-{{ j_main_version }}"
   web_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.web_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
-  tester_container_name: "bwpm_{{ test_suite }}_tester"
+  tester_container_name: "bwpm_{{ test_suite }}_tester-{{ j_main_version }}"
   tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
-  tester_network_name: "bwpm_network-{{ test_suite }}"
+  tester_network_name: "bwpm_network-{{ test_suite }}-{{ j_main_version }}"
 
 acceptance_target:
-  db_image: "{{ acceptance_source.db_image_tag_source }}"
-  web_image: "{{ acceptance_source.web_image_tag_source }}"
-  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
+  db_image: "{{ acceptance_source.db_image_tag_source }}-{{ j_main_version }}"
+  web_image: "{{ acceptance_source.web_image_tag_source }}-{{ j_main_version }}"
+  tester_image: "{{ acceptance_source.tester_image_tag_source }}-{{ j_main_version }}"
 

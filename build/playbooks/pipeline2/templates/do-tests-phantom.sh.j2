@@ -6,6 +6,11 @@ rm -f {{ codecept_failed_file }}
 # export sudo user
 export BW_TESTER_USER="jenkins"
 export BWPM_VERSION_TO_TEST="${1}"
+export DISPLAY=:{{ display }}
+
+# start x-server
+echo "Display {{ display }}"
+/usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
 
 phantomjs --webdriver=4447 >{{ test_log_path }}/phantomJS.log 2>{{ test_log_path }}/phantomJS.log  &
 sleep 3

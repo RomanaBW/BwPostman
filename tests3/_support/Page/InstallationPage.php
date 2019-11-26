@@ -669,7 +669,7 @@ class InstallationPage
 			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
 		}
 
-		$I->waitForElement(Generals::$sys_message_container, 150);
+		$I->waitForElementVisible(Generals::$sys_message_container, 150);
 
 		return;
 	}

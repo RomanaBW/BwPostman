@@ -136,7 +136,7 @@ class InstallRequiredCest
 			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
 		}
 
-		$I->waitForElement(Generals::$sys_message_container, 120);
+		$I->waitForElement(Generals::$sys_message_container, 150);
 
 		return;
 	}

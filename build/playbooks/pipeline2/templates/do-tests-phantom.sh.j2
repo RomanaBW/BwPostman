@@ -8,6 +8,8 @@ export BW_TESTER_USER="jenkins"
 export BWPM_VERSION_TO_TEST="${1}"
 
 phantomjs --webdriver=4447 >{{ test_log_path }}/phantomJS.log 2>{{ test_log_path }}/phantomJS.log  &
+sleep 3
+echo "phantom webdriver started"
 
 # run tests
 cd /data

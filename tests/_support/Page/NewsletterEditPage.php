@@ -1392,7 +1392,7 @@ class NewsletterEditPage
 //			$I->wait($iframeTime);
 //		}
 
-		$I->waitForElement(self::$tab5_send_iframeName, 20);
+		$I->waitForElement(self::$tab5_send_iframeName, 40);
 		$I->switchToIFrame(self::$tab5_send_iframe);
 
 		$I->waitForElementVisible(self::$success_send_number_id, 180);

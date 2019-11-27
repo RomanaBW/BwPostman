@@ -366,7 +366,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		$this->logger->addEntry(new JLogEntry('Form is instance'));
+		$this->logger->addEntry(new JLogEntry('Form U2S is instance'));
 
 		// Add CSS and JS for the radio fields
 		$doc = JFactory::getDocument();

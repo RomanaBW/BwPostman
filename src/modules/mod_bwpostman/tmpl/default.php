@@ -553,7 +553,7 @@ function checkModRegisterForm()
 			}
 		});
 		<?php
-		if ($paramsComponent->get('showinmodal') == 1)
+		if ($paramsComponent->get('disclaimer') == 1 && $paramsComponent->get('showinmodal') == 1)
 		{
 		?>
 		function setModModal() {

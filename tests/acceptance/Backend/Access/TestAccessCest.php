@@ -831,7 +831,7 @@ class TestAccessCest
 			if ($button == 'Newsletters')
 			{
 				$I->click(NewsletterManagerPage::$tab2);// switch to tab sent newsletters first
-				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
+				$I->waitForElementVisible(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
 				$extraClick = NewsletterManagerPage::$tab2;
 			}
 

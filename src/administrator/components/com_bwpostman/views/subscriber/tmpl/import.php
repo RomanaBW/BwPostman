@@ -35,7 +35,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('bootstrap.tooltip');
 
-$document = JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscribers_import.js');
+$document = JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
 
 $jinput	= JFactory::getApplication()->input;
 $image	= '<i class="icon-info"></i>';

@@ -878,9 +878,9 @@ class AccessPage
 						'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
 					),
 				'publish_by_toolbar'   => array(
-						'publish_button'    => ".//*[@id='ub0']",
+						'publish_button'    => ".//*[@id='cb0']",
 						'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
-						'unpublish_button'  => ".//*[@id='ub0']",
+						'unpublish_button'  => ".//*[@id='cb0']",
 						'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
 					),
 			),

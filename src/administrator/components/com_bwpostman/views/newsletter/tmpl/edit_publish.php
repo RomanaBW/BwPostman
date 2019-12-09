@@ -35,32 +35,6 @@ JHtml::_('formbehavior.chosen', 'select');
 $image = '<i class="icon-info"></i>';
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel')
-	{
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.publish_save')
-	{
-		form.task.setAttribute('value','newsletter.publish_save');
-		submitform(pressbutton);
-	}
-
-	if (pressbutton == 'newsletter.publish_apply')
-	{
-		form.task.setAttribute('value','newsletter.publish_apply');
-		submitform(pressbutton);
-	}
-};
-/* ]]> */
-</script>
-
 <div id="bwp_view_single">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
 		<div class="form-horizontal">

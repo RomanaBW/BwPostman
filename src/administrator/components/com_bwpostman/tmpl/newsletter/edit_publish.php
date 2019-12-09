@@ -40,32 +40,6 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 $image = '<i class="icon-info"></i>';
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-window.onload = function() {
-	Joomla = window.Joomla || {};
-
-	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
-		if (pressbutton === 'newsletter.cancel') {
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
-
-		if (pressbutton === 'newsletter.publish_save') {
-			form.task.setAttribute('value', 'newsletter.publish_save');
-			Joomla.submitform(pressbutton, form);
-		}
-
-		if (pressbutton === 'newsletter.publish_apply') {
-			form.task.setAttribute('value', 'newsletter.publish_apply');
-			Joomla.submitform(pressbutton, form);
-		}
-	};
-}
-/* ]]> */
-</script>
-
 <div id="bwp_view_single">
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="item-form">
 		<div class="form-horizontal">

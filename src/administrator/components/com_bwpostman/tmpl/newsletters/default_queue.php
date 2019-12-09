@@ -46,18 +46,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	function changeTab(tab)
-	{
-		if (tab !== 'default_unsent')
-		{
-			document.adminForm.tab.setAttribute('value',tab);
-		}
-	}
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<?php
 	if ($this->queueEntries)
@@ -167,6 +155,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="tpl" value="queue" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo HTMLHelper::_('form.token'); ?>
+
+			<input type="hidden" id="currentTab" value="default_queue" />
+			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

@@ -44,87 +44,9 @@ $image_newsletter		= JHtml::_(
 	'administrator/components/com_bwpostman/assets/images/send_f2.png',
 	JText::_('COM_BWPOSTMAN_NL_SENDMAIL')
 );
+
+$currentTab = 'edit_send';
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-
-// This function stay here instead of external JS file to get nearly free of parameters on buttons
-function changeTab(tab, task)
-{
-	if (tab != 'edit_send') {
-//		document.adminForm.layout.setAttribute('value',tab);
-		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel')
-	{
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.back')
-	{
-		form.task.value = 'back';
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.apply')
-	{
-		form.task.setAttribute('value','newsletter.apply');
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.apply' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
-	{
-		form.task.setAttribute('value',pressbutton);
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.sendmail')
-	{
-		confirmSendNl = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING', true); ?>");
-		if (confirmSendNl == true)
-		{
-			form.task.setAttribute('value','newsletter.sendmail');
-			submitform(pressbutton);
-		}
-	}
-
-	if (pressbutton == 'newsletter.sendmailandpublish')
-	{
-		confirmSendNl = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING_AND_PUBLISH', true); ?>");
-		if (confirmSendNl == true)
-		{
-			form.task.setAttribute('value','newsletter.sendmail');
-			submitform(pressbutton);
-		}
-	}
-
-	if (pressbutton == 'newsletter.sendtestmail')
-	{
-		confirmSendNl = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING', true); ?>");
-		if (confirmSendNl == true) {
-			form.task.setAttribute('value','newsletter.sendmail');
-			submitform(pressbutton);
-		}
-	}
-};
-/* ]]> */
-</script>
 
 <div id="bwp_view_single">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
@@ -138,28 +60,28 @@ Joomla.submitbutton = function (pressbutton)
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
-					<button onclick="return changeTab('edit_basic');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_html');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_text');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_preview');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="open">
-						<button onclick="return changeTab('edit_send');" class="buttonAsLink_open">
+						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>
@@ -305,5 +227,8 @@ Joomla.submitbutton = function (pressbutton)
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
+
+		<input type="hidden" id="confirmSend" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING', true); ?>" />
+		<input type="hidden" id="confirmSendPublish" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_SENDING_AND_PUBLISH', true); ?>" />
 	</form>
 </div>

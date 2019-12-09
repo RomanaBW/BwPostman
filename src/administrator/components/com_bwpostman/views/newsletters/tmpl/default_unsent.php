@@ -42,38 +42,6 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
-?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-	function changeTab(tab)
-	{
-		if (tab != 'default_unsent')
-		{
-			document.adminForm.tab.setAttribute('value',tab);
-		}
-	}
-
-	Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton == 'newsletters.archive')
-		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>");
-			if (ConfirmArchive == true)
-			{
-				submitform(pressbutton);
-			}
-		}
-		else
-		{
-			submitform(pressbutton);
-		}
-	};
-
-/* ]]> */
-</script>
-
-<?php
 // Open modalbox if task == startsending --> we will show the sending process in the modalbox
 $jinput	= JFactory::getApplication()->input;
 $task	= $jinput->get->get('task');
@@ -276,6 +244,9 @@ if ($task == "startsending")
 			<input type="hidden" name="tpl" value="unsent" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo JHtml::_('form.token'); ?>
+
+			<input type="hidden" id="currentTab" value="default_unsent" />
+			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

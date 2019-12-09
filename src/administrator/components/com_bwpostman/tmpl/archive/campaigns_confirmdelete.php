@@ -39,7 +39,7 @@ use Joomla\CMS\Language\Text;
 			htmlText += '	<fieldset>';
 			htmlText += '		<table width="100%" id="confirm-delete">';
 			htmlText += '			<tr>';
-			if(window.parent.document.adminForm.boxchecked.value == 0){
+			if(window.parent.document.adminForm.boxchecked.value === 0){
 				htmlText += '				<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';
 			}
 			else

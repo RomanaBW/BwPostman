@@ -197,34 +197,3 @@ $image = '<i class="icon-info"></i>';
 		</fieldset>
 	</div>
 </fieldset>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-var $j	= jQuery.noConflict();
-
-Joomla.submitbutton = function (pressbutton)
-{
-	if (pressbutton == 'campaign.cancel')
-	{
-		submitform(pressbutton);
-		return;
-	}
-
-	if ((pressbutton == 'campaign.apply') || (pressbutton == 'campaign.save') || (pressbutton == 'campaign.save2new') || (pressbutton == 'campaign.save2copy'))
-	{
-		if ($j("input[type=checkbox]:checked").length)
-		{
-			submitform(pressbutton);
-			return true;
-		}
-		else
-		{
-			alert('<?php echo JText::_("COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED"); ?>');
-			return false;
-		}
-	}
-};
-
-/* ]]> */
-</script>
-

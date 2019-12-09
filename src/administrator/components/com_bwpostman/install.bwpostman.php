@@ -1094,7 +1094,7 @@ class Com_BwPostmanInstallerScript
 			try
 			{
 				$bwpostman_main_group  = $_db->loadResult();
-				$bwpostman_main_group  = (int) $bwpostman_main_group;
+				$bwpostman_main_group  = array((int) $bwpostman_main_group);
 			}
 			catch (RuntimeException $e)
 			{

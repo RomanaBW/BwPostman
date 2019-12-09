@@ -130,7 +130,6 @@ codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchUnconfirme
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_listlimit.xml --html htmlreports/report_subscribers_unconfirmed_listlimit.html
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_pagination.xml --html htmlreports/report_subscribers_unconfirmed_pagination.html
 
-
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ImportSubscribersByCSV ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_import_csv.xml --html htmlreports/report_subscribers_import_csv.html
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ImportSubscribersByXML ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_import_xml.xml --html htmlreports/report_subscribers_import_xml.html
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVCA ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_export_csv_ca.xml --html htmlreports/report_subscribers_export_csv_ca.html

@@ -29,6 +29,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -36,95 +37,11 @@ defined('_JEXEC') or die('Restricted access');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('bootstrap.tooltip');
 
-?>
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_export.js');
 
-<script type="text/javascript">
-/* <![CDATA[ */
-//-----------------------------------------------------------------------------
-//http://www.mattkruse.com/javascript/selectbox/source.html
-//-----------------------------------------------------------------------------
-	function selectAllOptions(obj)
-	{
-		for (var i=0; i<obj.options.length; i++)
-		{
-			obj.options[i].selected = true;
-		}
-	}
-
-
-//-----------------------------------------------------------------------------
-// Like: http://www.plus2net.com/javascript_tutorial/list-remove.php
-//-----------------------------------------------------------------------------
-	function removeOptions(selectbox)
-	{
-		var i;
-
-		for(i=selectbox.options.length-1;i>=0;i--)
-		{
-			if(selectbox.options[i].selected)
-			{
-				selectbox.remove(i);
-			}
-		}
-	}
-
-//-----------------------------------------------------------------------------
-//http://javascript.internet.com/forms/select-box-with-options.html
-//-----------------------------------------------------------------------------
-	function moveUp(element) // Method to move an item up
-	{
-		for(i = 0; i < element.options.length; i++)
-		{
-			if(element.options[i].selected == true)
-			{
-				if(i != 0)
-				{
-					var temp    = new Option(element.options[i-1].text,element.options[i-1].value);
-					var temp2   = new Option(element.options[i].text,element.options[i].value);
-					element.options[i-1] = temp2;
-					element.options[i-1].selected = true;
-					element.options[i] = temp;
-				}
-			}
-		}
-	}
-
-	function moveDown(element) // Method to move an item down
-	{
-		for(i = (element.options.length - 1); i >= 0; i--)
-		{
-			if(element.options[i].selected == true)
-			{
-				if(i != (element.options.length - 1))
-				{
-					var temp    = new Option(element.options[i+1].text,element.options[i+1].value);
-					var temp2   = new Option(element.options[i].text,element.options[i].value);
-					element.options[i+1] = temp2;
-					element.options[i+1].selected = true;
-					element.options[i] = temp;
-				}
-			}
-		}
-	}
-
-	function check() // Method to check if the user didn't delete all items in the select box
-	{
-		var count_export_fields = document.getElementById('export_fields').length;
-
-		if (count_export_fields <= 0)
-		{
-		alert ("<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_NO_EXPORTFIELDS', true); ?>");
-		return 0;
-		}
-		return 1;
-	}
- /* ]]> */
-</script>
-
-<?php
-	$jinput	= Factory::getApplication()->input;
-	$image	= '<i class="icon-info"></i>';
-	$option	= $jinput->getCmd('option');
+$jinput	= Factory::getApplication()->input;
+$image	= '<i class="icon-info"></i>';
+$option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo $this->request_url_raw; ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
@@ -227,66 +144,8 @@ HTMLHelper::_('bootstrap.tooltip');
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<?php echo HTMLHelper::_('form.token'); ?>
+
+	<input type="hidden" id="exportAlertText" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_NO_EXPORTFIELDS', true); ?>" />
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-window.onload = function() {
-	var $j = jQuery.noConflict();
-
-	function extCheck() {
-		var format = $j("input[name='fileformat']:checked").val();
-
-		switch (format) {
-			case 'xml':
-				$j(".exportgroups").show();
-				$j(".exportfields").show();
-				break;
-			case 'csv':
-				$j(".exportgroups").show();
-				$j(".exportfields").show();
-				$j(".delimiter").show();
-				$j(".enclosure").show();
-				$j(".caption").show();
-				break;
-		}
-	}
-
-	$j(document).ready(function () {
-		$j(".delimiter").hide();
-		$j(".enclosure").hide();
-		$j(".caption").hide();
-		$j(".exportgroups").hide();
-		$j(".exportfields").hide();
-		$j(".button").hide();
-	});
-
-	$j("input[name='fileformat']").on("change", function () {
-		$j(".delimiter").hide();
-		$j(".enclosure").hide();
-		extCheck();
-	});
-
-	$j(".state input[type='checkbox']").on("change", function () {
-		if ($j(".archive input:checked").length) {
-			$j(".button").show();
-		}
-		if ($j(".state input:checked").length === 0) {
-			$j(".button").hide();
-		}
-	});
-
-	$j(".archive input[type='checkbox']").on("change", function () {
-		if ($j(".state input:checked").length) {
-			$j(".button").show();
-		}
-		if ($j(".archive input:checked").length === 0) {
-			$j(".button").hide();
-		}
-	});
-}
-/* ]]> */
-</script>
-

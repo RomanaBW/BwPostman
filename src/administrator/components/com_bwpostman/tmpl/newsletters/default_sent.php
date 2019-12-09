@@ -59,40 +59,6 @@ $modalParams['bodyHeight'] = 70;
 Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	function changeTab(tab)
-	{
-		if (tab !== 'default_unsent')
-		{
-			document.adminForm.tab.setAttribute('value',tab);
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-Joomla = window.Joomla || {};
-
-Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton === 'newsletters.archive')
-		{
-			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>");
-			if (ConfirmArchive === true)
-			{
-				Joomla.submitform(pressbutton, document.adminForm);
-			}
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-	};
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<?php
 	if ($this->queueEntries)
@@ -310,6 +276,9 @@ Joomla.submitbutton = function (pressbutton)
 			<input type="hidden" name="tpl" value="sent" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo HTMLHelper::_('form.token'); ?>
+
+			<input type="hidden" id="currentTab" value="default_sent" />
+			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

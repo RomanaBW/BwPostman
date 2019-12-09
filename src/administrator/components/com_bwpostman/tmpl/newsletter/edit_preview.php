@@ -194,36 +194,3 @@ $currentTab = 'edit_preview';
 		<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 </div>
-
-<script type="text/javascript">
-	/* <![CDATA[ */
-	window.onload = function() {
-		Joomla = window.Joomla || {};
-
-		Joomla.submitbutton = function (pressbutton) {
-			var form = document.adminForm;
-			if (pressbutton === 'newsletter.cancel') {
-				Joomla.submitform(pressbutton, form);
-				return;
-			}
-
-			if (pressbutton === 'newsletter.back') {
-				form.task.value = 'back';
-				Joomla.submitform(pressbutton, form);
-				return;
-			}
-
-			if (pressbutton === 'newsletter.apply') {
-				document.adminForm.task.setAttribute('value', 'newsletter.apply');
-				Joomla.submitform(pressbutton, form);
-				return;
-			}
-
-			if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy') {
-				document.adminForm.task.setAttribute('value', 'newsletter.save');
-				Joomla.submitform(pressbutton, form);
-			}
-		};
-	}
-	/* ]]> */
-</script>

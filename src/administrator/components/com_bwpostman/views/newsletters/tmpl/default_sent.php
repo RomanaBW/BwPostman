@@ -45,69 +45,9 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
 JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
+
+$currentTab = "default_sent";
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.checkAll2 = function(checkbox, stub)
-	{
-		if (!stub)
-		{
-			stub = 'ub';
-		}
-		if (checkbox.form)
-		{
-			var c = 0, i, e;
-			for (i = 0, n = checkbox.form.elements.length; i < n; i++)
-			{
-				e = checkbox.form.elements[i];
-				if (e.type == checkbox.type)
-				{
-					if ((stub && e.id.indexOf(stub) == 0) || !stub)
-					{
-						e.checked = checkbox.checked;
-						c += (e.checked == true ? 1 : 0);
-					}
-				}
-			}
-			if (checkbox.form.boxchecked)
-			{
-				checkbox.form.boxchecked.value = c;
-			}
-			return true;
-		}
-		return false;
-	};
-
-	function changeTab(tab)
-	{
-		if (tab != 'default_unsent')
-		{
-			document.adminForm.tab.setAttribute('value',tab);
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton == 'newsletters.archive')
-		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>");
-			if (ConfirmArchive == true)
-			{
-				submitform(pressbutton);
-			}
-		}
-		else
-		{
-			submitform(pressbutton);
-		}
-	};
-/* ]]> */
-</script>
 
 <div id="bwp_view_lists">
 	<?php
@@ -164,7 +104,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 						<tr>
 							<th width="30" nowrap="nowrap" align="center">
 								<input type="checkbox" name="checkall-toggle" value=""
-										title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll2(this)" />
+										title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 							</th>
 							<th nowrap="nowrap">
 								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
@@ -202,7 +142,7 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 						foreach ($this->items as $i => $item) :
 							?>
 							<tr class="row<?php echo $i % 2; ?>">
-								<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id, 0, 'cid', 'ub'); ?></td>
+								<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 								<td>
 									<?php if (!empty($item->attachment)) { ?>
 										<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
@@ -312,6 +252,10 @@ JFactory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			<input type="hidden" name="tpl" value="sent" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo JHtml::_('form.token'); ?>
+
+
+			<input type="hidden" id="currentTab" value="default_sent" />
+			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

@@ -1058,7 +1058,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				$msg = JText::_('COM_BWPOSTMAN_NL_ARCHIVED');
 			}
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
+			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters', false);
 			$this->setRedirect($link, $msg);
 		}
 

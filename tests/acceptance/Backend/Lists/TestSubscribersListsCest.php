@@ -770,6 +770,7 @@ class TestSubscribersListsCest
 		$I->wait(1);
 
 		$I->click(Generals::$toolbar['Import']);
+		$I->waitForElementVisible(SubsManage::$import_csv_button, 5);
 		$I->dontSeeElement(SubsManage::$import_search_button);
 
 		$I->click(SubsManage::$import_csv_button);
@@ -829,6 +830,7 @@ class TestSubscribersListsCest
 		$I->wait(1);
 
 		$I->click(Generals::$toolbar['Import']);
+		$I->waitForElementVisible(SubsManage::$import_xml_button, 5);
 		$I->dontSeeElement(SubsManage::$import_search_button);
 
 		$I->click(SubsManage::$import_xml_button);
@@ -884,7 +886,8 @@ class TestSubscribersListsCest
 		$I->wait(1);
 
 		$I->click(Generals::$toolbar['Export']);
-		$I->dontSeeElement(SubsManage::$import_search_button);
+		$I->waitForElementVisible(SubsManage::$import_csv_button, 5);
+		$I->dontSeeElement(SubsManage::$export_csv_confirmed);
 
 		$I->click(SubsManage::$import_csv_button);
 		$I->seeElement(SubsManage::$export_csv_confirmed);
@@ -907,7 +910,7 @@ class TestSubscribersListsCest
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->clickAndWait(SubsManage::$export_button_export, 15);
 
 		$I->seeFileFound($filename, $exportPath);
 
@@ -950,7 +953,8 @@ class TestSubscribersListsCest
 		$I->wait(1);
 
 		$I->click(Generals::$toolbar['Export']);
-		$I->dontSeeElement(SubsManage::$import_search_button);
+		$I->waitForElementVisible(SubsManage::$import_csv_button, 5);
+		$I->dontSeeElement(SubsManage::$export_csv_confirmed);
 
 		$I->click(SubsManage::$import_csv_button);
 		$I->seeElement(SubsManage::$export_csv_confirmed);
@@ -973,7 +977,7 @@ class TestSubscribersListsCest
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->clickAndWait(SubsManage::$export_button_export, 15);
 
 		$I->seeFileFound($filename, $exportPath);
 
@@ -1016,7 +1020,8 @@ class TestSubscribersListsCest
 		$I->wait(1);
 
 		$I->click(Generals::$toolbar['Export']);
-		$I->dontSeeElement(SubsManage::$import_search_button);
+		$I->waitForElementVisible(SubsManage::$import_csv_button, 5);
+		$I->dontSeeElement(SubsManage::$export_csv_confirmed);
 
 		$I->click(SubsManage::$import_csv_button);
 		$I->seeElement(SubsManage::$export_csv_confirmed);
@@ -1041,7 +1046,7 @@ class TestSubscribersListsCest
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->clickAndWait(SubsManage::$export_button_export, 15);
 
 		$I->seeFileFound($filename, $exportPath);
 
@@ -1126,7 +1131,7 @@ class TestSubscribersListsCest
 		$downloadPath   = $exportPath . $filename;
 
 		// Download export file, check if it is there
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->clickAndWait(SubsManage::$export_button_export, 15);
 		$I->seeFileFound($filename, $exportPath);
 
 		// Check exported datasets
@@ -1210,7 +1215,7 @@ class TestSubscribersListsCest
 		$downloadPath   = $exportPath . $filename;
 
 		// Download export file, check if it is there
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->clickAndWait(SubsManage::$export_button_export, 15);
 		$I->seeFileFound($filename, $exportPath);
 
 		// Check exported datasets
@@ -1275,7 +1280,7 @@ class TestSubscribersListsCest
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
 		$downloadPath   = $exportPath . $filename;
 
-		$I->clickAndWait(SubsManage::$export_button_export, 10);
+		$I->clickAndWait(SubsManage::$export_button_export, 15);
 
 		$I->seeFileFound($filename, $exportPath);
 

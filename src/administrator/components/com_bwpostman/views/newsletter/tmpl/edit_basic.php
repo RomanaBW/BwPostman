@@ -42,121 +42,17 @@ $checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NO_TEXT_TEMPLATE_SELECTED', t
 
 $checkRecipientArgs	= "'" . JText::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
 
-$currentTab = 'edit_basic';
-?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-var $j	= jQuery.noConflict();
-
-function changeTab(tab)
+if (isset($this->substitute))
 {
-	if (tab != 'edit_basic')
-	{
-		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');
-		checkSelectedContent(<?php echo $checkContentArgs; ?>);
-		if ($j("#jform_campaign_id option:selected").val() == '-1')
-		{
-			res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-			return res;
-		}
-		else
-		{
-			return true;
-		}
-	}
-	else
-	{
-		return false;
-	}
+	$substitute = $this->substitute;
+}
+else
+{
+	$substitute = false;
 }
 
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel')
-	{
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.back')
-	{
-		form.task.value = 'back';
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.apply' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
-	{
-		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
-		{
-			document.adminForm.task.setAttribute('value',pressbutton);
-			if ($j("#jform_campaign_id option:selected").val() == '-1')
-			{
-				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-				if (res == false)
-				{
-					return false;
-				}
-				else
-				{
-					submitform(pressbutton);
-					return true;
-				}
-			}
-			else
-			{
-				submitform(pressbutton);
-				return true;
-			}
-		}
-	}
-
-	if (pressbutton == 'newsletter.save')
-	{
-		if (checkSelectedContent(<?php echo $checkContentArgs; ?>)== true)
-		{
-			document.adminForm.task.setAttribute('value',pressbutton);
-			if ($j("#jform_campaign_id option:selected").val() == '-1')
-			{
-				res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-				if (res == false)
-				{
-					return false;
-				}
-				else
-				{
-					submitform(pressbutton);
-					return true;
-				}
-			}
-			else
-			{
-				submitform(pressbutton);
-				return true;
-			}
-		}
-	}
-};
-<?php if (isset($this->substitute) && $this->substitute === true): ?>
-window.onload = function()
-{
-	var substitute =  document.getElementsByName("jform[substitute_links]");
-	for (var i=0; i < substitute.length; i++)
-	{
-		substitute[i].onclick = function()
-		{
-			document.getElementById("add_content").value = "1";
-			document.getElementById("template_id_old").value = "";
-		};
-	}
-};
-
-<?php endif; ?>
-/* ]]> */
-</script>
+$currentTab = 'edit_basic';
+?>
 
 <div id="bwp_view_single">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
@@ -169,28 +65,28 @@ window.onload = function()
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="open">
-					<button onclick="return changeTab('edit_basic');" class="buttonAsLink_open">
+					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink_open">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_html');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_text');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_preview');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="closed">
-						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
+						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>
@@ -480,35 +376,10 @@ window.onload = function()
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
+
+		<input type="hidden" id="checkContentArgs" value="<?php echo $checkContentArgs; ?>" />
+		<input type="hidden" id="checkRecipientArgs" value="<?php echo $checkRecipientArgs; ?>" />
+		<input type="hidden" id="substituteLinks" value="<?php echo $substitute; ?>" />
+		<input type="hidden" id="currentTab" value="<?php echo $currentTab; ?>" />
 	</form>
 </div>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-var $j	= jQuery.noConflict();
-
-$j(document).ready(function()
-{
-	if ($j("#jform_campaign_id option:selected").val() != '-1')
-	{
-		$j( "#recipients" ).hide();
-	}
-	else
-	{
-		$j( "#recipients" ).show();
-	}
-});
-
-$j("#jform_campaign_id").on("change", function()
-{
-	if ($j("#jform_campaign_id option:selected").val() != '-1')
-	{
-		$j( "#recipients" ).hide();
-	}
-	else
-	{
-		$j( "#recipients" ).show();
-	}
-});
-/* ]]> */
-</script>

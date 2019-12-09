@@ -250,6 +250,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NLS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nls.js');
 
 		// Add Javascript to make squeezebox close-button invisible
 		$document->addScriptDeclaration('
@@ -414,6 +415,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NLS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nls.js');
 
 		// Add Javascript to make squeezebox close-button invisible
 		$document->addScriptDeclaration('

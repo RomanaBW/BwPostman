@@ -510,6 +510,9 @@ class TestTemplatesDetailsCest
 		$I->see('', TplEdit::$title);
 		$I->click(Generals::$toolbar['Cancel']);
 
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
+
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
@@ -566,6 +569,9 @@ class TestTemplatesDetailsCest
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
 		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -655,6 +661,9 @@ class TestTemplatesDetailsCest
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->click(TplEdit::$toolbar['Cancel']);
 
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
+
 		$I->see("Template", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
@@ -741,6 +750,9 @@ class TestTemplatesDetailsCest
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
 		$I->click(Generals::$toolbar['Cancel']);
+
+		$I->seeInPopup(TplEdit::$popup_changes_not_saved);
+		$I->acceptPopup();
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);

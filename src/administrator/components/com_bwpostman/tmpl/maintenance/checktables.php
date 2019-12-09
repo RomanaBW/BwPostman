@@ -38,7 +38,8 @@ $uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', true, true);
 HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
 
-$model		= $this->getModel();
+$model	= $this->getModel();
+$uri    = Uri::root();
 ?>
 
 <div id="checkResult" class="row">
@@ -56,57 +57,8 @@ $model		= $this->getModel();
 		<div id="result"></div>
 	</div>
 </div>
+
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
-<?php
-$uri = Uri::root();
-?>
+<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1" />
 
-<script type="text/javascript">
-	window.onload = function() {
-		function doAjax(data, successCallback) {
-			var structure =
-				{
-					success: function (data) {
-						// Call the callback function
-						successCallback(data);
-					},
-					error  : function (req) {
-						var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
-						jQuery('div#loading2').css({display: 'none'});
-						jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-						jQuery('div#result').html(message);
-						jQuery('div#toolbar').find('button').removeAttr('disabled');
-					}
-				};
-
-			structure.url = starturl;
-			structure.data = data;
-			structure.type = 'POST';
-			structure.dataType = 'json';
-			jQuery.ajax(structure);
-		}
-
-		function processUpdateStep(data) {
-			jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
-			jQuery('p#step' + data.step).addClass('alert alert-info');
-			// Do AJAX post
-			post = {step: 'step' + data.step};
-			doAjax(post, function (data) {
-				if (data.ready != "1") {
-					processUpdateStep(data);
-				} else {
-					jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
-					jQuery('div#loading2').css({display: 'none'});
-					jQuery('div#result').html(data.result);
-					jQuery('div#toolbar').find('button').removeAttr('disabled');
-				}
-			});
-		}
-
-		jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-		var starturl = 'index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1';
-		var data = {step: "1"};
-		processUpdateStep(data);
-	}
-</script>

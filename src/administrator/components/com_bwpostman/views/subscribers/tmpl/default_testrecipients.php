@@ -44,44 +44,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $colNum = 7;
 ?>
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	function changeTab(tab)
-	{
-		if (tab != 'default_testrecipients')
-		{
-			document.adminForm.tab.setAttribute('value',tab);
-		}
-	}
-
-	function OnlyFiltered(onlyFiltered) // Get the selected value from modal box
-	{
-		if (onlyFiltered === '1') {
-			document.getElementById('mlToExport').value = '<?php echo $this->filterMl; ?>';
-		}
-
-		Joomla.submitbutton('subscribers.exportSubscribers', document.adminForm);
-	}
-
-	Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton == 'subscriber.archive')
-		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE', true); ?>");
-			if (ConfirmArchive == true)
-			{
-				submitform(pressbutton);
-				return;
-			}
-		}
-		else
-		{
-			submitform(pressbutton);
-		}
-	};
-	/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=subscribers'); ?>"
 			method="post" name="adminForm" id="adminForm">
@@ -242,8 +204,11 @@ $colNum = 7;
 			<input type="hidden" name="tpl" value="testrecipients" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" id="mlToExport" name="mlToExport" value="" />
-
 			<?php echo JHtml::_('form.token'); ?>
+
+			<input type="hidden" id="currentTab" value="default_testrecipients" />
+			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE', true); ?>" />
+			<input type="hidden" id="exportMl" value="<?php echo $this->filterMl; ?>" />
 		</div>
 	</form>
 </div>

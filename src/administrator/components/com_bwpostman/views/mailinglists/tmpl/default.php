@@ -38,26 +38,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton == 'archive')
-		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_ML_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true)
-			{
-				submitform(pressbutton);
-			}
-		}
-		else
-		{
-			submitform(pressbutton);
-		}
-	};
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-inline">

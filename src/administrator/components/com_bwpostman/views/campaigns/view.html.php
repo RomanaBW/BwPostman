@@ -198,6 +198,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		$document	= Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_CAMS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive_cam_nls.js');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAMS'), 'list');
@@ -273,6 +274,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		$document	= Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_CAMS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive_cam_nls.js');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAMS'), 'list');

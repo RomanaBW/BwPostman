@@ -189,6 +189,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_ML_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_mailinglist.js');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
@@ -291,6 +292,7 @@ class BwPostmanViewMailinglist extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_ML_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_mailinglist.js');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');

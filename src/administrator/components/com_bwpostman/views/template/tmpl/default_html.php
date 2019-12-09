@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.keepalive');
 
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_html.js');
 
 $image = '<i class="icon-info"></i>';
 
@@ -47,157 +48,6 @@ $options = array(
 	'useCookie' => true, // this must not be a string. Don't use quotes.
 );
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-		var form = document.adminForm;
-
-		if (pressbutton == 'template.save')
-		{
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons" ,0);
-		}
-
-		if (pressbutton == 'template.apply')
-		{
-			writeStore("inputs", 0);
-		}
-
-		if (pressbutton == 'template.save2copy')
-		{
-			writeStore("inputs", 0);
-		}
-
-		if (pressbutton == 'template.cancel')
-		{
-			// check if form field values has changed
-			var inputs_old = readStore("inputs");
-			inputs = checkValues(1);
-			if (inputs_old === inputs)
-			{
-			}
-			else
-			{
-			// confirm if cancel or not
-				confirmCancel =confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
-				if (confirmCancel == false)
-				{
-					return;
-				}
-			}
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
-
-		// Validate input fields
-		if (form.jform_title.value == "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
-		}
-		else if (form.jform_description.value== "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, form);
-		}
-	};
-
-		// insert placeholder
-		function buttonClick(text, editor)
-		{
-			jInsertEditorText(text, editor);
-		}
-
-		// check form field values
-		function checkValues(turn)
-		{
-			var inputs = '';
-			var elements = document.adminForm.elements;
-			for (var i=0; i<elements.length; i++)
-			{
-				if (elements[i].getAttribute('id') == 'jform_tpl_css')
-				{
-					var fieldValue = elements[i].value.length;
-				}
-				else if (elements[i].getAttribute('id') == 'jform_tpl_html')
-				{
-				}
-				else
-					{
-					var fieldValue = elements[i].value;
-				}
-				if (elements[i].getAttribute('checked') != false)
-				{
-					var fieldChecked = elements[i].getAttribute('checked');
-				}
-				inputs += fieldValue + fieldChecked;
-			}
-			if (turn == 0)
-			{
-				writeStore("inputs", inputs);
-			}
-			else
-			{
-				return inputs;
-			}
-		}
-
-		// write to storage
-		function writeStore(item, value)
-		{
-			if (Browser.Features.localstorage)
-			{
-				localStorage[item] = value;
-			}
-			else
-			{
-				Cookie.write(item, value);
-			}
-		}
-
-		// read storage
-		function readStore(item)
-		{
-			if (Browser.Features.localstorage)
-			{
-				itemValue = localStorage[item];
-			}
-			else
-			{
-				itemValue = Cookie.read(item);
-			}
-			return itemValue;
-		}
-
-		window.onload = function() {
-		var framefenster = document.getElementById("myIframe");
-
-		if(framefenster.contentWindow.document.body)
-		{
-			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
-			if(document.all && !window.opera)
-			{
-				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
-			}
-			framefenster.style.height = framefenster_size + 'px';
-		}
-		// check if store is empty or 0
-		var store = readStore("inputs");
-		if (store == 0 || store === undefined || store === null)
-		{
-			checkValues(0);
-		}
-	};
-/* ]]> */
-</script>
 
 <div id="bwp_view_lists">
 	<?php
@@ -379,6 +229,11 @@ $options = array(
 		<?php echo $this->form->getInput('archive_time'); ?>
 		<?php echo $this->form->getInput('templates_table_id'); ?>
 		<?php echo JHtml::_('form.token'); ?>
+
+		<input type="hidden" id="cancelText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>" />
+		<input type="hidden" id="titleErrorText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>" />
+		<input type="hidden" id="descriptionErrorText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>" />
+
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 	</form>
 

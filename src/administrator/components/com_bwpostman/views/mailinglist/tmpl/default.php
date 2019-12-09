@@ -34,36 +34,6 @@ JHtml::_('formbehavior.chosen', 'select');
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-
-		var form = document.adminForm;
-
-		if (pressbutton == 'mailinglist.cancel')
-		{
-			submitform(pressbutton);
-			return;
-		}
-
-		// Validate input fields
-		if (form.jform_title.value == "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>");
-		}
-		else if (form.jform_description.value== "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION', true); ?>");
-		}
-		else
-		{
-			submitform(pressbutton);
-		}
-	};
-/* ]]> */
-</script>
-
 <div id="bwp_editform">
 	<?php
 	if ($this->queueEntries)
@@ -172,5 +142,7 @@ JHtml::_('formbehavior.chosen', 'select');
 		<?php echo $this->form->getInput('archive_time'); ?>
 		<?php echo JHtml::_('form.token'); ?>
 
+		<input type="hidden" id="alertTitle" value="<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>" />
+		<input type="hidden" id="alertDescription" value="<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'); ?>" />
 	</form>
 </div>

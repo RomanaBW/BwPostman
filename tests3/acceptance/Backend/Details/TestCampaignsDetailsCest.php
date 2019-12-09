@@ -396,11 +396,11 @@ class TestCampaignsDetailsCest
 		$I->click(CamEdit::$toolbar['Save & Close']);
 
 		// check for title
-//		$I->seeInPopup(CamEdit::$popup_no_recipients);
-//		$I->acceptPopup();
-		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Warning", Generals::$alert_header);
-		$I->see(CamEdit::$warning_no_title, Generals::$alert);
+		$I->seeInPopup(CamEdit::$popup_title);
+		$I->acceptPopup();
+//		$I->waitForElement(Generals::$alert_header, 30);
+//		$I->see("Warning", Generals::$alert_header);
+//		$I->see(CamEdit::$warning_no_title, Generals::$alert);
 
 		// fill title and description
 		$I->fillField(CamEdit::$title, CamEdit::$field_title);

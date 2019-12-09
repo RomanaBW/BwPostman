@@ -19,8 +19,7 @@ ALTER TABLE `#__bwpostman_subscribers` ADD `modified_by` int(10) unsigned NOT NU
 
 
 ALTER TABLE `#__bwpostman_newsletters` CHANGE `creation_date` `created_date` datetime NOT NULL default '0000-00-00 00:00:00';
-ALTER TABLE `#__bwpostman_newsletters` MODIFY `author` int(11) NOT NULL default '0' AFTER `created_date`;
-ALTER TABLE `#__bwpostman_newsletters` CHANGE `author` `created_by` int(11) NOT NULL default '0';
+ALTER TABLE `#__bwpostman_newsletters` CHANGE `author` `created_by` int(10) unsigned NOT NULL default '0';
 ALTER TABLE `#__bwpostman_newsletters` CHANGE `last_modification` `modified_time` datetime NOT NULL default '0000-00-00 00:00:00';
 ALTER TABLE `#__bwpostman_newsletters` ADD `usergroups` varchar(255) NOT NULL default '' AFTER `campaign_id`;
 ALTER TABLE `#__bwpostman_newsletters` ADD `modified_by` int(10) unsigned NOT NULL default '0' AFTER `modified_time`;

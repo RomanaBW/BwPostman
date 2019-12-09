@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
+use Joomla\CMS\Uri\Uri;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -71,6 +72,9 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$app 	= Factory::getApplication();
 		$jinput	= $app->input;
 		$task	= $jinput->get('task', 'export');
+
+		$document	= Factory::getDocument();
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
 
 		if ($task == 'insideModal')
 		{
@@ -137,7 +141,6 @@ class BwPostmanViewSubscriber extends JViewLegacy
 			}
 
 			// Joomla overwrites content-type, we can't use $appWeb->setHeader()
-			$document = Factory::getDocument();
 			$document->setMimeEncoding($mime_type);
 
 			@ob_end_clean();

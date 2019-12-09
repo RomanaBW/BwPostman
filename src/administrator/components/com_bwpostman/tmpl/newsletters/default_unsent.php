@@ -55,37 +55,6 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 	->addState(1, 'newsletter.changeIsTemplate', 'featured', 'COM_CONTENT_FEATURED');
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	function changeTab(tab)
-	{
-		if (tab !== 'default_unsent')
-		{
-			document.adminForm.tab.setAttribute('value',tab);
-		}
-	}
-
-Joomla = window.Joomla || {};
-
-Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton === 'newsletters.archive')
-		{
-			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>");
-			if (ConfirmArchive === true)
-			{
-				Joomla.submitform(pressbutton, document.adminForm);
-			}
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-	};
-
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<?php
 	// Open modalbox if task == startsending --> we will show the sending process in the modalbox
@@ -258,6 +227,9 @@ Joomla.submitbutton = function (pressbutton)
 			<input type="hidden" name="tpl" value="unsent" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo HTMLHelper::_('form.token'); ?>
+
+			<input type="hidden" id="currentTab" value="default_unsent" />
+			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

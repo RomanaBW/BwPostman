@@ -32,6 +32,7 @@ use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -115,6 +116,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			// Joomla overwrites content-type, we can't use $appWeb->setHeader()
 			$document = Factory::getDocument();
 			$document->setMimeEncoding($mimeType);
+			$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_checktables.js');
 
 			@ob_end_clean();
 			ob_start();

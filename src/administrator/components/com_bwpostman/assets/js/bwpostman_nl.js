@@ -176,7 +176,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 function checkSelectedRecipients (message) { // Method to check if some recipients are selected
 
 	var count_selected = 0;
-	var campaign_id = document.getElementById('jform[campaign_id');
+	var campaign_id = document.getElementById('jform_campaign_id').value;
 	var ml_available = document.getElementsByName('jform[ml_available][]');
 	var ml_unavailable = document.getElementsByName('jform[ml_unavailable][]');
 	var ml_intern = document.getElementsByName('jform[ml_intern][]');
@@ -311,24 +311,21 @@ function changeTab(newTab, currentTab, text_confirm_content, text_confirm_templa
 			var selectedContentOkay = checkSelectedContent(text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template);
 
 			if (selectedContentOkay === false) {
-				return;
+				return false;
 			}
 
 			var hasCampaign = window.hasCampaign();
 
-			if (hasCampaign) {
+			if (!hasCampaign) {
 				var campaignRecipientsOkay = checkSelectedRecipients(checkRecipientMessage);
 			}
 
 			if (campaignRecipientsOkay === false) {
-				return;
+				return false;
 			}
 		}
-
 		document.adminForm.tab.setAttribute('value', newTab);
 		document.adminForm.task.setAttribute('value', 'newsletter.changeTab');
-	} else {
-		return false;
 	}
 }
 
@@ -343,3 +340,118 @@ function switchRecipients() {
 		recipients.style.display = "flex";
 	}
 }
+
+var $j	= jQuery.noConflict();
+
+window.onload = function() {
+	Joomla = window.Joomla || {};
+
+	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
+		var selectedCampaign = document.getElementById("jform_campaign_id");
+		var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+	}
+
+	Joomla.submitbutton = function (pressbutton) {
+		var form = document.adminForm;
+		if (pressbutton === 'newsletter.cancel') {
+			Joomla.submitform(pressbutton, form);
+			return;
+		}
+
+		if (pressbutton === 'newsletter.back') {
+			form.task.value = 'back';
+			Joomla.submitform(pressbutton, form);
+			return;
+		}
+
+		if (pressbutton === 'newsletter.publish_save') {
+			form.task.setAttribute('value', 'newsletter.publish_save');
+			Joomla.submitform(pressbutton, form);
+		}
+
+		if (pressbutton === 'newsletter.publish_apply') {
+			form.task.setAttribute('value', 'newsletter.publish_apply');
+			Joomla.submitform(pressbutton, form);
+		}
+
+		if (pressbutton === 'newsletter.sendmail') {
+			confirmSendNl = confirm(document.getElementById('confirmSend').value);
+			if (confirmSendNl === true) {
+				form.task.setAttribute('value', 'newsletter.sendmail');
+				Joomla.submitform(pressbutton, form);
+			}
+		}
+
+		if (pressbutton === 'newsletter.sendmailandpublish') {
+			confirmSendNl = confirm(document.getElementById('confirmSendPublish').value);
+			if (confirmSendNl === true) {
+				form.task.setAttribute('value', 'newsletter.sendmail');
+				Joomla.submitform(pressbutton, form);
+			}
+		}
+
+		if (pressbutton === 'newsletter.sendtestmail') {
+			confirmSendNl = confirm(document.getElementById('confirmSend').value);
+			if (confirmSendNl === true) {
+				form.task.setAttribute('value', 'newsletter.sendmail');
+				Joomla.submitform(pressbutton, form);
+			}
+		}
+
+		if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.apply' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy')
+		{
+			form.task.setAttribute('value', pressbutton);
+
+			if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic')
+			{
+				var selectedCampaign = document.getElementById("jform_campaign_id");
+				var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+
+				if (checkSelectedContent(document.getElementById('checkContentArgs').value !== ''))
+				{
+					form.task.setAttribute('value',pressbutton);
+					if (selectedCampaignValue === '-1')
+					{
+						res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
+						if (res === false)
+						{
+							return false;
+						}
+					}
+				}
+			}
+			Joomla.submitform(pressbutton, form);
+		}
+	};
+
+	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
+		var recipients = document.getElementById('recipients');
+		if (selectedCampaignValue !== '-1') {
+			recipients.style.display = "none";
+		} else {
+			recipients.style.display = "flex";
+		}
+	}
+
+	if (document.getElementById('substitute') !== null && document.getElementById('substitute').value === true) {
+		var substitute = document.getElementsByName("jform[substitute_links]");
+		for (var i = 0; i < substitute.length; i++) {
+			substitute[i].onclick = function () {
+				document.getElementById("add_content").value = "1";
+				document.getElementById("template_id_old").value = "";
+			};
+		}
+	}
+};
+
+$j("#jform_campaign_id").on("change", function()
+{
+	if (document.getElementById('currentTab').value === 'edit_basic') {
+		if ($j("#jform_campaign_id option:selected").val() !== '-1') {
+			$j("#recipients").hide();
+		} else {
+			$j("#recipients").show();
+		}
+	}
+});
+

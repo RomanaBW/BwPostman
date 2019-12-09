@@ -37,6 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.keepalive');
 
+Factory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_std.js');
 
 $image = '<i class="icon-info"></i>';
 
@@ -53,140 +54,6 @@ $options = array(
 	'useCookie' => true, // this must not be a string. Don't use quotes.
 );
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-window.onload = function() {
-	Joomla = window.Joomla || {};
-
-	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
-
-		if (pressbutton === 'template.save') {
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
-		}
-
-		if (pressbutton === 'template.apply') {
-			writeStore("inputs", 0);
-		}
-
-		if (pressbutton === 'template.save2copy') {
-			writeStore("inputs", 0);
-		}
-
-		if (pressbutton === 'template.cancel') {
-			// check if form field values has changed
-			var inputs_old = readStore("inputs");
-			inputs = checkValues(1);
-			if (inputs_old === inputs) {
-			} else {
-				// confirm if cancel or not
-				confirmCancel = confirm("<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>");
-				if (confirmCancel === false) {
-					return;
-				}
-			}
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
-
-		// Validate input fields
-		if (form.jform_title.value == "") {
-			alert("<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>");
-		} else if (form.jform_description.value == "") {
-			alert("<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>");
-		} else {
-			Joomla.submitform(pressbutton, form);
-		}
-	};
-
-	// insert placeholder
-	function buttonClick(Field, myValue) {
-		myField = document.getElementById(Field);
-		if (document.selection) {
-			// IE support
-			myField.focus();
-			sel = document.selection.createRange();
-			sel.text = myValue;
-		} else if (myField.selectionStart || myField.selectionStart == '0') {
-			// MOZILLA/NETSCAPE support
-			var startPos = myField.selectionStart;
-			var endPos = myField.selectionEnd;
-			myField.value = myField.value.substring(0, startPos)
-				+ myValue
-				+ myField.value.substring(endPos, myField.value.length);
-		} else {
-			myField.value += myValue;
-		}
-	}
-
-	// check form field values
-	function checkValues(turn) {
-		var inputs = '';
-		var elements = document.adminForm.elements;
-		for (var i = 0; i < elements.length; i++) {
-			var fieldValue = elements[i].value;
-			if (elements[i].getAttribute('checked') !== false) {
-				var fieldChecked = elements[i].getAttribute('checked');
-			}
-			inputs += fieldValue + fieldChecked;
-		}
-		if (turn === 0) {
-			writeStore("inputs", inputs);
-		} else {
-			return inputs;
-		}
-	}
-
-	// write to storage
-	function writeStore(item, value) {
-		var test = 'test';
-		try {
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
-			localStorage[item] = value;
-		} catch (e) {
-			Cookie.write(item, value);
-		}
-	}
-
-	// read storage
-	function readStore(item) {
-		var test = 'test';
-		try {
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
-			itemValue = localStorage[item];
-		} catch (e) {
-			itemValue = Cookie.read(item);
-		}
-		return itemValue;
-	}
-
-	window.onload = function () {
-		var framefenster = document.getElementById("myIframe");
-
-		if (framefenster.contentWindow.document.body) {
-			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
-			if (document.all && !window.opera) {
-				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
-			}
-			framefenster.style.height = framefenster_size + 'px';
-		}
-		// check if store is empty or 0
-		var store = readStore("inputs");
-		if (store == 0 || store === undefined || store === null) {
-			checkValues(0);
-		}
-	};
-}
-/* ]]> */
-</script>
 
 <div id="bwp_view_lists" class="well well-small">
 	<?php
@@ -394,5 +261,9 @@ window.onload = function() {
 		<?php echo $this->form->getInput('archive_time'); ?>
 		<?php echo HTMLHelper::_('form.token'); ?>
 		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+
+		<input type="hidden" id="cancelText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>" />
+		<input type="hidden" id="titleErrorText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>" />
+		<input type="hidden" id="descriptionErrorText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>" />
 	</form>
 </div>

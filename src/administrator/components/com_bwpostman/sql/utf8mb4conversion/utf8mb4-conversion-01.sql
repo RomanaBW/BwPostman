@@ -23,85 +23,85 @@
 -- Step 1: Enlarge columns to avoid data loss on later conversion to utf8mb4
 --
 
-ALTER TABLE `#__bwpostman_campaigns` MODIFY COLUMN `title` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_campaigns` MODIFY COLUMN `description` varchar(2000) NOT NULL;
+ALTER TABLE `#__bwpostman_campaigns` MODIFY `title` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_campaigns` MODIFY `description` varchar(2000) NOT NULL;
 
-ALTER TABLE `#__bwpostman_mailinglists` MODIFY COLUMN `title` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_mailinglists` MODIFY COLUMN `description` varchar(2000) NOT NULL;
+ALTER TABLE `#__bwpostman_mailinglists` MODIFY `title` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_mailinglists` MODIFY `description` varchar(2000) NOT NULL;
 
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `from_name` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `from_email` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `reply_email` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `usergroups` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `selected_content` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `subject` VARCHAR(1000) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `description` varchar(2000) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `attachment` VARCHAR(1000) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_headline` VARCHAR(1000) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_headline` VARCHAR(1000) NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `intro_text_text` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `html_version` LONGTEXT NOT NULL;
-ALTER TABLE `#__bwpostman_newsletters` MODIFY COLUMN `text_version` LONGTEXT NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `from_name` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `from_email` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `reply_email` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `usergroups` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `selected_content` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `subject` VARCHAR(1000) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `description` varchar(2000) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `attachment` VARCHAR(1000) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `intro_headline` VARCHAR(1000) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `intro_text` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `intro_text_headline` VARCHAR(1000) NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `intro_text_text` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `html_version` LONGTEXT NOT NULL;
+ALTER TABLE `#__bwpostman_newsletters` MODIFY `text_version` LONGTEXT NOT NULL;
 
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_name` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `from_email` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `subject` VARCHAR(1000) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `body` LONGTEXT NOT NULL ;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `cc_email` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `bcc_email` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `attachment` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_email` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY COLUMN `reply_name` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `from_name` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `from_email` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `subject` VARCHAR(1000) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `body` LONGTEXT NOT NULL ;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `cc_email` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `bcc_email` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `attachment` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `reply_email` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailcontent` MODIFY `reply_name` VARCHAR(400) NOT NULL;
 
-ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `recipient` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `name` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY COLUMN `firstname` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY `recipient` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY `name` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_sendmailqueue` MODIFY `firstname` VARCHAR(400) NOT NULL;
 
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `name` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `firstname` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `email` VARCHAR(320) NOT NULL;
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `special` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `activation` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `editlink` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `registration_ip` VARCHAR(156) NOT NULL;
-ALTER TABLE `#__bwpostman_subscribers` MODIFY COLUMN `confirmation_ip` VARCHAR(156) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `name` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `firstname` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `email` VARCHAR(320) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `special` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `activation` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `editlink` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `registration_ip` VARCHAR(156) NOT NULL;
+ALTER TABLE `#__bwpostman_subscribers` MODIFY `confirmation_ip` VARCHAR(156) NOT NULL;
 
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `title` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `description` VARCHAR(2000) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `thumbnail` VARCHAR(2000) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_html` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_css` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_article` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `tpl_divider` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `basics` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `header` VARCHAR(1600) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `intro` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `article` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `footer` VARCHAR(1600) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `button1` VARCHAR(1600) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `button2` VARCHAR(1600) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `button3` VARCHAR(1600) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `button4` VARCHAR(1600) NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY COLUMN `button5` VARCHAR(1600) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `title` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `description` VARCHAR(2000) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `thumbnail` VARCHAR(2000) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_html` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_css` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_article` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_divider` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `basics` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `header` VARCHAR(1600) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `intro` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `article` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `footer` VARCHAR(1600) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `button1` VARCHAR(1600) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `button2` VARCHAR(1600) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `button3` VARCHAR(1600) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `button4` VARCHAR(1600) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `button5` VARCHAR(1600) NOT NULL;
 
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `title` VARCHAR(400) NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `css` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `header_tpl` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `intro_tpl` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `divider_tpl` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `article_tpl` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `readon_tpl` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `footer_tpl` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tpl` MODIFY COLUMN `button_tpl` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `title` VARCHAR(400) NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `css` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `header_tpl` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `intro_tpl` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `divider_tpl` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `article_tpl` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `readon_tpl` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `footer_tpl` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tpl` MODIFY `button_tpl` TEXT NOT NULL;
 
-ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_head_advanced` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_body_advanced` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_article_advanced_b` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_article_advanced_e` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_readon_advanced` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_legal_advanced_b` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates_tags` MODIFY COLUMN `tpl_tags_legal_advanced_e` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY `tpl_tags_head_advanced` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY `tpl_tags_body_advanced` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY `tpl_tags_article_advanced_b` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY `tpl_tags_article_advanced_e` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY `tpl_tags_readon_advanced` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY `tpl_tags_legal_advanced_b` TEXT NOT NULL;
+ALTER TABLE `#__bwpostman_templates_tags` MODIFY `tpl_tags_legal_advanced_e` TEXT NOT NULL;
 
 --
 -- Step 2: Convert all tables to utf8mb4 character set with utf8mb4_unicode_ci collation

@@ -43,63 +43,6 @@ JHtml::_('behavior.keepalive');
 $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-		var form = document.adminForm;
-		if (pressbutton == 'subscriber.cancel')
-		{
-			submitform(pressbutton);
-			return;
-		}
-		else
-		{
-			var isValid=true;
-			var action = pressbutton.split('.');
-
-			if (action[1] != 'cancel' && action[1] != 'close')
-			{
-				var forms = jQuery('form.form-validate');
-				for (var i = 0; i < forms.length; i++)
-				{
-					if (!document.formvalidator.isValid(forms[i]))
-					{
-						isValid = false;
-						break;
-					}
-				}
-			}
-
-			if (isValid)
-			{
-				submitform(pressbutton);
-				return true;
-			}
-		}
-	};
-
-	// This function changes the layout-value if the checkbox 'confirm' exists and if it is not checked
-	function checkConfirmBox() {
-
-		var form = document.adminForm;
-
-		cb = document.getElementById('confirm');
-
-		// Does the checkbox 'confirm' exist?
-		if(cb == null)
-		{
-			return;
-		}
-
-		if (form.jform_confirm.checked == false)
-		{
-			form.layout.value = 'unconfirmed';
-		}
-	}
-/* ]]> */
-</script>
-
 <div id="bwp_editform">
 	<?php
 	if ($this->queueEntries)

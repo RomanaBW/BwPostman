@@ -30,40 +30,11 @@ defined('_JEXEC') or die('Restricted access');
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.keepalive');
+
+$jinput	= JFactory::getApplication()->input;
+$image	= '<i class="icon-info"></i>';
+$option	= $jinput->getCmd('option');
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-//-------------------------------------------------------------------------------------
-//http://www.easywayserver.com/blog/enable-disable-radio-button-text-box-in-javascript
-//-------------------------------------------------------------------------------------
-
- function enable_disable()
- {
-
-  // Initialize form with empty field
-  document.adminForm.restorefile.disabled=false;
-  document.adminForm.restorefile.value="";
-
-  for(var i=0;i<document.adminForm.elements.length;i++)
-  {
-    if(document.adminForm.elements[i].restorefile.value!="")
-    {
-       if(document.adminForm.elements[i].checked==true){
-        document.adminForm.restorefile.disabled=false;
-        document.adminForm.submitbutton.disabled=false;
-       }
-     }
-  }
- }
- /* ]]> */
-</script>
-
-<?php
-	$jinput	= JFactory::getApplication()->input;
-	$image	= '<i class="icon-info"></i>';
-	$option	= $jinput->getCmd('option');
-	?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">

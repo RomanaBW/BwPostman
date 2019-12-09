@@ -38,26 +38,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton == 'template.archive')
-		{
-			ConfirmArchive = confirm("<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true)
-			{
-				Joomla.submitform(pressbutton, document.adminForm);
-			}
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-	};
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=templates'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-inline">
@@ -209,6 +189,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo JHtml::_('form.token'); ?>
 
+			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

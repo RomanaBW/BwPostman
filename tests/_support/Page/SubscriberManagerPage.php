@@ -113,7 +113,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $first_list_entry_tab2    = "//*[@id='ub0']";
+	public static $first_list_entry_tab2    = "//*[@id='cb0']";
 
 	// search subscriber
 

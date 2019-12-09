@@ -27,7 +27,23 @@
 	<property name="test_runner" value="bwpm_install_test_runner.sh" override="true" />
 	<property name="failed" value="false" override="true" />
 
-	<target name="create_project_name"
+	<target name="is_joomla_4"
+	        description="Check if we want to test under Joomla4">
+		<php expression="'${BW_TEST_JOOMLA_VERSION}'[0]" returnProperty="joomla_main_version" />
+		<echo message="Joomla main version: ${joomla_main_version}" />
+		<if>
+			<equals arg1="${joomla_main_version}" arg2="3"/>
+			<then>
+				<property name="test_src_dir" value="tests3" override="true" />
+			</then>
+			<else>
+				<property name="test_src_dir" value="tests" override="true" />
+			</else>
+		</if>
+		<echo message="Test-Source-Dir: ${test_src_dir}" />
+	</target>
+
+	<target name="create_project_name" depends="is_joomla_4"
 	        description="Creates the project name from given environment variables and export it">
 		<property name="project_name" value="j${joomla_version}" override="true" />
 
@@ -65,7 +81,7 @@
 		<php expression="putenv('BW_BASE_DIR=${base_dir}');" />
 		<php expression="putenv('BW_TEST_DIR=${test_dir}');" />
 
-		<php expression="putenv('BW_TEST_SRC_DIR=${test_dir}');" />
+		<php expression="putenv('BW_TEST_SRC_DIR=${test_src_dir}');" />
 
 		<php expression="putenv('BW_TEST_CONTAINER_DIR=${container_dir}');" />
 		<php expression="putenv('BW_TEST_WEB_BASE_DIR=${web_dir}');" />
@@ -225,14 +241,16 @@
 		<copy file="${base_dir}/codeception.tpl.yml" tofile="${base_dir}/codeception.yml" overwrite="true">
 			<filterchain>
 				<replacetokens begintoken="@" endtoken="@">
+					<token key="BW_TEST_SRC_DIR" value="${test_src_dir}" />
 					<token key="BW_TEST_PROJECT" value="${project_name}" />
 				</replacetokens>
 			</filterchain>
 		</copy>
 
-		<copy file="${test_dir}/acceptance.suite.tpl.yml" tofile="${test_dir}/acceptance.suite.yml" overwrite="true">
+		<copy file="${test_dir}/acceptance.suite.tpl.yml" tofile="${base_dir}/${test_src_dir}/acceptance.suite.yml" overwrite="true">
 			<filterchain>
 				<replacetokens begintoken="@" endtoken="@">
+					<token key="BW_TEST_SRC_DIR" value="${test_src_dir}" />
 					<token key="BW_TEST_PROJECT" value="${project_name}" />
 					<token key="BW_TEST_URL" value="${BW_TEST_URL}" />
 					<token key="BW_TEST_DB_HOST" value="${BW_TEST_DB_HOST}" />

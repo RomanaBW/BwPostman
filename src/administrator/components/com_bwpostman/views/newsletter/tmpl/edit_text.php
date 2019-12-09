@@ -32,55 +32,8 @@ JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 $image = JHtml::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$currentTab = 'edit_text';
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-function changeTab(tab)
-{
-	if (tab != 'edit_text')
-	{
-		document.adminForm.tab.setAttribute('value',tab);
-		document.adminForm.task.setAttribute('value','newsletter.changeTab');
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'newsletter.cancel')
-	{
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.back')
-	{
-		form.task.value = 'back';
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.apply')
-	{
-		document.adminForm.task.setAttribute('value','newsletter.apply');
-		submitform(pressbutton);
-		return;
-	}
-
-	if (pressbutton == 'newsletter.save' || pressbutton == 'newsletter.save2new' || pressbutton == 'newsletter.save2copy')
-	{
-		document.adminForm.task.setAttribute('value','newsletter.save');
-		submitform(pressbutton);
-	}
-};
-/* ]]> */
-</script>
 
 <div id="bwp_view_single">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
@@ -94,28 +47,28 @@ Joomla.submitbutton = function (pressbutton)
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
-					<button onclick="return changeTab('edit_basic');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_html');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="open">
-					<button onclick="return changeTab('edit_text');" class="buttonAsLink_open">
+					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="closed">
-					<button onclick="return changeTab('edit_preview');" class="buttonAsLink">
+					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="closed">
-						<button onclick="return changeTab('edit_send');" class="buttonAsLink">
+						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>

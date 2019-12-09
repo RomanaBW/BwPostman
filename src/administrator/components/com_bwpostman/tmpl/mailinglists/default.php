@@ -44,23 +44,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <script type="text/javascript">
 /* <![CDATA[ */
-Joomla = window.Joomla || {};
-
-Joomla.submitbutton = function (pressbutton)
-	{
-		if (pressbutton == 'archive')
-		{
-			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_ML_CONFIRM_ARCHIVE' , true); ?>");
-			if (ConfirmArchive == true)
-			{
-				Joomla.submitform(pressbutton, document.adminForm);
-			}
-		}
-		else
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-	};
 /* ]]> */
 </script>
 
@@ -161,6 +144,8 @@ Joomla.submitbutton = function (pressbutton)
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
 				<?php echo HTMLHelper::_('form.token'); ?>
+
+				<input type="hidden" id="alertArchive" value="<?php echo Text::_('COM_BWPOSTMAN_ML_CONFIRM_ARCHIVE', true); ?>" />
 			</div>
 			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
 			<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

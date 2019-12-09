@@ -182,6 +182,10 @@ class BwPostmanViewArchive extends JViewLegacy
 
 		$this->sidebar = JHtmlSidebar::render();
 
+		$document = JFactory::getDocument();
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_unarchive.js');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_delete_cam_nls.js');
+
 		// Call parent display
 		parent::display($tpl);
 	}

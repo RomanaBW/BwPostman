@@ -41,90 +41,6 @@ HTMLHelper::_('behavior.keepalive');
 
 <script type="text/javascript">
 /* <![CDATA[ */
-//-----------------------------------------------------------------------------
-//http://www.mattkruse.com/javascript/selectbox/source.html
-//-----------------------------------------------------------------------------
-	function selectAllOptions(obj)
-	{
-		for (var i=0; i<obj.options.length; i++)
-		{
-			obj.options[i].selected = true;
-		}
-	}
-
-
-//-----------------------------------------------------------------------------
-//referring to: http://www.plus2net.com/javascript_tutorial/list-remove.php
-//-----------------------------------------------------------------------------
-	function removeOptions(selectbox) // Method to get all items in the selectbox when submitting
-	{
-		var i;
-
-		for(i=selectbox.options.length-1;i>=0;i--)
-		{
-			if(selectbox.options[i].selected){
-				if (selectbox.options[i].text === 'email')
-				{
-					alert ("<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_REMOVING_EMAIL', true); ?>");
-				} else
-				{
-				selectbox.remove(i);
-				}
-			}
-		}
-	}
-
-//-----------------------------------------------------------------------------
-//http://javascript.internet.com/forms/select-box-with-options.html
-//-----------------------------------------------------------------------------
-	function moveUp(element) // Method to move an item up
-	{
-		for(i = 0; i < element.options.length; i++)
-		{
-			if(element.options[i].selected === true)
-			{
-				if(i !== 0)
-				{
-					var temp = new Option(element.options[i-1].text,element.options[i-1].value);
-					var temp2 = new Option(element.options[i].text,element.options[i].value);
-					element.options[i-1] = temp2;
-					element.options[i-1].selected = true;
-					element.options[i] = temp;
-				}
-			}
-		}
-	}
-
-	function moveDown(element) // Method to move an item down
-	{
-		for(i = (element.options.length - 1); i >= 0; i--)
-		{
-			if(element.options[i].selected == true)
-			{
-				if(i != (element.options.length - 1))
-				{
-					var temp = new Option(element.options[i+1].text,element.options[i+1].value);
-					var temp2 = new Option(element.options[i].text,element.options[i].value);
-					element.options[i+1] = temp2;
-					element.options[i+1].selected = true;
-					element.options[i] = temp;
-				}
-			}
-		}
-	}
-
-	function check() // Method to check if the user tries to delete the email item and if the numbers of items in both selected boxes are similar
-	{
-		var count_db_fields = document.getElementById('db_fields').length;
-
-		var count_import_fields = document.getElementById('import_fields').length;
-
-		if (count_db_fields !== count_import_fields) {
-		alert ("<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_MATCH_FIELDS', true); ?>");
-		return 0;
-		}
-		return 1;
-	}
 /* ]]> */
 </script>
 
@@ -405,6 +321,9 @@ HTMLHelper::_('behavior.keepalive');
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<?php echo HTMLHelper::_('form.token'); ?>
+
+	<input type="hidden" id="importAlertEmail" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_REMOVING_EMAIL', true); ?>" />
+	<input type="hidden" id="importAlertFields" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_MATCH_FIELDS', true); ?>" />
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

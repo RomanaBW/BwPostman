@@ -188,6 +188,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_MLS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive.js');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');
@@ -251,6 +252,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_MLS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive.js');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');

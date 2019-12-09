@@ -27,11 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-	// Keep session alive while editing
-	JHtml::_('behavior.keepalive');
-?>
+// Keep session alive while editing
+JHtml::_('behavior.keepalive');
 
-<?php
 $jinput	= JFactory::getApplication()->input;
 $image_pos = JHtml::_('image', 'administrator/images/tick.png', JText::_('COM_BWPOSTMAN_NOTES'));
 $image_neg = JHtml::_('image', 'administrator/images/publish_x.png', JText::_('COM_BWPOSTMAN_NOTES'));

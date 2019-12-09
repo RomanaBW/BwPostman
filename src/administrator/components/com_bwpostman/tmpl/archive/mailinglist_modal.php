@@ -39,9 +39,9 @@ use Joomla\CMS\Uri\Uri;
 </table>
 
 <fieldset class="adminform">
-	<table border="0" class="admintable">
+	<table  style="border: 0;" class="admintable">
 		<tr>
-			<td align="right">
+			<td style="text-align: right;">
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_TITLE');
 					echo ':'; ?>
@@ -50,7 +50,7 @@ use Joomla\CMS\Uri\Uri;
 			<td><?php echo $this->ml->title;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td style="text-align: right;">
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_DESC');
 					echo ':'; ?>
@@ -59,7 +59,7 @@ use Joomla\CMS\Uri\Uri;
 			<td><?php echo $this->ml->description;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td style="text-align: right;">
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_ACCESS');
 					echo ':'; ?>
@@ -68,7 +68,7 @@ use Joomla\CMS\Uri\Uri;
 			<td><?php echo $this->ml->access_level; ?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td style="text-align: right;">
 				<strong>
 					<?php echo Text::_('PUBLISHED');
 					echo ':'; ?>

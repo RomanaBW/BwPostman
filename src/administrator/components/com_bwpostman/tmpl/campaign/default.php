@@ -135,52 +135,11 @@ $tab_options = array(
 				<?php echo $this->form->getInput('archive_flag'); ?>
 				<?php echo $this->form->getInput('archive_time'); ?>
 				<?php echo HTMLHelper::_('form.token'); ?>
+
+				<input type="hidden" id="alertTitle" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>" />
+				<input type="hidden" id="alertRecipients" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>" />
 			</div>
 		</form>
 	</div>
 
 	<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-window.onload = function() {
-	var Joomla = window.Joomla || {};
-
-	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
-		if (pressbutton === 'campaign.cancel') {
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
-
-		if ((pressbutton === 'campaign.apply') || (pressbutton === 'campaign.save') || (pressbutton === 'campaign.save2new') || (pressbutton === 'campaign.save2copy')) {
-			var errors = 0;
-			var title = form.jform_title.value;
-			var inputs = document.getElementsByTagName('input');
-			var recipients = 0;
-
-			for (var i = 0; i < inputs.length; i++) {
-				if (inputs[i].type.toLowerCase() === 'checkbox' && inputs[i].checked === true) {
-					recipients++;
-				}
-			}
-
-			if (title === '') {
-				alert("<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>");
-				errors++;
-			}
-
-			if (!recipients) {
-				alert("<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>");
-				errors++;
-			}
-
-			if (errors > 0) {
-				return false;
-			}
-			Joomla.submitform(pressbutton, form);
-		}
-	}
-}
-/* ]]> */
-</script>

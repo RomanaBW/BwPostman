@@ -271,6 +271,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_SUBS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscribers.js');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB'), 'users');
@@ -396,6 +397,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_SUB'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscribers.js');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB'), 'users');

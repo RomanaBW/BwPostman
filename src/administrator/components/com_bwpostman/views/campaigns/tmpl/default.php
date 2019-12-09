@@ -45,16 +45,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
  */
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	function confirmArchive(archive_value) // Get the selected value from modal box
-	{
-		document.adminForm.archive_nl.value = archive_value;
-		Joomla.submitbutton('campaign.archive');
-	}
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=campaigns'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-inline">

@@ -61,48 +61,6 @@ $tab_options = array(
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	Joomla.submitbutton = function (pressbutton)
-	{
-		var form = document.adminForm;
-
-		if (pressbutton == 'campaign.cancel')
-		{
-			submitform(pressbutton);
-			return;
-		}
-
-		// Validate input fields
-		if (form.jform_title.value == "")
-		{
-			alert("<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>");
-		}
-		else
-		{
-			submitform(pressbutton);
-		}
-
-		<?php if (property_exists($this, 'autocam_values'))
-		{ ?>
-		if (pressbutton == 'delete')
-		{
-			submitform('campaign.apply');
-			return;
-		}
-		<?php } ?>
-
-		<?php
-		if (property_exists($this->item, 'tc_mailing_data'))
-		{ ?>
-			return checkReasonableTimes(pressbutton);
-			<?php
-		}
-		?>
-	};
-/* ]]> */
-</script>
-
 <div id="bwp_editform">
 	<?php
 	if ($this->queueEntries)
@@ -153,6 +111,9 @@ $tab_options = array(
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
 		<?php echo JHtml::_('form.token'); ?>
+
+		<input type="hidden" id="alertTitle" value="<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>" />
+		<input type="hidden" id="alertRecipients" value="<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>" />
 	</form>
 
 	<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

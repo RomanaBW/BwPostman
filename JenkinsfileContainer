@@ -173,11 +173,11 @@ pipeline {
 						}
 					}
 				}
-//			}
-//		}
+			}
+		}
 
-//		stage('Run acceptance Joomla 3') {
-//			parallel {
+		stage('Run acceptance Joomla 3') {
+			parallel {
 				stage('3-1: Lists + P2') {
 					steps {
 //						echo "Dummy 1"

@@ -72,7 +72,7 @@
 
 	<target name="create_net_name" depends="create_project_name"
 	        description="Creates the network name from project name to meet docker needs and export it">
-		<php expression="str_replace('_', '', '${project_name}')" returnProperty="net_name" />
+		<php expression="str_replace('_', '_', '${project_name}')" returnProperty="net_name" />
 		<php expression="putenv('BW_TEST_NET_NAME=${net_name}');" />
 	</target>
 

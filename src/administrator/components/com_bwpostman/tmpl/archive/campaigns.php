@@ -53,22 +53,6 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
  */
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	function confirmUnarchive(unarchive_value)  // Get the selected value from modal box
-	{
-		document.adminForm.unarchive_nl.value = unarchive_value;
-		Joomla.submitbutton('archive.unarchive');
-	}
-
-	function confirmDelete(delete_value)  // Get the selected value from modal box
-	{
-		document.adminForm.remove_nl.value = delete_value;
-		Joomla.submitbutton('archive.delete');
-	}
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<form action="<?php echo Route::_($this->request_url); ?>" method="post" name="adminForm" id="adminForm">
 		<div class="row">

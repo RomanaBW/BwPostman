@@ -47,6 +47,15 @@ $checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NO_TEXT_TEMPLATE_SELECTED', tr
 
 $checkRecipientArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
 
+if (isset($this->substitute))
+{
+	$substitute = $this->substitute;
+}
+else
+{
+	$substitute = false;
+}
+
 $currentTab = 'edit_basic';
 ?>
 
@@ -391,80 +400,10 @@ $currentTab = 'edit_basic';
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
 		<?php echo HTMLHelper::_('form.token'); ?>
+
+		<input type="hidden" id="checkContentArgs" value="<?php echo $checkContentArgs; ?>" />
+		<input type="hidden" id="checkRecipientArgs" value="<?php echo $checkRecipientArgs; ?>" />
+		<input type="hidden" id="substituteLinks" value="<?php echo $substitute; ?>" />
+		<input type="hidden" id="currentTab" value="<?php echo $currentTab; ?>" />
 	</form>
-		</div>
 </div>
-
-<script type="text/javascript">
-	/* <![CDATA[ */
-	window.onload = function() {
-		var Joomla = window.Joomla || {};
-		var selectedCampaign = document.getElementById("jform_campaign_id");
-		var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
-
-		Joomla.submitbutton = function (pressbutton)
-		{
-			var form = document.adminForm;
-			if (pressbutton === 'newsletter.cancel')
-			{
-				Joomla.submitform(pressbutton, form);
-				return;
-			}
-
-			if (pressbutton === 'newsletter.back')
-			{
-				form.task.value = 'back';
-				Joomla.submitform(pressbutton, form);
-				return;
-			}
-
-			if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.apply' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy')
-			{
-				var selectedCampaign = document.getElementById("jform_campaign_id");
-				var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
-				if (checkSelectedContent(<?php echo $checkContentArgs; ?>) === true)
-				{
-					form.task.setAttribute('value',pressbutton);
-					if (selectedCampaignValue === '-1')
-					{
-						res = checkSelectedRecipients(<?php echo $checkRecipientArgs; ?>);
-						if (res === false)
-						{
-							return false;
-						}
-						else
-						{
-							Joomla.submitform(pressbutton, form);
-							return true;
-						}
-					}
-					else
-					{
-						Joomla.submitform(pressbutton, form);
-						return true;
-					}
-				}
-			}
-		};
-
-		<?php if (isset($this->substitute) && $this->substitute === true): ?>
-			var substitute =  document.getElementsByName("jform[substitute_links]");
-			for (var i=0; i < substitute.length; i++)
-			{
-				substitute[i].onclick = function()
-				{
-					document.getElementById("add_content").value = "1";
-					document.getElementById("template_id_old").value = "";
-				};
-			}
-		<?php endif; ?>
-
-		var recipients = document.getElementById('recipients');
-		if (selectedCampaignValue !== '-1') {
-			recipients.style.display = "none";
-		} else {
-			recipients.style.display = "flex";
-		}
-	};
-	/* ]]> */
-</script>

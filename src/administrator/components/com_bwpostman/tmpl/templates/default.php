@@ -39,26 +39,8 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
+//Factory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-window.onload = function() {
-	Joomla = window.Joomla || {};
-
-	Joomla.submitbutton = function (pressbutton) {
-		if (pressbutton === 'template.archive') {
-			ConfirmArchive = confirm("<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE', true); ?>");
-			if (ConfirmArchive === true) {
-				Joomla.submitform(pressbutton, document.adminForm);
-			}
-		} else {
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-	};
-}
-/* ]]> */
-</script>
 
 <div id="bwp_view_lists">
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>"
@@ -212,6 +194,7 @@ window.onload = function() {
 			<input type="hidden" name="boxchecked" value="0" />
 			<?php echo HTMLHelper::_('form.token'); ?>
 
+			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

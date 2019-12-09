@@ -41,7 +41,7 @@ use Joomla\CMS\Uri\Uri;
 <fieldset class="adminform">
 	<table class="admintable">
 		<tr>
-			<td align="right">
+			<td style="text-align: right;">
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_TITLE');
 					echo ':'; ?>
@@ -50,7 +50,7 @@ use Joomla\CMS\Uri\Uri;
 			<td><?php echo $this->cam->title;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td style="text-align: right;>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_DESC');
 					echo ':'; ?>

@@ -38,6 +38,8 @@ $uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', true, true);
 HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
 
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_checktables.js');
+
 $model	= $this->getModel();
 $uri    = Uri::root();
 ?>

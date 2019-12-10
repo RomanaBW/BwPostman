@@ -108,3 +108,6 @@ if ($show_update || $string_special != '')
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 <input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo JSession::getFormToken(); ?>=1" />
+
+<?php
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_update_checksave.js');

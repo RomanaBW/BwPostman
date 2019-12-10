@@ -75,3 +75,6 @@ $option	= $jinput->getCmd('option');
 <div id="loading" style="display: none;"></div>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+
+<?php
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_restore_tables.js');

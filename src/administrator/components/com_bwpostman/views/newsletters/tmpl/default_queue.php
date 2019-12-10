@@ -77,18 +77,18 @@ $currentTab = "default_queue";
 			<div class="form-horizontal">
 				<ul class="bwp_tabs">
 					<li class="closed">
-						<button onclick="return changeTab('unsent');" class="buttonAsLink">
+						<button onclick="return changeTab('unsent', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 						</button>
 					</li>
 					<li class="closed">
-						<button onclick="return changeTab('sent');" class="buttonAsLink">
+						<button onclick="return changeTab('sent', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
 					<?php if (($this->count_queue> 0) && $this->permissions['newsletter']['send']) { ?>
 						<li class="open">
-							<button onclick="return changeTab('queue');" class="buttonAsLink_open">
+							<button onclick="return changeTab('queue', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
 							</button>
 						</li>

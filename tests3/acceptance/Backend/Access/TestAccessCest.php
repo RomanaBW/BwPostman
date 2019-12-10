@@ -791,6 +791,19 @@ class TestAccessCest
 		}
 
 		$I->click(Generals::$toolbar['Cancel']);
+		if ($button === 'Templates')
+		{
+			try
+			{
+				$I->seeInPopup('Any changes will not be saved. Close without saving?');
+				$I->acceptPopup();
+			}
+			catch (\Exception $e)
+			{
+				codecept_debug('Popup Templates not found');
+			}
+		}
+
 		$I->waitForElement(Generals::$pageTitle, 30);
 	}
 

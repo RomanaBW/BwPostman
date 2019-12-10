@@ -274,7 +274,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		HTMLHelper::_('jquery.framework');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nl.js');
 
 		// Set toolbar title and items
 		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
@@ -380,7 +380,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		HTMLHelper::_('jquery.framework');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpostman_nl.js');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nl.js');
 
 		// Set toolbar title and items
 		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);

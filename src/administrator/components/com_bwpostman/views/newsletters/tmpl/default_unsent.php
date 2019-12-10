@@ -46,6 +46,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $jinput	= JFactory::getApplication()->input;
 $task	= $jinput->get->get('task');
 
+$currentTab = "default_unsent";
+
 if ($task == "startsending")
 {
 	echo '<script type="text/javascript">' . "\n";
@@ -93,18 +95,18 @@ if ($task == "startsending")
 			<div class="form-horizontal">
 				<ul class="bwp_tabs">
 					<li class="open">
-						<button onclick="return changeTab('unsent');" class="buttonAsLink_open">
+						<button onclick="return changeTab('unsent', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 						</button>
 					</li>
 					<li class="closed">
-						<button onclick="return changeTab('sent');" class="buttonAsLink">
+						<button onclick="return changeTab('sent', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
 					<?php if ($this->count_queue && $this->permissions['newsletter']['send']) { ?>
 						<li class="closed">
-							<button onclick="return changeTab('queue');" class="buttonAsLink">
+							<button onclick="return changeTab('queue', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
 							</button>
 						</li>

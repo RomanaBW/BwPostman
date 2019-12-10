@@ -232,45 +232,6 @@ function buttonClick4(text, editor) {
 	return true;
 }
 
-// insert placeholder at cursor position
-jQuery(function($){
-	$.fn.EnableInsertAtCaret = function() {
-		$(this).on("focus", function() {
-			$(".insertatcaretactive").removeClass("insertatcaretactive");
-			$(this).addClass("insertatcaretactive");
-		});
-	};
-	$("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_html_version").EnableInsertAtCaret();
-});
-
-function InsertAtCaret(myValue) {
-	 jQuery(".insertatcaretactive").each(function(i) {
-		if (document.selection) {
-			//For browsers like Internet Explorer
-			this.focus();
-			var sel = document.selection.createRange();
-			sel.text = myValue;
-			this.focus();
-		}
-		else if (this.selectionStart || this.selectionStart === 0) {
-			//For browsers like Firefox and Webkit based
-			var startPos = this.selectionStart;
-			var endPos = this.selectionEnd;
-			var scrollTop = this.scrollTop;
-			this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
-			this.focus();
-			this.selectionStart = startPos + myValue.length;
-			this.selectionEnd = startPos + myValue.length;
-			this.scrollTop = scrollTop;
-		}
-		else {
-			this.value += myValue;
-			this.focus();
-		}
-	})
-}
-
-
 //-------------------------------------------------------------------
 //http://www.mattkruse.com/javascript/selectbox/source.html
 //-------------------------------------------------------------------
@@ -341,9 +302,9 @@ function switchRecipients() {
 	}
 }
 
-var $j	= jQuery.noConflict();
-
 window.onload = function() {
+	var $j	= jQuery.noConflict();
+
 	Joomla = window.Joomla || {};
 
 	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
@@ -442,16 +403,54 @@ window.onload = function() {
 			};
 		}
 	}
-};
 
-$j("#jform_campaign_id").on("change", function()
-{
-	if (document.getElementById('currentTab').value === 'edit_basic') {
-		if ($j("#jform_campaign_id option:selected").val() !== '-1') {
-			$j("#recipients").hide();
-		} else {
-			$j("#recipients").show();
-		}
+// insert placeholder at cursor position
+	jQuery(function($){
+		$.fn.EnableInsertAtCaret = function() {
+			$(this).on("focus", function() {
+				$(".insertatcaretactive").removeClass("insertatcaretactive");
+				$(this).addClass("insertatcaretactive");
+			});
+		};
+		$("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_html_version").EnableInsertAtCaret();
+	});
+
+	function InsertAtCaret(myValue) {
+		jQuery(".insertatcaretactive").each(function(i) {
+			if (document.selection) {
+				//For browsers like Internet Explorer
+				this.focus();
+				var sel = document.selection.createRange();
+				sel.text = myValue;
+				this.focus();
+			}
+			else if (this.selectionStart || this.selectionStart === 0) {
+				//For browsers like Firefox and Webkit based
+				var startPos = this.selectionStart;
+				var endPos = this.selectionEnd;
+				var scrollTop = this.scrollTop;
+				this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
+				this.focus();
+				this.selectionStart = startPos + myValue.length;
+				this.selectionEnd = startPos + myValue.length;
+				this.scrollTop = scrollTop;
+			}
+			else {
+				this.value += myValue;
+				this.focus();
+			}
+		})
 	}
-});
+
+	$j("#jform_campaign_id").on("change", function()
+	{
+		if (document.getElementById('currentTab').value === 'edit_basic') {
+			if ($j("#jform_campaign_id option:selected").val() !== '-1') {
+				$j("#recipients").hide();
+			} else {
+				$j("#recipients").show();
+			}
+		}
+	});
+};
 

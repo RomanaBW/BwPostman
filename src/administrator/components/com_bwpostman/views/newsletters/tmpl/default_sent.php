@@ -78,18 +78,18 @@ $currentTab = "default_sent";
 			<div class="form-horizontal">
 				<ul class="bwp_tabs">
 					<li class="closed">
-						<button onclick="return changeTab('unsent');" class="buttonAsLink">
+						<button onclick="return changeTab('unsent', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 						</button>
 					</li>
 					<li class="open">
-						<button onclick="return changeTab('sent');" class="buttonAsLink_open">
+						<button onclick="return changeTab('sent', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
 							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
 					<?php if ($this->count_queue && $this->permissions['newsletter']['send']) { ?>
 						<li class="closed">
-							<button onclick="return changeTab('queue');" class="buttonAsLink">
+							<button onclick="return changeTab('queue', '<?php echo $currentTab; ?>');" class="buttonAsLink">
 								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
 							</button>
 						</li>
@@ -159,7 +159,7 @@ $currentTab = "default_sent";
 											$item->checked_out_time,
 											'newsletters.',
 											BwPostmanHelper::canCheckin('newsletter', $item->checked_out),
-											'ub'
+											'cb'
 										);
 									} ?>
 									<?php
@@ -213,7 +213,7 @@ $currentTab = "default_sent";
 										$i,
 										'newsletters.',
 										BwPostmanHelper::canEditState('newsletter', (int) $item->id),
-										'ub'
+										'cb'
 									); ?>
 								</td>
 								<td align="center">

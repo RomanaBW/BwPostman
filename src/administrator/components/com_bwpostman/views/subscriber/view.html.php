@@ -515,7 +515,6 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$document	= Factory::getDocument();
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
-//		Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
 
 		$alt 	= "COM_BWPOSTMAN_BACK";
 
@@ -690,7 +689,6 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$document	= Factory::getDocument();
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
-//		Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
 
 		$alt 	= "COM_BWPOSTMAN_BACK";
 		$bar	= Toolbar::getInstance('toolbar');

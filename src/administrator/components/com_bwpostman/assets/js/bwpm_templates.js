@@ -23,17 +23,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-window.onload = function() {
-	Joomla = window.Joomla || {};
+Joomla = window.Joomla || {};
 
-	Joomla.submitbutton = function (pressbutton) {
-		if (pressbutton === 'template.archive') {
-			ConfirmArchive = confirm(document.getElementById('archiveText').value);
-			if (ConfirmArchive === true) {
-				Joomla.submitform(pressbutton, document.adminForm);
-			}
-		} else {
+Joomla.submitbutton = function (pressbutton) {
+	if (pressbutton === 'template.archive') {
+		ConfirmArchive = confirm(document.getElementById('archiveText').value);
+		if (ConfirmArchive === true) {
 			Joomla.submitform(pressbutton, document.adminForm);
 		}
-	};
+	} else {
+		Joomla.submitform(pressbutton, document.adminForm);
+	}
 };

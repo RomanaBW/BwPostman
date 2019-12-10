@@ -23,57 +23,55 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-window.onload = function() {
-	function doAjax(data, successCallback) {
-		var structure =
-			{
-				success: function (data) {
-					// Call the callback function
-					successCallback(data);
-				},
-				error  : function (req) {
-					var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
-					jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-					jQuery('div#result').html(message);
-					jQuery('div.resultSet').css('background-color', '#f2dede');
-					jQuery('div.resultSet').css('border-color', '#eed3d7');
-					jQuery('div#toolbar').find('button').removeAttr('disabled');
-				}
-			};
-
-		structure.url = starturl;
-		structure.data = data;
-		structure.type = 'POST';
-		structure.dataType = 'json';
-		jQuery.ajax(structure);
-	}
-
-	function processUpdateStep(data) {
-		jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
-		jQuery('p#step' + data.step).addClass('alert alert-info');
-		// Do AJAX post
-		post = {step: 'step' + data.step};
-		doAjax(post, function (data) {
-			if (data.ready !== "1") {
-				jQuery('div#result').append(data.result);
-				processUpdateStep(data);
-			} else {
-				jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
-				jQuery('div#result').append(data.result);
-				if (data.aClass != 'error') {
-					jQuery('div.resultSet').css('background-color', '#dff0d8');
-					jQuery('div.resultSet').css('border-color', '#d6e9c6');
-				} else {
-					jQuery('div.resultSet').css('background-color', '#f2dede');
-					jQuery('div.resultSet').css('border-color', '#eed3d7');
-				}
+function doAjax(data, successCallback) {
+	var structure =
+		{
+			success: function (data) {
+				// Call the callback function
+				successCallback(data);
+			},
+			error  : function (req) {
+				var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
+				jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
+				jQuery('div#result').html(message);
+				jQuery('div.resultSet').css('background-color', '#f2dede');
+				jQuery('div.resultSet').css('border-color', '#eed3d7');
 				jQuery('div#toolbar').find('button').removeAttr('disabled');
 			}
-		});
-	}
+		};
 
-	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-	var starturl = document.getElementById('startUrl').value;
-	var data = {step: "1"};
-	processUpdateStep(data);
-};
+	structure.url = starturl;
+	structure.data = data;
+	structure.type = 'POST';
+	structure.dataType = 'json';
+	jQuery.ajax(structure);
+}
+
+function processUpdateStep(data) {
+	jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
+	jQuery('p#step' + data.step).addClass('alert alert-info');
+	// Do AJAX post
+	post = {step: 'step' + data.step};
+	doAjax(post, function (data) {
+		if (data.ready !== "1") {
+			jQuery('div#result').append(data.result);
+			processUpdateStep(data);
+		} else {
+			jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
+			jQuery('div#result').append(data.result);
+			if (data.aClass != 'error') {
+				jQuery('div.resultSet').css('background-color', '#dff0d8');
+				jQuery('div.resultSet').css('border-color', '#d6e9c6');
+			} else {
+				jQuery('div.resultSet').css('background-color', '#f2dede');
+				jQuery('div.resultSet').css('border-color', '#eed3d7');
+			}
+			jQuery('div#toolbar').find('button').removeAttr('disabled');
+		}
+	});
+}
+
+jQuery('div#toolbar').find('button').attr("disabled", "disabled");
+var starturl = document.getElementById('startUrl').value;
+var data = {step: "1"};
+processUpdateStep(data);

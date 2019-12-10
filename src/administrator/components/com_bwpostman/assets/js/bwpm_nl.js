@@ -302,155 +302,153 @@ function switchRecipients() {
 	}
 }
 
-window.onload = function() {
-	var $j	= jQuery.noConflict();
+var $j	= jQuery.noConflict();
 
-	Joomla = window.Joomla || {};
+Joomla = window.Joomla || {};
 
-	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
-		var selectedCampaign = document.getElementById("jform_campaign_id");
-		var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
+	var selectedCampaign = document.getElementById("jform_campaign_id");
+	var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+}
+
+Joomla.submitbutton = function (pressbutton) {
+	var form = document.adminForm;
+	if (pressbutton === 'newsletter.cancel') {
+		Joomla.submitform(pressbutton, form);
+		return;
 	}
 
-	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
-		if (pressbutton === 'newsletter.cancel') {
+	if (pressbutton === 'newsletter.back') {
+		form.task.value = 'back';
+		Joomla.submitform(pressbutton, form);
+		return;
+	}
+
+	if (pressbutton === 'newsletter.publish_save') {
+		form.task.setAttribute('value', 'newsletter.publish_save');
+		Joomla.submitform(pressbutton, form);
+	}
+
+	if (pressbutton === 'newsletter.publish_apply') {
+		form.task.setAttribute('value', 'newsletter.publish_apply');
+		Joomla.submitform(pressbutton, form);
+	}
+
+	if (pressbutton === 'newsletter.sendmail') {
+		confirmSendNl = confirm(document.getElementById('confirmSend').value);
+		if (confirmSendNl === true) {
+			form.task.setAttribute('value', 'newsletter.sendmail');
 			Joomla.submitform(pressbutton, form);
-			return;
 		}
+	}
 
-		if (pressbutton === 'newsletter.back') {
-			form.task.value = 'back';
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
-
-		if (pressbutton === 'newsletter.publish_save') {
-			form.task.setAttribute('value', 'newsletter.publish_save');
+	if (pressbutton === 'newsletter.sendmailandpublish') {
+		confirmSendNl = confirm(document.getElementById('confirmSendPublish').value);
+		if (confirmSendNl === true) {
+			form.task.setAttribute('value', 'newsletter.sendmail');
 			Joomla.submitform(pressbutton, form);
 		}
+	}
 
-		if (pressbutton === 'newsletter.publish_apply') {
-			form.task.setAttribute('value', 'newsletter.publish_apply');
+	if (pressbutton === 'newsletter.sendtestmail') {
+		confirmSendNl = confirm(document.getElementById('confirmSend').value);
+		if (confirmSendNl === true) {
+			form.task.setAttribute('value', 'newsletter.sendmail');
 			Joomla.submitform(pressbutton, form);
 		}
+	}
 
-		if (pressbutton === 'newsletter.sendmail') {
-			confirmSendNl = confirm(document.getElementById('confirmSend').value);
-			if (confirmSendNl === true) {
-				form.task.setAttribute('value', 'newsletter.sendmail');
-				Joomla.submitform(pressbutton, form);
-			}
-		}
+	if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.apply' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy')
+	{
+		form.task.setAttribute('value', pressbutton);
 
-		if (pressbutton === 'newsletter.sendmailandpublish') {
-			confirmSendNl = confirm(document.getElementById('confirmSendPublish').value);
-			if (confirmSendNl === true) {
-				form.task.setAttribute('value', 'newsletter.sendmail');
-				Joomla.submitform(pressbutton, form);
-			}
-		}
-
-		if (pressbutton === 'newsletter.sendtestmail') {
-			confirmSendNl = confirm(document.getElementById('confirmSend').value);
-			if (confirmSendNl === true) {
-				form.task.setAttribute('value', 'newsletter.sendmail');
-				Joomla.submitform(pressbutton, form);
-			}
-		}
-
-		if (pressbutton === 'newsletter.save' || pressbutton === 'newsletter.apply' || pressbutton === 'newsletter.save2new' || pressbutton === 'newsletter.save2copy')
+		if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic')
 		{
-			form.task.setAttribute('value', pressbutton);
+			var selectedCampaign = document.getElementById("jform_campaign_id");
+			var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
 
-			if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic')
+			if (checkSelectedContent(document.getElementById('checkContentArgs').value !== ''))
 			{
-				var selectedCampaign = document.getElementById("jform_campaign_id");
-				var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
-
-				if (checkSelectedContent(document.getElementById('checkContentArgs').value !== ''))
+				form.task.setAttribute('value',pressbutton);
+				if (selectedCampaignValue === '-1')
 				{
-					form.task.setAttribute('value',pressbutton);
-					if (selectedCampaignValue === '-1')
+					res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
+					if (res === false)
 					{
-						res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
-						if (res === false)
-						{
-							return false;
-						}
+						return false;
 					}
 				}
 			}
-			Joomla.submitform(pressbutton, form);
 		}
-	};
-
-	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
-		var recipients = document.getElementById('recipients');
-		if (selectedCampaignValue !== '-1') {
-			recipients.style.display = "none";
-		} else {
-			recipients.style.display = "flex";
-		}
+		Joomla.submitform(pressbutton, form);
 	}
+};
 
-	if (document.getElementById('substitute') !== null && document.getElementById('substitute').value === true) {
-		var substitute = document.getElementsByName("jform[substitute_links]");
-		for (var i = 0; i < substitute.length; i++) {
-			substitute[i].onclick = function () {
-				document.getElementById("add_content").value = "1";
-				document.getElementById("template_id_old").value = "";
-			};
-		}
+if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
+	var recipients = document.getElementById('recipients');
+	if (selectedCampaignValue !== '-1') {
+		recipients.style.display = "none";
+	} else {
+		recipients.style.display = "flex";
 	}
+}
+
+if (document.getElementById('substitute') !== null && document.getElementById('substitute').value === true) {
+	var substitute = document.getElementsByName("jform[substitute_links]");
+	for (var i = 0; i < substitute.length; i++) {
+		substitute[i].onclick = function () {
+			document.getElementById("add_content").value = "1";
+			document.getElementById("template_id_old").value = "";
+		};
+	}
+}
 
 // insert placeholder at cursor position
-	jQuery(function($){
-		$.fn.EnableInsertAtCaret = function() {
-			$(this).on("focus", function() {
-				$(".insertatcaretactive").removeClass("insertatcaretactive");
-				$(this).addClass("insertatcaretactive");
-			});
-		};
-		$("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_html_version").EnableInsertAtCaret();
-	});
+jQuery(function($){
+	$.fn.EnableInsertAtCaret = function() {
+		$(this).on("focus", function() {
+			$(".insertatcaretactive").removeClass("insertatcaretactive");
+			$(this).addClass("insertatcaretactive");
+		});
+	};
+	$("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_html_version").EnableInsertAtCaret();
+});
 
-	function InsertAtCaret(myValue) {
-		jQuery(".insertatcaretactive").each(function(i) {
-			if (document.selection) {
-				//For browsers like Internet Explorer
-				this.focus();
-				var sel = document.selection.createRange();
-				sel.text = myValue;
-				this.focus();
-			}
-			else if (this.selectionStart || this.selectionStart === 0) {
-				//For browsers like Firefox and Webkit based
-				var startPos = this.selectionStart;
-				var endPos = this.selectionEnd;
-				var scrollTop = this.scrollTop;
-				this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
-				this.focus();
-				this.selectionStart = startPos + myValue.length;
-				this.selectionEnd = startPos + myValue.length;
-				this.scrollTop = scrollTop;
-			}
-			else {
-				this.value += myValue;
-				this.focus();
-			}
-		})
-	}
-
-	$j("#jform_campaign_id").on("change", function()
-	{
-		if (document.getElementById('currentTab').value === 'edit_basic') {
-			if ($j("#jform_campaign_id option:selected").val() !== '-1') {
-				$j("#recipients").hide();
-			} else {
-				$j("#recipients").show();
-			}
+function InsertAtCaret(myValue) {
+	jQuery(".insertatcaretactive").each(function(i) {
+		if (document.selection) {
+			//For browsers like Internet Explorer
+			this.focus();
+			var sel = document.selection.createRange();
+			sel.text = myValue;
+			this.focus();
 		}
-	});
-};
+		else if (this.selectionStart || this.selectionStart === 0) {
+			//For browsers like Firefox and Webkit based
+			var startPos = this.selectionStart;
+			var endPos = this.selectionEnd;
+			var scrollTop = this.scrollTop;
+			this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
+			this.focus();
+			this.selectionStart = startPos + myValue.length;
+			this.selectionEnd = startPos + myValue.length;
+			this.scrollTop = scrollTop;
+		}
+		else {
+			this.value += myValue;
+			this.focus();
+		}
+	})
+}
+
+$j("#jform_campaign_id").on("change", function()
+{
+	if (document.getElementById('currentTab').value === 'edit_basic') {
+		if ($j("#jform_campaign_id option:selected").val() !== '-1') {
+			$j("#recipients").hide();
+		} else {
+			$j("#recipients").show();
+		}
+	}
+});
 

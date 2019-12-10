@@ -33,27 +33,24 @@ function changeTab(tab)
 	}
 }
 
-window.onload = function() {
-	Joomla = window.Joomla || {};
+Joomla = window.Joomla || {};
 
-	window.OnlyFiltered = function (onlyFiltered) // Get the selected value from modal box
-	{
-		if (onlyFiltered === '1') {
-			document.getElementById('mlToExport').value = document.getElementById('exportMl').value;
-		}
+window.OnlyFiltered = function (onlyFiltered) // Get the selected value from modal box
+{
+	if (onlyFiltered === '1') {
+		document.getElementById('mlToExport').value = document.getElementById('exportMl').value;
+	}
 
-		Joomla.submitbutton('subscribers.exportSubscribers', document.adminForm);
-	};
-
-	Joomla.submitbutton = function (pressbutton) {
-		if (pressbutton === 'subscriber.archive') {
-			ConfirmArchive = confirm(document.getElementById('archiveText').value);
-			if (ConfirmArchive === true) {
-				Joomla.submitform(pressbutton, document.adminForm);
-			}
-		} else {
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-	};
+	Joomla.submitbutton('subscribers.exportSubscribers', document.adminForm);
 };
 
+Joomla.submitbutton = function (pressbutton) {
+	if (pressbutton === 'subscriber.archive') {
+		ConfirmArchive = confirm(document.getElementById('archiveText').value);
+		if (ConfirmArchive === true) {
+			Joomla.submitform(pressbutton, document.adminForm);
+		}
+	} else {
+		Joomla.submitform(pressbutton, document.adminForm);
+	}
+};

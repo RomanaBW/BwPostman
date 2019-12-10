@@ -23,122 +23,120 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-window.onload = function() {
-	Joomla = window.Joomla || {};
+Joomla = window.Joomla || {};
 
-	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
+Joomla.submitbutton = function (pressbutton) {
+	var form = document.adminForm;
 
-		if (pressbutton === 'template.save') {
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
-		}
+	if (pressbutton === 'template.save') {
+		writeStore("inputs", 0);
+		writeStore("jpanetabs_template_tabs", 0);
+		writeStore("jpanetabs_buttons", 0);
+	}
 
-		if (pressbutton === 'template.apply') {
-			writeStore("inputs", 0);
-		}
+	if (pressbutton === 'template.apply') {
+		writeStore("inputs", 0);
+	}
 
-		if (pressbutton === 'template.save2copy') {
-			writeStore("inputs", 0);
-		}
+	if (pressbutton === 'template.save2copy') {
+		writeStore("inputs", 0);
+	}
 
-		if (pressbutton === 'template.cancel') {
-			// check if form field values has changed
-			var inputs_old = readStore("inputs");
-			inputs = checkValues(1);
-			if (inputs_old === inputs) {
-			} else {
-				// confirm if cancel or not
-				confirmCancel = confirm(document.getElementById('cancelText').value);
-				if (confirmCancel === false) {
-					return;
-				}
-			}
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
-
-		// Validate input fields
-		if (form.jform_title.value === "") {
-			alert(document.getElementById('titleErrorText').value);
-		} else if (form.jform_description.value === "") {
-			alert(document.getElementById('descriptionErrorText').value);
+	if (pressbutton === 'template.cancel') {
+		// check if form field values has changed
+		var inputs_old = readStore("inputs");
+		inputs = checkValues(1);
+		if (inputs_old === inputs) {
 		} else {
-			Joomla.submitform(pressbutton, form);
+			// confirm if cancel or not
+			confirmCancel = confirm(document.getElementById('cancelText').value);
+			if (confirmCancel === false) {
+				return;
+			}
 		}
-	};
-
-	// insert placeholder
-	function buttonClick(text, editor) {
-		jInsertEditorText(text, editor);
+		writeStore("inputs", 0);
+		writeStore("jpanetabs_template_tabs", 0);
+		writeStore("jpanetabs_buttons", 0);
+		Joomla.submitform(pressbutton, form);
+		return;
 	}
 
-	// check form field values
-	function checkValues(turn) {
-		var inputs = '';
-		var elements = document.adminForm.elements;
-		for (var i = 0; i < elements.length; i++) {
-			if (elements[i].getAttribute('id') === 'jform_tpl_css') {
-				var fieldValue = elements[i].value.length;
-			} else if (elements[i].getAttribute('id') === 'jform_tpl_html') {
-			} else {
-				var fieldValue = elements[i].value;
-			}
-			if (elements[i].getAttribute('checked') !== false) {
-				var fieldChecked = elements[i].getAttribute('checked');
-			}
-			inputs += fieldValue + fieldChecked;
-		}
-		if (turn === 0) {
-			writeStore("inputs", inputs);
+	// Validate input fields
+	if (form.jform_title.value === "") {
+		alert(document.getElementById('titleErrorText').value);
+	} else if (form.jform_description.value === "") {
+		alert(document.getElementById('descriptionErrorText').value);
+	} else {
+		Joomla.submitform(pressbutton, form);
+	}
+};
+
+// insert placeholder
+function buttonClick(text, editor) {
+	jInsertEditorText(text, editor);
+}
+
+// check form field values
+function checkValues(turn) {
+	var inputs = '';
+	var elements = document.adminForm.elements;
+	for (var i = 0; i < elements.length; i++) {
+		if (elements[i].getAttribute('id') === 'jform_tpl_css') {
+			var fieldValue = elements[i].value.length;
+		} else if (elements[i].getAttribute('id') === 'jform_tpl_html') {
 		} else {
-			return inputs;
+			var fieldValue = elements[i].value;
 		}
+		if (elements[i].getAttribute('checked') !== false) {
+			var fieldChecked = elements[i].getAttribute('checked');
+		}
+		inputs += fieldValue + fieldChecked;
 	}
-
-	// write to storage
-	function writeStore(item, value) {
-		var test = 'test';
-		try {
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
-			localStorage[item] = value;
-		} catch (e) {
-			Cookie.write(item, value);
-		}
+	if (turn === 0) {
+		writeStore("inputs", inputs);
+	} else {
+		return inputs;
 	}
+}
 
-	// read storage
-	function readStore(item) {
-		var test = 'test';
-		try {
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
-			itemValue = localStorage[item];
-		} catch (e) {
-			itemValue = Cookie.read(item);
-		}
-		return itemValue;
+// write to storage
+function writeStore(item, value) {
+	var test = 'test';
+	try {
+		localStorage.setItem(test, test);
+		localStorage.removeItem(test);
+		localStorage[item] = value;
+	} catch (e) {
+		Cookie.write(item, value);
 	}
+}
 
-	window.onload = function () {
-		var framefenster = document.getElementById("myIframe");
+// read storage
+function readStore(item) {
+	var test = 'test';
+	try {
+		localStorage.setItem(test, test);
+		localStorage.removeItem(test);
+		itemValue = localStorage[item];
+	} catch (e) {
+		itemValue = Cookie.read(item);
+	}
+	return itemValue;
+}
 
-		if (framefenster.contentWindow.document.body) {
-			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
-			if (document.all && !window.opera) {
-				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
-			}
-			framefenster.style.height = framefenster_size + 'px';
+window.onload = function () {
+	var framefenster = document.getElementById("myIframe");
+
+	if (framefenster.contentWindow.document.body) {
+		var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
+		if (document.all && !window.opera) {
+			framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
 		}
-		// check if store is empty or 0
-		var store = readStore("inputs");
-		if (store === 0 || store === undefined || store === null) {
-			checkValues(0);
-		}
-	};
+		framefenster.style.height = framefenster_size + 'px';
+	}
+	// check if store is empty or 0
+	var store = readStore("inputs");
+	if (store === 0 || store === undefined || store === null) {
+		checkValues(0);
+	}
 };

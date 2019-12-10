@@ -23,49 +23,47 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-window.onload = function() {
-	function doAjax(data, successCallback) {
-		var structure =
-			{
-				success: function (data) {
-					// Call the callback function
-					successCallback(data);
-				},
-				error  : function (req) {
-					var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
-					jQuery('div#loading2').css({display: 'none'});
-					jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-					jQuery('div#result').html(message);
-					jQuery('div#toolbar').find('button').removeAttr('disabled');
-				}
-			};
-
-		structure.url = starturl;
-		structure.data = data;
-		structure.type = 'POST';
-		structure.dataType = 'json';
-		jQuery.ajax(structure);
-	}
-
-	function processUpdateStep(data) {
-		jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
-		jQuery('p#step' + data.step).addClass('alert alert-info');
-		// Do AJAX post
-		post = {step: 'step' + data.step};
-		doAjax(post, function (data) {
-			if (data.ready != "1") {
-				processUpdateStep(data);
-			} else {
-				jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
+function doAjax(data, successCallback) {
+	var structure =
+		{
+			success: function (data) {
+				// Call the callback function
+				successCallback(data);
+			},
+			error  : function (req) {
+				var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
 				jQuery('div#loading2').css({display: 'none'});
-				jQuery('div#result').html(data.result);
+				jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
+				jQuery('div#result').html(message);
 				jQuery('div#toolbar').find('button').removeAttr('disabled');
 			}
-		});
-	}
+		};
 
-	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-	var starturl = document.getElementById('startUrl').value;
-	var data = {step: "1"};
-	processUpdateStep(data);
-};
+	structure.url = starturl;
+	structure.data = data;
+	structure.type = 'POST';
+	structure.dataType = 'json';
+	jQuery.ajax(structure);
+}
+
+function processUpdateStep(data) {
+	jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
+	jQuery('p#step' + data.step).addClass('alert alert-info');
+	// Do AJAX post
+	post = {step: 'step' + data.step};
+	doAjax(post, function (data) {
+		if (data.ready !== "1") {
+			processUpdateStep(data);
+		} else {
+			jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
+			jQuery('div#loading2').css({display: 'none'});
+			jQuery('div#result').html(data.result);
+			jQuery('div#toolbar').find('button').removeAttr('disabled');
+		}
+	});
+}
+
+jQuery('div#toolbar').find('button').attr("disabled", "disabled");
+var starturl = document.getElementById('startUrl').value;
+var data = {step: "1"};
+processUpdateStep(data);

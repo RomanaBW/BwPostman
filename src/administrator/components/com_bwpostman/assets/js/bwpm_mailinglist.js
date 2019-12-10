@@ -23,25 +23,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-window.onload = function() {
-	Joomla = window.Joomla || {};
+Joomla = window.Joomla || {};
 
-	Joomla.submitbutton = function (pressbutton) {
+Joomla.submitbutton = function (pressbutton) {
 
-		var form = document.adminForm;
+	var form = document.adminForm;
 
-		if (pressbutton === 'mailinglist.cancel') {
-			Joomla.submitform(pressbutton, form);
-			return;
-		}
+	if (pressbutton === 'mailinglist.cancel') {
+		Joomla.submitform(pressbutton, form);
+		return;
+	}
 
-		// Validate input fields
-		if (form.jform_title.value === "") {
-			alert(document.getElementById('alertTitle').value);
-		} else if (form.jform_description.value === "") {
-			alert(document.getElementById('alertDescription').value);
-		} else {
-			Joomla.submitform(pressbutton, form);
-		}
-	};
+	// Validate input fields
+	if (form.jform_title.value === "") {
+		alert(document.getElementById('alertTitle').value);
+	} else if (form.jform_description.value === "") {
+		alert(document.getElementById('alertDescription').value);
+	} else {
+		Joomla.submitform(pressbutton, form);
+	}
 };

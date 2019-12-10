@@ -56,7 +56,7 @@ function processUpdateStep(data)
 	// Do AJAX post
 	post = {step : 'step'+data.step};
 	doAjax(post, function(data){
-		if(data.ready != "1")
+		if(data.ready !== "1")
 		{
 			processUpdateStep(data);
 		}
@@ -74,7 +74,7 @@ function processUpdateStep(data)
 				modal.style.display = 'none';
 			}
 			window.parent.onclick = function(event) {
-				if (event.target == modal) {
+				if (event.target === modal) {
 					modal.style.display = 'none';
 				}
 			}

@@ -29,6 +29,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -37,18 +38,13 @@ HTMLHelper::_('behavior.tooltip');
 
 // Keep session alive while editing
 HTMLHelper::_('behavior.keepalive');
-?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-/* ]]> */
-</script>
+$document = Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
 
-<?php
-	HTMLHelper::_('bootstrap.tooltip');
-	$jinput	= Factory::getApplication()->input;
-	$image	= '<i class="icon-info"></i>';
-	$option	= $jinput->getCmd('option');
+HTMLHelper::_('bootstrap.tooltip');
+$jinput	= Factory::getApplication()->input;
+$image	= '<i class="icon-info"></i>';
+$option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">

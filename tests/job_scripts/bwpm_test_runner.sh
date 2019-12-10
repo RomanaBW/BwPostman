@@ -114,21 +114,21 @@ fi
 if [[ "${BW_TEST_CAT}" == lists_subs ]]
 then
 # single tests for subscribers
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersByTableHeader  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_sort_by_tableheader.xml --html htmlreports/report_subscribers_sort_by_tableheader.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersBySelectList  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_sort_by_selectlist.xml --html htmlreports/report_subscribers_sort_by_selectlist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailformat  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_filter_by_mailformat.xml --html htmlreports/report_subscribers_filter_by_mailformat.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailinglist  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_filter_by_mailinglist.xml --html htmlreports/report_subscribers_filter_by_mailinglist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_search.xml --html htmlreports/report_subscribers_search.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_listlimit.xml --html htmlreports/report_subscribers_listlimit.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_pagination.xml --html htmlreports/report_subscribers_pagination.html
-#
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersByTableHeader  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_sort_by_tableheader.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_tableheader.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersBySelectList  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_sort_by_selectlist.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_selectlist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailformat  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailformat.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailformat.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailinglist  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_search.xml --html htmlreports/report_subscribers_unconfirmed_search.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_listlimit.xml --html htmlreports/report_subscribers_unconfirmed_listlimit.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_pagination.xml --html htmlreports/report_subscribers_unconfirmed_pagination.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersByTableHeader  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_sort_by_tableheader.xml --html htmlreports/report_subscribers_sort_by_tableheader.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersBySelectList  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_sort_by_selectlist.xml --html htmlreports/report_subscribers_sort_by_selectlist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailformat  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_filter_by_mailformat.xml --html htmlreports/report_subscribers_filter_by_mailformat.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailinglist  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_filter_by_mailinglist.xml --html htmlreports/report_subscribers_filter_by_mailinglist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_search.xml --html htmlreports/report_subscribers_search.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_listlimit.xml --html htmlreports/report_subscribers_listlimit.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_pagination.xml --html htmlreports/report_subscribers_pagination.html
+
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersByTableHeader  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_sort_by_tableheader.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_tableheader.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersBySelectList  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_sort_by_selectlist.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_selectlist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailformat  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailformat.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailformat.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailinglist  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_search.xml --html htmlreports/report_subscribers_unconfirmed_search.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_listlimit.xml --html htmlreports/report_subscribers_unconfirmed_listlimit.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationUnconfirmedSubscribers  ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_unconfirmed_pagination.xml --html htmlreports/report_subscribers_unconfirmed_pagination.html
 
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ImportSubscribersByCSV ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_import_csv.xml --html htmlreports/report_subscribers_import_csv.html
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ImportSubscribersByXML ${BW_TEST_DEBUG} --xml xmlreports/report_subscribers_import_xml.xml --html htmlreports/report_subscribers_import_xml.html

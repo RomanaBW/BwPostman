@@ -41,12 +41,12 @@ Joomla.submitbutton = function (pressbutton)
 		ConfirmArchive = confirm(document.getElementById('archiveText').value);
 		if (ConfirmArchive === true)
 		{
-			submitform(pressbutton, form);
+			Joomla.submitform(pressbutton, form);
 		}
 	}
 	else
 	{
-		submitform(pressbutton, form);
+		Joomla.submitform(pressbutton, form);
 	}
 };
 

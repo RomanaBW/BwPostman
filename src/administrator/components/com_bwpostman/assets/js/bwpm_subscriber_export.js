@@ -102,55 +102,57 @@ function check() // Method to check if the user didn't delete all items in the s
 	return 1;
 }
 
-var $j = jQuery.noConflict();
+window.onload = function() {
+	var $j = jQuery.noConflict();
 
-function extCheck() {
-	var format = $j("input[name='fileformat']:checked").val();
+	function extCheck() {
+		var format = $j("input[name='fileformat']:checked").val();
 
-	switch (format) {
-		case 'xml':
-			$j(".exportgroups").show();
-			$j(".exportfields").show();
-			break;
-		case 'csv':
-			$j(".exportgroups").show();
-			$j(".exportfields").show();
-			$j(".delimiter").show();
-			$j(".enclosure").show();
-			$j(".caption").show();
-			break;
+		switch (format) {
+			case 'xml':
+				$j(".exportgroups").show();
+				$j(".exportfields").show();
+				break;
+			case 'csv':
+				$j(".exportgroups").show();
+				$j(".exportfields").show();
+				$j(".delimiter").show();
+				$j(".enclosure").show();
+				$j(".caption").show();
+				break;
+		}
 	}
-}
 
-$j(document).ready(function () {
-	$j(".delimiter").hide();
-	$j(".enclosure").hide();
-	$j(".caption").hide();
-	$j(".exportgroups").hide();
-	$j(".exportfields").hide();
-	$j(".button").hide();
-});
-
-$j("input[name='fileformat']").on("change", function () {
-	$j(".delimiter").hide();
-	$j(".enclosure").hide();
-	extCheck();
-});
-
-$j(".state input[type='checkbox']").on("change", function () {
-	if ($j(".archive input:checked").length) {
-		$j(".button").show();
-	}
-	if ($j(".state input:checked").length === 0) {
+	$j(document).ready(function () {
+		$j(".delimiter").hide();
+		$j(".enclosure").hide();
+		$j(".caption").hide();
+		$j(".exportgroups").hide();
+		$j(".exportfields").hide();
 		$j(".button").hide();
-	}
-});
+	});
 
-$j(".archive input[type='checkbox']").on("change", function () {
-	if ($j(".state input:checked").length) {
-		$j(".button").show();
-	}
-	if ($j(".archive input:checked").length === 0) {
-		$j(".button").hide();
-	}
-});
+	$j("input[name='fileformat']").on("change", function () {
+		$j(".delimiter").hide();
+		$j(".enclosure").hide();
+		extCheck();
+	});
+
+	$j(".state input[type='checkbox']").on("change", function () {
+		if ($j(".archive input:checked").length) {
+			$j(".button").show();
+		}
+		if ($j(".state input:checked").length === 0) {
+			$j(".button").hide();
+		}
+	});
+
+	$j(".archive input[type='checkbox']").on("change", function () {
+		if ($j(".state input:checked").length) {
+			$j(".button").show();
+		}
+		if ($j(".archive input:checked").length === 0) {
+			$j(".button").hide();
+		}
+	});
+};

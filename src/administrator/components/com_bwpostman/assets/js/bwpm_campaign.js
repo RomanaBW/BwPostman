@@ -23,40 +23,42 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-var Joomla = window.Joomla || {};
+window.onload = function() {
+	var Joomla = window.Joomla || {};
 
-Joomla.submitbutton = function (pressbutton) {
-	var form = document.adminForm;
-	if (pressbutton === 'campaign.cancel') {
-		Joomla.submitform(pressbutton, form);
-		return;
-	}
+	Joomla.submitbutton = function (pressbutton) {
+		var form = document.adminForm;
+		if (pressbutton === 'campaign.cancel') {
+			Joomla.submitform(pressbutton, form);
+			return;
+		}
 
-	if ((pressbutton === 'campaign.apply') || (pressbutton === 'campaign.save') || (pressbutton === 'campaign.save2new') || (pressbutton === 'campaign.save2copy')) {
-		var errors = 0;
-		var title = form.jform_title.value;
-		var inputs = document.getElementsByTagName('input');
-		var recipients = 0;
+		if ((pressbutton === 'campaign.apply') || (pressbutton === 'campaign.save') || (pressbutton === 'campaign.save2new') || (pressbutton === 'campaign.save2copy')) {
+			var errors = 0;
+			var title = form.jform_title.value;
+			var inputs = document.getElementsByTagName('input');
+			var recipients = 0;
 
-		for (var i = 0; i < inputs.length; i++) {
-			if (inputs[i].type.toLowerCase() === 'checkbox' && inputs[i].checked === true) {
-				recipients++;
+			for (var i = 0; i < inputs.length; i++) {
+				if (inputs[i].type.toLowerCase() === 'checkbox' && inputs[i].checked === true) {
+					recipients++;
+				}
 			}
-		}
 
-		if (title === '') {
-			alert(document.getElementById('alertTitle').value);
-			errors++;
-		}
+			if (title === '') {
+				alert(document.getElementById('alertTitle').value);
+				errors++;
+			}
 
-		if (!recipients) {
-			alert(document.getElementById('alertRecipients').value);
-			errors++;
-		}
+			if (!recipients) {
+				alert(document.getElementById('alertRecipients').value);
+				errors++;
+			}
 
-		if (errors > 0) {
-			return false;
+			if (errors > 0) {
+				return false;
+			}
+			Joomla.submitform(pressbutton, form);
 		}
-		Joomla.submitform(pressbutton, form);
 	}
 };

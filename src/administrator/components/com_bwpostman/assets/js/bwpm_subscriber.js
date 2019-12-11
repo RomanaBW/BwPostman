@@ -23,48 +23,50 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-var Joomla = window.Joomla || {};
-var $j = jQuery.noConflict();
+window.onload = function() {
+	var Joomla = window.Joomla || {};
+	var $j = jQuery.noConflict();
 
-Joomla.submitbutton = function (pressbutton) {
-	var form = document.adminForm;
-	if (pressbutton === 'subscriber.cancel') {
-		Joomla.submitform(pressbutton, form);
-	} else {
-		var isValid = true;
-		var action = pressbutton.split('.');
+	Joomla.submitbutton = function (pressbutton) {
+		var form = document.adminForm;
+		if (pressbutton === 'subscriber.cancel') {
+			Joomla.submitform(pressbutton, form);
+		} else {
+			var isValid = true;
+			var action = pressbutton.split('.');
 
-		if (action[1] !== 'cancel' && action[1] !== 'close') {
-			var forms = jQuery('form.form-validate');
-			for (var i = 0; i < forms.length; i++) {
-				if (!document.formvalidator.isValid(forms[i])) {
-					isValid = false;
-					break;
+			if (action[1] !== 'cancel' && action[1] !== 'close') {
+				var forms = jQuery('form.form-validate');
+				for (var i = 0; i < forms.length; i++) {
+					if (!document.formvalidator.isValid(forms[i])) {
+						isValid = false;
+						break;
+					}
 				}
 			}
+
+			if (isValid) {
+				Joomla.submitform(pressbutton, form);
+				return true;
+			}
+		}
+	};
+
+	// This function changes the layout-value if the checkbox 'confirm' exists and if it is not checked
+	function checkConfirmBox() {
+
+		var form = document.adminForm;
+
+		cb = document.getElementById('confirm');
+
+		// Does the checkbox 'confirm' exist?
+		if (cb == null) {
+			return;
 		}
 
-		if (isValid) {
-			Joomla.submitform(pressbutton, form);
-			return true;
+		if (form.jform_confirm.checked === false) {
+			form.layout.value = 'unconfirmed';
 		}
 	}
 };
-
-// This function changes the layout-value if the checkbox 'confirm' exists and if it is not checked
-function checkConfirmBox() {
-
-	var form = document.adminForm;
-
-	cb = document.getElementById('confirm');
-
-	// Does the checkbox 'confirm' exist?
-	if (cb == null) {
-		return;
-	}
-
-	if (form.jform_confirm.checked === false) {
-		form.layout.value = 'unconfirmed';
-	}
-}
 

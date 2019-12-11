@@ -23,88 +23,90 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-var $j = jQuery.noConflict();
+window.onload = function() {
+	var $j = jQuery.noConflict();
 
-function extCheck() {
-	// get the file name, possibly with path (depends on browser)
-	var filename = $j("#importfile").val();
-	var format = $j("input[name='fileformat']:checked").val();
+	function extCheck() {
+		// get the file name, possibly with path (depends on browser)
+		var filename = $j("#importfile").val();
+		var format = $j("input[name='fileformat']:checked").val();
 
 
-	// Use a regular expression to trim everything before final dot
-	var extension = filename.replace(/^.*\./, '');
+		// Use a regular expression to trim everything before final dot
+		var extension = filename.replace(/^.*\./, '');
 
-	// If there is no dot anywhere in filename, we would have extension == filename,
-	// so we account for this possibility now
-	if (extension === filename) {
-		extension = '';
-	} else {
-		// if there is an extension, we convert to lower case
-		// (N.B. this conversion will not effect the value of the extension
-		// on the file upload.)
-		extension = extension.toLowerCase();
-	}
+		// If there is no dot anywhere in filename, we would have extension == filename,
+		// so we account for this possibility now
+		if (extension === filename) {
+			extension = '';
+		} else {
+			// if there is an extension, we convert to lower case
+			// (N.B. this conversion will not effect the value of the extension
+			// on the file upload.)
+			extension = extension.toLowerCase();
+		}
 
-	var errorTextFileFormat = document.getElementById('importAlertFileFormat');
-	switch (extension) {
-		case 'xml':
-			if (format === 'xml') {
-				$j(".button").show();
-			} else {
+		var errorTextFileFormat = document.getElementById('importAlertFileFormat').value;
+		switch (extension) {
+			case 'xml':
+				if (format === 'xml') {
+					$j(".button").show();
+				} else {
+					alert(errorTextFileFormat);
+					$j("#importfile").val('');
+				}
+				break;
+			case 'csv':
+				if (format === 'csv') {
+					$j(".button").show();
+					$j(".delimiter").show();
+					$j(".enclosure").show();
+					$j(".caption").show();
+				} else {
+					alert(errorTextFileFormat);
+					$j("#importfile").val('');
+				}
+				break;
+			default:
 				alert(errorTextFileFormat);
 				$j("#importfile").val('');
-			}
-			break;
-		case 'csv':
-			if (format === 'csv') {
-				$j(".button").show();
-				$j(".delimiter").show();
-				$j(".enclosure").show();
-				$j(".caption").show();
-			} else {
-				alert(errorTextFileFormat);
-				$j("#importfile").val('');
-			}
-			break;
-		default:
-			alert(errorTextFileFormat);
-			$j("#importfile").val('');
-			break;
+				break;
+		}
 	}
-}
 
-$j(document).ready(function () {
-	var format = $j("input[name='fileformat']:checked").val();
+	$j(document).ready(function () {
+		var format = $j("input[name='fileformat']:checked").val();
 
-	$j(".delimiter").hide();
-	$j(".enclosure").hide();
-	$j(".caption").hide();
-	$j(".button").hide();
+		$j(".delimiter").hide();
+		$j(".enclosure").hide();
+		$j(".caption").hide();
+		$j(".button").hide();
 
-	if (typeof (format) == 'undefined') {
-		$j(".importfile").hide();
-	} else {
+		if (typeof (format) == 'undefined') {
+			$j(".importfile").hide();
+		} else {
+			$j(".importfile").show();
+			if ($j("#importfile").val() !== '') {
+				extCheck();
+			}
+		}
+	});
+
+	$j("input[name='fileformat']").on("change", function () {
 		$j(".importfile").show();
+		$j(".delimiter").hide();
+		$j(".enclosure").hide();
+		$j(".caption").hide();
+		$j(".button").hide();
+		$j("#importfile").val('');
+	});
+
+	$j("#importfile").on("change", function () {
 		if ($j("#importfile").val() !== '') {
 			extCheck();
 		}
-	}
-});
-
-$j("input[name='fileformat']").on("change", function () {
-	$j(".importfile").show();
-	$j(".delimiter").hide();
-	$j(".enclosure").hide();
-	$j(".caption").hide();
-	$j(".button").hide();
-	$j("#importfile").val('');
-});
-
-$j("#importfile").on("change", function () {
-	if ($j("#importfile").val() !== '') {
-		extCheck();
-	}
-});
+	});
+};
 
 //-----------------------------------------------------------------------------
 //http://www.mattkruse.com/javascript/selectbox/source.html

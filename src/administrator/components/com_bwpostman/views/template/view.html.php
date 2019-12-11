@@ -268,7 +268,6 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('BWP_TPL_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template.js');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');
@@ -375,7 +374,6 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('BWP_TPL_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template.js');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
 		jimport('joomla.environment.browser');

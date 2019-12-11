@@ -1,7 +1,7 @@
 //
 // BwPostman Newsletter Component
 //
-// BwPostman Javascript for validating archiving.
+// BwPostman Javascript for template editing.
 //
 // @version %%version_number%%
 // @package BwPostman-Admin
@@ -23,20 +23,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-Joomla = window.Joomla || {};
-
-Joomla.submitbutton = function (pressbutton)
-{
-	if (pressbutton === 'archive')
-	{
-		var ConfirmArchive = confirm(document.getElementById('alertArchive').value);
-		if (ConfirmArchive === true)
-		{
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
+// insert placeholder
+function buttonClick(Field, myValue) {
+	var myField = document.getElementById(Field);
+	if (document.selection) {
+		// IE support
+		myField.focus();
+		var sel = document.selection.createRange();
+		sel.text = myValue;
+	} else if (myField.selectionStart || myField.selectionStart === '0') {
+		// MOZILLA/NETSCAPE support
+		var startPos = myField.selectionStart;
+		var endPos = myField.selectionEnd;
+		myField.value = myField.value.substring(0, startPos)
+			+ myValue
+			+ myField.value.substring(endPos, myField.value.length);
+	} else {
+		myField.value += myValue;
 	}
-	else
-	{
-		Joomla.submitform(pressbutton, document.adminForm);
-	}
-};
+}

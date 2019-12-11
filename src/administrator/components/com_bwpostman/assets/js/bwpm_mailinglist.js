@@ -24,7 +24,7 @@
 //
 
 window.onload = function() {
-	Joomla = window.Joomla || {};
+	var Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton) {
 

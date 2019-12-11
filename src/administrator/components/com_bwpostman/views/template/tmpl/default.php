@@ -156,3 +156,8 @@ $options = array(
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 	</form>
 </div>
+
+<?php
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_checkValues.js');
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template.js');
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

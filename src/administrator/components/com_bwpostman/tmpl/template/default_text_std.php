@@ -30,14 +30,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\Uri\Uri;
 
 defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.keepalive');
-
-Factory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_std.js');
 
 $image = '<i class="icon-info"></i>';
 
@@ -267,3 +266,8 @@ $options = array(
 		<input type="hidden" id="descriptionErrorText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>" />
 	</form>
 </div>
+
+<?php
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_checkValues.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_buttonClick.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

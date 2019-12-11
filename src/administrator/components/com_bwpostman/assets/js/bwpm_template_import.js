@@ -60,7 +60,7 @@ window.onload = function() {
 			} else {
 				jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
 				jQuery('div#result').append(data.result);
-				if (data.aClass != 'error') {
+				if (data.aClass !== 'error') {
 					jQuery('div.resultSet').css('background-color', '#dff0d8');
 					jQuery('div.resultSet').css('border-color', '#d6e9c6');
 				} else {

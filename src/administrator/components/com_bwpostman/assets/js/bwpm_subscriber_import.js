@@ -146,7 +146,7 @@ function removeOptions(selectbox) // Method to get all items in the selectbox wh
 //-----------------------------------------------------------------------------
 function moveUp(element) // Method to move an item up
 {
-	for(i = 0; i < element.options.length; i++)
+	for(var i = 0; i < element.options.length; i++)
 	{
 		if(element.options[i].selected === true)
 		{
@@ -164,7 +164,7 @@ function moveUp(element) // Method to move an item up
 
 function moveDown(element) // Method to move an item down
 {
-	for(i = (element.options.length - 1); i >= 0; i--)
+	for(var i = (element.options.length - 1); i >= 0; i--)
 	{
 		if(element.options[i].selected === true)
 		{

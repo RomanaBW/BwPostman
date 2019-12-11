@@ -1,7 +1,7 @@
 //
 // BwPostman Newsletter Component
 //
-// BwPostman Javascript for validating archiving.
+// BwPostman Javascript for maintenance check doAjax.
 //
 // @version %%version_number%%
 // @package BwPostman-Admin
@@ -23,20 +23,29 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-Joomla = window.Joomla || {};
-
-Joomla.submitbutton = function (pressbutton)
+function doAjax(data, successCallback)
 {
-	if (pressbutton === 'archive')
-	{
-		var ConfirmArchive = confirm(document.getElementById('alertArchive').value);
-		if (ConfirmArchive === true)
+	var starturl = document.getElementById('startUrl').value;
+	var structure =
 		{
-			Joomla.submitform(pressbutton, document.adminForm);
-		}
-	}
-	else
-	{
-		Joomla.submitform(pressbutton, document.adminForm);
-	}
-};
+			success: function(data)
+			{
+				// Call the callback function
+				successCallback(data);
+			},
+			error: function(req)
+			{
+				var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
+				jQuery('div#loading2').css({display:'none'});
+				jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
+				jQuery('div#result').html(message);
+				jQuery('div#toolbar').find('button').removeAttr('disabled');
+			}
+		};
+
+	structure.url = starturl;
+	structure.data = data;
+	structure.type = 'POST';
+	structure.dataType = 'json';
+	jQuery.ajax(structure);
+}

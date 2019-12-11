@@ -63,7 +63,7 @@ window.onload = function() {
 				jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
 				jQuery('div#loading2').css({display: 'none'});
 				jQuery('div#result').html(data.result);
-				if (data.error != '') {
+				if (data.error !== '') {
 					jQuery('div.resultSet').css('background-color', '#f2dede');
 					jQuery('div.resultSet').css('border-color', '#eed3d7');
 				} else {

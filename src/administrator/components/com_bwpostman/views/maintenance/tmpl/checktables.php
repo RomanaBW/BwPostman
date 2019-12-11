@@ -56,4 +56,5 @@ $model		= $this->getModel();
 <input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo JSession::getFormToken(); ?>=1" />
 
 <?php
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_maintenance_doAjax.js');
 JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_checktables.js');

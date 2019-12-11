@@ -31,8 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.keepalive');
 
-JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_html.js');
-
 $image = '<i class="icon-info"></i>';
 
 $options = array(
@@ -238,3 +236,7 @@ $options = array(
 	</form>
 
 </div>
+
+<?php
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_html.js');
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

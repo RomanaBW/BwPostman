@@ -38,7 +38,7 @@ Joomla.submitbutton = function (pressbutton)
 	var form = document.adminForm;
 	if (pressbutton === 'newsletters.archive')
 	{
-		ConfirmArchive = confirm(document.getElementById('archiveText').value);
+		var ConfirmArchive = confirm(document.getElementById('archiveText').value);
 		if (ConfirmArchive === true)
 		{
 			Joomla.submitform(pressbutton, form);

@@ -24,11 +24,11 @@
 //
 
 window.onload = function() {
-	Joomla = window.Joomla || {};
+	var Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton) {
 		if (pressbutton === 'template.archive') {
-			ConfirmArchive = confirm(document.getElementById('archiveText').value);
+			var ConfirmArchive = confirm(document.getElementById('archiveText').value);
 			if (ConfirmArchive === true) {
 				Joomla.submitform(pressbutton, document.adminForm);
 			}

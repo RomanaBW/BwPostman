@@ -23,32 +23,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function doAjax(data, successCallback)
-{
-	var structure =
-		{
-			success: function(data)
-			{
-				// Call the callback function
-				successCallback(data);
-			},
-			error: function(req)
-			{
-				var message = '<p class="bw_tablecheck_error">AJAX Loading Error: '+req.statusText+'</p>';
-				jQuery('div#loading2').css({display:'none'});
-				jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
-				jQuery('div#result').html(message);
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-			}
-		};
-
-	structure.url = starturl;
-	structure.data = data;
-	structure.type = 'POST';
-	structure.dataType = 'json';
-	jQuery.ajax(structure);
-}
-
 function processUpdateStep(data)
 {
 	jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert-'+data.aClass);
@@ -72,7 +46,7 @@ function processUpdateStep(data)
 			btnclose.style.display = 'block';
 			btnclose.onclick = function() {
 				modal.style.display = 'none';
-			}
+			};
 			window.parent.onclick = function(event) {
 				if (event.target === modal) {
 					modal.style.display = 'none';
@@ -82,6 +56,5 @@ function processUpdateStep(data)
 	});
 }
 jQuery('div#toolbar').find('button').attr("disabled","disabled");
-var starturl = document.getElementById('startUrl').value;
 var data = {step: "0"};
 processUpdateStep(data);

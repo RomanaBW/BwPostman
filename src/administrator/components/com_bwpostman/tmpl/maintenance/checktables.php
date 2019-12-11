@@ -38,8 +38,6 @@ $uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', true, true);
 HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
 
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_checktables.js');
-
 $model	= $this->getModel();
 $uri    = Uri::root();
 ?>
@@ -65,4 +63,5 @@ $uri    = Uri::root();
 <input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1" />
 
 <?php
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_maintenance_doAjax.js');
 Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_checktables.js');

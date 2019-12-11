@@ -31,8 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.keepalive');
 
-JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_std.js');
-
 $image = '<i class="icon-info"></i>';
 
 $options = array(
@@ -236,3 +234,8 @@ $options = array(
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 	</form>
 </div>
+
+<?php
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_checkValues.js');
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_buttonClick.js');
+JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

@@ -35,6 +35,16 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 	var template_id_old = document.getElementById('template_id_old');
 	var text_template_id_old = document.getElementById('text_template_id_old');
 
+	function checkContent() {
+		if (selected_content_new.options.length === 0) {
+			// item changed but no content selected
+			document.adminForm.add_content.value = -1;
+		}
+		else {
+			document.adminForm.add_content.value = 1;
+		}
+	}
+
 	var selected_content_oldArray = [];
 	if (selected_content_old.value !== '') {
 		selected_content_oldArray = selected_content_old.value.split(",");
@@ -87,13 +97,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 		if (selected_content_newArray.length !== selected_content_oldArray.length) { // The lengths of the arrays are not equal
 			var confirmAddContent = confirm(text_confirm_content);
 			if (confirmAddContent === true) {
-				if (selected_content_new.options.length === 0) {
-					// content changed but no content selected
-					document.adminForm.add_content.value = -1;
-				}
-				else {
-					document.adminForm.add_content.value = 1;
-				}
+				checkContent();
 				return true;
 			}
 			else {
@@ -107,13 +111,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 			if (template_id !== template_id_old.value) { // The values are not equal
 				var confirmTemplateId = confirm(text_confirm_template);
 				if (confirmTemplateId === true) {
-					if (selected_content_new.options.length === 0) {
-						// template changed but no content selected
-						document.adminForm.add_content.value = -1;
-					}
-					else {
-						document.adminForm.add_content.value = 1;
-					}
+					checkContent();
 					return true;
 				}
 				else {
@@ -125,13 +123,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 			if (text_template_id !== text_template_id_old.value) { // The values are not equal
 				var confirmTexttemplateId = confirm(text_confirm_text_template);
 				if (confirmTexttemplateId === true) {
-					if (selected_content_new.options.length === 0) {
-						// template changed but no content selected
-						document.adminForm.add_content.value = -1;
-					}
-					else {
-						document.adminForm.add_content.value = 1;
-					}
+					checkContent();
 					return true;
 				}
 				else {
@@ -305,7 +297,7 @@ function switchRecipients() {
 window.onload = function() {
 	var $j	= jQuery.noConflict();
 
-	Joomla = window.Joomla || {};
+	var Joomla = window.Joomla || {};
 
 	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
 		var selectedCampaign = document.getElementById("jform_campaign_id");
@@ -335,6 +327,7 @@ window.onload = function() {
 			Joomla.submitform(pressbutton, form);
 		}
 
+		var confirmSendNl = '';
 		if (pressbutton === 'newsletter.sendmail') {
 			confirmSendNl = confirm(document.getElementById('confirmSend').value);
 			if (confirmSendNl === true) {
@@ -373,7 +366,7 @@ window.onload = function() {
 					form.task.setAttribute('value',pressbutton);
 					if (selectedCampaignValue === '-1')
 					{
-						res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
+						var res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
 						if (res === false)
 						{
 							return false;

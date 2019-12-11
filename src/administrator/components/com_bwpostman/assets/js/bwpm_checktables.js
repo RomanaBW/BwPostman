@@ -24,29 +24,6 @@
 //
 
 window.onload = function() {
-	function doAjax(data, successCallback) {
-		var structure =
-			{
-				success: function (data) {
-					// Call the callback function
-					successCallback(data);
-				},
-				error  : function (req) {
-					var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
-					jQuery('div#loading2').css({display: 'none'});
-					jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-					jQuery('div#result').html(message);
-					jQuery('div#toolbar').find('button').removeAttr('disabled');
-				}
-			};
-
-		structure.url = starturl;
-		structure.data = data;
-		structure.type = 'POST';
-		structure.dataType = 'json';
-		jQuery.ajax(structure);
-	}
-
 	function processUpdateStep(data) {
 		jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
 		jQuery('p#step' + data.step).addClass('alert alert-info');
@@ -65,7 +42,6 @@ window.onload = function() {
 	}
 
 	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-	var starturl = document.getElementById('startUrl').value;
 	var data = {step: "1"};
 	processUpdateStep(data);
 };

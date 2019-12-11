@@ -57,7 +57,7 @@ window.onload = function() {
 
 		var form = document.adminForm;
 
-		cb = document.getElementById('confirm');
+		var cb = document.getElementById('confirm');
 
 		// Does the checkbox 'confirm' exist?
 		if (cb == null) {

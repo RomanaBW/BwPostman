@@ -17,11 +17,19 @@
   debug:
     msg: "{{ archive_source }}"
 
+- name: Workaround for failure when downloading Joomla package
+  set_fact:
+    archive_source: "/Support/Software/Joomla/3.9/Joomla_3.9.14-Stable-Full_Package.tar.bz2"
+
+- name: Debug archive source
+  debug:
+    msg: "{{ archive_source }}"
+
 - name: unpack Joomla files to document root
   unarchive:
     src: "{{ archive_source }}"
     dest: "{{ tester_web_root }}"
-    remote_src: yes
+#    remote_src: yes
     group: "{{ tester_www_user }}"
     owner: "{{ tester_www_group }}"
 

@@ -35,6 +35,7 @@ All manually changing variables should be kept (beneath other variables) at the 
 Changing variables sounds crazy, I know, but most variables are build on some manually entered values. These are automated 
 changing variables, in opposite to the manual changing variables. Normally I would prefer to name them parameters, but 
 ansible makes no difference…  
+**!!Attention: Joomla version now has also be changed at vars/codecept_paths_Jn.yml!!!!!!**
 
 There are some containers, which have to be build successively:
 1. Create base images for web server and database and store them at local docker registry
@@ -43,7 +44,8 @@ There are some containers, which have to be build successively:
 2. Install Joomla to previously created images. The playbooks and the images are
 	1. **create-push-joomla-files-image.yml**, image is **universe3:5000/romana/joomla-bare-files:{{ joomla_version }}**
 	2. **create-push-joomla-tables-image.yml**, image is **universe3:5000/romana/joomla-bare-tables:{{ joomla_version }}**
-	This task do a little bit more. All changes to the tables are also settled here, as there are
+    **!!Attention: Joomla version now has also be changed at vars/codecept_paths_Jn.yml!!!!!!**
+	This task does a little bit more. All changes to the tables are also settled here, as there are
 		1. Install all tables of joomla
 		2. Add needed Users, assign them to desired user groups
 		3. Enable user registration

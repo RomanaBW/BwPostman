@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.modal');
 JHtml::_('behavior.framework', true);
 $uncompressed = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
-JHtml::_('script', 'system/modal' . $uncompressed . '.js', true, true);
+JHtml::_('script', 'system/modal' . $uncompressed . '.js', array('relative' => true, 'detectBrowser' => true));
 JHtml::_('stylesheet', 'media/system/css/modal.css');
 
 $model		= $this->getModel();

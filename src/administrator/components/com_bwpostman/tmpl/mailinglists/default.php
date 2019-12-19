@@ -42,11 +42,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-/* ]]> */
-</script>
-
 <div id="bwp_view_lists">
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"
 			method="post" name="adminForm" id="adminForm">

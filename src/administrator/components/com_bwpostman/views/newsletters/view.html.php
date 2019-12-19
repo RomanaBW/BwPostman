@@ -225,6 +225,11 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			$tpl = $app->getUserState('com_bwpostman.newsletters.layout', 'unsent');
 		}
 
+		if ($tpl === 'queue' && (int)$this->count_queue === 0)
+		{
+			$tpl = 'unsent';
+		}
+
 		$app->setUserState('com_bwpostman.newsletters.layout', $tpl);
 
 		// Call parent display

@@ -33,6 +33,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
 
+use Joomla\CMS\Form\Form;
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 use Joomla\Registry\Registry as JRegistry;
 
@@ -794,6 +795,31 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		return $itemid;
+	}
+
+	/**
+	 * Method to validate the form data.
+	 *
+	 * @param   Form    $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 *
+	 * @return  array|boolean  Array of filtered data if valid, false otherwise.
+	 *
+	 * @see     FormRule
+	 * @see     InputFilter
+	 * @since   2.4.0
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		if (!isset($data['attachment']) || $data['attachment'] === "")
+		{
+			$data['attachment'] = array();
+		}
+
+		$validData = parent::validate($form, $data, $group);
+
+		return $validData;
 	}
 
 	/**

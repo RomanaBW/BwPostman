@@ -546,7 +546,7 @@ class BwPostmanTableSubscribers extends JTable
 
 		if ($fault)
 		{
-			$app->setUserState('com_bwpostman.edit.subscriber.data', $this);
+			$app->setUserState('com_bwpostman.edit.subscriber.data', $data);
 			$session->set('session_error', $err);
 			return false;
 		}
@@ -711,7 +711,7 @@ class BwPostmanTableSubscribers extends JTable
 					$err['err_id']		= $xid;
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid), 'error');
+//					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 					return false;
 				}
@@ -725,7 +725,7 @@ class BwPostmanTableSubscribers extends JTable
 					$err['err_email']	= $this->email;
 
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid), 'error');
+//					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 
 					return false;
@@ -746,14 +746,7 @@ class BwPostmanTableSubscribers extends JTable
 					$err['err_id'] = $xid;
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-					$app->enqueueMessage(
-						JText::sprintf(
-							'COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS',
-							$this->email,
-							$link
-						),
-						'error'
-					);
+//					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email, $link), 'error');
 					$session->set('session_error', $err);
 					return false;
 				}

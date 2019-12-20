@@ -144,7 +144,7 @@
       become: true
       become_user: root
       synchronize:
-        src: "{{ test_files_source }}"
+        src: "{{ test_files_source_local }}"
         dest: "/data/tests"
         delete: yes
         recursive: yes

@@ -323,7 +323,7 @@ class MaintenancePage
 		$I->amOnPage(MainView::$url);
 
 		$I->waitForElementVisible(self::$statisticsPaneGenerals, 5);
-		$I->click(self::$statisticsPaneGenerals);
+//		$I->click(self::$statisticsPaneGenerals);
 		$I->waitForElementVisible(self::$statisticsUnsentNewsletters, 5);
 		$I->see("53", self::$statisticsUnsentNewsletters);
 	}

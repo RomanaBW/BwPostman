@@ -207,7 +207,7 @@ class TestAccessCest
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
-			$I->click(AccessPage::$link_statistics_general);
+//			$I->click(AccessPage::$link_statistics_general);
 			$I->waitForElementVisible(AccessPage::$table_statistics_general, 5);
 			$I->wait(1);
 

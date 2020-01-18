@@ -13,6 +13,7 @@
 	<packagename>bwpostman</packagename>
 	<packager>Boldt Webservice</packager>
 	<packagerurl>https://www.boldt-webservice.de</packagerurl>
+	<blockChildUninstall>true</blockChildUninstall>
 
 	<description>
 		<b>BwPostman component, modules and  plugins installed successfully</b>

@@ -51,12 +51,15 @@ class Pkg_BwPostmanInstallerScript
 	 * @since       2.2.1
   */
 
-	public function install()
+	public function install($parent)
   {
 		sleep(5);
 		$session	= JFactory::getSession();
 		$session->set('update', false, 'bwpostman');
-//		$this->showFinished(false);
+		// Get component manifest file version
+		$manifest = $parent->getManifest();
+		$this->release	= $manifest->version;
+		$this->showFinished(false);
   }
 
   /**
@@ -67,11 +70,15 @@ class Pkg_BwPostmanInstallerScript
 	 * @since   2.2.1
   */
 
-	public function update()
+	public function update($parent)
   {
 		$session	= JFactory::getSession();
 		$session->set('update', true, 'bwpostman');
-//		$this->showFinished(true);
+		// Get component manifest file version
+		$manifest = $parent->getManifest();
+		$this->release	= $manifest->version;
+
+		$this->showFinished(true);
   }
 
 	/**
@@ -163,159 +170,325 @@ class Pkg_BwPostmanInstallerScript
 		}
 
 		$asset_path = 'components/com_bwpostman/assets';
-		?>
+			if(version_compare(JVERSION, '3.999.999', 'ge'))
+			{
+				?>
 
-<link rel="stylesheet" href="<?php echo JRoute::_($asset_path . '/css/install.css'); ?>" type="text/css" />
+				<link rel="stylesheet" href="<?php echo JRoute::_($asset_path . '/css/install_j4.css'); ?>" type="text/css" />
 
-<div id="com_bwp_install_header">
-	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img border="0" align="center" src="<?php echo JRoute::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
-	</a>
-</div>
-<div class="top_line"></div>
+				<div id="com_bwp_install_header" class="text-center">
+					<a href="https://www.boldt-webservice.de" target="_blank">
+						<img class="img-fluid mx-auto d-block border-0" src="<?php echo JRoute::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+					</a>
+				</div>
+				<div class="top_line"></div>
 
-<div id="com_bwp_install_outer">
-	<h1><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
-	<div id="com_bwp_install_left">
-		<div class="com_bwp_install_welcome">
-			<p><?php echo JText::_('COM_BWPOSTMAN_DESCRIPTION') ?></p>
-		</div>
-		<div class="com_bwp_install_finished">
-			<h2>
-			<?php
-			if($update){
-				echo JText::sprintf('COM_BWPOSTMAN_UPGRADE_SUCCESSFUL', $this->release);
-				echo '<br />' . JText::_('COM_BWPOSTMAN_EXTENSION_UPGRADE_REMIND');
+				<div id="com_bwp_install_outer" class="row">
+					<div class="col-lg-12 text-center p-2 mt-2">
+						<h1><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
+					</div>
+					<div id="com_bwp_install_left" class="col-lg-6 mb-2">
+						<div class="com_bwp_install_welcome">
+							<p><?php echo JText::_('COM_BWPOSTMAN_DESCRIPTION') ?></p>
+						</div>
+						<div class="com_bwp_install_finished text-center">
+							<h2>
+								<?php
+								if($update)
+								{
+									echo JText::sprintf('COM_BWPOSTMAN_UPGRADE_SUCCESSFUL', $this->release);
+// der Hinweis das Modul zu aktualisieren wird beim Paket nicht benötigt
+//				echo '<br />' . JText::_('COM_BWPOSTMAN_EXTENSION_UPGRADE_REMIND');
+								}
+								else
+								{
+									echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_SUCCESSFUL', $this->release);
+								}
+								?>
+							</h2>
+						</div>
+						<?php
+						if ($show_right)
+						{ ?>
+							<div class="cpanel text-center mb-3">
+								<div class="icon btn" >
+									<a href="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
+									</a>
+								</div>
+								<div class="icon btn">
+									<a href="<?php echo $manual; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-manual.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
+									</a>
+								</div>
+								<div class="icon btn">
+									<a href="<?php echo $forum; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-forum.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_FORUM')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
+									</a>
+								</div>
+							</div>
+							<?php
+						} ?>
+					</div>
+
+					<div id="com_bwp_install_right" class="col-lg-6">
+						<?php
+						if ($show_right)
+						{
+							if ($string_special != '')
+							{ ?>
+								<div class="com_bwp_install_specialnote p-3">
+									<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
+									<p class="urgent"><?php echo $string_special; ?></p>
+								</div>
+								<?php
+							}?>
+
+							<?php
+							if ($show_update)
+							{ ?>
+								<div class="com_bwp_install_updateinfo mb-3 p-3">
+									<h2 class="mb-3"><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
+									<?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_CHANGELOG_INFO'); ?>
+									<?php if ($string_new != '') { ?>
+										<h3 class="mb-2"><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
+										<p><?php echo $string_new; ?></p>
+									<?php }?>
+									<?php if ($string_improvement != '') { ?>
+										<h3 class="mb-2"><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
+										<p><?php echo $string_improvement; ?></p>
+									<?php }?>
+									<?php if ($string_bugfix != '') { ?>
+										<h3 class="mb-2"><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
+										<p><?php echo $string_bugfix; ?></p>
+									<?php }?>
+								</div>
+								<?php
+							}
+						}
+						else
+						{ ?>
+							<div class="cpanel text-center mb-3">
+								<div class="icon btn" >
+									<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&token=' . JSession::getFormToken()); ?>">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
+									</a>
+								</div>
+								<div class="icon btn">
+									<a href="<?php echo $manual; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
+									</a>
+								</div>
+								<div class="icon btn">
+									<a href="<?php echo $forum; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_FORUM')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
+									</a>
+								</div>
+							</div>
+							<?php
+						} ?>
+					</div>
+					<div class="clr clearfix"></div>
+
+					<div class="com_bwp_install_footer col-12 text-center my-3">
+						<p class="small">
+							<?php echo JText::_('&copy; 2012-'); echo date(" Y")?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>
+						</p>
+					</div>
+				</div>
+
+				<?php
 			}
 			else
 			{
-				echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_SUCCESSFUL', $this->release);
-			}
-			?>
-			</h2>
-		</div>
-		<?php if ($show_right) { ?>
-			<div class="cpanel">
-				<div class="icon" >
-					<a href="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>">
-						<?php echo JHtml::_(
-							'image',
-							'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
-							JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
-						); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
+				?>
+
+				<link rel="stylesheet" href="<?php echo JRoute::_($asset_path . '/css/install.css'); ?>" type="text/css" />
+
+				<div id="com_bwp_install_header">
+					<a href="https://www.boldt-webservice.de" target="_blank">
+						<img border="0" align="center" src="<?php echo JRoute::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 					</a>
 				</div>
-				<div class="icon">
-					<a href="<?php echo $manual; ?>" target="_blank">
-						<?php echo JHtml::_(
-							'image',
-							'administrator/components/com_bwpostman/assets/images/icon-48-manual.png',
-							JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')
-						); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
-					</a>
-				</div>
-				<div class="icon">
-					<a href="<?php echo $forum; ?>" target="_blank">
-						<?php echo JHtml::_(
-							'image',
-							'administrator/components/com_bwpostman/assets/images/icon-48-forum.png',
-							JText::_('COM_BWPOSTMAN_INSTALL_FORUM')
-						); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
-					</a>
-				</div>
-			</div>
-		<?php
-		} ?>
+				<div class="top_line"></div>
+
+				<div id="com_bwp_install_outer">
+					<h1><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
+					<div id="com_bwp_install_left">
+						<div class="com_bwp_install_welcome">
+							<p><?php echo JText::_('COM_BWPOSTMAN_DESCRIPTION') ?></p>
+						</div>
+						<div class="com_bwp_install_finished">
+							<h2>
+								<?php
+								if ($update)
+								{
+									echo JText::sprintf('COM_BWPOSTMAN_UPGRADE_SUCCESSFUL', $this->release);
+// der Hinweis das Modul zu aktualisieren wird beim Paket nicht benötigt
+//				echo '<br />' . JText::_('COM_BWPOSTMAN_EXTENSION_UPGRADE_REMIND');
+								}
+								else
+								{
+									echo JText::sprintf('COM_BWPOSTMAN_INSTALLATION_SUCCESSFUL', $this->release);
+								}
+								?>
+							</h2>
+						</div>
+						<?php if ($show_right) { ?>
+							<div class="cpanel">
+								<div class="icon">
+									<a href="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
+									</a>
+								</div>
+								<div class="icon">
+									<a href="<?php echo $manual; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-manual.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
+									</a>
+								</div>
+								<div class="icon">
+									<a href="<?php echo $forum; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-forum.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_FORUM')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
+									</a>
+								</div>
+							</div>
+							<?php
+						} ?>
 					</div>
 
-	<div id="com_bwp_install_right">
-		<?php
-		if ($show_right)
-		{
-			if ($string_special != '')
-			{ ?>
-				<div class="com_bwp_install_specialnote">
-					<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
-					<p class="urgent"><?php echo $string_special; ?></p>
-				</div>
-			<?php
-			}?>
+					<div id="com_bwp_install_right">
+						<?php
+						if ($show_right)
+						{
+							if ($string_special != '')
+							{ ?>
+								<div class="com_bwp_install_specialnote">
+									<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
+									<p class="urgent"><?php echo $string_special; ?></p>
+								</div>
+								<?php
+							} ?>
 
-			<?php if ($show_update)
-			{ ?>
-				<div class="com_bwp_install_updateinfo">
-					<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
-					<?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_CHANGELOG_INFO'); ?>
-					<?php if ($string_new != '') { ?>
-						<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
-						<p><?php echo $string_new; ?></p>
-					<?php
-					}?>
-					<?php if ($string_improvement != '')
-					{ ?>
-					<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
-						<p><?php echo $string_improvement; ?></p>
-					<?php
-					}?>
-					<?php if ($string_bugfix != '')
-					{ ?>
-						<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
-						<p><?php echo $string_bugfix; ?></p>
-					<?php
-					}?>
+							<?php if ($show_update)
+						{ ?>
+							<div class="com_bwp_install_updateinfo">
+								<h2><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
+								<?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_CHANGELOG_INFO'); ?>
+								<?php if ($string_new != '') { ?>
+									<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
+									<p><?php echo $string_new; ?></p>
+									<?php
+								} ?>
+								<?php if ($string_improvement != '')
+								{ ?>
+									<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
+									<p><?php echo $string_improvement; ?></p>
+									<?php
+								} ?>
+								<?php if ($string_bugfix != '')
+								{ ?>
+									<h3><?php echo JText::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
+									<p><?php echo $string_bugfix; ?></p>
+									<?php
+								} ?>
+							</div>
+							<?php
+						}
+						}
+						else
+						{ ?>
+							<div class="cpanel">
+								<div class="icon">
+									<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&token=' . JSession::getFormToken()); ?>">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
+									</a>
+								</div>
+								<div class="icon">
+									<a href="<?php echo $manual; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
+									</a>
+								</div>
+								<div class="icon">
+									<a href="<?php echo $forum; ?>" target="_blank">
+										<?php echo JHtml::_(
+											'image',
+											'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+											JText::_('COM_BWPOSTMAN_INSTALL_FORUM')
+										); ?>
+										<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
+									</a>
+								</div>
+							</div>
+							<?php
+						} ?>
+					</div>
+					<div class="clr"></div>
+
+					<div class="com_bwp_install_footer">
+						<p class="small">
+							<?php echo JText::_('&copy; 2012-');
+							echo date(" Y") ?> by
+							<a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>
+						</p>
+					</div>
 				</div>
-			<?php
+
+				<?php
 			}
-		}
-		else
-		{ ?>
-			<div class="cpanel">
-				<div class="icon" >
-					<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&token=' . JSession::getFormToken()); ?>">
-						<?php echo JHtml::_(
-							'image',
-							'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
-							JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
-						); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
-					</a>
-				</div>
-				<div class="icon">
-					<a href="<?php echo $manual; ?>" target="_blank">
-						<?php echo JHtml::_(
-							'image',
-							'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
-							JText::_('COM_BWPOSTMAN_INSTALL_MANUAL')
-						); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
-					</a>
-				</div>
-				<div class="icon">
-					<a href="<?php echo $forum; ?>" target="_blank">
-						<?php echo JHtml::_(
-							'image',
-							'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
-							JText::_('COM_BWPOSTMAN_INSTALL_FORUM')
-						); ?>
-						<span><?php echo JText::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
-					</a>
-				</div>
-			</div>
-		<?php
-		} ?>
-	</div>
-	<div class="clr"></div>
-
-	<div class="com_bwp_install_footer">
-		<p class="small">
-			<?php echo JText::_('&copy; 2012-'); echo date(" Y")?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>
-		</p>
-	</div>
-</div>
-
-	<?php
 	}
 }

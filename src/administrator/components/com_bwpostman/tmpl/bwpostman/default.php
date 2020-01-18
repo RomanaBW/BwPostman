@@ -33,16 +33,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-//Load tabs behavior for the statistics
-jimport('joomla.html.html.sliders');
-
 $app = Factory::getApplication();
 
 $jinput	= $app->input;
-
-$accordionParams = array();
-$accordionParams['toggle'] = true;
-$accordionParams['active'] = 'generals';
 
 if ($this->queueEntries) {
 	$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
@@ -197,254 +190,263 @@ if ($this->queueEntries) {
 			?>
 		</div>
 		<div class="bw-generals col-md-3 module-wrapper">
-			<?php echo HTMLHelper::_('bootstrap.startAccordion', 'bwpostman_statistic-pane', $accordionParams); ?>
-			<?php echo HTMLHelper::_('bootstrap.addSlide', 'bwpostman_statistic-pane', Text::_('COM_BWPOSTMAN_GENERAL_STATS'), 'generals'); ?>
-			<table class="adminlist">
-						<?php
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| $this->permissions['view']['newsletter']
-						)
-						{ ?>
-							<tr>
-								<td width="200"><?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT_NUM') . ': '; ?></td>
-								<td width="50">
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent'); ?>">
-											<?php echo $this->general['nl_unsent']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_NL_SENT_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&tab=sent'); ?>">
-											<?php echo $this->general['nl_sent']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<?php
-						}
+			<div id="bwpostman_statistic-pane" class="accordion collapse show" role="tablist">
+				<div class="card mb-2">
+					<a href="#generals" data-toggle="collapse" class="card-header" role="tab" aria-expanded="true"><?php echo Text::_('COM_BWPOSTMAN_GENERAL_STATS'); ?></a>
+					<div class="collapse show" id="generals" role="tabpanel">
+						<div class="card-body">
+							<table class="adminlist">
+								<?php
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| $this->permissions['view']['newsletter']
+								)
+								{ ?>
+									<tr>
+										<td width="200"><?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT_NUM') . ': '; ?></td>
+										<td width="50">
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent'); ?>">
+													<?php echo $this->general['nl_unsent']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_NL_SENT_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&tab=sent'); ?>">
+													<?php echo $this->general['nl_sent']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<?php
+								}
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| $this->permissions['view']['subscriber']
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_SUB_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=subscribers'); ?>">
-											<?php echo $this->general['sub']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_TEST_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=subscribers&tab=testrecipients'); ?>">
-											<?php echo $this->general['test']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<?php
-						}
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| $this->permissions['view']['subscriber']
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_SUB_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=subscribers'); ?>">
+													<?php echo $this->general['sub']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_TEST_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=subscribers&tab=testrecipients'); ?>">
+													<?php echo $this->general['test']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<?php
+								}
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| $this->permissions['view']['campaign']
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_CAM_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=campaigns'); ?>">
-											<?php echo $this->general['cam']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<?php
-						}
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| $this->permissions['view']['campaign']
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_CAM_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=campaigns'); ?>">
+													<?php echo $this->general['cam']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<?php
+								}
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| $this->permissions['view']['mailinglist']
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_ML_PUBLIC_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=mailinglists'); ?>">
-											<?php echo $this->general['ml_published']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_ML_INTERNAL_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=mailinglists'); ?>">
-											<?php echo $this->general['ml_unpublished']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-						<?php }
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| $this->permissions['view']['mailinglist']
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_ML_PUBLIC_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=mailinglists'); ?>">
+													<?php echo $this->general['ml_published']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_ML_INTERNAL_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=mailinglists'); ?>">
+													<?php echo $this->general['ml_unpublished']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+								<?php }
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| $this->permissions['view']['template']
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_TPL_HTML_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>">
-											<?php echo $this->general['html_templates']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_TPL_TEXT_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>">
-											<?php echo $this->general['text_templates']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-						<?php } ?>
-					</table>
-			<?php echo HTMLHelper::_('bootstrap.endSlide');
-				if ($this->permissions['com']['admin'] || $this->permissions['view']['maintenance'] || $this->permissions['view']['archive'])
-				{
-					echo HTMLHelper::_('bootstrap.addSlide', 'bwpostman_statistic-pane',
-						Text::_('COM_BWPOSTMAN_ARC_STATS'), 'archive'); ?>
-					<table class="adminlist">
-						<?php
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| ($this->permissions['view']['archive'] && $this->permissions['view']['newsletter'])
-						)
-						{ ?>
-							<tr>
-								<td width="200"><?php echo Text::_('COM_BWPOSTMAN_ARC_NL_NUM') . ': '; ?></td>
-								<td width="50">
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=newsletters'); ?>">
-											<?php echo $this->archive['arc_nl']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<?php
-						}
+									if ($this->permissions['com']['admin']
+										|| $this->permissions['view']['maintenance']
+										|| $this->permissions['view']['template']
+									)
+									{ ?>
+										<tr>
+											<td><?php echo Text::_('COM_BWPOSTMAN_TPL_HTML_NUM') . ': '; ?></td>
+											<td>
+												<b>
+													<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>">
+														<?php echo $this->general['html_templates']; ?>
+													</a>
+												</b>
+											</td>
+										</tr>
+										<tr>
+											<td><?php echo Text::_('COM_BWPOSTMAN_TPL_TEXT_NUM') . ': '; ?></td>
+											<td>
+												<b>
+													<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>">
+														<?php echo $this->general['text_templates']; ?>
+													</a>
+												</b>
+											</td>
+										</tr>
+									<?php } ?>
+							</table>
+						</div>
+					</div>
+				</div>
+				<?php	if ($this->permissions['com']['admin'] || $this->permissions['view']['maintenance'] || $this->permissions['view']['archive'])
+				{ ?>
+				<div class="card mb-2">
+					<a href="#archive" data-toggle="collapse" class="card-header collapsed" role="tab"><?php echo Text::_('COM_BWPOSTMAN_ARC_STATS'); ?></a>
+					<div class="collapse" id="archive" role="tabpanel">
+						<div class="card-body">
+							<table class="adminlist">
+								<?php
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| ($this->permissions['view']['archive'] && $this->permissions['view']['newsletter'])
+								)
+								{ ?>
+									<tr>
+										<td width="200"><?php echo Text::_('COM_BWPOSTMAN_ARC_NL_NUM') . ': '; ?></td>
+										<td width="50">
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=newsletters'); ?>">
+													<?php echo $this->archive['arc_nl']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<?php
+								}
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| ($this->permissions['view']['archive'] && $this->permissions['view']['subscriber'])
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_ARC_SUB_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=subscribers'); ?>">
-											<?php echo $this->archive['arc_sub']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<?php
-						}
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| ($this->permissions['view']['archive'] && $this->permissions['view']['subscriber'])
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_SUB_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=subscribers'); ?>">
+													<?php echo $this->archive['arc_sub']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<?php
+								}
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| ($this->permissions['view']['archive'] && $this->permissions['view']['campaign'])
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_ARC_CAM_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=campaigns'); ?>">
-											<?php echo $this->archive['arc_cam']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-							<?php
-						}
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| ($this->permissions['view']['archive'] && $this->permissions['view']['campaign'])
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_CAM_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=campaigns'); ?>">
+													<?php echo $this->archive['arc_cam']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+									<?php
+								}
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| ($this->permissions['view']['archive'] && $this->permissions['view']['mailinglist'])
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_ARC_ML_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=mailinglists'); ?>">
-											<?php echo $this->archive['arc_ml']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-						<?php }
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| ($this->permissions['view']['archive'] && $this->permissions['view']['mailinglist'])
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_ML_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=mailinglists'); ?>">
+													<?php echo $this->archive['arc_ml']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+								<?php }
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| ($this->permissions['view']['archive'] && $this->permissions['view']['template'])
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM') . ': '; ?></td>
-								<td>
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>">
-											<?php echo $this->archive['arc_html_templates']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-						<?php }
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| ($this->permissions['view']['archive'] && $this->permissions['view']['template'])
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM') . ': '; ?></td>
+										<td>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>">
+													<?php echo $this->archive['arc_html_templates']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+								<?php }
 
-						if ($this->permissions['com']['admin']
-							|| $this->permissions['view']['maintenance']
-							|| ($this->permissions['view']['archive'] && $this->permissions['view']['template'])
-						)
-						{ ?>
-							<tr>
-								<td><?php echo Text::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM') . ': '; ?></td>
-								<td>
+								if ($this->permissions['com']['admin']
+									|| $this->permissions['view']['maintenance']
+									|| ($this->permissions['view']['archive'] && $this->permissions['view']['template'])
+								)
+								{ ?>
+									<tr>
+										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_TPL_TEXT_NUM') . ': '; ?></td>
+										<td>
 
-									<b>
-										<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>">
-											<?php echo $this->archive['arc_text_templates']; ?>
-										</a>
-									</b>
-								</td>
-							</tr>
-						<?php } ?>
-					</table>
-					<?php echo HTMLHelper::_('bootstrap.endSlide');
-				}
-			?>
+											<b>
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>">
+													<?php echo $this->archive['arc_text_templates']; ?>
+												</a>
+											</b>
+										</td>
+									</tr>
+								<?php } ?>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php	} ?>
 		</div>
 	</div>
 	<div class="clr clearfix"></div>

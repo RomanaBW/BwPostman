@@ -57,4 +57,7 @@ function processUpdateStep(data)
 }
 jQuery('div#toolbar').find('button').attr("disabled","disabled");
 var data = {step: "0"};
-processUpdateStep(data);
+jQuery(document).ready(function() {
+	jQuery('body.contentpane').css('overflow-x', 'hidden');
+	processUpdateStep(data);
+});

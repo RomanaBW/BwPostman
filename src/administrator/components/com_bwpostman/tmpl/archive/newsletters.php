@@ -32,9 +32,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
-// Load the tooltip behavior for the notes
-HTMLHelper::_('behavior.tooltip');
+// Load the bootstrap tooltip for the notes
+HTMLHelper::_('bootstrap.tooltip');
 
 $user		= Factory::getUser();
 $userId		= $user->get('id');
@@ -44,6 +45,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 //Set context and layout state for filters
 $this->context	= 'archive.newsletters';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
+
+$modalParams = array();
+$modalParams['modalWidth'] = 80;
+$modalParams['bodyHeight'] = 70;
 //
 /**
  * BwPostman Archived Newsletters Layout
@@ -67,16 +72,16 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 					);
 					?>
 
-					<div class="form-horizontal">
-						<ul class="bwp_tabs">
+					<div class="bwp-archive">
+						<ul class="nav nav-tabs bwp-tabs">
 							<?php
 							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1, 0))
 							{
 							?>
-								<li class="open"><!-- We need to use the setAttribute-function because of the IE -->
-									<button onclick="layout.setAttribute('value','newsletters');this.form.submit();"
-											class="buttonAsLink_open"><?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>
-									</button>
+								<li class="nav-item"><!-- We need to use the setAttribute-function because of the IE -->
+									<a href="#" data-layout="newsletters" class="nav-link active">
+										<?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>
+									</a>
 								</li>
 								<?php
 							}
@@ -84,10 +89,10 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1, 0))
 							{
 							?>
-								<li class="closed">
-									<button onclick="layout.setAttribute('value','subscribers');this.form.submit();"
-											class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
-									</button>
+								<li class="nav-item">
+									<a href="#" data-layout="subscribers" class="nav-link">
+										<?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
+									</a>
 								</li>
 								<?php
 							}
@@ -95,10 +100,10 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1, 0))
 							{
 							?>
-								<li class="closed">
-									<button onclick="layout.setAttribute('value','campaigns');this.form.submit();"
-											class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
-									</button>
+								<li class="nav-item">
+									<a href="#" data-layout="campaigns" class="nav-link">
+										<?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
+									</a>
 								</li>
 								<?php
 							}
@@ -106,10 +111,10 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1, 0))
 							{
 							?>
-								<li class="closed">
-									<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();"
-											class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_MLS'); ?>
-									</button>
+								<li class="nav-item">
+									<a href="#" data-layout="mailinglists" class="nav-link">
+										<?php echo Text::_('COM_BWPOSTMAN_ARC_MLS'); ?>
+									</a>
 								</li>
 								<?php
 							}
@@ -117,18 +122,21 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1, 0))
 							{
 							?>
-								<li class="closed">
-									<button onclick="layout.setAttribute('value','templates');
-										this.form.submit();" class="buttonAsLink"><?php echo Text::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
-									</button>
+								<li class="nav-item">
+									<a href="#" data-layout="templates" class="nav-link">
+										<?php echo Text::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
+									</a>
 								</li>
 								<?php
 							}
 							?>
 						</ul>
 
-						<div class="current">
+						<div class="bwp-table">
 							<table id="main-table" class="table">
+								<caption id="captionTable" class="sr-only">
+									<?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+								</caption>
 								<thead>
 									<tr>
 										<th style="width: 1%;" class="text-center">
@@ -139,7 +147,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 										<th>
 											<?php echo HTMLHelper::_('searchtools.sort',  'Subject', 'a.subject', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
+										<th class="d-none d-lg-table-cell" style="min-width: 100px;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_DESCRIPTION',
@@ -148,7 +156,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-xl-table-cell" style="width: 10%;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_MAILING_DATE',
@@ -157,10 +165,10 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?>
 										</th>
-										<th width="100" nowrap="nowrap">
+										<th class="d-none d-lg-table-cell" width="100" nowrap="nowrap">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_CAM_NAME',
@@ -169,7 +177,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 5%;" scope="col">
+										<th class="d-none d-lg-table-cell" style="width: 5%;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_PUBLISHED',
@@ -178,7 +186,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_PUBLISH_UP',
@@ -195,7 +203,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-xl-table-cell" style="width: 10%;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
@@ -204,7 +212,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
+										<th style="width: 3%;" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
@@ -218,6 +226,12 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 								<?php
 								if (count($this->items) > 0) {
 									foreach ($this->items as $i => $item) :
+									$linkHtml = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id=' . $item->id);
+									$linkText = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
+									$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
+									$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
+									$frameHtml = "htmlFrameSent" . $item->id;
+									$frameText = "textFrameSent" . $item->id;
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
 											<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -226,35 +240,36 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												echo $item->subject;
 												if ($item->mailing_date != '0000-00-00 00:00:00')
 												{ ?>&nbsp;&nbsp;
-													<span class="cam_preview">
-														<span class="editlinktip hasTip"
-																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
-																<?php echo $this->escape($item->subject); ?>">
-															<a class="modal" href="
-															<?php echo Route::_(
-																'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id='. $item->id
-															);
-															?>"
-																	rel="{handler: 'iframe', size: {x: 650, y: 450}}">
+													<div class="bw-btn">
+														<span class="hasTooltip"
+																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>
+																<?php echo '<br />'.$this->escape($item->subject); ?>">
+															<?php
+															$modalParams['url'] = $linkHtml;
+															$modalParams['title'] = $titleHtml;
+															?>
+															<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info btn-sm" data-toggle="modal">
 																<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-															</a>&nbsp;
+															</button>
 														</span>
-														<span class="editlinktip hasTip" title="
-														<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>::
-														<?php echo $this->escape($item->subject); ?>">
-															<a class="modal" href="
-															<?php echo Route::_(
-																'index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id='. $item->id
-															);?>"
-																	rel="{handler: 'iframe', size: {x: 650, y: 450}}">
+														<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
+														<span class="hasTooltip"
+																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>
+																<?php echo '<br />'.$this->escape($item->subject); ?>">
+															<?php
+															$modalParams['url'] = $linkText;
+															$modalParams['title'] = $titleText;
+															?>
+															<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info btn-sm" data-toggle="modal">
 																<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-															</a>&nbsp;
+															</button>
 														</span>
-													</span>
+														<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
+													</div>
 												<?php } ?>
 											</td>
-											<td align="center"><?php echo $item->description; ?></td>
-											<td align="center">
+											<td class="d-none d-lg-table-cell text-center"><?php echo $item->description; ?></td>
+											<td class="d-none d-xl-table-cell text-center">
 												<?php
 												if ($item->mailing_date != '0000-00-00 00:00:00')
 												{
@@ -262,9 +277,9 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												}
 												?>&nbsp;
 											</td>
-											<td align="center">
+											<td class="d-none d-xl-table-cell text-center">
 												<?php echo $item->author; ?></td>
-											<td align="center">
+											<td class="d-none d-lg-table-cell text-center">
 												<?php echo $item->campaigns;
 												if ($item->campaign_archive_flag)
 												{
@@ -272,7 +287,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 												}
 												?>
 											</td>
-											<td align="center">
+											<td class="d-none d-lg-table-cell text-center">
 												<?php echo HTMLHelper::_(
 													'jgrid.published',
 													$item->published,
@@ -281,7 +296,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 													BwPostmanHelper::canEditState('newsletter', (int) $item->id)
 												); ?>
 											</td>
-											<td align="center">
+											<td class="d-none d-lg-table-cell text-center">
 												<p style="text-align: center;">
 													<?php echo ($item->publish_up != '0000-00-00 00:00:00')
 														? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
@@ -293,10 +308,10 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 														: '-'; ?>
 												</p>
 											</td>
-											<td align="center">
+											<td class="d-none d-xl-table-cell text-center">
 												<?php echo HTMLHelper::date($item->archive_date, Text::_('BW_DATE_FORMAT_LC5')); ?>
 											</td>
-											<td align="center"><?php echo $item->id; ?></td>
+											<td class="text-center"><?php echo $item->id; ?></td>
 										</tr>
 									<?php endforeach;
 								}
@@ -312,7 +327,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 					</div>
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="boxchecked" value="0" />
-					<input type="hidden" name="layout" value="newsletters" /><!-- value can change if one clicks on another tab -->
+					<input type="hidden" id="layout" name="layout" value="newsletters" /><!-- value can change if one clicks on another tab -->
 					<input type="hidden" name="tab" value="newsletters" /><!-- value never changes -->
 					<input type="hidden" name="view" value="archive" />
 					<?php echo HTMLHelper::_('form.token'); ?>
@@ -322,3 +337,6 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 		</div>
 	</form>
 </div>
+<?php
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
+?>

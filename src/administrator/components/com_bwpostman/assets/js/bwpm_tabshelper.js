@@ -1,7 +1,7 @@
 //
 // BwPostman Newsletter Component
 //
-// BwPostman Javascript for maintenance check tables.
+// BwPostman Javascript for tabs.
 //
 // @version %%version_number%%
 // @package BwPostman-Admin
@@ -23,25 +23,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-jQuery(document).ready(function() {
-	function processUpdateStep(data) {
-		jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
-		jQuery('p#step' + data.step).addClass('alert alert-info');
-		// Do AJAX post
-		post = {step: 'step' + data.step};
-		doAjax(post, function (data) {
-			if (data.ready !== "1") {
-				processUpdateStep(data);
-			} else {
-				jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
-				jQuery('div#loading2').css({display: 'none'});
-				jQuery('div#result').html(data.result);
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-			}
-		});
-	}
-
-	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-	var data = {step: "1"};
-	processUpdateStep(data);
+jQuery(document).ready(function(){
+	$('.bwp-tabs a').click(function() {
+		var layout = $(this).attr('data-layout');
+		$('#layout').val(layout);
+		$('form').submit();
+	});
 });

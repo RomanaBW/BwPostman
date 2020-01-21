@@ -43,7 +43,7 @@ $uri    = Uri::root();
 ?>
 
 <div id="checkResult" class="row">
-	<div class="col-md-6 well">
+	<div class="col-lg-6 inner well">
 		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
 		<p id="step1" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
 		<p id="step2" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
@@ -51,7 +51,7 @@ $uri    = Uri::root();
 		<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
 		<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
 	</div>
-	<div class="col-md-6 well well-small">
+	<div class="col-lg-6 well well-small">
 		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
 		<div id="loading2"></div>
 		<div id="result"></div>

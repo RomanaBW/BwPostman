@@ -23,7 +23,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-window.onload = function() {
+jQuery(document).ready(function() {
 	function doAjax(data, successCallback) {
 		var structure =
 			{
@@ -80,4 +80,4 @@ window.onload = function() {
 	var starturl = document.getElementById('startUrl').value;
 	var data = {step: "1"};
 	processUpdateStep(data);
-};
+});

@@ -37,9 +37,9 @@ use Joomla\CMS\Uri\Uri;
 		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_ML') ?></strong></td>
 	</tr>
 </table>
-
+<br />
 <fieldset class="adminform">
-	<table  style="border: 0;" class="admintable">
+	<table class="admintable">
 		<tr>
 			<td style="text-align: right;">
 				<strong>

@@ -39,7 +39,7 @@ class JFormFieldCustomscript extends JFormField
 {
 
 	/**
-	 * Method to get the field label markup 
+	 * Method to get the field label markup
 	 * We need no label.
 	 *
 	 * @return  string  The field label markup.
@@ -64,9 +64,17 @@ class JFormFieldCustomscript extends JFormField
 
 		$doc 		= JFactory::getDocument();
 		$text = JText::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
+		// Hide spacers on joomla 4
+		$hide_spacer = "";
+		if(version_compare(JVERSION, '3.999.999', 'ge'))
+		{
+			$hide_spacer = "				jQuery('#wrapper.wrapper #config [id^=\"com_bwpostman_\"] .field-spacer').css('display', 'none');";
+		}
+
 		$js = "
 			jQuery(document).ready(function()
 			{
+				$hide_spacer;
 				// monitors obligation fields
 				jQuery('#com_bwpostman_registration_settings').on('change', '.bwpcheck :radio', function(){
 					var ind = jQuery(this).index('.bwpcheck :radio');
@@ -113,6 +121,20 @@ class JFormFieldCustomscript extends JFormField
 
 
 		return;
+	}
+
+	/**
+	 * Method to get a control group with label and input.
+	 *
+	 * @return  string  A string containing the html for the control group
+	 *
+	 * @since   2.4.0
+	 */
+	public function renderField($options = array())
+	{
+		$options['class'] = empty($options['class']) ? 'hidden' : $options['class'] . ' hidden';
+
+		return parent::renderField($options);
 	}
 }
 

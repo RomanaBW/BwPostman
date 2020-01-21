@@ -27,14 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
-// Load the tooltip behavior for the notes
-HTMLHelper::_('behavior.tooltip');
+// Load the bootstrap tooltip for the notes
+HTMLHelper::_('bootstrap.tooltip');
 
 $user		= Factory::getUser();
 $userId		= $user->get('id');
@@ -45,6 +46,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'archive.campaigns';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campaigns');
 
+$modalParams = array();
+$modalParams['modalWidth'] = 80;
+$modalParams['bodyHeight'] = 70;
+
+//
 /**
  * BwPostman Archived Campaigns Layout
  *
@@ -67,69 +73,71 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 					);
 					?>
 
-					<div class="form-horizontal">
-						<ul class="bwp_tabs">
+					<div class="bwp-archive">
+						<ul class="nav nav-tabs bwp-tabs">
 							<?php
-							if ($this->permissions['newsletter']['archive'] && BwPostmanHelper::canArchive('newsletter', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1, 0))
 							{
-								?>
-								<li class="closed"><!-- We need to use the setAttribute-function because of the IE -->
-									<button onclick="layout.setAttribute('value','newsletters');this.form.submit();" class="buttonAsLink">
+							?>
+								<li class="nav-item"><!-- We need to use the setAttribute-function because of the IE -->
+									<a href="#" data-layout="newsletters" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>
-									</button>
+									</a>
 								</li>
 								<?php
 							}
 
-							if ($this->permissions['subscriber']['archive'] && BwPostmanHelper::canArchive('subscriber', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1, 0))
 							{
-								?>
-								<li class="closed">
-									<button onclick="layout.setAttribute('value','subscribers');this.form.submit();" class="buttonAsLink">
-										<?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?></button>
+							?>
+								<li class="nav-item">
+									<a href="#" data-layout="subscribers" class="nav-link">
+										<?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
+									</a>
 								</li>
 								<?php
 							}
 
-							if ($this->permissions['campaign']['archive'] && BwPostmanHelper::canArchive('campaign', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1, 0))
 							{
-								?>
-								<li class="open">
-									<button onclick="layout.setAttribute('value','campaigns');this.form.submit();"
-											class="buttonAsLink_open">
+							?>
+								<li class="nav-item">
+									<a href="#" data-layout="campaigns" class="nav-link active">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
-									</button>
+									</a>
 								</li>
 								<?php
 							}
 
-							if ($this->permissions['mailinglist']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1, 0))
 							{
-								?>
-								<li class="closed">
-									<button onclick="layout.setAttribute('value','mailinglists');this.form.submit();"
-											class="buttonAsLink">
+							?>
+								<li class="nav-item">
+									<a href="#" data-layout="mailinglists" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_MLS'); ?>
-									</button>
+									</a>
 								</li>
 								<?php
 							}
 
-							if ($this->permissions['template']['archive'] && BwPostmanHelper::canArchive('template', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1, 0))
 							{
-								?>
-								<li class="closed">
-									<button onclick="layout.setAttribute('value','templates');this.form.submit();" class="buttonAsLink">
+							?>
+								<li class="nav-item">
+									<a href="#" data-layout="templates" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
-									</button>
+									</a>
 								</li>
 								<?php
 							}
 							?>
 						</ul>
 
-						<div class="current">
+						<div class="bwp-table">
 							<table id="main-table" class="table">
+								<caption id="captionTable" class="sr-only">
+									<?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+								</caption>
 								<thead>
 									<tr>
 										<th style="width: 1%;" class="text-center">
@@ -137,7 +145,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
 													onclick="Joomla.checkAll(this)" />
 										</th>
-										<th class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+										<th style="min-width: 150px;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_CAM_TITLE',
@@ -146,7 +154,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+										<th style="min-width: 150px;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_CAM_DESCRIPTION',
@@ -155,7 +163,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_CAM_NL_NUM',
@@ -164,7 +172,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
@@ -173,7 +181,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
+										<th style="width: 3%;" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
@@ -188,25 +196,36 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 								if (count($this->items) > 0)
 								{
 									foreach ($this->items as $i => $item) :
-										$link = 'index.php?option=com_bwpostman&view=archive&format=raw&layout=campaign_modal&cam_id=';
-										$link .= $item->id;
+										$linkCam = Route::_('index.php?option=com_bwpostman&view=archive&format=raw&layout=campaign_modal&cam_id=' . $item->id);
+										$frameCam = "FrameCam" . $item->id;
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
-											<td align="center">
+											<td class="text-center">
 												<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 											</td>
 											<td>
-												<?php echo $item->title;?>
+												<span class="hasTooltip"
+														title="<?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_CAM');?>::
+														<?php echo '<br />'.$this->escape($item->title); ?>">
+													<?php
+													$modalParams['url'] = $linkCam;
+													$modalParams['title'] = Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM');
+													?>
+													<button type="button" data-target="#<?php echo $frameCam; ?>" class="btn btn-outline-info btn-sm" data-toggle="modal">
+														<?php echo $item->title;?>
+													</button>
+												</span>
+												<?php echo HTMLHelper::_('bootstrap.renderModal',$frameCam, $modalParams); ?>
 											</td>
 											<td><?php echo $item->description; ?>
 											</td>
-											<td align="center">
+											<td class="d-none d-lg-table-cell text-center">
 												<?php echo $item->newsletters; ?>
 											</td>
-											<td align="center">
+											<td class="d-none d-lg-table-cell text-center">
 												<?php echo HTMLHelper::date($item->archive_date, Text::_('BW_DATE_FORMAT_LC5')); ?>
 											</td>
-											<td align="center">
+											<td class="text-center">
 												<?php echo $item->id; ?>
 											</td>
 										</tr>
@@ -222,18 +241,21 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 								</tbody>
 							</table>
 						</div>
-
-						<input type="hidden" name="task" value="" />
-						<input type="hidden" name="boxchecked" value="0" />
-						<input type="hidden" name="unarchive_nl" value="0" />
-						<input type="hidden" name="remove_nl" value="0" />
-						<input type="hidden" name="layout" value="campaigns" /><!-- value can change if one clicks on another tab -->
-						<input type="hidden" name="tab" value="campaigns" /><!-- value never changes -->
-						<?php echo HTMLHelper::_('form.token'); ?>
 					</div>
-					<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+
+					<input type="hidden" name="task" value="" />
+					<input type="hidden" name="boxchecked" value="0" />
+					<input type="hidden" name="unarchive_nl" value="0" />
+					<input type="hidden" name="remove_nl" value="0" />
+					<input type="hidden" id="layout"  name="layout" value="campaigns" /><!-- value can change if one clicks on another tab -->
+					<input type="hidden" name="tab" value="campaigns" /><!-- value never changes -->
+					<?php echo HTMLHelper::_('form.token'); ?>
 				</div>
+				<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 			</div>
 		</div>
 	</form>
 </div>
+<?php
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
+?>

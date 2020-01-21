@@ -193,7 +193,7 @@ if ($this->queueEntries) {
 			<div id="bwpostman_statistic-pane" class="accordion collapse show" role="tablist">
 				<div class="card mb-2">
 					<a href="#generals" data-toggle="collapse" class="card-header" role="tab" aria-expanded="true"><?php echo Text::_('COM_BWPOSTMAN_GENERAL_STATS'); ?></a>
-					<div class="collapse show" id="generals" role="tabpanel">
+					<div class="collapse show" id="generals" role="tabpanel" data-parent="#bwpostman_statistic-pane">
 						<div class="card-body">
 							<table class="adminlist">
 								<?php
@@ -332,7 +332,7 @@ if ($this->queueEntries) {
 				{ ?>
 				<div class="card mb-2">
 					<a href="#archive" data-toggle="collapse" class="card-header collapsed" role="tab"><?php echo Text::_('COM_BWPOSTMAN_ARC_STATS'); ?></a>
-					<div class="collapse" id="archive" role="tabpanel">
+					<div class="collapse" id="archive" role="tabpanel" data-parent="#bwpostman_statistic-pane">
 						<div class="card-body">
 							<table class="adminlist">
 								<?php

@@ -694,7 +694,6 @@ table.export {
     font-size: 1.2em;
 }
 
-
 #checkResult .inner .well, #checkResult .alert-success, #checkResult .alert-error, #checkResult .alert-warning,
 #restoreResult .inner .well, #restoreResult .alert-success, #restoreResult .alert-error, #restoreResult .alert-warning {
 	background: 10px 3px no-repeat;
@@ -703,6 +702,11 @@ table.export {
 #checkResult .inner .well,
 #restoreResult .inner .well {
 	background-image: url("../images/prozess-disabled.png");
+}
+
+#checkResult .inner .well.alert-info,
+#restoreResult .inner .well.alert-info {
+	background-image: url("../images/loading.gif");
 }
 
 #checkResult .inner .well.alert-success,

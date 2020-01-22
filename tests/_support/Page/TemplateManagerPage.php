@@ -504,7 +504,7 @@ class TemplateManagerPage
 	 */
 	public static $arc_del_array_import     = array(
 		'field_title'          => "Standard Basic Import",
-		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived templates')]",
+		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived templates')]",
 		'archive_identifier'   => "Title",
 		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_confirm'      => 'Do you wish to archive the selected template(s)?',

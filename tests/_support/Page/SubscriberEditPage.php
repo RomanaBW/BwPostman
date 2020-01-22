@@ -272,7 +272,7 @@ class SubscriberEditPage
 	public static $arc_del_array     = array(
 		'mainTableId'          => "//*[@id='main-table-bw-confirmed']",
 		'field_title'          => "sam.sample",
-		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived subscribers')]",
+		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived subscribers')]",
 		'archive_identifier'   => "Name & Email",
 		'archive_title_col'    => "//*[@id='main-table-bw-confirmed']/tbody/*/td[%s]",
 		'archive_confirm'      => 'Do you wish to archive the selected subscriber(s)?',

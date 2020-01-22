@@ -222,7 +222,7 @@ class MailinglistEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "001 General mailing list",
-		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived mailinglists')]",
+		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived mailinglists')]",
 		'archive_identifier'   => "Title",
 		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected mailing list has been archived.',

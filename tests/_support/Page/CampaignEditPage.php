@@ -139,7 +139,7 @@ class CampaignEditPage
 	public static $arc_del_array     = array(
 		'field_title'          => "001 new campaign for tests",
 		'archive_button'       => "//*[@id='toolbar-popup-archive']/button",
-		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived campaigns')]",
+		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived campaigns')]",
 		'archive_identifier'   => "Title",
 		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected campaign has been archived.',

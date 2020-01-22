@@ -935,7 +935,7 @@ class NewsletterEditPage
 	 */
 	public static $arc_del_array     = array(
 		'field_title'          => "1. Simple Single Test Newsletter",
-		'archive_tab'          => "//*/ul[@class='bwp_tabs']/li/button[contains(text(),'Archived newsletters')]",
+		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived newsletters')]",
 		'archive_identifier'   => "Subject",
 		'archive_title_col'    => "//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'archive_success_msg'  => 'The selected newsletter has been archived.',

@@ -34,23 +34,8 @@ use Joomla\CMS\Router\Route;
 defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
-HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
-
-
-$tab_options = array(
-	'onActive' => 'function(title, description){
-		description.setStyle("display", "block");
-		title.addClass("open").removeClass("closed");
-	}',
-	'onBackground' => 'function(title, description){
-		description.setStyle("display", "none");
-		title.addClass("closed").removeClass("open");
-	}',
-	'useCookie' => 'true',  // note the quotes around true, since it must be a string.
-							// But if you put false there, you must not use quotes otherwise JHtmlBwTabs will handle it as true
-);
 
 /**
  * BwPostman Single Campaign Layout
@@ -70,63 +55,51 @@ $tab_options = array(
 	<div id="bwp_view_single">
 		<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
 				method="post" name="adminForm" id="item-form">
-			<div class="row title-alias form-vertical form-no-margin mb-3">
-			</div>
 			<div>
-				<?php echo HTMLHelper::_('uitab.startTabSet', 'campaign_tabs', array('active' => 'basic'));
-				// Start Tab basic
-				$title = Text::_('COM_BWPOSTMAN_NEW_CAM');
-
-				if ($this->item->id)
-				{
-					$title = Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id);
-				}
-
-				echo HTMLHelper::_(
-					'uitab.addTab',
-					'campaign_tabs',
-					'basic',
-					$title
-				);
-
-				echo $this->loadTemplate('basic');
-				echo HTMLHelper::_('uitab.endTab');
-
-				// Start Tab assigned/unsent newsletters
-				$text	= Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
-				echo HTMLHelper::_(
-					'uitab.addTab',
-					'campaign_tabs',
-					'unsent',
-					$text
-				);
-
-				echo $this->loadTemplate('unsent');
-				echo HTMLHelper::_('uitab.endTab');
-
-				// Start Tab sent newsletters
-				$text	= Text::_('COM_BWPOSTMAN_NL_SENT');
-				echo HTMLHelper::_(
-					'uitab.addTab',
-					'campaign_tabs',
-					'sent',
-					$text
-				);
-
-				echo $this->loadTemplate('sent');
-				echo HTMLHelper::_('uitab.endTab');
-
-				// Start Tab permissions
-				if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
-				{
-					echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'permissions',
-						Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'));
-					echo $this->loadTemplate('rules');
-					echo HTMLHelper::_('uitab.endTab');
-				}
-
-				echo HTMLHelper::_('uitab.endTabSet'); ?>
-
+				<div id="campaign_tabs">
+					<ul class="nav nav-tabs bwp-tabs">
+						<li class="nav-item">
+							<a class="nav-link active" id="tab-basic" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">
+								<?php echo $this->item->id ? Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id) : Text::_('COM_BWPOSTMAN_NEW_CAM'); ?>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="tab-unsent" data-toggle="tab" href="#unsent" role="tab" aria-controls="unsent" aria-selected="true">
+								<?php echo Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS'); ?>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="tab-sent" data-toggle="tab" href="#sent" role="tab" aria-controls="sent" aria-selected="true">
+								<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
+							</a>
+						</li>
+						<?php if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
+						{ ?>
+							<li class="nav-item">
+								<a class="nav-link" id="tab-permissions" data-toggle="tab" href="#permissions" role="tab" aria-controls="permissions" aria-selected="true">
+									<?php echo Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?>
+								</a>
+							</li>
+						<?php } ?>
+					</ul>
+					<div class="tab-content" id="campaignTabContent" role="tabpanel" aria-labelledby="basic-tab">
+						<div class="tab-pane fade show active" id="basic">
+							<?php echo $this->loadTemplate('basic'); ?>
+						</div>
+						<div class="tab-pane fade" id="unsent">
+							<?php echo $this->loadTemplate('unsent'); ?>
+						</div>
+						<div class="tab-pane fade" id="sent">
+							<?php echo $this->loadTemplate('sent'); ?>
+						</div>
+						<?php if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
+						{ ?>
+							<div class="tab-pane fade" id="permissions">
+								<?php echo $this->loadTemplate('rules'); ?>
+							</div>
+						<?php } ?>
+					</div>
+				</div>
 				<input type="hidden" name="task" value="" />
 
 				<?php echo $this->form->getInput('id'); ?>

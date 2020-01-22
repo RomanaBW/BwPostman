@@ -29,200 +29,186 @@ use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die('Restricted access');
 
-$image = '<i class="icon-info"></i>';
+$image = '<i class="fa fa-lg fa-info-circle"></i>';
 ?>
 
-<div class="row well">
-	<div class="col-md-6">
-		<legend>
-			<?php echo empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_CAM') : Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
-		</legend>
-		<?php
-		if (isset($this->item->err_code))
-		{
-			if (($this->item->err_code == 101) || ($this->item->err_code == 102))
+<div class="card card-body mb-3">
+	<div class="row">
+		<div class="col-12 mb-2">
+			<h3>
+				<?php echo empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_CAM') : Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
+			</h3>
+		</div>
+		<div class="col-lg-6">
+			<?php
+			if (isset($this->item->err_code))
 			{
+				if (($this->item->err_code == 101) || ($this->item->err_code == 102))
+				{
 
+				}
 			}
-		}
-		?>
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('title'); ?>
+			?>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('title'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('title'); ?>
+				</div>
 			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('title'); ?>
-			</div>
-		</div>
 
-		<?php
-		if (isset($this->item->err_code))
-		{
-			if (($this->item->err_code == 101) || ($this->item->err_code == 102))
+			<?php
+			if (isset($this->item->err_code))
 			{
+				if (($this->item->err_code == 101) || ($this->item->err_code == 102))
+				{
 
-			}
-		}?>
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('description'); ?>
+				}
+			}?>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('description'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('description'); ?>
+				</div>
 			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('description'); ?>
+
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('access'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('access'); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('published'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('published'); ?>
+				</div>
 			</div>
 		</div>
 
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('access'); ?>
+		<div class="col-lg-6">
+			<?php
+			// Romana - es gibt hier keine campaign_id
+			// @Karl - Ja, Du hast vollkommen Recht! :-(
+			?>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('created_by'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('created_by'); ?>
+				</div>
 			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('access'); ?>
-			</div>
-		</div>
 
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('published'); ?>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('created_date'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('created_date'); ?>
+				</div>
 			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('published'); ?>
+
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('modified_by'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('modified_by'); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('modified_time'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('modified_time'); ?>
+				</div>
 			</div>
 		</div>
+		<p class="col-12 clearfix"><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 	</div>
-
-	<div class="col-md-6">
-		<?php
-		if (empty($this->item->campaign_id))
-		{
-			$this->form->setFieldAttribute('campaign_id', 'type', 'hidden');
-		}
-		?>
-
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('campaign_id'); ?>
-			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('campaign_id'); ?>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('created_by'); ?>
-			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('created_by'); ?>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('created_date'); ?>
-			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('created_date'); ?>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('modified_by'); ?>
-			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('modified_by'); ?>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('modified_time'); ?>
-			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('modified_time'); ?>
-			</div>
-		</div>
-	</div>
-	<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
-	<div class="clearfix"></div>
 </div>
 
-<div class="row well cam-recipients">
-	<div class="col-md-9 nl-mailinglists">
-		<legend class="required">
-			<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
-		</legend>
-		<div class="well-white well-small">
-			<legend>
-				<span class="editlinktip hasTip hasTooltip"
-						title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
-					<?php echo $image; ?>
-				</span>
-				<span class="editlinktip hasTip hasTooltip"
-						title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
-								<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
-				</span>
-			</legend>
-			<div class="row">
-				<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
-					<?php if ($field->hidden): ?>
-						<?php echo $field->input; ?>
-					<?php else: ?>
-						<div class="col-md-4 nl-mailinglists">
-							<div class="well well-small">
-								<fieldset>
-									<legend>
-												<span class="editlinktip hasTip hasTooltip"
-														title="<?php echo Text::_($field->description); ?>">
-													<?php echo $image; ?>
-												</span>
-										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo Text::_($field->description); ?>">
-													<?php echo $field->label; ?>
-												</span>
-									</legend>
-									<div class="row-fluid clearfix">
-										<?php
-										$input_field	= trim($field->input);
-										if (!empty($input_field))
-										{
-											echo $field->input;
-										}
-										else
-										{
-											echo '<div class="width-50 fltlft col-md-6">
-																<label class="mailinglist_label noclear checkbox">' .
-												Text::_('COM_BWPOSTMAN_NO_DATA') .
-												'</label>
-															</div>';
-										}
-										?>
-									</div>
-								</fieldset>
+<div class="card card-body">
+	<div class="row cam-recipients">
+		<div class="col-12 mb-2">
+			<h3 class="required">
+				<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
+			</h3>
+		</div>
+		<div class="col-xl-8 nl-mailinglists">
+			<div class="card-header">
+				<h4>
+					<span class="hasTooltip"
+							title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+						<?php echo $image; ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
+					</span>
+				</h4>
+				<div class="row">
+					<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
+						<?php if ($field->hidden): ?>
+							<?php echo $field->input; ?>
+						<?php else: ?>
+							<div class="col-lg-4 nl-mailinglists mb-3">
+								<div class="card card-body">
+									<fieldset>
+										<h5>
+											<span class="hasTooltip"
+													title="<?php echo Text::_($field->description); ?>">
+												<?php echo $image; ?>
+												<?php echo $field->label; ?>
+											</span>
+										</h5>
+										<div class="row-fluid clearfix">
+											<?php
+											$input_field	= trim($field->input);
+											if (!empty($input_field))
+											{
+												echo $field->input;
+											}
+											else
+											{
+												echo '<div class="">' . Text::_('COM_BWPOSTMAN_NO_DATA') . '</div>';
+											}
+											?>
+										</div>
+									</fieldset>
+								</div>
 							</div>
-						</div>
-					<?php endif; ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xl-4 cam-usergroups">
+			<div class="card-header break-word">
+				<h4>
+				<span class="hasTooltip"
+						title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+					<?php echo $image; ?>
+					<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?>
+				</span>
+			</h4>
+				<div class="card card-body">
+				<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
+					<?php echo $field->input; ?>
 				<?php endforeach; ?>
+				</div>
 			</div>
 		</div>
 	</div>
-
-	<div class="col-md-3 cam-usergroups">
-		<div class="well-white well-small">
-			<legend>
-				<span class="editlinktip hasTip hasTooltip"
-						title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
-					<?php echo $image; ?>
-				</span>
-				<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
-			</legend>
-			<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
-				<?php echo $field->input; ?>
-			<?php endforeach; ?>
-		</div>
-	</div>
-	<div class="clr clearfix"></div>
 </div>
 
 

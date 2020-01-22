@@ -49,7 +49,6 @@ defined('_JEXEC') or die('Restricted access');
 							<th width="150"><?php echo JText::_('COM_BWPOSTMAN_NL_MAILING_DATE'); ?></th>
 							<th width="150"><?php echo JText::_('AUTHOR'); ?></th>
 							<th width="150"><?php echo JText::_('PUBLISHED'); ?></th>
-							?>
 						</tr>
 					</thead>
 					<tbody>
@@ -66,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 						<tr class="<?php echo "item$k"; ?>">
 							<td align="center">
 							<?php
-							if ($automation)
+							if (isset($automation) && $automation)
 							{
 								echo $item->mail_number;
 							}

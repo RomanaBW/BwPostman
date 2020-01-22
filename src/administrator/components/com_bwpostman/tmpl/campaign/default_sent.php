@@ -38,9 +38,9 @@ $title_html = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
 $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 ?>
 
-<legend><?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?></legend>
+<h3><?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?></h3>
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-12">
 	<?php
 	if (!empty($this->item->id)) {
 		if (empty($this->newsletters->sent)) {
@@ -52,19 +52,19 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 			<table class="table">
 				<thead>
 					<tr>
-						<th style="width: 2%; text-align: right; padding-right: 5px;">
+						<th style="width: 2%;">
 							<?php echo Text::_('NUM'); ?>
 						</th>
 						<th style="min-width: 200px;">
 							<?php echo Text::_('SUBJECT'); ?>
 						</th>
-						<th style="width: 13%; text-align: center;">
+						<th class="d-none d-sm-table-cell text-center" style="width: 13%;">
 							<?php echo Text::_('COM_BWPOSTMAN_NL_MAILING_DATE'); ?>
 						</th>
-						<th style="width: 13%; text-align: center;">
+						<th class="d-none d-lg-table-cell text-center" style="width: 13%;">
 							<?php echo Text::_('AUTHOR'); ?>
 						</th>
-						<th style="width: 7%; text-align: center;">
+						<th class="d-none d-lg-table-cell text-center" style="width: 7%;">
 							<?php echo Text::_('PUBLISHED'); ?>
 						</th>
 					</tr>
@@ -84,7 +84,7 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 					$frameText = "textFrameSent" . $item->id;
 					?>
 					<tr class="<?php echo "item$k"; ?>">
-						<td style="text-align: right; padding-right: 5px;">
+						<td>
 						<?php
 						if (isset($automation) && $automation)
 						{
@@ -97,36 +97,34 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 						?>
 						</td>
 						<td><?php echo $item->subject; ?>&nbsp;&nbsp;
-							<span class="cam_preview">
-								<span class="hasTip"
+							<div class="bw-btn">
+								<span class="hasTooltip"
 									title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
 									<?php
 									$modalParams['url'] = $link_html;
 									$modalParams['title'] = $title_html;
 									?>
-
-									<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info" data-toggle="modal">
+									<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info btn-sm" data-toggle="modal">
 										<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
 									</button>
-									<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
 									</span>
-								<span class="hasTip"
+								<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
+								<span class="hasTooltip"
 									title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
 									<?php
 									$modalParams['url'] = $link_text;
 									$modalParams['title'] = $title_text;
 									?>
-
-									<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info" data-toggle="modal">
+									<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info btn-sm" data-toggle="modal">
 										<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
 									</button>
-									<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
 								</span>
-							</span>
+								<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
+							</div>
 						</td>
-						<td style="text-align: center;"><?php echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
-						<td style="text-align: center;"><?php echo $item->author; ?></td>
-						<td style="text-align: center;">
+						<td class="d-none d-sm-table-cell text-center"><?php echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
+						<td class="d-none d-lg-table-cell text-center"><?php echo $item->author; ?></td>
+						<td class="d-none d-lg-table-cell text-center">
 							<?php
 							if ($item->published)
 							{

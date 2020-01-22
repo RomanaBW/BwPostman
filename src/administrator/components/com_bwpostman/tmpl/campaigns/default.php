@@ -33,7 +33,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 
 $user		= Factory::getUser();
@@ -54,7 +53,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=campaigns'); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-12">
 				<div id="j-main-container" class="j-main-container">
 					<?php
 						// Search tools bar
@@ -71,15 +70,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									<input type="checkbox" name="checkall-toggle" value=""
 											title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+								<th scope="col" style="min-width: 150px;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-								<th scope="col" class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+								<th scope="col" style="min-width: 150px;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+								<th scope="col" class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
+								<th scope="col" style="width: 3%;" scope="col" aria-sort="ascending">
 									<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 								</th>
 							</tr>
@@ -92,7 +91,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								{
 									?>
 									<tr class="row<?php echo $i % 2; ?>">
-										<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 										<td>
 										<?php
 										if ($item->checked_out)
@@ -120,8 +119,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										} ?>
 										</td>
 										<td><?php echo $item->description; ?></td>
-										<td align="center"><?php echo $item->newsletters; ?></td>
-										<td align="center"><?php echo $item->id; ?></td>
+										<td class="text-center"><?php echo $item->newsletters; ?></td>
+										<td class="d-none d-lg-table-cell text-center"><?php echo $item->id; ?></td>
 									</tr>
 								<?php
 								}

@@ -47,9 +47,9 @@ $title_html = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
 $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 ?>
 
-	<legend><?php echo $text; ?></legend>
+	<h3><?php echo $text; ?></h3>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-12">
 			<?php
 			//Show tabs with sent and unsent newsletters if we edit a campaign
 			if (!empty($this->item->id))
@@ -65,16 +65,16 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 					<table class="table">
 						<thead>
 							<tr>
-								<th style="width: 2%; text-align: right; padding-right: 5px;">
+								<th style="width: 2%;">
 									<?php echo Text::_('NUM'); ?>
 								</th>
 								<th style="min-width: 200px;">
 									<?php echo Text::_('SUBJECT'); ?>
 								</th>
-								<th style="width: 13%; text-align: center;">
+								<th class="d-none d-lg-table-cell text-center" style="width: 13%;">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE'); ?>
 								</th>
-								<th style="width: 13%; text-align: center;">
+								<th class="text-center" style="width: 13%;">
 									<?php echo Text::_('AUTHOR'); ?>
 								</th>
 							</tr>
@@ -95,37 +95,35 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 							$frameText = "textFrameUnsent" . $item->id;
 							?>
 							<tr class="<?php echo "item$k"; ?>">
-								<td style="text-align: right; padding-right: 5px;"><?php echo $i + 1; ?></td>
+								<td><?php echo $i + 1; ?></td>
 								<td><?php echo $item->subject; ?>&nbsp;&nbsp;
-									<span class="cam_preview">
-								<span class="hasTip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
-									<?php
-									$modalParams['url'] = $link_html;
-									$modalParams['title'] = $title_html;
-									?>
-
-									<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info" data-toggle="modal">
-										<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-									</button>
-									<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
-								</span>
-								<span class="hasTip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
-									<?php
-									$modalParams['url'] = $link_text;
-									$modalParams['title'] = $title_text;
-									?>
-
-									<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info" data-toggle="modal">
-										<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-									</button>
-									<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
-								</span>
-							</span>
+									<div class="bw-btn">
+										<span class="hasTooltip"
+												title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
+											<?php
+											$modalParams['url'] = $link_html;
+											$modalParams['title'] = $title_html;
+											?>
+											<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info btn-sm" data-toggle="modal">
+												<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
+											</button>
+										</span>
+										<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
+										<span class="hasTooltip"
+												title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
+											<?php
+											$modalParams['url'] = $link_text;
+											$modalParams['title'] = $title_text;
+											?>
+											<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info btn-sm" data-toggle="modal">
+												<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
+											</button>
+										</span>
+										<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
+									</div>
 								</td>
-								<td style="text-align: center;"><?php echo HTMLHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
-								<td style="text-align: center;"><?php echo $item->author; ?></td>
+								<td class="d-none d-lg-table-cell"><?php echo HTMLHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
+								<td class="text-center"><?php echo $item->author; ?></td>
 							</tr>
 							<?php
 							$k = 1 - $k;

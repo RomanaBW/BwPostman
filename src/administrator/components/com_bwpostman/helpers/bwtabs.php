@@ -129,7 +129,7 @@ class JHtmlBwTabs
 
 			$document = JFactory::getDocument();
 			$document->addScriptDeclaration($js);
-			JHtml::_('script', 'system/tabs.js', array('relative' => false, 'detectBrowser' => true));
+			JHtml::_('script', 'system/tabs.js', array('version' => 'auto', 'relative' => true));
 
 			$loaded[(string) $group] = true;
 		}

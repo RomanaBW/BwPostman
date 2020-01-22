@@ -28,8 +28,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-use Joomla\Component\Users\Administrator\Model\GroupModel as GroupModel;
 /**
  * Class Com_BwPostmanInstallerScript
  *

@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 // Include the syndicate functions only once
 require_once __DIR__ . '/helper.php';

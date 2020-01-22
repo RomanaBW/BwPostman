@@ -25,11 +25,11 @@
  */
 
 // Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-
-defined('_JEXEC') or die('Restricted access');
 
 $text	= Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
 if (property_exists($this->item, 'automailing_values'))

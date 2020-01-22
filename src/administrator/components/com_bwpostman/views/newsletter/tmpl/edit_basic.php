@@ -30,7 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.keepalive');
-//JHtml::_('formbehavior.chosen', 'select');
 
 $image = '<i class="icon-info"></i>';
 

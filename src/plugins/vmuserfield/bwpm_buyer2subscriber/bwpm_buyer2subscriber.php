@@ -26,7 +26,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');

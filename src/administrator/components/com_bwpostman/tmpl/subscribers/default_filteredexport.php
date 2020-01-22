@@ -25,10 +25,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-use Joomla\CMS\Language\Text;
-
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 ?>
 
 <form name="popupForm" action="#" method="get">

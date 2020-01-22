@@ -29,7 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 JHtml::_('behavior.tooltip');
-//JHtml::_('formbehavior.chosen', 'select');
 
 // Keep session alive while editing
 JHtml::_('behavior.keepalive');

@@ -25,9 +25,10 @@
  */
 
 // No direct access.
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
-defined('_JEXEC') or die;
 $fieldSets = $this->form->getFieldsets('footer');
 
 foreach ($fieldSets as $name => $fieldSet) :

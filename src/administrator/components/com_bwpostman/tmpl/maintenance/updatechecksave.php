@@ -25,14 +25,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
-
-defined('_JEXEC') or die('Restricted access');
 
 $uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', array('relative' => true, 'detectBrowser' => true));

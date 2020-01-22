@@ -25,11 +25,12 @@
  */
 
 // No direct access.
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
 
-defined('_JEXEC') or die;
 $fieldSets = $this->form->getFieldsets('intro');
 foreach ($fieldSets as $name => $fieldSet) :
 	?>

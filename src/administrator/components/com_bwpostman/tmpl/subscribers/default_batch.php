@@ -25,11 +25,11 @@
  */
 
 // no direct access
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die('Restricted access');
 
 // Get some states
 $filter_id	= $this->escape($this->state->get('filter.mailinglist'));

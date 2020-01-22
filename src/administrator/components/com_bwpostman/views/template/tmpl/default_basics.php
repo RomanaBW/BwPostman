@@ -25,7 +25,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 $fieldSets = $this->form->getFieldsets('basics');
 foreach ($fieldSets as $name => $fieldSet) :

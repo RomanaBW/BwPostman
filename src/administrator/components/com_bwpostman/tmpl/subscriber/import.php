@@ -25,13 +25,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
-
-defined('_JEXEC') or die('Restricted access');
 
 // Load the tooltip behavior for the notes
 HTMLHelper::_('behavior.tooltip');

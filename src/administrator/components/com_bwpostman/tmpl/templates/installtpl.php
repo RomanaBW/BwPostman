@@ -25,12 +25,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
-
-defined('_JEXEC') or die('Restricted access');
 
 Factory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_import.js');
 ?>

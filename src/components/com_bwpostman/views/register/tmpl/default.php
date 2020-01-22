@@ -25,12 +25,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
-
-defined('_JEXEC') or die('Restricted access');
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 

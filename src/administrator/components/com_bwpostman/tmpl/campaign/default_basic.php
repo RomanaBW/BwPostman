@@ -25,9 +25,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-use Joomla\CMS\Language\Text;
-
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
 
 $image = '<i class="fa fa-lg fa-info-circle"></i>';
 ?>

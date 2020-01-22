@@ -27,8 +27,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\Registry\Registry as JRegistry;
-
 /**
  * Class JFormFieldBwpSpacer
  * Helper form field to show a message

@@ -26,9 +26,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
-
-use Joomla\CMS\Language\Text;
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 

@@ -25,8 +25,8 @@
  */
 
 use Joomla\CMS\Crypt\Cipher\SodiumCipher;
-use Joomla\Registry\Registry as Registry;
 use \Joomla\CMS\Crypt\Key;
+
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**

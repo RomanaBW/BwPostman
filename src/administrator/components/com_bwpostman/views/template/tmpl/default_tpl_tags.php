@@ -25,7 +25,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 echo JHtml::_('tabs.start', 'tpl_tags', array('startOffset' => 0));
 echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TAGS_HEAD_LABEL'), 'panel1');

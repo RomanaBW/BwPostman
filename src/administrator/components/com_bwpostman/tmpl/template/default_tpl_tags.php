@@ -25,10 +25,10 @@
  */
 
 // No direct access.
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 echo HTMLHelper::_('uitab.startTabSet', 'tpl_tags', array('startOffset' => 0));
 echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag1', Text::_('COM_BWPOSTMAN_TPL_TAGS_HEAD_LABEL'));

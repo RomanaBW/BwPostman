@@ -25,10 +25,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-use Joomla\CMS\Layout\LayoutHelper;
-
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\LayoutHelper;
 ?>
 
 <table>

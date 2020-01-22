@@ -24,8 +24,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//use Joomla\Registry\Format\Json;
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 

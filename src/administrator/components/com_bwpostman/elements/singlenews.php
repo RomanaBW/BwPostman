@@ -25,11 +25,11 @@
  */
 
 // Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die('Restricted access');
 
 /**
  * Renders a newsletter element

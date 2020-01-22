@@ -9,7 +9,7 @@
 
 namespace Joomla\Component\Workflow\Administrator\View\Mailinglists;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;

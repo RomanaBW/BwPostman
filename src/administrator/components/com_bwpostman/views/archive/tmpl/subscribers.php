@@ -30,8 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 // Load the modal behavior for the subscriber preview
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
-//jimport ('joomla.html.html.bootstrap');
-//JHtml::_('behavior.modal');
 JHtml::_('behavior.multiselect');
 
 $user		= JFactory::getUser();

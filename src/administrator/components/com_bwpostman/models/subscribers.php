@@ -353,7 +353,12 @@ class BwPostmanModelSubscribers extends JModelList
 	private function getFilterBySubscriberState()
 	{
 		//Get the tab in which we are for correct query
-		$tab	= JFactory::getApplication()->input->get('tab', 'confirmed');
+		$tab	= JFactory::getApplication()->input->get('tab', '');
+
+		if ($tab === '')
+		{
+			$tab = JFactory::getApplication()->getUserState('com_bwpostman.subscribers.layout', 'confirmed');
+		}
 
 		switch ($tab)
 		{

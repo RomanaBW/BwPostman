@@ -463,7 +463,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			$contexts[$id] = $option . '.' . $this->context . '.' . $id;
 		}
 
-		// Set the model and sone variables
+		// Set the model and some variables
 		$model	= $this->getModel('Subscriber', '', array());
 
 		// run the batch operation.

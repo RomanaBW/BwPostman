@@ -601,7 +601,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailinglist_fieldset_identifier  = "//*/section[@id='details']/div[2]/legend/span[2]";
+	public static $mailinglist_fieldset_identifier  = "//*/div[@id='details']/div[2]/h4";
 
 	/**
 	 * @var string

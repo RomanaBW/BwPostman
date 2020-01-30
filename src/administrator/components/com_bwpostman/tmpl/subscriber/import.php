@@ -33,18 +33,15 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
-// Load the tooltip behavior for the notes
-HTMLHelper::_('behavior.tooltip');
-
 // Keep session alive while importing
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('formbehavior.chosen', 'select');
+//HTMLHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('bootstrap.tooltip');
 
 $document = Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
 
 $jinput	= Factory::getApplication()->input;
-$image	= '<i class="icon-info"></i>';
+$image	= '<i class="fa fa-info-circle fa-lg"></i>';
 $option	= $jinput->getCmd('option');
 
 ?>
@@ -52,82 +49,87 @@ $option	= $jinput->getCmd('option');
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">
 		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP1'); ?></legend>
-		<div class="well well-small">
-			<div class="row-fluid">
-				<table class="admintable bwptable import">
-					<tr class="bwptable">
-						<td width="250" align="right" class="key">
-							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?>">
-								<?php echo $image; ?>
-							</span>
-						</td>
-						<td class="bwptable">
-							<div class="bwpmailformat">
+		<div class="card card-body">
+			<div class="row">
+				<div class="admintable bwptable import col-12">
+					<fieldset class="bwptable form-group">
+						<div class="key row">
+							<label class="col-form-label col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?>
+								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
+							</label>
+							<div class="col-md-6">
 								<?php echo $this->lists['fileformat']; ?>
 							</div>
-						</td>
-					</tr>
-					<tr class="importfile">
-						<td align="right" class="key">
-							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
+						</div>
+					</fieldset>
+					<div class="importfile form-group row">
+						<label class="key col-md-6 text-md-right">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?>
+							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
-						</td>
-						<td>
-							<input type="file" name="importfile" id="importfile"
+						</label>
+						<div class="col-md-6">
+							<input type="file" class="form-control-file" name="importfile" id="importfile"
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?> />
-						</td>
-					</tr>
-					<tr class="delimiter">
-						<td align="right" class="key">
-							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
+						</div>
+					</div>
+					<div class="delimiter form-group row">
+						<label class="key col-md-6 text-md-right">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
+							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
-						</td>
-						<td><?php echo $this->lists['delimiter'];?></td>
-					</tr>
-					<tr class="enclosure">
-						<td align="right" class="key">
-							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
+						</label>
+						<div class="col-md-6">
+							<?php echo $this->lists['delimiter'];?>
+						</div>
+					</div>
+					<div class="enclosure form-group row">
+						<label class="key col-md-6 text-md-right">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?>
+							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
-						</td>
-						<td><?php echo $this->lists['enclosure'];?></td>
-					</tr>
-					<tr class="caption">
-						<td align="right" class="key">
-							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
+						</label>
+						<div class="col-md-6">
+							<?php echo $this->lists['enclosure'];?>
+						</div>
+					</div>
+					<div class="caption form-group row">
+						<label class="key col-md-6 text-md-right">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?>
+							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
-						</td>
-						<td>
-							<input type="checkbox" id="caption" name="caption" title="caption"
-								<?php
-								if (isset($this->import['caption']))
-								{
-									if ($this->import['caption'] == 1)
+						</label>
+						<div class="col-md-6">
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input" id="caption" name="caption" title="caption"
+									<?php
+									if (isset($this->import['caption']))
 									{
-										echo "checked";
-									}
-								} ?>
-							/>
-						</td>
-					</tr>
-					<tr class="button">
-						<td width="250" align="center" class="key">
+										if ($this->import['caption'] == 1)
+										{
+											echo "checked";
+										}
+									} ?>
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="button form-group row mt-3">
+						<div class="key col-12 text-center">
 							<input type="button" class="btn btn-success" name="submitbutton" id=""
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>
-										onclick="Joomla.submitbutton('subscribers.prepareImport');"
-										value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
+									onclick="Joomla.submitbutton('subscribers.prepareImport');"
+									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
 							/>
-						</td>
-					</tr>
-				</table>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</fieldset>
@@ -141,3 +143,4 @@ $option	= $jinput->getCmd('option');
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+

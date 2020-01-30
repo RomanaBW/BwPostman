@@ -370,7 +370,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				'select.genericlist',
 				$import_fields,
 				'import_fields[]',
-				'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 260px;"',
+				'class="custom-select inputbox" size="10" multiple="multiple" style="padding: 6px; width: 260px;"',
 				'value',
 				'text'
 			);

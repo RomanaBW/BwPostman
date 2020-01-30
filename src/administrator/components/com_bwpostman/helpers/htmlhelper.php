@@ -175,7 +175,7 @@ abstract class BwPostmanHTMLHelper {
 		$delimiter[] = JHtml::_('select.option', '\t', JText::_('COM_BWPOSTMAN_SUB_DELIMITER_TABULATOR'));
 		$delimiter[] = JHtml::_('select.option', ' ', JText::_('COM_BWPOSTMAN_SUB_DELIMITER_WHITESPACE'));
 
-		$delimiter_list	= JHtml::_('select.genericlist', $delimiter, 'delimiter', 'class="inputbox" size="1"', 'value', 'text', $selected);
+		$delimiter_list	= JHtml::_('select.genericlist', $delimiter, 'delimiter', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
 
 		return $delimiter_list;
 	}
@@ -199,7 +199,7 @@ abstract class BwPostmanHTMLHelper {
 		$enclosure[] = JHtml::_('select.option', "'", JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_QUOTE'));
 		$enclosure[] = JHtml::_('select.option', '"', JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_DOUBLEQUOTE'));
 
-		$enclosure_list	= JHtml::_('select.genericlist', $enclosure, 'enclosure', 'class="inputbox" size="1"', 'value', 'text', $selected);
+		$enclosure_list	= JHtml::_('select.genericlist', $enclosure, 'enclosure', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
 
 		return $enclosure_list;
 	}
@@ -221,7 +221,7 @@ abstract class BwPostmanHTMLHelper {
 
 		$emailformat[] 	= JHtml::_('select.option', '0', JText::_('COM_BWPOSTMAN_TEXT'));
 		$emailformat[] 	= JHtml::_('select.option', '1', JText::_('COM_BWPOSTMAN_HTML'));
-		$format_list	= JHtml::_('select.radiolist', $emailformat, 'emailformat', 'class="inputbox" ', 'value', 'text', $selected);
+		$format_list	= JHtml::_('select.radiolist', $emailformat, 'emailformat', 'class="form-check-input inputbox" ', 'value', 'text', $selected);
 
 		return $format_list;
 	}
@@ -250,7 +250,7 @@ abstract class BwPostmanHTMLHelper {
 		{
 			$db_fields[] = JHtml::_('select.option', $column, $column);
 		}
-		$db_fields = JHtml::_('select.genericlist', $db_fields, 'db_fields[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 240px;"', 'value', 'text');
+		$db_fields = JHtml::_('select.genericlist', $db_fields, 'db_fields[]', 'class="custom-select inputbox w-auto" size="10" multiple="multiple" style="padding: 6px; width: 240px;"', 'value', 'text');
 
 		return $db_fields;
 	}
@@ -363,7 +363,6 @@ abstract class BwPostmanHTMLHelper {
 
 		return $forumButton;
 	}
-
 	/**
 	 *
 	 * @param string $section

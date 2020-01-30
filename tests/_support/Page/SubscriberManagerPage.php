@@ -517,14 +517,14 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $import_button_further = "//*[@id='adminForm']/fieldset/div/div/table/tbody/tr[6]/td/input";
+	public static $import_button_further = "//*[@id='adminForm']/fieldset/div/div/div/div[5]/div/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $import_button_import  = "//*[@id='adminForm']/fieldset[2]/div/table/tbody/tr/td/input";
+	public static $import_button_import  = "//*[@id='adminForm']/div/div/div/input[contains(@class, 'btn-success')]";
 
 
 	/**
@@ -539,7 +539,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $import_legend_mls    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/div/fieldset/legend/span[2]";
+	public static $import_legend_mls    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/fieldset/legend/span[2]";
 
 	/**
 	 * @var string
@@ -743,7 +743,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $import_mls_target    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/div/fieldset/div/p[2]/label";
+	public static $import_mls_target    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/fieldset/p[2]/label/span";
 
 
 	/**
@@ -803,7 +803,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $export_legend_fields = "//*[@id='adminForm']/fieldset/div/table/tbody/tr[5]/td[1]";
+	public static $export_legend_fields = "//*[@id='adminForm']/fieldset/div/div/div[5]/label";
 
 
 	/**
@@ -832,21 +832,21 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $export_button_export = "//*[@id='adminForm']/fieldset/div/table/tbody/tr[6]/td/input";
+	public static $export_button_export = "//*[@id='adminForm']/fieldset/div/div/div[6]/div/input[contains(@class, 'btn-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $export_popup_yes = "html/body/form/fieldset/table/tbody/tr[2]/td/input[1]";
+	public static $export_popup_yes = "/html/body/form/fieldset/div/p[2]/input[contains(@class, 'btn-success')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $export_popup_no = "html/body/form/fieldset/table/tbody/tr[2]/td/input[2]";
+	public static $export_popup_no = "/html/body/form/fieldset/div/p[2]/input[contains(@class, 'btn-secondary')]";
 
 	/**
 	 * @var string

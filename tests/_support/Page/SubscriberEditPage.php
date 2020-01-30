@@ -355,21 +355,21 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_accessible       = "//*[@id='ml_available']/fieldset/div/p[%s]/label";
+	public static $mls_accessible       = "//*[@id='ml_available']/fieldset/p[%s]/label";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_nonaccessible    = "//*[@id='ml_unavailable']/fieldset/div/p[%s]/label";
+	public static $mls_nonaccessible    = "//*[@id='ml_unavailable']/fieldset/p[%s]/label";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal         = "//*[@id='ml_intern']/fieldset/div/p[%s]/label";
+	public static $mls_internal         = "//*[@id='ml_intern']/fieldset/p[%s]/label";
 
 
 	/**

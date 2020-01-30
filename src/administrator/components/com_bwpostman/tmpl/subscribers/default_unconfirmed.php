@@ -33,6 +33,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
+HTMLHelper::_('behavior.multiselect');
+
 $user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -56,76 +58,77 @@ $colNum = 8;
 					);
 					?>
 
-					<div class="form-horizontal">
-						<ul class="bwp_tabs">
-							<li class="closed">
-								<button onclick="return changeTab('confirmed');" class="buttonAsLink" id="tab-confirmed">
+					<div class="bwp-subscribers">
+						<ul class="nav nav-tabs bwp-tabs">
+							<li class="nav-item"><!-- We need to use the setAttribute-function because of the IE -->
+								<a id="tab-confirmed" href="#" onclick="changeTab('confirmed');Joomla.submitbutton();" class="nav-link">
 									<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMED'); ?>
-								</button>
+								</a>
 							</li>
-							<li class="open">
-								<button onclick="return changeTab('unconfirmed');" class="buttonAsLink_open" id="tab-unconfirmed">
+							<li class="nav-item">
+								<a id="tab-unconfirmed" href="#" onclick="changeTab('unconfirmed');Joomla.submitbutton();" class="nav-link active">
 									<?php echo Text::_('COM_BWPOSTMAN_SUB_UNCONFIRMED'); ?>
-								</button>
+								</a>
 							</li>
-							<li class="closed">
-								<button onclick="return changeTab('testrecipients');" class="buttonAsLink" id="tab-testrecipients">
+							<li class="nav-item">
+								<a id="tab-testrecipients" href="#" onclick="changeTab('testrecipients');Joomla.submitbutton();" class="nav-link">
 									<?php echo Text::_('COM_BWPOSTMAN_TEST'); ?>
-								</button>
+								</a>
 							</li>
 						</ul>
-					</div>
-					<div class="clr clearfix"></div>
 
-					<div class="current">
-						<table id="main-table-bw-unconfirmed" class="table bw-unconfirmed">
-							<caption id="captionTable" class="sr-only">
-								<?php echo Text::_('COM_BWPOSTMAN_SUBS_UNCONFIRMED_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
-							</caption>
-							<thead>
+						<div class="bwp-table">
+							<table id="main-table-bw-unconfirmed" class="table bw-unconfirmed">
+								<caption id="captionTable" class="sr-only">
+									<?php echo Text::_('COM_BWPOSTMAN_SUBS_UNCONFIRMED_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+								</caption>
+								<thead>
 								<tr>
 									<th style="width: 1%;" class="text-center">
 										<input type="checkbox" name="checkall-toggle" value=""
 												title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 									</th>
-									<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
+									<th style="min-width: 100px;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-md-table-cell" style="min-width: 80px;" scope="col">
+									<th class="d-none d-lg-table-cell" style="min-width: 80px;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?>
 									</th>
-									<?php if($this->params->get('show_gender')) { ?>
-										<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+									<?php
+									if($this->params->get('show_gender'))
+									{ ?>
+										<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_GENDER', 'a.gender', $listDirn, $listOrder); ?>
 										</th>
-									<?php } ?>
-									<th class="d-none d-md-table-cell" style="min-width: 150px;" scope="col">
+										<?php
+									} ?>
+									<th style="min-width: 150px;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+									<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+									<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_JOOMLA_USERID', 'a.user_id', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+									<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
+									<th class="d-none d-lg-table-cell" style="width: 3%;" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 									</th>
 								</tr>
-							</thead>
-							<tbody>
-							<?php
-							if (count($this->items))
-							{
-								foreach ($this->items as $i => $item) :
-									$ordering	= ($listOrder == 'a.ordering');
-									$name		= ($item->name) ? $item->name : Text::_('COM_BWPOSTMAN_SUB_NONAME');
-									?>
+								</thead>
+								<tbody>
+								<?php
+								if (count($this->items))
+								{
+									foreach ($this->items as $i => $item) :
+										$ordering	= ($listOrder == 'a.ordering');
+										$name		= ($item->name) ? $item->name : Text::_('COM_BWPOSTMAN_SUB_NONAME');
+										?>
 									<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 										<td>
 											<?php
 											if ($item->checked_out)
@@ -140,22 +143,23 @@ $colNum = 8;
 													'ub'
 												);
 											}
-
 											if (BwPostmanHelper::canEdit('subscriber', $item))
 											{ ?>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&task=subscriber.edit&id=' . $item->id);?>">
-													<?php echo $this->escape($name); ?></a> <?php
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&task=subscriber.edit&id=' . $item->id); ?>">
+													<?php echo $this->escape($name); ?>
+												</a>
+												<?php
 											}
 											else
 											{
 												echo $this->escape($name);
 											} ?>
 										</td>
-										<td><?php echo $item->firstname; ?></td>
-										<?php
-										if($this->params->get('show_gender'))
+										<td class="d-none d-lg-table-cell"><?php echo $item->firstname; ?></td>
+										<?php if($this->params->get('show_gender'))
 										{
-											$colNum = 9; ?>
+											$colNum = 9;
+											?>
 											<td>
 												<?php
 												if ($item->gender === 1)
@@ -174,55 +178,52 @@ $colNum = 8;
 											</td>
 										<?php } ?>
 										<td><?php echo $item->email; ?></td>
-										<td align="center"><?php echo ($item->emailformat) ? Text::_('COM_BWPOSTMAN_HTML') : Text::_('COM_BWPOSTMAN_TEXT')?></td>
-										<td align="center"><?php echo ($item->user_id) ? $item->user_id : ''; ?></td>
-										<td align="center"><?php echo $item->mailinglists; ?></td>
-										<td align="center"><?php echo $item->id; ?></td>
-									</tr><?php
-								endforeach;
-							}
-							else
-							{
-								// if no data ?>
-								<tr class="row1">
+										<td class="d-none d-lg-table-cell text-center"><?php echo ($item->emailformat) ? Text::_('COM_BWPOSTMAN_HTML') : Text::_('COM_BWPOSTMAN_TEXT')?></td>
+										<td class="d-none d-lg-table-cell text-center"><?php echo ($item->user_id) ? $item->user_id : ''; ?></td>
+										<td class="d-none d-lg-table-cell text-center"><?php echo $item->mailinglists; ?></td>
+										<td class="d-none d-lg-table-cell text-center"><?php echo $item->id; ?></td>
+										</tr><?php
+									endforeach;
+								}
+								else
+								{
+									// if no data ?>
+									<tr class="row1">
 									<td colspan="<?php echo $colNum; ?>"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-								</tr><?php
-							}
-							?>
-							</tbody>
-						</table>
+									</tr><?php
+								}
+								?>
+								</tbody>
+							</table>
+						</div>
 					</div>
+					<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+					<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+
+					<?php // Load the batch processing form. ?>
+					<?php echo HTMLHelper::_(
+						'bootstrap.renderModal',
+						'collapseModal',
+						array(
+							'title'  => Text::_('COM_BWPOSTMAN_SUB_BATCH_OPTIONS'),
+							'footer' => $this->loadTemplate('batch_footer'),
+						),
+						$this->loadTemplate('batch_body')
+					); ?>
+
+					<input type="hidden" name="task" value="" />
+					<input type="hidden" id="tab" name="tab" value="unconfirmed" />
+					<!--				<input type="hidden" name="layout" value="unconfirmed" />-->
+					<input type="hidden" name="tpl" value="unconfirmed" />
+					<input type="hidden" name="boxchecked" value="0" />
+					<input type="hidden" id="mlToExport" name="mlToExport" value="" />
+					<?php echo HTMLHelper::_('form.token'); ?>
+
+					<input type="hidden" id="currentTab" value="default_unconfirmed" />
+					<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE', true); ?>" />
+					<input type="hidden" id="exportMl" value="<?php echo $this->filterMl; ?>" />
 				</div>
 			</div>
-			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
-			<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
-
-			<?php // Load the batch processing form. ?>
-			<!--			--><?php // if ($user->authorise('core.create', 'com_content')
-			//				&& $user->authorise('core.edit', 'com_content')
-			//				&& $user->authorise('core.edit.state', 'com_content')) : ?>
-			<?php echo HTMLHelper::_(
-				'bootstrap.renderModal',
-				'collapseModal',
-				array(
-					'title'  => Text::_('COM_BWPOSTMAN_SUB_BATCH_OPTIONS'),
-					'footer' => $this->loadTemplate('batch_footer'),
-				),
-				$this->loadTemplate('batch_body')
-			); ?>
-			<!--			--><?php // endif; ?>
-
-			<input type="hidden" name="task" value="" />
-			<input type="hidden" id="tab" name="tab" value="unconfirmed" />
-<!--			<input type="hidden" name="layout" value="unconfirmed" />-->
-			<input type="hidden" name="tpl" value="unconfirmed" />
-			<input type="hidden" name="boxchecked" value="0" />
-			<input type="hidden" id="mlToExport" name="mlToExport" value="" />
-			<?php echo HTMLHelper::_('form.token'); ?>
-
-			<input type="hidden" id="currentTab" value="default_unconfirmed" />
-			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRM_ARCHIVE', true); ?>" />
-			<input type="hidden" id="exportMl" value="<?php echo $this->filterMl; ?>" />
 		</div>
 	</form>
 </div>

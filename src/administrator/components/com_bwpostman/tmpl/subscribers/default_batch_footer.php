@@ -16,6 +16,6 @@ HTMLHelper::_('script', 'bw_postman/admin-subscribers-default-batch-footer.es6.j
 <button type="button" class="btn btn-secondary" data-dismiss="modal">
 	<?php echo Text::_('JCANCEL'); ?>
 </button>
-<button type="submit" id='batch-submit-button-id' class="btn btn-success" data-submit-task='subscriber.batch'>
+<button type="submit" class="btn btn-success" onclick="Joomla.submitbutton('subscriber.batch');">
 	<?php echo Text::_('JGLOBAL_BATCH_PROCESS'); ?>
 </button>

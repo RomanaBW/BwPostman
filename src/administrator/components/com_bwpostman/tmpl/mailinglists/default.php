@@ -63,22 +63,22 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									<input class="hasTooltip" type="checkbox" name="checkall-toggle" value=""
 											title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
+								<th style="min-width: 100px;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="min-width: 250px;" scope="col">
+								<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+								<th style="width: 10%;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="width: 10%;" scope="col">
+								<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+								<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-md-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
+								<th class="d-none d-lg-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
 									<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 								</th>
 							</tr>
@@ -89,7 +89,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								foreach ($this->items as $i => $item) :
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+									<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 									<td>
 										<?php if ($item->checked_out) : ?>
 											<?php echo HTMLHelper::_(
@@ -109,8 +109,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											<?php echo $this->escape($item->title); ?>
 										<?php endif; ?>
 									</td>
-									<td><?php echo $item->description; ?></td>
-									<td align="center">
+									<td class="d-none d-lg-table-cell"><?php echo $item->description; ?></td>
+									<td class="text-center">
 										<?php echo HTMLHelper::_(
 											'jgrid.published',
 											$item->published,
@@ -120,9 +120,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											'cb'
 										); ?>
 									</td>
-									<td><?php echo $this->escape($item->access_level); ?></td>
-									<td align="center"><?php echo $item->subscribers; ?></td>
-									<td align="center"><?php echo $item->id; ?></td>
+									<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->access_level); ?></td>
+									<td class="d-none d-lg-table-cell text-center"><?php echo $item->subscribers; ?></td>
+									<td class="d-none d-lg-table-cell text-center"><?php echo $item->id; ?></td>
 								</tr>
 								<?php endforeach;
 							}

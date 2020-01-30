@@ -63,16 +63,6 @@ $image = '<i class="icon-info"></i>';
 					<?php echo $this->form->getLabel('description'); ?>
 					<div class="controls"><?php echo $this->form->getInput('description'); ?></div>
 				</li>
-
-				<li>
-					<?php echo $this->form->getLabel('access'); ?>
-					<div class="controls"><?php echo $this->form->getInput('access'); ?></div>
-				</li>
-
-				<li>
-					<?php echo $this->form->getLabel('published'); ?>
-					<div class="controls"><?php echo $this->form->getInput('published'); ?></div>
-				</li>
 			</ul>
 		</div>
 

@@ -30,18 +30,52 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
 
+<head>
+	<style>
+		.btn {
+			margin-right: .5rem;
+			background: var(--white);
+			border-color: var(--whiteoffset);
+			color: var(--atum-text-dark);
+			padding: 0 22px;
+			font-size: 1rem;
+			line-height: 2.375rem;
+			box-shadow: 1px 1px 1px 0
+			rgba(0,0,0,.25);
+		}
+		.btn-success {
+			color:#fff;
+			background-color:#2f7d32;
+			border-color:#2f7d32
+		}
+		.btn-success:hover {
+			color:#fff;
+			background-color:#256127;
+			border-color:#215823
+		}
+		.btn-success.focus,
+		.btn-success:focus {
+			box-shadow:0 0 0 .2rem rgba(78,145,81,.5)
+		}
+		p {
+			text-align:center;
+			margin:1.5rem;
+		}
+		.text {
+			font-size:1.2rem;
+		}
+	</style>
+</head>
+<body>
 <form name="popupForm" action="#" method="get">
 	<fieldset>
-		<table width="100%" id="modal-upload">
-			<tr>
-				<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_SUB_CONFIRM_EXPORT_FILTERED"); ?></th>
-			</tr>
-			<tr>
-				<td height="30" align="center">
-					<input type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('1')" value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />
-					<input type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('0')" value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />
-				</td>
-			</tr>
-		</table>
+		<div width="100%" id="modal-upload">
+			<p class="text"><?php echo Text::_("COM_BWPOSTMAN_SUB_CONFIRM_EXPORT_FILTERED"); ?></p>
+			<p>
+				<input class="btn btn-success" type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('1')" value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />
+				<input class="btn btn-secondary" type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('0')" value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />
+			</p>
+		</div>
 	</fieldset>
 </form>
+</body>

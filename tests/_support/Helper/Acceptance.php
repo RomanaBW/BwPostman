@@ -1298,7 +1298,7 @@ class Acceptance extends Codeception\Module
 //			$I->waitForElement(".//*[@id='confirm-delete']", 20);
 			$I->waitForText($manage_data['popup_delete_newsletters']);
 			$I->see($manage_data['popup_delete_newsletters']);
-			$I->clickAndWait($manage_data['popup_button_no'], 1);
+			$I->clickAndWait($manage_data['popup_button_delete_no'], 1);
 			$I->switchToIFrame();
 		}
 		else
@@ -1365,7 +1365,7 @@ class Acceptance extends Codeception\Module
 //			$I->waitForElement(".//*[@id='confirm-unarchive']", 20);
 			$I->waitForText($manage_data['popup_restore_newsletters']);
 			$I->see($manage_data['popup_restore_newsletters']);
-			$I->clickAndWait($manage_data['popup_button_no'], 1);
+			$I->clickAndWait($manage_data['popup_button_delete_no'], 1);
 			$I->switchToIFrame();
 		}
 
@@ -1400,6 +1400,7 @@ class Acceptance extends Codeception\Module
 		$I->waitForElement(Generals::$pageTitle, 30);
 
 		$I->see(Generals::$archive_txt, Generals::$pageTitle);
+		$I->wait(1);
 		$I->click($archive_tab);
 	}
 

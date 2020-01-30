@@ -207,7 +207,6 @@ class TestAccessCest
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
-//			$I->click(AccessPage::$link_statistics_general);
 			$I->waitForElementVisible(AccessPage::$table_statistics_general, 5);
 			$I->wait(1);
 
@@ -222,8 +221,6 @@ class TestAccessCest
 					$I->dontSeeElement($statistics_general_text);
 				}
 			}
-			$I->click(AccessPage::$link_statistics_general);
-			$I->waitForElementNotVisible(AccessPage::$table_statistics_general, 5);
 		}
 	}
 
@@ -258,9 +255,6 @@ class TestAccessCest
 						$I->dontSeeElement($statistics_archive_text);
 					}
 				}
-
-				$I->click(AccessPage::$link_statistics_archive);
-				$I->waitForElementVisible(AccessPage::$link_statistics_archive, 5);
 			}
 			else
 			{

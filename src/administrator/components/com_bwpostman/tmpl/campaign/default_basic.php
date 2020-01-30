@@ -49,14 +49,7 @@ $image = '<i class="fa fa-lg fa-info-circle"></i>';
 				}
 			}
 			?>
-			<div class="control-group">
-				<div class="control-label">
-					<?php echo $this->form->getLabel('title'); ?>
-				</div>
-				<div class="controls">
-					<?php echo $this->form->getInput('title'); ?>
-				</div>
-			</div>
+			<?php echo $this->form->renderField('title'); ?>
 
 			<?php
 			if (isset($this->item->err_code))
@@ -66,39 +59,10 @@ $image = '<i class="fa fa-lg fa-info-circle"></i>';
 
 				}
 			}?>
-			<div class="control-group">
-				<div class="control-label">
-					<?php echo $this->form->getLabel('description'); ?>
-				</div>
-				<div class="controls">
-					<?php echo $this->form->getInput('description'); ?>
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="control-label">
-					<?php echo $this->form->getLabel('access'); ?>
-				</div>
-				<div class="controls">
-					<?php echo $this->form->getInput('access'); ?>
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="control-label">
-					<?php echo $this->form->getLabel('published'); ?>
-				</div>
-				<div class="controls">
-					<?php echo $this->form->getInput('published'); ?>
-				</div>
-			</div>
+			<?php echo $this->form->renderField('description'); ?>
 		</div>
 
 		<div class="col-lg-6">
-			<?php
-			// Romana - es gibt hier keine campaign_id
-			// @Karl - Ja, Du hast vollkommen Recht! :-(
-			?>
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('created_by'); ?>

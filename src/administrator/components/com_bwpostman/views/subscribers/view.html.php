@@ -312,6 +312,15 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					{
 						$childBar->checkin('subscribers.checkin')->listCheck(true);
 					}
+
+					// Add a batch button
+					if (BwPostmanHelper::canEdit('subscriber'))
+					{
+						$childBar->popupButton('batch')
+							->text('JTOOLBAR_BATCH')
+							->selector('collapseModal')
+							->listCheck(true);
+					}
 				}
 
 				if ($this->permissions['subscriber']['create'])

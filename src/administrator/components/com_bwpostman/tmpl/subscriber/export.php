@@ -34,109 +34,111 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
 // Load the tooltip behavior for the notes
-HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('bootstrap.tooltip');
 
 Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_export.js');
 
 $jinput	= Factory::getApplication()->input;
-$image	= '<i class="icon-info"></i>';
+$image	= '<i class="fa fa-info-circle fa-lg"></i>';
 $option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo $this->request_url_raw; ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">
 		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'); ?></legend>
-		<div class="well well-small">
-			<table class="admintable export">
-				<tr class="bwptable fileformat">
-					<td align="right" class="key">
-						<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?></span>
-						<span class="editlinktip hasTip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FILEFORMAT_NOTE'); ?>">
+		<div class="card card-body">
+			<div class="admintable export">
+				<div class="bwptable fileformat row">
+					<label class="key col-form-label col-md-6 text-md-right">
+						<?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FILEFORMAT_NOTE'); ?>">
 							<?php echo $image; ?>
 						</span>
-					</td>
-					<td class="bwptable"><div class="bwpmailformat"><?php echo $this->lists['fileformat']; ?></div></td>
-				</tr>
-				<tr class="bwptable delimiter">
-					<td align="right" class="key">
-						<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></span>
-						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_DELIMITER_NOTE'); ?>">
+					</label>
+					<div class="col-md-6"><?php echo $this->lists['fileformat']; ?></div>
+				</div>
+				<div class="delimiter form-group row">
+					<label class="key col-md-6 text-md-right">
+						<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_DELIMITER_NOTE'); ?>">
 							<?php echo $image; ?>
 						</span>
-					</td>
-					<td><?php echo $this->lists['delimiter'];?></td>
-				</tr>
-				<tr class="bwptable enclosure">
-					<td align="right" class="key">
-						<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE'); ?></span>
-						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOTE'); ?>">
+					</label>
+					<div class="col-md-6"><?php echo $this->lists['delimiter'];?></div>
+				</div>
+				<div class="enclosure form-group row">
+					<label class="key col-md-6 text-md-right">
+						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE'); ?>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOTE'); ?>">
 							<?php echo $image; ?>
 						</span>
-					</td>
-					<td><?php echo $this->lists['enclosure'];?></td>
-				</tr>
-				<tr class="bwptable exportgroups">
-					<td align="right" class="key"><span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS'); ?></span>
-						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS_NOTE'); ?>">
+					</label>
+					<div class="col-md-6"><?php echo $this->lists['enclosure'];?></div>
+				</div>
+				<div class="exportgroups form-group row">
+					<label class="key col-md-6 text-md-right">
+						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS'); ?>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS_NOTE'); ?>">
 							<?php echo $image; ?>
 						</span>
-					</td>
-					<td class="bwptable mailformat">
+					</label>
+					<div class="col-md-6 mailformat">
 						<div class="bwpmailformat">
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_STATUS'); ?>
-							<p class="state"><input type="checkbox" id="status1" name="status1" title="status" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_CONFIRMED'); ?>
+							<p class="state"><label><input type="checkbox" id="status1" name="status1" title="status" value="1" />
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_CONFIRMED'); ?></label>
 							</p>
-							<p class="state"><input type="checkbox" id="status0" name="status0" title="status" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNCONFIRMED'); ?>
+							<p class="state"><label><input type="checkbox" id="status0" name="status0" title="status" value="1" />
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNCONFIRMED'); ?></label>
 							</p>
-							<p class="state"><input type="checkbox" id="status9" name="status9" title="status" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_TEST'); ?>
+							<p class="state"><label><input type="checkbox" id="status9" name="status9" title="status" value="1" />
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_TEST'); ?></label>
 							</p>
-							<br />
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVE'); ?><br />
-							<p class="archive"><input type="checkbox" id="archive0" name="archive0" title="archive" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNARCHIVED'); ?>
+							<p class="archive"><label><input type="checkbox" id="archive0" name="archive0" title="archive" value="1" />
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNARCHIVED'); ?></label>
 							</p>
-							<p class="archive"><input type="checkbox" id="archive1" name="archive1" title="archive" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVED'); ?>
+							<p class="archive"><label><input type="checkbox" id="archive1" name="archive1" title="archive" value="1" />
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVED'); ?></label>
 							</p>
 						</div>
-					</td>
-				</tr>
-				<tr class="exportfields">
-					<td width="150" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS'); ?><br />
-						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_NOTE'); ?>">
+					</div>
+				</div>
+				<div class="exportfields form-group row">
+					<label class="key col-md-6 text-md-right">
+						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS'); ?>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_NOTE'); ?>">
 							<?php echo $image; ?>
 						</span>
-					</td>
-					<td valign="top" width="280"><?php echo $this->lists['export_fields']; ?><br />
-						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
-							<input class="btn btn-small" type="button" name="upbutton" onclick="moveUp(document.getElementById('export_fields'));"
+					</label>
+					<div class="col-md-6">
+						<div class="mb-2">
+							<?php echo $this->lists['export_fields']; ?>
+						</div>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
+							<input class="btn btn-outline-primary btn-sm mb-2" type="button" name="upbutton" onclick="moveUp(document.getElementById('export_fields'));"
 									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
 						</span>
-						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
-							<input class="btn btn-small" type="button" name="downbutton" onclick="moveDown(document.getElementById('export_fields'));"
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
+							<input class="btn btn-outline-success btn-sm mb-2" type="button" name="downbutton" onclick="moveDown(document.getElementById('export_fields'));"
 									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
 						</span>
-						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-							<input class="btn btn-small" type="button" name="removebutton" onclick="removeOptions(export_fields);"
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
+							<input class="btn btn-outline-danger btn-sm mb-2" type="button" name="removebutton" onclick="removeOptions(export_fields);"
 									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
 						</span>
-					</td>
-					<td>&nbsp;</td>
-					<td valign="top"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_ANNOTATION'); ?></td>
-				</tr>
-				<tr class="button">
-					<td width="150" align="center" class="key">
+					</div>
+					<div><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_ANNOTATION'); ?></div>
+				</div>
+				<div class="button">
+					<div class="key text-center">
 						<input class="btn btn-success" type="button" name="submitbutton"
 								onclick="if(check()){selectAllOptions(document.adminForm['export_fields[]']);Joomla.submitbutton('subscribers.export');}"
 								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_BUTTON'); ?>"
 						/>
-					</td>
-				</tr>
-			</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</fieldset>
 
@@ -149,3 +151,4 @@ $option	= $jinput->getCmd('option');
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+

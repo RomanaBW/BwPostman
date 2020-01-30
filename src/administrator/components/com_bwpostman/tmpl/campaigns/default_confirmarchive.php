@@ -30,32 +30,53 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-		function check() // Checks if one or more campaigns are selected
-		{
-			var htmlText="";
-			htmlText += '<form name="popupForm" action="#" method="get">';
-			htmlText += '	<fieldset>';
-			htmlText += '		<table width="100%" id="confirm-archive">';
-			htmlText += '			<tr>';
-				if(window.parent.document.adminForm.boxchecked.value === 0){
-			htmlText += '				<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';
-				} else {
-			htmlText += '				<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_CAM_ARCHIVE_CAM_AND_NL"); ?></th>';
-			htmlText += '			</tr>';
-			htmlText += '			<tr>';
-			htmlText += '				<td height="30" align="center">';
-			htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmArchive(\'1\');"	value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />';
-			htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmArchive(\'0\');"	value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />';
-			htmlText += '				</td>';
-			}
-			htmlText += '			</tr>';
-			htmlText += '		</table>';
-			htmlText += '	</fieldset>';
-			htmlText += '</form>';
-			document.write(htmlText);
+<head>
+	<style>
+		.btn {
+			margin-right: .5rem;
+			background: var(--white);
+			border-color: var(--whiteoffset);
+			color: var(--atum-text-dark);
+			padding: 0 22px;
+			font-size: 1rem;
+			line-height: 2.375rem;
+			box-shadow: 1px 1px 1px 0
+			rgba(0,0,0,.25);
 		}
-		check();
-	/* ]]> */
-</script>
+		.btn-success {
+			color:#fff;
+			background-color:#2f7d32;
+			border-color:#2f7d32
+		}
+		.btn-success:hover {
+			color:#fff;
+			background-color:#256127;
+			border-color:#215823
+		}
+		.btn-success.focus,
+		.btn-success:focus {
+			box-shadow:0 0 0 .2rem rgba(78,145,81,.5)
+		}
+		p {
+			text-align:center;
+			margin:1.5rem;
+		}
+		.text {
+			font-size:1.2rem;
+		}
+	</style>
+</head>
+<body>
+<form name="popupForm" action="#" method="get">
+	<fieldset>
+		<div width="100%" id="confirm-archive">
+			<p class="text"><?php echo Text::_("COM_BWPOSTMAN_CAM_ARCHIVE_CAM_AND_NL"); ?></p>
+			<p>
+				<input class="btn btn-success" type="button" name="submitbutton" onClick="window.parent.confirmArchive('1')" value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />
+				<input class="btn btn-secondary" type="button" name="submitbutton" onClick="window.parent.confirmArchive('0')" value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />
+			</p>
+		</div>
+	</fieldset>
+</form>
+</body>
+

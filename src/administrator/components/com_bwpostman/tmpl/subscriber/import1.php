@@ -43,27 +43,27 @@ $document = Factory::getDocument()->addScript(Uri::root(true) . '/administrator/
 
 HTMLHelper::_('bootstrap.tooltip');
 $jinput	= Factory::getApplication()->input;
-$image	= '<i class="icon-info"></i>';
+$image	= '<i class="fa fa-info-circle fa-lg"></i>';
 $option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-	<fieldset class="adminform">
+	<fieldset class="adminform mb-4">
 		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP1'); ?></legend>
-		<div class="well well-small">
-		  <table class="admintable bwptable import">
-				<tr>
-					<td width="250" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></td>
-					<td><?php echo $this->import['filename']; ?></td>
-				</tr>
+		<div class="card card-body">
+			<div class="admintable bwptable import">
+				<div class="row">
+					<div class="key col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?>:</div>
+					<div class="col-md-6"><?php echo $this->import['filename']; ?></div>
+				</div>
 
 				<?php if ($this->import['fileformat'] == 'csv')
 				{
 					// Show delimiter, enclosure and caption
 					?>
-					<tr>
-						<td align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></td>
-						<td>
+					<div class="row">
+						<div class="key col-9 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>:</div>
+						<div class="col-3 col-md-6">
 							<?php
 							if ($this->import['delimiter'] == '\t')
 							{
@@ -76,11 +76,12 @@ $option	= $jinput->getCmd('option');
 							else
 							{
 								echo $this->import['delimiter'];
-							} ?></td>
-					</tr>
-					<tr>
-						<td align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></td>
-						<td>
+							} ?>
+						</div>
+					</div>
+					<div class="row">
+						<div class="key col-9 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?>:</div>
+						<div class="col-3 col-md-6">
 							<?php
 							if ($this->import['enclosure'] == '')
 							{
@@ -90,11 +91,11 @@ $option	= $jinput->getCmd('option');
 							{
 								echo $this->import['enclosure'];
 							} ?>
-						</td>
-					</tr>
-					<tr>
-						<td align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></td>
-						<td>
+						</div>
+					</div>
+					<div class="row">
+						<div class="key col-9 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?>:</div>
+						<div class="col-3 col-md-6">
 							<?php
 							if (empty($this->import['caption']))
 							{
@@ -104,213 +105,189 @@ $option	= $jinput->getCmd('option');
 							{
 								echo Text::_('COM_BWPOSTMAN_YES');
 							} ?>
-						</td>
-					</tr>
-				<?php
+						</div>
+					</div>
+					<?php
 				}
 				// End CSV format
 				?>
-			</table>
+			</div>
 		</div>
 	</fieldset>
 
 	<fieldset class="adminform">
 		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP2'); ?></legend>
-			<div class="well well-small">
-				<div class="well well-small">
-					<table class="admintable import">
-						<tr>
-							<td width="150" align="right" class="key" rowspan="2"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS'); ?>
-								<br />
-								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>">
-									<?php echo $image; ?>
-								</span>
-							</td>
-							<td><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
-								&nbsp;
-								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>">
-									<?php echo $image; ?>
-								</span>
-							</td>
-							<td>&nbsp;</td>
-							<td><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS'); ?>
-								&nbsp;
-								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?>">
-									<?php echo $image; ?>
-								</span>
-							</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td valign="top" width="180"><?php echo $this->lists['db_fields']; ?>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-								<input class="btn btn-small" type="button" onclick="removeOptions(db_fields);"
-										value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
-								</span>
-							</td>
-							<td width="20" align="center"><strong>=</strong></td>
-							<td valign="top" width="280"><?php echo $this->lists['import_fields']; ?>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
-									<input class="btn btn-small" type="button" onclick="moveUp(document.getElementById('import_fields'));"
-											value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
-								</span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
-									<input class="btn btn-small" type="button" onclick="moveDown(document.getElementById('import_fields'));"
-											value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
-								</span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-									<input class="btn btn-small" type="button" onclick="removeOptions(import_fields);"
-											value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
-								</span>
-							</td>
-							<td>&nbsp;</td>
-							<td valign="top"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_ANNOTATION'); ?></td>
-						</tr>
-					</table>
-				</div>
-
-				<div class="width-100 fltlft row-fluid">
-					<fieldset class="adminform">
-						<div class="width-33 fltlft span4">
-							<div class="well well-small">
-								<fieldset class="adminform">
-									<legend>
-										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
-											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
-									</legend>
-									<div class="row-fluid clearfix">
-										<?php
-										$ml_available	= $this->form->getInput('ml_available');
-										if (!empty($ml_available))
-										{
-											echo $this->form->getInput('ml_available');
-										}
-										else
-										{ ?>
-											<div class="width-50 fltlft span6">
-												<label class="mailinglist_label noclear checkbox">
-													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
-												</label>
-											</div><?php
-										}
-										?>
-									</div>
-								</fieldset>
-							</div>
+		<div>
+			<div class="admintable import card card-body mb-2">
+				<h4 class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS'); ?>
+					<span class="hasTooltip"
+							title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>">
+						<?php echo $image; ?>
+					</span>
+				</h4>
+				<div class="row">
+					<div class="col-sm-6 text-sm-right mb-2"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
+						&nbsp;
+						<span class="hasTooltip"
+								title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>">
+							<?php echo $image; ?>
+						</span>
+						<div class="my-2">
+							<?php echo $this->lists['db_fields']; ?>
 						</div>
-
-						<div class="width-33 fltlft span4">
-							<div class="well well-small">
-								<fieldset class="adminform">
-									<legend>
-										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
-											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
-									</legend>
-									<div class="row-fluid clearfix">
-										<?php
-										$ml_unavailable	= $this->form->getInput('ml_unavailable');
-
-										if (!empty($ml_unavailable))
-										{
-											echo $this->form->getInput('ml_unavailable');
-										}
-										else
-										{ ?>
-											<div class="width-50 fltlft span6">
-												<label class="mailinglist_label noclear checkbox">
-													<?php echo Text::_('COM_BWPOSTMAN_NO_DATA') ?>
-												</label>
-											</div><?php
-										}
-										?>
-									</div>
-								</fieldset>
-							</div>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
+							<input class="btn btn-danger btn-sm mb-2" type="button" onclick="removeOptions(db_fields);"
+									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
+						</span>
+					</div>
+					<div class="col-sm-6 mb-2"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS'); ?>
+						&nbsp;
+						<span class="hasTooltip"
+								title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?>">
+							<?php echo $image; ?>
+						</span>
+						<div class="my-2">
+							<?php echo $this->lists['import_fields']; ?>
 						</div>
-
-						<div class="width-33 fltlft span4">
-							<div class="well well-small">
-								<fieldset class="adminform">
-									<legend>
-										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
-											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
-									</legend>
-									<div class="row-fluid clearfix">
-										<?php
-										$ml_intern	= $this->form->getInput('ml_intern');
-										if (!empty($ml_intern))
-										{
-											echo $this->form->getInput('ml_intern');
-										}
-										else
-										{ ?>
-											<div class="width-50 fltlft span6">
-												<label class="mailinglist_label noclear checkbox">
-													<?php echo Text::_('COM_BWPOSTMAN_NO_DATA') ?>
-												</label>
-											</div><?php
-										}
-										?>
-									</div>
-								</fieldset>
-							</div>
-						</div>
-					</fieldset>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
+							<input class="btn btn-outline-primary btn-sm mb-2" type="button" onclick="moveUp(document.getElementById('import_fields'));"
+									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
+						</span>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
+							<input class="btn btn-outline-success btn-sm mb-2" type="button" onclick="moveDown(document.getElementById('import_fields'));"
+									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
+						</span>
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
+							<input class="btn btn-danger btn-sm mb-2" type="button" onclick="removeOptions(import_fields);"
+									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
+						</span>
+					</div>
 				</div>
+				<div><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_ANNOTATION'); ?></div>
+			</div>
 
-				<div class="well well-small">
-					<table class="admintable bwptable import">
-						<tr>
-							<td width="250" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT'); ?>
-								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE');?>">
+			<div class="card card-body mb-2">
+				<fieldset class="adminform row">
+					<div class="col-lg-4 mb-2">
+						<fieldset class="adminform">
+							<legend>
+								<span class="hasTooltip"
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
-							</td>
-							<td><?php echo $this->lists['emailformat']; ?></td>
-						</tr>
-					</table>
-					<table class="admintable bwptable import">
-						<tr>
-							<td width="250" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
-								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>">
+								<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
+							</legend>
+							<?php
+							$ml_available	= $this->form->getInput('ml_available');
+							if (!empty($ml_available))
+							{
+								echo $this->form->getInput('ml_available');
+							}
+							else
+							{ ?>
+								<label class="mailinglist_label noclear checkbox">
+									<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+								</label>
+								<?php
+							}
+							?>
+						</fieldset>
+					</div>
+
+					<div class="col-lg-4 mb-2">
+						<fieldset class="adminform">
+							<legend>
+								<span class="hasTooltip"
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
-							</td>
-							<td><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></td>
-						</tr>
-					</table>
-				</div>
+								<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
+							</legend>
+							<?php
+							$ml_unavailable	= $this->form->getInput('ml_unavailable');
+							if (!empty($ml_unavailable))
+							{
+								echo $this->form->getInput('ml_unavailable');
+							}
+							else
+							{ ?>
+								<label class="mailinglist_label noclear checkbox">
+									<?php echo Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+								</label>
+								<?php
+							}
+							?>
+						</fieldset>
+					</div>
 
-			<table class="admintable bwptable import">
-				<tr>
-					<td width="250" align="center" class="key"><input type="button" class="btn btn-success"
-						onclick="if(check())
-						{
-							selectAllOptions(document.adminForm['db_fields[]']);
-							selectAllOptions(document.adminForm['import_fields[]']);
-							Joomla.submitbutton('subscribers.import');
-						}"
-						 value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON1'); ?>" />
-					</td>
-				</tr>
-			</table>
+					<div class="col-lg-4 mb-2">
+						<fieldset class="adminform">
+							<legend>
+								<span class="hasTooltip"
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+									<?php echo $image; ?>
+								</span>
+								<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
+							</legend>
+							<?php
+							$ml_intern	= $this->form->getInput('ml_intern');
+							if (!empty($ml_intern))
+							{
+								echo $this->form->getInput('ml_intern');
+							}
+							else
+							{ ?>
+								<label class="mailinglist_label noclear checkbox">
+									<?php echo Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+								</label>
+								<?php
+							}
+							?>
+						</fieldset>
+					</div>
+				</fieldset>
+			</div>
+
+			<div class="card card-body mb-2">
+				<div class="admintable bwptable import">
+					<div class="row">
+						<div class="key col-8 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT'); ?>
+							<span class="hasTooltip"
+									title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE');?>">
+								<?php echo $image; ?>
+							</span>
+						</div>
+						<div class="col-4 col-md-6"><?php echo $this->lists['emailformat']; ?></div>
+					</div>
+				</div>
+				<div class="admintable bwptable import">
+					<div class="row">
+						<div class="key col-8 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
+							<span class="hasTooltip"
+									title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>">
+								<?php echo $image; ?>
+							</span>
+						</div>
+						<div class="col-4 col-md-6"><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</fieldset>
+
+	<div class="admintable bwptable import mb-3">
+		<div class="row">
+			<div class="key col-12 text-center"><input type="button" class="btn btn-success"
+						onclick="if(check())
+				{
+					selectAllOptions(document.adminForm['db_fields[]']);
+					selectAllOptions(document.adminForm['import_fields[]']);
+					Joomla.submitbutton('subscribers.import');
+				}"
+						value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON1'); ?>" />
+			</div>
+		</div>
+	</div>
 
 
 	<input type="hidden" name="task" value="import" />
@@ -323,3 +300,4 @@ $option	= $jinput->getCmd('option');
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+

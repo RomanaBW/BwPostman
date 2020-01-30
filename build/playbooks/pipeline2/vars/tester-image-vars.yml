@@ -1,7 +1,7 @@
 ---
 # Fast changing variables
 #joomla_version: "4.0.0a12"
-joomla_version: "3.9.14"
+joomla_version: "3.9.15"
 
 bwpm_version: "2.4.0"
 j_alpha_version: "alpha12"

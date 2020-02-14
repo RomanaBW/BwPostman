@@ -270,11 +270,9 @@ $currentTab = 'edit_basic';
 											</span>
 											<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 										</legend>
-										<div>
 											<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
 												<?php echo $field->input; ?>
 											<?php endforeach; ?>
-										</div>
 									</fieldset>
 								</div>
 							</div>
@@ -282,9 +280,7 @@ $currentTab = 'edit_basic';
 						</div>
 					</fieldset>
 				</div>
-			</fieldset>
 
-			<fieldset class="adminform">
 				<div class="row-fluid">
 					<div class="well-small">
 						<fieldset class="adminform">

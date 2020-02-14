@@ -290,7 +290,7 @@ function switchRecipients() {
 	if (selectedCampaignValue !== '-1') {
 		recipients.style.display = "none";
 	} else {
-		recipients.style.display = "flex";
+		recipients.style.display = "block";
 	}
 }
 
@@ -383,7 +383,7 @@ window.onload = function() {
 		if (selectedCampaignValue !== '-1') {
 			recipients.style.display = "none";
 		} else {
-			recipients.style.display = "flex";
+			recipients.style.display = "block";
 		}
 	}
 

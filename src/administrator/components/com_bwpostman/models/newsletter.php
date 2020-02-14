@@ -40,6 +40,7 @@ use Joomla\Registry\Registry as JRegistry;
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contentRenderer.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**
@@ -279,13 +280,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				// get available mailinglists to predefine for state
-				$item->ml_available = $this->getMailinglistsByRestriction($item->mailinglists, 'available');
+				$item->ml_available = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'available');
 
 				// get unavailable mailinglists to predefine for state
-				$item->ml_unavailable = $this->getMailinglistsByRestriction($item->mailinglists, 'unavailable');
+				$item->ml_unavailable = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'unavailable');
 
 				// get internal mailinglists to predefine for state
-				$item->ml_intern = $this->getMailinglistsByRestriction($item->mailinglists, 'internal');
+				$item->ml_intern = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'internal');
 
 				// Preset template ids
 				// Old template for existing newsletters not set during update to 1.1.x, so we have to manage this here also
@@ -2913,68 +2914,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		return $mailinglists;
-	}
-
-	/**
-	 * Method to get mailing lists by restriction
-	 *
-	 * @param array     $mailinglists
-	 * @param string    $condition
-	 *
-	 * @return array
-	 *
-	 * @throws \Exception
-	 *
-	 * @since 2.3.0
-	 */
-	private function getMailinglistsByRestriction($mailinglists, $condition)
-	{
-		$mls   = null;
-		$_db   = $this->_db;
-
-		$query = $_db->getQuery(true);
-		$query->select('id');
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		switch ($condition)
-		{
-			case 'available':
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('access') . ' = ' . (int) 1);
-				break;
-			case 'unavailable':
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('access') . ' > ' . (int) 1);
-				break;
-			case 'internal':
-				$query->where($_db->quoteName('published') . ' = ' . (int) 0);
-				break;
-		}
-
-		$_db->setQuery($query);
-
-		try
-		{
-			$mls = $_db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		$resultingMls = array_intersect($mailinglists, $mls);
-
-		if (count($resultingMls) > 0)
-		{
-			$restrictedMls = $resultingMls;
-		}
-		else
-		{
-			$restrictedMls = array();
-		}
-
-		return $restrictedMls;
 	}
 
 	/**

@@ -30,6 +30,8 @@ defined('_JEXEC') or die('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.model');
 
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
+
 /**
  * BwPostman cover page model
  *
@@ -169,38 +171,19 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 
 		// Get # of all published mailinglists
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('published') . ' = ' . (int) 1);
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+		// get available mailinglists to predefine for state
+		$ml_available = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'available', 0, false);
 
-		$db->setQuery($query);
-		try
-		{
-			$general['ml_published'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		// get unavailable mailinglists to predefine for state
+		$ml_unavailable = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'unavailable', 0, false);
+
+		$general['ml_published'] = count($ml_available) + count($ml_unavailable);
 
 		// Get # of all unpublished mailinglists
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('published') . ' = ' . (int) 0);
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+		// get internal mailinglists to predefine for state
+		$ml_intern = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'internal', 0, false);
 
-		$db->setQuery($query);
-		try
-		{
-			$general['ml_unpublished'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['ml_unpublished'] = count($ml_intern);
 
 		// Get # of all html templates
 		$query->clear();
@@ -307,20 +290,10 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 
 		// Get # of all archived mailinglists
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 1);
+		// get available mailinglists to predefine for state
+		$ml_archived = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'available', 1, false);
 
-		$db->setQuery($query);
-		try
-		{
-			$archive['arc_ml'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$archive['arc_ml'] = count($ml_archived);
 
 		// Get # of all html templates
 		$query->clear();

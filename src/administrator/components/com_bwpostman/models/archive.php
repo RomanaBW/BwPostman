@@ -202,13 +202,7 @@ class BwPostmanModelArchive extends JModelList
 				break;
 
 			case "campaigns":
-					$orderMainCol	= 'a.title';
-				break;
-
 			case "mailinglists":
-					$orderMainCol	= 'a.title';
-				break;
-
 			case "templates":
 					$orderMainCol	= 'a.title';
 				break;

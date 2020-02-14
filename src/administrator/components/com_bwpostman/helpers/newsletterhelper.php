@@ -27,7 +27,7 @@
 defined ('_JEXEC') or die ();
 
 /**
- * Class BwPostmanHTMLHelper
+ * Class BwPostmanNewsletterHelper
  *
  * @since
  */

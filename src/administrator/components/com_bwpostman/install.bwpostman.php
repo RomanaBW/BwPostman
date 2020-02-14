@@ -990,7 +990,7 @@ class Com_BwPostmanInstallerScript
 	}
 
 	/**
-	 * Method to add BwPostmanAdmin to view level special
+	 * Method to add BwPostmanAdmin to root asset
 	 *
 	 * @return boolean  true on success
 	 *

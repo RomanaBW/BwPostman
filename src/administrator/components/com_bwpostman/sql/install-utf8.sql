@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_mailinglists` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `asset_id` INT(10) NOT NULL DEFAULT '0',
   `title` VARCHAR(300) NOT NULL DEFAULT '',
-	`description` VARCHAR(1500) NOT NULL DEFAULT '',
+  `description` VARCHAR(1500) NOT NULL DEFAULT '',
   `campaign_id` INT(11) NOT NULL DEFAULT '0',
   `access` INT(11) NOT NULL DEFAULT '0',
   `published` TINYINT(1) NOT NULL DEFAULT '0',

@@ -30,10 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
 
+use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 jimport('joomla.application.component.helper');
 
 /**
@@ -91,7 +93,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return	Table|boolean   A Table object if found or boolean false on failure.
 	 *
 	 * @since  1.0.1
 	 */
@@ -199,88 +201,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 			}
 
 			// get available mailinglists to predefine for state
-			$query	= $_db->getQuery(true);
-			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-			$query->where($_db->quoteName('access') . ' = ' . (int) 1);
-
-			$_db->setQuery($query);
-
-			$mls_available  = array();
-
-			try
-			{
-				$mls_available	= $_db->loadColumn();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			$res_available	= array_intersect($item->mailinglists, $mls_available);
-
-			if (count($res_available) > 0)
-			{
-				$item->ml_available	= $res_available;
-			}
-			else
-			{
-				$item->ml_available	= array();
-			}
+			$item->ml_available = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'available');
 
 			// get unavailable mailinglists to predefine for state
-			$query	= $_db->getQuery(true);
-			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-			$query->where($_db->quoteName('access') . ' > ' . (int) 1);
-
-			$_db->setQuery($query);
-
-			$mls_unavailable	= $_db->loadColumn();
-			$res_unavailable	= array_intersect($item->mailinglists, $mls_unavailable);
-
-			if (count($res_unavailable) > 0)
-			{
-				$item->ml_unavailable	= $res_unavailable;
-			}
-			else
-			{
-				$item->ml_unavailable	= array();
-			}
+			$item->ml_unavailable = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'unavailable');
 
 			// get internal mailinglists to predefine for state
-			$query	= $_db->getQuery(true);
-			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 0);
-			$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+			$item->ml_intern = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'internal');
 
-			$_db->setQuery($query);
-
-			$mls_intern = array();
-			try
-			{
-				$mls_intern		= $_db->loadColumn();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			$res_intern		= array_intersect($item->mailinglists, $mls_intern);
-
-			if (count($res_intern) > 0)
-			{
-				$item->ml_intern	= $res_intern;
-			}
-			else
-			{
-				$item->ml_intern	= array();
-			}
 		}
 		else
 		{

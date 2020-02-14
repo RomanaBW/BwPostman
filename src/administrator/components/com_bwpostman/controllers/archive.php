@@ -66,6 +66,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 *
 	 * @return  BwPostmanControllerArchive		This object to support chaining.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function display($cachable = false, $urlparams = array())
@@ -84,10 +86,12 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	/**
 	 * Method to check if you can restore records
 	 *
-	 * @param   string      $view           The view to test.
-	 * @param	array 	    $recordIds		the item to check permission for
+	 * @param   string      $view           The view to check if restore is allowed
+	 * @param	array 	    $recordIds		The item to check if restore is allowed
 	 *
 	 * @return	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since	2.0.0
 	 */
@@ -109,10 +113,12 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	/**
 	 * Method to check if you can delete records
 	 *
-	 * @param   string      $view           The view to test.
-	 * @param	array 	    $recordIds		the item to check permission for
+	 * @param   string      $view           The view to check if delete is allowed
+	 * @param	array 	    $recordIds		The item to check if delete is allowed
 	 *
 	 * @return	boolean
+	 *
+	 * @throws Exception
 	 *
 	 * @since	2.0.0
 	 */
@@ -134,8 +140,6 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	/**
 	 * Method to unarchive items
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
-	 *
-	 * @access	public
 	 *
 	 * @return boolean|JControllerLegacy
 	 *
@@ -376,8 +380,6 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	/**
 	 * Method to remove an item from the database
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
-	 *
-	 * @access	public
 	 *
 	 * @return boolean|JControllerLegacy
 	 *

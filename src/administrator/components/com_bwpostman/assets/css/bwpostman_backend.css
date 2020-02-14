@@ -882,6 +882,11 @@ fieldset.usergroups label.checkbox input {
 	margin-top:			0;
 }
 
+fieldset#recipients .width-33
+{
+	margin-left: 1.5%;
+}
+
 div#batch-task.control-group.radio div.controls label,
 div #batch-task div.controls label {
 	display:			block;

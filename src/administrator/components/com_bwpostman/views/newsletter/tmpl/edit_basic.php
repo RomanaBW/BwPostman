@@ -270,9 +270,11 @@ $currentTab = 'edit_basic';
 											</span>
 											<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 										</legend>
-										<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
-											<?php echo $field->input; ?>
-										<?php endforeach; ?>
+										<div>
+											<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
+												<?php echo $field->input; ?>
+											<?php endforeach; ?>
+										</div>
 									</fieldset>
 								</div>
 							</div>
@@ -280,7 +282,9 @@ $currentTab = 'edit_basic';
 						</div>
 					</fieldset>
 				</div>
+			</fieldset>
 
+			<fieldset class="adminform">
 				<div class="row-fluid">
 					<div class="well-small">
 						<fieldset class="adminform">
@@ -303,7 +307,6 @@ $currentTab = 'edit_basic';
 										<?php endforeach; ?>
 									</ul>
 								</div>
-
 								<div class="width-20 fltlft span3">
 									<input style="width: 50px;" type="button" name="left" class="btn-left" value="&lt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_available_content'],
@@ -330,10 +333,6 @@ $currentTab = 'edit_basic';
 						</fieldset>
 					</div>
 				</div>
-			</fieldset>
-			<fieldset class="adminform">
-				<?php
-				?>
 			</fieldset>
 			<fieldset class="adminform">
 				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?></legend>

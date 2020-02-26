@@ -966,3 +966,14 @@ td.bwptable label.radiobtn {
 .tooltip-inner {
 	max-width: 400px !important;
 }
+
+joomla-tab[view="accordion"] joomla-tab[view="accordion"] a[role="tab"] {
+	background-color:var(--atum-bg-dark-40);
+	color: var(--atum-text-light) !important;
+}
+joomla-tab[view="accordion"] joomla-tab[view="accordion"] a[role="tab"]:hover, joomla-tab[view="accordion"] joomla-tab[view="accordion"] a[role="tab"][active] {
+	background-color:var(--atum-bg-dark-50);
+}
+.readonly {
+	background-color:#e8e8e8 !important;
+}

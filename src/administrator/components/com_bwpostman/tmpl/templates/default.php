@@ -39,15 +39,15 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
-//Factory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
+HTMLHelper::_('behavior.multiselect');
 ?>
 
 <div id="bwp_view_lists">
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<div class="row">
-			<div class="col-md-12">
-				<div id="j-main-container" class="j-main-container">
+			<div class="col-12">
+				<div id="j-main-container" class="j-main-container table-responsive">
 					<?php
 					// Search tools bar
 					echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
@@ -63,25 +63,25 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								<input type="checkbox" name="checkall-toggle" value=""
 										title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 							</th>
-							<th class="d-none d-md-table-cell" style="min-width: 250px;" scope="col">
+							<th style="min-width: 250px;" scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 							</th>
-							<th class="d-none d-md-table-cell" style="min-width: 10%;" scope="col">
+							<th class="d-none d-lg-table-cell" style="min-width: 10%;" scope="col">
 								<?php echo Text::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?>
 							</th>
-							<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+							<th style="width: 7%;" scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?>
 								</th>
-							<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+							<th style="width: 7%;" scope="col">
 								<?php echo Text::_('COM_BWPOSTMAN_TPL_SET_DEFAULT'); ?>
 							</th>
-							<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
+							<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
 							</th>
-							<th class="d-none d-md-table-cell" style="min-width: 250px;" scope="col" aria-sort="ascending">
+							<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col" aria-sort="ascending">
 								<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 							</th>
-							<th class="d-none d-md-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
+							<th style="width: 3%;" scope="col" aria-sort="ascending">
 								<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>
@@ -93,7 +93,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							foreach ($this->items as $i => $item) :
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+									<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 									<td>
 									<?php
 									if ($item->checked_out)
@@ -119,7 +119,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										echo $this->escape($item->title);
 									} ?>
 									</td>
-									<td class="center" align="center" >
+									<td class="d-none d-lg-table-cell text-center">
 										<?php
 										if ($item->thumbnail)
 											{
@@ -137,7 +137,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											}
 										} ?>
 									</td>
-									<td class="center" align="center">
+									<td class="text-center">
 										<?php
 										if (($item->tpl_id == 998) || ($item->tpl_id > 999))
 										{
@@ -148,7 +148,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											echo 'HTML';
 										}?>
 									</td>
-									<td class="center" align="center">
+									<td class="text-center">
 										<?php echo HTMLHelper::_(
 											'jgrid.isdefault',
 											($item->standard != '0' && !empty($item->standard)),
@@ -157,7 +157,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											BwPostmanHelper::canEditState('template', (int) $item->id) && $item->standard != '1'
 										);?>
 									</td>
-									<td class="center" align="center">
+									<td class="d-none d-lg-table-cell text-center">
 										<?php echo HTMLHelper::_(
 											'jgrid.published',
 											$item->published,
@@ -166,10 +166,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											BwPostmanHelper::canEditState('template', (int) $item->id),
 											'cb'
 										); ?>
-									<td>
+									<td class="d-none d-lg-table-cell text-center">
 									<?php echo nl2br($item->description); ?>
 								</td>
-									<td align="center"><?php echo $item->id; ?></td>
+									<td><?php echo $item->id; ?></td>
 								</tr><?php
 							endforeach;
 						}

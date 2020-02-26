@@ -33,18 +33,11 @@ $fieldSets = $this->form->getFieldsets('article');
 
 foreach ($fieldSets as $name => $fieldSet) :
 ?>
-	<fieldset class="panelform">
+	<fieldset class="panelform options-grid-form options-grid-form-full">
 		<legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
-		<div class="well well-small">
+		<div>
 			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $field->label; ?>
-					</div>
-					<div class="controls">
-						<?php echo $field->input; ?>
-					</div>
-				</div>
+				<?php echo $field->renderField(); ?>
 			<?php endforeach; ?>
 		</div>
 	</fieldset>

@@ -31,7 +31,7 @@ jQuery(function ($) {
 			$(this).addClass("insertatcaretactive");
 		});
 	};
-	$("#jform_intro_intro_text,#jform_intro_intro_headline").EnableInsertAtCaret();
+	$("#jform_intro_intro_text,#jform_intro_intro_headline,#jform_tpl_html").EnableInsertAtCaret();
 });
 
 function InsertAtCaret(myValue) {

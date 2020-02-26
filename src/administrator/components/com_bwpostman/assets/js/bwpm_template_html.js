@@ -28,26 +28,18 @@ function buttonClick(text, editor) {
 	jInsertEditorText(text, editor);
 }
 
-// check form field values
-function checkValues(turn) {
-	var inputs = '';
-	var elements = document.adminForm.elements;
-	var fieldValue = '';
-	for (var i = 0; i < elements.length; i++) {
-		if (elements[i].getAttribute('id') === 'jform_tpl_css') {
-			fieldValue = elements[i].value.length;
-		} else if (elements[i].getAttribute('id') === 'jform_tpl_html') {
-		} else {
-			fieldValue = elements[i].value;
-		}
-		if (elements[i].getAttribute('checked') !== false) {
-			var fieldChecked = elements[i].getAttribute('checked');
-		}
-		inputs += fieldValue + fieldChecked;
+//insert placeholder Joomla 4
+function buttonClick4(text, editor) {
+	// jInsertEditorText(text, editor);
+	if (jQuery('#'+editor+':visible').length === 0){
+		var content = window.Joomla.editors.instances[editor].getValue();
+		// Romana - geht sonst bei leerem Editorfeld nicht
+		Joomla.editors.instances[editor].replaceSelection(text);
 	}
-	if (turn === 0) {
-		writeStore("inputs", inputs);
-	} else {
-		return inputs;
+	else
+	{
+		// if editor is disabled
+		InsertAtCaret(text);
 	}
+	return true;
 }

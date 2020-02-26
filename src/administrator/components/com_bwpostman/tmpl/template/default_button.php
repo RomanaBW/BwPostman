@@ -33,25 +33,18 @@ use Joomla\CMS\Language\Text;
 $i = 1;
 
 echo '  <div class="clr clearfix"></div>';
-echo HTMLHelper::_('uitab.startTabSet', 'buttons', array('startOffset' => 0));
+echo HTMLHelper::_('uitab.startTabSet', 'buttons', ['active' => 'bpanel1']);
 
 while ($i <= 5) :
 	$fieldSets = $this->form->getFieldsets('button' . $i);
 	foreach ($fieldSets as $name => $fieldSet) :
 		echo HTMLHelper::_('uitab.addTab', 'buttons', 'bpanel' . $i, Text::_($fieldSet->label) . ' ' . $i);
 		?>
-		<fieldset class="panelform">
+		<fieldset class="panelform options-grid-form options-grid-form-full">
 			<legend><?php echo $this->escape(Text::_($fieldSet->label)) . ' ' . $i; ?></legend>
-			<div class="well well-small">
+			<div>
 				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-							<?php echo $field->input; ?>
-						</div>
-					</div>
+					<?php echo $field->renderField(); ?>
 				<?php endforeach; ?>
 			</div>
 		</fieldset>

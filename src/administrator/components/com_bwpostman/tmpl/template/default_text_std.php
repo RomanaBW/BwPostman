@@ -34,27 +34,10 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-// Load the tooltip behavior for the notes
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.keepalive');
-
-$image = '<i class="icon-info"></i>';
-
-$options = array(
-		'onActive' => 'function(title, description){
-		description.setStyle("display", "block");
-		title.addClass("open").removeClass("closed");
-	}',
-		'onBackground' => 'function(title, description){
-		description.setStyle("display", "none");
-		title.addClass("closed").removeClass("open");
-	}',
-	'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-	'useCookie' => true, // this must not be a string. Don't use quotes.
-);
 ?>
 
-<div id="bwp_view_lists" class="well well-small">
+<div id="bwp_view_lists">
 	<?php
 	if ($this->queueEntries) {
 		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
@@ -63,40 +46,29 @@ $options = array(
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<fieldset class="adminform">
-			<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_TEXT_TEMPLATE'); ?></legend>
+			<legend>
+				<?php
+				$title = Text::_('COM_BWPOSTMAN_NEW_TPL_TEXT');
+				if ($this->item->id)
+				{
+					$title = Text::sprintf('COM_BWPOSTMAN_EDIT_TPL_TEXT', $this->item->id);
+				}
+
+				echo $title;
+				?>
+			</legend>
 			<div class="row">
-				<div class="col-md-5">
+				<div class="col-xl-6">
 					<?php
-					echo HTMLHelper::_('uitab.startTabSet', 'template_tabs', $options);
+					echo HTMLHelper::_('uitab.startTabSet', 'template_tabs', ['active' => 'panel1']);
 					echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel1', Text::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'));
 					?>
-					<fieldset class="panelform">
+					<fieldset class="panelform options-grid-form options-grid-form-full">
 						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('title'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('title'); ?>
-							</div>
-						</div>
-
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('description'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('description'); ?>
-							</div>
-						</div>
-
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('thumbnail'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('thumbnail'); ?>
-							</div>
+						<div>
+							<?php echo $this->form->renderField('title'); ?>
+							<?php echo $this->form->renderField('description'); ?>
+							<?php echo $this->form->renderField('thumbnail'); ?>
 						</div>
 						<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 					</fieldset>
@@ -105,23 +77,18 @@ $options = array(
 
 					echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel2', Text::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'));
 					?>
-					<fieldset class="panelform">
+					<fieldset class="panelform options-grid-form options-grid-form-full">
 						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'); ?></legend>
-						<?php
-						foreach ($this->form->getFieldset('jheader') as $field) :
-							$show = array("jform[header][firstline]", "jform[header][secondline]");
-							if (in_array($field->name, $show)) : ?>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $field->label; ?>
-									</div>
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								</div>
-								<?php
-							endif;
-						endforeach; ?>
+						<div>
+							<?php
+							foreach ($this->form->getFieldset('jheader') as $field) :
+								$show = array("jform[header][firstline]", "jform[header][secondline]");
+								if (in_array($field->name, $show)) : ?>
+									<?php echo $field->renderField(); ?>
+									<?php
+								endif;
+							endforeach; ?>
+						</div>
 					</fieldset>
 					<?php
 					echo HTMLHelper::_('uitab.endTab');
@@ -132,74 +99,61 @@ $options = array(
 
 					echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel4', Text::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'));
 					?>
-					<fieldset class="panelform">
+					<fieldset class="panelform options-grid-form options-grid-form-full">
 						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
-							<?php
-							foreach ($this->form->getFieldset('jarticle') as $field) :
-								$show = array(
-									"jform[article][divider]",
-									"jform[article][show_title]",
-									"jform[article][show_author]",
-									"jform[article][show_createdate]",
-									"jform[article][show_readon]"
-								);
-								if (in_array($field->name, $show)) : ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $field->label; ?>
-										</div>
-										<div class="controls">
-											<?php echo $field->input; ?>
-										</div>
-									</div>
-									<?php
-								endif;
-							endforeach; ?>
+							<div>
+								<?php
+								foreach ($this->form->getFieldset('jarticle') as $field) :
+									$show = array(
+										"jform[article][divider]",
+										"jform[article][show_title]",
+										"jform[article][show_author]",
+										"jform[article][show_createdate]",
+										"jform[article][show_readon]"
+									);
+									if (in_array($field->name, $show)) : ?>
+										<?php echo $field->renderField(); ?>
+										<?php
+									endif;
+								endforeach; ?>
+							</div>
 					</fieldset>
 					<?php
 					echo HTMLHelper::_('uitab.endTab');
 
 					echo HTMLHelper::_('uitab.addTab', 'template_tabs', 'panel5', Text::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'));
 					?>
-					<fieldset class="panelform">
+					<fieldset class="panelform options-grid-form options-grid-form-full">
 						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'); ?></legend>
-						<?php
-						foreach ($this->form->getFieldset('jfooter') as $field) :
-							$show = array(
-									"jform[footer][show_impressum]",
-								"jform[footer][spacer3]",
-								"jform[footer][show_address]",
-								"jform[footer][address_text]",
-								"jform[footer][button_headline]"
-							);
-							if (in_array($field->name, $show)) : ?>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $field->label; ?>
-									</div>
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								</div>
-								<?php
-							endif;
-						endforeach;
+						<div>
+							<?php
+							foreach ($this->form->getFieldset('jfooter') as $field) :
+								$show = array(
+										"jform[footer][show_impressum]",
+									"jform[footer][show_address]",
+									"jform[footer][address_text]",
+									"jform[footer][button_headline]"
+								);
+								if (in_array($field->name, $show)) : ?>
+									<?php echo $field->renderField(); ?>
+									<?php
+								endif;
+							endforeach; ?>
+						</div>
+					</fieldset>
+					<?php
 						// begin footer buttons
 						$i = 1;
-
-						echo '  <div class="clr clearfix"></div>';
-
-						echo HTMLHelper::_('uitab.startTabSet', 'buttons',  array('startOffset' => 0));
+						echo HTMLHelper::_('uitab.startTabSet', 'buttons',  ['active' => 'bpanel1']);
 
 						while ($i <= 5) :
 							$fieldSets = $this->form->getFieldsets('button' . $i);
 							foreach ($fieldSets as $name => $fieldSet) :
 								echo HTMLHelper::_('uitab.addTab', 'buttons', 'bpanel' . $i, Text::_($fieldSet->label) . ' ' . $i);
 								?>
-									<fieldset class="panelform">
+									<fieldset class="panelform options-grid-form options-grid-form-full">
 										<legend><?php echo $this->escape(Text::_($fieldSet->label)) . ' ' . $i; ?></legend>
-										<div class="row">
-											<div class="col-md-12">
+										<div>
 											<?php
 											foreach ($this->form->getFieldset($name) as $field) :
 												$show = array(
@@ -208,18 +162,10 @@ $options = array(
 													"jform[button$i][button_href]"
 												);
 												if (in_array($field->name, $show)) : ?>
-													<div class="control-group">
-														<div class="control-label">
-															<?php echo $field->label; ?>
-														</div>
-														<div class="controls">
-															<?php echo $field->input; ?>
-														</div>
-													</div>
+													<?php echo $field->renderField(); ?>
 													<?php
 												endif;
 											endforeach; ?>
-											</div>
 										</div>
 									</fieldset>
 									<?php
@@ -230,19 +176,19 @@ $options = array(
 						endwhile;
 						echo HTMLHelper::_('uitab.endTabSet');
 						?>
-					</fieldset>
 					<?php
 					echo HTMLHelper::_('uitab.endTab');
 					echo HTMLHelper::_('uitab.endTabSet');
 					?>
-					<div class="well-note well-small"><?php echo Text::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
+					<div class="clr clearfix"></div>
+					<div class="alert alert-danger"><?php echo Text::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
-				<div id="email_preview" class="col-md-7">
+				<div id="email_preview" class="col-xl-6">
 					<p>
 						<button class="btn btn-large btn-block btn-primary"
 								type="submit"><?php echo Text::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;
 					</p>
-					<iframe id="myIframe" name="myIframeHtml"
+					<iframe id="myIframe" class="bg-white" name="myIframeHtml"
 							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
 							width="100%" style="border: 1px solid #c2c2c2; min-height:200px;">
 					</iframe>
@@ -268,6 +214,5 @@ $options = array(
 </div>
 
 <?php
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_checkValues.js');
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_buttonClick.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template.js');
 Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

@@ -35,7 +35,7 @@ use Joomla\CMS\Session\Session;
 Factory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_import.js');
 ?>
 <div id="checkResult" class="row">
-	<div class="col-md-6 inner well">
+	<div class="col-lg-6 inner well">
 		<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL'); ?></h2>
 		<p id="step1" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_1'); ?></p>
 		<p id="step2" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_2'); ?></p>
@@ -43,7 +43,7 @@ Factory::getDocument()->addScript(JUri::root(true) . '/administrator/components/
 		<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
 		<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
 	</div>
-	<div class="col-md-6 well well-small resultSet">
+	<div class="col-lg-6 well well-small resultSet">
 		<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
 		<div id="result"></div>
 	</div>

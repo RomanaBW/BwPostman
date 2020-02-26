@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 // Load the tooltip behavior for the notes
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.keepalive');
@@ -56,7 +58,17 @@ $options = array(
 	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_TEXT_TEMPLATE'); ?></legend>
+			<legend>
+				<?php
+				$title = Text::_('COM_BWPOSTMAN_NEW_TPL_TEXT');
+				if ($this->item->id)
+				{
+					$title = Text::sprintf('COM_BWPOSTMAN_EDIT_TPL_TEXT', $this->item->id);
+				}
+
+				echo $title;
+				?>
+			</legend>
 			<div class="well well-small">
 				<div class="fltlft width-40 span5 control-group">
 					<?php

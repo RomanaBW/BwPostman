@@ -34,20 +34,12 @@ use Joomla\CMS\Uri\Uri;
 $fieldSets = $this->form->getFieldsets('intro');
 foreach ($fieldSets as $name => $fieldSet) :
 	?>
-	<fieldset class="panelform">
+	<fieldset class="panelform options-grid-form options-grid-form-full">
 		<legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
-		<div class="row">
-			<div class="col-md-12">
-				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-							<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php endforeach; ?>
+		<div>
+			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+				<?php echo $field->renderField(); ?>
+			<?php endforeach; ?>
 			<div class="clr clearfix"></div>
 			<div><?php echo Text::_('COM_BWPOSTMAN_TPL_INTRO_TEXT_DESC'); ?></div>
 			<?php
@@ -64,8 +56,10 @@ foreach ($fieldSets as $name => $fieldSet) :
 
 			foreach ($linktexts as $key => $linktext)
 			{
-				echo "                    <a class=\"btn btn-small pull-left\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</a>";
-				echo '                     <p>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
+				echo "                    <div class=\"clearfix mb-2\">";
+				echo "                    	<span class=\"btn btn-info btn-sm\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</span>";
+				echo '                    	<span>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</span>';
+				echo '                    </div>';
 			}
 
 			if(PluginHelper::isEnabled('bwpostman', 'personalize'))

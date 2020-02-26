@@ -39,40 +39,40 @@ HTMLHelper::_('bootstrap.tooltip');
 
 <?php
 $jinput	= Factory::getApplication()->input;
-$image	= '<i class="icon-info"></i>';
+$image	= '<i class="fa fa-info-circle fa-lg"></i>';
 $option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">
 		<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_SELECT_UPLOAD_FILE'); ?></legend>
-		<div class="well well-small"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_USER_MESSAGE')?></div>
+		<div class="card card-body mb-3"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_USER_MESSAGE')?></div>
 		<?php
 		if (BwPostmanHelper::canAdd('template'))
 		{
 			?>
-			<div class="well well-small">
-				<div class="row-fluid">
-					<table class="admintable bwptable uploadtpl">
-						<tr>
-							<td align="right" class="key">
-								<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?></span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>">
+			<div class="card card-body">
+				<div class="row">
+					<div class="admintable bwptable uploadtpl col-12">
+						<div class="form-group row">
+							<label class="key col-md-6 text-md-right">
+								<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?>
+								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
-							</td>
-							<td>
-								<input type="file" name="uploadfile" id="uploadfile" />
-							</td>
-						</tr>
-						<tr>
-							<td width="250" align="center" class="key">
+							</label>
+							<div class="col-md-6">
+								<input type="file" class="form-control-file" name="uploadfile" id="uploadfile" />
+							</div>
+						</div>
+						<div class="button form-group row mt-3">
+							<div class="key col-12 text-center">
 								<input type="button" class="btn btn-success" name="submitbutton"
 									onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';"
 									value="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
-							</td>
-						</tr>
-					</table>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<?php

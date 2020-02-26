@@ -29,35 +29,14 @@ window.onload = function() {
 	Joomla.submitbutton = function (pressbutton) {
 		var form = document.adminForm;
 
-		if (pressbutton === 'template.save') {
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
-		}
-
-		if (pressbutton === 'template.apply') {
-			writeStore("inputs", 0);
-		}
-
-		if (pressbutton === 'template.save2copy') {
-			writeStore("inputs", 0);
-		}
-
 		if (pressbutton === 'template.cancel') {
-			// check if form field values has changed
-			var inputs_old = readStore("inputs");
-			var inputs = checkValues(1);
-			if (inputs_old === inputs) {
-			} else {
+			if (jQuery("#adminForm").data("changed")) {
 				// confirm if cancel or not
 				var confirmCancel = confirm(document.getElementById('cancelText').value);
 				if (confirmCancel === false) {
 					return;
 				}
 			}
-			writeStore("inputs", 0);
-			writeStore("jpanetabs_template_tabs", 0);
-			writeStore("jpanetabs_buttons", 0);
 			Joomla.submitform(pressbutton, form);
 			return;
 		}
@@ -72,44 +51,20 @@ window.onload = function() {
 		}
 	};
 
-	// write to storage
-	function writeStore(item, value) {
-		var test = 'test';
-		try {
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
-			localStorage[item] = value;
-		} catch (e) {
-			Cookie.write(item, value);
-		}
-	}
-
-	// read storage
-	function readStore(item) {
-		var test = 'test';
-		var itemValue = '';
-		try {
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
-			itemValue = localStorage[item];
-		} catch (e) {
-			itemValue = Cookie.read(item);
-		}
-		return itemValue;
-	}
 	var framefenster = document.getElementById("myIframe");
 
 	if (framefenster.contentWindow.document.body) {
-		var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
+		var framefenster_size = framefenster.contentWindow.document.body.offsetHeight+20;
 		if (document.all && !window.opera) {
-			framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
+			framefenster_size = framefenster.contentWindow.document.body.scrollHeight+20;
 		}
 		framefenster.style.height = framefenster_size + 'px';
 	}
-	// check if store is empty or 0
-	var store = readStore("inputs");
-	if (store === 0 || store === undefined || store === null) {
-		checkValues(0);
-	}
-
 };
+
+jQuery( document ).ready(function() {
+	jQuery("#adminForm :input").change(function() {
+		jQuery("#adminForm").data("changed",true);
+	});
+});
+

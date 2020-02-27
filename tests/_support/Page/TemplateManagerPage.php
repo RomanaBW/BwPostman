@@ -344,14 +344,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importField      = "//*/table[contains(@class, 'uploadtpl')]/tbody/tr[1]/td[2]/input";
+	public static $importField      = "//*/div[contains(@class, 'uploadtpl')]/div[1]/div/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $startImport_button      = "//*/table[contains(@class, 'uploadtpl')]/tbody/tr[2]/td/input";
+	public static $startImport_button      = "//*/div[contains(@class, 'uploadtpl')]/div[2]/div/input";
 
 	/**
 	 * @var string

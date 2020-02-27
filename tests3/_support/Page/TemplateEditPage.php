@@ -528,6 +528,7 @@ class TemplateEditPage
 	 */
 	public static function fillRequired(\AcceptanceTester $I, $type)
 	{
+		$I->clickAndWait(self::$tpl_tab1, 1);
 		$I->fillField(self::$title, self::$field_title);
 		$I->fillField(self::$description, sprintf(self::$field_description, $type));
 	}

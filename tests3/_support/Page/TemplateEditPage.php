@@ -524,10 +524,13 @@ class TemplateEditPage
 	 * @param \AcceptanceTester  $I
 	 * @param string            $type
 	 *
+	 * @throws \Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public static function fillRequired(\AcceptanceTester $I, $type)
 	{
+		$I->waitForElementVisible(self::$tpl_tab1, 5);
 		$I->clickAndWait(self::$tpl_tab1, 1);
 		$I->fillField(self::$title, self::$field_title);
 		$I->fillField(self::$description, sprintf(self::$field_description, $type));

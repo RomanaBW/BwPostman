@@ -6,9 +6,20 @@
     - vars/tester-test-vars.yml
 
   tasks:
+    - name: ensure log folder for webserver exists
+      become: true
+      become_user: root
+      file:
+        path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/{{ test_suite }}/logs"
+        state: directory
+        mode: 0777
+        owner: romana
+        group: users
+
     - name: Make the base image available locally
       docker_image:
         name: '{{ base_source.web_image_tag_source }}'
+        source: pull
 
     - name: Create the container
       docker_container:

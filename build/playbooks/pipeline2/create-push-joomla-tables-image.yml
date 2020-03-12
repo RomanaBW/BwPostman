@@ -19,6 +19,7 @@
 
 - hosts: "{{ bare_source.db_container_name }}"
   connection: docker
+  gather_facts: no
 
   vars_files:
     - vars/tester-test-vars.yml

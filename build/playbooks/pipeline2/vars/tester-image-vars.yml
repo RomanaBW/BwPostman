@@ -1,7 +1,7 @@
 ---
 # Fast changing variables
 #joomla_version: "4.0.0a12"
-joomla_version: "3.9.15"
+joomla_version: "3.9.16"
 
 bwpm_version: "2.4.0"
 j_alpha_version: "alpha12"
@@ -65,8 +65,8 @@ phantom_version: "2.1.1"
 # Settings for creating base LAMP containers
 official_mariadb: bitnami/mariadb:10.2-debian-9
 official_mariadb_short: mariadb:10.2-debian-9
-official_apache: php:7.3.4-apache-stretch
-official_apache_short: php:7.3.4-apache-stretch
+official_apache: php:apache
+official_apache_short: php-apache
 official_tester: romana/os-chromium-tester:latest
 official_tester_short: os-phantomjs-tester:latest
 
@@ -80,7 +80,7 @@ base_source:
 
 base_target:
   db_image_tag_target: "romana/{{ official_mariadb_short }}"
-  web_image_tag_target: "romana/{{ official_apache_short }}"
+  web_image_tag_target: "romana/{{ official_apache_short }}:{{ joomla_version }}"
   tester_image_tag_target: "romana/{{ official_tester_short }}"
 
 

@@ -7,7 +7,7 @@ pipeline {
 				script {
 					BWPM_VERSION = "2.4.0"
 
-					JOOMLA_VERSION_3 = "3.9.14"
+					JOOMLA_VERSION_3 = "3.9.16"
 					JOOMLA_VERSION_4 = "4.0.0a12"
 
 					GIT_MESSAGE = "not specified"
@@ -37,17 +37,17 @@ pipeline {
 			}
         }
 
-//		stage('Create tester package') {
-//			steps {
-//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
-//			}
-//		}
-//
-//		stage('Create full package') {
-//			steps {
-//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
-//			}
-//		}
+		stage('Create tester package') {
+			steps {
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
+			}
+		}
+
+		stage('Create full package') {
+			steps {
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
+			}
+		}
 
 		stage('Run smoke tests') {
 			parallel {
@@ -60,8 +60,8 @@ pipeline {
 					}
 					post {
 						always {
-							echo "Dummy Smoke ALWAYS"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
+//							echo "Dummy Smoke ALWAYS"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_4}")
@@ -78,8 +78,8 @@ pipeline {
 					}
 					post {
 						always {
-							echo "Dummy Smoke ALWAYS"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_3}'"
+//							echo "Dummy Smoke ALWAYS"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_3}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_3}")

@@ -38,7 +38,7 @@
 #  shell: "docker-php-ext-install -j$(nproc) openssl"
 
 - name: configure php gd
-  shell: "docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/"
+  shell: "docker-php-ext-configure gd --with-freetype --with-jpeg"
 
 - name: install php gd
   shell: "docker-php-ext-install -j$(nproc) gd"

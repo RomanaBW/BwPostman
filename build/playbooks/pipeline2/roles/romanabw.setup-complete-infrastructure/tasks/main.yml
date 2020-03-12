@@ -1,4 +1,8 @@
 ---
+- name: Show Joomla version
+  debug:
+    msg: "Joomla version {{ joomla_version }}"
+
 - name: Create network
   docker_network:
     name: "{{ source.tester_network_name }}"

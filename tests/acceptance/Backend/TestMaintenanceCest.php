@@ -131,7 +131,7 @@ class TestMaintenanceCest
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
 		$downloadPath = $path . $filename;
 
-		$I->clickAndWait(MaintenancePage::$saveTablesButton, 30);
+		$I->clickAndWait(MaintenancePage::$saveTablesButton, 120);
 
 		$I->assertTrue(file_exists($downloadPath));
 

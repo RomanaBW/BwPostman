@@ -3,6 +3,10 @@
   debug:
     msg: "Joomla version {{ joomla_version }}"
 
+- name: Show tester web root
+  debug:
+    msg: "tester web root {{ tester_web_root }}"
+
 - name: Create network
   docker_network:
     name: "{{ source.tester_network_name }}"

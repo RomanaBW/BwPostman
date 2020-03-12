@@ -13,6 +13,10 @@
 - name: Push webserver container image to private registry
   shell: "docker push {{ private_docker_repo }}/{{ target.web_image_tag_target }}"
 
+- name: show database image name
+  debug:
+    msg: "{{ private_docker_repo }}/{{ target.db_image_tag_target }}"
+
 - name: Commit the database container
   command: 'docker commit -a "{{ author }}" {{ source.db_container_name }} {{ private_docker_repo }}/{{ target.db_image_tag_target }}'
 

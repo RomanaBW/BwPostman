@@ -69,6 +69,10 @@
     - "vars/codecept_paths_J{{ j_master_version }}.yml"
 
   tasks:
+    - name: Show Joomla version
+      debug:
+        msg: "Joomla version {{ joomla_version }}"
+
     - name: Set db host name
       set_fact:
         db_host: "{{ smoke_source.db_container_name }}"
@@ -90,6 +94,10 @@
     - "vars/codecept_paths_J{{ j_master_version }}.yml"
 
   tasks:
+    - name: Show Joomla version
+      debug:
+        msg: "Joomla version {{ joomla_version }}"
+
     - name: Set ip of webserver
       set_fact:
         web_container_ip: "{{ hostvars['localhost']['web_container_ip'] }}"

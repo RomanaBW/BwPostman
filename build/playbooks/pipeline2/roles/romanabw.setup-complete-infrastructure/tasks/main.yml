@@ -23,6 +23,7 @@
 - name: Create the webserver container
   docker_container:
     image: '{{ target.web_image }}'
+    ignore_image: true
     name: '{{ source.web_container_name }}'
     hostname: '{{ source.web_container_name }}'
     working_dir: "{{ tester_web_root }}"

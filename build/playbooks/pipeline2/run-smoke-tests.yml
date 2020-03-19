@@ -94,6 +94,10 @@
     - "vars/codecept_paths_J{{ j_master_version }}.yml"
 
   tasks:
+    - name: Show Joomla master version
+      debug:
+        msg: "{{ j_master_version }}"
+
     - name: Show Joomla version
       debug:
         msg: "Joomla version {{ joomla_version }}"

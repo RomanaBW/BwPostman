@@ -70,7 +70,7 @@ class Login
 	 *
 	 * @since       2.0.0
 	 */
-	public static $loginArea     = ".//*/button[contains(., 'Log in')]";
+	public static $loginArea     = "//*/button[contains(., 'Log in')]";
 
 	/**
 	 * @var object  $tester AcceptanceTester

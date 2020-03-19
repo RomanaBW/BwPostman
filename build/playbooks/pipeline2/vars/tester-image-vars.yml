@@ -28,10 +28,6 @@ j_package_name:
   j4b: "Joomla_4.0.0-{{ j_beta_dev_version }}-Development-Full_Package.zip"
 
 j_main_version: "{{ joomla_version[0] }}"
-#archive_source_j3: "https://downloads.joomla.org/cms/joomla{{ j_main_version }}/{{ j_version_hyphen }}/Joomla_{{ j_version_hyphen }}-Stable-Full_Package.tar.bz2"
-
-#archive_source_j4: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_alpha_version }}/Joomla_4.0.0-{{ j_alpha_version }}-Alpha-Full_Package.tar.bz2"
-#archive_source_j4: "https://developer.joomla.org/nightlies/Joomla_4.0.0-{{ j_beta_dev_version }}-Development-Full_Package.zip"
 
 joomla_packages:
   - src: "https://downloads.joomla.org/cms/Joomla3/{{ j_version_hyphen }}/{{ j_package_name.j3 }}"

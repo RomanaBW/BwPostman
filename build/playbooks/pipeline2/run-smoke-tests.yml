@@ -4,7 +4,7 @@
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - "vars/codecept_paths_J{{ joomla_version[0] }}.yml"
 
   tasks:
     - name: Show Joomla version
@@ -66,7 +66,7 @@
     - ../vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - "vars/codecept_paths_J{{ joomla_version[0] }}.yml"
 
   tasks:
     - name: Show Joomla version
@@ -91,7 +91,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - "vars/codecept_paths_J{{ joomla_version[0] }}.yml"
 
   tasks:
     - name: Show Joomla master version

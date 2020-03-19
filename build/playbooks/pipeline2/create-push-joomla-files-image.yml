@@ -1,12 +1,27 @@
 ---
-- hosts: localhost
-  connection: local
+- hosts: tester
+  gather_facts: no
   vars_files:
-    - ../vars/container-basics.yml
+    - vars/container-basics.yml
     - vars/tester-test-vars.yml
     - vars/tester-image-vars.yml
 
   tasks:
+    - name: Show name of bare source web container
+      debug:
+        msg: "{{ bare_source.web_container_name }}"
+
+    - name: Show name of web target image container
+      debug:
+        msg: "{{ bare_target.web_image_tag_target }}"
+
+    - name: Get Joomla installation package
+      get_url:
+        url: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        force: yes
+      with_items: "{{ joomla_packages }}"
+
     - name: Make the base image available locally
       docker_image:
         name: '{{ private_docker_repo }}/{{ bare_source.web_image_tag_source }}'
@@ -42,10 +57,10 @@
         owner: "{{ tester_www_group }}"
 
 
-- hosts: localhost
+- hosts: tester
+  gather_facts: no
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
-  connection: local
   vars_files:
     - vars/tester-test-vars.yml
     - vars/tester-image-vars.yml
@@ -64,7 +79,7 @@
 
     - name: Replace table prefix
       replace:
-        path: "../files/joomla/{{ item.name }}"
+        path: "{{ playbook_dir }}/files/joomla/{{ item.name }}"
         regexp: '#__'
         replace: "{{ tester_db_prefix }}"
       with_items:

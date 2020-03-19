@@ -68,7 +68,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $nav_user_menu_logout = "//*[@class='dropdown-item']/a[normalize-space() = 'Log out']";
+	public static $nav_user_menu_logout = "//*/a[@class='dropdown-item'][normalize-space() = 'Log out']";
 
 	/**
 	 * @var string

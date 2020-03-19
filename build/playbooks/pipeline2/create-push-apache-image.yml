@@ -1,6 +1,6 @@
 ---
-- hosts: localhost
-  connection: local
+- hosts: tester
+  gather_facts: no
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml

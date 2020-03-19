@@ -1,42 +1,24 @@
 ---
-- name: Set archive source for Joomla 3
-  set_fact:
-    archive_source: "{{ archive_source_j3 }}"
-  when: j_master_version == '3'
-
-- name: Set archive source for Joomla 4
-  set_fact:
-    archive_source: "{{ archive_source_j4 }}"
-  when: j_master_version == '4'
-
 - name: Debug Joomla master version
   debug:
     msg: "{{ j_master_version }}"
 
 - name: Debug archive source
   debug:
-    msg: "{{ archive_source }}"
-
-- name: Workaround for failure when downloading Joomla package
-  set_fact:
-    archive_source: "/Support/Software/Joomla/3.9/Joomla_3.9.14-Stable-Full_Package.tar.bz2"
-
-- name: Debug archive source
-  debug:
-    msg: "{{ archive_source }}"
+    msg: "{{ bw_artifacts_base }}/data/j_install"
 
 - name: unpack Joomla files to document root
   unarchive:
-    src: "{{ archive_source }}"
+    src: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name[j_version_short] }}"
     dest: "{{ tester_web_root }}"
-#    remote_src: yes
     group: "{{ tester_www_user }}"
     owner: "{{ tester_www_group }}"
+#    remote_src: yes
 
 - name: get Joomla SQL files to fill into database
   fetch:
     src: "{{ tester_web_root }}installation/sql/mysql/{{ item.name }}"
-    dest: "../files/joomla/{{ item.name }}"
+    dest: "files/joomla/{{ item.name }}"
     flat: yes
   with_items:
     - { name: joomla.sql }

@@ -7,5 +7,5 @@ codecept_failed_file: "{{ codecept_path_output }}/failed"
 
 test_files_source: "{{ bw_project_base_dir }}/tests3/"
 test_files_source_local: "/vhosts/dev/joomla-cms/tests3/"
-joomla_version: "3.9.16"
+#joomla_version: "3.9.16"
 

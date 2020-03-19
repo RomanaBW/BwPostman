@@ -117,7 +117,7 @@
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: docker
   vars_files:
-    - ../vars/tests.yml
+    - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
 

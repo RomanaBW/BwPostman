@@ -105,3 +105,5 @@ bwpm_acceptTC_db-4 ansible_connection=docker
 bwpm_acceptTC_web-4 ansible_connection=docker
 bwpm_acceptTC_tester-4 ansible_connection=docker
 
+[tester]
+tester-j1

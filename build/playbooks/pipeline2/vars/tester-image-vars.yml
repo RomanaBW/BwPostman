@@ -1,24 +1,49 @@
 ---
 # Fast changing variables
-#joomla_version: "4.0.0a12"
-joomla_version: "3.9.16"
+joomla_version_4a: "4.0.0a12"
+joomla_version_4b: "4.0.0b1-1"
+joomla_version_3: "3.9.16"
+
+joomla_version: "{{ joomla_version_4b }}"
+
+#j_version_short: "j3"
+#j_version_short: "j4a"
+j_version_short: "j4b"
 
 bwpm_version: "2.4.0"
 j_alpha_version: "alpha12"
 j_beta_dev_version: "beta1-dev"
+
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"
 
+j_version_hyphen: "{{ joomla_version_3 | replace('.', '-') }}"
+
 # Default value: Joomla4, if Joomla3 is wanted, --extra-vars is needed
 #j_master_version: "4"
-j_master_version: "{{ joomla_version[0] }}"
+j_master_version: "{{ j_version_short[1] }}"
+j_package_name:
+  j3: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.tar.bz2"
+  j4a: "Joomla_4.0.0-{{ j_alpha_version }}-Alpha-Full_Package.tar.bz2"
+  j4b: "Joomla_4.0.0-{{ j_beta_dev_version }}-Development-Full_Package.zip"
 
-j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 j_main_version: "{{ joomla_version[0] }}"
-archive_source_j3: "https://downloads.joomla.org/cms/joomla{{ j_main_version }}/{{ j_version_hyphen }}/Joomla_{{ j_version_hyphen }}-Stable-Full_Package.tar.bz2"
+#archive_source_j3: "https://downloads.joomla.org/cms/joomla{{ j_main_version }}/{{ j_version_hyphen }}/Joomla_{{ j_version_hyphen }}-Stable-Full_Package.tar.bz2"
 
 #archive_source_j4: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_alpha_version }}/Joomla_4.0.0-{{ j_alpha_version }}-Alpha-Full_Package.tar.bz2"
-archive_source_j4: "https://developer.joomla.org/nightlies/Joomla_4.0.0-{{ j_beta_dev_version }}-Development-Full_Package.zip"
+#archive_source_j4: "https://developer.joomla.org/nightlies/Joomla_4.0.0-{{ j_beta_dev_version }}-Development-Full_Package.zip"
+
+joomla_packages:
+  - src: "https://downloads.joomla.org/cms/Joomla3/{{ j_version_hyphen }}/{{ j_package_name.j3 }}"
+    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j3 }}"
+  - src: "https://developer.joomla.org/nightlies/{{ j_package_name.j4b }}"
+    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4b }}"
+  - src: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_alpha_version }}/{{ j_package_name.j4a }}"
+    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4a }}"
+
+
+
+
 # Additional extensions to install, raw file names without version
 additional_extensions:
   - pkg_jce.zip

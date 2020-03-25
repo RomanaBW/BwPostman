@@ -22,13 +22,15 @@
 		<property name="version" value="2.4.0" override="true" />
 		<property name="lib_version" value="0.9.1" override="true" />
 
-		<property name="home_dir" value="/home/romana/PhpstormProjects/BwPostman" override="true" />
+<!--		<property name="home_dir" value="/home/romana/PhpstormProjects/BwPostman" override="true" />-->
+		<property name="home_dir" value="/vhosts/dev/joomla-cms" override="true" />
 
 		<property name="extension" value="BwPostman" override="true" />
 		<property name="component" value="com_bwpostman" override="true" />
 
 		<echo msg="Source dirs…" />
-		<property name="source_base_dir" value="${home_dir}/src" override="true" />
+<!--		<property name="source_base_dir" value="${home_dir}/src" override="true" />-->
+		<property name="source_base_dir" value="${home_dir}" override="true" />
 
 		<property name="source_admin_dir" value="${source_base_dir}/administrator/components/${component}" override="true" />
 		<property name="source_admin_lang_dir" value="${source_base_dir}/administrator/language" override="true" />

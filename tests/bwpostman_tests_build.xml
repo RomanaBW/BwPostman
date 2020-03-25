@@ -9,7 +9,8 @@
 	<property name="base_dir" value="/vhosts/dev/joomla-cms" override="true" />
 	<property name="test_dir" value="${base_dir}/tests" override="true" />
 
-	<property name="src_dir" value="/home/romana/PhpstormProjects/BwPostman/src" override="true" />
+<!--	<property name="src_dir" value="/home/romana/PhpstormProjects/BwPostman/src" override="true" />-->
+	<property name="src_dir" value="/vhosts/dev/joomla-cms" override="true" />
 
 	<property name="container_base" value="/vms/dockers" override="true" />
 	<property name="container_dir" value="${container_base}/containers" override="true" />
@@ -147,8 +148,9 @@
 	</target>
 
 	<target name="start_infrastructure" depends="set_rebase" description="start test infrastructure">
+		<echo message="Host name: ${host.name}" />
 		<echo message="Start infrastructure with: docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d"/>
-		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d" passthru="true" />
+		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml --verbose -p ${project_name} up -d" passthru="true" />
 	</target>
 
 	<target name="do_rebase" depends="start_infrastructure"
@@ -156,64 +158,15 @@
 		<if>
 			<equals arg1="${bwpm_install}" arg2=""/>
 				<then>
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/administrator/components/"
-							destinationDir="${web_dir}/${project_name}/files/administrator/components" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/administrator/language/"
-							destinationDir="${web_dir}/${project_name}/files/administrator/language" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/components/"
-							destinationDir="${web_dir}/${project_name}/files/components" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/images/"
-							destinationDir="${web_dir}/${project_name}/files/images" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/language/"
-							destinationDir="${web_dir}/${project_name}/files/language" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/media/"
-							destinationDir="${web_dir}/${project_name}/files/media" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/modules/"
-							destinationDir="${web_dir}/${project_name}/files/modules" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/plugins/bwpostman/"
-							destinationDir="${web_dir}/${project_name}/files/plugins/bwpostman" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/plugins/quickicon/"
-							destinationDir="${web_dir}/${project_name}/files/plugins/quickicon" />
-					<filesync
-							rsyncPath="/usr/bin/rsync"
-							options="-rlqc"
-							sourceDir="${src_dir}/plugins/system/"
-							destinationDir="${web_dir}/${project_name}/files/plugins/system" />
+					<exec command="${test_dir}/job_scripts/bwpm_rsync_build.sh ${src_dir} ${web_dir}/${project_name}/files" passthru="true" />
 					<if>
 						<equals arg1="${vm_version}" arg2="" />
 						<else>
-							<filesync
-									rsyncPath="/usr/bin/rsync"
-									options="-rlqc"
-									sourceDir="${src_dir}/plugins/vmfields/"
-									destinationDir="${web_dir}/${project_name}/files/plugins/vmfields" />
+<!--							<filesync-->
+<!--									rsyncPath="/usr/bin/rsync"-->
+<!--									options="-rlqc"-->
+<!--									sourceDir="${src_dir}/plugins/vmfields/"-->
+<!--									destinationDir="${web_dir}/${project_name}/files/plugins/vmfields" />-->
 						</else>
 					</if>
 				</then>
@@ -231,7 +184,7 @@
 			<equals arg1="${rebase}" arg2="1"/>
 			<then>
 				<echo message="Do Rebase erkannt: ${rebase}" />
-<!--				<echo message="Befehl: mysql -u ${BW_TEST_DB_USER} -p${BW_TEST_DB_PW} -h ${BW_TEST_DB_HOST} ${BW_TEST_DB_NAME} &lt; ${web_dir}/${project_name}/backups/${project_name}.sql" />-->
+				<echo message="Befehl: mysql -u ${BW_TEST_DB_USER} -p${BW_TEST_DB_PW} -h ${BW_TEST_DB_HOST} ${BW_TEST_DB_NAME} &lt; ${web_dir}/${project_name}/backups/${project_name}.sql" />
 				<exec command="mysql -u ${BW_TEST_DB_USER} -p${BW_TEST_DB_PW} -h ${BW_TEST_DB_HOST} ${BW_TEST_DB_NAME} &lt; ${web_dir}/${project_name}/backups/${project_name}.sql" passthru="true" />
 			</then>
 		</if>
@@ -266,7 +219,7 @@
 
 	<target name="start_test_container" depends="prepare_acceptance_suite"
 	        description="start test container, do tests" logskipped="true">
-		<exec command="docker-compose -f ${container_dir}/testers/bwpm-tester.yml up" passthru="true" />
+		<exec command="docker-compose -f ${container_dir}/testers/bwpm-tester.yml --verbose up" passthru="true" />
 	</target>
 
 	<target name="remove_test_container" depends="start_test_container"

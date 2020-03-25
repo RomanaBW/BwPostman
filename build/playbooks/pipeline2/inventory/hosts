@@ -105,5 +105,20 @@ bwpm_acceptTC_db-4 ansible_connection=docker
 bwpm_acceptTC_web-4 ansible_connection=docker
 bwpm_acceptTC_tester-4 ansible_connection=docker
 
+bwpm_fast_db-3 ansible_connection=docker
+bwpm_fast_web-3 ansible_connection=docker
+bwpm_fast_tester-3 ansible_connection=docker
+
+bwpm_fast_db-4 ansible_connection=docker
+bwpm_fast_web-4 ansible_connection=docker
+bwpm_fast_tester-4 ansible_connection=docker
+
+
+
+
+
 [tester]
 tester-j1
+
+[workplace]
+arbeitspferd

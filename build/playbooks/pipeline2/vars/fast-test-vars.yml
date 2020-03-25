@@ -1,0 +1,19 @@
+---
+bw_artifacts_base: "/repositories/artifacts/bwpostman/fast"
+project_base_dir: "/repositories/BwPostman/"
+
+build: "fast"
+test_suite: "fast"
+
+log_path: '/data/logs'
+record_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/videos"
+test_log_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/logs"
+
+test_db_host: "joomla_db"
+test_db_dbname: "joomlatest"
+test_db_user: "tester"
+test_db_password: "barbamama"
+
+screen_size: '1440x900'
+display: '45'
+

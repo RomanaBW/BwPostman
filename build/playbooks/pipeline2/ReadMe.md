@@ -60,9 +60,9 @@ There are some containers, which have to be build successively:
 		2. **universe3:5000/romana/joomla-jce-tables:{{ joomla_version }}**
 	2. optionally install VirtueMart with sample products, needed for testing plugin B2S 
 		
-Step 1 is only to do, if one want to change web server or database version.
+Step 1.ii is only to do, if one want to change web server or database version.
 
-Step 2 and 3 are to process every time, Joomla gets an update
+Step 1.i, 2 and 3 are to process every time, Joomla gets an update
 
 Step 3 may be processed without step 2, if version of Joomla does not change but the version of installed extensions.
 	

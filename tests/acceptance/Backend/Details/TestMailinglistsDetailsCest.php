@@ -333,10 +333,10 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-//		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see(Generals::$alert_error_txt, Generals::$alert_heading);
-//		$I->see(MlEdit::$error_save, Generals::$alert_error);
-//		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
+		$I->see(Generals::$alert_error_txt, Generals::$alert_heading);
+		$I->see(MlEdit::$error_save, Generals::$alert_error);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar4['Cancel']);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see("Mailinglists", Generals::$pageTitle);

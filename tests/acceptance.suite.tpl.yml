@@ -22,24 +22,6 @@ modules:
 
 # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
     config:
-      WebDriver:
-        url: http://@BW_TEST_URL@
-
-        browser: chrome
-        port: 4445
-        capabilities:
-            chromeOptions:
-                args: ["--no-sandbox", "--window-size=1440,900"]
-
-
-        connection_timeout: 60
-        restart: false
-
-#        browser: phantomjs
-#        port: 4447
-#        browser: firefox
-#        port: 4444
-
       Db:
         dsn: 'mysql:host=@BW_TEST_DB_HOST@;dbname=@BW_TEST_DB_NAME@'
         user: '@BW_TEST_DB_USER@'
@@ -48,6 +30,21 @@ modules:
         populate: false
         cleanup: false
         reconnect: true
+
+      WebDriver:
+        url: http://@BW_TEST_URL@
+
+        browser: chrome
+        port: 4445
+        capabilities:
+            chromeOptions:
+                args: ["--no-sandbox", "--window-size=1440,900"]
+                prefs:
+                  download.default_directory: "/tests/tests/_output"
+
+
+        connection_timeout: 60
+        restart: false
 
 #      MailCatcher:
 #        url: 'http://172.18.0.20'

@@ -173,14 +173,16 @@ class DbHelper extends Module
 	 * DbHelper method to get options of BwPostman extension from manifest
 	 *
 	 * @param   string      $extension          component, module name
-	 * @param   array       $criteria           special criteria, i.e. WHERE
 	 * @param   array       $credentials        credentials of database
+	 * @param   array       $criteria           special criteria, i.e. WHERE
 	 *
 	 * @return  object      $options            desired options
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws \Exception
 	 */
-	public static function grabManifestOptionsFromDatabase($extension, $criteria = array(), array $credentials)
+	public static function grabManifestOptionsFromDatabase($extension, array $credentials, $criteria = array())
 	{
 		$driver = self::getDbDriver($credentials);
 
@@ -211,12 +213,14 @@ class DbHelper extends Module
 	 *
 	 * @param   string      $extension          component, module, plugin name (element name)
 	 * @param   string      $options            option value to update
-	 * @param   array       $criteria           special criteria, i.e. WHERE
 	 * @param   array       $credentials        credentials of database
+	 * @param   array       $criteria           special criteria, i.e. WHERE
+	 *
+	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function setManifestOptionsInDatabase($extension, $options, $criteria = array(), array $credentials)
+	public static function setManifestOptionsInDatabase($extension, $options, array $credentials, $criteria = array())
 	{
 		$driver = self::getDbDriver($credentials);
 

@@ -473,10 +473,11 @@ class Acceptance extends Codeception\Module
 	private function getDbCredentials()
 	{
 		$_db = $this->getModule('Db');
+		$creds = $_db->_getConfig();
 
-		$credentials['dsn']      = $_db->_getConfig('dsn');
-		$credentials['user']     = $_db->_getConfig('user');
-		$credentials['password'] = $_db->_getConfig('password');
+		$credentials['dsn']      = $creds['dsn'];
+		$credentials['user']     = $creds['user'];
+		$credentials['password'] = $creds['password'];
 
 		$dsn_array  = explode(';', $credentials['dsn']);
 		$db_name    = explode('=', $dsn_array[1]);
@@ -788,18 +789,18 @@ class Acceptance extends Codeception\Module
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$status_list_id);
 		$I->selectOption(Generals::$status_list_id, Generals::$status_published);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSeeElement(Generals::$icon_unpublished);
 		$I->wait(1);
 
 		// select unpublished
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$status_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(Generals::$status_list_id);
 		$I->selectOption(Generals::$status_list_id, Generals::$status_unpublished);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSeeElement(Generals::$icon_published);
 	}
@@ -1059,8 +1060,8 @@ class Acceptance extends Codeception\Module
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_public);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Guest", Generals::$access_column);
 		$I->dontSee("Registered", Generals::$access_column);
@@ -1068,11 +1069,11 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select guest
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$access_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_guest);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Registered", Generals::$access_column);
@@ -1080,11 +1081,11 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select registered
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$access_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_registered);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -1092,11 +1093,11 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select special
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$access_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_special);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -1104,11 +1105,11 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select super users
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$access_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_super);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -1231,7 +1232,7 @@ class Acceptance extends Codeception\Module
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait($archive_button, 1);
 
-		if ($manage_data['section'] == 'template' || $manage_data['section'] == 'subscriber')
+		if ($manage_data['section'] == 'template' || $manage_data['section'] == 'subscriber' || $manage_data['section'] == 'newsletter')
 		{
 			// process confirmation popup
 			$I->seeInPopup($edit_data['archive_confirm']);
@@ -1433,14 +1434,14 @@ class Acceptance extends Codeception\Module
 		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 
-		$options = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
+		$options = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
 
 		if ($extension == 'mod_bwpostman' && property_exists($options, 'com_params'))
 		{
 			if ($options->com_params)
 			{
 				$extension = 'com_bwpostman';
-				$options = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
+				$options = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
 			}
 		}
 
@@ -1462,13 +1463,13 @@ class Acceptance extends Codeception\Module
 	{
 		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
-		$options        = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
+		$options        = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
 
 		$options->$option   = $value;
 
 		$options_string = json_encode($options);
 
-		DbHelper::setManifestOptionsInDatabase($extension, $options_string, $criteria, $credentials);
+		DbHelper::setManifestOptionsInDatabase($extension, $options_string, $credentials, $criteria);
 	}
 
 	/**

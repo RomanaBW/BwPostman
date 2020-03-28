@@ -473,10 +473,11 @@ class Acceptance extends Codeception\Module
 	private function getDbCredentials()
 	{
 		$_db = $this->getModule('Db');
+		$creds = $_db->_getConfig();
 
-		$credentials['dsn']      = $_db->_getConfig('dsn');
-		$credentials['user']     = $_db->_getConfig('user');
-		$credentials['password'] = $_db->_getConfig('password');
+		$credentials['dsn']      = $creds['dsn'];
+		$credentials['user']     = $creds['user'];
+		$credentials['password'] = $creds['password'];
 
 		$dsn_array  = explode(';', $credentials['dsn']);
 		$db_name    = explode('=', $dsn_array[1]);
@@ -1366,14 +1367,14 @@ class Acceptance extends Codeception\Module
 		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
 
-		$options = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
+		$options = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
 
 		if ($extension == 'mod_bwpostman' && property_exists($options, 'com_params'))
 		{
 			if ($options->com_params)
 			{
 				$extension = 'com_bwpostman';
-				$options = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
+				$options = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
 			}
 		}
 
@@ -1395,13 +1396,13 @@ class Acceptance extends Codeception\Module
 	{
 		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
-		$options        = DbHelper::grabManifestOptionsFromDatabase($extension, $criteria, $credentials);
+		$options        = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
 
 		$options->$option   = $value;
 
 		$options_string = json_encode($options);
 
-		DbHelper::setManifestOptionsInDatabase($extension, $options_string, $criteria, $credentials);
+		DbHelper::setManifestOptionsInDatabase($extension, $options_string, $credentials, $criteria);
 	}
 
 	/**

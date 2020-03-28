@@ -34,6 +34,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 // Load the tooltip behavior for the notes
+HTMLHelper::_('behavior.formvalidator');
 HtmlHelper::_('behavior.keepalive');
 HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom'));
 
@@ -46,7 +47,7 @@ HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom')
 		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo Route::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="item-form" class="form-validate">
 		<div id="mailinglist_tabs">
 			<ul class="nav nav-tabs bwp-tabs">

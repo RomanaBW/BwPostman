@@ -148,9 +148,8 @@
 	</target>
 
 	<target name="start_infrastructure" depends="set_rebase" description="start test infrastructure">
-		<echo message="Host name: ${host.name}" />
 		<echo message="Start infrastructure with: docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d"/>
-		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml --verbose -p ${project_name} up -d" passthru="true" />
+		<exec command="docker-compose -f ${container_dir}/infrastructure/run-bwpm.yml -p ${project_name} up -d" passthru="true" />
 	</target>
 
 	<target name="do_rebase" depends="start_infrastructure"
@@ -158,6 +157,7 @@
 		<if>
 			<equals arg1="${bwpm_install}" arg2=""/>
 				<then>
+					<echo message="Synchronize files…" />
 					<exec command="${test_dir}/job_scripts/bwpm_rsync_build.sh ${src_dir} ${web_dir}/${project_name}/files" passthru="true" />
 					<if>
 						<equals arg1="${vm_version}" arg2="" />
@@ -219,7 +219,7 @@
 
 	<target name="start_test_container" depends="prepare_acceptance_suite"
 	        description="start test container, do tests" logskipped="true">
-		<exec command="docker-compose -f ${container_dir}/testers/bwpm-tester.yml --verbose up" passthru="true" />
+		<exec command="docker-compose -f ${container_dir}/testers/bwpm-tester.yml up" passthru="true" />
 	</target>
 
 	<target name="remove_test_container" depends="start_test_container"

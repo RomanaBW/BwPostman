@@ -87,6 +87,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 * @return  BwPostmanControllerMailinglist		This object to support chaining.
 	 *
 	 * @since   2.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{

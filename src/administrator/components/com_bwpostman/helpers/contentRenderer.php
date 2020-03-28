@@ -28,7 +28,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
-JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
 /**
 * Content Renderer Class
@@ -325,6 +324,24 @@ class contentRenderer
 			// Editor user type check
 			$access          = new stdClass();
 			$access->canEdit = $access->canEditOwn = $access->canPublish = 0;
+
+			// $id = "-1" if no content is selected
+			if ($id == '-1')
+			{
+				$tag_article_begin = BwPostmanTplHelper::getArticleTagBegin();
+				$tag_article_end   = BwPostmanTplHelper::getArticleTagEnd();
+
+				// Set special article html if defined at the template
+				if (isset($tpl->tpl_tags_article) && $tpl->tpl_tags_article == 0)
+				{
+					$tag_article_begin = $tpl->tpl_tags_article_advanced_b;
+					$tag_article_end = $tpl->tpl_tags_article_advanced_e;
+				}
+
+				$content = $tag_article_begin . JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT') . $tag_article_end;
+
+				return stripslashes($content);
+			}
 
 			$row = $this->retrieveContent($id);
 

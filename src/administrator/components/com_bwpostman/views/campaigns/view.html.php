@@ -247,7 +247,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		}
 
 		// trigger BwTimeControl event
-		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar');
+		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar', array());
 
 		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
@@ -318,7 +318,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		}
 
 		// trigger BwTimeControl event
-		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar');
+		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar', array());
 
 		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
 		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');

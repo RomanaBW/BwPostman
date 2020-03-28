@@ -77,7 +77,7 @@ if ($this->queueEntries)
 			}
 
 			// trigger BwTimeControl event
-			Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceRenderLayout');
+			Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceRenderLayout', array());
 
 			$link = BwPostmanHTMLHelper::getForumLink();
 			BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', Text::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');

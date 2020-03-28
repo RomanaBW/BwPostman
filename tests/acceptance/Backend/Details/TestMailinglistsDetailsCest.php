@@ -100,10 +100,10 @@ class TestMailinglistsDetailsCest
 		$this->fillFormExtended($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_success);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		$I->see("Message", Generals::$alert_header);
+//		$I->see(MlEdit::$success_save, Generals::$alert_success);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -158,10 +158,10 @@ class TestMailinglistsDetailsCest
 		$this->fillFormExtended($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_success);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		$I->see("Message", Generals::$alert_header);
+//		$I->see(MlEdit::$success_save, Generals::$alert_success);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -228,11 +228,10 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar4['Save']);
-		$I->waitForElementVisible(Generals::$alert_header, 5);
-
-		$I->see("Message", Generals::$alert_header);
-		$I->see(MlEdit::$success_save, Generals::$alert_success);
-		$I->seeInField(MlEdit::$title, MlEdit::$field_title);
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		$I->see("Message", Generals::$alert_header);
+//		$I->see(MlEdit::$success_save, Generals::$alert_success);
+//		$I->seeInField(MlEdit::$title, MlEdit::$field_title);
 
 		// Grab ID of first mailinglist
 		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_mailinglists', 'id', array('title' => MlEdit::$field_title));
@@ -283,10 +282,10 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 		$I->click(Generals::$toolbar4['Save & Close']);
 
-		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
-		$I->see(MlEdit::$success_save, Generals::$alert_success);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
+//		$I->see(MlEdit::$success_save, Generals::$alert_success);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArchiveItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
 
@@ -324,20 +323,20 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
-		$I->see(MlEdit::$success_save, Generals::$alert_success);
-		$I->see('Mailinglists', Generals::$pageTitle);
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
+//		$I->see(MlEdit::$success_save, Generals::$alert_success);
+//		$I->see('Mailinglists', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);
 
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see(Generals::$alert_error_txt, Generals::$alert_heading);
-		$I->see(MlEdit::$error_save, Generals::$alert_error);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		$I->see(Generals::$alert_error_txt, Generals::$alert_heading);
+//		$I->see(MlEdit::$error_save, Generals::$alert_error);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar4['Cancel']);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see("Mailinglists", Generals::$pageTitle);

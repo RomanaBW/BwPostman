@@ -1016,7 +1016,7 @@ class User2SubscriberCest
 		$this->editComponentOptions($I);
 
 		// switch to no
-		$I->clickAndWait(".//*[@id='configTabs']/li[2]/a", 1);
+		$I->clickAndWait(RegPage::$bwpm_com_options_regTab, 1);
 		$this->switchPredefinedNewsletterFormat($I, RegPage::$format_show_button_identifier, 0);
 
 		// getManifestOption
@@ -1082,7 +1082,7 @@ class User2SubscriberCest
 		$this->editComponentOptions($I);
 
 		// switch to Text
-		$I->clickAndWait(".//*[@id='configTabs']/li[2]/a", 1);
+		$I->clickAndWait(RegPage::$bwpm_com_options_regTab, 1);
 		$this->switchPredefinedNewsletterFormat($I, RegPage::$mailformat_button_identifier, 0);
 
 		// getManifestOption
@@ -1110,7 +1110,7 @@ class User2SubscriberCest
 		$I->clickAndWait(Generals::$toolbar4['Options'], 1);
 
 		// switch to html
-		$I->clickAndWait(".//*[@id='configTabs']/li[2]/a", 1);
+		$I->clickAndWait(RegPage::$bwpm_com_options_regTab, 1);
 		$this->switchPredefinedNewsletterFormat($I, RegPage::$mailformat_button_identifier, 1);
 
 		// getManifestOption
@@ -1371,14 +1371,28 @@ class User2SubscriberCest
 			$I->fillField(RegPage::$login_identifier_name, RegPage::$login_value_name);
 			$I->fillField(RegPage::$login_identifier_username, RegPage::$login_value_username);
 			$I->fillField(RegPage::$login_identifier_email1, RegPage::$login_value_email);
-//			$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value_email);
+			try
+			{
+				$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value_email);
+			}
+			catch (\Exception $e)
+			{
+				codecept_debug('No second mail address field');
+			}
 		}
 		elseif (self::$visitor == 2)
 		{
 			$I->fillField(RegPage::$login_identifier_name, RegPage::$login_value2_name);
 			$I->fillField(RegPage::$login_identifier_username, RegPage::$login_value2_username);
 			$I->fillField(RegPage::$login_identifier_email1, RegPage::$login_value2_email);
-//			$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value2_email);
+			try
+			{
+				$I->fillField(RegPage::$login_identifier_email2, RegPage::$login_value2_email);
+			}
+			catch (\Exception $e)
+			{
+				codecept_debug('No second mail address field');
+			}
 		}
 
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
@@ -2114,7 +2128,7 @@ class User2SubscriberCest
 		$I->see(RegPage::$config_save_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->clickAndWait(".//*[@id='configTabs']/li[2]/a", 1);
+		$I->clickAndWait(RegPage::$bwpm_com_options_regTab, 1);
 		$I->scrollTo(sprintf($button, 0), 0, -100);
 		$I->seeElement(sprintf($button, $format) . $class);
 	}

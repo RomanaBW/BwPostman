@@ -48,35 +48,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab1             = "//*[@id='item-form']/div[1]/ul/li[1]/button";
+	public static $tab1             = "//*[@id='item-form']/div[1]/ul/li[1]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2             = "//*[@id='item-form']/div[1]/ul/li[2]/button";
+	public static $tab2             = "//*[@id='item-form']/div[1]/ul/li[2]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3             = "//*[@id='item-form']/div[1]/ul/li[3]/button";
+	public static $tab3             = "//*[@id='item-form']/div[1]/ul/li[3]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4             = "//*[@id='item-form']/div[1]/ul/li[4]/button";
+	public static $tab4             = "//*[@id='item-form']/div[1]/ul/li[4]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab5             = "//*[@id='item-form']/div[1]/ul/li[5]/button";
+	public static $tab5             = "//*[@id='item-form']/div[1]/ul/li[5]/a";
 
 	/**
 	 * @var string
@@ -156,7 +156,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_html            = "//*[@id='item-form']/div[3]/fieldset[2]/div";
+	public static $tab4_preview_html            = "//*[@id='preview-html']";
 
 	/**
 	 * @var string
@@ -177,7 +177,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_text            = "//*[@id='item-form']/div[3]/fieldset[3]/div";
+	public static $tab4_preview_text            = "//*[@id='preview-text']";
 
 	/**
 	 * @var string
@@ -719,35 +719,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_general       = "//*/div[contains(@class, 'nl-generals')]/legend";
+	public static $legend_general       = "//*/div[contains(@class, 'nl-generals')]/div/h3";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_templates     = "//*/div[contains(@class, 'nl-templates')]/legend";
+	public static $legend_templates     = "//*/div[contains(@class, 'nl-template')]/div/h3";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_recipients    = "//*/div[contains(@class, 'nl-recipients')]/legend";
+	public static $legend_recipients    = "//*/div[contains(@class, 'nl-mailinglists')]/div/h4";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $usergroup_recipients = "//*/div[contains(@class, 'nl-usergroups')]/div/legend";
+	public static $usergroup_recipients = "//*/div[contains(@class, 'nl-usergroups')]/div/h4";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_content       = "//*/div[contains(@class, 'nl-contents')]/legend";
+	public static $legend_content       = "//*/div[contains(@class, 'nl-content')]/div/h3";
 
 
 	/**
@@ -833,21 +833,21 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_inList_subject   = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[3]";
+	public static $success_inList_subject   = "//*/table[@id='main-table']/tbody/tr[1]/td[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_inList_desc      = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[4]";
+	public static $success_inList_desc      = "//*/table[@id='main-table']/tbody/tr[1]/td[4]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_inList_author    = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[6]";
+	public static $success_inList_author    = "//*/table[@id='main-table']/tbody/tr[1]/td[6]";
 
 
 	/**
@@ -926,7 +926,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $change_is_template  = "//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button";
+	public static $change_is_template  = "//*/table[@id='main-table']/tbody/tr[1]/td[8]/button";
 
 	/**
 	 * @var array
@@ -937,6 +937,7 @@ class NewsletterEditPage
 		'field_title'          => "1. Simple Single Test Newsletter",
 		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived newsletters')]",
 		'archive_identifier'   => "Subject",
+		'archive_confirm'      => 'Do you wish to archive the selected newsletter(s)?',
 		'archive_title_col'    => "//*[@id='main-table']/tbody/tr[1]/td[3]",
 		'archive_success_msg'  => 'The selected newsletter has been archived.',
 		'archive_success2_msg' => 'The selected newsletters have been archived.',
@@ -1015,14 +1016,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $add_content              = "//*/div[contains(@class, 'nl-content-mover')]/div/div[2]/input[1]";
+	public static $add_content              = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $remove_content           = "//*/div[contains(@class, 'nl-content-mover')]/div/div[2]/input[2]";
+	public static $remove_content           = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[2]";
 
 
 	/**
@@ -1077,7 +1078,7 @@ class NewsletterEditPage
 		$I->see('Newsletters', Generals::$pageTitle);
 		if ($isTemplate)
 		{
-			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
+			$I->seeElement("//*/table[@id='main-table']/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
 		}
 
 		$I->click(Generals::$first_list_entry);
@@ -1087,7 +1088,7 @@ class NewsletterEditPage
 		$I->see(self::$duplicate_prefix . self::$field_subject . "'");
 		if ($isTemplate)
 		{
-			$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[2]/td[8]/button/span[contains(@class, 'icon-unfeatured')]");
+			$I->seeElement("//*/table[@id='main-table']/tbody/tr[2]/td[8]/button/span[contains(@class, 'icon-unfeatured')]");
 		}
 
 		if ($withCleanup)
@@ -1300,7 +1301,7 @@ class NewsletterEditPage
 		self::fillFormSimple($I, $toUsergroup, $withAttachment);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
 		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
 
@@ -1380,17 +1381,7 @@ class NewsletterEditPage
 
 		$I->acceptPopup();
 
-//		$user = getenv('USER');
-//
-//		if (!$user)
-//		{
-//			$user = 'root';
-//		}
-//
-//		if ($user == 'jenkins')
-//		{
-//			$I->wait($iframeTime);
-//		}
+		$I->wait($iframeTime);
 
 		$I->waitForElement(self::$tab5_send_iframeName, 40);
 		$I->switchToIFrame(self::$tab5_send_iframe);

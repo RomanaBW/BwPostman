@@ -194,18 +194,18 @@ class TestTemplatesListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(TplManage::$format_list_id);
 		$I->selectOption(TplManage::$format_list_id, TplManage::$format_text);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(TplManage::$format_text_text, TplManage::$format_text_column);
 		$I->dontSee(TplManage::$format_text_html, TplManage::$format_text_column);
 
 		// select unpublished
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(TplManage::$format_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(TplManage::$format_list_id);
 		$I->selectOption(TplManage::$format_list_id, TplManage::$format_html);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(TplManage::$format_text_html, TplManage::$format_text_column);
 		$I->dontSee(TplManage::$format_text_text, TplManage::$format_text_column);
@@ -406,7 +406,7 @@ class TestTemplatesListsCest
 			$user = 'root';
 		}
 
-		$path     = Generals::$downloadFolder[$user];
+		$path     = Generals::$downloadFolder['user'];
 		$filename = 'bwpostman_template_export_id_' . $tplId . '.zip';
 		$downloadPath = $path . $filename;
 

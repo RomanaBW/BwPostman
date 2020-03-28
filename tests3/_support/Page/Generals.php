@@ -299,6 +299,7 @@ class Generals
 	public static $downloadFolder = array(
 		'root' => '/root/Downloads/',
 		'jenkins' => '/home/jenkins/Downloads/',
+		'user' => '/tests/tests/_output/',
 		);
 
 	/**

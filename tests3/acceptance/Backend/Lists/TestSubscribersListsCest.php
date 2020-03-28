@@ -878,7 +878,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -944,7 +944,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1012,7 +1012,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1092,7 +1092,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1172,7 +1172,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1238,7 +1238,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
 		$downloadPath   = $exportPath . $filename;
 

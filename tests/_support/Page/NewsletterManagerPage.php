@@ -52,21 +52,21 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab1 = "//*[@id='j-main-container']/div[2]/ul/li[1]/button";
+	public static $tab1 = "//*[@id='j-main-container']/div[2]/ul/li[1]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2 = "//*[@id='j-main-container']/div[2]/ul/li[2]/button";
+	public static $tab2 = "//*[@id='j-main-container']/div[2]/ul/li[2]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3 = "//*[@id='j-main-container']/div[2]/ul/li[3]/button";
+	public static $tab3 = "//*[@id='j-main-container']/div[2]/ul/li[3]/a";
 
 
 	/**
@@ -74,7 +74,7 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[3]/p/a";
+	public static $first_list_link          = "//*[@id='main-table']/tbody/tr[1]/td[3]/a";
 
 	/**
 	 * @var string
@@ -492,10 +492,10 @@ class NewsletterManagerPage
 	 * @since 2.2.0
 	 */
 	public static $set_template_by_icon   = array(
-		'is_template_button'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button",
-		'is_template_result'     => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-featured')]",
-		'is_not_template_button' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button",
-		'is_not_template_result' => ".//*[@id='j-main-container']/div[4]/table/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-unfeatured')]",
+		'is_template_button'     => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button",
+		'is_template_result'     => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-featured')]",
+		'is_not_template_button' => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button",
+		'is_not_template_result' => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-unfeatured')]",
 	);
 
 	/**

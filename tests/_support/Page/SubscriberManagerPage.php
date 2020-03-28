@@ -517,7 +517,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $import_button_further = "//*[@id='adminForm']/fieldset/div/div/div/div[5]/div/input";
+	public static $import_button_further = "//*/input[@id='further']";
 
 	/**
 	 * @var string

@@ -387,7 +387,7 @@ class TestTemplatesListsCest
 			$user = 'root';
 		}
 
-		$path     = Generals::$downloadFolder[$user];
+		$path     = Generals::$downloadFolder['user'];
 		$filename = 'bwpostman_template_export_id_' . $tplId . '.zip';
 		$downloadPath = $path . $filename;
 

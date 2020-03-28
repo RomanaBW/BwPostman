@@ -203,7 +203,7 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
-		$I->seeElement("//*[@id='j-main-container']/div[4]/table/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
+		$I->seeElement("//*/table[@id='main-table']/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -715,18 +715,6 @@ class TestNewslettersDetailsCest
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-//		$user = getenv('USER');
-//
-//		if (!$user)
-//		{
-//			$user = 'root';
-//		}
-//
-//		if ($user == 'jenkins')
-//		{
-//			$I->wait(6);
-//		}
-
 		$I->waitForElementVisible(NlEdit::$tab5_send_iframeName, 20);
 		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
 		$I->waitForText(NlEdit::$success_send_ready, 60);
@@ -763,7 +751,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], false, true);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10);
 
 		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_unpublished);
 

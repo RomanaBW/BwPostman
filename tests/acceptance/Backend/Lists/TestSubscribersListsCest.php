@@ -150,17 +150,17 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_text);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
 
 		// select HTML
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(SubsManage::$format_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_html);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 	}
@@ -190,8 +190,8 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$ml_list_id, SubsManage::$ml_select);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 	}
@@ -390,17 +390,17 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_text);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
 
 		// select HTML
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(SubsManage::$format_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_html);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 
@@ -431,8 +431,8 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$ml_list_id);
 		$I->selectOption(SubsManage::$ml_list_id, SubsManage::$ml_select_unconfirmed);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_unconfirmed_result, SubsManage::$unconfirmedMainTable);
 	}
@@ -906,7 +906,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -973,7 +973,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1042,7 +1042,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1091,8 +1091,8 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$ml_list_id);
 		$I->selectOption(SubsManage::$ml_list_id, SubsManage::$ml_select);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 
@@ -1126,7 +1126,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1175,8 +1175,8 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$ml_list_id);
 		$I->selectOption(SubsManage::$ml_list_id, SubsManage::$ml_select);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 
@@ -1210,7 +1210,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1276,7 +1276,7 @@ class TestSubscribersListsCest
 			$user = 'root';
 		}
 
-		$exportPath     = Generals::$downloadFolder[$user];
+		$exportPath     = Generals::$downloadFolder['user'];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
 		$downloadPath   = $exportPath . $filename;
 

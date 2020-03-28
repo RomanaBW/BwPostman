@@ -850,6 +850,14 @@ class User2SubscriberPage
 	public static $bwpm_subs_mls_table  = "bwpostman_subscribers_mailinglists";
 
 	/**
+	 * @var string
+	 *
+	 * @since 2..0
+	 */
+	public static $bwpm_com_options_regTab  = "//*[@id='configTabs']/ul/li[2]/a";
+
+
+	/**
 	 * @param \AcceptanceTester $I
 	 *
 	 * @since 2.0.0

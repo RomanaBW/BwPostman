@@ -109,7 +109,7 @@ class Generals
 	 *
 	 * @since 2.4.0
 	 */
-	public static $nlTabBar    = "//*[@class='tab-wrapper-bwp']";
+	public static $nlTabBar    = "//*[contains(@class, 'bwp-tabs')]";
 
 	/**
 	 * @var string
@@ -375,6 +375,7 @@ class Generals
 	public static $downloadFolder = array(
 		'root' => '/root/Downloads/',
 		'jenkins' => '/home/jenkins/Downloads/',
+		'user' => '/tests/tests/_output/',
 		);
 
 	/**

@@ -161,30 +161,30 @@ class TestNewslettersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_1);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 2
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(NlManage::$filter_authors_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_2);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 3
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(NlManage::$filter_authors_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_3);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
@@ -218,18 +218,18 @@ class TestNewslettersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(NlManage::$filter_campaign_list_id);
 		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_cam);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_cam_result);
 
 		// Filter without campaign
 		// select campaign
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(NlManage::$filter_campaign_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(NlManage::$filter_campaign_list_id);
 		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_without);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_nocam_result);
 	}
@@ -260,8 +260,8 @@ class TestNewslettersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(NlManage::$filter_is_template_list_id);
 		$I->selectOption(NlManage::$filter_is_template_list_id, NlManage::$filter_is_template_list_yes);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_is_template_yes_result);
 
@@ -269,11 +269,11 @@ class TestNewslettersListsCest
 //		$I->wait(1);
 //		$I->waitForElementVisible(NlManage::$filter_is_template_list, 5);
 		// select no
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(NlManage::$filter_is_template_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(NlManage::$filter_is_template_list_id);
 		$I->selectOption(NlManage::$filter_is_template_list_id, NlManage::$filter_is_template_list_no);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_is_template_no_result);
 	}
@@ -444,19 +444,19 @@ class TestNewslettersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_1);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 2
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(NlManage::$filter_authors_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_2);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 
 		$I->see(NlManage::$filter_author_2_txt, NlManage::$authors_col);
@@ -464,11 +464,11 @@ class TestNewslettersListsCest
 		$I->dontSee(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 
 		// select author 3
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(NlManage::$filter_authors_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_3);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(NlManage::$filter_author_3_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_1_txt, NlManage::$authors_col);
@@ -501,18 +501,18 @@ class TestNewslettersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(NlManage::$filter_campaign_list_id);
 		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_cam);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(NlManage::$filter_sent_cam_result);
 
 		// Filter without campaign
 		// select campaign
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(NlManage::$filter_campaign_list_id);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->click(NlManage::$filter_campaign_list_id);
 		$I->selectOption(NlManage::$filter_campaign_list_id, NlManage::$filter_campaign_without);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
+//		$I->click(Generals::$filterOptionsSwitcher);
+//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(Generals::$null_msg, Generals::$null_row);
 	}

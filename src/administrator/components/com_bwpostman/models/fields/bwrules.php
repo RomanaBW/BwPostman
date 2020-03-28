@@ -26,6 +26,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
@@ -91,23 +92,25 @@ class JFormFieldBwRules extends JFormFieldRules
 		else
 		{
 			HTMLHelper::_('form.csrf');
-			HTMLHelper::_('webcomponent', 'system/fields/joomla-field-permissions.min.js',
-				['version' => 'auto', 'relative' => true]);
-			HTMLHelper::_('webcomponent', 'vendor/joomla-custom-elements/joomla-tab.min.js', ['version' => 'auto', 'relative' => true]);
+			Factory::getDocument()->getWebAssetManager()
+				->useStyle('webcomponent.field-permissions')
+				->useScript('webcomponent.field-permissions')
+				->useStyle('webcomponent.joomla-tab')
+				->useScript('webcomponent.joomla-tab');
 		}
 
 		// Load JavaScript message titles
-		JText::script('ERROR');
-		JText::script('WARNING');
-		JText::script('NOTICE');
-		JText::script('MESSAGE');
+		Text::script('ERROR');
+		Text::script('WARNING');
+		Text::script('NOTICE');
+		Text::script('MESSAGE');
 
 		// Add strings for JavaScript error translations.
-		JText::script('JLIB_JS_AJAX_ERROR_CONNECTION_ABORT');
-		JText::script('JLIB_JS_AJAX_ERROR_NO_CONTENT');
-		JText::script('JLIB_JS_AJAX_ERROR_OTHER');
-		JText::script('JLIB_JS_AJAX_ERROR_PARSE');
-		JText::script('JLIB_JS_AJAX_ERROR_TIMEOUT');
+		Text::script('JLIB_JS_AJAX_ERROR_CONNECTION_ABORT');
+		Text::script('JLIB_JS_AJAX_ERROR_NO_CONTENT');
+		Text::script('JLIB_JS_AJAX_ERROR_OTHER');
+		Text::script('JLIB_JS_AJAX_ERROR_PARSE');
+		Text::script('JLIB_JS_AJAX_ERROR_TIMEOUT');
 
 		// Initialise some field attributes.
 		$section    = $this->section;

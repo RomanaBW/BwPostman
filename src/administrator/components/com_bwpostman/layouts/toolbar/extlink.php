@@ -54,7 +54,7 @@ else
 	$text   = $displayData['options']['text'];
 
 	?>
-	<joomla-toolbar-button id="<?php echo $id; ?>" task="" <?php echo $toolbarClass; ?>S>
+	<joomla-toolbar-button id="<?php echo $id; ?>" task="" <?php echo $toolbarClass; ?>>
 		<button onclick="window.open('<?php echo $url; ?>', '_blank', '');" class="<?php echo $buttonClass; ?>" type="button">
 			<span class="<?php echo $iconClass; ?>" aria-hidden="true"></span>
 			<?php echo $text; ?>

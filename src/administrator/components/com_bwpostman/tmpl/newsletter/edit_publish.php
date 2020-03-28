@@ -36,47 +36,47 @@ HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('formbehavior.chosen', 'select');
-
-$image = '<i class="icon-info"></i>';
 ?>
 
 <div id="bwp_view_single">
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="item-form">
-		<div class="form-horizontal">
-			<fieldset class="adminform">
-				<legend>
-					<?php echo Text::sprintf('COM_BWPOSTMAN_NL_EDIT_PUBLISHED', $this->item->id); ?>
-				</legend>
-				<div class="well well-small">
-					<div class="width-50 fltlft span6 control-group">
-						<ul class="adminformlist unstyled">
-							<?php foreach($this->form->getFieldset('edit_publish') as $field): ?>
-								<?php if ($field->hidden): ?>
-									<?php echo $field->input; ?>
-								<?php else: ?>
-									<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
-										<div class="controls"><?php echo $field->input; ?></div></li>
-								<?php endif; ?>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-
-					<div class="width-50 fltlft span6 control-group">
-						<ul class="adminformlist unstyled">
-							<?php foreach($this->form->getFieldset('basic_2') as $field): ?>
-								<?php if ($field->hidden): ?>
-									<li><?php echo $field->input; ?></li>
-								<?php else: ?>
-									<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
-										<div class="controls"><?php echo $field->input; ?></div></li>
-								<?php endif; ?>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-					<div class="clr clearfix"></div>
-					<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+		<div class="card card-body mb-3">
+			<div class="row">
+				<div class="col-12 mb-2">
+					<h3>
+						<?php echo Text::sprintf('COM_BWPOSTMAN_NL_EDIT_PUBLISHED', $this->item->id); ?>
+					</h3>
 				</div>
-			</fieldset>
+				<div class="col-lg-6">
+					<?php foreach($this->form->getFieldset('edit_publish') as $field): ?>
+						<?php if ($field->hidden): ?>
+							<?php echo $field->input; ?>
+						<?php else: ?>
+							<?php echo $field->renderField(); ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</div>
+
+				<div class="col-lg-6">
+					<?php foreach($this->form->getFieldset('basic_2') as $field): ?>
+						<?php if ($field->hidden): ?>
+							<?php echo $field->input; ?>
+						<?php else: ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $field->label; ?>
+								</div>
+								<div class="controls">
+									<?php echo $field->input; ?>
+								</div>
+							</div>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</div>
+				<div class="col-12 mb-2">
+					<span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span>
+				</div>
+			</div>
 		</div>
 
 		<?php

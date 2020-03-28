@@ -36,6 +36,7 @@ use Joomla\CMS\Uri\Uri;
 
 // Load the bootstrap tooltip for the notes
 HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.multiselect');
 
 $user		= Factory::getUser();
 $userId		= $user->get('id');
@@ -46,9 +47,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'archive.newsletters';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
 
-$modalParams = array();
-$modalParams['modalWidth'] = 80;
-$modalParams['bodyHeight'] = 70;
 //
 /**
  * BwPostman Archived Newsletters Layout
@@ -79,7 +77,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item"><!-- We need to use the setAttribute-function because of the IE -->
-									<a href="#" data-layout="newsletters" class="nav-link active">
+									<a href="javascript:void(0);" data-layout="newsletters" class="nav-link active">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>
 									</a>
 								</li>
@@ -90,7 +88,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="subscribers" class="nav-link">
+									<a href="javascript:void(0);" data-layout="subscribers" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
 									</a>
 								</li>
@@ -101,7 +99,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="campaigns" class="nav-link">
+									<a href="javascript:void(0);" data-layout="campaigns" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
 									</a>
 								</li>
@@ -112,7 +110,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="mailinglists" class="nav-link">
+									<a href="javascript:void(0);" data-layout="mailinglists" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_MLS'); ?>
 									</a>
 								</li>
@@ -123,7 +121,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="templates" class="nav-link">
+									<a href="javascript:void(0);" data-layout="templates" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
 									</a>
 								</li>
@@ -230,8 +228,6 @@ $modalParams['bodyHeight'] = 70;
 									$linkText = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
 									$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
 									$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
-									$frameHtml = "htmlFrameSent" . $item->id;
-									$frameText = "textFrameSent" . $item->id;
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
 											<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -241,30 +237,18 @@ $modalParams['bodyHeight'] = 70;
 												if ($item->mailing_date != '0000-00-00 00:00:00')
 												{ ?>&nbsp;&nbsp;
 													<div class="bw-btn">
-														<span class="hasTooltip"
+														<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
 																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>
-																<?php echo '<br />'.$this->escape($item->subject); ?>">
-															<?php
-															$modalParams['url'] = $linkHtml;
-															$modalParams['title'] = $titleHtml;
-															?>
-															<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info btn-sm" data-toggle="modal">
-																<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-															</button>
+															<?php echo '<br />'.$this->escape($item->subject); ?>"
+																data-title="<?php echo $titleHtml;?>" data-src="<?php echo $linkHtml;?>" data-toggle="modal" data-target="#bwp-modal">
+															<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
 														</span>
-														<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
-														<span class="hasTooltip"
+														<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
 																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>
-																<?php echo '<br />'.$this->escape($item->subject); ?>">
-															<?php
-															$modalParams['url'] = $linkText;
-															$modalParams['title'] = $titleText;
-															?>
-															<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info btn-sm" data-toggle="modal">
-																<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-															</button>
+															<?php echo '<br />'.$this->escape($item->subject); ?>"
+																data-title="<?php echo $titleText;?>" data-src="<?php echo $linkText;?>" data-toggle="modal" data-target="#bwp-modal">
+															<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
 														</span>
-														<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
 													</div>
 												<?php } ?>
 											</td>
@@ -336,6 +320,25 @@ $modalParams['bodyHeight'] = 70;
 			</div>
 		</div>
 	</form>
+</div>
+<div id="bwp-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title text-center">&nbsp;</h4>
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></span></button>
+			</div>
+			<div class="modal-body">
+				<div class="modal-spinner fa-4x text-center">
+					<i class="fa fa-spinner fa-spin"></i>
+				</div>
+				<div class="modal-text"></div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-dark btn-sm" data-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+			</div>
+		</div>
+	</div>
 </div>
 <?php
 Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');

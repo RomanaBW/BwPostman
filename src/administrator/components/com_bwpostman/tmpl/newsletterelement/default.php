@@ -32,7 +32,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('behavior.tooltip');
+//HTMLHelper::_('behavior.tooltip');
 ?>
 
 <form id="adminForm" action="<?php Route::_('index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component'); ?>"

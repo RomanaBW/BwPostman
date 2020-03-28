@@ -30,38 +30,29 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-		function check() // Checks if one or more campaigns are selected
-		{
-			var htmlText="";
-			htmlText += '<form name="popupForm" action="#" method="get">';
-			htmlText += '	<fieldset>';
-			htmlText += '		<table width="100%" id="confirm-unarchive">';
-			htmlText += '			<tr>';
-			if(window.parent.document.adminForm.boxchecked.value === 0)
-			{
-				htmlText += '				<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_NO_SELECTION"); ?></th>';
-			}
-			else
-			{
-				htmlText += '				<th height="30" align="center">';
-				htmlText += '<?php echo Text::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?></th>';
-				htmlText += '			</tr>';
-				htmlText += '			<tr>';
-				htmlText += '				<td height="30" align="center">';
-				htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'1\');"';
-				htmlText += ' value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />';
-				htmlText += '					<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive(\'0\');"';
-				htmlText += ' value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />';
-				htmlText += '				</td>';
-			}
-			htmlText += '			</tr>';
-			htmlText += '		</table>';
-			htmlText += '	</fieldset>';
-			htmlText += '</form>';
-			document.write(htmlText);
-		}
-		check();
-	/* ]]> */
-</script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de-de" lang="de-de" dir="ltr">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title><?php echo Text::_('COM_BWPOSTMAN_UNARCHIVE'); ?></title>
+	</head>
+	<body>
+		<form name="popupForm" action="#" method="get">
+			<fieldset>
+				<table width="100%" id="confirm-unarchive">
+					<tr>
+						<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?></th>
+					</tr>
+					<tr>
+						<td height="30" align="center">
+							<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive('1');"
+									value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />
+							<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive('0');"
+									value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+		</form>
+	</body>
+</html>

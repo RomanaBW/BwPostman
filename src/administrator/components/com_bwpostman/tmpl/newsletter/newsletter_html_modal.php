@@ -39,16 +39,6 @@ use Joomla\CMS\Uri\Uri;
 	</head>
 
 	<body id="preview_html">
-		<?php
-			$url	= Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
-		?>
-		<table>
-			<tr>
-				<td><img src="<?php echo $url; ?>" alt="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?>" /></td>
-				<td><strong><?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?></strong></td>
-			</tr>
-		</table>
-
 		<fieldset>
 			<table border="0">
 				<tr>

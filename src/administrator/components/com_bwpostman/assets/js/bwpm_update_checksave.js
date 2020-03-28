@@ -40,6 +40,7 @@ function processUpdateStep(data)
 			jQuery('div#loading2').css({display:'none'});
 			jQuery('div#result').html(data.result);
 			jQuery('div#toolbar').find('button').removeAttr('disabled');
+			jQuery('div#toolbar').find('a').removeAttr('disabled');
 			// Get the modal
 			var modal = window.parent.document.getElementById('bwp_Modal');
 			var btnclose = window.parent.document.getElementsByClassName('bwp_close')[0];
@@ -56,6 +57,7 @@ function processUpdateStep(data)
 	});
 }
 jQuery('div#toolbar').find('button').attr("disabled","disabled");
+jQuery('div#toolbar').find('a').attr("disabled","disabled");
 var data = {step: "0"};
 jQuery(document).ready(function() {
 	jQuery('body.contentpane').css('overflow-x', 'hidden');

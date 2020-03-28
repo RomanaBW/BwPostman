@@ -31,22 +31,45 @@ function changeTab(newTab, currentTab)
 	}
 }
 
-Joomla = window.Joomla || {};
+(function() {
+	Joomla = window.Joomla || {};
 
-Joomla.submitbutton = function (pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton === 'newsletters.archive')
+	Joomla.submitbutton = function (pressbutton)
 	{
-		var ConfirmArchive = confirm(document.getElementById('archiveText').value);
-		if (ConfirmArchive === true)
+		var form = document.adminForm;
+		if (pressbutton === 'newsletter.archive')
+		{
+			var ConfirmArchive = confirm(document.getElementById('archiveText').value);
+			if (ConfirmArchive === true)
+			{
+				Joomla.submitform(pressbutton, form);
+			}
+		}
+		else
 		{
 			Joomla.submitform(pressbutton, form);
 		}
+	};
+
+})();
+
+jQuery(document).ready(function() {
+	function updateModal(selector) {
+		var $sel = selector;
+		var src = $sel.data('src');
+		$('.modal-title').text($sel.data('title'));
+		var windowheight = $(window).height()-225;
+		$('.modal-text').html('<iframe id="frame" src="'+src+'" width="100%" height="'+windowheight+'" frameborder="0"></iframe>');
+		$('.modal-spinner').addClass('hidden');
 	}
-	else
-	{
-		Joomla.submitform(pressbutton, form);
-	}
-};
+	$('span.iframe').on('click',function(){
+		updateModal($(this));
+	});
+	$("#bwp-modal").on('hidden.bs.modal', function () {
+		$('.modal-title').empty();
+		$('.modal-text').empty();
+		$('.modal-spinner').removeClass('hidden');
+		$('.modal-footer .counter').empty();
+	});
+});
 

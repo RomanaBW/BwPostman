@@ -149,9 +149,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 			if ($model->checkTrials(2))
 			{
-				echo '<div class="modal" style="height: 150px;overflow: auto;margin-bottom: 15px;" id="progress">';
-				$ret	= $model->sendMailsFromQueue($mails_per_step);
-				echo '</div>';
 				// number of queue entries during sending
 				$entries = $model->checkTrials(2, 1);
 				$percent = empty($sumentries) ? 0 : ceil(100 / $sumentries * ($sumentries - $entries));
@@ -160,6 +157,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 						<span style="position: absolute; left: 48%;"><b>' . $percent . ' %</b></span>
 						<div style="background-color: green; width: ' . $percent . '%; height: 30px;"></div>
 						</div><br /><div id="nl_modal_to_send_message">' . Text::sprintf('COM_BWPOSTMAN_NL_SENT_MESSAGE', $entries, $sumentries) . '</div><br />';
+				echo '<div class="nl-modal" style="border: 1px solid silver; width: 98%;height:200px;overflow: auto; padding: 5px;margin-bottom: 15px;">';
+				$ret	= $model->sendMailsFromQueue($mails_per_step);
+				echo '</div>';
 
 				if ($ret == 1)
 				{   // There are more mails in the queue.

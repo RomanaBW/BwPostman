@@ -37,11 +37,13 @@ jQuery(document).ready(function() {
 				jQuery('div#loading2').css({display: 'none'});
 				jQuery('div#result').html(data.result);
 				jQuery('div#toolbar').find('button').removeAttr('disabled');
+				jQuery('div#toolbar').find('a').removeAttr('disabled');
 			}
 		});
 	}
 
 	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
+	jQuery('div#toolbar').find('a').attr("disabled", "disabled");
 	var data = {step: "1"};
 	processUpdateStep(data);
 });

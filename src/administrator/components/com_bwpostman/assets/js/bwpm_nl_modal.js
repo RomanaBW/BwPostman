@@ -1,15 +1,14 @@
-<?php
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman single newsletter modal queue template for backend.
+ * BwPostman Javascript for newsletter editing.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin
- * @author Romana Boldt
+ * @author Romana Boldt, Karl Klostermann
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
- * @license GNU/GPL, see LICENSE.txt
+ * @license GNU/GPL v3, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -24,9 +23,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-?>
-
-<div id="nl"></div>
+jQuery(document).ready(function() {
+	$('#sendFrame').modal('show');
+});

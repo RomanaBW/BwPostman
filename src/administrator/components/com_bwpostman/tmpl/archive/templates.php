@@ -36,6 +36,7 @@ use Joomla\CMS\Uri\Uri;
 
 // Load the bootstrap tooltip for the notes
 HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.multiselect');
 
 $user		= Factory::getUser();
 $userId		= $user->get('id');
@@ -46,9 +47,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'archive.templates';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'templates');
 
-$modalParams = array();
-$modalParams['modalWidth'] = 80;
-$modalParams['bodyHeight'] = 70;
 //
 /**
  * BwPostman Archived Templates Layout
@@ -79,7 +77,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item"><!-- We need to use the setAttribute-function because of the IE -->
-									<a href="#" data-layout="newsletters" class="nav-link">
+									<a href="javascript:void(0);" data-layout="newsletters" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>
 									</a>
 								</li>
@@ -90,7 +88,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="subscribers" class="nav-link">
+									<a href="javascript:void(0);" data-layout="subscribers" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
 									</a>
 								</li>
@@ -101,7 +99,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="campaigns" class="nav-link">
+									<a href="javascript:void(0);" data-layout="campaigns" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
 									</a>
 								</li>
@@ -112,7 +110,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="mailinglists" class="nav-link">
+									<a href="javascript:void(0);" data-layout="mailinglists" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_MLS'); ?>
 									</a>
 								</li>
@@ -123,7 +121,7 @@ $modalParams['bodyHeight'] = 70;
 							{
 							?>
 								<li class="nav-item">
-									<a href="#" data-layout="templates" class="nav-link active">
+									<a href="javascript:void(0);" data-layout="templates" class="nav-link active">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
 									</a>
 								</li>

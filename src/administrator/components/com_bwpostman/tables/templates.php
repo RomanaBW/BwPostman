@@ -469,7 +469,7 @@ class BwPostmanTableTemplates extends JTable
 			$tpl		= $tpl_model->getItem($tpl_id);
 
 			// get template model
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templatel.php');
+			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/template.php');
 			$model = new BwPostmanModelTemplate();
 			// make html template data
 			$this->tpl_html	= $model->makeTexttemplate($item, $tpl);

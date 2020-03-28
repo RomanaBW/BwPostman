@@ -36,9 +36,6 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 
-//Load tabs behavior for the Tabs
-jimport('joomla.html.html.tabs');
-
 $user	= Factory::getUser();
 $userId	= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -67,82 +64,81 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					);
 					?>
 
-					<div class="form-horizontal">
-						<ul class="bwp_tabs">
-							<li class="closed">
-								<button onclick="return changeTab('unsent');" class="buttonAsLink">
+					<div class="bwp-newsletters">
+						<ul class="nav nav-tabs bwp-tabs">
+							<li class="nav-item">
+								<a id="tab-unsent" href="#" onclick="changeTab('unsent');Joomla.submitbutton();" class="nav-link">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
-								</button>
+								</a>
 							</li>
-							<li class="closed">
-								<button onclick="return changeTab('sent');" class="buttonAsLink">
+							<li class="nav-item">
+								<a id="tab-sent" href="#" onclick="changeTab('sent');Joomla.submitbutton();" class="nav-link">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
-								</button>
+								</a>
 							</li>
-							<?php if (($this->count_queue> 0) && $this->permissions['newsletter']['send']) { ?>
-								<li class="open">
-									<button onclick="return changeTab('queue');" class="buttonAsLink_open">
+							<?php if ($this->count_queue && $this->permissions['newsletter']['send']) { ?>
+								<li class="nav-item">
+									<a id="tab-queue" href="#" onclick="changeTab('queue');Joomla.submitbutton();" class="nav-link active">
 										<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
-									</button>
+									</a>
 								</li>
 							<?php } ?>
 						</ul>
-					</div>
-					<div class="clr clearfix"></div>
 
-					<div class="current">
-						<table id="main-table" class="table">
-							<caption id="captionTable" class="sr-only">
+						<div class="bwp-table">
+							<table id="main-table" class="table">
+								<caption id="captionTable" class="sr-only">
 								<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
-							</caption>
-						<thead>
-							<tr>
-								<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="      min-width: 150px;" scope="col">
-									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-									<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
-								</th>
-								<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
-									<?php echo HTMLHelper::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-						<?php
-						if ($this->items && count($this->items))
-						{
-							foreach ($this->items as $i => $item) :
+								</caption>
+								<thead>
+									<tr>
+										<th style="min-width: 100px;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
+										</th>
+										<th class="d-none d-lg-table-cell" style="min-width: 100px;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
+										</th>
+										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
+										</th>
+										<th style="min-width: 150px;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
+										</th>
+										<th style="width: 7%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
+										</th>
+										<th style="width: 3%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+								if ($this->items && count($this->items))
+								{
+									foreach ($this->items as $i => $item) :
+										?>
+										<tr class="row<?php echo $i % 2; ?>">
+											<td><?php echo $this->escape($item->subject); ?></td>
+										<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->description); ?></td>
+										<td class="d-none d-xl-table-cell"><?php echo $item->authors; ?></td>
+										<td><?php echo $item->recipient; ?></td>
+										<td><?php echo $item->trial; ?></td>
+										<td class="text-center"><?php echo $item->id; ?></td>
+										</tr><?php
+									endforeach;
+								}
+								else
+								{
+									// if no data ?>
+									<tr class="row1">
+										<td colspan="8"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
+									</tr><?php
+								}
 								?>
-								<tr class="row<?php echo $i % 2; ?>">
-									<td><?php echo $this->escape($item->subject); ?></td>
-									<td><?php echo $this->escape($item->description); ?></td>
-									<td><?php echo $item->authors; ?></td>
-									<td><?php echo $item->recipient; ?></td>
-									<td><?php echo $item->trial; ?></td>
-									<td align="center"><?php echo $item->id; ?></td>
-								</tr><?php
-							endforeach;
-						}
-						else
-						{
-							// if no data ?>
-							<tr class="row1">
-								<td colspan="8"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
-							</tr><?php
-						}
-						?>
-						</tbody>
-					</table>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -40,6 +40,7 @@ function doAjax(data, successCallback)
 				jQuery('p#'+data.step).removeClass('alert-info').addClass('alert-error');
 				jQuery('div#result').html(message);
 				jQuery('div#toolbar').find('button').removeAttr('disabled');
+				jQuery('div#toolbar').find('a').removeAttr('disabled');
 			}
 		};
 

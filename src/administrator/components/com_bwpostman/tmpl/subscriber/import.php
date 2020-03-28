@@ -122,7 +122,7 @@ $option	= $jinput->getCmd('option');
 					</div>
 					<div class="button form-group row mt-3">
 						<div class="key col-12 text-center">
-							<input type="button" class="btn btn-success" name="submitbutton" id=""
+							<input type="button" class="btn btn-success" name="submitbutton" id="further"
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>
 									onclick="Joomla.submitbutton('subscribers.prepareImport');"
 									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"

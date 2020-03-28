@@ -218,12 +218,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->sidebar = JHtmlSidebar::render();
 
 		// Show the layout depending on the tab
-		$tpl = $jinput->get('tab', '');
-
-		if ($tpl === '')
-		{
-			$tpl = $app->getUserState('com_bwpostman.newsletters.layout', 'unsent');
-		}
+		$tpl = $jinput->get('tab', 'unsent');
 
 		if ($tpl === 'queue' && (int)$this->count_queue === 0)
 		{
@@ -325,6 +320,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					$options['url'] = "index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending";
 					$options['icon'] = "icon-envelope";
 					$options['text'] = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
+					$options['modalWidth'] = 80;
 					$options['bodyHeight'] = 70;
 					$options['name'] = 'continue_sending';
 

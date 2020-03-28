@@ -38,6 +38,7 @@ window.onload = function() {
 					jQuery('div.resultSet').css('background-color', '#f2dede');
 					jQuery('div.resultSet').css('border-color', '#eed3d7');
 					jQuery('div#toolbar').find('button').removeAttr('disabled');
+					jQuery('div#toolbar').find('a').removeAttr('disabled');
 				}
 			};
 
@@ -68,11 +69,13 @@ window.onload = function() {
 					jQuery('div.resultSet').css('border-color', '#eed3d7');
 				}
 				jQuery('div#toolbar').find('button').removeAttr('disabled');
+				jQuery('div#toolbar').find('a').removeAttr('disabled');
 			}
 		});
 	}
 
 	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
+	jQuery('div#toolbar').find('a').attr("disabled", "disabled");
 	var starturl = document.getElementById('startUrl').value;
 	var data = {step: "1"};
 	processUpdateStep(data);

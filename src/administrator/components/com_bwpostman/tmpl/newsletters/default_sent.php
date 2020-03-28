@@ -35,16 +35,13 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('behavior.core');
-HTMLHelper::_('behavior.tabstate');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
-//HTMLHelper::_('behavior.modal');
 HtmlHelper::_('behavior.multiselect');
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
-
-//Load tabs behavior for the Tabs
-jimport('joomla.html.html.tabs');
+// @Todo: Requires adminform to be present!!!!
+//HTMLHelper::_('behavior.tabstate');
 
 $user		= Factory::getUser();
 $userId		= $user->get('id');
@@ -52,9 +49,6 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
 $iconImage = Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
-$modalParams = array();
-$modalParams['modalWidth'] = 80;
-$modalParams['bodyHeight'] = 70;
 
 Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 ?>
@@ -80,109 +74,101 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 					);
 					?>
 
-					<div class="form-horizontal">
-						<ul class="bwp_tabs">
-							<li class="closed">
-								<button onclick="return changeTab('unsent');" class="buttonAsLink">
+					<div class="bwp-newsletters">
+						<ul class="nav nav-tabs bwp-tabs">
+							<li class="nav-item">
+								<a id="tab-unsent" href="#" onclick="changeTab('unsent');Joomla.submitbutton();" class="nav-link">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
-								</button>
+								</a>
 							</li>
-							<li class="open">
-								<button onclick="return changeTab('sent');" class="buttonAsLink_open">
+							<li class="nav-item">
+								<a id="tab-sent" href="#" onclick="changeTab('sent');Joomla.submitbutton();" class="nav-link active">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
-								</button>
+								</a>
 							</li>
 							<?php if ($this->count_queue && $this->permissions['newsletter']['send']) { ?>
-								<li class="closed">
-									<button onclick="return changeTab('queue');" class="buttonAsLink">
+								<li class="nav-item">
+									<a id="tab-queue" href="#" onclick="changeTab('queue');Joomla.submitbutton();" class="nav-link">
 										<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
-									</button>
+									</a>
 								</li>
 							<?php } ?>
 						</ul>
-					</div>
-					<div class="clr clearfix"></div>
 
-					<div class="current">
-						<table id="main-table" class="table">
-							<caption id="captionTable" class="sr-only">
-								<?php echo Text::_('COM_BWPOSTMAN_NL_SENT_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
-							</caption>
-							<thead>
-								<tr>
-									<th style="width: 1%;" class="text-center">
-										<input type="checkbox" name="checkall-toggle" value=""
-												title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
-									</th>
-									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
-									</th>
-									<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
-									</th>
-									<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
-									</th>
-									<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?>
-									</th>
-									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
-									</th>
-									<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
-									</th>
-									<th class="d-none d-md-table-cell" style="width: 5%;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort', 'Published', 'a.published', $listDirn, $listOrder); ?>
-									</th>
-									<th class="d-none d-md-table-cell" style="width: 10%;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?>
-										<br />
-										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
+						<div class="bwp-table">
+							<table id="main-table" class="table">
+								<caption id="captionTable" class="sr-only">
+									<?php echo Text::_('COM_BWPOSTMAN_NL_SENT_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+								</caption>
+								<thead>
+									<tr>
+										<th style="width: 1%;" class="text-center">
+											<input type="checkbox" name="checkall-toggle" value=""
+													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 										</th>
-									<th class="d-none d-md-table-cell" style="width: 3%;" scope="col">
-										<?php echo HTMLHelper::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php
-							if (count($this->items))
-							{
-								foreach ($this->items as $i => $item) :
-									$linkHtml = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id=' . $item->id);
-									$linkText = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
-									$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
-									$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
-//									$title = '<img src="' . $iconImage . '" alt="' . Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT') . '" /> ' . Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
-
-									$frameHtml = "htmlFrameSent" . $item->id;
-									$frameText = "textFrameSent" . $item->id;
-
-									?>
-									<tr class="row<?php echo $i % 2; ?>">
-										<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
-										<td>
-											<?php if (!empty($item->attachment)) { ?>
-												<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
-											<?php } ?>
-										</td>
-										<td nowrap="nowrap">
-											<?php
-											if ($item->checked_out)
-											{
-												echo HTMLHelper::_(
-													'jgrid.checkedout',
-													$i,
-													$item->editor,
-													$item->checked_out_time,
-													'newsletters.',
-													BwPostmanHelper::canCheckin('newsletter', $item->checked_out)
-												);
-											} ?>
-											<?php
-											if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', (int) $item->id)) : ?>
-												<p>
+										<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
+										</th>
+										<th style="min-width: 100px;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+										</th>
+										<th class="d-none d-lg-table-cell" style="min-width: 100px;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+										</th>
+										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?>
+										</th>
+										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
+										</th>
+										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
+										</th>
+										<th style="width: 5%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'Published', 'a.published', $listDirn, $listOrder); ?>
+										</th>
+										<th style="width: 10%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?>
+											<br />
+											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
+										</th>
+										<th style="width: 3%;" scope="col">
+											<?php echo HTMLHelper::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+								if (count($this->items))
+								{
+									foreach ($this->items as $i => $item) :
+										$linkHtml = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id=' . $item->id);
+										$linkText = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
+										$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
+										$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
+										?>
+										<tr class="row<?php echo $i % 2; ?>">
+										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+										<td class="d-none d-lg-table-cell">
+												<?php if (!empty($item->attachment)) { ?>
+													<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+												<?php } ?>
+											</td>
+											<td nowrap="nowrap">
+												<?php
+												if ($item->checked_out)
+												{
+													echo HTMLHelper::_(
+														'jgrid.checkedout',
+														$i,
+														$item->editor,
+														$item->checked_out_time,
+														'newsletters.',
+														BwPostmanHelper::canCheckin('newsletter', $item->checked_out)
+													);
+												} ?>
+												<?php
+												if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', (int) $item->id)) : ?>
 													<a href="
 													<?php echo Route::_(
 														'index.php?option=com_bwpostman&view=newsletter&layout=edit_publish&task=newsletter.edit&id='
@@ -191,79 +177,65 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 													?>">
 													<?php echo $this->escape($item->subject); ?>
 													</a>
-												</p>
-											<?php else : ?>
-												<p><?php echo $this->escape($item->subject); ?></p>
-											<?php endif; ?>
-											<div class="bw-btn">
-												<span class="hasTip"
-														title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>
-														<?php echo $this->escape($item->subject); ?>">
-													<?php
-													$modalParams['url'] = $linkHtml;
-													$modalParams['title'] = $titleHtml;
-													?>
-
-													<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info" data-toggle="modal">
+												<?php else : ?>
+													<?php echo $this->escape($item->subject); ?>
+												<?php endif; ?>
+												<div class="bw-btn">
+													<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
+															title="<?php echo $titleHtml;?>
+														<?php echo '<br />'.$this->escape($item->subject); ?>"
+															data-title="<?php echo $titleHtml;?>" data-src="<?php echo $linkHtml;?>" data-toggle="modal" data-target="#bwp-modal">
 														<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-													</button>
-													<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
-												</span>
+													</span>
 
-												<span class="hasTip" title="<?php
-													echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>
-													<?php echo $this->escape($item->subject); ?>">
-													<?php
-													$modalParams['url'] = $linkText;
-													$modalParams['title'] = $titleText;
-													?>
-
-													<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info" data-toggle="modal">
+													<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
+															title="<?php echo $titleText;?>
+														<?php echo '<br />'.$this->escape($item->subject); ?>"
+															data-title="<?php echo $titleText;?>" data-src="<?php echo $linkText;?>" data-toggle="modal" data-target="#bwp-modal">
 														<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-													</button>
-													<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
-												</span>
-											</div>
-										</td>
-										<td><?php echo $this->escape($item->description); ?></td>
-										<td><?php echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
-										<td><?php echo $item->authors; ?></td>
-										<td align="center"><?php echo $item->campaign_id; ?></td>
-										<td align="center">
-											<?php echo HTMLHelper::_(
-												'jgrid.published',
-												$item->published,
-												$i,
-												'newsletters.',
-												BwPostmanHelper::canEditState('newsletter', (int) $item->id)
-											); ?>
-										</td>
-										<td align="center">
-											<p>
-												<?php echo ($item->publish_up != '0000-00-00 00:00:00')
-													? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
-													: '-'; ?><br />
-											</p>
-											<p>
-												<?php echo ($item->publish_down != '0000-00-00 00:00:00')
-													? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
-													: '-'; ?>
-											</p>
-										</td>
-										<td align="center"><?php echo $item->id; ?></td>
+													</span>
+												</div>
+											</td>
+											<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->description); ?></td>
+											<td class="d-none d-lg-table-cell"><?php echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
+											<td class="d-none d-xl-table-cell"><?php echo $item->authors; ?></td>
+											<td class="d-none d-lg-table-cell text-center"><?php echo $item->campaign_id; ?></td>
+											<td class="text-center">
+												<?php echo HTMLHelper::_(
+													'jgrid.published',
+													$item->published,
+													$i,
+													'newsletters.',
+													BwPostmanHelper::canEditState('newsletter', (int) $item->id)
+												); ?>
+											</td>
+											<td class="text-center">
+												<p>
+													<?php echo ($item->publish_up != '0000-00-00 00:00:00')
+														? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
+														: '-'; ?><br />
+												</p>
+												<p>
+													<?php echo ($item->publish_down != '0000-00-00 00:00:00')
+														? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
+														: '-'; ?>
+												</p>
+											</td>
+											<td class="text-center"><?php echo $item->id; ?></td>
+										</tr><?php
+									endforeach;
+								}
+								else
+								{
+									// if no data ?>
+									<tr class="row1">
+										<td colspan="10"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 									</tr><?php
-								endforeach;
-							}
-							else
-							{
-								// if no data ?>
-								<tr class="row1">
-									<td colspan="10"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-								</tr><?php
-							}
-						?>
-							</tbody>
-						</table>
+								}
+							?>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -282,3 +254,23 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 		</div>
 	</form>
 </div>
+<div id="bwp-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title text-center">&nbsp;</h4>
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">X</span><span class="sr-only"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></span></button>
+			</div>
+			<div class="modal-body">
+				<div class="modal-spinner fa-4x text-center">
+					<i class="fa fa-spinner fa-spin"></i>
+				</div>
+				<div class="modal-text"></div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-dark btn-sm" data-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+

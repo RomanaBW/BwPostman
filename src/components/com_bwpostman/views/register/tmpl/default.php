@@ -34,10 +34,11 @@ use Joomla\CMS\Router\Route;
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-JHtml::_('behavior.tooltip');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
 JHtml::_('formbehavior.chosen', 'select');
+
+HTMLHelper::_('bootstrap.tooltip');
 
 // Depends on jQuery UI
 JHtml::_('jquery.ui', array('core'));

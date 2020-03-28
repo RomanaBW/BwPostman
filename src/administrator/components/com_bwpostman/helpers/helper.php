@@ -1288,6 +1288,8 @@ abstract class BwPostmanHelper
 		$query->select('DISTINCT ' . $db->quoteName('content_id'));
 		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
 		$query->where($db->quoteName('trial') . ' >= 2');
+// @ToDo: Hier ist zu überlegen, ob man die Meldung nicht generell anzeigt sobald noch Mails im Queue sind.
+// @ToDo: Ist mir erst aufgefallen, als ich den Versand manuell unterbrochen habe, dass nichts angezeigt wird.
 
 		$db->setQuery($query);
 

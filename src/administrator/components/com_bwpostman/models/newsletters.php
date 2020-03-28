@@ -244,12 +244,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->query = $this->_db->getQuery(true);
 
 		//Get the tab in which we are for correct query
-		$tab = $jinput->get('tab', '');
-
-		if ($tab === '')
-		{
-			$tab = JFactory::getApplication()->getUserState('com_bwpostman.newsletters.layout', 'unsent');
-		}
+		$tab = $jinput->get('tab', 'unsent');
 
 		switch ($tab)
 		{

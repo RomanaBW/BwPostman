@@ -27,9 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.formvalidator');
+
+HTMLHelper::_('bootstrap.tooltip');
 
 ?>
 

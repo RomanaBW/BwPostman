@@ -29,4 +29,22 @@ jQuery(document).ready(function(){
 		$('#layout').val(layout);
 		$('form').submit();
 	});
+
+	function updateModal(selector) {
+		var $sel = selector;
+		var src = $sel.data('src');
+		$('#bwp-modal .modal-title').text($sel.data('title'));
+		var windowheight = $(window).height()-225;
+		$('#bwp-modal .modal-text').html('<iframe id="frame" src="'+src+'" width="100%" height="'+windowheight+'" frameborder="0"></iframe>');
+		$('#bwp-modal .modal-spinner').addClass('hidden');
+	}
+	$('span.iframe').on('click',function(){
+		updateModal($(this));
+	});
+	$("#bwp-modal").on('hidden.bs.modal', function () {
+		$('#bwp-modal .modal-title').empty();
+		$('#bwp-modal .modal-text').empty();
+		$('#bwp-modal .modal-spinner').removeClass('hidden');
+		$('#bwp-modal .modal-footer .counter').empty();
+	});
 });

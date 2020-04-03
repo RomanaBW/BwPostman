@@ -783,7 +783,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10);
 
 		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_published);
 
@@ -815,7 +815,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20, true);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10, true);
 
 		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_published);
 
@@ -847,7 +847,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 20, true);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10, true);
 
 		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_published);
 
@@ -878,7 +878,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 25);
+		NlEdit::SendNewsletterToRealRecipients($I, true, false, false, 15);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

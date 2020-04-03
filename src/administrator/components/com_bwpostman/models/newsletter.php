@@ -2787,7 +2787,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (!$this->arise_queue)
 		{
 			$this->logger->addEntry(new JLogEntry('Before sending'));
-			$this->logger->addEntry(new JLogEntry('Mailer data: ' . print_r($mailer, true)));
+//			Use the following with care! Complete mails with body are written to log…
+//			$this->logger->addEntry(new JLogEntry('Mailer data: ' . print_r($mailer, true)));
 			$res = $mailer->Send();
 			// @ToDo: $res may be boolean of JException object!
 			$this->logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res)));

@@ -47,7 +47,7 @@ $currentTab = 'edit_html';
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
-					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
+					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
 						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>

@@ -111,21 +111,21 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender       = ".//*[@id='jform_gender_chzn']/a";
+	public static $gender       = "//*[@id='gender_chosen']/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender_female = ".//*[@id='edit_gender']/label[2]";
+	public static $gender_female = "//*[@id='gender_chosen']/div/ul/li[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender_male   = ".//*[@id='edit_gender']/label[1]";
+	public static $gender_male   = "//*[@id='gender_chosen']/div/ul/li[2]";
 
 	/**
 	 * @var string
@@ -764,6 +764,7 @@ class SubscriberviewPage
 
 		if ($options->show_gender)
 		{
+			$I->clickAndWait(self::$gender, 1);
 			$I->click(self::$gender_female);
 		}
 

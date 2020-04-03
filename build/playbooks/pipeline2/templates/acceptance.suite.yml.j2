@@ -28,6 +28,8 @@ modules:
       capabilities:
           chromeOptions:
               args: ["--no-sandbox", "--window-size=1440,900"]
+              prefs:
+                download.default_directory: "{{ codecept_path_output }}"
 
       connection_timeout: 60
       restart: false

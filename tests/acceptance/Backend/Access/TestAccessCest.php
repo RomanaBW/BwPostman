@@ -649,7 +649,7 @@ class TestAccessCest
 		}
 
 		$title_to_see .= $add_text;
-		$title_to_see = substr($title_to_see, 0, 44);
+		$title_to_see = substr($title_to_see, 0, 42);
 
 		return $title_to_see;
 	}
@@ -1374,7 +1374,7 @@ class TestAccessCest
 		$this->switchLoggedInUser($I, $user);
 		$I->switchToSection($I, NewsletterManagerPage::$arc_del_array);
 
-		NewsletterEditPage::SendNewsletterToRealRecipients($I, false, false, false, 20);
+		NewsletterEditPage::SendNewsletterToRealRecipients($I, false, false, false, 10);
 
 		$this->switchLoggedInUser($I, Generals::$admin);
 

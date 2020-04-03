@@ -675,49 +675,26 @@ class Com_BwPostmanInstallerScript
 			JFile::copy($media_path . 'index.html', $image_path . '/index.html');
 		}
 
-		if (!JFile::exists($image_path . '/deep_blue.png'))
-		{
-			JFile::copy($media_path . 'deep_blue.png', $image_path . '/deep_blue.png');
-		}
+		$tpl_images = array(
+			"deep_blue.png",
+			"soft_blue.png",
+			"creme.png",
+			"sample_html.png",
+			"text_template_1.png",
+			"text_template_2.png",
+			"text_template_3.png",
+			"sample_text.png",
+			"joomla_black.gif",
+			"standard_basic.png",
+			"sample_html_2018.png",
+		);
 
-		if (!JFile::exists($image_path . '/soft_blue.png'))
+		foreach ($tpl_images as $tpl_image)
 		{
-			JFile::copy($media_path . 'soft_blue.png', $image_path . '/soft_blue.png');
-		}
-
-		if (!JFile::exists($image_path . '/creme.png'))
-		{
-			JFile::copy($media_path . 'creme.png', $image_path . '/creme.png');
-		}
-
-		if (!JFile::exists($image_path . '/sample_html.png'))
-		{
-			JFile::copy($media_path . 'sample_html.png', $image_path . '/sample_html.png');
-		}
-
-		if (!JFile::exists($image_path . '/text_template_1.png'))
-		{
-			JFile::copy($media_path . 'text_template_1.png', $image_path . '/text_template_1.png');
-		}
-
-		if (!JFile::exists($image_path . '/text_template_2.png'))
-		{
-			JFile::copy($media_path . 'text_template_2.png', $image_path . '/text_template_2.png');
-		}
-
-		if (!JFile::exists($image_path . '/text_template_3.png'))
-		{
-			JFile::copy($media_path . 'text_template_3.png', $image_path . '/text_template_3.png');
-		}
-
-		if (!JFile::exists($image_path . '/sample_text.png'))
-		{
-			JFile::copy($media_path . 'sample_text.png', $image_path . '/sample_text.png');
-		}
-
-		if (!JFile::exists($image_path . '/joomla_black.gif'))
-		{
-			JFile::copy($media_path . 'joomla_black.gif', $image_path . '/joomla_black.gif');
+			if (!JFile::exists($image_path . "/" . $tpl_image))
+			{
+				JFile::copy($media_path . $tpl_image, JPATH_ROOT . $image_path . "/" . $tpl_image);
+			}
 		}
 	}
 
@@ -741,49 +718,26 @@ class Com_BwPostmanInstallerScript
 			JFile::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/bw_postman/index.html');
 		}
 
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/deep_blue.png'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/deep_blue.png', JPATH_ROOT . '/images/bw_postman/deep_blue.png');
-		}
+		$tpl_images = array(
+			"deep_blue.png",
+			"soft_blue.png",
+			"creme.png",
+			"sample_html.png",
+			"text_template_1.png",
+			"text_template_2.png",
+			"text_template_3.png",
+			"sample_text.png",
+			"joomla_black.gif",
+			"standard_basic.png",
+			"sample_html_2018.png",
+		);
 
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/soft_blue.png'))
+		foreach ($tpl_images as $tpl_image)
 		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/soft_blue.png', JPATH_ROOT . '/images/bw_postman/soft_blue.png');
-		}
-
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/creme.png'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/creme.png', JPATH_ROOT . '/images/bw_postman/creme.png');
-		}
-
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/sample_html.png'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/sample_html.png', JPATH_ROOT . '/images/bw_postman/sample_html.png');
-		}
-
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/text_template_1.png'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/text_template_1.png', JPATH_ROOT . '/images/bw_postman/text_template_1.png');
-		}
-
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/text_template_2.png'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/text_template_2.png', JPATH_ROOT . '/images/bw_postman/text_template_2.png');
-		}
-
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/text_template_3.png'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/text_template_3.png', JPATH_ROOT . '/images/bw_postman/text_template_3.png');
-		}
-
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/sample_text.png'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/sample_text.png', JPATH_ROOT . '/images/bw_postman/sample_text.png');
-		}
-
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/joomla_black.gif'))
-		{
-			JFile::copy(JPATH_ROOT . '/media/bw_postman/images/joomla_black.gif', JPATH_ROOT . '/images/bw_postman/joomla_black.gif');
+			if (!JFile::exists(JPATH_ROOT . "/images/bw_postman/$tpl_image"))
+			{
+				JFile::copy(JPATH_ROOT . "/media/bw_postman/images/$tpl_image", JPATH_ROOT . "/images/bw_postman/$tpl_image");
+			}
 		}
 	}
 

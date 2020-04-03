@@ -693,7 +693,7 @@ class Com_BwPostmanInstallerScript
 		{
 			if (!JFile::exists($image_path . "/" . $tpl_image))
 			{
-				JFile::copy($media_path . $tpl_image, JPATH_ROOT . $image_path . "/" . $tpl_image);
+				JFile::copy($media_path . $tpl_image, $image_path . "/" . $tpl_image);
 			}
 		}
 	}

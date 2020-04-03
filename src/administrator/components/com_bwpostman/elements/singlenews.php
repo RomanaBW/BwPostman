@@ -146,6 +146,15 @@ class JFormFieldsinglenews extends JFormField
 				. '<span class="icon-file" aria-hidden="true"></span> ' . Text::_('JSELECT')
 				. '</button>';
 
+			// Clear article button
+			$html .= '<button'
+				. ' class="btn btn-secondary' . ($value ? '' : ' hidden') . '"'
+				. ' id="' . $this->id . '_clear"'
+				. ' type="button"'
+				. ' onclick="window.processModalParent(\'' . $this->id . '\'); return false;">'
+				. '<span class="icon-remove" aria-hidden="true"></span> ' . Text::_('JCLEAR')
+				. '</button>';
+
 			$html .= '</span></span>';
 
 			// Select article modal

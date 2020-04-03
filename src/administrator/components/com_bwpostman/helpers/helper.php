@@ -1429,7 +1429,8 @@ abstract class BwPostmanHelper
 		imagepng($im, $captchaDir . '/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
 		imagedestroy($im);
 		// Bild ausgeben
-		readfile(JUri::base() . 'components/com_bwpostman/assets/capimgdir/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
+//		readfile(JUri::base() . 'components/com_bwpostman/assets/capimgdir/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
+		readfile($captchaDir . '/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
 	}
 
 	/**

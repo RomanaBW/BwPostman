@@ -102,7 +102,7 @@ $currentTab = 'edit_basic';
 				<div class="card card-body mb-2">
 					<div class="row nl-generals">
 						<div class="col-12 mb-2">
-							<h3>
+							<h3 id="bw_nl_edit_generals">
 								<?php
 								$title = Text::_('COM_BWPOSTMAN_NL_GENERAL');
 
@@ -218,7 +218,7 @@ $currentTab = 'edit_basic';
 				<div class="card card-body mb-2">
 					<div class="row nl-template">
 						<div class="col-12 mb-2">
-							<h3>
+							<h3 id="bw_nl_edit_tpl">
 								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>">
 									<?php echo $image; ?>
 									&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?>
@@ -249,7 +249,7 @@ $currentTab = 'edit_basic';
 				<div id="recipients" class="card card-body mb-2">
 					<div class="row nl-recipients">
 						<div class="col-12 mb-2">
-							<h3 class="required">
+							<h3 id="bw_nl_edit_subs" class="required">
 								<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
 							</h3>
 						</div>
@@ -321,7 +321,7 @@ $currentTab = 'edit_basic';
 				<div class="card card-body mb-2">
 					<div class="row nl-content">
 						<div class="col-12 mb-2">
-							<h3>
+							<h3 id="bw_nl_edit_content">
 								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
 									<?php echo $image; ?>
 									&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?>
@@ -376,7 +376,7 @@ $currentTab = 'edit_basic';
 					<div class="card card-body mb-3 com_config">
 						<div class="row">
 							<div class="col-12 mb-2">
-								<h3>
+								<h3 id="bw_nl_edit_rules">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?>
 								</h3>
 								<section id="rules" name="Newsletters permissions" aria-labelledby="tab-rules" role="tabpanel" active="">

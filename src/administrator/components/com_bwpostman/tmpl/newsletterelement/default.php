@@ -32,36 +32,41 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-//HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('bootstrap.tooltip');
 ?>
 
 <form id="adminForm" action="<?php Route::_('index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component'); ?>"
 		method="post" name="adminForm">
-	<table class="adminform">
-		<tr>
-			<td width="100%">
-				<?php echo Text::_('JSEARCH_FILTER_LABEL'); ?>
-				<input type="text" name="search" title="search" id="search"
-						value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
-				<button onclick="this.form.submit();" class="btn hasTooltip" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"
-						data-placement="bottom" style="margin-bottom:9px;">
-					<span class="icon-search"></span><?php echo '&#160;' . Text::_('JSEARCH_FILTER_SUBMIT'); ?>
+	<div class="js-stools" role="search" tabindex="-1" id="ui-skip-2">
+		<div class="js-stools-container-bar">
+			<div class="btn-toolbar">
+				<div class="lead mr-2"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></div>
+				<div class="input-group mr-2">
+					<input type="text" name="search" title="search" id="search"
+							value="<?php echo $this->lists['search']; ?>" class="form-control" onChange="document.adminForm.submit();" />
+					<button onclick="this.form.submit();" class="btn btn-primary input-group-append" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"
+							aria-label="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>">
+						<span class="fa fa-search mr-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
+					</button>
+				</div>
+				<button type="button" class="btn btn-outline-primary" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
+						aria-label="<?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.getElementById('search').setAttribute('value', '');this.form.submit();">
+					<span class="fa fa-times mr-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
-				<button type="button" class="btn hasTooltip" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
-						data-placement="bottom" onclick="this.form.getElementById('search').setAttribute('value', '');this.form.submit();" style="margin-bottom:9px;">
-					<span class="icon-remove"></span><?php echo '&#160;' . Text::_('JSEARCH_FILTER_CLEAR'); ?>
-				</button>
-			</td>
-		</tr>
-	</table>
-	<br />
+			</div>
+		</div>
+	</div>
 
-	<table class="adminlist table">
+	<table class="table table-sm">
 		<thead>
 			<tr>
-				<th width="10"><?php echo HTMLHelper::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-				<th class="title"><?php echo HTMLHelper::_('grid.sort', 'Subject', 'a.subject', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-				<th class="title" style="text-align:center;">
+				<th scope="col" class="text-center">
+					<?php echo HTMLHelper::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order']); ?>
+				</th>
+				<th scope="col" class="title">
+					<?php echo HTMLHelper::_('grid.sort', 'Subject', 'a.subject', $this->lists['order_Dir'], $this->lists['order']); ?>
+				</th>
+				<th scope="col" class="title text-center d-none d-sm-table-cell">
 					<?php echo HTMLHelper::_(
 						'grid.sort',
 						'COM_BWPOSTMAN_NL_MAILING_DATE',
@@ -70,10 +75,10 @@ use Joomla\CMS\Router\Route;
 						$this->lists['order']
 					); ?>
 				</th>
-				<th class="title" style="text-align:center;">
+				<th scope="col" class="text-center d-none d-md-table-cell">
 					<?php echo Text::_('JPUBLISHED'); ?>
 				</th>
-				<th class="title" style="text-align:center;">
+				<th scope="col" class="text-center d-none d-md-table-cell">
 					<?php echo HTMLHelper::_('grid.sort', 'Archived', 'a.archive_flag', $this->lists['order_Dir'], $this->lists['order']); ?>
 				</th>
 			</tr>
@@ -91,18 +96,18 @@ use Joomla\CMS\Router\Route;
 			{
 				foreach ($this->items as $i => $item) : ?>
 				<tr class="row<?php echo $i % 2; ?>">
-					<td align="center"><?php echo $item->id; ?></td>
-					<td>
-						<span class="editlinktip hasTip" title="<?php echo Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');?>
+					<td class="small text-center"><?php echo $item->id; ?></td>
+					<td scope="row">
+						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');?>
 								<?php echo "<br /><br /><strong>" . $item->subject . ":</strong><br />" . $item->description; ?>">
-							<a style="cursor:pointer;" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
+							<a class="" href="#" style="cursor:pointer;" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
 								<?php echo htmlspecialchars($item->subject, ENT_QUOTES, 'UTF-8'); ?>
 							</a>
 						</span>
 					</td>
-					<td align="center" style="text-align:center;"><?php echo $item->mailing_date; ?></td>
-					<td align="center" style="text-align:center;"><?php echo HTMLHelper::_('grid.published', $item, $i); ?></td>
-					<td align="center" style="text-align:center;">
+					<td class="small text-center d-none d-sm-table-cell"><?php echo $item->mailing_date; ?></td>
+					<td class="small text-center d-none d-md-table-cell text-success"><span class="fa fa-check-circle"></span></td>
+					<td class="small text-center d-none d-md-table-cell">
 						<?php
 						$archived = ($item->archive_flag === 1) ? '<i class="icon-archive"></i>' : '';
 						echo $archived; ?>

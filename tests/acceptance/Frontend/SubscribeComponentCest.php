@@ -162,6 +162,7 @@ class SubscribeComponentCest
 	public function SubscribeMissingValuesComponent(AcceptanceTester $I)
 	{
 		$options        = $I->getManifestOptions('com_bwpostman');
+		$I->setManifestOption('com_bwpostman', 'disclaimer', 0);
 		codecept_debug("Component Options:");
 		codecept_debug($options);
 		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
@@ -390,6 +391,7 @@ class SubscribeComponentCest
 		$I->wantTo('Get edit link');
 		$I->expectTo('see message wrong mail address');
 		$I->amOnPage(SubsView::$register_url);
+		$I->waitForElementVisible(SubsView::$register_edit_url, 5);
 		$I->click(SubsView::$register_edit_url);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_2);
 		$I->click(SubsView::$send_edit_link);

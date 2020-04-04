@@ -888,7 +888,7 @@ class TestTemplatesDetailsCest
 	{
 		TplEdit::fillRequired($I, 'HTML');
 
-		TplEdit::selectThumbnail($I, 'AdminTester');
+//		TplEdit::selectThumbnail($I, 'AdminTester');
 
 		$this->fillHtmlContent($I);
 

@@ -899,14 +899,14 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('USER');
+		$user = getenv('BW_TESTER_USER');
 
 		if (!$user)
 		{
-			$user = 'root';
+			$user = 'user2';
 		}
 
-		$exportPath     = Generals::$downloadFolder['user'];
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -966,14 +966,14 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('USER');
+		$user = getenv('BW_TESTER_USER');
 
 		if (!$user)
 		{
-			$user = 'root';
+			$user = 'user2';
 		}
 
-		$exportPath     = Generals::$downloadFolder['user'];
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1035,14 +1035,14 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('USER');
+		$user = getenv('BW_TESTER_USER');
 
 		if (!$user)
 		{
-			$user = 'root';
+			$user = 'user2';
 		}
 
-		$exportPath     = Generals::$downloadFolder['user'];
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1119,14 +1119,14 @@ class TestSubscribersListsCest
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
 		// Determine download path depending on user, which process the tests
-		$user = getenv('USER');
+		$user = getenv('BW_TESTER_USER');
 
 		if (!$user)
 		{
-			$user = 'root';
+			$user = 'user2';
 		}
 
-		$exportPath     = Generals::$downloadFolder['user'];
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1203,14 +1203,14 @@ class TestSubscribersListsCest
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
 		// Determine download path depending on user, which process the tests
-		$user = getenv('USER');
+		$user = getenv('BW_TESTER_USER');
 
 		if (!$user)
 		{
-			$user = 'root';
+			$user = 'user2';
 		}
 
-		$exportPath     = Generals::$downloadFolder['user'];
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.csv';
 		$downloadPath   = $exportPath . $filename;
 
@@ -1269,14 +1269,14 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
 
-		$user = getenv('USER');
+		$user = getenv('BW_TESTER_USER');
 
 		if (!$user)
 		{
-			$user = 'root';
+			$user = 'user2';
 		}
 
-		$exportPath     = Generals::$downloadFolder['user'];
+		$exportPath     = Generals::$downloadFolder[$user];
 		$filename       = 'BackupList_BwPostman_from_' . date("Y-m-d") . '.xml';
 		$downloadPath   = $exportPath . $filename;
 

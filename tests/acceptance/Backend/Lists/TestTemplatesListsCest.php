@@ -399,14 +399,14 @@ class TestTemplatesListsCest
 
 		$tplId = $I->grabTextFrom(TplManage::$firstTableId);
 
-		$user = getenv('USER');
+		$user = getenv('BW_TESTER_USER');
 
 		if (!$user)
 		{
-			$user = 'root';
+			$user = 'user2';
 		}
 
-		$path     = Generals::$downloadFolder['user'];
+		$path     = Generals::$downloadFolder[$user];
 		$filename = 'bwpostman_template_export_id_' . $tplId . '.zip';
 		$downloadPath = $path . $filename;
 

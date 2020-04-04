@@ -375,7 +375,8 @@ class Generals
 	public static $downloadFolder = array(
 		'root' => '/root/Downloads/',
 		'jenkins' => '/home/jenkins/Downloads/',
-		'user' => '/tests/tests/_output/',
+		'user1' => '/tests/tests/_output/',
+		'user2' => '/repositories/artifacts/bwpostman/downloads/',
 		);
 
 	/**

@@ -74,7 +74,14 @@ class TestMaintenanceCest
 
 		$versionToTest = $this->getVersionNumber($I);
 
-		$path     = Generals::$downloadFolder['user'];
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'user2';
+		}
+
+		$path     = Generals::$downloadFolder[$user];
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml.zip';
 		$downloadPath = $path . $filename;
 
@@ -113,7 +120,14 @@ class TestMaintenanceCest
 
 		$versionToTest = $this->getVersionNumber($I);
 
-		$path     = Generals::$downloadFolder['user'];
+		$user = getenv('BW_TESTER_USER');
+
+		if (!$user)
+		{
+			$user = 'user2';
+		}
+
+		$path     = Generals::$downloadFolder[$user];
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
 		$downloadPath = $path . $filename;
 

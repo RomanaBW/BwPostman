@@ -29,7 +29,7 @@ modules:
           chromeOptions:
               args: ["--no-sandbox", "--window-size=1440,900"]
               prefs:
-                download.default_directory: "{{ codecept_path_output }}"
+                download.default_directory: "/repositories/artifacts/bwpostman/downloads"
 
       connection_timeout: 60
       restart: false

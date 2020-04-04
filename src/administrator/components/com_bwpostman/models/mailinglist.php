@@ -78,8 +78,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		parent::__construct();
 
 		$jinput	= JFactory::getApplication()->input;
-		$array	= $jinput->get('cid',  0, '');
-		$this->setId((int) $array[0]);
+		$cids	= $jinput->get('cid',  array(0), '');
+		$this->setId((int) $cids[0]);
 	}
 
 	/**

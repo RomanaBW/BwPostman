@@ -446,8 +446,7 @@ class TestSubscribersDetailsCest
 
 		if ($options->show_gender)
 		{
-			$I->clickAndWait(SubEdit::$gender, 1);
-			$I->clickAndWait(SubEdit::$male, 1);
+			$I->selectOption(SubEdit::$gender, 'male');
 		}
 
 		// omit first name
@@ -496,14 +495,11 @@ class TestSubscribersDetailsCest
 			if ($options->special_field_obligation)
 			{
 				$I->fillField(SubEdit::$special, "");
-				if ($options->special_field_obligation)
-				{
-					$I->click(Generals::$toolbar4['Save']);
+				$I->click(Generals::$toolbar4['Save']);
 
-					$I->waitForElement(Generals::$alert_header, 30);
-					$I->see("Warning", Generals::$alert_heading);
-					$I->see(Generals::$invalidField . SubEdit::$specialTitle, Generals::$alert_warn);
-				}
+				$I->waitForElement(Generals::$alert_header, 30);
+				$I->see("Error", Generals::$alert_heading);
+				$I->see(sprintf(SubEdit::$popup_special, $options->special_label), Generals::$alert_error);
 			}
 
 			$I->fillField(SubEdit::$special, SubEdit::$field_special);

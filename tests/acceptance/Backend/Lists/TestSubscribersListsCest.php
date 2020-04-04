@@ -1342,6 +1342,17 @@ class TestSubscribersListsCest
 	private function cleanupImportedSubscribers(AcceptanceTester $I, $subscribers)
 	{
 		// @ToDo: Check for mailinglist of imported subscribers
+
+		$mailCol = 5;
+		$formatCol = 6;
+		$options = $I->getManifestOptions('com_bwpostman');
+
+		if (!$options->show_gender)
+		{
+			$mailCol = 4;
+			$formatCol = 5;
+		}
+
 		// Check for imported subscribers
 		foreach ($subscribers as $subscriber)
 		{
@@ -1365,7 +1376,7 @@ class TestSubscribersListsCest
 			$table_identifier = ".//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td";
 			$I->see($subscriber['name'], $table_identifier . '[2]');
 			$I->see($subscriber['firstname'], $table_identifier . '[3]');
-			$I->see($subscriber['email'], $table_identifier . '[4]');
+			$I->see($subscriber['email'], $table_identifier . '[' . $mailCol . ']');
 
 			$format = 'HTML';
 
@@ -1374,7 +1385,7 @@ class TestSubscribersListsCest
 				$format = 'Text';
 			}
 
-			$I->see($format, $table_identifier . '[5]');
+			$I->see($format, $table_identifier . '[' . $formatCol . ']');
 
 			// Delete imported subscribers
 			$edit_arc_del_array                = SubsEdit::prepareDeleteArray($I);

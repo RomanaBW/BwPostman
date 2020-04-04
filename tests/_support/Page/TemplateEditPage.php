@@ -563,10 +563,10 @@ class TemplateEditPage
 		self::fillRequired($I, 'Text');
 
 		// @ToDo: This is a workaround for the access tests because J4 doesn't show any images
-		if ($user == 'AdminTester')
-		{
-			self::selectThumbnail($I, $user);
-		}
+//		if ($user == 'AdminTester')
+//		{
+//			self::selectThumbnail($I, $user);
+//		}
 
 		self::fillTextContent($I);
 	}

@@ -162,6 +162,8 @@ class SubscribeComponentCest
 	public function SubscribeMissingValuesComponent(AcceptanceTester $I)
 	{
 		$options        = $I->getManifestOptions('com_bwpostman');
+		codecept_debug("Component Options:");
+		codecept_debug($options);
 		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
 
 		$I->wantTo("Test messages for missing input values by component");

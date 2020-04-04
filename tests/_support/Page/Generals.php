@@ -558,8 +558,8 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $sort_arrows = array(
-		'up'    => 'icon-arrow-up-3',
-		'down'  => 'icon-arrow-down-3'
+		'up'    => 'icon-arrow-up-3', # [contains(@class, 'icon-arrow-up-3')]
+		'down'  => 'icon-arrow-down-3' # [contains(@class, 'icon-arrow-down-3')]
 	);
 
 	/**
@@ -601,7 +601,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $table_headcol_arrow_location = "//*/table/thead/tr/th[%s]/a/span";
+	public static $table_headcol_arrow_location = "//*/table/thead/tr/th[%s]/a/span[2][contains(@class, '%s')]";
 
 	/**
 	 * @var string

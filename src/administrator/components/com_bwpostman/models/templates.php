@@ -667,7 +667,8 @@ class BwPostmanModelTemplates extends JModelList
 				foreach ($queries as $this->query)
 				{
 					$this->query = trim($this->query);
-					if ($this->query != '' && $this->query{0} != '#')
+//					if ($this->query != '' && $this->query{0} != '#') // curly braces are deprecated
+					if ($this->query != '' && $this->query[0] != '#')
 					{
 						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
 						$db->setQuery($this->query);

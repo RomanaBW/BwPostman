@@ -105,6 +105,10 @@
       set_fact:
         web_container_ip: "{{ hostvars['localhost']['web_container_ip'] }}"
 
+    - name: Show ip of webserver
+      debug:
+        msg: "{{ web_container_ip }}"
+
     - name: Set db host name
       set_fact:
         db_host: "{{ acceptance_source.db_container_name }}"

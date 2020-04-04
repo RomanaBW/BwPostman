@@ -911,7 +911,7 @@ class TestTemplatesDetailsCest
 		$this->fillRequiredExtended($I, 'HTML');
 
 		// select thumbnail
-		TplEdit::selectThumbnail($I, 'AdminTester');
+//		TplEdit::selectThumbnail($I, 'AdminTester');
 
 		$this->selectRadiosExtended($I);
 	}
@@ -932,8 +932,8 @@ class TestTemplatesDetailsCest
 		$this->fillRequiredExtended($I, 'Text');
 
 		// select thumbnail
-		TplEdit::selectThumbnail($I, 'AdminTester');
-
+//		TplEdit::selectThumbnail($I, 'AdminTester');
+//
 		$this->selectRadiosExtended($I);
 	}
 

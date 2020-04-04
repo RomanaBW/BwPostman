@@ -2272,6 +2272,9 @@ class OptionsPage
 
 		$I->clickAndWait(Generals::$toolbar4['Options'], 1);
 
+		$I->setManifestOption('com_bwpostman', 'disclaimer', '0');
+		$I->setManifestOption('com_bwpostman', 'use_Captcha', '0');
+
 		$I->click(Generals::$toolbar['Save']);
 
 		$I->waitForElementVisible(Generals::$alert_success4, 15);

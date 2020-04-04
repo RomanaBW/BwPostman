@@ -84,10 +84,12 @@ class TestMaintenanceCest
 		$path     = Generals::$downloadFolder[$user];
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml.zip';
 		$downloadPath = $path . $filename;
+		codecept_debug("Download path: " . $downloadPath);
 
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 40);
 
 		$I->assertTrue(file_exists($downloadPath));
+		unlink($downloadPath);
 	}
 
 	/**

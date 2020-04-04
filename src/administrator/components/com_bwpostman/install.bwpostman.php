@@ -1995,7 +1995,7 @@ class Com_BwPostmanInstallerScript
 		$params_default['disclaimer_menuitem']	            = "457";
 		$params_default['disclaimer_target']			    = "0";
 		$params_default['showinmodal']	                    = "1";
-		$params_default['use_captcha']					    = "2";
+		$params_default['use_captcha']					    = "0";
 		$params_default['security_question']	            = "Wieviele Beine hat ein Pferd? (1, 2, ...)";
 		$params_default['security_answer']	                = "4";
 		$params_default['activation_salutation_text']	    = "Hello";

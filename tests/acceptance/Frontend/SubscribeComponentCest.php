@@ -161,8 +161,9 @@ class SubscribeComponentCest
 	 */
 	public function SubscribeMissingValuesComponent(AcceptanceTester $I)
 	{
-		$options        = $I->getManifestOptions('com_bwpostman');
-		$I->setManifestOption('com_bwpostman', 'disclaimer', 0);
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', 1);
+		$I->setManifestOption('com_bwpostman', 'disclaimer', 1);
+		$options = $I->getManifestOptions('com_bwpostman');
 		codecept_debug("Component Options:");
 		codecept_debug($options);
 		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
@@ -268,6 +269,9 @@ class SubscribeComponentCest
 			$I->fillField(SubsView::$special, SubsView::$special_fill);
 			$I->checkOption(SubsView::$disclaimer);
 		}
+
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', 0);
+		$I->setManifestOption('com_bwpostman', 'disclaimer', 0);
 	}
 
 	/**

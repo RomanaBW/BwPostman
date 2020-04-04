@@ -256,7 +256,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error      = '//*[@id="system-message"]/joomla-alert[@type="danger"]/div[2]/p';
+	public static $alert_error      = "//*[@id='system-message']/joomla-alert[@type='danger']/div[2]/p";
 
 	/**
 	 * @var string

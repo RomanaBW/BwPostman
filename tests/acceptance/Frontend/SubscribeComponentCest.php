@@ -246,7 +246,10 @@ class SubscribeComponentCest
 			}
 			$I->click(SubsView::$button_register);
 			$I->scrollTo(Generals::$sys_message_container, 0, -100);
-			$I->see(sprintf(SubsView::$popup_enter_special, $options->special_label));
+			if ($options->special_field_obligation)
+			{
+				$I->see(sprintf(SubsView::$popup_enter_special, $options->special_label));
+			}
 			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
 			$I->fillField(SubsView::$name, SubsView::$lastname_fill);
 			$I->fillField(SubsView::$mail, SubsView::$mail_fill_1);

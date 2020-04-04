@@ -1988,7 +1988,7 @@ class Com_BwPostmanInstallerScript
 		$params_default['default_emailformat']			    = "0";
 		$params_default['show_desc']	                    = "1";
 		$params_default['desc_length']	                    = "150";
-		$params_default['disclaimer']					    = "1";
+		$params_default['disclaimer']					    = "0";
 		$params_default['disclaimer_selection']	            = "1";
 		$params_default['disclaimer_link']				    = "http:\/\/www.disclaimer.de\/disclaimer.htm";
 		$params_default['article_id']	                    = "70";

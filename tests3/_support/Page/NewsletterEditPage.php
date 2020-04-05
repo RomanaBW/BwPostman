@@ -556,15 +556,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_html    = ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[1]/div/fieldset/div/label[2]/span/span[contains(text(),'Standard Basic')]";
+	public static $template_html    = "//*/span[starts-with(normalize-space(text()),'Standard Basic')]/parent::span/parent::label/input[1]";// Template Standard Basic [3]
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_text
-		= ".//*[@id='adminForm']/div[3]/fieldset[1]/div/div[2]/div/fieldset/div/label[4]/span/span[contains(text(),'Standard TEXT Template 3')]";
+	public static $template_text		= "//*/span[starts-with(normalize-space(text()),'Standard TEXT Template 3')]/parent::span/parent::label/input[1]";
 
 
 	/**

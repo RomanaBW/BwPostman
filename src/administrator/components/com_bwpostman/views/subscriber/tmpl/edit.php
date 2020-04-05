@@ -166,7 +166,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 
 			<?php if ($new_test != '9') : ?>
 				<div class="width-100 fltlft row-fluid">
-					<fieldset class="adminform">
+					<fieldset id="subs_mailinglists" class="adminform">
 						<legend>
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
 								<?php echo $image; ?>

@@ -114,7 +114,7 @@ class TestTemplatesDetailsCest
 
 		// check if preview is visible at template list
 		$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
-//		$I->seeElement($thumb);
+		$I->seeElement($thumb);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -888,7 +888,7 @@ class TestTemplatesDetailsCest
 	{
 		TplEdit::fillRequired($I, 'HTML');
 
-//		TplEdit::selectThumbnail($I, 'AdminTester');
+		TplEdit::selectThumbnail($I, 'AdminTester');
 
 		$this->fillHtmlContent($I);
 

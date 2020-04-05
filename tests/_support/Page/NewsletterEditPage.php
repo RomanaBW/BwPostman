@@ -170,7 +170,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4_preview_html_divider    = "/html/body/table[1]/tbody/tr[5]/td";
+	public static $tab4_preview_html_divider    = "/html/body/table[1]/tbody/tr[5]/td[contains(@class, 'divider')]";
 
 	/**
 	 * @var string
@@ -577,14 +577,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_html    = "//*/span[contains(text(),'Standard Basic')]";// Template Standard Basic [3]
+	public static $template_html    = "//*/span[starts-with(normalize-space(text()),'Standard Basic')]/parent::span/parent::label/input[1]";// Template Standard Basic [3]
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_text		= "//*/span[contains(text(),'Standard TEXT Template 3')]";
+	public static $template_text		= "//*/span[starts-with(normalize-space(text()),'Standard TEXT Template 3')]/parent::span/parent::label/input[1]";
 
 
 	/**
@@ -1169,6 +1169,7 @@ class NewsletterEditPage
 		$I->scrollTo(self::$legend_templates);
 		$I->click(self::$template_html);
 		$I->click(self::$template_text);
+		$I->wait(1);
 
 		self::selectRecipients($I, $toUsergroup);
 

@@ -8,7 +8,23 @@
     src: "../files/joomla/{{ item.name }}"
     dest: "{{ joomla_additional_files_folder }}"
   with_items:
-    - { name: joomla.sql }
+    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
+    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
+  when: item.is_j3 | default(True) | bool
+
+- name: Replace placeholder for table prefix with real value
+  replace:
+    path: "{{ joomla_additional_files_folder }}/{{ item.name }}"
+    regexp: '#__'
+    replace: 'jos_'
+  with_items:
+    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
     - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
   when: item.is_j3 | default(True) | bool
 
@@ -29,7 +45,10 @@
 - name: insert Joomla data to database
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item.name }}"
   with_items:
-    - { name: joomla.sql }
+    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
+    - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
     - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
   when: item.is_j3 | default(True) | bool
 

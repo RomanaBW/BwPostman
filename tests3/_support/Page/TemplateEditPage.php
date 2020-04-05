@@ -258,14 +258,14 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $html_style       = ".//*[@id='jform_tpl_html']";
+	public static $html_style       = ".//*[@id='jform_tpl_html_ifr']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $text_style       = ".//*[@id='jform_tpl_html']";
+	public static $text_style       = ".//*[@id='jform_tpl_html_ifr']";
 
 	//buttons
 

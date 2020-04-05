@@ -123,7 +123,7 @@ class MainviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addHtmlTemplateButton    = '//*/div[contains(@class,"bw-icons")]/div[11]/div/a';
+	public static $addHtmlTemplateButton    = "//*/div[contains(@class,'bw-icons')]/div[11]/div/a";
 
 	/**
 	 * @var string

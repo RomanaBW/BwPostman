@@ -311,6 +311,13 @@ class SubscriberEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $mls_label            = "//*[@id='subs_mailinglists']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $mls_accessible       = ".//*[@id='details']/div/fieldset/div[1]/div/fieldset/div/p[%s]/label";
@@ -410,6 +417,7 @@ class SubscriberEditPage
 		$I->clickAndWait(self::$confirm, 1);
 		$I->clickAndWait(self::$confirmed, 1);
 
+		$I->scrollTo(self::$mls_label, 0, -100);
 		$I->click(sprintf(self::$mls_accessible, 2));
 		$I->click(sprintf(self::$mls_nonaccessible, 3));
 		$I->scrollTo(self::$mls_internal_label, 0, -100);

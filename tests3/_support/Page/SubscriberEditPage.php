@@ -436,15 +436,16 @@ class SubscriberEditPage
 	 */
 	public static function prepareDeleteArray(\AcceptanceTester $I)
 	{
-		$edit_arc_del_array                      = self::$arc_del_array;
-		$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 4);
+		$edit_arc_del_array = self::$arc_del_array;
+		$title_col = 4;
 
 		$options = $I->getManifestOptions('com_bwpostman');
 
 		if ($options->show_gender)
 		{
-			$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], 5);
+			$title_col = 5;
 		}
+		$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], $title_col);
 
 		return $edit_arc_del_array;
 	}

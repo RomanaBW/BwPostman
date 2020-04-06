@@ -111,14 +111,21 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender       = ".//*[@id='jform_gender_chzn']/a";
+	public static $gender_list       = ".//*[@id='gender_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $gender_list_id       = "gender_chzn";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender_female = ".//*[@id='edit_gender']/label[2]";
+	public static $gender_female          = ".//*/li[text()='female']";
 
 	/**
 	 * @var string
@@ -764,7 +771,7 @@ class SubscriberviewPage
 
 		if ($options->show_gender)
 		{
-			$I->click(self::$gender_female);
+			$I->clickSelectList(self::$gender_list, self::$gender_female, self::$gender_list_id);
 		}
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)

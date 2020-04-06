@@ -503,7 +503,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFileContent($file_name)
+	public function getFileContent($file_name)
 	{
 		$content    = '';
 
@@ -610,6 +610,7 @@ class TemplateEditPage
 		{
 			$I->waitForElement("//*[@id='browser-list']", 30);
 			$I->waitForElement(self::$thumb_select, 30);
+			$I->scrollTo(self::$thumb_select, 0, -100);
 			$I->clickAndWait(self::$thumb_select, 1);
 
 			$I->clickAndWait(self::$thumb_insert, 1);

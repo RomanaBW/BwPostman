@@ -258,14 +258,21 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $html_style       = ".//*[@id='jform_tpl_html_ifr']";
+	public static $html_style_frame       = "jform_tpl_html_editor_source_iframe";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $text_style       = ".//*[@id='jform_tpl_html_ifr']";
+	public static $html_style       = "//*[@id='jform_tpl_html']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $text_style       = ".//*[@id='jform_tpl_html']";
 
 	//buttons
 
@@ -423,7 +430,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $html_style_content       = '';
+	public static $html_style_content       = 'test text html';
 
 	/**
 	 * @var string
@@ -454,7 +461,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFileContent($file_name)
+	public function getFileContent($file_name)
 	{
 		$content    = '';
 

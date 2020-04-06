@@ -911,7 +911,7 @@ class TestTemplatesDetailsCest
 		$this->fillRequiredExtended($I, 'HTML');
 
 		// select thumbnail
-//		TplEdit::selectThumbnail($I, 'AdminTester');
+		TplEdit::selectThumbnail($I, 'AdminTester');
 
 		$this->selectRadiosExtended($I);
 	}
@@ -932,8 +932,8 @@ class TestTemplatesDetailsCest
 		$this->fillRequiredExtended($I, 'Text');
 
 		// select thumbnail
-//		TplEdit::selectThumbnail($I, 'AdminTester');
-//
+		TplEdit::selectThumbnail($I, 'AdminTester');
+
 		$this->selectRadiosExtended($I);
 	}
 
@@ -1013,10 +1013,16 @@ class TestTemplatesDetailsCest
 	 */
 	private function fillHtmlContent(AcceptanceTester $I)
 	{
+		$html_style_content   = TplEdit::getFileContent('tests/_data/html-newsletter.txt');
+
 		$I->clickAndWait(TplEdit::$tpl_tab3, 1);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
-		$I->fillField(TplEdit::$html_style, TplEdit::$html_style_content);
+
+		$I->executeJS("document.getElementById('jform_tpl_html').style.display = 'inline'");
+		$I->fillField(TplEdit::$html_style, $html_style_content);
+		$I->executeJS("document.getElementById('jform_tpl_html').style.display = 'none'");
+
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);

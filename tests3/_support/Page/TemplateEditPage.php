@@ -564,12 +564,15 @@ class TemplateEditPage
 		try
 		{
 			$I->waitForElement(".//*[@id='browser-list']", 5);
+			$I->scrollTo(self::$thumb_select, 0, -100);
 			$I->clickAndWait(self::$thumb_select, 1);
 
 			$I->clickAndWait(self::$thumb_insert, 1);
 		}
 		catch (\Exception $e)
 		{
+			codecept_debug("Show exception:");
+			codecept_debug($e);
 			$I->switchToIFrame(Generals::$image_frame);
 
 			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 5);

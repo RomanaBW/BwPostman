@@ -989,15 +989,18 @@ class TestTemplatesDetailsCest
 	 */
 	private function fillHtmlContent(AcceptanceTester $I)
 	{
+		$html_style_content   = TplEdit::getFileContent('tests/_data/html-newsletter.txt');
+
 		$I->clickAndWait(TplEdit::$tpl_tab3, 1);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
-		$I->fillField(TplEdit::$html_style, TplEdit::$html_style_content);
+		// @ToDo: Get this to work. JCE has done some changes, so textarea is not user-editable
+//		$I->fillField("textarea#jform_tpl_html.wf-editor.mce_editable", $html_style_content);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
-		$I->clickAndWait(TplEdit::$toolbar['Save'], 1);
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 	}
 
 	/**
@@ -1007,8 +1010,10 @@ class TestTemplatesDetailsCest
 	 */
 	private function fillCssContent(AcceptanceTester $I)
 	{
+		$css_style_content   = TplEdit::getFileContent('tests/_data/html-newsletter.css');
+
 		$I->click(TplEdit::$tpl_tab2);
-		$I->fillField(TplEdit::$css_style, TplEdit::$css_style_content);
+		$I->fillField(TplEdit::$css_style, $css_style_content);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 	}

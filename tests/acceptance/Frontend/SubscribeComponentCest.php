@@ -164,8 +164,6 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', 1);
 		$I->setManifestOption('com_bwpostman', 'disclaimer', 1);
 		$options = $I->getManifestOptions('com_bwpostman');
-		codecept_debug("Component Options:");
-		codecept_debug($options);
 		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
 
 		$I->wantTo("Test messages for missing input values by component");
@@ -402,7 +400,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$register_edit_url);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_2);
 		$I->click(SubsView::$send_edit_link);
-			$I->waitForElement(SubsView::$err_get_editlink, 30);
+		$I->waitForElement(SubsView::$err_get_editlink, 30);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_no_subscription);
 	}

@@ -994,8 +994,8 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(TplEdit::$tpl_tab3, 1);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
-		// @ToDo: Get this to work. JCE has done some changes, so textarea is not user-editable
-//		$I->fillField("textarea#jform_tpl_html.wf-editor.mce_editable", $html_style_content);
+//		@ToDo: Find a way to fill this editor field. It is not more fillable this way since J3.9.14 or 3.9.15.
+//		$I->fillField(TplEdit::$html_style, $html_style_content);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);

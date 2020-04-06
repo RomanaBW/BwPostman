@@ -161,7 +161,9 @@ class SubscribeComponentCest
 	 */
 	public function SubscribeMissingValuesComponent(AcceptanceTester $I)
 	{
-		$options        = $I->getManifestOptions('com_bwpostman');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', 1);
+		$I->setManifestOption('com_bwpostman', 'disclaimer', 1);
+		$options = $I->getManifestOptions('com_bwpostman');
 		$bwpm_version   = getenv('BW_TEST_BWPM_VERSION');
 
 		$I->wantTo("Test messages for missing input values by component");
@@ -234,8 +236,15 @@ class SubscribeComponentCest
 		// omit additional field
 		if ($options->show_special || $options->special_field_obligation)
 		{
+			if ($options->special_label === '')
+			{
+				$options->special_label = 'Additional Field';
+			}
 			$I->click(SubsView::$button_register);
-			$I->see(sprintf(SubsView::$popup_enter_special, $options->special_label));
+			if ($options->special_field_obligation)
+			{
+				$I->see(sprintf(SubsView::$popup_enter_special, $options->special_label));
+			}
 			$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
 			$I->fillField(SubsView::$name, SubsView::$lastname_fill);
 			$I->fillField(SubsView::$mail, SubsView::$mail_fill_1);
@@ -253,6 +262,9 @@ class SubscribeComponentCest
 			$I->fillField(SubsView::$special, SubsView::$special_fill);
 			$I->checkOption(SubsView::$disclaimer);
 		}
+
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', 0);
+		$I->setManifestOption('com_bwpostman', 'disclaimer', 0);
 	}
 
 	/**
@@ -382,7 +394,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$register_edit_url);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_2);
 		$I->click(SubsView::$send_edit_link);
-			$I->waitForElement(SubsView::$err_get_editlink, 30);
+		$I->waitForElement(SubsView::$err_get_editlink, 30);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_no_subscription);
 	}

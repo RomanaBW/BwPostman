@@ -479,14 +479,11 @@ class TestSubscribersDetailsCest
 			if ($options->special_field_obligation)
 			{
 				$I->fillField(SubEdit::$special, "");
-				if ($options->special_field_obligation)
-				{
-					$I->click(SubEdit::$toolbar['Save']);
+				$I->click(SubEdit::$toolbar['Save']);
 
-					$I->waitForElement(Generals::$alert_header, 30);
-					$I->see("Error", Generals::$alert_header);
-					$I->see(Generals::$invalidField . SubEdit::$specialTitle, Generals::$alert_error);
-				}
+				$I->waitForElement(Generals::$alert_header, 30);
+				$I->see("Error", Generals::$alert_header);
+				$I->see(Generals::$invalidField . SubEdit::$specialTitle, Generals::$alert_error);
 			}
 
 			$I->fillField(SubEdit::$special, SubEdit::$field_special);
@@ -510,6 +507,8 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(SubEdit::$confirm, 1);
 		$I->clickAndWait(SubEdit::$confirmed, 1);
+
+		$I->scrollTo(SubEdit::$mls_label, 0, -100);
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);

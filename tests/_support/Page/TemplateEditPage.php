@@ -581,8 +581,8 @@ class TemplateEditPage
 		}
 		catch (\Exception $e)
 		{
-//			codecept_debug("Exception:");
-//			codecept_debug($e);
+			codecept_debug("Exception:");
+			codecept_debug($e);
 			$I->switchToIFrame(Generals::$image_frame);
 
 			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 5);

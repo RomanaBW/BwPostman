@@ -419,40 +419,6 @@ class TemplateEditPage
 
 
 	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $css_style_content        = '';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $html_style_content       = 'test text html';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $text_style_content       = '';
-
-	/**
-	 * TemplateEditPage constructor.
-	 *
-	 * @since       2.0.0
-	 */
-	public function __construct()
-	{
-		$data_dir   = 'tests/_data/';
-		self::$css_style_content    = $this->getFileContent($data_dir . 'html-newsletter.css');
-		self::$html_style_content   = $this->getFileContent($data_dir . 'html-newsletter.txt');
-		self::$text_style_content   = $this->getFileContent($data_dir . 'text-newsletter.txt');
-	}
-
-	/**
 	 * Method to get file content to fill in template fields (CSS, HTML and Text)
 	 *
 	 * @param $file_name
@@ -461,7 +427,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public function getFileContent($file_name)
+	public static function getFileContent($file_name)
 	{
 		$content    = '';
 
@@ -564,6 +530,7 @@ class TemplateEditPage
 		try
 		{
 			$I->waitForElement(".//*[@id='browser-list']", 5);
+			$I-> waitForElement(self::$thumb_select, 5);
 			$I->scrollTo(self::$thumb_select, 0, -100);
 			$I->clickAndWait(self::$thumb_select, 1);
 
@@ -592,8 +559,10 @@ class TemplateEditPage
 	 */
 	public static function fillTextContent(\AcceptanceTester $I)
 	{
+		$text_style_content   = self::getFileContent('tests/_data/html-newsletter.txt');
+
 		$I->click(self::$tpl_tab2);
-		$I->fillField(self::$text_style, self::$text_style_content);
+		$I->fillField(self::$text_style, $text_style_content);
 		$I->scrollTo(self::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(self::$button_refresh_preview, 2);
 	}

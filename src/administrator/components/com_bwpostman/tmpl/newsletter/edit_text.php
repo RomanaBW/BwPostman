@@ -88,7 +88,7 @@ $currentTab = 'edit_text';
 				<div class="card card-body mb-2">
 					<div class="row">
 						<div class="col-12 mb-2">
-							<div class=“h3“>
+							<div class="h3">
 								<?php echo Text::_('COM_BWPOSTMAN_NL_TEXT'); ?>
 							</div>
 							<?php echo '<div>' . Text::_('COM_BWPOSTMAN_NL_PERSONALISATION_NOTE') . '</div>'; ?>

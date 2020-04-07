@@ -86,7 +86,7 @@ $currentTab = 'edit_preview';
 				<div class="card card-body mb-2">
 					<div class="row">
 						<div class="col-12 mb-2">
-							<div class=“h3“>
+							<div class="h3">
 								<?php echo Text::_('COM_BWPOSTMAN_NL_HEADER'); ?>
 							</div>
 							<div class="table-responsive w-auto">
@@ -132,7 +132,7 @@ $currentTab = 'edit_preview';
 					</div>
 					<div class="row">
 						<div id="preview-html" class="col-12 mb-4">
-							<div class=“h3“>
+							<div class="h3">
 								<?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?>
 							</div>
 							<div class="border">
@@ -146,7 +146,7 @@ $currentTab = 'edit_preview';
 					</div>
 					<div class="row">
 						<div id="preview-text" class="col-12 mb-2">
-							<div class=“h3“>
+							<div class="h3">
 								<?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?>
 							</div>
 							<div class="border">

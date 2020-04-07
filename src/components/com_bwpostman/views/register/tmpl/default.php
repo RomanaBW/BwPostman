@@ -41,7 +41,10 @@ JHtml::_('formbehavior.chosen', 'select');
 HTMLHelper::_('bootstrap.tooltip');
 
 // Depends on jQuery UI
-JHtml::_('jquery.ui', array('core'));
+if(version_compare(JVERSION, '3.999.999', 'le'))
+{
+	JHtml::_('jquery.ui', array('core'));
+}
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>

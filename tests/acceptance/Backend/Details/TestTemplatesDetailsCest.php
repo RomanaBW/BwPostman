@@ -1038,8 +1038,10 @@ class TestTemplatesDetailsCest
 	 */
 	private function fillCssContent(AcceptanceTester $I)
 	{
+		$css_style_content   = TplEdit::getFileContent('tests/_data/html-newsletter.css');
+
 		$I->click(TplEdit::$tpl_tab2);
-		$I->fillField(TplEdit::$css_style, TplEdit::$css_style_content);
+		$I->fillField(TplEdit::$css_style, $css_style_content);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 	}

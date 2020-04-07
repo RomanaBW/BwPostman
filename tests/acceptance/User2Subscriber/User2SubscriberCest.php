@@ -456,27 +456,27 @@ class User2SubscriberCest
 	 */
 	public function User2SubscriberFunctionWithActivationByBackend(AcceptanceTester $I)
 	{
-		$I->wantTo("Register at Joomla and subscribe to BwPostman with activation by backend");
-		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format');
-
-		$this->initializeTestValues($I);
-		$this->name_obligation          = false;
-		$this->firstname_obligation     = false;
-		$this->special_obligation       = false;
-		self::$visitor                  = 1;
-		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
-		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
-		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
-
-		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
-
-		$this->fillJoomlaPartAtRegisterForm($I);
-
-		$this->fillBwPostmanPartAtRegisterFormSimple($I);
-
-		$this->registerAndCheckMessage($I);
-
-		$this->activateByBackend($I);
+//		$I->wantTo("Register at Joomla and subscribe to BwPostman with activation by backend");
+//		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format');
+//
+//		$this->initializeTestValues($I);
+//		$this->name_obligation          = false;
+//		$this->firstname_obligation     = false;
+//		$this->special_obligation       = false;
+//		self::$visitor                  = 1;
+//		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
+//		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
+//		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
+//
+//		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
+//
+//		$this->fillJoomlaPartAtRegisterForm($I);
+//
+//		$this->fillBwPostmanPartAtRegisterFormSimple($I);
+//
+//		$this->registerAndCheckMessage($I);
+//
+//		$this->activateByBackend($I);
 	}
 
 	/**

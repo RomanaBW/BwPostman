@@ -88,9 +88,9 @@ $currentTab = 'edit_html';
 				<div class="card card-body mb-2">
 					<div class="row">
 						<div class="col-12 mb-2">
-							<h3>
+							<div class=“h3“>
 								<?php echo Text::_('COM_BWPOSTMAN_NL_HTML'); ?>
-							</h3>
+							</div>
 							<?php
 							foreach($this->form->getFieldset('html_version') as $field):
 								// if old template - show no intro fields

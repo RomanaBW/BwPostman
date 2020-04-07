@@ -86,9 +86,9 @@ $currentTab = 'edit_preview';
 				<div class="card card-body mb-2">
 					<div class="row">
 						<div class="col-12 mb-2">
-							<h3>
+							<div class=“h3“>
 								<?php echo Text::_('COM_BWPOSTMAN_NL_HEADER'); ?>
-							</h3>
+							</div>
 							<div class="table-responsive w-auto">
 								<table class="table table-borderless shadow-none w-auto">
 									<tr>
@@ -132,9 +132,9 @@ $currentTab = 'edit_preview';
 					</div>
 					<div class="row">
 						<div id="preview-html" class="col-12 mb-4">
-							<h3>
+							<div class=“h3“>
 								<?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?>
-							</h3>
+							</div>
 							<div class="border">
 								<iframe name="myIframeHtml"
 										src="index.php?option=com_bwpostman&amp;view=newsletter&amp;
@@ -146,9 +146,9 @@ $currentTab = 'edit_preview';
 					</div>
 					<div class="row">
 						<div id="preview-text" class="col-12 mb-2">
-							<h3>
+							<div class=“h3“>
 								<?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?>
-							</h3>
+							</div>
 							<div class="border">
 								<iframe name="myIframeText"
 										src="index.php?option=com_bwpostman&amp;view=newsletter&amp;

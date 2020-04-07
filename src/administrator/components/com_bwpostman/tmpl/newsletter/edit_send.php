@@ -100,9 +100,9 @@ $currentTab = 'edit_send';
 					<div class="card card-body mb-2">
 						<div class="row">
 							<div class="col-12 mb-2">
-								<h3>
+								<div class=“h3“>
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL'); ?>
-								</h3>
+								</div>
 								<div class="clearfix mb-3">
 									<?php echo $image_newsletter; ?>
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_TO_RECIPIENTS'); ?>
@@ -139,9 +139,9 @@ $currentTab = 'edit_send';
 				<div class="card card-body mb-2">
 					<div class="row">
 						<div class="col-12 mb-2">
-							<h3>
+							<div class=“h3“>
 								<?php echo Text::_('COM_BWPOSTMAN_NL_SENDTESTMAIL'); ?>
-							</h3>
+							</div>
 							<div class="clearfix mb-3">
 								<?php echo $image_testrecipients; ?>
 								<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_TO_TESTRECIPIENTS'); ?>

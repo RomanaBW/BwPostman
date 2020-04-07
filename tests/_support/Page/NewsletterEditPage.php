@@ -719,14 +719,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_general       = "//*/div[contains(@class, 'nl-generals')]/div/h3";
+	public static $legend_general       = "//*/div[contains(@class, 'nl-generals')]/div/div[contains(@class, 'h3')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_templates     = "//*/div[contains(@class, 'nl-template')]/div/h3";
+	public static $legend_templates     = "//*/div[contains(@class, 'nl-template')]/div/div[contains(@class, 'h3')]";
 
 	/**
 	 * @var string
@@ -747,7 +747,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_content       = "//*/div[contains(@class, 'nl-content')]/div/h3";
+	public static $legend_content       = "//*/div[contains(@class, 'nl-content')]/div/div[contains(@class, 'h3')]";
 
 
 	/**

@@ -459,41 +459,6 @@ class TemplateEditPage
 		'Help'          => "//*[@id='toolbar-help']/button",
 	);
 
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $css_style_content        = '';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $html_style_content       = '';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $text_style_content       = '';
-
-	/**
-	 * TemplateEditPage constructor.
-	 *
-	 * @since       2.0.0
-	 */
-	public function __construct()
-	{
-		$data_dir   = 'tests/_data/';
-		self::$css_style_content    = $this->getFileContent($data_dir . 'html-newsletter.css');
-		self::$html_style_content   = $this->getFileContent($data_dir . 'html-newsletter.txt');
-		self::$text_style_content   = $this->getFileContent($data_dir . 'text-newsletter.txt');
-	}
-
 	/**
 	 * Method to get file content to fill in template fields (CSS, HTML and Text)
 	 *
@@ -503,7 +468,7 @@ class TemplateEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public function getFileContent($file_name)
+	public static function getFileContent($file_name)
 	{
 		$content    = '';
 
@@ -562,11 +527,10 @@ class TemplateEditPage
 	{
 		self::fillRequired($I, 'Text');
 
-		// @ToDo: This is a workaround for the access tests because J4 doesn't show any images
-//		if ($user == 'AdminTester')
-//		{
-//			self::selectThumbnail($I, $user);
-//		}
+		if ($user == 'AdminTester')
+		{
+			self::selectThumbnail($I, $user);
+		}
 
 		self::fillTextContent($I);
 	}
@@ -609,6 +573,7 @@ class TemplateEditPage
 		try
 		{
 			$I->waitForElement(".//*[@id='browser-list']", 5);
+			$I-> waitForElement(self::$thumb_select, 5);
 			$I->scrollTo(self::$thumb_select, 0, -100);
 			$I->clickAndWait(self::$thumb_select, 1);
 
@@ -616,8 +581,8 @@ class TemplateEditPage
 		}
 		catch (\Exception $e)
 		{
-			codecept_debug("Exception:");
-			codecept_debug($e);
+//			codecept_debug("Exception:");
+//			codecept_debug($e);
 			$I->switchToIFrame(Generals::$image_frame);
 
 			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 5);
@@ -630,33 +595,6 @@ class TemplateEditPage
 		}
 
 		$I->switchToIFrame();
-
-//		if ($user === 'AdminTester' || $user === '')
-//		{
-//			$I->waitForElement("//*[@id='browser-list']", 30);
-//			$I->waitForElement(self::$thumb_select, 30);
-//			$I->scrollTo(self::$thumb_select, 0, -100);
-//			$I->clickAndWait(self::$thumb_select, 1);
-//
-//			$I->clickAndWait(self::$thumb_insert, 1);
-//		}
-//		else
-//		{
-//			$I->switchToIFrame(Generals::$image_frame);
-//
-//			$I->waitForElementVisible("//div[contains(@class, 'media-browser-items')]", 30);
-//			$I->waitForElementVisible(self::$thumb_select_user, 30);
-//			$I->clickAndWait(self::$thumb_select_user, 1);
-//
-//			$I->switchToIFrame();
-//			$I->switchToIFrame(Generals::$media_frame);
-//
-//			$I->clickAndWait(self::$thumb_insert_user, 1);
-//		}
-//
-//		$I->clickAndWait(self::$thumb_cancel, 1);
-//
-//		$I->switchToIFrame();
 	}
 
 	/**
@@ -666,8 +604,10 @@ class TemplateEditPage
 	 */
 	public static function fillTextContent(\AcceptanceTester $I)
 	{
+		$text_style_content   = self::getFileContent('tests/_data/html-newsletter.txt');
+
 		$I->click(self::$tpl_tab2);
-		$I->fillField(self::$text_style, self::$text_style_content);
+		$I->fillField(self::$text_style, $text_style_content);
 		$I->scrollTo(self::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(self::$button_refresh_preview, 2);
 	}

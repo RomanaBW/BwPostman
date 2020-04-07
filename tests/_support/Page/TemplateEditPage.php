@@ -606,21 +606,19 @@ class TemplateEditPage
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->wait(1);
 
-		if ($user === 'AdminTester' || $user === '')
+		try
 		{
-			$I->waitForElement("//*[@id='browser-list']", 30);
-			$I->waitForElement(self::$thumb_select, 30);
+			$I->waitForElement(".//*[@id='browser-list']", 5);
 			$I->scrollTo(self::$thumb_select, 0, -100);
 			$I->clickAndWait(self::$thumb_select, 1);
 
 			$I->clickAndWait(self::$thumb_insert, 1);
 		}
-		else
+		catch (\Exception $e)
 		{
 			$I->switchToIFrame(Generals::$image_frame);
 
-			$I->waitForElementVisible("//div[contains(@class, 'media-browser-items')]", 30);
-			$I->waitForElementVisible(self::$thumb_select_user, 30);
+			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 5);
 			$I->clickAndWait(self::$thumb_select_user, 1);
 
 			$I->switchToIFrame();
@@ -629,9 +627,34 @@ class TemplateEditPage
 			$I->clickAndWait(self::$thumb_insert_user, 1);
 		}
 
-		$I->clickAndWait(self::$thumb_cancel, 1);
-
 		$I->switchToIFrame();
+
+//		if ($user === 'AdminTester' || $user === '')
+//		{
+//			$I->waitForElement("//*[@id='browser-list']", 30);
+//			$I->waitForElement(self::$thumb_select, 30);
+//			$I->scrollTo(self::$thumb_select, 0, -100);
+//			$I->clickAndWait(self::$thumb_select, 1);
+//
+//			$I->clickAndWait(self::$thumb_insert, 1);
+//		}
+//		else
+//		{
+//			$I->switchToIFrame(Generals::$image_frame);
+//
+//			$I->waitForElementVisible("//div[contains(@class, 'media-browser-items')]", 30);
+//			$I->waitForElementVisible(self::$thumb_select_user, 30);
+//			$I->clickAndWait(self::$thumb_select_user, 1);
+//
+//			$I->switchToIFrame();
+//			$I->switchToIFrame(Generals::$media_frame);
+//
+//			$I->clickAndWait(self::$thumb_insert_user, 1);
+//		}
+//
+//		$I->clickAndWait(self::$thumb_cancel, 1);
+//
+//		$I->switchToIFrame();
 	}
 
 	/**

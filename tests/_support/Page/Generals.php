@@ -991,7 +991,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $last_page_identifier = "//*/li[contains(@class, 'page-link') and contains(@class, 'current')]/span";
+	public static $last_page_identifier = "//*/li[contains(@class, 'active')]/span[contains(@class, 'page-link')]";
 
 
 	// buttons

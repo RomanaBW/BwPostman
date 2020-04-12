@@ -904,8 +904,16 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				$app->setUserState('com_bwpostman.newsletters.publish_id', $recordId);
 				$app->setUserState('com_bwpostman.newsletters.mails_per_pageload',
 					$this->input->get('mails_per_pageload'));
-				$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&task=startsending&layout=queue',
-					false);
+				if(version_compare(JVERSION, '3.999.999', 'le'))
+				{
+					$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&task=startsending&layout=queue',
+						false);
+				}
+				else
+				{
+					$link = JRoute::_('index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send',
+						false);
+				}
 			}
 			else
 			{

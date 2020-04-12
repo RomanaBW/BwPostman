@@ -292,16 +292,6 @@ span.icon_attachment {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 }
-body {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 13px;
-	line-height: 18px;
-	color: #333;
-}
-html {
-	font-size: 100%;
-	-webkit-text-size-adjust: 100%;
-}
 .row-fluid.width-100 {
 	width:				100%;
 }

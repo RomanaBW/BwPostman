@@ -249,7 +249,7 @@ $currentTab = 'edit_basic';
 				<div id="recipients" class="card card-body mb-2">
 					<div class="row nl-recipients">
 						<div class="col-12 mb-2">
-							<div class="h3" id="bw_nl_edit_subs" class="required">
+							<div class="h3 required" id="bw_nl_edit_subs">
 								<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
 							</div>
 						</div>

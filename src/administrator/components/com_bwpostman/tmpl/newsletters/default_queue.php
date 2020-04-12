@@ -67,18 +67,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<div class="bwp-newsletters">
 						<ul class="nav nav-tabs bwp-tabs">
 							<li class="nav-item">
-								<a id="tab-unsent" href="#" onclick="changeTab('unsent');Joomla.submitbutton();" class="nav-link">
+								<a id="tab-unsent" href="javascript:void(0);" onclick="changeTab('unsent');Joomla.submitbutton();" class="nav-link">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 								</a>
 							</li>
 							<li class="nav-item">
-								<a id="tab-sent" href="#" onclick="changeTab('sent');Joomla.submitbutton();" class="nav-link">
+								<a id="tab-sent" href="javascript:void(0);" onclick="changeTab('sent');Joomla.submitbutton();" class="nav-link">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
 								</a>
 							</li>
 							<?php if ($this->count_queue && $this->permissions['newsletter']['send']) { ?>
 								<li class="nav-item">
-									<a id="tab-queue" href="#" onclick="changeTab('queue');Joomla.submitbutton();" class="nav-link active">
+									<a id="tab-queue" href="javascript:void(0);" onclick="changeTab('queue');Joomla.submitbutton();" class="nav-link active">
 										<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
 									</a>
 								</li>

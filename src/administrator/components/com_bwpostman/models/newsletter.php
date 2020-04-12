@@ -128,6 +128,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public $logger;
 
 	/**
+	 * property to messages while sending
+	 *
+	 * @var string
+	 *
+	 * @since       2.4.0
+	 */
+	public $sendmessage;
+	/**
 	 * Constructor
 	 * Determines the newsletter ID
 	 *
@@ -2461,20 +2469,41 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true)
+	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true, $mailsPerStepDone = 0, $ajaxCall = false)
 	{
 		$this->logger->addEntry(new JLogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep));
+		$this->sendmessage = '';
 
 		try
 		{
-			$sendMailCounter = 0;
-			echo JText::_('COM_BWPOSTMAN_NL_SENDING_PROCESS');
-			ob_flush();
-			flush();
+			if($ajaxCall === false)
+			{
+				$sendMailCounter = 0;
+				echo '<strong>' . JText::_('COM_BWPOSTMAN_NL_SENDING_PROCESS') . '</strong><br />';
+				ob_flush();
+				flush();
+			}
+			else
+			{
+				$sendMailCounter = $mailsPerStepDone;
+				$counter = 0;
+			}
 
 			while(1)
 			{
 				$ret = $this->sendMail($fromComponent);
+				if($ajaxCall === false)
+				{
+					echo $this->sendmessage;
+					ob_flush();
+					flush();
+				}
+				else
+				{
+					echo $this->sendmessage;
+					$this->sendmessage = '';
+				}
+
 				if ($ret == 0)
 				{                              // Queue is empty!
 					return 0;
@@ -2486,6 +2515,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{     // Maximum is reached.
 					return 1;
 					break;
+				}
+
+				if($ajaxCall !== false)
+				{
+					$counter++;
+					if ($counter >= 10)
+					{     // package for ajax call
+						return $sendMailCounter;
+						break;
+					}
 				}
 			}
 
@@ -2742,10 +2781,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// show queue working only wanted if sending newsletters from component backend directly, not in time controlled sending
 		if ($fromComponent)
 		{
-			echo "\n<br>{$tblSendMailQueue->recipient} (" .
+			$this->sendmessage .= "\n<br>{$tblSendMailQueue->recipient} (" .
 				JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
-			ob_flush();
-			flush();
 		}
 
 		// Get a JMail instance
@@ -2798,7 +2835,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			if ($fromComponent)
 			{
-				echo JText::_('COM_BWPOSTMAN_NL_SENT_SUCCESSFULLY');
+				$this->sendmessage .= JText::_('COM_BWPOSTMAN_NL_SENT_SUCCESSFULLY');
 			}
 		}
 		else
@@ -2808,7 +2845,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			if ($fromComponent)
 			{
 				// show message only wanted if sending newsletters from component backend directly, not in time controlled sending
-				echo JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING');
+				$this->sendmessage .= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING');
 			}
 
 			$tblSendMailQueue->push(

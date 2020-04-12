@@ -317,17 +317,10 @@ class BwPostmanViewNewsletters extends JViewLegacy
 						'COM_BWPOSTMAN_NL_RESET_TRIAL',
 						false
 					);
-					$options['url'] = "index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending";
-					$options['icon'] = "icon-envelope";
-					$options['text'] = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
-					$options['modalWidth'] = 80;
-					$options['bodyHeight'] = 70;
-					$options['name'] = 'continue_sending';
-
-					$button = new PopupButton('continue_sending');
-					$button->setOptions($options);
-
-					$toolbar->AppendButton($button);
+					$url = "index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send";
+					$icon = "envelope";
+					$text = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
+					$toolbar->AppendButton('Link', $icon, $text, $url);
 
 					ToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
 				}

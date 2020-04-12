@@ -31,10 +31,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Button\LinkButton;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Log\LogEntry;
 
 HTMLHelper::_('jquery.framework');
 
@@ -162,6 +164,20 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	public $substitute;
 
 	/**
+	 * @var string   $delay_message
+	 *
+	 * @since       2.4.0
+	 */
+	protected $delay_message;
+
+	/**
+	 * @var integer   $delay
+	 *
+	 * @since       2.4.0
+	 */
+	protected $delay;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -198,6 +214,55 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// Get input data
 		$jinput   = $app->input;
 		$referrer = $jinput->get->get('referrer', '', 'string');
+		$task	= $jinput->get('task', 'edit');
+
+		// only if task is startsending
+		if ($task == 'startsending')
+		{
+			$log_options    = array();
+			$logger   = new BwLogger($log_options);
+
+			// Get the params
+			$params			= ComponentHelper::getParams('com_bwpostman');
+			$this->delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
+			$logger->addEntry(new LogEntry('View raw delay: ' . $this->delay));
+
+			// Build delay message
+			if ((int) $params->get('mails_per_pageload_delay_unit') == 1000)
+			{
+				if ((int) $params->get('mails_per_pageload_delay') == 1)
+				{
+					$this->delay_message	= Text::sprintf(
+						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS', $this->delay / 1000)
+					);
+				}
+				else
+				{
+					$this->delay_message	= Text::sprintf(
+						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS', $this->delay / 1000)
+					);
+				}
+			}
+			else
+			{
+				if ((int) $params->get('mails_per_pageload_delay') == 1)
+				{
+					$this->delay_message	= Text::sprintf(
+						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES', $this->delay / 1000)
+					);
+				}
+				else
+				{
+					$this->delay_message	= Text::sprintf(
+						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $this->delay / 1000)
+					);
+				}
+			}
+		}
 
 		$this->form     = $this->get('Form');
 		$this->item     = $this->get('Item');
@@ -281,8 +346,23 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		$isNew = ($this->item->id == 0);
 
+		if ($layout == 'nl_send')
+		{
+			$options['text'] = "COM_BWPOSTMAN_BACK";
+			$options['name'] = 'back';
+			$options['url'] = "index.php?option=com_bwpostman&view=newsletters";
+			$options['icon'] = "icon-arrow-left";
+
+			$button = new LinkButton('back');
+			$document->setTitle(Text::_('COM_BWPOSTMAN_ACTION_SEND'));
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ACTION_SEND'), 'envelope');
+
+			$button->setOptions($options);
+
+			$toolbar->appendButton($button);
+		}
 		// If we come from sent newsletters, we have to do other stuff than normal
-		if ($layout == 'edit_publish')
+		elseif ($layout == 'edit_publish')
 		{
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
 

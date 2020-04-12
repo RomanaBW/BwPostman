@@ -154,7 +154,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				echo '</div>';
 				// number of queue entries during sending
 				$entries = $model->checkTrials(2, 1);
-				$percent = empty($sumentries) ? 0 : ceil(100 / $sumentries * ($sumentries - $entries));
+				$percent = empty($sumentries) ? 0 : floor(100 / $sumentries * ($sumentries - $entries));
 				// progressbar
 				echo '<div id="progress" style="border: 1px solid silver; width: 98%; line-height: 30px; padding: 2px;">
 						<span style="position: absolute; left: 48%;"><b>' . $percent . ' %</b></span>
@@ -163,7 +163,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 				if ($ret == 1)
 				{   // There are more mails in the queue.
-					echo '<div id="nl_modal_delay_message">' . $delay_message . '</div>';
+					echo '<div id="nl_modal_delay_message"><br /><br />' . $delay_message . '</div>';
 					echo '<script type="text/javascript">' . "\n";
 					echo "setTimeout('window.location.reload()'," . $delay . "); \n";
 					echo "</script>\n";
@@ -173,7 +173,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 				{   // No more mails to send.
 					// reset number of queue entries before start sending
 					$app->setUserState('com_bwpostman.newsletters.entries', null);
-					echo '<div id="nl_modal_to_send_message">' . Text::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED') . "</div>";
+					echo '<div id="nl_modal_to_send_message"><br />' . Text::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED') . Text::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE') . "<br /></div>";
 					ob_flush();
 					flush();
 					echo '<script type="text/javascript">' . "\n";

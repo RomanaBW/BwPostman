@@ -65,7 +65,7 @@ $batch_lists = '<label id="batch-choose-action-lbl" for="batch-choose-action">' 
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">&#215;</button>
-		<h3><?php echo Text::_('COM_BWPOSTMAN_SUB_BATCH_OPTIONS'); ?></h3>
+		<div class="h3"><?php echo Text::_('COM_BWPOSTMAN_SUB_BATCH_OPTIONS'); ?></div>
 	</div>
 	<div class="modal-body modal-batch">
 		<p><?php echo Text::_('COM_BWPOSTMAN_SUB_BATCH_TIP'); ?></p>

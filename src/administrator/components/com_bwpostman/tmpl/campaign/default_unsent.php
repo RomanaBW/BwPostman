@@ -47,7 +47,7 @@ $title_html = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
 $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 ?>
 
-	<h3><?php echo $text; ?></h3>
+	<div class="h3"><?php echo $text; ?></div>
 	<div class="row">
 		<div class="col-12">
 			<?php

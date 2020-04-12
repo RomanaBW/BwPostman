@@ -35,9 +35,9 @@ $image = '<i class="fa fa-lg fa-info-circle"></i>';
 <div class="card card-body mb-3">
 	<div class="row">
 		<div class="col-12 mb-2">
-			<h3>
+			<div class="h3">
 				<?php echo empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_CAM') : Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
-			</h3>
+			</div>
 		</div>
 		<div class="col-lg-6">
 			<?php
@@ -106,9 +106,9 @@ $image = '<i class="fa fa-lg fa-info-circle"></i>';
 <div class="card card-body">
 	<div class="row cam-recipients">
 		<div class="col-12 mb-2">
-			<h3 class="required">
+			<div class="h3 required">
 				<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *
-			</h3>
+			</div>
 		</div>
 		<div class="col-xl-8 nl-mailinglists">
 			<div class="card-header">

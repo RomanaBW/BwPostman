@@ -230,7 +230,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		if (is_object($menu))
 		{
 			$menu_params = new JRegistry();
-			$menu_params->loadString($menu->params, 'JSON');
+			$menu_params->loadString($menu->getParams(), 'JSON');
 			if (!$menu_params->get('page_heading'))
 			{
 				$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));

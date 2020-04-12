@@ -136,7 +136,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		if ($menu)
 		{
-			$menuParams->loadString($menu->params);
+			$menuParams->loadString($menu->getParams());
 		}
 
 		// if we came from list view to show single newsletter, then params of list view shall take effect

@@ -27,9 +27,6 @@
 //use Joomla\Registry\Format\Json;
 
 // Check to ensure this file is included in Joomla!
-use Joomla\Database\DatabaseDriver;
-use Joomla\Database\Exception\ExecutionFailureException;
-use Joomla\Database\ParameterType;
 use Joomla\Database\UTF8MB4SupportInterface;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
@@ -1419,7 +1416,7 @@ class Com_BwPostmanInstallerScript
 				}
 
 				// Create an array of queries from the sql file
-				$queries = DatabaseDriver::splitSql($buffer);
+				$queries = JDatabaseDriver::splitSql($buffer);
 
 				if (\count($queries) === 0)
 				{
@@ -1441,7 +1438,7 @@ class Com_BwPostmanInstallerScript
 
 						$db->setQuery($query)->execute();
 					}
-					catch (ExecutionFailureException $e)
+					catch (RuntimeException $e)
 					{
 						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), Log::ERROR, $this->log_cat));
 
@@ -1460,8 +1457,7 @@ class Com_BwPostmanInstallerScript
 		// Update the database
 		$query = $db->getQuery(true)
 			->delete('#__schemas')
-			->where('extension_id = :extension_id')
-			->bind(':extension_id', $extensionId, ParameterType::INTEGER);
+			->where('extension_id = ' . $extensionId);
 		$db->setQuery($query);
 
 		try
@@ -1470,16 +1466,15 @@ class Com_BwPostmanInstallerScript
 
 			$schemaVersion = end($files);
 
-			$query->clear()
-				->insert($db->quoteName('#__schemas'))
-				->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')))
-				->values(':extension_id, :version_id')
-				->bind(':extension_id', $extensionId, ParameterType::INTEGER)
-				->bind(':version_id', $schemaVersion);
+			$query->clear();
+			$query->insert($db->quoteName('#__schemas'));
+			$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
+			$query->values($extensionId);
+			$query->values($schemaVersion);
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (ExecutionFailureException $e)
+		catch (RuntimeException $e)
 		{
 			$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), Log::ERROR, $this->log_cat));
 
@@ -2363,7 +2358,7 @@ EOS;
 		return $modal;
 	}/**
  *
- * @return array
+ * @return string
  *
  * @throws Exception
  * @since version
@@ -2390,6 +2385,6 @@ EOS;
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return array($_db, $result, $query, $e);
+		return $result;
 	}
 }

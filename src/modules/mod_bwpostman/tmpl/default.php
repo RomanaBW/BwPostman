@@ -35,7 +35,10 @@ JHtml::_('behavior.formvalidator');
 JHtml::_('formbehavior.chosen', 'select');
 
 // Depends on jQuery UI
-JHtml::_('jquery.ui', array('core'));
+if(version_compare(JVERSION, '3.999.999', 'le'))
+{
+	JHtml::_('jquery.ui', array('core'));
+}
 
 $n	= count($mailinglists);
 

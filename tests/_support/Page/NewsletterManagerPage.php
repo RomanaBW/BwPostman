@@ -35,6 +35,15 @@ class NewsletterManagerPage
 	public static $url      = '/administrator/index.php?option=com_bwpostman&view=newsletters';
 
 	/**
+	 * url of sending page
+	 *
+	 * @var string
+	 *
+	 * @since   2.4.0
+	 */
+	public static $sendUrl      = '/administrator/index.php?option=com_bwpostman&view=newsletters&task=startsending&layout=nl_send';
+
+	/**
 	 * @var integer
 	 *
 	 * @since   2.0.0
@@ -765,4 +774,19 @@ class NewsletterManagerPage
 		'p_last_val_last'      => "vincent.zabel@tester-net.nil",
 		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[4]",
 	);
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.4.0
+	 */
+	public static $sendLayout = "//*[@id='sendResult']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.4.0
+	 */
+	public static $sendLayoutBack = "//*[@id='toolbar-back']";
+
 }

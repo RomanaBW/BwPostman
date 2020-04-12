@@ -239,6 +239,7 @@ class TestNewslettersDetailsCest
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
+		$I->wait(1);
 		$I->click(Generals::$systemMessageClose);
 
 		$I->see('', NlEdit::$subject);
@@ -714,15 +715,14 @@ class TestNewslettersDetailsCest
 
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
+		$I->wait(1);
 
-		$I->waitForElementVisible(NlEdit::$tab5_send_iframeName, 20);
-		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
-		$I->waitForText(NlEdit::$success_send_ready, 60);
+		$I->waitForElementVisible(NlManage::$sendLayout, 5);
+		$I->waitForText(NlEdit::$success_send_ready, 180);
 		$I->see(NlEdit::$success_send_ready);
 
-		$I->switchToIFrame();
-		$I->wait(5);
-
+		$I->click(NlManage::$sendLayoutBack);
+		$I->waitForElementVisible(Generals::$page_header, 10);
 		$I->see("Newsletters", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);

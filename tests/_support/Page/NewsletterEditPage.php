@@ -285,7 +285,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_send_ready   = 'All newsletters in the queue';
+	public static $success_send_ready   = 'All newsletters in the queue have been processed.';
 
 	/**
 	 * @var string
@@ -299,14 +299,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_send_number_id  = "//*[@id='nl_modal_to_send_message']";
+	public static $success_send_number_id  = "//*[@id='nl_to_send_message']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $delay_message_id  = "//*[@id='nl_modal_delay_message']";
+	public static $delay_message_id  = "//*[@id='nl_delay_message']";
 
 	/**
 	 * @var string
@@ -1179,6 +1179,7 @@ class NewsletterEditPage
 		$I->wait(2);
 		$content_title = $I->grabTextFrom(sprintf(self::$selected_content, 1));
 		$I->see($content_title, self::$selected_content_list);
+		$I->scrollTo(self::$legend_general, 0, -100);
 
 		return $content_title;
 	}
@@ -1382,21 +1383,16 @@ class NewsletterEditPage
 
 		$I->acceptPopup();
 
-		$I->wait($iframeTime);
-
-		$I->waitForElement(self::$tab5_send_iframeName, 40);
-		$I->switchToIFrame(self::$tab5_send_iframe);
-
-		$I->waitForElementVisible(self::$success_send_number_id, 180);
+		$I->waitForElementVisible(NlManage::$sendLayout, 5);
+		$I->waitForElementVisible(self::$success_send_number_id, 10);
 		$I->waitForText(self::$success_send_ready, 180);
 		$I->see(self::$success_send_ready);
-
 		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
 
-		$I->switchToIFrame();
-		$I->wait(8);
-
+		$I->click(NlManage::$sendLayoutBack);
+		$I->waitForElementVisible(Generals::$page_header, 10);
 		$I->see("Newsletters", Generals::$pageTitle);
+
 		$I->clickAndWait(NlManage::$tab2, 1);
 	}
 
@@ -1418,6 +1414,8 @@ class NewsletterEditPage
 	 */
 	public static function checkStatusOfSentNewsletter(\AcceptanceTester $I, $published)
 	{
+
+		$I->wait(1);
 		$I->clickAndWait(NlManage::$tab2, 2);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
 		$I->clickSelectList(Generals::$ordering_list, 'ID descending', Generals::$ordering_id);

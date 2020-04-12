@@ -94,6 +94,13 @@ class Generals
 	/**
 	 * @var string
 	 *
+	 * @since 2.4.0
+	 */
+	public static $page_header         = "//*[@id='header']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $filter_toolbar    = "//*[@class='js-stools-container-bar']";
@@ -543,7 +550,7 @@ class Generals
 		'Export Popup'         => "a#toolbar-popup-upload",
 		'Batch'                => "a#toolbar-batch",
 		'Reset sending trials' => "a#toolbar-unpublish",
-		'Continue sending'     => "//*/joomla-toolbar-button[@id='toolbar-continue_sending']",
+		'Continue sending'     => "//*/joomla-toolbar-button/a[@id='toolbar-envelope']",
 		'Clear queue'          => "a#toolbar-delete",
 		'Uninstall  '          => "a#toolbar-delete",
 		'BwPostman Manual'     => "//*/joomla-toolbar-button[@id='toolbar-manual']",

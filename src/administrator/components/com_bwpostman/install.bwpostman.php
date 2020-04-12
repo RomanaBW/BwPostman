@@ -27,6 +27,14 @@
 //use Joomla\Registry\Format\Json;
 
 // Check to ensure this file is included in Joomla!
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\Exception\ExecutionFailureException;
+use Joomla\Database\ParameterType;
+use Joomla\Database\UTF8MB4SupportInterface;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+
 defined('_JEXEC') or die('Restricted access');
 /**
  * Class Com_BwPostmanInstallerScript
@@ -377,6 +385,9 @@ class Com_BwPostmanInstallerScript
 
 			// remove double entries in table extensions
 			$this->removeDoubleExtensionsEntries();
+
+			// ensure SQL update files are processed
+			$this->processSqlUpdate($oldRelease);
 
 			// check all tables of BwPostman
 			// Let Ajax client redirect
@@ -1301,31 +1312,14 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function removeDoubleExtensionsEntries()
 	{
-		$_db	= JFactory::getDbo();
-		$result = 0;
+		$_db    = JFactory::getDbo();
+		$extensionId = $this->getExtensionId();
 
-		$query = $_db->getQuery(true);
-		$query->select($_db->quoteName('extension_id'));
-		$query->from($_db->quoteName('#__extensions'));
-		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
-		$query->where($_db->quoteName('client_id') . ' = ' . $_db->quote('0'));
-
-		$_db->setQuery($query);
-
-		try
-		{
-			$result = $_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if ($result)
+		if ($extensionId)
 		{
 			$query = $_db->getQuery(true);
 			$query->delete($_db->quoteName('#__extensions'));
-			$query->where($_db->quoteName('extension_id') . ' =  ' . $_db->quote($result));
+			$query->where($_db->quoteName('extension_id') . ' =  ' . $_db->quote($extensionId));
 
 			$_db->setQuery($query);
 
@@ -1380,6 +1374,119 @@ class Com_BwPostmanInstallerScript
 		$repairedRules = str_replace('"":1,', '', $rootRules);
 
 		$this->saveRootAsset($repairedRules);
+	}
+
+	/**
+	 * ensure SQL update files are processed
+	 *
+	 * @param string    $oldVersion
+	 *
+	 * @return  mixed  Number of queries processed or False on error
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	protected function processSqlUpdate($oldVersion)
+	{
+		$update_count = 0;
+		$db	= JFactory::getDbo();
+		$schemapath = JPATH_ROOT . '/administrator/components/com_bwpostman/sql/updates/mysql';
+		$extensionId = $this->getExtensionId();
+
+		$files = Folder::files($schemapath, '\.sql$');
+
+		if (empty($files))
+		{
+			return $update_count;
+		}
+
+		$files = str_replace('.sql', '', $files);
+		usort($files, 'version_compare');
+
+		foreach ($files as $file)
+		{
+			if (version_compare($file, $oldVersion) > 0)
+			{
+				$buffer = file_get_contents($schemapath . '/' . $file . '.sql');
+
+				// Graceful exit and rollback(?) if read not successful
+				if ($buffer === false)
+				{
+					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_READBUFFER'), Log::ERROR, $this->log_cat));
+
+					return false;
+				}
+
+				// Create an array of queries from the sql file
+				$queries = DatabaseDriver::splitSql($buffer);
+
+				if (\count($queries) === 0)
+				{
+					// No queries to process
+					continue;
+				}
+
+				$isUtf8mb4Db = $db instanceof UTF8MB4SupportInterface;
+
+				// Process each query in the $queries array (split out of sql file).
+				foreach ($queries as $query)
+				{
+					try
+					{
+						if ($isUtf8mb4Db)
+						{
+							$query = $db->convertUtf8mb4QueryToUtf8($query);
+						}
+
+						$db->setQuery($query)->execute();
+					}
+					catch (ExecutionFailureException $e)
+					{
+						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), Log::ERROR, $this->log_cat));
+
+						return false;
+					}
+
+					$queryString = (string) $query;
+					$queryString = str_replace(array("\r", "\n"), array('', ' '), substr($queryString, 0, 80));
+					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_UPDATE_LOG_QUERY', $file, $queryString), Log::INFO, $this->log_cat));
+
+					$update_count++;
+				}
+			}
+		}
+
+		// Update the database
+		$query = $db->getQuery(true)
+			->delete('#__schemas')
+			->where('extension_id = :extension_id')
+			->bind(':extension_id', $extensionId, ParameterType::INTEGER);
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+
+			$schemaVersion = end($files);
+
+			$query->clear()
+				->insert($db->quoteName('#__schemas'))
+				->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')))
+				->values(':extension_id, :version_id')
+				->bind(':extension_id', $extensionId, ParameterType::INTEGER)
+				->bind(':version_id', $schemaVersion);
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (ExecutionFailureException $e)
+		{
+			$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), Log::ERROR, $this->log_cat));
+
+			return false;
+		}
+
+		return $update_count;
 	}
 
 	/**
@@ -2254,5 +2361,35 @@ class Com_BwPostmanInstallerScript
 		<div id="bwpostman">{$html}</div><script>{$js}</script>
 EOS;
 		return $modal;
+	}/**
+ *
+ * @return array
+ *
+ * @throws Exception
+ * @since version
+ */
+	private function getExtensionId()
+	{
+		$_db    = JFactory::getDbo();
+		$result = 0;
+
+		$query = $_db->getQuery(true);
+		$query->select($_db->quoteName('extension_id'));
+		$query->from($_db->quoteName('#__extensions'));
+		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
+		$query->where($_db->quoteName('client_id') . ' = ' . $_db->quote('0'));
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$result = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return array($_db, $result, $query, $e);
 	}
 }

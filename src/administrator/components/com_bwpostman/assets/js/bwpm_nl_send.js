@@ -44,8 +44,8 @@ jQuery(document).ready(function() {
 		structure.url = starturl;
 		structure.data = data;
 		structure.type = 'POST',
-			structure.dataType = 'json',
-			jQuery.ajax(structure);
+		structure.dataType = 'json',
+		jQuery.ajax(structure);
 	}
 
 	function processUpdateStep(data) {
@@ -58,10 +58,10 @@ jQuery(document).ready(function() {
 				jQuery('div.alert').removeClass('hidden');
 				jQuery('div.alert-secondary').addClass('hidden');
 				if (data.delay_msg === "success") {
-					jQuery('div#load').addClass('hidden');
+					jQuery('div#load .fas').addClass('hidden');
 					setTimeout(function() {
 						jQuery('div#sending').attr('class', 'alert alert-success');
-						jQuery('div#load').removeClass('hidden');
+						jQuery('div#load .fas').removeClass('hidden');
 						jQuery('div#delay_msg').addClass('hidden');
 						processUpdateStep(data);
 					}, timeout);

@@ -81,7 +81,7 @@ $token      = Session::getFormToken();
 		</div>
 		<div class="col-md-6">
 			<div class="card-body">
-				<div class="h2"><?php echo Text::_('COM_BWPOSTMAN_NL_DETAILS'); ?></div>
+				<div class="h2"><?php echo Text::_('COM_BWPOSTMAN_NL_SENDING_DETAILS'); ?></div>
 				<div id="load" class="text-center"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>
 				<div id="result" class="mt-2"></div>
 			</div>

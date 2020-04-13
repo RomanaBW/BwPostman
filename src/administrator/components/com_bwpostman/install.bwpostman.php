@@ -1403,7 +1403,7 @@ class Com_BwPostmanInstallerScript
 
 		foreach ($files as $file)
 		{
-			if (version_compare($file, $oldVersion) > 0)
+			if (version_compare($file, $oldVersion) >= 0)
 			{
 				$buffer = file_get_contents($schemapath . '/' . $file . '.sql');
 
@@ -1436,6 +1436,9 @@ class Com_BwPostmanInstallerScript
 							$query = $db->convertUtf8mb4QueryToUtf8($query);
 						}
 
+						$queryMessage = "Query to process: " . (string)$query;
+						$this->logger->addEntry(new JLogEntry($queryMessage, Log::DEBUG, $this->log_cat));
+
 						$db->setQuery($query)->execute();
 					}
 					catch (RuntimeException $e)
@@ -1446,8 +1449,8 @@ class Com_BwPostmanInstallerScript
 					}
 
 					$queryString = (string) $query;
-					$queryString = str_replace(array("\r", "\n"), array('', ' '), substr($queryString, 0, 80));
-					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_UPDATE_LOG_QUERY', $file, $queryString), Log::INFO, $this->log_cat));
+					$queryString = str_replace(array("\r", "\n"), array('', ' '), $queryString);
+					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_UPDATE_LOG_QUERY', $file, $queryString), Log::DEBUG, $this->log_cat));
 
 					$update_count++;
 				}

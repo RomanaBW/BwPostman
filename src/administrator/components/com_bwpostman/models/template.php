@@ -150,6 +150,12 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$jinput		= JFactory::getApplication()->input;
 		$form_data	= $jinput->get('jform', '', 'array');
 
+		// needed to force duplicate queries
+		if ($jinput->get('view', NULL) == 'templates')
+		{
+			return true;
+		}
+
 		// no $data and no $form_data - standard
 		if (!$data && !$form_data)
 		{

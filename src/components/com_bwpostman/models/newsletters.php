@@ -193,8 +193,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if ($menu)
 		{
-			$menuParams = $menu->getParams();
-//			$menuParams->loadString($mParams);
+			$menuParams->loadString($menu->getParams());
 		}
 
 		$mergedParams = clone $menuParams;

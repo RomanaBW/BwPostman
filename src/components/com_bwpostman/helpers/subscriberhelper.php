@@ -374,7 +374,22 @@ class BwPostmanSubscriberHelper
 		$active_intro      = JText::_($params->get('activation_text'));
 		$permission_text   = JText::_($params->get('permission_text'));
 		$legal_information = JText::_($params->get('legal_information_text'));
+
+		$app = JFactory::getApplication();
+		$subscriber_id = $app->getUserState("com_bwpostman.subscriber.id");
+
+		if(isset($subscriber_id))
+		{
+			JPluginHelper::importPlugin('bwpostman');
+
+			if (JPluginHelper::isEnabled('bwpostman', 'personalize'))
+			{
+				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$active_title, $subscriber_id));
+			}
+		}
+
 		$active_msg        = $active_title;
+
 		if ($name !== '')
 		{
 			$active_msg        .= ' ' . $name;

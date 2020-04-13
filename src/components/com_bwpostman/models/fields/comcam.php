@@ -81,17 +81,30 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$options = $this->getOptions();
 
 		// Build the checkbox field output.
-		$html[] = '		<div class="well well-small">';
-		$html[] = '			<table class="adminlist table">';
-		$html[] = '				<thead>';
+		$html[] = '		<div class="well well-small table-responsive">';
+		$html[] = '			<table class="adminlist table table-striped">';
+		$html[] = '				<thead class="thead-light">';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value=""
-				title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-		$html[] = '						<th width="70" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
-		$html[] = '						<th width="200" nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
-		$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
-		$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
+		if(version_compare(JVERSION, '3.999.999', 'le'))
+		{
+			$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value=""
+					title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th width="70" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
+			$html[] = '						<th width="200" nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
+			$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
+			$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
+		}
+		else
+		{
+			$html[] = '						<th scope="col" style="width: 3%;">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th scope="col" style="width: 1%;" class="text-center"><input type="checkbox" name="checkall-toggle" value=""
+					title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th style="width: 10%;" scope="col">' . JText::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
+			$html[] = '						<th style="min-width: 200px;" scope="col">' . JText::_('JGLOBAL_TITLE') . '</th>';
+			$html[] = '						<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
+			$html[] = '						<th style="width: 10%;" scope="col">' . JText::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
+		}
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
 		$html[] = '				<tbody>';
@@ -109,13 +122,26 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
-				$html[] = '								<td><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
-					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
-				$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
-				$html[] = '								<td>' . JText::_($option->text) . '</td>';
-				$html[] = '								<td>' . JText::_($option->description) . '</td>';
-				$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';
+				if(version_compare(JVERSION, '3.999.999', 'le'))
+				{
+					$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
+					$html[] = '								<td><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
+						. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+					$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
+					$html[] = '								<td>' . JText::_($option->text) . '</td>';
+					$html[] = '								<td>' . JText::_($option->description) . '</td>';
+					$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';
+				}
+				else
+				{
+					$html[] = '								<td class="text-center">' . JText::_($option->value) . '</td>';
+					$html[] = '								<td class="text-center"><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
+						. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+					$html[] = '								<td class="tbody-icon text-center">' . $archived . '</td>';
+					$html[] = '								<td>' . JText::_($option->text) . '</td>';
+					$html[] = '								<td class="d-none d-lg-table-cell">' . JText::_($option->description) . '</td>';
+					$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';
+				}
 				$html[] = '							</tr>';
 			}
 		}

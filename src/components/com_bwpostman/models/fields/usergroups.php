@@ -89,14 +89,24 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		$options = $this->getOptions();
 
 		// Build the checkbox field output.
-		$html[] = '	    <div class="well well-small">';
-		$html[] = '			<table class="adminlist table">';
-		$html[] = '				<thead>';
+		$html[] = '	    <div class="well well-small table-responsive">';
+		$html[] = '			<table class="adminlist table table-striped">';
+		$html[] = '				<thead class="thead-light">';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
-			. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-		$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
+		if(version_compare(JVERSION, '3.999.999', 'le'))
+		{
+			$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
+				. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
+		}
+		else
+		{
+			$html[] = '						<th scope="col" style="width: 3%;">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th scope="col" style="width: 1%;" class="text-center"><input type="checkbox" name="checkall-toggle" value="" title="'
+				. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th class="text-nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
+		}
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
 		$html[] = '				<tbody>';
@@ -113,10 +123,10 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '							 <td align="center">' . JText::_($option->value) . '</td>';
+				$html[] = '							 <td style="align:center">' . JText::_($option->value) . '</td>';
 				$html[] = '              <td><input type="checkbox" id="ub' . $i . '" name="' . $this->name . '" value="'
 					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
-				$html[] = '							 <td>' . JText::_($option->text) . '</td>';
+				$html[] = '							 <td class="text-nowrap">' . JText::_($option->text) . '</td>';
 				$html[] = '						  </tr>';
 			}
 		}

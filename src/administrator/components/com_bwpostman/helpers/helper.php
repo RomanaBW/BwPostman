@@ -852,7 +852,7 @@ abstract class BwPostmanHelper
 				$recordId = (int) $data['id'];
 			}
 
-			if (key_exists('create', $data))
+			if (key_exists('create', $data) || key_exists('created_by', $data))
 			{
 				$createdBy = (int) $data['created_by'];
 			}
@@ -887,7 +887,7 @@ abstract class BwPostmanHelper
 		{
 			if ($editOwnItem)
 			{
-				$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+				$ownerId = self::getCreatorId($view, $recordId, $createdBy);
 
 				// Now test the owner is the user. If the owner matches 'me' then allow access.
 				if ($ownerId == $userId)
@@ -910,7 +910,7 @@ abstract class BwPostmanHelper
 		{
 			if ($editOwn)
 			{
-				$ownerId = self::getOwnerId($view, $recordId, $createdBy);
+				$ownerId = self::getCreatorId($view, $recordId, $createdBy);
 
 				// Now test the owner is the user. If the owner matches 'me' then allow access.
 				if ($ownerId == $userId)
@@ -1637,7 +1637,7 @@ abstract class BwPostmanHelper
 	}
 
 	/**
-	 * Method to parse language file
+	 * Method to get creator id
 	 *
 	 * @param    string $view       The name of the context.
 	 * @param    int    $recordId   The record to test.
@@ -1649,9 +1649,9 @@ abstract class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	private static function getOwnerId($view, $recordId, $createdBy)
+	private static function getCreatorId($view, $recordId, $createdBy)
 	{
-		$ownerId = $createdBy;
+		$creatorId = $createdBy;
 
 		$createdPropertyName    = 'created_by';
 
@@ -1660,46 +1660,21 @@ abstract class BwPostmanHelper
 			$createdPropertyName    = 'registered_by';
 		}
 
-		if (!$ownerId)
+		if (!$creatorId)
 		{
-			// Need to do a lookup from the model.
-			// get the model for user groups
-			switch ($view)
-			{
-				case 'campaign':
-					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/campaign.php');
-					$model = new BwPostmanModelCampaign();
-					break;
-				case 'mailinglist':
-					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/mailinglist.php');
-					$model = new BwPostmanModelMailinglist();
-					break;
-				case 'newsletter':
-					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
-					$model = new BwPostmanModelNewsletter();
-					break;
-				case 'subscriber':
-					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
-					$model = new BwPostmanModelSubscriber();
-					break;
-				case 'template':
-					require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/template.php');
-					$model = new BwPostmanModelTemplate();
-					break;
-			}
+			$db	= JFactory::getDbo();
+			$query	= $db->getQuery(true);
 
+			$query->select($db->quoteName($createdPropertyName));
+			$query->from($db->quoteName('#__bwpostman_' . $view . 's'));
+			$query->where($db->quoteName('id') . ' = ' . $recordId);
 
-			$record = $model->getItem($recordId);
+			$db->setQuery($query);
 
-			if (!is_object($record) || !property_exists($record, $createdPropertyName))
-			{
-				return false;
-			}
-
-			$ownerId = $record->{$createdPropertyName};
+			$creatorId = $db->loadResult();
 		}
 
-		return $ownerId;
+		return $creatorId;
 	}
 
 	/**

@@ -174,8 +174,8 @@ class BwPostmanViewNewsletter extends JViewLegacy
 					// reset number of queue entries before start sending
 					$app->setUserState('com_bwpostman.newsletters.entries', null);
 					echo '<div id="nl_modal_to_send_message"><br />' . Text::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED') . Text::_('COM_BWPOSTMAN_NL_WINDOW_AUTOCLOSE') . "<br /></div>";
-					ob_flush();
-					flush();
+//					ob_flush();
+//					flush();
 					echo '<script type="text/javascript">' . "\n";
 					// We cannot replace the "&" with an "&amp;" because it's JavaScript and not HTML
 					echo "function goBackToQueue(){window.parent.location.href = 'index.php?option=com_bwpostman&view=newsletters&layout=queue';} \n";

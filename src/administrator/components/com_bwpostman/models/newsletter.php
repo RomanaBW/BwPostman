@@ -2480,8 +2480,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				$sendMailCounter = 0;
 				echo '<strong>' . JText::_('COM_BWPOSTMAN_NL_SENDING_PROCESS') . '</strong><br />';
-				ob_flush();
-				flush();
+//				ob_flush();
+//				flush();
 			}
 			else
 			{
@@ -2495,8 +2495,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if($ajaxCall === false)
 				{
 					echo $this->sendmessage;
-					ob_flush();
-					flush();
+//					ob_flush();
+//					flush();
 				}
 				else
 				{

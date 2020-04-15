@@ -146,6 +146,8 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 										$linkText = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
 										$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
 										$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
+
+										$canEditState = BwPostmanHelper::canEditState('newsletter', $item);
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
 										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -168,7 +170,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 													);
 												} ?>
 												<?php
-												if (BwPostmanHelper::canEdit('newsletter', $item) || BwPostmanHelper::canEditState('newsletter', (int) $item->id)) : ?>
+												if (BwPostmanHelper::canEdit('newsletter', $item) || $canEditState) : ?>
 													<a href="
 													<?php echo Route::_(
 														'index.php?option=com_bwpostman&view=newsletter&layout=edit_publish&task=newsletter.edit&id='
@@ -206,7 +208,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 													$item->published,
 													$i,
 													'newsletters.',
-													BwPostmanHelper::canEditState('newsletter', (int) $item->id)
+													$canEditState
 												); ?>
 											</td>
 											<td class="text-center">

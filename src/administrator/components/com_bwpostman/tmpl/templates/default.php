@@ -91,6 +91,8 @@ HTMLHelper::_('behavior.multiselect');
 						if (count($this->items) > 0)
 						{
 							foreach ($this->items as $i => $item) :
+								$canEdit = BwPostmanHelper::canEdit('template', $item);
+								$canEditState = BwPostmanHelper::canEditState('template', $item);
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -108,7 +110,7 @@ HTMLHelper::_('behavior.multiselect');
 										);
 									}
 
-									if (BwPostmanHelper::canEdit('template', $item))
+									if ($canEdit)
 									{ ?>
 										<a href="<?php echo Route::_('index.php?option=com_bwpostman&task=template.edit&id=' . $item->id); ?>">
 											<?php echo $this->escape($item->title); ?>
@@ -123,7 +125,7 @@ HTMLHelper::_('behavior.multiselect');
 										<?php
 										if ($item->thumbnail)
 											{
-											if (BwPostmanHelper::canEdit('template', $item))
+											if ($canEdit)
 											{ ?>
 												<a href="<?php
 												echo Route::_('index.php?option=com_bwpostman&task=template.edit&id=' . $item->id);
@@ -154,7 +156,7 @@ HTMLHelper::_('behavior.multiselect');
 											($item->standard != '0' && !empty($item->standard)),
 											$i,
 											'template.',
-											BwPostmanHelper::canEditState('template', (int) $item->id) && $item->standard != '1'
+											$canEditState && $item->standard != '1'
 										);?>
 									</td>
 									<td class="d-none d-lg-table-cell text-center">
@@ -163,7 +165,7 @@ HTMLHelper::_('behavior.multiselect');
 											$item->published,
 											$i,
 											'templates.',
-											BwPostmanHelper::canEditState('template', (int) $item->id),
+											$canEditState,
 											'cb'
 										); ?>
 									<td class="d-none d-lg-table-cell text-center">

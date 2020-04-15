@@ -220,6 +220,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		$cid		= $jinput->post->get('cid', array(), 'array');
+		$createdBy  = $jinput->post->get('created_by');
 		$context	= "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
@@ -245,7 +246,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 		}
 		else
 		{
-			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed    = $this->allowEdit(array('id' => $recordId, 'created_by' => $createdBy), 'id');
 		}
 
 		if (!$allowed)

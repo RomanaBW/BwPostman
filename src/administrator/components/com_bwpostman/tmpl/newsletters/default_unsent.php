@@ -160,6 +160,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 									if (count($this->items))
 									{
 										foreach ($this->items as $i => $item) :
+											$canEdit = BwPostmanHelper::canEdit('newsletter', $item);
 											?>
 											<tr class="row<?php echo $i % 2; ?>">
 											<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -181,7 +182,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 															BwPostmanHelper::canCheckin('newsletter', $item->checked_out)
 														);
 													} ?>
-													<?php if (BwPostmanHelper::canEdit('newsletter', $item)) : ?>
+													<?php if ($canEdit) : ?>
 														<a href="
 														<?php
 														echo Route::_(
@@ -205,7 +206,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 											<td class="d-none d-xl-table-cell"><?php echo $item->authors; ?></td>
 											<td class="d-none d-lg-table-cell text-center"><?php echo $item->campaign_id; ?></td>
 											<td class="text-center">
-												<?php echo $isTemplateButton->render($item->is_template, $i, ['disabled' => !BwPostmanHelper::canEdit('newsletter', $item)]); ?>
+												<?php echo $isTemplateButton->render($item->is_template, $i, ['disabled' => !$canEdit]); ?>
 											</td>
 											<td class="text-center"><?php echo $item->id; ?></td>
 										</tr><?php

@@ -148,23 +148,26 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 										}?>
 									</td>
 									<td class="center" align="center">
-										<?php echo JHtml::_(
+										<?php
+										echo JHtml::_(
 											'jgrid.isdefault',
 											($item->standard != '0' && !empty($item->standard)),
 											$i,
 											'template.',
-											BwPostmanHelper::canEditState('template', (int) $item->id) && $item->standard != '1'
-										);?>
+											BwPostmanHelper::canEditState('template', (int) $item->id) && $item->standard != '1');
+										?>
 									</td>
 									<td class="center" align="center">
-										<?php echo JHtml::_(
+										<?php
+										echo JHtml::_(
 											'jgrid.published',
 											$item->published,
 											$i,
 											'templates.',
 											BwPostmanHelper::canEditState('template', (int) $item->id),
 											'cb'
-										); ?>
+										);
+										?>
 									<td>
 									<?php echo nl2br($item->description); ?>
 								</td>

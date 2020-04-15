@@ -147,7 +147,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 										$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
 										$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 
-										$canEditState = BwPostmanHelper::canEditState('newsletter', $item);
+										$canEditState = BwPostmanHelper::canEditState('newsletter', $item->id);
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
 										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>

@@ -199,7 +199,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 			$toolbar->addNew('mailinglist.add');
 		}
 
-		if (BwPostmanHelper::canEdit('mailinglist') || BwPostmanHelper::canEditState('mailinglist') || BwPostmanHelper::canArchive('mailinglist'))
+		if (BwPostmanHelper::canEdit('mailinglist') || BwPostmanHelper::canEditState('mailinglist', 0) || BwPostmanHelper::canArchive('mailinglist'))
 		{
 			$dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
@@ -269,7 +269,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		}
 
 		ToolbarHelper::divider();
-		if (BwPostmanHelper::canEditState('mailinglist'))
+		if (BwPostmanHelper::canEditState('mailinglist', 0))
 		{
 			ToolbarHelper::publishList('mailinglists.publish');
 			ToolbarHelper::unpublishList('mailinglists.unpublish');

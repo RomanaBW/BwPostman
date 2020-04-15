@@ -92,7 +92,7 @@ HTMLHelper::_('behavior.multiselect');
 						{
 							foreach ($this->items as $i => $item) :
 								$canEdit = BwPostmanHelper::canEdit('template', $item);
-								$canEditState = BwPostmanHelper::canEditState('template', $item);
+								$canEditState = BwPostmanHelper::canEditState('template', $item->id);
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
 									<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>

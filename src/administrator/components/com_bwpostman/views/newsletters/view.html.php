@@ -267,7 +267,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		switch ($tab)
 		{ // The layout-variable tells us which tab we are in
 			case "sent":
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
+				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -283,7 +283,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 						$childBar->edit('newsletter.edit')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEditState('newsletter'))
+					if (BwPostmanHelper::canEditState('newsletter', 0))
 					{
 						$childBar->publish('newsletters.publish')->listCheck(true);
 						$childBar->unpublish('newsletters.unpublish')->listCheck(true);
@@ -332,7 +332,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					ToolbarHelper::addNew('newsletter.add');
 				}
 
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
+				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -431,7 +431,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					ToolbarHelper::editList('newsletter.edit');
 				}
 
-				if (BwPostmanHelper::canEditState('newsletter'))
+				if (BwPostmanHelper::canEditState('newsletter', 0))
 				{
 					ToolbarHelper::publishList('newsletters.publish');
 					ToolbarHelper::unpublishList('newsletters.unpublish');
@@ -446,7 +446,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					ToolbarHelper::spacer();
 				}
 
-				if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0)) {
+				if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
+				{
 					ToolbarHelper::checkin('newsletters.checkin');
 					ToolbarHelper::divider();
 					ToolbarHelper::spacer();

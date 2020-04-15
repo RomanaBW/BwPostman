@@ -265,7 +265,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 						$childBar->edit('template.edit')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEditState('template'))
+					if (BwPostmanHelper::canEditState('template', 0))
 					{
 						$childBar->publish('templates.publish')->listCheck(true);
 						$childBar->unpublish('templates.unpublish')->listCheck(true);
@@ -391,7 +391,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 					ToolbarHelper::editList('template.edit');
 				}
 
-				if (BwPostmanHelper::canEditState('template'))
+				if (BwPostmanHelper::canEditState('template', 0))
 				{
 					ToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
 					ToolbarHelper::publishList('templates.publish');

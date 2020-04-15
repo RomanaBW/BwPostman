@@ -287,7 +287,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					$toolbar->addNew('subscriber.add');
 				}
 
-				if (BwPostmanHelper::canArchive('subscriber') || $this->permissions['subscriber']['create'] || BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
+				if (BwPostmanHelper::canArchive('subscriber') || $this->permissions['subscriber']['create'] || BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber', 0))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -308,7 +308,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 						$childBar->archive('subscriber.archive')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
+					if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber', 0))
 					{
 						$childBar->checkin('subscribers.checkin')->listCheck(true);
 					}
@@ -494,7 +494,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 
 		ToolbarHelper::divider();
 		ToolbarHelper::spacer();
-		if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
+		if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber', 0))
 		{
 			ToolbarHelper::checkin('subscribers.checkin');
 			ToolbarHelper::divider();

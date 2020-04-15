@@ -787,7 +787,14 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_checkbox_mailinglist      = "//*[@id='mb%s']";
+	public static $plugin_checkbox_mailinglist      = "//*[@id='mb%s']/parent::td/parent::tr";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $plugin_checkbox_mailinglist_input      = "//*[@id='mb%s']";
 
 	//messages
 

@@ -212,7 +212,9 @@ class User2SubscriberCest
 		$I->click(RegPage::$plugin_tab_mailinglists);
 		$I->waitForElement("//*[@id='jform_params_ml_available']/div", 30);
 
-		$checked    = $I->grabAttributeFrom(sprintf(RegPage::$plugin_checkbox_mailinglist, 6), "checked");
+		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 6), 0, -100);
+		$checked    = $I->grabAttributeFrom(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 6), "checked");
+		codecept_debug('Checkbox Mailinglist ID6: ' . $checked);
 		if (!$checked)
 		{
 			$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 6));
@@ -1245,10 +1247,12 @@ class User2SubscriberCest
 		$I->clickAndWait(RegPage::$plugin_tab_mailinglists, 1);
 
 		// click checkbox for further mailinglist
-		$I->checkOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+		$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
-		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 6));
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 6), 0, -100);
+		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 6));
 
 		// getManifestOption
 		$options = $I->getManifestOptions('bwpm_user2subscriber');
@@ -1256,13 +1260,19 @@ class User2SubscriberCest
 		$I->assertEquals("4", $options->ml_available[1]);
 
 		// deselect further mailinglist
-		$I->uncheckOption(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 0), 0, -100);
+		$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 0));
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
-		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist, 5));
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 5), 0, -100);
+		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 5));
 
 		// getManifestOption
 		$options = $I->getManifestOptions('bwpm_user2subscriber');
+		codecept_debug("Available Mailinglists:");
+		codecept_debug($options->ml_available);
 		$I->assertEquals("4", $options->ml_available[0]);
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);

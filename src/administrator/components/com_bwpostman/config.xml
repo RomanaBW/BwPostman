@@ -111,6 +111,18 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+		<field name="loglevel" type="list"
+		       default="ERROR"
+		       description="COM_BWPOSTMAN_LOGLEVEL_DESC"
+		       label="COM_BWPOSTMAN_LOGLEVEL_LABEL"
+		>
+			<option value="BW_ERROR">COM_BWPOSTMAN_LOGLEVEL_ERROR</option>
+			<option value="BW_WARNING">COM_BWPOSTMAN_LOGLEVEL_WARNING</option>
+			<option value="BW_INFO">COM_BWPOSTMAN_LOGLEVEL_INFO</option>
+			<option value="BW_DEBUG">COM_BWPOSTMAN_LOGLEVEL_DEBUG</option>
+			<option value="BW_DEVELOPMENT">COM_BWPOSTMAN_LOGLEVEL_DEVELOPMENT</option>
+		</field>
 	</fieldset>
 
 	<fieldset name="com_bwpostman_registration_settings" label="COM_BWPOSTMAN_REG_SETTINGS" description="COM_BWPOSTMAN_REG_SETTINGS_DESCRIPTION" addfieldpath="/administrator/components/com_bwpostman/models/fields">

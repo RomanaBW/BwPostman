@@ -2363,10 +2363,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$log_options = array('test' => 'testtext');
 		$logger      = new BwLogger($log_options);
 
-		if (BWPOSTMAN_LOG_MEM)
-		{
-			$logger->addEntry(new JLogEntry(sprintf('Memory consumption before parsing: %01.3f MB', (memory_get_usage(true) / (1024.0 * 1024.0)))));
-		}
+		$logger->addEntry(new JLogEntry(sprintf('Memory consumption before parsing: %01.3f MB', (memory_get_usage(true) / (1024.0 * 1024.0))), BwLogger::BW_DEBUG, 'maintenance'));
 
 		if ($file == '')
 		{
@@ -2394,17 +2391,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRONG_FILE_ERROR', $file));
 		}
 
-		if (BWPOSTMAN_LOG_MEM)
-		{
-			$logger->addEntry(
-				new JLogEntry(
-					sprintf(
-						'Memory consumption while parsing with XML file: %01.3f MB',
-						(memory_get_usage(true) / (1024.0 * 1024.0))
-					)
-				)
-			);
-		}
+		$logger->addEntry(
+			new JLogEntry(
+				sprintf(
+					'Memory consumption while parsing with XML file: %01.3f MB',
+					(memory_get_usage(true) / (1024.0 * 1024.0))
+				),
+				BwLogger::BW_DEBUG, 'maintenance')
+		);
 
 		// Get general data
 		$generals   = array();
@@ -2513,33 +2507,27 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			throw new BwException(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TRUNCATE_TMPFILE_ERROR', $tmp_file));
 		}
 
-		if (BWPOSTMAN_LOG_MEM)
-		{
-			$logger->addEntry(
-				new JLogEntry(
-					sprintf(
-						'Memory consumption while parsing before loop: %01.3f MB',
-						(memory_get_usage(true) / (1024.0 * 1024.0))
-					)
-				)
-			);
-		}
+		$logger->addEntry(
+			new JLogEntry(
+				sprintf(
+					'Memory consumption while parsing before loop: %01.3f MB',
+					(memory_get_usage(true) / (1024.0 * 1024.0))
+				),
+				BwLogger::BW_DEBUG, 'maintenance')
+		);
 
 		// paraphrase tables array per table for better handling and convert simple xml objects to strings
 		$i = 0;
 		while (null !== $tmp_table = array_shift($x_tables))
 		{
-			if (BWPOSTMAN_LOG_MEM)
-			{
-				$logger->addEntry(
-					new JLogEntry(
-						sprintf(
-							'Memory consumption while parsing at very beginning loop: %01.3f MB',
-							(memory_get_usage(true) / (1024.0 * 1024.0))
-						)
-					)
-				);
-			}
+			$logger->addEntry(
+				new JLogEntry(
+					sprintf(
+						'Memory consumption while parsing at very beginning loop: %01.3f MB',
+						(memory_get_usage(true) / (1024.0 * 1024.0))
+					),
+					BwLogger::BW_DEBUG, 'maintenance')
+			);
 
 			$w_table = array();
 
@@ -2550,17 +2538,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$w_table['queries'] = str_replace($is_prefix, $new_prefix, $w_table['queries']);
 			}
 
-			if (BWPOSTMAN_LOG_MEM)
-			{
-				$logger->addEntry(
-					new JLogEntry(
-						sprintf(
-							'Memory consumption while parsing at loop with query: %01.3f MB',
-							(memory_get_usage(true) / (1024.0 * 1024.0))
-						)
-					)
-				);
-			}
+			$logger->addEntry(
+				new JLogEntry(
+					sprintf(
+						'Memory consumption while parsing at loop with query: %01.3f MB',
+						(memory_get_usage(true) / (1024.0 * 1024.0))
+					),
+					BwLogger::BW_DEBUG, 'maintenance')
+			);
 
 			// extract table assets
 			if (property_exists($tmp_table, 'table_assets'))
@@ -2598,17 +2583,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 			}
 
-			if (BWPOSTMAN_LOG_MEM)
-			{
-				$logger->addEntry(
-					new JLogEntry(
-						sprintf(
-							'Memory consumption while parsing at loop with assets: %01.3f MB',
-							(memory_get_usage(true) / (1024.0 * 1024.0))
-						)
-					)
-				);
-			}
+			$logger->addEntry(
+				new JLogEntry(
+					sprintf(
+						'Memory consumption while parsing at loop with assets: %01.3f MB',
+						(memory_get_usage(true) / (1024.0 * 1024.0))
+					),
+					BwLogger::BW_DEBUG, 'maintenance')
+			);
 
 			// get table data; cannot use get_object_vars() because this returns empty objects on empty values, not empty array fields
 			$items = array();
@@ -2641,17 +2623,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			$w_table['table_data'] = $items;
-			if (BWPOSTMAN_LOG_MEM)
-			{
-				$logger->addEntry(
-					new JLogEntry(
-						sprintf(
-							'Memory consumption while parsing at loop with data sets: %01.3f MB',
-							(memory_get_usage(true) / (1024.0 * 1024.0))
-						)
-					)
-				);
-			}
+			$logger->addEntry(
+				new JLogEntry(
+					sprintf(
+						'Memory consumption while parsing at loop with data sets: %01.3f MB',
+						(memory_get_usage(true) / (1024.0 * 1024.0))
+					),
+					BwLogger::BW_DEBUG, 'maintenance')
+			);
 
 			unset($items);
 
@@ -2676,18 +2655,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			$i++;
-			if (BWPOSTMAN_LOG_MEM)
-			{
-				$logger->addEntry(
-					new JLogEntry(
-						sprintf(
-							'Memory consumption while parsing of table %s: %01.3f MB',
-							$table_names[$i - 1],
-							(memory_get_peak_usage(true) / (1024.0 * 1024.0))
-						)
-					)
-				);
-			}
+			$logger->addEntry(
+				new JLogEntry(
+					sprintf(
+						'Memory consumption while parsing of table %s: %01.3f MB',
+						$table_names[$i - 1],
+						(memory_get_peak_usage(true) / (1024.0 * 1024.0))
+					),
+					BwLogger::BW_DEBUG, 'maintenance')
+			);
 		}
 
 		echo '<p class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS') . '</p><br />';
@@ -3063,7 +3039,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->columns($this->assetColnames);
 			$query->values($insert_data);
 			$_db->setQuery($query);
-			$logger->addEntry(new JLogEntry('Write Loop Assets Query 1: ' . (string) $query));
+			$logger->addEntry(new JLogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEBUG, 'maintenance'));
 			if (!$_db->execute())
 			{
 				throw new BwException(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR'));

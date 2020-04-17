@@ -234,7 +234,7 @@ class BwPostmanPhpCron {
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
 			$message                         = 'Database error while getting stored params, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return json_decode($storedParams);
@@ -290,7 +290,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting encryption values, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		$key = new Key('sodium');
@@ -333,7 +333,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting previously used password, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		if ($params !== '')
@@ -370,7 +370,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting nonce, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return $nonce;
@@ -434,11 +434,11 @@ class BwPostmanPhpCron {
 
 			preg_match('/error/i', $curlRes, $matches);
 
-			$this->logger->addEntry(new JLogEntry('JobURL: ' . $jobUrl, JLog::INFO, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('cURL err: ' . $err, JLog::ERROR, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('cURL errMsg: ' . $errMsg, JLog::ERROR, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('cURL curlRes: ' . $curlRes, JLog::INFO, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('counted matches for error: ' . count($matches), JLog::INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('JobURL: ' . $jobUrl, BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('cURL err: ' . $err, BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('cURL errMsg: ' . $errMsg, BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('cURL curlRes: ' . $curlRes, BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('counted matches for error: ' . count($matches), BwLogger::BW_INFO, 'BwPm_TC'));
 
 			if ($err === 28 && JFile::exists(JPATH_PLUGINS . $this->startedFile))
 			{
@@ -451,7 +451,7 @@ class BwPostmanPhpCron {
 
 			if ($err !== 0 || count($matches) > 0)
 			{
-				$this->logger->addEntry(new JLogEntry('cURL errMsg: ' . $errMsg, JLog::ERROR, 'BwPm_TC'));
+				$this->logger->addEntry(new JLogEntry('cURL errMsg: ' . $errMsg, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 				if (!$err === 28 || count($matches) > 0)
 				{
@@ -482,11 +482,11 @@ class BwPostmanPhpCron {
 			}
 
 			curl_close($ch);
-			$this->logger->addEntry(new JLogEntry('Cron server started', JLog::INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('Cron server started', BwLogger::BW_INFO, 'BwPm_TC'));
 		}
 		else
 		{
-			$this->logger->addEntry(new JLogEntry('Cron server already started', JLog::INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('Cron server already started', BwLogger::BW_INFO, 'BwPm_TC'));
 		}
 
 		return true;
@@ -544,7 +544,7 @@ class BwPostmanPhpCron {
 			flush();
 
 			// from here the response has been sent. One can now wait as long as one want and do some stuff
-			$this->logger->addEntry(new JLogEntry('Cron job started', JLog::INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry('Cron job started', BwLogger::BW_INFO, 'BwPm_TC'));
 			$doRun = true;
 
 			do
@@ -561,7 +561,7 @@ class BwPostmanPhpCron {
 				if (JFile::exists(JPATH_PLUGINS . $this->stopFile))
 				{
 					$doRun = false;
-					$this->logger->addEntry(new JLogEntry('Stopping cron server', JLog::INFO, 'BwPm_TC'));
+					$this->logger->addEntry(new JLogEntry('Stopping cron server', BwLogger::BW_INFO, 'BwPm_TC'));
 				}
 
 				// Do every X minutes
@@ -578,7 +578,7 @@ class BwPostmanPhpCron {
 					// Send newsletter, if necessary
 					if (is_array($nlsToSend) && count($nlsToSend))
 					{
-						$this->logger->addEntry(new JLogEntry(JText::sprintf('%s newsletter(s) to send', count($nlsToSend)), JLog::INFO, 'BwPm_TC'));
+						$this->logger->addEntry(new JLogEntry(JText::sprintf('%s newsletter(s) to send', count($nlsToSend)), BwLogger::BW_INFO, 'BwPm_TC'));
 
 						foreach ($nlsToSend as $nlToSend)
 						{
@@ -594,7 +594,7 @@ class BwPostmanPhpCron {
 					}
 //					else
 //					{
-//						$this->logger->addEntry(new JLogEntry('No newsletters to send', JLog::DEBUG, 'BwPm_TC'));
+//						$this->logger->addEntry(new JLogEntry('No newsletters to send', BwLogger::BW_DEBUG, 'BwPm_TC'));
 //					}
 				}
 
@@ -614,7 +614,7 @@ class BwPostmanPhpCron {
 		}
 		else
 		{
-			$this->logger->addEntry(new JLogEntry(('Credentials error while sending'), JLog::ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry(('Credentials error while sending'), BwLogger::BW_ERROR, 'BwPm_TC'));
 			return $loginResult;
 		}
 		return true;
@@ -729,7 +729,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting plugin state, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return $pluginStateOld;
@@ -765,7 +765,7 @@ class BwPostmanPhpCron {
 		catch (RuntimeException $e)
 		{
 			$message = 'Database error while getting next newsletters to send, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 			return false;
 		}
@@ -807,7 +807,7 @@ class BwPostmanPhpCron {
 		catch (RuntimeException $e)
 		{
 			$message = 'Database error while check mailing date, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 			return false;
 		}
@@ -947,7 +947,7 @@ class BwPostmanPhpCron {
 		$mailer->setBody($body);
 
 		$mailer->Send();
-		$this->logger->addEntry(new JLogEntry(JText::_('Scheduled sending of newsletter with ID %s finished', $nlToSend), JLog::ERROR, 'BwPm_TC'));
+		$this->logger->addEntry(new JLogEntry(JText::_('Scheduled sending of newsletter with ID %s finished', $nlToSend), BwLogger::BW_ERROR, 'BwPm_TC'));
 
 	}
 
@@ -982,7 +982,7 @@ class BwPostmanPhpCron {
 		catch (RuntimeException $e)
 		{
 			$message = 'Database error while storing sent status, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 			return false;
 		}

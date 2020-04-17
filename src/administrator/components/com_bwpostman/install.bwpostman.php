@@ -314,7 +314,7 @@ class Com_BwPostmanInstallerScript
 		{
 			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
-			$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
+			$log_options  = array();
 			$this->logger = new BwLogger($log_options);
 
 			if(version_compare(JVERSION, '3.999.999', 'ge'))
@@ -828,7 +828,7 @@ class Com_BwPostmanInstallerScript
 				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
 				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 			}
-//			$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . print_r($groupModel, true), JLog::DEBUG, $this->log_cat));
+//			$this->logger->addEntry(new JLogEntry('GroupModel 2: ' . print_r($groupModel, true), BwLogger::BW_DEBUG, $this->log_cat));
 
 			// get group ID of public
 			$public_id = $this->getGroupId('Public');
@@ -1410,7 +1410,7 @@ class Com_BwPostmanInstallerScript
 				// Graceful exit and rollback(?) if read not successful
 				if ($buffer === false)
 				{
-					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_READBUFFER'), Log::ERROR, $this->log_cat));
+					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_READBUFFER'), BwLogger::BW_ERROR, $this->log_cat));
 
 					return false;
 				}
@@ -1437,20 +1437,20 @@ class Com_BwPostmanInstallerScript
 						}
 
 						$queryMessage = "Query to process: " . (string)$query;
-						$this->logger->addEntry(new JLogEntry($queryMessage, Log::DEBUG, $this->log_cat));
+						$this->logger->addEntry(new JLogEntry($queryMessage, BwLogger::BW_DEBUG, $this->log_cat));
 
 						$db->setQuery($query)->execute();
 					}
 					catch (RuntimeException $e)
 					{
-						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), Log::ERROR, $this->log_cat));
+						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
 
 						return false;
 					}
 
 					$queryString = (string) $query;
 					$queryString = str_replace(array("\r", "\n"), array('', ' '), $queryString);
-					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_UPDATE_LOG_QUERY', $file, $queryString), Log::DEBUG, $this->log_cat));
+					$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_UPDATE_LOG_QUERY', $file, $queryString), BwLogger::BW_DEBUG, $this->log_cat));
 
 					$update_count++;
 				}
@@ -1479,7 +1479,7 @@ class Com_BwPostmanInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), Log::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
 
 			return false;
 		}
@@ -1994,78 +1994,6 @@ class Com_BwPostmanInstallerScript
 
 	private function setDefaultParams()
 	{
-		$css_styles
-			= "
-			body	{
-			font-family: Tahoma, Arial, Helvetica, Univers, sans-serif;
-			font-size: 15px;
-			background:#E9EDF0;
-			padding:0px;
-			margin:0px;
-			padding-bottom:40px;
-			color: #3F3F3F;
-		}
-
-		.outer	{
-			margin: 0 auto;
-		}
-		
-		.header	{
-			padding: 10px auto;
-			border-bottom: 5px solid #599DCA;
-			text-align: center;
-			width: 100%;
-		}
-		
-		.logo	{
-			max-width: 100%;
-		}
-		
-		.content-outer	{
-			max-width: 1000px;
-			margin: 10px auto;
-		}
-		
-		.content	{
-			text-align: left;
-			background: #E9EDF0;
-			border-radius: 8px 8px 8px 8px;
-			box-shadow: 1px 1px 3px 2px #599DCA;
-			margin: 0 5px;
-			padding: 0;
-		}
-		
-		.content-inner	{
-			padding: 20px 15px;
-		}
-		
-		H1	{
-			color: #fff;
-			background: #599DCA;
-			border-radius: 8px 8px 0 0;
-			font-size: 16px;
-			font-weight: bold;
-			text-align: center;
-			padding: 10px 0;
-		}
-		
-		H2	{
-			border-radius: 8px 8px 8px 8px;
-			box-shadow: 1px 1px 3px 2px #599DCA;
-			color: #3061AF;
-			padding: 5px;
-		}
-		
-		.footer-outer	{
-			max-width: 1000px;
-			margin: 10px auto;
-		}
-		
-		.footer-inner	{
-			margin: 0 5px;
-		}
-		";
-
 		$params_default = array();
 		$config	= JFactory::getConfig();
 
@@ -2079,6 +2007,7 @@ class Com_BwPostmanInstallerScript
 		$params_default['publish_nl_by_default']	        = "0";
 		$params_default['compress_backup']	                = "0";
 		$params_default['show_boldt_link']	                = "1";
+		$params_default['loglevel']                         = "BW_ERROR";
 		$params_default['pretext']						    = "BWPM_MAILINGLIST_GDPR";
 		$params_default['show_gender']	                    = "1";
 		$params_default['show_firstname_field']			    = "1";

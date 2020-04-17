@@ -546,9 +546,9 @@ class BwPostmanModelTemplates extends JModelList
 		// If the file isn't okay, redirect to templates
 		if ($file['error'] > 0)
 		{
-			$this->logger->addEntry(new JLogEntry('tmp filename if template to import: ' . $src));
-			$this->logger->addEntry(new JLogEntry('archive name if template to import: ' . $archivename));
-			$this->logger->addEntry(new JLogEntry('file array: ' . print_r($file, true)));
+			$this->logger->addEntry(new JLogEntry('tmp filename if template to import: ' . $src, BwLogger::BW_DEBUG, 'templates'));
+			$this->logger->addEntry(new JLogEntry('archive name if template to import: ' . $archivename, BwLogger::BW_DEBUG, 'templates'));
+			$this->logger->addEntry(new JLogEntry('file array: ' . print_r($file, true), BwLogger::BW_DEBUG, 'templates'));
 
 			//http://de.php.net/features.file-upload.errors
 			$msg = JText::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD');

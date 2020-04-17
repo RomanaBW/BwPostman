@@ -27,9 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Miscellaneous
-define('BWPOSTMAN_LOG_MEM', 0);
-
 // import joomla controller library
 jimport('joomla.application.component.controller');
 

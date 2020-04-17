@@ -225,7 +225,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			// Get the params
 			$params			= ComponentHelper::getParams('com_bwpostman');
 			$this->delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
-			$logger->addEntry(new LogEntry('View raw delay: ' . $this->delay));
+			$logger->addEntry(new LogEntry('View raw delay: ' . $this->delay, BwLogger::BW_DEBUG, 'send'));
 
 			// Build delay message
 			if ((int) $params->get('mails_per_pageload_delay_unit') == 1000)

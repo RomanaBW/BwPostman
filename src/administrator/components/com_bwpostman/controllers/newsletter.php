@@ -770,7 +770,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$model	= $this->getModel('newsletter');
 		$error	= array();
 		$link   = '';
-		$this->logger->addEntry(new JLogEntry('NL controller sendmail reached'));
+		$this->logger->addEntry(new JLogEntry('NL controller sendmail reached', BwLogger::BW_INFO, 'send'));
 
 		// Get record ID from list view
 		$ids    	= (int) $this->input->get('cid', 0, '');
@@ -783,7 +783,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		$data = $model->preSendChecks($error, $recordId);
-		$this->logger->addEntry(new JLogEntry('NL controller preSendChecks finished'));
+		$this->logger->addEntry(new JLogEntry('NL controller preSendChecks finished', BwLogger::BW_INFO, 'send'));
 
 		// If preSendChecks fails redirect to edit
 		if ($error)
@@ -816,7 +816,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			// make sure, recordID matches data id (because we may come from list view or from a new newsletter)
 			$recordId = $model->getState('newsletter.id');
 			$ret_msg  = '';
-			$this->logger->addEntry(new JLogEntry('NL controller model save finished'));
+			$this->logger->addEntry(new JLogEntry('NL controller model save finished', BwLogger::BW_INFO, 'send'));
 
 			switch ($task)
 			{
@@ -893,7 +893,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 			if ($startsending)
 			{
-				$this->logger->addEntry(new JLogEntry('NL controller start sending reached'));
+				$this->logger->addEntry(new JLogEntry('NL controller start sending reached', BwLogger::BW_INFO, 'send'));
 				if ($task == "sendmailandpublish")
 				{
 					$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', 1);

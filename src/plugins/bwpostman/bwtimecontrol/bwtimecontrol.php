@@ -176,7 +176,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), JLog::DEBUG,
+				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG,
 					$this->log_cat));
 			}
 		}
@@ -185,7 +185,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
 			$message                         = 'Database error while getting component status, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -214,7 +214,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			if ($this->debug)
 			{
 				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']),
-					JLog::DEBUG, $this->log_cat));
+					BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -222,7 +222,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentVersion = '0.0.0';
 			$message                         = 'Database error while getting component version, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -270,7 +270,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('onContentPrepareForm reached', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('onContentPrepareForm reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -282,7 +282,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry(sprintf('Context is: %s', $context), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry(sprintf('Context is: %s', $context), BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!in_array($context, $this->allowedContext))
@@ -325,7 +325,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), JLog::ERROR,
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), BwLogger::BW_ERROR,
 					$this->log_cat));
 			}
 
@@ -753,7 +753,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
 			$message                         = 'Database error while getting all automated nl ids, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return array();
@@ -795,7 +795,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 				$this->_subject->setError($e->getMessage());
 				$this->BwPostmanComponentEnabled = false;
 				$message                         = 'Database error while getting all automated nl ids, error message is ' . $e->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, JLog::ERROR, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 			}
 		}
 

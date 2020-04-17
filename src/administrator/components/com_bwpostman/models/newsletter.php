@@ -2471,7 +2471,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true, $mailsPerStepDone = 0, $ajaxCall = false)
 	{
-		$this->logger->addEntry(new JLogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep));
+		$this->logger->addEntry(new JLogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep, BwLogger::BW_INFO, 'send'));
 		$this->sendmessage = '';
 
 		try
@@ -2763,7 +2763,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			$error_msg_plugin   = JText::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
 			$app->enqueueMessage($error_msg_plugin, 'error');
-			$this->logger->addEntry(new JLogEntry($error_msg_plugin));
+			$this->logger->addEntry(new JLogEntry($error_msg_plugin, BwLogger::BW_ERROR, 'personalize'));
 
 			$tblSendMailQueue->push(
 				$tblSendMailQueue->content_id,
@@ -2823,12 +2823,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if (!$this->arise_queue)
 		{
-			$this->logger->addEntry(new JLogEntry('Before sending'));
+			$this->logger->addEntry(new JLogEntry('Before sending', BwLogger::BW_INFO, 'send'));
 //			Use the following with care! Complete mails with body are written to log…
-//			$this->logger->addEntry(new JLogEntry('Mailer data: ' . print_r($mailer, true)));
+//			$this->logger->addEntry(new JLogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
 			$res = $mailer->Send();
 			// @ToDo: $res may be boolean of JException object!
-			$this->logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res)));
+			$this->logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
 		}
 
 		if ($res === true)

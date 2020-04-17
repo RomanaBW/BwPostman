@@ -217,14 +217,14 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -252,7 +252,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -288,7 +288,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Plugin User2Subscriber is enabled: %s', $enabled), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('Plugin User2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -324,7 +324,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Plugin Buyer2Subscriber is enabled: %s', $enabled), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('Plugin Buyer2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -402,7 +402,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('plgVmOnGetUserfields reached', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('plgVmOnGetUserfields reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->allowedContext($type))
@@ -733,7 +733,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('plgVmOnUserOrder reached', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new JLogEntry('plgVmOnUserOrder reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -758,7 +758,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		{
 			foreach ($subscription_data as $key=>$value)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('plgVmOnUserOrder submitted data, key %s value $s ', $key, $value), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new JLogEntry(sprintf('plgVmOnUserOrder submitted data, key %s value $s ', $key, $value), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 

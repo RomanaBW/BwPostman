@@ -205,10 +205,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			// Initialize variables
 			$jinput  = $app->input;
 			$error   = '';
-			if(BWPOSTMAN_LOG_MEM) {
-				$log_options = array('test' => 'testtext');
-				$logger      = new BwLogger($log_options);
-			}
+			$logger  = new BwLogger(array());
 
 			$session = JFactory::getSession();
 			$file    = $app->getUserState('com_bwpostman.maintenance.dest', '');
@@ -239,9 +236,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step1':
 					try
 					{
-						if(BWPOSTMAN_LOG_MEM) {
-							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
-						}
+						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						// parse table data
 						$table_names = $model->parseTablesData($file);
@@ -256,16 +251,14 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$session->set('trestore_tablenames', $table_names);
 						$step = "2";
 
-						if(BWPOSTMAN_LOG_MEM) {
-							$logger->addEntry(
-								new JLogEntry(
-									sprintf(
-										'Speicherverbrauch in Schritt 3: %01.3f MB',
-										(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-									)
-								)
-							);
-						}
+						$logger->addEntry(
+							new JLogEntry(
+								sprintf(
+									'Speicherverbrauch in Schritt 3: %01.3f MB',
+									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
+								),
+								BwLogger::BW_DEBUG, 'maintenance')
+						);
 					}
 					catch (BwException $e)
 					{
@@ -278,27 +271,21 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step2':
 					try
 					{
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
-						}
+						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						// output generals, get component asset and user groups
 						$model->outputGeneralInformation();
 
 						$step = "3";
 
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$logger->addEntry(
-								new JLogEntry(
-									sprintf(
-										'Speicherverbrauch in Schritt 2: %01.3f MB',
-										(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-									)
-								)
-							);
-						}
+						$logger->addEntry(
+							new JLogEntry(
+								sprintf(
+									'Speicherverbrauch in Schritt 2: %01.3f MB',
+									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
+								),
+								BwLogger::BW_DEBUG, 'maintenance')
+						);
 					}
 					catch (BwException $e)
 					{
@@ -311,26 +298,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step3':
 					try
 					{
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
-						}
+						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESS') . '</h4>';
 						$model->processAssetUserGroups($session->get('trestore_tablenames', ''));
 						$step = "4";
 
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$logger->addEntry(
-								new JLogEntry(
-									sprintf(
-										'Speicherverbrauch in Schritt 4: %01.3f MB',
-										(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-									)
-								)
-							);
-						}
+						$logger->addEntry(
+							new JLogEntry(
+								sprintf(
+									'Speicherverbrauch in Schritt 4: %01.3f MB',
+									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
+								),
+								BwLogger::BW_DEBUG, 'maintenance')
+						);
 					}
 					catch (BwException $e)
 					{
@@ -343,26 +324,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step4':
 					try
 					{
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
-						}
+						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CREATE_RESTORE_POINT') . '</h4>';
 						$model->createRestorePoint();
 						$step = "5";
 
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$logger->addEntry(
-								new JLogEntry(
-									sprintf(
-										'Speicherverbrauch in Schritt 5: %01.3f MB',
-										(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-									)
-								)
-							);
-						}
+						$logger->addEntry(
+							new JLogEntry(
+								sprintf(
+									'Speicherverbrauch in Schritt 5: %01.3f MB',
+									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
+								),
+								BwLogger::BW_DEBUG, 'maintenance')
+						);
 					}
 					catch (BwException $e)
 					{
@@ -375,10 +350,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				case 'step5':
 					try
 					{
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
-						}
+						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						// delete all existing asset sub entries of BwPostman
 						echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_HEAL_ASSETS') . '</h4>';
@@ -391,17 +363,14 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$model->healAssetsTable();
 						$step = "6";
 
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$logger->addEntry(
-								new JLogEntry(
-									sprintf(
-										'Speicherverbrauch in Schritt 6: %01.3f MB',
-										(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-									)
-								)
-							);
-						}
+						$logger->addEntry(
+							new JLogEntry(
+								sprintf(
+									'Speicherverbrauch in Schritt 6: %01.3f MB',
+									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
+								),
+								BwLogger::BW_DEBUG, 'maintenance')
+						);
 					}
 					catch (BwException $e)
 					{
@@ -426,10 +395,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 							$model->anewBwPostmanTables($table_names);
 						}
 
-						if(BWPOSTMAN_LOG_MEM)
-						{
-							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
-						}
+						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						// loop over all tables
 						echo '<h5>' . JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE', $table_names[$i]) . '</h5>';
@@ -453,17 +419,15 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 							$step  = "7";
 						}
 
-						if(BWPOSTMAN_LOG_MEM) {
-							$logger->addEntry(
-								new JLogEntry(
-									sprintf(
-										'Speicherverbrauch in Schritt 7, Tabelle %s: %01.3f MB',
-										$table_names[$i - 1],
-										(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-									)
-								)
-							);
-						}
+						$logger->addEntry(
+							new JLogEntry(
+								sprintf(
+									'Speicherverbrauch in Schritt 7, Tabelle %s: %01.3f MB',
+									$table_names[$i - 1],
+									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
+								),
+								BwLogger::BW_DEBUG, 'maintenance')
+						);
 					}
 					catch (BwException $e)
 					{

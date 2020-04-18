@@ -168,7 +168,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		JFormHelper::addFieldPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields');
 
 		$log_options    = array();
-		$this->logger   = new BwLogger($log_options);
+		$this->logger   = BwLogger::getInstance($log_options);
 		$this->debug    = $this->params->get('debug_option');
 
 		$this->setBwPostmanComponentStatus();

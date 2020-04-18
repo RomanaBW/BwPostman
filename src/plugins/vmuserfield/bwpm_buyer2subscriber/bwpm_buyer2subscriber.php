@@ -183,7 +183,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		parent::__construct($subject, $config);
 
 		$log_options    = array();
-		$this->logger   = new BwLogger($log_options);
+		$this->logger   = BwLogger::getInstance($log_options);
 		$this->debug    = $this->params->get('debug_option');
 
 		$this->setComponentStatus();

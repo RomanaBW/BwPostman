@@ -126,8 +126,8 @@ class BwPostmanModelTemplates extends JModelList
 			);
 		}
 
-		$log_options  = array('text_file' => 'bwpostman/BwPostman.log');
-		$this->logger = new BwLogger($log_options);
+		$log_options  = array();
+		$this->logger = BwLogger::getInstance($log_options);
 
 		parent::__construct($config);
 	}

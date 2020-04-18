@@ -77,7 +77,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$model	= $this->getModel('templates');
 
 		$log_options  = array();
-		$logger      = new BwLogger($log_options);
+		$logger      = BwLogger::getInstance($log_options);
 
 		try
 		{

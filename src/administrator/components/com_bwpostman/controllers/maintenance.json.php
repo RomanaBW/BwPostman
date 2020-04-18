@@ -30,8 +30,9 @@ defined('_JEXEC') or die('Restricted access');
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/maintenance.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/maintenance.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman Campaigns Controller
@@ -205,7 +206,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			// Initialize variables
 			$jinput  = $app->input;
 			$error   = '';
-			$logger  = new BwLogger(array());
+			$log_options = array();
+			$logger  = BwLogger::getInstance($log_options);
 
 			$session = JFactory::getSession();
 			$file    = $app->getUserState('com_bwpostman.maintenance.dest', '');

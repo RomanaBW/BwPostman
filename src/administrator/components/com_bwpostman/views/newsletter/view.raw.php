@@ -70,7 +70,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$app 	= Factory::getApplication();
 		$jinput	= Factory::getApplication()->input;
 		$log_options    = array();
-		$logger   = new BwLogger($log_options);
+		$logger   = BwLogger::getInstance($log_options);
 
 		if (!BwPostmanHelper::canView('newsletter'))
 		{

@@ -220,7 +220,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		if ($task == 'startsending')
 		{
 			$log_options    = array();
-			$logger   = new BwLogger($log_options);
+			$logger   = BwLogger::getInstance($log_options);
 
 			// Get the params
 			$params			= ComponentHelper::getParams('com_bwpostman');

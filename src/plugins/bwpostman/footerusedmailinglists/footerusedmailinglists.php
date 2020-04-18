@@ -74,8 +74,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		parent::__construct($subject, $config);
 //		$this->_enabled = false;
 
-//		$log_options    = array('text_file' => 'bwpostman/BwPmTimecontrol.log');
-//		$this->logger   = new BwLogger($log_options);
+//		$log_options    = array();
+//		$this->logger   = BwLogger::getInstance($log_options);
 //		$this->debug    = false;
 
 //		// Do not load if BwPostman version is not supported or BwPostman isn't detected

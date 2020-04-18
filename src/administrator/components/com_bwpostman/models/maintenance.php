@@ -2360,8 +2360,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	public function parseTablesData($file)
 	{
 		// @ToDo: Check if exceptions are handled correctly
-		$log_options = array('test' => 'testtext');
-		$logger      = new BwLogger($log_options);
+		$log_options = array();
+		$logger      = BwLogger::getInstance($log_options);
 
 		$logger->addEntry(new JLogEntry(sprintf('Memory consumption before parsing: %01.3f MB', (memory_get_usage(true) / (1024.0 * 1024.0))), BwLogger::BW_DEBUG, 'maintenance'));
 
@@ -3023,8 +3023,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected function writeLoopAssets($dataset, $assetLoopCounter, $base_asset, &$mapOldAssetIdsToNew)
 	{
 		// @ToDo: Check if exceptions are handled correctly
-		$log_options = array('test' => 'testtext');
-		$logger      = new BwLogger($log_options);
+		$log_options = array();
+		$logger      = BwLogger::getInstance($log_options);
 
 		try
 		{

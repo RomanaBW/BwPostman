@@ -87,7 +87,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		parent::__construct($config);
 
 		$log_options  = array();
-		$this->logger = new BwLogger($log_options);
+		$this->logger = BwLogger::getInstance($log_options);
 
 		//register extra tasks
 		$this->registerTask('setContent', 'setContent');

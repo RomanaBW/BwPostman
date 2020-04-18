@@ -139,7 +139,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		$this->_enabled = false;
 
 		$log_options  = array('text_file' => 'bwpostman/BwPmTimecontrol.log');
-		$this->logger = new BwLogger($log_options);
+		$this->logger = BwLogger::getInstance($log_options);
 		$this->debug  = false;
 
 		// Do not load if BwPostman version is not supported or BwPostman isn't detected

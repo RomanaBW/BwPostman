@@ -160,7 +160,7 @@ class BwPostmanPhpCron {
 		$app->triggerEvent('onAfterInitialise');
 
 		$log_options  = array('text_file' => 'bwpostman/BwPmTimecontrol.log');
-		$this->logger = new BwLogger($log_options);
+		$this->logger = BwLogger::getInstance($log_options);
 
 		$task = $app->input->get('task', null);
 		$extensionId = $app->input->get('extension_id', null);

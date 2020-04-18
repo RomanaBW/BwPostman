@@ -156,7 +156,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$this->processTestMode();
 
 		$log_options    = array();
-		$this->logger   = new BwLogger($log_options);
+		$this->logger   = BwLogger::getInstance($log_options);
 	}
 
 	/**

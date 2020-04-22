@@ -1247,6 +1247,7 @@ class User2SubscriberCest
 		$I->clickAndWait(RegPage::$plugin_tab_mailinglists, 1);
 
 		// click checkbox for further mailinglist
+		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 0), 0, -100);
 		$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);

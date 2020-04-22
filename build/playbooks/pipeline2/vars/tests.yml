@@ -132,9 +132,9 @@ test_suites:
 
   - name: accept4
     tests:
-#      - footerusedmailinglists
+      - footerusedmailinglists
       - user2subscriber
-#      - access1
+      - access1
 
   - name: accept5
     tests:

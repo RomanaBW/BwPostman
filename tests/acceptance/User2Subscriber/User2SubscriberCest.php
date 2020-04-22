@@ -1257,6 +1257,8 @@ class User2SubscriberCest
 
 		// getManifestOption
 		$options = $I->getManifestOptions('bwpm_user2subscriber');
+		codecept_debug("Options:");
+		codecept_debug($options);
 		$I->assertEquals("1", $options->ml_available[0]);
 		$I->assertEquals("4", $options->ml_available[1]);
 

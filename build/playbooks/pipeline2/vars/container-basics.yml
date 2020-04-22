@@ -84,6 +84,7 @@ codecept_path_support: "tests/_support"
 codecept_path_output: "/project_logs"
 codecept_failed_file: "/project_logs/failed"
 
-screen_size: '1440x900'
+#screen_size: '1440x900'
+screen_size: '1920x1080'
 display: ':45'
 

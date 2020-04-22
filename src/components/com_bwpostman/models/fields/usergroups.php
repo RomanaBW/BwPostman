@@ -89,7 +89,7 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		$options = $this->getOptions();
 
 		// Build the checkbox field output.
-		$html[] = '	    <div class="well well-small table-responsive">';
+		$html[] = '	    <div class="bwp-field well well-small table-responsive">';
 		$html[] = '			<table class="adminlist table table-striped">';
 		$html[] = '				<thead class="thead-light">';
 		$html[] = '					<tr>';

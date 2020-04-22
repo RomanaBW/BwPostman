@@ -81,7 +81,7 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$options = $this->getOptions();
 
 		// Build the checkbox field output.
-		$html[] = '		<div class="well well-small table-responsive">';
+		$html[] = '		<div class="bwp-field well well-small table-responsive">';
 		$html[] = '			<table class="adminlist table table-striped">';
 		$html[] = '				<thead class="thead-light">';
 		$html[] = '					<tr>';
@@ -137,7 +137,7 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 					$html[] = '								<td class="text-center">' . JText::_($option->value) . '</td>';
 					$html[] = '								<td class="text-center"><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
 						. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
-					$html[] = '								<td class="tbody-icon text-center">' . $archived . '</td>';
+					$html[] = '								<td class="text-center"><span class="tbody-icon">' . $archived . '</span></td>';
 					$html[] = '								<td>' . JText::_($option->text) . '</td>';
 					$html[] = '								<td class="d-none d-lg-table-cell">' . JText::_($option->description) . '</td>';
 					$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';

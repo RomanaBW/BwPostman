@@ -31,6 +31,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 
 HTMLHelper::_('jquery.framework');
+HTMLHelper::_('script', 'bw_postman/bwpm_menuhelper.js', array('version' => 'auto', 'relative' => true));
 
 JFormHelper::loadFieldClass('checkboxes');
 
@@ -73,8 +74,6 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	 */
 	protected function getInput()
 	{
-		$document	= Factory::getDocument();
-		$document->addScript(Uri::root(true) . '/components/com_bwpostman/assets/js/bwpm_menuhelper.js');
 
 		// Initialize variables.
 		$html	= array();
@@ -90,7 +89,7 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		$options = $this->getOptions();
 
 		// Build the checkbox field output.
-		$html[] = '	    <div class="well well-small table-responsive">';
+		$html[] = '	    <div class="bwp-field well well-small table-responsive">';
 		$html[] = '			<table class="adminlist table table-striped">';
 		$html[] = '				<thead class="thead-light">';
 		$html[] = '					<tr>';
@@ -151,10 +150,10 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 					$html[] = '								<td class="text-center">' . JText::_($option->value) . '</td>';
 					$html[] = '								<td class="text-center"><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
 						. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
-					$html[] = '								<td class="tbody-icon text-center">' . $archived . '</td>';
+					$html[] = '								<td class="text-center"><span class="tbody-icon ">' . $archived . '</span></td>';
 					$html[] = '								<td>' . JText::_($option->text) . '</td>';
 					$html[] = '								<td class="d-none d-lg-table-cell">' . JText::_($option->description) . '</td>';
-					$html[] = '								<td class="tbody-icon text-center">' . $published . '</td>';
+					$html[] = '								<td class="text-center"><span class="tbody-icon">' . $published . '</span></td>';
 					$html[] = '								<td>' . JText::_($option->access_level) . '</td>';
 				}
 				$html[] = '						  </tr>';

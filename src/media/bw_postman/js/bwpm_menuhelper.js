@@ -26,17 +26,10 @@
 jQuery(document).ready(function() {
 	jQuery('#fieldset-COM_BWPOSTMAN_ML_AVAILABLE .column-count-md-2').attr('class', 'column-count-1');
 	jQuery('#fieldset-COM_BWPOSTMAN_CAM_AVAILABLE .column-count-md-2').attr('class', 'column-count-1');
-	jQuery('#jform_params_ml_available tbody tr').on('click',function(){
-		var box = $(this).find('input:checkbox');
-		box.prop("checked", !box.prop("checked"));
-	});
-	jQuery('#jform_params_groups_available tbody tr').on('click',function(){
-		var box = $(this).find('input:checkbox');
-		box.prop("checked", !box.prop("checked"));
-	});
-	jQuery('#jform_params_cam_available tbody tr').on('click',function(){
-		var box = $(this).find('input:checkbox');
-		box.prop("checked", !box.prop("checked"));
+	jQuery('#fieldset-mailinglists .column-count-md-2').attr('class', 'column-count-1');
+	jQuery('.bwp-field tr').click(function(event) {
+		if (event.target.type !== 'checkbox') {
+			jQuery(':checkbox', this).trigger('click');
+		}
 	});
 });
-

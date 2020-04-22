@@ -727,6 +727,35 @@ table.export {
 	height: 3em;
 }
 
+#sendResult.j3 .alert.alert-secondary {
+	color: #383d41;
+	background-color: #e2e3e5;
+	border-color: #d6d8db;
+}
+
+#sendResult.j3 .mb-4 {
+	margin-bottom: 1.5rem !important;
+}
+
+#sendResult.j3 .mt-2 {
+	margin-top: 0.5rem !important;
+}
+
+#sendResult.j3 .alert {
+	padding-top: 1.5rem !important;
+	padding-bottom: 1.5rem !important;
+}
+
+#sendResult.j3 .mb-2 {
+	margin-bottom: 0.5rem !important;
+}
+
+#sendResult.j3 .icon-lg {
+	font-size:1.33333em;
+	line-height:.75em;
+	vertical-align:-.0667em;
+}
+
 /*----------------------------------------------------------
 	Pagination
 ----------------------------------------------------------*/

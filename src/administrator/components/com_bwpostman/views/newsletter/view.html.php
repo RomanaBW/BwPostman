@@ -467,8 +467,17 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		$isNew = ($this->item->id == 0);
 
+		if ($layout == 'nl_send')
+		{
+			$bar = Toolbar::getInstance('toolbar');
+			$alt = "COM_BWPOSTMAN_BACK";
+			$document->setTitle(Text::_('COM_BWPOSTMAN_ACTION_SEND'));
+			$backlink = 'index.php?option=com_bwpostman&view=newsletters';
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ACTION_SEND'), 'envelope');
+			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+		}
 		// If we come from sent newsletters, we have to do other stuff than normal
-		if ($layout == 'edit_publish')
+		elseif ($layout == 'edit_publish')
 		{
 			ToolbarHelper::save('newsletter.publish_save');
 			ToolbarHelper::apply('newsletter.publish_apply');

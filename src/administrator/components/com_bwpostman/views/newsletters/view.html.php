@@ -472,8 +472,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 						'COM_BWPOSTMAN_NL_RESET_TRIAL',
 						false
 					);
-					$link = 'index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending';
-					$bar->appendButton('Popup', 'envelope', $alt, $link, 600, 600);
+					$link = 'index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send';
+					$bar->appendButton('Link', 'envelope', $alt, $link);
 					ToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
 				}
 				break;

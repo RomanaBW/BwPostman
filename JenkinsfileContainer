@@ -24,6 +24,7 @@ pipeline {
 					DO_RECORD_J4_6 = "false";
 					DO_RECORD_J4_7 = "false";
 
+
 					PROJECT_NAME_3 = "j${JOOMLA_VERSION_3}_bwpm${BWPM_VERSION}"
 					VERSIONS_EXTRA_VAR_3 = "joomla_version=${JOOMLA_VERSION_3} bwpm_version=${BWPM_VERSION}";
 					DO_RECORD_J3_SMOKE = "true";

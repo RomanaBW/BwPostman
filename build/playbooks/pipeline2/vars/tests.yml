@@ -13,7 +13,8 @@ test_db_dbname: "joomlatest"
 test_db_user: "{{ vault_test_db_user_1 }}"
 test_db_password: "{{ vault_test_db_password_1 }}"
 
-screen_size: '1440x900'
+#screen_size: '1440x900'
+screen_size: '1920x1080'
 display: ':45'
 
 test_file:
@@ -131,9 +132,9 @@ test_suites:
 
   - name: accept4
     tests:
-      - footerusedmailinglists
+#      - footerusedmailinglists
       - user2subscriber
-      - access1
+#      - access1
 
   - name: accept5
     tests:

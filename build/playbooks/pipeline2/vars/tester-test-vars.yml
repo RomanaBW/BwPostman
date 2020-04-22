@@ -14,5 +14,6 @@ test_db_dbname: "joomlatest"
 test_db_user: "tester"
 test_db_password: "barbamama"
 
-screen_size: '1440x900'
+#screen_size: '1440x900'
+screen_size: '1920x1080'
 display: '45'

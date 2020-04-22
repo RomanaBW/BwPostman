@@ -1436,10 +1436,12 @@ class Com_BwPostmanInstallerScript
 							$query = $db->convertUtf8mb4QueryToUtf8($query);
 						}
 
+						$db->setQuery($query);
+
 						$queryMessage = "Query to process: " . (string)$query;
 						$this->logger->addEntry(new JLogEntry($queryMessage, BwLogger::BW_DEBUG, $this->log_cat));
 
-						$db->setQuery($query)->execute();
+						$db->execute();
 					}
 					catch (RuntimeException $e)
 					{

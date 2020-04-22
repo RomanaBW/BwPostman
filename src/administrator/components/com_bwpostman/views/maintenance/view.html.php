@@ -224,15 +224,12 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		switch ($layout)
 		{
-			case 'updateCheckSave':
-				break;
-			case 'checkTables':
-				break;
 			case 'saveTables':
-				$this->check_res	= $model->saveTables(false);
+				$this->check_res	= $model->saveTables(null, false);
 				break;
+			case 'updateCheckSave':
+			case 'checkTables':
 			case 'restoreTables':
-				break;
 			case 'doRestore':
 				break;
 			default:

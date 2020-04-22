@@ -79,7 +79,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					// save tables
 					$model	= $this->getModel('maintenance');
 					echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h4>';
-					$savedTables = $model->saveTables(true);
+					$savedTables = $model->saveTables(null, true);
 					echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h4>';
 					if ($savedTables != true)
 					{

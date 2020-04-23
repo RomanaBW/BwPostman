@@ -1323,7 +1323,7 @@ class Com_BwPostmanInstallerScript
 	private function removeDoubleExtensionsEntries()
 	{
 		$_db    = JFactory::getDbo();
-		$extensionId = $this->getExtensionId();
+		$extensionId = $this->getExtensionId(0);
 
 		if ($extensionId)
 		{
@@ -1402,7 +1402,7 @@ class Com_BwPostmanInstallerScript
 		$update_count = 0;
 		$db	= JFactory::getDbo();
 		$schemapath = JPATH_ROOT . '/administrator/components/com_bwpostman/sql/updates/mysql';
-		$extensionId = $this->getExtensionId();
+		$extensionId = $this->getExtensionId(1);
 
 		$files = Folder::files($schemapath, '\.sql$');
 
@@ -2304,12 +2304,14 @@ EOS;
 		return $modal;
 	}/**
  *
+ * @param  integer $clientId
+ *
  * @return string
  *
  * @throws Exception
  * @since version
  */
-	private function getExtensionId()
+	private function getExtensionId($clientId)
 	{
 		$_db    = JFactory::getDbo();
 		$result = 0;
@@ -2318,7 +2320,7 @@ EOS;
 		$query->select($_db->quoteName('extension_id'));
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
-		$query->where($_db->quoteName('client_id') . ' = ' . $_db->quote('1'));
+		$query->where($_db->quoteName('client_id') . ' = ' . $_db->quote($clientId));
 
 		$_db->setQuery($query);
 

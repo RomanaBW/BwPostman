@@ -1343,32 +1343,44 @@ class NewsletterEditPage
 
 		$I->acceptPopup();
 
-		$user = getenv('USER');
-
-		if (!$user)
-		{
-			$user = 'root';
-		}
-
-		if ($user == 'jenkins')
-		{
-			$I->wait($iframeTime);
-		}
-
-		$I->waitForElement(self::$tab5_send_iframeId, 40);
-		$I->switchToIFrame(self::$tab5_send_iframe);
-
-		$I->waitForElementVisible(self::$success_send_number_id, 180);
+//		$user = getenv('USER');
+//
+//		if (!$user)
+//		{
+//			$user = 'root';
+//		}
+//
+//		if ($user == 'jenkins')
+//		{
+//			$I->wait($iframeTime);
+//		}
+//
+		$I->waitForElementVisible(NlManage::$sendLayout, 5);
+		$I->waitForElementVisible(self::$success_send_number_id, 10);
 		$I->waitForText(self::$success_send_ready, 180);
 		$I->see(self::$success_send_ready);
-
 		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
 
-		$I->switchToIFrame();
-		$I->wait(8);
-
+		$I->click(NlManage::$sendLayoutBack);
+		$I->waitForElementVisible(Generals::$page_header, 10);
 		$I->see("Newsletters", Generals::$pageTitle);
+
 		$I->clickAndWait(NlManage::$tab2, 1);
+
+//		$I->waitForElementVisible(self::$tab5_send_iframeId, 40);
+//		$I->switchToIFrame(self::$tab5_send_iframe);
+//
+//		$I->waitForElementVisible(self::$success_send_number_id, 180);
+//		$I->waitForText(self::$success_send_ready, 180);
+//		$I->see(self::$success_send_ready);
+//
+//		$I->see(sprintf(self::$success_send_number, $remainsToSend, $nbrToSend));
+//
+//		$I->switchToIFrame();
+//		$I->wait(8);
+//
+//		$I->see("Newsletters", Generals::$pageTitle);
+//		$I->clickAndWait(NlManage::$tab2, 1);
 	}
 
 	/**

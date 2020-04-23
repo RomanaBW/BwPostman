@@ -37,8 +37,8 @@ test_file:
     testsuite_file: Backend/TestOptionsCest
 
   - suite: lists
-    testsuite_file: Backend/Lists/
-#    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
+#    testsuite_file: Backend/Lists/
+    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
 
   - suite: maintenance
     testsuite_file: Backend/TestMaintenanceCest
@@ -56,7 +56,8 @@ test_file:
     testsuite_file: Frontend
 
   - suite: details
-    testsuite_file: Backend/Details
+#    testsuite_file: Backend/Details
+    testsuite_file: Backend/Details/  TestNewslettersDetailsCest
 
   - suite: user2subscriber
     testsuite_file: User2Subscriber/User2SubscriberCest

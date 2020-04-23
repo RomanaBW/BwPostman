@@ -285,14 +285,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $success_send_number_id  = ".//*[@id='nl_modal_to_send_message']";
+	public static $success_send_number_id  = "//*[@id='nl_to_send_message']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $delay_message_id  = ".//*[@id='nl_modal_delay_message']";
+	public static $delay_message_id  = "//*[@id='nl_delay_message']";
 
 	/**
 	 * @var string

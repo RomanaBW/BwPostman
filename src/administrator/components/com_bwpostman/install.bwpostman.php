@@ -1443,6 +1443,12 @@ class Com_BwPostmanInstallerScript
 
 						$db->execute();
 					}
+					catch (JDatabaseExceptionExecuting $exception)
+					{
+						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $exception->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
+
+						return false;
+					}
 					catch (RuntimeException $e)
 					{
 						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));

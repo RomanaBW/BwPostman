@@ -301,6 +301,9 @@ class Com_BwPostmanInstallerScript
 
 	public function postflight($type)
 	{
+		$log_options  = array();
+		$this->logger = BwLogger::getInstance($log_options);
+
 		$this->logger->addEntry(new JLogEntry("Postflight reached", BwLogger::BW_DEBUG, $this->log_cat));
 
 		$m_params   = JComponentHelper::getParams('com_media');
@@ -315,9 +318,6 @@ class Com_BwPostmanInstallerScript
 		if ($type == 'install' || $type == 'update')
 		{
 			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-
-			$log_options  = array();
-			$this->logger = BwLogger::getInstance($log_options);
 
 			if(version_compare(JVERSION, '3.999.999', 'ge'))
 			{

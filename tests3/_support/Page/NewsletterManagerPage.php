@@ -778,5 +778,5 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.4.0
 	 */
-	public static $sendLayoutBack = "//*[@id='toolbar-back']";
+	public static $sendLayoutBack = "//*[@id='toolbar-arrow-left']/button";
 }

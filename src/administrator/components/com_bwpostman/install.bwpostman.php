@@ -301,6 +301,7 @@ class Com_BwPostmanInstallerScript
 
 	public function postflight($type)
 	{
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 		$log_options  = array();
 		$this->logger = BwLogger::getInstance($log_options);
 

@@ -768,16 +768,15 @@ class TestNewslettersListsCest
 
 		$I->clickAndWait(Generals::$toolbar['Continue sending'], 1);
 
-		//        $I->switchToIFrame('iframe');
-		//        $I->waitForText(NlEdit::$success_send_ready, 300);
-		//        $I->see(NlEdit::$success_send_ready);
+		$I->waitForElementVisible(NlManage::$sendLayout, 5);
+		$I->waitForElementVisible(NlEdit::$success_send_number_id, 10);
+		$I->waitForText(NlEdit::$success_send_ready, 180);
+		$I->see(NlEdit::$success_send_ready);
 
-		//        $I->see(sprintf(NlEdit::$success_send_number, NlEdit::$nbr_only_confirmed));
-
-		//        $I->switchToIFrame();
-		$I->wait(80);
-
+		$I->click(NlManage::$sendLayoutBack);
+		$I->waitForElementVisible(Generals::$pageTitle, 10);
 		$I->see("Newsletters", Generals::$pageTitle);
+
 		$I->clickAndWait(NlManage::$tab2, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);

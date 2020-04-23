@@ -37,8 +37,8 @@ test_file:
     testsuite_file: Backend/TestOptionsCest
 
   - suite: lists
-#    testsuite_file: Backend/Lists/
-    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
+    testsuite_file: Backend/Lists/
+#    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
 
   - suite: maintenance
     testsuite_file: Backend/TestMaintenanceCest
@@ -56,8 +56,7 @@ test_file:
     testsuite_file: Frontend
 
   - suite: details
-#    testsuite_file: Backend/Details
-    testsuite_file: Backend/Details/TestNewslettersDetailsCest
+    testsuite_file: Backend/Details
 
   - suite: user2subscriber
     testsuite_file: User2Subscriber/User2SubscriberCest
@@ -120,7 +119,7 @@ test_suites:
   - name: accept1
     tests:
       - lists
-#      - access2
+      - access2
 
   - name: accept2
     tests:
@@ -133,13 +132,13 @@ test_suites:
 
   - name: accept4
     tests:
-#      - footerusedmailinglists
-#      - user2subscriber
+      - footerusedmailinglists
+      - user2subscriber
       - access1
 
   - name: accept5
     tests:
-#      - frontend
+      - frontend
       - access3
 
   - name: accept6

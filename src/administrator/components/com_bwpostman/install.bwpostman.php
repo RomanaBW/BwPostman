@@ -1456,12 +1456,6 @@ class Com_BwPostmanInstallerScript
 
 						$db->execute();
 					}
-					catch (JDatabaseExceptionExecuting $exception)
-					{
-						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $exception->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
-
-						return false;
-					}
 					catch (RuntimeException $e)
 					{
 						$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
@@ -1493,8 +1487,7 @@ class Com_BwPostmanInstallerScript
 			$query->clear();
 			$query->insert($db->quoteName('#__schemas'));
 			$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
-			$query->values($extensionId);
-			$query->values($schemaVersion);
+			$query->values($db->quote($extensionId) . ',' . $db->quote($schemaVersion));
 			$db->setQuery($query);
 			$db->execute();
 		}
@@ -2325,7 +2318,7 @@ EOS;
 		$query->select($_db->quoteName('extension_id'));
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
-		$query->where($_db->quoteName('client_id') . ' = ' . $_db->quote('0'));
+		$query->where($_db->quoteName('client_id') . ' = ' . $_db->quote('1'));
 
 		$_db->setQuery($query);
 

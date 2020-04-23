@@ -57,7 +57,7 @@ test_file:
 
   - suite: details
 #    testsuite_file: Backend/Details
-    testsuite_file: Backend/Details/  TestNewslettersDetailsCest
+    testsuite_file: Backend/Details/TestNewslettersDetailsCest
 
   - suite: user2subscriber
     testsuite_file: User2Subscriber/User2SubscriberCest

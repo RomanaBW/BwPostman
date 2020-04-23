@@ -301,6 +301,8 @@ class Com_BwPostmanInstallerScript
 
 	public function postflight($type)
 	{
+		$this->logger->addEntry(new JLogEntry("Postflight reached", BwLogger::BW_DEBUG, $this->log_cat));
+
 		$m_params   = JComponentHelper::getParams('com_media');
 		$this->copyTemplateImagesToMedia($m_params);
 
@@ -344,8 +346,12 @@ class Com_BwPostmanInstallerScript
 			// check if sample templates exists
 			$this->checkSampleTemplates();
 
+			$this->logger->addEntry(new JLogEntry("Postflight checkSampleTemplates passed", BwLogger::BW_DEBUG, $this->log_cat));
+
 			// update/complete component rules
 			$this->updateRules();
+
+			$this->logger->addEntry(new JLogEntry("Postflight updateRules passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			$app 		= JFactory::getApplication();
 			$oldRelease	= $app->getUserState('com_bwpostman.update.oldRelease', '');
@@ -372,7 +378,11 @@ class Com_BwPostmanInstallerScript
 
 			$this->installSampleUsergroups();
 
+			$this->logger->addEntry(new JLogEntry("Postflight installSampleUserGroups passed", BwLogger::BW_DEBUG, $this->log_cat));
+
 			$this->repairRootAsset();
+
+			$this->logger->addEntry(new JLogEntry("Postflight repairRootAsset passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// convert tables to UTF8MB4
 			jimport('joomla.filesystem.file');
@@ -383,8 +393,12 @@ class Com_BwPostmanInstallerScript
 			// remove double entries in table extensions
 			$this->removeDoubleExtensionsEntries();
 
+			$this->logger->addEntry(new JLogEntry("Postflight removeDoubleExtensionsEntries passed", BwLogger::BW_DEBUG, $this->log_cat));
+
 			// ensure SQL update files are processed
 			$this->processSqlUpdate($oldRelease);
+
+			$this->logger->addEntry(new JLogEntry("Postflight processSqlUpdate passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// check all tables of BwPostman
 			// Let Ajax client redirect

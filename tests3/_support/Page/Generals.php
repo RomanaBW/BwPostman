@@ -410,7 +410,7 @@ class Generals
 		'Export Popup'         => ".//*[@id='toolbar-popup-upload']/button",
 		'Batch'                => ".//*[@id='toolbar-batch']/button",
 		'Reset sending trials' => ".//*[@id='toolbar-checkin']/button",
-		'Continue sending'     => ".//*[@id='toolbar-popup-envelope']/button",
+		'Continue sending'     => ".//*[@id='toolbar-envelope']/button",
 		'Clear queue'          => ".//*[@id='toolbar-trash']/button",
 		'Uninstall  '          => ".//*[@id='toolbar-delete']/button",
 		'BwPostman Manual'     => ".//*[@id='toolbar-forum']/button",

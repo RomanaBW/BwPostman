@@ -694,26 +694,14 @@ class TestNewslettersDetailsCest
 		$I->seeInPopup(NlEdit::$popup_send_confirm);
 		$I->acceptPopup();
 
-		$user = getenv('USER');
+		$I->wait(1);
 
-		if (!$user)
-		{
-			$user = 'root';
-		}
-
-		if ($user == 'jenkins')
-		{
-			$I->wait(6);
-		}
-
-		$I->waitForElement(NlEdit::$tab5_send_iframeId, 20);
-		$I->switchToIFrame(NlEdit::$tab5_send_iframe);
-		$I->waitForText(NlEdit::$success_send_ready, 60);
+		$I->waitForElementVisible(NlManage::$sendLayout, 5);
+		$I->waitForText(NlEdit::$success_send_ready, 180);
 		$I->see(NlEdit::$success_send_ready);
 
-		$I->switchToIFrame();
-		$I->wait(5);
-
+		$I->click(NlManage::$sendLayoutBack);
+		$I->waitForElementVisible(Generals::$pageTitle, 10);
 		$I->see("Newsletters", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);

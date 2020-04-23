@@ -301,7 +301,7 @@ class Com_BwPostmanInstallerScript
 
 	public function postflight($type)
 	{
-		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 		$log_options  = array();
 		$this->logger = BwLogger::getInstance($log_options);
 
@@ -318,8 +318,6 @@ class Com_BwPostmanInstallerScript
 
 		if ($type == 'install' || $type == 'update')
 		{
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-
 			if(version_compare(JVERSION, '3.999.999', 'ge'))
 			{
 				$this->isJ4 = true;
@@ -1988,7 +1986,7 @@ class Com_BwPostmanInstallerScript
 					$query = trim($query);
 					if ($query != '' && $query{0} != '#')
 					{
-						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
+						$query = str_replace("`DUMMY`", "'DUMMY'", $query);
 						$_db->setQuery($query);
 
 						try

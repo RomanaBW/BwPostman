@@ -1,0 +1,26 @@
+---
+actor: Tester
+paths:
+  tests: {{ test_src_dir }}
+  log: tests/_output/{{ project_name }}
+  data: tests/_data
+  support: {{ test_src_dir }}/_support
+#    envs: tests/_envs
+settings:
+  bootstrap: _bootstrap.php
+  colors: true
+  memory_limit: 2048M
+extensions:
+  enabled:
+    - Codeception\Extension\BwRunFailed
+coverage:
+  enabled: true
+modules:
+  config:
+    Codeception\Extension\RemoteDebug:
+      sessionName: PHPSTORM
+
+    Db:
+      populate: false
+      cleanup: false
+

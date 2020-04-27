@@ -1,4 +1,24 @@
 ---
+base_dir: "/vhosts/dev/joomla-cms"
+src_dir: "/vhosts/dev/joomla-cms"
+
+container_base: "/vms/dockers"
+container_dir: "{{ container_base }}/containers"
+
+test_runner: "bwpm_test_runner.sh"
+test_dir: "{{ base_dir }}/tests"
+test_src_dir: "tests"
+
+web_dir: "{{ container_base }}/global_data/test_data"
+
+php_version: "73"
+
+bwpm_install: ""
+
+
+
+
+
 bw_artifacts_base: "/repositories/artifacts/bwpostman/fast"
 project_base_dir: "/repositories/BwPostman/"
 
@@ -9,10 +29,12 @@ log_path: '/data/logs'
 record_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/videos"
 test_log_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/logs"
 
-test_db_host: "joomla_db"
+test_db_host: "mysqldbbwpm"
 test_db_dbname: "joomlatest"
 test_db_user: "tester"
 test_db_password: "barbamama"
+
+test_url: "172.18.0.20"
 
 #screen_size: '1440x900'
 screen_size: '1920x1080'

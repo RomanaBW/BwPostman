@@ -528,17 +528,12 @@ class TemplateEditPage
 		$I->wait(1);
 
 		$I->waitForElement(".//*[@id='browser-list']", 5);
-		$I->wait(5);
+		$I-> waitForElement(self::$thumb_select, 5);
 
-		$I->assertEquals(true, false);
+		$I->scrollTo(self::$thumb_select, 0, -100);
+		$I->clickAndWait(self::$thumb_select, 1);
 
-
-//		$I-> waitForElement(self::$thumb_select, 5);
-//
-//		$I->scrollTo(self::$thumb_select, 0, -100);
-//		$I->clickAndWait(self::$thumb_select, 1);
-//
-//		$I->clickAndWait(self::$thumb_insert, 1);
+		$I->clickAndWait(self::$thumb_insert, 1);
 
 
 

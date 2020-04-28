@@ -45,12 +45,13 @@
 - name: insert Joomla data to database
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item.name }}"
   with_items:
-    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
+#    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
+#    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
+#    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
     - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
     - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
   when: item.is_j3 | default(True) | bool
+#  ignore_errors: yes
 
 - name: create Joomla admin user
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/add-joomla-users.sql"

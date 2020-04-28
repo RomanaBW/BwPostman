@@ -27,6 +27,7 @@
     - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
     - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}" }
   when: item.is_j3 | default(True) | bool
+  ignore_errors: yes
 
 - name: remove Joomla installation folder
   file:

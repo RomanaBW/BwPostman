@@ -2,13 +2,14 @@
 # Fast changing variables
 joomla_version_4a: "4.0.0a12"
 joomla_version_4b: "4.0.0b1-3"
-joomla_version_3: "3.9.16"
+joomla_version_3: "3.9.18"
 
-joomla_version: "{{ joomla_version_4b }}"
+# this one has to be adjusted to the desired Joomla version
+joomla_version: "{{ joomla_version_3 }}"
 
-#j_version_short: "j3"
+j_version_short: "j3"
 #j_version_short: "j4a"
-j_version_short: "j4b"
+#j_version_short: "j4b"
 
 bwpm_version: "2.4.0"
 j_alpha_version: "alpha12"

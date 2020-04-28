@@ -527,6 +527,8 @@ class TemplateEditPage
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->wait(1);
 
+		$I->seeFileFound(self::$thumb_select, "/var/www/html/images/");
+
 		$I->waitForElement(".//*[@id='browser-list']", 5);
 		$I-> waitForElement(self::$thumb_select, 5);
 

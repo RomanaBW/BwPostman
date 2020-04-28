@@ -56,7 +56,8 @@ test_file:
     testsuite_file: Frontend
 
   - suite: details
-    testsuite_file: Backend/Details
+#    testsuite_file: Backend/Details
+    testsuite_file: Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateCompleteMainView
 
   - suite: user2subscriber
     testsuite_file: User2Subscriber/User2SubscriberCest

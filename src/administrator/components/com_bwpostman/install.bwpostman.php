@@ -395,7 +395,10 @@ class Com_BwPostmanInstallerScript
 			$this->logger->addEntry(new JLogEntry("Postflight removeDoubleExtensionsEntries passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// ensure SQL update files are processed
-			$this->processSqlUpdate($oldRelease);
+			if (!$this->processSqlUpdate($oldRelease))
+			{
+				$this->logger->addEntry(new JLogEntry("Postflight processSqlUpdate error", BwLogger::BW_ERROR, $this->log_cat));
+			}
 
 			$this->logger->addEntry(new JLogEntry("Postflight processSqlUpdate passed", BwLogger::BW_DEBUG, $this->log_cat));
 
@@ -1481,14 +1484,24 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			$this->logger->addEntry(new JLogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
 
-			$schemaVersion = end($files);
+			return false;
+		}
 
-			$query->clear();
-			$query->insert($db->quoteName('#__schemas'));
-			$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
-			$query->values($db->quote($extensionId) . ',' . $db->quote($schemaVersion));
-			$db->setQuery($query);
+		$schemaVersion = end($files);
+
+		$query->clear();
+		$query->insert($db->quoteName('#__schemas'));
+		$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
+		$query->values($db->quote($extensionId) . ',' . $db->quote($schemaVersion));
+		$db->setQuery($query);
+
+		try
+		{
 			$db->execute();
 		}
 		catch (RuntimeException $e)

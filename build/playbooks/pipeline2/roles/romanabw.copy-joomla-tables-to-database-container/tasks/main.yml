@@ -3,30 +3,45 @@
   set_fact:
     sql_base_cmd: "mysql -u {{ mariadb_user }} -p{{ mariadb_password }} {{ mariadb_database }}"
 
-- name: Copy joomla sql table files to container
+- name: Copy joomla 4 sql table files to container
   copy:
-    src: "../files/joomla/{{ item.name }}"
+    src: "../files/joomla/{{ item }}"
     dest: "{{ joomla_additional_files_folder }}"
   with_items:
-    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
-    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
-  when: item.is_j3 | default(True) | bool
+    - "base.sql"
+    - "supports.sql"
+    - "extensions.sql"
+  when: j_master_version == '4'
 
-- name: Replace placeholder for table prefix with real value
+- name: Copy joomla 3 sql table files to container
+  copy:
+    src: "../files/joomla/{{ item }}"
+    dest: "{{ joomla_additional_files_folder }}"
+  with_items:
+    - "joomla.sql"
+    - "sample_learn.sql"
+  when: j_master_version == '3'
+
+- name: Replace placeholder for table prefix J4 with real value
   replace:
-    path: "{{ joomla_additional_files_folder }}/{{ item.name }}"
+    path: "{{ joomla_additional_files_folder }}/{{ item }}"
     regexp: '#__'
     replace: 'jos_'
   with_items:
-    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
-    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
-  when: item.is_j3 | default(True) | bool
+    - "base.sql"
+    - "supports.sql"
+    - "extensions.sql"
+  when: j_master_version == '4'
+
+- name: Replace placeholder for table prefix J3 with real value
+  replace:
+    path: "{{ joomla_additional_files_folder }}/{{ item }}"
+    regexp: '#__'
+    replace: 'jos_'
+  with_items:
+    - "joomla.sql"
+    - "sample_learn.sql"
+  when: j_master_version == '3'
 
 - name: Copy configuring sql table files to container
   copy:
@@ -42,16 +57,20 @@
     - "reset-sending-stats.sql"
     - "change-install-plugins-order.sql"
 
-- name: insert Joomla data to database
-  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item.name }}"
+- name: insert Joomla data to database to J4
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
   with_items:
-#    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
-#    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
-#    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
-    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}"}
-  when: item.is_j3 | default(True) | bool
-#  ignore_errors: yes
+    - "base.sql"
+    - "supports.sql"
+    - "extensions.sql"
+  when: j_master_version == '4'
+
+- name: insert Joomla data to database to J3
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
+  with_items:
+    - "joomla.sql"
+    - "sample_learn.sql"
+  when: j_master_version == '3'
 
 - name: create Joomla admin user
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/add-joomla-users.sql"

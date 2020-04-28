@@ -15,19 +15,26 @@
     owner: "{{ tester_www_group }}"
 #    remote_src: yes
 
-- name: get Joomla SQL files to fill into database
+- name: get Joomla 4 SQL files to fill into database
   fetch:
-    src: "{{ tester_web_root }}installation/sql/mysql/{{ item.name }}"
-    dest: "files/joomla/{{ item.name }}"
+    src: "{{ tester_web_root }}installation/sql/mysql/{{ item }}"
+    dest: "files/joomla/{{ item }}"
     flat: yes
   with_items:
-    - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: extensions.sql, is_j4: "{{ j_master_version == '4' }}" }
-    - { name: joomla.sql, is_j3: "{{ j_master_version == '3' }}" }
-    - { name: sample_learn.sql, is_j3: "{{ j_master_version == '3' }}" }
-  when: item.is_j3 | default(True) | bool
-  ignore_errors: yes
+    - "base.sql"
+    - "supports.sql"
+    - "extensions.sql"
+  when: j_master_version == '4'
+
+- name: get Joomla 3 SQL files to fill into database
+  fetch:
+    src: "{{ tester_web_root }}installation/sql/mysql/{{ item }}"
+    dest: "files/joomla/{{ item }}"
+    flat: yes
+  with_items:
+    - "joomla.sql"
+    - "sample_learn.sql"
+  when: j_master_version == '3'
 
 - name: remove Joomla installation folder
   file:

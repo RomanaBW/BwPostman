@@ -28,7 +28,7 @@ pipeline {
 					VERSIONS_EXTRA_VAR_3 = "joomla_version=${JOOMLA_VERSION_3} bwpm_version=${BWPM_VERSION}";
 					DO_RECORD_J3_SMOKE = "true";
 					DO_RECORD_J3_1 = "false";
-					DO_RECORD_J3_2 = "false";
+					DO_RECORD_J3_2 = "true";
 					DO_RECORD_J3_3 = "false";
 					DO_RECORD_J3_4 = "true"; // has always to be true, because this suite uses codeception "friend", which does not work with "moving screens"
 					DO_RECORD_J3_5 = "false";

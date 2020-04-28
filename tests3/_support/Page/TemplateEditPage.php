@@ -527,15 +527,21 @@ class TemplateEditPage
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->wait(1);
 
-		$I->seeFileFound("powered_by.png", "/var/www/html/images/");
-
 		$I->waitForElement(".//*[@id='browser-list']", 5);
-		$I-> waitForElement(self::$thumb_select, 5);
+		$I->wait(5);
 
-		$I->scrollTo(self::$thumb_select, 0, -100);
-		$I->clickAndWait(self::$thumb_select, 1);
+		$I->assertEquals(true, false);
 
-		$I->clickAndWait(self::$thumb_insert, 1);
+
+//		$I-> waitForElement(self::$thumb_select, 5);
+//
+//		$I->scrollTo(self::$thumb_select, 0, -100);
+//		$I->clickAndWait(self::$thumb_select, 1);
+//
+//		$I->clickAndWait(self::$thumb_insert, 1);
+
+
+
 
 //		try
 //		{

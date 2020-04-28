@@ -44,6 +44,32 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
  */
 class BwPostmanControllerMaintenance extends JControllerLegacy
 {
+	/**
+	 * Integer to hold ready state
+	 *
+	 * @var integer
+	 *
+	 * @since 2.4.0
+	 */
+	protected $ready = 0;
+
+	/**
+	 * String to hold current message css class
+	 *
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	protected $alertClass = 'success';
+
+	/**
+	 * String to hold current message css class
+	 *
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	protected $errorMessage = '';
 
 	/**
 	 * Method to call checkTables tables process via ajax
@@ -66,8 +92,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$jinput	= $app->input;
 
 			$step = $jinput->get('step', 0);
-			$alertClass = 'success';
-			$ready = "0";
+			$this->alertClass = 'success';
+			$this->ready = "0";
 
 			// start output buffer
 			ob_start();
@@ -81,10 +107,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h4>';
 					$savedTables = $model->saveTables(null, true);
 					echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h4>';
-					if ($savedTables != true)
+
+					if ($savedTables !== true)
 					{
-						$alertClass = 'warning';
-						$ready = "0";
+						$this->alertClass = 'warning';
+						$this->ready = "0";
 					}
 
 					$step = "1";
@@ -125,7 +152,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					// clear session variables
 					$session->clear('tcheck_needTa');
 					$session->clear('tcheck_inTaNa');
-					$ready = "1";
+					$this->ready = "1";
 					$step = "6";
 					break;
 			}
@@ -133,10 +160,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			// return the contents of the output buffer
 			$content = ob_get_contents();
 
-			// use session to store result while $ready != "1"
+			// use session to store result while $this->ready != "1"
 			$storedContent = $session->get('tcheck_content', '');
 			$content = $storedContent . $content;
-			if ($ready != "1")
+			if ($this->ready != "1")
 			{
 				$result = '';
 				$session->set('tcheck_content', $content);
@@ -144,6 +171,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			else
 			{
 				$result = $content;
+
+				if ($this->errorMessage !== '')
+				{
+					$result = $this->errorMessage . $result;
+				}
+				else
+				{
+					$successMessage = '<p class="alert alert-success bw_tablecheck_finished">';
+					$successMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
+					$successMessage .= '</p>';
+
+					$result = $successMessage . $result;
+				}
+
 				$session->clear('tcheck_content');
 			}
 
@@ -152,8 +193,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 			// set json response
 			$res = array(
-				"aClass"	=> $alertClass,
-				"ready"		=> $ready,
+				"aClass"	=> $this->alertClass,
+				"ready"		=> $this->ready,
 				"result"	=> $result,
 				"step"		=> $step
 			);
@@ -214,8 +255,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$model   = $this->getModel('maintenance');
 
 			$step       = $jinput->get('step', 'step1');
-			$alertClass = 'success';
-			$ready      = "0";
+			$this->alertClass = 'success';
+			$this->ready      = "0";
 			if($step == 'step1') {
 				$content    = '';
 
@@ -246,8 +287,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						if (!is_array($table_names))
 						{
 							echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR') . '</p>';
-							$alertClass = 'error';
-							$ready      = "1";
+							$this->alertClass = 'error';
+							$this->ready      = "1";
 						}
 
 						$session->set('trestore_tablenames', $table_names);
@@ -265,8 +306,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (BwException $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$alertClass = 'error';
-						$ready      = "1";
+						$this->alertClass = 'error';
+						$this->ready      = "1";
 					}
 					break;
 
@@ -292,8 +333,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (BwException $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$alertClass = 'error';
-						$ready      = "1";
+						$this->alertClass = 'error';
+						$this->ready      = "1";
 					}
 					break;
 
@@ -318,8 +359,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (BwException $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$alertClass = 'error';
-						$ready      = "1";
+						$this->alertClass = 'error';
+						$this->ready      = "1";
 					}
 					break;
 
@@ -344,8 +385,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (BwException $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$alertClass = 'error';
-						$ready      = "1";
+						$this->alertClass = 'error';
+						$this->ready      = "1";
 					}
 					break;
 
@@ -379,8 +420,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$model->restoreRestorePoint();
 						$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
 						$error  .= JFactory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						$alertClass = 'error';
-						$ready      = "1";
+						$this->alertClass = 'error';
+						$this->ready      = "1";
 					}
 					break;
 
@@ -436,8 +477,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$model->restoreRestorePoint();
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
 						$error  .= JFactory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						$alertClass = 'error';
-						$ready      = "1";
+						$this->alertClass = 'error';
+						$this->ready      = "1";
 					}
 					break;
 
@@ -474,15 +515,15 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						// clear session variables
 						$session->clear('tcheck_needTa');
 						$session->clear('tcheck_inTaNa');
-						$ready = "1";
+						$this->ready = "1";
 						$step = "12";
 					}
 					catch (BwException $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
 						$error  .= JFactory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						$alertClass = 'error';
-						$ready      = "1";
+						$this->alertClass = 'error';
+						$this->ready      = "1";
 					}
 					break;
 			}
@@ -490,10 +531,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			// return the contents of the output buffer
 			$content = ob_get_contents();
 
-			// use session to store result while $ready != "1"
+			// use session to store result while $this->ready != "1"
 			$storedContent = $session->get('trestore_content', '');
 			$content       = $content . $storedContent;
-			if ($ready != "1")
+			if ($this->ready != "1")
 			{
 				$result = $content;
 				$session->set('trestore_content', $content);
@@ -501,6 +542,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			else
 			{
 				$result = $content;
+
+				if ($this->errorMessage !== '')
+				{
+					$result = $this->errorMessage . $result;
+				}
+				else
+				{
+					$successMessage = '<p class="alert alert-success bw_tablecheck_finished">';
+					$successMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
+					$successMessage .= '</p>';
+
+					$result = $successMessage . $result;
+				}
+
 				$session->clear('trestore_content');
 				if($error != '')
 				{
@@ -515,8 +570,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 			// set json response
 			$res = array(
-				"aClass"  => $alertClass,
-				"ready"   => $ready,
+				"aClass"  => $this->alertClass,
+				"ready"   => $this->ready,
 				"result"  => $result,
 				"error"   => $error,
 				"step"    => $step
@@ -531,15 +586,15 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		catch (BwException $e)
 		{
 			$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
-			$alertClass = 'error';
-			$ready      = "1";
+			$this->alertClass = 'error';
+			$this->ready      = "1";
 			$step       = "12";
 			$result     = "";
 
 			// set json response
 			$res = array(
-				"aClass"  => $alertClass,
-				"ready"   => $ready,
+				"aClass"  => $this->alertClass,
+				"ready"   => $this->ready,
 				"result"  => $result,
 				"error"   => $error,
 				"step"    => $step
@@ -555,14 +610,14 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		catch (RuntimeException $e)
 		{
 			$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
-			$alertClass = 'error';
-			$ready      = "1";
+			$this->alertClass = 'error';
+			$this->ready      = "1";
 			$step       = "12";
 
 			// set json response
 			$res = array(
-				"aClass"  => $alertClass,
-				"ready"   => $ready,
+				"aClass"  => $this->alertClass,
+				"ready"   => $this->ready,
 				"result"  => '',
 				"error"   => $error,
 				"step"    => $step
@@ -596,11 +651,18 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$model        = $this->getModel('maintenance');
 
 		$neededTables = $model->getNeededTables();
-		if (!is_array($neededTables))
+
+		if ($neededTables === false || !is_array($neededTables))
 		{
-			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_NEEDED_ERROR') . '</p>';
-			$alertClass = 'error';
-			$ready      = "1";
+			$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_NEEDED_ERROR');
+			$errorMessage .= '<br /><br />';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
+			$errorMessage .= '</p>';
+
+			$this->errorMessage = $errorMessage;
+			$this->alertClass = 'error';
+			$this->ready      = "1";
 		}
 
 		// store $neededTables in session
@@ -612,6 +674,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @param   $session    $session    The session of this task
 	 *
+	 * @return void
+	 *
 	 * @since   1.3.0
 	 */
 
@@ -619,11 +683,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	{
 		$model				= $this->getModel('maintenance');
 		$tableNamesArray	= $model->getTableNamesFromDB();
-		if (!is_array($tableNamesArray))
+
+		if ($tableNamesArray === false || !is_array($tableNamesArray))
 		{
-			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_INSTALLED_ERROR') . '</p>';
-			$alertClass = 'error';
-			$ready = "1";
+			$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_INSTALLED_ERROR');
+			$errorMessage .= '<br /><br />';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
+			$errorMessage .= '</p>';
+
+			$this->errorMessage = $errorMessage;
+			$this->alertClass = 'error';
+			$this->ready = "1";
+
+			return;
 		}
 
 		foreach ($tableNamesArray as $tableName)
@@ -652,11 +725,18 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_TABLE_GENERALS') . '</h4>';
 
 		// check table names
-		if (!$model->checkTableNames($neededTables, $genericTableNames, 'check'))
+		if ($model->checkTableNames($neededTables, $genericTableNames, 'check') === false)
 		{
-			echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_NAMES_ERROR') . '</p>';
-			$alertClass = 'error';
-			$ready = "1";
+			$errorMessage = '<p class="bw_tablecheck_error">';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_NAMES_ERROR');
+			$errorMessage .= '<br /><br />';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
+			$errorMessage .= '</p>';
+
+			$this->errorMessage = $errorMessage;
+			$this->errorMessage = $errorMessage;
+			$this->alertClass = 'error';
+			$this->ready = "1";
 		}
 	}
 
@@ -687,9 +767,17 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 			if ($res == 0)
 			{
-				echo '<p class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR') . '</p>';
-				$alertClass = 'error';
-				$ready      = "1";
+				$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+				$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR');
+				$errorMessage .= '<br /><br />';
+				$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
+				$errorMessage .= '</p>';
+
+				$this->errorMessage = $errorMessage;
+				$this->alertClass = 'error';
+				$this->ready      = "1";
+
+				break;
 			}
 		}
 	}
@@ -709,15 +797,23 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// check asset IDs (necessary because asset_id = 0 prevents deleting)
 		if (!$model->checkAssetId())
 		{
-			echo '<p class="bw_tablecheck_warn">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN') . '</p>';
-			$alertClass = 'warning';
+			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN');
+			$errorMessage .= '</p>';
+
+			$this->errorMessage = $errorMessage;
+			$this->alertClass = 'warning';
 		}
 
 		// check asset IDs (necessary because asset_id = 0 prevents deleting)
 		if (!$model->checkAssetParentId())
 		{
-			echo '<p class="bw_tablecheck_warn">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN') . '</p>';
-			$alertClass = 'warning';
+			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN');
+			$errorMessage .= '</p>';
+
+			$this->errorMessage = $errorMessage;
+			$this->alertClass = 'warning';
 		}
 
 		echo '<br />';
@@ -725,8 +821,12 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_USER_IDS') . '</h4>';
 		if (!$model->checkUserIds())
 		{
-			echo '<p class="bw_tablecheck_warn">' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_WARN') . '</p>';
-			$alertClass = 'warning';
+			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+			$errorMessage .= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_WARN');
+			$errorMessage .= '</p>';
+
+			$this->errorMessage = $errorMessage;
+			$this->alertClass = 'warning';
 		}
 		else
 		{

@@ -5691,7 +5691,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**

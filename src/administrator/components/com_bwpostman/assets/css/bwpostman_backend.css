@@ -674,18 +674,25 @@ table.export {
 	margin-top: 10px;
 }
 #checkResult .inner .well,
-#restoreResult .inner .well {
+#restoreResult .inner .well,
+#result .bw_tablecheck_warn,
+#result .bw_tablecheck_error,
+#result .bw_tablecheck_finished {
     padding: 8px 15px 8px 60px;
 	margin-bottom: 5px;
 }
 
 #checkResult .inner,
-#restoreResult .inner {
+#restoreResult .inner,
+#result .bw_tablecheck_warn,
+#result .bw_tablecheck_error,
+#result .bw_tablecheck_finished {
     font-size: 1.2em;
 }
 
 #checkResult .inner .well, #checkResult .alert-success, #checkResult .alert-error, #checkResult .alert-warning,
-#restoreResult .inner .well, #restoreResult .alert-success, #restoreResult .alert-error, #restoreResult .alert-warning {
+#restoreResult .inner .well, #restoreResult .alert-success, #restoreResult .alert-error, #restoreResult .alert-warning,
+#result .bw_tablecheck_warn, #result .bw_tablecheck_error, #result .bw_tablecheck_finished {
 	background: 10px 3px no-repeat;
 }
 
@@ -700,17 +707,20 @@ table.export {
 }
 
 #checkResult .inner .well.alert-success,
-#restoreResult .inner .well.alert-success {
+#restoreResult .inner .well.alert-success,
+#result .bw_tablecheck_finished {
 	background-image: url("../images/prozess-ok.png");
 }
 
 #checkResult .inner .well.alert-warning,
-#restoreResult .inner .well.alert-warning {
+#restoreResult .inner .well.alert-warning,
+#result .bw_tablecheck_warn {
 	background-image: url("../images/prozess-warning.png");
 }
 
 #checkResult .inner .well.alert-error,
-#restoreResult .inner .well.alert-error {
+#restoreResult .inner .well.alert-error,
+#result .bw_tablecheck_error {
 	background-image: url("../images/prozess-error.png");
 }
 

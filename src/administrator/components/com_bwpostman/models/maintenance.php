@@ -3413,6 +3413,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		$stateAssetsRaw = '';
 
+		if (!in_array($table, $this->assetTargetTables))
+		{
+			return -1;
+		}
+
 		if (!$onlyHeal && $table != 'component')
 		{
 			$stateAssetsRaw = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', '');
@@ -5691,7 +5696,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	/**

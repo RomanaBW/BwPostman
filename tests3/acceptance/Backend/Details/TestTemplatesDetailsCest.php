@@ -107,13 +107,18 @@ class TestTemplatesDetailsCest
 
 		// check if save and close is successful
 		$I->clickAndWait(TplEdit::$toolbar['Save & Close'], 3);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		// check if preview is visible at template list
-		$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
-		$I->seeElement($thumb);
+		$user = getenv('BW_TESTER_USER');
+
+		if ($user === "user1")
+		{
+			$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
+			$I->seeElement($thumb);
+		}
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -429,7 +434,13 @@ class TestTemplatesDetailsCest
 		$I->see(TplEdit::$success_save, Generals::$alert_msg);
 
 		// check if preview is visible at template list
-		$I->seeElement(sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url));
+		$user = getenv('BW_TESTER_USER');
+
+		if ($user === "user1")
+		{
+			$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
+			$I->seeElement($thumb);
+		}
 
 		$I->see("Template", Generals::$pageTitle);
 

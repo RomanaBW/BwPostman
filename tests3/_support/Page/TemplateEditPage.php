@@ -521,44 +521,25 @@ class TemplateEditPage
 	 */
 	public static function selectThumbnail(\AcceptanceTester $I, $user)
 	{
-		$user = getenv('USER');
-codecept_debug("User: " . $user);
+		$user = getenv('BW_TESTER_USER');
+		codecept_debug("User: " . $user);
 
-		$I->clickAndWait(self::$thumb_select_button, 1);
+		if ($user === "user1")
+		{
+			$I->clickAndWait(self::$thumb_select_button, 1);
 
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElement(".//*[@id='browser-list']", 5);
+			$I->switchToIFrame(Generals::$media_frame);
+			$I->waitForElement(".//*[@id='browser-list']", 5);
 
-		$I-> waitForElement(self::$thumb_select, 5);
+			$I-> waitForElement(self::$thumb_select, 5);
 
-		$I->scrollTo(self::$thumb_select, 0, -100);
-		$I->clickAndWait(self::$thumb_select, 1);
+			$I->scrollTo(self::$thumb_select, 0, -100);
+			$I->clickAndWait(self::$thumb_select, 1);
 
-		$I->clickAndWait(self::$thumb_insert, 1);
+			$I->clickAndWait(self::$thumb_insert, 1);
 
-
-
-
-//		try
-//		{
-//			$I->wait(1);
-//		}
-//		catch (\Exception $e)
-//		{
-//			codecept_debug("Show exception:");
-////			codecept_debug($e);
-//			$I->switchToIFrame(Generals::$image_frame);
-//
-//			$I->waitForElementVisible(".//ul[contains(@class, 'manager')]", 5);
-//			$I->clickAndWait(self::$thumb_select_user, 1);
-//
-//			$I->switchToIFrame();
-//			$I->switchToIFrame(Generals::$media_frame);
-//
-//			$I->clickAndWait(self::$thumb_insert_user, 1);
-//		}
-
-		$I->switchToIFrame();
+			$I->switchToIFrame();
+		}
 	}
 
 	/**

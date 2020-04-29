@@ -524,7 +524,8 @@ class TemplateEditPage
 
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
-		$I->switchToIFrame(Generals::$media_frame);
+//		$I->switchToIFrame(Generals::$media_frame);
+		$I->switchToIFrame('Change Image');
 		$I->wait(10);
 
 		$I->waitForElement(".//*[@id='browser-list']", 5);

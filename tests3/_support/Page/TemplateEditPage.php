@@ -528,6 +528,17 @@ class TemplateEditPage
 		$I->wait(1);
 
 		$I->waitForElement(".//*[@id='browser-list']", 5);
+
+		try
+		{
+			$I->seeInPopup('The server returned an invalid JSON response.');
+			$I->acceptPopup();
+		}
+		catch (\Exception $e)
+		{
+			codecept_debug('Popup JSON eror not present');
+		}
+
 		$I-> waitForElement(self::$thumb_select, 5);
 
 		$I->scrollTo(self::$thumb_select, 0, -100);

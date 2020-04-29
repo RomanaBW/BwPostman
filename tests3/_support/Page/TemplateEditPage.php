@@ -521,33 +521,13 @@ class TemplateEditPage
 	 */
 	public static function selectThumbnail(\AcceptanceTester $I, $user)
 	{
+		$user = getenv('USER');
+codecept_debug("User: " . $user);
 
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->switchToIFrame('Change Image');
-		$I->wait(10);
-
 		$I->waitForElement(".//*[@id='browser-list']", 5);
-
-		try
-		{
-			$I->seeInPopup('The server returned an invalid JSON response.');
-			$I->acceptPopup();
-		}
-		catch (\Exception $e)
-		{
-			codecept_debug('Popup JSON eror not present');
-		}
-
-		try
-		{
-			$I->switchToIFrame('Alert.');
-		}
-		catch (\Exception $e)
-		{
-			codecept_debug('Iframe alert not present');
-		}
 
 		$I-> waitForElement(self::$thumb_select, 5);
 

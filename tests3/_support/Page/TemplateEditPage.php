@@ -525,7 +525,7 @@ class TemplateEditPage
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
 		$I->switchToIFrame(Generals::$media_frame);
-		$I->wait(1);
+		$I->wait(10);
 
 		$I->waitForElement(".//*[@id='browser-list']", 5);
 
@@ -537,6 +537,15 @@ class TemplateEditPage
 		catch (\Exception $e)
 		{
 			codecept_debug('Popup JSON eror not present');
+		}
+
+		try
+		{
+			$I->switchToIFrame('Alert.');
+		}
+		catch (\Exception $e)
+		{
+			codecept_debug('Iframe alert not present');
 		}
 
 		$I-> waitForElement(self::$thumb_select, 5);

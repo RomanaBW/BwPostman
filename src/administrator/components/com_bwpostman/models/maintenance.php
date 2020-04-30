@@ -101,7 +101,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since 2.0.0
 	 */
-	protected $assetTargetTables = array('campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
+	protected $assetTargetTables = array('component', 'campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
 
 	/**
 	 * Instance of BwLogger

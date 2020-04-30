@@ -174,7 +174,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			$item	= parent::getItem($pk);
 
 			//get data from #__bwpostman_templates_tags
-			if ($item->tpl_id == 0)
+			if ($item->tpl_id === 0 || $item->tpl_id === '0')
 			{
 				$_db	= $this->_db;
 				$query	= $_db->getQuery(true);
@@ -306,7 +306,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 		}
 
 		// user-made html templates
-		if ($item->tpl_id == 0)
+		if ($item->tpl_id === 0 || $item->tpl_id === '0')
 		{
 			if (is_string($item->article))
 			{

@@ -80,8 +80,8 @@
     - name: Replace table prefix
       replace:
         path: "{{ playbook_dir }}/files/joomla/{{ item.name }}"
-        regexp: '#__'
-        replace: "{{ tester_db_prefix }}"
+        regexp: '`#__'
+        replace: "`{{ tester_db_prefix }}"
       with_items:
         - { name: base.sql, is_j4: "{{ j_master_version == '4' }}" }
         - { name: supports.sql, is_j4: "{{ j_master_version == '4' }}" }

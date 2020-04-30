@@ -5,7 +5,7 @@
 
 - name: Copy joomla 4 sql table files to container
   copy:
-    src: "../files/joomla/{{ item }}"
+    src: "../files/joomla4/{{ item }}"
     dest: "{{ joomla_additional_files_folder }}"
   with_items:
     - "base.sql"
@@ -25,8 +25,8 @@
 - name: Replace placeholder for table prefix J4 with real value
   replace:
     path: "{{ joomla_additional_files_folder }}/{{ item }}"
-    regexp: '#__'
-    replace: 'jos_'
+    regexp: '`#__'
+    replace: '`jos_'
   with_items:
     - "base.sql"
     - "supports.sql"
@@ -36,8 +36,8 @@
 - name: Replace placeholder for table prefix J3 with real value
   replace:
     path: "{{ joomla_additional_files_folder }}/{{ item }}"
-    regexp: '#__'
-    replace: 'jos_'
+    regexp: '`#__'
+    replace: '`jos_'
   with_items:
     - "joomla.sql"
     - "sample_learn.sql"
@@ -95,8 +95,3 @@
 
 - name: change order of installer plugins
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/change-install-plugins-order.sql"
-
-#- name: install JCE
-#
-#- name: install test mode plugin
-#

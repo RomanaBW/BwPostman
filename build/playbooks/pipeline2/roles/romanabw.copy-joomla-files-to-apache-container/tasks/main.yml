@@ -18,7 +18,7 @@
 - name: get Joomla 4 SQL files to fill into database
   fetch:
     src: "{{ tester_web_root }}installation/sql/mysql/{{ item }}"
-    dest: "files/joomla/{{ item }}"
+    dest: "files/joomla4/{{ item }}"
     flat: yes
   with_items:
     - "base.sql"

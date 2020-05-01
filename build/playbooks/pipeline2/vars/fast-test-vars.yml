@@ -30,6 +30,7 @@ record_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version 
 test_log_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/logs"
 
 test_db_host: "mysqldbbwpm"
+test_db_host_ip: "172.18.0.19"
 test_db_dbname: "joomlatest"
 test_db_user: "tester"
 test_db_password: "barbamama"

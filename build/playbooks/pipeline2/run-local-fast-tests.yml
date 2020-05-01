@@ -82,8 +82,16 @@
     - name: Synchronize files
       command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
 
+    - name: Set rebase command
+      set_fact:
+         sql_command: "mysql -u {{ test_db_user }} -p{{ test_db_password }} -h {{ test_db_host_ip }} {{ test_db_dbname }} < {{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"
+
+    - name: Output rebase command
+      debug:
+         msg: "{{ sql_command }}"
+
     - name: Rebase database
-      command: "mysql -u {{ test_db_user }} -p{{ test_db_password }} -h {{ test_db_host }} {{ test_db_dbname }} < ${{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"
+      shell: "{{ sql_command }}"
       when: failure_file.stat.exists or rebase|bool
 
     - name: Prepare manifest for codeception tests

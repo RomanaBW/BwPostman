@@ -2647,7 +2647,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$asset_loop      = 0;
 				$asset_siblings   = 0;
 				$asset_transform = array();
-				$base_asset      = $this->getBaseAsset($this->getRawTableName($table));
+				$rawTableName    = $this->getRawTableName($table);
+
+				$base_asset      = $this->getBaseAsset($rawTableName);
 
 				if ($base_asset === false)
 				{
@@ -3425,6 +3427,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
 		{
+			if (substr($table, -1) === 's')
+			{
+				$table = substr($table,0, -1);
+			}
+
 			$base_asset = $this->extractBaseAssetFromState(array('tableNameUC' => $table), $stateAssetsRaw);
 		}
 		else

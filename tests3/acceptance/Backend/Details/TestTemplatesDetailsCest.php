@@ -72,7 +72,7 @@ class TestTemplatesDetailsCest
 		$I->click(MainView::$addHtmlTemplateButton);
 		$I->waitForElement(TplEdit::$tpl_tab1, 30);
 
-		$this->fillFormExtendedHtml($I);
+		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
 
@@ -114,11 +114,11 @@ class TestTemplatesDetailsCest
 		// check if preview is visible at template list
 		$user = getenv('BW_TESTER_USER');
 
-		if ($user === "user1")
-		{
+//		if ($user === "user1")
+//		{
 			$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
 			$I->seeElement($thumb);
-		}
+//		}
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -393,7 +393,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(MainView::$addTextTemplateButton);
 
-		$this->fillFormExtendedText($I);
+		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(TplEdit::$toolbar['Back'], 1);
 
@@ -436,11 +436,11 @@ class TestTemplatesDetailsCest
 		// check if preview is visible at template list
 		$user = getenv('BW_TESTER_USER');
 
-		if ($user === "user1")
-		{
+//		if ($user === "user1")
+//		{
 			$thumb = sprintf(TplEdit::$thumbnail_list_pos, TplEdit::$thumb_url);
 			$I->seeElement($thumb);
-		}
+//		}
 
 		$I->see("Template", Generals::$pageTitle);
 
@@ -871,10 +871,6 @@ class TestTemplatesDetailsCest
 		TplEdit::fillRequired($I, 'HTML');
 
 		TplEdit::selectThumbnail($I, 'AdminTester');
-
-		$this->fillHtmlContent($I);
-
-		$this->fillCssContent($I);
 	}
 
 	/**
@@ -894,6 +890,10 @@ class TestTemplatesDetailsCest
 
 		// select thumbnail
 		TplEdit::selectThumbnail($I, 'AdminTester');
+
+		$this->fillHtmlContent($I);
+
+		$this->fillCssContent($I);
 
 		$this->selectRadiosExtended($I);
 	}
@@ -917,6 +917,8 @@ class TestTemplatesDetailsCest
 		TplEdit::selectThumbnail($I, 'AdminTester');
 
 		$this->selectRadiosExtended($I);
+
+		TplEdit::fillTextContent($I);
 	}
 
 	/**
@@ -953,6 +955,8 @@ class TestTemplatesDetailsCest
 	 */
 	private function selectRadiosExtended(AcceptanceTester $I)
 	{
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
+
 		//show author
 		// switch no
 		$I->click(TplEdit::$show_author_no);
@@ -1014,7 +1018,7 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
-		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+//		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 	}
 
 	/**

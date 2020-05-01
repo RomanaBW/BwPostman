@@ -486,8 +486,6 @@ class TemplateEditPage
 		self::fillRequired($I, 'Text');
 
 		self::selectThumbnail($I, $user);
-
-		self::fillTextContent($I);
 	}
 
 	/**
@@ -522,10 +520,10 @@ class TemplateEditPage
 	public static function selectThumbnail(\AcceptanceTester $I, $user)
 	{
 		$user = getenv('BW_TESTER_USER');
-		codecept_debug("User: " . $user);
+//		codecept_debug("User: " . $user);
 
-		if ($user === "user1")
-		{
+//		if ($user === "user1")
+//		{
 			$I->clickAndWait(self::$thumb_select_button, 1);
 
 			$I->switchToIFrame(Generals::$media_frame);
@@ -539,7 +537,10 @@ class TemplateEditPage
 			$I->clickAndWait(self::$thumb_insert, 1);
 
 			$I->switchToIFrame();
-		}
+
+			// Workaround because of JS error at media manager
+//			$I->clickAndWait("//*/button[contains(@class, 'close')]", 1);
+//		}
 	}
 
 	/**

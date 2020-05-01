@@ -72,7 +72,7 @@ class TestTemplatesDetailsCest
 		$I->click(MainView::$addHtmlTemplateButton);
 		$I->waitForElement(TplEdit::$tpl_tab1, 30);
 
-		$this->fillFormExtendedHtml($I);
+		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
@@ -144,7 +144,7 @@ class TestTemplatesDetailsCest
 
 		$this->fillFormExtendedHtml($I);
 
-		$I->click(Generals::$toolbar4['Cancel']);
+		$I->click(Generals::$toolbar['Cancel']);
 
 		try
 		{
@@ -399,7 +399,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(MainView::$addTextTemplateButton);
 
-		$this->fillFormExtendedText($I);
+		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
@@ -889,10 +889,6 @@ class TestTemplatesDetailsCest
 		TplEdit::fillRequired($I, 'HTML');
 
 		TplEdit::selectThumbnail($I, 'AdminTester');
-
-		$this->fillHtmlContent($I);
-
-		$this->fillCssContent($I);
 	}
 
 	/**
@@ -912,6 +908,10 @@ class TestTemplatesDetailsCest
 
 		// select thumbnail
 		TplEdit::selectThumbnail($I, 'AdminTester');
+
+		$this->fillHtmlContent($I);
+
+		$this->fillCssContent($I);
 
 		$this->selectRadiosExtended($I);
 	}
@@ -933,6 +933,8 @@ class TestTemplatesDetailsCest
 
 		// select thumbnail
 		TplEdit::selectThumbnail($I, 'AdminTester');
+
+		TplEdit::fillTextContent($I);
 
 		$this->selectRadiosExtended($I);
 	}
@@ -972,6 +974,8 @@ class TestTemplatesDetailsCest
 	 */
 	private function selectRadiosExtended(AcceptanceTester $I)
 	{
+		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
+
 		//show author
 		// switch no
 		$I->click(TplEdit::$show_author_no);
@@ -1027,8 +1031,8 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$button_editor_toggle);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
-		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 	}
 
 	/**

@@ -429,7 +429,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $tableHeaderIdArrow      = "//*[@id='main-table']/thead/tr/th[8]/a/span";
+	public static $tableHeaderIdArrow      = "//*[@id='main-table']/thead/tr/th[8]/a/span[2]";
 
 	/**
 	 * @var string

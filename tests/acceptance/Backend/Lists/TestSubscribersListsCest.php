@@ -1283,6 +1283,7 @@ class TestSubscribersListsCest
 		$I->clickAndWait(SubsManage::$export_button_export, 15);
 
 		$I->seeFileFound($filename, $exportPath);
+		$I->deleteFile($downloadPath);
 
 		$I->click(Generals::$toolbar['Cancel']);
 	}

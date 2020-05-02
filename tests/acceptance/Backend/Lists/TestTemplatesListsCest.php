@@ -354,9 +354,16 @@ class TestTemplatesListsCest
 
 		$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
 
-		if ($arrowClass !== 'icon-arrow-down-3')
+		if (strpos($arrowClass, 'icon-arrow-down-3') === false)
 		{
 			$I->clickAndWait(TplManage::$tableHeaderId, 1);
+			$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
+
+			if (strpos($arrowClass, 'icon-arrow-down-3') === false)
+			{
+				$I->clickAndWait(TplManage::$tableHeaderId, 1);
+				$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
+			}
 		}
 
 		$I->waitForElementVisible(TplManage::$firstTableTitle, 5);
@@ -390,13 +397,6 @@ class TestTemplatesListsCest
 
 		$I->clickAndWait(TplManage::$tableHeaderId, 1);
 
-		$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
-
-		if ($arrowClass !== 'icon-arrow-down-3')
-		{
-			$I->clickAndWait(TplManage::$tableHeaderId, 1);
-		}
-
 		$tplId = $I->grabTextFrom(TplManage::$firstTableId);
 
 		$user = getenv('BW_TESTER_USER');
@@ -420,7 +420,7 @@ class TestTemplatesListsCest
 
 		$I->assertTrue(file_exists($downloadPath));
 
-
+		$I->deleteFile($downloadPath);
 	}
 
 	/**

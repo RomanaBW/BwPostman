@@ -66,7 +66,7 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
-		$I->click(Generals::$joomlaMenuCollapse);
+//		$I->click(Generals::$joomlaMenuCollapse);
 
 		$sort_array     = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -83,7 +83,7 @@ class TestSubscribersListsCest
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
 
-		$I->click(Generals::$joomlaMenuCollapse);
+//		$I->click(Generals::$joomlaMenuCollapse);
 	}
 
 	/**
@@ -300,7 +300,7 @@ class TestSubscribersListsCest
 
 			$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
 
-			$I->click(Generals::$joomlaMenuCollapse);
+//			$I->click(Generals::$joomlaMenuCollapse);
 
 			$sort_array     = $this->prepareSortArray($I);
 			$loop_counts    = 10;
@@ -318,7 +318,7 @@ class TestSubscribersListsCest
 			$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 			$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
 
-			$I->click(Generals::$joomlaMenuCollapse);
+//			$I->click(Generals::$joomlaMenuCollapse);
 		}
 
 	/**

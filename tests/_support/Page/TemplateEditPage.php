@@ -527,10 +527,10 @@ class TemplateEditPage
 	{
 		self::fillRequired($I, 'Text');
 
-//		if ($user == 'AdminTester')
-//		{
+		if ($user === 'AdminTester' || $user === "user1")
+		{
 			self::selectThumbnail($I, $user);
-//		}
+		}
 	}
 
 	/**

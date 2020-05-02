@@ -677,11 +677,13 @@ class Acceptance extends Codeception\Module
 							$tableHeadcolLinkLocation = str_replace('main-table', 'main-table-bw-unconfirmed', $tableHeadcolLinkLocation);
 						}
 					}
+					$I->wait(1);
 					$I->click($tableHeadcolLinkLocation);
 					$I->waitForElementVisible($tableHeadcolLinkLocation, 30);
 				}
 				else
 				{
+					$I->wait(1);
 					$I->click(Generals::$filterOptionsSwitcher);
 					$I->click(Generals::$ordering_list);
 					$I->selectOption(Generals::$ordering_list, $sort_data_array['sort_criteria_select'][$key] . " " . $order);
@@ -1228,6 +1230,7 @@ class Acceptance extends Codeception\Module
 //			$archive_button = $edit_data['archive_button'];
 //		}
 
+		$I->wait(1);
 		$I->checkOption(Generals::$check_all_button);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait($archive_button, 1);

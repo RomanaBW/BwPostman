@@ -94,6 +94,11 @@
       shell: "{{ sql_command }}"
       when: failure_file.stat.exists or rebase|bool
 
+    - name: Pause after rebase
+      pause:
+        seconds: 10
+      when: failure_file.stat.exists or rebase|bool
+
     - name: Prepare manifest for codeception tests
       template:
         src: "codeception-fast.yml.j2"

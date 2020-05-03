@@ -9,6 +9,8 @@ test_runner: "bwpm_test_runner.sh"
 test_dir: "{{ base_dir }}/tests"
 test_src_dir: "tests"
 
+test_project_base_dir: "/home/romana/PhpstormProjects/BwPostman"
+
 web_dir: "{{ container_base }}/global_data/test_data"
 
 php_version: "73"

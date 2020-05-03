@@ -211,7 +211,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 			BwPostmanHelper::addSubmenu('bwpostman');
 			$this->addToolbarLegacy();
 		}
-		else{
+		else
+		{
 			$this->addToolbar();
 		}
 

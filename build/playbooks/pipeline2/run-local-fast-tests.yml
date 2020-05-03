@@ -2,9 +2,7 @@
 - hosts: localhost
   connection: local
   vars_files:
-#    - vars/tester-image-vars.yml
     - vars/fast-test-vars.yml
-#    - "vars/codecept_paths_J{{ lookup('env','BW_TEST_JOOMLA_VERSION')[0] }}.yml"
 
   tasks:
     - name: Import transmitted parameters
@@ -81,6 +79,12 @@
 
     - name: Synchronize files
       command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
+
+    - name: Synchronize tests J3
+      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests3 {{ src_dir }}/tests3"
+
+    - name: Synchronize tests J4
+      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
 
     - name: Set rebase command
       set_fact:

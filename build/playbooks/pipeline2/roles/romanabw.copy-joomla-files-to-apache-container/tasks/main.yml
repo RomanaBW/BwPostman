@@ -15,6 +15,11 @@
     owner: "{{ tester_www_group }}"
 #    remote_src: yes
 
+- name: copy misc files to webserver
+  copy:
+    src: "files/misc/boldt-webservice.png"
+    dest: "{{ tester_web_root }}/images/bw_postman"
+
 - name: get Joomla 4 SQL files to fill into database
   fetch:
     src: "{{ tester_web_root }}installation/sql/mysql/{{ item }}"

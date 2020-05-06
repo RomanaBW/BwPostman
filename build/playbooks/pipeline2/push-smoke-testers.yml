@@ -21,6 +21,7 @@
         sub_path: "smoke_j{{ j_main_version }}"
 
     - name: copy misc files to webserver
+      become: yes
       copy:
         src: "files/misc/boldt-webservice.png"
         dest: "{{ joomla_base_folders[sub_path] }}/images/bw_postman/boldt-webservice.png"

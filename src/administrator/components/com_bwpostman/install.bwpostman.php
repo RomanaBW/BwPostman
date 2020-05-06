@@ -1990,7 +1990,7 @@ class Com_BwPostmanInstallerScript
 				foreach ($queries as $query)
 				{
 					$query = trim($query);
-					if ($query != '' && $query{0} != '#')
+					if ($query != '' && $query[0] != '#')
 					{
 						$query = str_replace("`DUMMY`", "'DUMMY'", $query);
 						$_db->setQuery($query);

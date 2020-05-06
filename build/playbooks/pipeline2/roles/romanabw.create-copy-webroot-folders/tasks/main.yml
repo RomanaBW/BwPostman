@@ -1,0 +1,18 @@
+---
+- name: ensure joomla sub folders exists
+  become: true
+  file:
+    path: "{{ acceptance_folder }}"
+    state: directory
+    mode: 0777
+    owner: wwwrun
+    group: users
+
+- name: ensure joomla sub folders exists
+  become: true
+  copy:
+    src: : "{{ smoke_folder }}"
+    dest: "{{ acceptance_folder }}"
+    mode: 0777
+    owner: wwwrun
+    group: users

@@ -15,3 +15,20 @@
         source: "{{ smoke_source }}"
         target: "{{ smoke_target }}"
         push_tester: true
+
+    - name: Set variable for current joomla sub folder
+      set_fact:
+        sub_path: "smoke-j{{ j_main_version }}"
+
+    - name: Set variable for acceptance folder dictionary
+      set_fact:
+        folder_list: "acceptance_j{{ j_main_version }}_folders"
+
+    - name: create acceptance webroot folders and copy joomla files
+      include_role:
+        name: romanabw.create-copy-webroot-folders
+      vars:
+        acceptance_folder: "{{ item }}"
+        smoke_folder: "{{ joomla_base_folders[sub_path] }}"
+      with_items: "{{ folder_list }}"
+

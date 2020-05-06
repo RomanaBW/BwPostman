@@ -63,6 +63,29 @@ mariadb_password: barbamama
 mariadb_database: joomlatest
 mariadb_host: joomla_db
 
+# Joomla file folders
+main_base_folder: "/joomla-files"
+
+joomla_base_folders:
+  smoke-j3: "{{ main_base_folder }}/jbase_j3"
+  smoke-j4: "{{ main_base_folder }}/jbase_j4"
+  ext_install-j3: "{{ main_base_folder }}/jbase_j3"
+  ext_install-j4: "{{ main_base_folder }}/jbase_j4"
+
+acceptance_j3_folders:
+  - "{{ main_base_folder }}/accept1_j3"
+  - "{{ main_base_folder }}/accept2_j3"
+  - "{{ main_base_folder }}/accept3_j3"
+  - "{{ main_base_folder }}/accept4_j3"
+  - "{{ main_base_folder }}/accept5_j3"
+
+acceptance_j4_folders:
+  - "{{ main_base_folder }}/accept1_j4"
+  - "{{ main_base_folder }}/accept2_j4"
+  - "{{ main_base_folder }}/accept3_j4"
+  - "{{ main_base_folder }}/accept4_j4"
+  - "{{ main_base_folder }}/accept5_j4"
+
 # Webserver settings
 apache_host: joomla_web
 

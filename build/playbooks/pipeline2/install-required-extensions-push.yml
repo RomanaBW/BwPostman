@@ -12,6 +12,19 @@
       set_fact:
         test_suite: "ext_install"
 
+    - name: Set variable for current joomla sub folder
+      set_fact:
+        sub_path: "{{ test_suite }}-j{{ j_main_version }}"
+
+    - name: ensure joomla sub folder exists
+      become: true
+      file:
+        path: "{{ joomla_base_folders[sub_path] }}"
+        state: directory
+        mode: 0777
+        owner: wwwrun
+        group: users
+
     - name: ensure log folder for test results exists
       become: true
       become_user: root
@@ -51,6 +64,7 @@
       vars:
         source: "{{ required_source }}"
         target: "{{ required_target }}"
+        webroot_path: "{{ joomla_base_folders[sub_path] }}"
 
     - name: add joomla_additional_files_folder
       become: yes

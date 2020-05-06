@@ -31,11 +31,14 @@
     detach: yes
     exposed_ports:
       - "80"
+    published_ports:
+      - "80"
     networks:
       - name: "{{ source.tester_network_name }}"
     volumes:
       - /repositories:/repositories
-      - "/{{ test_log_path }}/joomla_logs:{{ tester_web_root }}/administrator/logs/"
+      - "{{ webroot_path }}:{{ tester_web_root }}"
+#      - "/{{ test_log_path }}/joomla_logs:{{ tester_web_root }}/administrator/logs/"
     etc_hosts: >
       {
         "localhost {{ source.web_container_name }}": "127.0.0.1"

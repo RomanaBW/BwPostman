@@ -29,6 +29,7 @@
 // Check to ensure this file is included in Joomla!
 use Joomla\Database\UTF8MB4SupportInterface;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 
@@ -687,14 +688,14 @@ class Com_BwPostmanInstallerScript
 		$media_path = JPATH_ROOT . '/media/bw_postman/images/';
 
 		// make new folder and copy template thumbnails
-		if (!JFolder::exists($image_path))
+		if (!Folder::exists($image_path))
 		{
-			JFolder::create($image_path);
+			Folder::create($image_path);
 		}
 
-		if (!JFile::exists($image_path . '/index.html'))
+		if (!File::exists($image_path . '/index.html'))
 		{
-			JFile::copy($media_path . 'index.html', $image_path . '/index.html');
+			File::copy($media_path . 'index.html', $image_path . '/index.html');
 		}
 
 		$tpl_images = array(
@@ -713,9 +714,9 @@ class Com_BwPostmanInstallerScript
 
 		foreach ($tpl_images as $tpl_image)
 		{
-			if (!JFile::exists($image_path . "/" . $tpl_image))
+			if (!File::exists($image_path . "/" . $tpl_image))
 			{
-				JFile::copy($media_path . $tpl_image, $image_path . "/" . $tpl_image);
+				File::copy($media_path . $tpl_image, $image_path . "/" . $tpl_image);
 			}
 		}
 	}
@@ -730,14 +731,14 @@ class Com_BwPostmanInstallerScript
 	private function copyTemplateImagesToImages()
 	{
 		$dest = JPATH_ROOT . '/images/bw_postman';
-		if (!JFolder::exists($dest))
+		if (!Folder::exists($dest))
 		{
-			JFolder::create(JPATH_ROOT . '/images/bw_postman');
+			Folder::create(JPATH_ROOT . '/images/bw_postman');
 		}
 
-		if (!JFile::exists(JPATH_ROOT . '/images/bw_postman/index.html'))
+		if (!File::exists(JPATH_ROOT . '/images/bw_postman/index.html'))
 		{
-			JFile::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/bw_postman/index.html');
+			File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/bw_postman/index.html');
 		}
 
 		$tpl_images = array(
@@ -756,9 +757,9 @@ class Com_BwPostmanInstallerScript
 
 		foreach ($tpl_images as $tpl_image)
 		{
-			if (!JFile::exists(JPATH_ROOT . "/images/bw_postman/$tpl_image"))
+			if (!File::exists(JPATH_ROOT . "/images/bw_postman/$tpl_image"))
 			{
-				JFile::copy(JPATH_ROOT . "/media/bw_postman/images/$tpl_image", JPATH_ROOT . "/images/bw_postman/$tpl_image");
+				File::copy(JPATH_ROOT . "/media/bw_postman/images/$tpl_image", JPATH_ROOT . "/images/bw_postman/$tpl_image");
 			}
 		}
 	}
@@ -1259,15 +1260,15 @@ class Com_BwPostmanInstallerScript
 		// Remove views and js
 		foreach ($removeFolders as $folder)
 		{
-			if (JFolder::exists($folder))
+			if (Folder::exists($folder))
 			{
-				JFolder::delete($folder);
+				Folder::delete($folder);
 			}
 		}
 
-		if (JFile::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/models/fields/allmedia.php'))
+		if (File::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/models/fields/allmedia.php'))
 		{
-			JFile::delete(JPATH_ROOT . "/administrator/components/com_bwpostman/models/fields/allmedia.php");
+			File::delete(JPATH_ROOT . "/administrator/components/com_bwpostman/models/fields/allmedia.php");
 		}
 
 

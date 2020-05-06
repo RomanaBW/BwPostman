@@ -2,13 +2,13 @@
 - name: Delete joomla sub folders
   become: true
   file:
-    path: "{{ acceptance_folder }}"
+    path: "{{ target_folder }}"
     state: absent
 
 - name: Create joomla sub folders
   become: true
   file:
-    path: "{{ acceptance_folder }}"
+    path: "{{ target_folder }}"
     state: directory
     mode: 0777
     owner: www-data
@@ -16,4 +16,4 @@
 
 - name: Copy joomla files to sub folders
   become: true
-  shell: "cp -rp {{ smoke_folder }}/* {{ acceptance_folder }}"
+  shell: "cp -rp {{ source_folder }}/* {{ target_folder }}"

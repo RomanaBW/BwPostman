@@ -11,14 +11,35 @@
       debug:
         msg: "Joomla version {{ joomla_version }}"
 
-    - name: Set variable for current joomla sub folder
+    - name: Set variable for source webroot folder
       set_fact:
-        sub_path: "smoke-j{{ j_main_version }}"
+        sub_path_source: "ext_install_j{{ j_main_version }}"
+
+    - name: Set variable for smoke webroot folder
+      set_fact:
+        sub_path_smoke: "smoke_j{{ j_main_version }}"
+
+    - name: create smoke webroot folder and copy joomla files for J4
+      include_role:
+        name: romanabw.create-copy-webroot-folders
+      vars:
+        target_folder: "{{ joomla_base_folders[sub_path_smoke] }}"
+        source_folder: "{{ joomla_base_folders[sub_path_source] }}"
+      when: j_main_version == '4'
+
+    - name: create acceptance webroot folders and copy joomla files for J3
+      include_role:
+        name: romanabw.create-copy-webroot-folders
+      vars:
+        target_folder: "{{ joomla_base_folders[sub_path_smoke] }}"
+        source_folder: "{{ joomla_base_folders[sub_path_source] }}"
+      with_items: "{{ acceptance_j3_folders }}"
+      when: j_main_version == '3'
 
     - name: ensure joomla sub folder exists
       become: true
       file:
-        path: "{{ joomla_base_folders[sub_path] }}"
+        path: "{{ joomla_base_folders[sub_path_smoke] }}"
         state: directory
         mode: 0777
         owner: www-data
@@ -71,7 +92,7 @@
       vars:
         source: "{{ smoke_source }}"
         target: "{{ smoke_target }}"
-        webroot_path: "{{ joomla_base_folders[sub_path] }}"
+        webroot_path: "{{ joomla_base_folders[sub_path_smoke] }}"
 
 
 - hosts: "{{ smoke_source.web_container_name }}"

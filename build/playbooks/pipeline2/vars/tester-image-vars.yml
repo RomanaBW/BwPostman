@@ -67,10 +67,10 @@ mariadb_host: joomla_db
 main_base_folder: "/joomla-files"
 
 joomla_base_folders:
-  smoke-j3: "{{ main_base_folder }}/jbase_j3"
-  smoke-j4: "{{ main_base_folder }}/jbase_j4"
-  ext_install-j3: "{{ main_base_folder }}/jbase_j3"
-  ext_install-j4: "{{ main_base_folder }}/jbase_j4"
+  smoke_j3: "{{ main_base_folder }}/smoke_j3"
+  smoke_j4: "{{ main_base_folder }}/smoke_j4"
+  ext_install_j3: "{{ main_base_folder }}/jbase_j3"
+  ext_install_j4: "{{ main_base_folder }}/jbase_j4"
 
 acceptance_j3_folders:
   - "{{ main_base_folder }}/accept1_j3"

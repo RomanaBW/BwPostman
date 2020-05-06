@@ -18,14 +18,14 @@
 
     - name: Set variable for current joomla sub folder
       set_fact:
-        sub_path: "smoke-j{{ j_main_version }}"
+        sub_path: "smoke_j{{ j_main_version }}"
 
     - name: create acceptance webroot folders and copy joomla files for J4
       include_role:
         name: romanabw.create-copy-webroot-folders
       vars:
-        acceptance_folder: "{{ item }}"
-        smoke_folder: "{{ joomla_base_folders[sub_path] }}"
+        target_folder: "{{ item }}"
+        source_folder: "{{ joomla_base_folders[sub_path] }}"
       with_items: "{{ acceptance_j4_folders }}"
       when: j_main_version == '4'
 
@@ -33,8 +33,8 @@
       include_role:
         name: romanabw.create-copy-webroot-folders
       vars:
-        acceptance_folder: "{{ item }}"
-        smoke_folder: "{{ joomla_base_folders[sub_path] }}"
+        target_folder: "{{ item }}"
+        source_folder: "{{ joomla_base_folders[sub_path] }}"
       with_items: "{{ acceptance_j3_folders }}"
       when: j_main_version == '3'
 

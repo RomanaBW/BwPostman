@@ -8,14 +8,6 @@
     - vars/tester-test-vars.yml
 
   tasks:
-    - name: copy misc files to webserver
-      copy:
-        src: "files/misc/boldt-webservice.png"
-        dest: "{{ tester_web_root }}images/bw_postman/boldt-webservice.png"
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
-        mode: 0755
-
     - name: push all test containers (db, webserver, tester)
       include_role:
         name: romanabw.push-complete-infrastructure
@@ -27,6 +19,14 @@
     - name: Set variable for current joomla sub folder
       set_fact:
         sub_path: "smoke_j{{ j_main_version }}"
+
+    - name: copy misc files to webserver
+      copy:
+        src: "files/misc/boldt-webservice.png"
+        dest: "{{ joomla_base_folders[sub_path] }}/images/bw_postman/boldt-webservice.png"
+        group: "{{ tester_www_user }}"
+        owner: "{{ tester_www_group }}"
+        mode: 0755
 
     - name: create acceptance webroot folders and copy joomla files for J4
       include_role:

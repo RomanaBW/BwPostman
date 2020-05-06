@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
+
 /**
  * Class BwPostmanMaintenanceHelper
  *
@@ -68,7 +71,7 @@ abstract class BwPostmanMaintenanceHelper
 
 				if ($compressResult)
 				{
-					JFile::delete($fileName);
+					File::delete($fileName);
 				}
 				break;
 		}
@@ -163,8 +166,8 @@ abstract class BwPostmanMaintenanceHelper
 		}
 		else
 		{
-			$destFileName = JFolder::files($destPath);
-			JFile::delete($srcFileName);
+			$destFileName = Folder::files($destPath);
+			File::delete($srcFileName);
 		}
 
 		return $destPath . "/" . $destFileName[0];

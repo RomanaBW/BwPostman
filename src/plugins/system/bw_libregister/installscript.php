@@ -28,6 +28,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\Folder;
+
 /**
  * Script file of BwPostman module
  *
@@ -87,9 +89,9 @@ class PlgSystemBW_LibregisterInstallerScript
 	public function postflight($type)
 	{
 		$oldLibPath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/toolbar/';
-		if (JFolder::exists($oldLibPath))
+		if (Folder::exists($oldLibPath))
 		{
-			JFolder::delete($oldLibPath);
+			Folder::delete($oldLibPath);
 		}
 
 		// We only need to perform this if the extension is being installed, not update

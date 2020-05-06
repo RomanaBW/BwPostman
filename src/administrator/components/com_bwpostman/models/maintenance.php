@@ -31,6 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 
 // Require some classes
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
@@ -155,7 +157,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to save tables
 	 *
-	 * Cannot use JFile::write() because we want to append data
+	 * Cannot use File::write() because we want to append data
 	 *
 	 * @access      public
 	 *
@@ -188,16 +190,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$fileName      = "BwPostman_" . $version . "_Tables_" . JFactory::getDate()->format("Y-m-d_H_i") . '.xml';
 		}
 
-		// Import JFolder and JFileObject class
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		// create (empty) backup file
 		$path = JPATH_ROOT . "/images/bw_postman/backup_tables";
 
-		if (!JFolder::exists($path))
+		if (!Folder::exists($path))
 		{
-			if (!JFolder::create($path))
+			if (!Folder::create($path))
 			{
 				if ($update)
 				{
@@ -389,7 +387,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (Exception $e)
 		{
-			JFile::delete($fileName);
+			File::delete($fileName);
 			fclose($handle);
 
 			return false;
@@ -729,14 +727,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$paths   = array();
 		$paths[] = JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/';
 
-		if (JFolder::exists(JPATH_PLUGINS . '/bwpostman/'))
+		if (Folder::exists(JPATH_PLUGINS . '/bwpostman/'))
 		{
 			$path2     = JPATH_PLUGINS . '/bwpostman/';
-			$p_folders = JFolder::folders($path2);
+			$p_folders = Folder::folders($path2);
 
 			foreach ($p_folders as $folder)
 			{
-				if (JFolder::exists($path2 . $folder . '/sql/'))
+				if (Folder::exists($path2 . $folder . '/sql/'))
 				{
 					$paths[] = $path2 . $folder . '/sql/';
 				}
@@ -2312,9 +2310,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	private function buildXmlData($tableName, $handle)
 	{
 		// @ToDo: Use simpleXml correctly
-		// Import JFolder and JFileObject class
-		jimport('joomla.filesystem.file');
-
 		$query = $this->db->getQuery(true);
 		$data  = array();
 

@@ -1903,9 +1903,16 @@ class TestOptionsCest
 		{
 			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
 			{
-				$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
-				$I->click(Generals::$alertNoticeClose);
-				$I->waitForElementNotVisible(Generals::$alertNoticeClose, 3);
+				try
+				{
+					$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
+					$I->click(Generals::$alertNoticeClose);
+					$I->waitForElementNotVisible(Generals::$alertNoticeClose, 3);
+				}
+				catch(\RuntimeException $e)
+				{
+					codecept_debug("No notice to close");
+				}
 			}
 		}
 	}

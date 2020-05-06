@@ -8,6 +8,14 @@
     - vars/tester-test-vars.yml
 
   tasks:
+    - name: copy misc files to webserver
+      copy:
+        src: "files/misc/boldt-webservice.png"
+        dest: "{{ tester_web_root }}images/bw_postman/boldt-webservice.png"
+        group: "{{ tester_www_user }}"
+        owner: "{{ tester_www_group }}"
+        mode: 0755
+
     - name: push all test containers (db, webserver, tester)
       include_role:
         name: romanabw.push-complete-infrastructure

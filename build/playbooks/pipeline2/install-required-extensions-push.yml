@@ -22,8 +22,8 @@
         path: "{{ joomla_base_folders[sub_path] }}"
         state: directory
         mode: 0777
-        owner: wwwrun
-        group: users
+        owner: www-data
+        group: www-data
 
     - name: ensure log folder for test results exists
       become: true

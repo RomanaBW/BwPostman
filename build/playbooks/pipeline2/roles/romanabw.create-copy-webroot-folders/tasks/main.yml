@@ -11,7 +11,7 @@
 - name: ensure joomla sub folders exists
   become: true
   copy:
-    src: : "{{ smoke_folder }}"
+    src: "{{ smoke_folder }}"
     dest: "{{ acceptance_folder }}"
     mode: 0777
     owner: wwwrun

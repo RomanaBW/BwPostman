@@ -684,7 +684,7 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function copyTemplateImagesToMedia($m_params)
 	{
-		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman';
+		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman/';
 		$media_path = JPATH_ROOT . '/media/bw_postman/images/';
 
 		// make new folder and copy template thumbnails

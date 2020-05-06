@@ -1,5 +1,11 @@
 ---
-- name: ensure joomla sub folders exists
+- name: Delete joomla sub folders
+  become: true
+  file:
+    path: "{{ acceptance_folder }}"
+    state: absent
+
+- name: Create joomla sub folders
   become: true
   file:
     path: "{{ acceptance_folder }}"
@@ -8,11 +14,6 @@
     owner: wwwrun
     group: users
 
-- name: ensure joomla sub folders exists
+- name: Copy joomla files to sub folders
   become: true
-  copy:
-    src: "{{ smoke_folder }}"
-    dest: "{{ acceptance_folder }}"
-    mode: 0777
-    owner: wwwrun
-    group: users
+  shell: "cp -rp {{ smoke_folder }}/* {{ acceptance_folder }}"

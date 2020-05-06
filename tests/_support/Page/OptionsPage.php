@@ -1726,7 +1726,7 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $noticeToClose = array(
-		'BwPostmanCampaignAdmin' => 'core.admin',
+//		'BwPostmanCampaignAdmin' => 'core.admin',
 		'BwPostmanMailinglistAdmin' => 'core.admin',
 		'BwPostmanNewsletterAdmin' => 'core.admin',
 		'BwPostmanSubscriberAdmin' => 'core.admin',

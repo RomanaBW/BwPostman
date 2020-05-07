@@ -42,7 +42,7 @@
         state: directory
         mode: 0777
         owner: www-data
-        group: www-data
+        group: users
 
     - name: Create the container
       docker_container:
@@ -72,8 +72,8 @@
       template:
         src: "configuration.php.j2"
         dest: "{{ tester_web_root }}configuration.php"
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
+        owner: "{{ tester_www_user }}"
+        group: "{{ tester_www_group }}"
 
 
 - hosts: tester

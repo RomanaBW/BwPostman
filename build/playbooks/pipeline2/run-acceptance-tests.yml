@@ -48,12 +48,17 @@
       set_fact:
         failure_flag: false
 
+    - name: Set variable for current joomla sub folder
+      set_fact:
+        sub_path: "{{ test_suite }}_j{{ j_main_version }}"
+
     - name: create network and start all test containers (db, webserver, tester)
       include_role:
         name: romanabw.setup-complete-infrastructure
       vars:
         source: "{{ acceptance_source }}"
         target: "{{ acceptance_target }}"
+        webroot_path: "{{ main_base_folder }}/{{ sub_path }}"
 
 
 - hosts: "{{ acceptance_source.web_container_name }}"
@@ -73,8 +78,8 @@
       template:
         src: "configuration.php.j2"
         dest: "{{ tester_web_root }}configuration.php"
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
+        owner: "{{ tester_www_user }}"
+        group: "{{ tester_www_group }}"
 
     - name: set webserver error log file
       lineinfile:

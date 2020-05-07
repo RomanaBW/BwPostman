@@ -25,8 +25,8 @@
       copy:
         src: "files/misc/boldt-webservice.png"
         dest: "{{ joomla_base_folders[sub_path] }}/images/bw_postman/boldt-webservice.png"
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
+        owner: "{{ tester_www_user }}"
+        group: "{{ tester_www_group }}"
         mode: 0755
 
     - name: create acceptance webroot folders and copy joomla files for J4

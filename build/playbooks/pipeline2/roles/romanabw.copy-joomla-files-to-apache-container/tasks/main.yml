@@ -11,8 +11,8 @@
   unarchive:
     src: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name[j_version_short] }}"
     dest: "{{ tester_web_root }}"
-    group: "{{ tester_www_user }}"
-    owner: "{{ tester_www_group }}"
+    owner: "{{ tester_www_user }}"
+    group: "{{ tester_www_group }}"
 #    remote_src: yes
 
 - name: get Joomla 4 SQL files to fill into database

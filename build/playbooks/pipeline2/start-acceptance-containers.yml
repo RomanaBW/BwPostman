@@ -52,8 +52,8 @@
       template:
         src: "configuration.php.j2"
         dest: "{{ tester_web_root }}configuration.php"
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
+        owner: "{{ tester_www_user }}"
+        group: "{{ tester_www_group }}"
 
     - name: set webserver error log file
       lineinfile:

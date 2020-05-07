@@ -23,7 +23,7 @@
         state: directory
         mode: 0777
         owner: www-data
-        group: www-data
+        group: users
 
     - name: ensure log folder for test results exists
       become: true
@@ -103,15 +103,15 @@
       template:
         src: "configuration.php.j2"
         dest: "{{ tester_web_root }}configuration.php"
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
+        owner: "{{ tester_www_user }}"
+        group: "{{ tester_www_group }}"
 
     - name: create safe path for virtuemart
       file:
         path: "/var/www/vmfiles/{{ item }}"
         state: directory
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
+        owner: "{{ tester_www_user }}"
+        group: "{{ tester_www_group }}"
       with_items:
         - invoices
         - keys
@@ -121,8 +121,8 @@
       file:
         path: "{{ tester_web_root }}administrator/logs"
         state: directory
-        group: "{{ tester_www_user }}"
-        owner: "{{ tester_www_group }}"
+        owner: "{{ tester_www_user }}"
+        group: "{{ tester_www_group }}"
         mode: 0777
 
 

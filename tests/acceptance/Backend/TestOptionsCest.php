@@ -1899,22 +1899,22 @@ class TestOptionsCest
 		$I->click($identifier);
 		$I->selectOption($identifier, $value);
 
-		if (array_key_exists($groupname, OptionsPage::$noticeToClose))
-		{
-			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
-			{
-				try
-				{
-					$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
-					$I->click(Generals::$alertNoticeClose);
-					$I->waitForElementNotVisible(Generals::$alertNoticeClose, 3);
-				}
-				catch(\RuntimeException $e)
-				{
-					codecept_debug("No notice to close");
-				}
-			}
-		}
+//		if (array_key_exists($groupname, OptionsPage::$noticeToClose))
+//		{
+//			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
+//			{
+//				try
+//				{
+//					$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
+//					$I->click(Generals::$alertNoticeClose);
+//					$I->waitForElementNotVisible(Generals::$alertNoticeClose, 3);
+//				}
+//				catch(\RuntimeException $e)
+//				{
+//					codecept_debug("No notice to close");
+//				}
+//			}
+//		}
 	}
 
 	/**

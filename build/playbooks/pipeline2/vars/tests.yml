@@ -131,7 +131,7 @@ test_suites:
   - name: accept3
     tests:
       - maintenance
-      - access4
+#      - access4
 
   - name: accept4
     tests:
@@ -142,7 +142,7 @@ test_suites:
   - name: accept5
     tests:
       - frontend
-      - access3
+#      - access3
 
   - name: accept6
     tests:

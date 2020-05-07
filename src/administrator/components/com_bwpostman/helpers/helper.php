@@ -883,14 +883,14 @@ abstract class BwPostmanHelper
 
 		// First check for item specific edit.own permission
 		$editOwnItem = self::checkActionPermission($view, 'edit.own', $recordId);
-		if ($editOwnItem !== null)
+		if ($editOwnItem !== false)
 		{
 			if ($editOwnItem)
 			{
 				$ownerId = self::getCreatorId($view, $recordId, $createdBy);
 
 				// Now test the owner is the user. If the owner matches 'me' then allow access.
-				if ($ownerId == $userId)
+				if ($ownerId === $userId)
 				{
 					return true;
 				}
@@ -899,7 +899,7 @@ abstract class BwPostmanHelper
 
 		// Second check for item specific edit permission
 		$editItem = self::checkActionPermission($view, $action, $recordId);
-		if ($editItem !== null)
+		if ($editItem !== false)
 		{
 			return $editItem;
 		}
@@ -964,7 +964,7 @@ abstract class BwPostmanHelper
 
 		// Check permission for submitted record
 		$allowed = self::checkActionPermission($view, $action, $recordId);
-		if ($allowed !== null)
+		if ($allowed !== false)
 		{
 			return $allowed;
 		}
@@ -1109,7 +1109,7 @@ abstract class BwPostmanHelper
 		// Check permission for submitted record
 		$allowed = self::checkActionPermission($view, $action, $recordId);
 
-		if ($allowed !== null)
+		if ($allowed !== false)
 		{
 			return $allowed;
 		}
@@ -1157,7 +1157,7 @@ abstract class BwPostmanHelper
 
 		// Check permission for submitted record
 		$allowed = self::checkActionPermission($view, $action, $recordId);
-		if ($allowed !== null)
+		if ($allowed !== false)
 		{
 			return $allowed;
 		}
@@ -1207,7 +1207,7 @@ abstract class BwPostmanHelper
 
 		// Check permission for submitted record
 		$allowed = self::checkActionPermission($view, $action, $recordId);
-		if ($allowed !== null)
+		if ($allowed !== false)
 		{
 			return $allowed;
 		}

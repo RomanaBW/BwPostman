@@ -137,7 +137,6 @@ class TestSubscribersDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		$this->fillFormExtended($I);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 		$I->see("Subscribers", Generals::$pageTitle);

@@ -905,6 +905,7 @@ class Acceptance extends Codeception\Module
 
 		$I->scrollTo($publish_by_toolbar['unpublish_button'], 0, -200);
 		$I->waitForElementVisible($publish_by_toolbar['unpublish_button'], 3);
+		$I->wait(1);
 		$I->clickAndWait($publish_by_toolbar['unpublish_button'], 1);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Unpublish'], 1);

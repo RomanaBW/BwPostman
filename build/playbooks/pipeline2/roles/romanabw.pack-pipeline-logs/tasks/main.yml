@@ -1,0 +1,45 @@
+---
+- name: create name of packed file
+  shell: "stat -c '%y' {{ folder_name }}"
+  register: folder_date_raw_raw
+  args:
+    chdir: "{{ source_test_path }}"
+
+- name: Set fixed length to build number (folder_name)
+  set_fact:
+    fixed_length_name: "{{ '%05d'|format(folder_name|int) }}"
+
+- name: Set raw folder date
+  set_fact:
+    folder_date_raw: "{{ folder_date_raw_raw.stdout }}"
+
+- name: Split folder date
+  set_fact:
+    folder_date_splitted: "{{ folder_date_raw.split('.') }}"
+
+- name: Replace space with underline
+  set_fact:
+    folder_date_underline: "{{ folder_date_splitted[0].replace(' ', '_') }}"
+
+- name: Replace colon with dash
+  set_fact:
+    folder_date_final: "{{ folder_date_underline.replace(':', '-') }}"
+
+- name: Create pack file name
+  set_fact:
+    pack_file_path: "{{ target }}/BwPostman_Build-{{ fixed_length_name }}_{{ folder_date_final }}.tar.gz"
+
+- name: Compress folder and remove it
+  become: yes
+  archive:
+    path: "{{ source }}/{{ folder_name }}/*"
+    dest: "{{ pack_file_path }}"
+    format: gz
+    owner: romana
+    group: users
+
+- name: delete source
+  become: yes
+  file:
+    path:  "{{ source }}/{{ folder_name }}"
+    state: absent

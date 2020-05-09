@@ -904,13 +904,14 @@ class Acceptance extends Codeception\Module
 		$I->seeElement($publish_by_toolbar['publish_result']);
 
 		$I->scrollTo($publish_by_toolbar['unpublish_button'], 0, -200);
+		$I->waitForElementVisible($publish_by_toolbar['unpublish_button'], 3);
 		$I->clickAndWait($publish_by_toolbar['unpublish_button'], 1);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Unpublish'], 1);
 		$I->see("One " . $item . " unpublished!");
 
 		// Confirm success message
-		$I->waitForElementVisible(Generals::$systemMessageClose);
+		$I->waitForElementVisible(Generals::$systemMessageClose, 5);
 		$I->click(Generals::$systemMessageClose);
 
 		if ($item == 'newsletter')

@@ -20,9 +20,13 @@
         owner: romana
         group: users
 
+    - name: Remove folder file
+      file:
+        path: "{{ folder_file }}"
+        state: absent
+
     - name: Get list of  log folders
       shell: "ls -cdA */ > {{ folder_file }}"
-#      shell: "ls -cdAr */"
       args:
         chdir: "{{ source_path }}"
 

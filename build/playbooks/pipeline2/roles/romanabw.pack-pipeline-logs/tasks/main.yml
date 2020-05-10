@@ -3,7 +3,7 @@
   shell: "stat -c '%y' {{ folder_name }}"
   register: folder_date_raw_raw
   args:
-    chdir: "{{ source_test_path }}"
+    chdir: "{{ source_path }}"
 
 - name: Set fixed length to build number (folder_name)
   set_fact:

@@ -16,7 +16,7 @@ pipeline {
 					PROJECT_NAME_4 = "j${JOOMLA_VERSION_4}_bwpm${BWPM_VERSION}"
 					VERSIONS_EXTRA_VAR_4 = "joomla_version=${JOOMLA_VERSION_4} bwpm_version=${BWPM_VERSION}";
 					DO_RECORD_J4_SMOKE = "true";
-					DO_RECORD_J4_1 = "true";
+					DO_RECORD_J4_1 = "false";
 					DO_RECORD_J4_2 = "false";
 					DO_RECORD_J4_3 = "false";
 					DO_RECORD_J4_4 = "false"; // possibly has always to be true, because this suite uses codeception "friend", which does not work well with "moving screens"
@@ -38,18 +38,18 @@ pipeline {
 			}
         }
 
-//		stage('Create tester package') {
-//			steps {
-//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
-//			}
-//		}
+		stage('Create tester package') {
+			steps {
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
+			}
+		}
 
 
-//		stage('Create full package') {
-//			steps {
-//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
-//			}
-//		}
+		stage('Create full package') {
+			steps {
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
+			}
+		}
 
 		stage('Run smoke tests') {
 			parallel {

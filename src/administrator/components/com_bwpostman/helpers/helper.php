@@ -229,6 +229,7 @@ abstract class BwPostmanHelper
 		catch (RuntimeException $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
 		}
 
 		return $manifest['version'];

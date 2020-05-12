@@ -186,6 +186,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		if (is_null($fileName))
 		{
 			$dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
+
+			if ($dottedVersion === false)
+			{
+				return false;
+			}
+
 			$version       = str_replace('.', '_', $dottedVersion);
 			$fileName      = "BwPostman_" . $version . "_Tables_" . JFactory::getDate()->format("Y-m-d_H_i") . '.xml';
 		}
@@ -197,11 +203,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			if (!Folder::create($path))
 			{
+				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path);
+				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
 				if ($update)
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
 					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
 					return false;
@@ -216,11 +222,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			if ($handle === false)
 			{
+				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path);
+				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
 				if ($update)
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
 					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
 					return false;
@@ -235,11 +241,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if ($this->tableNames === null)
 			{
+				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path);
+				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
 				if ($update)
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
 					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
 					return false;
@@ -257,11 +263,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (fwrite($handle, implode("\n", $file_data)) === false)
 			{
+				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER', $path);
+				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
 				if ($update)
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER', $path);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
 					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
 					return false;
@@ -299,11 +305,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 					else
 					{
+						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
+						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+
 						if ($update)
 						{
-							$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
-							$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
-
 							echo '<p class="bw_tablecheck_ok">'	. $message . '</p>';
 						}
 					}
@@ -372,11 +378,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			else
 			{
+				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
 				if ($update)
 				{
-					$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
 					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 				}
 
@@ -456,7 +462,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Builds the XML data header for the tables to export. Based on Joomla JDatabaseExporter
 	 *
-	 * @return    string    An XML string
+	 * @return    string|boolean    An XML string, false on failure
 	 *
 	 * @since    1.0.1
 	 */
@@ -465,6 +471,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// @ToDo: Use simpleXml correctly
 		// Get version of BwPostman
 		$version = $this->getBwPostmanVersion();
+
+		if ($version === false)
+		{
+			return false;
+		}
 
 		// Get database name
 		$dbname = self::getDBName();

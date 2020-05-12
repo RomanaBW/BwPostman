@@ -31,8 +31,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\LogEntry;
 
 // Require some classes
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
@@ -144,7 +148,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$logOptions   = array();
 		$this->logger = BwLogger::getInstance($logOptions);
 
-		$this->db = JFactory::getDbo();
+		$this->db = Factory::getDbo();
 
 		if(version_compare(JVERSION, '3.999.999', 'ge'))
 		{
@@ -174,7 +178,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		// @ToDo: Use simpleXml correctly
 		// Access check.
-		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$permissions['maintenance']['save'])
 		{
@@ -193,7 +197,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			$version       = str_replace('.', '_', $dottedVersion);
-			$fileName      = "BwPostman_" . $version . "_Tables_" . JFactory::getDate()->format("Y-m-d_H_i") . '.xml';
+			$fileName      = "BwPostman_" . $version . "_Tables_" . Factory::getDate()->format("Y-m-d_H_i") . '.xml';
 		}
 
 		// create (empty) backup file
@@ -203,8 +207,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			if (!Folder::create($path))
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				if ($update)
 				{
@@ -222,8 +226,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			if ($handle === false)
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				if ($update)
 				{
@@ -241,8 +245,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if ($this->tableNames === null)
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				if ($update)
 				{
@@ -263,8 +267,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (fwrite($handle, implode("\n", $file_data)) === false)
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER', $path);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER', $path);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				if ($update)
 				{
@@ -293,8 +297,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					$file_data[] = $tableStructure;
 					if (fwrite($handle, implode("\n", $file_data)) === false)
 					{
-						$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
-						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+						$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 						if ($update)
 						{
@@ -305,8 +309,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 					else
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
-						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 						if ($update)
 						{
@@ -317,8 +321,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					// write table data
 					if (!$this->buildXmlData($tableName, $handle))
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
-						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 						if ($update)
 						{
@@ -340,8 +344,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					$file_data[] = "\t\t</tables>\n";                                // set XML tables section
 					if (fwrite($handle, implode("\n", $file_data)) === false)
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName);
-						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName);
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 						if ($update)
 						{
@@ -360,7 +364,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (fwrite($handle, $file_data) !== false)
 			{
-				$compressed = JComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
+				$compressed = ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
 				$backupFile = $fileName;
 
 				if ($compressed)
@@ -368,8 +372,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					$backupFile = BwPostmanMaintenanceHelper::compressBackupFile($fileName);
 				}
 
-				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $fileName);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $fileName);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				if ($update)
 				{
@@ -378,8 +382,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			else
 			{
-				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				if ($update)
 				{
@@ -434,7 +438,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -488,7 +492,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$buffer[] = "\t<database name=\"$dbname\">";
 		$buffer[] = "\t\t<Generals>";
 		$buffer[] = "\t\t\t<BwPostmanVersion>" . $version . "</BwPostmanVersion>";
-		$buffer[] = "\t\t\t<SaveDate>" . JFactory::getDate()->format("Y-m-d_H:i") . "</SaveDate>";
+		$buffer[] = "\t\t\t<SaveDate>" . Factory::getDate()->format("Y-m-d_H:i") . "</SaveDate>";
 
 		$query = $this->db->getQuery(true);
 
@@ -506,7 +510,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -613,7 +617,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -659,7 +663,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			catch (RuntimeException $exception)
 			{
 				$message = $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -710,7 +714,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			catch (RuntimeException $exception)
 			{
 				$message = $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -761,8 +765,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (false === $fh = fopen($filename, 'r'))
 			{ // File cannot be opened
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OPEN_INSTALL_FILE_ERROR', $filename);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OPEN_INSTALL_FILE_ERROR', $filename);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
@@ -986,7 +990,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	public static function getGenericTableName($table)
 	{
 		// get db prefix
-		$prefix = JFactory::getDbo()->getPrefix();
+		$prefix = Factory::getDbo()->getPrefix();
 
 		// Replace the magic prefix if found.
 		$table = preg_replace("|^$prefix|", '#__', $table);
@@ -1039,7 +1043,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_OK');
+		$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_OK');
 		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
 		return true;
@@ -1062,8 +1066,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (!empty($diff_1))
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED', implode(',', $diff_1));
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED', implode(',', $diff_1));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
@@ -1087,21 +1091,21 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					if (!$createDB)
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_ERROR',	$missingTable);
-						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_ERROR',	$missingTable);
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 						echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 					}
 					else
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_SUCCESS', $missingTable);
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_SUCCESS', $missingTable);
 						echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 					}
 				}
 				catch (RuntimeException $exception)
 				{
 					$message = $exception->getMessage();
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -1109,7 +1113,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		else
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ALL_TABLES_INSTALLED');
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ALL_TABLES_INSTALLED');
 			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 		}
 
@@ -1132,7 +1136,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (!empty($diff_2))
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE', implode(',', $diff_2));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE', implode(',', $diff_2));
 			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
 			// delete obsolete tables
@@ -1147,19 +1151,19 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					if (!$deleteDB)
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE_DELETE_ERROR', $obsoleteTable);
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE_DELETE_ERROR', $obsoleteTable);
 						echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 					}
 					else
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE_DELETE_SUCCESS', $obsoleteTable);
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE_DELETE_SUCCESS', $obsoleteTable);
 						echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 					}
 				}
 				catch (RuntimeException $exception)
 				{
 					$message = $exception->getMessage();
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -1167,7 +1171,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		else
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NO_OBSOLETE_TABLES');
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NO_OBSOLETE_TABLES');
 			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 		}
 
@@ -1190,8 +1194,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
@@ -1222,8 +1226,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -1288,21 +1292,21 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					if (!$modifyTable)
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ERROR', $table->name);
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ERROR', $table->name);
 						echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
 						return false;
 					}
 					else
 					{
-						$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_SUCCESS', $table->name);
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_SUCCESS', $table->name);
 						echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 					}
 				}
 				catch (RuntimeException $exception)
 				{
 					$message = $exception->getMessage();
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -1335,8 +1339,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// compare primary key of installed table with needed one
 			if (strcasecmp($table->primary_key, $installed_key) != 0)
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_WRONG', $table->name);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_WRONG', $table->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
@@ -1394,8 +1398,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return true;
 		}
@@ -1454,7 +1458,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -1482,8 +1486,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (!$modifyKey)
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_ERROR', $table->name);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_ERROR', $table->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
@@ -1491,8 +1495,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			else
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_SUCCESS', $table->name);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_SUCCESS', $table->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 			}
@@ -1500,7 +1504,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -1529,7 +1533,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -1548,8 +1552,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function setCorrectAutoIncrement($table)
 	{
-		$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_WRONG', $table->name);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_WRONG', $table->name);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
@@ -1564,8 +1568,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (!$incrementKey)
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_ERROR', $table->name);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_ERROR', $table->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
@@ -1573,8 +1577,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			else
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_SUCCESS', $table->name);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_SUCCESS', $table->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 			}
@@ -1582,7 +1586,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -1636,7 +1640,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 			return false;
 		}
@@ -1670,8 +1674,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-		$message = str_pad(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_OK', $checkTable->name), 4096);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message = str_pad(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_OK', $checkTable->name), 4096);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		echo '<p class="bw_tablecheck_ok">' . $message	 . '</p>';
 
@@ -1680,8 +1684,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$message = str_pad(strip_tags(JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_ATTRIBUTES_OK', $checkTable->name)), 4096);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message = str_pad(strip_tags(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_ATTRIBUTES_OK', $checkTable->name)), 4096);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
@@ -1708,7 +1712,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = ' NULL ';
 			(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $this->db->quote($neededColumns[$i]['Default']) : $default = '';
 
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COLS', $neededColumns[$i]['Column'], $checkTable->name);
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COLS', $neededColumns[$i]['Column'], $checkTable->name);
 			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
 			$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name);
@@ -1724,12 +1728,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if (!$insertCol)
 				{
-					$message = JText::sprintf(
+					$message = Text::sprintf(
 						'COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_CREATE_ERROR',
 						$neededColumns[$i]['Column'],
 						$checkTable->name
 					);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
@@ -1738,12 +1742,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				else
 				{
 					$message = str_pad(
-						JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_CREATE_SUCCESS',
+						Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_CREATE_SUCCESS',
 							$neededColumns[$i]['Column'],
 							$checkTable->name),
 						4096
 					);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 					echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
@@ -1753,7 +1757,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			catch (RuntimeException $exception)
 			{
 				$message = $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -1776,11 +1780,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		if (array_search($installedColumns['Field'], $search_cols_2) === false)
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COLS',
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COLS',
 				$installedColumns['Field'],
 				$checkTable->name
 			);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
@@ -1794,10 +1798,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if (!$deleteCol)
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COL_CREATE_ERROR',
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COL_CREATE_ERROR',
 						$installedColumns['Field'],
 						$checkTable->name);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
@@ -1806,12 +1810,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				else
 				{
 					$message = str_pad(
-						JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COL_CREATE_SUCCESS',
+						Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COL_CREATE_SUCCESS',
 							$installedColumns['Field'],
 							$checkTable->name),
 						4096
 					);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 					echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
@@ -1821,7 +1825,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			catch (RuntimeException $exception)
 			{
 				$message = $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -1849,11 +1853,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (!empty($diff))
 			{
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES',
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES',
 					implode(',', array_keys($diff)),
 					$neededColumns[$i]['Column'],
 					$checkTable->name);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
@@ -1894,24 +1898,24 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						if (!$alterCol)
 						{
-							$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_ERROR',
+							$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_ERROR',
 								$missingCol,
 								$neededColumns[$i]['Column'],
 								$checkTable->name);
-							$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+							$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 						}
 						else
 						{
 							$message = str_pad(
-								JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_SUCCESS',
+								Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_SUCCESS',
 									$missingCol,
 									$neededColumns[$i]['Column'],
 									$checkTable->name),
 								4096
 							);
-							$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+							$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 							echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 						}
@@ -1919,7 +1923,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					catch (RuntimeException $exception)
 					{
 						$message = $exception->getMessage();
-						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 						return false;
 					}
@@ -2090,8 +2094,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 				}
 
-				$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $tableNameGeneric);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $tableNameGeneric);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 			}
@@ -2156,11 +2160,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 				catch (RuntimeException $exception)
 				{
-					$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionAsset['name']);
+					$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionAsset['name']);
 					$message .= ': ';
 					$message .= $exception->getMessage();
 
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -2216,7 +2220,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -2248,7 +2252,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -2337,15 +2341,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
 
 		if (fwrite($handle, "\t\t\t<table_data table=\"$tableName\">\n") === false)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -2356,8 +2360,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				if (fwrite($handle, "\t\t\t\t<dataset>\n") === false)
 				{
-					$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -2379,8 +2383,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					if (fwrite($handle, "\t\t\t\t\t<$key>" . $insert_string . "</$key>\n") === false)
 					{
-						$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-						$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+						$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 						return false;
 					}
@@ -2388,8 +2392,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if (fwrite($handle, "\t\t\t\t</dataset>\n") === false)
 				{
-					$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -2398,8 +2402,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (fwrite($handle, "\t\t\t</table_data>\n") === false)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -2488,20 +2492,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	public function outputGeneralInformation()
 	{
 		// Output general information
-		$generals = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.generals', null);
+		$generals = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', null);
 
 		if (key_exists('BwPostmanVersion', $generals) || key_exists('SaveDate', $generals))
 		{
-			echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_OUTPUT_GENERALS') . '</h4>';
+			echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_OUTPUT_GENERALS') . '</h4>';
 			if (key_exists('BwPostmanVersion', $generals))
 			{
-				$message =  JText::_('COM_BWPOSTMAN_VERSION') . $generals['BwPostmanVersion'];
+				$message =  Text::_('COM_BWPOSTMAN_VERSION') . $generals['BwPostmanVersion'];
 				echo '<p class="bw_tablecheck_info">' . $message . '</p>';
 			}
 
 			if (key_exists('SaveDate', $generals))
 			{
-				$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_DATE') . $generals['SaveDate'];
+				$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_DATE') . $generals['SaveDate'];
 				echo '<p class="bw_tablecheck_info">' . $message . '</p>';
 			}
 		}
@@ -2523,12 +2527,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	public function processAssetUserGroups($table_names)
 	{
 		// process user groups, if they exists in backup
-		$com_assets = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
-		$usergroups = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.usergroups', array());
-		$tmp_file   = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$com_assets = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
+		$usergroups = Factory::getApplication()->getUserState('com_bwpostman.maintenance.usergroups', array());
+		$tmp_file   = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$fp         = fopen($tmp_file, 'r');
 		$tables     = unserialize(fread($fp, filesize($tmp_file)));
-		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
+		Factory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
 		fclose($fp);
 
 		if (count($usergroups))
@@ -2548,7 +2552,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					return  false;
 				}
 
-				$com_assets = JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
+				$com_assets = Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
 				// rewrite table asset user groups
 				foreach ($table_names as $table)
@@ -2566,18 +2570,18 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 			}
 
-			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
-			JFactory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', '');
+			Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
+			Factory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', '');
 
-			$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESSED');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESSED');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 		}
 		else
 		{
-			$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_MESSAGE');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_MESSAGE');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 		}
@@ -2599,7 +2603,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	public function anewBwPostmanTables($tables)
 	{
 		// @ToDo: Check for process of plugin tables
-		$tmp_file      = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$tmp_file      = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$fp            = fopen($tmp_file, 'r');
 		$tablesQueries = unserialize(fread($fp, filesize($tmp_file)));
 
@@ -2640,10 +2644,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	public function reWriteTables($table, $lastTable = false)
 	{
-		$tmp_file        = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$tmpFileExists   = file_exists($tmp_file);
-		$dest            = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
-		$tablesFromState = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
+		$dest            = Factory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
+		$tablesFromState = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
 
 		if ($tmpFileExists)
 		{
@@ -2671,7 +2675,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				catch (RuntimeException $exception)
 				{
 					$message =  $exception->getMessage();
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -2820,8 +2824,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					} // end foreach table items
 				} // endif data sets exists
 
-				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
 
@@ -2836,7 +2840,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				/*
 				 * // For transaction test purposes only
 				if($table_name_raw == 'newsletters') {
-					throw new BwException(JText::_('Test-Exception Newsletter written'));
+					throw new BwException(Text::_('Test-Exception Newsletter written'));
 				}
 				*/
 
@@ -2857,7 +2861,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				unlink($dest);
 
 				$message =  $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 			}
 		}
 		return true;
@@ -2887,7 +2891,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message =  $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 		}
 
@@ -2905,7 +2909,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	protected static function getDBName()
 	{
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Get database name
 		return $config->get('db', '');
@@ -2936,7 +2940,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message =  $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -2961,12 +2965,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 		$message =  sprintf('Memory   consumption before parsing:  %01.3f MB', $memoryConsumption);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 
 		if ($file == '')
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_ERROR_NO_FILE');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_ERROR_NO_FILE');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -2974,8 +2978,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// get import file
 		if (false === $fh = fopen($file, 'rb'))
 		{ // File cannot be opened
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_FILE_ERROR', $file);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_FILE_ERROR', $file);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -2987,23 +2991,23 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// check if xml file is ok (most error case: non-xml-conform characters in xml file)
 		if (!is_object($xml))
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_READ_XML_ERROR', $file);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_READ_XML_ERROR', $file);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
 
 		if (!property_exists($xml, 'database'))
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRONG_FILE_ERROR', $file);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRONG_FILE_ERROR', $file);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
 
 		$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 		$message =  sprintf('Memory consumption while parsing with XML file: %01.3f MB', $memoryConsumption);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 
 		// Get general data
 		$generals = array();
@@ -3017,7 +3021,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$generals['SaveDate'] = (string) $xml->database->Generals->SaveDate;
 		}
 
-		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.generals', $generals);
+		Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', $generals);
 
 		// Get component asset
 		$com_assets = array();
@@ -3040,7 +3044,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
+		Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
 		// Get backed up user groups
 		$usergroups = array();
@@ -3056,11 +3060,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
+		Factory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
 
 		// Get all tables from the xml file converted to arrays recursively, results in an array/list of table-arrays
-		$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_DATA');
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_DATA');
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		echo '<h4>' . $message . '</h4>';
 
@@ -3076,8 +3080,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (count($x_tables) == 0)
 		{
-			$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -3108,11 +3112,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		unset($table);
 
 		// get buffer file
-		$tmp_file = JFactory::getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
+		$tmp_file = Factory::getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
 		if (false === $fp = fopen($tmp_file, 'w+'))
 		{ // File cannot be opened
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_TMPFILE_ERROR', $tmp_file);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_TMPFILE_ERROR', $tmp_file);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -3120,15 +3124,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// empty buffer file
 		if (false === ftruncate($fp, 0))
 		{ // File cannot be truncated
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TRUNCATE_TMPFILE_ERROR', $tmp_file);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TRUNCATE_TMPFILE_ERROR', $tmp_file);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
 
 		$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 		$message =  sprintf('Memory consumption while parsing before loop: %01.3f MB', $memoryConsumption);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 
 		// paraphrase tables array per table for better handling and convert simple xml objects to strings
 		$i = 0;
@@ -3136,7 +3140,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at very beginning loop: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 
 			$w_table = array();
 
@@ -3149,7 +3153,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at loop with query: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 
 			// extract table assets
 			if (property_exists($tmp_table, 'table_assets'))
@@ -3189,7 +3193,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at loop with assets: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 
 			// get table data; cannot use get_object_vars() because this returns empty objects on empty values, not empty array fields
 			$items = array();
@@ -3225,7 +3229,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at loop with data sets: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 
 			unset($items);
 
@@ -3246,8 +3250,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (false === fwrite($fp, $write_data))
 			{
-				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRITE_TMPFILE_ERROR', $tmp_file);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRITE_TMPFILE_ERROR', $tmp_file);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return  false;
 			}
@@ -3256,15 +3260,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],$memoryConsumption);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
 		}
 
-		$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS');
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS');
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
 
-		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tmp_file', $tmp_file);
+		Factory::getApplication()->setUserState('com_bwpostman.maintenance.tmp_file', $tmp_file);
 		fclose($fp);
 
 		return $table_names;
@@ -3290,27 +3294,27 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$asset_delete = $this->db->execute();
 
 			// Uncomment next line to test rollback (only makes sense, if deleted tables contained data)
-			// throw new BwException(JText::_('Test-Exception DeleteAssets Model'));
+			// throw new BwException(Text::_('Test-Exception DeleteAssets Model'));
 
 			if (!$asset_delete)
 			{
-				$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR');
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR');
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
 			else
 			{
-				$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_SUCCESS');
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_SUCCESS');
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 			}
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_DATABASE_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_DATABASE_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 		}
 
 		return  true;
@@ -3331,7 +3335,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		try
 		{
 			// com_assets are from state = from input file!
-			$com_assets = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
+			$com_assets = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
 			$query      = $this->db->getQuery(true);
 
 			// first get lft from main asset com_bwpostman, This is the one already existing in table
@@ -3379,19 +3383,19 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$set_asset_base = $this->db->execute();
 
 			// Uncomment next line to test rollback (only makes sense, if deleted tables contained data)
-			// throw new BwException(JText::_('Test-Exception HealAssets Model'));
+			// throw new BwException(Text::_('Test-Exception HealAssets Model'));
 
 			if (!$set_asset_left || !$set_asset_right || !$set_asset_base)
 			{
-				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR');
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR');
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
 			else
 			{
-				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS');
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS');
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
 				$base_asset['rgt'] = $base_asset['lft'] + 1;
@@ -3399,8 +3403,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_DATABASE_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_DATABASE_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3431,7 +3435,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (!$onlyHeal && $table != 'component')
 		{
-			$stateAssetsRaw = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', '');
+			$stateAssetsRaw = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', '');
 		}
 
 		if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
@@ -3471,8 +3475,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if ($asset === false || $com_asset === false)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3483,8 +3487,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (!$move_asset_left || !$move_asset_right)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -3501,8 +3505,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (!$writeAsset)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3523,8 +3527,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$writeTableName = $table['tableNameUC'];
 			}
 
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
 		}
@@ -3535,8 +3539,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$tableName = $table['tableNameUC'];
 		}
 
-		$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $tableName);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $tableName);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 		return $base_asset;
 	}
@@ -3572,10 +3576,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionName);
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionName);
 			$message .= ': ';
 			$message .= $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -3594,8 +3598,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		if (empty($asset))
 		{
-			$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR_EMPTY');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR_EMPTY');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3614,16 +3618,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (!$update_asset)
 			{
-				$message =  JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR');
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR');
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $asset['name']);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $asset['name']);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3677,7 +3681,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->values($insert_data);
 		$this->db->setQuery($query);
 
-		$this->logger->addEntry(new JLogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEBUG,
+		$this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEBUG,
 			'maintenance'));
 
 		try
@@ -3686,8 +3690,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (RuntimeException$exception)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR') . ': ' . $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR') . ': ' . $exception->getMessage();
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3726,8 +3730,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR') . ': ' . $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR') . ': ' . $exception->getMessage();
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3764,8 +3768,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR') . ': ' . $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR') . ': ' . $exception->getMessage();
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -3836,7 +3840,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			catch (RuntimeException $exception)
 			{
 				$message = $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return -1;
 			}
@@ -3862,8 +3866,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if (!$success)
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ADD_USERGROUP_ERROR', 	$item['title']);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ADD_USERGROUP_ERROR', 	$item['title']);
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return -1;
 				}
@@ -3881,7 +3885,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				catch (RuntimeException $exception)
 				{
 					$message = $exception->getMessage();
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return -1;
 				}
@@ -3924,7 +3928,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function rewriteAssetUserGroups($table, &$assets, $groupsToReplace)
 	{
-		$tables  = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
+		$tables  = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
 		$old_ids = array();
 		foreach ($groupsToReplace as $groupToReplace)
 		{
@@ -3972,15 +3976,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							{
 								// update table assets
 								$tables[$table]['table_assets'][$i]['rules'] = json_encode($rules);
-								JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
+								Factory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
 							}
 						}
 					}
 				}
 				else
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_USERGROUP_RULE_ERROR',	$asset['rules'], $table);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_USERGROUP_RULE_ERROR',	$asset['rules'], $table);
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -4021,10 +4025,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
 				$message .= ": ";
 				$message .= $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -4040,10 +4044,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
 				$message .= ": ";
 				$message .= $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -4059,10 +4063,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
 				$message .= ": ";
 				$message .= $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -4098,10 +4102,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
+				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
 				$message .= ": ";
 				$message .= $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -4119,19 +4123,19 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
+				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
 				$message .= ": ";
 				$message .= $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
 		}
 
-		$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING');
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING');
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.restorePoint_text', '<p class="bw_tablecheck_error">' . $message . '</p>');
+		Factory::getApplication()->setUserState('com_bwpostman.maintenance.restorePoint_text', '<p class="bw_tablecheck_error">' . $message . '</p>');
 
 		return true;
 	}
@@ -4167,8 +4171,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 				catch (RuntimeException $exception)
 				{
-					$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DELETE_RESTORE_POINT_ERROR') . $exception->getMessage();
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DELETE_RESTORE_POINT_ERROR') . $exception->getMessage();
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
 				}
@@ -4198,8 +4202,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (!is_array($this->tableNames))
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_AFFECTED_TABLES_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_AFFECTED_TABLES_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;
 		}
@@ -4257,7 +4261,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -4280,8 +4284,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if ($start === false)
 		{
-			$message = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_TABLE_NAME_ERROR');
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_TABLE_NAME_ERROR');
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 		}
 
 		return substr($table, $start + 1);
@@ -4343,7 +4347,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -4364,7 +4368,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function getBaseAssetItem($table)
 	{
-		$stateAssetsRaw = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
+		$stateAssetsRaw = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
 
 		if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
 		{
@@ -4446,7 +4450,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return -1;
 		}
@@ -4744,7 +4748,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5554,7 +5558,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5589,7 +5593,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5644,7 +5648,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5678,7 +5682,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5748,7 +5752,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5856,7 +5860,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5892,7 +5896,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5925,7 +5929,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -5960,7 +5964,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return -1;
 		}
@@ -6002,7 +6006,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return -1;
 		}
@@ -6042,7 +6046,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return -1;
 		}
@@ -6086,7 +6090,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			catch (RuntimeException $exception)
 			{
 				$message = $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -6121,7 +6125,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
@@ -6361,8 +6365,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			if (!$drop_table)
 			{
-				$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table);
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
@@ -6370,12 +6374,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message =  $exception->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
 		}
-		$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_SUCCESS', $table);
-		$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_SUCCESS', $table);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
@@ -6410,20 +6414,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$create_table = $this->db->execute();
 				if (!$create_table)
 				{
-					$message = JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table);
-					$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table);
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 				}
 			}
 			catch (RuntimeException $exception)
 			{
 				$message =  $exception->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 				return false;
 			}
 
-			$message =  JText::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_SUCCESS', $table);
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_SUCCESS', $table);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 		}

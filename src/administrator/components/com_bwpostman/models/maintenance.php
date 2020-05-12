@@ -2517,6 +2517,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$tmp_file   = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$fp         = fopen($tmp_file, 'r');
 		$tables     = unserialize(fread($fp, filesize($tmp_file)));
+		JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
 		fclose($fp);
 
 		if (count($usergroups))
@@ -2531,7 +2532,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			if (is_array($groupsToReplace))
 			{
 				// rewrite component asset user groups
-				if (!$this->rewriteAssetUserGroups('component', $com_assets, $groupsToReplace))
+				if (!$this->rewriteAssetUserGroups($tables, 'component', $com_assets, $groupsToReplace))
 				{
 					return  false;
 				}
@@ -2546,7 +2547,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					{
 						// get table assets
 						$assets = $tables[$table]['table_assets'];
-						if (!$this->rewriteAssetUserGroups($table, $assets, $groupsToReplace))
+						if (!$this->rewriteAssetUserGroups($tables, $table, $assets, $groupsToReplace))
 						{
 							return  false;
 						}
@@ -2628,9 +2629,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	public function reWriteTables($table, $lastTable = false)
 	{
-		$tmp_file      = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
-		$tmpFileExists = file_exists($tmp_file);
-		$dest          = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
+		$tmp_file        = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$tmpFileExists   = file_exists($tmp_file);
+		$dest            = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
+		$tablesFromState = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
 
 		if ($tmpFileExists)
 		{
@@ -2678,6 +2680,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$asset_max      = 0;
 				if (isset($tables[$table]['table_assets']))
 				{
+					// @ToDo: Rewrite assets: Get assets from state
+					$tables[$table]['table_assets'] = $tablesFromState[$table]['table_assets'];
 					$asset_max = count($tables[$table]['table_assets']);
 				}
 
@@ -3797,7 +3801,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @param array $usergroups user groups from backup file
 	 *
-	 * @return  array|boolean $group    array of old_id and new_id or false if no group id has changed
+	 * @return  array|boolean $group    array of old_id and new_id or false if no group id has changed. According groups were skipped.
 	 *
 	 * @since    1.3.0
 	 */
@@ -3898,6 +3902,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to rewrite user groups in the assets. Needed, if backup file processed contains other usergroups than currently installed ones.
 	 *
+	 * @param array  $tables          array of all tables
 	 * @param string $table           component or table name of the assets are to rewrite
 	 * @param array  $assets          array of the table assets
 	 * @param array  $groupsToReplace array with old and new ID of changed user groups
@@ -3908,9 +3913,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 */
-	private function rewriteAssetUserGroups($table, &$assets, $groupsToReplace)
+	private function rewriteAssetUserGroups(&$tables, $table, &$assets, $groupsToReplace)
 	{
-		$tables  = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tables');
+		$tables  = JFactory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
 		$old_ids = array();
 		foreach ($groupsToReplace as $groupToReplace)
 		{
@@ -3958,6 +3963,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							{
 								// update table assets
 								$tables[$table]['table_assets'][$i]['rules'] = json_encode($rules);
+								JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
 							}
 						}
 					}

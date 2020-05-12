@@ -267,7 +267,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				$session->set('trestore_tablenames', '');
 				$session->set('tcheck_needTa', '');
 				$session->set('tcheck_inTaNa', '');
-				JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', '');
+				JFactory::getApplication()->setUserState('com_bwpostman.maintenance.tables', array());
 			}
 
 			// start output buffer
@@ -395,14 +395,14 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					{
 						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
-						// delete all existing asset sub entries of BwPostman
+						// delete all existing asset sub entries of BwPostman at #__assets
 						echo '<h4>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_HEAL_ASSETS') . '</h4>';
 						$model->deleteSubAssets();
 
 						// uncomment next line to test rollback (only makes sense, if deleted tables contained data)
 //						throw new BwException(JText::_('Test-Exception DeleteAssets Controller'));
 
-						// repair holes in lft and rgt values, update component asset
+						// repair holes in lft and rgt values, update component asset at #__assets
 						$model->healAssetsTable();
 						$step = "6";
 

@@ -897,6 +897,7 @@ class Acceptance extends Codeception\Module
 
 		if ($item == 'newsletter')
 		{
+			$I->wait(1);
 			$I->clickAndWait($extra_click, 2);
 		}
 

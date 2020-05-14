@@ -26,6 +26,10 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 JFormHelper::loadFieldClass('radio');
 
 /**
@@ -59,7 +63,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	 */
 	protected function getInput()
 	{
-		$item	    = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$item	    = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
 		$html	    = array();
 		$selected   = '';
 
@@ -81,7 +85,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 		// note for old templates
 		if ($selected < 1)
 		{
-			$html[]	= JText::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
+			$html[]	= Text::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
 		}
 
 		if (count($options) > 0)
@@ -110,7 +114,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 				$html[]	= '<span class="media-preview add-on fltlft">';
 				$html[]	= '<span class="hasTooltip hasTipPreview" title="&lt;strong&gt;' . $option->description . '&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;'
 					. '&lt;div id=&quot;jform_[template_id]' . $option->value . '_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'
-					. $option->value . '_preview_img&quot; src=&quot;' . JUri::root() . $option->thumbnail . '&quot; alt=&quot;' . $option->title
+					. $option->value . '_preview_img&quot; src=&quot;' . Uri::root() . $option->thumbnail . '&quot; alt=&quot;' . $option->title
 					. '&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'
 					. $option->title . '</span>';
 				$html[]	= '</span>';
@@ -119,7 +123,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 		}
 		else
 		{
-			$html[]	= JText::_('COM_BWPOSTMAN_NO_DATA');
+			$html[]	= Text::_('COM_BWPOSTMAN_NO_DATA');
 		}
 
 		// End the radio field output.
@@ -139,14 +143,14 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	 */
 	public function getOptions()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Initialize variables.
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data', null);
 		$options    = array();
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 
 		// Build the select list for the templates
 		$query	= $_db->getQuery(true);
@@ -181,7 +185,7 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

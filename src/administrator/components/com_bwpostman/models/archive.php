@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
@@ -54,7 +56,7 @@ class BwPostmanModelArchive extends JModelList
 	 */
 	public function __construct()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$layout	= $app->input->get('layout', 'newsletters');
 
 		if (empty($config['filter_fields'])) {
@@ -144,7 +146,7 @@ class BwPostmanModelArchive extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 		$jinput			= $app->input;
 
 		// Adjust the context to support modal and tabbed layouts.
@@ -267,7 +269,7 @@ class BwPostmanModelArchive extends JModelList
 		$query		= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
 		$sub_query2	= $_db->getQuery(true);
-		$jinput		= JFactory::getApplication()->input;
+		$jinput		= Factory::getApplication()->input;
 		$layout		= $jinput->get('layout', 'newsletters');
 
 		switch ($layout)
@@ -519,9 +521,6 @@ class BwPostmanModelArchive extends JModelList
 				}
 				break;
 
-			case "campaigns":
-				break;
-
 			case "mailinglists":
 				// Get the state
 				$filter_published = $this->getState('filter.published');
@@ -564,6 +563,7 @@ class BwPostmanModelArchive extends JModelList
 				}
 				break;
 
+			case "campaigns":
 			default:
 				break;
 		}
@@ -630,22 +630,6 @@ class BwPostmanModelArchive extends JModelList
 					}
 					break;
 				case "campaigns":
-					switch ($filtersearch)
-					{
-						case 'description':
-								$query->where('a.description LIKE ' . $_db->quote($search, false));
-							break;
-						case 'title_description':
-								$query->where(
-									'(a.description LIKE ' . $_db->quote($search, false) . 'OR a.title LIKE ' . $_db->quote($search, false) . ')'
-								);
-							break;
-						case 'title':
-								$query->where('a.title LIKE ' . $_db->quote($search, false));
-							break;
-						default:
-					}
-					break;
 				case "mailinglists":
 					switch ($filtersearch)
 					{
@@ -683,108 +667,6 @@ class BwPostmanModelArchive extends JModelList
 
 		return;
 	}
-
-	/**
-	 * Method to get the data of a single subscriber for raw view
-	 *
-	 * @access	public
-	 *
-	 * @param 	int $sub_id     Subscriber ID
-	 *
-	 * @return 	object Subscriber
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	/*public function getSingleSubscriber($sub_id = null)
-	{
-		$subscriber = array();
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-		$subQuery1	= $_db->getQuery(true);
-		$subQuery2	= $_db->getQuery(true);
-		$subQuery3	= $_db->getQuery(true);
-
-		$subQuery1->select($_db->quoteName('u') . '.' . $_db->quoteName('name'));
-		$subQuery1->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
-		$subQuery1->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('s') . '.' . $_db->quoteName('confirmed_by'));
-
-		$subQuery2->select($_db->quoteName('u') . '.' . $_db->quoteName('name'));
-		$subQuery2->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
-		$subQuery2->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('s') . '.' . $_db->quoteName('registered_by'));
-
-		$subQuery3->select($_db->quoteName('u') . '.' . $_db->quoteName('name'));
-		$subQuery3->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
-		$subQuery3->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('s') . '.' . $_db->quoteName('archived_by'));
-
-		$query->select($_db->quoteName('s') . '.*');
-		$query->select(
-			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('confirmed_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery1 . ' ))
-			AS ' . $_db->quoteName('confirmed_by')
-		);
-		$query->select(
-			' IF(' . $_db->quoteName('s') . '.' . $_db->quoteName('registered_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery2 . ' ))
-			AS ' . $_db->quoteName('registered_by')
-		);
-		$query->select('(' . $subQuery3 . ') AS ' . $_db->quoteName('archived_by'));
-		$query->select(
-			' IF( ' . $_db->quoteName('s') . '.' . $_db->quoteName('emailformat') . ' = ' . (int) 0 . ', "Text", "HTML" )
-			AS ' . $_db->quoteName('emailformat')
-		);
-		$query->from($_db->quoteName('#__bwpostman_subscribers') . ' AS ' . $_db->quoteName('s'));
-		$query->where($_db->quoteName('s') . '.' . $_db->quoteName('id') . ' = ' . (int) $sub_id);
-
-		$_db->setQuery($query);
-		try
-		{
-			$subscriber = $_db->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		$query->clear();
-		$query->select($_db->quoteName('mailinglist_id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
-
-		$_db->setQuery($query);
-
-		try
-		{
-			$mailinglist_id_values = $_db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if (!empty($mailinglist_id_values))
-		{
-			$mailinglist_ids = implode(',', $mailinglist_id_values);
-		}
-		else
-		{
-			$mailinglist_ids = 0;
-		}
-
-		$query->clear();
-		$query->select($_db->quoteName('id'));
-		$query->select($_db->quoteName('title'));
-		$query->select($_db->quoteName('description'));
-		$query->select($_db->quoteName('archive_flag'));
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('id') . ' IN  (' . $mailinglist_ids . ')');
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$_db->setQuery($query);
-		$subscriber->lists = $_db->loadObjectList();
-
-		return $subscriber;
-	}
-	*/
 
 	/**
 	 * Method to get the data of a single campaign for raw view
@@ -829,7 +711,7 @@ class BwPostmanModelArchive extends JModelList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $campaign;
@@ -872,7 +754,7 @@ class BwPostmanModelArchive extends JModelList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $mailinglist;

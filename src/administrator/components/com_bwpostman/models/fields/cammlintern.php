@@ -26,7 +26,9 @@
 
 defined('JPATH_BASE') or die;
 
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 JFormHelper::loadFieldClass('radio');
 
@@ -49,15 +51,6 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	public $type = 'CamMlIntern';
 
 	/**
-	 * The subscriber id to check for
-	 *
-	 * @var    integer
-	 *
-	 * @since  1.0.1
-	 */
-	private $_subscriber_id = null;
-
-	/**
 	 * Method to get the field input markup.
 	 *
 	 * @return  string  The field input markup.
@@ -66,7 +59,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	 */
 	public function getLabel()
 	{
-		  $return = JText::_($this->element['label']);
+		  $return = Text::_($this->element['label']);
 		  return $return;
 	}
 
@@ -81,8 +74,8 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	 */
 	public function getInput()
 	{
-		$app		= JFactory::getApplication();
-		$_db		= JFactory::getDbo();
+		$app		= Factory::getApplication();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 		$ml_select	= array();
 		$selected	= '';
@@ -117,7 +110,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		if (!is_array($value))
 		{
 			// Convert the selections field to an array.
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($value);
 		}
 
@@ -146,7 +139,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -181,36 +174,13 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 	 */
 	public function getOptions()
 	{
-		$app	= JFactory::getApplication();
-
 		// Initialize variables.
 		$user_id		= null;
 		$options        = array();
-		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
-		$query_user	= $_db->getQuery(true);
-
-		// get user_ids if exists
-		if (is_array($subs_id) && !empty($subs_id))
-		{
-			$query_user->select($_db->quoteName('user_id'));
-			$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query_user->where($_db->quoteName('id') . ' = ' . (int) $subs_id[0]);
-
-			$_db->setQuery($query_user);
-
-			try
-			{
-				$user_id = $_db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
 
 		$query->select("id AS value, title, description AS text");
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
@@ -226,7 +196,7 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

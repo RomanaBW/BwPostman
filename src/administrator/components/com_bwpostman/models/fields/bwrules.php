@@ -30,8 +30,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
-use \Joomla\CMS\Access\Rules;
-
+use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php');
 
@@ -82,12 +83,12 @@ class JFormFieldBwRules extends JFormFieldRules
 	 */
 	protected function getInput()
 	{
-		JHtml::_('bootstrap.tooltip');
+		HtmlHelper::_('bootstrap.tooltip');
 
 		// Add Javascript for permission change
 		if (version_compare(JVERSION, '3.999.999', 'le'))
 		{
-			JHtml::_('script', 'system/permissions.js', array('version' => 'auto', 'relative' => true));
+			HtmlHelper::_('script', 'system/permissions.js', array('version' => 'auto', 'relative' => true));
 		}
 		else
 		{
@@ -168,7 +169,7 @@ class JFormFieldBwRules extends JFormFieldRules
 				$parentAssetName .= '.' . $section;
 			}
 
-			$_db = JFactory::getDbo();
+			$_db = Factory::getDbo();
 			$query = $_db->getQuery(true);
 			$query->clear();
 
@@ -185,7 +186,7 @@ class JFormFieldBwRules extends JFormFieldRules
 		if (!$isGlobalConfig)
 		{
 			// In this case we need to get the section rules too.
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			$query = $db->getQuery(true)
 				->select($db->quoteName('parent_id'))
@@ -206,7 +207,7 @@ class JFormFieldBwRules extends JFormFieldRules
 		$groups = $this->getUserGroups();
 
 		// Ajax request data.
-		$ajaxUri = JRoute::_('index.php?option=com_bwpostman&task=storePermission&format=json&' . JSession::getFormToken() . '=1');
+		$ajaxUri = Route::_('index.php?option=com_bwpostman&task=storePermission&format=json&' . Session::getFormToken() . '=1');
 
 		// Prepare output
 		$html = array();
@@ -225,26 +226,17 @@ class JFormFieldBwRules extends JFormFieldRules
 
 			if ($section === 'component' || !$section)
 			{
-				$html[] = JText::_('JLIB_RULES_SETTING_NOTES');
+				$html[] = Text::_('JLIB_RULES_SETTING_NOTES');
 			}
 			else
 			{
-				$html[] = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
+				$html[] = Text::_('JLIB_RULES_SETTING_NOTES_ITEM');
 			}
 
 			$html[] = '</div>';
 		}
 		else
 		{
-			if ($section === 'component' || !$section)
-			{
-				$rulesText = JText::_('JLIB_RULES_SETTING_NOTES');
-			}
-			else
-			{
-				$rulesText = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
-			}
-
 			// Description
 			$html[] = '<details>';
 			$html[] = '	<summary class="rule-notes">';
@@ -263,10 +255,8 @@ class JFormFieldBwRules extends JFormFieldRules
 			$html[] = '	</div>';
 			$html[] = '</details>';
 
-			$html = $this->getTabsJ4($ajaxUri, $html, $groups, $actions, $newItem, $assetRules, $isGlobalConfig, $assetId,
-				$parentAssetId);
+			$html = $this->getTabsJ4($ajaxUri, $html, $groups, $actions, $newItem, $assetRules, $isGlobalConfig, $assetId);
 		}
-
 
 		return implode("\n", $html);
 	}
@@ -309,7 +299,7 @@ class JFormFieldBwRules extends JFormFieldRules
 
 			$html[] = '<li' . $active . '>';
 			$html[] = '<a href="#permission-' . $group->value . '" data-toggle="tab">';
-			$html[] = JLayoutHelper::render('joomla.html.treeprefix',
+			$html[] = LayoutHelper::render('joomla.html.treeprefix',
 					array('level' => $group->level + 1)) . $group->text;
 			$html[] = '</a>';
 			$html[] = '</li>';
@@ -331,15 +321,15 @@ class JFormFieldBwRules extends JFormFieldRules
 			$html[] = '<tr>';
 
 			$html[] = '<th class="actions" id="actions-th' . $group->value . '">';
-			$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_ACTION') . '</span>';
+			$html[] = '<span class="acl-action">' . Text::_('JLIB_RULES_ACTION') . '</span>';
 			$html[] = '</th>';
 
 			$html[] = '<th class="settings" id="settings-th' . $group->value . '">';
-			$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_SELECT_SETTING') . '</span>';
+			$html[] = '<span class="acl-action">' . Text::_('JLIB_RULES_SELECT_SETTING') . '</span>';
 			$html[] = '</th>';
 
 			$html[] = '<th id="aclactionth' . $group->value . '">';
-			$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_CALCULATED_SETTING') . '</span>';
+			$html[] = '<span class="acl-action">' . Text::_('JLIB_RULES_CALCULATED_SETTING') . '</span>';
 			$html[] = '</th>';
 
 			$html[] = '</tr>';
@@ -359,8 +349,8 @@ class JFormFieldBwRules extends JFormFieldRules
 				$html[] = '<tr>';
 				$html[] = '<td headers="actions-th' . $group->value . '">';
 				$html[] = '<label for="' . $this->id . '_' . $action->name . '_' . $group->value . '" class="hasTooltip" title="'
-					. JHtml::_('tooltipText', $action->title, $action->description) . '">';
-				$html[] = JText::_($action->title);
+					. HtmlHelper::_('tooltipText', $action->title, $action->description) . '">';
+				$html[] = Text::_($action->title);
 				$html[] = '</label>';
 				$html[] = '</td>';
 
@@ -370,7 +360,7 @@ class JFormFieldBwRules extends JFormFieldRules
 					. ' name="' . $this->name . '[' . $action->name . '][' . $group->value . ']"'
 					. ' id="' . $this->id . '_' . $action->name . '_' . $group->value . '"'
 					. ' title="' . strip_tags(
-						JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title),
+						Text::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', Text::_($action->title),
 							trim($group->text))
 					) . '">';
 
@@ -388,10 +378,10 @@ class JFormFieldBwRules extends JFormFieldRules
 
 				// The parent group has "Not Set", all children can rightly "Inherit" from that.
 				$html[] = '<option value="" ' . ($assetRule === null ? ' selected="selected"' : '') . '>'
-					. JText::_(empty($group->parent_id) && $isGlobalConfig ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
-				$html[] = '<option value="1" ' . ($assetRule === true ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_ALLOWED')
+					. Text::_(empty($group->parent_id) && $isGlobalConfig ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
+				$html[] = '<option value="1" ' . ($assetRule === true ? ' selected="selected"' : '') . '>' . Text::_('JLIB_RULES_ALLOWED')
 					. '</option>';
-				$html[] = '<option value="0" ' . ($assetRule === false ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_DENIED')
+				$html[] = '<option value="0" ' . ($assetRule === false ? ' selected="selected"' : '') . '>' . Text::_('JLIB_RULES_DENIED')
 					. '</option>';
 
 				$html[] = '</select>&#160; ';
@@ -415,7 +405,7 @@ class JFormFieldBwRules extends JFormFieldRules
 				if ($isSuperUserGroup)
 				{
 					$result['class'] = 'label label-success';
-					$result['text']  = '<span class="icon-lock icon-white"></span>' . JText::_('JLIB_RULES_ALLOWED_ADMIN');
+					$result['text']  = '<span class="icon-lock icon-white"></span>' . Text::_('JLIB_RULES_ALLOWED_ADMIN');
 				}
 				// Not super user.
 				else
@@ -426,13 +416,13 @@ class JFormFieldBwRules extends JFormFieldRules
 					if ($inheritedGroupRule === null || $inheritedGroupRule === false)
 					{
 						$result['class'] = 'label label-important';
-						$result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED_INHERITED');
+						$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED_INHERITED');
 					}
 					// If recursive calculated setting is "Allowed". Calculated permission is "Allowed (Inherited)".
 					else
 					{
 						$result['class'] = 'label label-success';
-						$result['text']  = JText::_('JLIB_RULES_ALLOWED_INHERITED');
+						$result['text']  = Text::_('JLIB_RULES_ALLOWED_INHERITED');
 					}
 
 					// Second part: Overwrite the calculated permissions labels if there is an explicit permission in the current group.
@@ -447,13 +437,13 @@ class JFormFieldBwRules extends JFormFieldRules
 					if ($assetRule === false)
 					{
 						$result['class'] = 'label label-important';
-						$result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED');
+						$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED');
 					}
 					// If there is an explicit permission is "Allowed". Calculated permission is "Allowed".
 					elseif ($assetRule === true)
 					{
 						$result['class'] = 'label label-success';
-						$result['text']  = JText::_('JLIB_RULES_ALLOWED');
+						$result['text']  = Text::_('JLIB_RULES_ALLOWED');
 					}
 
 					// Third part: Overwrite the calculated permissions labels for special cases.
@@ -463,7 +453,7 @@ class JFormFieldBwRules extends JFormFieldRules
 						|| $inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
 					{
 						$result['class'] = 'label label-important';
-						$result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED_DEFAULT');
+						$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED_DEFAULT');
 					}
 
 					/**
@@ -474,7 +464,7 @@ class JFormFieldBwRules extends JFormFieldRules
 					/*					elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
 										{
 											$result['class'] = 'label label-important';
-											$result['text']  = '<span class="icon-lock icon-white"></span>' . JText::_('JLIB_RULES_NOT_ALLOWED_LOCKED');
+											$result['text']  = '<span class="icon-lock icon-white"></span>' . Text::_('JLIB_RULES_NOT_ALLOWED_LOCKED');
 										}
 					*/
 				}
@@ -500,7 +490,6 @@ class JFormFieldBwRules extends JFormFieldRules
 	 * @param Rules     $assetRules
 	 * @param           $isGlobalConfig
 	 * @param           $assetId
-	 * @param           $parentAssetId
 	 *
 	 * @return array
 	 *
@@ -514,8 +503,7 @@ class JFormFieldBwRules extends JFormFieldRules
 		$newItem,
 		Rules $assetRules,
 		$isGlobalConfig,
-		$assetId,
-		$parentAssetId
+		$assetId
 	) {
 		$html[] = '<joomla-field-permissions class="row mb-2" data-uri="' . $ajaxUri . '">';
 		$html[] = '	<joomla-tab orientation="vertical" id="permissions-sliders">';
@@ -613,10 +601,6 @@ class JFormFieldBwRules extends JFormFieldRules
 									// Get the group, group parent id, and group global config recursive calculated permission for the chosen action.
 
 									$inheritedGroupRule = BwAccess::checkGroup((int) $group->value, $action->name, $assetId);
-									$inheritedGroupParentAssetRule = !empty($parentAssetId) ? BwAccess::checkGroup($group->value,
-										$action->name, $parentAssetId) : null;
-									$inheritedParentGroupRule = !empty($group->parent_id) ? BwAccess::checkGroup($group->parent_id,
-										$action->name, $assetId) : null;
 
 							// Current group is a Super User group, so calculated setting is "Allowed (Super User)".
 									if ($isSuperUserGroup)
@@ -708,7 +692,7 @@ class JFormFieldBwRules extends JFormFieldRules
 	 */
 	private function checkAssetId($assetId)
 	{
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));

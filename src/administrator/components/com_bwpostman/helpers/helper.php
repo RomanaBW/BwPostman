@@ -27,6 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Access\Access;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php';
 
 
@@ -38,15 +45,6 @@ require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/B
 abstract class BwPostmanHelper
 {
 	/**
-	 * property to hold session
-	 *
-	 * @var array
-	 *
-	 * @since
-	 */
-	private static $session = null;
-
-	/**
 	 * property to hold permissions array
 	 *
 	 * @var array
@@ -54,15 +52,6 @@ abstract class BwPostmanHelper
 	 * @since 2.0.0
 	 */
 	private static $permissions = null;
-
-	/**
-	 * property to hold the groups the user is member of
-	 *
-	 * @var array
-	 *
-	 * @since 2.0.0
-	 */
-	private static $userGroups = null;
 
 	/**
 	 * Configure the Link bar.
@@ -83,7 +72,7 @@ abstract class BwPostmanHelper
 		}
 
 		JHtmlSidebar::addEntry(
-			JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY'),
+			Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY'),
 			'index.php?option=com_bwpostman',
 			$vName == 'bwpostman'
 		);
@@ -91,7 +80,7 @@ abstract class BwPostmanHelper
 		if (self::$permissions['view']['newsletter'])
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
+				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
 				'index.php?option=com_bwpostman&view=newsletters',
 				$vName == 'newsletters'
 			);
@@ -100,7 +89,7 @@ abstract class BwPostmanHelper
 		if (self::$permissions['view']['subscriber'])
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
+				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
 				'index.php?option=com_bwpostman&view=subscribers',
 				$vName == 'subscribers'
 			);
@@ -109,7 +98,7 @@ abstract class BwPostmanHelper
 		if (self::$permissions['view']['campaign'])
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
+				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
 				'index.php?option=com_bwpostman&view=campaigns',
 				$vName == 'campaigns'
 			);
@@ -118,7 +107,7 @@ abstract class BwPostmanHelper
 		if (self::$permissions['view']['mailinglist'])
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
+				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
 				'index.php?option=com_bwpostman&view=mailinglists',
 				$vName == 'mailinglists'
 			);
@@ -127,7 +116,7 @@ abstract class BwPostmanHelper
 		if (self::$permissions['view']['template'])
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
+				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
 				'index.php?option=com_bwpostman&view=templates',
 				$vName == 'templates'
 			);
@@ -136,7 +125,7 @@ abstract class BwPostmanHelper
 		if (self::$permissions['view']['archive'])
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
+				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
 				'index.php?option=com_bwpostman&view=archive&layout=newsletters',
 				$vName == 'archive'
 			);
@@ -145,7 +134,7 @@ abstract class BwPostmanHelper
 		if (self::$permissions['view']['maintenance'])
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
+				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
 				'index.php?option=com_bwpostman&view=maintenance',
 				$vName == 'maintenance'
 			);
@@ -197,7 +186,7 @@ abstract class BwPostmanHelper
 	public static function replaceLinks(&$text)
 	{
 		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto|#)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
-		$text       = preg_replace($search_str, ' ${1}="' . JUri::root() . '${2}"', $text);
+		$text       = preg_replace($search_str, ' ${1}="' . Uri::root() . '${2}"', $text);
 
 		return true;
 	}
@@ -209,13 +198,12 @@ abstract class BwPostmanHelper
 	 *
 	 * @since   0.9.1
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	static public function getInstalledBwPostmanVersion()
 	{
-		$db       = JFactory::getDbo();
+		$db       = Factory::getDbo();
 		$query    = $db->getQuery(true);
-		$manifest = array();
 
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
@@ -228,7 +216,7 @@ abstract class BwPostmanHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 
@@ -467,7 +455,7 @@ abstract class BwPostmanHelper
 		$intval     = 1;
 		if ($date == 'minute')
 		{
-			$intval = JComponentHelper::getParams('Com_bwpostman')->get('autocam_minute_intval');
+			$intval = ComponentHelper::getParams('Com_bwpostman')->get('autocam_minute_intval');
 		}
 
 		switch ($date)
@@ -554,11 +542,11 @@ abstract class BwPostmanHelper
 			$assetName = 'com_bwpostman';
 		}
 
-		$com_actions = JAccess::getActionsFromFile($path, "/access/section[@name='component']/");
+		$com_actions = Access::getActionsFromFile($path, "/access/section[@name='component']/");
 
 		if ($section != '')
 		{
-			$sec_actions = JAccess::getActionsFromFile($path, "/access/section[@name='" . $section . "']/");
+			$sec_actions = Access::getActionsFromFile($path, "/access/section[@name='" . $section . "']/");
 			$actions     = array_merge($com_actions, $sec_actions);
 		}
 		else
@@ -585,7 +573,7 @@ abstract class BwPostmanHelper
 	 */
 	public static function setPermissionsState()
 	{
-		$app = \JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Debugging variable, normally set to false
 		$reload = true;
@@ -602,7 +590,7 @@ abstract class BwPostmanHelper
 			return;
 		}
 
-		$user 			= JFactory::getUser();
+		$user 			= Factory::getUser();
 		$permissions	= array();
 
 		// Set permissions for component
@@ -781,7 +769,7 @@ abstract class BwPostmanHelper
 			return true;
 		}
 
-		$user    = JFactory::getUser();
+		$user    = Factory::getUser();
 		$userId  = $user->get('id');
 
 		// If current user checked out, he may check in.
@@ -834,7 +822,7 @@ abstract class BwPostmanHelper
 		 */
 
 		// Initialise variables.
-		$user      = JFactory::getUser();
+		$user      = Factory::getUser();
 		$userId    = $user->get('id');
 		$recordId  = 0;
 		$createdBy = 0;
@@ -843,7 +831,7 @@ abstract class BwPostmanHelper
 		// Extract needed data
 		if (is_object($data))
 		{
-			$data = \Joomla\Utilities\ArrayHelper::fromObject($data);
+			$data = ArrayHelper::fromObject($data);
 		}
 
 		if (is_array($data))
@@ -1175,7 +1163,7 @@ abstract class BwPostmanHelper
 			return true;
 		}
 
-		JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_DELETE_RIGHTS_MISSING', $view), 'error');
+		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_DELETE_RIGHTS_MISSING', $view), 'error');
 
 		return false;
 	}
@@ -1225,7 +1213,7 @@ abstract class BwPostmanHelper
 			return true;
 		}
 
-		JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_RESTORE_RIGHTS_MISSING', $view), 'error');
+		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_RESTORE_RIGHTS_MISSING', $view), 'error');
 
 		return false;
 	}
@@ -1241,7 +1229,7 @@ abstract class BwPostmanHelper
 	 */
 	public static function getMailinglistsWarning()
 	{
-		$_db          = JFactory::getDbo();
+		$_db          = Factory::getDbo();
 		$query        = $_db->getQuery(true);
 		$ml_published = '';
 
@@ -1259,12 +1247,12 @@ abstract class BwPostmanHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if ($ml_published < 1)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_WARNING_NO_PUBLISHED_MAILINGLIST'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_WARNING_NO_PUBLISHED_MAILINGLIST'), 'warning');
 			return true;
 		}
 
@@ -1281,7 +1269,7 @@ abstract class BwPostmanHelper
 	 */
 	public static function checkQueueEntries()
 	{
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 
 		// Get queue entries, which cannot be sent because sending trials have reached limit
 		$query = $db->getQuery(true);
@@ -1430,7 +1418,7 @@ abstract class BwPostmanHelper
 		imagepng($im, $captchaDir . '/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
 		imagedestroy($im);
 		// Bild ausgeben
-//		readfile(JUri::base() . 'components/com_bwpostman/assets/capimgdir/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
+//		readfile(Uri::base() . 'components/com_bwpostman/assets/capimgdir/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
 		readfile($captchaDir . '/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
 	}
 
@@ -1553,18 +1541,18 @@ abstract class BwPostmanHelper
 		if ($client == 'site')
 		{
 			$lookup1 = JPATH_SITE;
-			$lookup2 = BWPOSTMAN_PATH_SITE;
+			$lookup2 = JPATH_SITE . 'component/com_bwpostman';
 		}
 		else
 		{
 			$client  = 'admin';
 			$lookup1 = JPATH_ADMINISTRATOR;
-			$lookup2 = BWPOSTMAN_PATH_ADMIN;
+			$lookup2 = JPATH_ADMINISTRATOR . 'component/com_bwpostman';
 		}
 
 		if (empty($loaded["{$client}/{$file}"]))
 		{
-			$lang    = JFactory::getLanguage();
+			$lang    = Factory::getLanguage();
 			$english = false;
 			if ($lang->getTag() != 'en-GB' && !JDEBUG && !$lang->getDebug())
 			{
@@ -1663,7 +1651,7 @@ abstract class BwPostmanHelper
 
 		if (!$creatorId)
 		{
-			$db	= JFactory::getDbo();
+			$db	= Factory::getDbo();
 			$query	= $db->getQuery(true);
 
 			$query->select($db->quoteName($createdPropertyName));
@@ -1756,7 +1744,7 @@ abstract class BwPostmanHelper
 			$itemsToCheck[] = $itemRecord['id'];
 		}
 
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1787,7 +1775,7 @@ abstract class BwPostmanHelper
 	private static function getSectionAssetNames($view)
 	{
 		$asset_records  = array();
-		$_db            = JFactory::getDbo();
+		$_db            = Factory::getDbo();
 
 		try
 		{
@@ -1944,7 +1932,7 @@ abstract class BwPostmanHelper
 		{
 			try
 			{
-				$_db	= JFactory::getDbo();
+				$_db	= Factory::getDbo();
 				$query	= $_db->getQuery(true);
 
 				$query->select($_db->quoteName($field));
@@ -1986,7 +1974,7 @@ abstract class BwPostmanHelper
 	 */
 	public static function authorise($action, $assetName = null, $recordId = 0)
 	{
-		$userId = JFactory::getUser()->id;
+		$userId = Factory::getUser()->id;
 
 		return BwAccess::check($userId, $action, $assetName, false, $recordId);
 	}
@@ -2004,12 +1992,6 @@ abstract class BwPostmanHelper
 	public static function getWhereMlsClause($mls)
 	{
 		$whereMlsClause = '';
-		$nbrMls = 0;
-
-		if (is_array($mls))
-		{
-			$nbrMls = count($mls);
-		}
 
 		if (is_array($mls) && !empty($mls))
 		{
@@ -2031,12 +2013,6 @@ abstract class BwPostmanHelper
 	public static function getWhereCamsClause($cams)
 	{
 		$whereCamsClause = '';
-		$nbrCams = 0;
-
-		if (is_array($cams))
-		{
-			$nbrCams = count($cams);
-		}
 
 		if (is_array($cams) && !empty($cams))
 		{

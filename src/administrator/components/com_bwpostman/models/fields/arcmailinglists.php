@@ -27,6 +27,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -57,7 +60,7 @@ class JFormFieldArcMailinglists extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		// Get # of all published mailinglists
@@ -78,12 +81,12 @@ class JFormFieldArcMailinglists extends JFormFieldList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$parent = new stdClass;
 		$parent->value = '';
-		$parent->text = JText::_('COM_BWPOSTMAN_ARC_FILTER_MAILINGLISTS');
+		$parent->text = Text::_('COM_BWPOSTMAN_ARC_FILTER_MAILINGLISTS');
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

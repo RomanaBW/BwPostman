@@ -27,7 +27,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Multilanguage;
+
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 // Needed for Joomla 3!!
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
@@ -62,7 +72,7 @@ class contentRenderer
 		$itemid = 0;
 		try
 		{
-			$_db   = JFactory::getDbo();
+			$_db   = Factory::getDbo();
 			$query = $_db->getQuery(true);
 
 			$query->select($_db->quoteName('id'));
@@ -90,7 +100,7 @@ class contentRenderer
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $itemid;
@@ -111,10 +121,10 @@ class contentRenderer
 	 */
 	public function getContent($nl_content, $template_id, $text_template_id)
 	{
-		JPluginHelper::importPlugin('bwpostman');
-		$app = JFactory::getApplication();
+		PluginHelper::importPlugin('bwpostman');
+		$app = Factory::getApplication();
 
-		$param = JComponentHelper::getParams('com_bwpostman');
+		$param = ComponentHelper::getParams('com_bwpostman');
 		$content = array();
 
 		$tpl      = self::getTemplate($template_id);
@@ -137,7 +147,7 @@ class contentRenderer
 		if ($template_id < 1)
 		{
 			$content['html_version'] = '<div class="outer"><div class="header"><img class="logo" src="' .
-				JRoute::_(JUri::root() . $param->get('logo')) .
+				Route::_(Uri::root() . $param->get('logo')) .
 				'" alt="" /></div><div class="content-outer"><div class="content"><div class="content-inner"><p class="nl-intro">&nbsp;</p>';
 		}
 		else
@@ -215,8 +225,8 @@ class contentRenderer
 	public function retrieveContent($id)
 	{
 		$row   = new stdClass();
-		$app   = JFactory::getApplication();
-		$_db   = JFactory::getDbo();
+		$app   = Factory::getApplication();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('a') . '.*');
@@ -316,7 +326,7 @@ class contentRenderer
 	 */
 	public function replaceContentHtml($id, $tpl)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -341,7 +351,7 @@ class contentRenderer
 					$tag_article_end = $tpl->tpl_tags_article_advanced_e;
 				}
 
-				$content = $tag_article_begin . JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT') . $tag_article_end;
+				$content = $tag_article_begin . Text::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT') . $tag_article_end;
 
 				return stripslashes($content);
 			}
@@ -353,7 +363,7 @@ class contentRenderer
 				$params  = $row->params;
 				$lang    = self::getArticleLanguage($row->id);
 				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = JRoute::_(JUri::base());
+				$link    = Route::_(Uri::base());
 				if ($_Itemid)
 				{
 					$link .= $_Itemid;
@@ -410,14 +420,14 @@ class contentRenderer
 					$link       = str_replace('administrator/', '', $link);
 
 					// Trigger Plugin "substitutelinks"
-					if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+					if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 					{
-						JPluginHelper::importPlugin('bwpostman');
-						JFactory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+						PluginHelper::importPlugin('bwpostman');
+						Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 					}
 
 					$tag_readon = str_replace('[%readon_href%]', $link, $tag_readon);
-					$content    .= str_replace('[%readon_text%]', JText::_('READ_MORE'), $tag_readon);
+					$content    .= str_replace('[%readon_text%]', Text::_('READ_MORE'), $tag_readon);
 				}
 
 				// Set special article html if defined at the template
@@ -433,7 +443,7 @@ class contentRenderer
 			}
 		}
 
-		return JText::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
+		return Text::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
 	}
 
 	/**
@@ -450,7 +460,7 @@ class contentRenderer
 	 */
 	public function replaceContentHtmlNew($id, $tpl)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -470,8 +480,8 @@ class contentRenderer
 				$content = preg_replace("/<table id=\"readon\".*?<\/table>/is", "", $content);
 				$content = isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
 					str_replace('[%content_title%]', '', $content) :
-					str_replace('[%content_title%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_TITLE'), $content);
-				$content = str_replace('[%content_text%]', JText::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT'), $content);
+					str_replace('[%content_title%]', Text::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_TITLE'), $content);
+				$content = str_replace('[%content_text%]', Text::_('COM_BWPOSTMAN_TPL_PLACEHOLDER_CONTENT'), $content);
 
 				return stripslashes($content);
 			}
@@ -482,7 +492,7 @@ class contentRenderer
 			{
 				$lang    = self::getArticleLanguage($row->id);
 				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = JRoute::_(JUri::base());
+				$link    = Route::_(Uri::base());
 				if ($_Itemid)
 				{
 					$link .= $_Itemid;
@@ -492,7 +502,7 @@ class contentRenderer
 
 				if (intval($row->created) != 0)
 				{
-					$create_date = JHtml::_('date', $row->created);
+					$create_date = HtmlHelper::_('date', $row->created);
 				}
 
 				$link = str_replace('administrator/', '', $link);
@@ -508,14 +518,14 @@ class contentRenderer
 					if ($tpl->article['show_createdate'] == 1)
 					{
 						$content_text .= '<span class="createdate"><small>';
-						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
+						$content_text .= Text::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
 						$content_text .= '&nbsp;&nbsp;&nbsp;&nbsp;</small></span>';
 					}
 
 					if ($tpl->article['show_author'] == 1)
 					{
 						$content_text .= '<span class="created_by"><small>';
-						$content_text .= JText::sprintf(
+						$content_text .= Text::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
 							($row->created_by_alias ? $row->created_by_alias : $row->author)
 						);
@@ -529,20 +539,20 @@ class contentRenderer
 				$content      = str_replace('[%content_text%]', $content_text, $content);
 
 				// Trigger Plugin "substitutelinks"
-				if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+				if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 				{
-					JPluginHelper::importPlugin('bwpostman');
-					JFactory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+					PluginHelper::importPlugin('bwpostman');
+					Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 				}
 
 				$content = str_replace('[%readon_href%]', $link, $content);
-				$content = str_replace('[%readon_text%]', JText::_('READ_MORE'), $content);
+				$content = str_replace('[%readon_text%]', Text::_('READ_MORE'), $content);
 
 				return stripslashes($content);
 			}
 		}
 
-		return JText::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
+		return Text::sprintf('COM_BWPOSTMAN_NL_ERROR_RETRIEVING_CONTENT', $id);
 	}
 
 	/**
@@ -567,22 +577,11 @@ class contentRenderer
 
 			if ($row)
 			{
-				$lang    = self::getArticleLanguage($row->id);
-				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = JRoute::_(JUri::base());
-				if ($_Itemid)
-				{
-					$link .= $_Itemid;
-				}
-
-				$intro_text = $row->text;
-				$intro_text = strip_tags($intro_text);
-
-				$intro_text = $this->unHTMLSpecialCharsAll($intro_text);
+				list($link, $intro_text) = $this->getIntroText($row);
 
 				if (intval($row->created) != 0)
 				{
-					$create_date = JHtml::_('date', $row->created);
+					$create_date = HtmlHelper::_('date', $row->created);
 				}
 
 				$link = str_replace('administrator/', '', $link);
@@ -592,37 +591,24 @@ class contentRenderer
 					str_replace('[%content_title%]', '', $content) :
 					str_replace('[%content_title%]', $row->title, $content);
 				$content_text = "\n";
+
 				if (($text_tpl->article['show_createdate'] == 1) || ($text_tpl->article['show_author'] == 1))
 				{
-					if ($text_tpl->article['show_createdate'] == 1)
-					{
-						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
-						$content_text .= '    ';
-					}
-
-					if ($text_tpl->article['show_author'] == 1)
-					{
-						$content_text .= JText::sprintf(
-							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->author)
-						);
-					}
-
-					$content_text .= "\n\n";
+					$content_text = $this->getAuthorAndDate($text_tpl, $create_date, $content_text, $row);
 				}
 
 				$content_text .= $intro_text;
 				$content      = str_replace('[%content_text%]', $content_text . "\n", $content);
 
 				// Trigger Plugin "substitutelinks"
-				if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+				if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 				{
-					JPluginHelper::importPlugin('bwpostman');
-					JFactory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+					PluginHelper::importPlugin('bwpostman');
+					Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 				}
 
 				$content = str_replace('[%readon_href%]', $link . "\n", $content);
-				$content = str_replace('[%readon_text%]', JText::_('READ_MORE'), $content);
+				$content = str_replace('[%readon_text%]', Text::_('READ_MORE'), $content);
 
 				return stripslashes($content);
 			}
@@ -645,7 +631,7 @@ class contentRenderer
 	 */
 	public function replaceContentText($id, $text_tpl)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -657,44 +643,20 @@ class contentRenderer
 
 			if ($row)
 			{
-				$lang    = self::getArticleLanguage($row->id);
-				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = JRoute::_(JUri::base());
-				if ($_Itemid)
-				{
-					$link .= $_Itemid;
-				}
-
-				$intro_text = $row->text;
-				$intro_text = strip_tags($intro_text);
-
-				$intro_text = $this->unHTMLSpecialCharsAll($intro_text);
+				list($link, $intro_text) = $this->getIntroText($row);
 
 				if (intval($row->created) != 0)
 				{
-					$create_date = JHtml::_('date', $row->created);
+					$create_date = HtmlHelper::_('date', $row->created);
 				}
 
 				$content = isset($text_tpl->article['show_title']) && $text_tpl->article['show_title'] == 0 ? "\n" : "\n" . $row->title;
 
 				$content_text = "";
+
 				if (($text_tpl->article['show_createdate'] == 1) || ($text_tpl->article['show_author'] == 1))
 				{
-					if ($text_tpl->article['show_createdate'] == 1)
-					{
-						$content_text .= JText::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
-						$content_text .= '    ';
-					}
-
-					if ($text_tpl->article['show_author'] == 1)
-					{
-						$content_text .= JText::sprintf(
-							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->author)
-						);
-					}
-
-					$content_text .= "\n\n";
+					$content_text = $this->getAuthorAndDate($text_tpl, $create_date, $content_text, $row);
 				}
 
 				$intro_text = $content_text . $intro_text;
@@ -703,13 +665,13 @@ class contentRenderer
 				if ($text_tpl->article['show_readon'] == 1)
 				{
 					// Trigger Plugin "substitutelinks"
-					if (JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+					if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 					{
-						JPluginHelper::importPlugin('bwpostman');
-						JFactory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+						PluginHelper::importPlugin('bwpostman');
+						Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 					}
 
-					$content .= JText::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
+					$content .= Text::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
 				}
 
 				return stripslashes($content);
@@ -734,10 +696,10 @@ class contentRenderer
 	 */
 	private function getArticleLanguage($id)
 	{
-		if (JLanguageMultilang::isEnabled())
+		if (Multilanguage::isEnabled())
 		{
 			$result = '';
-			$_db	= JFactory::getDbo();
+			$_db	= Factory::getDbo();
 			$query	= $_db->getQuery(true);
 
 			$query->select($_db->quoteName('language'));
@@ -751,7 +713,7 @@ class contentRenderer
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			return $result;
@@ -778,14 +740,14 @@ class contentRenderer
 	public function getTemplate($template_id)
 	{
 		$tpl    = new stdClass();
-		$params = JComponentHelper::getParams('com_bwpostman');
+		$params = ComponentHelper::getParams('com_bwpostman');
 
 		if (is_null($template_id))
 		{
 			$template_id = '1';
 		}
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 		$query->select($_db->quoteName('id'));
 		$query->select($_db->quoteName('tpl_html'));
@@ -806,7 +768,7 @@ class contentRenderer
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if (is_string($tpl->basics))
@@ -858,7 +820,7 @@ class contentRenderer
 	{
 		$tpl_assets = array();
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 		$query->select('*');
 		$query->from($_db->quoteName('#__bwpostman_templates_tags'));
@@ -870,7 +832,7 @@ class contentRenderer
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $tpl_assets;
@@ -889,24 +851,24 @@ class contentRenderer
 	 */
 	public function replaceTplLinks(&$text)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$params 			= ComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
 
 		// replace edit and unsubscribe link
 		if ($del_sub_1_click === '0')
 		{
-			$replace1	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+			$replace1	= '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
 		}
 		else
 		{
-			$replace1	= '<a href="[UNSUBSCRIBE_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+			$replace1	= '<a href="[UNSUBSCRIBE_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
 		}
 		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '<a href="[EDIT_HREF]">' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
+		$replace2	= '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
 		$text		= str_replace('[%edit_link%]', $replace2, $text);
 
 		return true;
@@ -928,7 +890,7 @@ class contentRenderer
 	 */
 	public function addHtmlTags(&$text, &$id)
 	{
-		$params = JComponentHelper::getParams('com_bwpostman');
+		$params = ComponentHelper::getParams('com_bwpostman');
 		$tpl    = self::getTemplate($id);
 
 		// add template assets only for user-made templates
@@ -950,13 +912,13 @@ class contentRenderer
 		// only for old newsletters with template_id < 1
 		if ($id < 1 && $params->get('use_css_for_html_newsletter') == 1)
 		{
-			$params	= JComponentHelper::getParams('com_bwpostman');
+			$params	= ComponentHelper::getParams('com_bwpostman');
 			$css	= $params->get('css_for_html_newsletter');
 			$newtext .= '   ' . $css . "\n";
 		}
 
-		JPluginHelper::importPlugin('bwpostman');
-		JFactory::getApplication()->triggerEvent('onBwPostmanBeforeCustomCss', array(&$newtext));
+		PluginHelper::importPlugin('bwpostman');
+		Factory::getApplication()->triggerEvent('onBwPostmanBeforeCustomCss', array(&$newtext));
 
 		if (isset($tpl->basics['custom_css']))
 		{
@@ -1022,19 +984,19 @@ class contentRenderer
 	 */
 	public function addHTMLFooter(&$text, &$templateId)
 	{
-		$app = JFactory::getApplication();
-		$lang = JFactory::getLanguage();
+		$app = Factory::getApplication();
+		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$uri  				= JUri::getInstance();
-		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$uri  				= Uri::getInstance();
+		$params 			= ComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= JText::_($params->get('legal_information_text'));
+		$impressum			= Text::_($params->get('legal_information_text'));
 		$impressum			= nl2br($impressum, true);
 		$sitelink           = $uri->root();
 
-		JPluginHelper::importPlugin('bwpostman');
+		PluginHelper::importPlugin('bwpostman');
 		$app->triggerEvent('onBwPostmanBeforeObligatoryFooterHtml', array(&$text));
 
 		// get template assets if exists
@@ -1048,17 +1010,17 @@ class contentRenderer
 			// Trigger Plugin "substitutelinks"
 			if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 			{
-				JPluginHelper::importPlugin('bwpostman');
+				PluginHelper::importPlugin('bwpostman');
 				$app->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
 			}
 
 			if ($del_sub_1_click === '0')
 			{
-				$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . "<br /><br />" . $impressum;
+				$replace = "<br /><br />" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . "<br /><br />" . $impressum;
 			}
 			else
 			{
-				$replace = "<br /><br />" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . "<br /><br />" . $impressum;
+				$replace = "<br /><br />" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . "<br /><br />" . $impressum;
 			}
 
 			$replace3  = isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
@@ -1077,11 +1039,11 @@ class contentRenderer
 		{
 			if ($del_sub_1_click === '0')
 			{
-				$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . $impressum;
+				$replace = Text::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', $sitelink) . $impressum;
 			}
 			else
 			{
-				$replace = JText::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . $impressum;
+				$replace = Text::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . $impressum;
 			}
 			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
 		}
@@ -1106,14 +1068,14 @@ class contentRenderer
 	 */
 	public function replaceTextTplLinks(&$text)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$uri  				= JUri::getInstance();
+		$uri  				= Uri::getInstance();
 		$itemid_edit		= $this->getItemid('edit');
 		$itemid_unsubscribe	= $this->getItemid('register');
-		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$params 			= ComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
 
 		if ($del_sub_1_click === '0')
@@ -1131,16 +1093,16 @@ class contentRenderer
 		$sitelink			= '';
 
 		// Trigger Plugin "substitutelinks"
-		if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+		if(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 		{
-			JPluginHelper::importPlugin('bwpostman');
-			JFactory::getApplication()->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+			PluginHelper::importPlugin('bwpostman');
+			Factory::getApplication()->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
 		}
 
 		// replace edit and unsubscribe link
-		$replace1	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $unsubscribelink;
+		$replace1	= '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $unsubscribelink;
 		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '+ ' . JText::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $editlink;
+		$replace2	= '+ ' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $editlink;
 		$text		= str_replace('[%edit_link%]', $replace2, $text);
 
 		return true;
@@ -1162,30 +1124,30 @@ class contentRenderer
 	 */
 	public function addTextFooter(&$text, &$id)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$uri  				= JUri::getInstance();
+		$uri  				= Uri::getInstance();
 		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');
-		$params 			= JComponentHelper::getParams('com_bwpostman');
+		$params 			= ComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= "\n\n" . JText::_($params->get('legal_information_text')) . "\n\n";
+		$impressum			= "\n\n" . Text::_($params->get('legal_information_text')) . "\n\n";
 
 		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
 			'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
 		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
 		$sitelink			= $uri->root();
 
-		JPluginHelper::importPlugin('bwpostman');
-		JFactory::getApplication()->triggerEvent('onBwPostmanBeforeObligatoryFooterText', array(&$text));
+		PluginHelper::importPlugin('bwpostman');
+		Factory::getApplication()->triggerEvent('onBwPostmanBeforeObligatoryFooterText', array(&$text));
 
 		// Trigger Plugin "substitutelinks"
-		if(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+		if(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 		{
-			JPluginHelper::importPlugin('bwpostman');
-			JFactory::getApplication()->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+			PluginHelper::importPlugin('bwpostman');
+			Factory::getApplication()->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
 		}
 
 		if (strpos($text, '[%impressum%]') !== false)
@@ -1193,11 +1155,11 @@ class contentRenderer
 			// replace [%impressum%]
 			if ($del_sub_1_click === '0')
 			{
-				$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
+				$replace	= "\n\n" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			}
 			else
 			{
-				$replace	= "\n\n" . JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
+				$replace	= "\n\n" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
 			}
 			$text		= str_replace('[%impressum%]', $replace, $text);
 		}
@@ -1207,13 +1169,13 @@ class contentRenderer
 		{
 			if ($del_sub_1_click === '0')
 			{
-				$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
-					JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
+				$replace	= Text::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
+					Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			}
 			else
 			{
-				$replace	= JText::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
-					JText::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
+				$replace	= Text::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
+					Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
 			}
 			$text		= str_replace("[dummy]", $replace, $text);
 		}
@@ -1509,5 +1471,63 @@ class contentRenderer
 		);
 
 		return $text = preg_replace($search, $replace, $text);
+	}
+
+	/**
+ * @param stdClass $row
+ *
+ * @return array
+ *
+ * @throws Exception
+ *
+ * @since 2.4.0
+ */
+	private function getIntroText(stdClass $row)
+	{
+		$lang    = self::getArticleLanguage($row->id);
+		$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
+		$link    = Route::_(Uri::base());
+		if ($_Itemid)
+		{
+			$link .= $_Itemid;
+		}
+
+		$intro_text = $row->text;
+		$intro_text = strip_tags($intro_text);
+
+		$intro_text = $this->unHTMLSpecialCharsAll($intro_text);
+
+		return array($link, $intro_text);
+	}
+
+	/**
+	 * @param          $text_tpl
+	 * @param          $create_date
+	 * @param          $content_text
+	 * @param stdClass $row
+	 *
+	 * @return string
+	 *
+	 * @since 2.4.0
+	 */
+	private function getAuthorAndDate($text_tpl, $create_date, $content_text, stdClass $row)
+	{
+		if ($text_tpl->article['show_createdate'] == 1)
+		{
+			$content_text .= Text::sprintf('COM_CONTENT_CREATED_DATE_ON', $create_date);
+			$content_text .= '    ';
+		}
+
+		if ($text_tpl->article['show_author'] == 1)
+		{
+			$content_text .= Text::sprintf(
+				'COM_CONTENT_WRITTEN_BY',
+				($row->created_by_alias ? $row->created_by_alias : $row->author)
+			);
+		}
+
+		$content_text .= "\n\n";
+
+		return $content_text;
 	}
 }

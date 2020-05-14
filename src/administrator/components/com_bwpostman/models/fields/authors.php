@@ -27,6 +27,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -57,7 +60,7 @@ class JFormFieldAuthors extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
 
@@ -80,12 +83,12 @@ class JFormFieldAuthors extends JFormFieldList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$parent = new stdClass;
 		$parent->value	= '';
-		$parent->text	= '- ' . JText::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') . ' -';
+		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') . ' -';
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

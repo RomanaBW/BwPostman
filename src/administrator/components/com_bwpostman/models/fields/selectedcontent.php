@@ -26,6 +26,10 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -55,7 +59,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 */
 	public function getLabel()
 	{
-		$return = '<label for="' . $this->id . '" class="selected_content_label">' . JText::_($this->element['label']) . '</label>';
+		$return = '<label for="' . $this->id . '" class="selected_content_label">' . Text::_($this->element['label']) . '</label>';
 		return $return;
 	}
 
@@ -94,7 +98,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$options	= (array) $this->getOptions();
 
 		// Create a regular list.
-		$html[] = JHtml::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', '', $this->id);
+		$html[] = HTMLHelper::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', '', $this->id);
 
 		return implode($html);
 	}
@@ -114,7 +118,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$user_id		= null;
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query_user	= $_db->getQuery(true);
 
 		// get user_ids if exists
@@ -129,7 +133,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$options = $this->getSelectedContent();
@@ -151,8 +155,8 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 */
 	private function getSelectedContent()
 	{
-		$app				= JFactory::getApplication();
-		$_db				= JFactory::getDbo();
+		$app				= Factory::getApplication();
+		$_db				= Factory::getDbo();
 		$options			= array();
 		$selected_content	= '';
 
@@ -193,7 +197,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 				}
 				catch (RuntimeException $e)
 				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 			}
 		}

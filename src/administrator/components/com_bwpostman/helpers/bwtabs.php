@@ -26,6 +26,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 /**
  * Utility class for Tabs elements.
  *
@@ -96,7 +99,7 @@ class JHtmlBwTabs
 		if (!array_key_exists((string) $group, $loaded))
 		{
 			// Include MooTools framework
-			JHtml::_('behavior.framework', true);
+			HtmlHelper::_('behavior.framework', true);
 
 			$options = '{';
 				$opt['onActive'] = (isset($params['onActive'])) ? $params['onActive'] : null;
@@ -127,7 +130,7 @@ class JHtmlBwTabs
 						});
 					});';
 
-			$document = JFactory::getDocument();
+			$document = Factory::getDocument();
 			$document->addScriptDeclaration($js);
 			JHtml::_('script', 'system/tabs.js', array('version' => 'auto', 'relative' => true));
 

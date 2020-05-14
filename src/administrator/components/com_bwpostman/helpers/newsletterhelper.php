@@ -26,6 +26,8 @@
 
 defined ('_JEXEC') or die ();
 
+use Joomla\CMS\Factory;
+
 /**
  * Class BwPostmanNewsletterHelper
  *
@@ -39,7 +41,7 @@ abstract class BwPostmanNewsletterHelper {
 	 *
 	 * @return 	integer
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
@@ -47,7 +49,7 @@ abstract class BwPostmanNewsletterHelper {
 	{
 		$campaignId = -1;
 
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('campaign_id'));
@@ -62,7 +64,7 @@ abstract class BwPostmanNewsletterHelper {
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return (int)$campaignId;

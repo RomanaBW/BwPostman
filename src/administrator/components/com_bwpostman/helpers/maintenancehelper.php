@@ -29,6 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Archive\Archive;
 
 /**
  * Class BwPostmanMaintenanceHelper
@@ -45,7 +49,7 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @return   string    $compressedFile
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
@@ -53,7 +57,7 @@ abstract class BwPostmanMaintenanceHelper
 	{
 		jimport('joomla.filesystem.file');
 
-		$params = JComponentHelper::getParams('com_bwpostman');
+		$params = ComponentHelper::getParams('com_bwpostman');
 
 		$compressMethod = $params->get('compress_method', 'zip');
 		$compressedFile = $fileName . '.' . $compressMethod;
@@ -93,7 +97,7 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @return   boolean  success or not
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
@@ -108,11 +112,11 @@ abstract class BwPostmanMaintenanceHelper
 		);
 
 		// Run the packager
-		$archive = new Joomla\Archive\Archive();
+		$archive = new Archive();
 
 		if (!$packager = $archive->getAdapter('zip'))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
 
 			return false;
 		}
@@ -120,7 +124,7 @@ abstract class BwPostmanMaintenanceHelper
 
 		if (!$packResult)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_ZIP_CREATE'));
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_ZIP_CREATE'));
 
 			return false;
 		}
@@ -136,7 +140,7 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @return   string    $decompressedFile
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
@@ -145,14 +149,14 @@ abstract class BwPostmanMaintenanceHelper
 		jimport('joomla.filesystem.file');
 		jimport('joomla.archive.archive');
 
-		$destPath	= JFactory::getConfig()->get('tmp_path') . "/bwpm_unzipped";
+		$destPath	= Factory::getConfig()->get('tmp_path') . "/bwpm_unzipped";
 
 		// Run the packager
-		$archive = new Joomla\Archive\Archive;
+		$archive = new Archive;
 
 		if (!$packager = $archive->getAdapter('zip'))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
 
 			return false;
 		}
@@ -160,7 +164,7 @@ abstract class BwPostmanMaintenanceHelper
 
 		if (!$packResult)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_ZIP_EXTRACT'));
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_ZIP_EXTRACT'));
 
 			return $srcFileName;
 		}

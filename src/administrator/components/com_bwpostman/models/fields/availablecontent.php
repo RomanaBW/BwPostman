@@ -26,6 +26,11 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use \Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -55,7 +60,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 */
 	public function getLabel()
 	{
-		$return = '<label for="' . $this->id . '" class="available_content_label">' . JText::_($this->element['label']) . '</label>';
+		$return = '<label for="' . $this->id . '" class="available_content_label">' . Text::_($this->element['label']) . '</label>';
 		return $return;
 	}
 
@@ -124,7 +129,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$user_id		= null;
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query_user	= $_db->getQuery(true);
 
 		// get user_ids if exists
@@ -154,14 +159,14 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 */
 	private function getAvailableContent()
 	{
-		$app				= JFactory::getApplication();
-		$_db				= JFactory::getDbo();
+		$app				= Factory::getApplication();
+		$_db				= Factory::getDbo();
 		$query				= $_db->getQuery(true);
 		$options			= array();
 		$selected_content	= '';
 		$categories         = array();
 		$rows_list_uncat    = array();
-		$params = JComponentHelper::getParams('com_bwpostman');
+		$params = ComponentHelper::getParams('com_bwpostman');
 		$exc_cats = $params->get('excluded_categories');
 
 		if ($app->getUserState('com_bwpostman.edit.newsletter.data')) {
@@ -199,7 +204,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$rows_list = array();
@@ -238,7 +243,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if(count($rows_list) > 0)
@@ -251,7 +256,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query	= $_db->getQuery(true);
 		$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
 		$query->select(
-			'CONCAT("' . JText::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT_UNCATEGORIZED') . ' = ",'
+			'CONCAT("' . Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT_UNCATEGORIZED') . ' = ",'
 			. $_db->quoteName('title') . ') AS ' . $_db->quoteName('text')
 		);
 		$query->from($_db->quoteName('#__content'));
@@ -274,7 +279,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if(count($rows_list_uncat) > 0)

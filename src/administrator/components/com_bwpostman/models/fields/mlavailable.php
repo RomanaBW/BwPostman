@@ -26,7 +26,10 @@
 
 defined('JPATH_BASE') or die;
 
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Access\Access;
 
 JFormHelper::loadFieldClass('radio');
 
@@ -57,7 +60,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	 */
 	public function getLabel()
 	{
-		$return = JText::_($this->element['label']);
+		$return = Text::_($this->element['label']);
 		return $return;
 	}
 
@@ -72,8 +75,8 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	 */
 	public function getInput()
 	{
-		$app		= JFactory::getApplication();
-		$_db		= JFactory::getDbo();
+		$app		= Factory::getApplication();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 		$ml_select	= array();
 		$selected	= '';
@@ -109,7 +112,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		if (!is_array($value))
 		{
 			// Convert the selections field to an array.
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($value);
 		}
 
@@ -136,7 +139,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -152,7 +155,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -187,7 +190,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	 */
 	public function getOptions()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Initialize variables.
 		$user_id		= null;
@@ -196,7 +199,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 		$query_user	= $_db->getQuery(true);
 
@@ -215,14 +218,14 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
 		// get authorized viewlevels
 		if ($user_id)
 		{
-			$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
+			$accesslevels	= Access::getAuthorisedViewLevels($user_id);
 		}
 
 		$query->select("id AS value, title, description AS text");
@@ -248,7 +251,7 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

@@ -27,7 +27,7 @@
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\Registry\Registry;
 
 $data = $displayData;
 $layout	= $data['tab'];
@@ -37,7 +37,7 @@ $data['options'] = !empty($data['options']) ? $data['options'] : array();
 
 if (is_array($data['options']))
 {
-	$data['options'] = new JRegistry($data['options']);
+	$data['options'] = new Registry($data['options']);
 }
 
 // Options

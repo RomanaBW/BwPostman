@@ -29,6 +29,7 @@ defined('JPATH_BASE') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 
 $data = $displayData;
 $layout	= $data['tab'];
@@ -46,7 +47,9 @@ $selectorFieldName = $data['options']['selectorFieldName'] ?? 'client_id';
 if (isset($data['view']->filterForm) && !empty($data['view']->filterForm))
 {
 	// Checks if a selector (e.g. client_id) exists.
-	if ($selectorField = $data['view']->filterForm->getField($selectorFieldName))
+	$selectorField = $data['view']->filterForm->getField($selectorFieldName);
+
+	if ($selectorField)
 	{
 		$showSelector = $selectorField->getAttribute('filtermode', '') === 'selector' ? true : $showSelector;
 
@@ -114,7 +117,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 <div class="js-stools" role="search">
 	<?php if ($data['options']['showSelector']) : ?>
 	<div class="js-stools-container-selector">
-		<?php echo JLayoutHelper::render('tabbed.selector', $data, $basePath = JPATH_COMPONENT_ADMINISTRATOR .'/layouts/searchtools'); ?>
+		<?php echo LayoutHelper::render('tabbed.selector', $data, $basePath = JPATH_COMPONENT_ADMINISTRATOR .'/layouts/searchtools'); ?>
 	</div>
 	<?php endif; ?>
 	<div class="js-stools-container-bar">
@@ -123,10 +126,10 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 	<!-- Filters div -->
 	<div class="js-stools-container-filters clearfix<?php echo $filtersActiveClass; ?>">
 		<?php echo $this->sublayout('list', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools/tabbed'); ?>
-		<?php //echo JLayoutHelper::render('tabbed.list', $data, $basePath = JPATH_COMPONENT_ADMINISTRATOR .'/layouts/searchtools'); ?>
+		<?php //echo LayoutHelper::render('tabbed.list', $data, $basePath = JPATH_COMPONENT_ADMINISTRATOR .'/layouts/searchtools'); ?>
 		<?php if ($data['options']['filterButton']) : ?>
 		<?php echo $this->sublayout('filters', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools/tabbed'); ?>
-		<?php //echo JLayoutHelper::render('tabbed.filters', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools'); ?>
+		<?php //echo LayoutHelper::render('tabbed.filters', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools'); ?>
 	<?php endif; ?>
 	</div>
 </div>

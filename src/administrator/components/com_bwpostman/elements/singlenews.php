@@ -28,6 +28,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 
@@ -61,17 +63,17 @@ class JFormFieldsinglenews extends JFormField
 	 */
 	protected function getinput()
 	{
-		$doc 		= JFactory::getDocument();
+		$doc 		= Factory::getDocument();
 		$fieldName	= $this->name;
 
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
+		Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
 
-		$newsletter = JTable::getInstance('newsletters', 'BwPostmanTable');
+		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
 		if ($this->value) {
 			$newsletter->load($this->value);
 		}
 		else {
-			$newsletter->subject = JText::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');
+			$newsletter->subject = Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');
 		}
 
 		// The active newsletter id field.
@@ -84,12 +86,10 @@ class JFormFieldsinglenews extends JFormField
 			$value = '';
 		}
 
-		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component';
-
 		if (version_compare(JVERSION, '3.999.999', 'le'))
 		{
 			$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component';
-			JHtml::_('behavior.modal', 'a.modal');
+			HTMLHelper::_('behavior.modal', 'a.modal');
 
 			$js = "
 				function SelectNewsletter(id, subject) {
@@ -108,7 +108,7 @@ class JFormFieldsinglenews extends JFormField
 
 			$html  = '<span class="input-append">';
 			$html .= '<input type="text" class="input-medium" id="a_name" value="' . $newsletter->subject . '" disabled="disabled" size="35" />';
-			$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_NEWSLETTER') . '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}, iframeOptions: {id: \'nlsFrame\'}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+			$html .= '<a class="modal btn hasTooltip" title="' . HTMLHelper::tooltipText('COM_BWPOSTMAN_SELECT_NEWSLETTER') . '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}, iframeOptions: {id: \'nlsFrame\'}}"><i class="icon-file"></i> ' . Text::_('JSELECT') . '</a>';
 			$html .= "\n<input type=\"hidden\" id=\"a_id\" $class name=\"$fieldName\" value=\"$value\" />";
 		}
 		else

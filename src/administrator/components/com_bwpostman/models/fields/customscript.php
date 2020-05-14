@@ -27,6 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Renders a custom form field to insert a javascript to bwpostman settings
  *
@@ -60,10 +64,10 @@ class JFormFieldCustomscript extends JFormField
 	 */
 	protected function getinput()
 	{
-		JHtml::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 
-		$doc 		= JFactory::getDocument();
-		$text = JText::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
+		$doc 		= Factory::getDocument();
+		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
 		// Hide spacers on joomla 4
 		$hide_spacer = "";
 		if(version_compare(JVERSION, '3.999.999', 'ge'))

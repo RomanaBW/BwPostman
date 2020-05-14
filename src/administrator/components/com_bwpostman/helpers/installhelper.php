@@ -26,6 +26,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * Component helper class
@@ -47,7 +49,7 @@ class BwPostmanInstallHelper
 	 */
 	public static function serverClaimsUtf8mb4Support($format)
 	{
-		$_db = JFactory::getDbo();
+		$_db = Factory::getDbo();
 
 		switch ($format)
 		{
@@ -100,7 +102,7 @@ class BwPostmanInstallHelper
 	 */
 	public static function convertToUtf8Mb4($reference_table = '', $conversion_file = '')
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$converted  = false;
 
 		// This is only required for MySQL databases
@@ -142,7 +144,7 @@ class BwPostmanInstallHelper
 							$converted = false;
 
 							// Still render the error message from the Exception object
-							JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+							Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 						}
 					}
 				}
@@ -153,7 +155,7 @@ class BwPostmanInstallHelper
 		if ($converted == false)
 		{
 			// Show an error message telling to check database problems
-			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_DATABASE_ERROR_DATABASE_UPGRADE_FAILED'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('JLIB_DATABASE_ERROR_DATABASE_UPGRADE_FAILED'), 'error');
 		}
 	}
 
@@ -171,12 +173,12 @@ class BwPostmanInstallHelper
 	public static function tablesAreConverted($test_table = '')
 	{
 		//get database name
-		$config     = JFactory::getConfig();
+		$config     = Factory::getConfig();
 		$dbprefix   = $config->get('dbprefix');
 		$table_name = $dbprefix . $test_table;
 		$ret        = false;
 
-		$_db = JFactory::getDbo();
+		$_db = Factory::getDbo();
 
 		$query  = 'SHOW TABLE STATUS WHERE Name = ' . $_db->quote($table_name);
 		$_db->setQuery($query);
@@ -191,7 +193,7 @@ class BwPostmanInstallHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $ret;

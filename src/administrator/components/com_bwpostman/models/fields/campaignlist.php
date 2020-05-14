@@ -27,6 +27,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -57,7 +60,7 @@ class JFormFieldCampaignlist extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		// Get all published campaigns
@@ -75,12 +78,12 @@ class JFormFieldCampaignlist extends JFormFieldList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$parent = new stdClass;
 		$parent->value	= '-1';
-		$parent->text	= '- ' . JText::_('COM_BWPOSTMAN_NL_FILTER_CAMPAIGN') . ' -';
+		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_CAMPAIGN') . ' -';
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

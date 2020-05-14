@@ -25,10 +25,10 @@
  */
 
 use Joomla\CMS\Log\LogEntry;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
-\JLoader::import('joomla.filesystem.file');
-\JLoader::import('joomla.filesystem.folder');
-\JLoader::import('libraries.joomla.log.logger.w3c');
+JLoader::import('libraries.joomla.log.logger.w3c');
 
 
 /**
@@ -129,7 +129,7 @@ class BwLogger extends JLogLoggerW3c
 	 * @param   array  &$options  Log object options.
 	 * @param   string  $name  The name of the toolbar.
 	 *
-	 * @return  \BwLogger  The BwLogger object.
+	 * @return  BwLogger  The BwLogger object.
 	 *
 	 * @since   2.4.0
 	 */
@@ -151,12 +151,12 @@ class BwLogger extends JLogLoggerW3c
 	 * @return  void
 	 *
 	 * @since   2.4.0
-	 * @throws  \RuntimeException
+	 * @throws  RuntimeException
 	 */
 	public function addEntry(LogEntry $entry)
 	{
 		// Get component option loglevel
-		$param = JComponentHelper::getParams('com_bwpostman');
+		$param = ComponentHelper::getParams('com_bwpostman');
 		$loglevel = $param->get('loglevel');
 
 		// Rewrite Joomla default loglevel (Info) to the one of BwPostman (Info)
@@ -254,9 +254,9 @@ class BwLogger extends JLogLoggerW3c
 			// Write the new entry to the file.
 			$line .= "\n";
 
-			if (!\JFile::append($this->path, $line))
+			if (!File::append($this->path, $line))
 			{
-				throw new \RuntimeException('Cannot write to log file.');
+				throw new RuntimeException('Cannot write to log file.');
 			}
 		}
 	}

@@ -28,7 +28,15 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Asset;
-use Joomla\CMS\Access;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Helper\UserGroupsHelper;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Log\LogEntry;
+
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * Class that handles all access authorisation routines.
@@ -254,7 +262,7 @@ class BwAccess
 	 */
 	protected static function getSectionAsset($assetName)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$query = $db->getQuery(true);
 
@@ -339,7 +347,7 @@ class BwAccess
 
 		foreach ($identities as $identity)
 		{
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('p.parent_id');
 			$query->from($db->quoteName('#__usergroups') . ' AS n, ' . $db->quoteName('#__usergroups') . ' AS p');
@@ -516,7 +524,7 @@ class BwAccess
 		if (!isset(self::$assetPermissionsParentIdMapping[$extensionName]))
 		{
 			// Get the database connection object.
-			$db = \JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// Get a fresh query object:
 			$query    = $db->getQuery(true);
@@ -562,10 +570,10 @@ class BwAccess
 			return true;
 		}
 
-		!JDEBUG ?: \JProfiler::getInstance('Application')->mark('Before Access::preloadPermissions (' . $extensionName . ')');
+		!JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::preloadPermissions (' . $extensionName . ')');
 
 		// Get the database connection object.
-		$db         = \JFactory::getDbo();
+		$db         = Factory::getDbo();
 		$extraQuery = $db->qn('name') . ' = ' . $db->q($extensionName) . ' OR ' . $db->qn('parent_id') . ' = 0';
 
 		// Get a fresh query object.
@@ -597,7 +605,7 @@ class BwAccess
 		self::$preloadedAssetTypes[$assetType]     = true;
 		self::$preloadedAssetTypes[$extensionName] = true;
 
-		!JDEBUG ?: \JProfiler::getInstance('Application')->mark('After Access::preloadPermissions (' . $extensionName . ')');
+		!JDEBUG ?: Profiler::getInstance('Application')->mark('After Access::preloadPermissions (' . $extensionName . ')');
 
 		return true;
 	}
@@ -621,13 +629,13 @@ class BwAccess
 			return array();
 		}
 
-		!JDEBUG ?: \JProfiler::getInstance('Application')->mark('Before Access::preloadComponents (all components)');
+		!JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::preloadComponents (all components)');
 
 		// Add root to asset names list.
 		$components = array('root.1');
 
 		// Add enabled components to asset names list.
-		foreach (\JComponentHelper::getComponents() as $component)
+		foreach (ComponentHelper::getComponents() as $component)
 		{
 			if ($component->enabled)
 			{
@@ -636,7 +644,7 @@ class BwAccess
 		}
 
 		// Get the database connection object.
-		$db = \JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Get the asset info for all assets in asset names list.
 		$query = $db->getQuery(true)
@@ -678,7 +686,7 @@ class BwAccess
 		// Mark all components asset type as preloaded.
 		self::$preloadedAssetTypes['components'] = true;
 
-		!JDEBUG ?: \JProfiler::getInstance('Application')->mark('After Access::preloadComponents (all components)');
+		!JDEBUG ?: Profiler::getInstance('Application')->mark('After Access::preloadComponents (all components)');
 
 		return $components;
 	}
@@ -717,7 +725,7 @@ class BwAccess
 	protected static function getGroupPath($groupId)
 	{
 		// Load all the groups to improve performance on intensive groups checks
-		$groups = \JHelperUsergroups::getInstance()->getAll();
+		$groups = UserGroupsHelper::getInstance()->getAll();
 
 		if (!isset($groups[$groupId]))
 		{
@@ -737,13 +745,16 @@ class BwAccess
 	 * @param   boolean         $recursiveParentAsset  True to calculate the rule also based on inherited component/extension rules.
 	 * @param   boolean         $preload               Indicates whether preloading should be used.
 	 *
-	 * @return  \Joomla\CMS\Access\Rules  Rules object for the asset.
+	 * @return  Rules  Rules object for the asset.
 	 *
 	 * @since   11.1
 	 * @note    The non preloading code will be removed in 4.0. All asset rules should use asset preloading.
 	 */
 	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = false, $preload = true)
 	{
+		$logOptions   = array();
+		$logger = BwLogger::getInstance($logOptions);
+
 		// Auto preload the components assets and root asset (if chosen).
 		if ($preload)
 		{
@@ -777,18 +788,16 @@ class BwAccess
 		{
 			if ($extensionName && $assetName !== $extensionName)
 			{
-				\JLog::add('No asset found for ' . $assetName . ', falling back to ' . $extensionName, \JLog::WARNING, 'assets');
+				$message = "'No asset found for ' . $assetName . ', falling back to ' . $extensionName";
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'assets'));
 
 				return self::getAssetRules($extensionName, $recursive, $recursiveParentAsset, $preload);
 			}
 
 			if (self::$rootAssetId !== null && $assetName !== self::$preloadedAssets[self::$rootAssetId])
 			{
-				\JLog::add(
-					'No asset found for ' . $assetName . ', falling back to ' . self::$preloadedAssets[self::$rootAssetId],
-					\JLog::WARNING,
-					'assets'
-				);
+				$message = "No asset found for . $assetName . , falling back to" . self::$preloadedAssets[self::$rootAssetId];
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'assets'));
 
 				return self::getAssetRules(self::$preloadedAssets[self::$rootAssetId], $recursive, $recursiveParentAsset, $preload);
 			}
@@ -797,7 +806,7 @@ class BwAccess
 		// Almost all calls can take advantage of preloading.
 		if ($assetId && isset(self::$preloadedAssets[$assetId]))
 		{
-			!JDEBUG ?: \JProfiler::getInstance('Application')->mark('Before BwAccess::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
+			!JDEBUG ?: Profiler::getInstance('Application')->mark('Before BwAccess::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
 
 			// Collects permissions for each asset
 			$collected = array();
@@ -820,7 +829,7 @@ class BwAccess
 				if ($numberOfDots === 2 || count($assetNameParts) ===2)
 				{
 					$sectionName   = $assetNameParts[0] . '.' . $assetNameParts[1];
-				};
+				}
 
 
 				$collectedItem = json_decode(self::$assetPermissionsParentIdMapping[$extensionName][$assetId]->rules, true);
@@ -868,7 +877,7 @@ class BwAccess
 
 			if (!isset(self::$assetRulesIdentities[$hash]))
 			{
-				$rules = new \Joomla\CMS\Access\Rules;
+				$rules = new Rules;
 				$rules->mergeCollection($collected);
 
 				self::$assetRulesIdentities[$hash] = $rules;
@@ -880,15 +889,16 @@ class BwAccess
 				self::$assetRules[$assetId] = self::$assetRulesIdentities[$hash];
 			}
 
-			!JDEBUG ?: \JProfiler::getInstance('Application')->mark('After Access::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
+			!JDEBUG ?: Profiler::getInstance('Application')->mark('After Access::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
 
 			return self::$assetRulesIdentities[$hash];
 		}
 
 		// Non preloading code. Use old slower method, slower. Only used in rare cases (if any) or without preloading chosen.
-		\JLog::add('Asset ' . $assetKey . ' permissions fetch without preloading (slower method).', \JLog::INFO, 'assets');
+		$message = 'Asset ' . $assetKey . ' permissions fetch without preloading (slower method).';
+		$logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'assets'));
 
-		!JDEBUG ?: \JProfiler::getInstance('Application')->mark('Before Access::getAssetRules (assetKey:' . $assetKey . ')');
+		!JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::getAssetRules (assetKey:' . $assetKey . ')');
 
 		// There's no need to process it with the recursive method for the Root Asset ID.
 		if ((int) $assetKey === 1)
@@ -897,7 +907,7 @@ class BwAccess
 		}
 
 		// Get the database connection object.
-		$db = \JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Build the database query to get the rules for the asset.
 		$query = $db->getQuery(true)
@@ -949,10 +959,10 @@ class BwAccess
 		}
 
 		// Instantiate and return the Rules object for the asset rules.
-		$rules = new \Joomla\CMS\Access\Rules;
+		$rules = new Rules;
 		$rules->mergeCollection($collected);
 
-		!JDEBUG ?: \JProfiler::getInstance('Application')->mark('Before Access::getAssetRules <strong>Slower</strong> (assetKey:' . $assetKey . ')');
+		!JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::getAssetRules <strong>Slower</strong> (assetKey:' . $assetKey . ')');
 
 		return $rules;
 	}
@@ -981,7 +991,7 @@ class BwAccess
 		}
 
 		// No preload. Return root asset id from Assets.
-		$assets = new Asset(\JFactory::getDbo());
+		$assets = new Asset(Factory::getDbo());
 
 		return $assets->getRootId();
 	}
@@ -1024,7 +1034,7 @@ class BwAccess
 				// Else we have to do an extra db query to fetch it from the table fetch it from table.
 				else
 				{
-					$table = new Asset(\JFactory::getDbo());
+					$table = new Asset(Factory::getDbo());
 					$table->load(array('name' => $assetKey));
 					$loaded[$assetKey] = $table->id;
 				}
@@ -1068,7 +1078,7 @@ class BwAccess
 			// Else we have to do an extra db query to fetch it from the table fetch it from table.
 			else
 			{
-				$table = new Asset(\JFactory::getDbo());
+				$table = new Asset(Factory::getDbo());
 				$table->load($assetKey);
 				$loaded[$assetKey] = $table->name;
 			}
@@ -1148,7 +1158,7 @@ class BwAccess
 	public static function getGroupTitle($groupId)
 	{
 		// Fetch the group title from the database
-		$db    = \JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('title')
 			->from('#__usergroups')
@@ -1177,10 +1187,10 @@ class BwAccess
 
 		if (!isset(self::$groupsByUser[$storeId]))
 		{
-			// TODO: Uncouple this from \JComponentHelper and allow for a configuration setting or value injection.
-			if (class_exists('\JComponentHelper'))
+			// TODO: Uncouple this from ComponentHelper and allow for a configuration setting or value injection.
+			if (class_exists('ComponentHelper'))
 			{
-				$guestUsergroup = \JComponentHelper::getParams('com_users')->get('guest_usergroup', 1);
+				$guestUsergroup = ComponentHelper::getParams('com_users')->get('guest_usergroup', 1);
 			}
 			else
 			{
@@ -1195,7 +1205,7 @@ class BwAccess
 			// Registered user and guest if all groups are requested
 			else
 			{
-				$db = \JFactory::getDbo();
+				$db = Factory::getDbo();
 
 				// Build the database query to get the rules for the asset.
 				$query = $db->getQuery(true)
@@ -1256,7 +1266,7 @@ class BwAccess
 	public static function getUsersByGroup($groupId, $recursive = false)
 	{
 		// Get a database object.
-		$db = \JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$test = $recursive ? '>=' : '=';
 
@@ -1293,7 +1303,7 @@ class BwAccess
 		if (empty(self::$viewLevels))
 		{
 			// Get a database object.
-			$db = \JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// Build the base query.
 			$query = $db->getQuery(true)
@@ -1314,8 +1324,8 @@ class BwAccess
 		$authorised = array(1);
 
 		// Check for the recovery mode setting and return early.
-		$user      = \JUser::getInstance($userId);
-		$root_user = \JFactory::getConfig()->get('root_user');
+		$user      = User::getInstance($userId);
+		$root_user = Factory::getConfig()->get('root_user');
 
 		if (($user->username && $user->username == $root_user) || (is_numeric($root_user) && $user->id > 0 && $user->id == $root_user))
 		{
@@ -1374,11 +1384,11 @@ class BwAccess
 	 */
 	public static function getActions($component, $section = 'component')
 	{
-		\JLog::add(
-			__METHOD__ . ' is deprecated. Use Access::getActionsFromFile or Access::getActionsFromData instead.',
-			\JLog::WARNING,
-			'deprecated'
-		);
+		$logOptions   = array();
+		$logger = BwLogger::getInstance($logOptions);
+
+		$message = __METHOD__ . ' is deprecated. Use Access::getActionsFromFile or Access::getActionsFromData instead.';
+		$logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'assets'));
 
 		$actions = self::getActionsFromFile(
 			JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml',
@@ -1424,7 +1434,7 @@ class BwAccess
 	/**
 	 * Method to return a list of actions from a string or from an xml for which permissions can be set.
 	 *
-	 * @param   string|\SimpleXMLElement  $data   The XML string or an XML element.
+	 * @param   string|SimpleXMLElement  $data   The XML string or an XML element.
 	 * @param   string                    $xpath  An optional xpath to search for the fields.
 	 *
 	 * @return  boolean|array   False if case of error or the list of actions available.
@@ -1434,7 +1444,7 @@ class BwAccess
 	public static function getActionsFromData($data, $xpath = "/access/section[@name='component']/")
 	{
 		// If the data to load isn't already an XML element or string return false.
-		if ((!($data instanceof \SimpleXMLElement)) && (!is_string($data)))
+		if ((!($data instanceof SimpleXMLElement)) && (!is_string($data)))
 		{
 			return false;
 		}
@@ -1444,9 +1454,9 @@ class BwAccess
 		{
 			try
 			{
-				$data = new \SimpleXMLElement($data);
+				$data = new SimpleXMLElement($data);
 			}
-			catch (\Exception $e)
+			catch (Exception $e)
 			{
 				return false;
 			}

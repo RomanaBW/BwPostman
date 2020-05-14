@@ -27,6 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Renders a newsletter element
  *
@@ -55,17 +60,17 @@ class JFormFieldbuttons extends JFormField
 	 */
 	protected function getinput()
 	{
-		$doc 		= JFactory::getDocument();
+		$doc 		= Factory::getDocument();
 		$fieldName	= $this->name;
 
-		$newsletter = JTable::getInstance('newsletters', 'BwPostmanTable');
+		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
 		if ($this->value)
 		{
 			$newsletter->load($this->value);
 		}
 		else
 		{
-			$newsletter->subject = JText::_('COM_BWPOSTMAN_SELECT_BUTTON_LABEL');
+			$newsletter->subject = Text::_('COM_BWPOSTMAN_SELECT_BUTTON_LABEL');
 		}
 
 		$js = "
@@ -78,8 +83,6 @@ class JFormFieldbuttons extends JFormField
 
 		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp;field=' . $fieldName;
 		$doc->addScriptDeclaration($js);
-
-//		JHtml::_('behavior.modal', 'a.modal');
 
 		// The active newsletter id field.
 		if (0 == (int) $this->value)
@@ -101,8 +104,8 @@ class JFormFieldbuttons extends JFormField
 		$html  = '<span class="input-append">';
 		$html .= '<input type="text" class="input-medium" id="b_' . $fieldName . '" value="' . $newsletter->subject . '"';
 		$html .= 'disabled="disabled" size="35" />';
-		$html .= '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_BWPOSTMAN_SELECT_BUTTON_LABEL') . '"';
-		$html .= 'href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+		$html .= '<a class="modal btn hasTooltip" title="' . HtmlHelper::tooltipText('COM_BWPOSTMAN_SELECT_BUTTON_LABEL') . '"';
+		$html .= 'href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . Text::_('JSELECT') . '</a>';
 		$html .= "\n<input type=\"hidden\" id=\"a_$fieldName\" $class name=\"$fieldName\" value=\"$value\" />";
 
 		return $html;

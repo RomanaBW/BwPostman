@@ -26,6 +26,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Form Field class for the Joomla Platform.
  * Supports a nested check box field listing user groups.
@@ -83,7 +85,7 @@ class JFormFieldUsergroups extends JFormField
 			$disabled = ($disabled == 'true' || $disabled == 'disabled' || $disabled == '1');
 
 			// Create a new option object based on the <option /> element.
-			$tmp = JHtml::_(
+			$tmp = HTMLHelper::_(
 				'select.option',
 				(string) $option['value'],
 				trim((string) $option),
@@ -102,6 +104,6 @@ class JFormFieldUsergroups extends JFormField
 			$options[] = $tmp;
 		}
 
-		return JHtml::_('access.usergroups', $this->name, $this->value, $attr, $options, $this->id);
+		return HTMLHelper::_('access.usergroups', $this->name, $this->value, $attr, $options, $this->id);
 	}
 }

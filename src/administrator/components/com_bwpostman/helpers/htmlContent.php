@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Utility class for writing the HTML for content
@@ -132,7 +134,7 @@ class htmlContent
 		?>
 		<span class="created_by">
 			<small>
-				<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY',
+				<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY',
 					($row->created_by_alias ? $row->created_by_alias : $row->author)); ?>
 			</small>
 		</span>
@@ -154,12 +156,12 @@ class htmlContent
 
 		if (intval($row->created) != 0)
 		{
-			$create_date = JHtml::_('date', $row->created);
+			$create_date = HtmlHelper::_('date', $row->created);
 		}
 
 		?>
 		<span class="createdate">
-			<small><?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON',
+			<small><?php echo Text::sprintf('COM_CONTENT_CREATED_DATE_ON',
 					$create_date); ?>&nbsp;&nbsp;&nbsp;&nbsp;</small>
 		</span>
 		<?php
@@ -203,14 +205,14 @@ class htmlContent
 
 		if (intval($row->modified) != 0)
 		{
-			$mod_date = JHtml::_('date', $row->modified);
+			$mod_date = HtmlHelper::_('date', $row->modified);
 		}
 
 		if (($mod_date != '') && $params->get('modifydate'))
 		{
 			?>
 			<p class="modifydate">
-				<?php echo JText::_('LAST_UPDATED'); ?>
+				<?php echo Text::_('LAST_UPDATED'); ?>
 				(<?php echo $mod_date; ?>)
 			</p>
 			<?php

@@ -26,6 +26,10 @@
 
 defined ('_JEXEC') or die ();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Class BwPostmanHTMLHelper
  *
@@ -75,14 +79,14 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	public static function quickiconButton($link, $image, $text, $x_size = 0, $y_size = 0, $target = '', $onclick = '', $closable = true)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$closable = $closable != true ? ', closable: false' : '';
 		($x_size && $y_size) ? $modal_text	= 'class="modal" rel="{handler: \'iframe\', size: {x: ' . $x_size . ', y: ' . $y_size . '}' . $closable . '}"' : $modal_text	= '';
 		?>
 		<div class="btn text-center" style="float:<?php echo ($lang->isRtl()) ? 'right' : 'left'; ?>;">
 			<div class="icon" >
 				<a href="<?php echo $link; ?>" <?php if ($target != '') echo 'target="' . $target . '"'; ?> <?php if ($onclick != '') echo 'onclick="' . $onclick . '"'; ?> <?php echo $modal_text; ?>>
-					<span class="icon"><?php echo JHtml::_('image', 'administrator/components/com_bwpostman/assets/images/'.$image, $text); ?></span>
+					<span class="icon"><?php echo HtmlHelper::_('image', 'administrator/components/com_bwpostman/assets/images/'.$image, $text); ?></span>
 					<span class="linktext"><?php echo $text; ?></span>
 				</a>
 			</div>
@@ -97,11 +101,13 @@ abstract class BwPostmanHTMLHelper {
 	 *
 	 * @return 	string	export fields list, html select list multiple
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 	static public function getExportFieldsList()
 	{
-		$_db			= JFactory::getDbo();
+		$_db			= Factory::getDbo();
 		$export_fields	= array();
 
 		$query = "SHOW COLUMNS FROM {$_db->quoteName('#__bwpostman_subscribers')}
@@ -113,6 +119,7 @@ abstract class BwPostmanHTMLHelper {
 			;
 
 		$_db->setQuery($query);
+		$columns = array();
 
 		try
 		{
@@ -120,15 +127,15 @@ abstract class BwPostmanHTMLHelper {
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		foreach ($columns AS $column)
 		{
-			$export_fields[] = JHtml::_('select.option', $column->Field, $column->Field);
+			$export_fields[] = HtmlHelper::_('select.option', $column->Field, $column->Field);
 		}
 
-		$export_list	= JHtml::_('select.genericlist', $export_fields, 'export_fields[]', 'class="inputbox" size="20" multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
+		$export_list	= HtmlHelper::_('select.genericlist', $export_fields, 'export_fields[]', 'class="inputbox" size="20" multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
 
 		return $export_list;
 	}
@@ -148,9 +155,9 @@ abstract class BwPostmanHTMLHelper {
 	{
 		$fileformat 	= array();
 
-		$fileformat[] 	= JHtml::_('select.option', 'csv', JText::_('COM_BWPOSTMAN_CSV'));
-		$fileformat[] 	= JHtml::_('select.option', 'xml', JText::_('COM_BWPOSTMAN_XML'));
-		$format_list	= JHtml::_('select.radiolist', $fileformat, 'fileformat', 'class="inputbox"', 'value', 'text', $selected);
+		$fileformat[] 	= HtmlHelper::_('select.option', 'csv', Text::_('COM_BWPOSTMAN_CSV'));
+		$fileformat[] 	= HtmlHelper::_('select.option', 'xml', Text::_('COM_BWPOSTMAN_XML'));
+		$format_list	= HtmlHelper::_('select.radiolist', $fileformat, 'fileformat', 'class="inputbox"', 'value', 'text', $selected);
 
 		return $format_list;
 	}
@@ -170,12 +177,12 @@ abstract class BwPostmanHTMLHelper {
 	{
 		$delimiter	= array();
 
-		$delimiter[] = JHtml::_('select.option', ',', JText::_('COM_BWPOSTMAN_SUB_DELIMITER_COMMA'));
-		$delimiter[] = JHtml::_('select.option', ';', JText::_('COM_BWPOSTMAN_SUB_DELIMITER_SEMICOLON'));
-		$delimiter[] = JHtml::_('select.option', '\t', JText::_('COM_BWPOSTMAN_SUB_DELIMITER_TABULATOR'));
-		$delimiter[] = JHtml::_('select.option', ' ', JText::_('COM_BWPOSTMAN_SUB_DELIMITER_WHITESPACE'));
+		$delimiter[] = HtmlHelper::_('select.option', ',', Text::_('COM_BWPOSTMAN_SUB_DELIMITER_COMMA'));
+		$delimiter[] = HtmlHelper::_('select.option', ';', Text::_('COM_BWPOSTMAN_SUB_DELIMITER_SEMICOLON'));
+		$delimiter[] = HtmlHelper::_('select.option', '\t', Text::_('COM_BWPOSTMAN_SUB_DELIMITER_TABULATOR'));
+		$delimiter[] = HtmlHelper::_('select.option', ' ', Text::_('COM_BWPOSTMAN_SUB_DELIMITER_WHITESPACE'));
 
-		$delimiter_list	= JHtml::_('select.genericlist', $delimiter, 'delimiter', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
+		$delimiter_list	= HtmlHelper::_('select.genericlist', $delimiter, 'delimiter', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
 
 		return $delimiter_list;
 	}
@@ -195,11 +202,11 @@ abstract class BwPostmanHTMLHelper {
 	{
 		$enclosure	= array();
 
-		$enclosure[] = JHtml::_('select.option', '', JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION'));
-		$enclosure[] = JHtml::_('select.option', "'", JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_QUOTE'));
-		$enclosure[] = JHtml::_('select.option', '"', JText::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_DOUBLEQUOTE'));
+		$enclosure[] = HtmlHelper::_('select.option', '', Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOSEPARATION'));
+		$enclosure[] = HtmlHelper::_('select.option', "'", Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_QUOTE'));
+		$enclosure[] = HtmlHelper::_('select.option', '"', Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_DOUBLEQUOTE'));
 
-		$enclosure_list	= JHtml::_('select.genericlist', $enclosure, 'enclosure', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
+		$enclosure_list	= HtmlHelper::_('select.genericlist', $enclosure, 'enclosure', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
 
 		return $enclosure_list;
 	}
@@ -219,9 +226,9 @@ abstract class BwPostmanHTMLHelper {
 	{
 		$emailformat 	= array();
 
-		$emailformat[] 	= JHtml::_('select.option', '0', JText::_('COM_BWPOSTMAN_TEXT'));
-		$emailformat[] 	= JHtml::_('select.option', '1', JText::_('COM_BWPOSTMAN_HTML'));
-		$format_list	= JHtml::_('select.radiolist', $emailformat, 'emailformat', 'class="form-check-input inputbox" ', 'value', 'text', $selected);
+		$emailformat[] 	= HtmlHelper::_('select.option', '0', Text::_('COM_BWPOSTMAN_TEXT'));
+		$emailformat[] 	= HtmlHelper::_('select.option', '1', Text::_('COM_BWPOSTMAN_HTML'));
+		$format_list	= HtmlHelper::_('select.radiolist', $emailformat, 'emailformat', 'class="form-check-input inputbox" ', 'value', 'text', $selected);
 
 		return $format_list;
 	}
@@ -248,9 +255,9 @@ abstract class BwPostmanHTMLHelper {
 
 		foreach ($columns AS $column)
 		{
-			$db_fields[] = JHtml::_('select.option', $column, $column);
+			$db_fields[] = HtmlHelper::_('select.option', $column, $column);
 		}
-		$db_fields = JHtml::_('select.genericlist', $db_fields, 'db_fields[]', 'class="custom-select inputbox w-auto" size="10" multiple="multiple" style="padding: 6px; width: 240px;"', 'value', 'text');
+		$db_fields = HtmlHelper::_('select.genericlist', $db_fields, 'db_fields[]', 'class="custom-select inputbox w-auto" size="10" multiple="multiple" style="padding: 6px; width: 240px;"', 'value', 'text');
 
 		return $db_fields;
 	}
@@ -273,37 +280,37 @@ abstract class BwPostmanHTMLHelper {
 
 		if (($mailinglists['public']) || ($mailinglists['special']))
 		{
-			$import_mailinglists[] = JHtml::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
-			$import_mailinglists[] = JHtml::_('select.option', '- - - '.JText::_('COM_BWPOSTMAN_ML_PUBLIC').' - - -');
-			$import_mailinglists[] = JHtml::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
+			$import_mailinglists[] = HtmlHelper::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
+			$import_mailinglists[] = HtmlHelper::_('select.option', '- - - '.Text::_('COM_BWPOSTMAN_ML_PUBLIC').' - - -');
+			$import_mailinglists[] = HtmlHelper::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
 			if ($mailinglists['public'])
 			{
-				$import_mailinglists[] = JHtml::_('select.option', '- '.JText::_('COM_BWPOSTMAN_ML_PUBLIC_PUBLIC').' -');
+				$import_mailinglists[] = HtmlHelper::_('select.option', '- '.Text::_('COM_BWPOSTMAN_ML_PUBLIC_PUBLIC').' -');
 				foreach ($mailinglists['public'] AS $mailinglist)
 				{
-					$import_mailinglists[] = JHtml::_('select.option', $mailinglist['id'], $mailinglist['title'] .': '.$mailinglist['description']);
+					$import_mailinglists[] = HtmlHelper::_('select.option', $mailinglist['id'], $mailinglist['title'] .': '.$mailinglist['description']);
 				}
 			}
 			if ($mailinglists['special'])
 			{
-				$import_mailinglists[] = JHtml::_('select.option', '- '.JText::_('COM_BWPOSTMAN_ML_PUBLIC_REGISTERED_AND_MORE').' -');
+				$import_mailinglists[] = HtmlHelper::_('select.option', '- '.Text::_('COM_BWPOSTMAN_ML_PUBLIC_REGISTERED_AND_MORE').' -');
 				foreach ($mailinglists['special'] AS $mailinglist)
 				{
-					$import_mailinglists[] = JHtml::_('select.option', $mailinglist['id'], $mailinglist['title'] .': '.$mailinglist['description']);
+					$import_mailinglists[] = HtmlHelper::_('select.option', $mailinglist['id'], $mailinglist['title'] .': '.$mailinglist['description']);
 				}
 			}
 		}
 		if ($mailinglists['internal'])
 		{
-			$import_mailinglists[] = JHtml::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
-			$import_mailinglists[] = JHtml::_('select.option', '- - - '.JText::_('COM_BWPOSTMAN_ML_INTERNAL').' - - -');
-			$import_mailinglists[] = JHtml::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
+			$import_mailinglists[] = HtmlHelper::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
+			$import_mailinglists[] = HtmlHelper::_('select.option', '- - - '.Text::_('COM_BWPOSTMAN_ML_INTERNAL').' - - -');
+			$import_mailinglists[] = HtmlHelper::_('select.option', '- - - - - - - - - - - - - - - - - - - - - - - - - - - -');
 			foreach ($mailinglists['internal'] AS $mailinglist)
 			{
-				$import_mailinglists[] = JHtml::_('select.option', $mailinglist['id'], $mailinglist['title'] .': '.$mailinglist['description']);
+				$import_mailinglists[] = HtmlHelper::_('select.option', $mailinglist['id'], $mailinglist['title'] .': '.$mailinglist['description']);
 			}
 		}
-		$import_mailinglists	= JHtml::_('select.genericlist', $import_mailinglists, 'import_mailinglists[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 250px;"', 'value', 'text', $bwp_mailinglist_values);
+		$import_mailinglists	= HtmlHelper::_('select.genericlist', $import_mailinglists, 'import_mailinglists[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 250px;"', 'value', 'text', $bwp_mailinglist_values);
 		$import_mailinglists	= str_replace('>-', ' disabled="disabled">-', $import_mailinglists);
 
 		return $import_mailinglists;
@@ -317,7 +324,7 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	static function getForumLink()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 
 		$lang_ver		= substr($lang->getTag(), 0, 2);
 		if ($lang_ver != 'de')
@@ -344,7 +351,7 @@ abstract class BwPostmanHTMLHelper {
 	{
 		$manualLink = self::getManualLink($section);
 		$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
-		$manualButton = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+		$manualButton = new JButtonExtlink('Extlink', Text::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
 
 		return $manualButton;
 	}
@@ -359,7 +366,7 @@ abstract class BwPostmanHTMLHelper {
 	{
 		$forumLink  = BwPostmanHTMLHelper::getForumLink();
 		$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
-		$forumButton  = new JButtonExtlink('Extlink', JText::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
+		$forumButton  = new JButtonExtlink('Extlink', Text::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
 
 		return $forumButton;
 	}
@@ -373,7 +380,7 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	static function getManualLink($section)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$sectionPart = "handbuch-zu-bwpostman.html";
 
 		$lang_ver		= substr($lang->getTag(), 0, 2);
@@ -482,6 +489,8 @@ abstract class BwPostmanHTMLHelper {
 	public static function switchGridValue($i, $value, $task, $prefix = '', $active_title = '', $inactive_title = '',
 		$tip = false, $active_class = '', $inactive_class = '', $translate = true, $checkbox = 'cb', $access = true)
 	{
+		$title = '';
+
 		if (is_array($prefix))
 		{
 			$options        = $prefix;
@@ -498,11 +507,11 @@ abstract class BwPostmanHTMLHelper {
 
 		if ($tip)
 		{
-			JHtml::_('bootstrap.tooltip');
+			HtmlHelper::_('bootstrap.tooltip');
 
 			$title = $value ? $active_title : $inactive_title;
-			$title = $translate ? JText::_($title) : $title;
-			$title = JHtml::_('tooltipText', $title, '', 0);
+			$title = $translate ? Text::_($title) : $title;
+			$title = HtmlHelper::_('tooltipText', $title, '', 0);
 		}
 
 		if ($value)

@@ -26,6 +26,8 @@
 
 defined ('_JEXEC') or die ();
 
+use Joomla\CMS\Factory;
+
 /**
  * Class BwPostmanMailinglistHelper
  *
@@ -42,14 +44,15 @@ abstract class BwPostmanMailinglistHelper {
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
 	static public function getMailinglistsByRestriction($mailinglists, $condition = 'available', $archived = 0, $restricted = true)
 	{
 		$mls   = null;
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('id');
@@ -82,7 +85,7 @@ abstract class BwPostmanMailinglistHelper {
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if ($restricted === true)

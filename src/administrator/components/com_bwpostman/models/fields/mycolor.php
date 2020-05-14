@@ -25,6 +25,9 @@
  */
 
 defined('JPATH_PLATFORM') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
 JFormHelper::loadFieldClass('color');
 /**
  * Color Form Field class for the Joomla Platform.
@@ -65,7 +68,7 @@ class JFormFieldMyColor extends JFormFieldColor
 
 		if (!$disabled)
 		{
-			JHtml::_('behavior.colorpicker');
+			HTMLHelper::_('behavior.colorpicker');
 			$classes .= ' input-colorpicker';
 		}
 

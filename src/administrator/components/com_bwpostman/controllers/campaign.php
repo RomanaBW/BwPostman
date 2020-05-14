@@ -184,12 +184,6 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	public function edit($key = null, $urlVar = null)
 	{
-		// Check for request forgeries
-		if (!Session::checkToken())
-		{
-			jexit(Text::_('JINVALID_TOKEN'));
-		}
-
 		// Initialise variables.
 		$jinput		= Factory::getApplication()->input;
 		$model		= $this->getModel();

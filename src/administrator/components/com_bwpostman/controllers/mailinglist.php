@@ -27,10 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Plugin\PluginHelper;
+
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
-
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -73,7 +78,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 	}
@@ -82,19 +87,19 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 * Display
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
 	 * @return  BwPostmanControllerMailinglist		This object to support chaining.
 	 *
-	 * @since   2.0.0
-	 *
 	 * @throws Exception
+	 *
+	 * @since   2.0.0
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
 		if (!$this->permissions['view']['mailinglist'])
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
@@ -177,7 +182,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$jinput		= JFactory::getApplication()->input;
+		$jinput		= Factory::getApplication()->input;
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		$cid		= $jinput->post->get('cid', array(), 'array');
@@ -211,9 +216,9 @@ class BwPostmanControllerMailinglist extends JControllerForm
 
 		if (!$allowed)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
 					. $this->getRedirectToListAppend(),
 					false
@@ -226,11 +231,11 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()), 'error');
 
 			// …and do not allow the user to see the record.
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
 					. $this->getRedirectToItemAppend($recordId, $urlVar),
 					false
@@ -245,7 +250,7 @@ class BwPostmanControllerMailinglist extends JControllerForm
 			$this->holdEditId($context, $recordId);
 
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
 					. $this->getRedirectToItemAppend($recordId, $urlVar),
 					false
@@ -276,8 +281,8 @@ class BwPostmanControllerMailinglist extends JControllerForm
 
 		parent::save();
 
-		JPluginHelper::importPlugin('bwpostman');
-		JFactory::getApplication()->triggerEvent('onBwPostmanAfterMailinglistControllerSave', array());
+		PluginHelper::importPlugin('bwpostman');
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterMailinglistControllerSave', array());
 	}
 
 	/**
@@ -292,12 +297,12 @@ class BwPostmanControllerMailinglist extends JControllerForm
 	 */
 	public function archive()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Get the selected mailinglist(s)
@@ -308,13 +313,13 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		if (!$this->allowArchive($cid))
 		{
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
 					. $this->getRedirectToListAppend(),
 					false
 				)
 			);
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
 
 			return;
 		}
@@ -326,25 +331,25 @@ class BwPostmanControllerMailinglist extends JControllerForm
 		{
 			if ($n > 1)
 			{
-				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_MLS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_MLS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 			}
 			else
 			{
-				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_ML_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_ML_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 			}
 		}
 		else
 		{
 			if ($n > 1)
 			{
-				$msg = JText::_('COM_BWPOSTMAN_MLS_ARCHIVED');
+				$msg = Text::_('COM_BWPOSTMAN_MLS_ARCHIVED');
 			}
 			else
 			{
-				$msg = JText::_('COM_BWPOSTMAN_ML_ARCHIVED');
+				$msg = Text::_('COM_BWPOSTMAN_ML_ARCHIVED');
 			}
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=mailinglists', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=mailinglists', false);
 
 			$this->setRedirect($link, $msg);
 		}

@@ -27,6 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
 
@@ -72,7 +78,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 
@@ -88,8 +94,8 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 * @param	string	$prefix 	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModelLegacy
-
+	 * @return bool|BaseDatabaseModel
+	 *
 	 * @since	1.0.1
 	 */
 	public function getModel($name = 'Campaign', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
@@ -115,21 +121,16 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	{
 		if (!$this->permissions['view']['campaign'])
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		switch($this->getTask())
 		{
 			case 'add':
-				$jinput->set('hidemainmenu', 1);
-				$jinput->set('layout', 'form');
-				$jinput->set('view', 'campaign');
-				break;
-
 			case 'edit':
 				$jinput->set('hidemainmenu', 1);
 				$jinput->set('layout', 'form');
@@ -157,9 +158,9 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	public function checkin()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$ids = JFactory::getApplication()->input->post->get('cid', array(), 'array');
+		$ids = Factory::getApplication()->input->post->get('cid', array(), 'array');
 		$res = true;
 
 		foreach ($ids as $item)
@@ -173,8 +174,8 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 			}
 			else
 			{
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
-				$this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=campaigns', false));
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+				$this->setRedirect(Route::_('index.php?option=com_bwpostman&view=campaigns', false));
 				return false;
 			}
 		}

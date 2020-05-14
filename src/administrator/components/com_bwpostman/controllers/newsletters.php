@@ -27,10 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
+
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controlleradmin');
-
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -82,26 +86,26 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		$this->registerTask('sendtestmail', 'sendmail');
 		$this->registerTask('sendmailandpublish', 'sendmail');
 
-		$this->permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 	}
 
 	/**
 	 * Display
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
 	 * @return  BwPostmanControllerNewsletters		This object to support chaining.
 	 *
-	 * @since   2.0.0
-	 *
 	 * @throws Exception
+	 *
+	 * @since   2.0.0
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
 		if (!$this->permissions['view']['newsletter'])
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
@@ -140,9 +144,9 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	public function copy()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Access check
@@ -151,7 +155,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 			return false;
 		}
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'unsent');
@@ -167,25 +171,25 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		{ // Couldn't copy
 			if ($n > 1)
 			{
-				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_NLS_ERROR_COPYING', true) . "'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_NLS_ERROR_COPYING', true) . "'); window.history.go(-1); </script>\n";
 			}
 			else
 			{
-				echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_NL_ERROR_COPYING', true) . "'); window.history.go(-1); </script>\n";
+				echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_NL_ERROR_COPYING', true) . "'); window.history.go(-1); </script>\n";
 			}
 		}
 		else
 		{ // Copied successfully
 			if ($n > 1)
 			{
-				$msg = JText::_('COM_BWPOSTMAN_NLS_COPIED');
+				$msg = Text::_('COM_BWPOSTMAN_NLS_COPIED');
 			}
 			else
 			{
-				$msg = JText::_('COM_BWPOSTMAN_NL_COPIED');
+				$msg = Text::_('COM_BWPOSTMAN_NL_COPIED');
 			}
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
+			$link = Route::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
 			$this->setRedirect($link, $msg);
 		}
 
@@ -211,8 +215,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 			if (!$allowed)
 			{
-				$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters', false);
-				$this->setRedirect($link, JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+				$link = Route::_('index.php?option=com_bwpostman&view=newsletters', false);
+				$this->setRedirect($link, Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
 
 				return false;
 			}
@@ -224,7 +228,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	/**
 	 * Method to publish a list of newsletters.
 	 *
-	 * @return	bool
+	 * @return	boolean
 	 *
 	 * @throws Exception
 	 *
@@ -232,12 +236,12 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 */
 	public function publish()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Get the selected newsletters(s)
@@ -283,9 +287,9 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	public function checkin()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$ids = JFactory::getApplication()->input->post->get('cid', array(), 'array');
+		$ids = Factory::getApplication()->input->post->get('cid', array(), 'array');
 		$res = true;
 
 		foreach ($ids as $item)
@@ -299,8 +303,8 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 			}
 			else
 			{
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
-				$this->setRedirect(JRoute::_('index.php?option=com_bwpostman&view=newsletters', false));
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+				$this->setRedirect(Route::_('index.php?option=com_bwpostman&view=newsletters', false));
 				return false;
 			}
 		}
@@ -311,7 +315,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	/**
 	 * Method to set the tab state while changing tabs, used for building the appropriate toolbar
 	 *
-	 * @access	public
+	 * @return 	void
 	 *
 	 * @throws Exception
 	 *
@@ -319,21 +323,19 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 */
 	public function changeTab()
 	{
-		$app	= JFactory::getApplication();
-		$jinput	= JFactory::getApplication()->input;
+		$app	= Factory::getApplication();
+		$jinput	= Factory::getApplication()->input;
 		$tab	= $jinput->get('tab', 'unsent');
 
 		$app->setUserState('com_bwpostman.newsletters.tab', $tab);
 
-		$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=newsletters', false);
 
 		$this->setRedirect($link);
 	}
 
 	/**
 	 * Method to add selected content items to the newsletter
-	 *
-	 * @access	public
 	 *
 	 * @return 	string  $insert_contents    the content of the newsletter
 	 *
@@ -342,9 +344,9 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	public function addContent()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		$model = $this->getModel('newsletter');
@@ -358,20 +360,18 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	/**
 	 * Method to remove all entries from the sendmailqueue-table
 	 *
-	 * @access	public
+	 * @return 	boolean
 	 *
-	 * @return 	bool
-	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
 	public function clear_queue()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Access check
@@ -383,13 +383,13 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		$model = $this->getModel('newsletter');
 		if(!$model->delete_queue())
 		{ // Couldn't clear queue
-			echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_NL_ERROR_CLEARING_QUEUE', true) . "'); window.history.go(-1); </script>\n";
+			echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_NL_ERROR_CLEARING_QUEUE', true) . "'); window.history.go(-1); </script>\n";
 		}
 		else
 		{ // Cleared queue successfully
-			$msg = JText::_('COM_BWPOSTMAN_NL_CLEARED_QUEUE');
+			$msg = Text::_('COM_BWPOSTMAN_NL_CLEARED_QUEUE');
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent', false);
 			$this->setRedirect($link, $msg);
 		}
 
@@ -399,9 +399,9 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	/**
 	 * Method to reset the count of delivery attempts in sendmailqueue back to 0.
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -414,11 +414,11 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		}
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) jexit(JText::_('JINVALID_TOKEN'));
+		if (!Session::checkToken()) jexit(Text::_('JINVALID_TOKEN'));
 
 		$model = $this->getModel('newsletter');
 		$model->resetSendAttempts();
-		$link = JRoute::_('index.php?option=com_bwpostman&view=newsletters&tab=queue', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=newsletters&tab=queue', false);
 		$this->setRedirect($link);
 
 		return true;

@@ -79,7 +79,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Method to call checkTables tables process via ajax
 	 *
-	 * @access	public
+	 * @return 	void
 	 *
 	 * @since   1.3.0
 	 */
@@ -153,7 +153,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 				case 'step5':
 					// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-					$this->checkAssetAndUserIds($session);
+					$this->checkAssetAndUserIds();
 					// clear session variables
 					$session->clear('tcheck_needTa');
 					$session->clear('tcheck_inTaNa');
@@ -228,12 +228,14 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Method to call restoreTables tables process via ajax
 	 *
-	 * @access	public
+	 * @return 	void
 	 *
 	 * @since   1.3.0
 	 */
 	public function tRestore()
 	{
+		$app     = Factory::getApplication();
+
 		try
 		{
 			// Check for request forgeries
@@ -246,8 +248,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			{
 				set_time_limit(0);
 			}
-
-			$app     = Factory::getApplication();
 
 			// Initialize variables
 			$jinput  = $app->input;
@@ -263,8 +263,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$this->alertClass = 'success';
 			$this->ready      = "0";
 			if($step == 'step1') {
-				$content    = '';
-
 				// initialize session to prevent memory overflow
 				$session->set('trestore_content', '');
 				$session->set('tcheck_content', '');
@@ -568,7 +566,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					try
 					{
 						// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-						$this->checkAssetAndUserIds($session);
+						$this->checkAssetAndUserIds();
 
 						// clear session variables
 						$session->clear('tcheck_needTa');
@@ -701,6 +699,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @param   $session    $session    The session of this task
 	 *
+	 * @return void
+	 *
 	 * @since   1.3.0
 	 */
 
@@ -757,6 +757,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			return;
 		}
 
+		$installedTableNames = array();
+
 		foreach ($tableNamesArray as $tableName)
 		{
 			$installedTableNames[] = $tableName['tableNameGeneric'];
@@ -770,6 +772,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Method to convert to generic table names
 	 *
 	 * @param   $session    $session    The session of this task
+	 *
+	 * @return void
 	 *
 	 * @since   1.3.0
 	 */
@@ -802,6 +806,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Method to convert to generic table names
 	 *
 	 * @param   $session    $session    The session of this task
+	 *
+	 * @return void
 	 *
 	 * @since   1.3.0
 	 */
@@ -843,13 +849,13 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Method to check Assets and User IDs
 	 *
-	 * @param   $session
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.3.0
 	 */
-	protected function checkAssetAndUserIds($session)
+	protected function checkAssetAndUserIds()
 	{
 		$model	= $this->getModel('maintenance');
 

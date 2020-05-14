@@ -27,14 +27,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/maintenancehelper.php');
-
-//use Joomla\Filesystem\File as JFile;
 
 /**
  * BwPostman Maintenance Controller
@@ -57,6 +62,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Constructor
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @return void
 	 *
 	 * @since	1.0.1
 	 *
@@ -95,11 +102,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Display
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
 	 * @return  BwPostmanControllerMaintenance		This object to support chaining.
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
@@ -107,7 +114,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	{
 		if (!BwPostmanHelper::canView('maintenance'))
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
@@ -120,7 +127,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Method to call the view for the save tables process
 	 * --> we will take the raw-view which calls the saveTables-function in the model
 	 *
-	 * @access	public
+	 * @return 	void
 	 *
 	 * @since	1.3.0
 	 */
@@ -132,19 +139,19 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 		// first save all tables
 		echo '<br /><br /><div class="well">';
-		echo '<h2>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h2>';
+		echo '<h2>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h2>';
 		$model->saveTables(null, true);
 		ob_flush();
 		flush();
 
 		// then make the checks (function repairs tables automatically)
-		echo '<br /><br /><h2>' . JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
+		echo '<br /><br /><h2>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
 		$model->checkTables();
 		echo '</div>';
 		ob_flush();
 		flush();
 
-		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
 		$this->setRedirect($link);
 	}
 
@@ -163,20 +170,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
-			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
 		}
 
-		$jinput		= JFactory::getApplication()->input;
-		$document	= JFactory::getDocument();
+		$jinput		= Factory::getApplication()->input;
+		$document	= Factory::getDocument();
 
 		$jinput->set('view', 'subscriber');
 
 		$document->setType('raw');
 
-		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=saveTables&format=raw', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=saveTables&format=raw', false);
 		$this->setRedirect($link);
 		return true;
 	}
@@ -195,19 +202,21 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
-			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
 		}
 
-		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
 		$this->setRedirect($link);
 		return true;
 	}
 
 	/**
 	 * Method to call the layout for the restore tables process
+	 *
+	 * @return boolean
 	 *
 	 * @throws Exception
 	 *
@@ -218,13 +227,13 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		// Access check.
 		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
-			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
 		}
 
-		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables', false);
 		$this->setRedirect($link);
 		return true;
 	}
@@ -241,22 +250,22 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function doRestore()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Access check.
 		if (!BwPostmanHelper::canAdmin('maintenance'))
 		{
-			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return false;
 		}
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('restorefile');
@@ -264,7 +273,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		jimport('joomla.filesystem.file');
 
 		// Clean up filename to get rid of strange characters like spaces etc
-		$filename = JFile::makeSafe($file['name']);
+		$filename = File::makeSafe($file['name']);
 
 		// Set up the source and destination of the file
 		$src	= $file['tmp_name'];
@@ -273,23 +282,23 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		if ($file['error'] > 0)
 		{
 			//http://de.php.net/features.file-upload.errors
-			$msg = JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD');
+			$msg = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD');
 
 			switch ($file['error'])
 			{
 				case '1':
 				case '2':
-					$msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_SIZE');
+					$msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_SIZE');
 					break;
 				case '3':
-					$msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_PART');
+					$msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_PART');
 					break;
 				case '4':
-					$msg .= JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_FILE');
+					$msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_FILE');
 					break;
 			}
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
 			$this->setRedirect($link, $msg, 'error');
 
 		}
@@ -299,12 +308,12 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			// --> if the extension is wrong, redirect to restoretables.php
 			$fileExt = substr($filename, strrpos($filename, '.') + 1);
 
-			$dest	= JFactory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
+			$dest	= Factory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
 
 			if ($fileExt !== 'xml' && $fileExt !== 'zip')
 			{
-				$msg = JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_TYPE');
-				$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
+				$msg = Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_TYPE');
+				$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
 				$this->setRedirect($link, $msg, 'error');
 
 				// Check if the extension is identical to the selected file format
@@ -312,10 +321,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			}
 			else
 			{ // Everything is fine
-				if (JFile::upload($src, $dest) === false)
+				if (File::upload($src, $dest) === false)
 				{
-					$msg	= JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
-					$link	= JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
+					$msg	= Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
+					$link	= Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
 					$this->setRedirect($link, $msg, 'error');
 				}
 				else
@@ -327,7 +336,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 					$app->setUserState('com_bwpostman.maintenance.dest', $dest);
 
-					$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance&layout=doRestore', false);
+					$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=doRestore', false);
 				}
 			}
 		}
@@ -341,16 +350,16 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @return boolean
 	 *
-	 * @throws  \Exception
+	 * @throws  Exception
 	 *
 	 * @since       2.3.0
 	 */
 	public function startCron()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
 
-		$plugin = JPluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
 		$pluginParams = new JRegistry();
 		$pluginParams->loadString($plugin->params);
 		$pluginUser = $pluginParams->get('bwtimecontrol_username',null);
@@ -358,17 +367,17 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 		if ($pluginUser === null || $pluginPw === null)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_NO_CREDENTIALS'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('PLG_BWTIMECONTROL_NO_CREDENTIALS'), 'error');
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 
 			return false;
 		}
 		else
 		{
-			JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-			$results = JFactory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron', array());
+			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+			$results = Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron', array());
 
 			if ($results[0] !== true)
 			{
@@ -378,11 +387,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					$error .= $result . '<br />';
 				}
 
-				$error .= JText::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON');
-				JFactory::getApplication()->enqueueMessage($error, 'error');
+				$error .= Text::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON');
+				Factory::getApplication()->enqueueMessage($error, 'error');
 			}
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 			$this->setRedirect($link);
 			return true;
 		}
@@ -392,19 +401,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * Method to stop cron server
 	 *
 	 * @return boolean
-	 * @throws \Exception
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
 	public function stopCron()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
-		JPluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-		JFactory::getApplication()->triggerEvent('onBwPostmanMaintenanceStopCron', array());
+		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+		Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStopCron', array());
 
-		$link = JRoute::_('index.php?option=com_bwpostman&view=maintenance', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 		$this->setRedirect($link);
 		return true;
 	}

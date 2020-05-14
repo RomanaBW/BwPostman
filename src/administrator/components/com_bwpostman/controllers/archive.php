@@ -30,7 +30,11 @@ defined('_JEXEC') or die('Restricted access');
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controller');
 
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 // Import helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -74,7 +78,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	{
 		if (!BwPostmanHelper::canView('archive'))
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
@@ -149,12 +153,12 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 */
 	public function unarchive()
 	{
-		$app	= JFactory::getApplication();
-		$jinput	= JFactory::getApplication()->input;
+		$app	= Factory::getApplication();
+		$jinput	= Factory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken()) {
-			jexit(JText::_('JINVALID_TOKEN'));
+		if (!Session::checkToken()) {
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		$tab = $jinput->get('layout', 'newsletters');
@@ -167,7 +171,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		if (!$this->allowRestore($view, $cid))
 		{
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=com_bwpostman&view=archive&layout=' . $tab,
 					false
 				)
@@ -187,11 +191,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NLS', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NLS', true);
 					}
 					else
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NL', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_NL', true);
 					}
 
 					echo "<script>alert ('" . $alert . "'); window.history.go(-1); </script>\n";
@@ -200,11 +204,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_NLS_UNARCHIVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_NL_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_NL_UNARCHIVED');
 					}
 
 					$app->enqueueMessage($msg);
@@ -219,11 +223,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUBS', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUBS', true);
 					}
 					else
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUB', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_SUB', true);
 					}
 
 					echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
@@ -232,11 +236,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_SUBS_UNARCHIVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_SUB_UNARCHIVED');
 					}
 
 					$app->enqueueMessage($msg);
@@ -256,11 +260,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					{
 						if ($unarchive_nl)
 						{
-							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS_NL', true);
+							$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS_NL', true);
 						}
 						else
 						{
-							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS', true);
+							$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS', true);
 						}
 
 						echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
@@ -269,11 +273,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					{
 						if ($unarchive_nl)
 						{
-							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM_NL', true);
+							$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM_NL', true);
 						}
 						else
 						{
-							$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM', true);
+							$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM', true);
 						}
 
 						echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
@@ -284,22 +288,22 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					{
 						if ($unarchive_nl)
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_UNARCHIVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAMS_NL_UNARCHIVED');
 						}
 						else
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_UNARCHIVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAMS_UNARCHIVED');
 						}
 					}
 					else
 					{
 						if ($unarchive_nl)
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_UNARCHIVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAM_NL_UNARCHIVED');
 						}
 						else
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_UNARCHIVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAM_UNARCHIVED');
 						}
 					}
 
@@ -315,11 +319,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_MLS', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_MLS', true);
 					}
 					else
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_ML', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_ML', true);
 					}
 
 					echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
@@ -328,11 +332,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_MLS_UNARCHIVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ML_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ML_UNARCHIVED');
 					}
 
 					$app->enqueueMessage($msg);
@@ -347,11 +351,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPLS', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPLS', true);
 					}
 					else
 					{
-						$alert = JText::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPL', true);
+						$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_TPL', true);
 					}
 
 					echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
@@ -360,11 +364,11 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				{
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_TPLS_UNARCHIVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_UNARCHIVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_TPL_UNARCHIVED');
 					}
 
 					$app->enqueueMessage($msg);
@@ -389,15 +393,15 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$tab	= $jinput->get('layout', 'newsletters');
 		$cid	= $jinput->get('cid', array(0), 'post');
 		$type	= 'message';
@@ -409,10 +413,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		if (!$this->allowDelete($view, $cid))
 		{
 			$this->setRedirect(
-				JRoute::_(
-					'index.php?option=com_bwpostman&view=archive&layout=' . $tab,
-					false
-				)
+				Route::_('index.php?option=com_bwpostman&view=archive&layout=' . $tab, false)
 			);
 			return false;
 		}
@@ -430,22 +431,22 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					$type	= 'error';
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NLS');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NLS');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NL');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_NL');
 					}
 				}
 				else
 				{
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_NLS_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_NLS_REMOVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_NL_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_NL_REMOVED');
 					}
 				}
 				break;
@@ -458,22 +459,22 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					$type	= 'error';
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUBS');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUBS');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUB');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_SUB');
 					}
 				}
 				else
 				{
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_SUBS_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_SUBS_REMOVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_SUB_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_SUB_REMOVED');
 					}
 				}
 				break;
@@ -489,21 +490,21 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					if ($n > 1) {
 						if ($remove_nl)
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NL');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NL');
 						}
 						else
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS');
 						}
 					}
 					else {
 						if ($remove_nl)
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM_NL');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM_NL');
 						}
 						else
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAM');
 						}
 					}
 				}
@@ -512,21 +513,21 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					{
 						if ($remove_nl)
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_NL_REMOVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAMS_NL_REMOVED');
 						}
 						else
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAMS_REMOVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAMS_REMOVED');
 						}
 					}
 					else {
 						if ($remove_nl)
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_NL_REMOVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAM_NL_REMOVED');
 						}
 						else
 						{
-							$msg = JText::_('COM_BWPOSTMAN_ARC_CAM_REMOVED');
+							$msg = Text::_('COM_BWPOSTMAN_ARC_CAM_REMOVED');
 						}
 					}
 				}
@@ -540,22 +541,22 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					$type	= 'error';
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_ML');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_ML');
 					}
 				}
 				else
 				{
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_MLS_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_MLS_REMOVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ML_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ML_REMOVED');
 					}
 				}
 				break;
@@ -568,21 +569,21 @@ class BwPostmanControllerArchive extends JControllerLegacy
 					$type	= 'error';
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPLS');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPLS');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPL');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_ERROR_REMOVING_TPL');
 					}
 				}
 				else {
 					if ($n > 1)
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_TPLS_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_TPLS_REMOVED');
 					}
 					else
 					{
-						$msg = JText::_('COM_BWPOSTMAN_ARC_TPL_REMOVED');
+						$msg = Text::_('COM_BWPOSTMAN_ARC_TPL_REMOVED');
 					}
 				}
 				break;

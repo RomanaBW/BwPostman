@@ -27,6 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
 
@@ -47,7 +52,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	/**
 	 * Method to call the layout for the template upload and install process
 	 *
-	 * @access	public
+	 * @return void
 	 *
 	 * @throws BwException
 	 * @throws Exception
@@ -57,12 +62,12 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	public function installtpl()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken('get'))
+		if (!Session::checkToken('get'))
 		{
-			throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+			throw new BwException((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 		}
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$appWeb = new BwWebApp();
 		$jinput	= $app->input;
 
@@ -75,9 +80,6 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		$file = $app->getUserState('com_bwpostman.templates.uploadfile', '');
 
 		$model	= $this->getModel('templates');
-
-		$log_options  = array();
-		$logger      = BwLogger::getInstance($log_options);
 
 		try
 		{
@@ -92,8 +94,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					if (!$model->extractTplFiles($file))
 					{
 						$model->deleteTempFolder($file);
-						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
-						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
+						echo '<h3 class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$msg    = Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						$alertClass = 'error';
 						$ready = "1";
 					}
@@ -107,8 +109,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					if (!$model->installTplFiles($templatestplsql, $step))
 					{
 						$model->deleteTempFolder($file);
-						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
-						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$msg    = Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
+						echo '<h3 class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$alertClass = 'error';
 						$ready = "1";
 					}
@@ -122,8 +124,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					if (!$model->installTplFiles($templatessql, $step))
 					{
 						$model->deleteTempFolder($file);
-						echo '<h3 class="bw_tablecheck_error">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
-						$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
+						echo '<h3 class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$msg    = Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 						$alertClass = 'error';
 						$ready = "1";
 					}
@@ -151,7 +153,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 					$app->setUserState('com_bwpostman.templates.uploadfile', '');
 					$ready = "1";
 					$step = "6";
-					echo '<h3 class="bw_tablecheck_ok">' . JText::_('COM_BWPOSTMAN_TPL_INSTALL_OK') . '</h3>';
+					echo '<h3 class="bw_tablecheck_ok">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_OK') . '</h3>';
 					break;
 			}
 
@@ -179,7 +181,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		catch (BwException $e)
 		{
 			$result  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
-			$msg    = JText::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
+			$msg    = Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR');
 			$alertClass = 'error';
 			$ready      = "1";
 			$step       = "6";
@@ -200,13 +202,13 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 		if ($msg)
 		{ // install failed
-			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates', false);
+			$link	= Route::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, $msg, 'error');
 		}
 		else
 		{ // template installed
-			$msg	= JText::_('COM_BWPOSTMAN_TPL_UPLOAD_OK');
-			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates', false);
+			$msg	= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_OK');
+			$link	= Route::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, $msg);
 		}
 	}

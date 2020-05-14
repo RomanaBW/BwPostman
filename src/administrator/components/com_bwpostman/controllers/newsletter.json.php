@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
@@ -51,7 +52,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 	/**
 	 * Method to call newsletter sending process via ajax
 	 *
-	 * @access	public
+	 * @return 	boolean
 	 *
 	 * @since   2.4.0
 	 */
@@ -60,8 +61,8 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 		try
 		{
 			// Check for request forgeries
-			if (!JSession::checkToken('get')) {
-				throw new BwException((JText::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+			if (!Session::checkToken('get')) {
+				throw new BwException((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
 			$app 	= Factory::getApplication();
@@ -100,7 +101,6 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 			$published = "secondary";
 			$nopublished = "secondary";
 			$ready = "0";
-			$result = "";
 			$error = "secondary";
 
 			// start output buffer
@@ -207,17 +207,18 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 		catch (BwException $e)
 		{
 			echo $e->getMessage();
-			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			$msg['message']	= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
 			$msg['type']	= 'error';
 		}
 
 		catch (Exception $e)
 		{
 			echo $e->getMessage();
-			$msg['message']	= JText::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			$msg['message']	= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
 			$msg['type']	= 'error';
 		}
-	}
 
+		return true;
+	}
 }
 

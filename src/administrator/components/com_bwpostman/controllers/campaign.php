@@ -30,7 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');
 
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -76,7 +81,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 	}
@@ -89,13 +94,15 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 *
 	 * @return  BwPostmanControllerCampaign		This object to support chaining.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
 		if (!$this->permissions['view']['campaign'])
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
@@ -126,7 +133,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 *
 	 * @return	boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -142,7 +149,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 *
 	 * @return	boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	2.0.0
 	 */
@@ -169,16 +176,22 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
 	 * (sometimes required to avoid router collisions).
 	 *
-	 * @throws Exception
-	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
+	 *
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
 	public function edit($key = null, $urlVar = null)
 	{
+		// Check for request forgeries
+		if (!Session::checkToken())
+		{
+			jexit(Text::_('JINVALID_TOKEN'));
+		}
+
 		// Initialise variables.
-		$jinput		= JFactory::getApplication()->input;
+		$jinput		= Factory::getApplication()->input;
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		$cid		= $jinput->post->get('cid', array(), 'array');
@@ -212,9 +225,9 @@ class BwPostmanControllerCampaign extends JControllerForm
 
 		if (!$allowed)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
 					. $this->getRedirectToListAppend(),
 					false
@@ -227,11 +240,11 @@ class BwPostmanControllerCampaign extends JControllerForm
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
+			Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
 
 			// …and do not allow the user to see the record.
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
 					. $this->getRedirectToItemAppend($recordId, $urlVar),
 					false
@@ -246,7 +259,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 			$this->holdEditId($context, $recordId);
 
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
 					. $this->getRedirectToItemAppend($recordId, $urlVar),
 					false
@@ -260,14 +273,12 @@ class BwPostmanControllerCampaign extends JControllerForm
 	/**
 	 * Override method to save a campaign
 	 *
-	 * @access	public
-	 *
 	 * @param   string  $key     The name of the primary key of the URL variable.
 	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 *
@@ -275,10 +286,16 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function save($key = null, $urlVar = null)
 	{
 
+		// Check for request forgeries
+		if (!Session::checkToken())
+		{
+			jexit(Text::_('JINVALID_TOKEN'));
+		}
+
 		parent::save();
 
-		JPluginHelper::importPlugin('bwpostman');
-		JFactory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave', array());
+		PluginHelper::importPlugin('bwpostman');
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave', array());
 	}
 
 	/**
@@ -294,12 +311,12 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function archive()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// If archive_nl = 1 the assigned newsletters shall be archived, too
 		$archive_nl = $jinput->get('archive_nl');
@@ -312,13 +329,13 @@ class BwPostmanControllerCampaign extends JControllerForm
 		if (!$this->allowArchive($cid))
 		{
 			$this->setRedirect(
-				JRoute::_(
+				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
 					. $this->getRedirectToListAppend(),
 					false
 				)
 			);
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
 
 			return false;
 		}
@@ -331,21 +348,21 @@ class BwPostmanControllerCampaign extends JControllerForm
 			if ($n > 1) {
 				if ($archive_nl)
 				{
-					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAMS_NL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_CAMS_NL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 				else
 				{
-					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAMS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_CAMS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 			}
 			else {
 				if ($archive_nl)
 				{
-					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAM_NL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_CAM_NL_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 				else
 				{
-					echo "<script> alert ('" . JText::_('COM_BWPOSTMAN_CAM_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+					echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_CAM_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
 				}
 			}
 		}
@@ -355,26 +372,26 @@ class BwPostmanControllerCampaign extends JControllerForm
 			{
 				if ($archive_nl)
 				{
-					$msg = JText::_('COM_BWPOSTMAN_CAMS_NL_ARCHIVED');
+					$msg = Text::_('COM_BWPOSTMAN_CAMS_NL_ARCHIVED');
 				}
 				else
 				{
-					$msg = JText::_('COM_BWPOSTMAN_CAMS_ARCHIVED');
+					$msg = Text::_('COM_BWPOSTMAN_CAMS_ARCHIVED');
 				}
 			}
 			else
 			{
 				if ($archive_nl)
 				{
-					$msg = JText::_('COM_BWPOSTMAN_CAM_NL_ARCHIVED');
+					$msg = Text::_('COM_BWPOSTMAN_CAM_NL_ARCHIVED');
 				}
 				else
 				{
-					$msg = JText::_('COM_BWPOSTMAN_CAM_ARCHIVED');
+					$msg = Text::_('COM_BWPOSTMAN_CAM_ARCHIVED');
 				}
 			}
 
-			$link = JRoute::_('index.php?option=com_bwpostman&view=campaigns', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=campaigns', false);
 
 			$this->setRedirect($link, $msg);
 		}

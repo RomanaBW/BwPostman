@@ -26,14 +26,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Helper\MediaHelper;
+use Joomla\CMS\Log\LogEntry;
 
-$m_params = JComponentHelper::getParams('com_media');
+$m_params = ComponentHelper::getParams('com_media');
 define('COM_MEDIA_BASE', JPATH_ROOT . '/' . $m_params->get('file_path', 'images'));
 
-// Load the helper class
-require_once JPATH_ADMINISTRATOR . '/components/com_media/helpers/media.php';
+// Load the logger class
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman File Media Controller
@@ -52,34 +60,35 @@ class BwPostmanControllerFile extends JControllerLegacy
 	 *
 	 * @since	1.0.4
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	function upload()
 	{
-		$params = JComponentHelper::getParams('com_media');
+		$params = ComponentHelper::getParams('com_media');
+		$logger = BwLogger::getInstance(array());
 
 		// Check for request forgeries
-		if (!JSession::checkToken('request'))
+		if (!Session::checkToken('request'))
 		{
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('JINVALID_TOKEN')
+				'error' => Text::_('JINVALID_TOKEN')
 			);
 			echo json_encode($response);
 			return;
 		}
 
 		// Get the user
-		$user = JFactory::getUser();
-		JLog::addLogger(array('text_file' => 'upload.error.php'), JLog::ALL, array('upload'));
+		$user = Factory::getUser();
+
 
 		// Get some data from the request
 		$file	= $this->input->files->get('Filedata', '', 'array');
 		$folder	= $this->input->get('folder', '', 'path');
 
 		// Instantiate the media helper
-		$mediaHelper = new JHelperMedia;
-		$contentLength = JFactory::getApplication()->input->server->get('CONTENT_LENGTH', '', '');
+		$mediaHelper = new MediaHelper();
+		$contentLength = Factory::getApplication()->input->server->get('CONTENT_LENGTH', '', '');
 
 		if (
 			$contentLength > ($params->get('upload_maxsize', 0) * 1024 * 1024) ||
@@ -90,32 +99,33 @@ class BwPostmanControllerFile extends JControllerLegacy
 		{
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNFILETOOLARGE')
+				'error' => Text::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNFILETOOLARGE')
 			);
 			echo json_encode($response);
 			return;
 		}
 
 		// Set FTP credentials, if given
-		JClientHelper::setCredentialsFromRequest('ftp');
+		ClientHelper::setCredentialsFromRequest('ftp');
 
 		// Make the filename safe
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = File::makeSafe($file['name']);
 
 		if (isset($file['name']))
 		{
 			// The request is valid
 			$err = null;
 
-			$filepath = JPath::clean(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
+			$filepath = Path::clean(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
 
 			if (!$mediaHelper->canUpload($file, 'com_media'))
 			{
-				JLog::add('Invalid: ' . $filepath . ': ' . $err, JLog::INFO, 'upload');
+				$message = 'Invalid: ' . $filepath . ': ' . $err;
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'upload'));
 
 				$response = array(
 					'status' => '0',
-					'error' => JText::_($err)
+					'error' => Text::_($err)
 				);
 
 				echo json_encode($response);
@@ -123,19 +133,20 @@ class BwPostmanControllerFile extends JControllerLegacy
 			}
 
 			// Trigger the onContentBeforeSave event.
-			JPluginHelper::importPlugin('content');
+			PluginHelper::importPlugin('content');
 
 			$object_file	        = new JObject($file);
 			$object_file->filepath  = $filepath;
 
-			if (JFile::exists($object_file->filepath))
+			if (File::exists($object_file->filepath))
 			{
 				// File exists
-				JLog::add('File exists: ' . $object_file->filepath . ' by user_id ' . $user->id, JLog::INFO, 'upload');
+				$message = 'File exists: ' . $object_file->filepath . ' by user_id ' . $user->id;
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'upload'));
 
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_BWPOSTMAN_MEDIA_ERROR_FILE_EXISTS')
+					'error' => Text::_('COM_BWPOSTMAN_MEDIA_ERROR_FILE_EXISTS')
 				);
 
 				echo json_encode($response);
@@ -144,25 +155,27 @@ class BwPostmanControllerFile extends JControllerLegacy
 			elseif (!$user->authorise('core.create', 'com_media'))
 			{
 				// File does not exist and user is not authorised to create
-				JLog::add('Create not permitted: ' . $object_file->filepath . ' by user_id ' . $user->id, JLog::INFO, 'upload');
+				$message = 'Create not permitted: ' . $object_file->filepath . ' by user_id ' . $user->id;
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'upload'));
 
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_BWPOSTMAN_MEDIA_ERROR_CREATE_NOT_PERMITTED')
+					'error' => Text::_('COM_BWPOSTMAN_MEDIA_ERROR_CREATE_NOT_PERMITTED')
 				);
 
 				echo json_encode($response);
 				return;
 			}
 
-			if (!JFile::upload($object_file->tmp_name, $object_file->filepath))
+			if (!File::upload($object_file->tmp_name, $object_file->filepath))
 			{
 				// Error in upload
-				JLog::add('Error on upload: ' . $object_file->filepath, JLog::INFO, 'upload');
+				$message = 'Error on upload: ' . $object_file->filepath;
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'upload'));
 
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_BWPOSTMAN_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
+					'error' => Text::_('COM_BWPOSTMAN_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
 				);
 
 				echo json_encode($response);
@@ -170,11 +183,11 @@ class BwPostmanControllerFile extends JControllerLegacy
 			}
 			else
 			{
-				JLog::add($folder, JLog::INFO, 'upload');
+				$logger->addEntry(new LogEntry($folder, BwLogger::BW_INFO, 'upload'));
 
 				$response = array(
 					'status' => '1',
-					'error' => JText::sprintf('COM_BWPOSTMAN_MEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_MEDIA_BASE)))
+					'error' => Text::sprintf('COM_BWPOSTMAN_MEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_MEDIA_BASE)))
 				);
 
 				echo json_encode($response);
@@ -185,7 +198,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 		{
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('COM_BWPOSTMAN_MEDIA_ERROR_BAD_REQUEST')
+				'error' => Text::_('COM_BWPOSTMAN_MEDIA_ERROR_BAD_REQUEST')
 			);
 
 			echo json_encode($response);

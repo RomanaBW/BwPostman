@@ -27,6 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\Utilities\ArrayHelper;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
 
@@ -78,7 +85,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
 
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 	}
 
 	/**
@@ -88,7 +95,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 * @param	string	$prefix 	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModel
+	 * @return bool|BaseDatabaseModel
 	 *
 	 * @since	1.0.1
 	 */
@@ -103,7 +110,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 * Display
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   boolean  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
 	 * @return  BwPostmanControllerMailinglists		This object to support chaining.
 	 *
@@ -115,27 +122,21 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	{
 		if (!$this->permissions['view']['mailinglist'])
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
 
-		$jinput		= JFactory::getApplication()->input;
+		$jinput		= Factory::getApplication()->input;
 
 		// Show the layout depending on the task
 		switch($this->getTask())
 		{
 			case 'add':
-				$jinput->set('hidemainmenu', 1);
-				$jinput->set('layout', 'form');
-				$jinput->set('view', 'mailinglist');
-				break;
-
 			case 'edit':
 				$jinput->set('hidemainmenu', 1);
 				$jinput->set('layout', 'form');
 				$jinput->set('view', 'mailinglist');
-
 				break;
 			default:
 				$jinput->set('hidemainmenu', 0);
@@ -166,8 +167,8 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 
 			if (!$allowed)
 			{
-				$link = JRoute::_('index.php?option=com_bwpostman&view=mailinglists', false);
-				$this->setRedirect($link, JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+				$link = Route::_('index.php?option=com_bwpostman&view=mailinglists', false);
+				$this->setRedirect($link, Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
 
 				return false;
 			}
@@ -189,17 +190,17 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 */
 	public function publish()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Get the selected mailinglists(s)
 		$cid = $jinput->get('cid', array(0), 'post');
-		\Joomla\Utilities\ArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		// Access check
 		if (!$this->allowPublish($cid))

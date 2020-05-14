@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 
 /**
  * Class BwPostmanHelper
@@ -154,5 +155,32 @@ abstract class BwPostmanTplHelper
 		$legal_tag_end .= '   </tbody></table>' . "\n";
 
 		return $legal_tag_end;
+	}
+
+	/**
+	 * Method to get the number of standard templates
+	 *
+	 * @param $cid
+	 *
+	 * @return int
+	 *
+	 * @since 2.4.0
+	 */
+	public static function getNumberOfStdTemplates($cid)
+	{
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		// count selected standard templates
+		$query->select($db->quoteName('standard'));
+		$query->from($db->quoteName('#__bwpostman_templates'));
+		$query->where($db->quoteName('id') . " IN (" . implode(",", $cid) . ")");
+		$query->where($db->quoteName('standard') . " = " . $db->quote(1));
+
+		$db->setQuery($query);
+		$db->execute();
+		$count_std = $db->getNumRows();
+
+		return $count_std;
 	}
 }

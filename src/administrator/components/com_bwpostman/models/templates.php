@@ -31,6 +31,9 @@ use Joomla\Archive\Archive;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -110,6 +113,8 @@ class BwPostmanModelTemplates extends JModelList
 	 * Constructor
 	 * --> handles the pagination and set the Templates key
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.1.0
 	 */
 	public function __construct()
@@ -151,7 +156,7 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		$layout = $app->input->get('layout');
@@ -332,7 +337,7 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
 			if ($access)
@@ -355,9 +360,9 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	private function getFilterByViewLevel()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			if (!$user->authorise('core.admin'))
 			{
@@ -526,7 +531,7 @@ class BwPostmanModelTemplates extends JModelList
 	public function uploadTplFiles($file)
 	{
 		// Access check.
-		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 		if (!$permissions['template']['create'])
 		{
 			return false;
@@ -543,7 +548,7 @@ class BwPostmanModelTemplates extends JModelList
 		// Set up the source and destination of the file
 		$src = $file['tmp_name'];
 		$ext = File::getExt($filename);
-		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$tempPath = Factory::getConfig()->get('tmp_path');
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 
 		// If the file isn't okay, redirect to templates
@@ -611,7 +616,7 @@ class BwPostmanModelTemplates extends JModelList
 
 		$filename = File::makeSafe($file['name']);
 		$ext = File::getExt($filename);
-		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$tempPath = Factory::getConfig()->get('tmp_path');
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
 
@@ -647,9 +652,9 @@ class BwPostmanModelTemplates extends JModelList
 	public function installTplFiles(&$sql, $step)
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 
-		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$tempPath = Factory::getConfig()->get('tmp_path');
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
 
 		//we call sql file for the templates data
@@ -682,7 +687,7 @@ class BwPostmanModelTemplates extends JModelList
 						}
 						catch (RuntimeException $e)
 						{
-							JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+							Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 						}
 					}
 				}//end foreach
@@ -713,7 +718,7 @@ class BwPostmanModelTemplates extends JModelList
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$tempPath = Factory::getConfig()->get('tmp_path');
 		$imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
 
 		// make new folder and copy template thumbnails
@@ -828,7 +833,7 @@ class BwPostmanModelTemplates extends JModelList
 
 		$filename = File::makeSafe($file['name']);
 		$ext = File::getExt($filename);
-		$tempPath = JFactory::getConfig()->get('tmp_path');
+		$tempPath = Factory::getConfig()->get('tmp_path');
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 
@@ -892,7 +897,7 @@ class BwPostmanModelTemplates extends JModelList
 		// @ToDo: What is this method good for?
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			$appReflection = new ReflectionClass(get_class($app));
 			$_messageQueue = $appReflection->getProperty('_messageQueue');
 			$_messageQueue->setAccessible(true);
@@ -919,12 +924,12 @@ class BwPostmanModelTemplates extends JModelList
 	{
 		if (!isset($this->basename))
 		{
-			$jinput         = JFactory::getApplication()->input;
+			$jinput         = Factory::getApplication()->input;
 			$this->exportId = $jinput->get('id');
 
 			jimport('joomla.filesystem.file');
 
-			$app = JFactory::getApplication('administrator');
+			$app = Factory::getApplication('administrator');
 			$this->tmp_path = $app->get('tmp_path') . '/';
 
 			$basename = 'bwpostman_template_export_id_' . $this->exportId . '.zip';
@@ -1026,7 +1031,7 @@ class BwPostmanModelTemplates extends JModelList
 				}
 				catch (RuntimeException $e)
 				{
-					$errormsg = JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					$errormsg = Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 					$this->errRedirect($errormsg);
 				}
 
@@ -1231,8 +1236,8 @@ class BwPostmanModelTemplates extends JModelList
 		// Delete thumbnail in tmp folder
 		Folder::delete($this->tmp_path . 'images');
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$app->enqueueMessage($errormsg, $type);
-		$app->redirect(JRoute::_('index.php?option=com_bwpostman&view=templates', false));
+		$app->redirect(Route::_('index.php?option=com_bwpostman&view=templates', false));
 	}
 }

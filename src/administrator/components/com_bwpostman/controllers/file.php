@@ -26,8 +26,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Helper\MediaHelper;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
 
 $m_params = JComponentHelper::getParams('com_media');
 define('COM_MEDIA_BASE', JPATH_ROOT . '/' . $m_params->get('file_path', 'images'));
@@ -66,13 +73,13 @@ class BwPostmanControllerFile extends JControllerLegacy
 	public function upload()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
-		$params = JComponentHelper::getParams('com_media');
+		Session::checkToken('request') or jexit(Text::_('JINVALID_TOKEN'));
+		$params = ComponentHelper::getParams('com_media');
 
 		// Get some data from the request
 		$files			= $this->input->files->get('Filedata', '', 'array');
 		$this->folder	= $this->input->get('folder', '', 'path');
-		$return			= JFactory::getSession()->get('com_bwpostman.media.return_url');
+		$return			= Factory::getSession()->get('com_bwpostman.media.return_url');
 
 		// Set the redirect
 		if ($return)
@@ -91,10 +98,10 @@ class BwPostmanControllerFile extends JControllerLegacy
 		}
 
 		// Total length of post back data in bytes.
-		$contentLength = (int) JFactory::getApplication()->input->server->get('CONTENT_LENGTH', '', '');
+		$contentLength = (int) Factory::getApplication()->input->server->get('CONTENT_LENGTH', '', '');
 
 		// Instantiate the media helper
-		$mediaHelper = new JHelperMedia;
+		$mediaHelper = new MediaHelper();
 
 		// Maximum allowed size of post back data in MB.
 		$postMaxSize = $mediaHelper->toBytes(ini_get('post_max_size'));
@@ -106,7 +113,7 @@ class BwPostmanControllerFile extends JControllerLegacy
 		if (($postMaxSize > 0 && $contentLength > $postMaxSize)
 			|| ($memoryLimit != -1 && $contentLength > $memoryLimit))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNUPLOADTOOLARGE'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNUPLOADTOOLARGE'), 'warning');
 
 			return false;
 		}
@@ -117,42 +124,42 @@ class BwPostmanControllerFile extends JControllerLegacy
 		// Perform basic checks on file info before attempting anything
 		foreach ($files as &$file)
 		{
-			$file['name']		= JFile::makeSafe($file['name']);
-			$file['filepath']	= JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $file['name'])));
+			$file['name']		= File::makeSafe($file['name']);
+			$file['filepath']	= Path::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $file['name'])));
 
 			if (($file['error'] == 1)
 				|| ($uploadMaxSize > 0 && $file['size'] > $uploadMaxSize)
 				|| ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
 			{
 				// File size exceed either 'upload_max_filesize' or 'upload_maxsize'.
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNFILETOOLARGE'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MEDIA_ERROR_WARNFILETOOLARGE'), 'warning');
 
 				return false;
 			}
 
-			if (JFile::exists($file['filepath']))
+			if (File::exists($file['filepath']))
 			{
 				// A file with this name already exists
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_FILE_EXISTS'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MEDIA_ERROR_FILE_EXISTS'), 'warning');
 
 				return false;
 			}
 
 			if (!isset($file['name']))
 			{
-				// No filename (after the name was cleaned by JFile::makeSafe)
-				$this->setRedirect('index.php', JText::_('COM_BWPOSTMAN_MEDIA_INVALID_REQUEST'), 'error');
+				// No filename (after the name was cleaned by File::makeSafe)
+				$this->setRedirect('index.php', Text::_('COM_BWPOSTMAN_MEDIA_INVALID_REQUEST'), 'error');
 
 				return false;
 			}
 		}
 
 		// Set FTP credentials, if given
-		JClientHelper::setCredentialsFromRequest('ftp');
-		JPluginHelper::importPlugin('content');
+		ClientHelper::setCredentialsFromRequest('ftp');
+		PluginHelper::importPlugin('content');
 
 		// Instantiate the media helper
-		$mediaHelper = new JHelperMedia;
+		$mediaHelper = new MediaHelper();
 
 		foreach ($files as &$file)
 		{
@@ -169,16 +176,16 @@ class BwPostmanControllerFile extends JControllerLegacy
 			// Trigger the onContentBeforeSave event.
 			$object_file = new JObject($file);
 
-			if (!JFile::upload($object_file->tmp_name, $object_file->filepath))
+			if (!File::upload($object_file->tmp_name, $object_file->filepath))
 			{
 				// Error in upload
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'), 'warning');
 
 				return false;
 			}
 			else
 			{
-				$this->setMessage(JText::sprintf('COM_BWPOSTMAN_MEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_MEDIA_BASE))));
+				$this->setMessage(Text::sprintf('COM_BWPOSTMAN_MEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_MEDIA_BASE))));
 			}
 		}
 
@@ -196,10 +203,10 @@ class BwPostmanControllerFile extends JControllerLegacy
 	 */
 	protected function authoriseUser($action)
 	{
-		if (!JFactory::getUser()->authorise('core.' . strtolower($action), 'com_media'))
+		if (!Factory::getUser()->authorise('core.' . strtolower($action), 'com_media'))
 		{
 			// User is not authorised
-			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'), 'warning');
 
 			return false;
 		}
@@ -219,18 +226,19 @@ class BwPostmanControllerFile extends JControllerLegacy
 	 * @param	string	- file size			($files['size'])
 	 *
 	 * @return	array
-	 * @access	protected
+	 *
+	 * @since
 	 */
 	protected function reformatFilesArray($name, $type, $tmp_name, $error, $size)
 	{
-		$name = JFile::makeSafe($name);
+		$name = File::makeSafe($name);
 		return array(
 			'name'		=> $name,
 			'type'		=> $type,
 			'tmp_name'	=> $tmp_name,
 			'error'		=> $error,
 			'size'		=> $size,
-			'filepath'	=> JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
+			'filepath'	=> Path::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
 		);
 	}
 }

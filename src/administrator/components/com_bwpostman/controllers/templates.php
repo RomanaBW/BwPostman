@@ -27,10 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controlleradmin');
 
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -62,6 +67,15 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	public $permissions;
 
 	/**
+	 * property to hold id
+	 *
+	 * @var integer $id
+	 *
+	 * @since       2.4.0
+	 */
+	public $id;
+
+	/**
 	 * Constructor
 	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
@@ -74,7 +88,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 
@@ -118,12 +132,12 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	{
 		if (!$this->permissions['view']['template'])
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_bwpostman', false));
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
 			$this->redirect();
 			return $this;
 		}
 
-		$jinput		= JFactory::getApplication()->input;
+		$jinput		= Factory::getApplication()->input;
 
 		// Show the layout depending on the task
 		switch($this->getTask())
@@ -145,6 +159,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 *
 	 * @return	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since	2.0.0
 	 */
 	protected function allowPublish($recordIds = array())
@@ -155,8 +171,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 			if (!$allowed)
 			{
-				$link = JRoute::_('index.php?option=com_bwpostman&view=templates', false);
-				$this->setRedirect($link, JText::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+				$link = Route::_('index.php?option=com_bwpostman&view=templates', false);
+				$this->setRedirect($link, Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
 
 				return false;
 			}
@@ -168,8 +184,6 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	/**
 	 * Method to (un)publish a template
 	 *
-	 * @access	public
-	 *
 	 * @return	boolean
 	 *
 	 * @throws Exception
@@ -178,18 +192,18 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 */
 	public function publish()
 	{
-		$app	= JFactory::getApplication();
-		$jinput	= JFactory::getApplication()->input;
+		$app	= Factory::getApplication();
+		$jinput	= Factory::getApplication()->input;
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Get the selected template(s)
 		$cid = $jinput->get('cid', array(0), 'post');
-		\Joomla\Utilities\ArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		// Access check
 		if (!$this->allowPublish($cid))
@@ -197,34 +211,14 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			return false;
 		}
 
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-
-		// count selected standard templates
-		$query->select($db->quoteName('standard'));
-		$query->from($db->quoteName('#__bwpostman_templates'));
-		$query->where($db->quoteName('id') . " IN (" . implode(",", $cid) . ")");
-		$query->where($db->quoteName('standard') . " = " . $db->quote(1));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		$count_std = $db->getNumRows();
+		$count_std = BwPostmanTplHelper::getNumberOfStdTemplates($cid);
 
 		// unpublish only, if no standard template is selected
 		if ($count_std > 0 && $this->getTask() == 'unpublish')
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
-			$link = JRoute::_('index.php?option=com_bwpostman&view=templates', false);
-			$this->setRedirect($link, JText::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
+			$link = Route::_('index.php?option=com_bwpostman&view=templates', false);
+			$this->setRedirect($link, Text::_('COM_BWPOSTMAN_CANNOT_UNPUBLISH_STD_TPL'), 'error');
 		}
 		else
 		{
@@ -237,18 +231,18 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	/**
 	 * Method to call the layout for the template upload and install process
 	 *
-	 * @access	public
+	 * @return boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       1.1.0
 	 */
 	public function uploadtpl()
 	{
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Access check.
@@ -257,8 +251,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			return false;
 		}
 
-		$app	= JFactory::getApplication();
-		$jinput	= JFactory::getApplication()->input;
+		$app	= Factory::getApplication();
+		$jinput	= $app->input;
+
 		// Get file details from uploaded file
 		$file = $jinput->files->get('uploadfile', null, 'raw');
 		$app->setUserState('com_bwpostman.templates.uploadfile', $file);
@@ -268,12 +263,12 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 		if ($msg)
 		{
-			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates', false);
+			$link	= Route::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, $msg, 'error');
 		}
 		else
 		{
-			$link	= JRoute::_('index.php?option=com_bwpostman&view=templates&layout=installtpl', false);
+			$link	= Route::_('index.php?option=com_bwpostman&view=templates&layout=installtpl', false);
 			$this->setRedirect($link);
 		}
 
@@ -283,7 +278,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	/**
 	 * Method to export a newsletter template
 	 *
-	 * @throws \Exception
+	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.1.0
 	 */
@@ -295,7 +292,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 		// redirect to raw view
 		$this->setRedirect(
-			JRoute::_(
+			Route::_(
 				'index.php?option=' . $this->option . '&view=templates&task=export&id=' . $this->id, false
 			)
 		);

@@ -39,6 +39,7 @@ jimport('joomla.application.component.controlleradmin');
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**
  * BwPostman Templates Controller

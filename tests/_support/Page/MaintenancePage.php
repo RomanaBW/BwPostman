@@ -120,7 +120,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $headingRestoreFile   = "//*[@id='adminForm']/fieldset/legend";
+	public static $headingRestoreFile   = "//*[@id='adminForm']/fieldset/div[@class='h2']";
 
 	/**
 	 * @var string
@@ -300,7 +300,7 @@ class MaintenancePage
 
 		$I->attachFile("//*[@id='restorefile']", $filename);
 
-		$I->click("//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
+		$I->click("//*/input[contains(@class, 'btn-success')]");
 		$I->dontSeeElement(Generals::$alert_error);
 
 		$I->waitForElementVisible(self::$step1Field, 30);

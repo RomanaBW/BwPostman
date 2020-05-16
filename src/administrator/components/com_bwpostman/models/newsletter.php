@@ -2472,6 +2472,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @param integer   $mailsPerStep     number mails to send
 	 * @param boolean   $fromComponent    do we come from component or from plugin?
+	 * @param int       $mailsPerStepDone number of mails of current step sent
 	 *
 	 * @return int	0 -> queue is empty, 1 -> maximum reached, 2 -> fatal error
 	 *
@@ -2479,40 +2480,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true, $mailsPerStepDone = 0, $ajaxCall = false)
+	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true, $mailsPerStepDone = 0)
 	{
 		$this->logger->addEntry(new LogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep, BwLogger::BW_INFO, 'send'));
 		$this->sendmessage = '';
 
 		try
 		{
-			if($ajaxCall === false)
-			{
-				$sendMailCounter = 0;
-				echo '<strong>' . Text::_('COM_BWPOSTMAN_NL_SENDING_PROCESS') . '</strong><br />';
-//				ob_flush();
-//				flush();
-			}
-			else
-			{
-				$sendMailCounter = $mailsPerStepDone;
-				$counter = 0;
-			}
+			$sendMailCounter = $mailsPerStepDone;
+			$counter = 0;
 
 			while(1)
 			{
 				$ret = $this->sendMail($fromComponent);
-				if($ajaxCall === false)
-				{
-					echo $this->sendmessage;
-//					ob_flush();
-//					flush();
-				}
-				else
-				{
-					echo $this->sendmessage;
-					$this->sendmessage = '';
-				}
+				echo $this->sendmessage;
+				$this->sendmessage = '';
 
 				if ($ret == 0)
 				{                              // Queue is empty!
@@ -2527,14 +2509,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					break;
 				}
 
-				if($ajaxCall !== false)
-				{
-					$counter++;
-					if ($counter >= 10)
-					{     // package for ajax call
-						return $sendMailCounter;
-						break;
-					}
+				$counter++;
+				if ($counter >= 10)
+				{     // package for ajax call
+					return $sendMailCounter;
+					break;
 				}
 			}
 

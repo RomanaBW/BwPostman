@@ -31,6 +31,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 HtmlHelper::_('bootstrap.tooltip');
 HtmlHelper::_('formbehavior.chosen', 'select');

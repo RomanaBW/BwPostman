@@ -641,7 +641,6 @@ table.export {
 #error p.bw_tablecheck_error.err {
 	background-color:	#f2dede;
 	border:		1px solid #eed3d7;
-	padding :8px;
 	border-radius: 3px;
 	font-weight : bold;
 

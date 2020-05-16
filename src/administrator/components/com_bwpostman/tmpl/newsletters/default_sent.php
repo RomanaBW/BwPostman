@@ -261,7 +261,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title text-center">&nbsp;</h4>
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">X</span><span class="sr-only"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></span></button>
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></span></button>
 			</div>
 			<div class="modal-body">
 				<div class="modal-spinner fa-4x text-center">

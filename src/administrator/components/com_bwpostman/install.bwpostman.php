@@ -42,7 +42,6 @@ use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Installer\InstallerAdapter;
-use Joomla\Database\DatabaseDriver;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Component\Users\Administrator\Model\LevelModel;
 
@@ -1443,7 +1442,7 @@ class Com_BwPostmanInstallerScript
 				}
 
 				// Create an array of queries from the sql file
-				$queries = DatabaseDriver::splitSql($buffer);
+				$queries = JDatabaseDriver::splitSql($buffer);
 
 				if (count($queries) === 0)
 				{
@@ -1992,7 +1991,7 @@ class Com_BwPostmanInstallerScript
 		{
 			// Create an array of queries from the sql file
 			//			jimport('joomla.installer.helper');
-			$queries = DatabaseDriver::splitSql($buffer);
+			$queries = JDatabaseDriver::splitSql($buffer);
 
 			// No queries to process
 			if (count($queries) != 0)

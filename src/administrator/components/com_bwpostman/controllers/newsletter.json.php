@@ -52,7 +52,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 	/**
 	 * Method to call newsletter sending process via ajax
 	 *
-	 * @return 	boolean
+	 * @return 	void
 	 *
 	 * @since   2.4.0
 	 */
@@ -62,7 +62,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 		{
 			// Check for request forgeries
 			if (!Session::checkToken('get')) {
-				throw new BwException((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
 			$app 	= Factory::getApplication();
@@ -88,7 +88,9 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 			// Access check
 			if (!BwPostmanHelper::canSend($nl_id))
 			{
-				return false;
+				echo Text::_('COM_BWPOSTMAN_ERROR_SENDING_NO_PERMISSION');
+				header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+				exit;
 			}
 
 			// set defaults
@@ -114,7 +116,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 			if ($model->checkTrials(2))
 			{
 				// start sending process
-				$ret	= $model->sendMailsFromQueue($mails_per_step, true, $mailsThisStepDone, true);
+				$ret	= $model->sendMailsFromQueue($mails_per_step, true, $mailsThisStepDone);
 				// number of queue entries during sending
 				$entries = $model->checkTrials(2, 1);
 				// progressbar
@@ -204,21 +206,21 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 			echo json_encode($res);
 			$app->close();
 		}
-		catch (BwException $e)
+		catch (RuntimeException $e)
 		{
+			echo Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . '<br />';
 			echo $e->getMessage();
-			$msg['message']	= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
-			$msg['type']	= 'error';
+			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+			exit;
 		}
 
 		catch (Exception $e)
 		{
+			echo Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . '<br />';
 			echo $e->getMessage();
-			$msg['message']	= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
-			$msg['type']	= 'error';
+			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+			exit;
 		}
-
-		return true;
 	}
 }
 

@@ -89,7 +89,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		{
 			// Check for request forgeries
 			if (!Session::checkToken('get')) {
-				throw new BwException((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
 			$app = Factory::getApplication();
@@ -183,7 +183,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				}
 				else
 				{
-					$successMessage = '<p class="alert alert-success bw_tablecheck_finished">';
+					$successMessage = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
 					$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
 					$successMessage .= '</p>';
 
@@ -210,18 +210,18 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			echo json_encode($res);
 			$app->close();
 		}
-		catch (BwException $e)
+		catch (RuntimeException $e)
 		{
-			echo $e->getMessage();
-			$msg['message']	= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
-			$msg['type']	= 'error';
+			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+			exit;
 		}
 
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
-			$msg['message']	= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
-			$msg['type']	= 'error';
+			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+			exit;
 		}
 	}
 
@@ -234,20 +234,20 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function tRestore()
 	{
-		$app     = Factory::getApplication();
-
 		try
 		{
 			// Check for request forgeries
 			if (!Session::checkToken('get'))
 			{
-				throw new BwException((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
 			if (function_exists('set_time_limit'))
 			{
 				set_time_limit(0);
 			}
+
+			$app     = Factory::getApplication();
 
 			// Initialize variables
 			$jinput  = $app->input;
@@ -605,7 +605,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				}
 				else
 				{
-					$successMessage = '<p class="alert alert-success bw_tablecheck_finished">';
+					$successMessage = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
 					$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
 					$successMessage .= '</p>';
 
@@ -665,32 +665,16 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 		catch (RuntimeException $e)
 		{
-			$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
-			$this->alertClass = 'error';
-			$this->ready      = "1";
-			$step       = "12";
-
-			// set json response
-			$res = array(
-				"aClass"  => $this->alertClass,
-				"ready"   => $this->ready,
-				"result"  => '',
-				"error"   => $error,
-				"step"    => $step
-			);
-
-			// ajax response
-			$appWeb = new BwWebApp();
-			$appWeb->setHeader('Content-Type', 'application/json', true);
-			echo json_encode($res);
-			$app->close();
+			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+			exit;
 		}
 
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
-			$msg['message']	= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
-			$msg['type']	= 'error';
+			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+			exit;
 		}
 	}
 

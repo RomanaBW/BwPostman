@@ -227,6 +227,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 				$toolbar->AppendButton($button);
 				break;
 			case 'installtpl':
+				$jinput->set('hidemainmenu', true);
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL'), 'plus');
 
 				$button = new LinkButton('back');

@@ -39,21 +39,21 @@ HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.keepalive');
 
 $jinput	= Factory::getApplication()->input;
-$image	= '<i class="icon-info"></i>';
+$image = '<i class="fa fa-lg fa-info-circle"></i>';
 $option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
-	<fieldset class="adminform">
-		<legend><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SELECT_RESTORE_FILE'); ?></legend>
-		<div class="well well-small warning"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_USER_MESSAGE')?></div>
-		<div class="well well-small">
+	<fieldset class="adminform card card-body mb-2">
+		<div class="h2"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SELECT_RESTORE_FILE'); ?></div>
+		<div class="alert alert-warning"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_USER_MESSAGE')?></div>
+		<div>
 			<div class="row-fluid">
 				<table class="admintable bwptable restore">
 					<tr>
 						<td align="right" class="key">
-							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip"
+							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?>:</span>
+							<span class="editlinktip hasTip hasTooltip mr-2"
 									title="<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
@@ -64,7 +64,7 @@ $option	= $jinput->getCmd('option');
 					</tr>
 					<tr>
 						<td width="250" align="center" class="key">
-							<input type="button" class="btn btn-success" name="submitbutton"
+							<input type="button" class="btn btn-success mt-3" name="submitbutton"
 									onclick="Joomla.submitbutton('maintenance.doRestore');
 										document.getElementById('loading').style.display = 'block';"
 									value="<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_BUTTON'); ?>">

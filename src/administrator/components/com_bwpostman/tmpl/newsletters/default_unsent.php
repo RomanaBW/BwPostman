@@ -43,10 +43,6 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
-$modalParams = array();
-$modalParams['modalWidth'] = 80;
-$modalParams['bodyHeight'] = 70;
-
 // Configure featured button renderer.
 $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE']))
 	->addState(0, 'newsletter.changeIsTemplate', 'unfeatured', 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_SET_TITLE')
@@ -58,16 +54,6 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 	// Open modalbox if task == startsending --> we will show the sending process in the modalbox
 	$jinput	= Factory::getApplication()->input;
 	$task	= $jinput->get->get('task');
-
-	$link                 = Route::_('index.php?option=com_bwpostman&view=newsletter&layout=queue_modal&format=raw&task=continue_sending');
-	$title                = Text::_('COM_BWPOSTMAN_ACTION_SEND');
-	$modalParams['url']   = $link;
-	$modalParams['title'] = $title;
-	$modalParams['closeButton'] = false;
-	$modalParams['keyboard'] = false;
-	$modalParams['backdrop'] = 'static';
-
-	echo HTMLHelper::_('bootstrap.renderModal', 'sendFrame', $modalParams);
 
 	if ($task != 'startsending')
 	{
@@ -241,12 +227,3 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 		</div>
 	</form>
 </div>
-
-<?php
-// Open modalbox if task == startsending --> we will show the sending process in the modalbox
-
-if ($task == "startsending")
-{
-	Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nl_modal.js');
-}
-?>

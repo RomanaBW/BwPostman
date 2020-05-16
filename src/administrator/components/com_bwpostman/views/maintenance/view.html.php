@@ -277,6 +277,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 		// Set toolbar items for the page
 		if ($layout == 'restoreTables')
 		{
+			Factory::getApplication()->input->set('hidemainmenu', true);
 			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
 
@@ -287,6 +288,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		if ($layout == 'doRestore')
 		{
+			Factory::getApplication()->input->set('hidemainmenu', true);
 			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
 
@@ -325,11 +327,6 @@ class BwPostmanViewMaintenance extends JViewLegacy
 				. 'body {padding-top:0;}';
 			$document->addStyleDeclaration($style);
 			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
-		}
-
-		if ($this->permissions['com']['admin'])
-		{
-			ToolbarHelper::preferences('com_bwpostman', '500', '900');
 		}
 
 		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
